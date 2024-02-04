@@ -1,5 +1,5 @@
 import { RenderChaiBlocks } from "./render/index.ts";
-import "./chai-blocks";
+import "./blocks";
 import "./data-providers/data.ts";
 
 export function Render() {
