@@ -4,7 +4,7 @@ import "./index.css";
 import { Render } from "./Render.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.tsx";
-import "./chai-blocks";
+import "./blocks";
 
 async function enableMocking() {
   if (import.meta.env.MODE !== "development") {
