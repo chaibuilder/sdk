@@ -2,6 +2,15 @@
 
 Chai Builder is an Open Source Low Code React + Tailwind CSS Builder to create beautiful content driven websites. The perfect tool for Startups and Indie-Hackers alike.
 
+
+### Try Chai Builder:
+
+[Demo Link](https://chaibuilder-demo.vercel.app)
+
+[//]: # (Studio: [Studio Mode]&#40;https://chai-builder.vercel.app/studio&#41;)
+
+
+
 ## Features
 
 - **Visual Editor**: Easily tweak and fine-tune Tailwind CSS settings visually.
