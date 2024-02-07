@@ -7,17 +7,18 @@ Chai Builder is an Open Source Low Code React + Tailwind CSS Builder to create b
 
 [Demo Link](https://chaibuilder-demo.vercel.app)
 
-[//]: # (Studio: [Studio Mode]&#40;https://chai-builder.vercel.app/studio&#41;)
+Source Code (React App): [GitHub](https://github.com/surajair/demo)
 
 
-
-## Features
+### Features
 
 - **Visual Editor**: Easily tweak and fine-tune Tailwind CSS settings visually.
-- **Live Preview**: See real-time changes in a live preview, enabling quick design decisions.
 - **Customization**: Modify colors, spacing, typography, and more to match your design requirements.
 - **Responsive Design**: Test and preview designs across various screen sizes to ensure responsiveness.
 
+### In Progress
+- **Live Preview**: See real-time changes in a live preview, enabling quick design decisions.
+- **Sub Pages**: Global reusable blocks. Eg: Header, Footer etc
 
 ## Acknowledgments
 
