@@ -113,10 +113,17 @@ Step 4: Add the component on the page.
 ```tsx
 import "./chaibuilder.tailwind.css";
 import "@chaibuilder/sdk/styles";
-import {ChaiBuilderStudio} from "@chaibuilder/sdk";
+import {ChaiBuilderEditor} from "@chaibuilder/sdk";
 
 const BuilderFullPage = () => {
-  return  <ChaiBuilderStudio logo={<h1>Your Logo</h1>} />;
+  return  (
+    <ChaiBuilderEditor
+      logo={<h1>Your Logo</h1>}
+      blocks={[]}
+      onSaveBrandingOptions={(options) => console.log(options)}
+      onSavePage={pageData => console.log(pageData)}
+    />
+  );
 }
 ```
 
