@@ -1,4 +1,4 @@
-import { ManualClasses } from "./ManualClasses";
+import { ManualClasses } from "../components/settings/new-panel/ManualClasses.tsx";
 
 const BASIC_UNITS: string[] = ["px", "%", "em", "rem", "ch", "vh", "vw"];
 

@@ -5,7 +5,6 @@ import { BlockStyle } from "../choices/BlockStyle";
 import { useSelectedBlockCurrentClasses } from "../../../hooks";
 import { AccordionContent, AccordionItem, AccordionTrigger } from "../../../../ui";
 
-export const basicUnits = ["px", "%", "em", "rem", "ch", "vh", "vw"];
 const NestedOptions = ({ heading, items }: any) => {
   const currentClasses = useSelectedBlockCurrentClasses();
   const isAnyPropertySet: boolean = useMemo(() => {
