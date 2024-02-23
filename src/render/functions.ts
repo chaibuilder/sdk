@@ -9,7 +9,14 @@ import twLineClamp from "@tailwindcss/line-clamp";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { STYLES_KEY } from "../core/constants/CONTROLS.ts";
 
-export const getBrandingClasses = (brandingOptions: any, prefix: string = "c-") => {
+type BrandingOptions = {
+  bodyTextLightColor?: string;
+  bodyTextDarkColor?: string;
+  bodyBgLightColor?: string;
+  bodyBgDarkColor?: string;
+};
+
+export const getBrandingClasses = (brandingOptions: BrandingOptions, prefix: string = "c-") => {
   const textLight = get(brandingOptions, "bodyTextLightColor", "#64748b");
   const textDark = get(brandingOptions, "bodyTextDarkColor", "#94a3b8");
   const bgLight = get(brandingOptions, "bodyBgLightColor", "#FFFFFF");

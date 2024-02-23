@@ -11,7 +11,7 @@ import {
 } from "@chaibuilder/blocks";
 import { isEmpty } from "lodash";
 import ChaiBuilderLink from "../basic/chaibuilder-link";
-import { generateUUID, setBlockProps } from "../../core/lib";
+import { generateUUID, selectable } from "../../core/lib";
 
 const Navbar1 = ({
   blockProps,
@@ -30,7 +30,7 @@ const Navbar1 = ({
   const navId = generateUUID();
   return (
     <header
-      {...setBlockProps(blockProps)}
+      {...selectable(blockProps)}
       className="z-50 flex w-full flex-wrap border-b border-gray-200 bg-white py-3 text-sm dark:border-gray-700 dark:bg-gray-800 sm:flex-nowrap sm:justify-start sm:py-0">
       <nav
         className="relative mx-auto w-full max-w-7xl px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8"

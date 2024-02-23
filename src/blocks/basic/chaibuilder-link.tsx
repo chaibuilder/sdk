@@ -1,4 +1,4 @@
-import { enableStyling } from "../../core/lib";
+import { styling } from "../../core/lib";
 
 type LinkProps = {
   inBuilder?: boolean;
@@ -9,14 +9,14 @@ type LinkProps = {
 const ChaiBuilderLink = ({ inBuilder = false, style = {}, href, children }: LinkProps) => {
   if (inBuilder) {
     return (
-      <span data-simulate={"a"} {...enableStyling(style)}>
+      <span data-simulate={"a"} {...styling(style)}>
         {children}
       </span>
     );
   }
 
   return (
-    <a href={href} {...enableStyling(style)}>
+    <a href={href} {...styling(style)}>
       {children}
     </a>
   );

@@ -1,6 +1,6 @@
 import { omit } from "lodash";
 import { PlusCircledIcon } from "@radix-ui/react-icons";
-import { cn, setBlockProps } from "../../core/lib";
+import { cn, selectable } from "../../core/lib";
 
 type EmptySlotProps = {
   blockProps?: any;
@@ -11,7 +11,7 @@ type EmptySlotProps = {
 const EmptySlot = ({ blockProps, className = "", text = "BLOCK", styles = {} }: EmptySlotProps) => {
   return (
     <div
-      {...setBlockProps(blockProps)}
+      {...selectable(blockProps)}
       className={cn("flex h-20 flex-col items-center justify-center", className)}
       {...omit(styles, ["className"])}>
       <div className="flex h-full w-full items-center justify-center bg-[radial-gradient(#CCC,transparent_1.5px)] outline-dashed outline-2 outline-gray-400 duration-300 [background-size:12px_12px] dark:bg-[radial-gradient(#AAA,transparent_1.5px)]">
