@@ -6,6 +6,6 @@ export * from "./ChaiBuilderEditor";
 
 export * from "../hooks";
 
-export * from "../../studio";
+export * from "../../ChaiStudio.tsx";
 
 export type { ChaiBlock, ChaiBuilderEditorProps };

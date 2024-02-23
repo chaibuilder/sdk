@@ -1,8 +1,6 @@
-import { RenderChaiBlocks } from "./render/index.ts";
-import "./blocks";
-import "./data-providers/data.ts";
+import { RenderChaiBlocks } from "./render";
 
-export function Render() {
+function Preview() {
   return (
     <RenderChaiBlocks
       externalData={{ blogs: { heading: "This is external data" } }}
@@ -19,3 +17,5 @@ export function Render() {
     />
   );
 }
+
+export default Preview;

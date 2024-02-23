@@ -1,10 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import { Render } from "./Render.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import App from "./App.tsx";
+import ChaiStudio from "./ChaiStudio";
+import Preview from "./Preview";
+import ChaiEditor from "./Editor";
 import "./blocks";
+import "./data-providers/data";
 
 async function enableMocking() {
   if (import.meta.env.MODE !== "development") {
@@ -21,11 +23,15 @@ async function enableMocking() {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Render />,
+    element: <ChaiEditor />,
   },
   {
-    path: "/admin",
-    element: <App />,
+    path: "/studio",
+    element: <ChaiStudio />,
+  },
+  {
+    path: "/preview",
+    element: <Preview />,
   },
 ]);
 
