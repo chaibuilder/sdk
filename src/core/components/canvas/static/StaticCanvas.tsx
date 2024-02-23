@@ -92,7 +92,7 @@ const StaticCanvas = (): React.JSX.Element => {
     let initialHTML = IframeInitialContent;
     if (networkMode === "offline") {
       initialHTML = initialHTML.replace(
-        "https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio",
+        "https://old.chaibuilder.com/offline/tailwind.cdn.js",
         "/offline/tailwind.cdn.js",
       );
       initialHTML = initialHTML.replace("https://unpkg.com/aos@next/dist/aos.css", "/offline/aos.css");

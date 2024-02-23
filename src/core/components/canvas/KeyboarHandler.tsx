@@ -72,7 +72,7 @@ export const KeyboardHandler = () => {
         if (e.key === "v" && ids.length > 0) pasteBlocks(ids[0]);
       }
     };
-    // TODO: check for performance impact
+    // FIXME: check for performance impact
     iframeWin.removeEventListener("keydown", handleKeyDown);
     iframeWin.addEventListener("keydown", handleKeyDown);
     return () => {

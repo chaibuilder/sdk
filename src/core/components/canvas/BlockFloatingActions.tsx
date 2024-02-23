@@ -8,6 +8,11 @@ import { ChaiBlock } from "../../types/ChaiBlock";
 import { useDuplicateBlocks, useRemoveBlocks, useSelectedBlockIds, useSelectedStylingBlocks } from "../../hooks";
 import { useResizeObserver } from "@react-hookz/web";
 
+/**
+ * TODO: This is a temporary component which does not have drag and drop functionality
+ * @param block
+ * @param label
+ */
 const BlockActionLabel = ({ block, label }: any) => {
   const [, drag] = useDrag(() => ({
     type: "CANVAS_BLOCK",
@@ -28,14 +33,13 @@ const BlockActionLabel = ({ block, label }: any) => {
   );
 };
 
-// FIXME: lazy load this component
-export const BlockActionsStatic = ({
-  selectedBlockElement,
-  block,
-}: {
+type BlockActionProps = {
   block: ChaiBlock;
   selectedBlockElement: HTMLElement | undefined;
-}) => {
+};
+
+// FIXME: lazy load this component
+export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionProps) => {
   const removeBlock = useRemoveBlocks();
   const duplicateBlock = useDuplicateBlocks();
   const [, setSelectedIds] = useSelectedBlockIds();

@@ -1,5 +1,4 @@
-import { atom, useAtom } from "jotai";
-
-const chaiExternalDataAtom = atom({});
+import { useAtom } from "jotai";
+import { chaiExternalDataAtom } from "../../../atoms/builder.ts";
 
 export const useChaiExternalData = () => useAtom(chaiExternalDataAtom);

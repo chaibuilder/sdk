@@ -1,6 +1,5 @@
 import { atom } from "jotai";
-
-import { ChaiBuilderEditorProps } from "../types/chaiBuilderEditorProps.ts";
+import { ChaiBuilderEditorProps } from "../types/chaiBuilderEditorProps";
 
 export const chaiBuilderPropsAtom = atom<Omit<
   ChaiBuilderEditorProps,
@@ -8,5 +7,5 @@ export const chaiBuilderPropsAtom = atom<Omit<
 > | null>(null);
 chaiBuilderPropsAtom.debugLabel = "chaiBuilderPropsAtom";
 
-export const apiKeyAtom = atom<string | null>(null);
-apiKeyAtom.debugLabel = "apiKeyAtom";
+export const chaiExternalDataAtom = atom({});
+chaiExternalDataAtom.debugLabel = "chaiExternalDataAtom";

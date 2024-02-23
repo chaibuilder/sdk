@@ -3,7 +3,7 @@ import { each, filter, find, get, isEmpty, isNull, isString, memoize } from "lod
 import { twMerge } from "tailwind-merge";
 import { ChaiBlock } from "../../../types/ChaiBlock";
 import { SLOT_KEY, STYLES_KEY } from "../../../constants/CONTROLS";
-import { StylingAttributes } from "../../../types/index.ts";
+import { StylingAttributes } from "../../../types/index";
 import { useAllBlocks, useHighlightBlockId, useSelectedBlockIds, useSelectedStylingBlocks } from "../../../hooks";
 import { getBlockComponent } from "@chaibuilder/blocks";
 import { useChaiExternalData } from "./useChaiExternalData.ts";
