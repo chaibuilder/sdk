@@ -5,7 +5,7 @@ import { useDuplicateBlocks } from "./useDuplicateBlocks";
 import { useDispatch } from "./useTreeData";
 import { copiedBlockIdsAtom } from "./useCopyBlockIds";
 import { useCutBlockIds } from "./useCutBlockIds";
-import { presentBlocksAtom } from "../store/blocks";
+import { presentBlocksAtom } from "../atoms/blocks";
 import { BlockNode } from "../functions/Layers";
 
 const useMoveCutBlocks = () => {

@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useAtom, useAtomValue } from "jotai";
-import { pageBlocksAtom, pageBlocksTreeAtom } from "../store/blocks";
+import { pageBlocksAtom, pageBlocksTreeAtom } from "../atoms/blocks";
 import { nestedToFlatArray } from "../functions/Blocks";
 import { ChaiBlock } from "../types/ChaiBlock";
 

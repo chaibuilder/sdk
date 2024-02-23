@@ -14,10 +14,10 @@ import {
 } from "../../../../../ui";
 import { CoreBlock } from "./CoreBlock";
 import { PredefinedBlocks } from "./PredefinedBlocks";
-import { showPredefinedBlockCategoryAtom } from "../../../../store/ui";
+import { showPredefinedBlockCategoryAtom } from "../../../../atoms/ui";
 import { Cross1Icon } from "@radix-ui/react-icons";
 import { ChaiBlock } from "../../../../types/ChaiBlock";
-import { addBlocksModalAtom } from "../../../../store/blocks";
+import { addBlocksModalAtom } from "../../../../atoms/blocks";
 import { useAllBlocks, useSelectedBlockIds, useUILibraryBlocks } from "../../../../hooks";
 import ImportHTML from "./ImportHTML";
 import { useChaiBlocks } from "@chaibuilder/blocks";

@@ -5,7 +5,7 @@ import { syncBlocksWithDefaults, useChaiBlocks } from "@chaibuilder/blocks";
 import { Loader } from "lucide-react";
 import { DragPreviewImage, useDrag } from "react-dnd";
 import { useAtom } from "jotai";
-import { addBlocksModalAtom } from "../../../../store/blocks";
+import { addBlocksModalAtom } from "../../../../atoms/blocks";
 import { cn } from "../../../../lib";
 
 const BlockCard = ({ block, closePopover }: { block: any; closePopover: () => void }) => {

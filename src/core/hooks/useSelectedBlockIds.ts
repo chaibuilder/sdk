@@ -2,7 +2,7 @@ import { useCallback, useMemo } from "react";
 import { atom, useAtom, useAtomValue } from "jotai";
 import { filter, find, get as getProp, includes, isUndefined, map, without } from "lodash";
 import { atomWithStorage } from "jotai/utils";
-import { presentBlocksAtom } from "../store/blocks";
+import { presentBlocksAtom } from "../atoms/blocks";
 import { BlockNode } from "../functions/Layers";
 import { ChaiBlock } from "../types/ChaiBlock";
 

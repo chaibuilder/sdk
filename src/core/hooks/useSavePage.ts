@@ -2,7 +2,7 @@ import { useThrottledCallback } from "@react-hookz/web";
 import { atom, useAtom, useSetAtom } from "jotai";
 import { useGetPageData } from "./useGetPageData";
 import { useBuilderProp } from "./useBuilderProp";
-import { historyStatesAtom } from "../store/ui";
+import { historyStatesAtom } from "../atoms/ui";
 import { useCanvasHistory } from "./useCanvasHistory";
 import { usePageDataProviders } from "./usePageDataProviders.ts";
 

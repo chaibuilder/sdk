@@ -13,7 +13,7 @@ import {
   useSelectedStylingBlocks,
 } from "../../../hooks";
 import { IframeInitialContent } from "../IframeInitialContent";
-import { canvasIframeAtom, networkModeAtom } from "../../../store/ui";
+import { canvasIframeAtom, networkModeAtom } from "../../../atoms/ui";
 import { useCanvasScale } from "./useCanvasScale";
 import { Canvas, getElementByDataBlockId } from "./Canvas.tsx";
 import { ChaiFrame } from "../../../frame";

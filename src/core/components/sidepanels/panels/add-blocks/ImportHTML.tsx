@@ -14,10 +14,10 @@ import {
   Textarea,
 } from "../../../../../ui";
 import { useAddBlock, useSelectedBlockIds } from "../../../../hooks";
-import { activePanelAtom, addBlockOffCanvasAtom } from "../../../../store/ui";
+import { activePanelAtom, addBlockOffCanvasAtom } from "../../../../atoms/ui";
 import { first } from "lodash";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
-import { addBlocksModalAtom } from "../../../../store/blocks";
+import { addBlocksModalAtom } from "../../../../atoms/blocks";
 import { getBlocksFromHTML } from "../../../../import-html/html-to-json";
 
 const ImportHTML = () => {

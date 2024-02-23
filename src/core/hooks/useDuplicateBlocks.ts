@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { useAtomValue } from "jotai";
 import { each, get } from "lodash";
 import { useDispatch } from "./useTreeData";
-import { presentBlocksAtom } from "../store/blocks";
+import { presentBlocksAtom } from "../atoms/blocks";
 import { getDuplicatedBlocks } from "../functions/Blocks";
 import { useSelectedBlockIds } from "./useSelectedBlockIds";
 

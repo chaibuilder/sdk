@@ -1,7 +1,7 @@
 import { useAtomValue } from "jotai";
 import { filter, find, includes, isEmpty } from "lodash";
 import { useCallback } from "react";
-import { presentBlocksAtom } from "../store/blocks";
+import { presentBlocksAtom } from "../atoms/blocks";
 import { useDispatch } from "./useTreeData";
 import { useSelectedBlockIds } from "./useSelectedBlockIds";
 import { ChaiBlock } from "../types/ChaiBlock";

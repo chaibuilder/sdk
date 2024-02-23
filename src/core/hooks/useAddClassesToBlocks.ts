@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { atom, useSetAtom } from "jotai";
 import { each, filter, first, get as getProp } from "lodash";
 import { useDispatch } from "./useTreeData";
-import { pageBlocksAtomsAtom } from "../store/blocks";
+import { pageBlocksAtomsAtom } from "../atoms/blocks";
 import { getNewClasses } from "../functions/GetNewClasses";
 import { selectedStylingBlocksAtom, TStyleBlock } from "./useSelectedStylingBlocks";
 import { ChaiBlock } from "../types/ChaiBlock";

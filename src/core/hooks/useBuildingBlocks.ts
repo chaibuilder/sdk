@@ -1,7 +1,7 @@
 import { useAtomValue } from "jotai";
 import { useCallback } from "react";
-import { globalBlocksAtom } from "../store/buildingBlocks";
 import { useChaiBlocks } from "@chaibuilder/blocks";
+import { globalBlocksAtom } from "../atoms/blocks.ts";
 
 const setBlocks = () => {};
 

@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { atom, useSetAtom } from "jotai";
 import { each, filter, first, get as getProp, includes } from "lodash";
-import { pageBlocksAtomsAtom } from "../store/blocks";
+import { pageBlocksAtomsAtom } from "../atoms/blocks";
 import { useDispatch } from "./useTreeData";
 import { selectedStylingBlocksAtom, TStyleBlock } from "./useSelectedStylingBlocks";
 import { ChaiBlock } from "../types/ChaiBlock";

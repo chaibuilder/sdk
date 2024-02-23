@@ -3,7 +3,7 @@ import { map, omit } from "lodash";
 import { useAtomValue } from "jotai";
 import { useBrandingOptions } from "./useBrandingOptions";
 import { useCurrentPage } from "./useCurrentPage";
-import { presentBlocksAtom } from "../store/blocks";
+import { presentBlocksAtom } from "../atoms/blocks";
 import { BlockNode } from "../functions/Layers";
 import { splitPageBlocks } from "../functions/split-blocks";
 

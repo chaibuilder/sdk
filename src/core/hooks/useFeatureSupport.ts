@@ -1,6 +1,6 @@
 import { useAtom } from "jotai";
 import { get } from "lodash";
-import { chaiBuilderPropsAtom } from "../store/ChaiBuilderProps";
+import { chaiBuilderPropsAtom } from "../atoms/builder.ts";
 
 export const useFeatureSupport = (feature: string, defaultValue: boolean) => {
   const [builderProps] = useAtom(chaiBuilderPropsAtom);

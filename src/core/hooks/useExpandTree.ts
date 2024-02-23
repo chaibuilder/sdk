@@ -1,7 +1,7 @@
 import { atom, useAtom, useAtomValue } from "jotai";
 import { find, first, flatten, get, isEmpty, isString } from "lodash";
 import { useEffect } from "react";
-import { presentBlocksAtom } from "../store/blocks";
+import { presentBlocksAtom } from "../atoms/blocks";
 import { ChaiBlock } from "../types/ChaiBlock";
 import { useSelectedBlockIds } from "./useSelectedBlockIds";
 

@@ -1,7 +1,7 @@
 import { useAtomValue } from "jotai";
 import { useCallback } from "react";
 import { find } from "lodash";
-import { presentBlocksAtom } from "../store/blocks";
+import { presentBlocksAtom } from "../atoms/blocks";
 import { useDispatch } from "./useTreeData";
 import { generateUUID } from "../functions/functions";
 import { useSelectedBlockIds } from "./useSelectedBlockIds";

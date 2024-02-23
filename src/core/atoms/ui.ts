@@ -1,8 +1,4 @@
-import { atomWithStorage } from "jotai/utils";
 import { atom } from "jotai";
-
-export const blockStylingTabAtom = atomWithStorage("blockStylingActiveTab", 1);
-export const pagesAtom: any = atom([]);
 
 export const readOnlyModeAtom: any = atom<boolean>(false);
 readOnlyModeAtom.debugLabel = "readOnlyModeAtom";
@@ -16,7 +12,6 @@ advanceStylingOpenAtom.debugLabel = "advanceStylingOpenAtom";
 export const networkModeAtom: any = atom<string>("online");
 networkModeAtom.debugLabel = "networkModeAtom";
 
-export const currentUiLibraryAtom: any = atomWithStorage<string>("currentUiLibrary", "");
 export const codeEditorOpenAtom: any = atom(false);
 codeEditorOpenAtom.debugLabel = "codeEditorOpenAtom";
 

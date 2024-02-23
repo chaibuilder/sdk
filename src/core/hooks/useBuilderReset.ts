@@ -3,7 +3,7 @@ import { useHighlightBlockId } from "./useHighlightBlockId";
 import { useSelectedBlockIds } from "./useSelectedBlockIds";
 import { useSelectedStylingBlocks } from "./useSelectedStylingBlocks";
 import { useSetAtom } from "jotai";
-import { historyStatesAtom } from "../store/ui";
+import { historyStatesAtom } from "../atoms/ui";
 
 export const useBuilderReset = () => {
   const setNewState = useSetAtom(historyStatesAtom);

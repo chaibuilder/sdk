@@ -3,7 +3,7 @@ import { isEmpty } from "lodash";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
 import { useSelectedBlocksDisplayChild, useSelectedStylingBlocks, useStylingState } from "../../hooks";
-import { advanceStylingOpenAtom } from "../../store/ui";
+import { advanceStylingOpenAtom } from "../../atoms/ui";
 import { FLEX_CHILD_SECTION, GRID_CHILD_SECTION, SETTINGS_SECTIONS } from "../../constants/STYLING_GROUPS.ts";
 import { SettingsSection } from "./new-panel/SettingSection";
 import {

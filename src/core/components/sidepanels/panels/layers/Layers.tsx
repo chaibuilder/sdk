@@ -22,7 +22,7 @@ import { ScrollArea } from "../../../../../ui";
 import { cn } from "../../../../lib.ts";
 import { useAtom } from "jotai";
 import { useAddBlockByDrop } from "../../../../hooks/useAddBlockByDrop";
-import { addBlocksModalAtom } from "../../../../store/blocks";
+import { addBlocksModalAtom } from "../../../../atoms/blocks";
 
 function convertToTBlocks(newTree: NodeModel[]) {
   return map(newTree, (block) => {

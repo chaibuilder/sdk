@@ -3,7 +3,7 @@ import { CanvasTopBar } from "./topbar/CanvasTopBar";
 import { useBuilderProp } from "../../hooks";
 import { BUILDER_MODES } from "../../constants/BUILDER_MODES";
 import { useAtom } from "jotai";
-import { addBlocksModalAtom } from "../../store/blocks";
+import { addBlocksModalAtom } from "../../atoms/blocks";
 import { Skeleton } from "../../../ui";
 import { StaticCanvas } from "./static/StaticCanvas";
 import { ErrorBoundary } from "../ErrorBoundary";

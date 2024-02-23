@@ -1,5 +1,5 @@
 import { useAtomValue } from "jotai";
-import { presentBlocksAtom } from "../store/blocks";
+import { presentBlocksAtom } from "../atoms/blocks";
 import { ChaiBlock } from "../types/ChaiBlock";
 
 /**

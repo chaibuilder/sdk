@@ -2,11 +2,11 @@ import { ActionCreators } from "redux-undo";
 import { useCallback, useEffect } from "react";
 import { useAtom, useAtomValue } from "jotai";
 import { useDispatch } from "./useTreeData";
-import { pageBlocksAtom } from "../store/blocks";
+import { pageBlocksAtom } from "../atoms/blocks";
 import { usePreviewMode } from "./usePreviewMode";
 import { pageSyncStateAtom } from "./useSavePage";
 import { useBuilderProp } from "./useBuilderProp";
-import { historyStatesAtom } from "../store/ui";
+import { historyStatesAtom } from "../atoms/ui";
 import { useSelectedBlockIds } from "./useSelectedBlockIds";
 import { useSelectedStylingBlocks } from "./useSelectedStylingBlocks";
 

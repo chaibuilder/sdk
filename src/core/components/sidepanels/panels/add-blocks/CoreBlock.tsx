@@ -3,11 +3,11 @@ import { useAtom } from "jotai";
 import { first, has } from "lodash";
 import { createElement } from "react";
 import { BoxIcon } from "@radix-ui/react-icons";
-import { activePanelAtom } from "../../../../store/ui";
+import { activePanelAtom } from "../../../../atoms/ui";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../../ui";
 import { useAddBlock, useSelectedBlockIds } from "../../../../hooks";
 import { syncBlocksWithDefaults } from "@chaibuilder/blocks";
-import { addBlocksModalAtom } from "../../../../store/blocks";
+import { addBlocksModalAtom } from "../../../../atoms/blocks";
 
 export const CoreBlock = ({ block }: { block: any }) => {
   const { type, icon, label } = block;
