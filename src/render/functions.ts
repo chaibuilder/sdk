@@ -76,8 +76,8 @@ export type ChaiPageData = {
     blocks: ChaiBlock[];
     seoData?: Record<string, string>;
     slug?: string;
-    name: string;
-    providers: { providerKey: string; args: Record<string, any> }[];
+    name?: string;
+    providers?: { providerKey: string; args: Record<string, any> }[];
   };
   subPages?: {
     uuid: string;
@@ -85,13 +85,13 @@ export type ChaiPageData = {
     providers: { providerKey: string; args: Record<string, any> }[];
   }[];
   project: {
-    name: string;
-    favicon: string;
+    name?: string;
+    favicon?: string;
     brandingOptions: Record<string, string | number>;
     seoData?: Record<string, string>;
-    primaryLanguage: string;
-    languages: string[];
-    homepage: string;
+    primaryLanguage?: string;
+    languages?: string[];
+    homepage?: string;
   };
 };
 

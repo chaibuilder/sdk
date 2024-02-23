@@ -1,20 +1,29 @@
 import { RenderChaiBlocks } from "./render";
+import { useAtom } from "jotai/index";
+import { lsBlocksAtom, lsBrandingOptionsAtom } from "./atoms-dev.ts";
+import { useEffect, useState } from "react";
+import { getStylesForPageData } from "./render/functions.ts";
 
 function Preview() {
+  const [blocks] = useAtom(lsBlocksAtom);
+  const [brandingOptions] = useAtom(lsBrandingOptionsAtom);
+  const [allStyles, setStyles] = useState("");
+
+  useEffect(() => {
+    (async () => {
+      const styles = await getStylesForPageData({
+        page: { blocks: blocks },
+        project: { brandingOptions },
+      });
+      setStyles(styles);
+    })();
+  }, [blocks, brandingOptions]);
+
   return (
-    <RenderChaiBlocks
-      externalData={{ blogs: { heading: "This is external data" } }}
-      classPrefix={"c-"}
-      blocks={[
-        {
-          _id: "a",
-          _bindings: { content: "blogs.heading" },
-          _type: "Heading",
-          level: "h2",
-          content: "This is static content",
-        },
-      ]}
-    />
+    <>
+      <style>{allStyles}</style>
+      <RenderChaiBlocks externalData={{}} blocks={blocks} />
+    </>
   );
 }
 
