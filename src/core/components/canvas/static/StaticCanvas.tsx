@@ -108,7 +108,7 @@ const StaticCanvas = (): React.JSX.Element => {
         setStylingBlocks([]);
       }}
       onMouseLeave={() => setTimeout(() => highlight(""), 300)}
-      className="relative mx-auto h-full w-full bg-black/80"
+      className="relative mx-auto h-full w-full"
       style={initialWidth > 0 && !isEmpty(scale) ? { width: preview ? "100%" : initialWidth } : {}}
       ref={wrapperRef}>
       {/*// @ts-ignore*/}

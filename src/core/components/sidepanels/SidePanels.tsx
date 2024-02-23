@@ -153,9 +153,7 @@ const SidePanels = () => {
                 Data
               </TabsTrigger>
             </TabsList>
-            <TabsContent
-              value="layers"
-              className="no-scrollbar -mx-1 -mr-2 h-full flex-1 overflow-y-auto overflow-x-hidden">
+            <TabsContent value="layers" className="no-scrollbar h-full flex-1 overflow-y-auto overflow-x-hidden">
               {React.createElement(LayersPanel)}
             </TabsContent>
             <TabsContent value="data-provider" className="flex-1 overflow-y-auto overflow-x-hidden">
