@@ -26,4 +26,3 @@ export * from "./radix/components/ui/skeleton";
 export * from "./radix/components/ui/command";
 export * from "./radix/components/ui/context-menu";
 export * from "./widgets/index.ts";
-export { chaiBuilderTheme } from "./tailwind-config";
