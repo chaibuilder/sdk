@@ -3,7 +3,7 @@ import { each, filter, get, isEmpty, isString, memoize, omit } from "lodash";
 import { twMerge } from "tailwind-merge";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { SLOT_KEY, STYLES_KEY } from "../core/constants/CONTROLS.ts";
-import { getBlockComponent } from "@chaibuilder/blocks";
+import { getBlockComponent } from "@chaibuilder/runtime";
 import { addPrefixToClasses } from "./functions.ts";
 
 const getSlots = (block: ChaiBlock) => {

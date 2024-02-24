@@ -1,7 +1,8 @@
 import * as React from "react";
 import { DividerHorizontalIcon } from "@radix-ui/react-icons";
-import type { ChaiBlock } from "../../core/main";
-import { registerChaiBlock, Styles } from "@chaibuilder/blocks";
+import { Styles } from "@chaibuilder/runtime/controls";
+import { registerChaiBlock } from "@chaibuilder/runtime";
+import { ChaiBlock } from "../types/ChaiBlock.ts";
 
 /**
  * Divider component

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ScrollArea } from "../../ui";
-import { Image, SingleLineText } from "@chaibuilder/blocks";
+import { Image, SingleLineText } from "@chaibuilder/runtime/controls";
 import { Form } from "./form";
 import { useProject } from "../hooks/useProject";
 

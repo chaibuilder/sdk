@@ -1,7 +1,8 @@
 import * as React from "react";
 import { HeadingIcon } from "@radix-ui/react-icons";
-import { registerChaiBlock, RichText, SelectOption, Styles } from "@chaibuilder/blocks";
-import type { ChaiBlock } from "../../core/main";
+import { RichText, SelectOption, Styles } from "@chaibuilder/runtime/controls";
+import { registerChaiBlock } from "@chaibuilder/runtime";
+import { ChaiBlock } from "../types/ChaiBlock.ts";
 
 /**
  * Heading component

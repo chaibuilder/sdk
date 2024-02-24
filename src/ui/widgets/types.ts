@@ -5,7 +5,7 @@ import {
   ModelControlDefinition,
   SlotControlDefinition,
   StylesControlDefinition,
-} from "@chaibuilder/blocks";
+} from "@chaibuilder/runtime/controls";
 import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
 
 export interface ChaiCustomBlock {

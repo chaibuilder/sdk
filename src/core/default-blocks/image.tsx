@@ -1,9 +1,10 @@
 import * as React from "react";
 import { ImageIcon } from "@radix-ui/react-icons";
-import type { ChaiBlock } from "../../core/main";
-import { Image, registerChaiBlock, SingleLineText, Styles } from "@chaibuilder/blocks";
+import { Image, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import { isEmpty } from "lodash";
+import { registerChaiBlock } from "@chaibuilder/runtime";
 import EmptySlot from "./empty-slot";
+import { ChaiBlock } from "../types/ChaiBlock.ts";
 
 const ImageBlock = (
   block: ChaiBlock & {

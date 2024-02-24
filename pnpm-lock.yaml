@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@bobthered/tailwindcss-palette-generator': 3.1.1
-  '@chaibuilder/blocks': ^0.2.0
+  '@chaibuilder/runtime': ^0.1.0
   '@commitlint/cli': 17.7.1
   '@commitlint/config-conventional': 17.7.0
   '@emotion/react': ^11.11.1
@@ -120,7 +120,7 @@ specifiers:
 
 dependencies:
   '@bobthered/tailwindcss-palette-generator': 3.1.1
-  '@chaibuilder/blocks': 0.2.0_tailwindcss@3.3.5
+  '@chaibuilder/runtime': 0.1.0
   '@floating-ui/dom': 1.4.5
   '@floating-ui/react-dom': 2.0.1_biqbaboplfbrettd7655fr4n2y
   '@mhsdesign/jit-browser-tailwindcss': 0.3.0
@@ -623,17 +623,11 @@ packages:
       statuses: 2.0.1
     dev: true
 
-  /@chaibuilder/blocks/0.2.0_tailwindcss@3.3.5:
-    resolution: {integrity: sha512-1uFCgK/YB2Puxx/I54fL4kZY2gl45qByJWmoKJuUWL+//Gm19UP1MNO/Aw4Q34xScBKO1TE+YyRcawTksdUM3A==}
+  /@chaibuilder/runtime/0.1.0:
+    resolution: {integrity: sha512-EWB8d78Ve0p6ohyegQdS2edRJZDtTSWW7VCtEeb/nH6RFCDTk/C6zfNl0aSrDbf+q308sg4JXdDjZBGRzxRS1g==}
     dependencies:
-      '@radix-ui/react-icons': 1.3.0_react@18.2.0
-      clsx: 1.2.1
       lodash: 4.17.21
       react: 18.2.0
-      tailwind-merge: 1.13.2
-      tailwindcss-animate: 1.0.7_tailwindcss@3.3.5
-    transitivePeerDependencies:
-      - tailwindcss
     dev: false
 
   /@cloudflare/kv-asset-handler/0.2.0:
@@ -10170,14 +10164,6 @@ packages:
 
   /tailwindcss-animate/1.0.6_tailwindcss@3.3.5:
     resolution: {integrity: sha512-4WigSGMvbl3gCCact62ZvOngA+PRqhAn7si3TQ3/ZuPuQZcIEtVap+ENSXbzWhpojKB8CpvnIsrwBu8/RnHtuw==}
-    peerDependencies:
-      tailwindcss: '>=3.0.0 || insiders'
-    dependencies:
-      tailwindcss: 3.3.5
-    dev: false
-
-  /tailwindcss-animate/1.0.7_tailwindcss@3.3.5:
-    resolution: {integrity: sha512-bl6mpH3T7I3UFxuvDEXLxy/VuFxBk5bbzplh7tXI68mwMokNYd1t9qPBHlnyTwfa4JGC4zP516I1hYYtQ/vspA==}
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders'
     dependencies:

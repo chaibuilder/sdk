@@ -23,10 +23,7 @@ export const useSavePage = () => {
       setSyncState("SAVING");
       onSyncStatusChange("SAVING");
       const pageData = getPageData();
-      await Promise.all([
-        onSaveBlocks({ blocks: pageData.blocks, providers: [], identifier: "pageData.id" }),
-        onSavePage({ blocks: pageData.blocks, providers }),
-      ]);
+      await onSavePage({ blocks: pageData.blocks, providers });
       setTimeout(() => {
         setNewState({ undoCount, redoCount });
         setSyncState("SAVED");

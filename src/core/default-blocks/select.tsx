@@ -1,9 +1,10 @@
 import * as React from "react";
 import { DropdownMenuIcon } from "@radix-ui/react-icons";
 import { get, map } from "lodash";
-import type { ChaiBlock } from "../../core/main";
-import { generateUUID } from "../../core/lib";
-import { Checkbox, List, registerChaiBlock, SingleLineText, Styles } from "@chaibuilder/blocks";
+import { Checkbox, List, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
+import { registerChaiBlock } from "@chaibuilder/runtime";
+import { ChaiBlock } from "../types/ChaiBlock.ts";
+import { generateUUID } from "../lib.ts";
 
 const SelectBlock = (
   block: ChaiBlock & {

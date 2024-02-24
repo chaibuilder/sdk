@@ -5,7 +5,7 @@ import { ChaiBlock } from "../../../types/ChaiBlock";
 import { SLOT_KEY, STYLES_KEY } from "../../../constants/CONTROLS";
 import { StylingAttributes } from "../../../types/index";
 import { useAllBlocks, useHighlightBlockId, useSelectedBlockIds, useSelectedStylingBlocks } from "../../../hooks";
-import { getBlockComponent } from "@chaibuilder/blocks";
+import { getBlockComponent } from "@chaibuilder/runtime";
 import { useChaiExternalData } from "./useChaiExternalData.ts";
 
 // FIXME:  Duplicate code in CanvasRenderer.tsx

@@ -20,7 +20,7 @@ import { ChaiBlock } from "../../../../types/ChaiBlock";
 import { addBlocksModalAtom } from "../../../../atoms/blocks";
 import { useAllBlocks, useSelectedBlockIds, useUILibraryBlocks } from "../../../../hooks";
 import ImportHTML from "./ImportHTML";
-import { useChaiBlocks } from "@chaibuilder/blocks";
+import { useChaiBlocks } from "@chaibuilder/runtime";
 
 /**
  *

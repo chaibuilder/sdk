@@ -1,7 +1,7 @@
 import { filter, first, get, groupBy, has, isArray, isEmpty, map, mergeWith, values } from "lodash";
 import React, { useCallback, useMemo, useState } from "react";
 import { useAddBlock, useBuilderProp, useSelectedBlockIds, useUILibraryBlocks } from "../../../../hooks";
-import { syncBlocksWithDefaults, useChaiBlocks } from "@chaibuilder/blocks";
+import { syncBlocksWithDefaults, useChaiBlocks } from "@chaibuilder/runtime";
 import { Loader } from "lucide-react";
 import { DragPreviewImage, useDrag } from "react-dnd";
 import { useAtom } from "jotai";

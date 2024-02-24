@@ -1,4 +1,4 @@
-import { getChaiDataProviders } from "@chaibuilder/blocks";
+import { getChaiDataProviders } from "@chaibuilder/runtime";
 import {
   AlertDialog,
   AlertDialogAction,

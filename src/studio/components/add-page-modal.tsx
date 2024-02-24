@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { kebabCase } from "lodash";
 import { Button, Dialog, DialogContent, DialogTrigger } from "../../ui";
-import { SingleLineText } from "@chaibuilder/blocks";
+import { SingleLineText } from "@chaibuilder/runtime/controls";
 import { Form } from "./form";
 import { useAddPage } from "../mutations/usePageActions";
 

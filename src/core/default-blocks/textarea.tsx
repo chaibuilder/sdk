@@ -1,8 +1,9 @@
 import * as React from "react";
 import { InputIcon } from "@radix-ui/react-icons";
-import type { ChaiBlock } from "../../core/main";
-import { generateUUID } from "../../core/lib";
-import { Checkbox, Numeric, registerChaiBlock, SingleLineText, Styles } from "@chaibuilder/blocks";
+import { Checkbox, Numeric, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
+import { registerChaiBlock } from "@chaibuilder/runtime";
+import { ChaiBlock } from "../types/ChaiBlock.ts";
+import { generateUUID } from "../lib.ts";
 
 const InputBlock = (
   block: ChaiBlock & {

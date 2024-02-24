@@ -1,7 +1,7 @@
 import { filter, isEmpty, map } from "lodash";
 import type { ChaiBlock } from "../core/main";
 import type { ChaiPageData } from "../render/index.ts";
-import { getChaiDataProviders } from "@chaibuilder/blocks";
+import { getChaiDataProviders } from "@chaibuilder/runtime";
 
 type ChaiPage = {
   uuid: string;

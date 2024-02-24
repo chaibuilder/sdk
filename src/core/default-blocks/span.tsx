@@ -1,6 +1,7 @@
 import * as React from "react";
-import type { ChaiBlock } from "../../core/main";
-import { MultilineText, registerChaiBlock, Styles } from "@chaibuilder/blocks";
+import { MultilineText, Styles } from "@chaibuilder/runtime/controls";
+import { registerChaiBlock } from "@chaibuilder/runtime";
+import { ChaiBlock } from "../types/ChaiBlock.ts";
 
 const SpanBlock = (
   props: ChaiBlock & {

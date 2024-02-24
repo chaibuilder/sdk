@@ -1,7 +1,8 @@
 import * as React from "react";
 import { CodeIcon } from "@radix-ui/react-icons";
-import { MultilineText, registerChaiBlock, Styles } from "@chaibuilder/blocks";
-import type { ChaiBlock } from "../../core/main";
+import { MultilineText, Styles } from "@chaibuilder/runtime/controls";
+import { registerChaiBlock } from "@chaibuilder/runtime";
+import { ChaiBlock } from "../types/ChaiBlock.ts";
 
 const CustomHTMLBlock = (
   props: ChaiBlock & {

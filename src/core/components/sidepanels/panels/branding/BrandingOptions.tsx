@@ -3,7 +3,7 @@ import { RJSFSchema, UiSchema } from "@rjsf/utils";
 import validator from "@rjsf/validator-ajv8";
 import Form, { IChangeEvent } from "@rjsf/core";
 import { useBrandingOptions, useBuilderProp } from "../../../../hooks";
-import { Color, Numeric, SelectOption } from "@chaibuilder/blocks";
+import { Color, Numeric, SelectOption } from "@chaibuilder/runtime/controls";
 import { isEqual } from "lodash";
 
 const FONTS = [

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { TextIcon } from "@radix-ui/react-icons";
-import { registerChaiBlock, RichText, Styles } from "@chaibuilder/blocks";
-import type { ChaiBlock } from "../../core/main";
+import { RichText, Styles } from "@chaibuilder/runtime/controls";
+import { registerChaiBlock } from "@chaibuilder/runtime";
 import { isNull } from "lodash";
 
 /**
@@ -10,7 +10,7 @@ import { isNull } from "lodash";
  * @constructor
  */
 const ParagraphBlock = (
-  props: ChaiBlock & {
+  props: any & {
     blockProps: Record<string, string>;
     styles: Record<string, string>;
     children: React.ReactNode;

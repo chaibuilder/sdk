@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { isEmpty, isEqual, isString, kebabCase, omit } from "lodash";
 import { HomeIcon } from "@radix-ui/react-icons";
 import { Button, ScrollArea } from "../../ui";
-import { Checkbox, Image, Model, MultilineText, SingleLineText } from "@chaibuilder/blocks";
+import { Checkbox, Image, Model, MultilineText, SingleLineText } from "@chaibuilder/runtime/controls";
 import { toast } from "sonner";
 import { Form } from "./form";
 import { useQueryClient } from "@tanstack/react-query";

@@ -1,8 +1,8 @@
 import * as React from "react";
 import { ButtonIcon } from "@radix-ui/react-icons";
-import { Icon, Link, registerChaiBlock, SelectOption, SingleLineText, Styles } from "@chaibuilder/blocks";
-import type { ChaiBlock } from "../../core/main";
-
+import { Icon, Link, SelectOption, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
+import { registerChaiBlock } from "@chaibuilder/runtime";
+import { ChaiBlock } from "../types/ChaiBlock.ts";
 const ButtonBlock = (
   block: ChaiBlock & {
     blockProps: Record<string, string>;

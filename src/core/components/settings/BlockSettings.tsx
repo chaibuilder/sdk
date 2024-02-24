@@ -5,11 +5,12 @@ import { capitalize, cloneDeep, each, get, includes, isEmpty, keys, map } from "
 import { useActiveLanguage, useCanvasHistory, useSelectedBlock, useUpdateBlocksPropsRealtime } from "../../hooks";
 import { IconPickerField, ImagePickerField, LinkField, RTEField } from "../../../ui/widgets";
 import { getBlockJSONFromSchemas, getBlockJSONFromUISchemas } from "../../functions/controls";
-import { ChaiControlDefinition, getBlockComponent, SingleLineText } from "@chaibuilder/blocks";
+import { ChaiControlDefinition, SingleLineText } from "@chaibuilder/runtime/controls";
 import DataBindingSetting from "../../../ui/widgets/rjsf/widgets/data-binding";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../ui";
 import { BindingWidget } from "../../../ui/widgets/rjsf/widgets/binding.tsx";
 import { useMemo } from "react";
+import { getBlockComponent } from "@chaibuilder/runtime";
 
 /**
  *

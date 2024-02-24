@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Image, Model, MultilineText, SingleLineText } from "@chaibuilder/blocks";
+import { Image, Model, MultilineText, SingleLineText } from "@chaibuilder/runtime/controls";
 import { Form } from "./form";
 
 const ProjectSeoSettings = ({

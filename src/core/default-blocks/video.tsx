@@ -1,9 +1,10 @@
 import * as React from "react";
 import { VideoIcon } from "@radix-ui/react-icons";
 import { isEmpty } from "lodash";
-import type { ChaiBlock } from "../../core/main";
-import { Checkbox, Model, registerChaiBlock, SingleLineText, Styles } from "@chaibuilder/blocks";
+import { Checkbox, Model, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
+import { registerChaiBlock } from "@chaibuilder/runtime";
 import EmptySlot from "./empty-slot";
+import { ChaiBlock } from "../types/ChaiBlock.ts";
 
 const YOUTUBE_REGEX = /^(https?:\/\/)?(www\.)?youtube\.com\/(watch\?v=|embed\/)([a-zA-Z0-9_-]{11})/;
 const VIMEO_REGEX = /^(https?:\/\/)?(www\.)?vimeo\.com\/(\d+)/;

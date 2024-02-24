@@ -1,6 +1,7 @@
-import type { ChaiBlock } from "../../core/main";
-import { MultilineText, registerChaiBlock } from "@chaibuilder/blocks";
+import { MultilineText } from "@chaibuilder/runtime/controls";
+import { registerChaiBlock } from "@chaibuilder/runtime";
 import { SpaceBetweenVerticallyIcon } from "@radix-ui/react-icons";
+import { ChaiBlock } from "../types/ChaiBlock.ts";
 
 const RawTextBlock = (
   props: ChaiBlock & {

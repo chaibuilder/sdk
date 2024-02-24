@@ -1,4 +1,4 @@
-import { ChaiBuilderEditor, ChaiBuilderStudioProps, useBuilderProp } from "../../core/main";
+import { ChaiBuilderEditor, useBuilderProp } from "../../core/main";
 import { FileTextIcon, GearIcon } from "@radix-ui/react-icons";
 import React, { lazy, useCallback } from "react";
 import { useProject } from "../hooks/useProject.ts";
@@ -14,6 +14,7 @@ import { useUploadAsset } from "../mutations/useAssetActions.ts";
 import { useApiBaseUrl } from "../hooks/useApiBaseUrl.ts";
 import { TakeOverModal } from "./TakeOverModal.tsx";
 import SignOut from "./SignOut.tsx";
+import { ChaiBuilderStudioProps } from "../index.tsx";
 
 const PagesPanel = lazy(() => import("../panels/PagesPanel.tsx"));
 const ProjectSettings = lazy(() => import("../panels/ProjectPanel.tsx"));

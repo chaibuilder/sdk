@@ -1,6 +1,6 @@
 import "react-quill/dist/quill.snow.css";
 import "../index.css";
-
+import "../default-blocks";
 import { DevTools } from "jotai-devtools";
 import i18n from "../locales/load";
 import { FlagsProvider } from "flagged";
@@ -15,7 +15,7 @@ import { RootLayout } from "../components/RootLayout";
 import { builderStore } from "../atoms/store.ts";
 import { Toaster } from "../../ui";
 import { useBrandingOptions, useBuilderReset, useSetAllBlocks } from "../hooks";
-import { syncBlocksWithDefaults } from "@chaibuilder/blocks";
+import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { ChaiBuilderEditorProps } from "../types/chaiBuilderEditorProps.ts";
 import { dataProvidersAtom } from "../hooks/usePageDataProviders.ts";
 

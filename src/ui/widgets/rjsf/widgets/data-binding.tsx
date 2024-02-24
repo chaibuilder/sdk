@@ -40,7 +40,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "../../..";
-import { getBlockComponent, getChaiDataProviders } from "@chaibuilder/blocks";
+import { getBlockComponent, getChaiDataProviders } from "@chaibuilder/runtime";
 import { ErrorBoundary } from "../../../../core/components/ErrorBoundary.tsx";
 import { useSelectedBlock } from "../../../../core/hooks";
 import { useChaiExternalData } from "../../../../core/components/canvas/static/useChaiExternalData.ts";

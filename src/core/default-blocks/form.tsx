@@ -1,9 +1,10 @@
 import * as React from "react";
 import { isEmpty } from "lodash";
 import { GroupIcon, LetterCaseToggleIcon } from "@radix-ui/react-icons";
-import type { ChaiBlock } from "../../core/main";
-import { registerChaiBlock, RichText, SingleLineText, Styles } from "@chaibuilder/blocks";
+import { RichText, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
+import { registerChaiBlock } from "@chaibuilder/runtime";
 import EmptySlot from "./empty-slot";
+import { ChaiBlock } from "../types/ChaiBlock.ts";
 
 const FormBlock = (
   props: ChaiBlock & {

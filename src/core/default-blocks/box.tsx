@@ -1,12 +1,11 @@
 import * as React from "react";
-import type { ChaiBlock } from "../../core/main";
-import { Image, registerChaiBlock, SelectOption, Styles } from "@chaibuilder/blocks";
+import { Image, SelectOption, Styles } from "@chaibuilder/runtime/controls";
+import { registerChaiBlock } from "@chaibuilder/runtime";
 import { isEmpty } from "lodash";
 import EmptySlot from "./empty-slot";
-import { selectable } from "../../core/lib";
 
 const BoxBlock = (
-  props: ChaiBlock & {
+  props: any & {
     children: React.ReactNode;
     styles: any;
     tag: string;
@@ -24,7 +23,7 @@ const BoxBlock = (
     cssStyles = { backgroundImage: `url(${backgroundImage})` };
   }
 
-  return React.createElement(tag, { ...selectable(blockProps), ...styles, style: cssStyles }, children);
+  return React.createElement(tag, { ...blockProps, ...styles, style: cssStyles }, children);
 };
 
 registerChaiBlock(BoxBlock, {

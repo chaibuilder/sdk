@@ -1,5 +1,5 @@
 import { RenderChaiBlocks } from "./render";
-import { useAtom } from "jotai/index";
+import { useAtom } from "jotai";
 import { lsBlocksAtom, lsBrandingOptionsAtom } from "./atoms-dev.ts";
 import { useEffect, useState } from "react";
 import { getStylesForPageData } from "./render/functions.ts";

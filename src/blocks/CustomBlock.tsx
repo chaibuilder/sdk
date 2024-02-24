@@ -1,13 +1,5 @@
-import {
-  Checkbox,
-  List,
-  Model,
-  MultilineText,
-  Numeric,
-  registerChaiBlock,
-  SingleLineText,
-  Styles,
-} from "@chaibuilder/blocks";
+import { Checkbox, List, Model, MultilineText, Numeric, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
+import { registerChaiBlock } from "@chaibuilder/runtime";
 
 const CustomBlockBuilder = ({ blockProps, _bindings }) => {
   return (

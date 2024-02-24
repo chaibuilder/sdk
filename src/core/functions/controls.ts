@@ -5,7 +5,7 @@ import {
   ListControlDefinition,
   ModelControlDefinition,
   StylesControlDefinition,
-} from "@chaibuilder/blocks";
+} from "@chaibuilder/runtime/controls";
 import { generateUUID } from "./functions";
 import { I18N_KEY, SLOT_KEY } from "../constants/CONTROLS";
 

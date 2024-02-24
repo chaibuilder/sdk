@@ -1,6 +1,6 @@
 import * as React from "react";
-import type { ChaiBlock } from "../../core/main";
-import { registerChaiBlock, RichText, Styles } from "@chaibuilder/blocks";
+import { RichText, Styles } from "@chaibuilder/runtime/controls";
+import { registerChaiBlock } from "@chaibuilder/runtime";
 import {
   BorderAllIcon,
   BorderTopIcon,
@@ -8,9 +8,10 @@ import {
   TableIcon,
   ViewHorizontalIcon,
 } from "@radix-ui/react-icons";
-import { generateUUID } from "../../core/lib";
 import { isEmpty } from "lodash";
 import EmptySlot from "./empty-slot";
+import { generateUUID } from "../lib.ts";
+import { ChaiBlock } from "../types/ChaiBlock.ts";
 
 const getDefaultBlocks = (type: string): ChaiBlock[] => {
   const td = (id: string, content: string) => ({

@@ -1,8 +1,9 @@
 import * as React from "react";
 import { RadiobuttonIcon } from "@radix-ui/react-icons";
-import type { ChaiBlock } from "../../core/main";
-import { generateUUID } from "../../core/lib";
-import { Checkbox, registerChaiBlock, SingleLineText, Styles } from "@chaibuilder/blocks";
+import { Checkbox, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
+import { registerChaiBlock } from "@chaibuilder/runtime";
+import { generateUUID } from "../lib.ts";
+import { ChaiBlock } from "../types/ChaiBlock.ts";
 
 const RadioBlock = (
   block: ChaiBlock & {

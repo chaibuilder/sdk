@@ -1,10 +1,11 @@
 import * as React from "react";
 import { ColumnsIcon, RowsIcon } from "@radix-ui/react-icons";
 import { get, isEmpty } from "lodash";
-import { twMerge } from "tailwind-merge";
-import type { ChaiBlock } from "../../core/main";
-import { registerChaiBlock, RichText, SelectOption, Styles } from "@chaibuilder/blocks";
+import { cn } from "../lib.ts";
+import { RichText, SelectOption, Styles } from "@chaibuilder/runtime/controls";
+import { registerChaiBlock } from "@chaibuilder/runtime";
 import EmptySlot from "./empty-slot";
+import { ChaiBlock } from "../types/ChaiBlock.ts";
 
 const ListBlock = (
   props: ChaiBlock & {
@@ -12,15 +13,15 @@ const ListBlock = (
     styles: Record<string, string>;
   },
 ) => {
-  const { blockProps, children, _listType, styles, tag } = props;
-  const className = twMerge(get(styles, "className", ""), _listType);
+  const { blockProps, children, listType, styles, tag } = props;
+  const className = cn(get(styles, "className", ""), listType);
 
   if (!children && isEmpty(styles?.className)) {
     return <EmptySlot blockProps={blockProps} text="LIST ITEM" />;
   }
 
   return React.createElement(
-    tag ? tag : _listType === "list-decimal" ? "ol" : "ul",
+    tag ? tag : listType === "list-decimal" ? "ol" : "ul",
     { ...blockProps, ...styles, className },
     children,
   );
@@ -34,7 +35,7 @@ registerChaiBlock(ListBlock, {
   group: "basic",
   props: {
     styles: Styles({ default: "" }),
-    _listType: SelectOption({
+    listType: SelectOption({
       title: "List type",
       default: "list-disc",
       options: [

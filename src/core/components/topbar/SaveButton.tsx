@@ -17,12 +17,16 @@ export const SaveButton = () => {
     }
   }, [syncState]);
 
+  //BUG: on save the selection is lost
   return (
     <div className="flex items-center">
       <Tooltip>
         <TooltipTrigger asChild>
           <Toggle
-            onClick={() => savePage()}
+            onClick={(e) => {
+              e.preventDefault();
+              savePage();
+            }}
             className={`flex h-auto w-20 items-center gap-x-1 rounded-full p-1 px-2 ${classes}`}
             size="sm"
             variant="outline">

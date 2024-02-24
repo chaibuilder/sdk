@@ -6,7 +6,7 @@ import { BoxIcon } from "@radix-ui/react-icons";
 import { activePanelAtom } from "../../../../atoms/ui";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../../ui";
 import { useAddBlock, useSelectedBlockIds } from "../../../../hooks";
-import { syncBlocksWithDefaults } from "@chaibuilder/blocks";
+import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { addBlocksModalAtom } from "../../../../atoms/blocks";
 
 export const CoreBlock = ({ block }: { block: any }) => {
