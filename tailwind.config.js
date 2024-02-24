@@ -1,4 +1,4 @@
-import { chaiBuilderTheme } from "./src/core/tailwind-config.js";
+import { chaiBuilderTheme } from "./src/core/tailwind-config";
 
 /** @type {import('tailwindcss').Config} */
 
