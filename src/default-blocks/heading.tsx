@@ -2,7 +2,7 @@ import * as React from "react";
 import { HeadingIcon } from "@radix-ui/react-icons";
 import { RichText, SelectOption, Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import { ChaiBlock } from "../types/ChaiBlock.ts";
+import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
 /**
  * Heading component
@@ -51,3 +51,5 @@ registerChaiBlock(HeadingBlock as React.FC<any>, {
     content: RichText({ title: "Content", default: "Heading goes here" }),
   },
 });
+
+export default HeadingBlock;

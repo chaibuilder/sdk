@@ -1,7 +1,7 @@
 import * as React from "react";
 import { MultilineText, Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import { ChaiBlock } from "../types/ChaiBlock.ts";
+import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
 const SpanBlock = (
   props: ChaiBlock & {
@@ -31,3 +31,5 @@ registerChaiBlock(SpanBlock, {
     content: MultilineText({ title: "Content", default: "" }),
   },
 });
+
+export default SpanBlock;

@@ -4,8 +4,8 @@ import { Icon, Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
 import { isEmpty } from "lodash";
 import EmptySlot from "./empty-slot";
-import { ChaiBlock } from "../types/ChaiBlock.ts";
-import { cn } from "../lib";
+import { ChaiBlock } from "../core/types/ChaiBlock.ts";
+import { cn } from "../core/lib";
 
 const IconBlock = (
   block: ChaiBlock & {
@@ -44,3 +44,5 @@ registerChaiBlock(IconBlock as React.FC<any>, {
     }),
   },
 });
+
+export default IconBlock;

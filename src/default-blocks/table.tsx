@@ -10,8 +10,8 @@ import {
 } from "@radix-ui/react-icons";
 import { isEmpty } from "lodash";
 import EmptySlot from "./empty-slot";
-import { generateUUID } from "../lib.ts";
-import { ChaiBlock } from "../types/ChaiBlock.ts";
+import { generateUUID } from "../core/lib.ts";
+import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
 const getDefaultBlocks = (type: string): ChaiBlock[] => {
   const td = (id: string, content: string) => ({
@@ -219,3 +219,5 @@ registerChaiBlock(TableCellBlock, {
     content: RichText({ title: "Content", default: "Table cell item" }),
   },
 });
+
+export default TableBlock;

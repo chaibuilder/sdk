@@ -2,7 +2,7 @@ import * as React from "react";
 import { DividerHorizontalIcon } from "@radix-ui/react-icons";
 import { Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import { ChaiBlock } from "../types/ChaiBlock.ts";
+import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
 /**
  * Divider component
@@ -29,3 +29,5 @@ registerChaiBlock(DividerBlock as React.FC<any>, {
     styles: Styles({ default: "bg-gray-900 h-0.5 py-2 my-1" }),
   },
 });
+
+export default DividerBlock;

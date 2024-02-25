@@ -3,8 +3,8 @@ import { DropdownMenuIcon } from "@radix-ui/react-icons";
 import { get, map } from "lodash";
 import { Checkbox, List, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import { ChaiBlock } from "../types/ChaiBlock.ts";
-import { generateUUID } from "../lib.ts";
+import { ChaiBlock } from "../core/types/ChaiBlock.ts";
+import { generateUUID } from "../core/lib.ts";
 
 const SelectBlock = (
   block: ChaiBlock & {
@@ -106,3 +106,5 @@ registerChaiBlock(SelectBlock as React.FC<any>, {
     }),
   },
 });
+
+export default SelectBlock;

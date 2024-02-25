@@ -3,8 +3,8 @@ import { InputIcon } from "@radix-ui/react-icons";
 import { map } from "lodash";
 import { Checkbox, SelectOption, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import { ChaiBlock } from "../types/ChaiBlock.ts";
-import { generateUUID } from "../lib.ts";
+import { ChaiBlock } from "../core/types/ChaiBlock.ts";
+import { generateUUID } from "../core/lib.ts";
 
 const InputBlock = (
   block: ChaiBlock & {
@@ -95,3 +95,5 @@ registerChaiBlock(InputBlock as React.FC<any>, {
     required: Checkbox({ title: "Required", default: false }),
   },
 });
+
+export default InputBlock;

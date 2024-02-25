@@ -2,7 +2,7 @@ import * as React from "react";
 import { CursorTextIcon } from "@radix-ui/react-icons";
 import { RichText, Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import { ChaiBlock } from "../types/ChaiBlock.ts";
+import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
 /**
  * Heading component
@@ -47,3 +47,5 @@ registerChaiBlock(RichTextBlock as React.FC<any>, {
     }),
   },
 });
+
+export default RichTextBlock;

@@ -2,8 +2,8 @@ import * as React from "react";
 import { InputIcon } from "@radix-ui/react-icons";
 import { Checkbox, Numeric, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import { ChaiBlock } from "../types/ChaiBlock.ts";
-import { generateUUID } from "../lib.ts";
+import { ChaiBlock } from "../core/types/ChaiBlock.ts";
+import { generateUUID } from "../core/lib.ts";
 
 const InputBlock = (
   block: ChaiBlock & {
@@ -59,3 +59,5 @@ registerChaiBlock(InputBlock as React.FC<any>, {
     _rows: Numeric({ title: "Rows", default: 3 }),
   },
 });
+
+export default InputBlock;

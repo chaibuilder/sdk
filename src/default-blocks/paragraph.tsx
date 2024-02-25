@@ -43,3 +43,5 @@ registerChaiBlock(ParagraphBlock as React.FC<any>, {
     }),
   },
 });
+
+export default ParagraphBlock;

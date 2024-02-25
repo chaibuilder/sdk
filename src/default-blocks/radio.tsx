@@ -1,11 +1,11 @@
 import * as React from "react";
-import { CheckboxIcon } from "@radix-ui/react-icons";
+import { RadiobuttonIcon } from "@radix-ui/react-icons";
 import { Checkbox, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import { ChaiBlock } from "../types/ChaiBlock.ts";
-import { generateUUID } from "../lib.ts";
+import { generateUUID } from "../core/lib.ts";
+import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
-const CheckboxBlock = (
+const RadioBlock = (
   block: ChaiBlock & {
     blockProps: Record<string, string>;
     styles: Record<string, string>;
@@ -14,7 +14,7 @@ const CheckboxBlock = (
     checked: boolean;
   },
 ) => {
-  const { blockProps, fieldName, label, styles, inputStyles, required, checked, showLabel = true } = block;
+  const { blockProps, fieldName, label, styles, inputStyles, checked, required, showLabel = true } = block;
   const fieldId = generateUUID();
 
   if (!showLabel)
@@ -24,38 +24,33 @@ const CheckboxBlock = (
         {...blockProps}
         {...inputStyles}
         {...styles}
-        type="checkbox"
+        type="radio"
         required={required}
+        checked={checked}
         name={fieldName}
       />
     );
-
   return (
     <div {...styles} {...blockProps}>
-      <input
-        {...inputStyles}
-        name={fieldName}
-        id={fieldId}
-        type="checkbox"
-        required={required}
-        defaultChecked={checked}
-      />
-      {label && label !== "Label" && <label htmlFor={fieldId}>{label}</label>}
+      <input {...inputStyles} name={fieldName} id={fieldId} type="radio" required={required} defaultChecked={checked} />
+      {label && <label htmlFor={fieldId}>{label}</label>}
     </div>
   );
 };
 
-registerChaiBlock(CheckboxBlock as React.FC<any>, {
-  type: "Checkbox",
-  label: "Checkbox",
+registerChaiBlock(RadioBlock as React.FC<any>, {
+  type: "Radio",
+  label: "Radio",
   category: "core",
-  icon: CheckboxIcon,
+  icon: RadiobuttonIcon,
   group: "form",
   props: {
-    fieldName: SingleLineText({ title: "Field Name", default: "checkbox" }),
-    styles: Styles({ default: "flex items-center gap-x-2" }),
+    styles: Styles({ default: "flex items-center w-max gap-x-2" }),
+    fieldName: SingleLineText({ title: "Field Name", default: "radio" }),
     label: SingleLineText({ title: "Label", default: "Label" }),
     checked: Checkbox({ title: "Checked", default: false }),
     required: Checkbox({ title: "Required", default: false }),
   },
 });
+
+export default RadioBlock;

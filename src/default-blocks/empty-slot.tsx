@@ -1,6 +1,6 @@
 import { omit } from "lodash";
 import { PlusCircledIcon } from "@radix-ui/react-icons";
-import { cn } from "../lib";
+import { cn } from "../core/lib";
 
 type EmptySlotProps = {
   blockProps?: any;

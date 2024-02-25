@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import { ChaiBlock } from "../types/ChaiBlock.ts";
-import { cn } from "../lib";
+import { ChaiBlock } from "../core/types/ChaiBlock.ts";
+import { cn } from "../core/lib";
 
 const SlotBlock = (
   props: ChaiBlock & { children: React.ReactNode } & {
@@ -37,3 +37,5 @@ registerChaiBlock(SlotBlock, {
     emptyStyles: Styles({ default: "" }),
   },
 });
+
+export default SlotBlock;

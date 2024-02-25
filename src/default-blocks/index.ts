@@ -1,4 +1,3 @@
-import "./box";
 import "./heading";
 import "./paragraph";
 import "./rte";
@@ -22,3 +21,5 @@ import "./select";
 import "./checkbox";
 import "./radio";
 import "./form-button";
+
+export default "";

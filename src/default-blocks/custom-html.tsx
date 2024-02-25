@@ -2,7 +2,7 @@ import * as React from "react";
 import { CodeIcon } from "@radix-ui/react-icons";
 import { MultilineText, Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import { ChaiBlock } from "../types/ChaiBlock.ts";
+import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
 const CustomHTMLBlock = (
   props: ChaiBlock & {
@@ -33,3 +33,5 @@ registerChaiBlock(CustomHTMLBlock as React.FC<any>, {
     }),
   },
 });
+
+export default CustomHTMLBlock;

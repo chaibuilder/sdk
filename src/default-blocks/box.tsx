@@ -59,3 +59,5 @@ registerChaiBlock(BoxBlock, {
     backgroundImage: Image({ title: "Background Image" }),
   },
 });
+
+export default BoxBlock;

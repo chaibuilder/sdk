@@ -4,7 +4,7 @@ import { isEmpty } from "lodash";
 import { Checkbox, Model, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
 import EmptySlot from "./empty-slot";
-import { ChaiBlock } from "../types/ChaiBlock.ts";
+import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
 const YOUTUBE_REGEX = /^(https?:\/\/)?(www\.)?youtube\.com\/(watch\?v=|embed\/)([a-zA-Z0-9_-]{11})/;
 const VIMEO_REGEX = /^(https?:\/\/)?(www\.)?vimeo\.com\/(\d+)/;
@@ -119,3 +119,5 @@ registerChaiBlock(VideoBlock as React.FC<any>, {
     }),
   },
 });
+
+export default VideoBlock;

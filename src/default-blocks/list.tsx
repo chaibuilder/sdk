@@ -1,11 +1,11 @@
 import * as React from "react";
 import { ColumnsIcon, RowsIcon } from "@radix-ui/react-icons";
 import { get, isEmpty } from "lodash";
-import { cn } from "../lib.ts";
+import { cn } from "../core/lib.ts";
 import { RichText, SelectOption, Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
 import EmptySlot from "./empty-slot";
-import { ChaiBlock } from "../types/ChaiBlock.ts";
+import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
 const ListBlock = (
   props: ChaiBlock & {
@@ -100,3 +100,5 @@ registerChaiBlock(ListItemBlock, {
     content: RichText({ title: "Content", default: "List item" }),
   },
 });
+
+export default ListBlock;
