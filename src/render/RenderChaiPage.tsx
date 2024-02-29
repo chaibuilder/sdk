@@ -2,7 +2,6 @@ import { Provider } from "react-wrap-balancer";
 import { RenderChaiBlocks } from "./RenderChaiBlocks.tsx";
 import { get } from "lodash";
 import React from "react";
-import "../default-blocks";
 import { BRANDING_OPTIONS_DEFAULTS } from "../core/constants/MODIFIERS.ts";
 import type { ChaiPageData } from "./functions.ts";
 import { getBrandingClasses } from "./functions.ts";

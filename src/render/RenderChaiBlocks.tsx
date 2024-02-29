@@ -1,7 +1,6 @@
 import React from "react";
 import { each, filter, get, isEmpty, isString, memoize, omit } from "lodash";
 import { twMerge } from "tailwind-merge";
-import "../default-blocks/index.ts";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { SLOT_KEY, STYLES_KEY } from "../core/constants/CONTROLS.ts";
 import { getBlockComponent } from "@chaibuilder/runtime";

@@ -1,6 +1,5 @@
 import "react-quill/dist/quill.snow.css";
 import "../index.css";
-import "../../default-blocks";
 import { DevTools } from "jotai-devtools";
 import i18n from "../locales/load";
 import { FlagsProvider } from "flagged";
