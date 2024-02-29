@@ -13,6 +13,7 @@ export default defineConfig({
         core: resolve(__dirname, "src/core/main/index.ts"),
         render: resolve(__dirname, "src/render/index.ts"),
         ui: resolve(__dirname, "src/ui/index.ts"),
+        blocks: resolve(__dirname, "src/default-blocks/index.ts"),
         lib: resolve(__dirname, "src/core/lib.ts"),
         server: resolve(__dirname, "src/server/index.ts"),
         studio: resolve(__dirname, "src/studio/index.tsx"),
@@ -25,7 +26,7 @@ export default defineConfig({
       // into your library
       external: [
         "@bobthered/tailwindcss-palette-generator",
-        "@chaibuilder/blocks",
+        "@chaibuilder/runtime",
         "@floating-ui/dom",
         "@floating-ui/react-dom",
         "@mhsdesign/jit-browser-tailwindcss",
