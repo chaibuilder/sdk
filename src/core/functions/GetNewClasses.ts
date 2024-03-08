@@ -9,6 +9,7 @@ const MEDIA_QUERIES: any = {
   xl: 1280,
   "2xl": 1536,
 };
+
 const breakpoints: string[] = ["xs", "sm", "md", "lg", "xl", "2xl"];
 
 /**

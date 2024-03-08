@@ -6,7 +6,7 @@ import {
   ModelControlDefinition,
   StylesControlDefinition,
 } from "@chaibuilder/runtime/controls";
-import { generateUUID } from "./functions";
+import { generateUUID } from "./Functions.ts";
 import { I18N_KEY, SLOT_KEY } from "../constants/CONTROLS";
 
 export const getBlockJSONFromUISchemas = (control: ChaiControlDefinition, activeLang: string = "") => {

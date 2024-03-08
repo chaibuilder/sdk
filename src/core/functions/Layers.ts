@@ -1,7 +1,7 @@
 import { get, isEmpty } from "lodash";
 import React from "react";
 
-export type BlockNode = {
+export type ChaiBlock = {
   activeCls?: string;
 
   alt?: string;

@@ -5,7 +5,7 @@ import { ClassDerivedObject, constructClassObject } from "./Class";
 const REM_BASE = 16;
 const PX_TO_TW_DIVIDER = 4;
 
-function convertRemToPxIfNeeded(arbitraryValue: string) {
+export function convertRemToPxIfNeeded(arbitraryValue: string) {
   if (arbitraryValue.indexOf("rem") !== -1) {
     // eslint-disable-next-line no-param-reassign
     arbitraryValue = `${parseFloat(arbitraryValue.replace("rem", "")) * REM_BASE}px`;

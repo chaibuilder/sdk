@@ -1,6 +1,6 @@
 // @ts-ignore
 import { parse, stringify } from "himalaya";
-import { generateUUID } from "../functions/functions";
+import { generateUUID } from "../functions/Functions.ts";
 import { capitalize, filter, find, flatMapDeep, flatten, forEach, get, includes, isEmpty, omit, set } from "lodash";
 import { ChaiBlock } from "../types";
 import { cn } from "../lib.ts";

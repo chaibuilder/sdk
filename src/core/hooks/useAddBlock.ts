@@ -1,12 +1,12 @@
 import { useCallback } from "react";
 import { filter, find, first, forIn, has, startsWith } from "lodash";
 import { useDispatch } from "./useTreeData";
-import { generateUUID } from "../functions/functions";
+import { generateUUID } from "../functions/Functions.ts";
 import { canAddChildBlock } from "../functions/Layers";
 import { useSelectedBlockIds } from "./useSelectedBlockIds";
 import { ChaiBlock } from "../types/ChaiBlock";
 import { CoreBlock } from "../types/CoreBlock";
-import { getBlockDefaultProps } from "../functions/controls";
+import { getBlockDefaultProps } from "../functions/Controls.ts";
 import { SLOT_KEY } from "../constants/CONTROLS";
 import { useAllBlocks } from "./useAllBlocks";
 import { insertBlockAtIndex } from "../functions/InsertBlockAtIndex";

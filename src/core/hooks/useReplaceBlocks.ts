@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { find } from "lodash";
 import { presentBlocksAtom } from "../atoms/blocks";
 import { useDispatch } from "./useTreeData";
-import { generateUUID } from "../functions/functions";
+import { generateUUID } from "../functions/Functions.ts";
 import { useSelectedBlockIds } from "./useSelectedBlockIds";
 import { ChaiBlock } from "../types/ChaiBlock";
 

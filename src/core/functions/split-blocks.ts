@@ -1,16 +1,17 @@
 // @ts-nocheck
 import FlatToNested from "flat-to-nested";
 import { each, filter, find, first, flatten, get, isEmpty, map, set } from "lodash";
-import { BlockNode } from "./Layers";
+import { ChaiBlock } from "../types/ChaiBlock.ts";
 
 /**
- * THis is a very fragile code. Not automation tested but works perfectly
- * DO NOT EDIT this code without testing it first
+ * IMPORTANT: This is a very fragile code. Not automation tested but works perfectly
+ * DO NOT EDIT this code before adding tests
+ * FIXME: Add tests
  * @type {FlatToNested}
  */
 const flatToNestedInstance = new FlatToNested({});
 
-function getBlocksTree(blocks: BlockNode[]) {
+export function getBlocksTree(blocks: ChaiBlock[]) {
   let elements = flatToNestedInstance.convert(blocks);
   elements =
     !elements.type && elements.children && elements.children.length
@@ -23,7 +24,7 @@ function getBlocksTree(blocks: BlockNode[]) {
 
 const nestedToFlatArray = (nestedJson: any, parent: any) =>
   flatten(
-    nestedJson.map((block: BlockNode) => {
+    nestedJson.map((block: ChaiBlock) => {
       // eslint-disable-next-line no-param-reassign
       block = parent ? { ...block, parent } : { ...block };
       if (block.children) {
@@ -43,8 +44,8 @@ function setProjectBlocksInMemory(nodes: any, initial = false) {
       // eslint-disable-next-line no-param-reassign
       nodes[i] = {
         type: "GlobalBlock",
-        _parent: get(element, "parent", null),
         blockId: element.blockId,
+        _parent: get(element, "parent", null),
         _id: element._id,
       };
     } else if (element.children && element.children.length) {
@@ -53,20 +54,20 @@ function setProjectBlocksInMemory(nodes: any, initial = false) {
   }
 }
 
-function getInnerBlocks(flatArr: BlockNode[]) {
-  let blocks: BlockNode[] = [];
+function getInnerBlocks(flatArr: ChaiBlock[]) {
+  let blocks: ChaiBlock[] = [];
   let pBlocks = filter(flatArr, { type: "GlobalBlock" });
   if (pBlocks.length > 0) {
     pBlocks = map(pBlocks, getPBlocks);
-    each(pBlocks, (pBlock: BlockNode[]) => {
+    each(pBlocks, (pBlock: ChaiBlock[]) => {
       blocks = [...blocks, ...getSingleBlock(pBlock)];
     });
   }
   return blocks;
 }
 
-function getSingleBlock(flatArray: BlockNode[]) {
-  let blocks: BlockNode[] = [];
+function getSingleBlock(flatArray: ChaiBlock[]) {
+  let blocks: ChaiBlock[] = [];
   const parent = get(first(flatArray), "parent", null);
   set(first(flatArray), "parent", null);
   const block = [flatToNestedInstance.convert(clone(flatArray))];
@@ -78,7 +79,7 @@ function getSingleBlock(flatArray: BlockNode[]) {
   return blocks;
 }
 
-function getPBlocks(block: BlockNode) {
+function getPBlocks(block: ChaiBlock) {
   const rootBlock = find(FLAT_ARRAY, { _id: block._id });
   if (!rootBlock) return [];
   const blocks = [rootBlock];
@@ -91,7 +92,7 @@ function getPBlocks(block: BlockNode) {
 
 const clone = (obj: any) => JSON.parse(JSON.stringify(obj));
 
-let FLAT_ARRAY: BlockNode[] = [];
+let FLAT_ARRAY: ChaiBlock[] = [];
 
 export function splitPageBlocks(allPageBlocks: any[]) {
   FLAT_ARRAY = allPageBlocks;
@@ -100,6 +101,6 @@ export function splitPageBlocks(allPageBlocks: any[]) {
   const pageBlocks = nestedToFlatArray(clonedTree, null);
   const globalBlocks = getInnerBlocks(pageBlocks);
   const mappedBlocks = {};
-  each(globalBlocks, (projectBlock: BlockNode) => set(mappedBlocks, first(projectBlock).blockId, projectBlock));
+  each(globalBlocks, (projectBlock: ChaiBlock) => set(mappedBlocks, first(projectBlock).blockId, projectBlock));
   return [pageBlocks, mappedBlocks];
 }

@@ -3,7 +3,7 @@ import { useAtomValue } from "jotai";
 import { map } from "lodash";
 import { presentBlocksAtom } from "../atoms/blocks";
 import { useDispatch } from "./useTreeData";
-import { generateUUID } from "../functions/functions";
+import { generateUUID } from "../functions/Functions.ts";
 import { useGetPageData } from "./useGetPageData";
 import { useBuildingBlocks } from "./useBuildingBlocks";
 

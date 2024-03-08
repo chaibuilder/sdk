@@ -4,7 +4,7 @@ import validator from "@rjsf/validator-ajv8";
 import { capitalize, cloneDeep, each, get, includes, isEmpty, keys, map } from "lodash";
 import { useActiveLanguage, useCanvasHistory, useSelectedBlock, useUpdateBlocksPropsRealtime } from "../../hooks";
 import { IconPickerField, ImagePickerField, LinkField, RTEField } from "../../../ui/widgets";
-import { getBlockJSONFromSchemas, getBlockJSONFromUISchemas } from "../../functions/controls";
+import { getBlockJSONFromSchemas, getBlockJSONFromUISchemas } from "../../functions/Controls.ts";
 import { ChaiControlDefinition, SingleLineText } from "@chaibuilder/runtime/controls";
 import DataBindingSetting from "../../../ui/widgets/rjsf/widgets/data-binding";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../ui";

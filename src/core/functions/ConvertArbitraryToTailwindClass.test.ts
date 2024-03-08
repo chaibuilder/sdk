@@ -1,5 +1,12 @@
-import { convertArbitraryToTailwindClass } from "./ConvertArbitraryToTailwindClass.ts";
-import { gap, nonArbitraryClasses, opacity, padding, position, zIndex } from "./ArbitraryClassesMock";
+import { convertArbitraryToTailwindClass, convertRemToPxIfNeeded } from "./ConvertArbitraryToTailwindClass.ts";
+import {
+  gap,
+  nonArbitraryClasses,
+  opacity,
+  padding,
+  position,
+  zIndex,
+} from "./ConvertArbitraryToTailwindClass.data.ts";
 
 describe("ConvertArbitraryToTw", () => {
   const MAPPER: { [key: string]: string } = {
@@ -57,5 +64,32 @@ describe("ConvertArbitraryToTw", () => {
       const expected: string = MAPPER[cls];
       expect(convertArbitraryToTailwindClass(cls)).toBe(expected);
     }
+  });
+});
+
+describe("convertRemToPxIfNeeded", () => {
+  it("should convert rem values to px", () => {
+    const result = convertRemToPxIfNeeded("2rem");
+    expect(result).toBe("32px");
+  });
+
+  it("should not convert non-rem values", () => {
+    const result = convertRemToPxIfNeeded("100px");
+    expect(result).toBe("100px");
+  });
+
+  it("should handle decimal rem values", () => {
+    const result = convertRemToPxIfNeeded("2.5rem");
+    expect(result).toBe("40px");
+  });
+
+  it("should handle zero rem values", () => {
+    const result = convertRemToPxIfNeeded("0rem");
+    expect(result).toBe("0px");
+  });
+
+  it("should handle negative rem values", () => {
+    const result = convertRemToPxIfNeeded("-1rem");
+    expect(result).toBe("-16px");
   });
 });

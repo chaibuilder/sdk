@@ -6,14 +6,14 @@ import { useDispatch } from "./useTreeData";
 import { copiedBlockIdsAtom } from "./useCopyBlockIds";
 import { useCutBlockIds } from "./useCutBlockIds";
 import { presentBlocksAtom } from "../atoms/blocks";
-import { BlockNode } from "../functions/Layers";
+import { ChaiBlock } from "../functions/Layers";
 
 const useMoveCutBlocks = () => {
   const presentBlocks = useAtomValue(presentBlocksAtom);
   const dispatch = useDispatch();
   return useCallback(
     (blockIds: Array<string>, newParentId: string) => {
-      const newBlocks = map(presentBlocks, (block: BlockNode) => {
+      const newBlocks = map(presentBlocks, (block: ChaiBlock) => {
         if (includes(blockIds, get(block, "_id"))) {
           set(block, "_parent", newParentId);
         }
