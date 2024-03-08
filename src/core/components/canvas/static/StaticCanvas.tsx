@@ -117,7 +117,7 @@ const StaticCanvas = (): React.JSX.Element => {
         ref={iframeRef as any}
         id="canvas-iframe"
         style={{ width: `${width}px`, ...scale }}
-        className="relative mx-auto box-content h-full max-w-full shadow-md transition-all duration-300 ease-linear"
+        className="relative mx-auto box-content h-full max-w-full shadow-lg transition-all duration-300 ease-linear"
         initialContent={iframeContent}>
         <KeyboardHandler />
         <BlockActionsStatic
