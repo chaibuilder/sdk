@@ -2,7 +2,7 @@ import { RenderChaiBlocks } from "./render";
 import { useAtom } from "jotai";
 import { lsBlocksAtom, lsBrandingOptionsAtom } from "./atoms-dev.ts";
 import { useEffect, useState } from "react";
-import { getStylesForPageData } from "./render/functions.ts";
+import { getStylesForBlocks } from "./render/functions.ts";
 
 function Preview() {
   const [blocks] = useAtom(lsBlocksAtom);
@@ -11,10 +11,7 @@ function Preview() {
 
   useEffect(() => {
     (async () => {
-      const styles = await getStylesForPageData({
-        page: { blocks: blocks },
-        project: { brandingOptions },
-      });
+      const styles = await getStylesForBlocks(blocks, brandingOptions);
       setStyles(styles);
     })();
   }, [blocks, brandingOptions]);

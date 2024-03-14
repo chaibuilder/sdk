@@ -4,7 +4,4 @@ export { getBlocksFromHTML } from "./import-html/html-to-json";
 export { convertArbitraryToTailwindClass } from "./functions/ConvertArbitraryToTailwindClass";
 export * from "../render/functions";
 
-export const selectable = (attrs: Record<string, string>) => ({ ...attrs });
-export const styling = (attrs: Record<string, string>) => ({ ...attrs });
-
-export { chaiBuilderTheme } from "./tailwind-config";
+export { chaiBuilderTheme } from "../tailwind/tailwind-config.ts";

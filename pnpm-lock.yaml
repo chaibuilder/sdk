@@ -190,7 +190,6 @@ dependencies:
   redux-undo: 1.1.0
   sonner: 1.2.0_biqbaboplfbrettd7655fr4n2y
   tailwind-merge: 1.13.2
-  tailwindcss-animate: 1.0.6_tailwindcss@3.3.5
   tippy.js: 6.3.7
   unist-util-visit: 4.1.2
   unsplash-js: 7.0.18
@@ -233,6 +232,7 @@ devDependencies:
   prop-types: 15.8.1
   react-router-dom: 6.19.0_biqbaboplfbrettd7655fr4n2y
   tailwindcss: 3.3.5
+  tailwindcss-animate: 1.0.6_tailwindcss@3.3.5
   ts-jest: 29.1.1_df7ucliaobjkqulprdmdbm3mmm
   typescript: 5.2.2
   vite: 5.0.12_@types+node@20.8.10
@@ -10238,7 +10238,7 @@ packages:
       tailwindcss: '>=3.0.0 || insiders'
     dependencies:
       tailwindcss: 3.3.5
-    dev: false
+    dev: true
 
   /tailwindcss-animate/1.0.7_tailwindcss@3.3.5:
     resolution: {integrity: sha512-bl6mpH3T7I3UFxuvDEXLxy/VuFxBk5bbzplh7tXI68mwMokNYd1t9qPBHlnyTwfa4JGC4zP516I1hYYtQ/vspA==}

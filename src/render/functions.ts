@@ -101,6 +101,14 @@ export const getStylesForPageData = async (pageData: ChaiPageData, classPrefix: 
   return await getBlocksTailwindCSS(blocks, pageData.project.brandingOptions, classPrefix);
 };
 
+export const getStylesForBlocks = async (
+  blocks: ChaiBlock[],
+  brandingOptions: BrandingOptions,
+  classPrefix: string = "c-",
+): Promise<string> => {
+  return await getBlocksTailwindCSS(blocks, brandingOptions, classPrefix);
+};
+
 async function getTailwindCSS(options: any, markupString: string[], safelist: string[] = [], prefix: string = "c-") {
   const primary = get(options, "primaryColor", "#000");
   const secondary = get(options, "secondaryColor", "#ccc");

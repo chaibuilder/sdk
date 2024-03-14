@@ -16,6 +16,7 @@ export default defineConfig({
         lib: resolve(__dirname, "src/core/lib.ts"),
         server: resolve(__dirname, "src/server/index.ts"),
         studio: resolve(__dirname, "src/studio/index.tsx"),
+        tailwind: resolve(__dirname, "src/tailwind/index.ts"),
       },
       formats: ["es", "cjs"],
     },

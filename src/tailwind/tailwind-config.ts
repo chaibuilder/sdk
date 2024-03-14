@@ -1,4 +1,4 @@
-export function chaiBuilderTheme() {
+export function chaiBuilderTheme(theme: Record<string, any> = {}) {
   return {
     colors: {
       border: "hsl(var(--border))",
@@ -54,5 +54,6 @@ export function chaiBuilderTheme() {
       "accordion-down": "accordion-down 0.2s ease-out",
       "accordion-up": "accordion-up 0.2s ease-out",
     },
+    ...theme,
   };
 }
