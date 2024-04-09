@@ -8,6 +8,7 @@ import BlockSettings from "./BlockSettings";
 import BlockStyling from "./BlockStyling";
 import { BlockSettingsContext } from "./SettingsContext";
 import { useSelectedBlock } from "../../hooks";
+import { ErrorBoundary } from "../ErrorBoundary.tsx";
 
 const MAPPER: { [key: string]: number } = {
   px: 1,
@@ -91,30 +92,32 @@ const Settings: React.FC = () => {
     );
 
   return (
-    <BlockSettingsContext.Provider value={{ setDragData }}>
-      {dragData.dragging ? (
-        <div
-          onMouseMove={updateStyle}
-          onMouseUp={() => dragStopped()}
-          className="absolute inset-0 z-30 cursor-row-resize bg-gray-300/10 "
-        />
-      ) : null}
+    <ErrorBoundary>
+      <BlockSettingsContext.Provider value={{ setDragData }}>
+        {dragData.dragging ? (
+          <div
+            onMouseMove={updateStyle}
+            onMouseUp={() => dragStopped()}
+            className="absolute inset-0 z-30 cursor-row-resize bg-gray-300/10 "
+          />
+        ) : null}
 
-      <Tabs defaultValue="settings" className="flex h-full w-full flex-col py-1">
-        <TabsList className="mx-1 grid grid-cols-2">
-          <TabsTrigger value="settings">Settings</TabsTrigger>
-          <TabsTrigger value="styling">Styling</TabsTrigger>
-        </TabsList>
-        <TabsContent
-          value="settings"
-          className="no-scrollbar -mx-1 -mr-2 h-full flex-1 overflow-y-auto overflow-x-hidden">
-          <BlockSettings />
-        </TabsContent>
-        <TabsContent value="styling" className="flex-1 overflow-y-auto overflow-x-hidden">
-          <BlockStyling />
-        </TabsContent>
-      </Tabs>
-    </BlockSettingsContext.Provider>
+        <Tabs defaultValue="settings" className="flex h-full w-full flex-col py-1">
+          <TabsList className="mx-1 grid grid-cols-2">
+            <TabsTrigger value="settings">Settings</TabsTrigger>
+            <TabsTrigger value="styling">Styling</TabsTrigger>
+          </TabsList>
+          <TabsContent
+            value="settings"
+            className="no-scrollbar -mx-1 -mr-2 h-full flex-1 overflow-y-auto overflow-x-hidden">
+            <BlockSettings />
+          </TabsContent>
+          <TabsContent value="styling" className="flex-1 overflow-y-auto overflow-x-hidden">
+            <BlockStyling />
+          </TabsContent>
+        </Tabs>
+      </BlockSettingsContext.Provider>
+    </ErrorBoundary>
   );
 };
 

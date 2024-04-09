@@ -13,12 +13,11 @@ const AddPageModalContent = ({ closeModal }: { closeModal: any }): React.ReactEl
     blocks: [],
     type: "STATIC",
     seoData: {},
+    template: "",
   });
 
   const handleAddPage = () => {
-    addPage.mutate(pageData, {
-      onSuccess: () => closeModal(),
-    });
+    addPage.mutate(pageData, { onSuccess: () => closeModal() });
   };
 
   const updateRealtime = ({ formData }: any, key?: string): void => {
@@ -73,7 +72,7 @@ const AddPageModal = (): React.ReactElement => {
 
   return (
     <Dialog open={open} onOpenChange={() => setOpen(!open)}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button size="sm" variant="link" className="text-blue-500" onClick={() => setOpen(!open)}>
           + New Page
         </Button>

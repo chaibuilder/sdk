@@ -323,11 +323,11 @@ const AddBindingModalContent = ({
  * @returns Add JSON viewer to select path of data
  *
  */
-const AddBindingModal = ({ children, onAddBinding, appliedBindings, editMode = true, item = {} }: any) => {
+const AddBindingModal = ({ disabled, children, onAddBinding, appliedBindings, editMode = true, item = {} }: any) => {
   const [open, setOpen] = useState(false);
   return (
     <Dialog>
-      <DialogTrigger asChild onClick={() => setOpen(true)}>
+      <DialogTrigger disabled={disabled} asChild onClick={() => setOpen(true)}>
         {children}
       </DialogTrigger>
       {open && (
@@ -494,9 +494,11 @@ const DataBindingSetting = ({ bindingData, onChange }: { bindingData: any; onCha
       ))}
       <Tooltip delayDuration={200}>
         <TooltipTrigger className="w-full">
-          <AddBindingModal appliedBindings={map(_formData, "key")} onAddBinding={addNewBindingProp}>
-            <button
-              disabled={isAddDisabled}
+          <AddBindingModal
+            disabled={isAddDisabled}
+            appliedBindings={map(_formData, "key")}
+            onAddBinding={addNewBindingProp}>
+            <span
               className={`w-full px-5 py-1.5 text-xs rounded-md font-medium duration-200 ${
                 isAddDisabled
                   ? "cursor-not-allowed bg-gray-200 text-gray-400"
@@ -507,7 +509,7 @@ const DataBindingSetting = ({ bindingData, onChange }: { bindingData: any; onCha
               ) : (
                 "+ Add Data Binding"
               )}
-            </button>
+            </span>
           </AddBindingModal>
         </TooltipTrigger>
         {isAddDisabled && (

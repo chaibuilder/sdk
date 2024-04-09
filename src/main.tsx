@@ -7,6 +7,7 @@ import Preview from "./Preview";
 import ChaiEditor from "./Editor";
 import "./blocks";
 import "./data-providers/data";
+import RJSF from "./RJSF.tsx";
 
 async function enableMocking() {
   if (import.meta.env.MODE !== "development") {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
   {
     path: "/preview",
     element: <Preview />,
+  },
+  {
+    path: "/rjsf",
+    element: <RJSF />,
   },
 ]);
 
