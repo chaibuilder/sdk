@@ -27,7 +27,11 @@ export const RangeChoices = ({ property, onChange }: any) => {
             disabled={!canChange && (!canReset || index - 1 < 0)}
             onClick={() => onChange(nth(classes, index - 1), property)}>
             <span className="flex items-center justify-center">
-              <MinusIcon className={!canChange && (!canReset || index - 1 < 0) ? "text-gray-500" : "text-white/60"} />
+              <MinusIcon
+                className={
+                  !canChange && (!canReset || index - 1 < 0) ? "text-gray-500" : "text-black/60 dark:text-white/60"
+                }
+              />
             </span>
           </button>
           <div className="w-8/12 text-center">
@@ -40,7 +44,11 @@ export const RangeChoices = ({ property, onChange }: any) => {
             onClick={() => onChange(nth(classes, index + 1), property)}>
             <span className="flex items-center justify-center">
               <PlusIcon
-                className={!canChange && (!canReset || index + 1 >= classes.length) ? "text-gray-500" : "text-white/60"}
+                className={
+                  !canChange && (!canReset || index + 1 >= classes.length)
+                    ? "text-gray-500"
+                    : "text-black/60 dark:text-white/60"
+                }
               />
             </span>
           </button>
