@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { findLast, get } from "lodash";
-import { InfoCircledIcon, TrashIcon } from "@radix-ui/react-icons";
+import { CrossCircledIcon, InfoCircledIcon } from "@radix-ui/react-icons";
 import {
   useAddClassesToBlocks,
   useCanvasWidth,
@@ -247,7 +247,7 @@ export const BlockStyle = (props: EditOptionProps) => {
               ) : null
             ) : (
               <button type="button" onClick={() => removeClass()} title="Reset" className="flex px-1.5 text-xs">
-                <TrashIcon className="h-5 w-5 text-blue-500 hover:opacity-80" />
+                <CrossCircledIcon className="h-5 w-5 text-blue-500 hover:opacity-80" />
               </button>
             )}
           </div>

@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useState } from "react";
-import { get, isEmpty, isNaN, parseInt } from "lodash";
+import { first, get, isEmpty, isNaN, parseInt } from "lodash";
 import { useThrottledCallback } from "@react-hookz/web";
 import { InfoCircledIcon, RowSpacingIcon, TriangleDownIcon } from "@radix-ui/react-icons";
 import { getUserInputValues } from "../../../functions/GetUserInputValues";
@@ -86,6 +86,8 @@ const UnitSelection = ({ onSelect, current, units }: { current: string; onSelect
   </div>
 );
 
+const THROTTLE_TIME = 50; //milliseconds
+
 export const AdvanceChoices = (props: RangeOptionsType) => {
   const [showUnits, setShowUnits] = useState(false);
   const [value, setValue] = useState<number | string>("");
@@ -100,7 +102,7 @@ export const AdvanceChoices = (props: RangeOptionsType) => {
     const { value: newValue, unit: newUnit } = getClassValueAndUnit(currentClass);
     if (newUnit === "") {
       setValue(newValue);
-      setUnit(cssProperty?.toLowerCase().includes("width") ? "%" : units[0]);
+      setUnit(cssProperty?.toLowerCase().includes("width") ? "%" : first(units));
       return;
     }
     setUnit(newUnit);
@@ -111,21 +113,8 @@ export const AdvanceChoices = (props: RangeOptionsType) => {
     }
   }, [currentClass, cssProperty, units]);
 
-  const emitOnChange = useThrottledCallback(
-    (cls: string) => {
-      onChange(cls);
-    },
-    [onChange],
-    200,
-  );
-
-  const emitOnDrag = useThrottledCallback(
-    (cls: string) => {
-      onChange(cls, false);
-    },
-    [onChange],
-    200,
-  );
+  const emitOnChange = useThrottledCallback((cls: string) => onChange(cls), [onChange], THROTTLE_TIME);
+  const emitOnDrag = useThrottledCallback((cls: string) => onChange(cls, false), [onChange], THROTTLE_TIME);
 
   const setStyle = useCallback(
     (realtime = false) => {

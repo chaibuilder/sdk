@@ -6,6 +6,7 @@ import ChaiStudio from "./ChaiStudio";
 import Preview from "./Preview";
 import ChaiEditor from "./Editor";
 import "./blocks";
+import "./RowCol.tsx";
 import "./data-providers/data";
 import RJSF from "./RJSF.tsx";
 

@@ -28,6 +28,79 @@ export const GRID_CHILD_SECTION = {
 
 export const SETTINGS_SECTIONS = [
   {
+    heading: "Layout",
+    items: [
+      { type: "arbitrary", label: "Width", units: BASIC_UNITS.concat("auto"), property: "width" },
+      { type: "arbitrary", label: "Height", units: BASIC_UNITS.concat("auto"), property: "height" },
+      {
+        styleType: "multiple",
+        label: "Margin",
+        negative: true,
+        units: [...BASIC_UNITS, "auto"],
+        options: [
+          { key: "margin", label: "All" },
+          { key: "marginX", label: "Left-Right" },
+          { key: "marginY", label: "Top-Bottom" },
+          { key: "marginTop", label: "Top" },
+          { key: "marginRight", label: "Right" },
+          { key: "marginBottom", label: "Bottom" },
+          { key: "marginLeft", label: "Left" },
+        ],
+      },
+      {
+        styleType: "multiple",
+        label: "Padding",
+        options: [
+          { key: "padding", label: "All" },
+          { key: "paddingX", label: "Left-Right" },
+          { key: "paddingY", label: "Top-Bottom" },
+          { key: "paddingTop", label: "Top" },
+          { key: "paddingRight", label: "Right" },
+          { key: "paddingBottom", label: "Bottom" },
+          { key: "paddingLeft", label: "Left" },
+        ],
+      },
+      {
+        styleType: "multiple",
+        label: "Space Bt.",
+        options: [
+          { key: "spaceX", label: "Left-Right" },
+          { key: "spaceY", label: "Top-Bottom" },
+        ],
+      },
+    ],
+  },
+  {
+    heading: "Size",
+    items: [
+      {
+        styleType: "accordion",
+        heading: "Min width & height",
+        items: [
+          { type: "arbitrary", label: "Min Width", units: BASIC_UNITS.concat("auto"), property: "minWidth" },
+          { type: "arbitrary", label: "Min Height", units: BASIC_UNITS.concat("auto"), property: "minHeight" },
+        ],
+      },
+      {
+        styleType: "accordion",
+        heading: "Max width & height",
+        items: [
+          { type: "arbitrary", label: "Max Width", units: BASIC_UNITS.concat("auto"), property: "maxWidth" },
+          { type: "arbitrary", label: "Max Height", units: BASIC_UNITS.concat("auto"), property: "maxHeight" },
+        ],
+      },
+      {
+        styleType: "accordion",
+        heading: "Object options & aspect ratio",
+        items: [
+          { type: "dropdown", label: "Aspect", property: "aspectRatio" },
+          { type: "dropdown", label: "Fit", property: "objectFit" },
+          { type: "dropdown", label: "Position", property: "objectPosition" },
+        ],
+      },
+    ],
+  },
+  {
     heading: "Display",
     items: [
       { type: "dropdown", label: "Display", property: "display", units: BASIC_UNITS },
@@ -83,79 +156,6 @@ export const SETTINGS_SECTIONS = [
         items: [
           { type: "dropdown", label: "Visibility", property: "visibility", units: BASIC_UNITS },
           { type: "arbitrary", label: "Opacity", property: "opacity", units: ["-"] },
-        ],
-      },
-    ],
-  },
-  {
-    heading: "Spacing",
-    items: [
-      {
-        styleType: "multiple",
-        label: "Margin",
-        negative: true,
-        units: [...BASIC_UNITS, "auto"],
-        options: [
-          { key: "margin", label: "All" },
-          { key: "marginX", label: "Left-Right" },
-          { key: "marginY", label: "Top-Bottom" },
-          { key: "marginTop", label: "Top" },
-          { key: "marginRight", label: "Right" },
-          { key: "marginBottom", label: "Bottom" },
-          { key: "marginLeft", label: "Left" },
-        ],
-      },
-      {
-        styleType: "multiple",
-        label: "Padding",
-        options: [
-          { key: "padding", label: "All" },
-          { key: "paddingX", label: "Left-Right" },
-          { key: "paddingY", label: "Top-Bottom" },
-          { key: "paddingTop", label: "Top" },
-          { key: "paddingRight", label: "Right" },
-          { key: "paddingBottom", label: "Bottom" },
-          { key: "paddingLeft", label: "Left" },
-        ],
-      },
-      {
-        styleType: "multiple",
-        label: "Space Between",
-        options: [
-          { key: "spaceX", label: "Left-Right" },
-          { key: "spaceY", label: "Top-Bottom" },
-        ],
-      },
-    ],
-  },
-  {
-    heading: "Size",
-    items: [
-      { type: "arbitrary", label: "Width", units: BASIC_UNITS.concat("auto"), property: "width" },
-      { type: "arbitrary", label: "Height", units: BASIC_UNITS.concat("auto"), property: "height" },
-      {
-        styleType: "accordion",
-        heading: "Min width & height",
-        items: [
-          { type: "arbitrary", label: "Min Width", units: BASIC_UNITS.concat("auto"), property: "minWidth" },
-          { type: "arbitrary", label: "Min Height", units: BASIC_UNITS.concat("auto"), property: "minHeight" },
-        ],
-      },
-      {
-        styleType: "accordion",
-        heading: "Max width & height",
-        items: [
-          { type: "arbitrary", label: "Max Width", units: BASIC_UNITS.concat("auto"), property: "maxWidth" },
-          { type: "arbitrary", label: "Max Height", units: BASIC_UNITS.concat("auto"), property: "maxHeight" },
-        ],
-      },
-      {
-        styleType: "accordion",
-        heading: "Object options & aspect ratio",
-        items: [
-          { type: "dropdown", label: "Aspect", property: "aspectRatio" },
-          { type: "dropdown", label: "Fit", property: "objectFit" },
-          { type: "dropdown", label: "Position", property: "objectPosition" },
         ],
       },
     ],

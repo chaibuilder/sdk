@@ -70,7 +70,7 @@ export default function BlockStyling() {
         </div>
       </div>
       <ScrollArea className="no-scrollbar -mx-1 h-full overflow-x-hidden">
-        <Accordion type="multiple" className="h-full w-full">
+        <Accordion defaultValue={["Layout"]} type="multiple" className="h-full w-full">
           {flexChild && <SettingsSection section={FLEX_CHILD_SECTION} />}
           {gridChild ? <SettingsSection section={GRID_CHILD_SECTION} /> : null}
           {SETTINGS_SECTIONS.map((section) => (
