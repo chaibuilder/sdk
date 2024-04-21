@@ -5,7 +5,6 @@ import { useBuilderProp } from "./useBuilderProp";
 
 type DroppedBlock = {
   block: any;
-  destinationIndex: number;
   relativeIndex: number;
   dropTargetId: string | number;
 };

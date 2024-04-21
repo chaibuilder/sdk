@@ -7,8 +7,9 @@ import { StylingAttributes } from "../../../types/index";
 import { useAllBlocks, useHighlightBlockId } from "../../../hooks";
 import { getBlockComponent } from "@chaibuilder/runtime";
 import { useChaiExternalData } from "./useChaiExternalData.ts";
-import { useAtom } from "jotai/index";
+import { useAtom } from "jotai";
 import { inlineEditingActiveAtom } from "../../../atoms/ui.ts";
+import { canAddChildBlock } from "../../../functions/Layers.ts";
 
 // FIXME:  Duplicate code in CanvasRenderer.tsx
 const getSlots = (block: ChaiBlock) => {
@@ -117,6 +118,7 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
           return (
             <Suspense>
               {React.createElement(Component, {
+                "data-dnd": canAddChildBlock(block._type) ? "branch" : "leaf",
                 blockProps: {
                   "data-block-id": block._id,
                   "data-block-type": block._type,

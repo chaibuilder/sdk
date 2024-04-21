@@ -133,8 +133,8 @@ const StaticCanvas = (): React.JSX.Element => {
           ) : (
             <StaticBlocksRenderer />
           )}
-          <div className="h-60"></div>
         </Canvas>
+        <div id={"placeholder"} className={"absolute max-w-full transition-all"}></div>
       </ChaiFrame>
     </div>
   );
