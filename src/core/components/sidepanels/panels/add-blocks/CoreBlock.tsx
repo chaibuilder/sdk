@@ -1,6 +1,6 @@
 import { DragPreviewImage, useDrag } from "react-dnd";
 import { useAtom } from "jotai";
-import { first, has } from "lodash";
+import { first, has, omit } from "lodash";
 import { createElement } from "react";
 import { BoxIcon } from "@radix-ui/react-icons";
 import { activePanelAtom } from "../../../../atoms/ui";
@@ -41,7 +41,14 @@ export const CoreBlock = ({ block }: { block: any }) => {
           <button
             onClick={addBlockToPage}
             type="button"
-            ref={drag}
+            onDragStart={(ev) => {
+              ev.dataTransfer.setData("text/plain", JSON.stringify(omit(block, ["component", "icon"])));
+              setTimeout(() => {
+                setAddBlocks(false);
+                setActivePanel("layers");
+              }, 200);
+            }}
+            draggable={"true"}
             className="cursor-grab space-y-2 rounded-lg border border-border p-3 text-center hover:bg-slate-300/50">
             {createElement(icon || BoxIcon, { className: "w-4 h-4 mx-auto" })}
             <p className="truncate text-xs">{label || type}</p>

@@ -6,10 +6,11 @@ import {
   useSelectedStylingBlocks,
   useUpdateBlocksProps,
 } from "../../../hooks";
-import { first, isEmpty } from "lodash";
+import { first, isEmpty, omit } from "lodash";
 import { Quill } from "react-quill";
 import { useAtom } from "jotai";
 import { inlineEditingActiveAtom } from "../../../atoms/ui.ts";
+import { useDnd } from "../dnd/useDnd.ts";
 
 function getTargetedBlock(target) {
   // check if target is a block by checking attr data-block-id else get .closest('[data-block-id]')
@@ -126,13 +127,15 @@ export const Canvas = ({ children }: { children: React.ReactNode }) => {
 
   const handleDblClick = useHandleCanvasDblClick();
   const handleCanvasClick = useHandleCanvasClick();
+  const dnd = useDnd();
 
   return (
     <div
       id="canvas"
       onClick={handleCanvasClick}
       onDoubleClick={handleDblClick}
-      className={`relative h-screen max-w-full`}>
+      {...omit(dnd, "isDragging")}
+      className={`relative h-screen max-w-full ` + (dnd.isDragging ? "dragging" : "")}>
       {children}
     </div>
   );
