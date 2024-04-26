@@ -80,7 +80,6 @@ const Layers = (): React.JSX.Element => {
         await addBlockOnDrop({
           block: item,
           dropTargetId: "",
-          destinationIndex: 0,
           relativeIndex: 0,
         });
         setAddBlocks(false);

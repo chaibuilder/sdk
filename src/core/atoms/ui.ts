@@ -42,3 +42,6 @@ historyStatesAtom.debugLabel = "historyStatesAtom";
 
 export const inlineEditingActiveAtom = atom("");
 inlineEditingActiveAtom.debugLabel = "inlineEditingActiveAtom";
+
+export const draggingFlagAtom = atom(false);
+draggingFlagAtom.debugLabel = "isDraggingAtom";

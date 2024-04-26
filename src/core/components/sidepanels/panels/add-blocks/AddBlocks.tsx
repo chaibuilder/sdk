@@ -15,9 +15,7 @@ import {
 import { CoreBlock } from "./CoreBlock";
 import { PredefinedBlocks } from "./PredefinedBlocks";
 import { showPredefinedBlockCategoryAtom } from "../../../../atoms/ui";
-import { Cross1Icon } from "@radix-ui/react-icons";
 import { ChaiBlock } from "../../../../types/ChaiBlock";
-import { addBlocksModalAtom } from "../../../../atoms/blocks";
 import { useAllBlocks, useSelectedBlockIds, useUILibraryBlocks } from "../../../../hooks";
 import ImportHTML from "./ImportHTML";
 import { useChaiBlocks } from "@chaibuilder/runtime";
@@ -45,7 +43,6 @@ const AddBlocksPanel = () => {
   const [active, setActive] = useState<string>("basic");
   const chaiBlocks = useChaiBlocks();
   const [, setCategory] = useAtom(showPredefinedBlockCategoryAtom);
-  const [, setAddBlocks] = useAtom(addBlocksModalAtom);
 
   const [ids] = useSelectedBlockIds();
   const blocks = useAllBlocks();
@@ -72,18 +69,11 @@ const AddBlocksPanel = () => {
 
   return (
     <div className="flex h-full flex-col overflow-hidden">
-      <div className="mb-2 flex justify-between rounded-md bg-background/30 p-1">
-        <h1 className="flex flex-col items-baseline px-1 text-2xl font-semibold xl:flex-row">
-          Add block
-          <span className="p-0 text-xs font-light leading-3 opacity-80 xl:pl-1">
-            {tab === "html" ? "(Enter or paste your own HTML code)" : "(Drag & drop into tree view or click to add)"}
-          </span>
-        </h1>
-        <button
-          onClick={() => setAddBlocks(false)}
-          className="flex h-max items-center gap-x-1 rounded-full border p-px text-xs text-gray-800 hover:bg-gray-100 md:p-2">
-          <Cross1Icon width={12} /> Close
-        </button>
+      <div className="mb-2 flex flex-col justify-between rounded-md bg-background/30 p-1">
+        <h1 className="flex flex-col items-baseline px-1 text-xl font-semibold xl:flex-col">Add block</h1>
+        <span className="p-0 text-xs font-light leading-3 opacity-80 xl:pl-1">
+          {tab === "html" ? "(Enter or paste your own HTML code)" : "(Drag & drop into tree view or click to add)"}
+        </span>
       </div>
 
       <Tabs
@@ -112,7 +102,7 @@ const AddBlocksPanel = () => {
                       {group}
                     </AccordionTrigger>
                     <AccordionContent>
-                      <div className="grid grid-cols-4 gap-2">
+                      <div className="grid grid-cols-2 gap-2">
                         {React.Children.toArray(
                           reject(filter(values(groupedBlocks.core), { group }), { hidden: true }).map((block) => (
                             <CoreBlock block={block} />

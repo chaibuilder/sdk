@@ -118,10 +118,10 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
           return (
             <Suspense>
               {React.createElement(Component, {
-                "data-dnd": canAddChildBlock(block._type) ? "branch" : "leaf",
                 blockProps: {
                   "data-block-id": block._id,
                   "data-block-type": block._type,
+                  "data-dnd": canAddChildBlock(block._type) ? "branch" : "leaf",
                 },
                 inBuilder: true,
                 index,

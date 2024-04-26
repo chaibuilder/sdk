@@ -10,6 +10,7 @@ import { cn } from "../../lib.ts";
 import { DatabaseIcon, ListTreeIcon } from "lucide-react";
 import { PageDataProviders } from "./PageDataProviders.tsx";
 
+const AddBlocksPanel = lazy(() => import("./panels/add-blocks/AddBlocks.tsx"));
 const LayersPanel = lazy(() => import("./panels/layers/Layers"));
 const BrandingOptions = lazy(() => import("./panels/branding/BrandingOptions"));
 const ImagesPanel = lazy(() => import("./panels/images/ImagesPanel"));
@@ -28,6 +29,7 @@ const SidePanels = () => {
   const [hideTimeout, setHideTimeout] = useState<any>(null);
 
   const panels: { [key: string]: LazyExoticComponent<any> } = {
+    "add-blocks": AddBlocksPanel,
     layers: LayersPanel,
     "branding-options": BrandingOptions,
     images: ImagesPanel,
@@ -55,8 +57,7 @@ const SidePanels = () => {
         <div className="relative z-[100] flex w-14 flex-col items-center space-y-2">
           <Button
             onClick={() => {
-              setAddBlocks(true);
-              setActivePanel("layers");
+              handleChangePanel("add-blocks");
             }}
             size="sm"
             variant={activePanel === "add-blocks" ? "default" : "outline"}>

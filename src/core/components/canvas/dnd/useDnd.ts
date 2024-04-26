@@ -2,21 +2,32 @@ import { DragEvent, useState } from "react";
 import { throttle } from "lodash";
 import { useFrame } from "../../../frame";
 import { useAddBlockByDrop } from "../../../hooks/useAddBlockByDrop.ts";
+import { useAtom } from "jotai";
+import { draggingFlagAtom } from "../../../atoms/ui.ts";
 
 let iframeDocument: null | HTMLDocument = null;
 let possiblePositions: number[] = [];
 let dropIndex: number | null = null;
 
+function getPadding(target: HTMLElement) {
+  const style = window.getComputedStyle(target);
+  const paddingLeft = parseInt(style.paddingLeft, 10) as number;
+  const paddingTop = parseInt(style.paddingTop, 10) as number;
+  const paddingRight = parseInt(style.paddingRight, 10) as number;
+  const paddingBottom = parseInt(style.paddingBottom, 10) as number;
+  return { paddingLeft, paddingTop, paddingRight, paddingBottom };
+}
+
 const positionPlaceholder = (target: HTMLElement, orientation: "vertical" | "horizontal", mousePosition: number) => {
   if (!iframeDocument) return;
   const targetRect = target.getBoundingClientRect();
   const placeholder = iframeDocument?.getElementById("placeholder") as HTMLElement;
-  placeholder.style.width = orientation === "vertical" ? targetRect.width + "px" : "2px";
-  placeholder.style.height = orientation === "vertical" ? "5px" : targetRect.height + "px";
-  placeholder.style.backgroundColor = "red";
-  placeholder.style.opacity = "0.5";
-  placeholder.style.position = "absolute";
-  placeholder.style.zIndex = "99999";
+
+  // get padding of the target element
+  const { paddingLeft, paddingTop, paddingRight, paddingBottom } = getPadding(target);
+
+  placeholder.style.width = orientation === "vertical" ? targetRect.width - paddingLeft - paddingRight + "px" : "2px";
+  placeholder.style.height = orientation === "vertical" ? "5px" : targetRect.height - paddingTop - paddingBottom + "px";
   placeholder.style.display = "block";
 
   const closest = possiblePositions.reduce((prev, curr) =>
@@ -33,7 +44,9 @@ const calculatePossiblePositions = (target: HTMLElement) => {
   const children = Array.from(target.children) as HTMLElement[];
   // filter out the elements with data-dnd="ignore"
   children.filter((child) => child.getAttribute("data-dnd") !== "ignore");
-  possiblePositions = [0];
+  const { paddingLeft, paddingTop } = getPadding(target);
+
+  possiblePositions = [orientation === "vertical" ? paddingLeft : paddingTop];
 
   possiblePositions = [
     ...possiblePositions,
@@ -77,7 +90,7 @@ function removePlaceholder() {
 
 export const useDnd = () => {
   const { document } = useFrame();
-  const [isDragging, setIsDragging] = useState(false);
+  const [isDragging, setIsDragging] = useAtom(draggingFlagAtom);
   const addOnDrop = useAddBlockByDrop();
   iframeDocument = document as HTMLDocument;
   return {
@@ -86,9 +99,16 @@ export const useDnd = () => {
     onDragOver: dragOver,
     onDrop: (ev: DragEvent) => {
       const data: string = JSON.parse(ev.dataTransfer.getData("text/plain") as string);
-      addOnDrop({ block: data, dropTargetId: null, relativeIndex: dropIndex });
+      // get the block id from the attribute data-block-id from target
+      let blockId = (ev.target as HTMLElement).getAttribute("data-block-id");
+      if (blockId === null) {
+        const parent = (ev.target as HTMLElement).parentElement;
+        blockId = parent.getAttribute("data-block-id");
+      }
+
+      addOnDrop({ block: data, dropTargetId: blockId || null, relativeIndex: dropIndex });
       setIsDragging(false);
-      removePlaceholder();
+      setTimeout(() => removePlaceholder(), 300);
     },
     onDragEnter: (e: DragEvent) => {
       const event = e;
