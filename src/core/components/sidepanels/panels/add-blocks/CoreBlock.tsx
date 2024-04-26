@@ -1,18 +1,18 @@
-import { DragPreviewImage, useDrag } from "react-dnd";
 import { useAtom } from "jotai";
 import { first, has, omit } from "lodash";
 import { createElement } from "react";
 import { BoxIcon } from "@radix-ui/react-icons";
 import { activePanelAtom } from "../../../../atoms/ui";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../../ui";
-import { useAddBlock, useSelectedBlockIds } from "../../../../hooks";
+import { useAddBlock, useHighlightBlockId, useSelectedBlockIds } from "../../../../hooks";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { addBlocksModalAtom } from "../../../../atoms/blocks";
 
 export const CoreBlock = ({ block }: { block: any }) => {
   const { type, icon, label } = block;
   const { addCoreBlock, addPredefinedBlock } = useAddBlock();
-  const [ids] = useSelectedBlockIds();
+  const [ids, setSelected] = useSelectedBlockIds();
+  const [, setHighlighted] = useHighlightBlockId();
   const [, setActivePanel] = useAtom(activePanelAtom);
   const [, setAddBlocks] = useAtom(addBlocksModalAtom);
   const addBlockToPage = () => {
@@ -25,17 +25,8 @@ export const CoreBlock = ({ block }: { block: any }) => {
     setActivePanel("layers");
   };
 
-  const [, drag, dragPreview] = useDrag(() => ({
-    type: "CHAI_BLOCK",
-    item: block,
-  }));
-
   return (
     <>
-      <DragPreviewImage
-        connect={dragPreview}
-        src={"https://placehold.co/100x30/000000/FFF?text=" + (label || type).replace(/ /g, "+")}
-      />
       <Tooltip>
         <TooltipTrigger asChild>
           <button
@@ -44,6 +35,8 @@ export const CoreBlock = ({ block }: { block: any }) => {
             onDragStart={(ev) => {
               ev.dataTransfer.setData("text/plain", JSON.stringify(omit(block, ["component", "icon"])));
               setTimeout(() => {
+                setSelected([]);
+                setHighlighted(null);
                 setAddBlocks(false);
                 setActivePanel("layers");
               }, 200);

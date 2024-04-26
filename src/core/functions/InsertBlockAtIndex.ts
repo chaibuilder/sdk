@@ -8,11 +8,6 @@ export function insertBlockAtIndex(
   newBlocks: ChaiBlock[],
   allowChildren: boolean,
 ) {
-  // if the parent doesn't exist, just add the new blocks to the end of the array
-  if (parentId === null) {
-    return [...allBlocks, ...newBlocks];
-  }
-
   // otherwise, find the index of the parent and add the destination index to it
   if (destinationIndex !== null) {
     // @ts-ignore
