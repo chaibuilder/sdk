@@ -23,13 +23,16 @@ export const IframeInitialContent: string = `<!doctype html>
     .aspect-square{aspect-ratio: 1/1;}
     .aspect-video{aspect-ratio: 16/9;}
     a{ pointer-events: none !important; }
-    </style>
+    .ql-container{ height: auto !important; }
+    </style>    
     <style id="hidden-blocks"></style>
     <style id="selected-block"></style>
     <style id="selected-styling-block"></style>
     <style id="highlighted-block"></style>
+
   </head>
   <body class="font-body antialiased h-full">
     <div class="frame-root"></div>
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.js"></script>
   </body>
 </html>`;

@@ -24,7 +24,7 @@ export const useUpdateBlocksProps = () => {
   const dispatch = useDispatch();
   const updateBlocksProps = useSetAtom(updateBlocksPropsAtom);
   return useCallback(
-    (blockIds: Array<string>, props: { string: any }) => {
+    (blockIds: Array<string>, props: Record<string, any>) => {
       updateBlocksProps({ blockIds, props, dispatch });
       createSnapshot();
     },

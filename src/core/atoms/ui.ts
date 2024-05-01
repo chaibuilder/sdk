@@ -3,9 +3,6 @@ import { atom } from "jotai";
 export const readOnlyModeAtom: any = atom<boolean>(false);
 readOnlyModeAtom.debugLabel = "readOnlyModeAtom";
 
-export const inlineEditingActiveAtom: any = atom<boolean>(false);
-inlineEditingActiveAtom.debugLabel = "inlineEditingActiveAtom";
-
 export const advanceStylingOpenAtom: any = atom(false);
 advanceStylingOpenAtom.debugLabel = "advanceStylingOpenAtom";
 
@@ -42,3 +39,6 @@ showPredefinedBlockCategoryAtom.debugLabel = "showPredefinedBlockCategoryAtom";
 
 export const historyStatesAtom = atom<{ undoCount: number; redoCount: number }>({ undoCount: 0, redoCount: 0 });
 historyStatesAtom.debugLabel = "historyStatesAtom";
+
+export const inlineEditingActiveAtom = atom("");
+inlineEditingActiveAtom.debugLabel = "inlineEditingActiveAtom";
