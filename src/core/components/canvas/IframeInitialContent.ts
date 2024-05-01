@@ -24,6 +24,14 @@ export const IframeInitialContent: string = `<!doctype html>
     .aspect-video{aspect-ratio: 16/9;}
     a{ pointer-events: none !important; }
     .ql-container{ height: auto !important; }
+    [contenteditable="true"], [contenteditable="true"] * { cursor: text !important; }
+    [contenteditable="true"] {
+        outline: none;
+        box-shadow: 0 0 0px 4px rgba(36, 150, 255, 0.2);
+        -webkit-user-select: text;
+        -moz-user-select: text;
+        user-select: text;
+    }
     </style>    
     <style id="hidden-blocks"></style>
     <style id="selected-block"></style>
