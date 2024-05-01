@@ -1,11 +1,11 @@
 {
   "name": "@chaibuilder/sdk",
-  "description": "Low code visual builder",
+  "description": "Open source low-code visual builder",
   "private": false,
   "author": "Suraj Air",
   "license": "BSD-3-Clause",
   "homepage": "https://chaibuilder.com",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "type": "module",
   "repository": {
     "type": "git",
