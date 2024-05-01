@@ -1,9 +1,10 @@
-import { DragEvent, useState } from "react";
-import { throttle } from "lodash";
+import { DragEvent } from "react";
+import { noop, throttle } from "lodash";
 import { useFrame } from "../../../frame";
 import { useAddBlockByDrop } from "../../../hooks/useAddBlockByDrop.ts";
 import { useAtom } from "jotai";
 import { draggingFlagAtom } from "../../../atoms/ui.ts";
+import { useFeature } from "flagged";
 
 let iframeDocument: null | HTMLDocument = null;
 let possiblePositions: number[] = [];
@@ -92,44 +93,53 @@ export const useDnd = () => {
   const { document } = useFrame();
   const [isDragging, setIsDragging] = useAtom(draggingFlagAtom);
   const addOnDrop = useAddBlockByDrop();
+  const dndEnabled = useFeature("dnd");
   iframeDocument = document as HTMLDocument;
   return {
     isDragging,
     "data-dnd": "branch",
-    onDragOver: dragOver,
-    onDrop: (ev: DragEvent) => {
-      const data: string = JSON.parse(ev.dataTransfer.getData("text/plain") as string);
-      // get the block id from the attribute data-block-id from target
-      let blockId = (ev.target as HTMLElement).getAttribute("data-block-id");
-      if (blockId === null) {
-        const parent = (ev.target as HTMLElement).parentElement;
-        blockId = parent.getAttribute("data-block-id");
-      }
+    onDragOver: dndEnabled ? dragOver : noop,
+    onDrop: !dndEnabled
+      ? noop
+      : (ev: DragEvent) => {
+          const data: string = JSON.parse(ev.dataTransfer.getData("text/plain") as string);
+          // get the block id from the attribute data-block-id from target
+          let blockId = (ev.target as HTMLElement).getAttribute("data-block-id");
+          if (blockId === null) {
+            const parent = (ev.target as HTMLElement).parentElement;
+            blockId = parent.getAttribute("data-block-id");
+          }
 
-      addOnDrop({ block: data, dropTargetId: blockId || null, relativeIndex: dropIndex });
-      setIsDragging(false);
-      setTimeout(() => removePlaceholder(), 300);
-    },
-    onDragEnter: (e: DragEvent) => {
-      const event = e;
-      event.stopPropagation();
-      event.preventDefault();
-      possiblePositions = [];
-      const target = event.target as HTMLElement;
-      calculatePossiblePositions(target);
-      target.classList.add("outline", "outline-blue-500", "outline-4", "-outline-offset-4");
-      setIsDragging(true);
-    },
-    onDragLeave: (e: DragEvent) => {
-      const event = e;
-      event.stopPropagation();
-      event.preventDefault();
-      const target = event.target as HTMLElement;
-      target.classList.remove("outline", "outline-blue-500", "outline-4", "-outline-offset-4");
-    },
-    onMouseOut: () => {
-      setIsDragging(false);
-      removePlaceholder();
-    },
+          addOnDrop({ block: data, dropTargetId: blockId || null, relativeIndex: dropIndex });
+          setIsDragging(false);
+          setTimeout(() => removePlaceholder(), 300);
+        },
+    onDragEnter: !dndEnabled
+      ? noop
+      : (e: DragEvent) => {
+          const event = e;
+          event.stopPropagation();
+          event.preventDefault();
+          possiblePositions = [];
+          const target = event.target as HTMLElement;
+          calculatePossiblePositions(target);
+          target.classList.add("outline", "outline-blue-500", "outline-4", "-outline-offset-4");
+          setIsDragging(true);
+        },
+    onDragLeave: !dndEnabled
+      ? noop
+      : (e: DragEvent) => {
+          const event = e;
+          event.stopPropagation();
+          event.preventDefault();
+          const target = event.target as HTMLElement;
+          target.classList.remove("outline", "outline-blue-500", "outline-4", "-outline-offset-4");
+        },
+    onMouseOut: !dndEnabled
+      ? noop
+      : () => {
+          setIsDragging(false);
+          removePlaceholder();
+        },
   };
 };
