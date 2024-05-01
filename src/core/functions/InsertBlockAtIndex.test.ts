@@ -2,7 +2,7 @@ import { insertBlockAtIndex } from "./InsertBlockAtIndex.ts";
 
 describe("insertBlockAtIndex", () => {
   it("should add new blocks to the end if parent doesn't exist", () => {
-    const blocks = insertBlockAtIndex([{ _id: "1", _type: "Box" }], null, 0, [{ _id: "2", _type: "Box" }], true);
+    const blocks = insertBlockAtIndex([{ _id: "1", _type: "Box" }], null, 1, [{ _id: "2", _type: "Box" }], true);
     expect(blocks).toEqual([
       { _id: "1", _type: "Box" },
       { _id: "2", _type: "Box" },
