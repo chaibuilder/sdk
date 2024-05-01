@@ -28,7 +28,7 @@ export const KeyboardHandler = () => {
   const [, setPreview] = usePreviewMode();
   const removeBlocks = useRemoveBlocks();
   const { savePage } = useSavePage();
-  const [editing] = useAtom(inlineEditingActiveAtom);
+  const [editingBlockId] = useAtom(inlineEditingActiveAtom);
   const [, setEditName] = useAtom(editLayerNameAtom);
   const enterEditMode = (e: any) => {
     if (e.key === "Enter") {
@@ -48,13 +48,13 @@ export const KeyboardHandler = () => {
         return;
       }
       enterEditMode(e);
-      if (!editing && (e.key === "Delete" || e.key === "Backspace")) {
+      if (!editingBlockId && (e.key === "Delete" || e.key === "Backspace")) {
         e.preventDefault();
         removeBlocks(ids);
       }
       if (e.ctrlKey || e.metaKey) {
         if (["z", "y", "d", "x", "c", "p", "s", "v"].includes(e.key)) {
-          if (editing && ["x", "z", "v"].includes(e.key)) {
+          if (editingBlockId && ["x", "z", "v"].includes(e.key)) {
             return true;
           }
           e.preventDefault();
@@ -89,7 +89,7 @@ export const KeyboardHandler = () => {
     cut,
     copy,
     pasteBlocks,
-    editing,
+    editingBlockId,
     savePage,
     iframeWin,
   ]);
