@@ -61,6 +61,9 @@ const useHandleCanvasDblClick = () => {
     Array.from(newBlock.attributes).forEach((attr) => {
       if (attr.name !== "class") newBlock.removeAttribute(attr.name);
     });
+    if (blockType === "Text") {
+      newBlock.style.display = "inline-block";
+    }
     chaiBlock.parentNode.insertBefore(newBlock, chaiBlock.nextSibling);
     const quill = new Quill(newBlock);
     function blurListener() {
