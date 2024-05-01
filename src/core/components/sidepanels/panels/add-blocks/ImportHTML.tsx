@@ -9,14 +9,12 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
   Label,
   Textarea,
 } from "../../../../../ui";
 import { useAddBlock, useSelectedBlockIds } from "../../../../hooks";
 import { activePanelAtom, addBlockOffCanvasAtom } from "../../../../atoms/ui";
 import { first } from "lodash";
-import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { addBlocksModalAtom } from "../../../../atoms/blocks";
 import { getBlocksFromHTML } from "../../../../import-html/html-to-json";
 
@@ -40,16 +38,14 @@ const ImportHTML = () => {
   return (
     <Card className="border-border/0 p-0 shadow-none">
       <CardHeader className="p-3">
-        <CardTitle>Import HTML</CardTitle>
         <CardDescription>
-          Use HTML snippets from component libraries like Tailwind UI, Flowbite, Preline, Kitwind, Tailblocks etc. or
-          just copy paste your own HTML code. Only Tailwind CSS markup is supported.
+          Use HTML snippets from Tailwind CSS component libraries etc. or just copy paste your own HTML code.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-2 px-3 py-0">
         <div className="space-y-1">
           <Label htmlFor="current" className="text-sm">
-            Enter HTML Code:
+            Tailwind HTML snippet:
           </Label>
           <Textarea
             autoFocus
@@ -58,22 +54,19 @@ const ImportHTML = () => {
             defaultValue={code}
             onChange={(evt) => setCode(evt.target.value)}
             rows={12}
-            placeholder={`<div>
-    <h1>Enter code here</h1>
-</div>`}
-            className="resize-none overflow-x-auto whitespace-pre font-mono font-normal"
+            placeholder={`Enter your code snippet here...`}
+            className="resize-none bg-gray-100 overflow-x-auto whitespace-pre text-xs font-mono font-normal"
           />
         </div>
       </CardContent>
       <CardFooter className="flex flex-col justify-end p-3">
         <Button disabled={code.trim() === ""} onClick={() => importComponents()} size="sm" className="w-full">
-          Import
+          Import HTML
         </Button>
-        <Alert variant="default" className="mt-2 p-1 text-blue-400">
-          <ExclamationTriangleIcon className="h-4 w-4" />
-          <AlertTitle className="text-sm leading-4">
-            Imported html will be added to the currently selected block. If no block is selected, the html will be added
-            to the page.
+        <Alert variant="default" className="mt-2 p-1 border-none text-gray-400">
+          <AlertTitle className="text-xs  font-normal leading-4">
+            NOTE: Imported html will be added to the currently selected block. If no block is selected, the html will be
+            added to the page.
           </AlertTitle>
         </Alert>
       </CardFooter>

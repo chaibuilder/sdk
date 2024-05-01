@@ -72,7 +72,7 @@ const AddBlocksPanel = () => {
       <div className="mb-2 flex flex-col justify-between rounded-md bg-background/30 p-1">
         <h1 className="flex flex-col items-baseline px-1 text-xl font-semibold xl:flex-col">Add block</h1>
         <span className="p-0 text-xs font-light leading-3 opacity-80 xl:pl-1">
-          {tab === "html" ? "(Enter or paste your own HTML code)" : "(Click to add block to page)"}
+          {tab === "html" ? "(Enter or paste TailwindCSS HTML snippet)" : "(Click to add block to page)"}
         </span>
       </div>
 
@@ -85,8 +85,8 @@ const AddBlocksPanel = () => {
         className="h-max">
         <TabsList className={"grid w-full " + (hasUiBlocks ? "grid-cols-3" : "grid-cols-2")}>
           <TabsTrigger value="core">Core</TabsTrigger>
-          {hasUiBlocks ? <TabsTrigger value="ui-blocks">UI Blocks</TabsTrigger> : null}
-          <TabsTrigger value="html">Import</TabsTrigger>
+          {hasUiBlocks ? <TabsTrigger value="ui-blocks">Custom Blocks</TabsTrigger> : null}
+          <TabsTrigger value="html">Import </TabsTrigger>
         </TabsList>
       </Tabs>
       {tab === "core" && (
