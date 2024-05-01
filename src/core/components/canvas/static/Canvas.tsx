@@ -40,27 +40,27 @@ function destroyQuill(quill) {
 }
 
 const useHandleCanvasDblClick = () => {
-  const INLINE_EDITABLE_BLOCKS = ["Heading", "Paragraph", "Span", "Button"];
+  const INLINE_EDITABLE_BLOCKS = ["Heading", "Paragraph", "Text", "Link", "Span", "Button"];
   const updateContent = useUpdateBlocksProps();
   const [, setIds] = useSelectedBlockIds();
   const [, setHighlightedId] = useHighlightBlockId();
-  const [, setEditingBlockId] = useAtom(inlineEditingActiveAtom);
+  const [editingBlockId, setEditingBlockId] = useAtom(inlineEditingActiveAtom);
   return (e) => {
+    if (editingBlockId) return;
     const chaiBlock: HTMLElement = getTargetedBlock(e.target);
     const blockType = chaiBlock.getAttribute("data-block-type");
     if (!blockType || !INLINE_EDITABLE_BLOCKS.includes(blockType)) {
       return;
     }
     setEditingBlockId(chaiBlock.getAttribute("data-block-id"));
-    chaiBlock.style.display = "none";
-    // move chaiBlock element to the end of #canvas element
-
     const newBlock = chaiBlock.cloneNode(true) as HTMLElement;
+
+    chaiBlock.style.display = "none";
+
     Array.from(newBlock.attributes).forEach((attr) => {
       if (attr.name !== "class") newBlock.removeAttribute(attr.name);
     });
     chaiBlock.parentNode.insertBefore(newBlock, chaiBlock.nextSibling);
-    newBlock.style.display = "block";
     const quill = new Quill(newBlock);
     function blurListener() {
       const content = quill.getText(0, quill.getLength());

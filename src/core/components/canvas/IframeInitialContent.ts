@@ -23,7 +23,6 @@ export const IframeInitialContent: string = `<!doctype html>
     .aspect-square{aspect-ratio: 1/1;}
     .aspect-video{aspect-ratio: 16/9;}
     a{ pointer-events: none !important; }
-    .ql-container{ height: auto !important; }
     [contenteditable="true"], [contenteditable="true"] * { cursor: text !important; }
     [contenteditable="true"] {
         outline: none;
