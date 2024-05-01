@@ -4,11 +4,9 @@ import { twMerge } from "tailwind-merge";
 import { ChaiBlock } from "../../../types/ChaiBlock";
 import { SLOT_KEY, STYLES_KEY } from "../../../constants/CONTROLS";
 import { StylingAttributes } from "../../../types/index";
-import { useAllBlocks, useHighlightBlockId } from "../../../hooks";
+import { useAllBlocks } from "../../../hooks";
 import { getBlockComponent } from "@chaibuilder/runtime";
 import { useChaiExternalData } from "./useChaiExternalData.ts";
-import { useAtom } from "jotai";
-import { inlineEditingActiveAtom } from "../../../atoms/ui.ts";
 import { canAddChildBlock } from "../../../functions/Layers.ts";
 
 // FIXME:  Duplicate code in CanvasRenderer.tsx
@@ -32,7 +30,7 @@ function getElementAttrs(block: ChaiBlock, key: string) {
   return get(block, `${key}_attrs`, {}) as Record<string, string>;
 }
 
-function getStyleAttrs(block: ChaiBlock, onMouseEnter: any, onMouseLeave: any) {
+function getStyleAttrs(block: ChaiBlock) {
   const styles: { [key: string]: StylingAttributes } = {};
   Object.keys(block).forEach((key) => {
     if (isString(block[key]) && block[key].startsWith(STYLES_KEY)) {
@@ -42,8 +40,6 @@ function getStyleAttrs(block: ChaiBlock, onMouseEnter: any, onMouseLeave: any) {
         "data-style-prop": key,
         "data-block-parent": block._id,
         "data-style-id": `${key}-${block._id}`,
-        onMouseEnter,
-        onMouseLeave,
         ...getElementAttrs(block, key),
       };
     }
@@ -64,32 +60,8 @@ function applyBindings(block: ChaiBlock, chaiData: any): ChaiBlock {
 
 export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
   const allBlocks = useAllBlocks();
-  const [, setHighlightedId] = useHighlightBlockId();
-  const [editingBlockId] = useAtom(inlineEditingActiveAtom);
 
-  const onMouseEnter = useCallback(
-    (e: any) => {
-      if (editingBlockId) return;
-      const styleId: string | null = e.currentTarget?.getAttribute("data-style-id");
-      setHighlightedId(styleId || "");
-      e.stopPropagation();
-    },
-    [setHighlightedId, editingBlockId],
-  );
-
-  const onMouseLeave = useCallback(
-    (e: any) => {
-      if (editingBlockId) return;
-      setHighlightedId("");
-      e.stopPropagation();
-    },
-    [setHighlightedId, editingBlockId],
-  );
-
-  const getStyles = useCallback(
-    (block: ChaiBlock) => getStyleAttrs(block, onMouseEnter, onMouseLeave),
-    [onMouseEnter, onMouseLeave],
-  );
+  const getStyles = useCallback((block: ChaiBlock) => getStyleAttrs(block), []);
 
   const [chaiData] = useChaiExternalData();
 

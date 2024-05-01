@@ -6,7 +6,7 @@ import {
   useSelectedStylingBlocks,
   useUpdateBlocksProps,
 } from "../../../hooks";
-import { first, isEmpty, omit } from "lodash";
+import { first, isEmpty, omit, throttle } from "lodash";
 import { Quill } from "react-quill";
 import { useAtom } from "jotai";
 import { inlineEditingActiveAtom } from "../../../atoms/ui.ts";
@@ -106,6 +106,22 @@ const useHandleCanvasClick = () => {
   };
 };
 
+const handleMouseMove = throttle((e: any, setHighlightedId) => {
+  const chaiBlock: HTMLElement = getTargetedBlock(e.target);
+  if (chaiBlock.getAttribute("data-style-id")) {
+    setHighlightedId(chaiBlock.getAttribute("data-style-id"));
+  }
+}, 100);
+
+const useHandleMouseMove = () => {
+  const [, setHighlightedId] = useHighlightBlockId();
+  const [editingBlockId] = useAtom(inlineEditingActiveAtom);
+  return (e: any) => {
+    if (editingBlockId) return;
+    handleMouseMove(e, setHighlightedId);
+  };
+};
+
 export const Canvas = ({ children }: { children: React.ReactNode }) => {
   const { document } = useFrame();
   const [ids] = useSelectedBlockIds();
@@ -130,6 +146,7 @@ export const Canvas = ({ children }: { children: React.ReactNode }) => {
 
   const handleDblClick = useHandleCanvasDblClick();
   const handleCanvasClick = useHandleCanvasClick();
+  const handleMouseMove = useHandleMouseMove();
   const dnd = useDnd();
 
   return (
@@ -137,6 +154,7 @@ export const Canvas = ({ children }: { children: React.ReactNode }) => {
       id="canvas"
       onClick={handleCanvasClick}
       onDoubleClick={handleDblClick}
+      onMouseMove={handleMouseMove}
       {...omit(dnd, "isDragging")}
       className={`relative h-screen max-w-full ` + (dnd.isDragging ? "dragging" : "")}>
       {children}
