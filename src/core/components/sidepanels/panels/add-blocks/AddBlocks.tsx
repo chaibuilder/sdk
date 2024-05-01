@@ -72,7 +72,7 @@ const AddBlocksPanel = () => {
       <div className="mb-2 flex flex-col justify-between rounded-md bg-background/30 p-1">
         <h1 className="flex flex-col items-baseline px-1 text-xl font-semibold xl:flex-col">Add block</h1>
         <span className="p-0 text-xs font-light leading-3 opacity-80 xl:pl-1">
-          {tab === "html" ? "(Enter or paste your own HTML code)" : "(Drag & drop into tree view or click to add)"}
+          {tab === "html" ? "(Enter or paste your own HTML code)" : "(Click to add block to page)"}
         </span>
       </div>
 
@@ -102,7 +102,7 @@ const AddBlocksPanel = () => {
                       {group}
                     </AccordionTrigger>
                     <AccordionContent>
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="grid grid-cols-3 gap-2">
                         {React.Children.toArray(
                           reject(filter(values(groupedBlocks.core), { group }), { hidden: true }).map((block) => (
                             <CoreBlock block={block} />

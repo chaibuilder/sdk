@@ -7,6 +7,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../../ui";
 import { useAddBlock, useHighlightBlockId, useSelectedBlockIds } from "../../../../hooks";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { addBlocksModalAtom } from "../../../../atoms/blocks";
+import { useFeature } from "flagged";
 
 export const CoreBlock = ({ block }: { block: any }) => {
   const { type, icon, label } = block;
@@ -24,6 +25,7 @@ export const CoreBlock = ({ block }: { block: any }) => {
     setAddBlocks(false);
     setActivePanel("layers");
   };
+  const dndEnabled = useFeature("dnd");
 
   return (
     <>
@@ -41,8 +43,11 @@ export const CoreBlock = ({ block }: { block: any }) => {
                 setActivePanel("layers");
               }, 200);
             }}
-            draggable={"true"}
-            className="cursor-grab space-y-2 rounded-lg border border-border p-3 text-center hover:bg-slate-300/50">
+            draggable={dndEnabled ? "true" : "false"}
+            className={
+              "space-y-2 rounded-lg border border-border p-3 text-center hover:bg-slate-300/50 " +
+              (dndEnabled ? "cursor-grab" : "cursor-pointer")
+            }>
             {createElement(icon || BoxIcon, { className: "w-4 h-4 mx-auto" })}
             <p className="truncate text-xs">{label || type}</p>
           </button>

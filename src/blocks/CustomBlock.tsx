@@ -43,3 +43,38 @@ registerChaiBlock(CustomBlockBuilder, {
     }),
   },
 });
+
+registerChaiBlock(CustomBlockBuilder, {
+  type: "CustomBlock2",
+  label: "Custom Block2",
+  group: "Custom Blocks2",
+  props: {
+    styles: Styles({ default: "" }),
+    heading: MultilineText({ title: "Heading" }),
+    content: MultilineText({ title: "Content" }),
+    subheading: MultilineText({ title: "Sub heading" }),
+    items: List({
+      title: "Items",
+      default: [{ item: "First" }],
+      itemProperties: {
+        item: SingleLineText({ title: "Item", default: "" }),
+      },
+    }),
+    meta: Model({
+      title: "Meta",
+      default: {
+        height: 0,
+        visible: false,
+      },
+      properties: {
+        height: Numeric({ title: "Height", default: 0 }),
+        visible: Checkbox({ title: "Visible", default: false }),
+        // language: ["en", "fs"],
+        // offset: {
+        //   x: 10,
+        //   y: 20,
+        // },
+      },
+    }),
+  },
+});
