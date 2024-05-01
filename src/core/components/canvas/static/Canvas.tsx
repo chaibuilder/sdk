@@ -1,6 +1,11 @@
 import React, { useEffect } from "react";
 import { useFrame } from "../../../frame";
-import { useSelectedBlockIds, useSelectedStylingBlocks, useUpdateBlocksProps } from "../../../hooks";
+import {
+  useHighlightBlockId,
+  useSelectedBlockIds,
+  useSelectedStylingBlocks,
+  useUpdateBlocksProps,
+} from "../../../hooks";
 import { first, isEmpty } from "lodash";
 import { Quill } from "react-quill";
 import { useAtom } from "jotai";
@@ -34,44 +39,66 @@ function destroyQuill(quill) {
   quill = null;
 }
 
-const useHandleInlineEdit = () => {
+const useHandleCanvasDblClick = () => {
   const INLINE_EDITABLE_BLOCKS = ["Heading", "Paragraph", "Span", "Button"];
   const updateContent = useUpdateBlocksProps();
   const [, setIds] = useSelectedBlockIds();
+  const [, setHighlightedId] = useHighlightBlockId();
   const [, setEditingBlockId] = useAtom(inlineEditingActiveAtom);
-  return {
-    handleDblClick: (e) => {
-      const chaiBlock: HTMLElement = getTargetedBlock(e.target);
-      const blockType = chaiBlock.getAttribute("data-block-type");
-      if (!blockType || !INLINE_EDITABLE_BLOCKS.includes(blockType)) {
-        return;
-      }
-      setEditingBlockId(chaiBlock.getAttribute("data-block-id"));
-      chaiBlock.style.display = "none";
-      // move chaiBlock element to the end of #canvas element
+  return (e) => {
+    const chaiBlock: HTMLElement = getTargetedBlock(e.target);
+    const blockType = chaiBlock.getAttribute("data-block-type");
+    if (!blockType || !INLINE_EDITABLE_BLOCKS.includes(blockType)) {
+      return;
+    }
+    setEditingBlockId(chaiBlock.getAttribute("data-block-id"));
+    chaiBlock.style.display = "none";
+    // move chaiBlock element to the end of #canvas element
 
-      const newBlock = chaiBlock.cloneNode(true) as HTMLElement;
-      Array.from(newBlock.attributes).forEach((attr) => {
-        if (attr.name !== "class") newBlock.removeAttribute(attr.name);
-      });
-      chaiBlock.parentNode.insertBefore(newBlock, chaiBlock.nextSibling);
-      newBlock.style.display = "block";
-      const quill = new Quill(newBlock);
-      function blurListener() {
-        const content = quill.getText(0, quill.getLength());
-        updateContent([chaiBlock.getAttribute("data-block-id")], { content });
-        chaiBlock.removeAttribute("style");
-        newBlock.removeEventListener("blur", blurListener, true);
-        destroyQuill(quill);
-        setEditingBlockId("");
-      }
-      newBlock.addEventListener("blur", blurListener, true);
-      quill.focus();
-      // remove .ql-clipboard element from newBlock
-      newBlock.querySelector(".ql-clipboard")?.remove();
+    const newBlock = chaiBlock.cloneNode(true) as HTMLElement;
+    Array.from(newBlock.attributes).forEach((attr) => {
+      if (attr.name !== "class") newBlock.removeAttribute(attr.name);
+    });
+    chaiBlock.parentNode.insertBefore(newBlock, chaiBlock.nextSibling);
+    newBlock.style.display = "block";
+    const quill = new Quill(newBlock);
+    function blurListener() {
+      const content = quill.getText(0, quill.getLength());
+      updateContent([chaiBlock.getAttribute("data-block-id")], { content });
+      chaiBlock.removeAttribute("style");
+      newBlock.removeEventListener("blur", blurListener, true);
+      destroyQuill(quill);
+      setEditingBlockId("");
+      setHighlightedId("");
+    }
+    newBlock.addEventListener("blur", blurListener, true);
+    quill.focus();
+    // remove .ql-clipboard element from newBlock
+    newBlock.querySelector(".ql-clipboard")?.remove();
+    setIds([]);
+  };
+};
 
-      setIds([]);
-    },
+const useHandleCanvasClick = () => {
+  const [, setStyleBlockIds] = useSelectedStylingBlocks();
+  const [, setIds] = useSelectedBlockIds();
+  const [editingBlockId] = useAtom(inlineEditingActiveAtom);
+  return (e: any) => {
+    if (editingBlockId) {
+      return;
+    }
+    e.stopPropagation();
+    const chaiBlock: HTMLElement = getTargetedBlock(e.target);
+    if (chaiBlock.getAttribute("data-block-parent")) {
+      // check if target element has data-styles-prop attribute
+      const styleProp = chaiBlock.getAttribute("data-style-prop") as string;
+      const styleId = chaiBlock.getAttribute("data-style-id") as string;
+      const blockId = chaiBlock.getAttribute("data-block-parent") as string;
+      setStyleBlockIds([{ id: styleId, prop: styleProp, blockId }]);
+      setIds([blockId]);
+    } else if (chaiBlock.getAttribute("data-block-id")) {
+      setIds([chaiBlock.getAttribute("data-block-id")]);
+    }
   };
 };
 
@@ -96,10 +123,16 @@ export const Canvas = ({ children }: { children: React.ReactNode }) => {
       }
     }, 100);
   }, [document, ids, setSelectedStylingBlocks, styleIds]);
-  const { handleDblClick } = useHandleInlineEdit();
+
+  const handleDblClick = useHandleCanvasDblClick();
+  const handleCanvasClick = useHandleCanvasClick();
 
   return (
-    <div id="canvas" onDoubleClick={handleDblClick} className={`relative h-screen max-w-full`}>
+    <div
+      id="canvas"
+      onClick={handleCanvasClick}
+      onDoubleClick={handleDblClick}
+      className={`relative h-screen max-w-full`}>
       {children}
     </div>
   );

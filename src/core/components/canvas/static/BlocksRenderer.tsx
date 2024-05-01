@@ -4,9 +4,11 @@ import { twMerge } from "tailwind-merge";
 import { ChaiBlock } from "../../../types/ChaiBlock";
 import { SLOT_KEY, STYLES_KEY } from "../../../constants/CONTROLS";
 import { StylingAttributes } from "../../../types/index";
-import { useAllBlocks, useHighlightBlockId, useSelectedBlockIds, useSelectedStylingBlocks } from "../../../hooks";
+import { useAllBlocks, useHighlightBlockId } from "../../../hooks";
 import { getBlockComponent } from "@chaibuilder/runtime";
 import { useChaiExternalData } from "./useChaiExternalData.ts";
+import { useAtom } from "jotai/index";
+import { inlineEditingActiveAtom } from "../../../atoms/ui.ts";
 
 // FIXME:  Duplicate code in CanvasRenderer.tsx
 const getSlots = (block: ChaiBlock) => {
@@ -29,7 +31,7 @@ function getElementAttrs(block: ChaiBlock, key: string) {
   return get(block, `${key}_attrs`, {}) as Record<string, string>;
 }
 
-function getStyleAttrs(block: ChaiBlock, onMouseEnter: any, onMouseLeave: any, onClick: any) {
+function getStyleAttrs(block: ChaiBlock, onMouseEnter: any, onMouseLeave: any) {
   const styles: { [key: string]: StylingAttributes } = {};
   Object.keys(block).forEach((key) => {
     if (isString(block[key]) && block[key].startsWith(STYLES_KEY)) {
@@ -41,7 +43,6 @@ function getStyleAttrs(block: ChaiBlock, onMouseEnter: any, onMouseLeave: any, o
         "data-style-id": `${key}-${block._id}`,
         onMouseEnter,
         onMouseLeave,
-        onClick,
         ...getElementAttrs(block, key),
       };
     }
@@ -63,52 +64,30 @@ function applyBindings(block: ChaiBlock, chaiData: any): ChaiBlock {
 export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
   const allBlocks = useAllBlocks();
   const [, setHighlightedId] = useHighlightBlockId();
-  const [, setStyleBlockIds] = useSelectedStylingBlocks();
-  const [, setIds] = useSelectedBlockIds();
+  const [editingBlockId] = useAtom(inlineEditingActiveAtom);
 
   const onMouseEnter = useCallback(
     (e: any) => {
+      if (editingBlockId) return;
       const styleId: string | null = e.currentTarget?.getAttribute("data-style-id");
       setHighlightedId(styleId || "");
       e.stopPropagation();
     },
-    [setHighlightedId],
+    [setHighlightedId, editingBlockId],
   );
 
   const onMouseLeave = useCallback(
     (e: any) => {
+      if (editingBlockId) return;
       setHighlightedId("");
       e.stopPropagation();
     },
-    [setHighlightedId],
-  );
-  const onClick = useCallback(
-    (e: any) => {
-      e.stopPropagation();
-      const currentTarget = e.currentTarget;
-      if (currentTarget.getAttribute("data-block-parent")) {
-        // check if target element has data-styles-prop attribute
-        const styleProp = currentTarget.getAttribute("data-style-prop") as string;
-        const styleId = currentTarget.getAttribute("data-style-id") as string;
-        const blockId = currentTarget.getAttribute("data-block-parent") as string;
-        setStyleBlockIds([{ id: styleId, prop: styleProp, blockId }]);
-        setIds([blockId]);
-      } else if (currentTarget.getAttribute("data-block-id")) {
-        setIds([currentTarget.getAttribute("data-block-id")]);
-        if (currentTarget.getAttribute("data-block-parent")) {
-          const styleProp = currentTarget.getAttribute("data-style-prop") as string;
-          const styleId = currentTarget.getAttribute("data-style-id") as string;
-          const blockId = currentTarget.getAttribute("data-block-parent") as string;
-          setStyleBlockIds([{ id: styleId, prop: styleProp, blockId }]);
-        }
-      }
-    },
-    [setStyleBlockIds, setIds],
+    [setHighlightedId, editingBlockId],
   );
 
   const getStyles = useCallback(
-    (block: ChaiBlock) => getStyleAttrs(block, onMouseEnter, onMouseLeave, onClick),
-    [onClick, onMouseEnter, onMouseLeave],
+    (block: ChaiBlock) => getStyleAttrs(block, onMouseEnter, onMouseLeave),
+    [onMouseEnter, onMouseLeave],
   );
 
   const [chaiData] = useChaiExternalData();
@@ -139,7 +118,6 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
             <Suspense>
               {React.createElement(Component, {
                 blockProps: {
-                  onClick,
                   "data-block-id": block._id,
                   "data-block-type": block._type,
                 },
