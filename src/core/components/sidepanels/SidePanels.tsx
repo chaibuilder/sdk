@@ -50,6 +50,7 @@ const SidePanels = () => {
     setActivePanel(newPanel);
   };
   const [, setAddBlocks] = useAtom(addBlocksModalAtom);
+  const dataBindingSupport = useBuilderProp("dataBindingSupport", false);
 
   return (
     <div className="relative flex">
@@ -144,23 +145,34 @@ const SidePanels = () => {
               <div className="h-16 w-full bg-gray-200" />
             </div>
           }>
-          <Tabs defaultValue="layers" className="flex h-full w-full flex-col py-1">
-            <TabsList className="mx-1 h-10 grid grid-cols-2">
-              <TabsTrigger value="layers">
-                <ListTreeIcon className={"h-3 mr-2"} /> Layers
-              </TabsTrigger>
-              <TabsTrigger value="data-provider">
-                <DatabaseIcon className={"w-3 mr-2"} />
-                Data
-              </TabsTrigger>
-            </TabsList>
-            <TabsContent value="layers" className="no-scrollbar h-full flex-1 overflow-y-auto overflow-x-hidden">
-              {React.createElement(LayersPanel)}
-            </TabsContent>
-            <TabsContent value="data-provider" className="flex-1 overflow-y-auto overflow-x-hidden">
-              <PageDataProviders />
-            </TabsContent>
-          </Tabs>
+          {dataBindingSupport ? (
+            <Tabs defaultValue="layers" className="flex h-full w-full flex-col py-1">
+              <TabsList className="mx-1 h-10 grid grid-cols-2">
+                <TabsTrigger value="layers">
+                  <ListTreeIcon className={"h-3 mr-2"} /> Layers
+                </TabsTrigger>
+                <TabsTrigger value="data-provider">
+                  <DatabaseIcon className={"w-3 mr-2"} />
+                  Data
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="layers" className="no-scrollbar h-full flex-1 overflow-y-auto overflow-x-hidden">
+                {React.createElement(LayersPanel)}
+              </TabsContent>
+              <TabsContent value="data-provider" className="flex-1 overflow-y-auto overflow-x-hidden">
+                <PageDataProviders />
+              </TabsContent>
+            </Tabs>
+          ) : (
+            <div>
+              <div className={"flex items-center bg-gray-200  rounded-md py-1"}>
+                <ListTreeIcon className={"h-4 mr-2 ml-2"} /> Layers
+              </div>
+              <div className="no-scrollbar h-full flex-1 overflow-y-auto overflow-x-hidden">
+                {React.createElement(LayersPanel)}
+              </div>
+            </div>
+          )}
         </Suspense>
       </div>
     </div>

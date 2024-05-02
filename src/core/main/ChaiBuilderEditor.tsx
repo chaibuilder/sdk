@@ -36,7 +36,7 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
     builderStore.set(
       // @ts-ignore
       chaiBuilderPropsAtom,
-      omit(props, ["blocks", "subPages", "brandingOptions", "dataProvidersAtom"]),
+      omit(props, ["blocks", "subPages", "brandingOptions", "dataProviders"]),
     );
   }, [props]);
 

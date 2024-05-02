@@ -24,6 +24,7 @@ export interface ChaiBuilderEditorProps {
   canvasTopBarComponents?: {
     right?: React.LazyExoticComponent<any>[];
   };
+  dataBindingSupport?: boolean;
   dataProviders?: { providerKey: string; args: Record<string, any> }[];
   darkMode?: boolean;
   dndOptions?: any;
