@@ -107,11 +107,10 @@ export default function BlockSettings() {
 
   const staticContentProperties = useMemo(() => {
     const controls = cloneDeep(get(coreBlock, "props", {})) as { [key: string]: ChaiControlDefinition };
-    each(bindingProps, (key) => {
-      delete controls[key];
-    });
+    if (!dataBindingSupported) return controls;
+    each(bindingProps, (key) => delete controls[key]);
     return controls;
-  }, [coreBlock, bindingProps]);
+  }, [coreBlock, bindingProps, dataBindingSupported]);
 
   return (
     <div className="overflow-x-hidden">
