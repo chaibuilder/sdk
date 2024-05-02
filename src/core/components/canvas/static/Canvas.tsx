@@ -53,7 +53,6 @@ const useHandleCanvasDblClick = () => {
     if (!blockType || !INLINE_EDITABLE_BLOCKS.includes(blockType)) {
       return;
     }
-    setEditingBlockId(chaiBlock.getAttribute("data-block-id"));
     const newBlock = chaiBlock.cloneNode(true) as HTMLElement;
 
     chaiBlock.style.display = "none";
@@ -65,7 +64,7 @@ const useHandleCanvasDblClick = () => {
       newBlock.style.display = "inline-block";
     }
     chaiBlock.parentNode.insertBefore(newBlock, chaiBlock.nextSibling);
-    const quill = new Quill(newBlock);
+    const quill = new Quill(newBlock, { placeholder: "Type here..." });
     function blurListener() {
       const content = quill.getText(0, quill.getLength());
       updateContent([chaiBlock.getAttribute("data-block-id")], { content });
@@ -80,6 +79,7 @@ const useHandleCanvasDblClick = () => {
     // remove .ql-clipboard element from newBlock
     newBlock.querySelector(".ql-clipboard")?.remove();
     setIds([]);
+    setEditingBlockId(chaiBlock.getAttribute("data-block-id"));
   };
 };
 
