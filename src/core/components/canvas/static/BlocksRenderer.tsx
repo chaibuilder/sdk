@@ -8,6 +8,8 @@ import { useAllBlocks } from "../../../hooks";
 import { getBlockComponent } from "@chaibuilder/runtime";
 import { useChaiExternalData } from "./useChaiExternalData.ts";
 import { canAddChildBlock } from "../../../functions/Layers.ts";
+import { useAtom } from "jotai/index";
+import { inlineEditingActiveAtom } from "../../../atoms/ui.ts";
 
 // FIXME:  Duplicate code in CanvasRenderer.tsx
 const getSlots = (block: ChaiBlock) => {
@@ -64,11 +66,15 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
   const getStyles = useCallback((block: ChaiBlock) => getStyleAttrs(block), []);
 
   const [chaiData] = useChaiExternalData();
+  const [editingBlockId] = useAtom(inlineEditingActiveAtom);
 
   return (
     <>
       {React.Children.toArray(
         blocks.map((block: ChaiBlock, index: number) => {
+          // If the block is being edited, we don't want to render it
+          if (editingBlockId === block._id) return null;
+
           const slots = getSlots(block);
           const attrs: any = {};
           if (!isEmpty(slots)) {
