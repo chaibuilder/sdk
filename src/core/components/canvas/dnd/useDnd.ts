@@ -28,42 +28,70 @@ const positionPlaceholder = (target: HTMLElement, orientation: "vertical" | "hor
   const { paddingLeft, paddingTop, paddingRight, paddingBottom } = getPadding(target);
 
   placeholder.style.width = orientation === "vertical" ? targetRect.width - paddingLeft - paddingRight + "px" : "2px";
-  placeholder.style.height = orientation === "vertical" ? "5px" : targetRect.height - paddingTop - paddingBottom + "px";
+  placeholder.style.height = orientation === "vertical" ? "2px" : targetRect.height - paddingTop - paddingBottom + "px";
   placeholder.style.display = "block";
 
   const closest = possiblePositions.reduce((prev, curr) =>
     Math.abs(curr - mousePosition) < Math.abs(prev - mousePosition) ? curr : prev,
   );
   dropIndex = possiblePositions.indexOf(closest);
-  placeholder.style.top = target.offsetTop + (orientation === "vertical" ? closest : 0) + "px";
-  placeholder.style.left = target.offsetLeft + (orientation === "horizontal" ? closest : 0) + "px";
+  if (orientation === "vertical") {
+    placeholder.style.top = target.offsetTop + closest + "px";
+    placeholder.style.left = target.offsetLeft + paddingLeft + "px";
+  } else {
+    placeholder.style.top = target.offsetTop + paddingTop + "px";
+    placeholder.style.left = target.offsetLeft + closest + "px";
+  }
 };
 
 const calculatePossiblePositions = (target: HTMLElement) => {
   const orientation = getOrientation(target);
-  const targetRect = target.getBoundingClientRect();
-  const children = Array.from(target.children) as HTMLElement[];
-  // filter out the elements with data-dnd="ignore"
-  children.filter((child) => child.getAttribute("data-dnd") !== "ignore");
-  const { paddingLeft, paddingTop } = getPadding(target);
+  const style = window.getComputedStyle(target);
+  const isHorizontal = orientation === "horizontal";
 
-  possiblePositions = [orientation === "vertical" ? paddingLeft : paddingTop];
+  // Get padding values
+  const paddingLeft = parseInt(style.paddingLeft);
+  const paddingTop = parseInt(style.paddingTop);
 
-  possiblePositions = [
-    ...possiblePositions,
-    ...children.map((child) => {
-      const childRect = child.getBoundingClientRect();
-      return orientation === "vertical"
-        ? childRect.top - targetRect.top + childRect.height
-        : childRect.left - targetRect.left + childRect.width;
-    }),
-  ];
+  // Calculate positions based on child elements and their margins
+  let currentPosition = isHorizontal ? paddingLeft : paddingTop;
+  possiblePositions = [currentPosition];
+
+  Array.from(target.children).forEach((child: HTMLElement) => {
+    const childStyle = window.getComputedStyle(child);
+    const childMarginBefore = parseInt(
+      isHorizontal ? childStyle.marginLeft + childStyle.marginRight : childStyle.marginTop + childStyle.marginBottom,
+    );
+    const childDimension = isHorizontal ? child.offsetWidth : child.offsetHeight;
+    // First child, consider starting position with its margin
+    possiblePositions.push(currentPosition + childDimension + childMarginBefore);
+    // Move the current position across this child
+    currentPosition += childDimension + childMarginBefore;
+  });
 };
 
 function getOrientation(target: HTMLElement) {
   const display = window.getComputedStyle(target).display;
-  const orientation: "vertical" | "horizontal" = display === "block" ? "vertical" : "horizontal";
-  return display === "flex" && target.style.flexDirection === "column" ? "vertical" : orientation;
+  const flexDirection = window.getComputedStyle(target).flexDirection;
+
+  if (display === "flex") {
+    if (flexDirection === "column" || flexDirection === "column-reverse") {
+      return "vertical";
+    } else {
+      return "horizontal";
+    }
+  } else if (display === "grid") {
+    const gridTemplateRows = window.getComputedStyle(target).gridTemplateRows;
+    const gridTemplateColumns = window.getComputedStyle(target).gridTemplateColumns;
+
+    if (gridTemplateRows.includes("auto")) {
+      return "vertical";
+    } else if (gridTemplateColumns.includes("auto")) {
+      return "horizontal";
+    }
+  }
+
+  return display === "block" ? "vertical" : "horizontal";
 }
 
 const throttledDragOver = throttle((e: DragEvent) => {
@@ -123,7 +151,7 @@ export const useDnd = () => {
           possiblePositions = [];
           const target = event.target as HTMLElement;
           calculatePossiblePositions(target);
-          target.classList.add("outline", "outline-blue-500", "outline-4", "-outline-offset-4");
+          target.classList.add("outline", "outline-green-300", "outline-2", "-outline-offset-2");
           setIsDragging(true);
         },
     onDragLeave: !dndEnabled
@@ -133,7 +161,7 @@ export const useDnd = () => {
           event.stopPropagation();
           event.preventDefault();
           const target = event.target as HTMLElement;
-          target.classList.remove("outline", "outline-blue-500", "outline-4", "-outline-offset-4");
+          target.classList.remove("outline", "outline-green-300", "outline-2", "-outline-offset-2");
         },
     onMouseOut: !dndEnabled
       ? noop
