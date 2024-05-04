@@ -8,6 +8,7 @@ import { useFeature } from "flagged";
 
 let iframeDocument: null | HTMLDocument = null;
 let possiblePositions: number[] = [];
+let dropTarget: HTMLElement | null = null;
 let dropIndex: number | null = null;
 
 function getPadding(target: HTMLElement) {
@@ -130,6 +131,7 @@ export const useDnd = () => {
     onDrop: !dndEnabled
       ? noop
       : (ev: DragEvent) => {
+          dropTarget?.classList.remove("outline", "outline-green-300", "outline-2", "-outline-offset-2");
           const data: string = JSON.parse(ev.dataTransfer.getData("text/plain") as string);
           // get the block id from the attribute data-block-id from target
           let blockId = (ev.target as HTMLElement).getAttribute("data-block-id");
@@ -140,12 +142,16 @@ export const useDnd = () => {
 
           addOnDrop({ block: data, dropTargetId: blockId || null, relativeIndex: dropIndex });
           setIsDragging(false);
-          setTimeout(() => removePlaceholder(), 300);
+          removePlaceholder();
+          setTimeout(() => {
+            removePlaceholder();
+          }, 300);
         },
     onDragEnter: !dndEnabled
       ? noop
       : (e: DragEvent) => {
           const event = e;
+          dropTarget = event.target as HTMLElement;
           event.stopPropagation();
           event.preventDefault();
           possiblePositions = [];
@@ -158,6 +164,7 @@ export const useDnd = () => {
       ? noop
       : (e: DragEvent) => {
           const event = e;
+          dropTarget = null;
           event.stopPropagation();
           event.preventDefault();
           const target = event.target as HTMLElement;
