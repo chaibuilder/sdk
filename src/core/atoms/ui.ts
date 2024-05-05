@@ -44,4 +44,7 @@ export const inlineEditingActiveAtom = atom("");
 inlineEditingActiveAtom.debugLabel = "inlineEditingActiveAtom";
 
 export const draggingFlagAtom = atom(false);
-draggingFlagAtom.debugLabel = "isDraggingAtom";
+draggingFlagAtom.debugLabel = "draggingFlagAtom";
+
+export const draggedBlockIdAtom = atom("");
+draggedBlockIdAtom.debugLabel = "draggedBlockIdAtom";

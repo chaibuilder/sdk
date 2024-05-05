@@ -9,6 +9,8 @@ import {
   useSelectedBlockIds,
   useSelectedStylingBlocks,
 } from "../../../hooks";
+import { useAtom } from "jotai/index";
+import { draggedBlockIdAtom } from "../../../atoms/ui.ts";
 // @ts-ignore
 
 export const HeadTags = ({ model }: { model: string }) => {
@@ -17,6 +19,7 @@ export const HeadTags = ({ model }: { model: string }) => {
   const [darkMode] = useDarkMode();
   const [highlightedId] = useHighlightBlockId();
   const [stylingBlockIds] = useSelectedStylingBlocks();
+  const [draggedBlockId] = useAtom(draggedBlockIdAtom);
 
   const { document: iframeDoc, window: iframeWin } = useFrame();
 
@@ -27,6 +30,7 @@ export const HeadTags = ({ model }: { model: string }) => {
   const [selectedStylingBlocks] = useState<HTMLStyleElement>(
     iframeDoc?.getElementById("selected-styling-block") as HTMLStyleElement,
   );
+  const [draggedBlock] = useState<HTMLStyleElement>(iframeDoc?.getElementById("dragged-block") as HTMLStyleElement);
 
   useEffect(() => {
     if (darkMode) iframeDoc?.documentElement.classList.add("dark");
@@ -97,6 +101,14 @@ export const HeadTags = ({ model }: { model: string }) => {
   }, [selectedBlockIds, selectedBlockStyle]);
 
   useEffect(() => {
+    if (!draggedBlockId) {
+      draggedBlock.textContent = "";
+      return;
+    }
+    draggedBlock.textContent = `[data-block-id="${draggedBlockId}"]{ pointer-events: none !important; opacity: 0.2 !important}`;
+  }, [draggedBlockId]);
+
+  useEffect(() => {
     if (!highlightedBlockStyle) return;
     highlightedBlockStyle.textContent = highlightedId
       ? `[data-style-id="${highlightedId}"]{ outline: 1px solid orange !important; outline-offset: -1px;}`
@@ -112,7 +124,6 @@ export const HeadTags = ({ model }: { model: string }) => {
 
   // set body background color
   useEffect(() => {
-    if (model === "section") return;
     const textLight = get(brandingOptions, "bodyTextLightColor", "#64748b");
     const textDark = get(brandingOptions, "bodyTextDarkColor", "#94a3b8");
     const bgLight = get(brandingOptions, "bodyBgLightColor", "#FFFFFF");

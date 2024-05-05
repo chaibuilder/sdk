@@ -1,31 +1,41 @@
 import { flip } from "@floating-ui/dom";
 import { shift, useFloating } from "@floating-ui/react-dom";
-import { get, isEmpty } from "lodash";
+import { get, isEmpty, pick } from "lodash";
 import { ArrowUpIcon, CopyIcon, DragHandleDots2Icon, TrashIcon } from "@radix-ui/react-icons";
-import { useDrag } from "react-dnd";
 import { canDeleteBlock, canDuplicateBlock } from "../../functions/Layers";
 import { ChaiBlock } from "../../types/ChaiBlock";
-import { useDuplicateBlocks, useRemoveBlocks, useSelectedBlockIds, useSelectedStylingBlocks } from "../../hooks";
+import {
+  useDuplicateBlocks,
+  useHighlightBlockId,
+  useRemoveBlocks,
+  useSelectedBlockIds,
+  useSelectedStylingBlocks,
+} from "../../hooks";
 import { useResizeObserver } from "@react-hookz/web";
+import { useAtom } from "jotai";
+import { draggedBlockIdAtom } from "../../atoms/ui.ts";
+import { useFeature } from "flagged";
 
 /**
- * TODO: This is a temporary component which does not have drag and drop functionality
  * @param block
  * @param label
  */
 const BlockActionLabel = ({ block, label }: any) => {
-  const [, drag] = useDrag(() => ({
-    type: "CANVAS_BLOCK",
-    item: block,
-  }));
-
+  const [, setSelected] = useSelectedBlockIds();
+  const [, setHighlighted] = useHighlightBlockId();
+  const [, setDraggedBlockId] = useAtom(draggedBlockIdAtom);
+  const dndSupport = useFeature("dnd");
   return (
     <div
       className="mr-10 flex cursor-grab items-center space-x-1 px-1"
-      ref={drag}
-      onDragStart={() => {
-        console.log("drag start");
-        /** This works when drag start */
+      draggable={dndSupport ? "true" : "false"}
+      onDragStart={(ev) => {
+        ev.dataTransfer.setData("text/plain", JSON.stringify(pick(block, ["_id", "_type"])));
+        setDraggedBlockId(block._id);
+        setTimeout(() => {
+          setSelected([]);
+          setHighlighted(null);
+        }, 200);
       }}>
       <DragHandleDots2Icon />
       {label}

@@ -5,6 +5,7 @@ import { useAddBlockByDrop } from "../../../hooks/useAddBlockByDrop.ts";
 import { useAtom } from "jotai";
 import { draggingFlagAtom } from "../../../atoms/ui.ts";
 import { useFeature } from "flagged";
+import { useHighlightBlockId, useSelectedBlockIds } from "../../../hooks";
 
 let iframeDocument: null | HTMLDocument = null;
 let possiblePositions: number[] = [];
@@ -123,6 +124,8 @@ export const useDnd = () => {
   const [isDragging, setIsDragging] = useAtom(draggingFlagAtom);
   const addOnDrop = useAddBlockByDrop();
   const dndEnabled = useFeature("dnd");
+  const [, setHighlight] = useHighlightBlockId();
+  const [, setBlockIds] = useSelectedBlockIds();
   iframeDocument = document as HTMLDocument;
   return {
     isDragging,
@@ -159,6 +162,8 @@ export const useDnd = () => {
           calculatePossiblePositions(target);
           target.classList.add("outline", "outline-green-300", "outline-2", "-outline-offset-2");
           setIsDragging(true);
+          setHighlight("");
+          setBlockIds([]);
         },
     onDragLeave: !dndEnabled
       ? noop
