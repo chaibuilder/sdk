@@ -59,9 +59,8 @@ export const usePublishPage = (): any => {
         queryClient.invalidateQueries({ queryKey: ["page_data", currentPageId] });
         return;
       }
-      // TODO: if api fails, invalidate the page_data query
       toast.success("Page published successfully.", {
-        position: "top-right",
+        position: "bottom-right",
         duration: 2000,
       });
     },
