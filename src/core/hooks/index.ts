@@ -41,7 +41,6 @@ import { useFeatureSupport } from "./useFeatureSupport";
 import { useBuilderProp } from "./useBuilderProp";
 import { useUILibraryBlocks } from "./useUiLibraries";
 
-export * from "./useLanguage";
 export {
   useBuilderReset,
   useFeatureSupport,

@@ -48,7 +48,6 @@ type BlockActionProps = {
   selectedBlockElement: HTMLElement | undefined;
 };
 
-// FIXME: lazy load this component
 export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionProps) => {
   const removeBlock = useRemoveBlocks();
   const duplicateBlock = useDuplicateBlocks();

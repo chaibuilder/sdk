@@ -93,14 +93,14 @@ const useHandleCanvasClick = () => {
     }
     e.stopPropagation();
     const chaiBlock: HTMLElement = getTargetedBlock(e.target);
-    if (chaiBlock.getAttribute("data-block-parent")) {
+    if (chaiBlock?.getAttribute("data-block-parent")) {
       // check if target element has data-styles-prop attribute
       const styleProp = chaiBlock.getAttribute("data-style-prop") as string;
       const styleId = chaiBlock.getAttribute("data-style-id") as string;
       const blockId = chaiBlock.getAttribute("data-block-parent") as string;
       setStyleBlockIds([{ id: styleId, prop: styleProp, blockId }]);
       setIds([blockId]);
-    } else if (chaiBlock.getAttribute("data-block-id")) {
+    } else if (chaiBlock?.getAttribute("data-block-id")) {
       setIds([chaiBlock.getAttribute("data-block-id")]);
     }
   };
@@ -108,7 +108,7 @@ const useHandleCanvasClick = () => {
 
 const handleMouseMove = throttle((e: any, setHighlightedId) => {
   const chaiBlock: HTMLElement = getTargetedBlock(e.target);
-  if (chaiBlock.getAttribute("data-style-id")) {
+  if (chaiBlock?.getAttribute("data-style-id")) {
     setHighlightedId(chaiBlock.getAttribute("data-style-id"));
   }
 }, 100);

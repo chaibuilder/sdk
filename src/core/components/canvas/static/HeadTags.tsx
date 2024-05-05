@@ -9,7 +9,7 @@ import {
   useSelectedBlockIds,
   useSelectedStylingBlocks,
 } from "../../../hooks";
-import { useAtom } from "jotai/index";
+import { useAtom } from "jotai";
 import { draggedBlockIdAtom } from "../../../atoms/ui.ts";
 // @ts-ignore
 
@@ -40,7 +40,6 @@ export const HeadTags = ({ model }: { model: string }) => {
   const headingFont: string = get(brandingOptions, "headingFont", "DM Sans");
   const bodyFont: string = get(brandingOptions, "bodyFont", "DM Sans");
 
-  // FIXME: Something is wrong with this code
   useEffect(() => {
     const primary = get(brandingOptions, "primaryColor", "#000");
     const secondary = get(brandingOptions, "secondaryColor", "#FFF");
@@ -111,14 +110,14 @@ export const HeadTags = ({ model }: { model: string }) => {
   useEffect(() => {
     if (!highlightedBlockStyle) return;
     highlightedBlockStyle.textContent = highlightedId
-      ? `[data-style-id="${highlightedId}"]{ outline: 1px solid orange !important; outline-offset: -1px;}`
+      ? `[data-style-id="${highlightedId}"]{ outline: 1px solid #42a1fc !important; outline-offset: -1px;}`
       : "";
   }, [highlightedId, selectedBlockIds, highlightedBlockStyle]);
 
   useEffect(() => {
     if (!selectedStylingBlocks) return;
     selectedStylingBlocks.textContent = `${map(stylingBlockIds, ({ id }: any) => `[data-style-id="${id}"]`).join(",")}{
-                outline: 1px solid orange !important; outline-offset: -1px;
+                outline: 1px solid #42a1fc !important; outline-offset: -1px;
             }`;
   }, [stylingBlockIds, selectedStylingBlocks]);
 

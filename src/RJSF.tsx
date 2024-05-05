@@ -1,17 +1,16 @@
 import { RJSFSchema, UiSchema } from "@rjsf/utils";
 import RjForm from "@rjsf/core";
-import { get, includes } from "lodash";
+import { includes } from "lodash";
 import { getBlockJSONFromSchemas, getBlockJSONFromUISchemas } from "./core/functions/Controls.ts";
 import { BindingWidget } from "./ui/widgets/rjsf/widgets/binding.tsx";
 import { IconPickerField, ImagePickerField, LinkField, RTEField } from "./ui";
 import validator from "@rjsf/validator-ajv8";
 import { useState } from "react";
-import { Checkbox, Link, SingleLineText, SelectOption, MultilineText } from "@chaibuilder/runtime/controls";
+import { Checkbox, Link, MultilineText, SelectOption, SingleLineText } from "@chaibuilder/runtime/controls";
 
 const propsSchema: RJSFSchema = { type: "object", properties: {} };
 const uiSchema: UiSchema = {};
 
-const activeLang = "en";
 const properties = {
   name: SingleLineText({ title: "Name", default: "" }),
   area: MultilineText({ title: "Multiline", default: "" }),
@@ -22,9 +21,9 @@ const properties = {
 Object.keys(properties).forEach((key) => {
   const control = properties[key];
   if (includes(["slot", "styles"], control.type)) return;
-  const propKey = get(control, "i18n", false) ? `${key}-${activeLang}` : key;
-  propsSchema.properties[propKey] = getBlockJSONFromSchemas(control, activeLang);
-  uiSchema[propKey] = getBlockJSONFromUISchemas(control, activeLang);
+  const propKey = key;
+  propsSchema.properties[propKey] = getBlockJSONFromSchemas(control);
+  uiSchema[propKey] = getBlockJSONFromUISchemas(control);
 });
 
 function RJSF() {

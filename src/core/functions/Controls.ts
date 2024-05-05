@@ -9,7 +9,7 @@ import {
 import { generateUUID } from "./Functions.ts";
 import { I18N_KEY, SLOT_KEY } from "../constants/CONTROLS";
 
-export const getBlockJSONFromUISchemas = (control: ChaiControlDefinition, activeLang: string = "") => {
+export const getBlockJSONFromUISchemas = (control: ChaiControlDefinition) => {
   switch (control.type) {
     case "singular":
       return (control as ControlDefinition).uiSchema;
@@ -22,8 +22,8 @@ export const getBlockJSONFromUISchemas = (control: ChaiControlDefinition, active
         // eslint-disable-next-line no-shadow
         const control = modelProperties[key];
         if (includes(["slot", "styles"], control.type)) return;
-        const propKey = get(control, "i18n", false) ? `${key}-${activeLang}` : key;
-        modelProps[propKey] = getBlockJSONFromUISchemas(control, activeLang);
+        const propKey = key;
+        modelProps[propKey] = getBlockJSONFromUISchemas(control);
       });
       return modelProps;
     case "list":
@@ -37,8 +37,8 @@ export const getBlockJSONFromUISchemas = (control: ChaiControlDefinition, active
         // eslint-disable-next-line no-shadow
         const control = itemProperties[key];
         if (includes(["slot", "styles"], control.type)) return;
-        const propKey = get(control, "i18n", false) ? `${key}-${activeLang}` : key;
-        listProps.items[propKey] = getBlockJSONFromUISchemas(control, activeLang);
+        const propKey = key;
+        listProps.items[propKey] = getBlockJSONFromUISchemas(control);
       });
       return listProps;
     default:
@@ -46,7 +46,7 @@ export const getBlockJSONFromUISchemas = (control: ChaiControlDefinition, active
   }
 };
 
-export const getBlockJSONFromSchemas = (control: ChaiControlDefinition, activeLang: string = "") => {
+export const getBlockJSONFromSchemas = (control: ChaiControlDefinition) => {
   switch (control.type) {
     case "singular":
       return (control as ControlDefinition).schema;
@@ -63,8 +63,8 @@ export const getBlockJSONFromSchemas = (control: ChaiControlDefinition, activeLa
         // eslint-disable-next-line no-shadow
         const control = modelProperties[key];
         if (includes(["slot", "styles"], control.type)) return;
-        const propKey = get(control, "i18n", false) ? `${key}-${activeLang}` : key;
-        modelProps.properties[propKey] = getBlockJSONFromSchemas(control, activeLang);
+        const propKey = key;
+        modelProps.properties[propKey] = getBlockJSONFromSchemas(control);
       });
       return modelProps;
     case "list":
@@ -83,8 +83,8 @@ export const getBlockJSONFromSchemas = (control: ChaiControlDefinition, activeLa
         // eslint-disable-next-line no-shadow
         const control = itemProperties[key];
         if (includes(["slot", "styles"], control.type)) return;
-        const propKey = get(control, "i18n", false) ? `${key}-${activeLang}` : key;
-        listProps.items.properties[propKey] = getBlockJSONFromSchemas(control, activeLang);
+        const propKey = key;
+        listProps.items.properties[propKey] = getBlockJSONFromSchemas(control);
         set(listProps.items, "title", get(control, "itemTitle", `${listTitle} item`));
       });
       return listProps;

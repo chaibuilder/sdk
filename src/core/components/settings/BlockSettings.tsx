@@ -1,79 +1,12 @@
-import { RJSFSchema, UiSchema } from "@rjsf/utils";
-import RjForm, { IChangeEvent } from "@rjsf/core";
-import validator from "@rjsf/validator-ajv8";
-import { capitalize, cloneDeep, each, get, includes, isEmpty, keys, map } from "lodash";
-import {
-  useActiveLanguage,
-  useBuilderProp,
-  useCanvasHistory,
-  useSelectedBlock,
-  useUpdateBlocksPropsRealtime,
-} from "../../hooks";
-import { IconPickerField, ImagePickerField, LinkField, RTEField } from "../../../ui/widgets";
-import { getBlockJSONFromSchemas, getBlockJSONFromUISchemas } from "../../functions/Controls.ts";
+import { IChangeEvent } from "@rjsf/core";
+import { capitalize, cloneDeep, each, get, isEmpty, keys, map } from "lodash";
+import { useBuilderProp, useCanvasHistory, useSelectedBlock, useUpdateBlocksPropsRealtime } from "../../hooks";
 import { ChaiControlDefinition, SingleLineText } from "@chaibuilder/runtime/controls";
 import DataBindingSetting from "../../../ui/widgets/rjsf/widgets/data-binding";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../ui";
-import { BindingWidget } from "../../../ui/widgets/rjsf/widgets/binding.tsx";
-import { memo, useMemo } from "react";
+import { useMemo } from "react";
 import { getBlockComponent } from "@chaibuilder/runtime";
-
-/**
- *
- * @param param0
- * @returns Form for Static and name fields
- */
-const Form = memo(
-  ({
-    createHistorySnapshot,
-    properties,
-    formData,
-    onChange,
-  }: {
-    formData: any;
-    properties: any;
-    createHistorySnapshot: () => void;
-    onChange: ({ formData }: any, key?: string) => void;
-  }) => {
-    const [activeLang] = useActiveLanguage();
-
-    const propsSchema: RJSFSchema = { type: "object", properties: {} };
-    const uiSchema: UiSchema = {};
-
-    Object.keys(properties).forEach((key) => {
-      const control = properties[key];
-      if (includes(["slot", "styles"], control.type)) return;
-      const propKey = get(control, "i18n", false) ? `${key}-${activeLang}` : key;
-      propsSchema.properties[propKey] = getBlockJSONFromSchemas(control, activeLang);
-      uiSchema[propKey] = getBlockJSONFromUISchemas(control, activeLang);
-    });
-
-    return (
-      <RjForm
-        widgets={{
-          binding: BindingWidget,
-          richtext: RTEField,
-          icon: IconPickerField,
-          image: ImagePickerField,
-        }}
-        fields={{
-          link: LinkField,
-        }}
-        idSeparator="."
-        autoComplete="off"
-        omitExtraData={false}
-        liveOmit={false}
-        liveValidate
-        validator={validator}
-        uiSchema={uiSchema}
-        onBlur={createHistorySnapshot}
-        schema={propsSchema}
-        formData={formData}
-        onChange={onChange}
-      />
-    );
-  },
-);
+import { JSONForm } from "./JSONForm.tsx";
 
 /**
  *
@@ -114,7 +47,7 @@ export default function BlockSettings() {
 
   return (
     <div className="overflow-x-hidden">
-      <Form
+      <JSONForm
         onChange={updateRealtime}
         createHistorySnapshot={createHistorySnapshot}
         formData={formData}
@@ -159,7 +92,7 @@ export default function BlockSettings() {
               ) : (
                 ""
               )}
-              <Form
+              <JSONForm
                 onChange={updateRealtime}
                 createHistorySnapshot={createHistorySnapshot}
                 formData={formData}
@@ -169,7 +102,7 @@ export default function BlockSettings() {
           </AccordionItem>
         </Accordion>
       ) : (
-        <Form
+        <JSONForm
           onChange={updateRealtime}
           createHistorySnapshot={createHistorySnapshot}
           formData={formData}
