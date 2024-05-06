@@ -8,8 +8,9 @@ import { ChaiBlock } from "../types/ChaiBlock";
 import { CoreBlock } from "../types/CoreBlock";
 import { getBlockDefaultProps } from "../functions/Controls.ts";
 import { SLOT_KEY } from "../constants/CONTROLS";
-import { useAllBlocks } from "./useAllBlocks";
 import { insertBlockAtIndex } from "../functions/InsertBlockAtIndex";
+import { useBlocksStore } from "./useBlocksStore.ts";
+import { useNewHistory } from "./useNewHistory.ts";
 
 type AddBlocks = {
   addCoreBlock: any;
@@ -18,8 +19,9 @@ type AddBlocks = {
 
 export const useAddBlock = (): AddBlocks => {
   const dispatch = useDispatch();
-  const allBlocks = useAllBlocks();
+  const [allBlocks, setBlocks] = useBlocksStore();
   const [, setSelected] = useSelectedBlockIds();
+  const { queue } = useNewHistory();
 
   const addPredefinedBlock = useCallback(
     (blocks: ChaiBlock[], parentId?: string, index?: number) => {
@@ -45,7 +47,7 @@ export const useAddBlock = (): AddBlocks => {
       }
       dispatch({
         type: "set_blocks",
-        payload: insertBlockAtIndex(allBlocks, parentId || null, index || null, blocks, canAdd),
+        payload: insertBlockAtIndex(allBlocks, parentId || null, index || null, blocks),
       });
       setSelected([first(blocks)?._id]);
       return first(blocks);
@@ -92,11 +94,9 @@ export const useAddBlock = (): AddBlocks => {
         newBlock._parent = parentBlock._parent;
       }
       const newBlocks: ChaiBlock[] = [newBlock, ...slots];
-      dispatch({
-        type: "set_blocks",
-        payload: insertBlockAtIndex(allBlocks, parentId || null, index || null, newBlocks, canAdd),
-      });
+      setBlocks(insertBlockAtIndex(allBlocks, parentId || null, index || null, newBlocks));
       setSelected([newBlock._id]);
+      queue({ type: "add", payload: newBlocks });
       return newBlock;
     },
     [addPredefinedBlock, allBlocks, dispatch, setSelected],

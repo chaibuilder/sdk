@@ -54,8 +54,6 @@ const useHandleCanvasDblClick = () => {
     }
     const newBlock = chaiBlock.cloneNode(true) as HTMLElement;
 
-    chaiBlock.style.display = "none";
-
     Array.from(newBlock.attributes).forEach((attr) => {
       if (attr.name !== "class") newBlock.removeAttribute(attr.name);
     });
@@ -67,7 +65,6 @@ const useHandleCanvasDblClick = () => {
     function blurListener() {
       const content = quill.getText(0, quill.getLength());
       updateContent([chaiBlock.getAttribute("data-block-id")], { content });
-      chaiBlock.removeAttribute("style");
       newBlock.removeEventListener("blur", blurListener, true);
       destroyQuill(quill);
       setEditingBlockId("");
@@ -75,7 +72,6 @@ const useHandleCanvasDblClick = () => {
     }
     newBlock.addEventListener("blur", blurListener, true);
     quill.focus();
-    // remove .ql-clipboard element from newBlock
     newBlock.querySelector(".ql-clipboard")?.remove();
     setEditingBlockId(chaiBlock.getAttribute("data-block-id"));
   };

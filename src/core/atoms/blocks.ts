@@ -4,19 +4,17 @@ import { getBlocksTree } from "../functions/Blocks";
 import { pageBlocksReducer } from "./reducer";
 import { filter, has } from "lodash-es";
 
-export const pageBlocksAtom: any = atomWithReducer(
-  {
-    past: [],
-    present: [],
-    future: [],
-  },
-  pageBlocksReducer,
-);
+const initialValue = {
+  past: [],
+  present: [],
+  future: [],
+};
+export const pageBlocksAtom: any = atomWithReducer(initialValue, pageBlocksReducer);
 pageBlocksAtom.debugLabel = "pageBlocksAtom";
 
 // derived atoms
 // @ts-ignore
-export const presentBlocksAtom = atom((get) => get(pageBlocksAtom)?.present);
+export const presentBlocksAtom = atom([]);
 presentBlocksAtom.debugLabel = "presentBlocksAtom";
 export const pageBlocksAtomsAtom = splitAtom(presentBlocksAtom);
 pageBlocksAtomsAtom.debugLabel = "pageBlocksAtomsAtom";
