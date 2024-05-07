@@ -32,7 +32,7 @@ export const fetchImage = async (payload: any, accessKey: string) =>
   });
 
 const UnsplashImages = ({ isModalView, onSelect }: { isModalView: boolean; onSelect: (_url: string) => void }) => {
-  const unsplashAccessKey = useBuilderProp("unsplashAccessKey");
+  const unsplashAccessKey = useBuilderProp("unsplashAccessKey", "");
   const [images, setImages] = useState<any[]>([]);
   const [page, setPage] = useState(0);
   const [orientation, setOrientation] = useState<undefined | "landscape" | "portrait" | "squarish">();
@@ -68,7 +68,7 @@ const UnsplashImages = ({ isModalView, onSelect }: { isModalView: boolean; onSel
   };
 
   useEffect(() => {
-    if (!isEmpty(debouncedQuery)) {
+    if (!isEmpty(debouncedQuery) && unsplashAccessKey) {
       setIsFetching(true);
       const payload: any = { query: debouncedQuery as string, page: 1 };
       if (orientation) payload.orientation = orientation;

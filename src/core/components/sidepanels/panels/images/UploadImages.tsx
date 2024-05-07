@@ -32,7 +32,7 @@ const UploadImages = ({ isModalView, onSelect }: { isModalView: boolean; onSelec
       setImages(uploadedImages || []);
       setIsFetching(false);
     })();
-  }, [fetchImages, setImages]);
+  }, []);
 
   const onChange = (e: any) => {
     if (e && e?.target?.files?.length > 0) setFile(e.target.files[0]);
