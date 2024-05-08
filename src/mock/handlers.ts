@@ -5,6 +5,7 @@ import { html, library, pages, project, successResponse } from "./data.ts";
 
 export const handlers: any = [
   http.get("/api/chaibuilder/library", () => HttpResponse.json(successResponse(library))),
+  http.get("/api/chaibuilder/assets", () => HttpResponse.json(successResponse([]))),
   http.get("/api/chaibuilder/block", () => HttpResponse.json(successResponse(html))),
   http.get("/api/chaibuilder/verify", () => HttpResponse.json(successResponse({}))),
   http.get("/api/chaibuilder/project", () => HttpResponse.json(successResponse(project))),

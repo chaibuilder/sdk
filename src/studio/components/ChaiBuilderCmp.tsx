@@ -66,11 +66,15 @@ export const ChaiBuilderCmp = (props: ChaiBuilderStudioProps) => {
 
   const fetchMediaCallback = async (limit = 20, offset = 0) => {
     const params = `limit=${limit}&offset=${offset}`;
-    return (await fetch(`${baseUrl}/assets?${params}`).then((_res) => _res.json())) as {
-      id: string;
-      url: string;
-      name: string;
-    }[];
+    const response = await fetch(`${baseUrl}/assets?${params}`).then((_res) => _res.json());
+    return response.result === "success"
+      ? (response.data as {
+          id: string;
+          url: string;
+          name: string;
+          thumbUrl: string;
+        }[])
+      : [];
   };
 
   const { logo = Logo } = props;
