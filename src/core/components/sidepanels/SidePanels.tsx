@@ -164,14 +164,14 @@ const SidePanels = () => {
               </TabsContent>
             </Tabs>
           ) : (
-            <div>
+            <>
               <div className={"flex items-center bg-gray-200  rounded-md py-1"}>
                 <ListTreeIcon className={"h-4 mr-2 ml-2"} /> Layers
               </div>
               <div className="no-scrollbar h-full flex-1 overflow-y-auto overflow-x-hidden">
                 {React.createElement(LayersPanel)}
               </div>
-            </div>
+            </>
           )}
         </Suspense>
       </div>
