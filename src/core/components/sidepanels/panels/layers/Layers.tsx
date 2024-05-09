@@ -46,10 +46,12 @@ const Layers = (): React.JSX.Element => {
   const [, setAddBlocks] = useAtom(addBlocksModalAtom);
   const handleDrop = async (newTree: NodeModel[], options: any) => {
     const { dragSource, relativeIndex, dropTargetId, monitor } = options;
-    const blocks: ChaiBlock[] = convertToTBlocks(newTree);
-    setAllBlocks(blocks);
     if (dragSource) {
       createSnapshot();
+      const blocks: ChaiBlock[] = convertToTBlocks(newTree);
+      setAllBlocks(blocks);
+      const block = monitor.getItem();
+      setIds([block.id]);
     } else {
       await addBlockOnDrop({ block: monitor.getItem(), dropTargetId, relativeIndex });
       setAddBlocks(false);
