@@ -69,6 +69,10 @@
 }
 
 @layer base {
+  .rjsf input[type="color"] {
+    @apply p-0 !important;
+  }
+
   .rjsf {
     @apply px-4;
   }

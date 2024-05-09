@@ -67,6 +67,10 @@
   padding-right: 1rem
 }
 
+.rjsf input[type="color"] {
+  padding: 0 !important;
+}
+
 .rjsf .form-group {
   display: flex;
   flex-direction: column

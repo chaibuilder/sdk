@@ -52,8 +52,24 @@ const SidePanels = () => {
   const [, setAddBlocks] = useAtom(addBlocksModalAtom);
   const dataBindingSupport = useBuilderProp("dataBindingSupport", false);
 
+  function hidePanel() {
+    const timeout = setTimeout(() => {
+      if (hideTimeout) {
+        handleChangePanel("layers");
+        clearTimeout(hideTimeout);
+      }
+    }, 500);
+    setHideTimeout(timeout);
+  }
+
   return (
-    <div className="relative flex">
+    <div className="relative flex ">
+      {activePanel !== "layers" ? (
+        <div
+          onMouseEnter={hidePanel}
+          onClick={() => handleChangePanel("layers")}
+          className={"fixed inset-0 bg-black/20 z-[50]"}></div>
+      ) : null}
       <div className="z-[100] flex h-full w-fit flex-col items-center justify-between border-b border-r border-border bg-background pt-2">
         <div className="relative z-[100] flex w-14 flex-col items-center space-y-2">
           <Button
@@ -100,12 +116,11 @@ const SidePanels = () => {
           )}
         </div>
       </div>
-      <div
-        onClick={() => {
-          handleChangePanel("layers");
-        }}
-        className={"absolute inset-0 right-0 z-50 w-screen bg-black/20" + (activePanel === "layers" ? " hidden" : "")}
-      />
+      {/*<div*/}
+      {/*  onMouseEnter={hidePanel}*/}
+      {/*  onClick={() => handleChangePanel("layers")}*/}
+      {/*  className={"absolute inset-0 right-0 z-50 w-screen bg-black/20" + (activePanel === "layers" ? " hidden" : "")}*/}
+      {/*/>*/}
       <div
         className={`fixed left-14 z-[50] h-full w-96 border-r bg-background duration-500 ease-in-out ${
           activePanel !== "layers" ? "translate-x-0" : "-translate-x-full"
@@ -122,15 +137,6 @@ const SidePanels = () => {
             className={cn("relative h-full max-h-[93%] bg-background p-1", activePanel === "layers" ? "" : "z-[100]")}
             onMouseEnter={() => {
               if (hideTimeout) clearTimeout(hideTimeout);
-            }}
-            onMouseLeave={() => {
-              const timeout = setTimeout(() => {
-                if (hideTimeout) {
-                  handleChangePanel("layers");
-                  clearTimeout(hideTimeout);
-                }
-              }, 1000);
-              setHideTimeout(timeout);
             }}>
             {React.createElement(get(panels, _activePanel, () => <div />))}
           </div>

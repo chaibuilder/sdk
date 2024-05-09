@@ -5,6 +5,7 @@ import Form, { IChangeEvent } from "@rjsf/core";
 import { useBrandingOptions, useBuilderProp } from "../../../../hooks";
 import { Color, Numeric, SelectOption } from "@chaibuilder/runtime/controls";
 import { isEqual } from "lodash";
+import { ColorField } from "../../../../../ui/widgets/rjsf/widgets/color.tsx";
 
 const FONTS = [
   { title: "Roboto", value: "Roboto" },
@@ -149,6 +150,9 @@ const BrandingOptions = (): React.JSX.Element => {
       </div>
       <div className="-mx-2">
         <Form
+          widgets={{
+            color: ColorField,
+          }}
           idSeparator="."
           autoComplete="off"
           omitExtraData
