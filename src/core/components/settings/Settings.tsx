@@ -112,7 +112,7 @@ const Settings: React.FC = () => {
             className="no-scrollbar -mx-1 -mr-2 h-full flex-1 overflow-y-auto overflow-x-hidden">
             <BlockSettings />
           </TabsContent>
-          <TabsContent value="styling" className="flex-1 overflow-y-auto overflow-x-hidden">
+          <TabsContent value="styling" className="flex-1 h-full overflow-y-auto overflow-x-hidden">
             <BlockStyling />
           </TabsContent>
         </Tabs>

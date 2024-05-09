@@ -43,7 +43,7 @@ export default function BlockStyling() {
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
     <div onClick={() => setShowAdvance(false)} className="flex h-full flex-col">
-      <div className="flex flex-col space-x-4 space-y-3 border-b border-border px-4 py-2">
+      <div className="flex flex-col space-x-4 space-y-3 border-b h-12 border-border px-4 py-1">
         <div className="flex items-center justify-end gap-x-1.5">
           <Label htmlFor="" className="flex gap-x-1.5 text-xs italic">
             State
@@ -69,7 +69,7 @@ export default function BlockStyling() {
           </Select>
         </div>
       </div>
-      <ScrollArea className="no-scrollbar -mx-1 h-full overflow-x-hidden">
+      <ScrollArea className="no-scrollbar -mx-1 mb-4 flex-1 h-full overflow-x-hidden">
         <Accordion defaultValue={["Layout"]} type="multiple" className="h-full w-full">
           {flexChild && <SettingsSection section={FLEX_CHILD_SECTION} />}
           {gridChild ? <SettingsSection section={GRID_CHILD_SECTION} /> : null}

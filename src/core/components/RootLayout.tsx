@@ -55,7 +55,7 @@ const RootLayout: React.FC = () => {
               <TopBar />
             </Suspense>
           </div>
-          <main className="flex h-full flex-row relative">
+          <main className="flex h-full flex-1 flex-row relative">
             {!editable ? (
               <div className="absolute backdrop-blur-[2px] flex items-center justify-center inset-0 z-[500] h-full w-full">
                 <Suspense>{React.createElement(NonEditable)}</Suspense>
