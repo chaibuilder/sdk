@@ -30,7 +30,7 @@ export const useRemoveBlocks = () => {
       const parentBlockId = find(presentBlocks, { _id: blockIds[0] })?._parent || null;
       const newBlocks = removeBlocks(presentBlocks, blockIds);
       dispatch({ type: "set_blocks", payload: newBlocks });
-      setSelectedIds(parentBlockId ? [parentBlockId] : []);
+      setTimeout(() => setSelectedIds(parentBlockId ? [parentBlockId] : []), 200);
     },
     [presentBlocks, setSelectedIds, dispatch, ids],
   );
