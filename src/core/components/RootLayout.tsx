@@ -71,7 +71,7 @@ const RootLayout: React.FC = () => {
                 <CanvasArea />
               </Suspense>
             </div>
-            <div className="flex h-full w-[280px] min-w-[280px] border-l border-border">
+            <div className="flex h-[90%] w-[280px] pb-10 min-w-[280px] border-l border-border">
               <Suspense>
                 <Settings />
               </Suspense>

@@ -69,8 +69,8 @@ export default function BlockStyling() {
           </Select>
         </div>
       </div>
-      <ScrollArea className="no-scrollbar -mx-1 mb-4 flex-1 h-full overflow-x-hidden">
-        <Accordion defaultValue={["Layout"]} type="multiple" className="h-full w-full">
+      <ScrollArea className="no-scrollbar -mx-1 flex-1 max-h-full overflow-y-hidden overflow-x-hidden">
+        <Accordion defaultValue={["Layout"]} type="multiple" className="w-full">
           {flexChild && <SettingsSection section={FLEX_CHILD_SECTION} />}
           {gridChild ? <SettingsSection section={GRID_CHILD_SECTION} /> : null}
           {SETTINGS_SECTIONS.map((section) => (
@@ -78,7 +78,6 @@ export default function BlockStyling() {
           ))}
           <CustomAttributes section={{ heading: "Attributes" }} />
         </Accordion>
-        <div className="h-60"></div>
       </ScrollArea>
     </div>
   );

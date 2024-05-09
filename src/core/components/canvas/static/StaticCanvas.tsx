@@ -108,7 +108,7 @@ const StaticCanvas = (): React.JSX.Element => {
         setStylingBlocks([]);
       }}
       onMouseLeave={() => setTimeout(() => highlight(""), 300)}
-      className="relative mx-auto h-full w-full"
+      className="relative mx-auto overflow-hidden h-full w-full"
       style={initialWidth > 0 && !isEmpty(scale) ? { width: preview ? "100%" : initialWidth } : {}}
       ref={wrapperRef}>
       {/*// @ts-ignore*/}
@@ -117,7 +117,7 @@ const StaticCanvas = (): React.JSX.Element => {
         ref={iframeRef as any}
         id="canvas-iframe"
         style={{ width: `${width}px`, ...scale }}
-        className="relative mx-auto box-content h-full max-w-full shadow-lg transition-all duration-300 ease-linear"
+        className="relative mx-auto box-content max-h-full h-full max-w-full shadow-lg transition-all duration-300 ease-linear"
         initialContent={iframeContent}>
         <KeyboardHandler />
         <BlockActionsStatic
@@ -134,8 +134,9 @@ const StaticCanvas = (): React.JSX.Element => {
             <StaticBlocksRenderer />
           )}
         </Canvas>
+        <br />
+
         <div id={"placeholder"} className={"absolute bg-green-500 z-[99999] max-w-full transition-transform"}></div>
-        <div className={"py-10"}></div>
       </ChaiFrame>
     </div>
   );

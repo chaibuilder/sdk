@@ -156,7 +156,7 @@ export const Canvas = ({ children }: { children: React.ReactNode }) => {
       onDoubleClick={handleDblClick}
       onMouseMove={handleMouseMove}
       {...omit(dnd, "isDragging")}
-      className={`relative h-screen max-w-full ` + (dnd.isDragging ? "dragging" : "")}>
+      className={`relative mb-5 max-w-full ` + (dnd.isDragging ? "dragging" : "")}>
       {children}
     </div>
   );

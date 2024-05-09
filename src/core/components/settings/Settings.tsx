@@ -3,7 +3,7 @@ import { useThrottledCallback } from "@react-hookz/web";
 import { get, isNaN, isNull, startsWith } from "lodash";
 import { useTranslation } from "react-i18next";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../ui";
+import { ScrollArea, Tabs, TabsContent, TabsList, TabsTrigger } from "../../../ui";
 import BlockSettings from "./BlockSettings";
 import BlockStyling from "./BlockStyling";
 import { BlockSettingsContext } from "./SettingsContext";
@@ -110,7 +110,9 @@ const Settings: React.FC = () => {
           <TabsContent
             value="settings"
             className="no-scrollbar -mx-1 -mr-2 h-full flex-1 overflow-y-auto overflow-x-hidden">
-            <BlockSettings />
+            <ScrollArea className="no-scrollbar -mx-1 pb-5 flex-1 max-h-full overflow-y-hidden overflow-x-hidden">
+              <BlockSettings />
+            </ScrollArea>
           </TabsContent>
           <TabsContent value="styling" className="flex-1 h-full overflow-y-auto overflow-x-hidden">
             <BlockStyling />

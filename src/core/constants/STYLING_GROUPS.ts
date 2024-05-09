@@ -187,7 +187,7 @@ export const SETTINGS_SECTIONS = [
               { key: "insetY", label: "Top Bottom" },
             ],
           },
-          { type: "arbitrary", label: "Z-Chai", units: ["-", "auto"], property: "zIndex" },
+          { type: "arbitrary", label: "Z-Index", units: ["-", "auto"], property: "zIndex" },
         ],
       },
       {
