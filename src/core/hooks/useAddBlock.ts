@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { filter, find, first, forIn, has, startsWith } from "lodash";
 import { useDispatch } from "./useTreeData";
 import { generateUUID } from "../functions/Functions.ts";
-import { canAddChildBlock } from "../functions/Layers";
+import { canAddAsChild, canAddChildBlock } from "../functions/Layers";
 import { useSelectedBlockIds } from "./useSelectedBlockIds";
 import { ChaiBlock } from "../types/ChaiBlock";
 import { CoreBlock } from "../types/CoreBlock";
@@ -33,12 +33,13 @@ export const useAddBlock = (): AddBlocks => {
           children[j]._parent = blocks[i]._id;
         }
       }
+      const block = first(blocks);
       let parentBlock;
       if (parentId) {
         parentBlock = find(allBlocks, { _id: parentId }) as ChaiBlock;
         blocks[0]._parent = parentId;
       }
-      const canAdd = parentBlock ? canAddChildBlock(parentBlock._type) : true;
+      const canAdd = parentBlock ? canAddAsChild(block._type, parentBlock._type) : true;
       if (!canAdd && parentBlock) {
         blocks[0]._parent = parentBlock._parent;
       }

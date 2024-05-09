@@ -1,4 +1,4 @@
-import { get, isEmpty } from "lodash";
+import { get, includes, isEmpty } from "lodash";
 import React from "react";
 
 export type ChaiBlock = {
@@ -66,20 +66,7 @@ export type ChaiBlock = {
  * @param type
  */
 export const canAddChildBlock = (type: string) =>
-  [
-    "Box",
-    "Slot",
-    "Form",
-    "DataProvider",
-    "Link",
-    "List",
-    "ListItem",
-    "Row",
-    "Column",
-    "Table",
-    "Row",
-    "TableCell",
-  ].includes(type);
+  ["Box", "Slot", "Form", "Link", "Heading", "List", "ListItem", "Table", "TableCell"].includes(type);
 
 /**
  *
@@ -99,6 +86,9 @@ export function canAddAsChild(dragSourceType: string, dropTargetType: string) {
     return false;
   }
   if (dropTargetType === "Row" && dragSourceType !== "Column") {
+    return false;
+  }
+  if (dropTargetType === "Heading" && !includes(["Span", "Text"], dragSourceType)) {
     return false;
   }
 
