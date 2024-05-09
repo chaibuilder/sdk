@@ -91,6 +91,9 @@ export function canAddAsChild(dragSourceType: string, dropTargetType: string) {
   if (dropTargetType === "Heading" && !includes(["Span", "Text"], dragSourceType)) {
     return false;
   }
+  if (dropTargetType === "Paragraph" && !includes(["Span", "Text"], dragSourceType)) {
+    return false;
+  }
 
   return canAddChildBlock(dropTargetType);
 }
