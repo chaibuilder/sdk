@@ -8,12 +8,18 @@ export const useCanvasScale = (dimension: { height: number; width: number }) => 
   const updateScale = useCallback(() => {
     const { width, height } = dimension;
     if (width < canvasWidth) {
-      const newScale: number = parseFloat((width / canvasWidth).toString());
+      const newScale: number = parseFloat((width / canvasWidth).toFixed(2).toString());
       let heightObj = {};
+      const scaledHeight = height * newScale;
       if (height) {
-        heightObj = { height: height + 2 * height * (1 - newScale) };
+        heightObj = {
+          // Eureka! This is the formula to calculate the height of the scaled element. Thank you ChatGPT 4
+          height: 100 + ((height - scaledHeight) / scaledHeight) * 100 + "%",
+        };
       }
       setScale({
+        position: "relative",
+        top: 0,
         transform: `scale(${newScale})`,
         transformOrigin: "top left",
         ...heightObj,
