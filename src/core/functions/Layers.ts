@@ -66,7 +66,7 @@ export type ChaiBlock = {
  * @param type
  */
 export const canAddChildBlock = (type: string) =>
-  ["Box", "Slot", "Form", "Link", "Heading", "List", "ListItem", "Table", "TableCell"].includes(type);
+  ["Box", "Slot", "Form", "Link", "Paragraph", "Heading", "List", "ListItem", "Table", "TableCell"].includes(type);
 
 /**
  *
