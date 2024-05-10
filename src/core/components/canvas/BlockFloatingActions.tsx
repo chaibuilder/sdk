@@ -80,7 +80,7 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
         e.preventDefault();
       }}
       onKeyDown={(e) => e.stopPropagation()}
-      className="z-50 flex h-6 items-center bg-blue-500  py-2 text-xs text-white">
+      className="z-[99999] flex h-6 items-center bg-blue-500  py-2 text-xs text-white">
       <BlockActionLabel label={label} block={block} />
       <div className="flex gap-2 px-1 ">
         {parentId && (
