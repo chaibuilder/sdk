@@ -1,4 +1,4 @@
-import { get, isEmpty, map, startsWith } from "lodash";
+import { get, isEmpty, map, startsWith } from "lodash-es";
 import { MODIFIERS } from "../constants/MODIFIERS";
 import { CLASSES_LIST } from "../constants/CLASSES_LIST";
 

@@ -1,4 +1,4 @@
-import { get, replace, set, startsWith } from "lodash";
+import { get, replace, set, startsWith } from "lodash-es";
 import { tailwindcssPaletteGenerator } from "@bobthered/tailwindcss-palette-generator";
 import { createTailwindcss } from "@mhsdesign/jit-browser-tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";

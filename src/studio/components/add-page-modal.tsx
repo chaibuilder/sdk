@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { kebabCase } from "lodash";
+import { kebabCase } from "lodash-es";
 import { Button, Dialog, DialogContent, DialogTrigger } from "../../ui";
 import { SingleLineText } from "@chaibuilder/runtime/controls";
 import { Form } from "./form";

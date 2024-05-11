@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { atom, useSetAtom } from "jotai";
-import { each, filter, first, get as getProp } from "lodash";
+import { each, filter, first, get as getProp } from "lodash-es";
 import { useDispatch } from "./useTreeData";
 import { pageBlocksAtomsAtom } from "../atoms/blocks";
 import { getNewClasses } from "../functions/GetNewClasses";

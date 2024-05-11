@@ -1,6 +1,6 @@
 import { flip } from "@floating-ui/dom";
 import { shift, useFloating } from "@floating-ui/react-dom";
-import { get, isEmpty, pick } from "lodash";
+import { get, isEmpty, pick } from "lodash-es";
 import { ArrowUpIcon, CopyIcon, DragHandleDots2Icon, TrashIcon } from "@radix-ui/react-icons";
 import { canDeleteBlock, canDuplicateBlock } from "../../functions/Layers";
 import { ChaiBlock } from "../../types/ChaiBlock";

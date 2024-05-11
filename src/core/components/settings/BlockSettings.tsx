@@ -1,5 +1,5 @@
 import { IChangeEvent } from "@rjsf/core";
-import { capitalize, cloneDeep, each, get, isEmpty, keys, map } from "lodash";
+import { capitalize, cloneDeep, each, get, isEmpty, keys, map } from "lodash-es";
 import { useBuilderProp, useCanvasHistory, useSelectedBlock, useUpdateBlocksPropsRealtime } from "../../hooks";
 import { ChaiControlDefinition, SingleLineText } from "@chaibuilder/runtime/controls";
 import DataBindingSetting from "../../../ui/widgets/rjsf/widgets/data-binding";

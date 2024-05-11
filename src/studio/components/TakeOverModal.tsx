@@ -2,7 +2,7 @@ import { Button } from "../../ui";
 import { useTakeControl } from "../mutations/usePageActions.ts";
 import { useCurrentPage } from "../hooks/useCurrentPage.ts";
 import { usePageData } from "../hooks/usePageData.ts";
-import { get } from "lodash";
+import { get } from "lodash-es";
 import { Loader } from "lucide-react";
 import { MdEmail, MdPerson } from "react-icons/md";
 

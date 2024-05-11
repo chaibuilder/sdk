@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
-import { filter, forEach, get, isEmpty, last, map, set } from "lodash";
+import { filter, forEach, get, isEmpty, last, map, set } from "lodash-es";
 import { PlusIcon, TrashIcon } from "@radix-ui/react-icons";
 import { useSavePage, useSelectedBlock, useSelectedStylingBlocks, useUpdateBlocksPropsRealtime } from "../../../hooks";
 import { AccordionContent, AccordionItem, AccordionTrigger, Label } from "../../../../ui";

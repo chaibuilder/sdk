@@ -21,7 +21,7 @@ import {
   SelectValue,
 } from "../../../ui";
 import React, { useEffect, useMemo, useState } from "react";
-import { filter, find, isEmpty, isNull, map } from "lodash";
+import { filter, find, isEmpty, isNull, map } from "lodash-es";
 import { usePageDataProviders } from "../../hooks/usePageDataProviders.ts";
 import { useAtom } from "jotai";
 import { pageSyncStateAtom } from "../../hooks/useSavePage.ts";

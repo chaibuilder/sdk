@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useState } from "react";
-import { filter, find, first, groupBy, includes, isEmpty, map, reject, uniq, values } from "lodash";
+import { filter, find, first, groupBy, includes, isEmpty, map, reject, uniq, values } from "lodash-es";
 import { useAtom } from "jotai";
 import {
   Accordion,

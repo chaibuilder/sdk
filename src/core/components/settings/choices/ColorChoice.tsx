@@ -1,4 +1,4 @@
-import { get } from "lodash";
+import { get } from "lodash-es";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useCurrentClassByProperty } from "./BlockStyle";
 import { DropDown } from "./DropdownChoices";

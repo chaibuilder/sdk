@@ -1,4 +1,4 @@
-import { map } from "lodash";
+import { map } from "lodash-es";
 import { ClassDerivedObject, constructClassObject } from "./Class";
 import { getBelongsToForClass } from "./GetNewClasses";
 

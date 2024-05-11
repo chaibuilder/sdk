@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { isEmpty, startCase } from "lodash";
+import { isEmpty, startCase } from "lodash-es";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
 import { createApi } from "unsplash-js";
 import {

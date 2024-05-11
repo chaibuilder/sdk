@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { capitalize, filter, has, set, sortBy } from "lodash";
+import { capitalize, filter, has, set, sortBy } from "lodash-es";
 import { useApiBaseUrl } from "./useApiBaseUrl.ts";
 import { fetchWrapper } from "../fetch.ts";
 import { getBlocksFromHTML } from "../../core/import-html/html-to-json.ts";

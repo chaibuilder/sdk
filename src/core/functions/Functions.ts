@@ -1,4 +1,4 @@
-import { isEmpty, startsWith } from "lodash";
+import { isEmpty, startsWith } from "lodash-es";
 import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 

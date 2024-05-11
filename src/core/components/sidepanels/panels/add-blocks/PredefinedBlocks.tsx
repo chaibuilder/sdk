@@ -1,4 +1,4 @@
-import { filter, first, get, groupBy, has, isArray, isEmpty, keys, map, mergeWith, values } from "lodash";
+import { filter, first, get, groupBy, has, isArray, isEmpty, keys, map, mergeWith, values } from "lodash-es";
 import React, { useCallback, useMemo, useState } from "react";
 import { useAddBlock, useBuilderProp, useSelectedBlockIds, useUILibraryBlocks } from "../../../../hooks";
 import { syncBlocksWithDefaults, useChaiBlocks } from "@chaibuilder/runtime";

@@ -1,5 +1,5 @@
 import { DesktopIcon, DotsVerticalIcon, LaptopIcon, MobileIcon } from "@radix-ui/react-icons";
-import { includes, map, toUpper } from "lodash";
+import { includes, map, toUpper } from "lodash-es";
 import {
   Button,
   DropdownMenu,

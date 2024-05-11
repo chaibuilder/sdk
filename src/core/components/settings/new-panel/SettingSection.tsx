@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useMemo } from "react";
-import { flatten, has, intersection, map } from "lodash";
+import { flatten, has, intersection, map } from "lodash-es";
 import { MultipleChoices } from "../choices/MultipleChoices";
 import { BlockStyle } from "../choices/BlockStyle";
 import { useSelectedBlockCurrentClasses } from "../../../hooks";

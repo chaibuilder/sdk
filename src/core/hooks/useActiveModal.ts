@@ -1,6 +1,6 @@
 import { atom, useAtom } from "jotai";
 import { useCallback } from "react";
-import { get } from "lodash";
+import { get } from "lodash-es";
 
 type ModalProps = {
   backdropClose?: boolean;

@@ -1,4 +1,4 @@
-import { get, map, startCase, toLower } from "lodash";
+import { get, map, startCase, toLower } from "lodash-es";
 import React, { useContext, useMemo } from "react";
 import { BoxIcon } from "@radix-ui/react-icons";
 import { EDITOR_ICONS } from "../../../constants/ICONS";

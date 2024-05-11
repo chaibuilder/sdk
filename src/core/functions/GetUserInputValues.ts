@@ -1,8 +1,8 @@
-import { isEmpty } from "lodash";
+import { isEmpty } from "lodash-es";
 
 export const getUserInputValues = (
   input: string,
-  allowedUnits: string[]
+  allowedUnits: string[],
 ): { error: string } | { unit: string; value: string } => {
   // eslint-disable-next-line no-param-reassign
   input = input.toLowerCase();

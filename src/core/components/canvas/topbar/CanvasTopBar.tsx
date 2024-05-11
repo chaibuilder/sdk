@@ -1,5 +1,5 @@
 import React from "react";
-import { round } from "lodash";
+import { round } from "lodash-es";
 import { ZoomInIcon } from "@radix-ui/react-icons";
 import { UndoRedo } from "./UndoRedo";
 import { Separator } from "../../../../ui";

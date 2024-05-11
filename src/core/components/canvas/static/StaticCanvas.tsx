@@ -1,7 +1,7 @@
 // @ts-nochecks
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { first, isEmpty } from "lodash";
+import { first, isEmpty } from "lodash-es";
 import { useAtom } from "jotai";
 import {
   useBuilderProp,

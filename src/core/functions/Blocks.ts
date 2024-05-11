@@ -1,5 +1,5 @@
 import FlatToNested from "flat-to-nested";
-import { each, filter, find, flatten, get, isEmpty, isString, map, omit, set } from "lodash";
+import { each, filter, find, flatten, get, isEmpty, isString, map, omit, set } from "lodash-es";
 import { generateUUID } from "./Functions.ts";
 import { ChaiBlock } from "../types/ChaiBlock";
 

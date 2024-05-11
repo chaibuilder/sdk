@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { RJSFSchema, UiSchema } from "@rjsf/utils";
-import { includes } from "lodash";
+import { includes } from "lodash-es";
 import { getBlockJSONFromSchemas, getBlockJSONFromUISchemas } from "../../functions/Controls.ts";
 import RjForm from "@rjsf/core";
 import { BindingWidget } from "../../../ui/widgets/rjsf/widgets/binding.tsx";

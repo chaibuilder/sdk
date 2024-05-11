@@ -1,4 +1,4 @@
-import { get, includes, isEmpty } from "lodash";
+import { get, includes, isEmpty } from "lodash-es";
 import React from "react";
 
 export type ChaiBlock = {

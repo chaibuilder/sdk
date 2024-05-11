@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { has } from "lodash";
+import { has } from "lodash-es";
 import { useAddBlock } from "./useAddBlock";
 import { useBuilderProp } from "./useBuilderProp";
 

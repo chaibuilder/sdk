@@ -6,7 +6,7 @@ import {
   useSelectedStylingBlocks,
   useUpdateBlocksProps,
 } from "../../../hooks";
-import { first, isEmpty, omit, throttle } from "lodash";
+import { first, isEmpty, omit, throttle } from "lodash-es";
 import { Quill } from "react-quill";
 import { useAtom } from "jotai";
 import { inlineEditingActiveAtom } from "../../../atoms/ui.ts";

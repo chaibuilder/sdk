@@ -1,4 +1,4 @@
-import { filter, isEmpty, map } from "lodash";
+import { filter, isEmpty, map } from "lodash-es";
 import type { ChaiBlock } from "../core/main";
 import type { ChaiPageData } from "../render/index.ts";
 import { getChaiDataProviders } from "@chaibuilder/runtime";

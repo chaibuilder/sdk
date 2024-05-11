@@ -1,5 +1,5 @@
 import { atom, useAtom } from "jotai";
-import { includes, without } from "lodash";
+import { includes, without } from "lodash-es";
 import { useCallback } from "react";
 
 const hiddenBlockIdsAtom = atom<Array<string>>([]);

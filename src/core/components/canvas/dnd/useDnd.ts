@@ -1,5 +1,5 @@
 import { DragEvent } from "react";
-import { noop, throttle } from "lodash";
+import { noop, throttle } from "lodash-es";
 import { useFrame } from "../../../frame";
 import { useAddBlockByDrop } from "../../../hooks/useAddBlockByDrop.ts";
 import { useAtom } from "jotai";

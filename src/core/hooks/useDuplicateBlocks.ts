@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useAtomValue } from "jotai";
-import { each, get } from "lodash";
+import { each, get } from "lodash-es";
 import { useDispatch } from "./useTreeData";
 import { presentBlocksAtom } from "../atoms/blocks";
 import { getDuplicatedBlocks } from "../functions/Blocks";

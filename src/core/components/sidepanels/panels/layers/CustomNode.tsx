@@ -2,7 +2,7 @@ import { NodeModel, useDragOver } from "@minoru/react-dnd-treeview";
 import { TriangleRightIcon } from "@radix-ui/react-icons";
 import { TypeIcon } from "./TypeIcon";
 import { useHiddenBlockIds, useHighlightBlockId } from "../../../../hooks";
-import { nth, startsWith } from "lodash";
+import { nth, startsWith } from "lodash-es";
 import { useMemo } from "react";
 import { ChaiBlock } from "../../../../types/ChaiBlock";
 import { STYLES_KEY } from "../../../../constants/CONTROLS";

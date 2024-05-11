@@ -1,4 +1,4 @@
-import { get } from "lodash";
+import { get } from "lodash-es";
 import React, { useContext, useMemo } from "react";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { CLASSES_LIST } from "../../../constants/CLASSES_LIST";

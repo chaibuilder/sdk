@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
-import { first, get, isEmpty, map, reject } from "lodash";
+import { first, get, isEmpty, map, reject } from "lodash-es";
 // @ts-ignore
 import Autosuggest from "react-autosuggest";
 import Fuse from "fuse.js";
@@ -53,7 +53,7 @@ export function ManualClasses() {
       const [prefix] = matches;
       const searchWithoutPrefix = search.replace(prefix, "");
       const fuseResults = fuse.search(searchWithoutPrefix);
-      classMatches = fuseResults.map((result) => ({
+      classMatches = fuseResults.map((result: any) => ({
         ...result,
         item: { ...result.item, name: prefix + result.item.name },
       }));

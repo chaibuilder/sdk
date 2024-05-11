@@ -5,7 +5,7 @@ import i18n from "../locales/load";
 import { FlagsProvider } from "flagged";
 import { useEffect } from "react";
 import { DndProvider } from "react-dnd";
-import { omit } from "lodash";
+import { omit } from "lodash-es";
 import { getBackendOptions, MultiBackend } from "@minoru/react-dnd-treeview";
 import { FEATURE_TOGGLES } from "../FEATURE_TOGGLES";
 import { chaiBuilderPropsAtom } from "../atoms/builder.ts";

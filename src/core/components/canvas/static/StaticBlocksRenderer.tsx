@@ -1,4 +1,4 @@
-import { filter, isEmpty } from "lodash";
+import { filter, isEmpty } from "lodash-es";
 import { Provider } from "react-wrap-balancer";
 import { useAllBlocks } from "../../../hooks";
 import { BlocksRendererStatic } from "./BlocksRenderer";

@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useState } from "react";
-import { first, get, isEmpty, isNaN, parseInt } from "lodash";
+import { first, get, isEmpty, isNaN, parseInt } from "lodash-es";
 import { useThrottledCallback } from "@react-hookz/web";
 import { InfoCircledIcon, RowSpacingIcon, TriangleDownIcon } from "@radix-ui/react-icons";
 import { getUserInputValues } from "../../../functions/GetUserInputValues";

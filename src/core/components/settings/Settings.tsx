@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { useThrottledCallback } from "@react-hookz/web";
-import { get, isNaN, isNull, startsWith } from "lodash";
+import { get, isNaN, isNull, startsWith } from "lodash-es";
 import { useTranslation } from "react-i18next";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
 import { ScrollArea, Tabs, TabsContent, TabsList, TabsTrigger } from "../../../ui";

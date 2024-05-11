@@ -1,5 +1,5 @@
 import React, { Suspense, useCallback } from "react";
-import { each, filter, find, get, isEmpty, isNull, isString, memoize } from "lodash";
+import { each, filter, find, get, isEmpty, isNull, isString, memoize } from "lodash-es";
 import { twMerge } from "tailwind-merge";
 import { ChaiBlock } from "../../../types/ChaiBlock";
 import { SLOT_KEY, STYLES_KEY } from "../../../constants/CONTROLS";

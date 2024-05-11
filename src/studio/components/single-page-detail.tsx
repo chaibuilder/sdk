@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { isEmpty, isEqual, isString, kebabCase, omit } from "lodash";
+import { isEmpty, isEqual, isString, kebabCase, omit } from "lodash-es";
 import { HomeIcon } from "@radix-ui/react-icons";
 import { Button, ScrollArea } from "../../ui";
 import { Checkbox, Image, Model, MultilineText, SingleLineText } from "@chaibuilder/runtime/controls";

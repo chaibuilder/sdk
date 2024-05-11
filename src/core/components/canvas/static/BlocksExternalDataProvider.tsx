@@ -1,4 +1,4 @@
-import { each, find } from "lodash";
+import { each, find } from "lodash-es";
 import { useEffect } from "react";
 import { useChaiExternalData } from "./useChaiExternalData.ts";
 import { usePageDataProviders } from "../../../hooks/usePageDataProviders.ts";

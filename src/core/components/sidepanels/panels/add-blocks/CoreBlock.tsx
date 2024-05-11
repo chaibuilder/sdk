@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import { first, has, omit } from "lodash";
+import { first, has, omit } from "lodash-es";
 import { createElement } from "react";
 import { BoxIcon } from "@radix-ui/react-icons";
 import { activePanelAtom } from "../../../../atoms/ui";

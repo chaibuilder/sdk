@@ -1,4 +1,4 @@
-import { get, map, startCase, toLower } from "lodash";
+import { get, map, startCase, toLower } from "lodash-es";
 import React, { useCallback, useState } from "react";
 import { BoxIcon } from "@radix-ui/react-icons";
 import { ClassDerivedObject } from "../../../functions/Class";

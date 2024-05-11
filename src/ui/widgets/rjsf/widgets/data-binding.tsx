@@ -15,7 +15,7 @@ import {
   startCase,
   toLower,
   truncate,
-} from "lodash";
+} from "lodash-es";
 import { Check, EditIcon, TrashIcon } from "lucide-react";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {

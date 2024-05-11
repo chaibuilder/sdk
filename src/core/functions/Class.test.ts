@@ -1,4 +1,4 @@
-import { each } from "lodash";
+import { each } from "lodash-es";
 import { getModForCls, getMqForCls, getPropertyForClass, getPureClsName } from "./Class";
 import { CLASSES_LIST } from "../constants/CLASSES_LIST";
 import { convertArbitraryToTailwindClass } from "./ConvertArbitraryToTailwindClass.ts";

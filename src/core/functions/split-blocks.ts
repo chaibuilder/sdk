@@ -1,6 +1,6 @@
 // @ts-nocheck
 import FlatToNested from "flat-to-nested";
-import { each, filter, find, first, flatten, get, isEmpty, map, set } from "lodash";
+import { each, filter, find, first, flatten, get, isEmpty, map, set } from "lodash-es";
 import { ChaiBlock } from "../types/ChaiBlock.ts";
 
 /**

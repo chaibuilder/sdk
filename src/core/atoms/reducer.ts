@@ -1,4 +1,4 @@
-import { isEmpty, set } from "lodash";
+import { isEmpty, set } from "lodash-es";
 import undoable, { excludeAction } from "redux-undo";
 import { ChaiBlock } from "../types/ChaiBlock";
 

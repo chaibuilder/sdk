@@ -1,4 +1,4 @@
-import { flatten, flattenDeep, map, range, values } from "lodash";
+import { flatten, flattenDeep, map, range, values } from "lodash-es";
 import { CLASS_VALUES } from "./CLASS_VALUES";
 
 type ClassListType = {

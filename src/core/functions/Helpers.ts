@@ -1,4 +1,4 @@
-import { first, get, includes, isEmpty, isNumber, map, startsWith } from "lodash";
+import { first, get, includes, isEmpty, isNumber, map, startsWith } from "lodash-es";
 
 export const WIDTH_HEIGHT_VALUES = {
   auto: "class",

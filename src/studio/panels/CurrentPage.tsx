@@ -1,5 +1,5 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui";
-import { capitalize, filter, find, get, isEmpty, map, sortBy } from "lodash";
+import { capitalize, filter, find, get, isEmpty, map, sortBy } from "lodash-es";
 import { toast } from "sonner";
 import { useEffect } from "react";
 import { useProject } from "../hooks/useProject";

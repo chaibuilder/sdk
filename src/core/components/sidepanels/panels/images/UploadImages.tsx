@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { isEmpty, map } from "lodash";
+import { isEmpty, map } from "lodash-es";
 import { Cross1Icon, GearIcon, UploadIcon } from "@radix-ui/react-icons";
 import { atom, useAtom } from "jotai";
 import { ScrollArea } from "../../../../../ui";

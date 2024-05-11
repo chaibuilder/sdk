@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { filter, find, first, forIn, has, startsWith } from "lodash";
+import { filter, find, first, forIn, has, startsWith } from "lodash-es";
 import { useDispatch } from "./useTreeData";
 import { generateUUID } from "../functions/Functions.ts";
 import { canAddAsChild } from "../functions/Layers";

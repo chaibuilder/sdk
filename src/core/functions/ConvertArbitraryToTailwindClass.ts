@@ -1,4 +1,4 @@
-import { first, get, includes, keys, map, parseInt } from "lodash";
+import { first, get, includes, keys, map, parseInt } from "lodash-es";
 import { PER_VALUE_TO_TW_CLASS, PX_VALUE_TO_TW_CLASS } from "../constants/TWCLASS_VALUES";
 import { ClassDerivedObject, constructClassObject } from "./Class";
 

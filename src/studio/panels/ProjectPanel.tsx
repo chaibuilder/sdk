@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useRef } from "react";
-import { isEmpty, isEqual } from "lodash";
+import { isEmpty, isEqual } from "lodash-es";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../..//ui";
 import { useProject } from "../hooks/useProject";
 import { useUpdateProject } from "../mutations/useProjectActions";

@@ -1,4 +1,4 @@
-import { get, map } from "lodash";
+import { get, map } from "lodash-es";
 import { useEffect, useState } from "react";
 import { useFrame } from "../../../frame";
 import { tailwindcssPaletteGenerator } from "@bobthered/tailwindcss-palette-generator";

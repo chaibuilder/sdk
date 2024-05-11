@@ -1,6 +1,6 @@
 import { useAuth } from "../mutations/useAuth.ts";
 import React, { FormEvent, Suspense, useState } from "react";
-import { size } from "lodash";
+import { size } from "lodash-es";
 import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import { MdEmail } from "react-icons/md";
 

@@ -2,7 +2,7 @@ import React from "react";
 import RjFrom, { IChangeEvent } from "@rjsf/core";
 import validator from "@rjsf/validator-ajv8";
 import { RJSFSchema, UiSchema } from "@rjsf/utils";
-import { first, get, includes, set } from "lodash";
+import { first, get, includes, set } from "lodash-es";
 import { IconPickerField, ImagePickerField, LinkField, RTEField } from "../../ui";
 
 const getBlockJSONFromUISchemas = (control: any, activeLang: string = "") => {

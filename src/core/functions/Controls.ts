@@ -1,4 +1,4 @@
-import { each, forIn, get, has, includes, isEmpty, map, set } from "lodash";
+import { each, forIn, get, has, includes, isEmpty, map, set } from "lodash-es";
 import {
   ChaiControlDefinition,
   ControlDefinition,

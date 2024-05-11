@@ -1,4 +1,4 @@
-import { each, filter, find, includes, isNull, map, pick, sortBy } from "lodash";
+import { each, filter, find, includes, isNull, map, pick, sortBy } from "lodash-es";
 import { ClassDerivedObject, constructClassObject } from "./Class";
 
 const MEDIA_QUERIES: any = {

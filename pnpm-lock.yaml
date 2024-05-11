@@ -81,7 +81,7 @@ specifiers:
   jotai: 2.2.2
   jotai-devtools: ^0.7.1
   jsdoc: ^4.0.2
-  lodash: 4.17.21
+  lodash-es: 4.17.21
   lucide-react: ^0.244.0
   msw: ^2.0.8
   nanoid: ^4.0.2
@@ -169,7 +169,7 @@ dependencies:
   html-formatter: 0.1.9
   i18next: 23.6.0
   jotai: 2.2.2_react@18.2.0
-  lodash: 4.17.21
+  lodash-es: 4.17.21
   lucide-react: 0.244.0_react@18.2.0
   nanoid: 4.0.2
   post-robot: 10.0.46

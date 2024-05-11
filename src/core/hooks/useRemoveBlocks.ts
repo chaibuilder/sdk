@@ -1,5 +1,5 @@
 import { useAtomValue } from "jotai";
-import { filter, find, includes, isEmpty } from "lodash";
+import { filter, find, includes, isEmpty } from "lodash-es";
 import { useCallback } from "react";
 import { presentBlocksAtom } from "../atoms/blocks";
 import { useDispatch } from "./useTreeData";

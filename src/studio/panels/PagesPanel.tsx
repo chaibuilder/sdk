@@ -1,6 +1,6 @@
 /* eslint-disable arrow-body-style */
 import React, { Suspense } from "react";
-import { filter, get, sortBy } from "lodash";
+import { filter, get, sortBy } from "lodash-es";
 import { usePages } from "../hooks/usePages";
 import { useProject } from "../hooks/useProject";
 

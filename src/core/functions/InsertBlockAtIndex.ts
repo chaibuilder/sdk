@@ -1,4 +1,4 @@
-import { filter, findIndex, isEmpty, last } from "lodash";
+import { filter, findIndex, isEmpty, last } from "lodash-es";
 import { ChaiBlock } from "../types/ChaiBlock";
 
 export function insertBlockAtIndex(

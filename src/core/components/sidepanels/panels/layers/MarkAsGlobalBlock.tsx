@@ -2,7 +2,7 @@ import { GlobeIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { Button } from "../../../../../ui";
 import { useMarkAsGlobalBlock } from "../../../../hooks";
-import { capitalize } from "lodash";
+import { capitalize } from "lodash-es";
 
 const MarkAsGlobalBlock = ({ id = null, closeModal }: { id: string | null; closeModal: () => void }) => {
   const markAsGlobal = useMarkAsGlobalBlock();

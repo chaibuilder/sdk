@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { map, omit } from "lodash";
+import { map, omit } from "lodash-es";
 import { useAtomValue } from "jotai";
 import { useBrandingOptions } from "./useBrandingOptions";
 import { useCurrentPage } from "./useCurrentPage";

@@ -1,4 +1,4 @@
-import { get, includes, last } from "lodash";
+import { get, includes, last } from "lodash-es";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { STYLES_KEY } from "../core/constants/CONTROLS.ts";
 import { BrandingOptions } from "../core/types/index.ts";

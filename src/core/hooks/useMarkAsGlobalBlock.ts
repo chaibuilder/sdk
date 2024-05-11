@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useAtomValue } from "jotai";
-import { map } from "lodash";
+import { map } from "lodash-es";
 import { presentBlocksAtom } from "../atoms/blocks";
 import { useDispatch } from "./useTreeData";
 import { generateUUID } from "../functions/Functions.ts";

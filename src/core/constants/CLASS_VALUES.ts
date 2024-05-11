@@ -1,4 +1,4 @@
-import { map, range } from "lodash";
+import { map, range } from "lodash-es";
 
 type ClassValuesType = {
   [key: string]: Array<string | number>;

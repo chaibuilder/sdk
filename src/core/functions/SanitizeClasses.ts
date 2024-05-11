@@ -1,4 +1,4 @@
-import { filter, find, isEmpty, map } from "lodash";
+import { filter, find, isEmpty, map } from "lodash-es";
 import { ClassDerivedObject, constructClassObject } from "./Class";
 
 const breakpoints: string[] = ["xs", "sm", "md", "lg", "xl", "2xl"];

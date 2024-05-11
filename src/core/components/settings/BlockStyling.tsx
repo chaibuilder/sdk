@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import { isEmpty } from "lodash";
+import { isEmpty } from "lodash-es";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
 import { useSelectedBlocksDisplayChild, useSelectedStylingBlocks, useStylingState } from "../../hooks";

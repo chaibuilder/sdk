@@ -1,5 +1,5 @@
 import { FieldProps } from "@rjsf/utils";
-import { map } from "lodash";
+import { map } from "lodash-es";
 import { useEffect, useState } from "react";
 import { useBuilderProp } from "../../../../core/hooks";
 

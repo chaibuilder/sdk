@@ -14,7 +14,7 @@ import {
 } from "../../../../../ui";
 import { useAddBlock, useSelectedBlockIds } from "../../../../hooks";
 import { activePanelAtom, addBlockOffCanvasAtom } from "../../../../atoms/ui";
-import { first } from "lodash";
+import { first } from "lodash-es";
 import { addBlocksModalAtom } from "../../../../atoms/blocks";
 import { getBlocksFromHTML } from "../../../../import-html/html-to-json";
 

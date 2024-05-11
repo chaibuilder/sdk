@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from "react";
 import { atom, useAtom, useAtomValue } from "jotai";
-import { filter, find, get as getProp, includes, isUndefined, map, without } from "lodash";
+import { filter, find, get as getProp, includes, isUndefined, map, without } from "lodash-es";
 import { atomWithStorage } from "jotai/utils";
 import { presentBlocksAtom } from "../atoms/blocks";
 import { ChaiBlock } from "../types/ChaiBlock";

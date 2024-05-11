@@ -1,7 +1,7 @@
 // @ts-ignore
 import { parse, stringify } from "himalaya";
 import { cn, generateUUID } from "../functions/Functions.ts";
-import { capitalize, filter, find, flatMapDeep, flatten, forEach, get, includes, isEmpty, omit, set } from "lodash";
+import { capitalize, filter, find, flatMapDeep, flatten, forEach, get, includes, isEmpty, omit, set } from "lodash-es";
 import { ChaiBlock } from "../types";
 import { STYLES_KEY } from "../constants/CONTROLS";
 

@@ -1,6 +1,6 @@
 import { http, HttpResponse } from "msw";
 import { faker } from "@faker-js/faker";
-import { find, map, omit } from "lodash";
+import { find, map, omit } from "lodash-es";
 import { html, library, pages, project, successResponse } from "./data.ts";
 
 export const handlers: any = [

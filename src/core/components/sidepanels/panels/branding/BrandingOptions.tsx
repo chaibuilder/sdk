@@ -4,7 +4,7 @@ import validator from "@rjsf/validator-ajv8";
 import Form, { IChangeEvent } from "@rjsf/core";
 import { useBrandingOptions, useBuilderProp } from "../../../../hooks";
 import { Color, Numeric, SelectOption } from "@chaibuilder/runtime/controls";
-import { isEqual } from "lodash";
+import { isEqual } from "lodash-es";
 import { ColorField } from "../../../../../ui/widgets/rjsf/widgets/color.tsx";
 
 const FONTS = [

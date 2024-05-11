@@ -5,7 +5,7 @@
   "author": "Suraj Air",
   "license": "BSD-3-Clause",
   "homepage": "https://chaibuilder.com",
-  "version": "1.1.13",
+  "version": "1.1.14",
   "type": "module",
   "repository": {
     "type": "git",
@@ -122,7 +122,7 @@
     "html-formatter": "0.1.9",
     "i18next": "^23.2.8",
     "jotai": "2.2.2",
-    "lodash": "4.17.21",
+    "lodash-es": "4.17.21",
     "lucide-react": "^0.244.0",
     "nanoid": "^4.0.2",
     "post-robot": "10.0.46",

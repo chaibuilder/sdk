@@ -1,5 +1,5 @@
 import { WidgetProps } from "@rjsf/utils";
-import { isEmpty } from "lodash";
+import { isEmpty } from "lodash-es";
 import ImagePickerModal from "../../../../core/components/sidepanels/panels/images/ImagePickerModal.tsx";
 
 const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => (

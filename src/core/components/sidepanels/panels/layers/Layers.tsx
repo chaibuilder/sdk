@@ -1,4 +1,4 @@
-import { find, includes, isEmpty, isUndefined, map } from "lodash";
+import { find, includes, isEmpty, isUndefined, map } from "lodash-es";
 import * as React from "react";
 import { DoubleArrowDownIcon, StackIcon } from "@radix-ui/react-icons";
 import { useDragLayer, useDrop } from "react-dnd";

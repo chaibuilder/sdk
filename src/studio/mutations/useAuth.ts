@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useApiBaseUrl } from "../hooks/useApiBaseUrl.ts";
 import { fetchWrapper } from "../fetch.ts";
-import { omit } from "lodash";
+import { omit } from "lodash-es";
 
 export const useAuth = () => {
   const baseUrl = useApiBaseUrl();

@@ -1,5 +1,5 @@
 import { WidgetProps } from "@rjsf/utils";
-import { debounce } from "lodash";
+import { debounce } from "lodash-es";
 
 const ColorField = ({ value, onChange, id, onBlur }: WidgetProps) => {
   const throttledChange = debounce(onChange, 200);

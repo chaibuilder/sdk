@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useFrame } from "../../frame";
 import { useAtom } from "jotai";
-import { first } from "lodash";
+import { first } from "lodash-es";
 import {
   useAllBlocks,
   useCanvasHistory,

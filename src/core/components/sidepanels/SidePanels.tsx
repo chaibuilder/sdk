@@ -1,7 +1,7 @@
 import { Half2Icon, PlusIcon } from "@radix-ui/react-icons";
 import React, { lazy, LazyExoticComponent, Suspense, useState } from "react";
 import { useAtom } from "jotai";
-import { each, get } from "lodash";
+import { each, get } from "lodash-es";
 import { Button, Skeleton, Tabs, TabsContent, TabsList, TabsTrigger } from "../../../ui";
 import { activePanelAtom } from "../../atoms/ui";
 import { useBuilderProp } from "../../hooks";

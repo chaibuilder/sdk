@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo } from "react";
-import { findLast, get } from "lodash";
+import { findLast, get } from "lodash-es";
 import { CrossCircledIcon, InfoCircledIcon } from "@radix-ui/react-icons";
 import {
   useAddClassesToBlocks,

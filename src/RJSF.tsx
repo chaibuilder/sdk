@@ -1,6 +1,6 @@
 import { RJSFSchema, UiSchema } from "@rjsf/utils";
 import RjForm from "@rjsf/core";
-import { includes } from "lodash";
+import { includes } from "lodash-es";
 import { getBlockJSONFromSchemas, getBlockJSONFromUISchemas } from "./core/functions/Controls.ts";
 import { BindingWidget } from "./ui/widgets/rjsf/widgets/binding.tsx";
 import { IconPickerField, ImagePickerField, LinkField, RTEField } from "./ui";

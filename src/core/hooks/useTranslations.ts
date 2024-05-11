@@ -1,6 +1,6 @@
 import { atom, useAtom } from "jotai";
 import { useCallback } from "react";
-import { set } from "lodash";
+import { set } from "lodash-es";
 
 type TBlockTranslation = {
   [_path: string]: any;
@@ -16,7 +16,7 @@ export const useTranslations = () => {
       set(translations, `${lang}.${path}`, value);
       setTranslations(translations);
     },
-    [translations, setTranslations]
+    [translations, setTranslations],
   );
 
   return [translations, updateTranslation];

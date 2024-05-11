@@ -1,6 +1,6 @@
 import { useAtomValue } from "jotai";
 import { useCallback, useMemo } from "react";
-import { get, includes, isEmpty, map, set } from "lodash";
+import { get, includes, isEmpty, map, set } from "lodash-es";
 import { useDuplicateBlocks } from "./useDuplicateBlocks";
 import { useDispatch } from "./useTreeData";
 import { copiedBlockIdsAtom } from "./useCopyBlockIds";
