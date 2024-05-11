@@ -27,3 +27,10 @@ export type StylingAttributes = {
   onMouseEnter?: (e: any) => void;
   onMouseLeave?: (e: any) => void;
 };
+
+export type BrandingOptions = {
+  bodyTextLightColor?: string;
+  bodyTextDarkColor?: string;
+  bodyBgLightColor?: string;
+  bodyBgDarkColor?: string;
+};

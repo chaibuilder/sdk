@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { useBuilderProp, usePreviewMode } from "../hooks";
 import { Button, Skeleton } from "../../ui";
-import { cn } from "../lib.ts";
+import { cn } from "../functions/Functions.ts";
 
 export const PreviewScreen = () => {
   const [isPreviewOn, setPreviewMode] = usePreviewMode();

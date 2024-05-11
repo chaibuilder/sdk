@@ -1,8 +1,8 @@
-import { getBlocksFromHTML } from "../../core/lib";
 import { useMutation } from "@tanstack/react-query";
 import { capitalize, filter, has, set, sortBy } from "lodash";
 import { useApiBaseUrl } from "./useApiBaseUrl.ts";
 import { fetchWrapper } from "../fetch.ts";
+import { getBlocksFromHTML } from "../../core/import-html/html-to-json.ts";
 
 export const useUiLibraryBlocks = (): any => {
   const baseUrl = useApiBaseUrl();

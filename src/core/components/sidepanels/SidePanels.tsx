@@ -6,9 +6,9 @@ import { Button, Skeleton, Tabs, TabsContent, TabsList, TabsTrigger } from "../.
 import { activePanelAtom } from "../../atoms/ui";
 import { useBuilderProp } from "../../hooks";
 import { addBlocksModalAtom } from "../../atoms/blocks";
-import { cn } from "../../lib.ts";
 import { DatabaseIcon, ListTreeIcon } from "lucide-react";
 import { PageDataProviders } from "./PageDataProviders.tsx";
+import { cn } from "../../functions/Functions.ts";
 
 const AddBlocksPanel = lazy(() => import("./panels/add-blocks/AddBlocks.tsx"));
 const LayersPanel = lazy(() => import("./panels/layers/Layers"));

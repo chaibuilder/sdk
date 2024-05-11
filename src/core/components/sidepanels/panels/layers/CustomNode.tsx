@@ -1,12 +1,12 @@
 import { NodeModel, useDragOver } from "@minoru/react-dnd-treeview";
 import { TriangleRightIcon } from "@radix-ui/react-icons";
 import { TypeIcon } from "./TypeIcon";
-import { cn } from "../../../../lib";
 import { useHiddenBlockIds, useHighlightBlockId } from "../../../../hooks";
 import { nth, startsWith } from "lodash";
 import { useMemo } from "react";
 import { ChaiBlock } from "../../../../types/ChaiBlock";
 import { STYLES_KEY } from "../../../../constants/CONTROLS";
+import { cn } from "../../../../functions/Functions.ts";
 
 type Props = {
   depth: number;

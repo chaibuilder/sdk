@@ -4,4 +4,7 @@ export { getBlocksFromHTML } from "./import-html/html-to-json";
 export { convertArbitraryToTailwindClass } from "./functions/ConvertArbitraryToTailwindClass";
 export * from "../render/functions";
 
-export { chaiBuilderTheme } from "../tailwind/tailwind-config.ts";
+export { getTailwindCSS } from "../render/getTailwindCSS.ts";
+export { getStylesForBlocks } from "../render/getTailwindCSS.ts";
+export { getStylesForPageData } from "../render/getTailwindCSS.ts";
+export { getBlocksTailwindCSS } from "../render/getTailwindCSS.ts";

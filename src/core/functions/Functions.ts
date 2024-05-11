@@ -1,4 +1,6 @@
 import { isEmpty, startsWith } from "lodash";
+import { ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 /**
  * Check the passed value and converts it to valid css property value
@@ -30,3 +32,5 @@ export const getBreakpointValue = (width: number) =>
     : width >= 640
     ? "SM"
     : "XS";
+
+export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));

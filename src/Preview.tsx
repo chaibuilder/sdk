@@ -2,7 +2,7 @@ import { RenderChaiBlocks } from "./render";
 import { useAtom } from "jotai";
 import { lsBlocksAtom, lsBrandingOptionsAtom } from "./atoms-dev.ts";
 import { useEffect, useState } from "react";
-import { getStylesForBlocks } from "./render/functions.ts";
+import { getStylesForBlocks } from "./core/lib.ts";
 
 function Preview() {
   const [blocks] = useAtom(lsBlocksAtom);

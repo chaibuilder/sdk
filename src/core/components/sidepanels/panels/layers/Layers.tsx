@@ -19,10 +19,10 @@ import { useExpandedIds } from "../../../../hooks/useExpandTree";
 import { ChaiBlock } from "../../../../types/ChaiBlock";
 import { BlockContextMenu } from "./BlockContextMenu";
 import { ScrollArea } from "../../../../../ui";
-import { cn } from "../../../../lib.ts";
 import { useAtom } from "jotai";
 import { useAddBlockByDrop } from "../../../../hooks/useAddBlockByDrop";
 import { addBlocksModalAtom } from "../../../../atoms/blocks";
+import { cn } from "../../../../functions/Functions.ts";
 
 function convertToTBlocks(newTree: NodeModel[]) {
   return map(newTree, (block) => {
