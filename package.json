@@ -5,7 +5,7 @@
   "author": "Suraj Air",
   "license": "BSD-3-Clause",
   "homepage": "https://chaibuilder.com",
-  "version": "1.1.14",
+  "version": "1.1.15",
   "type": "module",
   "repository": {
     "type": "git",
@@ -73,7 +73,7 @@
   },
   "dependencies": {
     "@bobthered/tailwindcss-palette-generator": "3.1.1",
-    "@chaibuilder/runtime": "0.1.10",
+    "@chaibuilder/runtime": "0.1.11",
     "@floating-ui/dom": "1.4.5",
     "@floating-ui/react-dom": "2.0.1",
     "@mhsdesign/jit-browser-tailwindcss": "0.4.0",
