@@ -13,7 +13,7 @@ import {
 } from "../../hooks";
 import { useResizeObserver } from "@react-hookz/web";
 import { useAtom } from "jotai";
-import { draggedBlockIdAtom } from "../../atoms/ui.ts";
+import { draggedBlockIdAtom, inlineEditingActiveAtom } from "../../atoms/ui.ts";
 import { useFeature } from "flagged";
 
 /**
@@ -53,6 +53,7 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
   const duplicateBlock = useDuplicateBlocks();
   const [, setSelectedIds] = useSelectedBlockIds();
   const [, setStyleBlocks] = useSelectedStylingBlocks();
+  const [editingBlockId] = useAtom(inlineEditingActiveAtom);
   const { floatingStyles, refs, update } = useFloating({
     placement: "top-start",
     middleware: [shift(), flip()],
@@ -67,7 +68,7 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
 
   const label: string = isEmpty(get(block, "_name", "")) ? get(block, "_type", "") : get(block, "_name", "");
 
-  if (!selectedBlockElement || !block) return null;
+  if (!selectedBlockElement || !block || editingBlockId) return null;
 
   return (
     <div

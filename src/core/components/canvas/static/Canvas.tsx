@@ -43,7 +43,6 @@ function destroyQuill(quill) {
 const useHandleCanvasDblClick = () => {
   const INLINE_EDITABLE_BLOCKS = ["Heading", "Paragraph", "Text", "Link", "Span", "Button"];
   const updateContent = useUpdateBlocksProps();
-  const [, setIds] = useSelectedBlockIds();
   const [, setHighlightedId] = useHighlightBlockId();
   const [editingBlockId, setEditingBlockId] = useAtom(inlineEditingActiveAtom);
   return (e) => {
@@ -78,7 +77,6 @@ const useHandleCanvasDblClick = () => {
     quill.focus();
     // remove .ql-clipboard element from newBlock
     newBlock.querySelector(".ql-clipboard")?.remove();
-    setIds([]);
     setEditingBlockId(chaiBlock.getAttribute("data-block-id"));
   };
 };
