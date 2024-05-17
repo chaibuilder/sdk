@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useMemo } from "react";
 import { findLast, get } from "lodash-es";
 import { CrossCircledIcon, InfoCircledIcon } from "@radix-ui/react-icons";
@@ -131,6 +132,7 @@ const getBreakpoint = (mq: string): string =>
   `${mq.toUpperCase()} ${BREAKPOINTS[mq] ? `(${BREAKPOINTS[mq]} & up)` : ""}`;
 
 export const BlockStyle = (props: EditOptionProps) => {
+  const { t } = useTranslation();
   const { type = "icons", label, property, onEmitChange = () => {}, units, negative = false } = props;
   const [dark] = useDarkMode();
   const [stylingState] = useStylingState();
@@ -195,7 +197,7 @@ export const BlockStyle = (props: EditOptionProps) => {
     <BlockStyleProvider canChange={canChange} canReset={currentClass && canReset}>
       <div className="group flex flex-row items-center py-2 first:pt-0 last:pb-0">
         <div className="relative w-[70px] truncate text-xs text-foreground">
-          <span className={`text-[11px] ${currentClass && !canReset ? "text-foreground" : ""}`}>{label}</span>
+          <span className={`text-[11px] ${currentClass && !canReset ? "text-foreground" : ""}`}>{t(label)}</span>
         </div>
         <div className="flex flex-row items-center">
           <div className="w-[150px]">

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAtom } from "jotai";
+import { useTranslation } from "react-i18next";
 import {
   Alert,
   AlertTitle,
@@ -19,6 +20,7 @@ import { addBlocksModalAtom } from "../../../../atoms/blocks";
 import { getBlocksFromHTML } from "../../../../import-html/html-to-json";
 
 const ImportHTML = () => {
+  const { t } = useTranslation();
   const [code, setCode] = useState("");
   const { addPredefinedBlock } = useAddBlock();
   const [ids]: any = useSelectedBlockIds();
@@ -39,13 +41,13 @@ const ImportHTML = () => {
     <Card className="border-border/0 p-0 shadow-none">
       <CardHeader className="p-3">
         <CardDescription>
-          Use HTML snippets from Tailwind CSS component libraries etc. or just copy paste your own HTML code.
+          {t("html_snippet_description")}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-2 px-3 py-0">
         <div className="space-y-1">
           <Label htmlFor="current" className="text-sm">
-            Tailwind HTML snippet:
+            {t("tailwind_html_snippet")}
           </Label>
           <Textarea
             autoFocus
@@ -54,19 +56,18 @@ const ImportHTML = () => {
             defaultValue={code}
             onChange={(evt) => setCode(evt.target.value)}
             rows={12}
-            placeholder={`Enter your code snippet here...`}
+            placeholder={t("enter_code_snippet")}
             className="resize-none bg-gray-100 overflow-x-auto whitespace-pre text-xs font-mono font-normal"
           />
         </div>
       </CardContent>
       <CardFooter className="flex flex-col justify-end p-3">
         <Button disabled={code.trim() === ""} onClick={() => importComponents()} size="sm" className="w-full">
-          Import HTML
+          {t("import_html")}
         </Button>
         <Alert variant="default" className="mt-2 p-1 border-none text-gray-400">
-          <AlertTitle className="text-xs  font-normal leading-4">
-            NOTE: Imported html will be added to the currently selected block. If no block is selected, the html will be
-            added to the page.
+          <AlertTitle className="text-xs font-normal leading-4">
+            {t("note_imported_html")}
           </AlertTitle>
         </Alert>
       </CardFooter>

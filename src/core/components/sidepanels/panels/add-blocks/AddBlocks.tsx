@@ -1,6 +1,7 @@
 import React, { Suspense, useEffect, useState } from "react";
 import { filter, find, first, groupBy, includes, isEmpty, map, reject, uniq, values } from "lodash-es";
 import { useAtom } from "jotai";
+import { useTranslation } from "react-i18next";
 import {
   Accordion,
   AccordionContent,
@@ -39,6 +40,7 @@ const isAllowedBlockType = (block: ChaiBlock | null | undefined, type: string) =
 };
 
 const AddBlocksPanel = () => {
+  const { t } = useTranslation();
   const [tab, setTab] = useState<string>("core");
   const [active, setActive] = useState<string>("basic");
   const chaiBlocks = useChaiBlocks();
@@ -70,9 +72,9 @@ const AddBlocksPanel = () => {
   return (
     <div className="flex h-full flex-col overflow-hidden">
       <div className="mb-2 flex flex-col justify-between rounded-md bg-background/30 p-1">
-        <h1 className="flex flex-col items-baseline px-1 text-xl font-semibold xl:flex-col">Add block</h1>
+        <h1 className="flex flex-col items-baseline px-1 text-xl font-semibold xl:flex-col">{t("add_block")}</h1>
         <span className="p-0 text-xs font-light leading-3 opacity-80 xl:pl-1">
-          {tab === "html" ? "(Enter or paste TailwindCSS HTML snippet)" : "(Click to add block to page)"}
+          {tab === "html" ? t("enter_paste_tailwind_html") : t("click_to_add_block")}
         </span>
       </div>
 
@@ -84,9 +86,9 @@ const AddBlocksPanel = () => {
         value={tab}
         className="h-max">
         <TabsList className={"grid w-full " + (hasUiBlocks ? "grid-cols-3" : "grid-cols-2")}>
-          <TabsTrigger value="core">Core</TabsTrigger>
-          {hasUiBlocks ? <TabsTrigger value="ui-blocks">Custom Blocks</TabsTrigger> : null}
-          <TabsTrigger value="html">Import </TabsTrigger>
+          <TabsTrigger value="core">{t("core")}</TabsTrigger>
+          {hasUiBlocks ? <TabsTrigger value="ui-blocks">{t("custom_blocks")}</TabsTrigger> : null}
+          <TabsTrigger value="html">{t("import")}</TabsTrigger>
         </TabsList>
       </Tabs>
       {tab === "core" && (

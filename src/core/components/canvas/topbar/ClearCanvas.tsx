@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useCallback } from "react";
 import { EraserIcon } from "@radix-ui/react-icons";
 import {
@@ -15,6 +16,7 @@ import {
 import { useCanvasHistory, useSelectedBlockIds, useSelectedStylingBlocks, useSetAllBlocks } from "../../../hooks";
 
 export const ClearCanvas = () => {
+  const { t } = useTranslation();
   const [setAllBlocks] = useSetAllBlocks();
   const { createSnapshot } = useCanvasHistory();
   const [, setIds] = useSelectedBlockIds();
@@ -31,17 +33,17 @@ export const ClearCanvas = () => {
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button size="sm" variant="ghost" className="flex items-center gap-x-1">
-            <EraserIcon /> Clear
+            <EraserIcon /> {t("clear")}
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent className="border-border">
           <AlertDialogHeader>
-            <AlertDialogTitle>Clear whole canvas?</AlertDialogTitle>
-            <AlertDialogDescription>Are you sure you want to clear the whole canvas?</AlertDialogDescription>
+            <AlertDialogTitle>{t("clear_canvas_title")}</AlertDialogTitle>
+            <AlertDialogDescription>{t("clear_canvas_description")}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={clearCanvas}>Yes</AlertDialogAction>
+            <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+            <AlertDialogAction onClick={clearCanvas}>{t("yes")}</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

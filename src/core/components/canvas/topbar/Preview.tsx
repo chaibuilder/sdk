@@ -1,7 +1,9 @@
+import { useTranslation } from "react-i18next";
 import { Button, Tooltip, TooltipContent, TooltipTrigger } from "../../../../ui";
 import { useBuilderProp } from "../../../hooks";
 
 export const Preview = () => {
+  const { t } = useTranslation();
   const previewLink = useBuilderProp("previewLink", false);
   if (!previewLink) return null;
   return (
@@ -25,12 +27,12 @@ export const Preview = () => {
                 <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
                 <circle cx="12" cy="12" r="3"></circle>
               </svg>
-              &nbsp;Preview
+              &nbsp;{t("preview")}
             </Button>
           </a>
         </TooltipTrigger>
         <TooltipContent>
-          <p>Preview</p>
+          <p>{t("preview")}</p>
         </TooltipContent>
       </Tooltip>
     </div>
