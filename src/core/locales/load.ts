@@ -21,7 +21,7 @@ i18n
         translation: lngEs,
       }
     },
-    lng: "en", // if you're using a language detector, do not define the lng option
+    lng: "pt-BR", // if you're using a language detector, do not define the lng option
     fallbackLng: "en",
 
     interpolation: {

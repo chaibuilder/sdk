@@ -3,7 +3,7 @@
   "enter_paste_tailwind_html": "(Digite ou cole um trecho HTML do TailwindCSS)",
   "click_to_add_block": "(Clique para adicionar bloco à página)",
   "core": "Principal",
-  "custom_blocks": "Blocos Personalizados",
+  "custom_blocks": "Personalizados",
   "import": "Importar",
   "html_snippet_description": "Use trechos HTML de bibliotecas de componentes Tailwind CSS, etc. ou simplesmente copie e cole seu próprio código HTML.",
   "tailwind_html_snippet": "Trecho HTML do Tailwind:",
