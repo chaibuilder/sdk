@@ -99,29 +99,30 @@ const BreakpointCard = ({
   breakpoint,
   width,
   icon,
-  onClick
+  onClick,
 }: BreakpointCardProps) => {
   const { t } = useTranslation();
-  return (<HoverCard>
-    <HoverCardTrigger asChild>
-      <Button
-        onClick={() => onClick(width)}
-        size="sm"
-        variant={breakpoint === currentBreakpoint ? "secondary" : "ghost"}>
-        {icon}
-      </Button>
-    </HoverCardTrigger>
-    <HoverCardContent className="w-52 border-border">
-      <div className="flex justify-between space-x-4">
-        <div className="space-y-1">
-          <h4 className="text-sm font-semibold">{t(title)}</h4>
-          <p className="text-xs">{t(content)}</p>
+  return (
+    <HoverCard>
+      <HoverCardTrigger asChild>
+        <Button
+          onClick={() => onClick(width)}
+          size="sm"
+          variant={breakpoint === currentBreakpoint ? "secondary" : "ghost"}>
+          {icon}
+        </Button>
+      </HoverCardTrigger>
+      <HoverCardContent className="w-52 border-border">
+        <div className="flex justify-between space-x-4">
+          <div className="space-y-1">
+            <h4 className="text-sm font-semibold">{t(title)}</h4>
+            <p className="text-xs">{t(content)}</p>
+          </div>
         </div>
-      </div>
-    </HoverCardContent>
-  </HoverCard>)
-}
-
+      </HoverCardContent>
+    </HoverCard>
+  );
+};
 
 export const Breakpoints = () => {
   const [, breakpoint, setNewWidth] = useCanvasWidth();
@@ -143,7 +144,7 @@ export const Breakpoints = () => {
       {map(
         BREAKPOINTS.filter((bp: BreakpointItemType) => includes(selectedBreakpoints, toUpper(bp.breakpoint))),
         (bp: BreakpointItemType) => (
-          <BreakpointCard {...bp} onClick={setNewWidth} key={bp.breakpoint} currentBreakpoint={breakpoint} t={t} />
+          <BreakpointCard {...bp} onClick={setNewWidth} key={bp.breakpoint} currentBreakpoint={breakpoint} />
         ),
       )}
       <DropdownMenu>
