@@ -6,6 +6,7 @@ import { useSelectedBlockCurrentClasses } from "../../../hooks";
 import { EDITOR_ICONS } from "../../../constants/ICONS";
 import { BlockStyle } from "./BlockStyle";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../ui";
+import { useTranslation } from "react-i18next";
 
 const basicUnits = ["px", "%", "em", "rem", "ch", "vh", "vw"];
 
@@ -18,6 +19,7 @@ export const MultipleChoices = ({
   units = basicUnits,
   negative = false,
 }: any) => {
+  const { t } = useTranslation();
   const [selectedProp, setSelectedProp] = useState(options[0].key);
   const currentClasses: Array<ClassDerivedObject> = useSelectedBlockCurrentClasses();
   const hasAnyClassSet = useCallback((key: string) => map(currentClasses, "property").includes(key), [currentClasses]);
@@ -28,7 +30,7 @@ export const MultipleChoices = ({
         borderT ? "border-t" : ""
       }`}>
       <div className="flex flex-row text-xs">
-        {label && <span className="relative w-[70px] flex-none text-xs text-foreground">{label}</span>}
+        {label && <span className="relative w-[70px] flex-none text-xs text-foreground">{t(label)}</span>}
         <div className="mb-3 flex grow flex-row flex-wrap gap-x-px">
           {React.Children.toArray(
             options.map(({ label: l, key }: any) => (

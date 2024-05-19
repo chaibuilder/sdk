@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { DesktopIcon, DotsVerticalIcon, LaptopIcon, MobileIcon } from "@radix-ui/react-icons";
 import { includes, map, toUpper } from "lodash-es";
 import {
@@ -48,43 +49,43 @@ const TabletIcon = ({ landscape = false }) => (
 
 const BREAKPOINTS: BreakpointItemType[] = [
   {
-    title: "Mobile (XS)",
-    content: "Styles set here are applied to all screen unless edited at higher breakpoint",
+    title: "mobile_xs_title",
+    content: "mobile_xs_content",
     breakpoint: "xs",
     icon: <MobileIcon />,
     width: 400,
   },
   {
-    title: "Mobile landscape (SM)",
-    content: "Styles set here are applied at 640px and up unless edited at higher breakpoint",
+    title: "mobile_sm_title",
+    content: "mobile_sm_content",
     breakpoint: "sm",
     icon: <MobileIcon className="rotate-90" />,
     width: 640,
   },
   {
-    title: "Tablet (MD)",
-    content: "Styles set here are applied at 768px and up",
+    title: "tablet_md_title",
+    content: "tablet_md_content",
     breakpoint: "md",
     icon: <TabletIcon />,
     width: 800,
   },
   {
-    title: "Tablet Landscape (LG)",
-    content: "Styles set here are applied at 1024px and up unless edited at higher breakpoint",
+    title: "tablet_lg_title",
+    content: "tablet_lg_content",
     breakpoint: "lg",
     icon: <TabletIcon landscape />,
     width: 1024,
   },
   {
-    title: "Desktop (XL)",
-    content: "Styles set here are applied at 1280px and up unless edited at higher breakpoint",
+    title: "desktop_xl_title",
+    content: "desktop_xl_content",
     breakpoint: "xl",
     icon: <LaptopIcon />,
     width: 1420,
   },
   {
-    title: "Large Desktop (2XL)",
-    content: "Styles set here are applied at 1536px and up",
+    title: "large_desktop_2xl_title",
+    content: "large_desktop_2xl_content",
     breakpoint: "2xl",
     icon: <DesktopIcon />,
     width: 1920,
@@ -98,9 +99,10 @@ const BreakpointCard = ({
   breakpoint,
   width,
   icon,
-  onClick,
-}: BreakpointCardProps) => (
-  <HoverCard>
+  onClick
+}: BreakpointCardProps) => {
+  const { t } = useTranslation();
+  return (<HoverCard>
     <HoverCardTrigger asChild>
       <Button
         onClick={() => onClick(width)}
@@ -112,17 +114,19 @@ const BreakpointCard = ({
     <HoverCardContent className="w-52 border-border">
       <div className="flex justify-between space-x-4">
         <div className="space-y-1">
-          <h4 className="text-sm font-semibold">{title}</h4>
-          <p className="text-xs">{content}</p>
+          <h4 className="text-sm font-semibold">{t(title)}</h4>
+          <p className="text-xs">{t(content)}</p>
         </div>
       </div>
     </HoverCardContent>
-  </HoverCard>
-);
+  </HoverCard>)
+}
+
 
 export const Breakpoints = () => {
   const [, breakpoint, setNewWidth] = useCanvasWidth();
   const [selectedBreakpoints, setSelectedBreakpoints] = useSelectedBreakpoints();
+  const { t } = useTranslation();
 
   const toggleBreakpoint = (newBreakPoint: string) => {
     if (selectedBreakpoints.includes(newBreakPoint)) {
@@ -139,7 +143,7 @@ export const Breakpoints = () => {
       {map(
         BREAKPOINTS.filter((bp: BreakpointItemType) => includes(selectedBreakpoints, toUpper(bp.breakpoint))),
         (bp: BreakpointItemType) => (
-          <BreakpointCard {...bp} onClick={setNewWidth} key={bp.breakpoint} currentBreakpoint={breakpoint} />
+          <BreakpointCard {...bp} onClick={setNewWidth} key={bp.breakpoint} currentBreakpoint={breakpoint} t={t} />
         ),
       )}
       <DropdownMenu>
@@ -149,7 +153,7 @@ export const Breakpoints = () => {
           </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56 border-border text-xs">
-          <DropdownMenuLabel>Breakpoints</DropdownMenuLabel>
+          <DropdownMenuLabel>{t("Breakpoints")}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {map(BREAKPOINTS, (bp: BreakpointItemType) => (
             <DropdownMenuCheckboxItem
@@ -157,7 +161,7 @@ export const Breakpoints = () => {
               disabled={bp.breakpoint === "xs"}
               onCheckedChange={() => toggleBreakpoint(toUpper(bp.breakpoint))}
               checked={includes(selectedBreakpoints, toUpper(bp.breakpoint))}>
-              {bp.title}
+              {t(bp.title)}
             </DropdownMenuCheckboxItem>
           ))}
         </DropdownMenuContent>

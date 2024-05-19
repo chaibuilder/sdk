@@ -22,6 +22,7 @@ import {
 } from "../../../ui";
 import React, { useEffect, useMemo, useState } from "react";
 import { filter, find, isEmpty, isNull, map } from "lodash-es";
+import { useTranslation } from "react-i18next";
 import { usePageDataProviders } from "../../hooks/usePageDataProviders.ts";
 import { useAtom } from "jotai";
 import { pageSyncStateAtom } from "../../hooks/useSavePage.ts";
@@ -30,6 +31,7 @@ import { ErrorBoundary } from "../ErrorBoundary.tsx";
 const LazyViewer = React.lazy(() => import("react-json-view"));
 
 const ViewProviderData = ({ provider, onClose }) => {
+  const { t } = useTranslation();
   const [json, setJson] = useState(null);
 
   useEffect(() => {
@@ -45,7 +47,7 @@ const ViewProviderData = ({ provider, onClose }) => {
     <Dialog onOpenChange={(open) => (!open ? onClose() : "")} defaultOpen={true}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Data Provider: {provider.name}</DialogTitle>
+          <DialogTitle>{t("data_provider")}: {provider.name}</DialogTitle>
           <DialogDescription>{provider.description}</DialogDescription>
         </DialogHeader>
         <ErrorBoundary>
@@ -64,30 +66,31 @@ const ViewProviderData = ({ provider, onClose }) => {
 };
 
 function RemoveProviderConfirmation({
-  children,
-  name,
-  onRemove,
-}: {
+                                      children,
+                                      name,
+                                      onRemove,
+                                    }: {
   children: any;
   name: string;
   onRemove: () => void;
 }) {
+  const { t } = useTranslation();
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Are you sure, you want to remove <span className="text-blue-500">{name}</span> provider?
+            {t("remove_provider_confirmation", { name })}
           </AlertDialogTitle>
           <AlertDialogDescription>
-            Your data provider will be removed from this page and all added data binding will be not visible on blocks.
+            {t("remove_provider_warning")}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
           <AlertDialogAction onClick={onRemove} className="bg-red-600 hover:bg-red-700">
-            Remove
+            {t("remove")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
@@ -96,6 +99,7 @@ function RemoveProviderConfirmation({
 }
 
 export const PageDataProviders = () => {
+  const { t } = useTranslation();
   const providersList = useMemo(() => getChaiDataProviders(), []);
   const [dataProviders, setChaiProviders] = usePageDataProviders();
   const [, setSyncState] = useAtom(pageSyncStateAtom);
@@ -136,9 +140,10 @@ export const PageDataProviders = () => {
     return (
       <div>
         <p className="text-gray-500 mb-1.5 text-xs p-4">
-          You have no data providers registered. Please add a data provider to your project. <br />
+          {t("no_data_providers")}
+          <br />
           <a className="text-blue-500" href="https://chaibuilder.com/docs/registering-data-providers" target={"_blank"}>
-            Learn more
+            {t("learn_more")}
           </a>
         </p>
       </div>
@@ -148,15 +153,15 @@ export const PageDataProviders = () => {
     <div className="px-1">
       <br />
       <label>
-        <p className="text-gray-500 mb-1.5 text-xs">Add data providers:</p>
+        <p className="text-gray-500 mb-1.5 text-xs">{t("add_data_providers")}</p>
       </label>
       <div className="flex items-center space-x-1">
         <Select value={provider} onValueChange={(value) => addProvider(value)}>
           <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select a provider" />
+            <SelectValue placeholder={t("select_provider")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Choose</SelectItem>
+            <SelectItem value="">{t("choose")}</SelectItem>
             {options.map((option) => (
               <SelectItem key={option.value} value={option.value}>
                 {option.label}
@@ -168,7 +173,7 @@ export const PageDataProviders = () => {
       <br />
 
       <div className={`border-t ${providers.length ? "block" : "hidden"}`}>
-        <p className="text-gray-500 pt-4 pb-1.5 text-xs flex-1 font-medium">Page data providers:</p>
+        <p className="text-gray-500 pt-4 pb-1.5 text-xs flex-1 font-medium">{t("page_data_providers")}:</p>
         <div className="space-y-2">
           {providers.map((dataProvider) => (
             <div
@@ -201,7 +206,7 @@ export const PageDataProviders = () => {
                     <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
                     <circle cx="12" cy="12" r="3"></circle>
                   </svg>
-                  View Data
+                  {t("view_data")}
                 </button>
                 <RemoveProviderConfirmation onRemove={() => removeProvider(dataProvider)} name={dataProvider.name}>
                   <button className="inline-flex items-center justify-center text-xs font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 underline-offset-4 hover:underline h-9 rounded-md px-3 text-red-500">
@@ -220,7 +225,7 @@ export const PageDataProviders = () => {
                       <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
                       <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
                     </svg>
-                    Remove
+                    {t("remove")}
                   </button>
                 </RemoveProviderConfirmation>
               </div>

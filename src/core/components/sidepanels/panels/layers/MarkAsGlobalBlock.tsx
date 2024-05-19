@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { GlobeIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { Button } from "../../../../../ui";
@@ -5,26 +6,27 @@ import { useMarkAsGlobalBlock } from "../../../../hooks";
 import { capitalize } from "lodash-es";
 
 const MarkAsGlobalBlock = ({ id = null, closeModal }: { id: string | null; closeModal: () => void }) => {
+  const { t } = useTranslation();
   const markAsGlobal = useMarkAsGlobalBlock();
   const [name, setName] = useState("");
 
   return (
     <>
-      <h1 className="text-lg font-bold">Mark as Global</h1>
+      <h1 className="text-lg font-bold">{t("mark_as_global")}</h1>
       <div className={"py-2 text-sm"}>
-        Note: Global blocks are single instances. Editing global blocks will be reflected on all pages using these
-        blocks. <br />
+        {t("global_block_note")}
+        <br />
         <ul className={"mt-4 list-inside list-disc space-y-1"}>
           <li>
-            Global blocks are indicated with <GlobeIcon className="inline" /> icon in left sidebar
+            {t("global_block_indicator")} <GlobeIcon className="inline" />
           </li>
-          <li>{`Global blocks are available under "Global" category`}</li>
+          <li>{t("global_block_category")}</li>
         </ul>
       </div>
       <div className={"my-4"}>
-        <label className={"block text-sm font-medium text-gray-400"}>Enter global block name</label>
+        <label className={"block text-sm font-medium text-gray-400"}>{t("enter_global_block_name")}</label>
         <input
-          placeholder={"Eg: Header, Footer "}
+          placeholder={t("eg_header_footer")}
           className={"mt-2 w-full"}
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -39,10 +41,10 @@ const MarkAsGlobalBlock = ({ id = null, closeModal }: { id: string | null; close
           }}
           disabled={name.length <= 2}
           variant="default">
-          Mark as Global
+          {t("mark_as_global")}
         </Button>
         <Button variant="outline" onClick={closeModal}>
-          Cancel
+          {t("cancel")}
         </Button>
       </div>
     </>

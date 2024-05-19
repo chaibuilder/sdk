@@ -4,8 +4,10 @@ import { MultipleChoices } from "../choices/MultipleChoices";
 import { BlockStyle } from "../choices/BlockStyle";
 import { useSelectedBlockCurrentClasses } from "../../../hooks";
 import { AccordionContent, AccordionItem, AccordionTrigger } from "../../../../ui";
+import { useTranslation } from "react-i18next";
 
 const NestedOptions = ({ heading, items }: any) => {
+  const { t } = useTranslation();
   const currentClasses = useSelectedBlockCurrentClasses();
   const isAnyPropertySet: boolean = useMemo(() => {
     const getItemProperties = (it: any[]) =>
@@ -35,7 +37,7 @@ const NestedOptions = ({ heading, items }: any) => {
     <details>
       <summary className="my-px cursor-default rounded-md bg-background p-px px-2 text-[11px] text-foreground">
         <div className="inline">
-          {heading}
+          {t(heading)}
           {isAnyPropertySet ? (
             <span
               className={`ml-1 mr-2 inline-block h-[8px] w-[8px] rounded-full ${
@@ -60,6 +62,7 @@ const NestedOptions = ({ heading, items }: any) => {
 const SectionContext = createContext({});
 
 export const SettingsSection = ({ section }: any) => {
+  const { t } = useTranslation();
   const currentClasses = useSelectedBlockCurrentClasses();
 
   const matchCondition = useCallback(
@@ -82,7 +85,7 @@ export const SettingsSection = ({ section }: any) => {
   );
 
   const isAnyPropertySet: boolean = useMemo(() => {
-    if (currentClasses.length > 0 && section.heading === "Classes") {
+    if (currentClasses.length > 0 && section.heading === "classes.heading") {
       return true;
     }
     const getItemProperties = (items: any[]) =>
@@ -117,7 +120,7 @@ export const SettingsSection = ({ section }: any) => {
         <AccordionTrigger className="px-3 py-2 text-xs hover:no-underline">
           <div className="flex items-center gap-x-2">
             <div className={`h-[8px] w-[8px] rounded-full ${isAnyPropertySet ? "bg-blue-500" : "bg-gray-300"}`} />
-            {section.heading}
+            {t(section.heading)}
           </div>
         </AccordionTrigger>
         <AccordionContent className="bg-gray-100 px-3.5 py-2">

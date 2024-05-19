@@ -104,8 +104,8 @@ const Settings: React.FC = () => {
 
         <Tabs defaultValue="settings" className="flex h-full w-full flex-col py-1">
           <TabsList className="mx-1 grid grid-cols-2">
-            <TabsTrigger value="settings">Settings</TabsTrigger>
-            <TabsTrigger value="styling">Styling</TabsTrigger>
+            <TabsTrigger value="settings">{t("settings")}</TabsTrigger>
+            <TabsTrigger value="styling">{t("styling")}</TabsTrigger>
           </TabsList>
           <TabsContent
             value="settings"
