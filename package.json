@@ -169,6 +169,7 @@
     "autoprefixer": "^10.4.16",
     "better-docs": "^2.7.2",
     "better-sqlite3": "^9.1.1",
+    "clean-jsdoc-theme": "^4.3.0",
     "drizzle-kit": "^0.20.4",
     "drizzle-orm": "^0.29.0",
     "eslint": "^8.45.0",
