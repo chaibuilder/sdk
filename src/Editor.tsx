@@ -3,26 +3,27 @@ import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
 import { lsBlocksAtom, lsBrandingOptionsAtom, lsProvidersAtom } from "./atoms-dev.ts";
 
-function ChaiEditor() {
+let PreviewMessage = () => {
   const { t } = useTranslation();
+  return (
+    <div className={"font-normal text-sm"}>
+      {t("dev_mode_message")}{" "}
+      <a target={"_blank"} className="text-orange-500 underline" href={"/preview"}>
+        /preview
+      </a>{" "}
+      {t("to_see_page_preview")}
+    </div>
+  );
+};
+
+function ChaiEditor() {
   const [blocks, setBlocks] = useAtom(lsBlocksAtom);
   const [brandingOptions, setBrandingOptions] = useAtom(lsBrandingOptionsAtom);
   const [providers, setProviders] = useAtom(lsProvidersAtom);
+
   return (
     <ChaiBuilderEditor
-      topBarComponents={{
-        left: [
-          () => (
-            <div className={"font-normal text-sm"}>
-              {t("dev_mode_message")}{" "}
-              <a target={"_blank"} className="text-orange-500 underline" href={"/preview"}>
-                /preview
-              </a>{" "}
-              {t("to_see_page_preview")}
-            </div>
-          ),
-        ],
-      }}
+      topBarComponents={{ left: [PreviewMessage] }}
       blocks={blocks}
       dataProviders={providers}
       brandingOptions={brandingOptions}

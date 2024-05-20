@@ -50,6 +50,10 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   }, [props.blocks]);
 
   useEffect(() => {
+    i18n.changeLanguage(props.locale || "en");
+  }, [props.locale]);
+
+  useEffect(() => {
     setBrandingOptions(props.brandingOptions);
   }, [props.brandingOptions, setBrandingOptions]);
 

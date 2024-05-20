@@ -29,4 +29,4 @@ i18n
     },
   });
 
-export default "";
+export default i18n;

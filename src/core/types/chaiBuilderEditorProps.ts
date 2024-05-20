@@ -1,8 +1,8 @@
 import { ChaiBlock } from "./ChaiBlock";
-import React, { LazyExoticComponent } from "react";
+import React from "react";
 import { ChaiPage, PredefinedBlock } from "./index";
 
-interface UiLibrary {
+interface UILibrary {
   name: string;
   uuid: string;
 }
@@ -12,18 +12,17 @@ interface Block {
   [key: string]: any;
 }
 
-type ReactComponents = React.LazyExoticComponent<any> | React.FC<any>;
+type ReactComponentType = React.ComponentType<any>;
 
 export interface ChaiBuilderEditorProps {
   blocks?: ChaiBlock[];
   editable?: boolean;
-  nonEditableComponent?: ReactComponents;
+  locale?: string;
+  nonEditableComponent?: ReactComponentType;
   brandingOptions?: Record<string, string>;
   canvas?: React.FC<any>;
   previewLink?: string;
-  canvasTopBarComponents?: {
-    right?: React.LazyExoticComponent<any>[];
-  };
+  canvasTopBarComponents?: { right?: ReactComponentType[] };
   dataBindingSupport?: boolean;
   dataProviders?: { providerKey: string; args: Record<string, any> }[];
   darkMode?: boolean;
@@ -41,17 +40,17 @@ export interface ChaiBuilderEditorProps {
   onSavePage: ({ blocks, providers }: any) => Promise<boolean>;
   onSaveBrandingOptions: (brandingOptions: any) => Promise<boolean>;
   onSyncStatusChange?: (syncStatus: "UNSAVED" | "SAVED") => void;
-  previewComponent?: LazyExoticComponent<any>;
+  previewComponent?: ReactComponentType;
   sideBarComponents?: {
-    bottom?: ReactComponents[];
-    top?: { icon: React.FC<any> | string; name: string; panel: ReactComponents }[];
+    bottom?: ReactComponentType[];
+    top?: { icon: ReactComponentType | string; name: string; panel: ReactComponentType }[];
   };
   topBarComponents?: {
-    center?: ReactComponents[];
-    left?: ReactComponents[];
-    right?: ReactComponents[];
+    center?: ReactComponentType[];
+    left?: ReactComponentType[];
+    right?: ReactComponentType[];
   };
-  uiLibraries?: UiLibrary[];
+  uiLibraries?: UILibrary[];
   uploadMediaCallback?: (file: File) => Promise<{ url: string }>;
   getPages?: () => Promise<ChaiPage[]>;
   unsplashAccessKey?: string;
