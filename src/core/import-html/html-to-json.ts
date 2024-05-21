@@ -139,11 +139,10 @@ const getBlockProps = (node: Node): Record<string, any> => {
       return { _type: "TextArea", showLabel: false };
     case "audio":
       return { _type: "Audio" };
-    case "iframe":
-      return { _type: "Iframe" };
     case "canvas":
       return { _type: "Canvas" };
     case "video":
+    case "iframe":
       return { _type: "CustomHTML" };
     case "svg":
       return { _type: "Icon" };
@@ -264,10 +263,7 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
       const inputType = block.inputType || "text";
       if (inputType === "checkbox") set(block, "_type", "Checkbox");
       else if (inputType === "radio") set(block, "_type", "Radio");
-    } else if (node.tagName === "video") {
-      /**
-       * video element to custom html block
-       */
+    } else if (node.tagName === "video" || node.tagName === "iframe") {
       block.content = stringify([node]);
       return [block] as ChaiBlock[];
     } else if (node.tagName === "svg") {
