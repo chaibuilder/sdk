@@ -1,4 +1,7 @@
 // @ts-nocheck
+/**
+ * This code is not used in the current version of the project.
+ */
 import { parse, parseResultToJSON, serialize } from "forgiving-xml-parser";
 import { filter, find, first, flatten, get, isEmpty, isString, map, trim, uniqueId } from "lodash-es";
 import formatter from "html-formatter";
