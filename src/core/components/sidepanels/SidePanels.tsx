@@ -129,7 +129,10 @@ const SidePanels = () => {
             </div>
           }>
           <div
-            className={cn("relative h-full max-h-[93%] overflow-y-auto bg-background p-1", activePanel === "layers" ? "" : "z-[100]")}
+            className={cn(
+              "relative h-full max-h-[93%] overflow-y-auto overflow-x-hidden bg-background p-1",
+              activePanel === "layers" ? "" : "z-[100]",
+            )}
             onMouseEnter={() => {
               if (hideTimeout) clearTimeout(hideTimeout);
             }}>
