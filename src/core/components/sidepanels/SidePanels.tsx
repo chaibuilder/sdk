@@ -116,13 +116,8 @@ const SidePanels = () => {
           )}
         </div>
       </div>
-      {/*<div*/}
-      {/*  onMouseEnter={hidePanel}*/}
-      {/*  onClick={() => handleChangePanel("layers")}*/}
-      {/*  className={"absolute inset-0 right-0 z-50 w-screen bg-black/20" + (activePanel === "layers" ? " hidden" : "")}*/}
-      {/*/>*/}
       <div
-        className={`fixed left-14 z-[50] h-full w-96 border-r bg-background duration-500 ease-in-out ${
+        className={`absolute left-14 z-[50] h-full w-96 border-r bg-background duration-500 ease-in-out ${
           activePanel !== "layers" ? "translate-x-0" : "-translate-x-full"
         }`}>
         <Suspense
