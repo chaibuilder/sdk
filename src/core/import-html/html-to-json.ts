@@ -1,7 +1,7 @@
 // @ts-ignore
 import { parse, stringify } from "himalaya";
 import { cn, generateUUID } from "../functions/Functions.ts";
-import { capitalize, filter, find, flatMapDeep, flatten, forEach, get, includes, isEmpty, omit, set } from "lodash-es";
+import { capitalize, filter, find, flatMapDeep, flatten, forEach, get, includes, isEmpty, set } from "lodash-es";
 import { ChaiBlock } from "../types";
 import { STYLES_KEY } from "../constants/CONTROLS";
 
@@ -208,7 +208,7 @@ const getBlockProps = (node: Node): Record<string, any> => {
       return {
         _type: "Box",
         tag: node.tagName,
-        name: node.tagName === "div" ? "Box" : capitalize(node.tagName),
+        _name: node.tagName === "div" ? "Box" : capitalize(node.tagName),
       };
   }
 };
@@ -274,9 +274,9 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
 
       const svgHeight = find(node.attributes, { key: "height" });
       const svgWidth = find(node.attributes, { key: "width" });
-      const height = get(svgHeight, "value") ? `[${get(svgHeight, "value")}px]` : "full";
-      const width = get(svgWidth, "value") ? `[${get(svgWidth, "value")}px]` : "full";
-      const svgClass = get(find(node.attributes, { key: "class" }), "value");
+      const height = get(svgHeight, "value") ? `[${get(svgHeight, "value")}px]` : "24px";
+      const width = get(svgWidth, "value") ? `[${get(svgWidth, "value")}px]` : "24px";
+      const svgClass = get(find(node.attributes, { key: "class" }), "value", "w-full h-full");
       block.styles = `${STYLES_KEY}, ${cn(`w-${width} h-${height}`, svgClass)}`.trim();
 
       node.attributes = filter(node.attributes, (attr) => !includes(["style", "width", "height", "class"], attr.key));
