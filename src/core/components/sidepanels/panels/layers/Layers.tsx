@@ -19,9 +19,7 @@ import { useExpandedIds } from "../../../../hooks/useExpandTree";
 import { ChaiBlock } from "../../../../types/ChaiBlock";
 import { BlockContextMenu } from "./BlockContextMenu";
 import { ScrollArea } from "../../../../../ui";
-import { useAtom } from "jotai";
 import { useAddBlockByDrop } from "../../../../hooks/useAddBlockByDrop";
-import { addBlocksModalAtom } from "../../../../atoms/blocks";
 import { cn } from "../../../../functions/Functions.ts";
 
 function convertToTBlocks(newTree: NodeModel[]) {
@@ -43,7 +41,6 @@ const Layers = (): React.JSX.Element => {
   const { createSnapshot } = useCanvasHistory();
   const expandedIds = useExpandedIds();
   const addBlockOnDrop = useAddBlockByDrop();
-  const [, setAddBlocks] = useAtom(addBlocksModalAtom);
   const handleDrop = async (newTree: NodeModel[], options: any) => {
     const { dragSource, relativeIndex, dropTargetId, monitor } = options;
     if (dragSource) {
@@ -54,7 +51,6 @@ const Layers = (): React.JSX.Element => {
       setIds([block.id]);
     } else {
       await addBlockOnDrop({ block: monitor.getItem(), dropTargetId, relativeIndex });
-      setAddBlocks(false);
     }
   };
 
@@ -84,7 +80,6 @@ const Layers = (): React.JSX.Element => {
           dropTargetId: "",
           relativeIndex: 0,
         });
-        setAddBlocks(false);
       })();
     },
   }));

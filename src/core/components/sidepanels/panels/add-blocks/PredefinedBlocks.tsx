@@ -5,8 +5,8 @@ import { syncBlocksWithDefaults, useChaiBlocks } from "@chaibuilder/runtime";
 import { Loader } from "lucide-react";
 import { DragPreviewImage, useDrag } from "react-dnd";
 import { useAtom } from "jotai";
-import { addBlocksModalAtom } from "../../../../atoms/blocks";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../../ui";
+import { activePanelAtom } from "../../../../atoms/ui.ts";
 
 const BlockCard = ({ block, closePopover }: { block: any; closePopover: () => void }) => {
   const [isAdding, setIsAdding] = useState(false);
@@ -83,8 +83,8 @@ export const PredefinedBlocks = () => {
     });
   }, [customGroupsList, groupsList]);
 
-  const [, setAddBlocks] = useAtom(addBlocksModalAtom);
   const [selectedGroup, setGroup] = useState(first(keys(mergedGroups)) || "");
+  const [, setActivePanel] = useAtom(activePanelAtom);
   const blocks = get(mergedGroups, selectedGroup, []);
 
   return (
@@ -108,7 +108,7 @@ export const PredefinedBlocks = () => {
       </div>
       <div className="h-full w-full space-y-2 overflow-y-auto px-2">
         {React.Children.toArray(
-          blocks.map((block) => <BlockCard block={block} closePopover={() => setAddBlocks(false)} />),
+          blocks.map((block) => <BlockCard block={block} closePopover={() => setActivePanel("layers")} />),
         )}
       </div>
     </div>
