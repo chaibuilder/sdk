@@ -17,7 +17,7 @@ import { CoreBlock } from "./CoreBlock";
 import { PredefinedBlocks } from "./PredefinedBlocks";
 import { showPredefinedBlockCategoryAtom } from "../../../../atoms/ui";
 import { ChaiBlock } from "../../../../types/ChaiBlock";
-import { useAllBlocks, useSelectedBlockIds, useUILibraryBlocks } from "../../../../hooks";
+import { useAllBlocks, useBuilderProp, useSelectedBlockIds, useUILibraryBlocks } from "../../../../hooks";
 import ImportHTML from "./ImportHTML";
 import { useChaiBlocks } from "@chaibuilder/runtime";
 
@@ -45,6 +45,7 @@ const AddBlocksPanel = () => {
   const [active, setActive] = useState<string>("basic");
   const chaiBlocks = useChaiBlocks();
   const [, setCategory] = useAtom(showPredefinedBlockCategoryAtom);
+  const importHTML = useBuilderProp("importHTML", true);
 
   const [ids] = useSelectedBlockIds();
   const blocks = useAllBlocks();
@@ -85,10 +86,10 @@ const AddBlocksPanel = () => {
         }}
         value={tab}
         className="h-max">
-        <TabsList className={"grid w-full " + (hasUiBlocks ? "grid-cols-3" : "grid-cols-2")}>
+        <TabsList className={"grid w-full " + (hasUiBlocks && importHTML ? "grid-cols-3" : "grid-cols-2")}>
           <TabsTrigger value="core">{t("core")}</TabsTrigger>
           {hasUiBlocks ? <TabsTrigger value="ui-blocks">{t("custom_blocks")}</TabsTrigger> : null}
-          <TabsTrigger value="html">{t("import")}</TabsTrigger>
+          {importHTML ? <TabsTrigger value="html">{t("import")}</TabsTrigger> : null}
         </TabsList>
       </Tabs>
       {tab === "core" && (
@@ -124,7 +125,7 @@ const AddBlocksPanel = () => {
           <PredefinedBlocks />
         </Suspense>
       )}
-      {tab === "html" && <ImportHTML />}
+      {tab === "html" && importHTML ? <ImportHTML /> : null}
     </div>
   );
 };
