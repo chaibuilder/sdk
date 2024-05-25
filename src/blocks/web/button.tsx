@@ -1,8 +1,8 @@
 import * as React from "react";
 import { ButtonIcon } from "@radix-ui/react-icons";
-import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
-import { registerChaiBlock } from "@chaibuilder/runtime";
 import { Icon, Link, Numeric, SelectOption, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
+import { registerChaiBlock } from "@chaibuilder/runtime";
+import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
 
 const ButtonBlock = (
   block: ChaiBlock & {
@@ -11,7 +11,7 @@ const ButtonBlock = (
   },
 ) => {
   const { blockProps, iconSize, icon, content, iconPos, styles, children } = block;
-  let _icon = icon;
+  const _icon = icon;
   const child = children || (
     <>
       {content}
@@ -27,7 +27,7 @@ const ButtonBlock = (
   return React.createElement("button", { ...blockProps, ...styles, type: "button" }, child);
 };
 
-registerChaiBlock(ButtonBlock as React.FC<any>, {
+registerChaiBlock(ButtonBlock, {
   type: "Button",
   label: "Button",
   category: "core",

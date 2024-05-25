@@ -1,14 +1,11 @@
-import React from "react";
+import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ChaiStudio from "./ChaiStudio";
 import Preview from "./Preview";
-import ChaiBuilderDefault from "./Editor";
-import "./blocks/website";
 import "./data-providers/data";
 import RJSF from "./RJSF.tsx";
-import ChaiBuilderEmail from "./Email.tsx";
+import "./index.css";
 
 async function enableMocking() {
   if (import.meta.env.MODE !== "development") {
@@ -21,6 +18,9 @@ async function enableMocking() {
   // once the Service Worker is up and ready to intercept requests.
   return worker.start();
 }
+
+const ChaiBuilderDefault = lazy(() => import("./Editor.tsx"));
+const ChaiBuilderEmail = lazy(() => import("./Email.tsx"));
 
 const router = createBrowserRouter([
   {

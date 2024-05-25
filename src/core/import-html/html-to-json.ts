@@ -4,6 +4,7 @@ import { cn, generateUUID } from "../functions/Functions.ts";
 import { capitalize, filter, find, flatMapDeep, flatten, forEach, get, includes, isEmpty, set } from "lodash-es";
 import { ChaiBlock } from "../types";
 import { STYLES_KEY } from "../constants/CONTROLS";
+import { omit } from "lodash";
 
 type Node = {
   type: "element" | "text" | "comment";

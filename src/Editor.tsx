@@ -4,6 +4,7 @@ import { lsBlocksAtom, lsBrandingOptionsAtom, lsProvidersAtom } from "./atoms-de
 import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
 import { PredefinedBlock } from "./core/types/CoreBlock.ts";
 import { ChaiBuilderEditor } from "./core/main";
+import "./blocks/web";
 
 let PreviewMessage = () => {
   const { t } = useTranslation();
