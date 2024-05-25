@@ -14,7 +14,16 @@ interface Block {
 
 type ReactComponentType = React.ComponentType<any>;
 
+type Breakpoint = {
+  title: string;
+  content: string;
+  breakpoint: "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+  icon: React.ReactNode | Element;
+  width: number;
+};
+
 export interface ChaiBuilderEditorProps {
+  breakpoints?: Breakpoint[];
   blocks?: ChaiBlock[];
   editable?: boolean;
   locale?: string;

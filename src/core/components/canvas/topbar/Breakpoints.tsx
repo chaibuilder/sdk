@@ -13,7 +13,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "../../../../ui";
-import { useCanvasWidth, useSelectedBreakpoints } from "../../../hooks";
+import { useBuilderProp, useCanvasWidth, useSelectedBreakpoints } from "../../../hooks";
 
 interface BreakpointItemType {
   breakpoint: string;
@@ -47,7 +47,7 @@ const TabletIcon = ({ landscape = false }) => (
   </svg>
 );
 
-const BREAKPOINTS: BreakpointItemType[] = [
+const DEFAULT_BREAKPOINTS: BreakpointItemType[] = [
   {
     title: "mobile_xs_title",
     content: "mobile_xs_content",
@@ -128,6 +128,7 @@ export const Breakpoints = () => {
   const [, breakpoint, setNewWidth] = useCanvasWidth();
   const [selectedBreakpoints, setSelectedBreakpoints] = useSelectedBreakpoints();
   const { t } = useTranslation();
+  const breakpoints = useBuilderProp("breakpoints", DEFAULT_BREAKPOINTS);
 
   const toggleBreakpoint = (newBreakPoint: string) => {
     if (selectedBreakpoints.includes(newBreakPoint)) {
@@ -139,10 +140,20 @@ export const Breakpoints = () => {
     }
   };
 
+  if (breakpoints.length < 4) {
+    return (
+      <div className="flex items-center rounded-md">
+        {map(breakpoints, (bp) => (
+          <BreakpointCard {...bp} onClick={setNewWidth} key={bp.breakpoint} currentBreakpoint={breakpoint} />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="flex items-center rounded-md">
       {map(
-        BREAKPOINTS.filter((bp: BreakpointItemType) => includes(selectedBreakpoints, toUpper(bp.breakpoint))),
+        breakpoints.filter((bp: BreakpointItemType) => includes(selectedBreakpoints, toUpper(bp.breakpoint))),
         (bp: BreakpointItemType) => (
           <BreakpointCard {...bp} onClick={setNewWidth} key={bp.breakpoint} currentBreakpoint={breakpoint} />
         ),
@@ -156,7 +167,7 @@ export const Breakpoints = () => {
         <DropdownMenuContent className="w-56 border-border text-xs">
           <DropdownMenuLabel>{t("Breakpoints")}</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {map(BREAKPOINTS, (bp: BreakpointItemType) => (
+          {map(breakpoints, (bp: BreakpointItemType) => (
             <DropdownMenuCheckboxItem
               key={bp.breakpoint}
               disabled={bp.breakpoint === "xs"}
