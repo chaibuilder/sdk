@@ -1,6 +1,6 @@
 export type ChaiBlock = {
-  readonly _id: string;
-  readonly _type: string;
+  _id: string;
+  _type: string;
   _name?: string;
   _parent?: string | null | undefined;
   _bindings?: Record<string, string>;
