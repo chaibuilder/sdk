@@ -5,7 +5,7 @@
   "author": "Suraj Air",
   "license": "BSD-3-Clause",
   "homepage": "https://chaibuilder.com",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "type": "module",
   "repository": {
     "type": "git",
@@ -55,6 +55,16 @@
     "./styles": {
       "import": "./dist/style.css",
       "require": "./dist/style.css"
+    },
+    "./web-blocks": {
+      "import": "./dist/web-blocks.js",
+      "require": "./dist/web-blocks.cjs",
+      "types": "./dist/web-blocks.d.ts"
+    },
+    "./email-blocks": {
+      "import": "./dist/email-blocks.js",
+      "require": "./dist/email-blocks.cjs",
+      "types": "./dist/email-blocks.d.ts"
     }
   },
   "scripts": {
