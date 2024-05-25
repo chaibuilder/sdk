@@ -4,10 +4,11 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ChaiStudio from "./ChaiStudio";
 import Preview from "./Preview";
-import ChaiEditor from "./Editor";
-import "./blocks";
+import ChaiBuilderDefault from "./Editor";
+import "./blocks/website";
 import "./data-providers/data";
 import RJSF from "./RJSF.tsx";
+import ChaiBuilderEmail from "./Email.tsx";
 
 async function enableMocking() {
   if (import.meta.env.MODE !== "development") {
@@ -24,7 +25,11 @@ async function enableMocking() {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <ChaiEditor />,
+    element: <ChaiBuilderDefault />,
+  },
+  {
+    path: "/email",
+    element: <ChaiBuilderEmail />,
   },
   {
     path: "/studio",
