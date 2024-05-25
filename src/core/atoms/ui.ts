@@ -31,9 +31,6 @@ canvasIframeAtom.debugLabel = "canvasIframeAtom";
 export const activePanelAtom = atom<string>("layers");
 activePanelAtom.debugLabel = "activePanelAtom";
 
-export const addBlockOffCanvasAtom = atom(false);
-addBlockOffCanvasAtom.debugLabel = "addBlockOffCanvasAtom";
-
 export const showPredefinedBlockCategoryAtom = atom("");
 showPredefinedBlockCategoryAtom.debugLabel = "showPredefinedBlockCategoryAtom";
 

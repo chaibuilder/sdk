@@ -89,9 +89,7 @@ export default function BlockSettings() {
                   Data binding is set for <b>{map(bindingProps, capitalize).join(", ")}</b>{" "}
                   {bindingProps.length === 1 ? "property" : "properties"}. Remove data binding to edit static content.
                 </div>
-              ) : (
-                ""
-              )}
+              ) : null}
               <JSONForm
                 onChange={updateRealtime}
                 createHistorySnapshot={createHistorySnapshot}

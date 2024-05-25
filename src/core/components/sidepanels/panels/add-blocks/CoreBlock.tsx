@@ -6,7 +6,6 @@ import { activePanelAtom } from "../../../../atoms/ui";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../../ui";
 import { useAddBlock, useHighlightBlockId, useSelectedBlockIds } from "../../../../hooks";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
-import { addBlocksModalAtom } from "../../../../atoms/blocks";
 import { useFeature } from "flagged";
 
 export const CoreBlock = ({ block }: { block: any }) => {
@@ -15,14 +14,12 @@ export const CoreBlock = ({ block }: { block: any }) => {
   const [ids, setSelected] = useSelectedBlockIds();
   const [, setHighlighted] = useHighlightBlockId();
   const [, setActivePanel] = useAtom(activePanelAtom);
-  const [, setAddBlocks] = useAtom(addBlocksModalAtom);
   const addBlockToPage = () => {
     if (has(block, "blocks")) {
       addPredefinedBlock(syncBlocksWithDefaults(block.blocks), first(ids));
     } else {
       addCoreBlock(block, first(ids));
     }
-    setAddBlocks(false);
     setActivePanel("layers");
   };
   const dndEnabled = useFeature("dnd");
@@ -39,7 +36,6 @@ export const CoreBlock = ({ block }: { block: any }) => {
               setTimeout(() => {
                 setSelected([]);
                 setHighlighted(null);
-                setAddBlocks(false);
                 setActivePanel("layers");
               }, 200);
             }}

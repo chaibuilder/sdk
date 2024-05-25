@@ -30,10 +30,9 @@ builderActivePageAtom.debugLabel = "builderActivePageAtom";
 export const destinationDropIndexAtom = atom<number>(-1);
 destinationDropIndexAtom.debugLabel = "destinationDropIndexAtom";
 
-export const addBlocksModalAtom = atom(false);
-addBlocksModalAtom.debugLabel = "addBlocksModalAtom";
 export const buildingBlocksAtom: any = atom<Array<any>>([]);
 buildingBlocksAtom.debugLabel = "buildingBlocksAtom";
+
 export const globalBlocksAtom = atom<Array<any>>((get) => {
   const globalBlocks = get(buildingBlocksAtom) as Array<any>;
   return filter(globalBlocks, (block) => has(block, "blockId"));

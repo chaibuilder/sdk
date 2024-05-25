@@ -43,7 +43,7 @@ export const JSONForm = memo(({ createHistorySnapshot, properties, formData, onC
       autoComplete="off"
       omitExtraData={false}
       liveOmit={false}
-      liveValidate
+      liveValidate={false}
       validator={validator}
       uiSchema={uiSchema}
       onBlur={createHistorySnapshot}

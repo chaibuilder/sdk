@@ -5,7 +5,6 @@ import { each, get } from "lodash-es";
 import { Button, Skeleton, Tabs, TabsContent, TabsList, TabsTrigger } from "../../../ui";
 import { activePanelAtom } from "../../atoms/ui";
 import { useBuilderProp } from "../../hooks";
-import { addBlocksModalAtom } from "../../atoms/blocks";
 import { DatabaseIcon, ListTreeIcon } from "lucide-react";
 import { PageDataProviders } from "./PageDataProviders.tsx";
 import { cn } from "../../functions/Functions.ts";
@@ -28,7 +27,7 @@ const SidePanels = () => {
   const [_activePanel, _setActivePanel] = useState(activePanel);
   const [hideTimeout, setHideTimeout] = useState<any>(null);
 
-  const panels: { [key: string]: LazyExoticComponent<any> } = {
+  const panels: { [key: string]: React.ComponentType<any> } = {
     "add-blocks": AddBlocksPanel,
     layers: LayersPanel,
     "branding-options": BrandingOptions,
@@ -41,15 +40,13 @@ const SidePanels = () => {
   const handleChangePanel = (newPanel: string) => {
     // * Waiting for panel to slide in before changing its content
     clearTimeout(timeout);
-    setAddBlocks(false);
     if (activePanel !== "layers" && newPanel === "layers") {
-      timeout = setTimeout(() => _setActivePanel("layers"), 500);
+      timeout = setTimeout(() => setActivePanel("layers"), 500);
     } else {
       _setActivePanel(newPanel);
     }
     setActivePanel(newPanel);
   };
-  const [, setAddBlocks] = useAtom(addBlocksModalAtom);
   const dataBindingSupport = useBuilderProp("dataBindingSupport", false);
 
   function hidePanel() {
@@ -136,7 +133,7 @@ const SidePanels = () => {
             onMouseEnter={() => {
               if (hideTimeout) clearTimeout(hideTimeout);
             }}>
-            {React.createElement(get(panels, _activePanel, () => <div />))}
+            {React.createElement(get(panels, activePanel, () => <div />))}
           </div>
         </Suspense>
       </div>
