@@ -1,6 +1,8 @@
+import "./body";
 import "./box";
 import "./heading";
 import "./paragraph";
+import "./span";
 import "./rte";
 import "./button";
 import "./link";
@@ -10,7 +12,6 @@ import "./image";
 import "./slot";
 import "./video";
 import "./custom-html";
-import "./span";
 import "./divider";
 import "./line-break";
 import "./text";

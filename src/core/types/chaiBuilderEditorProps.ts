@@ -22,45 +22,76 @@ type Breakpoint = {
   width: number;
 };
 
+type SavePageData = {
+  blocks: ChaiBlock[];
+  providers?: DataProvider[];
+};
+
+type DataProvider = { providerKey: string; args: Record<string, any> };
+
 export interface ChaiBuilderEditorProps {
   breakpoints?: Breakpoint[];
-  blocks?: ChaiBlock[];
+
   editable?: boolean;
+
+  loading?: boolean;
+
   locale?: string;
+
   nonEditableComponent?: ReactComponentType;
-  brandingOptions?: Record<string, string>;
+
   canvas?: React.FC<any>;
-  previewLink?: string;
   canvasTopBarComponents?: { right?: ReactComponentType[] };
+
+  previewLink?: string;
+
   dataBindingSupport?: boolean;
-  dataProviders?: { providerKey: string; args: Record<string, any> }[];
+  dataProviders?: DataProvider[];
+
   darkMode?: boolean;
+
   dndOptions?: any;
+
+  importHTMLSupport?: boolean;
+
   fetchMediaCallback?: (limit?: number, offset?: number) => Promise<any[]>;
+  uploadMediaCallback?: (file: File) => Promise<{ url: string }>;
+
   getExternalPredefinedBlock?: (
     block: PredefinedBlock,
   ) => Promise<PredefinedBlock & { blocks: ChaiBlock[]; html: string }>;
   getUILibraryBlocks?: (libraryUuid: string) => Promise<PredefinedBlock[]>;
+  uiLibraries?: UILibrary[];
+
   subPages?: Block[];
   subPagesSupport?: boolean;
-  importHTML?: boolean;
-  loading?: boolean;
+
+  blocks?: ChaiBlock[];
   onSaveBlocks?: ({ blocks, providers }: any) => Promise<any>; // deprecated
-  onSavePage: ({ blocks, providers }: any) => Promise<boolean>;
-  onSaveBrandingOptions: (brandingOptions: any) => Promise<boolean>;
+  onSavePage?: ({ blocks, providers }: SavePageData) => Promise<boolean | Error>;
+
+  brandingOptions?: Record<string, string>;
+  onSaveBrandingOptions?: (brandingOptions: Record<string, any>) => Promise<boolean | Error>;
+
+  container?: ChaiBlock;
+  onSaveContainer?: (container: ChaiBlock) => Promise<boolean | Error>;
+
   onSyncStatusChange?: (syncStatus: "UNSAVED" | "SAVED") => void;
+
   previewComponent?: ReactComponentType;
+
   sideBarComponents?: {
     bottom?: ReactComponentType[];
     top?: { icon: ReactComponentType | string; name: string; panel: ReactComponentType }[];
   };
+
   topBarComponents?: {
     center?: ReactComponentType[];
     left?: ReactComponentType[];
     right?: ReactComponentType[];
   };
-  uiLibraries?: UILibrary[];
-  uploadMediaCallback?: (file: File) => Promise<{ url: string }>;
+
   getPages?: () => Promise<ChaiPage[]>;
+
   unsplashAccessKey?: string;
 }

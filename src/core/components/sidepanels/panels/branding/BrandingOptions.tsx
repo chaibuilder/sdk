@@ -65,6 +65,7 @@ const BrandingOptions = (): React.JSX.Element => {
   const brandingRef = React.useRef(brandingOptions);
 
   React.useEffect(() => {
+    // on unmount
     return () => {
       if (!isEqual(brandingOptions, brandingRef.current)) {
         onSaveBrandingOptions(brandingRef.current);

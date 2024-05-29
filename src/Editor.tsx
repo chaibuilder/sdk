@@ -1,10 +1,11 @@
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
-import { lsBlocksAtom, lsBrandingOptionsAtom, lsProvidersAtom } from "./atoms-dev.ts";
+import { lsBlocksAtom, lsBrandingOptionsAtom, lsContainer, lsProvidersAtom } from "./atoms-dev.ts";
 import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
 import { PredefinedBlock } from "./core/types/CoreBlock.ts";
 import { ChaiBuilderEditor } from "./core/main";
 import "./blocks/web";
+import { wrapInsideContainer } from "./core/functions/wrapInsideContainer.ts";
 
 let PreviewMessage = () => {
   const { t } = useTranslation();
@@ -23,6 +24,7 @@ function ChaiBuilderDefault() {
   const [blocks, setBlocks] = useAtom(lsBlocksAtom);
   const [brandingOptions, setBrandingOptions] = useAtom(lsBrandingOptionsAtom);
   const [providers, setProviders] = useAtom(lsProvidersAtom);
+  const [container, setContainer] = useAtom(lsContainer);
 
   return (
     <ChaiBuilderEditor
@@ -52,6 +54,11 @@ function ChaiBuilderDefault() {
       }}
       onSaveBrandingOptions={async (options: any) => {
         setBrandingOptions(options);
+        return true;
+      }}
+      container={wrapInsideContainer(container ? container : "Body")}
+      onSaveContainer={async (container: any) => {
+        setContainer(container);
         return true;
       }}
     />

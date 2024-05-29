@@ -2,6 +2,6 @@ import "./container.tsx";
 
 import { noop } from "lodash-es";
 
-const loadWebBlocks = noop;
+const loadEmailBlocks = noop;
 
-export { loadWebBlocks };
+export { loadEmailBlocks };
