@@ -24,7 +24,7 @@ const CustomHTMLBlock = React.memo(
   },
 );
 
-registerChaiBlock(CustomHTMLBlock as React.FC<any>, {
+registerChaiBlock(CustomHTMLBlock, {
   type: "CustomHTML",
   label: "CustomHTML",
   category: "core",
