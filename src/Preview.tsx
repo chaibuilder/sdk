@@ -3,6 +3,7 @@ import { useAtom } from "jotai";
 import { lsBlocksAtom, lsBrandingOptionsAtom } from "./atoms-dev.ts";
 import { useEffect, useState } from "react";
 import { getStylesForBlocks } from "./core/lib.ts";
+import "./blocks/web";
 
 function Preview() {
   const [blocks] = useAtom(lsBlocksAtom);
@@ -19,7 +20,7 @@ function Preview() {
   return (
     <>
       <style>{allStyles}</style>
-      <RenderChaiBlocks externalData={{}} blocks={blocks} />
+      <RenderChaiBlocks blocks={blocks} />
     </>
   );
 }
