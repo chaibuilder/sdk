@@ -73,7 +73,7 @@ export interface ChaiBuilderEditorProps {
   brandingOptions?: Record<string, string>;
   onSaveBrandingOptions?: (brandingOptions: Record<string, any>) => Promise<boolean | Error>;
 
-  container?: ChaiBlock;
+  container?: ChaiBlock | "Body" | "Container";
   onSaveContainer?: (container: ChaiBlock) => Promise<boolean | Error>;
 
   onSyncStatusChange?: (syncStatus: "UNSAVED" | "SAVED") => void;

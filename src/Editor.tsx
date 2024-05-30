@@ -5,7 +5,6 @@ import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
 import { PredefinedBlock } from "./core/types/CoreBlock.ts";
 import { ChaiBuilderEditor } from "./core/main";
 import "./blocks/web";
-import { wrapInsideContainer } from "./core/functions/wrapInsideContainer.ts";
 
 let PreviewMessage = () => {
   const { t } = useTranslation();
@@ -30,7 +29,6 @@ function ChaiBuilderDefault() {
     <ChaiBuilderEditor
       // @ts-ignore
       getExternalPredefinedBlock={async (block: PredefinedBlock) => {
-        // bases on block.uuid, you can fetch block data from your server or return predefined block
         return getBlocksFromHTML(`<div class="bg-red-300"><p>Hello World</p></div>`);
       }}
       getUILibraryBlocks={async () => {
@@ -56,7 +54,7 @@ function ChaiBuilderDefault() {
         setBrandingOptions(options);
         return true;
       }}
-      container={wrapInsideContainer(container ? container : "Body")}
+      container={container || "Body"}
       onSaveContainer={async (container: any) => {
         setContainer(container);
         return true;
