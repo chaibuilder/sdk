@@ -7,6 +7,8 @@ import { STYLES_KEY } from "../constants/CONTROLS";
 import { omit } from "lodash";
 import { getVideoURLFromHTML, hasVideoEmbed } from "./import-video.ts";
 
+const DATA_CHAI_REPLACE_PREFIX = "data-chai-replace-";
+
 type Node = {
   type: "element" | "text" | "comment";
   tagName: string;
@@ -108,6 +110,13 @@ const getAttrs = (node: Node) => {
       set(attrs, replacers[key], getSanitizedValue(value));
     } else if (!includes(["style", "class", "srcset"], key)) {
       set(attrs, `styles_attrs.${key}`, getSanitizedValue(value));
+    }
+  });
+
+  forEach(attributes, ({ key, value }) => {
+    if (key.startsWith(DATA_CHAI_REPLACE_PREFIX)) {
+      const attrToReplace = key.replace(DATA_CHAI_REPLACE_PREFIX, "");
+      set(attrs, attrToReplace, value);
     }
   });
 
