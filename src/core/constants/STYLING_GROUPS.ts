@@ -230,35 +230,35 @@ export const SETTINGS_SECTIONS = [
   {
     heading: "typography.heading",
     items: [
-      { type: "dropdown", property: "typography.font", label: "typography.font" },
-      { type: "arbitrary", property: "typography.size", label: "typography.size", units: BASIC_UNITS },
-      { type: "arbitrary", property: "typography.height", label: "typography.height", units: BASIC_UNITS.concat("-") },
-      { type: "range", property: "typography.weight", label: "typography.weight" },
-      { type: "color", property: "typography.color", label: "typography.color" },
+      { type: "dropdown", property: "fontFamily", label: "typography.font" },
+      { type: "arbitrary", property: "fontSize", label: "typography.size", units: BASIC_UNITS },
+      { type: "arbitrary", property: "lineHeight", label: "typography.height", units: BASIC_UNITS.concat("-") },
+      { type: "range", property: "fontWeight", label: "typography.weight" },
+      { type: "color", property: "textColor", label: "typography.color" },
       {
         styleType: "accordion",
         heading: "typography.alignments",
         items: [
-          { type: "dropdown", property: "typography.align", label: "typography.align" },
-          { type: "dropdown", property: "typography.valign", label: "typography.valign" },
+          { type: "dropdown", property: "textAlign", label: "typography.align" },
+          { type: "dropdown", property: "verticalAlign", label: "typography.valign" },
         ],
       },
       {
         styleType: "accordion",
         heading: "typography.spacing_decoration_more",
         items: [
-          { type: "dropdown", property: "typography.spacing", label: "typography.spacing" },
-          { type: "dropdown", property: "typography.decoration", label: "typography.decoration" },
-          { type: "range", property: "typography.thickness", label: "typography.thickness" },
-          { type: "dropdown", property: "typography.transform", label: "typography.transform" },
+          { type: "dropdown", property: "letterSpacing", label: "typography.spacing" },
+          { type: "dropdown", property: "textDecoration", label: "typography.decoration" },
+          { type: "range", property: "textDecorationThickness", label: "typography.thickness" },
+          { type: "dropdown", property: "textTransform", label: "typography.transform" },
         ],
       },
       {
         styleType: "accordion",
         heading: "typography.whitespace_breaks",
         items: [
-          { type: "dropdown", property: "typography.whitespace", label: "typography.whitespace" },
-          { type: "dropdown", property: "typography.wordbreak", label: "typography.wordbreak" },
+          { type: "dropdown", property: "whitespace", label: "typography.whitespace" },
+          { type: "dropdown", property: "wordbreak", label: "typography.wordbreak" },
         ],
       },
     ],
