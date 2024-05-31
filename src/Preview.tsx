@@ -12,7 +12,7 @@ function Preview() {
 
   useEffect(() => {
     (async () => {
-      const styles = await getStylesForBlocks(blocks, brandingOptions);
+      const styles = await getStylesForBlocks(blocks, brandingOptions, "", true);
       setStyles(styles);
     })();
   }, [blocks, brandingOptions]);
@@ -20,7 +20,7 @@ function Preview() {
   return (
     <>
       <style>{allStyles}</style>
-      <RenderChaiBlocks blocks={blocks} />
+      <RenderChaiBlocks classPrefix={""} blocks={blocks} />
     </>
   );
 }
