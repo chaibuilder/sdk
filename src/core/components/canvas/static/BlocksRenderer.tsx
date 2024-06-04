@@ -90,7 +90,7 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
           attrs.children = childBlocks.length ? <BlocksRendererStatic blocks={childBlocks} /> : null;
 
           const chaiBlock = getBlockComponent(block._type) as any;
-          const Component = get(chaiBlock, "component", null);
+          const Component = get(chaiBlock, "builderComponent", get(chaiBlock, "component", null));
           if (isNull(Component)) return <noscript>{`<!-- ${block?._type} not registered -->`}</noscript>;
 
           return (
