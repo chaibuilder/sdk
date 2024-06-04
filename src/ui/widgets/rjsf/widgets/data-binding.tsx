@@ -44,8 +44,8 @@ import { getBlockComponent, getChaiDataProviders } from "@chaibuilder/runtime";
 import { ErrorBoundary } from "../../../../core/components/ErrorBoundary.tsx";
 import { useSelectedBlock } from "../../../../core/hooks";
 import { useChaiExternalData } from "../../../../core/components/canvas/static/useChaiExternalData.ts";
-
-const LazyJsonViewer = React.lazy(() => import("react-json-view"));
+import { JsonView, allExpanded, defaultStyles } from "react-json-view-lite";
+import "react-json-view-lite/dist/index.css";
 
 // * Object to Path and Data Type
 function getPathAndTypes(obj) {
@@ -79,14 +79,15 @@ const ViewData = ({ data, fullView }: { data: any; fullView?: boolean }) => {
       <>
         <div className="h-3" />
         <ErrorBoundary>
-          <LazyJsonViewer
-            style={{ maxHeight: "40vh", overflowY: "auto" }}
-            name={"Content"}
-            enableClipboard={false}
-            displayObjectSize={false}
-            displayDataTypes={false}
-            src={data}
-            collapsed={true}
+          <JsonView
+            data={data}
+            shouldExpandNode={allExpanded}
+            style={{
+              ...defaultStyles,
+              container: "max-h-[40vh] overflow-y-auto text-[12px] leading-[1.5] tracking-wide font-mono",
+              stringValue: "text-orange-600",
+              label: "text-green-900 font-semibold pr-1 tracking-wider",
+            }}
           />
         </ErrorBoundary>
       </>
@@ -281,6 +282,7 @@ const AddBindingModalContent = ({
           onChange={(value) => {
             const _dataType = getDataType(value, "PROP");
             setProp(value);
+
             if (dataType !== _dataType) setPath("");
             setDataType(_dataType);
           }}
@@ -297,6 +299,7 @@ const AddBindingModalContent = ({
           setValue={setPath}
           onChange={(value) => {
             const _dataType = getDataType(value, "PATH");
+
             setPath(dataType === _dataType ? value : "");
           }}
           data={dataProvider}
