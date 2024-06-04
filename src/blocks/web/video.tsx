@@ -1,11 +1,10 @@
 import * as React from "react";
 import { VideoIcon } from "@radix-ui/react-icons";
-import { isEmpty } from "lodash-es";
+import { get, isEmpty } from "lodash-es";
 import { Checkbox, Model, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
 import EmptySlot from "./empty-slot";
 import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
-import { get } from "lodash";
 
 const YOUTUBE_REGEX = /^(https?:\/\/)?(www\.)?youtube\.com\/(watch\?v=|embed\/)([a-zA-Z0-9_-]{11})/;
 const VIMEO_REGEX = /^(https?:\/\/)?(www\.)?player.vimeo\.com/;
@@ -92,8 +91,8 @@ const VideoBlock = React.memo(
     }
 
     return (
-      <div className="relative overflow-hidden w-full h-full" style={{ paddingBottom: "56.25%" }}>
-        {inBuilder ? <div {...blockProps} {...styles} className="absolute h-full w-full z-20" /> : null}
+      <div className="relative h-full w-full overflow-hidden" style={{ paddingBottom: "56.25%" }}>
+        {inBuilder ? <div {...blockProps} {...styles} className="absolute z-20 h-full w-full" /> : null}
         {videoElement}
       </div>
     );

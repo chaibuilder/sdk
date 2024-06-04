@@ -1,18 +1,20 @@
 import { ChaiBuilderEditor, useAllBlocks } from "./core/main";
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
-import { lsBlocksAtom, lsBrandingOptionsAtom, lsProvidersAtom } from "./atoms-dev.ts";
+import { lsBrandingOptionsAtom, lsEmailBlocksAtom } from "./atoms-dev.ts";
 import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
 import { PredefinedBlock } from "./core/types/CoreBlock.ts";
 import { MobileIcon } from "@radix-ui/react-icons";
 import { render } from "@react-email/render";
 import { RenderChaiBlocks } from "./render";
 import { Head, Html, Tailwind } from "@react-email/components";
-import "./blocks/email";
+import { loadEmailBlocks } from "./blocks/email";
+
+loadEmailBlocks();
 
 let PreviewMessage = () => {
   const { t } = useTranslation();
-  return <div className={"font-normal text-sm"}>{t("THis is an awesome Email Builder")}</div>;
+  return <div className={"text-sm font-normal"}>{t("This is an awesome Email Builder")}</div>;
 };
 
 const BREAKPOINTS = [
@@ -41,7 +43,7 @@ const ExportBtn = () => {
         <Html lang="en" dir="ltr">
           <Head />
           <body>
-            <RenderChaiBlocks externalData={{}} blocks={blocks} />
+            <RenderChaiBlocks blocks={blocks} />
           </body>
         </Html>
       </Tailwind>,
@@ -50,16 +52,15 @@ const ExportBtn = () => {
     console.log(html);
   };
   return (
-    <button className="text-white bg-blue-500 px-4 py-2 rounded-md" onClick={() => exportHTML()}>
+    <button className="rounded-md bg-blue-500 px-4 py-2 text-white" onClick={() => exportHTML()}>
       {t("Export")}
     </button>
   );
 };
 
 function ChaiBuilderEmail() {
-  const [blocks, setBlocks] = useAtom(lsBlocksAtom);
+  const [blocks, setBlocks] = useAtom(lsEmailBlocksAtom);
   const [brandingOptions, setBrandingOptions] = useAtom(lsBrandingOptionsAtom);
-  const [providers, setProviders] = useAtom(lsProvidersAtom);
 
   return (
     <ChaiBuilderEditor
@@ -83,11 +84,9 @@ function ChaiBuilderEmail() {
       }}
       topBarComponents={{ left: [PreviewMessage], right: [ExportBtn] }}
       blocks={blocks}
-      dataProviders={providers}
       brandingOptions={brandingOptions}
-      onSavePage={async ({ blocks, providers }: any) => {
+      onSavePage={async ({ blocks }: any) => {
         setBlocks(blocks);
-        setProviders(providers);
         return true;
       }}
       onSaveBrandingOptions={async (options: any) => {

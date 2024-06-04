@@ -5,7 +5,7 @@ const ColComponent = () => {
 };
 
 const RowComponent = () => {
-  return <div className={"w-full p-4 border"}>Row</div>;
+  return <div className={"w-full border p-4"}>Row</div>;
 };
 
 registerChaiBlock(ColComponent, {
@@ -13,7 +13,6 @@ registerChaiBlock(ColComponent, {
   label: "Col",
   category: "core",
   group: "basic",
-  props: {},
 });
 
 registerChaiBlock(RowComponent, {
@@ -21,5 +20,4 @@ registerChaiBlock(RowComponent, {
   label: "Row",
   category: "core",
   group: "basic",
-  props: {},
 });

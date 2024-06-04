@@ -5,11 +5,12 @@ import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
 import { PredefinedBlock } from "./core/types/CoreBlock.ts";
 import { ChaiBuilderEditor } from "./core/main";
 import "./blocks/web";
+import "./data-providers/data";
 
 let PreviewMessage = () => {
   const { t } = useTranslation();
   return (
-    <div className={"font-normal text-sm"}>
+    <div className={"text-sm font-normal"}>
       {t("dev_mode_message")}{" "}
       <a target={"_blank"} className="text-orange-500 underline" href={"/preview"}>
         /preview
