@@ -18,7 +18,7 @@ export default function BlockSettings() {
   const updateBlockPropsRealtime = useUpdateBlocksPropsRealtime();
   const coreBlock = getBlockComponent(selectedBlock._type);
   const formData = { ...selectedBlock };
-  const dataBindingSupported = useBuilderProp("dataBindingSupport", false);
+  const dataBindingSupported = useBuilderProp("dataBindingSupport", true);
 
   const createHistorySnapshot = () => createSnapshot();
 
