@@ -6,7 +6,9 @@ import { MobileIcon } from "@radix-ui/react-icons";
 import { render } from "@react-email/render";
 import { RenderChaiBlocks } from "./render";
 import { Head, Html, Tailwind } from "@react-email/components";
-import "./blocks/email";
+import { loadEmailBlocks } from "./blocks/email";
+
+loadEmailBlocks();
 
 let PreviewMessage = () => {
   const { t } = useTranslation();
@@ -39,7 +41,7 @@ const ExportBtn = () => {
         <Html lang="en" dir="ltr">
           <Head />
           <body>
-            <RenderChaiBlocks externalData={{}} blocks={blocks} />
+            <RenderChaiBlocks blocks={blocks} />
           </body>
         </Html>
       </Tailwind>,
