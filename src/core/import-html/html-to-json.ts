@@ -1,10 +1,9 @@
 // @ts-ignore
 import { parse, stringify } from "himalaya";
 import { cn, generateUUID } from "../functions/Functions.ts";
-import { capitalize, filter, find, flatMapDeep, flatten, forEach, get, includes, isEmpty, set } from "lodash-es";
+import { capitalize, filter, find, flatMapDeep, flatten, forEach, get, includes, isEmpty, omit, set } from "lodash-es";
 import { ChaiBlock } from "../types";
 import { STYLES_KEY } from "../constants/CONTROLS";
-import { omit } from "lodash";
 import { getVideoURLFromHTML, hasVideoEmbed } from "./import-video.ts";
 
 type Node = {

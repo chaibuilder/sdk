@@ -1,4 +1,4 @@
-import { isEmpty } from "lodash";
+import { isEmpty } from "lodash-es";
 
 export const hasVideoEmbed = (html: string): boolean => {
   // Regular expressions for YouTube and Vimeo URLs

@@ -1,10 +1,6 @@
 import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import ChaiStudio from "./ChaiStudio";
-import Preview from "./Preview";
-import "./data-providers/data";
-import RJSF from "./RJSF.tsx";
 import "./index.css";
 
 async function enableMocking() {
@@ -21,6 +17,9 @@ async function enableMocking() {
 
 const ChaiBuilderDefault = lazy(() => import("./Editor.tsx"));
 const ChaiBuilderEmail = lazy(() => import("./Email.tsx"));
+const ChaiStudio = lazy(() => import("./ChaiStudio.tsx"));
+const Preview = lazy(() => import("./Preview.tsx"));
+const RJSF = lazy(() => import("./RJSF.tsx"));
 
 const router = createBrowserRouter([
   {
