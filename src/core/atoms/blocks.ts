@@ -16,8 +16,9 @@ pageBlocksAtom.debugLabel = "pageBlocksAtom";
 
 // derived atoms
 // @ts-ignore
-export const presentBlocksAtom = atom((get) => get(pageBlocksAtom)?.present);
+export const presentBlocksAtom = atom([]);
 presentBlocksAtom.debugLabel = "presentBlocksAtom";
+
 export const pageBlocksAtomsAtom = splitAtom(presentBlocksAtom);
 pageBlocksAtomsAtom.debugLabel = "pageBlocksAtomsAtom";
 

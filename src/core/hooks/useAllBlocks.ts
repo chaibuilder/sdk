@@ -5,4 +5,7 @@ import { ChaiBlock } from "../types/ChaiBlock";
 /**
  * useTreeData hook
  */
-export const useAllBlocks = (): ChaiBlock[] => useAtomValue(presentBlocksAtom);
+export const useAllBlocks = (): ChaiBlock[] => {
+  console.warn("useAllBlocks is deprecated, use useBlocksStore() instead");
+  return useAtomValue(presentBlocksAtom);
+};

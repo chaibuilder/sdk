@@ -3,7 +3,6 @@ import { useFrame } from "../../frame";
 import { useAtom } from "jotai";
 import { first } from "lodash-es";
 import {
-  useAllBlocks,
   useCanvasHistory,
   useCopyBlockIds,
   useCutBlockIds,
@@ -16,11 +15,12 @@ import {
   useSelectedStylingBlocks,
 } from "../../hooks";
 import { editLayerNameAtom, inlineEditingActiveAtom } from "../../atoms/ui";
+import { useBlocksStore } from "../../history/blocks.ts";
 
 export const KeyboardHandler = () => {
   const { window: iframeWin }: any = useFrame();
   const [ids, setSelected] = useSelectedBlockIds();
-  const allBlocks = useAllBlocks();
+  const [allBlocks] = useBlocksStore();
   const [, setStylingBlocks] = useSelectedStylingBlocks();
   const { undo, redo } = useCanvasHistory();
   const duplicateBlocks = useDuplicateBlocks();

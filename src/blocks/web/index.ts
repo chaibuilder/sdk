@@ -1,5 +1,4 @@
 import { noop } from "lodash-es";
-import "./body";
 import "./box";
 import "./heading";
 import "./paragraph";
@@ -14,16 +13,19 @@ import "./slot";
 import "./video";
 import "./custom-html";
 import "./divider";
-import "./line-break";
 import "./text";
-import "./table";
-import "./form/form.tsx";
-import "./form/input.tsx";
-import "./form/textarea.tsx";
-import "./form/select.tsx";
-import "./form/checkbox.tsx";
-import "./form/radio.tsx";
-import "./form/form-button.tsx";
+
+// hidden
+import "./hidden/body";
+import "./hidden/line-break";
+import "./hidden/table";
+import "./hidden/form/form";
+import "./hidden/form/form-button";
+import "./hidden/form/checkbox";
+import "./hidden/form/input";
+import "./hidden/form/radio";
+import "./hidden/form/select";
+import "./hidden/form/textarea";
 
 const loadWebBlocks = noop;
 

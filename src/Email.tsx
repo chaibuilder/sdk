@@ -1,4 +1,4 @@
-import { ChaiBuilderEditor, useAllBlocks } from "./core/main";
+import { ChaiBuilderEditor } from "./core/main";
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
 import { lsBrandingOptionsAtom, lsEmailBlocksAtom } from "./atoms-dev.ts";
@@ -34,7 +34,7 @@ const BREAKPOINTS = [
 
 const ExportBtn = () => {
   const { t } = useTranslation();
-  const blocks = useAllBlocks();
+  const [blocks] = useBlocksStore();
   const exportHTML = async () => {
     const html = render(
       <Tailwind config={{ prefix: "c-" }}>

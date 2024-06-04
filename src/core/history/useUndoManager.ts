@@ -14,7 +14,7 @@ const useUndoManager = () => {
       undoManager.setCallback(noop);
     };
   }, []);
-  return { undoManager, hasRedo: undoManager.hasRedo(), hasUndo: undoManager.hasUndo(), reset: undoManager.reset() };
+  return { undoManager, hasRedo: undoManager.hasRedo(), hasUndo: undoManager.hasUndo(), clear: undoManager.clear() };
 };
 
 export { useUndoManager };
