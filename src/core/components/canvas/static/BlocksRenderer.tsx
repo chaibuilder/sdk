@@ -8,7 +8,7 @@ import { useAllBlocks } from "../../../hooks";
 import { getBlockComponent } from "@chaibuilder/runtime";
 import { useChaiExternalData } from "./useChaiExternalData.ts";
 import { canAddChildBlock } from "../../../functions/Layers.ts";
-import { useAtom } from "jotai/index";
+import { useAtom } from "jotai";
 import { inlineEditingActiveAtom } from "../../../atoms/ui.ts";
 
 // FIXME:  Duplicate code in CanvasRenderer.tsx
