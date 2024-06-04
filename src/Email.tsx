@@ -1,9 +1,7 @@
 import { ChaiBuilderEditor, useAllBlocks } from "./core/main";
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
-import { lsBlocksAtom, lsBrandingOptionsAtom, lsProvidersAtom } from "./atoms-dev.ts";
-import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
-import { PredefinedBlock } from "./core/types/CoreBlock.ts";
+import { lsBrandingOptionsAtom, lsEmailBlocksAtom } from "./atoms-dev.ts";
 import { MobileIcon } from "@radix-ui/react-icons";
 import { render } from "@react-email/render";
 import { RenderChaiBlocks } from "./render";
@@ -63,24 +61,9 @@ function ChaiBuilderEmail() {
 
   return (
     <ChaiBuilderEditor
-      importHTML={false}
+      importHTMLSupport={false}
       // @ts-ignore
       breakpoints={BREAKPOINTS}
-      // @ts-ignore
-      getExternalPredefinedBlock={async (block: PredefinedBlock) => {
-        // bases on block.uuid, you can fetch block data from your server or return predefined block
-        return getBlocksFromHTML(`<div class="bg-red-300"><p>Hello World</p></div>`);
-      }}
-      getUILibraryBlocks={async () => {
-        return [
-          {
-            uuid: "hero-uuid",
-            name: "Header",
-            group: "Hero",
-            preview: "https://via.placeholder.com/350x100",
-          },
-        ];
-      }}
       topBarComponents={{ left: [PreviewMessage], right: [ExportBtn] }}
       blocks={blocks}
       dataProviders={providers}

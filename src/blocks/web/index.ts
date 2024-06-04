@@ -1,3 +1,4 @@
+import { noop } from "lodash-es";
 import "./body";
 import "./box";
 import "./heading";
@@ -23,7 +24,6 @@ import "./form/select.tsx";
 import "./form/checkbox.tsx";
 import "./form/radio.tsx";
 import "./form/form-button.tsx";
-import { noop } from "lodash-es";
 
 const loadWebBlocks = noop;
 
