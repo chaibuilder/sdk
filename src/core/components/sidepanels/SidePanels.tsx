@@ -60,12 +60,12 @@ const SidePanels = () => {
   }
 
   return (
-    <div className="relative flex ">
+    <div className="relative flex">
       {activePanel !== "layers" ? (
         <div
           onMouseEnter={hidePanel}
           onClick={() => handleChangePanel("layers")}
-          className={"fixed inset-0 bg-black/20 z-[50]"}></div>
+          className={"fixed inset-0 z-[50] bg-black/20"}></div>
       ) : null}
       <div className="z-[100] flex h-full w-fit flex-col items-center justify-between border-b border-r border-border bg-background pt-2">
         <div className="relative z-[100] flex w-14 flex-col items-center space-y-2">
@@ -148,12 +148,12 @@ const SidePanels = () => {
           }>
           {dataBindingSupport ? (
             <Tabs defaultValue="layers" className="flex h-full w-full flex-col py-1">
-              <TabsList className="mx-1 h-10 grid grid-cols-2">
+              <TabsList className="mx-1 grid h-10 grid-cols-2">
                 <TabsTrigger value="layers">
-                  <ListTreeIcon className={"h-3 mr-2"} /> Layers
+                  <ListTreeIcon className={"mr-2 h-3"} /> Layers
                 </TabsTrigger>
                 <TabsTrigger value="data-provider">
-                  <DatabaseIcon className={"w-3 mr-2"} />
+                  <DatabaseIcon className={"mr-2 w-3"} />
                   Data
                 </TabsTrigger>
               </TabsList>
@@ -166,8 +166,8 @@ const SidePanels = () => {
             </Tabs>
           ) : (
             <>
-              <div className={"flex items-center bg-gray-200  rounded-md py-1"}>
-                <ListTreeIcon className={"h-4 mr-2 ml-2"} /> Layers
+              <div className={"flex items-center rounded-md bg-gray-200 py-1"}>
+                <ListTreeIcon className={"ml-2 mr-2 h-4"} /> Layers
               </div>
               <div className="no-scrollbar h-full flex-1 overflow-y-auto overflow-x-hidden">
                 {React.createElement(LayersPanel)}

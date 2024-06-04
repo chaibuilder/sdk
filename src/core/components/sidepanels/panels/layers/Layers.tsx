@@ -99,7 +99,7 @@ const Layers = (): React.JSX.Element => {
         {isEmpty(allBlocks) ? (
           <div
             ref={drop}
-            className={`mx-1 mt-4 max-w-full h-full p-6 text-center text-sm text-gray-400 ${
+            className={`mx-1 mt-4 h-full max-w-full p-6 text-center text-sm text-gray-400 ${
               isOver ? "bg-blue-200" : ""
             }`}>
             {isOver ? (

@@ -35,7 +35,7 @@ class ErrorBoundary extends React.Component<Props, State> {
        * @returns {JSX.Element} A fallback UI to display when an error is caught.
        */
       return (
-        <div className="bg-red-200 h-full w-full rounded-md text-red-500 p-4" id="errorBoundary">
+        <div className="h-full w-full rounded-md bg-red-200 p-4 text-red-500" id="errorBoundary">
           <p className="font-semibold">Oops! Something went wrong.</p>
           <p>Please try again later.</p>
         </div>

@@ -55,13 +55,13 @@ const RootLayout: React.FC = () => {
               <TopBar />
             </Suspense>
           </div>
-          <main className="flex h-full flex-1 flex-row relative">
+          <main className="relative flex h-full flex-1 flex-row">
             {!editable ? (
-              <div className="absolute backdrop-blur-[2px] flex items-center justify-center inset-0 z-[500] h-full w-full">
+              <div className="absolute inset-0 z-[500] flex h-full w-full items-center justify-center backdrop-blur-[2px]">
                 <Suspense>{React.createElement(NonEditable)}</Suspense>
               </div>
             ) : null}
-            <div className="flex h-full w-fit border-border max-h-full" style={{ maxHeight: "calc(100vh - 56px)" }}>
+            <div className="flex h-full max-h-full w-fit border-border" style={{ maxHeight: "calc(100vh - 56px)" }}>
               <Suspense>
                 <SidePanels />
               </Suspense>
@@ -71,7 +71,7 @@ const RootLayout: React.FC = () => {
                 <CanvasArea />
               </Suspense>
             </div>
-            <div className="flex h-[90%] w-[280px] pb-10 min-w-[280px] border-l border-border">
+            <div className="flex h-[90%] w-[280px] min-w-[280px] border-l border-border pb-10">
               <Suspense>
                 <Settings />
               </Suspense>
