@@ -44,6 +44,8 @@ import { getBlockComponent, getChaiDataProviders } from "@chaibuilder/runtime";
 import { ErrorBoundary } from "../../../../core/components/ErrorBoundary.tsx";
 import { useSelectedBlock } from "../../../../core/hooks";
 import { useChaiExternalData } from "../../../../core/components/canvas/static/useChaiExternalData.ts";
+import { JsonView, allExpanded, defaultStyles } from "react-json-view-lite";
+import "react-json-view-lite/dist/index.css";
 
 const LazyJsonViewer = React.lazy(() => import("react-json-view"));
 
@@ -79,15 +81,26 @@ const ViewData = ({ data, fullView }: { data: any; fullView?: boolean }) => {
       <>
         <div className="h-3" />
         <ErrorBoundary>
-          <LazyJsonViewer
-            style={{ maxHeight: "40vh", overflowY: "auto" }}
-            name={"Content"}
-            enableClipboard={false}
-            displayObjectSize={false}
-            displayDataTypes={false}
-            src={data}
-            collapsed={true}
-          />
+          {
+            // <LazyJsonViewer
+            //   style={{ maxHeight: "40vh", overflowY: "auto" }}
+            //   name={"Content"}
+            //   enableClipboard={false}
+            //   displayObjectSize={false}
+            //   displayDataTypes={false}
+            //   src={data}
+            //   collapsed={true}
+            // />
+            <JsonView
+                data={data}
+                shouldExpandNode={allExpanded}
+                style={{
+                  ...defaultStyles,
+                  container: "max-h-[40vh] overflow-y-auto",
+                }}
+
+              />
+          }
         </ErrorBoundary>
       </>
     ) : (
@@ -281,6 +294,7 @@ const AddBindingModalContent = ({
           onChange={(value) => {
             const _dataType = getDataType(value, "PROP");
             setProp(value);
+
             if (dataType !== _dataType) setPath("");
             setDataType(_dataType);
           }}
@@ -297,6 +311,7 @@ const AddBindingModalContent = ({
           setValue={setPath}
           onChange={(value) => {
             const _dataType = getDataType(value, "PATH");
+            console.log(_dataType);
             setPath(dataType === _dataType ? value : "");
           }}
           data={dataProvider}

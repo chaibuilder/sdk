@@ -5,10 +5,9 @@ import { Checkbox, Model, SingleLineText, Styles } from "@chaibuilder/runtime/co
 import { registerChaiBlock } from "@chaibuilder/runtime";
 import EmptySlot from "./empty-slot";
 import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
-import { get } from "lodash";
 
 const YOUTUBE_REGEX = /^(https?:\/\/)?(www\.)?youtube\.com\/(watch\?v=|embed\/)([a-zA-Z0-9_-]{11})/;
-const VIMEO_REGEX = /^(https?:\/\/)?(www\.)?player.vimeo\.com/;
+const VIMEO_REGEX = /^(https?:\/\/)?(www\.)?vimeo\.com\/(\d+)/;
 const DAILYMOTION_REGEX = /^(https?:\/\/)?(www\.)?dailymotion\.com\/(video|embed\/video)\/([a-zA-Z0-9_-]+)/;
 
 const getEmbedURL = (url: string): string | null => {
@@ -53,10 +52,10 @@ const VideoBlock = React.memo(
   ) => {
     const { blockProps, inBuilder, styles, url, controls } = block;
 
-    const autoplay = get(controls, "autoPlay", false);
-    const _controls = get(controls, "controls", false);
-    const muted = autoplay || get(controls, "muted", true);
-    const loop = get(controls, "loop", false);
+    const autoplay = controls.autoPlay;
+    const _controls = controls.controls;
+    const muted = autoplay || controls.muted;
+    const loop = controls.loop;
 
     if (isEmpty(url)) return <EmptySlot blockProps={blockProps} text="VIDEO URL" className="h-36" />;
 
@@ -92,7 +91,7 @@ const VideoBlock = React.memo(
     }
 
     return (
-      <div className="relative overflow-hidden w-full h-full" style={{ paddingBottom: "56.25%" }}>
+      <div className="relative overflow-hidden" style={{ paddingBottom: "56.25%" }}>
         {inBuilder ? <div {...blockProps} {...styles} className="absolute h-full w-full z-20" /> : null}
         {videoElement}
       </div>

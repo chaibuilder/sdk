@@ -61,7 +61,7 @@ export function RenderChaiBlocks({
   blocks: ChaiBlock[];
   parent?: string;
   classPrefix?: string;
-  externalData?: Record<string, any>;
+  externalData: Record<string, any>;
 }) {
   const allBlocks = blocks;
   const getStyles = (block: ChaiBlock) => getStyleAttrs(block, classPrefix);

@@ -14,7 +14,6 @@ registerChaiBlock(LineBreakComponent, {
   label: "Line Break",
   category: "core",
   group: "basic",
-  hidden: true,
   icon: SpaceBetweenVerticallyIcon,
   props: {
     styles: Styles({ default: "" }),

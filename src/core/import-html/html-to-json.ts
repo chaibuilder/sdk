@@ -5,7 +5,6 @@ import { capitalize, filter, find, flatMapDeep, flatten, forEach, get, includes,
 import { ChaiBlock } from "../types";
 import { STYLES_KEY } from "../constants/CONTROLS";
 import { omit } from "lodash";
-import { getVideoURLFromHTML, hasVideoEmbed } from "./import-video.ts";
 
 type Node = {
   type: "element" | "text" | "comment";
@@ -266,14 +265,7 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
       if (inputType === "checkbox") set(block, "_type", "Checkbox");
       else if (inputType === "radio") set(block, "_type", "Radio");
     } else if (node.tagName === "video" || node.tagName === "iframe") {
-      const innerHTML = stringify([node]);
-      if (hasVideoEmbed(innerHTML)) {
-        set(block, "_type", "Video");
-        set(block, "url", getVideoURLFromHTML(innerHTML));
-        set(block, "styles", `${STYLES_KEY},absolute top-0 left-0 w-full h-full`);
-        set(block, "controls", { autoPlay: false, muted: true, loop: false, controls: false });
-      }
-      block.content = innerHTML;
+      block.content = stringify([node]);
       return [block] as ChaiBlock[];
     } else if (node.tagName === "svg") {
       /**

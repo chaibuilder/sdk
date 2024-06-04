@@ -1,6 +1,6 @@
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
-import { lsBlocksAtom, lsBrandingOptionsAtom, lsContainer, lsProvidersAtom } from "./atoms-dev.ts";
+import { lsBlocksAtom, lsBrandingOptionsAtom, lsProvidersAtom } from "./atoms-dev.ts";
 import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
 import { PredefinedBlock } from "./core/types/CoreBlock.ts";
 import { ChaiBuilderEditor } from "./core/main";
@@ -23,12 +23,12 @@ function ChaiBuilderDefault() {
   const [blocks, setBlocks] = useAtom(lsBlocksAtom);
   const [brandingOptions, setBrandingOptions] = useAtom(lsBrandingOptionsAtom);
   const [providers, setProviders] = useAtom(lsProvidersAtom);
-  const [container, setContainer] = useAtom(lsContainer);
 
   return (
     <ChaiBuilderEditor
       // @ts-ignore
       getExternalPredefinedBlock={async (block: PredefinedBlock) => {
+        // bases on block.uuid, you can fetch block data from your server or return predefined block
         return getBlocksFromHTML(`<div class="bg-red-300"><p>Hello World</p></div>`);
       }}
       getUILibraryBlocks={async () => {
@@ -52,11 +52,6 @@ function ChaiBuilderDefault() {
       }}
       onSaveBrandingOptions={async (options: any) => {
         setBrandingOptions(options);
-        return true;
-      }}
-      container={container || "Body"}
-      onSaveContainer={async (container: any) => {
-        setContainer(container);
         return true;
       }}
     />

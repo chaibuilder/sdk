@@ -5,6 +5,7 @@ import defaultTheme from "tailwindcss/defaultTheme";
 import twForms from "@tailwindcss/forms";
 import twTypography from "@tailwindcss/typography";
 import twAspectRatio from "@tailwindcss/aspect-ratio";
+import twLineClamp from "@tailwindcss/line-clamp";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { addPrefixToClasses, ChaiPageData, getBrandingClasses } from "./functions.ts";
 import { STYLES_KEY } from "../core/constants/CONTROLS.ts";
@@ -15,7 +16,6 @@ export async function getTailwindCSS(
   markupString: string[],
   safelist: string[] = [],
   prefix: string = "c-",
-  includeBaseStyles: boolean = false,
 ) {
   const primary = get(options, "primaryColor", "#000");
   const secondary = get(options, "secondaryColor", "#ccc");
@@ -31,6 +31,7 @@ export async function getTailwindCSS(
   set(colors, "secondary.DEFAULT", secondary);
   const tailwind = createTailwindcss({
     tailwindConfig: {
+      prefix,
       darkMode: "class",
       safelist,
       theme: {
@@ -45,22 +46,19 @@ export async function getTailwindCSS(
           colors,
         },
       },
-      plugins: [twForms, twTypography, twAspectRatio],
-      corePlugins: { preflight: includeBaseStyles },
-      ...(prefix ? { prefix: `${prefix}` } : {}),
+      plugins: [twForms, twTypography, twAspectRatio, twLineClamp],
+      corePlugins: { preflight: false },
     },
   });
 
   const css = await tailwind.generateStylesFromContent(
-    ` ${includeBaseStyles ? "@tailwind base;" : ""}
-      @tailwind components;
+    ` @tailwind components;
       @tailwind utilities;`,
     markupString,
   );
-  return `${css} 
-    .${prefix}bg-clip-text{background-clip: text;-webkit-background-clip: text;} h1,h2,h3,h4,h5,h6{font-family: "${headingFont}",${defaultTheme.fontFamily.sans.join(
-      ", ",
-    )};}`;
+  return `${css} .${prefix}bg-clip-text{background-clip: text;-webkit-background-clip: text;} h1,h2,h3,h4,h5,h6{font-family: "${headingFont}",${defaultTheme.fontFamily.sans.join(
+    ", ",
+  )};}`;
 }
 
 const addPrefixToBlockStyles = (blocks: ChaiBlock[], prefix: string) => {
@@ -77,37 +75,23 @@ const addPrefixToBlockStyles = (blocks: ChaiBlock[], prefix: string) => {
   });
 };
 
-export const getBlocksTailwindCSS = (
-  blocks: ChaiBlock[],
-  brandingOptions: any,
-  prefix: string = "c-",
-  includeBaseStyles: boolean = false,
-) => {
+export const getBlocksTailwindCSS = (blocks: ChaiBlock[], brandingOptions: any, prefix: string = "c-") => {
   const brandingClasses = getBrandingClasses(brandingOptions, prefix);
   return getTailwindCSS(
     brandingOptions,
     [replace(JSON.stringify(addPrefixToBlockStyles(blocks, prefix)), /#styles:/g, "")],
     brandingClasses.split(" ").concat(`${prefix}inline-block`, `${prefix}w-full`, `${prefix}h-full`),
-    prefix,
-    includeBaseStyles,
   );
 };
-
-export const getStylesForPageData = async (
-  pageData: ChaiPageData,
-  classPrefix: string = "c-",
-  includeBaseStyles: boolean = false,
-): Promise<string> => {
+export const getStylesForPageData = async (pageData: ChaiPageData, classPrefix: string = "c-"): Promise<string> => {
   //TODO: add support for subpages
   const blocks = pageData.page.blocks;
-  return await getBlocksTailwindCSS(blocks, pageData.project.brandingOptions, classPrefix, includeBaseStyles);
+  return await getBlocksTailwindCSS(blocks, pageData.project.brandingOptions, classPrefix);
 };
-
 export const getStylesForBlocks = async (
   blocks: ChaiBlock[],
   brandingOptions: BrandingOptions,
   classPrefix: string = "c-",
-  includeBaseStyles: boolean = false,
 ): Promise<string> => {
-  return await getBlocksTailwindCSS(blocks, brandingOptions, classPrefix, includeBaseStyles);
+  return await getBlocksTailwindCSS(blocks, brandingOptions, classPrefix);
 };

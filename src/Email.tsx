@@ -5,10 +5,10 @@ import { lsBlocksAtom, lsBrandingOptionsAtom, lsProvidersAtom } from "./atoms-de
 import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
 import { PredefinedBlock } from "./core/types/CoreBlock.ts";
 import { MobileIcon } from "@radix-ui/react-icons";
+import "./blocks/email";
 import { render } from "@react-email/render";
 import { RenderChaiBlocks } from "./render";
 import { Head, Html, Tailwind } from "@react-email/components";
-import "./blocks/email";
 
 let PreviewMessage = () => {
   const { t } = useTranslation();
