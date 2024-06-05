@@ -12,7 +12,7 @@ import "./blocks/email";
 
 let PreviewMessage = () => {
   const { t } = useTranslation();
-  return <div className={"font-normal text-sm"}>{t("THis is an awesome Email Builder")}</div>;
+  return <div className={"text-sm font-normal"}>{t("THis is an awesome Email Builder")}</div>;
 };
 
 const BREAKPOINTS = [
@@ -50,7 +50,7 @@ const ExportBtn = () => {
     console.log(html);
   };
   return (
-    <button className="text-white bg-blue-500 px-4 py-2 rounded-md" onClick={() => exportHTML()}>
+    <button className="rounded-md bg-blue-500 px-4 py-2 text-white" onClick={() => exportHTML()}>
       {t("Export")}
     </button>
   );
@@ -71,7 +71,6 @@ function ChaiBuilderEmail() {
         // bases on block.uuid, you can fetch block data from your server or return predefined block
         return getBlocksFromHTML(`<div class="bg-red-300"><p>Hello World</p></div>`);
       }}
-      dataBindingSupport={true}
       getUILibraryBlocks={async () => {
         return [
           {
