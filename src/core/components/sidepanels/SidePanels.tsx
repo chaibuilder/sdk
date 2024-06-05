@@ -47,7 +47,7 @@ const SidePanels = () => {
     }
     setActivePanel(newPanel);
   };
-  const dataBindingSupport = useBuilderProp("dataBindingSupport", true);
+  const dataBindingSupport = useBuilderProp("dataBindingSupport", false);
 
   function hidePanel() {
     const timeout = setTimeout(() => {
