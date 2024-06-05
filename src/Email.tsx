@@ -71,6 +71,7 @@ function ChaiBuilderEmail() {
         // bases on block.uuid, you can fetch block data from your server or return predefined block
         return getBlocksFromHTML(`<div class="bg-red-300"><p>Hello World</p></div>`);
       }}
+      dataBindingSupport={true}
       getUILibraryBlocks={async () => {
         return [
           {
