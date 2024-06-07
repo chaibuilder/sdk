@@ -149,12 +149,13 @@ export const Canvas = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div
+      data-block-id={"container"}
       id="canvas"
       onClick={handleCanvasClick}
       onDoubleClick={handleDblClick}
       onMouseMove={handleMouseMove}
       {...omit(dnd, "isDragging")}
-      className={`relative mb-5 max-w-full ` + (dnd.isDragging ? "dragging" : "")}>
+      className={`relative mb-5 h-full max-w-full ` + (dnd.isDragging ? "dragging" : "")}>
       {children}
     </div>
   );
