@@ -1,5 +1,7 @@
-import { get, includes, isEmpty } from "lodash-es";
+import { get } from "lodash-es";
 import React from "react";
+import { getBlockComponent } from "@chaibuilder/runtime";
+import { has } from "lodash";
 
 export type ChaiBlock = {
   activeCls?: string;
@@ -61,42 +63,43 @@ export type ChaiBlock = {
   vertical?: boolean;
 };
 
+type BlockDefinition = {
+  canAcceptBlock?: (target: string) => boolean;
+  canDelete?: () => boolean;
+  canDuplicate?: () => boolean;
+  canMove?: () => boolean;
+};
+
+/**
+ *
+ * @param parentType
+ * @param childType
+ */
+export const canAcceptChildBlock = (parentType: string, childType: string) => {
+  const blockDefinition = getBlockComponent(parentType) as BlockDefinition;
+  if (!blockDefinition) return false;
+  return has(blockDefinition, "canAcceptBlock") ? blockDefinition.canAcceptBlock(childType) : false;
+};
+
 /**
  *
  * @param type
  */
-export const canAddChildBlock = (type: string) =>
-  ["Box", "Slot", "Form", "Link", "Paragraph", "Heading", "List", "ListItem", "Table", "TableCell"].includes(type);
+export const canDuplicateBlock = (type: string) => {
+  const blockDefinition = getBlockComponent(type) as BlockDefinition;
+  if (!blockDefinition) return true;
+  return has(blockDefinition, "canDuplicate") ? blockDefinition.canDuplicate() : true;
+};
 
 /**
  *
  * @param type
  */
-export const canDuplicateBlock = (type: string) => !["Slot"].includes(type);
-
-/**
- *
- * @param type
- */
-export const canDeleteBlock = (type: string) => !["Slot"].includes(type);
-
-export function canAddAsChild(dragSourceType: string, dropTargetType: string) {
-  if (dragSourceType === "Slot") return false;
-  if (dropTargetType === "List" && dragSourceType !== "ListItem") {
-    return false;
-  }
-  if (dropTargetType === "Row" && dragSourceType !== "Column") {
-    return false;
-  }
-  if (dropTargetType === "Heading" && !includes(["Span", "Text"], dragSourceType)) {
-    return false;
-  }
-  if (dropTargetType === "Paragraph" && !includes(["Span", "Text"], dragSourceType)) {
-    return false;
-  }
-
-  return canAddChildBlock(dropTargetType);
-}
+export const canDeleteBlock = (type: string) => {
+  const blockDefinition = getBlockComponent(type) as BlockDefinition;
+  if (!blockDefinition) return true;
+  return has(blockDefinition, "canDelete") ? blockDefinition.canDelete() : true;
+};
 
 /**
  *
@@ -108,8 +111,5 @@ export function canAddAsChild(dragSourceType: string, dropTargetType: string) {
 export const canDropBlock = (_currentTree: any, { dragSource, dropTarget }: any) => {
   const dragSourceType = get(dragSource, "data._type", "");
   const dropTargetType = get(dropTarget, "data._type", "");
-  if (dragSourceType === "Slot" || (get(dragSource, "id") && get(dragSource, "id") === get(dropTarget, "id")))
-    return false;
-  if (isEmpty(dropTargetType)) return true;
-  return canAddAsChild(dragSourceType, dropTargetType);
+  return canAcceptChildBlock(dropTargetType, dragSourceType);
 };
