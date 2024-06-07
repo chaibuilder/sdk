@@ -33,6 +33,7 @@ export const IframeInitialContent: string = `<!doctype html>
         -moz-user-select: text;
         user-select: text;
     }
+    .frame-root .frame-content { height: 100%; }
     </style>    
     <style id="hidden-blocks"></style>
     <style id="selected-block"></style>
@@ -42,7 +43,7 @@ export const IframeInitialContent: string = `<!doctype html>
 
   </head>
   <body class="font-body antialiased h-full">
-    <div class="frame-root"></div>
+    <div class="frame-root h-full"></div>
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.js"></script>
   </body>
 </html>`;
