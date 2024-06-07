@@ -1,6 +1,7 @@
 import { Heading } from "@react-email/components";
 import { registerChaiBlock } from "@chaibuilder/runtime";
 import { SelectOption, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
+import { HeadingIcon } from "@radix-ui/react-icons";
 
 const HeadingBlock = ({ level, blockProps, styles, content }: any) => {
   return (
@@ -23,6 +24,7 @@ registerChaiBlock(HeadingBlock, {
   label: "Heading",
   group: "basic",
   category: "core",
+  icon: HeadingIcon,
   builderComponent: HeadingBuilder,
   props: {
     content: SingleLineText({ title: "Content", default: "Enter your heading here..." }),
@@ -42,3 +44,5 @@ registerChaiBlock(HeadingBlock, {
     }),
   },
 });
+
+export default HeadingBlock;

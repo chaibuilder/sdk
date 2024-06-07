@@ -1,32 +1,33 @@
-import { Button } from "@react-email/components";
+import { Img } from "@react-email/components";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import { Link, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
+import { Image, Styles, SingleLineText } from "@chaibuilder/runtime/controls";
+import { ImageIcon } from "@radix-ui/react-icons";
 
-const ButtonBlock = ({ blockProps, styles, link, content }: any) => {
-  return (
-    <Button {...blockProps} {...styles} href={link.href}>
-      {content}
-    </Button>
-  );
+const ImageBlock = ({ blockProps, styles, alt, image, width, height }: any) => {
+  return <Img {...blockProps} {...styles} src={image} alt={alt} width={width} height={height} />;
 };
 
-const ButtonBuilder = ({ blockProps, styles, content }: any) => {
-  return (
-    <button type={"button"} {...blockProps} {...styles}>
-      {content}
-    </button>
-  );
+const ImageBuilder = ({ blockProps, styles, alt, image, width, height }: any) => {
+  return <img {...blockProps} {...styles} src={image} alt={alt} width={width} height={height} />;
 };
 
-registerChaiBlock(ButtonBlock, {
-  type: "Button",
-  label: "Button",
+registerChaiBlock(ImageBlock, {
+  type: "Image",
+  label: "Image",
   group: "basic",
   category: "core",
-  builderComponent: ButtonBuilder,
+  icon: ImageIcon,
+  builderComponent: ImageBuilder,
   props: {
-    content: SingleLineText({ title: "Content", default: "Click me" }),
-    link: Link({ title: "Link", default: { href: "https://chaibuilder.com", target: "_blank", type: "url" } }),
-    styles: Styles({ default: "bg-primary text-white px-4 py-2 rounded-md" }),
+    styles: Styles({ default: "w-full" }),
+    image: Image({
+      title: "Image",
+      default: "https://fakeimg.pl/400x200?text=Choose&font=bebas",
+    }),
+    alt: SingleLineText({ title: "Alt", default: "" }),
+    width: SingleLineText({ title: "Width", default: "" }),
+    height: SingleLineText({ title: "Height", default: "" }),
   },
 });
+
+export default ImageBlock;
