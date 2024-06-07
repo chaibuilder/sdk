@@ -1,6 +1,6 @@
 import { find, includes, isEmpty, isUndefined, map } from "lodash-es";
 import * as React from "react";
-import { DoubleArrowDownIcon, StackIcon } from "@radix-ui/react-icons";
+import { BoxIcon, DoubleArrowDownIcon, StackIcon } from "@radix-ui/react-icons";
 import { useDragLayer, useDrop } from "react-dnd";
 import { NodeModel, Tree } from "@minoru/react-dnd-treeview";
 import { useTranslation } from "react-i18next";
@@ -21,6 +21,7 @@ import { BlockContextMenu } from "./BlockContextMenu";
 import { ScrollArea } from "../../../../../ui";
 import { useAddBlockByDrop } from "../../../../hooks/useAddBlockByDrop";
 import { cn } from "../../../../functions/Functions.ts";
+import { useBlocksContainer } from "../../../../hooks/useBrandingOptions.ts";
 
 function convertToTBlocks(newTree: NodeModel[]) {
   return map(newTree, (block) => {
@@ -32,6 +33,26 @@ function convertToTBlocks(newTree: NodeModel[]) {
   });
 }
 
+function BlocksContainer() {
+  const [container] = useBlocksContainer();
+  const [ids, setSelected] = useSelectedBlockIds();
+  if (!container) return null;
+  return (
+    <div
+      onClick={(e) => {
+        e.stopPropagation();
+        setSelected(["container"]);
+      }}
+      className={cn(
+        "flex items-center pl-2 text-xs",
+        includes(ids, "container") ? "bg-blue-500 text-white" : "hover:bg-gray-200 dark:hover:bg-gray-800",
+      )}>
+      <BoxIcon /> &nbsp;
+      {container._type}
+    </div>
+  );
+}
+
 const Layers = (): React.JSX.Element => {
   const allBlocks = useAllBlocks();
   const [setAllBlocks] = useSetAllBlocks();
@@ -41,6 +62,7 @@ const Layers = (): React.JSX.Element => {
   const { createSnapshot } = useCanvasHistory();
   const expandedIds = useExpandedIds();
   const addBlockOnDrop = useAddBlockByDrop();
+  const [blocksContainer] = useBlocksContainer();
   const handleDrop = async (newTree: NodeModel[], options: any) => {
     const { dragSource, relativeIndex, dropTargetId, monitor } = options;
     if (dragSource) {
@@ -111,6 +133,7 @@ const Layers = (): React.JSX.Element => {
           </div>
         ) : (
           <ScrollArea id="layers-view" className="no-scrollbar h-full overflow-y-auto p-1">
+            <BlocksContainer />
             <Tree
               initialOpen={expandedIds}
               extraAcceptTypes={["CHAI_BLOCK"]}
@@ -135,7 +158,7 @@ const Layers = (): React.JSX.Element => {
               dragPreviewRender={(monitorProps) => <CustomDragPreview monitorProps={monitorProps} />}
               onDrop={handleDrop}
               classes={{
-                root: "h-full pt-2",
+                root: "h-[90%] " + (blocksContainer ? "pl-2" : "pt-2"),
                 draggingSource: "opacity-30",
                 dropTarget: "bg-green-100",
                 placeholder: "relative",

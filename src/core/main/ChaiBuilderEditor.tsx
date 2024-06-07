@@ -17,6 +17,8 @@ import { useBrandingOptions, useBuilderReset, useSetAllBlocks } from "../hooks";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { ChaiBuilderEditorProps } from "../types/chaiBuilderEditorProps.ts";
 import { dataProvidersAtom } from "../hooks/usePageDataProviders.ts";
+import { useBlocksContainer } from "../hooks/useBrandingOptions.ts";
+import { isString } from "lodash";
 
 if (import.meta.env.NODE_ENV === "development") {
   console.log("Chai Builder:", i18n);
@@ -30,6 +32,7 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   const { dndOptions = { backend: MultiBackend } } = props;
   const [setAllBlocks] = useSetAllBlocks();
   const [, setBrandingOptions] = useBrandingOptions();
+  const [, setContainer] = useBlocksContainer();
   const reset = useBuilderReset();
 
   useEffect(() => {
@@ -43,6 +46,16 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   useEffect(() => {
     builderStore.set(dataProvidersAtom, props.dataProviders || []);
   }, [props.dataProviders]);
+
+  useEffect(() => {
+    if (isString(props.container)) {
+      // @ts-ignore
+      setContainer({ _type: props.container, _id: "container" });
+    } else {
+      // @ts-ignore
+      setContainer({ ...props.container, ...{ _id: "container" } });
+    }
+  }, [props.container]);
 
   useEffect(() => {
     setAllBlocks(syncBlocksWithDefaults(props.blocks || []));

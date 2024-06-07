@@ -77,6 +77,11 @@ function ChaiBuilderEmail() {
         setBrandingOptions(options);
         return true;
       }}
+      container={"Container"}
+      onSaveContainer={async (container: any) => {
+        console.log(container);
+        return true;
+      }}
     />
   );
 }
