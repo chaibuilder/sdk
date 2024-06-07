@@ -76,6 +76,7 @@ type BlockDefinition = {
  * @param childType
  */
 export const canAcceptChildBlock = (parentType: string, childType: string) => {
+  if (!parentType) return true; // this is root
   const blockDefinition = getBlockComponent(parentType) as BlockDefinition;
   if (!blockDefinition) return false;
   return has(blockDefinition, "canAcceptBlock") ? blockDefinition.canAcceptBlock(childType) : false;

@@ -22,6 +22,7 @@ registerChaiBlock(CustomCodeBlock, {
   label: "Code Block",
   group: "basic",
   category: "core",
+  hidden: true,
   icon: CodeSandboxLogoIcon,
   builderComponent: CodeBlockBuilder,
   props: {

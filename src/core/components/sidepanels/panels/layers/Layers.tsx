@@ -37,6 +37,7 @@ function BlocksContainer() {
   const [container] = useBlocksContainer();
   const [ids, setSelected] = useSelectedBlockIds();
   if (!container) return null;
+  console.log("container", container);
   return (
     <div
       onClick={(e) => {

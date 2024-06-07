@@ -5,7 +5,7 @@ import i18n from "../locales/load";
 import { FlagsProvider } from "flagged";
 import { useEffect } from "react";
 import { DndProvider } from "react-dnd";
-import { omit } from "lodash-es";
+import { isObject, isString, omit } from "lodash-es";
 import { getBackendOptions, MultiBackend } from "@minoru/react-dnd-treeview";
 import { FEATURE_TOGGLES } from "../FEATURE_TOGGLES";
 import { chaiBuilderPropsAtom } from "../atoms/builder.ts";
@@ -18,7 +18,6 @@ import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { ChaiBuilderEditorProps } from "../types/chaiBuilderEditorProps.ts";
 import { dataProvidersAtom } from "../hooks/usePageDataProviders.ts";
 import { useBlocksContainer } from "../hooks/useBrandingOptions.ts";
-import { isString } from "lodash";
 
 if (import.meta.env.NODE_ENV === "development") {
   console.log("Chai Builder:", i18n);
@@ -51,7 +50,7 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
     if (isString(props.container)) {
       // @ts-ignore
       setContainer({ _type: props.container, _id: "container" });
-    } else {
+    } else if (isObject(props.container)) {
       // @ts-ignore
       setContainer({ ...props.container, ...{ _id: "container" } });
     }

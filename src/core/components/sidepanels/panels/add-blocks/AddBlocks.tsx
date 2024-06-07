@@ -36,6 +36,7 @@ const isAllowedBlockType = (block: ChaiBlock | null | undefined, type: string) =
   else if (parentType === "TableHead" || parentType === "TableBody") return type === "TableRow";
   else if (parentType === "TableRow") return type === "TableCell";
   else if (parentType === "Row") return type === "Column";
+  else if (parentType === "Heading" || parentType === "Text") return type === "RawText";
   return !includes(notAllowedInRoot, type);
 };
 

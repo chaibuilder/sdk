@@ -5,7 +5,7 @@ import { lsBrandingOptionsAtom, lsEmailBlocksAtom } from "./atoms-dev.ts";
 import { MobileIcon } from "@radix-ui/react-icons";
 import { render } from "@react-email/render";
 import { RenderChaiBlocks } from "./render";
-import { Head, Html, Tailwind } from "@react-email/components";
+import { Font, Head, Html, Tailwind } from "@react-email/components";
 import { loadEmailBlocks } from "./blocks/email";
 
 loadEmailBlocks();
@@ -39,7 +39,18 @@ const ExportBtn = () => {
     const html = render(
       <Tailwind config={{ prefix: "c-" }}>
         <Html lang="en" dir="ltr">
-          <Head />
+          <Head>
+            <Font
+              fontFamily="Roboto"
+              fallbackFontFamily="Verdana"
+              webFont={{
+                url: "https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2",
+                format: "woff2",
+              }}
+              fontWeight={400}
+              fontStyle="normal"
+            />
+          </Head>
           <body>
             <RenderChaiBlocks blocks={blocks} />
           </body>
@@ -74,11 +85,6 @@ function ChaiBuilderEmail() {
       }}
       onSaveBrandingOptions={async (options: any) => {
         setBrandingOptions(options);
-        return true;
-      }}
-      container={"Container"}
-      onSaveContainer={async (container: any) => {
-        console.log(container);
         return true;
       }}
     />
