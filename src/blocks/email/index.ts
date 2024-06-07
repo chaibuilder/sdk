@@ -7,7 +7,7 @@ import "./preview.tsx";
 import "./markdown.tsx";
 import "./image.tsx";
 import "./divider.tsx";
-import "./code-block.tsx"
+import "./code-block.tsx";
 
 const loadEmailBlocks = noop;
 

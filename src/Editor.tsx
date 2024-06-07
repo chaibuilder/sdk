@@ -29,6 +29,7 @@ function ChaiBuilderDefault() {
   return (
     <ChaiBuilderEditor
       // @ts-ignore
+      dataBindingSupport={true}
       getExternalPredefinedBlock={async (block: PredefinedBlock) => {
         return getBlocksFromHTML(`<div class="bg-red-300"><p>Hello World</p></div>`);
       }}

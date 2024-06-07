@@ -12,7 +12,7 @@ loadEmailBlocks();
 
 let PreviewMessage = () => {
   const { t } = useTranslation();
-  return <div className={"text-sm font-normal"}>{t("This is an awesome Email Builder")}</div>;
+  return <div className={"text-sm font-normal"}>{t("THis is an awesome Email Builder")}</div>;
 };
 
 const BREAKPOINTS = [
@@ -74,6 +74,11 @@ function ChaiBuilderEmail() {
       }}
       onSaveBrandingOptions={async (options: any) => {
         setBrandingOptions(options);
+        return true;
+      }}
+      container={"Container"}
+      onSaveContainer={async (container: any) => {
+        console.log(container);
         return true;
       }}
     />

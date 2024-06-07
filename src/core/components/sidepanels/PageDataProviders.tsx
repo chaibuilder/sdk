@@ -26,9 +26,9 @@ import { useTranslation } from "react-i18next";
 import { usePageDataProviders } from "../../hooks/usePageDataProviders.ts";
 import { useAtom } from "jotai";
 import { pageSyncStateAtom } from "../../hooks/useSavePage.ts";
+import { JsonView, allExpanded, defaultStyles } from "react-json-view-lite";
 import { ErrorBoundary } from "../ErrorBoundary.tsx";
-
-const LazyViewer = React.lazy(() => import("react-json-view"));
+import "react-json-view-lite/dist/index.css";
 
 const ViewProviderData = ({ provider, onClose }) => {
   const { t } = useTranslation();
@@ -37,7 +37,7 @@ const ViewProviderData = ({ provider, onClose }) => {
   useEffect(() => {
     if (provider) {
       const fn = provider.mockFn ? provider.mockFn : provider.dataFn;
-      fn().then((data) => setJson(data));
+      fn().then((data: any) => setJson(data));
     }
   }, [provider]);
 
@@ -47,17 +47,21 @@ const ViewProviderData = ({ provider, onClose }) => {
     <Dialog onOpenChange={(open) => (!open ? onClose() : "")} defaultOpen={true}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{t("data_provider")}: {provider.name}</DialogTitle>
+          <DialogTitle>
+            {t("data_provider")}: {provider.name}
+          </DialogTitle>
           <DialogDescription>{provider.description}</DialogDescription>
         </DialogHeader>
         <ErrorBoundary>
-          <LazyViewer
-            style={{ maxHeight: "80vh", overflowY: "auto" }}
-            name={provider.providerKey}
-            enableClipboard={false}
-            displayObjectSize={false}
-            displayDataTypes={false}
-            src={json}
+          <JsonView
+            data={json}
+            shouldExpandNode={allExpanded}
+            style={{
+              ...defaultStyles,
+              container: "max-h-[80vh] overflow-y-auto text-[12px] leading-[1.5] tracking-wide font-mono",
+              stringValue: "text-orange-600",
+              label: "text-green-900 font-semibold pr-1 tracking-wider",
+            }}
           />
         </ErrorBoundary>
       </DialogContent>
@@ -66,10 +70,10 @@ const ViewProviderData = ({ provider, onClose }) => {
 };
 
 function RemoveProviderConfirmation({
-                                      children,
-                                      name,
-                                      onRemove,
-                                    }: {
+  children,
+  name,
+  onRemove,
+}: {
   children: any;
   name: string;
   onRemove: () => void;
@@ -80,12 +84,8 @@ function RemoveProviderConfirmation({
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>
-            {t("remove_provider_confirmation", { name })}
-          </AlertDialogTitle>
-          <AlertDialogDescription>
-            {t("remove_provider_warning")}
-          </AlertDialogDescription>
+          <AlertDialogTitle>{t("remove_provider_confirmation", { name })}</AlertDialogTitle>
+          <AlertDialogDescription>{t("remove_provider_warning")}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
