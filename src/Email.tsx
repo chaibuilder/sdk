@@ -55,9 +55,8 @@ const ExportBtn = () => {
 };
 
 function ChaiBuilderEmail() {
-  const [blocks, setBlocks] = useAtom(lsBlocksAtom);
+  const [blocks, setBlocks] = useAtom(lsEmailBlocksAtom);
   const [brandingOptions, setBrandingOptions] = useAtom(lsBrandingOptionsAtom);
-  const [providers, setProviders] = useAtom(lsProvidersAtom);
 
   return (
     <ChaiBuilderEditor
@@ -66,15 +65,18 @@ function ChaiBuilderEmail() {
       breakpoints={BREAKPOINTS}
       topBarComponents={{ left: [PreviewMessage], right: [ExportBtn] }}
       blocks={blocks}
-      dataProviders={providers}
       brandingOptions={brandingOptions}
-      onSavePage={async ({ blocks, providers }: any) => {
+      onSavePage={async ({ blocks }: any) => {
         setBlocks(blocks);
-        setProviders(providers);
         return true;
       }}
       onSaveBrandingOptions={async (options: any) => {
         setBrandingOptions(options);
+        return true;
+      }}
+      container={"Container"}
+      onSaveContainer={async (container: any) => {
+        console.log(container);
         return true;
       }}
     />
