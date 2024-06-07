@@ -30,3 +30,5 @@ registerChaiBlock(ButtonBlock, {
     styles: Styles({ default: "bg-primary text-white px-4 py-2 rounded-md" }),
   },
 });
+
+export default ButtonBlock;
