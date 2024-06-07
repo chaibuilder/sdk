@@ -15,3 +15,5 @@ registerChaiBlock(MarkdownBlock, {
     content: MultilineText({ default: "# This is a ~~strikethrough~~", title: "Markdown" }),
   },
 });
+
+export default MarkdownBlock;

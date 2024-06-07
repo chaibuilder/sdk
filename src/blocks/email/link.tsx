@@ -1,32 +1,36 @@
-import { Button } from "@react-email/components";
+import { Link } from "@react-email/components";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import { Link, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
+import { Link as link, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
+import { Link1Icon } from "@radix-ui/react-icons";
 
-const ButtonBlock = ({ blockProps, styles, link, content }: any) => {
+const LinkBlock = ({ blockProps, styles, href, content, target }: any) => {
   return (
-    <Button {...blockProps} {...styles} href={link.href}>
+    <Link {...blockProps} {...styles} href={href} target={target}>
       {content}
-    </Button>
+    </Link>
   );
 };
 
-const ButtonBuilder = ({ blockProps, styles, content }: any) => {
+const LinkBuilder = ({ blockProps, styles, href, content, target }: any) => {
   return (
-    <button type={"button"} {...blockProps} {...styles}>
+    <a {...blockProps} {...styles} href={href} target={target}>
       {content}
-    </button>
+    </a>
   );
 };
 
-registerChaiBlock(ButtonBlock, {
-  type: "Button",
-  label: "Button",
+registerChaiBlock(LinkBlock, {
+  type: "Link",
+  label: "Link",
   group: "basic",
   category: "core",
-  builderComponent: ButtonBuilder,
+  icon: Link1Icon,
+  builderComponent: LinkBuilder,
   props: {
-    content: SingleLineText({ title: "Content", default: "Click me" }),
-    link: Link({ title: "Link", default: { href: "https://chaibuilder.com", target: "_blank", type: "url" } }),
-    styles: Styles({ default: "bg-primary text-white px-4 py-2 rounded-md" }),
+    content: SingleLineText({ title: "Content", default: "I am a link." }),
+    link: link({ title: "Link", default: { href: "https://chaibuilder.com", target: "_blank", type: "url" } }),
+    styles: Styles({ default: "font-bold" }),
   },
 });
+
+export default LinkBlock;

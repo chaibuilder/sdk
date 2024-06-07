@@ -26,3 +26,5 @@ registerChaiBlock(PreviewBlock, {
   canAcceptBlock: () => true,
   canDuplicate: () => false,
 });
+
+export default PreviewBlock;
