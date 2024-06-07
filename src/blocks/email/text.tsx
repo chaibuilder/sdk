@@ -1,6 +1,6 @@
 import { Text } from "@react-email/components";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import { SingleLineText, Styles } from "@chaibuilder/runtime/controls";
+import { MultilineText, Styles } from "@chaibuilder/runtime/controls";
 import { TextIcon } from "@radix-ui/react-icons";
 
 const TextBlock = ({ blockProps, styles, content }: any) => {
@@ -11,16 +11,30 @@ const TextBlock = ({ blockProps, styles, content }: any) => {
   );
 };
 
+const TextBlockBuilder = ({ content, blockProps, styles }: any) => {
+  return (
+    <p {...blockProps} {...styles}>
+      {content}
+    </p>
+  );
+};
+
 registerChaiBlock(TextBlock, {
   type: "Text",
   label: "Text",
   group: "basic",
   category: "core",
   icon: TextIcon,
+  builderComponent: TextBlockBuilder,
   props: {
-    content: SingleLineText({ title: "Content", default: "Enter your text here..." }),
-    styles: Styles({ default: "text-xl" }),
+    content: MultilineText({
+      title: "Content",
+      default:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor. Ut in nulla enim.",
+    }),
+    styles: Styles({ default: "" }),
   },
+  canAcceptBlock: (blockType: string) => ["Link", "RawText"].includes(blockType),
 });
 
 export default TextBlock;

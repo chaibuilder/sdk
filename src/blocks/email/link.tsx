@@ -11,11 +11,11 @@ const LinkBlock = ({ blockProps, styles, href, content, target }: any) => {
   );
 };
 
-const LinkBuilder = ({ blockProps, styles, href, content, target }: any) => {
+const LinkBuilder = ({ blockProps, styles, content, children }: any) => {
   return (
-    <a {...blockProps} {...styles} href={href} target={target}>
-      {content}
-    </a>
+    <span {...blockProps} {...styles}>
+      {children ? children : content}
+    </span>
   );
 };
 
@@ -25,12 +25,25 @@ registerChaiBlock(LinkBlock, {
   group: "basic",
   category: "core",
   icon: Link1Icon,
+  blocks: [
+    {
+      _id: "a",
+      _type: "Link",
+    },
+    {
+      _id: "b",
+      _parent: "a",
+      _type: "RawText",
+      content: "I am a link.",
+    },
+  ],
   builderComponent: LinkBuilder,
   props: {
     content: SingleLineText({ title: "Content", default: "I am a link." }),
     link: link({ title: "Link", default: { href: "https://chaibuilder.com", target: "_blank", type: "url" } }),
-    styles: Styles({ default: "font-bold" }),
+    styles: Styles({ default: "font-bold text-blue-500" }),
   },
+  canAcceptBlock: () => true,
 });
 
 export default LinkBlock;

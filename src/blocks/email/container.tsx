@@ -15,10 +15,9 @@ registerChaiBlock(ContainerBlock, {
   label: "Container",
   group: "basic",
   category: "core",
-  hidden: true,
   props: { styles: Styles({ default: "" }) },
   canAcceptBlock: () => true,
-  canMove: () => false,
+  canMove: () => true,
   canDelete: () => false,
   canDuplicate: () => false,
 });

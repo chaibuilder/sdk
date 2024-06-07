@@ -43,6 +43,7 @@ registerChaiBlock(HeadingBlock, {
       ],
     }),
   },
+  canAcceptBlock: (blockType: string) => ["Link", "RawText"].includes(blockType),
 });
 
 export default HeadingBlock;
