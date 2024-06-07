@@ -3,23 +3,23 @@ import { registerChaiBlock } from "@chaibuilder/runtime";
 import { Checkbox, MultilineText, SelectOption, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import { CodeSandboxLogoIcon } from "@radix-ui/react-icons";
 
-const CustomCodeBlock = ({ blockProps, styles, code, linenumbers, theme, language }: any) => {
+const CustomCodeBlock = ({ blockProps, styles, code, lineNumbers, theme, language }: any) => {
   return (
-    <CodeBlock {...blockProps} {...styles} code={code} linenumbers={linenumbers} theme={theme} language={language} />
+    <CodeBlock {...blockProps} {...styles} code={code} linenumbers={lineNumbers} theme={theme} language={language} />
   );
 };
 
-const CodeBlockBuilder = ({ blockProps, styles, code, linenumbers, theme, language }: any) => {
+const CodeBlockBuilder = ({ blockProps, styles, code }: any) => {
   return (
-    <code {...blockProps} {...styles} linenumbers={linenumbers} theme={theme} language={language}>
-      {code}
-    </code>
+    <div {...blockProps} {...styles}>
+      <code>{code}</code>
+    </div>
   );
 };
 
 registerChaiBlock(CustomCodeBlock, {
   type: "CodeBlock",
-  label: "CodeBlock",
+  label: "Code Block",
   group: "basic",
   category: "core",
   icon: CodeSandboxLogoIcon,
@@ -28,7 +28,7 @@ registerChaiBlock(CustomCodeBlock, {
     styles: Styles({ default: "" }),
     code: MultilineText({ title: "Code", default: "console.log('Hello, world!');" }),
     theme: SingleLineText({ title: "Theme", default: "dracula" }),
-    linenumbers: Checkbox({
+    lineNumbers: Checkbox({
       title: "Line number",
       default: false,
     }),
