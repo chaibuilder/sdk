@@ -6,6 +6,7 @@ import { useBrandingOptions, useBuilderProp } from "../../../../hooks";
 import { Color, Numeric, SelectOption } from "@chaibuilder/runtime/controls";
 import { isEqual } from "lodash-es";
 import { ColorField } from "../../../../../ui/widgets/rjsf/widgets/color.tsx";
+import { useBlocksContainer } from "../../../../hooks/useBrandingOptions.ts";
 
 const FONTS = [
   { title: "Roboto", value: "Roboto" },
@@ -62,6 +63,7 @@ const FONTS = [
 const BrandingOptions = (): React.JSX.Element => {
   const onSaveBrandingOptions = useBuilderProp("onSaveBrandingOptions", async () => {});
   const [brandingOptions, setBrandingOptions] = useBrandingOptions();
+  const [container] = useBlocksContainer();
   const brandingRef = React.useRef(brandingOptions);
 
   React.useEffect(() => {
@@ -93,7 +95,7 @@ const BrandingOptions = (): React.JSX.Element => {
     roundedCorners,
   }: any = brandingOptions;
 
-  const brandingProperties: Record<string, any> = {
+  let brandingProperties: Record<string, any> = {
     headingFont: SelectOption({
       title: "Heading font",
       default: headingFont,
@@ -110,24 +112,29 @@ const BrandingOptions = (): React.JSX.Element => {
     }),
     primaryColor: Color({ title: "Primary", default: primaryColor }),
     secondaryColor: Color({ title: "Secondary", default: secondaryColor }),
-    bodyBgLightColor: Color({
-      title: "Body Background (Light)",
-      default: bodyBgLightColor,
-    }),
-    bodyBgDarkColor: Color({
-      title: "Body Background (Dark)",
-      default: bodyBgDarkColor,
-    }),
-    bodyTextLightColor: Color({
-      title: "Body Text (Light)",
-      default: bodyTextDarkColor,
-    }),
-    bodyTextDarkColor: Color({
-      title: "Body Text (Dark)",
-      default: bodyTextLightColor,
-    }),
-    // TODO: exteend more options from user
   };
+
+  if (!container) {
+    brandingProperties = {
+      ...brandingProperties,
+      bodyBgLightColor: Color({
+        title: "Body Background (Light)",
+        default: bodyBgLightColor,
+      }),
+      bodyBgDarkColor: Color({
+        title: "Body Background (Dark)",
+        default: bodyBgDarkColor,
+      }),
+      bodyTextLightColor: Color({
+        title: "Body Text (Light)",
+        default: bodyTextDarkColor,
+      }),
+      bodyTextDarkColor: Color({
+        title: "Body Text (Dark)",
+        default: bodyTextLightColor,
+      }),
+    };
+  }
 
   const propsSchema: RJSFSchema = {
     type: "object",
