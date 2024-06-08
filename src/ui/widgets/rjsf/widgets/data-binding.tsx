@@ -17,7 +17,7 @@ import {
   truncate,
 } from "lodash-es";
 import { Check, EditIcon, TrashIcon } from "lucide-react";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Button,
   Command,
@@ -44,7 +44,7 @@ import { getBlockComponent, getChaiDataProviders } from "@chaibuilder/runtime";
 import { ErrorBoundary } from "../../../../core/components/ErrorBoundary.tsx";
 import { useSelectedBlock } from "../../../../core/hooks";
 import { useChaiExternalData } from "../../../../core/components/canvas/static/useChaiExternalData.ts";
-import { JsonView, allExpanded, defaultStyles } from "react-json-view-lite";
+import { allExpanded, defaultStyles, JsonView } from "react-json-view-lite";
 import "react-json-view-lite/dist/index.css";
 
 // * Object to Path and Data Type
@@ -92,7 +92,7 @@ const ViewData = ({ data, fullView }: { data: any; fullView?: boolean }) => {
         </ErrorBoundary>
       </>
     ) : (
-      <div className="text-gray-800/50 text-[12px] leading-4 w-full max-h-36 overflow-x-hidden overflow-y-auto">
+      <div className="max-h-36 w-full overflow-y-auto overflow-x-hidden text-[12px] leading-4 text-gray-800/50">
         <span className="font-medium text-gray-800/80">Content: </span>
         {data}
       </div>
@@ -100,7 +100,7 @@ const ViewData = ({ data, fullView }: { data: any; fullView?: boolean }) => {
   }
 
   return (
-    <div className="text-[10px] text-gray-800/50 leading-3 whitespace-nowrap overflow-hidden w-full">
+    <div className="w-full overflow-hidden whitespace-nowrap text-[10px] leading-3 text-gray-800/50">
       {truncate(type === "object" ? JSON.stringify(data) : data, { length: 40 })}
     </div>
   );
@@ -161,27 +161,27 @@ const DataProvidersSuggester = ({
               size="sm"
               className={` ${
                 !isEmpty(value)
-                  ? "min-w-[350px] justify-between items-center"
-                  : "bg-blue-500 text-gray-100 hover:bg-blue-400 hover:text-white w-44 justify-center"
+                  ? "min-w-[350px] items-center justify-between"
+                  : "w-44 justify-center bg-blue-500 text-gray-100 hover:bg-blue-400 hover:text-white"
               }`}>
               {value ? (
                 <>
-                  <span className={`text-sm pr-8`}>
+                  <span className={`pr-8 text-sm`}>
                     {isProp && (
-                      <span className="text-[10px] text-purple-500 bg-purple-100 px-2 py-0.5 mr-2 rounded-full">
+                      <span className="mr-2 rounded-full bg-purple-100 px-2 py-0.5 text-[10px] text-purple-500">
                         {startCase(dataType)}
                       </span>
                     )}
                     {value}
                   </span>
-                  <span className="text-[9px] text-blue-400 underline cursor-pointer hover:text-blue-700">Change</span>
+                  <span className="cursor-pointer text-[9px] text-blue-400 underline hover:text-blue-700">Change</span>
                 </>
               ) : (
                 <>+ Set {startCase(toLower(type))}</>
               )}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="p-0 z-[999] min-w-[300px]" side="right" align="start">
+          <PopoverContent className="z-[999] min-w-[300px] p-0" side="right" align="start">
             <Command>
               <CommandInput placeholder={`Choose ${toLower(type)}...`} />
               <CommandList>
@@ -192,19 +192,19 @@ const DataProvidersSuggester = ({
                       key={status}
                       value={status}
                       className={`cursor-pointer ${
-                        isProp ? "flex justify-between items-center" : "flex flex-col items-start justify-start"
+                        isProp ? "flex items-center justify-between" : "flex flex-col items-start justify-start"
                       }`}
                       onSelect={(value) => {
                         setValue(find(options, (priority) => priority === value) || null);
                         setOpen(false);
                       }}>
                       <div className="flex items-center gap-x-2">
-                        <Check className={`w-4 h-4 text-green-500 ${value === status ? "" : "opacity-0"}`} />
+                        <Check className={`h-4 w-4 text-green-500 ${value === status ? "" : "opacity-0"}`} />
                         {status}
                       </div>
                       {isProp ? (
                         <div>
-                          <span className="text-[10px] text-purple-500 bg-purple-100 px-2 py-0.5 rounded-full">
+                          <span className="rounded-full bg-purple-100 px-2 py-0.5 text-[10px] text-purple-500">
                             {startCase(get(suggestedPathDataType, status, ""))}
                           </span>
                         </div>
@@ -272,7 +272,7 @@ const AddBindingModalContent = ({
           Add prop and path of binding. Click save when you're done.
         </DialogDescription>
       </DialogHeader>
-      <div className="flex flex-col gap-1 relative">
+      <div className="relative flex flex-col gap-1">
         <DataProvidersSuggester
           type="PROP"
           isDisabled={false}
@@ -389,22 +389,22 @@ const NewDataBindingPair = ({
   useEffect(() => setDataType(() => getDataType(item.key, "PROP")), [item.key]);
 
   return (
-    <div className={`flex flex-col border border-gray-200 relative rounded-md p-2`}>
-      <div className="text-gray-500 font-normal text-sm">{item.key}</div>
+    <div className={`relative flex flex-col rounded-md border border-gray-200 p-2`}>
+      <div className="text-sm font-normal text-gray-500">{item.key}</div>
       <div className="font-medium leading-5">{item.value}</div>
       <ViewData data={get(dataProvider, item.value, "")} />
 
       <div className="flex items-center justify-end gap-x-2">
         <AddBindingModal editMode onAddBinding={onAddBinding} appliedBindings={appliedBindings} item={item}>
-          <EditIcon className="h-6 w-6 mt-1 cursor-pointer rounded border hover:bg-blue-400 hover:text-white border-blue-400 p-1 text-blue-400 hover:scale-105 duration-200" />
+          <EditIcon className="mt-1 h-6 w-6 cursor-pointer rounded border border-blue-400 p-1 text-blue-400 duration-200 hover:scale-105 hover:bg-blue-400 hover:text-white" />
         </AddBindingModal>
         <TrashIcon
           onClick={() => onRemove()}
-          className="h-6 w-6 mt-1 cursor-pointer rounded border hover:bg-red-400 hover:text-white border-red-400 p-1 text-red-400 hover:scale-105 duration-200"
+          className="mt-1 h-6 w-6 cursor-pointer rounded border border-red-400 p-1 text-red-400 duration-200 hover:scale-105 hover:bg-red-400 hover:text-white"
         />
       </div>
       {!isEmpty(dataType) && !isEmpty(item.key) && (
-        <div className="mt-px absolute right-0 top-1 text-purple-600 text-[10px] flex items-center font-medium h-4 px-2 rounded-full">
+        <div className="absolute right-0 top-1 mt-px flex h-4 items-center rounded-full px-2 text-[10px] font-medium text-purple-600">
           {startCase(dataType)}
         </div>
       )}
@@ -470,8 +470,8 @@ const DataBindingSetting = ({ bindingData, onChange }: { bindingData: any; onCha
 
   if (isEmpty(providers)) {
     return (
-      <div className="w-full flex items-center justify-center">
-        <p className="text-gray-500 mb-1.5 text-xs">
+      <div className="flex w-full items-center justify-center">
+        <p className="mb-1.5 text-xs text-gray-500">
           You have no data providers registered. Please add a data provider to your project. <br />
           <a className="text-blue-500" href="https://chaibuilder.com/docs/registering-data-providers" target={"_blank"}>
             Learn more
@@ -502,13 +502,13 @@ const DataBindingSetting = ({ bindingData, onChange }: { bindingData: any; onCha
             appliedBindings={map(_formData, "key")}
             onAddBinding={addNewBindingProp}>
             <span
-              className={`w-full px-5 py-1.5 text-xs rounded-md font-medium duration-200 ${
+              className={`w-full rounded-md px-5 py-1.5 text-xs font-medium duration-200 ${
                 isAddDisabled
                   ? "cursor-not-allowed bg-gray-200 text-gray-400"
                   : "bg-blue-700/20 text-blue-800 hover:bg-blue-700/30"
               }`}>
               {isEmpty(dataProvider) ? (
-                <small className="text-gray-500 text-[9.5px]">No data provider has been set up for this page</small>
+                <small className="text-[9.5px] text-gray-500">No data provider has been set up for this page</small>
               ) : (
                 "+ Add Data Binding"
               )}

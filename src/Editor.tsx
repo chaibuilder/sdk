@@ -2,7 +2,6 @@ import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
 import { lsBlocksAtom, lsBrandingOptionsAtom, lsContainer, lsProvidersAtom } from "./atoms-dev.ts";
 import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
-import { PredefinedBlock } from "./core/types/CoreBlock.ts";
 import { ChaiBuilderEditor } from "./core/main";
 import "./blocks/web";
 import "./data-providers/data";
@@ -28,9 +27,9 @@ function ChaiBuilderDefault() {
 
   return (
     <ChaiBuilderEditor
-      // @ts-ignore
       dataBindingSupport={true}
-      getExternalPredefinedBlock={async (block: PredefinedBlock) => {
+      // @ts-ignore
+      getExternalPredefinedBlock={async () => {
         return getBlocksFromHTML(`<div class="bg-red-300"><p>Hello World</p></div>`);
       }}
       getUILibraryBlocks={async () => {
