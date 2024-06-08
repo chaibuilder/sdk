@@ -98,7 +98,7 @@ const Settings: React.FC = () => {
           <div
             onMouseMove={updateStyle}
             onMouseUp={() => dragStopped()}
-            className="absolute inset-0 z-30 cursor-row-resize bg-gray-300/10 "
+            className="absolute inset-0 z-30 cursor-row-resize bg-gray-300/10"
           />
         ) : null}
 
@@ -107,14 +107,12 @@ const Settings: React.FC = () => {
             <TabsTrigger value="settings">{t("settings")}</TabsTrigger>
             <TabsTrigger value="styling">{t("styling")}</TabsTrigger>
           </TabsList>
-          <TabsContent
-            value="settings"
-            className="no-scrollbar -mx-1 -mr-2 h-full flex-1 overflow-y-auto overflow-x-hidden">
-            <ScrollArea className="no-scrollbar -mx-1 pb-5 flex-1 max-h-full overflow-y-hidden overflow-x-hidden">
+          <TabsContent value="settings" className="no-scrollbar h-full flex-1 overflow-y-auto overflow-x-hidden">
+            <ScrollArea className="no-scrollbar max-h-full flex-1 overflow-x-hidden overflow-y-hidden pb-5">
               <BlockSettings />
             </ScrollArea>
           </TabsContent>
-          <TabsContent value="styling" className="flex-1 h-full overflow-y-auto overflow-x-hidden">
+          <TabsContent value="styling" className="h-full flex-1 overflow-y-auto overflow-x-hidden">
             <BlockStyling />
           </TabsContent>
         </Tabs>

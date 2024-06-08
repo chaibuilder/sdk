@@ -50,6 +50,7 @@ registerChaiBlock(HeadingBlock, {
     styles: Styles({ default: "text-3xl" }),
     content: MultilineText({ title: "Content", default: "Heading goes here" }),
   },
+  canAcceptBlock: (type) => type === "Span" || type === "Text",
 });
 
 export default HeadingBlock;

@@ -10,9 +10,7 @@ export const handlers: any = [
   http.get("/api/chaibuilder/verify", () => HttpResponse.json(successResponse({}))),
   http.get("/api/chaibuilder/project", () => HttpResponse.json(successResponse(project))),
   http.get("/api/chaibuilder/pages", () =>
-    HttpResponse.json(
-      successResponse(map(pages, (page) => omit(page, ["blocks", "linkedSubpages", "seoData", "project"]))),
-    ),
+    HttpResponse.json(successResponse(map(pages, (page) => omit(page, ["blocks", "linkedSubpages", "project"])))),
   ),
   http.get("/api/chaibuilder/page", ({ request }) => {
     const url = new URL(request.url);

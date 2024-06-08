@@ -45,6 +45,7 @@ registerChaiBlock(ListBlock, {
       ],
     }),
   },
+  canAcceptBlock: (blockType: string) => blockType === "ListItem",
   blocks: [
     { _type: "List", _id: "a", listType: "list-none", styles: "#styles:," },
     {
@@ -99,6 +100,7 @@ registerChaiBlock(ListItemBlock, {
     styles: Styles({ default: "" }),
     content: MultilineText({ title: "Content", default: "List item" }),
   },
+  canAcceptBlock: () => true,
 });
 
 export default ListBlock;

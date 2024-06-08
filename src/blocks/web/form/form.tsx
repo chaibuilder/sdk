@@ -69,6 +69,7 @@ registerChaiBlock(FormBlock, {
       default: "Thank you for your submission.",
     }),
   },
+  canAcceptBlock: () => true,
 });
 
 const LabelBlock = (

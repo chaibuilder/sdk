@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ButtonIcon } from "@radix-ui/react-icons";
-import { Icon, Link, Numeric, SelectOption, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
+import { Icon, Numeric, SelectOption, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
 import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
 
@@ -18,7 +18,7 @@ const ButtonBlock = (
       {_icon && (
         <div
           style={{ width: iconSize + "px" }}
-          className={iconPos + (iconPos === "order-first" ? " mr-2" : "ml-2") || ""}
+          className={iconPos + (iconPos === "order-first" ? "mr-2" : "ml-2") || ""}
           dangerouslySetInnerHTML={{ __html: _icon }}
         />
       )}
@@ -36,7 +36,6 @@ registerChaiBlock(ButtonBlock, {
   props: {
     content: SingleLineText({ title: "Label", default: "Button", multiLingual: true }),
     styles: Styles({ default: "text-white bg-primary px-4 py-2 rounded-global flex items-center" }),
-    link: Link({ title: "Link", default: { type: "page", href: "", target: "_blank" } }),
     icon: Icon({ title: "Icon", default: "" }),
     iconSize: Numeric({ title: "Icon Size", default: 24 }),
     iconPos: SelectOption({

@@ -36,6 +36,7 @@ registerChaiBlock(SlotBlock, {
     styles: Styles({ default: "" }),
     emptyStyles: Styles({ default: "" }),
   },
+  canAcceptBlock: () => true,
 });
 
 export default SlotBlock;

@@ -71,6 +71,7 @@ registerChaiBlock(LinkBlock, {
       default: { type: "page", target: "_self", href: "" },
     }),
   },
+  canAcceptBlock: () => true,
 });
 
 export default LinkBlock;

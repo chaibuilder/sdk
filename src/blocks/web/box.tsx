@@ -60,6 +60,7 @@ registerChaiBlock(BoxBlock, {
     }),
     backgroundImage: Image({ title: "Background Image" }),
   },
+  canAcceptBlock: () => true,
 });
 
 export default BoxBlock;
