@@ -2,7 +2,7 @@ import { filter, find, includes, isEmpty } from "lodash-es";
 import { useCallback } from "react";
 import { useSelectedBlockIds } from "./useSelectedBlockIds";
 import { ChaiBlock } from "../types/ChaiBlock";
-import { useBlocksStore, useBlocksStoreActions } from "../history/blocks.ts";
+import { useBlocksStore, useBlocksStoreActions } from "../history/useBlocksStoreActions.ts";
 import { map } from "lodash";
 
 const removeBlocks = (blocks: ChaiBlock[], blockIds: Array<string>): ChaiBlock[] => {

@@ -15,7 +15,7 @@ import {
   useSelectedStylingBlocks,
 } from "../../hooks";
 import { editLayerNameAtom, inlineEditingActiveAtom } from "../../atoms/ui";
-import { useBlocksStore } from "../../history/blocks.ts";
+import { useBlocksStore } from "../../history/useBlocksStoreActions.ts";
 
 export const KeyboardHandler = () => {
   const { window: iframeWin }: any = useFrame();

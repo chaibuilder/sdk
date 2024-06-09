@@ -5,7 +5,7 @@ import { BlocksRendererStatic } from "./BlocksRenderer";
 import { BlocksExternalDataProvider } from "./BlocksExternalDataProvider.tsx";
 import { getBlockComponent } from "@chaibuilder/runtime";
 import { createElement } from "react";
-import { useBlocksStore } from "../../../history/blocks.ts";
+import { useBlocksStore } from "../../../history/useBlocksStoreActions.ts";
 
 export const StaticBlocksRenderer = () => {
   const [blocks] = useBlocksStore();

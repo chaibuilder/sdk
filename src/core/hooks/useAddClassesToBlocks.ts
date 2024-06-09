@@ -7,7 +7,7 @@ import { selectedStylingBlocksAtom, TStyleBlock } from "./useSelectedStylingBloc
 import { ChaiBlock } from "../types/ChaiBlock";
 import { STYLES_KEY } from "../constants/CONTROLS";
 import { map } from "lodash";
-import { useBlocksStoreActions } from "../history/blocks.ts";
+import { useBlocksStoreActions } from "../history/useBlocksStoreActions.ts";
 
 const getSplitClasses = (classesString: string) => {
   const splitClasses: string[] = classesString.replace(STYLES_KEY, "").split(",");

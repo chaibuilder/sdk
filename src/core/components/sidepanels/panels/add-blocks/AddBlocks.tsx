@@ -20,7 +20,7 @@ import { ChaiBlock } from "../../../../types/ChaiBlock";
 import { useBuilderProp, useSelectedBlockIds, useUILibraryBlocks } from "../../../../hooks";
 import ImportHTML from "./ImportHTML";
 import { useChaiBlocks } from "@chaibuilder/runtime";
-import { useBlocksStore } from "../../../../history/blocks.ts";
+import { useBlocksStore } from "../../../../history/useBlocksStoreActions.ts";
 
 /**
  *

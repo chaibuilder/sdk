@@ -4,7 +4,7 @@ import { BoxIcon, DoubleArrowDownIcon, StackIcon } from "@radix-ui/react-icons";
 import { useDragLayer, useDrop } from "react-dnd";
 import { NodeModel, Tree } from "@minoru/react-dnd-treeview";
 import { useTranslation } from "react-i18next";
-import { useCanvasHistory, useSelectedBlockIds, useSelectedStylingBlocks, useSetAllBlocks } from "../../../../hooks";
+import { useCanvasHistory, useSelectedBlockIds, useSelectedStylingBlocks } from "../../../../hooks";
 import { CustomNode } from "./CustomNode";
 import { CustomDragPreview } from "./CustomDragPreview";
 import { Placeholder } from "./Placeholder";
@@ -16,7 +16,7 @@ import { ScrollArea } from "../../../../../ui";
 import { useAddBlockByDrop } from "../../../../hooks/useAddBlockByDrop";
 import { cn } from "../../../../functions/Functions.ts";
 import { useBlocksContainer } from "../../../../hooks/useBrandingOptions.ts";
-import { useBlocksStore } from "../../../../history/blocks.ts";
+import { useBlocksStore, useBlocksStoreActions } from "../../../../history/useBlocksStoreActions.ts";
 
 function convertToTBlocks(newTree: NodeModel[]) {
   return map(newTree, (block) => {
@@ -50,7 +50,7 @@ function BlocksContainer() {
 
 const Layers = (): React.JSX.Element => {
   const [allBlocks] = useBlocksStore();
-  const [setAllBlocks] = useSetAllBlocks();
+  const { setNewBlocks: setAllBlocks } = useBlocksStoreActions();
   const [ids, setIds, toggleIds] = useSelectedBlockIds();
   const [, setStyleBlocks] = useSelectedStylingBlocks();
   const { t } = useTranslation();

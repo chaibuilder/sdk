@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useBlocksStoreActions } from "../history/blocks.ts";
+import { useBlocksStoreActions } from "../history/useBlocksStoreActions.ts";
 
 /**
  *

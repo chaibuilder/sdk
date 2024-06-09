@@ -1,11 +1,14 @@
 import { ChaiBlock } from "../types/ChaiBlock.ts";
-import { useBlocksStore } from "./blocks.ts";
+import { useBlocksStore } from "./useBlocksStoreActions.ts";
 import { find, map, omit } from "lodash";
 
 export const useBlocksStoreManager = () => {
   const [, setBlocks] = useBlocksStore();
 
   return {
+    setNewBlocks: (newBlocks: ChaiBlock[]) => {
+      setBlocks(newBlocks);
+    },
     addBlocks: (newBlocks: ChaiBlock[], parent?: string, position?: number) => {
       setBlocks((prevBlocks) => {
         prevBlocks = [...prevBlocks, ...newBlocks];

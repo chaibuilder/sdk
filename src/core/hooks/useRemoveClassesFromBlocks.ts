@@ -6,7 +6,7 @@ import { selectedStylingBlocksAtom, TStyleBlock } from "./useSelectedStylingBloc
 import { ChaiBlock } from "../types/ChaiBlock";
 import { getSplitClasses } from "../import-html/general";
 import { STYLES_KEY } from "../constants/CONTROLS";
-import { useBlocksStoreActions } from "../history/blocks.ts";
+import { useBlocksStoreActions } from "../history/useBlocksStoreActions.ts";
 
 export const removeClassFromBlocksAtom: any = atom(null, (get, _set, { blockIds, fullClasses }) => {
   const styleBlock = first(get(selectedStylingBlocksAtom)) as TStyleBlock;

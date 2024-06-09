@@ -13,7 +13,20 @@ export const useBlocksStore = () => {
 export const useBlocksStoreActions = () => {
   const { add } = useUndoManager();
   const [currentBlocks] = useBlocksStore();
-  const { addBlocks: addNewBlocks, removeBlocks: removeExistingBlocks, updateBlocksProps } = useBlocksStoreManager();
+  const {
+    setNewBlocks: setBlocks,
+    addBlocks: addNewBlocks,
+    removeBlocks: removeExistingBlocks,
+    updateBlocksProps,
+  } = useBlocksStoreManager();
+
+  const setNewBlocks = (newBlocks: ChaiBlock[]) => {
+    setBlocks(newBlocks);
+    add({
+      undo: () => setBlocks(currentBlocks),
+      redo: () => setBlocks(newBlocks),
+    });
+  };
 
   const addBlocks = (newBlocks: ChaiBlock[], parent?: string, position?: number) => {
     addNewBlocks(newBlocks, parent, position);
@@ -59,5 +72,6 @@ export const useBlocksStoreActions = () => {
     removeBlocks,
     updateBlocks,
     updateBlocksRuntime,
+    setNewBlocks,
   };
 };

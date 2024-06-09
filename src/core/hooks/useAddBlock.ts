@@ -9,7 +9,7 @@ import { CoreBlock } from "../types/CoreBlock";
 import { getBlockDefaultProps } from "../functions/Controls.ts";
 import { SLOT_KEY } from "../constants/CONTROLS";
 import { useAllBlocks } from "./useAllBlocks";
-import { useBlocksStoreActions } from "../history/blocks.ts";
+import { useBlocksStoreActions } from "../history/useBlocksStoreActions.ts";
 
 type AddBlocks = {
   addCoreBlock: any;
