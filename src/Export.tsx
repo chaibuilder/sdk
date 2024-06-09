@@ -1,15 +1,9 @@
-import { useState } from "react";
-
+import React, { useState, useCallback } from "react";
 import { ClipboardIcon } from "@radix-ui/react-icons";
 import { useCopyToClipboard } from "./core/hooks/useCopyToClipboard";
-
-import clsx from "clsx";
-
 import { ErrorBoundary } from "./core/components/ErrorBoundary";
-
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/radix/components/ui/tooltip";
-
 import { CodeBlock, oneLight } from "@react-email/components";
 
 interface ExportModalProps {
@@ -17,14 +11,12 @@ interface ExportModalProps {
   handleClick: () => Promise<string>;
 }
 
-const ExportModal: React.FC<ExportModalProps> = ({ content, handleClick }) => {
+const ExportModal: React.FC<ExportModalProps> = React.memo(({ content, handleClick }) => {
   const [emailHTMLContent, setEmailHTMLContent] = useState<string>("");
-
   const [copiedText, copy] = useCopyToClipboard();
-
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
-  const handleCopy = (text: string) => () => {
+  const handleCopy = useCallback((text: string) => () => {
     copy(text)
       .then(() => {
         setIsCopied(true);
@@ -34,17 +26,17 @@ const ExportModal: React.FC<ExportModalProps> = ({ content, handleClick }) => {
         setIsCopied(false);
         console.error("Failed to copy!", error);
       });
-  };
+  }, [copy, copiedText]);
+
+  const triggerClick = useCallback(() => {
+    handleClick().then(setEmailHTMLContent).catch(console.error);
+  }, [handleClick]);
 
   return (
     <Dialog>
       <DialogTrigger
         className="rounded-md bg-blue-500 px-4 py-2 text-white"
-        onClick={() => {
-          handleClick().then((html) => {
-            setEmailHTMLContent(html);
-          });
-        }}>
+        onClick={triggerClick}>
         {content}
       </DialogTrigger>
       <DialogContent className="max-h-[80vh] max-w-xl gap-0 overflow-auto p-0 lg:max-w-2xl xl:max-w-3xl 2xl:max-w-4xl">
@@ -57,9 +49,7 @@ const ExportModal: React.FC<ExportModalProps> = ({ content, handleClick }) => {
               <TooltipTrigger asChild>
                 <ClipboardIcon
                   onClick={handleCopy(emailHTMLContent)}
-                  className={clsx(
-                    "size-6 cursor-pointer rounded-md border bg-zinc-200 p-1 transition-all ease-in-out hover:bg-zinc-400",
-                  )}
+                  className={`size-6 cursor-pointer rounded-md border bg-zinc-200 p-1 transition-all ease-in-out ${isCopied ? 'hover:bg-zinc-400' : ''}`}
                 />
               </TooltipTrigger>
               <TooltipContent side="left">
@@ -72,6 +62,6 @@ const ExportModal: React.FC<ExportModalProps> = ({ content, handleClick }) => {
       </DialogContent>
     </Dialog>
   );
-};
+});
 
 export default ExportModal;
