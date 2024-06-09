@@ -9,7 +9,7 @@ import { CoreBlock } from "../types/CoreBlock";
 import { getBlockDefaultProps } from "../functions/Controls.ts";
 import { SLOT_KEY } from "../constants/CONTROLS";
 import { useAllBlocks } from "./useAllBlocks";
-import { insertBlockAtIndex } from "../functions/InsertBlockAtIndex";
+import { useBlocksStoreActions } from "../history/blocks.ts";
 
 type AddBlocks = {
   addCoreBlock: any;
@@ -20,9 +20,10 @@ export const useAddBlock = (): AddBlocks => {
   const dispatch = useDispatch();
   const allBlocks = useAllBlocks();
   const [, setSelected] = useSelectedBlockIds();
+  const { addBlocks } = useBlocksStoreActions();
 
   const addPredefinedBlock = useCallback(
-    (blocks: ChaiBlock[], parentId?: string, index?: number) => {
+    (blocks: ChaiBlock[], parentId?: string, position?: number) => {
       // eslint-disable-next-line no-param-reassign
       for (let i = 0; i < blocks.length; i++) {
         const { _id } = blocks[i];
@@ -35,18 +36,22 @@ export const useAddBlock = (): AddBlocks => {
       }
       const block = first(blocks);
       let parentBlock;
+      let parentBlockId;
       if (parentId) {
         parentBlock = find(allBlocks, { _id: parentId }) as ChaiBlock;
         blocks[0]._parent = parentId;
+        parentBlockId = parentId;
       }
       const canAdd = parentBlock ? canAcceptChildBlock(parentBlock._type, block._type) : true;
       if (!canAdd && parentBlock) {
         blocks[0]._parent = parentBlock._parent;
+        parentBlockId = parentBlock._parent;
       }
-      dispatch({
-        type: "set_blocks",
-        payload: insertBlockAtIndex(allBlocks, parentId || null, index || null, blocks, canAdd),
-      });
+      // dispatch({
+      //   type: "set_blocks",
+      //   payload: insertBlockAtIndex(allBlocks, parentId || null, position || null, blocks, canAdd),
+      // });
+      addBlocks(blocks, parentBlockId, position);
       setSelected([first(blocks)?._id]);
       return first(blocks);
     },
@@ -54,10 +59,10 @@ export const useAddBlock = (): AddBlocks => {
   );
 
   const addCoreBlock = useCallback(
-    (coreBlock: CoreBlock, parentId?: string, index?: number) => {
+    (coreBlock: CoreBlock, parentId?: string, position?: number) => {
       if (has(coreBlock, "blocks")) {
         const blocks = coreBlock.blocks as ChaiBlock[];
-        return addPredefinedBlock(blocks, parentId, index);
+        return addPredefinedBlock(blocks, parentId, position);
       }
 
       const blockId = generateUUID();
@@ -83,19 +88,23 @@ export const useAddBlock = (): AddBlocks => {
         ...props,
       };
       let parentBlock;
+      let parentBlockId;
       if (parentId) {
         parentBlock = find(allBlocks, { _id: parentId }) as ChaiBlock;
         newBlock._parent = parentId;
+        parentBlockId = parentId;
       }
       const canAdd = parentBlock ? canAcceptChildBlock(parentBlock._type, coreBlock.type) : true;
       if (!canAdd && parentBlock) {
         newBlock._parent = parentBlock._parent;
+        parentBlockId = parentBlock._parent;
       }
       const newBlocks: ChaiBlock[] = [newBlock, ...slots];
-      dispatch({
-        type: "set_blocks",
-        payload: insertBlockAtIndex(allBlocks, parentId || null, index || null, newBlocks, canAdd),
-      });
+      // dispatch({
+      //   type: "set_blocks",
+      //   payload: insertBlockAtIndex(allBlocks, parentId || null, position || null, newBlocks, canAdd),
+      // });
+      addBlocks(newBlocks, parentBlockId, position);
       setSelected([newBlock._id]);
       return newBlock;
     },

@@ -1,10 +1,9 @@
-import { useAtomValue } from "jotai";
 import { filter, find, includes, isEmpty } from "lodash-es";
 import { useCallback } from "react";
-import { presentBlocksAtom } from "../atoms/blocks";
-import { useDispatch } from "./useTreeData";
 import { useSelectedBlockIds } from "./useSelectedBlockIds";
 import { ChaiBlock } from "../types/ChaiBlock";
+import { useBlocksStore, useBlocksStoreActions } from "../history/blocks.ts";
+import { map } from "lodash";
 
 const removeBlocks = (blocks: ChaiBlock[], blockIds: Array<string>): ChaiBlock[] => {
   const _blockIds: Array<string> = [];
@@ -21,17 +20,19 @@ const removeBlocks = (blocks: ChaiBlock[], blockIds: Array<string>): ChaiBlock[]
 };
 
 export const useRemoveBlocks = () => {
-  const dispatch = useDispatch();
-  const presentBlocks = useAtomValue(presentBlocksAtom);
+  const [presentBlocks] = useBlocksStore();
   const [ids, setSelectedIds] = useSelectedBlockIds();
+  const { removeBlocks } = useBlocksStoreActions();
 
   return useCallback(
     (blockIds: Array<string>) => {
       const parentBlockId = find(presentBlocks, { _id: blockIds[0] })?._parent || null;
-      const newBlocks = removeBlocks(presentBlocks, blockIds);
-      dispatch({ type: "set_blocks", payload: newBlocks });
+      removeBlocks(map(blockIds, (id) => find(presentBlocks, { _id: id })));
+      // const newBlocks = removeBlocks(presentBlocks, blockIds);
+      // dispatch({ type: "set_blocks", payload: newBlocks });
+
       setTimeout(() => setSelectedIds(parentBlockId ? [parentBlockId] : []), 200);
     },
-    [presentBlocks, setSelectedIds, dispatch, ids],
+    [presentBlocks, setSelectedIds, ids],
   );
 };
