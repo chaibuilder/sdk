@@ -4,7 +4,7 @@ import { BoxIcon, DoubleArrowDownIcon, StackIcon } from "@radix-ui/react-icons";
 import { useDragLayer, useDrop } from "react-dnd";
 import { NodeModel, Tree } from "@minoru/react-dnd-treeview";
 import { useTranslation } from "react-i18next";
-import { useCanvasHistory, useSelectedBlockIds, useSelectedStylingBlocks } from "../../../../hooks";
+import { useSelectedBlockIds, useSelectedStylingBlocks } from "../../../../hooks";
 import { CustomNode } from "./CustomNode";
 import { CustomDragPreview } from "./CustomDragPreview";
 import { Placeholder } from "./Placeholder";
@@ -54,14 +54,12 @@ const Layers = (): React.JSX.Element => {
   const [ids, setIds, toggleIds] = useSelectedBlockIds();
   const [, setStyleBlocks] = useSelectedStylingBlocks();
   const { t } = useTranslation();
-  const { createSnapshot } = useCanvasHistory();
   const expandedIds = useExpandedIds();
   const addBlockOnDrop = useAddBlockByDrop();
   const [blocksContainer] = useBlocksContainer();
   const handleDrop = async (newTree: NodeModel[], options: any) => {
     const { dragSource, relativeIndex, dropTargetId, monitor } = options;
     if (dragSource) {
-      createSnapshot();
       const blocks: ChaiBlock[] = convertToTBlocks(newTree);
       setAllBlocks(blocks);
       const block = monitor.getItem();

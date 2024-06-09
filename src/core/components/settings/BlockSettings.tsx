@@ -1,12 +1,13 @@
 import { IChangeEvent } from "@rjsf/core";
 import { capitalize, cloneDeep, each, get, isEmpty, keys, map } from "lodash-es";
-import { useBuilderProp, useCanvasHistory, useSelectedBlock, useUpdateBlocksPropsRealtime } from "../../hooks";
+import { useBuilderProp, useSelectedBlock, useUpdateBlocksPropsRealtime } from "../../hooks";
 import { ChaiControlDefinition, SingleLineText } from "@chaibuilder/runtime/controls";
 import DataBindingSetting from "../../../ui/widgets/rjsf/widgets/data-binding";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../ui";
 import { useMemo } from "react";
 import { getBlockComponent } from "@chaibuilder/runtime";
 import { JSONForm } from "./JSONForm.tsx";
+import { noop } from "lodash";
 
 /**
  *
@@ -14,13 +15,10 @@ import { JSONForm } from "./JSONForm.tsx";
  */
 export default function BlockSettings() {
   const selectedBlock = useSelectedBlock() as any;
-  const { createSnapshot } = useCanvasHistory();
   const updateBlockPropsRealtime = useUpdateBlocksPropsRealtime();
   const coreBlock = getBlockComponent(selectedBlock._type);
   const formData = { ...selectedBlock };
   const dataBindingSupported = useBuilderProp("dataBindingSupport", false);
-
-  const createHistorySnapshot = () => createSnapshot();
 
   const updateRealtime = ({ formData: newData }: IChangeEvent, id?: string) => {
     if (id) {
@@ -49,7 +47,7 @@ export default function BlockSettings() {
     <div className="overflow-x-hidden">
       <JSONForm
         onChange={updateRealtime}
-        createHistorySnapshot={createHistorySnapshot}
+        createHistorySnapshot={noop}
         formData={formData}
         properties={nameProperties}
       />
@@ -92,7 +90,7 @@ export default function BlockSettings() {
               ) : null}
               <JSONForm
                 onChange={updateRealtime}
-                createHistorySnapshot={createHistorySnapshot}
+                createHistorySnapshot={noop}
                 formData={formData}
                 properties={staticContentProperties}
               />
@@ -102,7 +100,7 @@ export default function BlockSettings() {
       ) : (
         <JSONForm
           onChange={updateRealtime}
-          createHistorySnapshot={createHistorySnapshot}
+          createHistorySnapshot={noop}
           formData={formData}
           properties={staticContentProperties}
         />

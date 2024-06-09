@@ -5,7 +5,7 @@ import { CLASSES_LIST } from "../../../constants/CLASSES_LIST";
 import { useCurrentClassByProperty } from "./BlockStyle";
 import { StyleContext } from "./StyleContext";
 import { Input, Tooltip, TooltipContent, TooltipTrigger } from "../../../../ui";
-import { useCanvasHistory } from "../../../hooks";
+import { useUndoManager } from "../../../hooks";
 
 export const DropDownChoices = ({ label, property, onChange }: any) => {
   const classes = useMemo(() => get(CLASSES_LIST, `${property}.classes`, [""]), [property]);
@@ -14,7 +14,7 @@ export const DropDownChoices = ({ label, property, onChange }: any) => {
   const { canChange } = useContext(StyleContext);
   const isArbitraryClassUsed = /\[.*\]/g.test(pureClsName);
   return (
-    <div className={label ? "w-full rounded " : "grow"}>
+    <div className={label ? "w-full rounded" : "grow"}>
       {isArbitraryClassUsed ? (
         <div className="flex items-center">
           <Input className="w-[70%] rounded py-1" readOnly value={pureClsName} />
@@ -42,14 +42,14 @@ export const DropDownChoices = ({ label, property, onChange }: any) => {
 
 export function DropDown({ selected, onChange, rounded = false, options, disabled = false }: any) {
   const currentClassName = selected.replace(/.*:/g, "").trim();
-  const { undo, redo } = useCanvasHistory();
+  const { undo, redo } = useUndoManager();
 
   return (
     <select
       disabled={!options.length || disabled}
       className={`${
         rounded ? "rounded-md border border-border" : "border-0"
-      } w-full disable:bg-gray-500 h-full truncate rounded bg-background px-2 py-1 text-xs outline-none disabled:cursor-not-allowed`}
+      } disable:bg-gray-500 h-full w-full truncate rounded bg-background px-2 py-1 text-xs outline-none disabled:cursor-not-allowed`}
       onChange={(e) => onChange(e.target.value)}
       onKeyDown={(evt) => {
         if (evt.ctrlKey) {

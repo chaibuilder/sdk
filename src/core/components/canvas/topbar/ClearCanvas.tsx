@@ -13,20 +13,19 @@ import {
   AlertDialogTrigger,
   Button,
 } from "../../../../ui";
-import { useCanvasHistory, useSelectedBlockIds, useSelectedStylingBlocks, useSetAllBlocks } from "../../../hooks";
+import { useSelectedBlockIds, useSelectedStylingBlocks } from "../../../hooks";
+import { useBlocksStoreActions } from "../../../history/useBlocksStoreActions.ts";
 
 export const ClearCanvas = () => {
   const { t } = useTranslation();
-  const [setAllBlocks] = useSetAllBlocks();
-  const { createSnapshot } = useCanvasHistory();
+  const { setNewBlocks } = useBlocksStoreActions();
   const [, setIds] = useSelectedBlockIds();
   const [, setStyleIds] = useSelectedStylingBlocks();
   const clearCanvas = useCallback(() => {
-    setAllBlocks([]);
+    setNewBlocks([]);
     setIds([]);
     setStyleIds([]);
-    createSnapshot();
-  }, [setAllBlocks, createSnapshot]);
+  }, [setNewBlocks]);
 
   return (
     <div className="flex items-center">

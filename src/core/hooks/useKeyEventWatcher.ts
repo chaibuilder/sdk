@@ -5,7 +5,7 @@ import { useRemoveBlocks } from "./useRemoveBlocks";
 import { useDuplicateBlocks } from "./useDuplicateBlocks";
 import { useCutBlockIds } from "./useCutBlockIds";
 import { usePasteBlocks } from "./usePasteBlocks";
-import { useCanvasHistory } from "./useCanvasHistory";
+import { useUndoManager } from "../history/useUndoManager.ts";
 
 export const useKeyEventWatcher = () => {
   const [ids, setIds] = useSelectedBlockIds();
@@ -14,7 +14,7 @@ export const useKeyEventWatcher = () => {
   const duplicateBlocks = useDuplicateBlocks();
   const [, setCutIds] = useCutBlockIds();
   const { pasteBlocks } = usePasteBlocks();
-  const { undo, redo } = useCanvasHistory();
+  const { undo, redo } = useUndoManager();
 
   useHotkeys("esc", () => setIds([]), {}, [setIds]);
   useHotkeys("ctrl+c,command+c", () => setCopyIds(ids), {}, [ids, setCopyIds]);
