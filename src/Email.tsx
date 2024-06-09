@@ -8,10 +8,11 @@ import { RenderChaiBlocks } from "./render";
 import { Font, Head, Html, Tailwind } from "@react-email/components";
 import { loadEmailBlocks } from "./blocks/email";
 import { useBlocksStore } from "./core/history/useBlocksStoreUndoableActions.ts";
+import ExportModal from "./Export.tsx";
 
 loadEmailBlocks();
 
-let PreviewMessage = () => {
+const PreviewMessage = () => {
   const { t } = useTranslation();
   return <div className={"text-sm font-normal"}>{t("This is an awesome Email Builder")}</div>;
 };
@@ -60,12 +61,10 @@ const ExportBtn = () => {
       { pretty: true },
     );
     console.log(html);
+
+    return html;
   };
-  return (
-    <button className="rounded-md bg-blue-500 px-4 py-2 text-white" onClick={() => exportHTML()}>
-      {t("Export")}
-    </button>
-  );
+  return <ExportModal content={t("Export")} handleClick={() => exportHTML()} />;
 };
 
 function ChaiBuilderEmail() {
