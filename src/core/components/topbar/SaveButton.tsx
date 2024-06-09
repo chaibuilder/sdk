@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Toggle, Tooltip, TooltipContent, TooltipTrigger } from "../../../ui";
+import { Button, Tooltip, TooltipContent, TooltipTrigger } from "../../../ui";
 import { useSavePage, useTranslation } from "../../hooks";
 
 export const SaveButton = () => {
@@ -22,7 +22,7 @@ export const SaveButton = () => {
     <div className="flex items-center">
       <Tooltip>
         <TooltipTrigger asChild>
-          <Toggle
+          <Button
             onClick={(e) => {
               e.preventDefault();
               savePage();
@@ -37,7 +37,7 @@ export const SaveButton = () => {
               />
             </svg>
             {syncState === "SAVING" ? "Saving..." : syncState === "SAVED" ? t("Saved") : "Save"}
-          </Toggle>
+          </Button>
         </TooltipTrigger>
         <TooltipContent>
           <p>{syncState === "SAVING" ? "Saving..." : syncState === "SAVED" ? "Saved" : "Save changes"}</p>

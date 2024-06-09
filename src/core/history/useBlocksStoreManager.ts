@@ -10,12 +10,14 @@ export const useBlocksStoreManager = () => {
       setBlocks(newBlocks);
     },
     addBlocks: (newBlocks: ChaiBlock[], parent?: string, position?: number) => {
+      //FIXME: add parent and position logic
       setBlocks((prevBlocks) => {
         prevBlocks = [...prevBlocks, ...newBlocks];
         return prevBlocks;
       });
     },
     removeBlocks: (blocks: ChaiBlock[]) => {
+      //FIXME: handle nested children blocks
       setBlocks((prevBlocks) => prevBlocks.filter((block) => !map(blocks, "_id").includes(block._id)));
     },
     updateBlocksProps: (blocks: ChaiBlock[]) => {

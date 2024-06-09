@@ -46,8 +46,8 @@ function ChaiBuilderDefault() {
       dataProviders={providers}
       brandingOptions={brandingOptions}
       onSavePage={async ({ blocks, providers }: any) => {
-        setBlocks(blocks);
-        setProviders(providers);
+        console.log(blocks);
+        console.log(providers);
         return true;
       }}
       onSaveBrandingOptions={async (options: any) => {
