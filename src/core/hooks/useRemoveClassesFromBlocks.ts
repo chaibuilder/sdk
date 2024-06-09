@@ -1,21 +1,21 @@
 import { useCallback } from "react";
 import { atom, useSetAtom } from "jotai";
-import { each, filter, first, get as getProp, includes } from "lodash-es";
+import { each, filter, first, get as getProp, includes, map } from "lodash-es";
 import { pageBlocksAtomsAtom } from "../atoms/blocks";
-import { useDispatch } from "./useTreeData";
 import { selectedStylingBlocksAtom, TStyleBlock } from "./useSelectedStylingBlocks";
 import { ChaiBlock } from "../types/ChaiBlock";
 import { getSplitClasses } from "../import-html/general";
 import { STYLES_KEY } from "../constants/CONTROLS";
+import { useBlocksStoreActions } from "../history/blocks.ts";
 
-export const removeClassFromBlocksAtom: any = atom(null, (get, _set, { blockIds, fullClasses, dispatch }) => {
+export const removeClassFromBlocksAtom: any = atom(null, (get, _set, { blockIds, fullClasses }) => {
   const styleBlock = first(get(selectedStylingBlocksAtom)) as TStyleBlock;
   const blockAtoms = filter(get(pageBlocksAtomsAtom), (blockAtom) =>
     // @ts-ignore
     blockIds.includes(get(blockAtom)._id),
   );
 
-  each(blockAtoms, (blockAtom) => {
+  return map(blockAtoms, (blockAtom) => {
     const block: ChaiBlock = get(blockAtom as any);
     const nonDynamicClasses: string[] = fullClasses;
     // eslint-disable-next-line prefer-const
@@ -35,26 +35,23 @@ export const removeClassFromBlocksAtom: any = atom(null, (get, _set, { blockIds,
       baseClasses = baseClasses.replace(regEx, " ").replace(/  +/g, " ").trim();
     });
 
-    dispatch({
-      type: "update_props_realtime",
-      payload: {
-        ids: [block._id],
-        props: {
-          [styleBlock.prop]: `${STYLES_KEY}${baseClasses},${classes}`,
-        },
+    return {
+      ids: [block._id],
+      props: {
+        [styleBlock.prop]: `${STYLES_KEY}${baseClasses},${classes}`,
       },
-    });
+    };
   });
 });
 
 export const useRemoveClassesFromBlocks = (): Function => {
-  const dispatch = useDispatch();
+  const { updateBlocks } = useBlocksStoreActions();
   const removeClassesFromBlocks = useSetAtom(removeClassFromBlocksAtom);
   return useCallback(
     (blockIds: Array<string>, fullClasses: Array<string>) => {
-      removeClassesFromBlocks({ blockIds, fullClasses, dispatch });
-      setTimeout(() => dispatch({ type: "create_snapshot" }));
+      const blocks = removeClassesFromBlocks({ blockIds, fullClasses });
+      updateBlocks(blockIds, blocks[0].props);
     },
-    [dispatch, removeClassesFromBlocks],
+    [removeClassesFromBlocks],
   );
 };

@@ -1,6 +1,6 @@
 import { ChaiBlock } from "../types/ChaiBlock.ts";
-import { map } from "lodash-es";
 import { useBlocksStore } from "./blocks.ts";
+import { find, map, omit } from "lodash";
 
 export const useBlocksStoreManager = () => {
   const [, setBlocks] = useBlocksStore();
@@ -13,8 +13,18 @@ export const useBlocksStoreManager = () => {
       });
     },
     removeBlocks: (blocks: ChaiBlock[]) => {
-      setBlocks((prevBlocks) => {
-        return prevBlocks.filter((block) => !map(blocks, "_id").includes(block._id));
+      setBlocks((prevBlocks) => prevBlocks.filter((block) => !map(blocks, "_id").includes(block._id)));
+    },
+    updateBlocksProps: (blocks: ChaiBlock[]) => {
+      setBlocks((prevBlocks: ChaiBlock[]) => {
+        const blocksIds = blocks.map((block) => block._id);
+        return prevBlocks.map((block) => {
+          if (blocksIds.includes(block._id)) {
+            const props = find(blocks, { _id: block._id });
+            return { ...block, ...omit(props, "_id") };
+          }
+          return block;
+        });
       });
     },
   };

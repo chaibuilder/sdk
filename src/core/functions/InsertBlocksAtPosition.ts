@@ -1,18 +1,18 @@
 import { filter, findIndex, isEmpty, last } from "lodash-es";
 import { ChaiBlock } from "../types/ChaiBlock";
 
-export function insertBlockAtIndex(
+export function insertBlocksAtPosition(
   allBlocks: ChaiBlock[],
-  parentId: string | null,
-  destinationIndex: number | null,
   newBlocks: ChaiBlock[],
-  allowChildren: boolean,
+  allowChildren: boolean = false,
+  parentId?: string,
+  position?: number,
 ) {
   // otherwise, find the index of the parent and add the destination index to it
-  if (destinationIndex !== null) {
+  if (position !== null) {
     // @ts-ignore
     const parentIndex = findIndex(allBlocks, { _parent: parentId });
-    const insertIndex = (parentIndex === -1 ? 0 : parentIndex) + destinationIndex;
+    const insertIndex = (parentIndex === -1 ? 0 : parentIndex) + position;
     // add the new blocks array to the original array at the correct index
     allBlocks.splice(insertIndex, 0, ...newBlocks);
     return allBlocks;

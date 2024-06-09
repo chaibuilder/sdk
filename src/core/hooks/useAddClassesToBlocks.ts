@@ -1,12 +1,13 @@
 import { useCallback } from "react";
 import { atom, useSetAtom } from "jotai";
-import { each, filter, first, get as getProp } from "lodash-es";
-import { useDispatch } from "./useTreeData";
+import { filter, first, get as getProp } from "lodash-es";
 import { pageBlocksAtomsAtom } from "../atoms/blocks";
 import { getNewClasses } from "../functions/GetNewClasses";
 import { selectedStylingBlocksAtom, TStyleBlock } from "./useSelectedStylingBlocks";
 import { ChaiBlock } from "../types/ChaiBlock";
 import { STYLES_KEY } from "../constants/CONTROLS";
+import { map } from "lodash";
+import { useBlocksStoreActions } from "../history/blocks.ts";
 
 const getSplitClasses = (classesString: string) => {
   const splitClasses: string[] = classesString.replace(STYLES_KEY, "").split(",");
@@ -25,37 +26,32 @@ type Created = {
  * @param newClasses
  * @param dispatch
  */
-export const addClassesToBlocksAtom: any = atom(null, (get, _set, { blockIds, newClasses, dispatch }: Created) => {
+export const addClassesToBlocksAtom: any = atom(null, (get, _set, { blockIds, newClasses }: Created) => {
   // @ts-ignore
   const blockAtoms = filter(get(pageBlocksAtomsAtom), (blockAtom) =>
     // @ts-ignore
     blockIds.includes(get(blockAtom)._id),
   );
   const styleBlock = first(get(selectedStylingBlocksAtom)) as TStyleBlock;
-  each(blockAtoms, (blockAtom) => {
+  return map(blockAtoms, (blockAtom) => {
     const block: ChaiBlock = get(blockAtom as any);
     const classesString: string = getProp(block, styleBlock.prop, `${STYLES_KEY},`);
     const { baseClasses, classes } = getSplitClasses(classesString);
-    dispatch({
-      type: "update_props_realtime",
-      payload: {
-        ids: [block._id],
-        props: { [styleBlock.prop]: `${STYLES_KEY}${getNewClasses(classes, baseClasses, newClasses)}` },
-      },
-    });
+    return {
+      ids: [block._id],
+      props: { [styleBlock.prop]: `${STYLES_KEY}${getNewClasses(classes, baseClasses, newClasses)}` },
+    };
   });
 });
 
 export const useAddClassesToBlocks = (): Function => {
-  const dispatch = useDispatch();
   const addClassesToBlocks = useSetAtom(addClassesToBlocksAtom);
+  const { updateBlocks } = useBlocksStoreActions();
   return useCallback(
-    (blockIds: Array<string>, newClasses: Array<string>, history: boolean) => {
-      addClassesToBlocks({ blockIds, newClasses, dispatch });
-      if (history) {
-        setTimeout(() => dispatch({ type: "create_snapshot" }), 500);
-      }
+    (blockIds: Array<string>, newClasses: Array<string>) => {
+      const blocks = addClassesToBlocks({ blockIds, newClasses });
+      updateBlocks(blockIds, blocks[0].props);
     },
-    [dispatch, addClassesToBlocks],
+    [addClassesToBlocks],
   );
 };
