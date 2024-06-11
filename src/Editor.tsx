@@ -20,9 +20,9 @@ let PreviewMessage = () => {
 };
 
 function ChaiBuilderDefault() {
-  const [blocks, setBlocks] = useAtom(lsBlocksAtom);
+  const [blocks] = useAtom(lsBlocksAtom);
   const [brandingOptions, setBrandingOptions] = useAtom(lsBrandingOptionsAtom);
-  const [providers, setProviders] = useAtom(lsProvidersAtom);
+  const [providers] = useAtom(lsProvidersAtom);
 
   return (
     <ChaiBuilderEditor

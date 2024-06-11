@@ -1,38 +1,37 @@
-import { filter, findIndex, isEmpty, last } from "lodash-es";
-import { ChaiBlock } from "../types/ChaiBlock";
-
 export function insertBlocksAtPosition(
-  allBlocks: ChaiBlock[],
-  newBlocks: ChaiBlock[],
-  allowChildren: boolean = false,
+  allBlocks: { _id: string; _parent?: string }[],
+  newBlocks: { _id: string; _parent?: string }[],
   parentId?: string,
   position?: number,
 ) {
-  // otherwise, find the index of the parent and add the destination index to it
-  if (position !== null) {
-    // @ts-ignore
-    const parentIndex = findIndex(allBlocks, { _parent: parentId });
-    const insertIndex = (parentIndex === -1 ? 0 : parentIndex) + position;
-    // add the new blocks array to the original array at the correct index
-    allBlocks.splice(insertIndex, 0, ...newBlocks);
-    return allBlocks;
+  // If no parentId is provided, append new blocks to the end of top-level blocks
+  let parentBlocks = allBlocks.filter((block) => !block._parent);
+
+  if (parentId) {
+    // Filter the blocks that belong to the specified parent
+    parentBlocks = allBlocks.filter((block) => block._parent === parentId);
   }
 
-  if (!allowChildren) {
-    const index = findIndex(allBlocks, { _id: parentId });
-    // if the destination index is null, just add the new blocks next to current selection
-    const insertIndex = index + 1;
-    // add the new blocks array to the original array at the correct index
-    allBlocks.splice(insertIndex, 0, ...newBlocks);
-    return allBlocks;
+  // Determine the position to insert the new blocks
+  const insertPosition = position !== undefined ? position : parentBlocks.length;
+
+  // Find the correct index in the allBlocks array to insert the new blocks
+  let insertIndex = allBlocks.length;
+  for (let i = 0, count = 0; i < allBlocks.length; i++) {
+    if (allBlocks[i]._parent === parentId) {
+      if (count === insertPosition) {
+        insertIndex = i;
+        break;
+      }
+      count++;
+    }
   }
 
-  let lastIndex = findIndex(allBlocks, { _id: parentId });
-  const childBlocks = filter(allBlocks, { _parent: parentId });
-  if (!isEmpty(childBlocks)) {
-    lastIndex = findIndex(allBlocks, { _id: last(childBlocks)!._id });
+  // If no parentId is specified and position is greater than top-level blocks count
+  if (!parentId && position !== undefined && position >= parentBlocks.length) {
+    insertIndex = allBlocks.length;
   }
-  const insertIndex = lastIndex + 1;
-  allBlocks.splice(insertIndex, 0, ...newBlocks);
-  return allBlocks;
+
+  // Insert the new blocks at the specified position within the parent block
+  return [...allBlocks.slice(0, insertIndex), ...newBlocks, ...allBlocks.slice(insertIndex)];
 }

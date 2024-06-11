@@ -1,6 +1,8 @@
 import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { useBlocksStore } from "./useBlocksStoreActions.ts";
-import { find, map, omit } from "lodash";
+import { find, omit } from "lodash-es";
+import { removeNestedBlocks } from "../hooks/useRemoveBlocks.ts";
+import { insertBlocksAtPosition } from "../functions/InsertBlocksAtPosition.ts";
 
 export const useBlocksStoreManager = () => {
   const [, setBlocks] = useBlocksStore();
@@ -10,15 +12,12 @@ export const useBlocksStoreManager = () => {
       setBlocks(newBlocks);
     },
     addBlocks: (newBlocks: ChaiBlock[], parent?: string, position?: number) => {
-      //FIXME: add parent and position logic
       setBlocks((prevBlocks) => {
-        prevBlocks = [...prevBlocks, ...newBlocks];
-        return prevBlocks;
+        return insertBlocksAtPosition(prevBlocks, newBlocks, parent, position);
       });
     },
-    removeBlocks: (blocks: ChaiBlock[]) => {
-      //FIXME: handle nested children blocks
-      setBlocks((prevBlocks) => prevBlocks.filter((block) => !map(blocks, "_id").includes(block._id)));
+    removeBlocks: (blockIds: string[]) => {
+      setBlocks((prevBlocks) => removeNestedBlocks(prevBlocks, blockIds));
     },
     updateBlocksProps: (blocks: ChaiBlock[]) => {
       setBlocks((prevBlocks: ChaiBlock[]) => {

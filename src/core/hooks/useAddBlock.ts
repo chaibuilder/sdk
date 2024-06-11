@@ -47,10 +47,7 @@ export const useAddBlock = (): AddBlocks => {
         blocks[0]._parent = parentBlock._parent;
         parentBlockId = parentBlock._parent;
       }
-      // dispatch({
-      //   type: "set_blocks",
-      //   payload: insertBlockAtIndex(allBlocks, parentId || null, position || null, blocks, canAdd),
-      // });
+
       addBlocks(blocks, parentBlockId, position);
       setSelected([first(blocks)?._id]);
       return first(blocks);
@@ -100,10 +97,7 @@ export const useAddBlock = (): AddBlocks => {
         parentBlockId = parentBlock._parent;
       }
       const newBlocks: ChaiBlock[] = [newBlock, ...slots];
-      // dispatch({
-      //   type: "set_blocks",
-      //   payload: insertBlockAtIndex(allBlocks, parentId || null, position || null, newBlocks, canAdd),
-      // });
+
       addBlocks(newBlocks, parentBlockId, position);
       setSelected([newBlock._id]);
       return newBlock;

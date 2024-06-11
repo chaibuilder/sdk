@@ -1,6 +1,6 @@
 import { IChangeEvent } from "@rjsf/core";
 import { capitalize, cloneDeep, each, get, isEmpty, keys, map } from "lodash-es";
-import { useBuilderProp, useSelectedBlock, useUpdateBlocksPropsRealtime } from "../../hooks";
+import { useBuilderProp, useSelectedBlock, useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "../../hooks";
 import { ChaiControlDefinition, SingleLineText } from "@chaibuilder/runtime/controls";
 import DataBindingSetting from "../../../ui/widgets/rjsf/widgets/data-binding";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../ui";
@@ -16,6 +16,7 @@ import { noop } from "lodash";
 export default function BlockSettings() {
   const selectedBlock = useSelectedBlock() as any;
   const updateBlockPropsRealtime = useUpdateBlocksPropsRealtime();
+  const updateBlockProps = useUpdateBlocksProps();
   const coreBlock = getBlockComponent(selectedBlock._type);
   const formData = { ...selectedBlock };
   const dataBindingSupported = useBuilderProp("dataBindingSupport", false);
@@ -24,6 +25,13 @@ export default function BlockSettings() {
     if (id) {
       const path = id.replace("root.", "") as string;
       updateBlockPropsRealtime([selectedBlock._id], { [path]: get(newData, path) } as any);
+    }
+  };
+
+  const updateProps = ({ formData: newData }: IChangeEvent, id?: string) => {
+    if (id) {
+      const path = id.replace("root.", "") as string;
+      updateBlockProps([selectedBlock._id], { [path]: get(newData, path) } as any);
     }
   };
 
@@ -69,7 +77,7 @@ export default function BlockSettings() {
               <DataBindingSetting
                 bindingData={get(formData, "_bindings", {})}
                 onChange={(_bindings) => {
-                  updateRealtime({ formData: { ...formData, _bindings } } as IChangeEvent, "root._bindings");
+                  updateProps({ formData: { ...formData, _bindings } } as IChangeEvent, "root._bindings");
                 }}
               />
             </AccordionContent>

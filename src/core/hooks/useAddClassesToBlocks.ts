@@ -46,10 +46,14 @@ export const addClassesToBlocksAtom: any = atom(null, (get, _set, { blockIds, ne
 
 export const useAddClassesToBlocks = (): Function => {
   const addClassesToBlocks = useSetAtom(addClassesToBlocksAtom);
-  const { updateBlocks } = useBlocksStoreActions();
+  const { updateBlocks, updateBlocksRuntime } = useBlocksStoreActions();
   return useCallback(
-    (blockIds: Array<string>, newClasses: Array<string>) => {
+    (blockIds: Array<string>, newClasses: Array<string>, undo: boolean = false) => {
       const blocks = addClassesToBlocks({ blockIds, newClasses });
+      if (!undo) {
+        updateBlocksRuntime(blockIds, blocks[0].props);
+        return;
+      }
       updateBlocks(blockIds, blocks[0].props);
     },
     [addClassesToBlocks],
