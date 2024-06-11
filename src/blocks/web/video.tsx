@@ -91,7 +91,7 @@ const VideoBlock = React.memo(
     }
 
     return (
-      <div className="relative h-full w-full overflow-hidden" style={{ paddingBottom: "56.25%" }}>
+      <div className="relative w-full overflow-hidden" style={{ paddingBottom: "56.25%" }}>
         {inBuilder ? <div {...blockProps} {...styles} className="absolute z-20 h-full w-full" /> : null}
         {videoElement}
       </div>
