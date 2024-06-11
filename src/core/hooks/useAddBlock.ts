@@ -8,8 +8,7 @@ import { ChaiBlock } from "../types/ChaiBlock";
 import { CoreBlock } from "../types/CoreBlock";
 import { getBlockDefaultProps } from "../functions/Controls.ts";
 import { SLOT_KEY } from "../constants/CONTROLS";
-import { useAllBlocks } from "./useAllBlocks";
-import { useBlocksStoreActions } from "../history/useBlocksStoreActions.ts";
+import { useBlocksStore, useBlocksStoreActions } from "../history/useBlocksStoreActions.ts";
 
 type AddBlocks = {
   addCoreBlock: any;
@@ -18,7 +17,7 @@ type AddBlocks = {
 
 export const useAddBlock = (): AddBlocks => {
   const dispatch = useDispatch();
-  const allBlocks = useAllBlocks();
+  const [allBlocks] = useBlocksStore();
   const [, setSelected] = useSelectedBlockIds();
   const { addBlocks } = useBlocksStoreActions();
 

@@ -4,10 +4,10 @@ import { useBuilderProp, useSelectedBlock, useUpdateBlocksProps, useUpdateBlocks
 import { ChaiControlDefinition, SingleLineText } from "@chaibuilder/runtime/controls";
 import DataBindingSetting from "../../../ui/widgets/rjsf/widgets/data-binding";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../ui";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { getBlockComponent } from "@chaibuilder/runtime";
 import { JSONForm } from "./JSONForm.tsx";
-import { noop } from "lodash";
+import { debounce } from "lodash";
 
 /**
  *
@@ -21,17 +21,29 @@ export default function BlockSettings() {
   const formData = { ...selectedBlock };
   const dataBindingSupported = useBuilderProp("dataBindingSupport", false);
 
-  const updateRealtime = ({ formData: newData }: IChangeEvent, id?: string) => {
-    if (id) {
-      const path = id.replace("root.", "") as string;
-      updateBlockPropsRealtime([selectedBlock._id], { [path]: get(newData, path) } as any);
-    }
-  };
-
   const updateProps = ({ formData: newData }: IChangeEvent, id?: string) => {
     if (id) {
       const path = id.replace("root.", "") as string;
       updateBlockProps([selectedBlock._id], { [path]: get(newData, path) } as any);
+    }
+  };
+
+  const debouncedCall = useCallback(
+    debounce(
+      ({ formData }: IChangeEvent, id) => {
+        updateProps({ formData } as IChangeEvent, id);
+      },
+      1500,
+      { leading: true },
+    ),
+    [],
+  );
+
+  const updateRealtime = ({ formData: newData }: IChangeEvent, id?: string) => {
+    if (id) {
+      const path = id.replace("root.", "") as string;
+      debouncedCall({ formData } as IChangeEvent, id);
+      updateBlockPropsRealtime([selectedBlock._id], { [path]: get(newData, path) } as any);
     }
   };
 
@@ -53,12 +65,7 @@ export default function BlockSettings() {
 
   return (
     <div className="overflow-x-hidden">
-      <JSONForm
-        onChange={updateRealtime}
-        createHistorySnapshot={noop}
-        formData={formData}
-        properties={nameProperties}
-      />
+      <JSONForm onChange={updateRealtime} formData={formData} properties={nameProperties} />
       <hr className="mt-4" />
       {dataBindingSupported ? (
         <Accordion type="multiple" defaultValue={["STATIC", "BINDING"]} className="h-full w-full">
@@ -96,22 +103,12 @@ export default function BlockSettings() {
                   {bindingProps.length === 1 ? "property" : "properties"}. Remove data binding to edit static content.
                 </div>
               ) : null}
-              <JSONForm
-                onChange={updateRealtime}
-                createHistorySnapshot={noop}
-                formData={formData}
-                properties={staticContentProperties}
-              />
+              <JSONForm onChange={updateRealtime} formData={formData} properties={staticContentProperties} />
             </AccordionContent>
           </AccordionItem>
         </Accordion>
       ) : (
-        <JSONForm
-          onChange={updateRealtime}
-          createHistorySnapshot={noop}
-          formData={formData}
-          properties={staticContentProperties}
-        />
+        <JSONForm onChange={updateRealtime} formData={formData} properties={staticContentProperties} />
       )}
       <div className="pb-60"></div>
     </div>

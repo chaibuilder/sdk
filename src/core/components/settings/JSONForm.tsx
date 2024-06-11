@@ -10,7 +10,6 @@ import validator from "@rjsf/validator-ajv8";
 type JSONFormType = {
   formData: any;
   properties: any;
-  createHistorySnapshot: () => void;
   onChange: ({ formData }: any, key?: string) => void;
 };
 /**
@@ -18,7 +17,7 @@ type JSONFormType = {
  * @param param0
  * @returns JSONForm for Static and name fields
  */
-export const JSONForm = memo(({ createHistorySnapshot, properties, formData, onChange }: JSONFormType) => {
+export const JSONForm = memo(({ properties, formData, onChange }: JSONFormType) => {
   const propsSchema: RJSFSchema = { type: "object", properties: {} };
   const uiSchema: UiSchema = {};
 
@@ -46,7 +45,6 @@ export const JSONForm = memo(({ createHistorySnapshot, properties, formData, onC
       liveValidate={false}
       validator={validator}
       uiSchema={uiSchema}
-      onBlur={createHistorySnapshot}
       schema={propsSchema}
       formData={formData}
       onChange={onChange}
