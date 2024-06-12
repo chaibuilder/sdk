@@ -31,10 +31,6 @@ export default function BlockStyling() {
         <div className="space-y-4 rounded-xl p-4">
           <MixerHorizontalIcon className="mx-auto text-3xl" />
           <h1>{t("no_styling_block_selected")}</h1>
-          <p className="text-xs ">
-            Hint: Styling allowed blocks are highlighted with{" "}
-            <span className="border border-orange-500 p-px">orange</span> border
-          </p>
         </div>
       </div>
     );
@@ -43,7 +39,7 @@ export default function BlockStyling() {
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
     <div onClick={() => setShowAdvance(false)} className="flex h-full flex-col">
-      <div className="flex flex-col space-x-4 space-y-3 border-b h-12 border-border px-4 py-1">
+      <div className="flex h-12 flex-col space-x-4 space-y-3 border-b border-border px-4 py-1">
         <div className="flex items-center justify-end gap-x-1.5">
           <Label htmlFor="" className="flex gap-x-1.5 text-xs italic">
             State
@@ -69,7 +65,7 @@ export default function BlockStyling() {
           </Select>
         </div>
       </div>
-      <ScrollArea className="no-scrollbar -mx-1 flex-1 max-h-full overflow-y-hidden overflow-x-hidden">
+      <ScrollArea className="no-scrollbar -mx-1 max-h-full flex-1 overflow-x-hidden overflow-y-hidden">
         <Accordion defaultValue={["Layout"]} type="multiple" className="w-full">
           {flexChild && <SettingsSection section={FLEX_CHILD_SECTION} />}
           {gridChild ? <SettingsSection section={GRID_CHILD_SECTION} /> : null}

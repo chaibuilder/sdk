@@ -7,6 +7,7 @@ import { render } from "@react-email/render";
 import { RenderChaiBlocks } from "./render";
 import { Font, Head, Html, Tailwind } from "@react-email/components";
 import { loadEmailBlocks } from "./blocks/email";
+import { useBlocksStore } from "./core/history/useBlocksStoreUndoableActions.ts";
 
 loadEmailBlocks();
 
@@ -81,6 +82,7 @@ function ChaiBuilderEmail() {
       brandingOptions={brandingOptions}
       onSavePage={async ({ blocks }: any) => {
         setBlocks(blocks);
+        localStorage.setItem("chai-builder-blocks-email", JSON.stringify(blocks));
         return true;
       }}
       onSaveBrandingOptions={async (options: any) => {

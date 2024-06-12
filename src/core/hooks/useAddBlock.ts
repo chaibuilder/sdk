@@ -8,7 +8,7 @@ import { ChaiBlock } from "../types/ChaiBlock";
 import { CoreBlock } from "../types/CoreBlock";
 import { getBlockDefaultProps } from "../functions/Controls.ts";
 import { SLOT_KEY } from "../constants/CONTROLS";
-import { useBlocksStore, useBlocksStoreActions } from "../history/useBlocksStoreActions.ts";
+import { useBlocksStore, useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 
 type AddBlocks = {
   addCoreBlock: any;
@@ -19,7 +19,7 @@ export const useAddBlock = (): AddBlocks => {
   const dispatch = useDispatch();
   const [allBlocks] = useBlocksStore();
   const [, setSelected] = useSelectedBlockIds();
-  const { addBlocks } = useBlocksStoreActions();
+  const { addBlocks } = useBlocksStoreUndoableActions();
 
   const addPredefinedBlock = useCallback(
     (blocks: ChaiBlock[], parentId?: string, position?: number) => {

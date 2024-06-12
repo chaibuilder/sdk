@@ -15,7 +15,7 @@ const ImageBlock = (
     styles: Record<string, string>;
   },
 ) => {
-  const { blockProps, image, styles, alt, height = 200, width = 200 } = block;
+  const { blockProps, image, styles, alt, height, width } = block;
 
   if (isEmpty(image)) return <EmptySlot blockProps={blockProps} text="IMAGE URL" className="h-36" />;
 

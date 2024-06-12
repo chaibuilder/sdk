@@ -1,6 +1,6 @@
 import * as React from "react";
 import { VideoIcon } from "@radix-ui/react-icons";
-import { get, isEmpty } from "lodash-es";
+import { get, isEmpty, omit, pick } from "lodash-es";
 import { Checkbox, Model, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
 import EmptySlot from "./empty-slot";
@@ -72,7 +72,7 @@ const VideoBlock = React.memo(
       }
       videoElement = React.createElement("iframe", {
         ...blockProps,
-        ...styles,
+        className: "absolute inset-0 w-full h-full",
         src: embedURL,
         allow: inBuilder ? "" : "autoplay *; fullscreen *",
         allowFullScreen: true,
@@ -81,7 +81,7 @@ const VideoBlock = React.memo(
     } else {
       videoElement = React.createElement("video", {
         ...blockProps,
-        ...styles,
+        className: "absolute inset-0 w-full h-full",
         src: url,
         controls: _controls,
         muted,
@@ -91,9 +91,13 @@ const VideoBlock = React.memo(
     }
 
     return (
-      <div className="relative w-full overflow-hidden" style={{ paddingBottom: "56.25%" }}>
-        {inBuilder ? <div {...blockProps} {...styles} className="absolute z-20 h-full w-full" /> : null}
-        {videoElement}
+      <div {...pick(styles, ["className"])}>
+        <div className="relative w-full overflow-hidden" style={{ paddingBottom: "56.25%" }}>
+          {inBuilder ? (
+            <div {...blockProps} {...omit(styles, ["className"])} className="absolute inset-0 z-20 h-full w-full" />
+          ) : null}
+          {videoElement}
+        </div>
       </div>
     );
   },
@@ -106,7 +110,7 @@ registerChaiBlock(VideoBlock, {
   icon: VideoIcon,
   group: "basic",
   props: {
-    styles: Styles({ default: "absolute top-0 left-0 w-full h-full" }),
+    styles: Styles({ default: "" }),
     url: SingleLineText({
       title: "Video URL",
       default: "https://www.youtube.com/watch?v=9xwazD5SyVg&ab_channel=MaximilianMustermann",
@@ -115,7 +119,7 @@ registerChaiBlock(VideoBlock, {
       title: "Controls",
       properties: {
         autoPlay: Checkbox({ title: "Autoplay", default: true }),
-        controls: Checkbox({ title: "Show widgets", default: false }),
+        controls: Checkbox({ title: "Show controls", default: false }),
         loop: Checkbox({ title: "Loop", default: false }),
         muted: Checkbox({ title: "Muted", default: true }),
       },

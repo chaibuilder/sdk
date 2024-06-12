@@ -2,7 +2,7 @@ import { filter, find, includes, isEmpty } from "lodash-es";
 import { useCallback } from "react";
 import { useSelectedBlockIds } from "./useSelectedBlockIds";
 import { ChaiBlock } from "../types/ChaiBlock";
-import { useBlocksStore, useBlocksStoreActions } from "../history/useBlocksStoreActions.ts";
+import { useBlocksStore, useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 
 export const removeNestedBlocks = (blocks: ChaiBlock[], blockIds: Array<string>): ChaiBlock[] => {
   const _blockIds: Array<string> = [];
@@ -21,7 +21,7 @@ export const removeNestedBlocks = (blocks: ChaiBlock[], blockIds: Array<string>)
 export const useRemoveBlocks = () => {
   const [presentBlocks] = useBlocksStore();
   const [ids, setSelectedIds] = useSelectedBlockIds();
-  const { setNewBlocks } = useBlocksStoreActions();
+  const { setNewBlocks } = useBlocksStoreUndoableActions();
 
   return useCallback(
     (blockIds: Array<string>) => {

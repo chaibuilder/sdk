@@ -1,7 +1,6 @@
-import { get } from "lodash-es";
+import { get, has } from "lodash-es";
 import React from "react";
 import { getBlockComponent } from "@chaibuilder/runtime";
-import { has } from "lodash";
 
 export type ChaiBlock = {
   activeCls?: string;

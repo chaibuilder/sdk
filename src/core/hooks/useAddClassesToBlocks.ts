@@ -1,13 +1,12 @@
 import { useCallback } from "react";
 import { atom, useSetAtom } from "jotai";
-import { filter, first, get as getProp } from "lodash-es";
+import { filter, first, get as getProp, map } from "lodash-es";
 import { pageBlocksAtomsAtom } from "../atoms/blocks";
 import { getNewClasses } from "../functions/GetNewClasses";
 import { selectedStylingBlocksAtom, TStyleBlock } from "./useSelectedStylingBlocks";
 import { ChaiBlock } from "../types/ChaiBlock";
 import { STYLES_KEY } from "../constants/CONTROLS";
-import { map } from "lodash";
-import { useBlocksStoreActions } from "../history/useBlocksStoreActions.ts";
+import { useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 
 const getSplitClasses = (classesString: string) => {
   const splitClasses: string[] = classesString.replace(STYLES_KEY, "").split(",");
@@ -46,7 +45,7 @@ export const addClassesToBlocksAtom: any = atom(null, (get, _set, { blockIds, ne
 
 export const useAddClassesToBlocks = (): Function => {
   const addClassesToBlocks = useSetAtom(addClassesToBlocksAtom);
-  const { updateBlocks, updateBlocksRuntime } = useBlocksStoreActions();
+  const { updateBlocks, updateBlocksRuntime } = useBlocksStoreUndoableActions();
   return useCallback(
     (blockIds: Array<string>, newClasses: Array<string>, undo: boolean = false) => {
       const blocks = addClassesToBlocks({ blockIds, newClasses });

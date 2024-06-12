@@ -21,11 +21,14 @@ let PreviewMessage = () => {
 
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
-  const [brandingOptions, setBrandingOptions] = useAtom(lsBrandingOptionsAtom);
+  const [brandingOptions] = useAtom(lsBrandingOptionsAtom);
   const [providers] = useAtom(lsProvidersAtom);
+
+  console.log(blocks, brandingOptions, providers);
 
   return (
     <ChaiBuilderEditor
+      darkMode={true}
       dataBindingSupport={true}
       // @ts-ignore
       getExternalPredefinedBlock={async () => {
@@ -46,12 +49,12 @@ function ChaiBuilderDefault() {
       dataProviders={providers}
       brandingOptions={brandingOptions}
       onSavePage={async ({ blocks, providers }: any) => {
-        console.log(blocks);
-        console.log(providers);
+        localStorage.setItem("chai-builder-blocks", JSON.stringify(blocks));
+        localStorage.setItem("chai-builder-providers", JSON.stringify(providers));
         return true;
       }}
       onSaveBrandingOptions={async (options: any) => {
-        setBrandingOptions(options);
+        localStorage.setItem("chai-builder-branding-options", JSON.stringify(options));
         return true;
       }}
     />
