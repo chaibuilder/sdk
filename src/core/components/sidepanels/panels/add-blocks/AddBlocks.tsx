@@ -17,9 +17,10 @@ import { CoreBlock } from "./CoreBlock";
 import { PredefinedBlocks } from "./PredefinedBlocks";
 import { showPredefinedBlockCategoryAtom } from "../../../../atoms/ui";
 import { ChaiBlock } from "../../../../types/ChaiBlock";
-import { useAllBlocks, useBuilderProp, useSelectedBlockIds, useUILibraryBlocks } from "../../../../hooks";
+import { useBuilderProp, useSelectedBlockIds, useUILibraryBlocks } from "../../../../hooks";
 import ImportHTML from "./ImportHTML";
 import { useChaiBlocks } from "@chaibuilder/runtime";
+import { useBlocksStore } from "../../../../history/useBlocksStoreActions.ts";
 
 /**
  *
@@ -49,7 +50,7 @@ const AddBlocksPanel = () => {
   const importHTMLSupport = useBuilderProp("importHTMLSupport", true);
 
   const [ids] = useSelectedBlockIds();
-  const blocks = useAllBlocks();
+  const [blocks] = useBlocksStore();
   const block = find(blocks, { _id: first(ids) });
 
   const { data: predefinedBlocks, isLoading } = useUILibraryBlocks();

@@ -4,12 +4,12 @@ import { twMerge } from "tailwind-merge";
 import { ChaiBlock } from "../../../types/ChaiBlock";
 import { SLOT_KEY, STYLES_KEY } from "../../../constants/CONTROLS";
 import { StylingAttributes } from "../../../types/index";
-import { useAllBlocks } from "../../../hooks";
 import { getBlockComponent } from "@chaibuilder/runtime";
 import { useChaiExternalData } from "./useChaiExternalData.ts";
 import { useAtom } from "jotai";
 import { inlineEditingActiveAtom } from "../../../atoms/ui.ts";
 import { has } from "lodash";
+import { useBlocksStore } from "../../../history/useBlocksStoreActions.ts";
 
 // FIXME:  Duplicate code in CanvasRenderer.tsx
 const getSlots = (block: ChaiBlock) => {
@@ -61,7 +61,7 @@ function applyBindings(block: ChaiBlock, chaiData: any): ChaiBlock {
 }
 
 export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
-  const allBlocks = useAllBlocks();
+  const [allBlocks] = useBlocksStore();
 
   const getStyles = useCallback((block: ChaiBlock) => getStyleAttrs(block), []);
 

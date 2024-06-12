@@ -23,7 +23,7 @@ registerChaiDataProvider("hero", {
   dataFn: async () => ({
     heading: "Hello World",
     subheading:
-      "This is a subheading This is a subheading This is a subheading This is a subheading This is a subheading This is a subheading This is a subheading This is a subheading This is a subheading This is a subheading This is a subheading This is a subheading This is a subheading This is a subheading This is a subheading This is a subheading",
+      "Lorem Ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
     items: [{ item: "home" }, { item: "about" }, { item: "contact" }],
     meta: {
       height: 10,

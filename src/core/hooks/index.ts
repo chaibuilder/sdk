@@ -40,8 +40,10 @@ import { useTranslation } from "react-i18next";
 import { useFeatureSupport } from "./useFeatureSupport";
 import { useBuilderProp } from "./useBuilderProp";
 import { useUILibraryBlocks } from "./useUiLibraries";
+import { useUndoManager } from "../history/useUndoManager";
 
 export {
+  useUndoManager,
   useBuilderReset,
   useFeatureSupport,
   useReadOnlyMode,

@@ -1,44 +1,25 @@
 import { useCallback } from "react";
-import { atom, useSetAtom } from "jotai";
-import { useCanvasHistory } from "./useCanvasHistory";
-import { useDispatch } from "./useTreeData";
-
-type UpdateBlockProps = {
-  blockIds: Array<string>;
-  dispatch: any;
-  props: { string: any };
-};
-
-export const updateBlocksPropsAtom: any = atom(null, (_get, _set, { blockIds, props, dispatch }: UpdateBlockProps) => {
-  dispatch({
-    type: "update_props_realtime",
-    payload: { ids: blockIds, props },
-  });
-});
+import { useBlocksStoreActions } from "../history/useBlocksStoreActions.ts";
 
 /**
  *
  */
 export const useUpdateBlocksProps = () => {
-  const { createSnapshot } = useCanvasHistory();
-  const dispatch = useDispatch();
-  const updateBlocksProps = useSetAtom(updateBlocksPropsAtom);
+  const { updateBlocks } = useBlocksStoreActions();
   return useCallback(
-    (blockIds: Array<string>, props: Record<string, any>) => {
-      updateBlocksProps({ blockIds, props, dispatch });
-      createSnapshot();
+    (blockIds: Array<string>, props: Record<string, any>, prevPropsState?: Record<string, any>) => {
+      updateBlocks(blockIds, props, prevPropsState);
     },
-    [createSnapshot, dispatch, updateBlocksProps],
+    [updateBlocks],
   );
 };
 
 export const useUpdateBlocksPropsRealtime = () => {
-  const dispatch = useDispatch();
-  const updateBlocksProps = useSetAtom(updateBlocksPropsAtom);
+  const { updateBlocksRuntime } = useBlocksStoreActions();
   return useCallback(
-    (blockIds: Array<string>, props: { string: any }) => {
-      updateBlocksProps({ blockIds, props, dispatch });
+    (blockIds: Array<string>, props: Record<string, any>) => {
+      updateBlocksRuntime(blockIds, props);
     },
-    [dispatch, updateBlocksProps],
+    [updateBlocksRuntime],
   );
 };

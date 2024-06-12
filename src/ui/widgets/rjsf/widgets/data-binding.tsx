@@ -430,7 +430,7 @@ const DataBindingSetting = ({ bindingData, onChange }: { bindingData: any; onCha
 
   useEffect(() => {
     setFormData(map(bindingData, (value, key) => ({ key, value })));
-  }, [selectedBlock?._id]);
+  }, [selectedBlock?._id, bindingData]);
 
   // * Disable if key of last element not added
   const isAddDisabled = useMemo(() => {
@@ -496,7 +496,7 @@ const DataBindingSetting = ({ bindingData, onChange }: { bindingData: any; onCha
         />
       ))}
       <Tooltip delayDuration={200}>
-        <TooltipTrigger className="w-full">
+        <TooltipTrigger disabled={isEmpty(dataProvider)} className="w-full">
           <AddBindingModal
             disabled={isAddDisabled}
             appliedBindings={map(_formData, "key")}

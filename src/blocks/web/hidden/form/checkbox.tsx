@@ -1,8 +1,8 @@
 import { CheckboxIcon } from "@radix-ui/react-icons";
 import { Checkbox, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import { generateUUID } from "../../../core/functions/Functions.ts";
-import { ChaiBlock } from "../../../core/types/ChaiBlock.ts";
+import { generateUUID } from "../../../../core/functions/Functions.ts";
+import { ChaiBlock } from "../../../../core/types/ChaiBlock.ts";
 
 const CheckboxBlock = (
   block: ChaiBlock & {

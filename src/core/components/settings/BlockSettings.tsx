@@ -1,12 +1,13 @@
 import { IChangeEvent } from "@rjsf/core";
 import { capitalize, cloneDeep, each, get, isEmpty, keys, map } from "lodash-es";
-import { useBuilderProp, useCanvasHistory, useSelectedBlock, useUpdateBlocksPropsRealtime } from "../../hooks";
+import { useBuilderProp, useSelectedBlock, useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "../../hooks";
 import { ChaiControlDefinition, SingleLineText } from "@chaibuilder/runtime/controls";
 import DataBindingSetting from "../../../ui/widgets/rjsf/widgets/data-binding";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../ui";
-import { useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { getBlockComponent } from "@chaibuilder/runtime";
 import { JSONForm } from "./JSONForm.tsx";
+import { debounce } from "lodash";
 
 /**
  *
@@ -14,18 +15,33 @@ import { JSONForm } from "./JSONForm.tsx";
  */
 export default function BlockSettings() {
   const selectedBlock = useSelectedBlock() as any;
-  const { createSnapshot } = useCanvasHistory();
   const updateBlockPropsRealtime = useUpdateBlocksPropsRealtime();
+  const updateBlockProps = useUpdateBlocksProps();
   const coreBlock = getBlockComponent(selectedBlock._type);
   const formData = { ...selectedBlock };
+  const [prevFormData, setPrevFormData] = useState(formData);
   const dataBindingSupported = useBuilderProp("dataBindingSupport", false);
 
-  const createHistorySnapshot = () => createSnapshot();
+  const updateProps = ({ formData: newData }: IChangeEvent, id?: string, oldState?: any) => {
+    if (id) {
+      const path = id.replace("root.", "") as string;
+      updateBlockProps([selectedBlock._id], { [path]: get(newData, path) } as any, oldState);
+    }
+  };
+
+  const debouncedCall = useCallback(
+    debounce(({ formData }, id, oldPropState) => {
+      updateProps({ formData } as IChangeEvent, id, oldPropState);
+      setPrevFormData(formData);
+    }, 1500),
+    [],
+  );
 
   const updateRealtime = ({ formData: newData }: IChangeEvent, id?: string) => {
     if (id) {
       const path = id.replace("root.", "") as string;
       updateBlockPropsRealtime([selectedBlock._id], { [path]: get(newData, path) } as any);
+      debouncedCall({ formData: newData }, id, { [path]: get(prevFormData, path) });
     }
   };
 
@@ -47,12 +63,7 @@ export default function BlockSettings() {
 
   return (
     <div className="overflow-x-hidden">
-      <JSONForm
-        onChange={updateRealtime}
-        createHistorySnapshot={createHistorySnapshot}
-        formData={formData}
-        properties={nameProperties}
-      />
+      <JSONForm onChange={updateRealtime} formData={formData} properties={nameProperties} />
       <hr className="mt-4" />
       {dataBindingSupported ? (
         <Accordion type="multiple" defaultValue={["STATIC", "BINDING"]} className="h-full w-full">
@@ -69,9 +80,9 @@ export default function BlockSettings() {
             </AccordionTrigger>
             <AccordionContent className="px-4 pt-4">
               <DataBindingSetting
-                bindingData={get(formData, "_bindings", {})}
+                bindingData={get(selectedBlock, "_bindings", {})}
                 onChange={(_bindings) => {
-                  updateRealtime({ formData: { ...formData, _bindings } } as IChangeEvent, "root._bindings");
+                  updateProps({ formData: { _bindings } } as IChangeEvent, "root._bindings");
                 }}
               />
             </AccordionContent>
@@ -90,22 +101,12 @@ export default function BlockSettings() {
                   {bindingProps.length === 1 ? "property" : "properties"}. Remove data binding to edit static content.
                 </div>
               ) : null}
-              <JSONForm
-                onChange={updateRealtime}
-                createHistorySnapshot={createHistorySnapshot}
-                formData={formData}
-                properties={staticContentProperties}
-              />
+              <JSONForm onChange={updateRealtime} formData={formData} properties={staticContentProperties} />
             </AccordionContent>
           </AccordionItem>
         </Accordion>
       ) : (
-        <JSONForm
-          onChange={updateRealtime}
-          createHistorySnapshot={createHistorySnapshot}
-          formData={formData}
-          properties={staticContentProperties}
-        />
+        <JSONForm onChange={updateRealtime} formData={formData} properties={staticContentProperties} />
       )}
       <div className="pb-60"></div>
     </div>

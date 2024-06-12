@@ -3,8 +3,8 @@ import { isEmpty } from "lodash-es";
 import { GroupIcon, LetterCaseToggleIcon } from "@radix-ui/react-icons";
 import { RichText, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import EmptySlot from "../empty-slot.tsx";
-import { ChaiBlock } from "../../../core/types/ChaiBlock.ts";
+import EmptySlot from "../../empty-slot.tsx";
+import { ChaiBlock } from "../../../../core/types/ChaiBlock.ts";
 
 const FormBlock = (
   props: ChaiBlock & {

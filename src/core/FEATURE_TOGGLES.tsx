@@ -13,6 +13,12 @@ function getDNDSupport() {
   return urlParams.has("dnd");
 }
 
+function getNewUndoSupport() {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.has("undo");
+}
+
 export const FEATURE_TOGGLES: { [key: string]: boolean } = {
   dnd: getDNDSupport(),
+  newUndo: !getNewUndoSupport(),
 };

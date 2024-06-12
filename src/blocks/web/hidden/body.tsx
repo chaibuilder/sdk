@@ -31,6 +31,10 @@ registerChaiBlock(BodyBlock, {
     styles: Styles({ default: "font-body antialiased" }),
     backgroundImage: Image({ title: "Background Image" }),
   },
+  canHaveChildBlocks: () => true,
+  canDelete: () => false,
+  canMove: () => false,
+  canDuplicate: () => false,
 });
 
 export default BodyBlock;

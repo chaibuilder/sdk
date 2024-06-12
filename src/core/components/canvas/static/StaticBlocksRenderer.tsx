@@ -1,13 +1,14 @@
 import { filter, isEmpty } from "lodash-es";
 import { Provider } from "react-wrap-balancer";
-import { useAllBlocks, useBuilderProp } from "../../../hooks";
+import { useBuilderProp } from "../../../hooks";
 import { BlocksRendererStatic } from "./BlocksRenderer";
 import { BlocksExternalDataProvider } from "./BlocksExternalDataProvider.tsx";
 import { getBlockComponent } from "@chaibuilder/runtime";
 import { createElement } from "react";
+import { useBlocksStore } from "../../../history/useBlocksStoreActions.ts";
 
 export const StaticBlocksRenderer = () => {
-  const blocks = useAllBlocks();
+  const [blocks] = useBlocksStore();
   const container = useBuilderProp("container", null);
 
   const blocksHtml = isEmpty(blocks) ? null : (

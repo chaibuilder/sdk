@@ -1,6 +1,6 @@
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
-import { lsBlocksAtom, lsBrandingOptionsAtom, lsContainer, lsProvidersAtom } from "./atoms-dev.ts";
+import { lsBlocksAtom, lsBrandingOptionsAtom, lsProvidersAtom } from "./atoms-dev.ts";
 import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
 import { ChaiBuilderEditor } from "./core/main";
 import "./blocks/web";
@@ -20,10 +20,9 @@ let PreviewMessage = () => {
 };
 
 function ChaiBuilderDefault() {
-  const [blocks, setBlocks] = useAtom(lsBlocksAtom);
+  const [blocks] = useAtom(lsBlocksAtom);
   const [brandingOptions, setBrandingOptions] = useAtom(lsBrandingOptionsAtom);
-  const [providers, setProviders] = useAtom(lsProvidersAtom);
-  const [container, setContainer] = useAtom(lsContainer);
+  const [providers] = useAtom(lsProvidersAtom);
 
   return (
     <ChaiBuilderEditor
@@ -47,17 +46,12 @@ function ChaiBuilderDefault() {
       dataProviders={providers}
       brandingOptions={brandingOptions}
       onSavePage={async ({ blocks, providers }: any) => {
-        setBlocks(blocks);
-        setProviders(providers);
+        console.log(blocks);
+        console.log(providers);
         return true;
       }}
       onSaveBrandingOptions={async (options: any) => {
         setBrandingOptions(options);
-        return true;
-      }}
-      container={container || "Body"}
-      onSaveContainer={async (container: any) => {
-        setContainer(container);
         return true;
       }}
     />

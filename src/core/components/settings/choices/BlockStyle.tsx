@@ -207,6 +207,7 @@ export const BlockStyle = (props: EditOptionProps) => {
                 classPrefix={get(CLASS_PREFIXES, property, "")}
                 units={units || []}
                 onChange={addNewClass}
+                //FIXME: onChangeRuntime needed for realtime changes
                 negative={negative}
                 cssProperty={property}
               />
@@ -231,7 +232,7 @@ export const BlockStyle = (props: EditOptionProps) => {
                     <div className="text-right">
                       <div>
                         Current style is set at &nbsp;
-                        <span className="font-bold ">
+                        <span className="font-bold">
                           {getBreakpoint(get(currentClass, "mq"))}
                           {dark && !currentClass.dark ? "(Light mode)" : ""}
                         </span>
