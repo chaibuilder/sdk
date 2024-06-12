@@ -84,7 +84,9 @@ function RemoveProviderConfirmation({
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{t("remove_provider_confirmation", { name })}</AlertDialogTitle>
+          <AlertDialogTitle
+            dangerouslySetInnerHTML={{ __html: t("remove_provider_confirmation").replace(`{name}`, name) }}
+          />
           <AlertDialogDescription>{t("remove_provider_warning")}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

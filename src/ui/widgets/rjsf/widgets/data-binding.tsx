@@ -430,7 +430,7 @@ const DataBindingSetting = ({ bindingData, onChange }: { bindingData: any; onCha
 
   useEffect(() => {
     setFormData(map(bindingData, (value, key) => ({ key, value })));
-  }, [selectedBlock?._id]);
+  }, [selectedBlock?._id, bindingData]);
 
   // * Disable if key of last element not added
   const isAddDisabled = useMemo(() => {
