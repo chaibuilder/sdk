@@ -4,7 +4,7 @@ import { useBuilderProp, useSelectedBlock, useUpdateBlocksProps, useUpdateBlocks
 import { ChaiControlDefinition, SingleLineText } from "@chaibuilder/runtime/controls";
 import DataBindingSetting from "../../../ui/widgets/rjsf/widgets/data-binding";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../ui";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { getBlockComponent } from "@chaibuilder/runtime";
 import { JSONForm } from "./JSONForm.tsx";
 import { debounce } from "lodash";
@@ -19,31 +19,29 @@ export default function BlockSettings() {
   const updateBlockProps = useUpdateBlocksProps();
   const coreBlock = getBlockComponent(selectedBlock._type);
   const formData = { ...selectedBlock };
+  const [prevFormData, setPrevFormData] = useState(formData);
   const dataBindingSupported = useBuilderProp("dataBindingSupport", false);
 
-  const updateProps = ({ formData: newData }: IChangeEvent, id?: string) => {
+  const updateProps = ({ formData: newData }: IChangeEvent, id?: string, oldState?: any) => {
     if (id) {
       const path = id.replace("root.", "") as string;
-      updateBlockProps([selectedBlock._id], { [path]: get(newData, path) } as any);
+      updateBlockProps([selectedBlock._id], { [path]: get(newData, path) } as any, oldState);
     }
   };
 
   const debouncedCall = useCallback(
-    debounce(
-      ({ formData }: IChangeEvent, id) => {
-        updateProps({ formData } as IChangeEvent, id);
-      },
-      1500,
-      { leading: true },
-    ),
+    debounce(({ formData }, id, oldPropState) => {
+      updateProps({ formData } as IChangeEvent, id, oldPropState);
+      setPrevFormData(formData);
+    }, 1500),
     [],
   );
 
   const updateRealtime = ({ formData: newData }: IChangeEvent, id?: string) => {
     if (id) {
       const path = id.replace("root.", "") as string;
-      debouncedCall({ formData } as IChangeEvent, id);
       updateBlockPropsRealtime([selectedBlock._id], { [path]: get(newData, path) } as any);
+      debouncedCall({ formData: newData }, id, { [path]: get(prevFormData, path) });
     }
   };
 
@@ -82,9 +80,9 @@ export default function BlockSettings() {
             </AccordionTrigger>
             <AccordionContent className="px-4 pt-4">
               <DataBindingSetting
-                bindingData={get(formData, "_bindings", {})}
+                bindingData={get(selectedBlock, "_bindings", {})}
                 onChange={(_bindings) => {
-                  updateProps({ formData: { ...formData, _bindings } } as IChangeEvent, "root._bindings");
+                  updateProps({ formData: { _bindings } } as IChangeEvent, "root._bindings");
                 }}
               />
             </AccordionContent>

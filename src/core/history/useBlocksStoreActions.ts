@@ -47,18 +47,25 @@ export const useBlocksStoreActions = () => {
     });
   };
 
-  const updateBlocks = (blockIds: string[], props: Record<string, any>) => {
-    const propKeys = keys(props);
-    const currentPropValues = map(blockIds, (_id: string) => {
-      const block = currentBlocks.find((block) => block._id === _id);
-      const prevProps = { _id };
-      each(propKeys, (key: string) => (prevProps[key] = block[key]));
-      return prevProps;
-    });
+  const updateBlocks = (blockIds: string[], props: Partial<ChaiBlock>, oldPropsState?: Partial<ChaiBlock>) => {
+    let previousPropsState = [];
+    if (oldPropsState) {
+      previousPropsState = map(blockIds, (_id: string) => {
+        return { _id, ...oldPropsState };
+      });
+    } else {
+      const propKeys = keys(props);
+      previousPropsState = map(blockIds, (_id: string) => {
+        const block = currentBlocks.find((block) => block._id === _id);
+        const prevProps = { _id };
+        each(propKeys, (key: string) => (prevProps[key] = block[key]));
+        return prevProps;
+      });
+    }
 
     updateBlocksProps(map(blockIds, (_id: string) => ({ _id, ...props })));
     add({
-      undo: () => updateBlocksProps(currentPropValues),
+      undo: () => updateBlocksProps(previousPropsState),
       redo: () => updateBlocksProps(map(blockIds, (_id: string) => ({ _id, ...props }))),
     });
   };

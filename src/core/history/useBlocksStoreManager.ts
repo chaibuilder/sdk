@@ -19,7 +19,7 @@ export const useBlocksStoreManager = () => {
     removeBlocks: (blockIds: string[]) => {
       setBlocks((prevBlocks) => removeNestedBlocks(prevBlocks, blockIds));
     },
-    updateBlocksProps: (blocks: ChaiBlock[]) => {
+    updateBlocksProps: (blocks: Partial<ChaiBlock>[]) => {
       setBlocks((prevBlocks: ChaiBlock[]) => {
         const blocksIds = blocks.map((block) => block._id);
         return prevBlocks.map((block) => {
