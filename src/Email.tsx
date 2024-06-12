@@ -9,6 +9,7 @@ import { Font, Head, Html, Tailwind } from "@react-email/components";
 import { loadEmailBlocks } from "./blocks/email";
 import { useBlocksStore } from "./core/history/useBlocksStoreUndoableActions.ts";
 import ExportModal from "./Export.tsx";
+import { useBlocksStore } from "./core/history/useBlocksStoreActions.ts";
 
 loadEmailBlocks();
 
