@@ -8,6 +8,7 @@ import { RenderChaiBlocks } from "./render";
 import { Font, Head, Html, Tailwind } from "@react-email/components";
 import { loadEmailBlocks } from "./blocks/email";
 import ExportModal from "./Export.tsx";
+import { useBlocksStore } from "./core/history/useBlocksStoreActions.ts";
 
 loadEmailBlocks();
 

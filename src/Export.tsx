@@ -1,8 +1,8 @@
 import React, { useState, useCallback } from "react";
-import { ClipboardIcon } from "@radix-ui/react-icons";
+import { ClipboardIcon, DownloadIcon } from "@radix-ui/react-icons";
 import { useCopyToClipboard } from "./core/hooks/useCopyToClipboard";
 import { ErrorBoundary } from "./core/components/ErrorBoundary";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui";
+import { Dialog, DialogContent, DialogTrigger } from "./ui";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/radix/components/ui/tooltip";
 import { CodeBlock, oneLight } from "@react-email/components";
 
@@ -16,17 +16,32 @@ const ExportModal: React.FC<ExportModalProps> = React.memo(({ content, handleCli
   const [copiedText, copy] = useCopyToClipboard();
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
-  const handleCopy = useCallback((text: string) => () => {
-    copy(text)
-      .then(() => {
-        setIsCopied(true);
-        console.log("Copied!", { copiedText, text });
-      })
-      .catch((error) => {
-        setIsCopied(false);
-        console.error("Failed to copy!", error);
-      });
-  }, [copy, copiedText]);
+  const handleCopy = useCallback(
+    (text: string) => () => {
+      copy(text)
+        .then(() => {
+          setIsCopied(true);
+          console.log("Copied!", { copiedText, text });
+        })
+        .catch((error) => {
+          setIsCopied(false);
+          console.error("Failed to copy!", error);
+        });
+    },
+    [copy, copiedText],
+  );
+
+  const downloadHTMLContent = (htmlContent: string) => {
+    const blob = new Blob([htmlContent], { type: "text/html" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = "index.html";
+    document.body.appendChild(anchor);
+    anchor.click();
+    URL.revokeObjectURL(url);
+    document.body.removeChild(anchor);
+  };
 
   const triggerClick = useCallback(() => {
     handleClick().then(setEmailHTMLContent).catch(console.error);
@@ -34,29 +49,41 @@ const ExportModal: React.FC<ExportModalProps> = React.memo(({ content, handleCli
 
   return (
     <Dialog>
-      <DialogTrigger
-        className="rounded-md bg-blue-500 px-4 py-2 text-white"
-        onClick={triggerClick}>
+      <DialogTrigger className="rounded-md bg-blue-500 px-4 py-2 text-white" onClick={triggerClick}>
         {content}
       </DialogTrigger>
-      <DialogContent className="max-h-[80vh] max-w-xl gap-0 overflow-auto p-0 lg:max-w-2xl xl:max-w-3xl 2xl:max-w-4xl">
+      <DialogContent className="flex max-h-[80vh] max-w-xl flex-col gap-0 overflow-auto p-0 lg:max-w-2xl xl:max-w-3xl 2xl:max-w-4xl">
         <ErrorBoundary>
-          <DialogHeader>
-            <DialogTitle className="flex items-center justify-between px-4 py-3.5 font-bold">HTML</DialogTitle>
-          </DialogHeader>
-          <div className="absolute inset-0 right-2 top-[3.8rem] flex justify-end">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <ClipboardIcon
-                  onClick={handleCopy(emailHTMLContent)}
-                  className={`size-6 cursor-pointer rounded-md border bg-zinc-200 p-1 transition-all ease-in-out ${isCopied ? 'hover:bg-zinc-400' : ''}`}
-                />
-              </TooltipTrigger>
-              <TooltipContent side="left">
-                <p className="text-sm tracking-wide">{`${!isCopied ? "Copy" : "Copied"} to clipboard`}</p>
-              </TooltipContent>
-            </Tooltip>
+          <div className="sticky top-0 z-10 flex items-center justify-between bg-white px-4 pt-3.5 text-lg font-bold">
+            HTML
+            <div className="flex items-center gap-2">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <DownloadIcon
+                    onClick={() => downloadHTMLContent(emailHTMLContent)}
+                    className={`size-6 cursor-pointer rounded-md border p-1 transition-all ease-in-out`}
+                  />
+                </TooltipTrigger>
+                <TooltipContent side="left">
+                  <p className="text-sm tracking-wide">Download</p>
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <ClipboardIcon
+                    onClick={handleCopy(emailHTMLContent)}
+                    className={`size-6 cursor-pointer rounded-md border p-1 transition-all ease-in-out`}
+                  />
+                </TooltipTrigger>
+                <TooltipContent side="left">
+                  <p className="text-sm tracking-wide">{`${!isCopied ? "Copy" : "Copied"} to clipboard`}</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
           </div>
+          {/* <div className="absolute inset-0 right-2 top-[3.8rem] flex justify-end">
+             
+            </div> */}
           <CodeBlock code={emailHTMLContent} language="html" theme={oneLight} />
         </ErrorBoundary>
       </DialogContent>
