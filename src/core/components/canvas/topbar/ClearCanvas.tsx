@@ -14,11 +14,11 @@ import {
   Button,
 } from "../../../../ui";
 import { useSelectedBlockIds, useSelectedStylingBlocks } from "../../../hooks";
-import { useBlocksStoreActions } from "../../../history/useBlocksStoreActions.ts";
+import { useBlocksStoreUndoableActions } from "../../../history/useBlocksStoreUndoableActions.ts";
 
 export const ClearCanvas = () => {
   const { t } = useTranslation();
-  const { setNewBlocks } = useBlocksStoreActions();
+  const { setNewBlocks } = useBlocksStoreUndoableActions();
   const [, setIds] = useSelectedBlockIds();
   const [, setStyleIds] = useSelectedStylingBlocks();
   const clearCanvas = useCallback(() => {

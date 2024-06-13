@@ -5,7 +5,7 @@ import i18n from "../locales/load";
 import { FlagsProvider } from "flagged";
 import { useEffect } from "react";
 import { DndProvider } from "react-dnd";
-import { isObject, isString, omit } from "lodash-es";
+import { omit } from "lodash-es";
 import { getBackendOptions, MultiBackend } from "@minoru/react-dnd-treeview";
 import { FEATURE_TOGGLES } from "../FEATURE_TOGGLES";
 import { chaiBuilderPropsAtom } from "../atoms/builder.ts";
@@ -13,11 +13,12 @@ import { ErrorBoundary } from "../components/ErrorBoundary";
 import { RootLayout } from "../components/RootLayout";
 import { builderStore } from "../atoms/store.ts";
 import { Toaster } from "../../ui";
-import { useBrandingOptions, useBuilderReset, useSetAllBlocks } from "../hooks";
+import { useBrandingOptions, useBuilderReset } from "../hooks";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { ChaiBuilderEditorProps } from "../types/chaiBuilderEditorProps.ts";
 import { dataProvidersAtom } from "../hooks/usePageDataProviders.ts";
-import { useBlocksContainer } from "../hooks/useBrandingOptions.ts";
+import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
+import { ChaiBlock } from "../types/ChaiBlock.ts";
 
 if (import.meta.env.NODE_ENV === "development") {
   console.log("Chai Builder:", i18n);
@@ -29,9 +30,8 @@ const DragLayerComponent = (props: any) => {
 
 const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   const { dndOptions = { backend: MultiBackend } } = props;
-  const [setAllBlocks] = useSetAllBlocks();
+  const [, setAllBlocks] = useBlocksStore();
   const [, setBrandingOptions] = useBrandingOptions();
-  const [, setContainer] = useBlocksContainer();
   const reset = useBuilderReset();
 
   useEffect(() => {
@@ -47,17 +47,8 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   }, [props.dataProviders]);
 
   useEffect(() => {
-    if (isString(props.container)) {
-      // @ts-ignore
-      setContainer({ _type: props.container, _id: "container" });
-    } else if (isObject(props.container)) {
-      // @ts-ignore
-      setContainer({ ...props.container, ...{ _id: "container" } });
-    }
-  }, [props.container]);
-
-  useEffect(() => {
-    setAllBlocks(syncBlocksWithDefaults(props.blocks || []));
+    // @ts-ignore
+    setAllBlocks(syncBlocksWithDefaults(props.blocks || []) as ChaiBlock[]);
     reset();
   }, [props.blocks]);
 

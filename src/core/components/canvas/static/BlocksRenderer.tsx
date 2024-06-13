@@ -1,5 +1,5 @@
 import React, { Suspense, useCallback } from "react";
-import { each, filter, find, get, isEmpty, isNull, isString, memoize } from "lodash-es";
+import { each, filter, find, get, has, isEmpty, isNull, isString, memoize } from "lodash-es";
 import { twMerge } from "tailwind-merge";
 import { ChaiBlock } from "../../../types/ChaiBlock";
 import { SLOT_KEY, STYLES_KEY } from "../../../constants/CONTROLS";
@@ -8,8 +8,7 @@ import { getBlockComponent } from "@chaibuilder/runtime";
 import { useChaiExternalData } from "./useChaiExternalData.ts";
 import { useAtom } from "jotai";
 import { inlineEditingActiveAtom } from "../../../atoms/ui.ts";
-import { has } from "lodash";
-import { useBlocksStore } from "../../../history/useBlocksStoreActions.ts";
+import { useBlocksStore } from "../../../history/useBlocksStoreUndoableActions.ts";
 
 // FIXME:  Duplicate code in CanvasRenderer.tsx
 const getSlots = (block: ChaiBlock) => {

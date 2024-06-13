@@ -100,7 +100,8 @@ export const useSelectedBlocksDisplayChild = () => ({
 /**
  * useSelectedBlock hook
  */
-export const useSelectedBlock = () => useAtomValue(selectedBlockAtom);
+//@ts-ignore
+export const useSelectedBlock = () => useAtomValue<ChaiBlock>(selectedBlockAtom);
 
 /**
  * TODO: Add test cases for this hook
