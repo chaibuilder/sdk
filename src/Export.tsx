@@ -2,9 +2,11 @@ import React, { useState, useCallback } from "react";
 import { ClipboardIcon, DownloadIcon } from "@radix-ui/react-icons";
 import { useCopyToClipboard } from "./core/hooks/useCopyToClipboard";
 import { ErrorBoundary } from "./core/components/ErrorBoundary";
-import { Dialog, DialogContent, DialogTrigger } from "./ui";
+import { Button, Dialog, DialogContent, DialogFooter, DialogTrigger } from "./ui";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/radix/components/ui/tooltip";
 import { CodeBlock, oneLight } from "@react-email/components";
+import { DialogClose } from "@radix-ui/react-dialog";
+import { useTranslation } from "react-i18next";
 
 interface ExportModalProps {
   content: any;
@@ -15,6 +17,7 @@ const ExportModal: React.FC<ExportModalProps> = React.memo(({ content, handleCli
   const [emailHTMLContent, setEmailHTMLContent] = useState<string>("");
   const [copiedText, copy] = useCopyToClipboard();
   const [isCopied, setIsCopied] = useState<boolean>(false);
+  const { t } = useTranslation();
 
   const handleCopy = useCallback(
     (text: string) => () => {
@@ -81,10 +84,18 @@ const ExportModal: React.FC<ExportModalProps> = React.memo(({ content, handleCli
               </Tooltip>
             </div>
           </div>
-          {/* <div className="absolute inset-0 right-2 top-[3.8rem] flex justify-end">
-             
-            </div> */}
+
           <CodeBlock code={emailHTMLContent} language="html" theme={oneLight} />
+          <DialogFooter className="flex px-4 pb-2">
+            <DialogClose asChild>
+              <Button type="button" variant="secondary">
+                {t("cancel")}
+              </Button>
+            </DialogClose>
+            <DialogClose asChild>
+              <Button type="button">{t("save")}</Button>
+            </DialogClose>
+          </DialogFooter>
         </ErrorBoundary>
       </DialogContent>
     </Dialog>
