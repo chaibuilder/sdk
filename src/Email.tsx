@@ -7,8 +7,8 @@ import { render } from "@react-email/render";
 import { RenderChaiBlocks } from "./render";
 import { Font, Head, Html, Tailwind } from "@react-email/components";
 import { loadEmailBlocks } from "./blocks/email";
+import { useBlocksStore } from "./core/history/useBlocksStoreUndoableActions.ts";
 import ExportModal from "./Export.tsx";
-import { useBlocksStore } from "./core/history/useBlocksStoreActions.ts";
 
 loadEmailBlocks();
 
@@ -72,24 +72,23 @@ function ChaiBuilderEmail() {
   const [brandingOptions, setBrandingOptions] = useAtom(lsBrandingOptionsAtom);
 
   return (
-    <>
-      <ChaiBuilderEditor
-        importHTMLSupport={false}
-        // @ts-ignore
-        breakpoints={BREAKPOINTS}
-        topBarComponents={{ left: [PreviewMessage], right: [ExportBtn] }}
-        blocks={blocks}
-        brandingOptions={brandingOptions}
-        onSavePage={async ({ blocks }: any) => {
-          setBlocks(blocks);
-          return true;
-        }}
-        onSaveBrandingOptions={async (options: any) => {
-          setBrandingOptions(options);
-          return true;
-        }}
-      />
-    </>
+    <ChaiBuilderEditor
+      importHTMLSupport={false}
+      // @ts-ignore
+      breakpoints={BREAKPOINTS}
+      topBarComponents={{ left: [PreviewMessage], right: [ExportBtn] }}
+      blocks={blocks}
+      brandingOptions={brandingOptions}
+      onSavePage={async ({ blocks }: any) => {
+        setBlocks(blocks);
+        localStorage.setItem("chai-builder-blocks-email", JSON.stringify(blocks));
+        return true;
+      }}
+      onSaveBrandingOptions={async (options: any) => {
+        setBrandingOptions(options);
+        return true;
+      }}
+    />
   );
 }
 

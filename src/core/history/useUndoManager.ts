@@ -1,6 +1,6 @@
 import UndoManager from "undo-manager";
 import { useEffect } from "react";
-import { noop } from "lodash";
+import { noop } from "lodash-es";
 import { useAtom } from "jotai";
 import { pageSyncStateAtom } from "../hooks/useSavePage.ts";
 

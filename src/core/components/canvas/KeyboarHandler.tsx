@@ -3,10 +3,7 @@ import { useFrame } from "../../frame";
 import { useAtom } from "jotai";
 import { first } from "lodash-es";
 import {
-  useCopyBlockIds,
-  useCutBlockIds,
   useDuplicateBlocks,
-  usePasteBlocks,
   usePreviewMode,
   useRemoveBlocks,
   useSavePage,
@@ -15,7 +12,7 @@ import {
   useUndoManager,
 } from "../../hooks";
 import { editLayerNameAtom, inlineEditingActiveAtom } from "../../atoms/ui";
-import { useBlocksStore } from "../../history/useBlocksStoreActions.ts";
+import { useBlocksStore } from "../../history/useBlocksStoreUndoableActions.ts";
 
 export const KeyboardHandler = () => {
   const { window: iframeWin }: any = useFrame();
@@ -24,9 +21,6 @@ export const KeyboardHandler = () => {
   const [, setStylingBlocks] = useSelectedStylingBlocks();
   const { undo, redo } = useUndoManager();
   const duplicateBlocks = useDuplicateBlocks();
-  const [, cut] = useCutBlockIds();
-  const [, copy] = useCopyBlockIds();
-  const { pasteBlocks } = usePasteBlocks();
   const [, setPreview] = usePreviewMode();
   const removeBlocks = useRemoveBlocks();
   const { savePage } = useSavePage();
@@ -83,9 +77,6 @@ export const KeyboardHandler = () => {
         if (e.key === "z") undo();
         if (e.key === "y") redo();
         if (e.key === "d") duplicateBlocks(ids);
-        if (e.key === "x") cut(ids);
-        if (e.key === "c") copy(ids);
-        if (e.key === "v" && ids.length > 0) pasteBlocks(ids[0]);
       }
     };
     // FIXME: check for performance impact
@@ -94,20 +85,6 @@ export const KeyboardHandler = () => {
     return () => {
       iframeWin.removeEventListener("keydown", handleKeyDown);
     };
-  }, [
-    ids,
-    setSelected,
-    undo,
-    removeBlocks,
-    setPreview,
-    redo,
-    duplicateBlocks,
-    cut,
-    copy,
-    pasteBlocks,
-    editingBlockId,
-    savePage,
-    iframeWin,
-  ]);
+  }, [ids, setSelected, undo, removeBlocks, setPreview, redo, duplicateBlocks, editingBlockId, savePage, iframeWin]);
   return null;
 };

@@ -6,7 +6,7 @@ import { selectedStylingBlocksAtom, TStyleBlock } from "./useSelectedStylingBloc
 import { ChaiBlock } from "../types/ChaiBlock";
 import { getSplitClasses } from "../import-html/general";
 import { STYLES_KEY } from "../constants/CONTROLS";
-import { useBlocksStoreActions } from "../history/useBlocksStoreActions.ts";
+import { useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 
 export const removeClassFromBlocksAtom: any = atom(null, (get, _set, { blockIds, fullClasses }) => {
   const styleBlock = first(get(selectedStylingBlocksAtom)) as TStyleBlock;
@@ -45,7 +45,7 @@ export const removeClassFromBlocksAtom: any = atom(null, (get, _set, { blockIds,
 });
 
 export const useRemoveClassesFromBlocks = (): Function => {
-  const { updateBlocks } = useBlocksStoreActions();
+  const { updateBlocks } = useBlocksStoreUndoableActions();
   const removeClassesFromBlocks = useSetAtom(removeClassFromBlocksAtom);
   return useCallback(
     (blockIds: Array<string>, fullClasses: Array<string>) => {

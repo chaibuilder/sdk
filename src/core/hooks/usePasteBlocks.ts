@@ -29,6 +29,7 @@ export const usePasteBlocks = (): {
   canPaste: boolean;
   pasteBlocks: Function;
 } => {
+  console.warn("usePasteBlocks is not implemented");
   // @ts-ignore
   const copiedBlockIds: Array<string> = useAtomValue(copiedBlockIdsAtom);
   const [cutBlockIds, setCutBlockIds] = useCutBlockIds();

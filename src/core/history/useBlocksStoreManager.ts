@@ -1,5 +1,5 @@
 import { ChaiBlock } from "../types/ChaiBlock.ts";
-import { useBlocksStore } from "./useBlocksStoreActions.ts";
+import { useBlocksStore } from "./useBlocksStoreUndoableActions.ts";
 import { find, omit } from "lodash-es";
 import { removeNestedBlocks } from "../hooks/useRemoveBlocks.ts";
 import { insertBlocksAtPosition } from "../functions/InsertBlocksAtPosition.ts";

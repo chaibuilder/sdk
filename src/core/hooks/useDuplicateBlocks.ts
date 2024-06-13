@@ -1,31 +1,39 @@
 import { useCallback } from "react";
-import { useAtomValue } from "jotai";
-import { each, get } from "lodash-es";
-import { useDispatch } from "./useTreeData";
-import { presentBlocksAtom } from "../atoms/blocks";
-import { getDuplicatedBlocks } from "../functions/Blocks";
+import { each, filter, get, isString } from "lodash-es";
 import { useSelectedBlockIds } from "./useSelectedBlockIds";
+import { useBlocksStore, useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
+import { getDuplicatedBlocks } from "../functions/Blocks.ts";
+import { ChaiBlock } from "../types/ChaiBlock.ts";
 
 /**
  * useDuplicateBlock
  */
 export const useDuplicateBlocks = (): Function => {
-  const dispatch = useDispatch();
-  const presentBlocks = useAtomValue(presentBlocksAtom);
+  const [presentBlocks] = useBlocksStore();
   const [, setSelected] = useSelectedBlockIds();
+  const { addBlocks } = useBlocksStoreUndoableActions();
 
   return useCallback(
-    (blockIds: Array<string>, newParentId: string | null = null) => {
+    (blockIds: string[], parentId: string | null = null) => {
       const newBlockIds: string[] = [];
-      each(blockIds, (blockId) => {
-        const newParent = newParentId === blockId ? null : newParentId;
-        const newBlocks = getDuplicatedBlocks(presentBlocks, blockId, newParent);
+      each(blockIds, (blockId: string) => {
+        const block = presentBlocks.find((block) => block._id === blockId);
+        if (!parentId) {
+          // use the parent of the same block. Can be a falsy value. null undefined etc.
+          parentId = block._parent;
+        }
+        // get sibling blocks
+        const siblingBlocks = filter(presentBlocks, (_block: ChaiBlock) =>
+          isString(parentId) ? _block._parent === parentId : !block._parent,
+        );
+        const blockPosition = siblingBlocks.indexOf(block);
+        const newBlockPosition = blockPosition + 1;
+        const newBlocks = getDuplicatedBlocks(presentBlocks, blockId, parentId);
+        addBlocks(newBlocks, parentId, newBlockPosition);
         newBlockIds.push(get(newBlocks, "0._id", ""));
-        dispatch({ type: "add_duplicate_blocks", payload: newBlocks });
       });
       setSelected(newBlockIds);
-      dispatch({ type: "create_snapshot" });
     },
-    [presentBlocks, setSelected, dispatch],
+    [presentBlocks, setSelected],
   );
 };

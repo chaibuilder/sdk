@@ -16,7 +16,7 @@ import { ScrollArea } from "../../../../../ui";
 import { useAddBlockByDrop } from "../../../../hooks/useAddBlockByDrop";
 import { cn } from "../../../../functions/Functions.ts";
 import { useBlocksContainer } from "../../../../hooks/useBrandingOptions.ts";
-import { useBlocksStore, useBlocksStoreActions } from "../../../../history/useBlocksStoreActions.ts";
+import { useBlocksStore, useBlocksStoreUndoableActions } from "../../../../history/useBlocksStoreUndoableActions.ts";
 
 function convertToTBlocks(newTree: NodeModel[]) {
   return map(newTree, (block) => {
@@ -50,7 +50,7 @@ function BlocksContainer() {
 
 const Layers = (): React.JSX.Element => {
   const [allBlocks] = useBlocksStore();
-  const { setNewBlocks: setAllBlocks } = useBlocksStoreActions();
+  const { setNewBlocks: setAllBlocks } = useBlocksStoreUndoableActions();
   const [ids, setIds, toggleIds] = useSelectedBlockIds();
   const [, setStyleBlocks] = useSelectedStylingBlocks();
   const { t } = useTranslation();

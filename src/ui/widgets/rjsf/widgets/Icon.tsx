@@ -13,10 +13,15 @@ const getSvgMarkup = (icon: string) => {
     let iconPickerMarkup = iconPickerContainer.innerHTML;
     setTimeout(() => container.removeChild(iconPickerContainer), 100);
 
-    if (!iconPickerMarkup) return "";
     // // * Removing height and width from svg
     const parser = new DOMParser();
     const svgDoc = parser.parseFromString(iconPickerMarkup, "image/svg+xml");
+    // remove width and height
+    const svgElement = svgDoc.querySelector("svg");
+    if (svgElement) {
+      svgElement.removeAttribute("width");
+      svgElement.removeAttribute("height");
+    }
     return new XMLSerializer().serializeToString(svgDoc);
   } catch (err) {
     console.error(err);
@@ -35,7 +40,9 @@ const IconPickerField = ({ value, onChange }: WidgetProps) => {
     <div className="mt-1 flex h-20 items-center gap-x-2" id="icon-picker-field">
       <div className="group relative h-12 w-12">
         <div
-          dangerouslySetInnerHTML={{ __html: value ? value.replace("<svg", `<svg class="h-5 w-5"`) : "<svg />" }}
+          dangerouslySetInnerHTML={{
+            __html: value ? value.replace("<svg", `<svg class="h-5 w-5"`) : "<svg class='h-5 w-5' />",
+          }}
           className="absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2 transform cursor-pointer bg-white"
         />
         <IconPicker

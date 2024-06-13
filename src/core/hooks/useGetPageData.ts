@@ -3,7 +3,7 @@ import { map, omit } from "lodash-es";
 import { useBrandingOptions } from "./useBrandingOptions";
 import { useCurrentPage } from "./useCurrentPage";
 import { splitPageBlocks } from "../functions/split-blocks";
-import { useBlocksStore } from "../history/useBlocksStoreActions.ts";
+import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
 
 export const useGetPageData = () => {
   const [projectOptions] = useBrandingOptions();

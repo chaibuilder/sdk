@@ -1,11 +1,11 @@
 import { useCallback } from "react";
-import { useBlocksStoreActions } from "../history/useBlocksStoreActions.ts";
+import { useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 
 /**
  *
  */
 export const useUpdateBlocksProps = () => {
-  const { updateBlocks } = useBlocksStoreActions();
+  const { updateBlocks } = useBlocksStoreUndoableActions();
   return useCallback(
     (blockIds: Array<string>, props: Record<string, any>, prevPropsState?: Record<string, any>) => {
       updateBlocks(blockIds, props, prevPropsState);
@@ -15,7 +15,7 @@ export const useUpdateBlocksProps = () => {
 };
 
 export const useUpdateBlocksPropsRealtime = () => {
-  const { updateBlocksRuntime } = useBlocksStoreActions();
+  const { updateBlocksRuntime } = useBlocksStoreUndoableActions();
   return useCallback(
     (blockIds: Array<string>, props: Record<string, any>) => {
       updateBlocksRuntime(blockIds, props);
