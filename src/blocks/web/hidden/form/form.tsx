@@ -1,5 +1,4 @@
 import * as React from "react";
-import { isEmpty } from "lodash-es";
 import { GroupIcon, LetterCaseToggleIcon } from "@radix-ui/react-icons";
 import { RichText, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
@@ -16,9 +15,9 @@ const FormBlock = (
   },
 ) => {
   const { blockProps, errorMessage, name, _type, successMessage, action, styles, children } = props;
-
-  if (!children && isEmpty(styles?.className)) {
-    return <EmptySlot blockProps={blockProps} text="FORM FIELDS" />;
+  let nestedChildren = children;
+  if (!children) {
+    nestedChildren = <EmptySlot blockProps={{}} text="FORM FIELDS" />;
   }
 
   const alpineAttrs = {
@@ -40,7 +39,7 @@ const FormBlock = (
       {...styles}>
       <div {...formResponseAttr}></div>
       <input name={"formname"} type={"hidden"} value={name || _type} />
-      {children}
+      {nestedChildren}
     </form>
   );
 };

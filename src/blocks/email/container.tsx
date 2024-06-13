@@ -3,12 +3,13 @@ import { registerChaiBlock } from "@chaibuilder/runtime";
 import EmptySlot from "../empty-slot.tsx";
 
 const ContainerBlock = ({ blockProps, styles, children }) => {
+  let nestedChildren = children;
   if (!children) {
-    return <EmptySlot blockProps={blockProps} styles={styles} />;
+    nestedChildren = <EmptySlot blockProps={{}} styles={{}} />;
   }
   return (
     <Container {...blockProps} {...styles}>
-      {children}
+      {nestedChildren}
     </Container>
   );
 };

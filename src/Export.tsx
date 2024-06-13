@@ -1,9 +1,10 @@
-import React, { useState, useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useCopyToClipboard } from "./core/hooks/useCopyToClipboard";
 import { ErrorBoundary } from "./core/components/ErrorBoundary";
-import { Button, Dialog, DialogContent, DialogFooter, DialogTrigger } from "./ui";
+import { Button, Dialog, DialogContent, DialogFooter, DialogTrigger, ScrollArea } from "./ui";
 import { CodeBlock, oneLight } from "@react-email/components";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 
 interface ExportModalProps {
   content: any;
@@ -13,22 +14,16 @@ interface ExportModalProps {
 const ExportModal: React.FC<ExportModalProps> = React.memo(({ content, handleClick }) => {
   const [emailHTMLContent, setEmailHTMLContent] = useState<string>("");
   const [, copy] = useCopyToClipboard();
-  const [isCopied, setIsCopied] = useState<boolean>(false);
   const { t } = useTranslation();
 
   const handleCopy = useCallback(
-    (text: string) => () => {
-      copy(text)
-        .then(() => {
-          setIsCopied(true);
-          console.log("Copied!",  isCopied);
-        })
-        .catch((error) => {
-          setIsCopied(false);
-          console.error("Failed to copy!", error);
-        });
+    async (text: string) => {
+      try {
+        await copy(text);
+        toast.success(t("Copied!"));
+      } catch (error) {}
     },
-    [copy, isCopied],
+    [copy],
   );
 
   const downloadHTMLContent = (htmlContent: string) => {
@@ -57,16 +52,20 @@ const ExportModal: React.FC<ExportModalProps> = React.memo(({ content, handleCli
           <div className="sticky top-0 z-10 flex items-center justify-between bg-white px-4 pt-3.5 text-lg font-bold">
             Export Email Template
           </div>
-          <CodeBlock code={emailHTMLContent} language="html" theme={oneLight} />
-          <DialogFooter className="flex px-4 pb-2">
-            <Button type="button" onClick={() => downloadHTMLContent(emailHTMLContent)}>
-              {t("Download")}
-            </Button>
-            <Button type="button" variant="outline" onClick={handleCopy(emailHTMLContent)}>
-              {t("Copy")}
-            </Button>
-          </DialogFooter>
+          <ScrollArea className="h-full overflow-scroll">
+            <div className="text-xs">
+              <CodeBlock code={emailHTMLContent} language="html" theme={oneLight} />
+            </div>
+          </ScrollArea>
         </ErrorBoundary>
+        <DialogFooter className="sticky bottom-0 flex px-4 py-2 sm:justify-start">
+          <Button type="button" onClick={() => downloadHTMLContent(emailHTMLContent)}>
+            {t("Download")}
+          </Button>
+          <Button type="button" variant="outline" onClick={() => handleCopy(emailHTMLContent)}>
+            {t("Copy")}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

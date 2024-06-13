@@ -2,19 +2,24 @@ import { Link } from "@react-email/components";
 import { registerChaiBlock } from "@chaibuilder/runtime";
 import { Link as link, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import { Link1Icon } from "@radix-ui/react-icons";
+import EmptySlot from "../empty-slot.tsx";
 
-const LinkBlock = ({ blockProps, styles, href, content, target }: any) => {
+const LinkBlock = ({ blockProps, styles, href, content, target, children }: any) => {
   return (
     <Link {...blockProps} {...styles} href={href} target={target}>
-      {content}
+      {children || content}
     </Link>
   );
 };
 
 const LinkBuilder = ({ blockProps, styles, content, children }: any) => {
+  let nestedChildren = children;
+  if (!children) {
+    nestedChildren = <EmptySlot blockProps={{}} styles={{}} />;
+  }
   return (
     <span {...blockProps} {...styles}>
-      {children ? children : content}
+      {nestedChildren ? nestedChildren : content}
     </span>
   );
 };

@@ -1,15 +1,12 @@
-import { ChaiBuilderEditor } from "./core/main";
+import { ChaiBuilderEditor, useBrandingOptions } from "./core/main";
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
 import { lsBrandingOptionsAtom, lsEmailBlocksAtom } from "./atoms-dev.ts";
 import { MobileIcon } from "@radix-ui/react-icons";
-import { render } from "@react-email/render";
-import { RenderChaiBlocks } from "./render";
-import { Font, Head, Html, Tailwind } from "@react-email/components";
 import { loadEmailBlocks } from "./blocks/email";
 import { useBlocksStore } from "./core/history/useBlocksStoreUndoableActions.ts";
 import ExportModal from "./Export.tsx";
-import { useBlocksStore } from "./core/history/useBlocksStoreActions.ts";
+import { renderEmail } from "./email/functions.tsx";
 
 loadEmailBlocks();
 
@@ -38,32 +35,9 @@ const BREAKPOINTS = [
 const ExportBtn = () => {
   const { t } = useTranslation();
   const [blocks] = useBlocksStore();
+  const [brandingOptions] = useBrandingOptions();
   const exportHTML = async () => {
-    const html = render(
-      <Tailwind config={{ prefix: "c-" }}>
-        <Html lang="en" dir="ltr">
-          <Head>
-            <Font
-              fontFamily="Roboto"
-              fallbackFontFamily="Verdana"
-              webFont={{
-                url: "https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2",
-                format: "woff2",
-              }}
-              fontWeight={400}
-              fontStyle="normal"
-            />
-          </Head>
-          <body>
-            <RenderChaiBlocks blocks={blocks} />
-          </body>
-        </Html>
-      </Tailwind>,
-      { pretty: true },
-    );
-    console.log(html);
-
-    return html;
+    return renderEmail(blocks, brandingOptions);
   };
   return <ExportModal content={t("Export")} handleClick={() => exportHTML()} />;
 };

@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Image, SelectOption, Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import { isEmpty } from "lodash-es";
 import EmptySlot from "../empty-slot.tsx";
 
 const BoxBlock = React.memo(
@@ -15,16 +14,17 @@ const BoxBlock = React.memo(
     },
   ) => {
     const { blockProps, backgroundImage, children, tag = "div", styles } = props;
-
-    if (!children && isEmpty(styles?.className)) {
-      return <EmptySlot blockProps={blockProps} styles={styles} />;
+    let nestedChildren = children;
+    if (!children) {
+      nestedChildren = <EmptySlot blockProps={{}} styles={{}} />;
     }
+
     let cssStyles = {};
     if (backgroundImage) {
       cssStyles = { backgroundImage: `url(${backgroundImage})` };
     }
 
-    return React.createElement(tag, { ...blockProps, ...styles, style: cssStyles }, children);
+    return React.createElement(tag, { ...blockProps, ...styles, style: cssStyles }, nestedChildren);
   },
 );
 

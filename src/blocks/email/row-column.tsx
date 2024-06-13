@@ -2,6 +2,7 @@ import { Column, Row } from "@react-email/components";
 import { registerChaiBlock } from "@chaibuilder/runtime";
 import { SelectOption, Styles } from "@chaibuilder/runtime/controls";
 import { ImageIcon } from "@radix-ui/react-icons";
+import EmptySlot from "../empty-slot.tsx";
 
 const RowBlock = ({ blockProps, styles, children }: any) => {
   return (
@@ -17,6 +18,10 @@ registerChaiBlock(RowBlock, {
   group: "basic",
   category: "core",
   icon: ImageIcon,
+  blocks: [
+    { _type: "Row", _id: "a" },
+    { _type: "Column", _id: "b", _parent: "a" },
+  ],
   props: {
     styles: Styles({ default: "" }),
   },
@@ -24,9 +29,14 @@ registerChaiBlock(RowBlock, {
 });
 
 const ColumnBlock = ({ blockProps, styles, children, align }: any) => {
+  let nestedChildren = children;
+  if (!children) {
+    nestedChildren = <EmptySlot blockProps={{}} styles={{}} />;
+  }
+
   return (
     <Column {...blockProps} {...styles} align={align}>
-      {children}
+      {nestedChildren}
     </Column>
   );
 };
