@@ -1,4 +1,4 @@
-import { canDropBlock } from "./Layers";
+import { canDropBlock } from "./block-helpers.ts";
 
 describe("canDropBlock Function", () => {
   it('should return false if dragSourceType is "Slot"', () => {

@@ -1,5 +1,5 @@
 import { omit } from "lodash-es";
-import { cn } from "../../core/functions/Functions.ts";
+import { cn } from "../core/functions/Functions.ts";
 
 type EmptySlotProps = {
   blockProps?: any;
@@ -13,7 +13,7 @@ const EmptySlot = ({ blockProps, className = "", styles = {} }: EmptySlotProps) 
       {...blockProps}
       className={cn("flex h-20 flex-col items-center justify-center", className)}
       {...omit(styles, ["className"])}>
-      <div className="flex h-full w-full items-center justify-center  outline-dashed outline-1 -outline-offset-1 outline-gray-400 duration-300">
+      <div className="flex h-full w-full items-center justify-center outline-dashed outline-1 -outline-offset-1 outline-gray-400 duration-300">
         <span className="opacit flex items-center gap-x-1.5 text-xs font-semibold text-gray-400"></span>
       </div>
     </div>

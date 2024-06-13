@@ -94,6 +94,9 @@ export const getBlockJSONFromSchemas = (control: ChaiControlDefinition) => {
 };
 
 export const getBlockDefaultProps = (propDefinitions: { [key: string]: ChaiControlDefinition }) => {
+  if (!propDefinitions) {
+    return {};
+  }
   const defaultProps: Record<string, any> = {};
   Object.keys(propDefinitions).forEach((key) => {
     defaultProps[key] = getBlockDefaultProp(propDefinitions[key]);

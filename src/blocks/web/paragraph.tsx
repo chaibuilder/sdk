@@ -33,7 +33,7 @@ registerChaiBlock(ParagraphBlock as React.FC<any>, {
   label: "Paragraph",
   category: "core",
   icon: TextIcon,
-  group: "basic",
+  group: "typography",
   props: {
     styles: Styles({ default: "" }),
     content: MultilineText({

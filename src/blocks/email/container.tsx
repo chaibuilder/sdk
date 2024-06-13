@@ -1,8 +1,11 @@
 import { Container } from "@react-email/components";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import { Styles } from "@chaibuilder/runtime/controls";
+import EmptySlot from "../empty-slot.tsx";
 
 const ContainerBlock = ({ blockProps, styles, children }) => {
+  if (!children) {
+    return <EmptySlot blockProps={blockProps} styles={styles} />;
+  }
   return (
     <Container {...blockProps} {...styles}>
       {children}
@@ -15,9 +18,9 @@ registerChaiBlock(ContainerBlock, {
   label: "Container",
   group: "basic",
   category: "core",
-  props: { styles: Styles({ default: "" }) },
   canAcceptBlock: () => true,
   canMove: () => true,
   canDelete: () => false,
   canDuplicate: () => false,
+  canBeNested: (parentType?: string) => !parentType,
 });

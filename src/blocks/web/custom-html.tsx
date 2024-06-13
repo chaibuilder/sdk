@@ -14,7 +14,7 @@ const CustomHTMLBlock = React.memo(
     const { blockProps, styles, content, inBuilder } = props;
     return (
       <div className={"relative"}>
-        {inBuilder ? <div {...blockProps} {...styles} className="absolute h-full w-full z-20" /> : null}
+        {inBuilder ? <div {...blockProps} {...styles} className="absolute z-20 h-full w-full" /> : null}
         {React.createElement("div", {
           ...styles,
           dangerouslySetInnerHTML: { __html: content },
@@ -26,10 +26,10 @@ const CustomHTMLBlock = React.memo(
 
 registerChaiBlock(CustomHTMLBlock, {
   type: "CustomHTML",
-  label: "CustomHTML",
+  label: "Custom HTML",
   category: "core",
   icon: CodeIcon,
-  group: "basic",
+  group: "advanced",
   props: {
     styles: Styles({ default: "" }),
     content: MultilineText({

@@ -14,7 +14,6 @@ import "./video";
 import "./custom-html";
 import "./divider";
 import "./text";
-
 // hidden
 import "./hidden/body";
 import "./hidden/line-break";

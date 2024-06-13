@@ -1,5 +1,6 @@
 import { Preview } from "@react-email/components";
 import { registerChaiBlock } from "@chaibuilder/runtime";
+import { MultilineText } from "@chaibuilder/runtime/controls";
 
 const PreviewBlock = ({ blockProps, styles, children }: any) => {
   return (
@@ -25,6 +26,9 @@ registerChaiBlock(PreviewBlock, {
   builderComponent: PreviewBuilder,
   canAcceptBlock: () => true,
   canDuplicate: () => false,
+  props: {
+    content: MultilineText({ default: "Preview content", title: "Content" }),
+  },
 });
 
 export default PreviewBlock;

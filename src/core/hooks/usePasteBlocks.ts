@@ -6,7 +6,7 @@ import { useDispatch } from "./useTreeData";
 import { copiedBlockIdsAtom } from "./useCopyBlockIds";
 import { useCutBlockIds } from "./useCutBlockIds";
 import { presentBlocksAtom } from "../atoms/blocks";
-import { ChaiBlock } from "../functions/Layers";
+import { ChaiBlock } from "../types/ChaiBlock.ts";
 
 const useMoveCutBlocks = () => {
   const presentBlocks = useAtomValue(presentBlocksAtom);

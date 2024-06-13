@@ -2,7 +2,7 @@ import { CopyIcon, TrashIcon } from "@radix-ui/react-icons";
 import React, { useCallback } from "react";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "../../../../../ui";
 import { useDuplicateBlocks, useRemoveBlocks, useSelectedBlock, useSelectedBlockIds } from "../../../../hooks";
-import { canDeleteBlock, canDuplicateBlock } from "../../../../functions/Layers.ts";
+import { canDeleteBlock, canDuplicateBlock } from "../../../../functions/block-helpers.ts";
 
 const RemoveBlocks = () => {
   const [selectedIds] = useSelectedBlockIds();

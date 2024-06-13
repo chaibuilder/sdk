@@ -32,7 +32,7 @@ registerChaiBlock(HeadingBlock, {
   label: "Heading",
   category: "core",
   icon: HeadingIcon,
-  group: "basic",
+  group: "typography",
   props: {
     level: SelectOption({
       title: "Level",

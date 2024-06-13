@@ -25,7 +25,7 @@ registerChaiBlock(RawTextBlock, {
   label: "Text",
   hidden: true,
   category: "core",
-  group: "basic",
+  group: "typography",
   icon: SpaceBetweenVerticallyIcon,
   props: {
     content: MultilineText({ title: "Content", defaultValue: "" }),

@@ -8,7 +8,7 @@ import { useSelectedBlockIds, useSelectedStylingBlocks } from "../../../../hooks
 import { CustomNode } from "./CustomNode";
 import { CustomDragPreview } from "./CustomDragPreview";
 import { Placeholder } from "./Placeholder";
-import { canDropBlock } from "../../../../functions/Layers";
+import { canDropBlock } from "../../../../functions/block-helpers.ts";
 import { useExpandedIds } from "../../../../hooks/useExpandTree";
 import { ChaiBlock } from "../../../../types/ChaiBlock";
 import { BlockContextMenu } from "./BlockContextMenu";

@@ -1,6 +1,6 @@
 import { Section } from "@react-email/components";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import { SelectOption, Styles } from "@chaibuilder/runtime/controls";
+import { SelectOption } from "@chaibuilder/runtime/controls";
 import { ImageIcon } from "@radix-ui/react-icons";
 
 const SectionBlock = ({ blockProps, styles, children }: any) => {
@@ -18,7 +18,6 @@ registerChaiBlock(SectionBlock, {
   category: "core",
   icon: ImageIcon,
   props: {
-    styles: Styles({ default: "w-full" }),
     align: SelectOption({
       title: "Align",
       default: "",

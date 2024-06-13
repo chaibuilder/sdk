@@ -121,13 +121,13 @@ const BrandingOptions = (): React.JSX.Element => {
         title: "Body Background (Light)",
         default: bodyBgLightColor,
       }),
-      bodyBgDarkColor: Color({
-        title: "Body Background (Dark)",
-        default: bodyBgDarkColor,
-      }),
       bodyTextLightColor: Color({
         title: "Body Text (Light)",
         default: bodyTextDarkColor,
+      }),
+      bodyBgDarkColor: Color({
+        title: "Body Background (Dark)",
+        default: bodyBgDarkColor,
       }),
       bodyTextDarkColor: Color({
         title: "Body Text (Dark)",
@@ -142,7 +142,6 @@ const BrandingOptions = (): React.JSX.Element => {
   };
   const uiSchema: UiSchema = {};
 
-  // TODO: Check for nested properties inside List and Model
   Object.keys(brandingProperties).forEach((key) => {
     const property = brandingProperties[key];
     if (!propsSchema.properties) propsSchema.properties = {};
@@ -158,9 +157,7 @@ const BrandingOptions = (): React.JSX.Element => {
       </div>
       <div className="-mx-2">
         <Form
-          widgets={{
-            color: ColorField,
-          }}
+          widgets={{ color: ColorField }}
           idSeparator="."
           autoComplete="off"
           omitExtraData

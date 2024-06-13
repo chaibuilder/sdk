@@ -2,7 +2,7 @@ import { flip } from "@floating-ui/dom";
 import { shift, useFloating } from "@floating-ui/react-dom";
 import { get, isEmpty, pick } from "lodash-es";
 import { ArrowUpIcon, CopyIcon, DragHandleDots2Icon, TrashIcon } from "@radix-ui/react-icons";
-import { canDeleteBlock, canDuplicateBlock } from "../../functions/Layers";
+import { canDeleteBlock, canDuplicateBlock } from "../../functions/block-helpers.ts";
 import { ChaiBlock } from "../../types/ChaiBlock";
 import {
   useDuplicateBlocks,
@@ -81,12 +81,12 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
         e.preventDefault();
       }}
       onKeyDown={(e) => e.stopPropagation()}
-      className="z-[99999] flex h-6 items-center bg-blue-500  py-2 text-xs text-white">
+      className="z-[99999] flex h-6 items-center bg-blue-500 py-2 text-xs text-white">
       <BlockActionLabel label={label} block={block} />
-      <div className="flex gap-2 px-1 ">
+      <div className="flex gap-2 px-1">
         {parentId && (
           <ArrowUpIcon
-            className="hover:scale-105 "
+            className="hover:scale-105"
             onClick={() => {
               setStyleBlocks([]);
               setSelectedIds([parentId]);
@@ -94,10 +94,10 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
           />
         )}
         {canDuplicateBlock(get(block, "_type", "")) ? (
-          <CopyIcon className="hover:scale-105 " onClick={() => duplicateBlock([block?._id])} />
+          <CopyIcon className="hover:scale-105" onClick={() => duplicateBlock([block?._id])} />
         ) : null}
         {canDeleteBlock(get(block, "_type", "")) ? (
-          <TrashIcon className="hover:scale-105 " onClick={() => removeBlock([block?._id])} />
+          <TrashIcon className="hover:scale-105" onClick={() => removeBlock([block?._id])} />
         ) : null}
       </div>
     </div>

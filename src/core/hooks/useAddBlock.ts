@@ -2,13 +2,14 @@ import { useCallback } from "react";
 import { filter, find, first, forIn, has, startsWith } from "lodash-es";
 import { useDispatch } from "./useTreeData";
 import { generateUUID } from "../functions/Functions.ts";
-import { canAcceptChildBlock } from "../functions/Layers";
+import { canAcceptChildBlock, canBeNestedInside } from "../functions/block-helpers.ts";
 import { useSelectedBlockIds } from "./useSelectedBlockIds";
 import { ChaiBlock } from "../types/ChaiBlock";
 import { CoreBlock } from "../types/CoreBlock";
 import { getBlockDefaultProps } from "../functions/Controls.ts";
 import { SLOT_KEY } from "../constants/CONTROLS";
 import { useBlocksStore, useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
+import { useToast } from "../../ui";
 
 type AddBlocks = {
   addCoreBlock: any;
@@ -20,6 +21,7 @@ export const useAddBlock = (): AddBlocks => {
   const [allBlocks] = useBlocksStore();
   const [, setSelected] = useSelectedBlockIds();
   const { addBlocks } = useBlocksStoreUndoableActions();
+  const { toast } = useToast();
 
   const addPredefinedBlock = useCallback(
     (blocks: ChaiBlock[], parentId?: string, position?: number) => {
@@ -41,6 +43,7 @@ export const useAddBlock = (): AddBlocks => {
         blocks[0]._parent = parentId;
         parentBlockId = parentId;
       }
+
       const canAdd = parentBlock ? canAcceptChildBlock(parentBlock._type, block._type) : true;
       if (!canAdd && parentBlock) {
         blocks[0]._parent = parentBlock._parent;
@@ -89,6 +92,14 @@ export const useAddBlock = (): AddBlocks => {
         parentBlock = find(allBlocks, { _id: parentId }) as ChaiBlock;
         newBlock._parent = parentId;
         parentBlockId = parentId;
+      }
+      if (!canBeNestedInside(parentBlock?._type, coreBlock.type)) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: `"${coreBlock.type}" cannot be added under "${parentBlock._type}"`,
+        });
+        return;
       }
       const canAdd = parentBlock ? canAcceptChildBlock(parentBlock._type, coreBlock.type) : true;
       if (!canAdd && parentBlock) {

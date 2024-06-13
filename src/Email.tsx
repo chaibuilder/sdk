@@ -19,7 +19,7 @@ let PreviewMessage = () => {
 const BREAKPOINTS = [
   {
     title: "Mobile",
-    content: "Mobile content",
+    content: "Mobile email client",
     breakpoint: "xs",
     icon: <MobileIcon />,
     width: 400,
@@ -29,7 +29,7 @@ const BREAKPOINTS = [
     content: "Content as seen  inside an email client",
     breakpoint: "sm",
     icon: <MobileIcon className={"rotate-90"} />,
-    width: 600,
+    width: 800,
   },
 ];
 

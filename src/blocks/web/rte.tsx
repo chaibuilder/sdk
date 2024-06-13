@@ -29,7 +29,7 @@ registerChaiBlock(RichTextBlock as React.FC<any>, {
   label: "Rich Text",
   category: "core",
   icon: CursorTextIcon,
-  group: "basic",
+  group: "typography",
   props: {
     styles: Styles({ default: "" }),
     content: RichText({

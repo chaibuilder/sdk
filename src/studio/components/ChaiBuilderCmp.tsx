@@ -85,7 +85,6 @@ export const ChaiBuilderCmp = (props: ChaiBuilderStudioProps) => {
   return (
     <div className="bg-background text-foreground">
       <ChaiBuilderEditor
-        
         editable={pageData?.lockedBy ? pageData?.lockedBy.self : true}
         nonEditableComponent={TakeOverModal}
         blocks={pageData?.blocks || []}

@@ -2,7 +2,7 @@ import * as React from "react";
 import { Image, SelectOption, Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
 import { isEmpty } from "lodash-es";
-import EmptySlot from "./empty-slot";
+import EmptySlot from "../empty-slot.tsx";
 
 const BoxBlock = React.memo(
   (

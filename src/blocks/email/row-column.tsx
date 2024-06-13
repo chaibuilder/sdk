@@ -51,4 +51,5 @@ registerChaiBlock(ColumnBlock, {
     }),
   },
   canAcceptBlock: () => true,
+  canBeNested: (type: string) => type === "Row",
 });
