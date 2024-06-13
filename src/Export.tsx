@@ -1,10 +1,9 @@
 import React, { useCallback, useState } from "react";
 import { useCopyToClipboard } from "./core/hooks/useCopyToClipboard";
 import { ErrorBoundary } from "./core/components/ErrorBoundary";
-import { Button, Dialog, DialogContent, DialogFooter, DialogTrigger, ScrollArea } from "./ui";
+import { Button, Dialog, DialogContent, DialogFooter, DialogTrigger, ScrollArea, useToast } from "./ui";
 import { CodeBlock, oneLight } from "@react-email/components";
 import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
 
 interface ExportModalProps {
   content: any;
@@ -15,12 +14,15 @@ const ExportModal: React.FC<ExportModalProps> = React.memo(({ content, handleCli
   const [emailHTMLContent, setEmailHTMLContent] = useState<string>("");
   const [, copy] = useCopyToClipboard();
   const { t } = useTranslation();
+  const { toast } = useToast();
+  const [open, setOpen] = useState(false);
 
   const handleCopy = useCallback(
     async (text: string) => {
       try {
         await copy(text);
-        toast.success(t("Copied!"));
+        toast({ title: t("Copied"), description: t("Email template copied!") });
+        setOpen(false);
       } catch (error) {}
     },
     [copy],
@@ -36,14 +38,17 @@ const ExportModal: React.FC<ExportModalProps> = React.memo(({ content, handleCli
     anchor.click();
     URL.revokeObjectURL(url);
     document.body.removeChild(anchor);
+    toast({ title: t("Download complete"), description: t("Email template downloaded successfully!") });
+    setOpen(false);
   };
 
   const triggerClick = useCallback(() => {
+    setOpen(true);
     handleClick().then(setEmailHTMLContent).catch(console.error);
   }, [handleClick]);
 
   return (
-    <Dialog>
+    <Dialog open={open}>
       <DialogTrigger className="rounded-md bg-blue-500 px-4 py-2 text-white" onClick={triggerClick}>
         {content}
       </DialogTrigger>
