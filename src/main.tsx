@@ -16,7 +16,7 @@ async function enableMocking() {
 }
 
 const ChaiBuilderDefault = lazy(() => import("./Editor.tsx"));
-const ChaiBuilderEmail = lazy(() => import("./Email.tsx"));
+const ChaiBuilderEmail = lazy(() => import("./EmailBuilder.tsx"));
 const ChaiStudio = lazy(() => import("./ChaiStudio.tsx"));
 const Preview = lazy(() => import("./Preview.tsx"));
 const RJSF = lazy(() => import("./RJSF.tsx"));

@@ -1,10 +1,10 @@
 import { render } from "@react-email/render";
 import { Font, FontProps, Head, Html, Tailwind } from "@react-email/components";
-import { RenderChaiBlocks } from "../render";
+import { RenderChaiBlocks } from "./index.ts";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import defaultTheme from "tailwindcss/defaultTheme";
 import { tailwindcssPaletteGenerator } from "@bobthered/tailwindcss-palette-generator";
-import { get, set } from "lodash";
+import { get, set } from "lodash-es";
 
 const generateTailwindConfig = (options: Record<string, any>, prefix: string = "c-") => {
   const primary = get(options, "primaryColor", "#000");
@@ -46,11 +46,11 @@ const getFont = (font: string): FontProps => {
   };
 };
 
-export const renderEmail = (
+export const generateEmailTemplate = (
   blocks: ChaiBlock[],
   brandingOptions: Record<string, any>,
   output: "plain" | "html" = "html",
-) => {
+): string => {
   const tailwindConfig = generateTailwindConfig(brandingOptions);
   return render(
     <Tailwind config={tailwindConfig}>

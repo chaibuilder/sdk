@@ -5,8 +5,8 @@ import { lsBrandingOptionsAtom, lsEmailBlocksAtom } from "./atoms-dev.ts";
 import { loadEmailBlocks } from "./blocks/email";
 import { useBlocksStore } from "./core/history/useBlocksStoreUndoableActions.ts";
 import ExportModal from "./Export.tsx";
-import { renderEmail } from "./email/functions.tsx";
-import { ChaiBuilderEmail } from "./email/ChaiBuilderEmail.tsx";
+import { generateEmailTemplate } from "./render";
+import { ChaiBuilderEmail } from "./email";
 
 loadEmailBlocks();
 
@@ -20,7 +20,7 @@ const ExportBtn = () => {
   const [blocks] = useBlocksStore();
   const [brandingOptions] = useBrandingOptions();
   const exportHTML = async () => {
-    return renderEmail(blocks, brandingOptions);
+    return generateEmailTemplate(blocks, brandingOptions);
   };
   return <ExportModal content={t("Export")} handleClick={() => exportHTML()} />;
 };
