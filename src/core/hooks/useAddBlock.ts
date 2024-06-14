@@ -95,7 +95,7 @@ export const useAddBlock = (): AddBlocks => {
         toast({
           variant: "destructive",
           title: "Error",
-          description: `"${coreBlock.type}" cannot be added under "${parentBlock._type}"`,
+          description: `"${coreBlock.type}" cannot be added under "${parentBlock ? parentBlock?._type : "root"}"`,
         });
         return;
       }

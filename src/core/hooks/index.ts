@@ -32,8 +32,11 @@ import { useTranslation } from "react-i18next";
 import { useBuilderProp } from "./useBuilderProp";
 import { useUILibraryBlocks } from "./useUiLibraries";
 import { useUndoManager } from "../history/useUndoManager";
+import { useCopyToClipboard } from "./useCopyToClipboard";
+import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
 
 export {
+  useBlocksStore,
   useUndoManager,
   useBuilderReset,
   useReadOnlyMode,
@@ -44,6 +47,7 @@ export {
   useCanvasZoom,
   useBuilderProp,
   useCopyBlockIds,
+  useCopyToClipboard,
   useCurrentPage,
   useCutBlockIds,
   useTranslation,

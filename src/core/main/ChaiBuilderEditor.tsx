@@ -19,14 +19,7 @@ import { ChaiBuilderEditorProps } from "../types/chaiBuilderEditorProps.ts";
 import { dataProvidersAtom } from "../hooks/usePageDataProviders.ts";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
 import { ChaiBlock } from "../types/ChaiBlock.ts";
-
-if (import.meta.env.NODE_ENV === "development") {
-  console.log("Chai Builder:", i18n);
-}
-
-const DragLayerComponent = (props: any) => {
-  return <>{props.children}</>;
-};
+import { MobileMessage } from "./MobileMessage.tsx";
 
 const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   const { dndOptions = { backend: MultiBackend } } = props;
@@ -62,9 +55,7 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
 
   return (
     <DndProvider {...dndOptions} options={getBackendOptions()}>
-      <DragLayerComponent>
-        <RootLayout />
-      </DragLayerComponent>
+      <RootLayout />
     </DndProvider>
   );
 };
@@ -78,6 +69,7 @@ const ChaiBuilderEditor = (props: ChaiBuilderEditorProps) => (
   <ErrorBoundary>
     <FlagsProvider features={FEATURE_TOGGLES}>
       <DevTools />
+      <MobileMessage />
       <ChaiBuilderComponent {...props} />
     </FlagsProvider>
     <Toaster />
