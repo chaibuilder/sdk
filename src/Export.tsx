@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { useCopyToClipboard } from "./core/hooks/useCopyToClipboard";
 import { ErrorBoundary } from "./core/components/ErrorBoundary";
-import { Button, Dialog, DialogContent, DialogFooter, DialogTrigger, ScrollArea, useToast } from "./ui";
+import { Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger, ScrollArea, useToast } from "./ui";
 import { CodeBlock, oneLight } from "@react-email/components";
 import { useTranslation } from "react-i18next";
 
@@ -15,14 +15,12 @@ const ExportModal: React.FC<ExportModalProps> = React.memo(({ content, handleCli
   const [, copy] = useCopyToClipboard();
   const { t } = useTranslation();
   const { toast } = useToast();
-  const [open, setOpen] = useState(false);
 
   const handleCopy = useCallback(
     async (text: string) => {
       try {
         await copy(text);
         toast({ title: t("Copied"), description: t("Email template copied!") });
-        setOpen(false);
       } catch (error) {}
     },
     [copy],
@@ -39,24 +37,22 @@ const ExportModal: React.FC<ExportModalProps> = React.memo(({ content, handleCli
     URL.revokeObjectURL(url);
     document.body.removeChild(anchor);
     toast({ title: t("Download complete"), description: t("Email template downloaded successfully!") });
-    setOpen(false);
   };
 
   const triggerClick = useCallback(() => {
-    setOpen(true);
     handleClick().then(setEmailHTMLContent).catch(console.error);
   }, [handleClick]);
 
   return (
-    <Dialog open={open}>
+    <Dialog>
       <DialogTrigger className="rounded-md bg-blue-500 px-4 py-2 text-white" onClick={triggerClick}>
         {content}
       </DialogTrigger>
       <DialogContent className="flex max-h-[80vh] max-w-xl flex-col gap-0 overflow-auto p-0 lg:max-w-2xl xl:max-w-3xl 2xl:max-w-4xl">
         <ErrorBoundary>
-          <div className="sticky top-0 z-10 flex items-center justify-between bg-white px-4 pt-3.5 text-lg font-bold">
+          <DialogHeader className="sticky top-0 z-10 flex items-center justify-between bg-white px-4 pt-3.5 text-lg font-bold">
             Export Email Template
-          </div>
+          </DialogHeader>
           <ScrollArea className="h-full overflow-scroll">
             <div className="text-xs">
               <CodeBlock code={emailHTMLContent} language="html" theme={oneLight} />

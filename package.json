@@ -61,6 +61,12 @@
       "require": "./dist/web-blocks.cjs",
       "types": "./dist/web-blocks.d.ts"
     },
+
+    "./email": {
+      "import": "./dist/email.js",
+      "require": "./dist/email.cjs",
+      "types": "./dist/email.d.ts"
+    },
     "./email-blocks": {
       "import": "./dist/email-blocks.js",
       "require": "./dist/email-blocks.cjs",

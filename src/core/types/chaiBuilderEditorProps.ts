@@ -17,7 +17,7 @@ type ReactComponentType = React.ComponentType<any>;
 type Breakpoint = {
   title: string;
   content: string;
-  breakpoint: "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+  breakpoint: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | string;
   icon: React.ReactNode | Element;
   width: number;
 };

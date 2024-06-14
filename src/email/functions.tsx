@@ -6,7 +6,7 @@ import defaultTheme from "tailwindcss/defaultTheme";
 import { tailwindcssPaletteGenerator } from "@bobthered/tailwindcss-palette-generator";
 import { get, set } from "lodash";
 
-const generateTailwindConfig = (options: Record<string, any>) => {
+const generateTailwindConfig = (options: Record<string, any>, prefix: string = "c-") => {
   const primary = get(options, "primaryColor", "#000");
   const secondary = get(options, "secondaryColor", "#ccc");
   const bodyFont = get(options, "bodyFont", "Inter");
@@ -18,7 +18,6 @@ const generateTailwindConfig = (options: Record<string, any>) => {
   set(colors, "primary.DEFAULT", primary);
   set(colors, "secondary.DEFAULT", secondary);
   return {
-    prefix: "c-",
     theme: {
       fontFamily: {
         body: [bodyFont, ...defaultTheme.fontFamily.sans],
@@ -30,6 +29,7 @@ const generateTailwindConfig = (options: Record<string, any>) => {
         colors,
       },
     },
+    ...(prefix ? { prefix } : {}),
   };
 };
 
