@@ -1,6 +1,5 @@
 import { useCallback } from "react";
 import { filter, find, first, forIn, has, startsWith } from "lodash-es";
-import { useDispatch } from "./useTreeData";
 import { generateUUID } from "../functions/Functions.ts";
 import { canAcceptChildBlock, canBeNestedInside } from "../functions/block-helpers.ts";
 import { useSelectedBlockIds } from "./useSelectedBlockIds";
@@ -17,7 +16,6 @@ type AddBlocks = {
 };
 
 export const useAddBlock = (): AddBlocks => {
-  const dispatch = useDispatch();
   const [allBlocks] = useBlocksStore();
   const [, setSelected] = useSelectedBlockIds();
   const { addBlocks } = useBlocksStoreUndoableActions();
@@ -54,7 +52,7 @@ export const useAddBlock = (): AddBlocks => {
       setSelected([first(blocks)?._id]);
       return first(blocks);
     },
-    [allBlocks, dispatch, setSelected],
+    [allBlocks, setSelected],
   );
 
   const addCoreBlock = useCallback(
@@ -112,7 +110,7 @@ export const useAddBlock = (): AddBlocks => {
       setSelected([newBlock._id]);
       return newBlock;
     },
-    [addPredefinedBlock, allBlocks, dispatch, setSelected],
+    [addPredefinedBlock, allBlocks, setSelected],
   );
 
   return { addCoreBlock, addPredefinedBlock };

@@ -1,18 +1,7 @@
 import { atom } from "jotai";
-import { atomWithReducer, splitAtom } from "jotai/utils";
+import { splitAtom } from "jotai/utils";
 import { getBlocksTree } from "../functions/Blocks";
-import { pageBlocksReducer } from "./reducer";
 import { filter, has } from "lodash-es";
-
-export const pageBlocksAtom: any = atomWithReducer(
-  {
-    past: [],
-    present: [],
-    future: [],
-  },
-  pageBlocksReducer,
-);
-pageBlocksAtom.debugLabel = "pageBlocksAtom";
 
 // derived atoms
 // @ts-ignore

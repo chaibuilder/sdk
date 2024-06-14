@@ -2,7 +2,6 @@ import { useAtomValue } from "jotai";
 import { useCallback } from "react";
 import { find } from "lodash-es";
 import { presentBlocksAtom } from "../atoms/blocks";
-import { useDispatch } from "./useTreeData";
 import { generateUUID } from "../functions/Functions.ts";
 import { useSelectedBlockIds } from "./useSelectedBlockIds";
 import { ChaiBlock } from "../types/ChaiBlock";
@@ -76,7 +75,6 @@ export const replaceBlockAndSetParent = (
 
 export const useReplaceBlocks = () => {
   const currentBlocks = useAtomValue(presentBlocksAtom) as ChaiBlock[];
-  const dispatch = useDispatch();
   const [, setSelectedIds] = useSelectedBlockIds();
   const replaceBlocks = useCallback(
     (blockId: string, newBlocks: ChaiBlock[]) => {
@@ -84,7 +82,7 @@ export const useReplaceBlocks = () => {
       // eslint-disable-next-line no-param-reassign
       newBlocks = regenerateRandomIds(newBlocks);
       const newBlockList = replaceBlockAndSetParent(blockId, currentBlocks, newBlocks);
-      dispatch({ type: "set_blocks", payload: [...newBlockList] });
+      console.log("newBlockList", newBlockList);
       setSelectedIds([newBlocks[0]._id]);
     },
     [currentBlocks],

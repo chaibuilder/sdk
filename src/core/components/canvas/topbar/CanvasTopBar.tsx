@@ -6,10 +6,10 @@ import { Separator } from "../../../../ui";
 import { DarkMode } from "./DarkMode";
 import { Breakpoints } from "./Breakpoints";
 import { ClearCanvas } from "./ClearCanvas";
-import { useCanvasZoom, useFeatureSupport } from "../../../hooks";
+import { useBuilderProp, useCanvasZoom } from "../../../hooks";
 
 const CanvasTopBar: React.FC = () => {
-  const darkModeSupport = useFeatureSupport("darkMode", false);
+  const darkModeSupport = useBuilderProp("darkMode", false);
   const [zoom] = useCanvasZoom();
 
   return (

@@ -2,7 +2,6 @@ import { useAtomValue } from "jotai";
 import { useCallback, useMemo } from "react";
 import { get, includes, isEmpty, map, set } from "lodash-es";
 import { useDuplicateBlocks } from "./useDuplicateBlocks";
-import { useDispatch } from "./useTreeData";
 import { copiedBlockIdsAtom } from "./useCopyBlockIds";
 import { useCutBlockIds } from "./useCutBlockIds";
 import { presentBlocksAtom } from "../atoms/blocks";
@@ -10,7 +9,6 @@ import { ChaiBlock } from "../types/ChaiBlock.ts";
 
 const useMoveCutBlocks = () => {
   const presentBlocks = useAtomValue(presentBlocksAtom);
-  const dispatch = useDispatch();
   return useCallback(
     (blockIds: Array<string>, newParentId: string) => {
       const newBlocks = map(presentBlocks, (block: ChaiBlock) => {
@@ -19,9 +17,9 @@ const useMoveCutBlocks = () => {
         }
         return block;
       });
-      dispatch({ type: "set_blocks", payload: newBlocks });
+      console.log("newBlocks", newBlocks);
     },
-    [presentBlocks, dispatch],
+    [presentBlocks],
   );
 };
 
