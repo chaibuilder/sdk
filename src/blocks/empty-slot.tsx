@@ -6,8 +6,10 @@ type EmptySlotProps = {
   className?: any;
   text?: string;
   styles?: any;
+  inBuilder?: boolean;
 };
-const EmptySlot = ({ blockProps, className = "", styles = {} }: EmptySlotProps) => {
+const EmptySlot = ({ blockProps, className = "", styles = {}, inBuilder }: EmptySlotProps) => {
+  if (!inBuilder) return null;
   return (
     <div
       {...blockProps}

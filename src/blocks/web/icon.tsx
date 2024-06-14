@@ -13,14 +13,14 @@ const IconBlock = (
     styles: Record<string, string>;
   },
 ) => {
-  const { blockProps, icon, styles, width, height } = block;
+  const { blockProps, icon, styles, width, inBuilder, height } = block;
   const iStyles = {
     ...styles,
     className: cn(styles.className, "inline-block c-inline-block", `w-[${width}px]`, `h-[${height}px]`),
   };
 
   if (isEmpty(icon)) {
-    return <EmptySlot blockProps={blockProps} text="" className="h-8 w-14" />;
+    return <EmptySlot blockProps={blockProps} text="" inBuilder={inBuilder} className="h-8 w-14" />;
   }
 
   return React.createElement("span", {

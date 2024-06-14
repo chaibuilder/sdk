@@ -11,9 +11,9 @@ const SlotBlock = (
     emptyStyles?: Record<string, string>;
   },
 ) => {
-  const { blockProps, styles, children } = props;
+  const { blockProps, inBuilder, styles, children } = props;
   let emptySlot: React.ReactNode | null = null;
-  if (!children) {
+  if (!children && inBuilder) {
     emptySlot = (
       // @ts-ignore
       <div className={cn("flex flex-col items-center justify-center", props.emptyStyles?.className)}>

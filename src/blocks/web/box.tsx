@@ -13,10 +13,10 @@ const BoxBlock = React.memo(
       blockProps: Record<string, string>;
     },
   ) => {
-    const { blockProps, backgroundImage, children, tag = "div", styles } = props;
+    const { blockProps, inBuilder, backgroundImage, children, tag = "div", styles } = props;
     let nestedChildren = children;
     if (!children) {
-      nestedChildren = <EmptySlot blockProps={{}} styles={{}} />;
+      nestedChildren = <EmptySlot blockProps={{}} styles={{}} inBuilder={inBuilder} />;
     }
 
     let cssStyles = {};

@@ -18,7 +18,7 @@ const LinkBlock = (
   const { blockProps, link, children, styles, inBuilder, content } = props;
 
   if (!children && isEmpty(styles?.className) && isEmpty(content)) {
-    return <EmptySlot blockProps={blockProps} />;
+    return <EmptySlot blockProps={blockProps} inBuilder={inBuilder} />;
   }
 
   if (inBuilder) {

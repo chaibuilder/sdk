@@ -13,11 +13,11 @@ const ListBlock = (
     styles: Record<string, string>;
   },
 ) => {
-  const { blockProps, children, listType, styles, tag } = props;
+  const { blockProps, children, listType, styles, tag, inBuilder } = props;
   const className = cn(get(styles, "className", ""), listType);
 
   if (!children && isEmpty(styles?.className)) {
-    return <EmptySlot blockProps={blockProps} text="LIST ITEM" />;
+    return <EmptySlot inBuilder={inBuilder} blockProps={blockProps} text="LIST ITEM" />;
   }
 
   return React.createElement(

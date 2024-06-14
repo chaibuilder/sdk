@@ -14,7 +14,7 @@ const BREAKPOINTS = [
     content: "Content as seen  inside an email client",
     breakpoint: "sm",
     icon: <MobileIcon className={"rotate-90"} />,
-    width: 800,
+    width: 700,
   },
 ];
 

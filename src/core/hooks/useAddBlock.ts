@@ -97,6 +97,7 @@ export const useAddBlock = (): AddBlocks => {
           title: "Error",
           description: `"${coreBlock.type}" cannot be added under "${parentBlock ? parentBlock?._type : "root"}"`,
         });
+        setSelected([]);
         return;
       }
       const canAdd = parentBlock ? canAcceptChildBlock(parentBlock._type, coreBlock.type) : true;
