@@ -4,6 +4,7 @@
   "click_to_add_block": "(Clique para adicionar bloco à página)",
   "core": "Principal",
   "custom_blocks": "Personalizados",
+  "ui_library": "Biblioteca de UI",
   "import": "Importar",
   "html_snippet_description": "Use trechos HTML de bibliotecas de componentes Tailwind CSS, etc. ou simplesmente copie e cole seu próprio código HTML.",
   "tailwind_html_snippet": "Trecho HTML do Tailwind:",

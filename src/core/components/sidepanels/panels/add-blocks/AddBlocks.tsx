@@ -76,12 +76,12 @@ const AddBlocksPanel = () => {
             "grid w-full " +
             (hasUiBlocks && importHTMLSupport
               ? "grid-cols-3"
-              : hasUiBlocks && !importHTMLSupport
+              : (hasUiBlocks && !importHTMLSupport) || (!hasUiBlocks && importHTMLSupport)
                 ? "grid-cols-2"
                 : "grid-cols-1")
           }>
-          <TabsTrigger value="core">{t("core")}</TabsTrigger>
-          {hasUiBlocks ? <TabsTrigger value="ui-blocks">{t("custom_blocks")}</TabsTrigger> : null}
+          <TabsTrigger value="core">{t("Blocks")}</TabsTrigger>
+          {hasUiBlocks ? <TabsTrigger value="ui-blocks">{t("ui_library")}</TabsTrigger> : null}
           {importHTMLSupport ? <TabsTrigger value="html">{t("import")}</TabsTrigger> : null}
         </TabsList>
       </Tabs>
