@@ -166,12 +166,16 @@ const SidePanels = () => {
             </Tabs>
           ) : (
             <>
-              <div className={"flex items-center rounded-md bg-gray-200 py-1"}>
-                <ListTreeIcon className={"ml-2 mr-2 h-4"} /> Layers
-              </div>
-              <div className="no-scrollbar h-full flex-1 overflow-y-auto overflow-x-hidden">
-                {React.createElement(LayersPanel)}
-              </div>
+              <Tabs defaultValue="layers" className="flex h-full w-full flex-col py-1">
+                <TabsList className="mx-1 grid h-10 grid-cols-1">
+                  <TabsTrigger value="layers">
+                    <ListTreeIcon className={"mr-2 h-3"} /> Layers
+                  </TabsTrigger>
+                </TabsList>
+                <TabsContent value="layers" className="no-scrollbar h-full flex-1 overflow-y-auto overflow-x-hidden">
+                  {React.createElement(LayersPanel)}
+                </TabsContent>
+              </Tabs>
             </>
           )}
         </Suspense>

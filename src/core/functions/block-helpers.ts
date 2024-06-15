@@ -37,5 +37,5 @@ export const canDeleteBlock = (type: string) => {
 export const canDropBlock = (_currentTree: any, { dragSource, dropTarget }: any) => {
   const dragSourceType = get(dragSource, "data._type", "");
   const dropTargetType = get(dropTarget, "data._type", "");
-  return canBeNestedInside(dropTargetType, dragSourceType);
+  return canAcceptChildBlock(dropTargetType, dragSourceType);
 };

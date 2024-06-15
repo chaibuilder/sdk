@@ -47,7 +47,7 @@ const TabletIcon = ({ landscape = false }) => (
   </svg>
 );
 
-const DEFAULT_BREAKPOINTS: BreakpointItemType[] = [
+const WEB_BREAKPOINTS: BreakpointItemType[] = [
   {
     title: "mobile_xs_title",
     content: "mobile_xs_content",
@@ -128,7 +128,7 @@ export const Breakpoints = () => {
   const [, breakpoint, setNewWidth] = useCanvasWidth();
   const [selectedBreakpoints, setSelectedBreakpoints] = useSelectedBreakpoints();
   const { t } = useTranslation();
-  const breakpoints = useBuilderProp("breakpoints", DEFAULT_BREAKPOINTS);
+  const breakpoints = useBuilderProp("breakpoints", WEB_BREAKPOINTS);
 
   const toggleBreakpoint = (newBreakPoint: string) => {
     if (selectedBreakpoints.includes(newBreakPoint)) {
