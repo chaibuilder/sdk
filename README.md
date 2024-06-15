@@ -36,20 +36,22 @@ Step 4: Add the builder to your page.
 ```tsx
 import "./chaibuilder.tailwind.css";
 import "@chaibuilder/sdk/styles";
-import {ChaiBuilderEditor} from "@chaibuilder/sdk";
+import { ChaiBuilderEditor } from "@chaibuilder/sdk";
+import { loadWebBlocks } from "@chaibuilder/sdk/web-blocks";
+loadWebBlocks();
 
 const BuilderFullPage = () => {
   return  (
       <ChaiBuilderEditor
           blocks={[]}
-          onSavePage={async (blocks) => await saveBlocks(blocks)}
-          onSaveBrandingOptions={async (branding) => await saveBranding(branding)}
+          onSavePage={async (blocks) => { console.log(blocks); return true }}
+          onSaveBrandingOptions={async (branding) => { console.log(blocks); return true }}
       />
   );
 }
 ```
     
-Step 5: Render the blocks on your page.
+### Render the blocks on your page.
 
 ```tsx
 export default () => {
