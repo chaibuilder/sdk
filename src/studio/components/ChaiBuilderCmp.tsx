@@ -1,4 +1,4 @@
-import { ChaiBuilderEditor, useBuilderProp } from "../../core/main";
+import { ChaiBuilderEditor, ChaiBuilderEditorProps, useBuilderProp } from "../../core/main";
 import { FileTextIcon, GearIcon } from "@radix-ui/react-icons";
 import React, { lazy, useCallback } from "react";
 import { useProject } from "../hooks/useProject.ts";
@@ -82,42 +82,42 @@ export const ChaiBuilderCmp = (props: ChaiBuilderStudioProps) => {
   if (isLoading || !project) return <FullPageLoading />;
   if (loadingPages || !pages) return <FullPageLoading />;
 
-  return (
-    <div className="bg-background text-foreground">
-      <ChaiBuilderEditor
-        editable={pageData?.lockedBy ? pageData?.lockedBy.self : true}
-        nonEditableComponent={TakeOverModal}
-        blocks={pageData?.blocks || []}
-        brandingOptions={project.brandingOptions}
-        darkMode={props.darkMode || false}
-        dataProviders={pageData?.providers || []}
-        onSavePage={async ({ blocks, providers }) => {
-          await updatePage({ blocks, providers, uuid: currentPage });
-          return true;
-        }}
-        onSaveBrandingOptions={async (branding) => {
-          await mutate({ brandingOptions: branding });
-          return true;
-        }}
-        topBarComponents={{
-          left: [logo],
-          center: [CurrentPage],
-          right: [PublishPage],
-        }}
-        sideBarComponents={{
-          top: [
-            { icon: FileTextIcon, name: "pages", panel: PagesPanel },
-            { icon: GearIcon, name: "settings", panel: ProjectSettings },
-          ],
-          bottom: [SignOut],
-        }}
-        uploadMediaCallback={uploadMediaCallback}
-        fetchMediaCallback={fetchMediaCallback}
-        getUILibraryBlocks={getUILibraryBlocks}
-        getExternalPredefinedBlock={getExternalPredefinedBlock}
-        getPages={() => pages}
-        unsplashAccessKey={props.unsplashAccessKey || ""}
-      />
-    </div>
-  );
+  const editorProps: ChaiBuilderEditorProps = {
+    ...props,
+    editable: pageData?.lockedBy ? pageData?.lockedBy.self : true,
+    nonEditableComponent: TakeOverModal,
+    blocks: pageData?.blocks || [],
+    brandingOptions: project.brandingOptions,
+    darkMode: props.darkMode || false,
+    dataBindingSupport: (pageData?.providers || []).length > 0,
+    dataProviders: pageData?.providers || [],
+    onSavePage: async ({ blocks, providers }) => {
+      await updatePage({ blocks, providers, uuid: currentPage });
+      return true;
+    },
+    onSaveBrandingOptions: async (branding) => {
+      await mutate({ brandingOptions: branding });
+      return true;
+    },
+    topBarComponents: {
+      left: [logo],
+      center: [CurrentPage],
+      right: [PublishPage],
+    },
+    sideBarComponents: {
+      top: [
+        { icon: FileTextIcon, name: "pages", panel: PagesPanel },
+        { icon: GearIcon, name: "settings", panel: ProjectSettings },
+        ...(props.sideBarComponents?.top || []),
+      ],
+      bottom: [SignOut],
+    },
+    uploadMediaCallback: uploadMediaCallback,
+    fetchMediaCallback: fetchMediaCallback,
+    getUILibraryBlocks: getUILibraryBlocks,
+    getExternalPredefinedBlock: getExternalPredefinedBlock,
+    getPages: () => pages,
+  };
+
+  return <ChaiBuilderEditor {...editorProps} />;
 };

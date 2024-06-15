@@ -5,6 +5,7 @@ import { FullPageLoading } from "./components/FullPageLoading.tsx";
 import { useVerify } from "./mutations/useAuth.ts";
 import { Toaster } from "sonner";
 import { LoginScreen } from "./components/LoginScreen.tsx";
+import { ChaiBuilderEditorProps } from "../core/types/chaiBuilderEditorProps.ts";
 
 const ChaiBuilderStudioComponent = (props: ChaiBuilderStudioProps) => {
   const { data, isLoading } = useVerify();
@@ -24,9 +25,10 @@ const queryClient = new QueryClient();
 export type ChaiBuilderStudioProps = {
   apiBaseUrl?: string;
   logo?: React.FC<any> | React.LazyExoticComponent<any>;
-  darkMode?: boolean;
-  unsplashAccessKey?: string;
-};
+} & Omit<
+  ChaiBuilderEditorProps,
+  "topBarComponents" | "editable" | "onSaveBrandingOptions" | "onSaveBlocks" | "blocks" | "brandingOptions"
+>;
 
 export const ChaiBuilderStudio = (props: ChaiBuilderStudioProps) => {
   return (
