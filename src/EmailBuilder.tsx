@@ -2,11 +2,11 @@ import { useBrandingOptions } from "./core/main";
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
 import { lsBrandingOptionsAtom, lsEmailBlocksAtom } from "./atoms-dev.ts";
-import { loadEmailBlocks } from "./blocks/email";
-import { useBlocksStore } from "./core/history/useBlocksStoreUndoableActions.ts";
+import { useBlocksStore } from "./core/hooks";
 import ExportModal from "./Export.tsx";
 import { generateEmailTemplate } from "./render";
 import { ChaiBuilderEmail } from "./email";
+import { loadEmailBlocks } from "./blocks/email";
 
 loadEmailBlocks();
 

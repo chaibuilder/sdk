@@ -27,16 +27,16 @@ const router = createBrowserRouter([
     element: <ChaiBuilderDefault />,
   },
   {
+    path: "/preview",
+    element: <Preview />,
+  },
+  {
     path: "/email",
     element: <ChaiBuilderEmail />,
   },
   {
     path: "/studio",
     element: <ChaiStudio />,
-  },
-  {
-    path: "/preview",
-    element: <Preview />,
   },
   {
     path: "/rjsf",
