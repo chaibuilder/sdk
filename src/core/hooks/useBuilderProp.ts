@@ -15,7 +15,10 @@ export const useBuilderProp = <T>(
   propKey:
     | keyof Omit<ChaiBuilderEditorProps, ExcludedBuilderProps>
     | "sideBarComponents.top"
-    | "sideBarComponents.bottom",
+    | "sideBarComponents.bottom"
+    | "topBarComponents.left"
+    | "topBarComponents.right"
+    | "topBarComponents.center",
   defaultValue: T = undefined,
 ): T => {
   const builderProps = useAtomValue(chaiBuilderPropsAtom);

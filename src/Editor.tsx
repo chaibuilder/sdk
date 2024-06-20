@@ -27,6 +27,7 @@ function ChaiBuilderDefault() {
   const [providers] = useAtom(lsProvidersAtom);
   return (
     <ChaiBuilderEditor
+      previewComponent={PreviewMessage}
       dataBindingSupport={true}
       // @ts-ignore
       getExternalPredefinedBlock={async () => {
