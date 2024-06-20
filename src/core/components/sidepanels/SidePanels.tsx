@@ -10,6 +10,7 @@ import { PageDataProviders } from "./PageDataProviders.tsx";
 import { cn } from "../../functions/Functions.ts";
 import { useTranslation } from "react-i18next";
 import { OUTLINE_KEY } from "../../constants/STRINGS.ts";
+import { HotKeys } from "../HotKeys.tsx";
 
 const AddBlocksPanel = lazy(() => import("./panels/add-blocks/AddBlocks.tsx"));
 const OutlinePanel = lazy(() => import("./panels/outline/Outline.tsx"));
@@ -106,7 +107,8 @@ const SidePanels = () => {
             )),
           )}
         </div>
-        <div className="relative z-[100] flex w-14 flex-col items-center space-y-2">
+        <div className="relative z-[100] flex w-14 flex-col items-center space-y-2 pb-2">
+          <HotKeys />
           {React.Children.toArray(
             bottomComponents.map((Component) => (
               <Suspense fallback={<Skeleton className="h-10" />}>

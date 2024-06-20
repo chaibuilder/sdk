@@ -12,7 +12,10 @@ type ExcludedBuilderProps =
   | "onSaveBlocks";
 
 export const useBuilderProp = <T>(
-  propKey: keyof Omit<ChaiBuilderEditorProps, ExcludedBuilderProps>,
+  propKey:
+    | keyof Omit<ChaiBuilderEditorProps, ExcludedBuilderProps>
+    | "sideBarComponents.top"
+    | "sideBarComponents.bottom",
   defaultValue: T = undefined,
 ): T => {
   const builderProps = useAtomValue(chaiBuilderPropsAtom);
