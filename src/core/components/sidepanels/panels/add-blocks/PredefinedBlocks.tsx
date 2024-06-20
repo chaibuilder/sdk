@@ -1,4 +1,4 @@
-import { filter, first, get, groupBy, has, isArray, isEmpty, keys, map, mergeWith, values } from "lodash-es";
+import { filter, first, get, groupBy, has, isArray, isEmpty, keys, map, mergeWith, noop, values } from "lodash-es";
 import React, { useCallback, useMemo, useState } from "react";
 import { useAddBlock, useBuilderProp, useSelectedBlockIds, useUILibraryBlocks } from "../../../../hooks";
 import { syncBlocksWithDefaults, useChaiBlocks } from "@chaibuilder/runtime";
@@ -11,7 +11,7 @@ import { OUTLINE_KEY } from "../../../../constants/STRINGS.ts";
 
 const BlockCard = ({ block, closePopover }: { block: any; closePopover: () => void }) => {
   const [isAdding, setIsAdding] = useState(false);
-  const getExternalPredefinedBlock = useBuilderProp("getExternalPredefinedBlock");
+  const getExternalPredefinedBlock = useBuilderProp("getExternalPredefinedBlock", noop());
   const { addCoreBlock, addPredefinedBlock } = useAddBlock();
   const [ids] = useSelectedBlockIds();
 

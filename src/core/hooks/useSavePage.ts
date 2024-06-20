@@ -9,9 +9,9 @@ pageSyncStateAtom.debugLabel = "pageSyncStateAtom";
 
 export const useSavePage = () => {
   const [syncState, setSyncState] = useAtom(pageSyncStateAtom);
-  const onSaveBlocks = useBuilderProp("onSaveBlocks", async () => {});
-  const onSavePage = useBuilderProp("onSavePage", async () => {});
-  const onSyncStatusChange = useBuilderProp("onSyncStatusChange", () => {});
+  const onSaveBlocks = useBuilderProp("onSaveBlocks", async (_args) => {});
+  const onSavePage = useBuilderProp("onSavePage", async (_args) => {});
+  const onSyncStatusChange = useBuilderProp("onSyncStatusChange", (_state) => {});
   const getPageData = useGetPageData();
   const [providers] = usePageDataProviders();
 

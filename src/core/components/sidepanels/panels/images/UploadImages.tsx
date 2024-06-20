@@ -16,8 +16,8 @@ const uploadedMediaAtom = atom<
 
 // @TODO: Loading media and showing skeleton for uploaded images and unsplash images
 const UploadImages = ({ isModalView, onSelect }: { isModalView: boolean; onSelect: (_url: string) => void }) => {
-  const uploadImage = useBuilderProp("uploadMediaCallback", () => "");
-  const fetchImages = useBuilderProp("fetchMediaCallback", () => []);
+  const uploadImage = useBuilderProp("uploadMediaCallback");
+  const fetchImages = useBuilderProp("fetchMediaCallback");
 
   const [images, setImages] = useAtom(uploadedMediaAtom);
   const [isUploading, setIsUploading] = useState(false);
@@ -27,7 +27,9 @@ const UploadImages = ({ isModalView, onSelect }: { isModalView: boolean; onSelec
 
   useEffect(() => {
     (async () => {
+      if (!fetchImages) return;
       setIsFetching(true);
+      // @ts-ignore
       const uploadedImages = await fetchImages();
       setImages(uploadedImages || []);
       setIsFetching(false);
@@ -39,11 +41,14 @@ const UploadImages = ({ isModalView, onSelect }: { isModalView: boolean; onSelec
   };
 
   const onUpload = async () => {
+    if (!uploadImage) return;
     setIsUploading(true);
     try {
+      // @ts-ignore
       const { url } = await uploadImage(file);
       onSelect(url);
       setFile(undefined);
+      // @ts-ignore
       const uploadedImages = await fetchImages();
       setImages(uploadedImages);
     } catch (err: any) {
@@ -60,7 +65,7 @@ const UploadImages = ({ isModalView, onSelect }: { isModalView: boolean; onSelec
           <img
             src={URL.createObjectURL(file)}
             alt=""
-            className="h-auto w-full max-w-sm rounded-md  max-h-96 object-contain"
+            className="h-auto max-h-96 w-full max-w-sm rounded-md object-contain"
           />
           {error && <div className="w-full pt-2 text-center text-sm text-red-500">{error}</div>}
           <div className="flex w-full items-center justify-center gap-2 pt-2">

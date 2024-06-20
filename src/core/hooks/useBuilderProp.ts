@@ -3,13 +3,7 @@ import { get } from "lodash-es";
 import { chaiBuilderPropsAtom } from "../atoms/builder.ts";
 import { ChaiBuilderEditorProps } from "../types/chaiBuilderEditorProps.ts";
 
-type ExcludedBuilderProps =
-  | "blocks"
-  | "subPages"
-  | "brandingOptions"
-  | "dataProviders"
-  | "onSaveBrandingOptions"
-  | "onSaveBlocks";
+type ExcludedBuilderProps = "blocks" | "subPages" | "brandingOptions" | "dataProviders";
 
 export const useBuilderProp = <T>(
   propKey:
@@ -18,7 +12,8 @@ export const useBuilderProp = <T>(
     | "sideBarComponents.bottom"
     | "topBarComponents.left"
     | "topBarComponents.right"
-    | "topBarComponents.center",
+    | "topBarComponents.center"
+    | "languages",
   defaultValue: T = undefined,
 ): T => {
   const builderProps = useAtomValue(chaiBuilderPropsAtom);

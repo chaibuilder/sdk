@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { has } from "lodash-es";
+import { has, noop } from "lodash-es";
 import { useAddBlock } from "./useAddBlock";
 import { useBuilderProp } from "./useBuilderProp";
 
@@ -11,7 +11,7 @@ type DroppedBlock = {
 
 export const useAddBlockByDrop = () => {
   const { addCoreBlock } = useAddBlock();
-  const getExternalPredefinedBlock = useBuilderProp("getExternalPredefinedBlock");
+  const getExternalPredefinedBlock = useBuilderProp("getExternalPredefinedBlock", noop);
   return useCallback(
     async (options: DroppedBlock) => {
       const { block: droppedBlock, dropTargetId, relativeIndex } = options;

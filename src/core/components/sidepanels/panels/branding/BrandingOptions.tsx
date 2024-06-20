@@ -4,7 +4,7 @@ import validator from "@rjsf/validator-ajv8";
 import Form, { IChangeEvent } from "@rjsf/core";
 import { useBrandingOptions, useBuilderProp } from "../../../../hooks";
 import { Color, Numeric, SelectOption } from "@chaibuilder/runtime/controls";
-import { isEqual } from "lodash-es";
+import { isEqual, noop } from "lodash-es";
 import { ColorField } from "../../../../../ui/widgets/rjsf/widgets/color.tsx";
 import { useBlocksContainer } from "../../../../hooks/useBrandingOptions.ts";
 
@@ -61,7 +61,7 @@ const FONTS = [
 ];
 
 const BrandingOptions = (): React.JSX.Element => {
-  const onSaveBrandingOptions = useBuilderProp("onSaveBrandingOptions", async () => {});
+  const onSaveBrandingOptions = useBuilderProp("onSaveBrandingOptions", noop);
   const [brandingOptions, setBrandingOptions] = useBrandingOptions();
   const [container] = useBlocksContainer();
   const brandingRef = React.useRef(brandingOptions);

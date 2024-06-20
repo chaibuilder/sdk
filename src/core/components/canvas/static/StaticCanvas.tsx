@@ -45,7 +45,7 @@ const StaticCanvas = (): React.JSX.Element => {
   const [, setSelectedStyleElements] = useState<HTMLElement[] | null[]>([]);
   const [, setCanvasIframe] = useAtom(canvasIframeAtom);
   const [stylingBlocks, setStylingBlocks] = useSelectedStylingBlocks();
-  const loadingCanvas = useBuilderProp("loadingCanvas", false);
+  const loadingCanvas = useBuilderProp("loading", false);
 
   useEffect(() => {
     const { clientWidth, clientHeight } = wrapperRef.current as HTMLDivElement;
@@ -108,7 +108,7 @@ const StaticCanvas = (): React.JSX.Element => {
         setStylingBlocks([]);
       }}
       onMouseLeave={() => setTimeout(() => highlight(""), 300)}
-      className="relative mx-auto overflow-hidden h-full w-full"
+      className="relative mx-auto h-full w-full overflow-hidden"
       style={initialWidth > 0 && !isEmpty(scale) ? { width: preview ? "100%" : initialWidth } : {}}
       ref={wrapperRef}>
       {/*// @ts-ignore*/}
@@ -136,7 +136,7 @@ const StaticCanvas = (): React.JSX.Element => {
         </Canvas>
         <br />
 
-        <div id={"placeholder"} className={"absolute bg-green-500 z-[99999] max-w-full transition-transform"}></div>
+        <div id={"placeholder"} className={"absolute z-[99999] max-w-full bg-green-500 transition-transform"}></div>
       </ChaiFrame>
     </div>
   );
