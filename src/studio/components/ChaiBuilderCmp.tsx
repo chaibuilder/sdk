@@ -89,7 +89,6 @@ export const ChaiBuilderCmp = (props: ChaiBuilderStudioProps) => {
     blocks: pageData?.blocks || [],
     brandingOptions: project.brandingOptions,
     darkMode: props.darkMode || false,
-    dataBindingSupport: (pageData?.providers || []).length > 0,
     dataProviders: pageData?.providers || [],
     onSavePage: async ({ blocks, providers }) => {
       await updatePage({ blocks, providers, uuid: currentPage });
