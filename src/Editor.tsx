@@ -5,6 +5,8 @@ import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
 import { ChaiBuilderEditor } from "./core/main";
 import "./blocks/web";
 import "./data-providers/data";
+import { CodeIcon } from "@radix-ui/react-icons";
+import { find } from "lodash";
 
 let PreviewMessage = () => {
   const { t } = useTranslation();
@@ -23,9 +25,6 @@ function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
   const [brandingOptions] = useAtom(lsBrandingOptionsAtom);
   const [providers] = useAtom(lsProvidersAtom);
-
-  console.log(blocks, brandingOptions, providers);
-
   return (
     <ChaiBuilderEditor
       darkMode={true}
@@ -44,6 +43,14 @@ function ChaiBuilderDefault() {
           },
         ];
       }}
+      outlineMenuItems={[
+        {
+          item: (blockId: string) => (
+            <CodeIcon onClick={() => console.log("blockId", find(blocks, { _id: blockId }))} />
+          ),
+          tooltip: "export Code",
+        },
+      ]}
       topBarComponents={{ left: [PreviewMessage] }}
       blocks={blocks}
       dataProviders={providers}

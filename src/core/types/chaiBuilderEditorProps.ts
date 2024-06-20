@@ -1,5 +1,5 @@
 import { ChaiBlock } from "./ChaiBlock";
-import React from "react";
+import React, { ReactNode } from "react";
 import { ChaiPage, PredefinedBlock } from "./index";
 
 interface UILibrary {
@@ -28,6 +28,12 @@ type SavePageData = {
 };
 
 type DataProvider = { providerKey: string; args: Record<string, any> };
+
+type OutlineMenuItem = {
+  item: (blockId: string) => ReactNode;
+  tooltip: string | ReactNode;
+};
+type OutlineMenuItems = OutlineMenuItem[];
 
 export interface ChaiBuilderEditorProps {
   breakpoints?: Breakpoint[];
@@ -90,6 +96,8 @@ export interface ChaiBuilderEditorProps {
     left?: ReactComponentType[];
     right?: ReactComponentType[];
   };
+
+  outlineMenuItems?: OutlineMenuItems;
 
   getPages?: () => Promise<ChaiPage[]>;
 
