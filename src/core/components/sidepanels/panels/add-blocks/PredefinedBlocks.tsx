@@ -7,6 +7,7 @@ import { DragPreviewImage, useDrag } from "react-dnd";
 import { useAtom } from "jotai";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../../ui";
 import { activePanelAtom } from "../../../../atoms/ui.ts";
+import { OUTLINE_KEY } from "../../../../constants/STRINGS.ts";
 
 const BlockCard = ({ block, closePopover }: { block: any; closePopover: () => void }) => {
   const [isAdding, setIsAdding] = useState(false);
@@ -88,8 +89,8 @@ export const PredefinedBlocks = () => {
   const blocks = get(mergedGroups, selectedGroup, []);
 
   return (
-    <div className="relative flex flex-col h-full max-h-full overflow-hidden py-2">
-      <div className={"p-3 sticky top-0 flex w-full items-center"}>
+    <div className="relative flex h-full max-h-full flex-col overflow-hidden py-2">
+      <div className={"sticky top-0 flex w-full items-center p-3"}>
         <Select value={selectedGroup} onValueChange={(value) => setGroup(value)}>
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select a provider" />
@@ -108,7 +109,7 @@ export const PredefinedBlocks = () => {
       </div>
       <div className="h-full w-full space-y-2 overflow-y-auto px-2">
         {React.Children.toArray(
-          blocks.map((block) => <BlockCard block={block} closePopover={() => setActivePanel("layers")} />),
+          blocks.map((block) => <BlockCard block={block} closePopover={() => setActivePanel(OUTLINE_KEY)} />),
         )}
       </div>
     </div>

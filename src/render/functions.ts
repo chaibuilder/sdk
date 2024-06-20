@@ -1,6 +1,6 @@
 import { get, includes, last } from "lodash-es";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
-import { STYLES_KEY } from "../core/constants/CONTROLS.ts";
+import { STYLES_KEY } from "../core/constants/STRINGS.ts";
 import { BrandingOptions } from "../core/types/index.ts";
 
 export const getBrandingClasses = (brandingOptions: BrandingOptions, prefix: string = "c-") => {

@@ -5,7 +5,7 @@ import { pageBlocksAtomsAtom } from "../atoms/blocks";
 import { getNewClasses } from "../functions/GetNewClasses";
 import { selectedStylingBlocksAtom, TStyleBlock } from "./useSelectedStylingBlocks";
 import { ChaiBlock } from "../types/ChaiBlock";
-import { STYLES_KEY } from "../constants/CONTROLS";
+import { STYLES_KEY } from "../constants/STRINGS.ts";
 import { useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 
 const getSplitClasses = (classesString: string) => {

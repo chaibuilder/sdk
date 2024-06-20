@@ -7,7 +7,7 @@ import {
   StylesControlDefinition,
 } from "@chaibuilder/runtime/controls";
 import { generateUUID } from "./Functions.ts";
-import { I18N_KEY, SLOT_KEY } from "../constants/CONTROLS";
+import { I18N_KEY, SLOT_KEY } from "../constants/STRINGS.ts";
 
 export const getBlockJSONFromUISchemas = (control: ChaiControlDefinition) => {
   switch (control.type) {

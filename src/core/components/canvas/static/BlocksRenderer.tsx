@@ -2,7 +2,7 @@ import React, { Suspense, useCallback } from "react";
 import { each, filter, find, get, has, isEmpty, isNull, isString, memoize } from "lodash-es";
 import { twMerge } from "tailwind-merge";
 import { ChaiBlock } from "../../../types/ChaiBlock";
-import { SLOT_KEY, STYLES_KEY } from "../../../constants/CONTROLS";
+import { SLOT_KEY, STYLES_KEY } from "../../../constants/STRINGS.ts";
 import { StylingAttributes } from "../../../types/index";
 import { getBlockComponent } from "@chaibuilder/runtime";
 import { useChaiExternalData } from "./useChaiExternalData.ts";

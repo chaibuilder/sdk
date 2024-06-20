@@ -1,4 +1,4 @@
-import { STYLES_KEY } from "../constants/CONTROLS";
+import { STYLES_KEY } from "../constants/STRINGS.ts";
 
 /**
  * Returns a boolean indicating whether the current environment is development

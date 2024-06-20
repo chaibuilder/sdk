@@ -7,7 +7,7 @@ import twTypography from "@tailwindcss/typography";
 import twAspectRatio from "@tailwindcss/aspect-ratio";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { addPrefixToClasses, ChaiPageData, getBrandingClasses } from "./functions.ts";
-import { STYLES_KEY } from "../core/constants/CONTROLS.ts";
+import { STYLES_KEY } from "../core/constants/STRINGS.ts";
 import { BrandingOptions } from "../core/types/index";
 
 export async function getTailwindCSS(

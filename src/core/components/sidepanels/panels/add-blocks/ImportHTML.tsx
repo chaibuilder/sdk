@@ -17,6 +17,7 @@ import { useAddBlock, useSelectedBlockIds } from "../../../../hooks";
 import { activePanelAtom } from "../../../../atoms/ui";
 import { first } from "lodash-es";
 import { getBlocksFromHTML } from "../../../../import-html/html-to-json";
+import { OUTLINE_KEY } from "../../../../constants/STRINGS.ts";
 
 const ImportHTML = () => {
   const { t } = useTranslation();
@@ -29,7 +30,7 @@ const ImportHTML = () => {
     const blocks = getBlocksFromHTML(code);
     addPredefinedBlock([...blocks], first(ids) || null);
     setCode("");
-    setActivePanel("layers");
+    setActivePanel(OUTLINE_KEY);
   };
 
   return (
@@ -50,7 +51,7 @@ const ImportHTML = () => {
             rows={12}
             value={code}
             placeholder={t("enter_code_snippet")}
-            className="resize-none bg-gray-100 overflow-x-auto whitespace-pre text-xs font-mono font-normal"
+            className="resize-none overflow-x-auto whitespace-pre bg-gray-100 font-mono text-xs font-normal"
           />
         </div>
       </CardContent>
@@ -58,7 +59,7 @@ const ImportHTML = () => {
         <Button disabled={code.trim() === ""} onClick={() => importComponents()} size="sm" className="w-full">
           {t("import_html")}
         </Button>
-        <Alert variant="default" className="mt-2 p-1 border-none text-gray-400">
+        <Alert variant="default" className="mt-2 border-none p-1 text-gray-400">
           <AlertTitle className="text-xs font-normal leading-4">{t("note_imported_html")}</AlertTitle>
         </Alert>
       </CardFooter>

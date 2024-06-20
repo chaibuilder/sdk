@@ -3,7 +3,7 @@ import { parse, stringify } from "himalaya";
 import { cn, generateUUID } from "../functions/Functions.ts";
 import { capitalize, filter, find, flatMapDeep, flatten, forEach, get, includes, isEmpty, omit, set } from "lodash-es";
 import { ChaiBlock } from "../types";
-import { STYLES_KEY } from "../constants/CONTROLS";
+import { STYLES_KEY } from "../constants/STRINGS.ts";
 import { getVideoURLFromHTML, hasVideoEmbed } from "./import-video.ts";
 
 type Node = {

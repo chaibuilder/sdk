@@ -8,9 +8,11 @@ import { useBuilderProp } from "../../hooks";
 import { DatabaseIcon, ListTreeIcon } from "lucide-react";
 import { PageDataProviders } from "./PageDataProviders.tsx";
 import { cn } from "../../functions/Functions.ts";
+import { useTranslation } from "react-i18next";
+import { OUTLINE_KEY } from "../../constants/STRINGS.ts";
 
 const AddBlocksPanel = lazy(() => import("./panels/add-blocks/AddBlocks.tsx"));
-const LayersPanel = lazy(() => import("./panels/layers/Layers"));
+const OutlinePanel = lazy(() => import("./panels/outline/Outline.tsx"));
 const BrandingOptions = lazy(() => import("./panels/branding/BrandingOptions"));
 const ImagesPanel = lazy(() => import("./panels/images/ImagesPanel"));
 
@@ -26,10 +28,11 @@ const SidePanels = () => {
   const [activePanel, setActivePanel] = useAtom(activePanelAtom);
   const [_activePanel, _setActivePanel] = useState(activePanel);
   const [hideTimeout, setHideTimeout] = useState<any>(null);
+  const { t } = useTranslation();
 
   const panels: { [key: string]: React.ComponentType<any> } = {
     "add-blocks": AddBlocksPanel,
-    layers: LayersPanel,
+    [OUTLINE_KEY]: OutlinePanel,
     "branding-options": BrandingOptions,
     images: ImagesPanel,
   };
@@ -40,8 +43,8 @@ const SidePanels = () => {
   const handleChangePanel = (newPanel: string) => {
     // * Waiting for panel to slide in before changing its content
     clearTimeout(timeout);
-    if (activePanel !== "layers" && newPanel === "layers") {
-      timeout = setTimeout(() => setActivePanel("layers"), 500);
+    if (activePanel !== OUTLINE_KEY && newPanel === OUTLINE_KEY) {
+      timeout = setTimeout(() => setActivePanel(OUTLINE_KEY), 500);
     } else {
       _setActivePanel(newPanel);
     }
@@ -52,7 +55,7 @@ const SidePanels = () => {
   function hidePanel() {
     const timeout = setTimeout(() => {
       if (hideTimeout) {
-        handleChangePanel("layers");
+        handleChangePanel(OUTLINE_KEY);
         clearTimeout(hideTimeout);
       }
     }, 500);
@@ -61,10 +64,10 @@ const SidePanels = () => {
 
   return (
     <div className="relative flex">
-      {activePanel !== "layers" ? (
+      {activePanel !== OUTLINE_KEY ? (
         <div
           onMouseEnter={hidePanel}
-          onClick={() => handleChangePanel("layers")}
+          onClick={() => handleChangePanel(OUTLINE_KEY)}
           className={"fixed inset-0 z-[50] bg-black/20"}></div>
       ) : null}
       <div className="z-[100] flex h-full w-fit flex-col items-center justify-between border-b border-r border-border bg-background pt-2">
@@ -78,9 +81,9 @@ const SidePanels = () => {
             <PlusIcon className="text-xl" />
           </Button>
           <Button
-            onClick={() => handleChangePanel("layers")}
+            onClick={() => handleChangePanel(OUTLINE_KEY)}
             size="sm"
-            variant={activePanel === "layers" ? "default" : "outline"}>
+            variant={activePanel === OUTLINE_KEY ? "default" : "outline"}>
             <ListTreeIcon className="w-4" />
           </Button>
           <Button
@@ -115,7 +118,7 @@ const SidePanels = () => {
       </div>
       <div
         className={`absolute left-14 z-[50] h-full w-96 border-r bg-background duration-500 ease-in-out ${
-          activePanel !== "layers" ? "translate-x-0" : "-translate-x-full"
+          activePanel !== OUTLINE_KEY ? "translate-x-0" : "-translate-x-full"
         }`}>
         <Suspense
           fallback={
@@ -128,7 +131,7 @@ const SidePanels = () => {
           <div
             className={cn(
               "relative h-full max-h-[93%] overflow-y-auto overflow-x-hidden bg-background p-1",
-              activePanel === "layers" ? "" : "z-[100]",
+              activePanel === OUTLINE_KEY ? "" : "z-[100]",
             )}
             onMouseEnter={() => {
               if (hideTimeout) clearTimeout(hideTimeout);
@@ -147,18 +150,18 @@ const SidePanels = () => {
             </div>
           }>
           {dataBindingSupport ? (
-            <Tabs defaultValue="layers" className="flex h-full w-full flex-col py-1">
+            <Tabs defaultValue={OUTLINE_KEY} className="flex h-full w-full flex-col py-1">
               <TabsList className="mx-1 grid h-10 grid-cols-2">
-                <TabsTrigger value="layers">
-                  <ListTreeIcon className={"mr-2 h-3"} /> Layers
+                <TabsTrigger value={OUTLINE_KEY}>
+                  <ListTreeIcon className={"mr-2 h-3"} /> {t("Outline")}
                 </TabsTrigger>
                 <TabsTrigger value="data-provider">
                   <DatabaseIcon className={"mr-2 w-3"} />
-                  Data
+                  {t("Data")}
                 </TabsTrigger>
               </TabsList>
-              <TabsContent value="layers" className="no-scrollbar h-full flex-1 overflow-y-auto overflow-x-hidden">
-                {React.createElement(LayersPanel)}
+              <TabsContent value={OUTLINE_KEY} className="no-scrollbar h-full flex-1 overflow-y-auto overflow-x-hidden">
+                {React.createElement(OutlinePanel)}
               </TabsContent>
               <TabsContent value="data-provider" className="flex-1 overflow-y-auto overflow-x-hidden">
                 <PageDataProviders />
@@ -166,14 +169,16 @@ const SidePanels = () => {
             </Tabs>
           ) : (
             <>
-              <Tabs defaultValue="layers" className="flex h-full w-full flex-col py-1">
+              <Tabs defaultValue={OUTLINE_KEY} className="flex h-full w-full flex-col py-1">
                 <TabsList className="mx-1 grid h-10 grid-cols-1">
-                  <TabsTrigger value="layers">
-                    <ListTreeIcon className={"mr-2 h-3"} /> Layers
+                  <TabsTrigger value={OUTLINE_KEY}>
+                    <ListTreeIcon className={"mr-2 h-3"} /> {t("Outline")}
                   </TabsTrigger>
                 </TabsList>
-                <TabsContent value="layers" className="no-scrollbar h-full flex-1 overflow-y-auto overflow-x-hidden">
-                  {React.createElement(LayersPanel)}
+                <TabsContent
+                  value={OUTLINE_KEY}
+                  className="no-scrollbar h-full flex-1 overflow-y-auto overflow-x-hidden">
+                  {React.createElement(OutlinePanel)}
                 </TabsContent>
               </Tabs>
             </>

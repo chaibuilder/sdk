@@ -5,7 +5,7 @@ import { pageBlocksAtomsAtom } from "../atoms/blocks";
 import { selectedStylingBlocksAtom, TStyleBlock } from "./useSelectedStylingBlocks";
 import { ChaiBlock } from "../types/ChaiBlock";
 import { getSplitClasses } from "../import-html/general";
-import { STYLES_KEY } from "../constants/CONTROLS";
+import { STYLES_KEY } from "../constants/STRINGS.ts";
 import { useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 
 export const removeClassFromBlocksAtom: any = atom(null, (get, _set, { blockIds, fullClasses }) => {

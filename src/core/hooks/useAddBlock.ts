@@ -6,7 +6,7 @@ import { useSelectedBlockIds } from "./useSelectedBlockIds";
 import { ChaiBlock } from "../types/ChaiBlock";
 import { CoreBlock } from "../types/CoreBlock";
 import { getBlockDefaultProps } from "../functions/Controls.ts";
-import { SLOT_KEY } from "../constants/CONTROLS";
+import { SLOT_KEY } from "../constants/STRINGS.ts";
 import { useBlocksStore, useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 import { useToast } from "../../ui";
 

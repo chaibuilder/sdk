@@ -22,6 +22,7 @@ const ChaiBuilderEmail = (props: ChaiBuilderEditorProps) => {
   const emailProps: ChaiBuilderEditorProps = {
     ...props,
     importHTMLSupport: false,
+    dataBindingSupport: false,
     breakpoints: BREAKPOINTS,
   };
 

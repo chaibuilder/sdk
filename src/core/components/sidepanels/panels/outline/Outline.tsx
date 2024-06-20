@@ -28,7 +28,7 @@ function convertToTBlocks(newTree: NodeModel[]): ChaiBlock[] {
   });
 }
 
-const Layers = (): React.JSX.Element => {
+const Outline = (): React.JSX.Element => {
   const [allBlocks] = useBlocksStore();
   const { setNewBlocks: setAllBlocks } = useBlocksStoreUndoableActions();
   const [ids, setIds, toggleIds] = useSelectedBlockIds();
@@ -149,4 +149,4 @@ const Layers = (): React.JSX.Element => {
   );
 };
 
-export default Layers;
+export default Outline;

@@ -7,6 +7,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../../ui";
 import { useAddBlock, useHighlightBlockId, useSelectedBlockIds } from "../../../../hooks";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { useFeature } from "flagged";
+import { OUTLINE_KEY } from "../../../../constants/STRINGS.ts";
 
 export const CoreBlock = ({ block }: { block: any }) => {
   const { type, icon, label } = block;
@@ -20,7 +21,7 @@ export const CoreBlock = ({ block }: { block: any }) => {
     } else {
       addCoreBlock(block, first(ids));
     }
-    setActivePanel("layers");
+    setActivePanel(OUTLINE_KEY);
   };
   const dndEnabled = useFeature("dnd");
 
@@ -36,7 +37,7 @@ export const CoreBlock = ({ block }: { block: any }) => {
               setTimeout(() => {
                 setSelected([]);
                 setHighlighted(null);
-                setActivePanel("layers");
+                setActivePanel(OUTLINE_KEY);
               }, 200);
             }}
             draggable={dndEnabled ? "true" : "false"}

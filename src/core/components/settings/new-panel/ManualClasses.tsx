@@ -14,7 +14,7 @@ import {
   useSelectedStylingBlocks,
 } from "../../../hooks";
 import { Button, Label } from "../../../../ui";
-import { STYLES_KEY } from "../../../constants/CONTROLS";
+import { STYLES_KEY } from "../../../constants/STRINGS.ts";
 
 const fuse = new Fuse(ALL_TW_CLASSES, {
   isCaseSensitive: false,

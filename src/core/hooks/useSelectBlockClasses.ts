@@ -5,7 +5,7 @@ import { selectedBlockAtom, styleStateAtom } from "./useSelectedBlockIds";
 import { darkModeAtom } from "./useDarkMode";
 import { canvasBreakpointAtom } from "./useCanvasWidth";
 import { selectedStylingBlocksAtom } from "./useSelectedStylingBlocks";
-import { STYLES_KEY } from "../constants/CONTROLS";
+import { STYLES_KEY } from "../constants/STRINGS.ts";
 
 /**
  * Derived atom based on selected block classes
