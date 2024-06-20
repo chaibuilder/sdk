@@ -1,23 +1,34 @@
-import React, { lazy, MouseEvent, Suspense, useEffect } from "react";
+import React, { ComponentType, lazy, MouseEvent, Suspense, useEffect } from "react";
 import { isDevelopment } from "../import-html/general";
 import { PreviewScreen } from "./PreviewScreen";
 import { useKeyEventWatcher } from "../hooks/useKeyEventWatcher.ts";
 import { useExpandTree } from "../hooks/useExpandTree";
 import { useAtom } from "jotai";
-import { pageSyncStateAtom } from "../hooks/useSavePage.ts";
+import { pageSyncStateAtom, useSavePage } from "../hooks/useSavePage.ts";
 import "./canvas/static/BlocksExternalDataProvider.tsx";
 import { useBuilderProp } from "../hooks";
 import { TooltipProvider } from "../../ui";
+import { useIntervalEffect } from "@react-hookz/web";
 
 const SidePanels = lazy(() => import("./sidepanels/SidePanels"));
 const TopBar = lazy(() => import("./topbar/Topbar"));
 const CanvasArea = lazy(() => import("./canvas/CanvasArea"));
 const Settings = lazy(() => import("./settings/Settings"));
 
+const useAutoSave = () => {
+  const { savePage } = useSavePage();
+  const autoSaveSupported = useBuilderProp("autoSaveSupport", true);
+  const autoSaveInterval = useBuilderProp("autoSaveInterval", 60);
+  useIntervalEffect(() => {
+    if (!autoSaveSupported) return;
+    savePage();
+  }, autoSaveInterval * 1000);
+};
+
 /**
  * RootLayout is a React component that renders the main layout of the application.
  */
-const RootLayout: React.FC = () => {
+const RootLayout: ComponentType = () => {
   const [syncState] = useAtom(pageSyncStateAtom);
   /**
    * Prevents the context menu from appearing in production mode.
@@ -29,6 +40,7 @@ const RootLayout: React.FC = () => {
 
   useKeyEventWatcher();
   useExpandTree();
+  useAutoSave();
 
   useEffect(() => {
     if (syncState !== "SAVED") {

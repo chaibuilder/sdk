@@ -34,8 +34,11 @@ type OutlineMenuItem = {
   tooltip: string | ReactNode;
 };
 type OutlineMenuItems = OutlineMenuItem[];
+type TimeInSeconds = number;
 
 export interface ChaiBuilderEditorProps {
+  autoSaveSupport?: boolean;
+  autoSaveInterval?: TimeInSeconds;
   breakpoints?: Breakpoint[];
 
   editable?: boolean;

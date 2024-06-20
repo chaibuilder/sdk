@@ -27,7 +27,6 @@ function ChaiBuilderDefault() {
   const [providers] = useAtom(lsProvidersAtom);
   return (
     <ChaiBuilderEditor
-      darkMode={true}
       dataBindingSupport={true}
       // @ts-ignore
       getExternalPredefinedBlock={async () => {
@@ -58,6 +57,7 @@ function ChaiBuilderDefault() {
       onSavePage={async ({ blocks, providers }: any) => {
         localStorage.setItem("chai-builder-blocks", JSON.stringify(blocks));
         localStorage.setItem("chai-builder-providers", JSON.stringify(providers));
+        await new Promise((resolve) => setTimeout(resolve, 2000));
         return true;
       }}
       onSaveBrandingOptions={async (options: any) => {

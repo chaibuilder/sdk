@@ -1,6 +1,7 @@
 import { useMemo } from "react";
-import { Button, Tooltip, TooltipContent, TooltipTrigger } from "../../../ui";
+import { Button } from "../../../ui";
 import { useSavePage, useTranslation } from "../../hooks";
+import { FaCircleCheck } from "react-icons/fa6";
 
 export const SaveButton = () => {
   const { savePage, syncState } = useSavePage();
@@ -9,7 +10,7 @@ export const SaveButton = () => {
   const classes = useMemo(() => {
     switch (syncState) {
       case "SAVING":
-        return "animate-pulse bg-gray-500 text-gray-900";
+        return "animate-pulse bg-gray-300 text-gray-900";
       case "SAVED":
         return "bg-green-500 text-white hover:bg-green-600 hover:text-white";
       default:
@@ -17,32 +18,21 @@ export const SaveButton = () => {
     }
   }, [syncState]);
 
-  //BUG: on save the selection is lost
-  return (
-    <div className="flex items-center">
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            onClick={(e) => {
-              e.preventDefault();
-              savePage();
-            }}
-            className={`flex h-auto w-20 items-center gap-x-1 rounded-full p-1 px-2 ${classes}`}
-            size="sm"
-            variant="outline">
-            <svg fill="currentColor" width="16" height="16" viewBox="0 0 0.32 0.32" xmlns="http://www.w3.org/2000/svg">
-              <path
-                fillRule="evenodd"
-                d="M.274.086a.02.02 0 0 1 0 .028l-.12.12a.02.02 0 0 1-.028 0l-.06-.06A.02.02 0 0 1 .094.146L.14.192.246.086a.02.02 0 0 1 .028 0Z"
-              />
-            </svg>
-            {syncState === "SAVING" ? "Saving..." : syncState === "SAVED" ? t("Saved") : "Save"}
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>{syncState === "SAVING" ? "Saving..." : syncState === "SAVED" ? "Saved" : "Save changes"}</p>
-        </TooltipContent>
-      </Tooltip>
-    </div>
+  const button = (
+    <Button
+      disabled={syncState === "SAVING"}
+      onClick={(e) => {
+        e.preventDefault();
+        savePage();
+      }}
+      className={`flex h-auto w-fit items-center gap-x-2 rounded-full p-1.5 px-3 ${classes}`}
+      size="sm"
+      variant="outline">
+      <FaCircleCheck className={"text-lg"} />
+      <span className={"text-sm"}>
+        {syncState === "SAVING" ? "Saving..." : syncState === "SAVED" ? t("Saved") : t("Unsaved")}
+      </span>
+    </Button>
   );
+  return <div className="flex items-center">{button}</div>;
 };
