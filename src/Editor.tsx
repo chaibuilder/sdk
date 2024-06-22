@@ -55,14 +55,12 @@ function ChaiBuilderDefault() {
       blocks={blocks}
       dataProviders={providers}
       brandingOptions={brandingOptions}
-      onSavePage={async ({ blocks, providers }: any) => {
+      onSave={async ({ blocks, providers, brandingOptions }: any) => {
         localStorage.setItem("chai-builder-blocks", JSON.stringify(blocks));
         localStorage.setItem("chai-builder-providers", JSON.stringify(providers));
+        localStorage.setItem("chai-builder-branding-options", JSON.stringify(brandingOptions));
+        console.log("Saved", brandingOptions, blocks, providers);
         await new Promise((resolve) => setTimeout(resolve, 2000));
-        return true;
-      }}
-      onSaveBrandingOptions={async (options: any) => {
-        localStorage.setItem("chai-builder-branding-options", JSON.stringify(options));
         return true;
       }}
     />

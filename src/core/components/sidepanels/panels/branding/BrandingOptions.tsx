@@ -118,19 +118,19 @@ const BrandingOptions = (): React.JSX.Element => {
     brandingProperties = {
       ...brandingProperties,
       bodyBgLightColor: Color({
-        title: "Body Background (Light)",
+        title: "Body Background (Light Mode)",
         default: bodyBgLightColor,
       }),
       bodyTextLightColor: Color({
-        title: "Body Text (Light)",
+        title: "Body Text (Light Mode)",
         default: bodyTextDarkColor,
       }),
       bodyBgDarkColor: Color({
-        title: "Body Background (Dark)",
+        title: "Body Background (Dark mode)",
         default: bodyBgDarkColor,
       }),
       bodyTextDarkColor: Color({
-        title: "Body Text (Dark)",
+        title: "Body Text (Dark mode)",
         default: bodyTextLightColor,
       }),
     };

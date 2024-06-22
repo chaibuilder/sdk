@@ -25,6 +25,7 @@ type Breakpoint = {
 type SavePageData = {
   blocks: ChaiBlock[];
   providers?: DataProvider[];
+  brandingOptions?: Record<string, any>;
 };
 
 type DataProvider = { providerKey: string; args: Record<string, any> };
@@ -77,13 +78,11 @@ export interface ChaiBuilderEditorProps {
 
   blocks?: ChaiBlock[];
   onSaveBlocks?: ({ blocks, providers }: any) => Promise<any>; // deprecated
-  onSavePage?: ({ blocks, providers }: SavePageData) => Promise<boolean | Error>;
+  onSavePage?: ({ blocks, providers }: SavePageData) => Promise<boolean | Error>; // deprecated
+  onSave?: ({ blocks, providers }: SavePageData) => Promise<boolean | Error>;
 
   brandingOptions?: Record<string, string>;
-  onSaveBrandingOptions?: (brandingOptions: Record<string, any>) => Promise<boolean | Error>;
-
-  container?: ChaiBlock | "Body" | "Container";
-  onSaveContainer?: (container: ChaiBlock) => Promise<boolean | Error>;
+  onSaveBrandingOptions?: (brandingOptions: Record<string, any>) => Promise<boolean | Error>; // deprecated
 
   onSyncStatusChange?: (syncStatus: "UNSAVED" | "SAVED") => void;
 
