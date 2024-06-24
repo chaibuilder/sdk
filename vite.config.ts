@@ -55,6 +55,7 @@ export default defineConfig({
         "@radix-ui/react-toggle",
         "@radix-ui/react-tooltip",
         "@react-hookz/web",
+        "react-arborist",
         "@react-email/render",
         "@react-email/components",
         "@rjsf/core",

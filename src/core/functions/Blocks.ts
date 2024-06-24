@@ -1,9 +1,15 @@
 import FlatToNested from "flat-to-nested";
-import { each, filter, find, flatten, get, isEmpty, isString, map, omit, set } from "lodash-es";
+import { each, filter, find, flatten, get, isString, map, omit, set } from "lodash-es";
 import { generateUUID } from "./Functions.ts";
 import { ChaiBlock } from "../types/ChaiBlock";
+import { isEmpty } from "lodash";
 
-const flatToNestedInstance = new FlatToNested({ children: "blockNodes" });
+const flatToNestedInstance = new FlatToNested({
+  children: "children",
+  id: "_id",
+  parent: "_parent",
+  options: { deleteParent: false },
+});
 
 export const nestedToFlatArray = (nestedJson: Array<ChaiBlock>, parent: string | null = null): Array<ChaiBlock> =>
   flatten(
@@ -46,8 +52,8 @@ export function duplicateBlocks(blocks: Array<ChaiBlock>, id: string, _parent: s
 }
 
 export function getBlocksTree(blocks: ChaiBlock[]) {
-  let elements: any = flatToNestedInstance.convert(blocks.map((block) => omit(block, ["settings"])));
-  elements = !elements.type && elements.blockNodes ? elements.blockNodes : !isEmpty(elements) ? [elements] : [];
+  let elements: any = flatToNestedInstance.convert(blocks);
+  elements = !elements._type && elements.children ? elements.children : !isEmpty(elements) ? [elements] : [];
   return elements;
 }
 

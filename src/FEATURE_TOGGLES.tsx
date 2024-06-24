@@ -13,12 +13,12 @@ function getDNDSupport() {
   return urlParams.has("dnd");
 }
 
-function getNewUndoSupport() {
+function getOutlinePlugin() {
   const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.has("undo");
+  return urlParams.has("outline");
 }
 
 export const FEATURE_TOGGLES: { [key: string]: boolean } = {
   dnd: getDNDSupport(),
-  newUndo: !getNewUndoSupport(),
+  arborist: getOutlinePlugin(),
 };

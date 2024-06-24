@@ -27,6 +27,8 @@ function ChaiBuilderDefault() {
   const [providers] = useAtom(lsProvidersAtom);
   return (
     <ChaiBuilderEditor
+      showDebugLogs={true}
+      autoSaveSupport={false}
       previewComponent={PreviewMessage}
       dataBindingSupport={true}
       // @ts-ignore

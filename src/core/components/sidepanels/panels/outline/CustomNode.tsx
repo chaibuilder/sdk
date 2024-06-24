@@ -49,6 +49,10 @@ function getShowOnMediaQueryMessage(classes = "") {
   return "";
 }
 
+function getName(text: string) {
+  return text.split("/").pop();
+}
+
 const getBlocksClasses = (data: ChaiBlock) => {
   let classes = "";
   Object.keys(data).forEach((key) => {
@@ -114,11 +118,12 @@ export const CustomNode = (props: Props) => {
             <div className="-mt-1 h-3 w-3">
               <TypeIcon type={data?._type} />
             </div>
-            <div className="ml-2 truncate text-[11px]">{props.node.data?._name || props.node.text}</div>
+            <div className="ml-2 truncate text-[11px]">{props.node.data?._name || getName(props.node.text)}</div>
             {showOnMessage ? (
               <span
                 className={
-                  "ml-2 flex items-center text-[10px] italic " + (isSelected ? "text-gray-200" : "text-gray-500")
+                  "ml-2 flex items-center truncate text-[10px] italic " +
+                  (isSelected ? "text-gray-200" : "text-gray-500")
                 }>
                 ({showOnMessage})
               </span>

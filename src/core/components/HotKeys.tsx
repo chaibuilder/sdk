@@ -49,7 +49,7 @@ export const HotKeys = () => {
             <div className={"mr-8 flex flex-col space-y-2 border-r border-gray-200"}>
               {Object.keys(keys).map((key) => {
                 return (
-                  <div className="flex items-center space-x-4">
+                  <div key={key} className="flex items-center space-x-4">
                     <Badge variant={"outline"} className={"border border-gray-600 p-1 px-2"}>
                       {t(key)}
                     </Badge>

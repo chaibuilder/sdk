@@ -1,6 +1,5 @@
 import { atom } from "jotai";
 import { splitAtom } from "jotai/utils";
-import { getBlocksTree } from "../functions/Blocks";
 import { filter, has } from "lodash-es";
 
 // derived atoms
@@ -10,9 +9,6 @@ presentBlocksAtom.debugLabel = "presentBlocksAtom";
 
 export const pageBlocksAtomsAtom = splitAtom(presentBlocksAtom);
 pageBlocksAtomsAtom.debugLabel = "pageBlocksAtomsAtom";
-
-export const pageBlocksTreeAtom = atom((get) => getBlocksTree(get(presentBlocksAtom)));
-pageBlocksTreeAtom.debugLabel = "pageBlocksTreeAtom";
 
 export const builderActivePageAtom = atom<string>("");
 builderActivePageAtom.debugLabel = "builderActivePageAtom";

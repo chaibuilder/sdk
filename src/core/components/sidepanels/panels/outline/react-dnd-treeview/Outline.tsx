@@ -4,19 +4,20 @@ import { DoubleArrowDownIcon, StackIcon } from "@radix-ui/react-icons";
 import { useDragLayer, useDrop } from "react-dnd";
 import { NodeModel, Tree } from "@minoru/react-dnd-treeview";
 import { useTranslation } from "react-i18next";
-import { useSelectedBlockIds, useSelectedStylingBlocks } from "../../../../hooks";
-import { CustomNode } from "./CustomNode";
-import { CustomDragPreview } from "./CustomDragPreview";
-import { Placeholder } from "./Placeholder";
-import { canDropBlock } from "../../../../functions/block-helpers.ts";
-import { useExpandedIds } from "../../../../hooks/useExpandTree";
-import { ChaiBlock } from "../../../../types/ChaiBlock";
-import { BlockContextMenu } from "./BlockContextMenu";
-import { ScrollArea } from "../../../../../ui";
-import { useAddBlockByDrop } from "../../../../hooks/useAddBlockByDrop";
-import { cn } from "../../../../functions/Functions.ts";
-import { useBlocksContainer } from "../../../../hooks/useBrandingOptions.ts";
-import { useBlocksStore, useBlocksStoreUndoableActions } from "../../../../history/useBlocksStoreUndoableActions.ts";
+import { useSelectedBlockIds, useSelectedStylingBlocks } from "../../../../../hooks";
+import { CustomNode } from "../CustomNode.tsx";
+import { CustomDragPreview } from "../CustomDragPreview.tsx";
+import { Placeholder } from "../Placeholder.tsx";
+import { canDropBlock } from "../../../../../functions/block-helpers.ts";
+import { useExpandedIds } from "../../../../../hooks/useExpandTree.ts";
+import { ChaiBlock } from "../../../../../types/ChaiBlock.ts";
+import { BlockContextMenu } from "../BlockContextMenu.tsx";
+import { ScrollArea } from "../../../../../../ui";
+import { useAddBlockByDrop } from "../../../../../hooks/useAddBlockByDrop.ts";
+import { cn } from "../../../../../functions/Functions.ts";
+import { useBlocksContainer } from "../../../../../hooks/useBrandingOptions.ts";
+import { useBlocksStore, useBlocksStoreUndoableActions } from "../../../../../history/useBlocksStoreUndoableActions.ts";
+import { debugLog } from "../../../../../functions/logging.ts";
 
 function convertToTBlocks(newTree: NodeModel[]): ChaiBlock[] {
   return map(newTree, (block) => {
@@ -42,6 +43,7 @@ const Outline = (): React.JSX.Element => {
     if (dragSource) {
       const blocks: ChaiBlock[] = convertToTBlocks(newTree);
       setAllBlocks(blocks);
+      debugLog("Handle Drop -> New Blocks -> ", blocks);
       const block = monitor.getItem();
       setIds([block.id]);
     } else {
