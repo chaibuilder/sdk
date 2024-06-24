@@ -1,9 +1,9 @@
-import { get, includes, last } from "lodash-es";
+import { get, last } from "lodash-es";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { STYLES_KEY } from "../core/constants/STRINGS.ts";
 import { BrandingOptions } from "../core/types/index.ts";
 
-export const getBrandingClasses = (brandingOptions: BrandingOptions, prefix: string = "c-") => {
+export const getBrandingClasses = (brandingOptions: BrandingOptions, prefix: string = "") => {
   const textLight = get(brandingOptions, "bodyTextLightColor", "#64748b");
   const textDark = get(brandingOptions, "bodyTextDarkColor", "#94a3b8");
   const bgLight = get(brandingOptions, "bodyBgLightColor", "#FFFFFF");
@@ -12,13 +12,12 @@ export const getBrandingClasses = (brandingOptions: BrandingOptions, prefix: str
   return `${prefix}font-body ${prefix}antialiased ${prefix}text-[${textLight}] ${prefix}bg-[${bgLight}] dark:${prefix}text-[${textDark}] dark:${prefix}bg-[${bgDark}]`;
 };
 
-export const addPrefixToClasses = (classes: string, prefix: string = "c-") => {
+export const addPrefixToClasses = (classes: string, prefix: string = "") => {
   const classesArray = classes.replace(STYLES_KEY, "").split(",");
   const array = classesArray.map((item) => {
     const classes = item.split(" ");
     const newClasses = classes.map((item) => {
       if (item === "") return "";
-      if (includes(item, "hs-") || includes(item, "[--") || includes(item, "paddle")) return item;
       // if the class had a state of media query, then prefix the classes
       // eg: dark:hover:bg-red-500 => dark:hover:c-bg-red-500
       // eg: hover:bg-red-500 => hover:c-bg-red-500

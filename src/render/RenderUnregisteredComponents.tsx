@@ -3,7 +3,6 @@ import { each, filter, get, isEmpty, isString, memoize, omit } from "lodash-es";
 import { twMerge } from "tailwind-merge";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { SLOT_KEY, STYLES_KEY } from "../core/constants/STRINGS.ts";
-import { getBlockComponent } from "@chaibuilder/runtime";
 import { addPrefixToClasses } from "./functions.ts";
 
 const getSlots = (block: ChaiBlock) => {
@@ -20,7 +19,7 @@ const getSlots = (block: ChaiBlock) => {
 const generateClassNames = memoize((styles: string, classPrefix: string) => {
   const stylesArray = styles.replace(STYLES_KEY, "").split(",");
   const classes = twMerge(stylesArray[0], stylesArray[1]);
-  if (classPrefix === "") return classes.replace(STYLES_KEY, "").trim();
+  if (!classPrefix) return classes.replace(STYLES_KEY, "").trim();
   // split classes by space and add prefix to each class
   return addPrefixToClasses(classes, classPrefix).replace(STYLES_KEY, "").trim();
 });
@@ -53,17 +52,17 @@ function applyBindings(block: ChaiBlock, chaiData: any): ChaiBlock {
   });
   return block;
 }
-export function RenderChaiBlocks({
-  blocks,
-  parent,
-  classPrefix = "",
-  externalData = {},
-}: {
-  blocks: ChaiBlock[];
+
+type UnregisteredCompoentProps = {
+  components: Record<string, React.ComponentType<any>>;
+  blocks: Record<string, any>[];
   parent?: string;
   classPrefix?: string;
   externalData?: Record<string, any>;
-}) {
+};
+
+export function RenderUnregisteredComponents(props: UnregisteredCompoentProps) {
+  const { components, blocks, parent, classPrefix = "", externalData = {} } = props;
   const allBlocks = blocks;
   const getStyles = (block: ChaiBlock) => getStyleAttrs(block, classPrefix);
   const filteredBlocks = parent
@@ -79,11 +78,12 @@ export function RenderChaiBlocks({
             Object.keys(slots).forEach((key) => {
               attrs[key] = React.Children.toArray(
                 slots[key].map((slotId: string) => (
-                  <RenderChaiBlocks
+                  <RenderUnregisteredComponents
                     externalData={externalData}
                     classPrefix={classPrefix}
                     blocks={allBlocks}
                     parent={slotId}
+                    components={components}
                   />
                 )),
               );
@@ -92,26 +92,23 @@ export function RenderChaiBlocks({
           const blocks = filter(allBlocks, { _parent: block._id });
           attrs.children =
             blocks.length > 0 ? (
-              <RenderChaiBlocks
+              <RenderUnregisteredComponents
                 externalData={externalData}
                 classPrefix={classPrefix}
                 parent={block._id}
                 blocks={allBlocks}
+                components={components}
               />
             ) : null;
 
-          const blockDefinition = getBlockComponent(block._type);
-          if (blockDefinition !== null) {
+          const blockComponent = get(components, block._type, null);
+          if (blockComponent !== null) {
             let syncedBlock: ChaiBlock = block;
-            // @ts-ignore
-            const Component: React.FC<any> = (blockDefinition as { component: React.FC<ChaiBlock> }).component;
-            syncedBlock = { ...(blockDefinition as any).defaults, ...block };
+            const Component: React.FC<any> = blockComponent;
             return React.createElement(
               Component,
               omit(
                 {
-                  blockProps: {},
-                  inBuilder: false,
                   ...syncedBlock,
                   index,
                   ...applyBindings(block, externalData),
