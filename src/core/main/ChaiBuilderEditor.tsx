@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { DndProvider } from "react-dnd";
 import { omit } from "lodash-es";
 import { getBackendOptions, MultiBackend } from "@minoru/react-dnd-treeview";
-import { FEATURE_TOGGLES } from "../FEATURE_TOGGLES";
+import { FEATURE_TOGGLES } from "../../FEATURE_TOGGLES.tsx";
 import { chaiBuilderPropsAtom } from "../atoms/builder.ts";
 import { ErrorBoundary } from "../components/ErrorBoundary";
 import { RootLayout } from "../components/RootLayout";
@@ -20,9 +20,10 @@ import { dataProvidersAtom } from "../hooks/usePageDataProviders.ts";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
 import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { MobileMessage } from "./MobileMessage.tsx";
+import { setDebugLogs } from "../functions/logging.ts";
 
 const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
-  const { dndOptions = { backend: MultiBackend } } = props;
+  const { dndOptions = { backend: MultiBackend, options: getBackendOptions() } } = props;
   const [, setAllBlocks] = useBlocksStore();
   const [, setBrandingOptions] = useBrandingOptions();
   const reset = useBuilderReset();
@@ -50,11 +51,15 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   }, [props.locale]);
 
   useEffect(() => {
+    setDebugLogs(props.showDebugLogs);
+  }, [props.showDebugLogs]);
+
+  useEffect(() => {
     setBrandingOptions(props.brandingOptions);
   }, [props.brandingOptions, setBrandingOptions]);
 
   return (
-    <DndProvider {...dndOptions} options={getBackendOptions()}>
+    <DndProvider {...dndOptions}>
       <RootLayout />
     </DndProvider>
   );
