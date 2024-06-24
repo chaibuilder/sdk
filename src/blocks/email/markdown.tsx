@@ -7,7 +7,7 @@ const MarkdownBlock = ({ blockProps, content }) => {
 };
 
 registerChaiBlock(MarkdownBlock, {
-  type: "Markdown",
+  type: "Email/Markdown",
   label: "Markdown",
   group: "basic",
   category: "core",

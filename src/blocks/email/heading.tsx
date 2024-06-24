@@ -20,7 +20,7 @@ const HeadingBuilder = ({ blockProps, styles, content }: any) => {
 };
 
 registerChaiBlock(HeadingBlock, {
-  type: "Heading",
+  type: "Email/Heading",
   label: "Heading",
   group: "basic",
   category: "core",
@@ -43,7 +43,7 @@ registerChaiBlock(HeadingBlock, {
       ],
     }),
   },
-  canAcceptBlock: (blockType: string) => ["Link", "RawText"].includes(blockType),
+  canAcceptBlock: (blockType: string) => ["Email/Link", "Email/RawText"].includes(blockType),
 });
 
 export default HeadingBlock;

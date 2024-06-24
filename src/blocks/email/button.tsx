@@ -19,7 +19,7 @@ const ButtonBuilder = ({ blockProps, styles, content }: any) => {
 };
 
 registerChaiBlock(ButtonBlock, {
-  type: "Button",
+  type: "Email/Button",
   label: "Button",
   group: "basic",
   category: "core",

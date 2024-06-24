@@ -20,7 +20,7 @@ const CodeBlockBuilder = ({ blockProps, styles, code }: any) => {
 };
 
 registerChaiBlock(CustomCodeBlock, {
-  type: "CodeInline",
+  type: "Email/CodeInline",
   label: "Code Inline",
   group: "basic",
   category: "core",

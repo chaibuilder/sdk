@@ -13,19 +13,19 @@ const RowBlock = ({ blockProps, styles, children }: any) => {
 };
 
 registerChaiBlock(RowBlock, {
-  type: "Row",
+  type: "Email/Row",
   label: "Row",
   group: "basic",
   category: "core",
   icon: ImageIcon,
   blocks: [
-    { _type: "Row", _id: "a" },
-    { _type: "Column", _id: "b", _parent: "a" },
+    { _type: "Email/Row", _id: "a" },
+    { _type: "Email/Column", _id: "b", _parent: "a" },
   ],
   props: {
     styles: Styles({ default: "" }),
   },
-  canAcceptBlock: (type: string) => type === "Column",
+  canAcceptBlock: (type: string) => type === "Email/Column",
 });
 
 const ColumnBlock = ({ blockProps, styles, children, align }: any) => {
@@ -42,7 +42,7 @@ const ColumnBlock = ({ blockProps, styles, children, align }: any) => {
 };
 
 registerChaiBlock(ColumnBlock, {
-  type: "Column",
+  type: "Email/Column",
   label: "Column",
   group: "basic",
   category: "core",
@@ -61,5 +61,5 @@ registerChaiBlock(ColumnBlock, {
     }),
   },
   canAcceptBlock: () => true,
-  canBeNested: (type: string) => type === "Row",
+  canBeNested: (type: string) => type === "Email/Row",
 });

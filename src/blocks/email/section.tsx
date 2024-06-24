@@ -12,7 +12,7 @@ const SectionBlock = ({ blockProps, styles, children }: any) => {
 };
 
 registerChaiBlock(SectionBlock, {
-  type: "Section",
+  type: "Email/Section",
   label: "Section",
   group: "basic",
   category: "core",

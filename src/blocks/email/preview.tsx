@@ -19,7 +19,7 @@ const PreviewBuilder = ({ blockProps, styles, content }: any) => {
 };
 
 registerChaiBlock(PreviewBlock, {
-  type: "Preview",
+  type: "Email/Preview",
   label: "Preview",
   group: "basic",
   category: "core",

@@ -20,7 +20,7 @@ const TextBlockBuilder = ({ content, blockProps, styles }: any) => {
 };
 
 registerChaiBlock(TextBlock, {
-  type: "Text",
+  type: "Email/Text",
   label: "Text",
   group: "basic",
   category: "core",
@@ -34,7 +34,7 @@ registerChaiBlock(TextBlock, {
     }),
     styles: Styles({ default: "" }),
   },
-  canAcceptBlock: (blockType: string) => ["Link", "RawText"].includes(blockType),
+  canAcceptBlock: (blockType: string) => ["Email/Link", "Email/RawText"].includes(blockType),
 });
 
 export default TextBlock;

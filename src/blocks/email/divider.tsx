@@ -12,7 +12,7 @@ const DividerBuilder = ({ blockProps, styles }: any) => {
 };
 
 registerChaiBlock(DividerBlock, {
-  type: "Divider",
+  type: "Email/Divider",
   label: "Divider",
   group: "basic",
   category: "core",

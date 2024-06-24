@@ -11,7 +11,7 @@ const TextBlockBuilder = ({ content, blockProps }: any) => {
 };
 
 registerChaiBlock(TextBlock, {
-  type: "RawText",
+  type: "Email/RawText",
   label: "Raw Text",
   group: "basic",
   category: "core",

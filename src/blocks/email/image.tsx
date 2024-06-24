@@ -1,6 +1,6 @@
 import { Img } from "@react-email/components";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import { Image, Styles, SingleLineText } from "@chaibuilder/runtime/controls";
+import { Image, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import { ImageIcon } from "@radix-ui/react-icons";
 
 const ImageBlock = ({ blockProps, styles, alt, image, width, height }: any) => {
@@ -12,7 +12,7 @@ const ImageBuilder = ({ blockProps, styles, alt, image, width, height }: any) =>
 };
 
 registerChaiBlock(ImageBlock, {
-  type: "Image",
+  type: "Email/Image",
   label: "Image",
   group: "basic",
   category: "core",

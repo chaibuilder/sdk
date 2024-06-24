@@ -18,7 +18,7 @@ const CodeBlockBuilder = ({ blockProps, styles, code }: any) => {
 };
 
 registerChaiBlock(CustomCodeBlock, {
-  type: "CodeBlock",
+  type: "Email/CodeBlock",
   label: "Code Block",
   group: "basic",
   category: "core",

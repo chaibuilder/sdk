@@ -15,7 +15,7 @@ const ContainerBlock = ({ blockProps, styles, children, inBuilder }) => {
 };
 
 registerChaiBlock(ContainerBlock, {
-  type: "Container",
+  type: "Email/Container",
   label: "Container",
   group: "basic",
   category: "core",
