@@ -38,6 +38,7 @@ const Outline = (): React.JSX.Element => {
   const expandedIds = useExpandedIds();
   const addBlockOnDrop = useAddBlockByDrop();
   const [blocksContainer] = useBlocksContainer();
+  
   const handleDrop = async (newTree: NodeModel[], options: any) => {
     const { dragSource, relativeIndex, dropTargetId, monitor } = options;
     if (dragSource) {
