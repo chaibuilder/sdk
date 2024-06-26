@@ -61,7 +61,7 @@ const NestedOptions = ({ heading, items }: any) => {
 
 const SectionContext = createContext({});
 
-export const SettingsSection = ({ section }: any) => {
+export const StylingGroup = ({ section }: any) => {
   const { t } = useTranslation();
   const currentClasses = useSelectedBlockCurrentClasses();
 
