@@ -70,7 +70,6 @@ export default defineConfig({
         "cmdk",
         "date-fns",
         "flagged",
-        "flat-to-nested",
         "fuse.js",
         "himalaya",
         "html-formatter",

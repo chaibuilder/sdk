@@ -89,7 +89,7 @@
   },
   "dependencies": {
     "@bobthered/tailwindcss-palette-generator": "3.1.1",
-    "@chaibuilder/runtime": "0.2.3",
+    "@chaibuilder/runtime": "0.2.5",
     "@floating-ui/dom": "1.4.5",
     "@floating-ui/react-dom": "2.0.1",
     "@mhsdesign/jit-browser-tailwindcss": "0.4.0",
@@ -129,7 +129,6 @@
     "clsx": "1.2.1",
     "cmdk": "0.2.0",
     "flagged": "2.0.9",
-    "flat-to-nested": "1.1.1",
     "fuse.js": "6.6.2",
     "himalaya": "^1.1.0",
     "html-formatter": "0.1.9",

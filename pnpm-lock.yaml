@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@bobthered/tailwindcss-palette-generator': 3.1.1
-  '@chaibuilder/runtime': 0.2.3
+  '@chaibuilder/runtime': 0.2.5
   '@commitlint/cli': 17.7.1
   '@commitlint/config-conventional': 17.7.0
   '@emotion/react': ^11.11.1
@@ -67,7 +67,6 @@ specifiers:
   eslint-plugin-react-hooks: ^4.6.0
   eslint-plugin-react-refresh: ^0.4.3
   flagged: 2.0.9
-  flat-to-nested: 1.1.1
   fuse.js: 6.6.2
   himalaya: ^1.1.0
   html-formatter: 0.1.9
@@ -116,7 +115,7 @@ specifiers:
 
 dependencies:
   '@bobthered/tailwindcss-palette-generator': 3.1.1
-  '@chaibuilder/runtime': 0.2.3_kgsil3qmwkuaypzeupjafsqja4
+  '@chaibuilder/runtime': 0.2.5_kgsil3qmwkuaypzeupjafsqja4
   '@floating-ui/dom': 1.4.5
   '@floating-ui/react-dom': 2.0.1_biqbaboplfbrettd7655fr4n2y
   '@mhsdesign/jit-browser-tailwindcss': 0.4.0
@@ -156,7 +155,6 @@ dependencies:
   clsx: 1.2.1
   cmdk: 0.2.0_uhnvbqyidce6nup7tsgrqjnqhy
   flagged: 2.0.9_react@18.2.0
-  flat-to-nested: 1.1.1
   fuse.js: 6.6.2
   himalaya: 1.1.0
   html-formatter: 0.1.9
@@ -624,8 +622,8 @@ packages:
       statuses: 2.0.1
     dev: true
 
-  /@chaibuilder/runtime/0.2.3_kgsil3qmwkuaypzeupjafsqja4:
-    resolution: {integrity: sha512-QlYFay5DDY4wUhC+C4sumOTeryvwibz26DMwLAOfmxzgggCIMwhzhwfYKfKqTvr59S4bcouJOjqCn8PMFqdOzg==}
+  /@chaibuilder/runtime/0.2.5_kgsil3qmwkuaypzeupjafsqja4:
+    resolution: {integrity: sha512-W2QAVoCAXttosvKAaiLBNKo0Ueb/XrrCR3S0CBHlagYmq5jmoQDqFD8Z9Cfz5es/PoIVku81v4W4wcZb+sXOyg==}
     dependencies:
       '@radix-ui/react-icons': 1.3.0_react@18.2.0
       clsx: 2.1.0
@@ -7560,10 +7558,6 @@ packages:
       flatted: 3.2.9
       keyv: 4.5.4
       rimraf: 3.0.2
-
-  /flat-to-nested/1.1.1:
-    resolution: {integrity: sha512-Sym5oik6BO9JnsDEjv9Q9hPTCexG2ttk0UiM2mgLEiCiiUOQr8acBd33r8ixnoSGR0HAxPoP8WtLAL5oV46IhQ==}
-    dev: false
 
   /flatted/3.2.9:
     resolution: {integrity: sha512-36yxDn5H7OFZQla0/jFJmbIKTdZAQHngCedGxiMmpNfEZM0sdEeT+WczLQrjK6D7o2aiyLYDnkw0R3JK0Qv1RQ==}
