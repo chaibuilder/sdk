@@ -1,4 +1,4 @@
-import { Tree } from "react-arborist";
+import { NodeRendererProps, Tree } from "react-arborist";
 import { cn } from "../../../../../functions/Functions.ts";
 import {
   useBuilderProp,
@@ -12,12 +12,15 @@ import { useDebouncedCallback } from "@react-hookz/web";
 import { TriangleRightIcon } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
 import { treeDSBlocks } from "../../../../../atoms/blocks.ts";
+import {memo} from "react";
 
-function Node({ node, style, dragHandle }) {
+const Node = memo(({ node, style, dragHandle }: Omit<NodeRendererProps<any>, "tree">) => {
   const [, setHighlighted] = useHighlightBlockId();
   const outlineItems = useBuilderProp("outlineMenuItems", []);
 
-  const { id, isSelected, data, handleClick } = node;
+  const { id, isSelected, data, handleClick, willReceiveDrop } = node;
+
+  const isDropZone = node.children.length > 0;
 
   const debouncedSetHighlighted = useDebouncedCallback((id) => setHighlighted(id), [], 300);
 
@@ -29,11 +32,11 @@ function Node({ node, style, dragHandle }) {
     node.toggle();
   };
 
-  const handleClearSelection = (e: any) => {
+  const handleNodeClickWithoutPropagating = (e: any) => {
     /**
      * To stop propagation of the event to the parent
      * Tree Component to avoid clearing the selection of blocks
-     * and allowing to select other blocks
+     * and allowing to select current block.
      */
     e.stopPropagation();
     /**
@@ -44,9 +47,15 @@ function Node({ node, style, dragHandle }) {
     handleClick(e);
   };
 
+  // useEffect(() => {
+  //   if (willReceiveDrop && isDropZone && !node.isOpen) {
+  //     node.toggle();
+  //   }
+  // }, [willReceiveDrop, isDropZone, node]);
+
   return (
     <div
-      onClick={handleClearSelection}
+      onClick={handleNodeClickWithoutPropagating}
       key={id}
       onMouseEnter={() => debouncedSetHighlighted(id)}
       style={style}
@@ -54,6 +63,7 @@ function Node({ node, style, dragHandle }) {
       className={cn(
         "group relative flex !h-fit w-full items-center justify-between space-x-px overflow-hidden py-px",
         isSelected ? "bg-blue-500 text-white" : "text-gray-600 hover:bg-gray-200 dark:hover:bg-gray-800",
+        willReceiveDrop && isDropZone && "bg-gray-200 text-gray-600",
       )}>
       <div className="flex items-center">
         <div
@@ -87,7 +97,7 @@ function Node({ node, style, dragHandle }) {
       </div>
     </div>
   );
-}
+});
 
 const ListTree = () => {
   const [treeData] = useAtom(treeDSBlocks);
