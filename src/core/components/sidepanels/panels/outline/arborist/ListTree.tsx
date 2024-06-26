@@ -2,14 +2,18 @@ import { NodeRendererProps, Tree } from "react-arborist";
 import { cn } from "../../../../../functions/Functions.ts";
 import {
   useBuilderProp,
-  useHighlightBlockId,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
+  useHighlightBlockId,
 } from "../../../../../hooks";
 import { ScrollArea, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../../ui";
+import { memo } from "react";
+
 import { TypeIcon } from "../TypeIcon.tsx";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { TriangleRightIcon } from "@radix-ui/react-icons";
+import { DefaultCursor } from "./Default-Cursor.tsx";
+
 import { useAtom } from "jotai";
 import { treeDSBlocks } from "../../../../../atoms/blocks.ts";
 import {memo} from "react";
@@ -61,7 +65,7 @@ const Node = memo(({ node, style, dragHandle }: Omit<NodeRendererProps<any>, "tr
       style={style}
       ref={dragHandle}
       className={cn(
-        "group relative flex !h-fit w-full items-center justify-between space-x-px overflow-hidden py-px",
+        "group flex !h-fit w-full items-center justify-between space-x-px py-px",
         isSelected ? "bg-blue-500 text-white" : "text-gray-600 hover:bg-gray-200 dark:hover:bg-gray-800",
         willReceiveDrop && isDropZone && "bg-gray-200 text-gray-600",
       )}>
@@ -70,7 +74,7 @@ const Node = memo(({ node, style, dragHandle }: Omit<NodeRendererProps<any>, "tr
           className={`flex h-4 w-4 rotate-0 transform cursor-pointer items-center justify-center text-xs transition-transform duration-100 ${
             node.isOpen ? "rotate-90" : ""
           }`}>
-          {node.children?.length > 0 && (
+          {isDropZone && (
             <button onClick={handleToggle} type="button">
               <TriangleRightIcon />
             </button>
@@ -139,10 +143,12 @@ const ListTree = () => {
           rowHeight={20}
           onDelete={onDelete}
           data={treeData}
+          renderCursor={DefaultCursor}
+          onSelect={onSelect}
+          childrenAccessor={(d: any) => d.children}
           width={"100%"}
           indent={10}
-          idAccessor={"_id"}
-          onSelect={onSelect}>
+          idAccessor={"_id"}>
           {Node as any}
         </Tree>
       </ScrollArea>
