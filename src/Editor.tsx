@@ -1,10 +1,10 @@
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
-import { lsBlocksAtom, lsBrandingOptionsAtom, lsProvidersAtom } from "./atoms-dev.ts";
+import { lsBlocksAtom, lsBrandingOptionsAtom, lsProvidersAtom } from "./__dev/atoms-dev.ts";
 import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
 import { ChaiBuilderEditor } from "./core/main";
 import "./blocks/web";
-import "./data-providers/data";
+import "./__dev/data-providers/data";
 import { CodeIcon } from "@radix-ui/react-icons";
 import { find } from "lodash";
 
@@ -25,6 +25,7 @@ function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
   const [brandingOptions] = useAtom(lsBrandingOptionsAtom);
   const [providers] = useAtom(lsProvidersAtom);
+
   return (
     <ChaiBuilderEditor
       showDebugLogs={true}
@@ -50,7 +51,7 @@ function ChaiBuilderDefault() {
           item: (blockId: string) => (
             <CodeIcon onClick={() => console.log("blockId", find(blocks, { _id: blockId }))} />
           ),
-          tooltip: "export Code",
+          tooltip: "Export Code",
         },
       ]}
       topBarComponents={{ left: [PreviewMessage] }}

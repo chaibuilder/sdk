@@ -1,6 +1,6 @@
 import { RenderChaiBlocks } from "./render";
 import { useAtom } from "jotai";
-import { lsBlocksAtom, lsBrandingOptionsAtom } from "./atoms-dev.ts";
+import { lsBlocksAtom, lsBrandingOptionsAtom } from "./__dev/atoms-dev.ts";
 import { useEffect, useState } from "react";
 import { getStylesForBlocks } from "./core/lib.ts";
 import "./blocks/web";
