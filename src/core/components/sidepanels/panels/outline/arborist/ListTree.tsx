@@ -16,7 +16,6 @@ import { DefaultCursor } from "./Default-Cursor.tsx";
 
 import { useAtom } from "jotai";
 import { treeDSBlocks } from "../../../../../atoms/blocks.ts";
-import {memo} from "react";
 
 const Node = memo(({ node, style, dragHandle }: Omit<NodeRendererProps<any>, "tree">) => {
   const [, setHighlighted] = useHighlightBlockId();
