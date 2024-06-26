@@ -1,4 +1,4 @@
-import { Tree } from "react-arborist";
+import { NodeRendererProps, Tree } from "react-arborist";
 import { cn } from "../../../../../functions/Functions.ts";
 import {
   useBuilderProp,
@@ -8,12 +8,13 @@ import {
   useBlocksStore,
 } from "../../../../../hooks";
 import { ScrollArea, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../../ui";
-import { useMemo } from "react";
+import { useMemo, memo, useEffect } from "react";
 
 import { getBlocksTree } from "../../../../../functions/Blocks.ts";
 import { TypeIcon } from "../TypeIcon.tsx";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { TriangleRightIcon } from "@radix-ui/react-icons";
+import { DefaultCursor } from "./Default-Cursor.tsx";
 
 const removeDuplicates = (nodes, seen = new Set()) => {
   return nodes.reduce((acc, node) => {
@@ -26,11 +27,13 @@ const removeDuplicates = (nodes, seen = new Set()) => {
   }, []);
 };
 
-function Node({ node, style, dragHandle }) {
+const Node = memo(({ node, style, dragHandle }: Omit<NodeRendererProps<any>, "tree">) => {
   const [, setHighlighted] = useHighlightBlockId();
   const outlineItems = useBuilderProp("outlineMenuItems", []);
 
-  const { id, isSelected, data, handleClick } = node;
+  const { id, isSelected, data, handleClick, willReceiveDrop } = node;
+
+  const isDropZone = node.children.length > 0;
 
   const debouncedSetHighlighted = useDebouncedCallback((id) => setHighlighted(id), [], 300);
 
@@ -42,11 +45,11 @@ function Node({ node, style, dragHandle }) {
     node.toggle();
   };
 
-  const handleClearSelection = (e: any) => {
+  const handleNodeClickWithoutPropagating = (e: any) => {
     /**
      * To stop propagation of the event to the parent
      * Tree Component to avoid clearing the selection of blocks
-     * and allowing to select other blocks
+     * and allowing to select current block.
      */
     e.stopPropagation();
     /**
@@ -57,9 +60,15 @@ function Node({ node, style, dragHandle }) {
     handleClick(e);
   };
 
+  // useEffect(() => {
+  //   if (willReceiveDrop && isDropZone && !node.isOpen) {
+  //     node.toggle();
+  //   }
+  // }, [willReceiveDrop, isDropZone, node]);
+
   return (
     <div
-      onClick={handleClearSelection}
+      onClick={handleNodeClickWithoutPropagating}
       key={id}
       onMouseEnter={() => debouncedSetHighlighted(id)}
       style={style}
@@ -67,13 +76,14 @@ function Node({ node, style, dragHandle }) {
       className={cn(
         "group flex !h-fit w-full items-center justify-between space-x-px py-px",
         isSelected ? "bg-blue-500 text-white" : "text-gray-600 hover:bg-gray-200 dark:hover:bg-gray-800",
+        willReceiveDrop && isDropZone && "bg-gray-200 text-gray-600",
       )}>
       <div className="flex items-center">
         <div
           className={`flex h-4 w-4 rotate-0 transform cursor-pointer items-center justify-center text-xs transition-transform duration-100 ${
             node.isOpen ? "rotate-90" : ""
           }`}>
-          {node.children.length > 0 && (
+          {isDropZone && (
             <button onClick={handleToggle} type="button">
               <TriangleRightIcon />
             </button>
@@ -100,7 +110,7 @@ function Node({ node, style, dragHandle }) {
       </div>
     </div>
   );
-}
+});
 
 const ListTree = () => {
   const [allBlocks] = useBlocksStore();
@@ -113,7 +123,7 @@ const ListTree = () => {
     setStyleBlocks([]);
   };
 
-  //FIXME: This is a temporary fix to remove the duplicates from the treeData 
+  //FIXME: This is a temporary fix to remove the duplicates from the treeData
   const treeData = useMemo(() => {
     let treeBlocks = getBlocksTree(allBlocks);
     /***
@@ -123,8 +133,6 @@ const ListTree = () => {
 
     return treeBlocks;
   }, [allBlocks]);
-
-  console.log(treeData);
 
   const onRename = ({ id, name }) => {
     console.log("onRename", { id, name });
@@ -156,6 +164,7 @@ const ListTree = () => {
           width={216}
           indent={18}
           idAccessor={"_id"}
+          renderCursor={DefaultCursor}
           onSelect={onSelect}
           childrenAccessor={(d: any) => d.children}>
           {Node as any}
