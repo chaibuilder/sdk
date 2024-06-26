@@ -5,27 +5,17 @@ import {
   useSelectedBlockIds,
   useSelectedStylingBlocks,
   useHighlightBlockId,
-  useBlocksStore,
 } from "../../../../../hooks";
 import { ScrollArea, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../../ui";
-import { useMemo, memo, useEffect } from "react";
+import { memo } from "react";
 
-import { getBlocksTree } from "../../../../../functions/Blocks.ts";
 import { TypeIcon } from "../TypeIcon.tsx";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { TriangleRightIcon } from "@radix-ui/react-icons";
 import { DefaultCursor } from "./Default-Cursor.tsx";
 
-const removeDuplicates = (nodes, seen = new Set()) => {
-  return nodes.reduce((acc, node) => {
-    if (!seen.has(node._id)) {
-      seen.add(node._id);
-      const children = node.children ? removeDuplicates(node.children, seen) : [];
-      acc.push({ ...node, children });
-    }
-    return acc;
-  }, []);
-};
+import { useAtom } from "jotai";
+import { treeDSBlocks } from "../../../../../atoms/blocks.ts";
 
 const Node = memo(({ node, style, dragHandle }: Omit<NodeRendererProps<any>, "tree">) => {
   const [, setHighlighted] = useHighlightBlockId();
@@ -59,12 +49,6 @@ const Node = memo(({ node, style, dragHandle }: Omit<NodeRendererProps<any>, "tr
      */
     handleClick(e);
   };
-
-  // useEffect(() => {
-  //   if (willReceiveDrop && isDropZone && !node.isOpen) {
-  //     node.toggle();
-  //   }
-  // }, [willReceiveDrop, isDropZone, node]);
 
   return (
     <div
@@ -104,7 +88,7 @@ const Node = memo(({ node, style, dragHandle }: Omit<NodeRendererProps<any>, "tr
               asChild>
               {outlineItem.item(id)}
             </TooltipTrigger>
-            <TooltipContent className="">{outlineItem.tooltip}</TooltipContent>
+            <TooltipContent className="z-[9999]">{outlineItem.tooltip}</TooltipContent>
           </Tooltip>
         ))}
       </div>
@@ -113,7 +97,7 @@ const Node = memo(({ node, style, dragHandle }: Omit<NodeRendererProps<any>, "tr
 });
 
 const ListTree = () => {
-  const [allBlocks] = useBlocksStore();
+  const [treeData] = useAtom(treeDSBlocks);
 
   const [ids, setIds] = useSelectedBlockIds();
   const [, setStyleBlocks] = useSelectedStylingBlocks();
@@ -122,17 +106,6 @@ const ListTree = () => {
     setIds([]);
     setStyleBlocks([]);
   };
-
-  //FIXME: This is a temporary fix to remove the duplicates from the treeData
-  const treeData = useMemo(() => {
-    let treeBlocks = getBlocksTree(allBlocks);
-    /***
-     * Removing the duplicates from the TreeBlocks
-     */
-    treeBlocks = removeDuplicates(treeBlocks);
-
-    return treeBlocks;
-  }, [allBlocks]);
 
   const onRename = ({ id, name }) => {
     console.log("onRename", { id, name });
@@ -144,16 +117,18 @@ const ListTree = () => {
     console.log("onDelete", { ids });
   };
 
-  const onSelect = (node: any) => {
-    const nodeId = node[0] ? node[0].id : "";
+  const onSelect = (nodes: any) => {
+    if (nodes.length === 0) return;
+    const nodeId = nodes[0] ? nodes[0].id : "";
     setStyleBlocks([]);
     setIds([nodeId]);
   };
 
   return (
     <div className={cn("-mx-1 -mt-1 flex h-full select-none flex-col space-y-1")} onClick={() => clearSelection()}>
-      <ScrollArea id="layers-view" className="no-scrollbar h-full overflow-y-auto p-1 px-2 text-xs">
+      <ScrollArea id="outline-view" className="no-scrollbar h-full overflow-y-auto p-1 px-2 text-xs">
         <Tree
+          className="max-w-full !overflow-hidden"
           selection={ids[0] || ""}
           onRename={onRename}
           openByDefault={false}
@@ -161,12 +136,12 @@ const ListTree = () => {
           rowHeight={20}
           onDelete={onDelete}
           data={treeData}
-          width={216}
-          indent={18}
-          idAccessor={"_id"}
           renderCursor={DefaultCursor}
           onSelect={onSelect}
-          childrenAccessor={(d: any) => d.children}>
+          childrenAccessor={(d: any) => d.children}
+          width={"100%"}
+          indent={10}
+          idAccessor={"_id"}>
           {Node as any}
         </Tree>
       </ScrollArea>

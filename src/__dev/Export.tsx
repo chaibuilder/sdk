@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
-import { useCopyToClipboard } from "./core/hooks";
-import { Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger, ScrollArea, useToast } from "./ui";
+import { useCopyToClipboard } from "../core/hooks";
+import { Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger, ScrollArea, useToast } from "../ui";
 import { CodeBlock, oneLight } from "@react-email/components";
 import { useTranslation } from "react-i18next";
 

@@ -1,15 +1,6 @@
-import FlatToNested from "flat-to-nested";
 import { each, filter, find, flatten, get, isString, map, omit, set } from "lodash-es";
 import { generateUUID } from "./Functions.ts";
 import { ChaiBlock } from "../types/ChaiBlock";
-import { isEmpty } from "lodash";
-
-const flatToNestedInstance = new FlatToNested({
-  children: "children",
-  id: "_id",
-  parent: "_parent",
-  options: { deleteParent: false },
-});
 
 export const nestedToFlatArray = (nestedJson: Array<ChaiBlock>, parent: string | null = null): Array<ChaiBlock> =>
   flatten(
@@ -51,10 +42,30 @@ export function duplicateBlocks(blocks: Array<ChaiBlock>, id: string, _parent: s
   return flatten(newBlocks);
 }
 
-export function getBlocksTree(blocks: ChaiBlock[]) {
-  let elements: any = flatToNestedInstance.convert(blocks);
-  elements = !elements._type && elements.children ? elements.children : !isEmpty(elements) ? [elements] : [];
-  return elements;
+export function convertToBlocksTree(blocks: ChaiBlock[]) {
+  // Create a map to store nodes by their ids
+  const idMap = {};
+  blocks.forEach((item) => {
+    idMap[item._id] = { ...item, children: [] };
+  });
+
+  // Create the result array to store top level nodes
+  const result = [];
+
+  blocks.forEach((item) => {
+    if (item._parent) {
+      // If the item has a parent, find the parent and add the node to its children
+      const parent = idMap[item._parent];
+      if (parent) {
+        parent.children.push(idMap[item._id]);
+      }
+    } else {
+      // If the item has no parent, it is a top level node
+      result.push(idMap[item._id]);
+    }
+  });
+
+  return result;
 }
 
 // eslint-disable-next-line no-underscore-dangle

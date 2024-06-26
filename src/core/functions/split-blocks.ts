@@ -1,7 +1,7 @@
 // @ts-nocheck
-import FlatToNested from "flat-to-nested";
-import { each, filter, find, first, flatten, get, isEmpty, map, set } from "lodash-es";
+import { each, filter, find, first, flatten, get, map, set } from "lodash-es";
 import { ChaiBlock } from "../types/ChaiBlock.ts";
+import { convertToBlocksTree } from "./Blocks.ts";
 
 /**
  * IMPORTANT: This is a very fragile code. Not automation tested but works perfectly
@@ -9,17 +9,8 @@ import { ChaiBlock } from "../types/ChaiBlock.ts";
  * FIXME: Add tests
  * @type {FlatToNested}
  */
-const flatToNestedInstance = new FlatToNested({});
-
 export function getBlocksTree(blocks: ChaiBlock[]) {
-  let elements = flatToNestedInstance.convert(blocks);
-  elements =
-    !elements.type && elements.children && elements.children.length
-      ? elements.children
-      : !isEmpty(elements)
-      ? [elements]
-      : [];
-  return elements;
+  return convertToBlocksTree(blocks);
 }
 
 const nestedToFlatArray = (nestedJson: any, parent: any) =>

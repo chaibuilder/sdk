@@ -1,11 +1,9 @@
-import { useAtom } from "jotai";
 import { isEmpty } from "lodash-es";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
 import { useSelectedBlocksDisplayChild, useSelectedStylingBlocks, useStylingState } from "../../hooks";
-import { advanceStylingOpenAtom } from "../../atoms/ui";
 import { FLEX_CHILD_SECTION, GRID_CHILD_SECTION, SETTINGS_SECTIONS } from "../../constants/STYLING_GROUPS.ts";
-import { SettingsSection } from "./new-panel/SettingSection";
+import { StylingGroup } from "./new-panel/SettingSection";
 import {
   Accordion,
   Label,
@@ -18,11 +16,11 @@ import {
 } from "../../../ui";
 import { CustomAttributes } from "./new-panel/CustomAttribute";
 import { BrushIcon } from "lucide-react";
+import { StylingHelpers } from "./StylingHelpers.tsx";
 
 export default function BlockStyling() {
   const [state, setState] = useStylingState();
   const { flexChild, gridChild } = useSelectedBlocksDisplayChild();
-  const [, setShowAdvance] = useAtom(advanceStylingOpenAtom);
   const { t } = useTranslation();
 
   const [stylingBlocks] = useSelectedStylingBlocks();
@@ -38,8 +36,8 @@ export default function BlockStyling() {
   }
 
   return (
-    // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
-    <div onClick={() => setShowAdvance(false)} className="flex h-full flex-col">
+    <div className="flex h-full flex-col">
+      <StylingHelpers />
       <div className="flex h-12 flex-col space-x-4 px-4 py-1">
         <div className="flex items-center justify-end gap-x-1.5">
           <Label htmlFor="" className="flex gap-x-1.5 text-xs italic">
@@ -74,10 +72,10 @@ export default function BlockStyling() {
       ) : null}
       <ScrollArea className="no-scrollbar -mx-1 max-h-full flex-1 overflow-x-hidden overflow-y-hidden border-t border-border">
         <Accordion defaultValue={["Layout"]} type="multiple" className="w-full">
-          {flexChild && <SettingsSection section={FLEX_CHILD_SECTION} />}
-          {gridChild ? <SettingsSection section={GRID_CHILD_SECTION} /> : null}
+          {flexChild && <StylingGroup section={FLEX_CHILD_SECTION} />}
+          {gridChild ? <StylingGroup section={GRID_CHILD_SECTION} /> : null}
           {SETTINGS_SECTIONS.map((section) => (
-            <SettingsSection key={section.heading} section={section} />
+            <StylingGroup key={section.heading} section={section} />
           ))}
           <CustomAttributes section={{ heading: "Attributes" }} />
         </Accordion>

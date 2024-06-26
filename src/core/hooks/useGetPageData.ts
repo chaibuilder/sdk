@@ -4,6 +4,7 @@ import { useBrandingOptions } from "./useBrandingOptions";
 import { useCurrentPage } from "./useCurrentPage";
 import { splitPageBlocks } from "../functions/split-blocks";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
+import { ChaiBlock } from "../types/ChaiBlock.ts";
 
 export const useGetPageData = () => {
   const [projectOptions] = useBrandingOptions();
@@ -11,14 +12,13 @@ export const useGetPageData = () => {
   const [presentBlocks] = useBlocksStore();
 
   return useCallback(() => {
-    const blocks = map(presentBlocks, (block) =>
+    const blocks = map(presentBlocks, (block: ChaiBlock) =>
       omit(block, ["expanded", "order", "title", "siblings", "tempClasses"]),
     );
-    const [pageFilteredBlocks = [], globalBlocks = []] = splitPageBlocks(blocks);
+    const [pageFilteredBlocks = []] = splitPageBlocks(blocks);
     return {
       currentPage,
       blocks: pageFilteredBlocks,
-      globalBlocks,
     };
   }, [projectOptions, currentPage, presentBlocks]);
 };
