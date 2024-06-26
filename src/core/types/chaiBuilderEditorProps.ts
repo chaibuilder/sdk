@@ -105,4 +105,5 @@ export interface ChaiBuilderEditorProps {
   getPages?: () => Promise<ChaiPage[]>;
 
   unsplashAccessKey?: string;
+  _flags?: Record<string, boolean>;
 }

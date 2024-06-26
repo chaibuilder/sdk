@@ -70,15 +70,18 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
  * @param props
  * @constructor
  */
-const ChaiBuilderEditor = (props: ChaiBuilderEditorProps) => (
-  <ErrorBoundary>
-    <FlagsProvider features={FEATURE_TOGGLES}>
-      <DevTools />
-      <MobileMessage />
-      <ChaiBuilderComponent {...props} />
-    </FlagsProvider>
-    <Toaster />
-  </ErrorBoundary>
-);
+const ChaiBuilderEditor = (props: ChaiBuilderEditorProps) => {
+  const _flags = props._flags || {};
+  return (
+    <ErrorBoundary>
+      <FlagsProvider features={{ ...FEATURE_TOGGLES, ..._flags }}>
+        <DevTools />
+        <MobileMessage />
+        <ChaiBuilderComponent {...props} />
+      </FlagsProvider>
+      <Toaster />
+    </ErrorBoundary>
+  );
+};
 
 export { ChaiBuilderEditor };
