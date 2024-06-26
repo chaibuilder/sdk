@@ -13,17 +13,6 @@ import { TriangleRightIcon } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
 import { treeDSBlocks } from "../../../../../atoms/blocks.ts";
 
-const removeDuplicates = (nodes, seen = new Set()) => {
-  return nodes.reduce((acc, node) => {
-    if (!seen.has(node._id)) {
-      seen.add(node._id);
-      const children = node.children ? removeDuplicates(node.children, seen) : [];
-      acc.push({ ...node, children });
-    }
-    return acc;
-  }, []);
-};
-
 function Node({ node, style, dragHandle }) {
   const [, setHighlighted] = useHighlightBlockId();
   const outlineItems = useBuilderProp("outlineMenuItems", []);
