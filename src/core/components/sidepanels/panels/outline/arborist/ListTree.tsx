@@ -2,18 +2,16 @@ import { Tree } from "react-arborist";
 import { cn } from "../../../../../functions/Functions.ts";
 import {
   useBuilderProp,
+  useHighlightBlockId,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
-  useHighlightBlockId,
-  useBlocksStore,
 } from "../../../../../hooks";
 import { ScrollArea, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../../ui";
-import { useMemo } from "react";
-
-import { getBlocksTree } from "../../../../../functions/Blocks.ts";
 import { TypeIcon } from "../TypeIcon.tsx";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { TriangleRightIcon } from "@radix-ui/react-icons";
+import { useAtom } from "jotai";
+import { treeDSBlocks } from "../../../../../atoms/blocks.ts";
 
 const removeDuplicates = (nodes, seen = new Set()) => {
   return nodes.reduce((acc, node) => {
@@ -65,7 +63,7 @@ function Node({ node, style, dragHandle }) {
       style={style}
       ref={dragHandle}
       className={cn(
-        "group flex !h-fit w-full items-center justify-between space-x-px py-px",
+        "group relative flex !h-fit w-full items-center justify-between space-x-px overflow-hidden py-px",
         isSelected ? "bg-blue-500 text-white" : "text-gray-600 hover:bg-gray-200 dark:hover:bg-gray-800",
       )}>
       <div className="flex items-center">
@@ -73,7 +71,7 @@ function Node({ node, style, dragHandle }) {
           className={`flex h-4 w-4 rotate-0 transform cursor-pointer items-center justify-center text-xs transition-transform duration-100 ${
             node.isOpen ? "rotate-90" : ""
           }`}>
-          {node.children.length > 0 && (
+          {node.children?.length > 0 && (
             <button onClick={handleToggle} type="button">
               <TriangleRightIcon />
             </button>
@@ -94,7 +92,7 @@ function Node({ node, style, dragHandle }) {
               asChild>
               {outlineItem.item(id)}
             </TooltipTrigger>
-            <TooltipContent className="">{outlineItem.tooltip}</TooltipContent>
+            <TooltipContent className="z-[9999]">{outlineItem.tooltip}</TooltipContent>
           </Tooltip>
         ))}
       </div>
@@ -103,7 +101,7 @@ function Node({ node, style, dragHandle }) {
 }
 
 const ListTree = () => {
-  const [allBlocks] = useBlocksStore();
+  const [treeData] = useAtom(treeDSBlocks);
 
   const [ids, setIds] = useSelectedBlockIds();
   const [, setStyleBlocks] = useSelectedStylingBlocks();
@@ -112,19 +110,6 @@ const ListTree = () => {
     setIds([]);
     setStyleBlocks([]);
   };
-
-  //FIXME: This is a temporary fix to remove the duplicates from the treeData 
-  const treeData = useMemo(() => {
-    let treeBlocks = getBlocksTree(allBlocks);
-    /***
-     * Removing the duplicates from the TreeBlocks
-     */
-    treeBlocks = removeDuplicates(treeBlocks);
-
-    return treeBlocks;
-  }, [allBlocks]);
-
-  console.log(treeData);
 
   const onRename = ({ id, name }) => {
     console.log("onRename", { id, name });
@@ -136,16 +121,18 @@ const ListTree = () => {
     console.log("onDelete", { ids });
   };
 
-  const onSelect = (node: any) => {
-    const nodeId = node[0] ? node[0].id : "";
+  const onSelect = (nodes: any) => {
+    if (nodes.length === 0) return;
+    const nodeId = nodes[0] ? nodes[0].id : "";
     setStyleBlocks([]);
     setIds([nodeId]);
   };
 
   return (
     <div className={cn("-mx-1 -mt-1 flex h-full select-none flex-col space-y-1")} onClick={() => clearSelection()}>
-      <ScrollArea id="layers-view" className="no-scrollbar h-full overflow-y-auto p-1 px-2 text-xs">
+      <ScrollArea id="outline-view" className="no-scrollbar h-full overflow-y-auto p-1 px-2 text-xs">
         <Tree
+          className="max-w-full !overflow-hidden"
           selection={ids[0] || ""}
           onRename={onRename}
           openByDefault={false}
@@ -153,11 +140,10 @@ const ListTree = () => {
           rowHeight={20}
           onDelete={onDelete}
           data={treeData}
-          width={216}
-          indent={18}
+          width={"100%"}
+          indent={10}
           idAccessor={"_id"}
-          onSelect={onSelect}
-          childrenAccessor={(d: any) => d.children}>
+          onSelect={onSelect}>
           {Node as any}
         </Tree>
       </ScrollArea>

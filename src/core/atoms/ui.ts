@@ -3,9 +3,6 @@ import { atom } from "jotai";
 export const readOnlyModeAtom: any = atom<boolean>(false);
 readOnlyModeAtom.debugLabel = "readOnlyModeAtom";
 
-export const advanceStylingOpenAtom: any = atom(false);
-advanceStylingOpenAtom.debugLabel = "advanceStylingOpenAtom";
-
 export const networkModeAtom: any = atom<string>("online");
 networkModeAtom.debugLabel = "networkModeAtom";
 

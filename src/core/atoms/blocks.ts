@@ -1,10 +1,20 @@
 import { atom } from "jotai";
 import { splitAtom } from "jotai/utils";
 import { filter, has } from "lodash-es";
+import { convertToBlocksTree } from "../functions/Blocks.ts";
 
 // derived atoms
 // @ts-ignore
 export const presentBlocksAtom = atom([]);
+presentBlocksAtom.debugLabel = "presentBlocksAtom";
+
+//TODO: Need a better name for this atom. Also should be a custom hook
+export const treeDSBlocks = atom((get) => {
+  const presentBlocks = get(presentBlocksAtom);
+  return convertToBlocksTree([...presentBlocks]);
+});
+treeDSBlocks.debugLabel = "treeDSBlocks";
+
 presentBlocksAtom.debugLabel = "presentBlocksAtom";
 
 export const pageBlocksAtomsAtom = splitAtom(presentBlocksAtom);
