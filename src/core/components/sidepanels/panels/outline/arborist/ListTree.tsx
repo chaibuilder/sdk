@@ -52,9 +52,13 @@ const Node = memo(({ node, style, dragHandle }: Omit<NodeRendererProps<any>, "tr
   };
 
   useEffect(() => {
-    if (willReceiveDrop && isDropZone && !node.isOpen) {
-      node.toggle();
-    }
+    const timedToggle = setTimeout(() => {
+      if (willReceiveDrop && isDropZone && !node.isOpen) {
+        node.toggle();
+      } 
+    }, 500);
+
+    return () => clearTimeout(timedToggle);
   }, [willReceiveDrop, isDropZone, node]);
 
   return (
