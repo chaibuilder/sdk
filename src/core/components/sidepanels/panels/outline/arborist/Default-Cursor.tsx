@@ -11,12 +11,12 @@ export const DefaultCursor = React.memo(function DefaultCursor({ top, left }: Cu
   const style: CSSProperties = {
     position: "absolute",
     pointerEvents: "none",
-    top: top  + "px",
+    top: top + "px",
     left: left + "px",
     right: 0,
   };
   return (
-    <div style={{ ...placeholderStyle, ...style }}>
+    <div style={{ ...placeholderStyle, ...style }} className="">
       <div className="h-0.5 flex-1 rounded-[1px] bg-green-500"></div>
     </div>
   );

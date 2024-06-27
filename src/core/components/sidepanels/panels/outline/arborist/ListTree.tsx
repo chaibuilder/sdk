@@ -1,4 +1,4 @@
-import { NodeRendererProps, Tree } from "react-arborist";
+import {  NodeRendererProps, Tree } from "react-arborist";
 import { cn } from "../../../../../functions/Functions.ts";
 import {
   useBuilderProp,
@@ -7,7 +7,7 @@ import {
   useHighlightBlockId,
 } from "../../../../../hooks";
 import { ScrollArea, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../../ui";
-import { memo } from "react";
+import { memo, useEffect } from "react";
 
 import { TypeIcon } from "../TypeIcon.tsx";
 import { useDebouncedCallback } from "@react-hookz/web";
@@ -29,9 +29,7 @@ const Node = memo(({ node, style, dragHandle }: Omit<NodeRendererProps<any>, "tr
 
   const handleToggle = (event: any) => {
     event.stopPropagation();
-    /**
-     * Toggle the node open and close State
-     */
+    /*Toggle the node open and close State*/
     node.toggle();
   };
 
@@ -50,11 +48,11 @@ const Node = memo(({ node, style, dragHandle }: Omit<NodeRendererProps<any>, "tr
     handleClick(e);
   };
 
-  // useEffect(() => {
-  //   if (willReceiveDrop && isDropZone && !node.isOpen) {
-  //     node.toggle();
-  //   }
-  // }, [willReceiveDrop, isDropZone, node]);
+  useEffect(() => {
+    if (willReceiveDrop && isDropZone && !node.isOpen) {
+      node.toggle();
+    }
+  }, [willReceiveDrop, isDropZone, node]);
 
   return (
     <div
@@ -102,6 +100,12 @@ const Node = memo(({ node, style, dragHandle }: Omit<NodeRendererProps<any>, "tr
   );
 });
 
+// const DragPreview = ({ offset, mouse, id, dragIds, isDragging }: DragPreviewProps) => {
+
+//   const tree =
+
+// };
+
 const ListTree = () => {
   const [treeData] = useAtom(treeDSBlocks);
 
@@ -146,6 +150,7 @@ const ListTree = () => {
           onSelect={onSelect}
           childrenAccessor={(d: any) => d.children}
           width={"100%"}
+          // renderDragPreview={DragPreview}
           indent={10}
           idAccessor={"_id"}>
           {Node as any}
