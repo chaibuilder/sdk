@@ -1,29 +1,32 @@
-import {  NodeRendererProps, Tree } from "react-arborist";
+import { memo, useEffect } from "react";
+import { useAtom } from "jotai";
+import { useDebouncedCallback } from "@react-hookz/web";
+import { NodeRendererProps, Tree } from "react-arborist";
+
+import { treeDSBlocks } from "../../../../../atoms/blocks.ts";
+
 import { cn } from "../../../../../functions/Functions.ts";
+
 import {
   useBuilderProp,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
   useHighlightBlockId,
 } from "../../../../../hooks";
+
+import { TriangleRightIcon } from "@radix-ui/react-icons";
 import { ScrollArea, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../../ui";
-import { memo, useEffect } from "react";
 
 import { TypeIcon } from "../TypeIcon.tsx";
-import { useDebouncedCallback } from "@react-hookz/web";
-import { TriangleRightIcon } from "@radix-ui/react-icons";
-import { DefaultCursor } from "./Default-Cursor.tsx";
-
-import { useAtom } from "jotai";
-import { treeDSBlocks } from "../../../../../atoms/blocks.ts";
+import { DefaultCursor } from "./DefaultCursor.tsx";
+import { DefaultDragPreview } from "./DefaultDragPreview.tsx";
 
 const Node = memo(({ node, style, dragHandle }: Omit<NodeRendererProps<any>, "tree">) => {
   const [, setHighlighted] = useHighlightBlockId();
   const outlineItems = useBuilderProp("outlineMenuItems", []);
 
-  const { id, isSelected, data, handleClick, willReceiveDrop } = node;
-
   const isDropZone = node.children.length > 0;
+  const { id, isSelected, data, handleClick, willReceiveDrop, isDragging } = node;
 
   const debouncedSetHighlighted = useDebouncedCallback((id) => setHighlighted(id), [], 300);
 
@@ -65,6 +68,7 @@ const Node = memo(({ node, style, dragHandle }: Omit<NodeRendererProps<any>, "tr
         "group flex !h-fit w-full items-center justify-between space-x-px py-px",
         isSelected ? "bg-blue-500 text-white" : "text-gray-600 hover:bg-gray-200 dark:hover:bg-gray-800",
         willReceiveDrop && isDropZone && "bg-gray-200 text-gray-600",
+        isDragging && "opacity-20",
       )}>
       <div className="flex items-center">
         <div
@@ -99,12 +103,6 @@ const Node = memo(({ node, style, dragHandle }: Omit<NodeRendererProps<any>, "tr
     </div>
   );
 });
-
-// const DragPreview = ({ offset, mouse, id, dragIds, isDragging }: DragPreviewProps) => {
-
-//   const tree =
-
-// };
 
 const ListTree = () => {
   const [treeData] = useAtom(treeDSBlocks);
@@ -150,7 +148,7 @@ const ListTree = () => {
           onSelect={onSelect}
           childrenAccessor={(d: any) => d.children}
           width={"100%"}
-          // renderDragPreview={DragPreview}
+          renderDragPreview={DefaultDragPreview}
           indent={10}
           idAccessor={"_id"}>
           {Node as any}
