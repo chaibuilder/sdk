@@ -16,6 +16,7 @@ export const useBlocksStoreUndoableActions = () => {
     setNewBlocks: setBlocks,
     addBlocks: addNewBlocks,
     removeBlocks: removeExistingBlocks,
+    moveBlocks: moveExistingBlocks,
     updateBlocksProps,
   } = useBlocksStoreManager();
 
@@ -47,6 +48,28 @@ export const useBlocksStoreUndoableActions = () => {
     });
   };
 
+  const moveBlocks = (blockIds: string[], parent: string | undefined, position: number) => {
+    // Save the current positions of the blocks for undo
+    const currentPositions = map(blockIds, (_id: string) => {
+      const block = currentBlocks.find((block) => block._id === _id) as ChaiBlock;
+      const oldParent = block._parent || undefined;
+      const siblings = currentBlocks
+        .filter((block) => (oldParent ? block._parent === oldParent : !block._parent))
+        .map((block) => block._id);
+      const oldPosition = siblings.indexOf(_id);
+      return { _id, oldParent, oldPosition };
+    });
+
+    moveExistingBlocks(blockIds, parent, position);
+    add({
+      undo: () =>
+        each(currentPositions, ({ _id, oldParent, oldPosition }) => {
+          moveExistingBlocks([_id], oldParent, oldPosition);
+        }),
+      redo: () => moveExistingBlocks(blockIds, parent, position),
+    });
+  };
+
   const updateBlocks = (blockIds: string[], props: Partial<ChaiBlock>, oldPropsState?: Partial<ChaiBlock>) => {
     let previousPropsState = [];
     if (oldPropsState) {
@@ -75,6 +98,7 @@ export const useBlocksStoreUndoableActions = () => {
   };
 
   return {
+    moveBlocks,
     addBlocks,
     removeBlocks,
     updateBlocks,

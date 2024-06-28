@@ -2,7 +2,8 @@ import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { useBlocksStore } from "./useBlocksStoreUndoableActions.ts";
 import { find, omit } from "lodash-es";
 import { removeNestedBlocks } from "../hooks/useRemoveBlocks.ts";
-import { insertBlocksAtPosition } from "../functions/InsertBlocksAtPosition.ts";
+import { insertBlocksAtPosition } from "./InsertBlocksAtPosition.ts";
+import { moveBlocksWithChildren } from "./moveBlocksWithChildren.ts";
 
 export const useBlocksStoreManager = () => {
   const [, setBlocks] = useBlocksStore();
@@ -12,12 +13,13 @@ export const useBlocksStoreManager = () => {
       setBlocks(newBlocks);
     },
     addBlocks: (newBlocks: ChaiBlock[], parent?: string, position?: number) => {
-      setBlocks((prevBlocks) => {
-        return insertBlocksAtPosition(prevBlocks, newBlocks, parent, position);
-      });
+      setBlocks((prevBlocks) => insertBlocksAtPosition(prevBlocks, newBlocks, parent, position));
     },
     removeBlocks: (blockIds: string[]) => {
       setBlocks((prevBlocks) => removeNestedBlocks(prevBlocks, blockIds));
+    },
+    moveBlocks: (blockIds: string[], newParent: string | undefined, position: number) => {
+      setBlocks((prevBlocks) => moveBlocksWithChildren(prevBlocks, blockIds, newParent, position));
     },
     updateBlocksProps: (blocks: Partial<ChaiBlock>[]) => {
       setBlocks((prevBlocks: ChaiBlock[]) => {

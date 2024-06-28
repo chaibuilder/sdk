@@ -9,9 +9,9 @@ import { cn } from "../../../../../functions/Functions.ts";
 
 import {
   useBuilderProp,
+  useHighlightBlockId,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
-  useHighlightBlockId,
 } from "../../../../../hooks";
 
 import { TriangleRightIcon } from "@radix-ui/react-icons";
@@ -20,6 +20,7 @@ import { ScrollArea, Tooltip, TooltipContent, TooltipTrigger } from "../../../..
 import { TypeIcon } from "../TypeIcon.tsx";
 import { DefaultCursor } from "./DefaultCursor.tsx";
 import { DefaultDragPreview } from "./DefaultDragPreview.tsx";
+import { useBlocksStoreUndoableActions } from "../../../../../history/useBlocksStoreUndoableActions.ts";
 
 const Node = memo(({ node, style, dragHandle }: Omit<NodeRendererProps<any>, "tree">) => {
   const [, setHighlighted] = useHighlightBlockId();
@@ -55,7 +56,7 @@ const Node = memo(({ node, style, dragHandle }: Omit<NodeRendererProps<any>, "tr
     const timedToggle = setTimeout(() => {
       if (willReceiveDrop && isDropZone && !node.isOpen) {
         node.toggle();
-      } 
+      }
     }, 500);
 
     return () => clearTimeout(timedToggle);
@@ -113,6 +114,7 @@ const ListTree = () => {
 
   const [ids, setIds] = useSelectedBlockIds();
   const [, setStyleBlocks] = useSelectedStylingBlocks();
+  const { moveBlocks } = useBlocksStoreUndoableActions();
 
   const clearSelection = () => {
     setIds([]);
@@ -123,7 +125,7 @@ const ListTree = () => {
     console.log("onRename", { id, name });
   };
   const onMove = ({ dragIds, parentId, index }) => {
-    console.log("onMove", { dragIds, parentId, index });
+    moveBlocks(dragIds, parentId, index);
   };
   const onDelete = ({ ids }) => {
     console.log("onDelete", { ids });
