@@ -2,32 +2,27 @@ import { memo, useEffect } from "react";
 import { useAtom } from "jotai";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { NodeRendererProps, Tree } from "react-arborist";
-
 import { treeDSBlocks } from "../../../../../atoms/blocks.ts";
-
 import { cn } from "../../../../../functions/Functions.ts";
-
 import {
   useBuilderProp,
   useHighlightBlockId,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
 } from "../../../../../hooks";
-
 import { TriangleRightIcon } from "@radix-ui/react-icons";
 import { ScrollArea, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../../ui";
-
 import { TypeIcon } from "../TypeIcon.tsx";
 import { DefaultCursor } from "./DefaultCursor.tsx";
 import { DefaultDragPreview } from "./DefaultDragPreview.tsx";
 import { useBlocksStoreUndoableActions } from "../../../../../history/useBlocksStoreUndoableActions.ts";
+import { BlockContextMenu } from "../BlockContextMenu.tsx";
 
 const Node = memo(({ node, style, dragHandle }: Omit<NodeRendererProps<any>, "tree">) => {
-  const [, setHighlighted] = useHighlightBlockId();
   const outlineItems = useBuilderProp("outlineMenuItems", []);
-
+  const [, setHighlighted] = useHighlightBlockId();
   const isDropZone = node.children.length > 0;
-  const { id, isSelected, data, handleClick, willReceiveDrop, isDragging } = node;
+  const { id, data, isSelected, willReceiveDrop, isDragging, isEditing, handleClick } = node;
 
   const debouncedSetHighlighted = useDebouncedCallback((id) => setHighlighted(id), [], 300);
 
@@ -63,51 +58,82 @@ const Node = memo(({ node, style, dragHandle }: Omit<NodeRendererProps<any>, "tr
   }, [willReceiveDrop, isDropZone, node]);
 
   return (
-    <div
-      onClick={handleNodeClickWithoutPropagating}
-      key={id}
-      onMouseEnter={() => debouncedSetHighlighted(id)}
-      style={style}
-      ref={dragHandle}
-      className={cn(
-        "group flex !h-fit w-full items-center justify-between space-x-px py-px",
-        isSelected ? "bg-blue-500 text-white" : "text-gray-600 hover:bg-gray-200 dark:hover:bg-gray-800",
-        willReceiveDrop && isDropZone && "bg-gray-200 text-gray-600",
-        isDragging && "opacity-20",
-      )}>
-      <div className="flex items-center">
-        <div
-          className={`flex h-4 w-4 rotate-0 transform cursor-pointer items-center justify-center text-xs transition-transform duration-100 ${
-            node.isOpen ? "rotate-90" : ""
-          }`}>
-          {isDropZone && (
-            <button onClick={handleToggle} type="button">
-              <TriangleRightIcon />
-            </button>
-          )}
-        </div>
-        <button type="button" className="flex items-center">
-          <div className="-mt-0.5 h-3 w-3">
-            <TypeIcon type={data?._type} />
+    <BlockContextMenu id={id}>
+      <div
+        onClick={handleNodeClickWithoutPropagating}
+        onMouseEnter={() => debouncedSetHighlighted(id)}
+        style={style}
+        data-id={id}
+        ref={dragHandle}
+        className={cn(
+          "group flex !h-fit w-full items-center justify-between space-x-px py-px",
+          isSelected ? "bg-blue-500 text-white" : "text-gray-600 hover:bg-gray-200 dark:hover:bg-gray-800",
+          willReceiveDrop && isDropZone && "bg-green-200 text-green-600",
+          isDragging && "opacity-20",
+        )}>
+        <div className="flex items-center">
+          <div
+            className={`flex h-4 w-4 rotate-0 transform cursor-pointer items-center justify-center text-xs transition-transform duration-100 ${
+              node.isOpen ? "rotate-90" : ""
+            }`}>
+            {isDropZone && (
+              <button onClick={handleToggle} type="button">
+                <TriangleRightIcon />
+              </button>
+            )}
           </div>
-          <div className="ml-2 truncate text-[11px]">{data?._type}</div>
-        </button>
+          <button type="button" className="flex items-center">
+            <div className="-mt-0.5 h-3 w-3">
+              <TypeIcon type={data?._type} />
+            </div>
+            {isEditing ? (
+              <Input node={node} />
+            ) : (
+              <div
+                className="ml-2 truncate text-[11px]"
+                onDoubleClick={(e) => {
+                  e.stopPropagation();
+                  node.edit();
+                  node.deselect();
+                }}>
+                {data?._type}
+              </div>
+            )}
+          </button>
+        </div>
+        <div className="invisible flex items-center space-x-1 pr-2 group-hover:visible">
+          {outlineItems.map((outlineItem) => (
+            <Tooltip>
+              <TooltipTrigger
+                className="cursor-pointer rounded bg-transparent hover:bg-white hover:text-blue-500"
+                asChild>
+                {outlineItem.item(id)}
+              </TooltipTrigger>
+              <TooltipContent className="z-[9999]">{outlineItem.tooltip}</TooltipContent>
+            </Tooltip>
+          ))}
+        </div>
       </div>
-      <div className="invisible flex items-center space-x-1 pr-2 group-hover:visible">
-        {outlineItems.map((outlineItem) => (
-          <Tooltip>
-            <TooltipTrigger
-              className="cursor-pointer rounded bg-transparent hover:bg-white hover:text-blue-500"
-              asChild>
-              {outlineItem.item(id)}
-            </TooltipTrigger>
-            <TooltipContent className="z-[9999]">{outlineItem.tooltip}</TooltipContent>
-          </Tooltip>
-        ))}
-      </div>
-    </div>
+    </BlockContextMenu>
   );
 });
+
+const Input = ({ node }) => {
+  return (
+    <input
+      autoFocus
+      className="ml-2 w-full rounded-sm border border-black/30 bg-transparent px-1 text-[11px] outline-none"
+      type="text"
+      defaultValue={node.data.name}
+      onFocus={(e) => e.currentTarget.select()}
+      onBlur={() => node.reset()}
+      onKeyDown={(e) => {
+        if (e.key === "Escape") node.reset();
+        if (e.key === "Enter") node.submit(e.currentTarget.value);
+      }}
+    />
+  );
+};
 
 const ListTree = () => {
   const [treeData] = useAtom(treeDSBlocks);
@@ -156,6 +182,16 @@ const ListTree = () => {
           width={"100%"}
           renderDragPreview={DefaultDragPreview}
           indent={10}
+          onContextMenu={(e: any) => {
+            e.preventDefault();
+
+            const nodeId = e.target.dataset.id || "";
+
+            setStyleBlocks([]);
+            setIds([nodeId]);
+
+            console.log(e);
+          }}
           idAccessor={"_id"}>
           {Node as any}
         </Tree>
