@@ -151,7 +151,7 @@ const BrandingOptions = (): React.JSX.Element => {
   });
 
   return (
-    <div className="flex h-full select-none flex-col">
+    <div className="flex h-full w-60 select-none flex-col">
       <div className="rounded-md bg-background/30 p-1">
         <h1 className="px-1 font-semibold">Branding Options</h1>
       </div>

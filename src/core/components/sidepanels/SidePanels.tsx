@@ -122,7 +122,7 @@ const SidePanels = () => {
         </div>
       </div>
       <div
-        className={`absolute left-14 z-[50] h-full w-96 border-r bg-background duration-500 ease-in-out ${
+        className={`absolute left-14 z-[50] h-full w-fit border-r bg-background duration-500 ease-in-out ${
           activePanel !== OUTLINE_KEY ? "translate-x-0" : "-translate-x-full"
         }`}>
         <Suspense
@@ -135,7 +135,7 @@ const SidePanels = () => {
           }>
           <div
             className={cn(
-              "relative h-full max-h-[93%] overflow-y-auto overflow-x-hidden bg-background p-1",
+              "relative h-full max-h-[98%] overflow-y-auto overflow-x-hidden bg-background p-1",
               activePanel === OUTLINE_KEY ? "" : "z-[100]",
             )}
             onMouseEnter={() => {

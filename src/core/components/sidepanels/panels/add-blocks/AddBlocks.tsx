@@ -56,7 +56,7 @@ const AddBlocksPanel = () => {
     (!isLoading && !isEmpty(predefinedBlocks)) || find(values(chaiBlocks), { category: "custom" }) !== undefined;
 
   return (
-    <div className="flex h-full flex-col overflow-hidden">
+    <div className="flex h-full w-72 flex-col overflow-hidden">
       <div className="mb-2 flex flex-col justify-between rounded-md bg-background/30 p-1">
         <h1 className="flex flex-col items-baseline px-1 text-xl font-semibold xl:flex-col">{t("add_block")}</h1>
         <span className="p-0 text-xs font-light leading-3 opacity-80 xl:pl-1">
