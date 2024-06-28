@@ -22,7 +22,7 @@ export default function BlockSettings() {
   const dataBindingSupported = useBuilderProp("dataBindingSupport", false);
 
   const updateProps = ({ formData: newData }: IChangeEvent, id?: string, oldState?: any) => {
-    if (id) {
+    if (id && prevFormData?._id === selectedBlock._id) {
       const path = id.replace("root.", "") as string;
       updateBlockProps([selectedBlock._id], { [path]: get(newData, path) } as any, oldState);
     }
@@ -33,7 +33,7 @@ export default function BlockSettings() {
       updateProps({ formData } as IChangeEvent, id, oldPropState);
       setPrevFormData(formData);
     }, 1500),
-    [],
+    [selectedBlock?._id],
   );
 
   const updateRealtime = ({ formData: newData }: IChangeEvent, id?: string) => {
@@ -62,7 +62,7 @@ export default function BlockSettings() {
 
   return (
     <div className="overflow-x-hidden">
-      <JSONForm onChange={updateRealtime} formData={formData} properties={nameProperties} />
+      <JSONForm id={selectedBlock?._id} onChange={updateRealtime} formData={formData} properties={nameProperties} />
       <hr className="mt-4" />
       {dataBindingSupported ? (
         <Accordion type="multiple" defaultValue={["STATIC", "BINDING"]} className="h-full w-full">
@@ -100,12 +100,22 @@ export default function BlockSettings() {
                   {bindingProps.length === 1 ? "property" : "properties"}. Remove data binding to edit static content.
                 </div>
               ) : null}
-              <JSONForm onChange={updateRealtime} formData={formData} properties={staticContentProperties} />
+              <JSONForm
+                id={selectedBlock?._id}
+                onChange={updateRealtime}
+                formData={formData}
+                properties={staticContentProperties}
+              />
             </AccordionContent>
           </AccordionItem>
         </Accordion>
       ) : (
-        <JSONForm onChange={updateRealtime} formData={formData} properties={staticContentProperties} />
+        <JSONForm
+          id={selectedBlock?._id}
+          onChange={updateRealtime}
+          formData={formData}
+          properties={staticContentProperties}
+        />
       )}
       <div className="pb-60"></div>
     </div>

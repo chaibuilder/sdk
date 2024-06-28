@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 import { RJSFSchema, UiSchema } from "@rjsf/utils";
 import { includes } from "lodash-es";
 import { getBlockJSONFromSchemas, getBlockJSONFromUISchemas } from "../../functions/Controls.ts";
@@ -8,6 +8,7 @@ import { IconPickerField, ImagePickerField, LinkField, RTEField } from "../../..
 import validator from "@rjsf/validator-ajv8";
 
 type JSONFormType = {
+  id?: string;
   formData: any;
   properties: any;
   onChange: ({ formData }: any, key?: string) => void;
@@ -17,7 +18,8 @@ type JSONFormType = {
  * @param param0
  * @returns JSONForm for Static and name fields
  */
-export const JSONForm = memo(({ properties, formData, onChange }: JSONFormType) => {
+export const JSONForm = memo(({ id, properties, formData, onChange }: JSONFormType) => {
+  const [form, setForm] = useState<any>(formData);
   const propsSchema: RJSFSchema = { type: "object", properties: {} };
   const uiSchema: UiSchema = {};
 
@@ -28,6 +30,10 @@ export const JSONForm = memo(({ properties, formData, onChange }: JSONFormType) 
     propsSchema.properties[propKey] = getBlockJSONFromSchemas(control);
     uiSchema[propKey] = getBlockJSONFromUISchemas(control);
   });
+
+  useEffect(() => {
+    setForm(formData);
+  }, [id]);
 
   return (
     <RjForm
@@ -46,8 +52,12 @@ export const JSONForm = memo(({ properties, formData, onChange }: JSONFormType) 
       validator={validator}
       uiSchema={uiSchema}
       schema={propsSchema}
-      formData={formData}
-      onChange={onChange}
+      formData={form}
+      onChange={({ formData: fD }, id) => {
+        if (!id) return;
+        setForm(fD);
+        onChange({ formData: fD }, id);
+      }}
     />
   );
 });
