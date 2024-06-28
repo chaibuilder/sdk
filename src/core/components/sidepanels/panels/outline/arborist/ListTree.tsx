@@ -19,8 +19,8 @@ import { ScrollArea, Tooltip, TooltipContent, TooltipTrigger } from "../../../..
 
 import { TypeIcon } from "../TypeIcon.tsx";
 import { DefaultCursor } from "./DefaultCursor.tsx";
-import { DefaultDragPreview } from "./DefaultDragPreview.tsx";
 import { useBlocksStoreUndoableActions } from "../../../../../history/useBlocksStoreUndoableActions.ts";
+import { DefaultDragPreview } from "./DefaultDragPreview.tsx";
 
 const Node = memo(({ node, style, dragHandle }: Omit<NodeRendererProps<any>, "tree">) => {
   const [, setHighlighted] = useHighlightBlockId();
