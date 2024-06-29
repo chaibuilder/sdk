@@ -1,59 +1,85 @@
 import * as React from "react";
 import { useState } from "react";
-import { filter, forEach, get, isEmpty, last, map, set } from "lodash-es";
-import { PlusIcon, TrashIcon } from "@radix-ui/react-icons";
-import { useSavePage, useSelectedBlock, useSelectedStylingBlocks, useUpdateBlocksPropsRealtime } from "../../../hooks";
-import { AccordionContent, AccordionItem, AccordionTrigger, Label } from "../../../../ui";
+import { filter, forEach, get, isEmpty, kebabCase, map, set } from "lodash-es";
+import {
+  useSelectedBlock,
+  useSelectedStylingBlocks,
+  useUpdateBlocksProps,
+  useUpdateBlocksPropsRealtime,
+} from "../../../hooks";
+import { useTranslation } from "react-i18next";
+import { DeleteIcon } from "lucide-react";
+import { PlusIcon } from "@radix-ui/react-icons";
+import { Button, Input, Tooltip, TooltipContent, TooltipTrigger } from "../../../../ui";
 
-const NewAttributePair = ({
-  item,
-  index,
-  canDelete,
-  onChange,
-  onRemove,
-}: {
-  item: { key: string; value: string };
-  index: number;
-  canDelete: boolean;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>, i: number) => void;
-  onRemove: () => void;
-}) => {
+const NewAttributePair = ({ onAdd }: { onAdd: Function }) => {
+  const { t } = useTranslation();
+  const [item, setItem] = useState<Record<"key" | "value", string>>({ key: "", value: "" });
+
+  const emitAdd = () => {
+    if (!isEmpty(item.key)) {
+      onAdd({ ...item, key: kebabCase(item.key) });
+      setItem({ key: "", value: "" });
+    }
+  };
   return (
-    <div className={`flex flex-col gap-1 border-gray-400 py-2 ${canDelete ? "border-b" : ""}`}>
-      <input
+    <div className={`flex flex-col gap-1 border-gray-200 px-1`}>
+      <Input
         name="key"
-        onChange={(e) => onChange(e, index)}
+        onChange={(e) => setItem({ ...item, key: e.target.value })}
         value={item.key}
-        placeholder="Key"
-        className="w-full rounded border-gray-300 bg-background p-0.5 pl-2 text-sm focus-visible:outline-0"
+        placeholder={t("Name")}
         autoComplete="off"
         autoCapitalize="off"
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            if (!isEmpty(item.key)) {
+              emitAdd();
+            }
+          }
+        }}
       />
       <div className="flex items-center gap-x-1.5">
-        <input
+        <Input
           name="value"
-          onChange={(e) => (isEmpty(item.key) ? {} : onChange(e, index))}
+          onChange={(e) => setItem({ ...item, value: e.target.value })}
           value={item.value}
-          placeholder="Value"
-          className="w-full rounded border-gray-300 bg-background p-0.5 pl-2 text-sm focus-visible:outline-0"
+          placeholder={t("Value")}
           autoComplete="off"
           autoCapitalize="off"
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              if (!isEmpty(item.key)) {
+                emitAdd();
+              }
+            }
+          }}
         />
-        <TrashIcon
-          onClick={onRemove}
-          className="h-6 w-6 cursor-pointer rounded border border-red-400 p-1 text-red-400 hover:opacity-80"
-        />
+      </div>
+      <div className="flex items-center gap-x-2">
+        <Button disabled={isEmpty(item.key)} onClick={emitAdd} size="sm" className="flex items-center">
+          <span>{t("Add")}&nbsp;</span>
+          <PlusIcon />
+        </Button>
+        {!isEmpty(item.key) ? (
+          <Button variant="ghost" onClick={() => setItem({ key: "", value: "" })}>
+            {t("Cancel")}
+          </Button>
+        ) : null}
       </div>
     </div>
   );
 };
 
-export const CustomAttributes = ({ section }: any) => {
-  const { setSyncState } = useSavePage();
+export const CustomAttributes = () => {
   const block = useSelectedBlock();
   const [attributes, setAttributes] = useState([] as Array<{ key: string; value: string }>);
   const [selectedStylingBlock] = useSelectedStylingBlocks();
   const updateBlockPropsRealtime = useUpdateBlocksPropsRealtime();
+  const updateBlockProps = useUpdateBlocksProps();
+  const { t } = useTranslation();
 
   const attrKey = `${get(selectedStylingBlock, "0.prop")}_attrs`;
 
@@ -65,15 +91,13 @@ export const CustomAttributes = ({ section }: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [get(block, attrKey)]);
 
-  const addAttribute = () => setAttributes([...attributes, { key: "", value: "" }]);
   const removeAttribute = (index: number) => {
     const _attributes = filter(attributes, (_, ind) => index !== ind);
     updateAttributes(_attributes);
   };
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
-    const _attrs: any = [...attributes];
-    _attrs[index][e.target.name] = e.target.value;
+  const onAdd = (newAttr: Record<"key" | "value", string>) => {
+    const _attrs: any = [...attributes, newAttr];
     updateAttributes(_attrs);
   };
 
@@ -85,63 +109,67 @@ export const CustomAttributes = ({ section }: any) => {
           set(_attrs, item.key, item.value);
         }
       });
-      // @ts-ignore
-      updateBlockPropsRealtime([get(block, "_id")], { [attrKey]: _attrs });
-      setSyncState("UNSAVED");
+      updateBlockProps([get(block, "_id")], { [attrKey]: _attrs });
     },
-    [block, setSyncState, updateBlockPropsRealtime, attrKey],
+    [block, updateBlockPropsRealtime, attrKey],
   );
 
   return (
-    <AccordionItem value={section.heading}>
-      <AccordionTrigger className="px-3 py-2 text-xs hover:no-underline">
-        <div className="flex items-center gap-x-2">
-          <div
-            className={`h-[8px] w-[8px] rounded-full ${!isEmpty(get(block, attrKey)) ? "bg-blue-500" : "bg-gray-300"}`}
-          />
-          Attributes
-        </div>
-      </AccordionTrigger>
-      <AccordionContent className="bg-gray-100 px-3.5 py-2">
-        <div className="no-scrollbar flex min-h-max flex-col gap-y-2 overflow-y-auto bg-gray-100 p-px">
-          <Label className="mt-2 flex w-full items-center justify-between">
-            Add Custom attributes
-            <div
-              className={`flex h-6 w-max items-center justify-center gap-x-0.5 rounded-full border p-1 px-2 text-xs ${
-                !isEmpty(attributes) && isEmpty(last(attributes)?.key)
-                  ? "cursor-not-allowed border-gray-400 text-gray-400"
-                  : "cursor-pointer border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-white"
-              }`}
-              onClick={() => {
-                if (!isEmpty(attributes) && isEmpty(last(attributes)?.key)) return;
-                addAttribute();
-              }}>
-              <PlusIcon width={12} height={12} /> Add
-            </div>
-          </Label>
-          <div className="flex flex-col">
-            {isEmpty(attributes) && (
-              <div className="flex h-12 items-center justify-center text-sm text-gray-400">
-                Click + Add to add attributes
-              </div>
-            )}
-            {React.Children.toArray(
-              map(attributes, (item: { key: string; value: string }, index) => {
-                const canDelete = attributes.length > 0 && index < attributes.length - 1;
-                return (
-                  <NewAttributePair
-                    item={item}
-                    index={index}
-                    canDelete={canDelete}
-                    onChange={onChange}
-                    onRemove={() => removeAttribute(index)}
-                  />
-                );
-              }),
-            )}
+    <div className="px-2">
+      <div className="no-scrollbar flex min-h-max flex-col gap-y-2 overflow-y-auto">
+        <div className="flex flex-col">
+          <div>
+            <ul className="overflow-hidden rounded-md bg-gray-100 p-2 text-xs text-gray-700">
+              {isEmpty(attributes) ? (
+                <li className="flex h-16 items-center justify-center">
+                  <p>{t("No custom attributes added yet")}</p>
+                </li>
+              ) : (
+                <li>
+                  <span className="font-bold">{t("Custom attributes")}</span>
+                </li>
+              )}
+              {React.Children.toArray(
+                map(attributes, (item: { key: string; value: string }) => {
+                  return (
+                    <li className="group flex max-w-full items-center justify-between">
+                      <Tooltip delayDuration={1000}>
+                        <TooltipTrigger asChild>
+                          <div className="w-[90%] cursor-default truncate px-1 hover:bg-gray-200">
+                            {item.key}
+                            &nbsp;<span className="font-bold text-orange-500">=</span>&nbsp;
+                            {item.value}
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent className="max-w-[200px]">
+                          <div>
+                            {t("Name")}: {item.key}
+                          </div>
+                          <div>
+                            {t("Value")}: {item.value}
+                          </div>
+                        </TooltipContent>
+                      </Tooltip>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <button
+                            className="invisible group-hover:visible"
+                            onClick={() => removeAttribute(attributes.indexOf(item))}>
+                            <DeleteIcon className="w-4 text-gray-500" />
+                          </button>
+                        </TooltipTrigger>
+                        <TooltipContent className="max-w-[200px]">{t("Remove attribute")}</TooltipContent>
+                      </Tooltip>
+                    </li>
+                  );
+                }),
+              )}
+            </ul>
           </div>
+          <div className="py-2" />
+          <NewAttributePair onAdd={(newAttr: Record<"key" | "value", string>) => onAdd(newAttr)} />
         </div>
-      </AccordionContent>
-    </AccordionItem>
+      </div>
+    </div>
   );
 };

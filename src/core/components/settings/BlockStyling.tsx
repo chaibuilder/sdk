@@ -14,7 +14,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../ui";
-import { CustomAttributes } from "./new-panel/CustomAttribute";
 import { BrushIcon } from "lucide-react";
 import { StylingHelpers } from "./StylingHelpers.tsx";
 
@@ -77,7 +76,6 @@ export default function BlockStyling() {
           {SETTINGS_SECTIONS.map((section) => (
             <StylingGroup key={section.heading} section={section} />
           ))}
-          <CustomAttributes section={{ heading: "Attributes" }} />
         </Accordion>
       </ScrollArea>
     </div>
