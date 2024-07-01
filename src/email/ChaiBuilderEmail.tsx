@@ -1,5 +1,6 @@
 import { ChaiBuilderEditor, ChaiBuilderEditorProps } from "../core/main";
 import { MobileIcon } from "@radix-ui/react-icons";
+import { includes } from "lodash";
 
 const BREAKPOINTS = [
   {
@@ -21,6 +22,7 @@ const BREAKPOINTS = [
 const ChaiBuilderEmail = (props: ChaiBuilderEditorProps) => {
   const emailProps: ChaiBuilderEditorProps = {
     ...props,
+    filterChaiBlock: (block: any) => includes(block.type, "Email/"),
     importHTMLSupport: false,
     dataBindingSupport: false,
     breakpoints: BREAKPOINTS,

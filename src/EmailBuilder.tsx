@@ -7,8 +7,10 @@ import ExportModal from "./__dev/Export.tsx";
 import { generateEmailTemplate } from "./render";
 import { ChaiBuilderEmail } from "./email";
 import { loadEmailBlocks } from "./blocks/email";
+import { loadWebBlocks } from "./blocks/web";
 
 loadEmailBlocks();
+loadWebBlocks();
 
 const PreviewMessage = () => {
   const { t } = useTranslation();

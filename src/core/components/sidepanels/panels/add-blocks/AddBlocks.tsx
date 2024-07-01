@@ -20,29 +20,18 @@ import { useBuilderProp, useUILibraryBlocks } from "../../../../hooks";
 import ImportHTML from "./ImportHTML";
 import { useChaiBlocks } from "@chaibuilder/runtime";
 
-/**
- *
- * Checking which block to show in add block list
- *
- */
-const isAllowedBlockType = () => {
-  return true;
-};
-
 const AddBlocksPanel = () => {
   const { t } = useTranslation();
   const [tab, setTab] = useState<string>("core");
   const [active, setActive] = useState<string>("basic");
-  const chaiBlocks = useChaiBlocks();
+  const allChaiBlocks = useChaiBlocks();
   const [, setCategory] = useAtom(showPredefinedBlockCategoryAtom);
   const importHTMLSupport = useBuilderProp("importHTMLSupport", true);
-
+  const filterChaiBlock = useBuilderProp("filterChaiBlock", () => true);
   const { data: predefinedBlocks, isLoading } = useUILibraryBlocks();
-  const groupedBlocks = groupBy(
-    filter(chaiBlocks, () => isAllowedBlockType()),
-    "category",
-  ) as { core: any[]; custom: any[] };
+  const chaiBlocks = filter(allChaiBlocks, filterChaiBlock);
 
+  const groupedBlocks = groupBy(chaiBlocks, "category") as Record<string, any[]>;
   const uniqueTypeGroup = uniq(map(groupedBlocks.core, "group"));
 
   // * setting active tab if not already selected from current unique list
@@ -90,9 +79,7 @@ const AddBlocksPanel = () => {
           <div className="mt-2 w-full">
             {React.Children.toArray(
               map(uniqueTypeGroup, (group: string) =>
-                reject(filter(values(groupedBlocks.core), { group }), {
-                  hidden: true,
-                }).length ? (
+                reject(filter(values(groupedBlocks.core), { group }), { hidden: true }).length ? (
                   <Accordion type="single" value={group} collapsible className="w-full">
                     <AccordionItem value={group}>
                       <AccordionTrigger className="rounded-md bg-gray-100 px-4 py-2 capitalize">

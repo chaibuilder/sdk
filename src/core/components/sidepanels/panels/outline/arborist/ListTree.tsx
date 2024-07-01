@@ -102,7 +102,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
                   node.edit();
                   node.deselect();
                 }}>
-                {data?._name || data?._type}
+                {data?._name || data?._type.split("/").pop()}
               </div>
             )}
           </div>
