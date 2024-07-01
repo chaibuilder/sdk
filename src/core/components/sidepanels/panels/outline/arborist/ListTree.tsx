@@ -5,6 +5,7 @@ import { MoveHandler, NodeRendererProps, RenameHandler, Tree } from "react-arbor
 import { treeDSBlocks } from "../../../../../atoms/blocks.ts";
 import { cn } from "../../../../../functions/Functions.ts";
 import {
+  useBlocksStore,
   useBuilderProp,
   useHighlightBlockId,
   useSelectedBlockIds,
@@ -19,6 +20,7 @@ import { DefaultDragPreview } from "./DefaultDragPreview.tsx";
 import { useBlocksStoreUndoableActions } from "../../../../../history/useBlocksStoreUndoableActions.ts";
 import { BlockContextMenu } from "../BlockContextMenu.tsx";
 import { canAcceptChildBlock } from "../../../../../functions/block-helpers.ts";
+import { find, first } from "lodash";
 
 const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const outlineItems = useBuilderProp("outlineMenuItems", []);
@@ -139,6 +141,14 @@ const Input = ({ node }) => {
     />
   );
 };
+const useCanMove = () => {
+  const [blocks] = useBlocksStore();
+  return (ids: string[], newParentId: string | null) => {
+    const newParentType = find(blocks, { _id: newParentId })?._type;
+    const blockType = first(ids.map((id) => find(blocks, { _id: id })?._type));
+    return canAcceptChildBlock(newParentType, blockType);
+  };
+};
 
 const ListTree = () => {
   const [treeData] = useAtom(treeDSBlocks);
@@ -146,6 +156,7 @@ const ListTree = () => {
   const updateBlockProps = useUpdateBlocksProps();
   const [, setStyleBlocks] = useSelectedStylingBlocks();
   const { moveBlocks } = useBlocksStoreUndoableActions();
+  const canMove = useCanMove();
 
   const clearSelection = () => {
     setIds([]);
@@ -156,7 +167,7 @@ const ListTree = () => {
     updateBlockProps([id], { _name: name }, node.data._name);
   };
   const onMove: MoveHandler<any> = ({ dragIds, parentId, index }) => {
-    moveBlocks(dragIds, parentId, index);
+    if (canMove(dragIds, parentId)) moveBlocks(dragIds, parentId, index);
   };
 
   const onSelect = (nodes: any) => {
