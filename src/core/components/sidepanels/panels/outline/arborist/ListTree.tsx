@@ -1,7 +1,7 @@
-import { memo, useEffect } from "react";
+import { memo, useEffect, MouseEvent } from "react";
 import { useAtom } from "jotai";
 import { useDebouncedCallback } from "@react-hookz/web";
-import { NodeRendererProps, Tree } from "react-arborist";
+import { MoveHandler, NodeRendererProps, RenameHandler, Tree } from "react-arborist";
 import { treeDSBlocks } from "../../../../../atoms/blocks.ts";
 import { cn } from "../../../../../functions/Functions.ts";
 import {
@@ -9,6 +9,7 @@ import {
   useHighlightBlockId,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
+  useUpdateBlocksProps,
 } from "../../../../../hooks";
 import { TriangleRightIcon } from "@radix-ui/react-icons";
 import { ScrollArea, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../../ui";
@@ -96,12 +97,12 @@ const Node = memo(({ node, style, dragHandle, tree }: NodeRendererProps<any>) =>
             ) : (
               <div
                 className="ml-2 truncate text-[11px]"
-                onDoubleClick={(e) => {
+                onDoubleClick={(e) => { 
                   e.stopPropagation();
                   node.edit();
                   node.deselect();
                 }}>
-                {data?._type}
+                {data?._name || data?._type}
               </div>
             )}
           </button>
@@ -131,9 +132,8 @@ const Input = ({ node }) => {
       type="text"
       defaultValue={node.data.name}
       onFocus={(e) => e.currentTarget.select()}
-      onBlur={() => node.reset()} //save on blur
+      onBlur={(e) => node.submit(e.currentTarget.value)}
       onKeyDown={(e) => {
-        if (e.key === "Escape") node.reset();
         if (e.key === "Enter") node.submit(e.currentTarget.value);
       }}
     />
@@ -142,8 +142,8 @@ const Input = ({ node }) => {
 
 const ListTree = () => {
   const [treeData] = useAtom(treeDSBlocks);
-
   const [ids, setIds] = useSelectedBlockIds();
+  const updateBlockProps = useUpdateBlocksProps();
   const [, setStyleBlocks] = useSelectedStylingBlocks();
   const { moveBlocks } = useBlocksStoreUndoableActions();
 
@@ -152,14 +152,11 @@ const ListTree = () => {
     setStyleBlocks([]);
   };
 
-  const onRename = ({ id, name }) => {
-    console.log("onRename", { id, name });
+  const onRename: RenameHandler<any> = ({ id, name, node }) => {
+    updateBlockProps([id], { _name: name }, node.data._name);
   };
-  const onMove = ({ dragIds, parentId, index }) => {
+  const onMove: MoveHandler<any> = ({ dragIds, parentId, index }) => {
     moveBlocks(dragIds, parentId, index);
-  };
-  const onDelete = ({ ids }) => {
-    console.log("onDelete", { ids });
   };
 
   const onSelect = (nodes: any) => {
@@ -169,7 +166,7 @@ const ListTree = () => {
     setIds([nodeId]);
   };
 
-  const onContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
+  const onContextMenu = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     const target = e.target as HTMLDivElement;
     const nodeId =
@@ -190,7 +187,6 @@ const ListTree = () => {
           openByDefault={false}
           onMove={onMove}
           rowHeight={20}
-          onDelete={onDelete}
           data={treeData}
           renderCursor={DefaultCursor}
           onSelect={onSelect}
