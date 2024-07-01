@@ -82,6 +82,7 @@ specifiers:
   lucide-react: ^0.244.0
   msw: ^2.0.8
   postcss: ^8.4.31
+  preline: ^2.3.0
   prettier: ^3.3.0
   prettier-plugin-tailwindcss: ^0.6.1
   prop-types: ^15.8.1
@@ -163,6 +164,7 @@ dependencies:
   lodash: 4.17.21
   lodash-es: 4.17.21
   lucide-react: 0.244.0_react@18.2.0
+  preline: 2.3.0
   react: 18.2.0
   react-arborist: 3.4.0_pikd2mlpdc3g5bl6cxdgvund7m
   react-autosuggest: 10.1.0_react@18.2.0
@@ -10054,6 +10056,12 @@ packages:
       tar-fs: 2.1.1
       tunnel-agent: 0.6.0
     dev: true
+
+  /preline/2.3.0:
+    resolution: {integrity: sha512-mBMF7NTbbhC2wp+1RHbBaHUCXsdM9ObJo64LvDcNRSKLbaC4uszkqBZ/X/paklEQh3+dOUAVBp1zvE5yQf/czw==}
+    dependencies:
+      '@popperjs/core': 2.11.8
+    dev: false
 
   /prelude-ls/1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}

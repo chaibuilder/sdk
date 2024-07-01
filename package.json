@@ -136,6 +136,7 @@
     "lodash": "^4.17.21",
     "lodash-es": "4.17.21",
     "lucide-react": "^0.244.0",
+    "preline": "^2.3.0",
     "react": "^18.2.0",
     "react-arborist": "^3.4.0",
     "react-autosuggest": "10.1.0",

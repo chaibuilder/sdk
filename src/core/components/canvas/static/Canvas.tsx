@@ -84,6 +84,7 @@ const useHandleCanvasDblClick = () => {
 const useHandleCanvasClick = () => {
   const [, setStyleBlockIds] = useSelectedStylingBlocks();
   const [, setIds] = useSelectedBlockIds();
+  const [, setHighlighted] = useHighlightBlockId();
   const [editingBlockId] = useAtom(inlineEditingActiveAtom);
   return (e: any) => {
     if (editingBlockId) {
@@ -91,6 +92,12 @@ const useHandleCanvasClick = () => {
     }
     e.stopPropagation();
     const chaiBlock: HTMLElement = getTargetedBlock(e.target);
+    if (chaiBlock?.getAttribute("data-block-id") && chaiBlock?.getAttribute("data-block-id") === "container") {
+      setIds([]);
+      setStyleBlockIds([]);
+      setHighlighted("");
+      return;
+    }
     if (chaiBlock?.getAttribute("data-block-parent")) {
       // check if target element has data-styles-prop attribute
       const styleProp = chaiBlock.getAttribute("data-style-prop") as string;
@@ -101,6 +108,7 @@ const useHandleCanvasClick = () => {
     } else if (chaiBlock?.getAttribute("data-block-id")) {
       setIds([chaiBlock.getAttribute("data-block-id")]);
     }
+    setHighlighted("");
   };
 };
 

@@ -75,6 +75,7 @@ export default defineConfig({
         "html-formatter",
         "i18next",
         "jotai",
+        "preline",
         "prop-types",
         "lodash",
         "lodash-es",

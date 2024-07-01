@@ -11,6 +11,9 @@ import {
 } from "../../../hooks";
 import { useAtom } from "jotai";
 import { draggedBlockIdAtom } from "../../../atoms/ui.ts";
+import typography from "@tailwindcss/typography";
+import forms from "@tailwindcss/forms";
+import aspectRatio from "@tailwindcss/aspect-ratio";
 // @ts-ignore
 
 export const HeadTags = ({ model }: { model: string }) => {
@@ -70,21 +73,55 @@ export const HeadTags = ({ model }: { model: string }) => {
       },
 
       plugins: [
-        // @ts-ignore
-        iframeWin.tailwind.plugin.withOptions(({ prefix = "ui" } = {}) => ({ addVariant }: any) => {
-          // eslint-disable-next-line no-restricted-syntax
-          for (const state of ["open", "checked", "selected", "active", "disabled"]) {
-            // But for now, this will do:
-            addVariant(`${prefix}-${state}`, [
-              `&[data-headlessui-state~="${state}"]`,
-              `:where([data-headlessui-state~="${state}"]) &`,
-            ]);
-
-            addVariant(`${prefix}-not-${state}`, [
-              `&[data-headlessui-state]:not([data-headlessui-state~="${state}"])`,
-              `:where([data-headlessui-state]:not([data-headlessui-state~="${state}"])) &:not([data-headlessui-state])`,
-            ]);
-          }
+        typography,
+        forms,
+        aspectRatio,
+        iframeWin.tailwind.plugin.withOptions(() => ({ addVariant, e }: any) => {
+          addVariant("hs-accordion-active", [
+            ({ modifySelectors, separator }) => {
+              modifySelectors(({ className }) => {
+                return `.hs-accordion.active.${e(`hs-accordion-active${separator}${className}`)}`;
+              });
+            },
+            ({ modifySelectors, separator }) => {
+              modifySelectors(({ className }) => {
+                return `.hs-accordion.active > .${e(`hs-accordion-active${separator}${className}`)}`;
+              });
+            },
+            ({ modifySelectors, separator }) => {
+              modifySelectors(({ className }) => {
+                return `.hs-accordion.active > .hs-accordion-toggle .${e(
+                  `hs-accordion-active${separator}${className}`,
+                )}`;
+              });
+            },
+            ({ modifySelectors, separator }) => {
+              modifySelectors(({ className }) => {
+                return `.hs-accordion.active > .hs-accordion-heading > .hs-accordion-toggle .${e(
+                  `hs-accordion-active${separator}${className}`,
+                )}`;
+              });
+            },
+            ({ modifySelectors, separator }) => {
+              modifySelectors(({ className }) => {
+                return `.hs-accordion.active > .hs-accordion-toggle.${e(
+                  `hs-accordion-active${separator}${className}`,
+                )}`;
+              });
+            },
+            ({ modifySelectors, separator }) => {
+              modifySelectors(({ className }) => {
+                return `.hs-accordion.active > .hs-accordion-heading > .hs-accordion-toggle.${e(
+                  `hs-accordion-active${separator}${className}`,
+                )}`;
+              });
+            },
+          ]);
+          addVariant("hs-accordion-selected", ({ modifySelectors, separator }) => {
+            modifySelectors(({ className }) => {
+              return `.hs-accordion .selected.${e(`hs-accordion-selected${separator}${className}`)}`;
+            });
+          });
         }),
       ],
     };
@@ -110,14 +147,14 @@ export const HeadTags = ({ model }: { model: string }) => {
   useEffect(() => {
     if (!highlightedBlockStyle) return;
     highlightedBlockStyle.textContent = highlightedId
-      ? `[data-style-id="${highlightedId}"]{ outline: 1px solid #42a1fc !important; outline-offset: -1px;}`
+      ? `[data-style-id="${highlightedId}"]{ outline: 1px solid red !important; outline-offset: -1px;}`
       : "";
   }, [highlightedId, selectedBlockIds, highlightedBlockStyle]);
 
   useEffect(() => {
     if (!selectedStylingBlocks) return;
     selectedStylingBlocks.textContent = `${map(stylingBlockIds, ({ id }: any) => `[data-style-id="${id}"]`).join(",")}{
-                outline: 1px solid #42a1fc !important; outline-offset: -1px;
+                outline: 1px solid orange !important; outline-offset: -1px;
             }`;
   }, [stylingBlockIds, selectedStylingBlocks]);
 

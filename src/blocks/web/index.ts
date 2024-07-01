@@ -14,6 +14,9 @@ import "./video";
 import "./custom-html";
 import "./divider";
 import "./text";
+
+import "./interactive/accordion.tsx";
+
 // hidden
 import "./hidden/body";
 import "./hidden/line-break";

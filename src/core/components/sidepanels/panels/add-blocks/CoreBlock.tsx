@@ -8,6 +8,7 @@ import { useAddBlock, useHighlightBlockId, useSelectedBlockIds } from "../../../
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { useFeature } from "flagged";
 import { OUTLINE_KEY } from "../../../../constants/STRINGS.ts";
+import { isFunction } from "lodash";
 
 export const CoreBlock = ({ block }: { block: any }) => {
   const { type, icon, label } = block;
@@ -17,7 +18,8 @@ export const CoreBlock = ({ block }: { block: any }) => {
   const [, setActivePanel] = useAtom(activePanelAtom);
   const addBlockToPage = () => {
     if (has(block, "blocks")) {
-      addPredefinedBlock(syncBlocksWithDefaults(block.blocks), first(ids));
+      const blocks = isFunction(block.blocks) ? block.blocks() : block.blocks;
+      addPredefinedBlock(syncBlocksWithDefaults(blocks), first(ids));
     } else {
       addCoreBlock(block, first(ids));
     }

@@ -6,6 +6,7 @@ import { isEmpty } from "lodash-es";
 import EmptySlot from "../empty-slot.tsx";
 import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
 import { cn } from "../../core/functions/Functions.ts";
+import { addForcedClasses } from "./helper.ts";
 
 const IconBlock = (
   block: ChaiBlock & {
@@ -14,19 +15,20 @@ const IconBlock = (
   },
 ) => {
   const { blockProps, icon, styles, width, inBuilder, height } = block;
-  const iStyles = {
-    ...styles,
-    className: cn(styles.className, "inline-block c-inline-block", `w-[${width}px]`, `h-[${height}px]`),
-  };
+  const iStyles = addForcedClasses(
+    styles,
+    cn("inline-block", width ? `w-[${width}px]` : "", height ? `h-[${height}px]` : ""),
+  );
 
   if (isEmpty(icon)) {
     return <EmptySlot blockProps={blockProps} text="" inBuilder={inBuilder} className="h-8 w-14" />;
   }
 
+  const svg = icon.replace(/<svg /g, '<svg class="w-[inherit] h-[inherit]" ');
   return React.createElement("span", {
     ...blockProps,
     ...iStyles,
-    dangerouslySetInnerHTML: { __html: icon },
+    dangerouslySetInnerHTML: { __html: svg },
   });
 };
 
@@ -42,8 +44,8 @@ registerChaiBlock(IconBlock, {
       title: "Icon",
       default: `<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16"  xmlns="http://www.w3.org/2000/svg"><path d="M8 16c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zM8 1.5c3.59 0 6.5 2.91 6.5 6.5s-2.91 6.5-6.5 6.5-6.5-2.91-6.5-6.5 2.91-6.5 6.5-6.5zM8 9.356c1.812 0 3.535-0.481 5-1.327-0.228 2.788-2.393 4.971-5 4.971s-4.772-2.186-5-4.973c1.465 0.845 3.188 1.329 5 1.329zM4 5.5c0-0.828 0.448-1.5 1-1.5s1 0.672 1 1.5c0 0.828-0.448 1.5-1 1.5s-1-0.672-1-1.5zM10 5.5c0-0.828 0.448-1.5 1-1.5s1 0.672 1 1.5c0 0.828-0.448 1.5-1 1.5s-1-0.672-1-1.5z"></path></svg>`,
     }),
-    width: Numeric({ title: "Width", default: 40 }),
-    height: Numeric({ title: "Height", default: 40 }),
+    width: Numeric({ title: "Width", default: "" }),
+    height: Numeric({ title: "Height", default: "" }),
   },
 });
 
