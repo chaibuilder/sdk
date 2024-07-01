@@ -7,11 +7,11 @@ import { activePanelAtom } from "../../atoms/ui";
 import { useBuilderProp } from "../../hooks";
 import { DatabaseIcon, ListTreeIcon } from "lucide-react";
 import { PageDataProviders } from "./PageDataProviders.tsx";
-import { cn } from "../../functions/Functions.ts";
 import { useTranslation } from "react-i18next";
 import { OUTLINE_KEY } from "../../constants/STRINGS.ts";
 import { HotKeys } from "../HotKeys.tsx";
 import { useFeature } from "flagged";
+import { cn } from "../../functions/Functions.ts";
 
 const AddBlocksPanel = lazy(() => import("./panels/add-blocks/AddBlocks.tsx"));
 const OutlinePanel = lazy(() => import("./panels/outline/react-dnd-treeview/Outline.tsx"));
@@ -121,30 +121,29 @@ const SidePanels = () => {
           )}
         </div>
       </div>
-      <div
-        className={`absolute left-14 z-[50] h-full w-fit min-w-[200px] border-r bg-background duration-500 ease-in-out ${
-          activePanel !== OUTLINE_KEY ? "translate-x-0" : "-translate-x-full"
-        }`}>
-        <Suspense
-          fallback={
-            <div className="flex animate-pulse flex-col gap-y-2 bg-white p-4">
-              <div className="h-6 w-1/2 bg-gray-300" />
-              <div className="h-16 w-full bg-gray-200" />
-              <div className="h-16 w-full bg-gray-200" />
-            </div>
+      {activePanel !== OUTLINE_KEY ? (
+        <div
+          className={
+            "absolute left-14 z-[50] h-full w-fit translate-x-0 border-r bg-background transition-all duration-500 ease-in-out"
           }>
-          <div
-            className={cn(
-              "relative h-full max-h-[98%] overflow-y-auto overflow-x-hidden bg-background p-1",
-              activePanel === OUTLINE_KEY ? "" : "z-[100]",
-            )}
-            onMouseEnter={() => {
-              if (hideTimeout) clearTimeout(hideTimeout);
-            }}>
-            {React.createElement(get(panels, activePanel, () => <div />))}
-          </div>
-        </Suspense>
-      </div>
+          <Suspense
+            fallback={
+              <div className="flex animate-pulse flex-col gap-y-2 bg-white p-4">
+                <div className="h-6 w-1/2 bg-gray-300" />
+                <div className="h-16 w-full bg-gray-200" />
+                <div className="h-16 w-full bg-gray-200" />
+              </div>
+            }>
+            <div
+              className={cn("relative z-[100] h-full max-h-[98%] overflow-y-auto overflow-x-hidden bg-background p-1")}
+              onMouseEnter={() => {
+                if (hideTimeout) clearTimeout(hideTimeout);
+              }}>
+              {React.createElement(get(panels, activePanel, () => <div />))}
+            </div>
+          </Suspense>
+        </div>
+      ) : null}
       <div className="h-full w-60 border-r p-1">
         <Suspense
           fallback={
