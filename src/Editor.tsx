@@ -6,7 +6,7 @@ import { ChaiBuilderEditor } from "./core/main";
 import "./blocks/web";
 import "./__dev/data-providers/data";
 import { CodeIcon } from "@radix-ui/react-icons";
-import { find } from "lodash";
+import { find } from "lodash-es";
 
 let PreviewMessage = () => {
   const { t } = useTranslation();

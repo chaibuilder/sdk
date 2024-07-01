@@ -12,7 +12,7 @@ import {
 } from "../../../ui";
 import { useAddClassesToBlocks, useSelectedBlock, useSelectedStylingBlocks } from "../../hooks";
 import { getBlockComponent, useGlobalStylingPresets } from "@chaibuilder/runtime";
-import { capitalize, first, get, has, isEmpty, keys, startCase } from "lodash";
+import { capitalize, first, get, has, isEmpty, keys, startCase } from "lodash-es";
 import { useTranslation } from "react-i18next";
 import { CaretDownIcon } from "@radix-ui/react-icons";
 

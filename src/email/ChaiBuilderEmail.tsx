@@ -1,6 +1,6 @@
 import { ChaiBuilderEditor, ChaiBuilderEditorProps } from "../core/main";
 import { MobileIcon } from "@radix-ui/react-icons";
-import { includes } from "lodash";
+import { includes } from "lodash-es";
 
 const BREAKPOINTS = [
   {

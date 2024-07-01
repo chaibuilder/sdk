@@ -18,6 +18,7 @@ registerChaiBlock(Accordion, {
   label: "Accordion",
   category: "core",
   group: "advanced",
+  hidden: true,
   props: {
     styles: Styles({ default: "" }),
   },

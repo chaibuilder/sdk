@@ -20,7 +20,7 @@ import { DefaultDragPreview } from "./DefaultDragPreview.tsx";
 import { useBlocksStoreUndoableActions } from "../../../../../history/useBlocksStoreUndoableActions.ts";
 import { BlockContextMenu } from "../BlockContextMenu.tsx";
 import { canAcceptChildBlock } from "../../../../../functions/block-helpers.ts";
-import { find, first } from "lodash";
+import { find, first } from "lodash-es";
 
 const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const outlineItems = useBuilderProp("outlineMenuItems", []);

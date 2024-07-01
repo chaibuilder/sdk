@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import { first, has, omit } from "lodash-es";
+import { first, has, isFunction, omit } from "lodash-es";
 import { createElement } from "react";
 import { BoxIcon } from "@radix-ui/react-icons";
 import { activePanelAtom } from "../../../../atoms/ui";
@@ -8,7 +8,6 @@ import { useAddBlock, useHighlightBlockId, useSelectedBlockIds } from "../../../
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { useFeature } from "flagged";
 import { OUTLINE_KEY } from "../../../../constants/STRINGS.ts";
-import { isFunction } from "lodash";
 
 export const CoreBlock = ({ block }: { block: any }) => {
   const { type, icon, label } = block;

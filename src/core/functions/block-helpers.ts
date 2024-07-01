@@ -1,6 +1,5 @@
-import { get, has } from "lodash-es";
+import { get, has, memoize } from "lodash-es";
 import { getBlockComponent } from "@chaibuilder/runtime";
-import { memoize } from "lodash";
 
 type BlockDefinition = {
   canAcceptBlock?: (target: string) => boolean;
