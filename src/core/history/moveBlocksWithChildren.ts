@@ -1,5 +1,5 @@
 import { ChaiBlock } from "../types/ChaiBlock.ts";
-import { isEmpty } from "lodash";
+import { isEmpty } from "lodash-es";
 
 function sortBlocks(blocks: Partial<ChaiBlock>[]) {
   const sortedBlocks = [];
@@ -25,7 +25,7 @@ function sortBlocks(blocks: Partial<ChaiBlock>[]) {
 
   // Start adding blocks from the top-level parents
   blocks.forEach((block) => {
-    if (block._parent === undefined) {
+    if (!block._parent) {
       addBlockAndChildren(block._id);
     }
   });
@@ -36,7 +36,7 @@ function sortBlocks(blocks: Partial<ChaiBlock>[]) {
 export const moveBlocksWithChildren = (
   _blocks: Partial<ChaiBlock>[],
   idsToMove: string[],
-  newParent: string | undefined,
+  newParent: string | undefined | null,
   position: number,
 ): Partial<ChaiBlock>[] => {
   if (isEmpty(idsToMove)) return sortBlocks(_blocks);
@@ -74,7 +74,7 @@ export const moveBlocksWithChildren = (
 
   // Find the correct insertion index based on newParent and position
   let insertIndex;
-  if (newParent === undefined) {
+  if (!newParent) {
     insertIndex = position;
   } else {
     // Find the index of the newParent block

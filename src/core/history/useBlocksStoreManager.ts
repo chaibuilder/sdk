@@ -18,7 +18,7 @@ export const useBlocksStoreManager = () => {
     removeBlocks: (blockIds: string[]) => {
       setBlocks((prevBlocks) => removeNestedBlocks(prevBlocks, blockIds));
     },
-    moveBlocks: (blockIds: string[], newParent: string | undefined, position: number) => {
+    moveBlocks: (blockIds: string[], newParent: string | null, position: number) => {
       setBlocks((prevBlocks) => moveBlocksWithChildren(prevBlocks, blockIds, newParent, position));
     },
     updateBlocksProps: (blocks: Partial<ChaiBlock>[]) => {

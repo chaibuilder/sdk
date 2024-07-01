@@ -52,13 +52,19 @@ export const useBlocksStoreUndoableActions = () => {
     // Save the current positions of the blocks for undo
     const currentPositions = map(blockIds, (_id: string) => {
       const block = currentBlocks.find((block) => block._id === _id) as ChaiBlock;
-      const oldParent = block._parent || undefined;
+      const oldParent = block._parent || null;
       const siblings = currentBlocks
         .filter((block) => (oldParent ? block._parent === oldParent : !block._parent))
         .map((block) => block._id);
       const oldPosition = siblings.indexOf(_id);
       return { _id, oldParent, oldPosition };
     });
+
+    //if the parent and position are the same as the current parent and position, do nothing
+    const firstBlock = currentPositions.find(({ _id }) => _id === blockIds[0]);
+    if (firstBlock && firstBlock.oldParent === parent && firstBlock.oldPosition === position) {
+      return;
+    }
 
     moveExistingBlocks(blockIds, parent, position);
     add({
