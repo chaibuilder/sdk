@@ -147,14 +147,14 @@ export const HeadTags = ({ model }: { model: string }) => {
   useEffect(() => {
     if (!highlightedBlockStyle) return;
     highlightedBlockStyle.textContent = highlightedId
-      ? `[data-style-id="${highlightedId}"]{ outline: 1px solid red !important; outline-offset: -1px;}`
+      ? `[data-style-id="${highlightedId}"]{ outline: 1px solid #42a1fc !important; outline-offset: -1px;}`
       : "";
   }, [highlightedId, selectedBlockIds, highlightedBlockStyle]);
 
   useEffect(() => {
     if (!selectedStylingBlocks) return;
     selectedStylingBlocks.textContent = `${map(stylingBlockIds, ({ id }: any) => `[data-style-id="${id}"]`).join(",")}{
-                outline: 1px solid orange !important; outline-offset: -1px;
+                outline: 1px solid #42a1fc !important; outline-offset: -1px;
             }`;
   }, [stylingBlockIds, selectedStylingBlocks]);
 

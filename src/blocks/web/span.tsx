@@ -30,6 +30,7 @@ registerChaiBlock(SpanBlock, {
     styles: Styles({ default: "" }),
     content: MultilineText({ title: "Content", default: "Enter your content" }),
   },
+  canAcceptBlock: () => true,
 });
 
 export default SpanBlock;

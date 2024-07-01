@@ -1,4 +1,4 @@
-import { memo, useEffect, MouseEvent } from "react";
+import { memo, MouseEvent, useEffect } from "react";
 import { useAtom } from "jotai";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { MoveHandler, NodeRendererProps, RenameHandler, Tree } from "react-arborist";
@@ -18,13 +18,11 @@ import { DefaultCursor } from "./DefaultCursor.tsx";
 import { DefaultDragPreview } from "./DefaultDragPreview.tsx";
 import { useBlocksStoreUndoableActions } from "../../../../../history/useBlocksStoreUndoableActions.ts";
 import { BlockContextMenu } from "../BlockContextMenu.tsx";
-import { canDropBlock } from "../../../../../functions/block-helpers.ts";
+import { canAcceptChildBlock } from "../../../../../functions/block-helpers.ts";
 
-const Node = memo(({ node, style, dragHandle, tree }: NodeRendererProps<any>) => {
+const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const outlineItems = useBuilderProp("outlineMenuItems", []);
   const [, setHighlighted] = useHighlightBlockId();
-
-  const isDropAllowed = tree.props.disableDrop;
 
   const hasChildren = node.children.length > 0;
 
@@ -45,6 +43,7 @@ const Node = memo(({ node, style, dragHandle, tree }: NodeRendererProps<any>) =>
      * and allowing to select current block.
      */
     e.stopPropagation();
+    node.toggle();
     /**
      * It will work when a node is clicked.
      * The onSelect in the parent Tree Component
@@ -54,14 +53,15 @@ const Node = memo(({ node, style, dragHandle, tree }: NodeRendererProps<any>) =>
   };
 
   useEffect(() => {
+    //TODO: Come back to this later. Might lead to a performance issue
     const timedToggle = setTimeout(() => {
-      if (willReceiveDrop && isDropAllowed && !node.isOpen) {
+      if (willReceiveDrop && !node.isOpen) {
         node.toggle();
       }
     }, 500);
 
     return () => clearTimeout(timedToggle);
-  }, [willReceiveDrop, isDropAllowed, node]);
+  }, [willReceiveDrop, node]);
 
   return (
     <BlockContextMenu id={id}>
@@ -72,9 +72,9 @@ const Node = memo(({ node, style, dragHandle, tree }: NodeRendererProps<any>) =>
         data-node-id={id}
         ref={dragHandle}
         className={cn(
-          "group flex !h-fit w-full items-center justify-between space-x-px py-px",
+          "group flex !h-fit w-full items-center justify-between space-x-px py-px outline-none",
           isSelected ? "bg-blue-500 text-white" : "text-gray-600 hover:bg-gray-200 dark:hover:bg-gray-800",
-          isDropAllowed && willReceiveDrop && "bg-green-200 text-green-600",
+          willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
           isDragging && "opacity-20",
         )}>
         <div className="flex items-center">
@@ -88,7 +88,7 @@ const Node = memo(({ node, style, dragHandle, tree }: NodeRendererProps<any>) =>
               </button>
             )}
           </div>
-          <button type="button" className="flex items-center">
+          <div className="flex items-center">
             <div className="-mt-0.5 h-3 w-3">
               <TypeIcon type={data?._type} />
             </div>
@@ -97,7 +97,7 @@ const Node = memo(({ node, style, dragHandle, tree }: NodeRendererProps<any>) =>
             ) : (
               <div
                 className="ml-2 truncate text-[11px]"
-                onDoubleClick={(e) => { 
+                onDoubleClick={(e) => {
                   e.stopPropagation();
                   node.edit();
                   node.deselect();
@@ -105,7 +105,7 @@ const Node = memo(({ node, style, dragHandle, tree }: NodeRendererProps<any>) =>
                 {data?._name || data?._type}
               </div>
             )}
-          </button>
+          </div>
         </div>
         <div className="invisible flex items-center space-x-1 pr-2 group-hover:visible">
           {outlineItems.map((outlineItem) => (
@@ -177,6 +177,12 @@ const ListTree = () => {
     }
   };
 
+  const debouncedDisableDrop = useDebouncedCallback(
+    ({ parentNode, dragNodes }) => !canAcceptChildBlock(parentNode?.data._type, dragNodes[0]?.data._type),
+    [],
+    300,
+  );
+
   return (
     <div className={cn("-mx-1 -mt-1 flex h-full select-none flex-col space-y-1")} onClick={() => clearSelection()}>
       <ScrollArea id="outline-view" className="no-scrollbar h-full overflow-y-auto p-1 px-2 text-xs">
@@ -195,12 +201,7 @@ const ListTree = () => {
           renderDragPreview={DefaultDragPreview}
           indent={10}
           onContextMenu={onContextMenu}
-          disableDrop={({ parentNode, dragNodes }) =>
-            !canDropBlock(null, {
-              dragSource: dragNodes[0],
-              dropTarget: parentNode,
-            })
-          }
+          disableDrop={debouncedDisableDrop as any}
           idAccessor={"_id"}>
           {Node as any}
         </Tree>

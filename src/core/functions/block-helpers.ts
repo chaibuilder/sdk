@@ -1,5 +1,6 @@
 import { get, has } from "lodash-es";
 import { getBlockComponent } from "@chaibuilder/runtime";
+import { memoize } from "lodash";
 
 type BlockDefinition = {
   canAcceptBlock?: (target: string) => boolean;
@@ -9,30 +10,30 @@ type BlockDefinition = {
   canBeNested?: (target: string) => boolean;
 };
 
-export const canAcceptChildBlock = (parentType: string, childType: string) => {
+export const canAcceptChildBlock = memoize((parentType: string, childType: string) => {
   if (!parentType) return true; // this is root
   const blockDefinition = getBlockComponent(parentType) as BlockDefinition;
   if (!blockDefinition) return false;
   return has(blockDefinition, "canAcceptBlock") ? blockDefinition.canAcceptBlock(childType) : false;
-};
+});
 
-export const canBeNestedInside = (parentType: string, childType: string) => {
+export const canBeNestedInside = memoize((parentType: string, childType: string) => {
   const blockDefinition = getBlockComponent(childType) as BlockDefinition;
   if (!blockDefinition) return true;
   return has(blockDefinition, "canBeNested") ? blockDefinition.canBeNested(parentType) : true;
-};
+});
 
-export const canDuplicateBlock = (type: string) => {
+export const canDuplicateBlock = memoize((type: string) => {
   const blockDefinition = getBlockComponent(type) as BlockDefinition;
   if (!blockDefinition) return true;
   return has(blockDefinition, "canDuplicate") ? blockDefinition.canDuplicate() : true;
-};
+});
 
-export const canDeleteBlock = (type: string) => {
+export const canDeleteBlock = memoize((type: string) => {
   const blockDefinition = getBlockComponent(type) as BlockDefinition;
   if (!blockDefinition) return true;
   return has(blockDefinition, "canDelete") ? blockDefinition.canDelete() : true;
-};
+});
 
 export const canDropBlock = (_currentTree: any, { dragSource, dropTarget }: any) => {
   const dragSourceType = get(dragSource, "data._type", "");
