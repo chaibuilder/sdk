@@ -1,10 +1,11 @@
 // @ts-ignore
 import { parse, stringify } from "himalaya";
 import { cn, generateUUID } from "../functions/Functions.ts";
-import { capitalize, filter, find, flatMapDeep, flatten, forEach, get, includes, isEmpty, omit, set } from "lodash-es";
+import { capitalize, find, flatMapDeep, flatten, forEach, get, includes, isEmpty, set } from "lodash-es";
 import { ChaiBlock } from "../types";
 import { STYLES_KEY } from "../constants/STRINGS.ts";
 import { getVideoURLFromHTML, hasVideoEmbed } from "./import-video.ts";
+import { filter } from "lodash";
 
 type Node = {
   type: "element" | "text" | "comment";
@@ -88,6 +89,8 @@ const getSanitizedValue = (value: any) => (value === null ? true : value);
  * @param node
  */
 const getAttrs = (node: Node) => {
+  if (node.tagName === "svg") return {};
+
   const attrs: Record<string, string> = {};
   const replacers = ATTRIBUTE_MAP[node.tagName] || {};
   const attributes: Array<{ key: string; value: string }> = node.attributes as any;
@@ -289,7 +292,6 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
 
       node.attributes = filter(node.attributes, (attr) => !includes(["style", "width", "height", "class"], attr.key));
       block.icon = stringify([node]);
-      set(block, "styles_attrs", omit(get(block, "styles_attrs") || {}, ["height", "width", "style", "class"]));
       return [block] as ChaiBlock[];
     } else if (node.tagName == "option" && parent && parent.block?._type === "Select") {
       /**
