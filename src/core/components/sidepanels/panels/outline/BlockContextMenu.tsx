@@ -52,25 +52,3 @@ export const BlockContextMenu = ({ children }: { children: React.ReactNode | nul
     </>
   );
 };
-
-// const CutBlocks = () => {
-//   const [selectedIds] = useSelectedBlockIds();
-//   const [, setCutIds] = useCutBlockIds();
-//
-//   return (
-//     <ContextMenuItem className="flex items-center gap-x-4 text-xs" onClick={() => setCutIds(selectedIds)}>
-//       <ScissorsIcon /> Cut
-//     </ContextMenuItem>
-//   );
-// };
-//
-// const CopyBlocks = () => {
-//   const [selectedIds] = useSelectedBlockIds();
-//   const [, setCopyIds] = useCopyBlockIds();
-//
-//   return (
-//     <ContextMenuItem className="flex items-center gap-x-4 text-xs" onClick={() => setCopyIds(selectedIds)}>
-//       <ClipboardIcon /> Copy
-//     </ContextMenuItem>
-//   );
-// };

@@ -10,12 +10,10 @@ import { PageDataProviders } from "./PageDataProviders.tsx";
 import { useTranslation } from "react-i18next";
 import { OUTLINE_KEY } from "../../constants/STRINGS.ts";
 import { HotKeys } from "../HotKeys.tsx";
-import { useFeature } from "flagged";
 import { cn } from "../../functions/Functions.ts";
 
 const AddBlocksPanel = lazy(() => import("./panels/add-blocks/AddBlocks.tsx"));
-const OutlinePanel = lazy(() => import("./panels/outline/react-dnd-treeview/Outline.tsx"));
-const ArboristPanel = lazy(() => import("./panels/outline/arborist/ListTree.tsx"));
+const ArboristPanel = lazy(() => import("./panels/outline/treeview/ListTree.tsx"));
 const BrandingOptions = lazy(() => import("./panels/branding/BrandingOptions"));
 const ImagesPanel = lazy(() => import("./panels/images/ImagesPanel"));
 
@@ -32,11 +30,10 @@ const SidePanels = () => {
   const [_activePanel, _setActivePanel] = useState(activePanel);
   const [hideTimeout, setHideTimeout] = useState<any>(null);
   const { t } = useTranslation();
-  const arborist = useFeature("arborist");
 
   const panels: { [key: string]: React.ComponentType<any> } = {
     "add-blocks": AddBlocksPanel,
-    [OUTLINE_KEY]: arborist ? ArboristPanel : OutlinePanel,
+    [OUTLINE_KEY]: ArboristPanel,
     "branding-options": BrandingOptions,
     images: ImagesPanel,
   };
@@ -165,7 +162,7 @@ const SidePanels = () => {
                 </TabsTrigger>
               </TabsList>
               <TabsContent value={OUTLINE_KEY} className="no-scrollbar h-full flex-1 overflow-y-auto overflow-x-hidden">
-                {React.createElement(arborist ? ArboristPanel : OutlinePanel)}
+                {React.createElement(ArboristPanel)}
               </TabsContent>
               <TabsContent value="data-provider" className="flex-1 overflow-y-auto overflow-x-hidden">
                 <PageDataProviders />
@@ -182,7 +179,7 @@ const SidePanels = () => {
                 <TabsContent
                   value={OUTLINE_KEY}
                   className="no-scrollbar h-full flex-1 overflow-y-auto overflow-x-hidden">
-                  {React.createElement(arborist ? ArboristPanel : OutlinePanel)}
+                  {React.createElement(ArboristPanel)}
                 </TabsContent>
               </Tabs>
             </>

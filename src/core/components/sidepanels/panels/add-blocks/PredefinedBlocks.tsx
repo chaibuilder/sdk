@@ -3,7 +3,6 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useAddBlock, useBuilderProp, useSelectedBlockIds, useUILibraryBlocks } from "../../../../hooks";
 import { syncBlocksWithDefaults, useChaiBlocks } from "@chaibuilder/runtime";
 import { Loader } from "lucide-react";
-import { DragPreviewImage, useDrag } from "react-dnd";
 import { useAtom } from "jotai";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../../ui";
 import { activePanelAtom } from "../../../../atoms/ui.ts";
@@ -14,14 +13,6 @@ const BlockCard = ({ block, closePopover }: { block: any; closePopover: () => vo
   const getExternalPredefinedBlock = useBuilderProp("getExternalPredefinedBlock", noop());
   const { addCoreBlock, addPredefinedBlock } = useAddBlock();
   const [ids] = useSelectedBlockIds();
-
-  const [, drag, dragPreview] = useDrag(
-    () => ({
-      type: "CHAI_BLOCK",
-      item: block,
-    }),
-    [block],
-  );
 
   const addBlock = useCallback(
     async (e: any) => {
@@ -41,12 +32,7 @@ const BlockCard = ({ block, closePopover }: { block: any; closePopover: () => vo
 
   return (
     <>
-      <DragPreviewImage
-        connect={dragPreview}
-        src={"https://placehold.co/100x30/000000/FFF?text=" + (block.name || block.label)?.replace(" ", "+")}
-      />
       <div
-        ref={drag}
         onClick={isAdding ? () => {} : addBlock}
         className="relative cursor-pointer overflow-hidden rounded-md border border-transparent duration-200 hover:scale-x-105 hover:border-foreground/20 hover:shadow-2xl">
         {isAdding && (

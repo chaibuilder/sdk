@@ -13,7 +13,7 @@ import {
   useUpdateBlocksProps,
 } from "../../../../../hooks";
 import { TriangleRightIcon } from "@radix-ui/react-icons";
-import { ScrollArea, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../../ui";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../../../ui";
 import { TypeIcon } from "../TypeIcon.tsx";
 import { DefaultCursor } from "./DefaultCursor.tsx";
 import { DefaultDragPreview } from "./DefaultDragPreview.tsx";
@@ -196,9 +196,10 @@ const ListTree = () => {
 
   return (
     <div className={cn("-mx-1 -mt-1 flex h-full select-none flex-col space-y-1")} onClick={() => clearSelection()}>
-      <ScrollArea id="outline-view" className="no-scrollbar h-full overflow-y-auto p-1 px-2 text-xs">
+      <div id="outline-view" className="no-scrollbar h-full overflow-y-auto p-1 px-2 text-xs">
         <Tree
-          className="max-w-full !overflow-hidden"
+          height={800}
+          className="no-scrollbar !h-full max-w-full !overflow-y-auto !overflow-x-hidden"
           selection={ids[0] || ""}
           onRename={onRename}
           openByDefault={false}
@@ -216,7 +217,7 @@ const ListTree = () => {
           idAccessor={"_id"}>
           {Node as any}
         </Tree>
-      </ScrollArea>
+      </div>
     </div>
   );
 };

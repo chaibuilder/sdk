@@ -6,7 +6,3 @@ export interface CoreBlock {
   props: { [key: string]: any };
   type: string;
 }
-
-export interface PredefinedBlock {
-  type: string;
-}

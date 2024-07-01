@@ -72,6 +72,17 @@
   [role="treeitem"], [role="treeitem"] > * {
     @apply outline-none;
   }
+
+  .no-scrollbar{
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;  /* Safari and Chrome */
+  }
+
+
   .rjsf input[type="color"] {
     @apply p-0 !important;
   }
