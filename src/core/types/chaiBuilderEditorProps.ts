@@ -38,6 +38,7 @@ type OutlineMenuItems = OutlineMenuItem[];
 type TimeInSeconds = number;
 
 export interface ChaiBuilderEditorProps {
+  hideSaveButton?: boolean;
   filterChaiBlock?: (block: any) => boolean;
   showDebugLogs?: boolean;
   autoSaveSupport?: boolean;

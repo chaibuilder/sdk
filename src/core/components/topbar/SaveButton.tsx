@@ -1,11 +1,12 @@
 import { useMemo } from "react";
 import { Button } from "../../../ui";
-import { useSavePage, useTranslation } from "../../hooks";
+import { useBuilderProp, useSavePage, useTranslation } from "../../hooks";
 import { FaCircleCheck } from "react-icons/fa6";
 
 export const SaveButton = () => {
   const { savePage, saveState } = useSavePage();
   const { t } = useTranslation();
+  const hideButton = useBuilderProp("hideSaveButton", false);
 
   const classes = useMemo(() => {
     switch (saveState) {
@@ -17,6 +18,10 @@ export const SaveButton = () => {
         return "bg-gray-200 text-gray-500 hover:bg-gray-100";
     }
   }, [saveState]);
+
+  if (hideButton) {
+    return null;
+  }
 
   const button = (
     <Button
