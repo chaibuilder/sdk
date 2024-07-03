@@ -6,34 +6,34 @@ import { usePageDataProviders } from "./usePageDataProviders.ts";
 import { useBrandingOptions } from "./useBrandingOptions.ts";
 import { noop } from "lodash-es";
 
-export const pageSyncStateAtom = atom<"SAVED" | "UNSAVED" | "SAVING">("SAVED"); // SAVING
-pageSyncStateAtom.debugLabel = "pageSyncStateAtom";
+export const builderSaveStateAtom = atom<"SAVED" | "UNSAVED" | "SAVING">("SAVED"); // SAVING
+builderSaveStateAtom.debugLabel = "builderSaveStateAtom";
 
 export const useSavePage = () => {
-  const [syncState, setSyncState] = useAtom(pageSyncStateAtom);
+  const [saveState, setSaveState] = useAtom(builderSaveStateAtom);
   const onSavePage = useBuilderProp("onSavePage", async (_args) => {});
   const onSave = useBuilderProp("onSave", async (_args) => {});
-  const onSaveStatusChange = useBuilderProp("onSaveStatusChange", noop);
+  const onSaveStateChange = useBuilderProp("onSaveStateChange", noop);
   const getPageData = useGetPageData();
   const [providers] = usePageDataProviders();
   const [brandingOptions] = useBrandingOptions();
 
   const savePage = useThrottledCallback(
     async () => {
-      setSyncState("SAVING");
-      onSaveStatusChange("SAVING");
+      setSaveState("SAVING");
+      onSaveStateChange("SAVING");
       const pageData = getPageData();
       await onSavePage({ blocks: pageData.blocks, providers });
       await onSave({ blocks: pageData.blocks, providers, brandingOptions });
       setTimeout(() => {
-        setSyncState("SAVED");
-        onSaveStatusChange("SAVED");
+        setSaveState("SAVED");
+        onSaveStateChange("SAVED");
       }, 100);
       return true;
     },
-    [getPageData, setSyncState, brandingOptions, onSave, onSaveStatusChange],
-    5000, // save only every 5 seconds
+    [getPageData, setSaveState, brandingOptions, onSave, onSaveStateChange],
+    3000, // save only every 5 seconds
   );
 
-  return { savePage, syncState, setSyncState };
+  return { savePage, saveState, setSaveState };
 };

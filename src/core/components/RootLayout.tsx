@@ -4,7 +4,7 @@ import { PreviewScreen } from "./PreviewScreen";
 import { useKeyEventWatcher } from "../hooks/useKeyEventWatcher.ts";
 import { useExpandTree } from "../hooks/useExpandTree";
 import { useAtom } from "jotai";
-import { pageSyncStateAtom, useSavePage } from "../hooks/useSavePage.ts";
+import { builderSaveStateAtom, useSavePage } from "../hooks/useSavePage.ts";
 import "./canvas/static/BlocksExternalDataProvider.tsx";
 import { useBuilderProp } from "../hooks";
 import { TooltipProvider } from "../../ui";
@@ -29,7 +29,7 @@ const useAutoSave = () => {
  * RootLayout is a React component that renders the main layout of the application.
  */
 const RootLayout: ComponentType = () => {
-  const [syncState] = useAtom(pageSyncStateAtom);
+  const [saveState] = useAtom(builderSaveStateAtom);
   /**
    * Prevents the context menu from appearing in production mode.
    * @param {MouseEvent<HTMLDivElement>} e - The mouse event.
@@ -43,7 +43,7 @@ const RootLayout: ComponentType = () => {
   useAutoSave();
 
   useEffect(() => {
-    if (syncState !== "SAVED") {
+    if (saveState !== "SAVED") {
       window.onbeforeunload = () => "";
     } else {
       window.onbeforeunload = null;
@@ -52,7 +52,7 @@ const RootLayout: ComponentType = () => {
     return () => {
       window.onbeforeunload = null;
     };
-  }, [syncState]);
+  }, [saveState]);
   const editable = useBuilderProp("editable", true);
   const NonEditable = useBuilderProp("nonEditableComponent", null);
 

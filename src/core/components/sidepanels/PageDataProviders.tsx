@@ -25,7 +25,7 @@ import { filter, find, isEmpty, isNull, map } from "lodash-es";
 import { useTranslation } from "react-i18next";
 import { usePageDataProviders } from "../../hooks/usePageDataProviders.ts";
 import { useAtom } from "jotai";
-import { pageSyncStateAtom } from "../../hooks/useSavePage.ts";
+import { builderSaveStateAtom } from "../../hooks/useSavePage.ts";
 import { allExpanded, defaultStyles, JsonView } from "react-json-view-lite";
 import { ErrorBoundary } from "../ErrorBoundary.tsx";
 import "react-json-view-lite/dist/index.css";
@@ -104,7 +104,7 @@ export const PageDataProviders = () => {
   const { t } = useTranslation();
   const providersList = useMemo(() => getChaiDataProviders(), []);
   const [dataProviders, setChaiProviders] = usePageDataProviders();
-  const [, setSyncState] = useAtom(pageSyncStateAtom);
+  const [, setSaveState] = useAtom(builderSaveStateAtom);
 
   const [providers, setProviders] = useState(
     filter(providersList, (p) => map(dataProviders, "providerKey").includes(p.providerKey)),
@@ -127,13 +127,13 @@ export const PageDataProviders = () => {
     setProviders((prev) => [...prev, dataProvider]);
     setChaiProviders((prev) => [...prev, { providerKey: dataProvider.providerKey, args: {} }]);
     setProvider("");
-    setSyncState("UNSAVED");
+    setSaveState("UNSAVED");
   };
 
   const removeProvider = (provider) => {
     setProviders((prev) => filter(prev, (p) => p.providerKey !== provider.providerKey));
     setChaiProviders((prev) => filter(prev, (p) => p.providerKey !== provider.providerKey));
-    setSyncState("UNSAVED");
+    setSaveState("UNSAVED");
   };
 
   const viewData = (p) => setViewer(p);

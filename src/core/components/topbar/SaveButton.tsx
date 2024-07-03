@@ -4,11 +4,11 @@ import { useSavePage, useTranslation } from "../../hooks";
 import { FaCircleCheck } from "react-icons/fa6";
 
 export const SaveButton = () => {
-  const { savePage, syncState } = useSavePage();
+  const { savePage, saveState } = useSavePage();
   const { t } = useTranslation();
 
   const classes = useMemo(() => {
-    switch (syncState) {
+    switch (saveState) {
       case "SAVING":
         return "animate-pulse bg-gray-300 text-gray-900";
       case "SAVED":
@@ -16,11 +16,11 @@ export const SaveButton = () => {
       default:
         return "bg-gray-200 text-gray-500 hover:bg-gray-100";
     }
-  }, [syncState]);
+  }, [saveState]);
 
   const button = (
     <Button
-      disabled={syncState === "SAVING"}
+      disabled={saveState === "SAVING"}
       onClick={(e) => {
         e.preventDefault();
         savePage();
@@ -30,7 +30,7 @@ export const SaveButton = () => {
       variant="outline">
       <FaCircleCheck className={"text-lg"} />
       <span className={"text-sm"}>
-        {syncState === "SAVING" ? "Saving..." : syncState === "SAVED" ? t("Saved") : t("Unsaved")}
+        {saveState === "SAVING" ? "Saving..." : saveState === "SAVED" ? t("Saved") : t("Unsaved")}
       </span>
     </Button>
   );

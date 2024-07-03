@@ -66,7 +66,7 @@ function ChaiBuilderDefault() {
         await new Promise((resolve) => setTimeout(resolve, 2000));
         return true;
       }}
-      onSyncStatusChange={(status: any) => {
+      onSaveStateChange={(status: any) => {
         console.log("Sync Status", status);
       }}
     />

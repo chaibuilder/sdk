@@ -2,19 +2,19 @@ import UndoManager from "undo-manager";
 import { useEffect } from "react";
 import { noop } from "lodash-es";
 import { useAtom } from "jotai";
-import { pageSyncStateAtom } from "../hooks/useSavePage.ts";
+import { builderSaveStateAtom } from "../hooks/useSavePage.ts";
 import { useBuilderProp } from "../hooks";
 
 const undoManager = new UndoManager();
 undoManager.setLimit(50);
 
 const useUndoManager = () => {
-  const [, setSyncState] = useAtom(pageSyncStateAtom);
-  const emitSyncState = useBuilderProp("onSaveStatusChange", noop);
+  const [, setSaveState] = useAtom(builderSaveStateAtom);
+  const emitSaveState = useBuilderProp("onSaveStateChange", noop);
   useEffect(() => {
     undoManager.setCallback(() => {
-      setSyncState("UNSAVED");
-      emitSyncState("UNSAVED");
+      setSaveState("UNSAVED");
+      emitSaveState("UNSAVED");
     });
     return () => {
       undoManager.setCallback(noop);

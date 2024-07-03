@@ -8,12 +8,14 @@ import { useCurrentPage } from "../hooks/useCurrentPage.ts";
 import { useSavePage } from "../../core/hooks";
 import { useChangePage } from "../hooks/useChangePage.ts";
 import { BriefcaseIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const CurrentPage = () => {
   const { data: project } = useProject();
   const { data: _pages, isLoading } = usePages();
-  const { syncState } = useSavePage();
+  const { saveState } = useSavePage();
   const changeCurrentPage = useChangePage();
+  const { t } = useTranslation();
   const [currentPageUuid, setCurrentPageUuid] = useCurrentPage();
   const pages = sortBy(filter(_pages, { type: "STATIC" }), (page) => (get(page, "uuid") === project?.homepage ? 0 : 1));
 
@@ -29,8 +31,8 @@ const CurrentPage = () => {
   }, [setCurrentPageUuid]);
 
   const changePage = (newPage: string) => {
-    if (syncState !== "SAVED") {
-      toast.error("You have unsaved changes. Please save before changing the page.");
+    if (saveState !== "SAVED") {
+      toast.error(t("You have unsaved changes. Please save before changing the page."));
     } else {
       const newPageDetail = find(pages, { uuid: newPage });
       changeCurrentPage(newPageDetail);
@@ -41,12 +43,12 @@ const CurrentPage = () => {
 
   return (
     <nav
-      className="flex rounded-lg border border-gray-200 bg-gray-50 px-3 pr-0 py-1 text-gray-700 dark:border-gray-700 dark:bg-gray-800"
+      className="flex rounded-lg border border-gray-200 bg-gray-50 px-3 py-1 pr-0 text-gray-700 dark:border-gray-700 dark:bg-gray-800"
       aria-label="Breadcrumb">
       <ol className="inline-flex items-center space-x-1 md:space-x-3">
         <li className="inline-flex items-center">
           <div className="inline-flex items-center text-sm font-medium text-gray-500 dark:text-gray-400">
-            <BriefcaseIcon className="w-4 h-4 mr-2" />
+            <BriefcaseIcon className="mr-2 h-4 w-4" />
             {capitalize(project.name)}
           </div>
         </li>
