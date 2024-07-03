@@ -86,7 +86,7 @@ export interface ChaiBuilderEditorProps {
   brandingOptions?: Record<string, string>;
   onSaveBrandingOptions?: (brandingOptions: Record<string, any>) => Promise<boolean | Error>; // deprecated
 
-  onSyncStatusChange?: (syncStatus: "UNSAVED" | "SAVED") => void;
+  onSaveStatusChange?: (syncStatus: "UNSAVED" | "SAVED" | "SAVING") => void;
 
   previewComponent?: ReactComponentType;
 

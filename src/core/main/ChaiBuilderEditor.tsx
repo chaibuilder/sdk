@@ -41,6 +41,7 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
     // @ts-ignore
     setAllBlocks(syncBlocksWithDefaults(props.blocks || []) as ChaiBlock[]);
     reset();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.blocks]);
 
   useEffect(() => {

@@ -3,14 +3,19 @@ import { useEffect } from "react";
 import { noop } from "lodash-es";
 import { useAtom } from "jotai";
 import { pageSyncStateAtom } from "../hooks/useSavePage.ts";
+import { useBuilderProp } from "../hooks";
 
 const undoManager = new UndoManager();
 undoManager.setLimit(50);
 
 const useUndoManager = () => {
   const [, setSyncState] = useAtom(pageSyncStateAtom);
+  const emitSyncState = useBuilderProp("onSaveStatusChange", noop);
   useEffect(() => {
-    undoManager.setCallback(() => setSyncState("UNSAVED"));
+    undoManager.setCallback(() => {
+      setSyncState("UNSAVED");
+      emitSyncState("UNSAVED");
+    });
     return () => {
       undoManager.setCallback(noop);
     };
