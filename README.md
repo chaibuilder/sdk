@@ -36,16 +36,17 @@ Step 4: Add the builder to your page.
 ```tsx
 import "./chaibuilder.tailwind.css";
 import "@chaibuilder/sdk/styles";
+import "@chaibuilder/sdk/web-blocks";
 import { ChaiBuilderEditor } from "@chaibuilder/sdk";
-import { loadWebBlocks } from "@chaibuilder/sdk/web-blocks";
-loadWebBlocks();
 
 const BuilderFullPage = () => {
   return  (
       <ChaiBuilderEditor
-          blocks={[]}
-          onSavePage={async (blocks) => { console.log(blocks); return true }}
-          onSaveBrandingOptions={async (branding) => { console.log(blocks); return true }}
+          blocks={[{_type: 'Heading', _id: 'a', content: 'This is a heading', styles: '#styles:,text-3xl font-bold'}]}
+          onSave={async ({ blocks, providers, brandingOptions } ) => {
+            console.log(blocks, providers, brandingOptions );
+            return true
+          }}
       />
   );
 }
