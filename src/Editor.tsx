@@ -2,11 +2,18 @@ import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
 import { lsBlocksAtom, lsBrandingOptionsAtom, lsProvidersAtom } from "./__dev/atoms-dev.ts";
 import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
-import { ChaiBuilderEditor } from "./core/main";
-import "./blocks/web";
+import { ChaiBuilderEditor, useBlocksStore } from "./core/main";
+import { loadWebBlocks } from "./blocks/web";
 import "./__dev/data-providers/data";
 import { CodeIcon } from "@radix-ui/react-icons";
 import { find } from "lodash-es";
+
+loadWebBlocks();
+
+const ExportCode = ({ blockId }: { blockId: string }) => {
+  const [blocks] = useBlocksStore();
+  return <CodeIcon onClick={() => console.log("blockId", find(blocks, { _id: blockId }))} />;
+};
 
 let PreviewMessage = () => {
   const { t } = useTranslation();
@@ -48,9 +55,7 @@ function ChaiBuilderDefault() {
       }}
       outlineMenuItems={[
         {
-          item: (blockId: string) => (
-            <CodeIcon onClick={() => console.log("blockId", find(blocks, { _id: blockId }))} />
-          ),
+          item: ExportCode,
           tooltip: "Export Code",
         },
       ]}

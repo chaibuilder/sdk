@@ -1,4 +1,4 @@
-import { memo, MouseEvent, useEffect } from "react";
+import React, { memo, MouseEvent, useEffect } from "react";
 import { useAtom } from "jotai";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { MoveHandler, NodeRendererProps, RenameHandler, Tree } from "react-arborist";
@@ -115,7 +115,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
               <TooltipTrigger
                 className="cursor-pointer rounded bg-transparent hover:bg-white hover:text-blue-500"
                 asChild>
-                {outlineItem.item(id)}
+                {React.createElement(outlineItem.item, { blockId: id })}
               </TooltipTrigger>
               <TooltipContent className="z-[9999]">{outlineItem.tooltip}</TooltipContent>
             </Tooltip>

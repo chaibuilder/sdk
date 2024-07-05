@@ -31,7 +31,7 @@ type SavePageData = {
 type DataProvider = { providerKey: string; args: Record<string, any> };
 
 type OutlineMenuItem = {
-  item: (blockId: string) => ReactNode;
+  item: React.ComponentType<{ blockId: string }>;
   tooltip: string | ReactNode;
 };
 type OutlineMenuItems = OutlineMenuItem[];
