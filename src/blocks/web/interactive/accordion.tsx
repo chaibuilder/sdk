@@ -3,6 +3,82 @@ import { Styles } from "@chaibuilder/runtime/controls";
 import { addForcedClasses } from "../helper.ts";
 import { STYLES_KEY } from "../../../core/constants/STRINGS.ts";
 import { generateUUID } from "../../../core/functions/Functions.ts";
+import { flatten, map } from "lodash";
+
+const AccordionGroup = ({ children, blockProps, styles }) => {
+  const forcedStyles = addForcedClasses(styles, "hs-accordion-group");
+  return (
+    <div {...blockProps} {...forcedStyles}>
+      {children}
+    </div>
+  );
+};
+
+registerChaiBlock(AccordionGroup, {
+  type: "AccordionGroup",
+  label: "Accordion Group",
+  category: "core",
+  group: "advanced",
+  props: {
+    styles: Styles({ default: "" }),
+  },
+  // @ts-ignore
+  blocks: () => {
+    return [
+      { _id: "aa", _type: "AccordionGroup", _name: "Accordion Group" },
+      ...flatten(
+        map([1, 2], (num) => {
+          const id = `accordion-` + generateUUID();
+          return [
+            { _id: "a" + num, _type: "Accordion", _name: "Accordion", _parent: "aa" },
+            {
+              _id: "b" + num,
+              _type: "AccordionToggle",
+              _parent: "a" + num,
+              _name: "Accordion Toggle",
+              styles_attrs: { "aria-controls": id },
+            },
+            {
+              _id: "b1" + num,
+              _type: "Icon",
+              _parent: "b" + num,
+              styles: `${STYLES_KEY},hs-accordion-active:hidden hs-accordion-active:text-blue-600 hs-accordion-active:group-hover:text-blue-600 block size-4 text-gray-600 group-hover:text-gray-500 dark:text-neutral-400`,
+              icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14"></path>
+          <path d="M12 5v14"></path>
+        </svg>`,
+            },
+            {
+              _id: "b2" + num,
+              _type: "Icon",
+              _parent: "b" + num,
+              styles: `${STYLES_KEY},hs-accordion-active:block hs-accordion-active:text-blue-600 hs-accordion-active:group-hover:text-blue-600 hidden size-4 text-gray-600 group-hover:text-gray-500 dark:text-neutral-400`,
+              icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14"></path>
+        </svg>`,
+            },
+            { _id: "b3" + num, _type: "Text", _parent: "b" + num, content: "Accordion Title" },
+            {
+              _id: "c" + num,
+              _type: "AccordionContent",
+              _parent: "a" + num,
+              _name: "Accordion Content",
+              styles: `${STYLES_KEY},w-full overflow-hidden transition-[height] duration-300 px-6 py-3`,
+              styles_attrs: { "aria-labelledby": id },
+            },
+            {
+              _id: "c1" + num,
+              _type: "Text",
+              _parent: "c" + num,
+              content:
+                "It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element.",
+            },
+          ];
+        }),
+      ),
+    ];
+  },
+});
 
 const Accordion = ({ children, blockProps, styles }) => {
   const forcedStyles = addForcedClasses(styles, "hs-accordion");
@@ -18,54 +94,54 @@ registerChaiBlock(Accordion, {
   label: "Accordion",
   category: "core",
   group: "advanced",
-  hidden: true,
   props: {
     styles: Styles({ default: "" }),
   },
   // @ts-ignore
   blocks: () => {
-    const id = `accordion` + generateUUID();
+    const id = `accordion-` + generateUUID();
+    const num = "1";
     return [
-      { _id: "a", _type: "Accordion", _name: "Accordion" },
+      { _id: "a" + num, _type: "Accordion", _name: "Accordion" },
       {
-        _id: "b",
-        _type: "AccordionTrigger",
-        _parent: "a",
-        _name: "Accordion Trigger",
+        _id: "b" + num,
+        _type: "AccordionToggle",
+        _parent: "a" + num,
+        _name: "Accordion Toggle",
         styles_attrs: { "aria-controls": id },
       },
       {
-        _id: "b1",
+        _id: "b1" + num,
         _type: "Icon",
-        _parent: "b",
+        _parent: "b" + num,
         styles: `${STYLES_KEY},hs-accordion-active:hidden hs-accordion-active:text-blue-600 hs-accordion-active:group-hover:text-blue-600 block size-4 text-gray-600 group-hover:text-gray-500 dark:text-neutral-400`,
         icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M5 12h14"></path>
-          <path d="M12 5v14"></path>
-        </svg>`,
+    <path d="M5 12h14"></path>
+    <path d="M12 5v14"></path>
+  </svg>`,
       },
       {
-        _id: "b2",
+        _id: "b2" + num,
         _type: "Icon",
-        _parent: "b",
+        _parent: "b" + num,
         styles: `${STYLES_KEY},hs-accordion-active:block hs-accordion-active:text-blue-600 hs-accordion-active:group-hover:text-blue-600 hidden size-4 text-gray-600 group-hover:text-gray-500 dark:text-neutral-400`,
         icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M5 12h14"></path>
-        </svg>`,
+    <path d="M5 12h14"></path>
+  </svg>`,
       },
-      { _id: "b1", _type: "Text", _parent: "b", content: "Accordion Title" },
+      { _id: "b3" + num, _type: "Text", _parent: "b" + num, content: "Accordion Title" },
       {
-        _id: "c",
+        _id: "c" + num,
         _type: "AccordionContent",
-        _parent: "a",
+        _parent: "a" + num,
         _name: "Accordion Content",
         styles: `${STYLES_KEY},w-full overflow-hidden transition-[height] duration-300 px-6 py-3`,
         styles_attrs: { "aria-labelledby": id },
       },
       {
-        _id: "c1",
+        _id: "c1" + num,
         _type: "Text",
-        _parent: "c",
+        _parent: "c" + num,
         content:
           "It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element.",
       },
@@ -73,7 +149,7 @@ registerChaiBlock(Accordion, {
   },
 });
 
-const AccordionTrigger = ({ children, blockProps, styles }) => {
+const AccordionToggle = ({ children, blockProps, styles }) => {
   const forcedStyles = addForcedClasses(styles, "hs-accordion-toggle");
   return (
     <button {...forcedStyles} {...blockProps}>
@@ -82,9 +158,9 @@ const AccordionTrigger = ({ children, blockProps, styles }) => {
   );
 };
 
-registerChaiBlock(AccordionTrigger, {
-  type: "AccordionTrigger",
-  label: "Accordion Trigger",
+registerChaiBlock(AccordionToggle, {
+  type: "AccordionToggle",
+  label: "Accordion Toggle",
   category: "core",
   group: "advanced",
   hidden: true,

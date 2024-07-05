@@ -45,7 +45,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
      * and allowing to select current block.
      */
     e.stopPropagation();
-    node.toggle();
+    if (!node.isOpen) node.toggle();
     /**
      * It will work when a node is clicked.
      * The onSelect in the parent Tree Component

@@ -127,7 +127,41 @@ const getStyles = (node: Node, propKey: string = "styles"): Record<string, strin
   return { [propKey]: `${STYLES_KEY},` };
 };
 
+const getInteractiveBlock = (node: Node) => {
+  // interactive nodes as the ones with one of the following class
+  const interactiveClasses = {
+    "hs-collapse-toggle": "CollapseToggle",
+    "hs-collapse": "Collapse",
+    "hs-accordion-group": "AccordionGroup",
+    "hs-accordion": "Accordion",
+    "hs-accordion-toggle": "AccordionToggle",
+    "hs-accordion-content": "AccordionContent",
+    "hs-dropdown": "Dropdown",
+    "hs-dropdown-toggle": "DropdownToggle",
+    "hs-dropdown-menu": "DropdownMenu",
+    "hs-overlay": "Overlay",
+    "hs-tooltip": "Tooltip",
+    "hs-tooltip-toggle": "TooltipToggle",
+    "hs-tooltip-content": "TooltipContent",
+  };
+  const classAttr = find(node.attributes, { key: "class" }) as { value: string } | undefined;
+  if (classAttr) {
+    const classes = classAttr.value.split(" ");
+    for (const className of classes) {
+      if (interactiveClasses[className]) {
+        return interactiveClasses[className];
+      }
+    }
+  }
+};
+
 const getBlockProps = (node: Node): Record<string, any> => {
+  //check if the node has class hs-accordion
+  const interactiveNode: string | null = getInteractiveBlock(node);
+  if (interactiveNode) {
+    return { _type: interactiveNode };
+  }
+
   switch (node.tagName) {
     // self closing tags
     case "img":

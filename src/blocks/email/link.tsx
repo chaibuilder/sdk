@@ -25,7 +25,7 @@ const LinkBuilder = ({ blockProps, styles, content, children }: any) => {
 };
 
 registerChaiBlock(LinkBlock, {
-  type: "Link",
+  type: "Email/Link",
   label: "Link",
   group: "basic",
   category: "core",
