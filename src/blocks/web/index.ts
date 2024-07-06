@@ -17,6 +17,7 @@ import "./text";
 
 import "./interactive/accordion.tsx";
 import "./interactive/collapse.tsx";
+import "./interactive/dark-mode.tsx";
 // import "./interactive/dropdown.tsx";
 // hidden
 import "./hidden/body";

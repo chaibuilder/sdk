@@ -40,9 +40,9 @@ export const CanvasSettings = () => {
   const { block, settings } = canvasSettings;
 
   return (
-    <div className="bg-gray-100 px-3 py-2 text-xs hover:no-underline">
-      <div className="flex items-center gap-x-2">{canvasSettings.block._type} settings</div>
-      <div className="bg-white px-4 pt-4">
+    <div className="text-xs hover:no-underline">
+      <div className="flex items-center gap-x-2 bg-gray-100 px-4 py-2">{canvasSettings.block._type} settings</div>
+      <div className="bg-white pb-2">
         <JSONForm
           id={block?._id}
           onChange={({ formData }) => setSettings(block._id, formData)}

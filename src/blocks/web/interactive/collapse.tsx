@@ -23,11 +23,8 @@ registerChaiBlock(CollapseToggle, {
   canAcceptBlock: () => true,
 });
 
-const CollapseContent = ({ children, blockProps, styles, _showContent, inBuilder }) => {
-  const forcedStyles = addForcedClasses(
-    styles,
-    "hs-collapse " + (_showContent && inBuilder ? "!block !opacity-100" : ""),
-  );
+const CollapseContent = ({ children, blockProps, styles, canvasSettings }) => {
+  const forcedStyles = addForcedClasses(styles, "hs-collapse " + (canvasSettings?.active ? "!block !opacity-100" : ""));
   return (
     <div {...forcedStyles} {...blockProps}>
       {children}
@@ -45,9 +42,13 @@ registerChaiBlock(CollapseContent, {
       default:
         "transition-opacity transition-margin duration hs-collapse-open:opacity-100 opacity-0 w-56 hidden z-10 mt-2 min-w-60 bg-white",
     }),
-    _showContent: Checkbox({ default: false, title: "Show content in canvas" }),
   },
   canAcceptBlock: () => true,
+  //@ts-ignore
+  canvasSettings: {
+    active: Checkbox({ default: false, title: "Show collapse in canvas" }),
+  },
+  getCanvasSettingsFrom: (block) => [block._id],
   // @ts-ignore
   blocks: () => {
     const id = `collapse-` + generateUUID();

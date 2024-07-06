@@ -98,11 +98,13 @@ registerChaiBlock(Accordion, {
   props: {
     styles: Styles({ default: "" }),
   },
+
   //@ts-ignore
   canvasSettings: {
     active: Checkbox({ default: false, title: "Show content in canvas" }),
   },
   getCanvasSettingsFrom: (block) => [block._id],
+
   // @ts-ignore
   blocks: () => {
     const id = `accordion-` + generateUUID();
