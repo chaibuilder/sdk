@@ -7,6 +7,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "..
 import { useCallback, useMemo, useState } from "react";
 import { getBlockComponent } from "@chaibuilder/runtime";
 import { JSONForm } from "./JSONForm.tsx";
+import { CanvasSettings } from "./CanvasSettings.tsx";
 
 /**
  *
@@ -64,6 +65,7 @@ export default function BlockSettings() {
     <div className="overflow-x-hidden">
       <JSONForm id={selectedBlock?._id} onChange={updateRealtime} formData={formData} properties={nameProperties} />
       <hr className="mt-4" />
+      <CanvasSettings />
       {dataBindingSupported ? (
         <Accordion type="multiple" defaultValue={["STATIC", "BINDING"]} className="h-full w-full">
           <AccordionItem value="BINDING">

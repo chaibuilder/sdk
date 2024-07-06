@@ -9,6 +9,7 @@ import { useChaiExternalData } from "./useChaiExternalData.ts";
 import { useAtom } from "jotai";
 import { inlineEditingActiveAtom } from "../../../atoms/ui.ts";
 import { useBlocksStore } from "../../../history/useBlocksStoreUndoableActions.ts";
+import { useCanvasSettings } from "../../../hooks/useCanvasSettings.ts";
 
 // FIXME:  Duplicate code in CanvasRenderer.tsx
 const getSlots = (block: ChaiBlock) => {
@@ -61,11 +62,20 @@ function applyBindings(block: ChaiBlock, chaiData: any): ChaiBlock {
 
 export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
   const [allBlocks] = useBlocksStore();
-
+  const [canvasSettings] = useCanvasSettings();
   const getStyles = useCallback((block: ChaiBlock) => getStyleAttrs(block), []);
 
   const [chaiData] = useChaiExternalData();
   const [editingBlockId] = useAtom(inlineEditingActiveAtom);
+  const getCanvasSettings = useCallback(
+    (blockIds: string[]) => {
+      return blockIds.reduce((acc, blockId) => {
+        const settings = get(canvasSettings, blockId, {});
+        return { ...acc, ...settings };
+      }, {});
+    },
+    [canvasSettings, allBlocks],
+  );
 
   return (
     <>
@@ -91,7 +101,10 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
           const chaiBlock = getBlockComponent(block._type) as any;
           const Component = get(chaiBlock, "builderComponent", get(chaiBlock, "component", null));
           if (isNull(Component)) return <noscript>{`<!-- ${block?._type} not registered -->`}</noscript>;
-
+          const canvasSettingsFrom = has(chaiBlock, "getCanvasSettingsFrom")
+            ? chaiBlock?.getCanvasSettingsFrom(block, allBlocks)
+            : [];
+          const canvasSettings = getCanvasSettings(canvasSettingsFrom);
           return (
             <Suspense>
               {React.createElement(Component, {
@@ -100,11 +113,12 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
                   "data-block-type": block._type,
                   "data-dnd": has(chaiBlock, "canAcceptBlock") ? "branch" : "leaf",
                 },
-                inBuilder: true,
                 index,
                 ...applyBindings(block, chaiData),
                 ...getStyles(block),
                 ...attrs,
+                inBuilder: true,
+                canvasSettings,
               })}
             </Suspense>
           );

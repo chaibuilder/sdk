@@ -46,3 +46,6 @@ draggedBlockIdAtom.debugLabel = "draggedBlockIdAtom";
 
 export const treeRefAtom = atom<TreeApi<any> | null>(null);
 treeRefAtom.debugLabel = "treeRefAtom";
+
+export const canvasSettingsAtom = atom({});
+canvasSettingsAtom.debugLabel = "canvasSettingsAtom";

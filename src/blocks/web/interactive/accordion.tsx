@@ -3,7 +3,7 @@ import { Checkbox, Styles } from "@chaibuilder/runtime/controls";
 import { addForcedClasses } from "../helper.ts";
 import { STYLES_KEY } from "../../../core/constants/STRINGS.ts";
 import { generateUUID } from "../../../core/functions/Functions.ts";
-import { flatten, map } from "lodash";
+import { flatten, map } from "lodash-es";
 
 const AccordionGroup = ({ children, blockProps, styles }) => {
   const forcedStyles = addForcedClasses(styles, "hs-accordion-group");
@@ -81,8 +81,8 @@ registerChaiBlock(AccordionGroup, {
   canAcceptBlock: (type) => type === "Accordion",
 });
 
-const Accordion = ({ children, blockProps, styles }) => {
-  const forcedStyles = addForcedClasses(styles, "hs-accordion");
+const Accordion = ({ children, blockProps, styles, canvasSettings }) => {
+  const forcedStyles = addForcedClasses(styles, "hs-accordion " + (canvasSettings?.active ? "active" : ""));
   return (
     <div {...blockProps} {...forcedStyles}>
       {children}
@@ -98,6 +98,11 @@ registerChaiBlock(Accordion, {
   props: {
     styles: Styles({ default: "" }),
   },
+  //@ts-ignore
+  canvasSettings: {
+    active: Checkbox({ default: false, title: "Show content in canvas" }),
+  },
+  getCanvasSettingsFrom: (block) => [block._id],
   // @ts-ignore
   blocks: () => {
     const id = `accordion-` + generateUUID();
@@ -177,10 +182,10 @@ registerChaiBlock(AccordionToggle, {
   canDuplicate: () => false,
 });
 
-const AccordionContent = ({ children, blockProps, styles, _showContent, inBuilder }) => {
+const AccordionContent = ({ children, blockProps, styles, canvasSettings }) => {
   const forcedStyles = addForcedClasses(
     styles,
-    "hs-accordion-content " + (_showContent && inBuilder ? "!block !opacity-100" : ""),
+    "hs-accordion-content " + (canvasSettings?.active ? "!block !opacity-100" : ""),
   );
   return (
     <div {...forcedStyles} {...blockProps}>
@@ -197,8 +202,9 @@ registerChaiBlock(AccordionContent, {
   hidden: true,
   props: {
     styles: Styles({ default: "w-full overflow-hidden transition-height hidden duration-300" }),
-    _showContent: Checkbox({ default: false, title: "Show content in canvas" }),
   },
+  //@ts-ignore
+  getCanvasSettingsFrom: (block) => [block._parent],
   canAcceptBlock: () => true,
   canDelete: () => false,
   canMove: () => false,
