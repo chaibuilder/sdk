@@ -1,5 +1,5 @@
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import { Styles } from "@chaibuilder/runtime/controls";
+import { Checkbox, Styles } from "@chaibuilder/runtime/controls";
 import { addForcedClasses } from "../helper.ts";
 import { STYLES_KEY } from "../../../core/constants/STRINGS.ts";
 import { generateUUID } from "../../../core/functions/Functions.ts";
@@ -78,6 +78,7 @@ registerChaiBlock(AccordionGroup, {
       ),
     ];
   },
+  canAcceptBlock: (type) => type === "Accordion",
 });
 
 const Accordion = ({ children, blockProps, styles }) => {
@@ -135,7 +136,7 @@ registerChaiBlock(Accordion, {
         _type: "AccordionContent",
         _parent: "a" + num,
         _name: "Accordion Content",
-        styles: `${STYLES_KEY},w-full overflow-hidden transition-[height] duration-300 px-6 py-3`,
+        styles: `${STYLES_KEY},w-full overflow-hidden hidden transition-[height] duration-300 px-6 py-3`,
         styles_attrs: { "aria-labelledby": id },
       },
       {
@@ -176,8 +177,11 @@ registerChaiBlock(AccordionToggle, {
   canDuplicate: () => false,
 });
 
-const AccordionContent = ({ children, blockProps, styles }) => {
-  const forcedStyles = addForcedClasses(styles, "hs-accordion-content");
+const AccordionContent = ({ children, blockProps, styles, _showContent, inBuilder }) => {
+  const forcedStyles = addForcedClasses(
+    styles,
+    "hs-accordion-content " + (_showContent && inBuilder ? "!block !opacity-100" : ""),
+  );
   return (
     <div {...forcedStyles} {...blockProps}>
       {children}
@@ -192,7 +196,8 @@ registerChaiBlock(AccordionContent, {
   group: "advanced",
   hidden: true,
   props: {
-    styles: Styles({ default: "w-full overflow-hidden transition-[height] duration-300" }),
+    styles: Styles({ default: "w-full overflow-hidden transition-height hidden duration-300" }),
+    _showContent: Checkbox({ default: false, title: "Show content in canvas" }),
   },
   canAcceptBlock: () => true,
   canDelete: () => false,

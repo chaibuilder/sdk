@@ -44,21 +44,21 @@ export default function BlockStyling() {
           </Label>
           <Select defaultValue={state as string} onValueChange={(value) => setState(value)}>
             <SelectTrigger className="h-auto w-fit p-1 px-3">
-              <SelectValue placeholder="State" />
+              <SelectValue placeholder={t("State")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Normal</SelectItem>
-              <SelectItem value="hover">Hover</SelectItem>
-              <SelectItem value="active">Active</SelectItem>
-              <SelectItem value="focus">Focus</SelectItem>
-              <SelectItem value="before">Before</SelectItem>
-              <SelectItem value="after">After</SelectItem>
-              <SelectItem value="only">Only</SelectItem>
-              <SelectItem value="first">First</SelectItem>
-              <SelectItem value="last">Last</SelectItem>
-              <SelectItem value="first-letter">First Letter</SelectItem>
-              <SelectItem value="first-line">First Line</SelectItem>
-              <SelectItem value="disabled">Disabled</SelectItem>
+              <SelectItem value="">{t("Normal")}</SelectItem>
+              <SelectItem value="hover">{t("Hover")}</SelectItem>
+              <SelectItem value="active">{t("Active")}</SelectItem>
+              <SelectItem value="focus">{t("Focus")}</SelectItem>
+              <SelectItem value="before">{t("Before")}</SelectItem>
+              <SelectItem value="after">{t("After")}</SelectItem>
+              <SelectItem value="only">{t("Only")}</SelectItem>
+              <SelectItem value="first">{t("First")}</SelectItem>
+              <SelectItem value="last">{t("Last")}</SelectItem>
+              <SelectItem value="first-letter">{t("First Letter")}</SelectItem>
+              <SelectItem value="first-line">{t("First Line")}</SelectItem>
+              <SelectItem value="disabled">{t("Disabled")}</SelectItem>
             </SelectContent>
           </Select>
         </div>

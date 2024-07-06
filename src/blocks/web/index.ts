@@ -15,7 +15,8 @@ import "./custom-html";
 import "./divider";
 import "./text";
 
-// import "./interactive/accordion.tsx";
+import "./interactive/accordion.tsx";
+import "./interactive/collapse.tsx";
 // import "./interactive/dropdown.tsx";
 // hidden
 import "./hidden/body";
