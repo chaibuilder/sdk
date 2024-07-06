@@ -47,7 +47,7 @@ export const CoreBlock = ({ block }: { block: any }) => {
               (dndEnabled ? "cursor-grab" : "cursor-pointer")
             }>
             {createElement(icon || BoxIcon, { className: "w-4 h-4 mx-auto" })}
-            <p className="truncate text-xs">{label || type}</p>
+            <p className="text-xs">{label || type}</p>
           </button>
         </TooltipTrigger>
         <TooltipContent>

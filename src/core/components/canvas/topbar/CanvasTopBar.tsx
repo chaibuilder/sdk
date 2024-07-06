@@ -31,11 +31,8 @@ const CanvasTopBar: React.FC = () => {
         <UndoRedo />
       </div>
       <div className="flex h-full items-center space-x-2">
-        {/* <div className="max-w-96 bg-blue-600">Custom Canvas Topbar</div> */}
         <Separator orientation="vertical" />
         <ClearCanvas />
-        {/*<Separator orientation="vertical" />*/}
-        {/*<Preview />*/}
       </div>
     </div>
   );

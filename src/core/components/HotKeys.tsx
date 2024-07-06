@@ -12,8 +12,9 @@ import {
 } from "../../ui";
 import { KeyboardIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
+import { memo } from "react";
 
-export const HotKeys = () => {
+export const HotKeys = memo(() => {
   const { t } = useTranslation();
   const keys: { [key: string]: string } = {
     "ctrl + Z": "Undo",
@@ -75,4 +76,4 @@ export const HotKeys = () => {
       </DialogContent>
     </Dialog>
   );
-};
+});
