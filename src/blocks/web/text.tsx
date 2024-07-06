@@ -12,7 +12,7 @@ const RawTextBlock = (
 ) => {
   if (props.inBuilder) {
     return (
-      <span className={"flex"} {...props.blockProps}>
+      <span className={"inline-block"} {...props.blockProps}>
         {props.content}
       </span>
     );

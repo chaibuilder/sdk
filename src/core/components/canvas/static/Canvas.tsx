@@ -9,7 +9,7 @@ import {
 import { first, isEmpty, omit, throttle } from "lodash-es";
 import { Quill } from "react-quill";
 import { useAtom } from "jotai";
-import { inlineEditingActiveAtom } from "../../../atoms/ui.ts";
+import { inlineEditingActiveAtom, treeRefAtom } from "../../../atoms/ui.ts";
 import { useDnd } from "../dnd/useDnd.ts";
 
 function getTargetedBlock(target) {
@@ -86,10 +86,12 @@ const useHandleCanvasClick = () => {
   const [, setIds] = useSelectedBlockIds();
   const [, setHighlighted] = useHighlightBlockId();
   const [editingBlockId] = useAtom(inlineEditingActiveAtom);
+  const [treeRef] = useAtom(treeRefAtom);
   return (e: any) => {
     if (editingBlockId) {
       return;
     }
+    treeRef.closeAll();
     e.stopPropagation();
     const chaiBlock: HTMLElement = getTargetedBlock(e.target);
     if (chaiBlock?.getAttribute("data-block-id") && chaiBlock?.getAttribute("data-block-id") === "container") {

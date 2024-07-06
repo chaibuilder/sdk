@@ -1,4 +1,4 @@
-import React, { memo, MouseEvent, useEffect } from "react";
+import React, { memo, MouseEvent, useEffect, useRef } from "react";
 import { useAtom } from "jotai";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { MoveHandler, NodeRendererProps, RenameHandler, Tree } from "react-arborist";
@@ -21,6 +21,7 @@ import { useBlocksStoreUndoableActions } from "../../../../../history/useBlocksS
 import { BlockContextMenu } from "../BlockContextMenu.tsx";
 import { canAcceptChildBlock } from "../../../../../functions/block-helpers.ts";
 import { find, first } from "lodash-es";
+import { treeRefAtom } from "../../../../../atoms/ui.ts";
 
 const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const outlineItems = useBuilderProp("outlineMenuItems", []);
@@ -157,11 +158,18 @@ const ListTree = () => {
   const [, setStyleBlocks] = useSelectedStylingBlocks();
   const { moveBlocks } = useBlocksStoreUndoableActions();
   const canMove = useCanMove();
+  const treeRef = useRef(null);
+  const [, setTreeRef] = useAtom(treeRefAtom);
 
   const clearSelection = () => {
     setIds([]);
     setStyleBlocks([]);
   };
+
+  useEffect(() => {
+    //@ts-ignore
+    setTreeRef(treeRef.current);
+  }, [treeRef.current]);
 
   const onRename: RenameHandler<any> = ({ id, name, node }) => {
     updateBlockProps([id], { _name: name }, node.data._name);
@@ -198,6 +206,7 @@ const ListTree = () => {
     <div className={cn("-mx-1 -mt-1 flex h-full select-none flex-col space-y-1")} onClick={() => clearSelection()}>
       <div id="outline-view" className="no-scrollbar h-full overflow-y-auto p-1 px-2 text-xs">
         <Tree
+          ref={treeRef}
           height={800}
           className="no-scrollbar !h-full max-w-full !overflow-y-auto !overflow-x-hidden"
           selection={ids[0] || ""}

@@ -1,4 +1,5 @@
 import { atom } from "jotai";
+import { TreeApi } from "react-arborist";
 
 export const readOnlyModeAtom: any = atom<boolean>(false);
 readOnlyModeAtom.debugLabel = "readOnlyModeAtom";
@@ -42,3 +43,6 @@ draggingFlagAtom.debugLabel = "draggingFlagAtom";
 
 export const draggedBlockIdAtom = atom("");
 draggedBlockIdAtom.debugLabel = "draggedBlockIdAtom";
+
+export const treeRefAtom = atom<TreeApi<any> | null>(null);
+treeRefAtom.debugLabel = "treeRefAtom";
