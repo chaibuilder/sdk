@@ -1,35 +1,11 @@
-import { useBlocksStore, useSelectedBlock } from "../../hooks";
-import { useMemo } from "react";
-import { ChaiControlDefinition } from "@chaibuilder/runtime/controls";
-import { cloneDeep, get, isEmpty } from "lodash-es";
-import { getBlockComponent } from "@chaibuilder/runtime";
+import { get, isEmpty } from "lodash-es";
 import { JSONForm } from "./JSONForm.tsx";
 import { useCanvasSettings } from "../../hooks/useCanvasSettings.ts";
+import { useSelectedBlockCanvasSetting } from "../../hooks/useSelectedBlockIds.ts";
 
 export const CanvasSettings = () => {
   const [canvasSettingItems, setCanvasSettings] = useCanvasSettings();
-  const selectedBlock = useSelectedBlock() as any;
-  const [allBlocks] = useBlocksStore();
-  const allParentBlocks = useMemo(() => {
-    let block = selectedBlock;
-    const blocks = [block];
-    do {
-      const parentBlock = allBlocks.find(({ _id }) => _id === block?._parent);
-      block = parentBlock;
-      if (parentBlock) blocks.push(parentBlock);
-    } while (block?._parent);
-
-    return blocks;
-  }, [selectedBlock?._type, allBlocks]);
-
-  const canvasSettings = useMemo(() => {
-    for (let i = 0; i < allParentBlocks.length; i++) {
-      const coreBlock = getBlockComponent(allParentBlocks[i]._type);
-      const settings = cloneDeep(get(coreBlock, "canvasSettings", {})) as { [key: string]: ChaiControlDefinition };
-      if (!isEmpty(settings)) return { settings, block: allParentBlocks[i] };
-    }
-    return {};
-  }, [allParentBlocks]);
+  const canvasSettings = useSelectedBlockCanvasSetting();
 
   const setSettings = (id: string, settings: any) => {
     setCanvasSettings((prev) => ({ ...prev, [id]: settings }));

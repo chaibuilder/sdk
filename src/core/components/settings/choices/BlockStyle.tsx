@@ -207,7 +207,6 @@ export const BlockStyle = (props: EditOptionProps) => {
                 classPrefix={get(CLASS_PREFIXES, property, "")}
                 units={units || []}
                 onChange={addNewClass}
-                //FIXME: onChangeRuntime needed for realtime changes
                 negative={negative}
                 cssProperty={property}
               />

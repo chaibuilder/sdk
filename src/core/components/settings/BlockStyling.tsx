@@ -1,4 +1,4 @@
-import { isEmpty } from "lodash-es";
+import { isEmpty, map } from "lodash-es";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
 import { useSelectedBlocksDisplayChild, useSelectedStylingBlocks, useStylingState } from "../../hooks";
@@ -16,13 +16,15 @@ import {
 } from "../../../ui";
 import { BrushIcon } from "lucide-react";
 import { StylingHelpers } from "./StylingHelpers.tsx";
+import { useSelectedBlockCustomStylingStates } from "../../hooks/useSelectedBlockIds.ts";
 
 export default function BlockStyling() {
   const [state, setState] = useStylingState();
   const { flexChild, gridChild } = useSelectedBlocksDisplayChild();
   const { t } = useTranslation();
-
+  const styleStates = useSelectedBlockCustomStylingStates();
   const [stylingBlocks] = useSelectedStylingBlocks();
+
   if (isEmpty(stylingBlocks)) {
     return (
       <div className="p-4 text-center">
@@ -47,6 +49,12 @@ export default function BlockStyling() {
               <SelectValue placeholder={t("State")} />
             </SelectTrigger>
             <SelectContent>
+              {map(styleStates, (state: string, key: string) => (
+                <SelectItem key={key} value={key}>
+                  {t(state)}
+                </SelectItem>
+              ))}
+              <hr />
               <SelectItem value="">{t("Normal")}</SelectItem>
               <SelectItem value="hover">{t("Hover")}</SelectItem>
               <SelectItem value="active">{t("Active")}</SelectItem>

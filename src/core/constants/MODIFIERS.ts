@@ -36,17 +36,9 @@ export const MODIFIERS: Array<string> = [
   "selection",
   "file",
   "placeholder",
-  // headless UI
-  "ui-open",
-  "ui-disabled",
-  "ui-active",
-  "ui-selected",
-  "ui-checked",
-  "ui-not-open",
-  "ui-not-disabled",
-  "ui-not-active",
-  "ui-not-selected",
-  "ui-not-checked",
+  // preline
+  "hs-collapse-open",
+  "hs-accordion-active",
 ];
 
 export const BRANDING_OPTIONS_DEFAULTS = {
