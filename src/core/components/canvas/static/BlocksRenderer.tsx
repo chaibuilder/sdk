@@ -101,10 +101,10 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
           const chaiBlock = getBlockComponent(block._type) as any;
           const Component = get(chaiBlock, "builderComponent", get(chaiBlock, "component", null));
           if (isNull(Component)) return <noscript>{`<!-- ${block?._type} not registered -->`}</noscript>;
-          const canvasSettingsFrom = has(chaiBlock, "getCanvasSettingsFrom")
-            ? chaiBlock?.getCanvasSettingsFrom(block, allBlocks)
+          const blockStateFrom = has(chaiBlock, "getBlockStateFrom")
+            ? chaiBlock?.getBlockStateFrom(block, allBlocks)
             : [];
-          const canvasSettings = getCanvasSettings(canvasSettingsFrom);
+          const blockState = getCanvasSettings(blockStateFrom);
           return (
             <Suspense>
               {React.createElement(Component, {
@@ -118,7 +118,7 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
                 ...getStyles(block),
                 ...attrs,
                 inBuilder: true,
-                canvasSettings,
+                blockState,
               })}
             </Suspense>
           );

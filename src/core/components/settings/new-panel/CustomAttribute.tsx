@@ -10,7 +10,8 @@ import {
 import { useTranslation } from "react-i18next";
 import { DeleteIcon } from "lucide-react";
 import { PlusIcon } from "@radix-ui/react-icons";
-import { Button, Input, Tooltip, TooltipContent, TooltipTrigger } from "../../../../ui";
+import { Button, Input, Tooltip, TooltipContent, TooltipTrigger, useToast } from "../../../../ui";
+import { find, startsWith } from "lodash";
 
 const NewAttributePair = ({ onAdd }: { onAdd: Function }) => {
   const { t } = useTranslation();
@@ -80,6 +81,7 @@ export const CustomAttributes = () => {
   const updateBlockPropsRealtime = useUpdateBlocksPropsRealtime();
   const updateBlockProps = useUpdateBlocksProps();
   const { t } = useTranslation();
+  const { toast } = useToast();
 
   const attrKey = `${get(selectedStylingBlock, "0.prop")}_attrs`;
 
@@ -97,6 +99,18 @@ export const CustomAttributes = () => {
   };
 
   const onAdd = (newAttr: Record<"key" | "value", string>) => {
+    // check if the attribute is a predefined attribute by checking in attributes with same key
+    const predefinedAttr = find(attributes, { key: newAttr.key });
+    if (predefinedAttr) {
+      if (predefinedAttr.value.startsWith("dnd-") || predefinedAttr.value.startsWith("#dnd-")) {
+        toast({
+          title: t(`Cannot add predefined attribute`),
+          variant: "destructive",
+          description: t(`"(${newAttr.key})" cannot be added as it is a predefined attribute for this block`),
+        });
+        return;
+      }
+    }
     const _attrs: any = [...attributes, newAttr];
     updateAttributes(_attrs);
   };
@@ -126,7 +140,7 @@ export const CustomAttributes = () => {
                 </li>
               ) : (
                 <li>
-                  <span className="font-bold">{t("Custom attributes")}</span>
+                  <span className="font-bold">{t("Attributes")}</span>
                 </li>
               )}
               {React.Children.toArray(
@@ -153,12 +167,17 @@ export const CustomAttributes = () => {
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <button
+                            disabled={startsWith(item.value, "dnd-")}
                             className="invisible group-hover:visible"
                             onClick={() => removeAttribute(attributes.indexOf(item))}>
                             <DeleteIcon className="w-4 text-gray-500" />
                           </button>
                         </TooltipTrigger>
-                        <TooltipContent className="max-w-[200px]">{t("Remove attribute")}</TooltipContent>
+                        <TooltipContent className="max-w-[200px]">
+                          {startsWith(item.value, "dnd-")
+                            ? t("Predefined attribute. Cannot be deleted")
+                            : t("Remove attribute")}
+                        </TooltipContent>
                       </Tooltip>
                     </li>
                   );

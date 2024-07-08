@@ -14,6 +14,7 @@ import { draggedBlockIdAtom } from "../../../atoms/ui.ts";
 import typography from "@tailwindcss/typography";
 import forms from "@tailwindcss/forms";
 import aspectRatio from "@tailwindcss/aspect-ratio";
+import { prelinePlugin } from "./Preline.ts";
 // @ts-ignore
 
 export const HeadTags = ({ model }: { model: string }) => {
@@ -72,58 +73,7 @@ export const HeadTags = ({ model }: { model: string }) => {
         },
       },
 
-      plugins: [
-        typography,
-        forms,
-        aspectRatio,
-        iframeWin.tailwind.plugin.withOptions(() => ({ addVariant, e }: any) => {
-          addVariant("hs-accordion-active", [
-            ({ modifySelectors, separator }) => {
-              modifySelectors(({ className }) => {
-                return `.hs-accordion.active.${e(`hs-accordion-active${separator}${className}`)}`;
-              });
-            },
-            ({ modifySelectors, separator }) => {
-              modifySelectors(({ className }) => {
-                return `.hs-accordion.active > .${e(`hs-accordion-active${separator}${className}`)}`;
-              });
-            },
-            ({ modifySelectors, separator }) => {
-              modifySelectors(({ className }) => {
-                return `.hs-accordion.active > .hs-accordion-toggle .${e(
-                  `hs-accordion-active${separator}${className}`,
-                )}`;
-              });
-            },
-            ({ modifySelectors, separator }) => {
-              modifySelectors(({ className }) => {
-                return `.hs-accordion.active > .hs-accordion-heading > .hs-accordion-toggle .${e(
-                  `hs-accordion-active${separator}${className}`,
-                )}`;
-              });
-            },
-            ({ modifySelectors, separator }) => {
-              modifySelectors(({ className }) => {
-                return `.hs-accordion.active > .hs-accordion-toggle.${e(
-                  `hs-accordion-active${separator}${className}`,
-                )}`;
-              });
-            },
-            ({ modifySelectors, separator }) => {
-              modifySelectors(({ className }) => {
-                return `.hs-accordion.active > .hs-accordion-heading > .hs-accordion-toggle.${e(
-                  `hs-accordion-active${separator}${className}`,
-                )}`;
-              });
-            },
-          ]);
-          addVariant("hs-accordion-selected", ({ modifySelectors, separator }) => {
-            modifySelectors(({ className }) => {
-              return `.hs-accordion .selected.${e(`hs-accordion-selected${separator}${className}`)}`;
-            });
-          });
-        }),
-      ],
+      plugins: [typography, forms, aspectRatio, iframeWin.tailwind.plugin.withOptions(() => prelinePlugin)],
     };
   }, [brandingOptions, iframeWin, headingFont, bodyFont]);
 

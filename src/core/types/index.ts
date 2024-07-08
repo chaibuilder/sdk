@@ -23,9 +23,6 @@ export type StylingAttributes = {
   "data-block-parent": string;
   "data-style-id": string;
   "data-style-prop": string;
-  onClick?: (e: any) => void;
-  onMouseEnter?: (e: any) => void;
-  onMouseLeave?: (e: any) => void;
 };
 
 export type BrandingOptions = {

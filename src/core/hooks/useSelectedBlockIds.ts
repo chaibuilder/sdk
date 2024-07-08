@@ -126,7 +126,7 @@ export const useSelectedBlockCanvasSetting = () => {
   return useMemo(() => {
     for (let i = 0; i < allParentBlocks.length; i++) {
       const coreBlock = getBlockComponent(allParentBlocks[i]._type);
-      const settings = cloneDeep(get(coreBlock, "canvasSettings", {})) as { [key: string]: ChaiControlDefinition };
+      const settings = cloneDeep(get(coreBlock, "blockState", {})) as { [key: string]: ChaiControlDefinition };
       if (!isEmpty(settings)) return { settings, block: allParentBlocks[i] };
     }
     return {};
