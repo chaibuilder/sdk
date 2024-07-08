@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
-import { filter, forEach, get, isEmpty, kebabCase, map, set } from "lodash-es";
+import { filter, find, forEach, get, isEmpty, kebabCase, map, set, startsWith } from "lodash-es";
 import {
   useSelectedBlock,
   useSelectedStylingBlocks,
@@ -11,7 +11,6 @@ import { useTranslation } from "react-i18next";
 import { DeleteIcon } from "lucide-react";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { Button, Input, Tooltip, TooltipContent, TooltipTrigger, useToast } from "../../../../ui";
-import { find, startsWith } from "lodash";
 
 const NewAttributePair = ({ onAdd }: { onAdd: Function }) => {
   const { t } = useTranslation();

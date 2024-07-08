@@ -21,7 +21,7 @@ const ParagraphBlock = (
   if (!isNull(props.children)) return React.createElement("p", { ...styles, ...blockProps }, props.children);
 
   // eslint-disable-next-line react/no-danger
-  return React.createElement("div", {
+  return React.createElement("p", {
     ...styles,
     ...blockProps,
     dangerouslySetInnerHTML: { __html: content },
