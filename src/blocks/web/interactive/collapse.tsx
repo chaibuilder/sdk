@@ -39,7 +39,7 @@ registerChaiBlock(CollapseToggle, {
 
 const CollapseContent = ({ children, blockProps, styles, blockState, inBuilder }) => {
   const blockStateClasses = inBuilder
-    ? { "!block !opacity-100 open": blockState?.active, "hidden opacity-0": !blockState?.active }
+    ? { "!block !opacity-100 open": blockState?.active, "": !blockState?.active }
     : {};
   // take truthy values from blockStateClasses and add them to the forcedStyles
   const blockStateClassNames = Object.keys(blockStateClasses)

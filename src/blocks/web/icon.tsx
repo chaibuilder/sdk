@@ -15,10 +15,7 @@ const IconBlock = (
   },
 ) => {
   const { blockProps, icon, styles, width, inBuilder, height } = block;
-  const iStyles = addForcedClasses(
-    styles,
-    cn("inline-block", width ? `w-[${width}px]` : "", height ? `h-[${height}px]` : ""),
-  );
+  const iStyles = addForcedClasses(styles, cn(width ? `w-[${width}px]` : "", height ? `h-[${height}px]` : ""));
 
   if (isEmpty(icon)) {
     return <EmptySlot blockProps={blockProps} text="" inBuilder={inBuilder} className="h-8 w-14" />;
