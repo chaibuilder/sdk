@@ -190,7 +190,7 @@ const getInteractiveBlock = (node: Node) => {
 
 const getBlockProps = (node: Node): Record<string, any> => {
   //check if the node has class hs-accordion
-  const interactiveNode: string | null = getInteractiveBlock(node);
+  const interactiveNode: string | undefined = getInteractiveBlock(node);
   if (interactiveNode) {
     return { _type: interactiveNode };
   }
@@ -275,10 +275,11 @@ const getBlockProps = (node: Node): Record<string, any> => {
       return { _type: "TableFooter" };
 
     default:
+      const type = get(node, "children", []).length > 0 ? "Box" : "EmptyBox";
       return {
-        _type: "Box",
+        _type: type,
         tag: node.tagName,
-        _name: node.tagName === "div" ? "Box" : capitalize(node.tagName),
+        _name: type == "EmptyBox" ? type : node.tagName === "div" ? type : capitalize(node.tagName),
       };
   }
 };

@@ -1,5 +1,6 @@
 import { noop } from "lodash-es";
 import "./box";
+import "./empty-box";
 import "./heading";
 import "./paragraph";
 import "./span";
