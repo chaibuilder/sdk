@@ -11,11 +11,7 @@ const RawTextBlock = (
   },
 ) => {
   if (props.inBuilder) {
-    return (
-      <span className={"inline-block"} {...props.blockProps}>
-        {props.content}
-      </span>
-    );
+    return <span {...props.blockProps}>{props.content}</span>;
   }
   return `${props.content}`;
 };
