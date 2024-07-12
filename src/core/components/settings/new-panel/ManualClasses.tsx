@@ -4,7 +4,7 @@ import { first, get, isEmpty, map, reject } from "lodash-es";
 // @ts-ignore
 import Autosuggest from "react-autosuggest";
 import Fuse from "fuse.js";
-import { Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
+import { CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { ALL_TW_CLASSES } from "../../../constants/CLASSES_LIST";
 import {
   useAddClassesToBlocks,
@@ -13,7 +13,7 @@ import {
   useSelectedBlockIds,
   useSelectedStylingBlocks,
 } from "../../../hooks";
-import { Button, Label } from "../../../../ui";
+import { Button, Label, Tooltip, TooltipContent, TooltipTrigger, useToast } from "../../../../ui";
 import { STYLES_KEY } from "../../../constants/STRINGS.ts";
 
 const fuse = new Fuse(ALL_TW_CLASSES, {
@@ -30,6 +30,7 @@ export function ManualClasses() {
   const removeClassesFromBlocks = useRemoveClassesFromBlocks();
   const [selectedIds] = useSelectedBlockIds();
   const [newCls, setNewCls] = useState("");
+  const { toast } = useToast();
   const prop = first(styleBlock)?.prop as string;
   const classes = reject((get(block, prop, "").replace(STYLES_KEY, "").split(",").pop() || "").split(" "), isEmpty);
   const addNewClasses = () => {
@@ -87,12 +88,38 @@ export function ManualClasses() {
     className: "w-full rounded-md text-xs px-2 hover:outline-0 bg-background border-border py-1",
   };
 
+  const onClickCopy = () => {
+    if (navigator.clipboard === undefined) {
+      toast({
+        title: "Clipboard not supported",
+        description: "Please use Chrome, Firefox or Safari",
+        variant: "destructive",
+      });
+      return;
+    }
+    navigator.clipboard.writeText(classes.join(" "));
+    toast({
+      title: "Copied",
+      description: "Classes copied to clipboard",
+    });
+  };
+
   return (
     <div
       className={`no-scrollbar flex ${
         suggestions.length > 0 ? "min-h-[300px]" : "min-h-max"
       } w-full flex-col gap-y-5 overflow-y-auto bg-gray-100 px-px`}>
-      <Label className="mt-2">Add Tailwind classes</Label>
+      <Label className="mt-2 flex items-center gap-x-2">
+        <span>Add Tailwind classes</span>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <CopyIcon onClick={onClickCopy} className={"cursor-pointer"} />
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Copy classes to clipboard</p>
+          </TooltipContent>
+        </Tooltip>
+      </Label>
       <div className="relative -mt-4 flex items-center gap-x-3">
         <div className="relative flex w-full items-center gap-x-3">
           <Autosuggest
