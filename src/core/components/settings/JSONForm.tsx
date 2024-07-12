@@ -6,6 +6,7 @@ import RjForm from "@rjsf/core";
 import { BindingWidget } from "../../../ui/widgets/rjsf/widgets/binding.tsx";
 import { IconPickerField, ImagePickerField, LinkField, RTEField } from "../../../ui";
 import validator from "@rjsf/validator-ajv8";
+import { useThrottledCallback } from "@react-hookz/web";
 
 type JSONFormType = {
   id?: string;
@@ -35,6 +36,14 @@ export const JSONForm = memo(({ id, properties, formData, onChange }: JSONFormTy
     setForm(formData);
   }, [id]);
 
+  const throttledChange = useThrottledCallback(
+    async ({ formData }: any, id?: string) => {
+      onChange({ formData }, id);
+    },
+    [onChange],
+    1000, // save only every 5 seconds
+  );
+
   return (
     <RjForm
       widgets={{
@@ -56,7 +65,7 @@ export const JSONForm = memo(({ id, properties, formData, onChange }: JSONFormTy
       onChange={({ formData: fD }, id) => {
         if (!id) return;
         setForm(fD);
-        onChange({ formData: fD }, id);
+        throttledChange({ formData: fD }, id);
       }}
     />
   );
