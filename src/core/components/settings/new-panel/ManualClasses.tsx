@@ -159,11 +159,11 @@ export function ManualClasses() {
           classes.map((cls: string) => (
             <div
               key={cls}
-              className="group relative flex cursor-default items-center gap-x-1 rounded-full border border-blue-600 bg-blue-500 p-px px-1.5 text-[11px] text-white hover:border-blue-900">
+              className="group relative truncate max-w-[260px] flex cursor-default items-center gap-x-1 rounded-full border border-blue-600 bg-blue-500 p-px px-1.5 text-[11px] text-white hover:border-blue-900">
               {cls}
               <Cross2Icon
                 onClick={() => removeClassesFromBlocks(selectedIds, [cls])}
-                className="invisible absolute right-1 hover:text-white group-hover:visible group-hover:cursor-pointer"
+                className="invisible absolute right-1 hover:text-white group-hover:visible group-hover:cursor-pointer "
               />
             </div>
           )),
