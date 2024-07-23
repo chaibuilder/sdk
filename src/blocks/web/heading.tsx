@@ -23,6 +23,8 @@ const HeadingBlock = (
   return React.createElement(level, {
     ...styles,
     ...blockProps,
+    "data-ai-key": "content",
+    "data-ai-type": "html",
     dangerouslySetInnerHTML: { __html: content },
   });
 };

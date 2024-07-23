@@ -36,7 +36,7 @@ function setProjectBlocksInMemory(nodes: any, initial = false) {
       nodes[i] = {
         type: "GlobalBlock",
         blockId: element.blockId,
-        _parent: get(element, "parent", null),
+        _parent: get(element, "_parent", null),
         _id: element._id,
       };
     } else if (element.children && element.children.length) {
@@ -59,14 +59,13 @@ function getInnerBlocks(flatArr: ChaiBlock[]) {
 
 function getSingleBlock(flatArray: ChaiBlock[]) {
   let blocks: ChaiBlock[] = [];
-  const parent = get(first(flatArray), "parent", null);
-  set(first(flatArray), "parent", null);
+  const parent = get(first(flatArray), "_parent", null);
+  set(first(flatArray), "_parent", null);
   const block = [flatToNestedInstance.convert(clone(flatArray))];
   setProjectBlocksInMemory(block, true);
   let flat = nestedToFlatArray(block, flatArray[0]._id);
-  flat = set(flat, "0.parent", parent);
+  flat = set(flat, "0._parent", parent);
   blocks = [...blocks, flat, ...getInnerBlocks(flat)];
-
   return blocks;
 }
 

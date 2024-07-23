@@ -43,7 +43,7 @@ selectedBlockAtom.debugLabel = "selectedBlockAtom";
 // FIXME: This is a hacky way to check if the selected blocks are flex children
 // const areFlexChild = (classes: string) => classes.match(/flex( |$)/g) !== null;
 // const areGridChild = (classes: string) => classes.match(/grid( |$)/g) !== null;
-const getParentId = (block: ChaiBlock | {}) => getProp(block, "parent", null);
+const getParentId = (block: ChaiBlock | {}) => getProp(block, "_parent", null);
 
 export const selectedBlocksParentsAtom = atom((get) => {
   const selectedBlocks = get(selectedBlocksAtom);

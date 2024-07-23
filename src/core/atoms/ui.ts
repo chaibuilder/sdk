@@ -49,3 +49,6 @@ treeRefAtom.debugLabel = "treeRefAtom";
 
 export const canvasSettingsAtom = atom({});
 canvasSettingsAtom.debugLabel = "canvasSettingsAtom";
+
+export const aiAssistantActiveAtom = atom(false);
+aiAssistantActiveAtom.debugLabel = "askAiActiveBlockAtom";

@@ -2,11 +2,12 @@ import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
 import { lsBlocksAtom, lsBrandingOptionsAtom, lsProvidersAtom } from "./__dev/atoms-dev.ts";
 import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
-import { ChaiBuilderEditor, useBlocksStore } from "./core/main";
+import { ChaiBlock, ChaiBuilderEditor, useBlocksStore } from "./core/main";
 import { loadWebBlocks } from "./blocks/web";
 import "./__dev/data-providers/data";
 import { CodeIcon } from "@radix-ui/react-icons";
 import { find } from "lodash-es";
+import { askAi } from "./ai";
 
 loadWebBlocks();
 
@@ -67,12 +68,14 @@ function ChaiBuilderDefault() {
         localStorage.setItem("chai-builder-blocks", JSON.stringify(blocks));
         localStorage.setItem("chai-builder-providers", JSON.stringify(providers));
         localStorage.setItem("chai-builder-branding-options", JSON.stringify(brandingOptions));
-        console.log("Saved", brandingOptions, blocks, providers);
         await new Promise((resolve) => setTimeout(resolve, 2000));
         return true;
       }}
-      onSaveStateChange={(status: any) => {
-        console.log("Sync Status", status);
+      askAiCallBack={async (prompt: string, blocks: ChaiBlock[]) => {
+        const websiteDescription =
+          "Chai Studio is a visual builder desktop application for creating static websites. You can create pages inside app and export them as code or render directly inside your project. It allows to use AI for content generation";
+        const response = await askAi(prompt, websiteDescription, blocks);
+        return response;
       }}
     />
   );

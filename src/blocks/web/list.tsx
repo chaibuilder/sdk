@@ -84,6 +84,7 @@ const ListItemBlock = (
     return React.createElement(tag || "li", {
       ...styles,
       ...blockProps,
+      "data-ai-key": "content",
       dangerouslySetInnerHTML: { __html: content },
     });
   }

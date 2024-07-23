@@ -9,6 +9,8 @@ import "./canvas/static/BlocksExternalDataProvider.tsx";
 import { useBuilderProp } from "../hooks";
 import { TooltipProvider } from "../../ui";
 import { useIntervalEffect } from "@react-hookz/web";
+import { aiAssistantActiveAtom } from "../atoms/ui.ts";
+import { AskAI } from "./AskAi.tsx";
 
 const SidePanels = lazy(() => import("./sidepanels/SidePanels"));
 const TopBar = lazy(() => import("./topbar/Topbar"));
@@ -30,6 +32,7 @@ const useAutoSave = () => {
  */
 const RootLayout: ComponentType = () => {
   const [saveState] = useAtom(builderSaveStateAtom);
+  const [aiAssistantActive] = useAtom(aiAssistantActiveAtom);
   /**
    * Prevents the context menu from appearing in production mode.
    * @param {MouseEvent<HTMLDivElement>} e - The mouse event.
@@ -83,10 +86,11 @@ const RootLayout: ComponentType = () => {
                 <CanvasArea />
               </Suspense>
             </div>
-            <div className="flex h-[90%] w-[280px] min-w-[280px] border-l border-border pb-10">
+            <div className="relative flex h-[100%] w-[280px] min-w-[280px] border-l border-border pb-10">
               <Suspense>
                 <Settings />
               </Suspense>
+              {aiAssistantActive ? <AskAI /> : null}
             </div>
           </main>
         </div>

@@ -87,7 +87,8 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@chaibuilder/runtime": "0.2.6",
+    "@ai-sdk/openai": "^0.0.37",
+    "@chaibuilder/runtime": "0.2.7",
     "@floating-ui/dom": "1.4.5",
     "@floating-ui/react-dom": "2.0.1",
     "@mhsdesign/jit-browser-tailwindcss": "0.4.0",
@@ -122,6 +123,7 @@
     "@tailwindcss/line-clamp": "^0.4.4",
     "@tailwindcss/typography": "^0.5.10",
     "@tanstack/react-query": "^5.8.4",
+    "ai": "^3.2.32",
     "class-variance-authority": "0.6.1",
     "clsx": "1.2.1",
     "cmdk": "0.2.0",
@@ -176,6 +178,8 @@
     "autoprefixer": "^10.4.16",
     "better-docs": "^2.7.2",
     "better-sqlite3": "^9.1.1",
+    "cheerio": "1.0.0-rc.12",
+    "dotenv": "^16.4.5",
     "drizzle-kit": "^0.20.4",
     "drizzle-orm": "^0.29.0",
     "eslint": "^8.53.0",
@@ -195,9 +199,11 @@
     "tailwindcss": "^3.3.5",
     "tailwindcss-animate": "1.0.6",
     "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.2.2",
     "vite": "^5.0.12",
-    "vite-plugin-dts": "^3.6.3"
+    "vite-plugin-dts": "^3.6.3",
+    "zod": "^3.23.8"
   },
   "msw": {
     "workerDirectory": "public"

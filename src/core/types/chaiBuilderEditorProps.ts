@@ -36,6 +36,11 @@ type OutlineMenuItem = {
 };
 type OutlineMenuItems = OutlineMenuItem[];
 type TimeInSeconds = number;
+export type AskAiResponse = {
+  blocks?: Array<{ _id: string } & Partial<ChaiBlock>>;
+  usage?: Record<any, number>;
+  error?: any;
+};
 
 export interface ChaiBuilderEditorProps {
   hideSaveButton?: boolean;
@@ -44,7 +49,6 @@ export interface ChaiBuilderEditorProps {
   autoSaveSupport?: boolean;
   autoSaveInterval?: TimeInSeconds;
   breakpoints?: Breakpoint[];
-
   editable?: boolean;
 
   loading?: boolean;
@@ -69,6 +73,7 @@ export interface ChaiBuilderEditorProps {
 
   fetchMediaCallback?: (limit?: number, offset?: number) => Promise<any[]>;
   uploadMediaCallback?: (file: File) => Promise<{ url: string }>;
+  askAiCallBack?: (prompt: string, blocks: ChaiBlock[]) => Promise<AskAiResponse>;
 
   getExternalPredefinedBlock?: (
     block: PredefinedBlock,

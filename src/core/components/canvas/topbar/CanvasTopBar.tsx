@@ -7,6 +7,7 @@ import { DarkMode } from "./DarkMode";
 import { Breakpoints } from "./Breakpoints";
 import { ClearCanvas } from "./ClearCanvas";
 import { useBuilderProp, useCanvasZoom } from "../../../hooks";
+import { AiAssistant } from "./AiAssistant.tsx";
 
 const CanvasTopBar: React.FC = () => {
   const darkModeSupport = useBuilderProp("darkMode", false);
@@ -31,6 +32,7 @@ const CanvasTopBar: React.FC = () => {
         <UndoRedo />
       </div>
       <div className="flex h-full items-center space-x-2">
+        <AiAssistant />
         <Separator orientation="vertical" />
         <ClearCanvas />
       </div>

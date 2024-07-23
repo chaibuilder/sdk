@@ -17,6 +17,7 @@ const SpanBlock = (
   return React.createElement(tag || "span", {
     ...styles,
     ...blockProps,
+    "data-ai-key": "content",
     dangerouslySetInnerHTML: { __html: content },
   });
 };

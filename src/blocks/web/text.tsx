@@ -10,8 +10,12 @@ const RawTextBlock = (
     blockProps: Record<string, string>;
   },
 ) => {
-  if (props.inBuilder) {
-    return <span {...props.blockProps}>{props.content}</span>;
+  if (props.inBuilder || props.forceWrapper) {
+    return (
+      <span data-ai-key={"content"} {...props.blockProps}>
+        {props.content}
+      </span>
+    );
   }
   return `${props.content}`;
 };

@@ -71,35 +71,38 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
   if (!selectedBlockElement || !block || editingBlockId) return null;
 
   return (
-    <div
-      role="button"
-      tabIndex={0}
-      ref={refs.setFloating}
-      style={floatingStyles}
-      onClick={(e) => {
-        e.stopPropagation();
-        e.preventDefault();
-      }}
-      onKeyDown={(e) => e.stopPropagation()}
-      className="z-[99999] flex h-6 items-center bg-blue-500 py-2 text-xs text-white">
-      <BlockActionLabel label={label} block={block} />
-      <div className="flex gap-2 px-1">
-        {parentId && (
-          <ArrowUpIcon
-            className="hover:scale-105"
-            onClick={() => {
-              setStyleBlocks([]);
-              setSelectedIds([parentId]);
-            }}
-          />
-        )}
-        {canDuplicateBlock(get(block, "_type", "")) ? (
-          <CopyIcon className="hover:scale-105" onClick={() => duplicateBlock([block?._id])} />
-        ) : null}
-        {canDeleteBlock(get(block, "_type", "")) ? (
-          <TrashIcon className="hover:scale-105" onClick={() => removeBlock([block?._id])} />
-        ) : null}
+    <>
+      <div
+        role="button"
+        tabIndex={0}
+        ref={refs.setFloating}
+        style={floatingStyles}
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+        onKeyDown={(e) => e.stopPropagation()}
+        className="z-[99999] flex h-6 items-center bg-blue-500 py-2 text-xs text-white">
+        <BlockActionLabel label={label} block={block} />
+
+        <div className="flex gap-2 px-1">
+          {parentId && (
+            <ArrowUpIcon
+              className="hover:scale-105"
+              onClick={() => {
+                setStyleBlocks([]);
+                setSelectedIds([parentId]);
+              }}
+            />
+          )}
+          {canDuplicateBlock(get(block, "_type", "")) ? (
+            <CopyIcon className="hover:scale-105" onClick={() => duplicateBlock([block?._id])} />
+          ) : null}
+          {canDeleteBlock(get(block, "_type", "")) ? (
+            <TrashIcon className="hover:scale-105" onClick={() => removeBlock([block?._id])} />
+          ) : null}
+        </div>
       </div>
-    </div>
+    </>
   );
 };

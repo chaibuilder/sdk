@@ -24,6 +24,8 @@ const ParagraphBlock = (
   return React.createElement("p", {
     ...styles,
     ...blockProps,
+    "data-ai-key": "content",
+    "data-ai-type": "html",
     dangerouslySetInnerHTML: { __html: content },
   });
 };

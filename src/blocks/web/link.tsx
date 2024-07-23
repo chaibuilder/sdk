@@ -49,6 +49,7 @@ const LinkBlock = (
   return React.createElement("a", {
     ...blockProps,
     ...styles,
+    "data-ai-key": "content",
     href: link.href || "#",
     target: link.target || "_self",
     dangerouslySetInnerHTML: { __html: content },

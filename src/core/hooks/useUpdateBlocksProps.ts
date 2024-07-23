@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import { useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
+import { ChaiBlock } from "../types/ChaiBlock.ts";
 
 /**
  *
@@ -11,6 +12,16 @@ export const useUpdateBlocksProps = () => {
       updateBlocks(blockIds, props, prevPropsState);
     },
     [updateBlocks],
+  );
+};
+
+export const useUpdateMultipleBlocksProps = () => {
+  const { updateMultipleBlocksProps } = useBlocksStoreUndoableActions();
+  return useCallback(
+    (blocks: Array<{ _id: string } & Partial<ChaiBlock>>) => {
+      updateMultipleBlocksProps(blocks);
+    },
+    [updateMultipleBlocksProps],
   );
 };
 

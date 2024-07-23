@@ -15,7 +15,7 @@ const ButtonBlock = (
 
   const child = children || (
     <>
-      <span>{content}</span>
+      <span data-ai-key="content">{content}</span>
       {_icon && (
         <div
           style={{ width: iconSize + "px" }}
@@ -25,7 +25,15 @@ const ButtonBlock = (
       )}
     </>
   );
-  return React.createElement("button", { ...blockProps, ...styles, type: "button" }, child);
+  return React.createElement(
+    "button",
+    {
+      ...blockProps,
+      ...styles,
+      type: "button",
+    },
+    child,
+  );
 };
 
 registerChaiBlock(ButtonBlock, {
@@ -35,7 +43,7 @@ registerChaiBlock(ButtonBlock, {
   icon: ButtonIcon,
   group: "basic",
   props: {
-    content: SingleLineText({ title: "Label", default: "Button", multiLingual: true }),
+    content: SingleLineText({ title: "Label", default: "Button" }),
     styles: Styles({ default: "text-white bg-primary px-4 py-2 rounded-global flex items-center" }),
     icon: Icon({ title: "Icon", default: `` }),
     iconSize: Numeric({ title: "Icon Size", default: 24 }),
