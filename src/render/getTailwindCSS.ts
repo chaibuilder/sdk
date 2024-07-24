@@ -1,5 +1,4 @@
-import { get, replace, set, startsWith } from "lodash-es";
-import { tailwindcssPaletteGenerator } from "@bobthered/tailwindcss-palette-generator";
+import { get, replace, startsWith } from "lodash-es";
 import { createTailwindcss } from "@mhsdesign/jit-browser-tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";
 import twForms from "@tailwindcss/forms";
@@ -9,6 +8,7 @@ import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { addPrefixToClasses, ChaiPageData, getBrandingClasses } from "./functions.ts";
 import { STYLES_KEY } from "../core/constants/STRINGS.ts";
 import { BrandingOptions } from "../core/types/index";
+import getPalette from "tailwindcss-palette-generator";
 
 export async function getTailwindCSS(
   options: any,
@@ -23,12 +23,10 @@ export async function getTailwindCSS(
   const headingFont = get(options, "headingFont", "Inter");
   const bodyFont = get(options, "bodyFont", "Inter");
   const borderRadius = get(options, "roundedCorners", "0");
-  const colors = tailwindcssPaletteGenerator({
-    colors: [primary, secondary],
-    names: ["primary", "secondary"],
-  });
-  set(colors, "primary.DEFAULT", primary);
-  set(colors, "secondary.DEFAULT", secondary);
+  const colors = getPalette([
+    { color: primary, name: "primary" },
+    { color: secondary, name: "secondary" },
+  ]);
   const tailwind = createTailwindcss({
     tailwindConfig: {
       darkMode: "class",
