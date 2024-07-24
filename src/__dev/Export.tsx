@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { useCopyToClipboard } from "../core/hooks";
 import { Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger, ScrollArea, useToast } from "../ui";
-import { CodeBlock, oneLight } from "@react-email/components";
 import { useTranslation } from "react-i18next";
 
 interface ExportModalProps {
@@ -52,9 +51,7 @@ const ExportModal: React.FC<ExportModalProps> = React.memo(({ content, handleCli
           Export Email Template
         </DialogHeader>
         <ScrollArea className="h-full overflow-scroll">
-          <div className="text-xs">
-            <CodeBlock code={emailHTMLContent} language="html" theme={oneLight} />
-          </div>
+          <div className="text-xs">{/*<CodeBlock code={emailHTMLContent} language="html" theme={oneLight} />*/}</div>
         </ScrollArea>
         <DialogFooter className="sticky bottom-0 flex px-4 py-2 sm:justify-start">
           <Button type="button" onClick={() => downloadHTMLContent(emailHTMLContent)}>
