@@ -57,3 +57,12 @@ export type ChaiPageData = {
     homepage?: string;
   };
 };
+
+export const convertToBlocks = (jsonString: string): ChaiBlock[] => {
+  if (!jsonString) return [];
+  try {
+    return JSON.parse(jsonString);
+  } catch (error) {
+    return [{ _type: "Paragraph", _id: "error", content: "Invalid JSON. Please check the JSON string." }];
+  }
+};
