@@ -6,7 +6,7 @@ export const nestedToFlatArray = (nestedJson: Array<ChaiBlock>, parent: string |
   flatten(
     nestedJson.map((block: any) => {
       // eslint-disable-next-line no-param-reassign
-      block = parent !== null ? { ...block, parent } : block;
+      block = parent !== null ? { ...block, _parent: parent } : block;
       if (block.children && block.children.length) {
         const children = [...block.children];
         // eslint-disable-next-line no-param-reassign
