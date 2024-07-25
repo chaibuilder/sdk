@@ -20,7 +20,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
         </ImagePickerModal>
       )}
       <div className="flex w-3/5 flex-col">
-        {!missingUploadImageCallback && !missingUnsplashImageCallback && (
+        {!(missingUploadImageCallback && missingUnsplashImageCallback) && (
           <>
             <ImagePickerModal onSelect={onChange}>
               <small className="cursor-pointer rounded-full bg-gray-600 px-2 py-1 text-center text-xs text-white hover:bg-gray-500 dark:bg-gray-700">
