@@ -3,20 +3,18 @@ import { Font, FontProps, Head, Html, Tailwind } from "@react-email/components";
 import { RenderChaiBlocks } from "./index.ts";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import defaultTheme from "tailwindcss/defaultTheme";
-import { tailwindcssPaletteGenerator } from "@bobthered/tailwindcss-palette-generator";
-import { get, set } from "lodash-es";
+import { get } from "lodash-es";
+import getPalette from "tailwindcss-palette-generator";
 
 const generateTailwindConfig = (options: Record<string, any>, prefix: string = "c-") => {
   const primary = get(options, "primaryColor", "#000");
   const secondary = get(options, "secondaryColor", "#ccc");
   const bodyFont = get(options, "bodyFont", "Inter");
   const borderRadius = get(options, "roundedCorners", "0");
-  const colors = tailwindcssPaletteGenerator({
-    colors: [primary, secondary],
-    names: ["primary", "secondary"],
-  });
-  set(colors, "primary.DEFAULT", primary);
-  set(colors, "secondary.DEFAULT", secondary);
+  const colors = getPalette([
+    { color: primary, name: "primary" },
+    { color: secondary, name: "secondary" },
+  ]);
   return {
     theme: {
       fontFamily: {

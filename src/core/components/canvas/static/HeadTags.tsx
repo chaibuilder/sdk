@@ -1,7 +1,6 @@
 import { get, map } from "lodash-es";
 import { useEffect, useState } from "react";
 import { useFrame } from "../../../frame";
-import { tailwindcssPaletteGenerator } from "@bobthered/tailwindcss-palette-generator";
 import {
   useBrandingOptions,
   useDarkMode,
@@ -15,6 +14,7 @@ import typography from "@tailwindcss/typography";
 import forms from "@tailwindcss/forms";
 import aspectRatio from "@tailwindcss/aspect-ratio";
 import { prelinePlugin } from "./Preline.ts";
+import getPalette from "tailwindcss-palette-generator";
 // @ts-ignore
 
 export const HeadTags = ({ model }: { model: string }) => {
@@ -47,12 +47,10 @@ export const HeadTags = ({ model }: { model: string }) => {
   useEffect(() => {
     const primary = get(brandingOptions, "primaryColor", "#000");
     const secondary = get(brandingOptions, "secondaryColor", "#FFF");
-    const colors = tailwindcssPaletteGenerator({
-      colors: [primary, secondary],
-      names: ["primary", "secondary"],
-    });
-    colors.primary.DEFAULT = primary;
-    colors.secondary.DEFAULT = secondary;
+    const colors = getPalette([
+      { color: primary, name: "primary" },
+      { color: secondary, name: "secondary" },
+    ]);
 
     const borderRadius = get(brandingOptions, "roundedCorners", "0");
     // @ts-ignore

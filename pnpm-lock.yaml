@@ -103,6 +103,7 @@ specifiers:
   tailwind-merge: 2.3.0
   tailwindcss: ^3.3.5
   tailwindcss-animate: 1.0.6
+  tailwindcss-palette-generator: ^0.6.5
   tippy.js: ^6.3.7
   ts-jest: ^29.1.1
   typescript: ^5.2.2
@@ -176,6 +177,7 @@ dependencies:
   react-wrap-balancer: 1.1.0_react@18.2.0
   sonner: 1.2.0_biqbaboplfbrettd7655fr4n2y
   tailwind-merge: 2.3.0
+  tailwindcss-palette-generator: 0.6.5_tailwindcss@3.3.5
   tippy.js: 6.3.7
   undo-manager: 1.1.1
   unsplash-js: 7.0.18
@@ -6071,6 +6073,10 @@ packages:
     resolution: {integrity: sha512-jJ0bqzaylmJtVnNgzTeSOs8DPavpbYgEr/b0YL8/2GO3xJEhInFmhKMUnEJQjZumK7KXGFhUy89PrsJWlakBVg==}
     dev: true
 
+  /chroma-js/2.4.2:
+    resolution: {integrity: sha512-U9eDw6+wt7V8z5NncY2jJfZa+hUH8XEj8FQHgFJTrUFnJfXYf4Ml4adI2vXZOjqRDpFWtYVWypDfZwnJ+HIR4A==}
+    dev: false
+
   /chrome-trace-event/1.0.3:
     resolution: {integrity: sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg==}
     engines: {node: '>=6.0'}
@@ -11429,6 +11435,16 @@ packages:
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders'
     dependencies:
+      tailwindcss: 3.3.5
+    dev: false
+
+  /tailwindcss-palette-generator/0.6.5_tailwindcss@3.3.5:
+    resolution: {integrity: sha512-B82r4McwKnwc1enJh/vbVqKhhte4JS4bQltPm6OKNejnZf4xgDqCiW2aviAiXnjni3fTldL0K4Gsrkq/DvhkiA==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      tailwindcss: '>=3.4.0 || insiders'
+    dependencies:
+      chroma-js: 2.4.2
       tailwindcss: 3.3.5
     dev: false
 

@@ -28,7 +28,6 @@ export default defineConfig({
       // make sure to externalize deps that shouldn't be bundled
       // into your library
       external: [
-        "@bobthered/tailwindcss-palette-generator",
         "@chaibuilder/runtime",
         "@floating-ui/dom",
         "@floating-ui/react-dom",
@@ -65,6 +64,7 @@ export default defineConfig({
         "@tailwindcss/line-clamp",
         "@tailwindcss/typography",
         "class-variance-authority",
+        "tailwindcss-palette-generator",
         "clsx",
         "cmdk",
         "date-fns",
