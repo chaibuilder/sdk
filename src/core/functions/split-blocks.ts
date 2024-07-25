@@ -17,7 +17,7 @@ const nestedToFlatArray = (nestedJson: any, parent: any) =>
   flatten(
     nestedJson.map((block: ChaiBlock) => {
       // eslint-disable-next-line no-param-reassign
-      block = parent ? { ...block, parent } : { ...block };
+      block = parent ? { ...block, _parent: parent } : { ...block };
       if (block.children) {
         const children = [...block.children];
         // eslint-disable-next-line no-param-reassign
