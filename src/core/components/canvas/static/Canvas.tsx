@@ -45,6 +45,7 @@ const useHandleCanvasDblClick = () => {
   const updateContent = useUpdateBlocksProps();
   const [, setHighlightedId] = useHighlightBlockId();
   const [editingBlockId, setEditingBlockId] = useAtom(inlineEditingActiveAtom);
+
   return (e) => {
     if (editingBlockId) return;
     const chaiBlock: HTMLElement = getTargetedBlock(e.target);
@@ -74,6 +75,13 @@ const useHandleCanvasDblClick = () => {
       setHighlightedId("");
     }
     newBlock.addEventListener("blur", blurListener, true);
+
+    newBlock.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === "Escape") {
+        blurListener();
+      }
+    });
+
     quill.focus();
     // remove .ql-clipboard element from newBlock
     newBlock.querySelector(".ql-clipboard")?.remove();
