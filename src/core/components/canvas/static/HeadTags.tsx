@@ -59,11 +59,11 @@ export const HeadTags = ({ model }: { model: string }) => {
     iframeWin.tailwind.config = {
       darkMode: "class",
       theme: {
-        fontFamily: {
-          heading: [headingFont],
-          body: [bodyFont],
-        },
         extend: {
+          fontFamily: {
+            heading: [headingFont],
+            body: [bodyFont],
+          },
           borderRadius: {
             global: `${!borderRadius ? "0" : borderRadius}px`,
           },

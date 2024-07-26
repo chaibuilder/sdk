@@ -57,7 +57,7 @@ export default function BlockSettings() {
   const staticContentProperties = useMemo(() => {
     const controls = cloneDeep(get(coreBlock, "props", {})) as { [key: string]: ChaiControlDefinition };
     if (!dataBindingSupported) return controls;
-    each(bindingProps, (key) => delete controls[key]);
+    each(bindingProps, (key: string) => delete controls[key]);
     return controls;
   }, [coreBlock, bindingProps, dataBindingSupported]);
 
