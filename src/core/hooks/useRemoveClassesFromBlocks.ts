@@ -22,7 +22,8 @@ export const removeClassFromBlocksAtom: any = atom(null, (get, _set, { blockIds,
     let { classes, baseClasses } = getSplitClasses(getProp(block, styleBlock.prop, "styles:,"));
 
     each(nonDynamicClasses, (fullCls: string) => {
-      const regEx = new RegExp(`(^| )${fullCls.replace("[", "\\[").replace("]", "\\]")}($| )`, "g");
+      const escapedClass = fullCls.replace(/[\[\]\/\\{}()*+?.^$|]/g, "\\$&");
+      const regEx = new RegExp(`(^| )${escapedClass}($| )`, "g");
       classes = classes.replace(regEx, " ").replace(/  +/g, " ").trim();
       const mq = first(fullCls.split(":"));
       if (includes(["2xl", "xl", "lg", "md", "sm"], mq)) {
