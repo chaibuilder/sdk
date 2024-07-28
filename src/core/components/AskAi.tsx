@@ -16,6 +16,10 @@ const AskAIPrompt = ({ blockId }: { blockId: string | undefined }) => {
     promptRef.current?.focus();
   }, []);
 
+  const onComplete = () => {
+    setPrompt("");
+  };
+
   if (!blockId)
     return (
       <div className="p-4 text-center">
@@ -31,6 +35,7 @@ const AskAIPrompt = ({ blockId }: { blockId: string | undefined }) => {
       <h2 className="text-xs font-semibold">{t("Ask AI")} (GPT-4o mini)</h2>
       <Textarea
         ref={promptRef}
+        value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
         placeholder={t("Ask AI to edit something")}
         className="w-full border border-gray-400 focus:border-0"
@@ -41,7 +46,7 @@ const AskAIPrompt = ({ blockId }: { blockId: string | undefined }) => {
         {!loading ? (
           <Button
             disabled={prompt.trim().length < 5 || loading}
-            onClick={() => askAi(blockId, prompt)}
+            onClick={() => askAi(blockId, prompt, onComplete)}
             variant="default"
             className="w-fit"
             size="sm">

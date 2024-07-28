@@ -32,7 +32,7 @@ export const useAskAi = () => {
   const [blocks] = useBlocksStore();
   return {
     askAi: useCallback(
-      async (blockId: string, prompt: string) => {
+      async (blockId: string, prompt: string, onComplete?: () => void) => {
         if (!callBack) return;
         setProcessing(true);
         setError(null);
@@ -49,6 +49,7 @@ export const useAskAi = () => {
           setError(e);
         } finally {
           setProcessing(false);
+          if (onComplete) onComplete();
         }
       },
       [callBack],
