@@ -32,9 +32,9 @@ const CanvasTopBar: React.FC = () => {
         <UndoRedo />
       </div>
       <div className="flex h-full items-center space-x-2">
-        <AiAssistant />
-        <Separator orientation="vertical" />
         <ClearCanvas />
+        <Separator orientation="vertical" />
+        <AiAssistant />
       </div>
     </div>
   );
