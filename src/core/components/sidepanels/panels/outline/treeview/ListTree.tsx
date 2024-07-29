@@ -143,7 +143,7 @@ const Input = ({ node }) => {
       autoFocus
       className="ml-2 w-full rounded-sm border border-black/30 bg-transparent px-1 text-[11px] outline-none"
       type="text"
-      defaultValue={node.data.name}
+      defaultValue={node.data?._name || node.data?._type}
       onFocus={(e) => e.currentTarget.select()}
       onBlur={(e) => node.submit(e.currentTarget.value)}
       onKeyDown={(e) => {
