@@ -161,15 +161,16 @@ const getInteractiveBlock = (node: Node) => {
       }
     }
   }
-  const interactiveAttrs = {
-    "data-hs-overlay": "OverlayTrigger",
-    "data-hs-remove-element": "RemoveElementButton",
-    "data-hs-tab": "Tab",
-    "data-hs-theme-click-value": "DarkModeButton",
-    'role="tablist"': "TabList",
-    'role="tab"': "TabItem",
-    'role="tabpanel"': "TabPanel",
-  };
+  const interactiveAttrs = {};
+  // {
+  //   "data-hs-overlay": "OverlayTrigger",
+  //   "data-hs-remove-element": "RemoveElementButton",
+  //   "data-hs-tab": "Tab",
+  //   "data-hs-theme-click-value": "DarkModeButton",
+  //   'role="tablist"': "TabList",
+  //   'role="tab"': "TabItem",
+  //   'role="tabpanel"': "TabPanel",
+  // };
 
   //loop through they keys in interactiveAttrs and check if the key matches
   for (const key in interactiveAttrs) {
