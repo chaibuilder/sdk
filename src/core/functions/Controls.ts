@@ -126,8 +126,8 @@ export const getBlockDefaultProp = (control: ChaiControlDefinition) => {
       return `${SLOT_KEY}${generateUUID()}`;
     case "singular":
       // eslint-disable-next-line no-case-declarations
-      const { i18n, schema } = control as ControlDefinition;
-      return i18n ? I18N_KEY : get(schema, "default", "");
+      const { schema } = control as ControlDefinition;
+      return get(schema, "default", "");
     case "model":
       return getBlockDefaultProps((control as ModelControlDefinition).properties);
     case "list":
@@ -177,7 +177,6 @@ const getListTranslations = (control: ListControlDefinition, blockId: string, pr
 };
 
 const getSingleTranslation = (control: ControlDefinition, blockId: string, primaryLang: string, path: string[]) => {
-  if (!control.i18n) return {};
   const {
     schema: { default: defaultValue },
   } = control;

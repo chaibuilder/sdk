@@ -98,6 +98,6 @@ registerChaiBlock(LabelBlock, {
   hidden: true,
   props: {
     styles: Styles({ default: "" }),
-    content: SingleLineText({ title: "Content", default: "Label" }),
+    content: SingleLineText({ title: "Content", default: "Label", ai: { html: false } }),
   },
 });

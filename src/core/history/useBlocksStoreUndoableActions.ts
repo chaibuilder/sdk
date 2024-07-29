@@ -99,6 +99,23 @@ export const useBlocksStoreUndoableActions = () => {
     });
   };
 
+  const updateMultipleBlocksProps = (blocks: Array<{ _id: string } & Partial<ChaiBlock>>) => {
+    let previousPropsState = [];
+    previousPropsState = map(blocks, (block: Partial<ChaiBlock>) => {
+      const propKeys = keys(block);
+      const currentBlock = currentBlocks.find((currentBlock) => currentBlock._id === block._id);
+      const prevProps = {};
+      each(propKeys, (key: string) => (prevProps[key] = currentBlock[key]));
+      return prevProps;
+    });
+
+    updateBlocksProps(blocks);
+    add({
+      undo: () => updateBlocksProps(previousPropsState),
+      redo: () => updateBlocksProps(blocks),
+    });
+  };
+
   const updateBlocksRuntime = (blockIds: string[], props: Record<string, any>) => {
     updateBlocksProps(map(blockIds, (_id: string) => ({ _id, ...props })));
   };
@@ -110,5 +127,6 @@ export const useBlocksStoreUndoableActions = () => {
     updateBlocks,
     updateBlocksRuntime,
     setNewBlocks,
+    updateMultipleBlocksProps,
   };
 };

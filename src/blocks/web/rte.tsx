@@ -19,7 +19,13 @@ const RichTextBlock = (
   // eslint-disable-next-line react/no-danger
   return (
     <div className="max-w-full">
-      <div {...blockProps} {...styles} dangerouslySetInnerHTML={{ __html: content }} />
+      <div
+        data-ai-key="content"
+        data-ai-type={"richtext"}
+        {...blockProps}
+        {...styles}
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
     </div>
   );
 };

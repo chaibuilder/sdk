@@ -2,13 +2,17 @@ import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
 import { lsBlocksAtom, lsBrandingOptionsAtom, lsProvidersAtom } from "./__dev/atoms-dev.ts";
 import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
-import { ChaiBuilderEditor, useBlocksStore } from "./core/main";
+import { ChaiBlock, ChaiBuilderEditor, useBlocksStore } from "./core/main";
 import { loadWebBlocks } from "./blocks/web";
 import "./__dev/data-providers/data";
 import { CodeIcon } from "@radix-ui/react-icons";
 import { find } from "lodash-es";
+import { ChaiBuilderAI } from "./ai";
 
 loadWebBlocks();
+
+const websiteDescription = "Chai Builder is an open source visual builder for websites.";
+const cbAi = new ChaiBuilderAI(websiteDescription, import.meta.env.VITE_OPENAI_API_KEY as string);
 
 const ExportCode = ({ blockId }: { blockId: string }) => {
   const [blocks] = useBlocksStore();
@@ -67,12 +71,13 @@ function ChaiBuilderDefault() {
         localStorage.setItem("chai-builder-blocks", JSON.stringify(blocks));
         localStorage.setItem("chai-builder-providers", JSON.stringify(providers));
         localStorage.setItem("chai-builder-branding-options", JSON.stringify(brandingOptions));
-        console.log("Saved", brandingOptions, blocks, providers);
         await new Promise((resolve) => setTimeout(resolve, 2000));
         return true;
       }}
-      onSaveStateChange={(status: any) => {
-        console.log("Sync Status", status);
+      askAiCallBack={async (prompt: string, blocks: ChaiBlock[]) => {
+        const response = await cbAi.askAi(prompt, blocks);
+        console.log("response", response);
+        return response;
       }}
     />
   );
