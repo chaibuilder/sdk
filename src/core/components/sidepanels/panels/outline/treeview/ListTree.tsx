@@ -261,6 +261,8 @@ const ListTree = () => {
       const node = treeRef.current.get(ids[0]);
       if (node) {
         node.select();
+        setIds[node.id];
+        setStyleBlocks([]);
       }
     }
 
@@ -268,7 +270,7 @@ const ListTree = () => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [ids, treeRef]);
+  }, [treeRef]);
 
   return (
     <div className={cn("-mx-1 -mt-1 flex h-full select-none flex-col space-y-1")} onClick={() => clearSelection()}>
