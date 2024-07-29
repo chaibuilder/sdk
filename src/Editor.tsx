@@ -1,23 +1,15 @@
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
-import { lsBlocksAtom, lsBrandingOptionsAtom, lsProvidersAtom } from "./__dev/atoms-dev.ts";
-import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
-import { ChaiBlock, ChaiBuilderEditor, useBlocksStore } from "./core/main";
+import { lsBlocksAtom, lsBrandingOptionsAtom } from "./__dev/atoms-dev.ts";
+import { ChaiBlock, ChaiBuilderEditor } from "./core/main";
 import { loadWebBlocks } from "./blocks/web";
 import "./__dev/data-providers/data";
-import { CodeIcon } from "@radix-ui/react-icons";
-import { find } from "lodash-es";
 import { ChaiBuilderAI } from "./ai";
 
 loadWebBlocks();
 
 const websiteDescription = "Chai Builder is an open source visual builder for websites.";
 const cbAi = new ChaiBuilderAI(websiteDescription, import.meta.env.VITE_OPENAI_API_KEY as string);
-
-const ExportCode = ({ blockId }: { blockId: string }) => {
-  const [blocks] = useBlocksStore();
-  return <CodeIcon onClick={() => console.log("blockId", find(blocks, { _id: blockId }))} />;
-};
 
 let PreviewMessage = () => {
   const { t } = useTranslation();
@@ -35,37 +27,15 @@ let PreviewMessage = () => {
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
   const [brandingOptions] = useAtom(lsBrandingOptionsAtom);
-  const [providers] = useAtom(lsProvidersAtom);
 
   return (
     <ChaiBuilderEditor
+      unsplashAccessKey={"XgYBCm-XCHecRMsbfhw6oZWGkltco1U5TYMEd0LXZeA"}
       showDebugLogs={true}
       autoSaveSupport={false}
       previewComponent={PreviewMessage}
-      dataBindingSupport={true}
-      // @ts-ignore
-      getExternalPredefinedBlock={async () => {
-        return getBlocksFromHTML(`<div class="bg-red-300"><p>Hello World</p></div>`);
-      }}
-      getUILibraryBlocks={async () => {
-        return [
-          {
-            uuid: "hero-uuid",
-            name: "Header",
-            group: "Hero",
-            preview: "https://via.placeholder.com/350/100",
-          },
-        ];
-      }}
-      outlineMenuItems={[
-        {
-          item: ExportCode,
-          tooltip: "Export Code",
-        },
-      ]}
       topBarComponents={{ left: [PreviewMessage] }}
       blocks={blocks}
-      dataProviders={providers}
       brandingOptions={brandingOptions}
       onSave={async ({ blocks, providers, brandingOptions }: any) => {
         localStorage.setItem("chai-builder-blocks", JSON.stringify(blocks));
