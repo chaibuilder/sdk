@@ -22,6 +22,16 @@ import { BlockContextMenu } from "../BlockContextMenu.tsx";
 import { canAcceptChildBlock } from "../../../../../functions/block-helpers.ts";
 import { find, first } from "lodash-es";
 import { treeRefAtom } from "../../../../../atoms/ui.ts";
+import {
+  defaultShortcuts,
+  selectFirst,
+  selectLast,
+  selectNext,
+  selectPrev,
+  selectParent,
+  open,
+  close,
+} from "./DefaultShortcuts.tsx";
 
 const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const outlineItems = useBuilderProp("outlineMenuItems", []);
@@ -201,6 +211,64 @@ const ListTree = () => {
     [],
     300,
   );
+
+  const handleKeyDown = (e) => {
+    if (!treeRef.current) return;
+
+    const tree = treeRef.current;
+    const selectedNode = tree.selectedNodes[0];
+
+    if (!selectedNode) return;
+
+    const isLeaf = !selectedNode.isInternal;
+    const isClosed = !selectedNode.isOpen;
+    const isOpen = selectedNode.isOpen;
+
+    const shortcut = defaultShortcuts.find((s) => s.key === e.key && (!s.when || eval(s.when)));
+
+    if (shortcut) {
+      e.preventDefault();
+      switch (shortcut.command) {
+        case "selectNext":
+          selectNext(tree);
+          break;
+        case "selectPrev":
+          selectPrev(tree);
+          break;
+        case "selectParent":
+          selectParent(tree, isLeaf || isClosed);
+          break;
+        case "close":
+          close(tree, isOpen);
+          break;
+        case "open":
+          open(tree, isClosed);
+          break;
+        case "selectFirst":
+          selectFirst(tree);
+          break;
+        case "selectLast":
+          selectLast(tree);
+          break;
+        default:
+          break;
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (ids[0] && treeRef.current) {
+      const node = treeRef.current.get(ids[0]);
+      if (node) {
+        node.select();
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [ids, treeRef]);
 
   return (
     <div className={cn("-mx-1 -mt-1 flex h-full select-none flex-col space-y-1")} onClick={() => clearSelection()}>
