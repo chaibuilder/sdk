@@ -260,7 +260,14 @@ const ListTree = () => {
 
   return (
     <div className={cn("-mx-1 -mt-1 flex h-full select-none flex-col space-y-1")} onClick={() => clearSelection()}>
-      <div id="outline-view" className="no-scrollbar h-full overflow-y-auto p-1 px-2 text-xs" onKeyDown={handleKeyDown}>
+      <div
+        id="outline-view"
+        className="no-scrollbar h-full overflow-y-auto p-1 px-2 text-xs"
+        onKeyDown={(e) => {
+          if (!treeRef.current.isEditing) {
+            handleKeyDown(e);
+          }
+        }}>
         <Tree
           ref={treeRef}
           height={800}
