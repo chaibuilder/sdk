@@ -1,4 +1,4 @@
-import React, { memo, MouseEvent, useEffect, useRef } from "react";
+import React, { memo, MouseEvent, useEffect, useRef, useState } from "react";
 import { useAtom } from "jotai";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { MoveHandler, NodeRendererProps, RenameHandler, Tree } from "react-arborist";
@@ -217,8 +217,10 @@ const ListTree = () => {
 
     const tree = treeRef.current;
     const selectedNode = tree.selectedNodes[0];
-
     if (!selectedNode) return;
+
+    setIds[selectedNode.id];
+    setStyleBlocks([]);
 
     const isLeaf = !selectedNode.isInternal;
     const isClosed = !selectedNode.isOpen;
@@ -256,25 +258,9 @@ const ListTree = () => {
     }
   };
 
-  useEffect(() => {
-    if (ids[0] && treeRef.current) {
-      const node = treeRef.current.get(ids[0]);
-      if (node) {
-        node.select();
-        setIds[node.id];
-        setStyleBlocks([]);
-      }
-    }
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [treeRef]);
-
   return (
     <div className={cn("-mx-1 -mt-1 flex h-full select-none flex-col space-y-1")} onClick={() => clearSelection()}>
-      <div id="outline-view" className="no-scrollbar h-full overflow-y-auto p-1 px-2 text-xs">
+      <div id="outline-view" className="no-scrollbar h-full overflow-y-auto p-1 px-2 text-xs" onKeyDown={handleKeyDown}>
         <Tree
           ref={treeRef}
           height={800}
