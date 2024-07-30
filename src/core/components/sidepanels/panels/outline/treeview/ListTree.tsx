@@ -1,4 +1,4 @@
-import React, { memo, MouseEvent, useEffect, useRef, useState } from "react";
+import React, { memo, MouseEvent, useEffect, useRef } from "react";
 import { useAtom } from "jotai";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { MoveHandler, NodeRendererProps, RenameHandler, Tree } from "react-arborist";
