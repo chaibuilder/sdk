@@ -1,6 +1,5 @@
 import {
   Badge,
-  Button,
   Dialog,
   DialogContent,
   DialogHeader,
@@ -32,9 +31,9 @@ export const HotKeys = memo(() => {
       <DialogTrigger>
         <Tooltip>
           <TooltipTrigger>
-            <Button size="sm" className="w-10" variant="outline">
+            <div className="flex w-10 items-center justify-center">
               <KeyboardIcon />
-            </Button>
+            </div>
           </TooltipTrigger>
           <TooltipContent>
             <p>{t("Keyboard shortcuts")}</p>
