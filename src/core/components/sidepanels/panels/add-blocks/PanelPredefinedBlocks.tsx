@@ -1,5 +1,5 @@
 import { filter, first, get, groupBy, has, isArray, isEmpty, keys, map, mergeWith, noop, values } from "lodash-es";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState, useRef } from "react";
 import {
   useAddBlock,
   useBuilderProp,
@@ -42,7 +42,7 @@ const BlockCard = ({ block, closePopover }: { block: any; closePopover: () => vo
     <>
       <div
         onClick={isAdding ? () => {} : addBlock}
-        className="relative cursor-pointer overflow-hidden rounded-md border border-transparent duration-200 hover:scale-x-105 hover:border-foreground/20 hover:shadow-2xl">
+        className="relative cursor-pointer overflow-hidden rounded-md border border-transparent duration-200 hover:scale-x-105 hover:border-foreground/20 hover:shadow-xl">
         {isAdding && (
           <div className="absolute flex h-full w-full items-center justify-center bg-black bg-opacity-70">
             <Loader className="animate-spin" size={15} color="white" />{" "}
@@ -80,9 +80,21 @@ const PanelPredefinedBlocks = () => {
 
   const [selectedGroup, setGroup] = useState(first(keys(mergedGroups)) || "");
   const [, setActivePanel] = useAtom(activePanelAtom);
-  const [hoverGroup, setHoverGroup] = useState(false);
+  const [hoverGroup, setHoverGroup] = useState("");
   const blocks = get(mergedGroups, selectedGroup, []);
   const { t } = useTranslation();
+  const timeoutRef = useRef(null);
+
+  const handleMouseOver = (group) => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    timeoutRef.current = setTimeout(() => {
+      setHoverGroup(group);
+      setGroup(group);
+    }, 500);
+  };
 
   return (
     <>
@@ -98,12 +110,10 @@ const PanelPredefinedBlocks = () => {
             {React.Children.toArray(
               map(mergedGroups, (_groupedBlocks, group) => (
                 <div
-                  data-block-group={group}
-                  onMouseOver={() => {
-                    setTimeout(() => setHoverGroup(true), 500);
-                  }}
+                  data-hover-group={group}
+                  onMouseOver={() => handleMouseOver(group)}
                   key={group}
-                  className="flex h-10 w-full items-center justify-between rounded-md border-2 border-zinc-200 p-2 text-sm transition-all ease-in-out hover:bg-zinc-200 hover:shadow-md">
+                  className="flex h-10 w-full items-center justify-between rounded-md border-2 border-zinc-200 p-2 text-sm transition-all ease-in-out hover:bg-zinc-200">
                   <span>{group}</span>
                   <CaretRightIcon className="ml-2 h-5 w-5" />
                 </div>
@@ -112,9 +122,14 @@ const PanelPredefinedBlocks = () => {
           </div>
         </div>
         <div
+          onMouseEnter={() => {
+            if (timeoutRef.current) {
+              clearTimeout(timeoutRef.current);
+            }
+          }}
           className={clsx(
             "fixed top-0 z-10 flex h-full max-h-full w-60 flex-col gap-2 bg-white px-2 py-2 transition-all ease-linear",
-            hoverGroup && "translate-x-60",
+            selectedGroup === hoverGroup && "translate-x-60",
           )}>
           <div className="h-full w-full space-y-2 overflow-y-auto px-2">
             {React.Children.toArray(

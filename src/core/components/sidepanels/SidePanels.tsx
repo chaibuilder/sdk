@@ -85,7 +85,7 @@ const SidePanels = () => {
       ) : null}
       <div className="z-[100] flex h-full w-fit flex-col items-center justify-between border-b border-r border-border bg-background pt-2">
         <div className="relative z-[100] flex w-14 flex-col items-center space-y-2">
-          {hasUiBlocks ? (
+          {!hasUiBlocks ? (
             <Button
               onClick={() => {
                 handleChangePanel("add-blocks");
@@ -153,7 +153,7 @@ const SidePanels = () => {
       {activePanel !== OUTLINE_KEY ? (
         <div
           className={
-            "absolute left-14 z-[50] h-full w-fit translate-x-0 border-r bg-background transition-all duration-500 ease-in-out"
+            "absolute left-14 z-[50] h-[100vh] w-fit translate-x-0 border-r bg-background transition-all duration-500 ease-in-out"
           }>
           <Suspense
             fallback={
