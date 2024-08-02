@@ -95,37 +95,19 @@ const PanelPredefinedBlocks = () => {
             </span>
           </div>
           <div className={"sticky top-0 flex w-full flex-col items-center gap-1 px-1"}>
-            <div
-              data-block-group="header"
-              onMouseOver={() => {
-                setTimeout(() => setHoverGroup(true), 500);
-              }}
-              className="flex h-10 w-full items-center justify-between rounded-md border-2 border-zinc-200 p-2 text-sm transition-all ease-in-out hover:bg-zinc-200 hover:shadow-md">
-              <span>Navigation</span>
-              <CaretRightIcon className="ml-2 h-5 w-5" />
-            </div>
-            <div
-              data-block-group="form"
-              onMouseOver={() => {
-                setTimeout(() => setHoverGroup(true), 500);
-              }}
-              className="flex h-10 w-full items-center justify-between rounded-md border-2 border-zinc-200 p-2 text-sm transition-all ease-in-out hover:bg-zinc-200 hover:shadow-md">
-              <span>Form</span>
-              <CaretRightIcon className="ml-2 h-5 w-5" />
-            </div>
-            <div
-              data-block-group="hero"
-              onMouseOver={() => {
-                setTimeout(() => setHoverGroup(true), 500);
-              }}
-              className="flex h-10 w-full items-center justify-between rounded-md border-2 border-zinc-200 p-2 text-sm transition-all ease-in-out hover:bg-zinc-200 hover:shadow-md">
-              <span>Hero</span>
-              <CaretRightIcon className="ml-2 h-5 w-5" />
-            </div>
-          </div>
-          <div className="h-full w-full space-y-2 overflow-y-auto px-2">
             {React.Children.toArray(
-              blocks.map((block) => <BlockCard block={block} closePopover={() => setActivePanel(OUTLINE_KEY)} />),
+              map(mergedGroups, (_groupedBlocks, group) => (
+                <div
+                  data-block-group={group}
+                  onMouseOver={() => {
+                    setTimeout(() => setHoverGroup(true), 500);
+                  }}
+                  key={group}
+                  className="flex h-10 w-full items-center justify-between rounded-md border-2 border-zinc-200 p-2 text-sm transition-all ease-in-out hover:bg-zinc-200 hover:shadow-md">
+                  <span>{group}</span>
+                  <CaretRightIcon className="ml-2 h-5 w-5" />
+                </div>
+              )),
             )}
           </div>
         </div>
@@ -134,30 +116,11 @@ const PanelPredefinedBlocks = () => {
             "fixed top-0 z-10 flex h-full max-h-full w-60 flex-col gap-2 bg-white px-2 py-2 transition-all ease-linear",
             hoverGroup && "translate-x-60",
           )}>
-          <img
-            sf-name="navigation_1"
-            sf-ratio="0.057"
-            data-block-group="hero"
-            className="flex h-12 w-full cursor-pointer items-center justify-between rounded-md border-[1px] border-zinc-200 object-contain transition-all ease-in-out hover:scale-105 hover:shadow-md"
-            srcSet="https://designmodo.com/startup/app/app-dist/i/blocks/light/navigation_1_640.jpg"
-            src="https://designmodo.com/startup/app/app-dist/i/blocks/light/navigation_1_640.jpg"
-          />
-          <img
-            sf-name="navigation_1"
-            sf-ratio="0.057"
-            data-block-group="hero"
-            className="flex h-12 w-full cursor-pointer items-center justify-between rounded-md border-[1px] border-zinc-200 object-contain transition-all ease-in-out hover:scale-105 hover:shadow-md"
-            srcSet="https://designmodo.com/startup/app/app-dist/i/blocks/light/navigation_1_640.jpg"
-            src="https://designmodo.com/startup/app/app-dist/i/blocks/light/navigation_1_640.jpg"
-          />
-          <img
-            sf-name="navigation_1"
-            sf-ratio="0.057"
-            data-block-group="hero"
-            className="flex h-12 w-full cursor-pointer items-center justify-between rounded-md border-[1px] border-zinc-200 object-contain transition-all ease-in-out hover:scale-105 hover:shadow-md"
-            srcSet="https://designmodo.com/startup/app/app-dist/i/blocks/light/navigation_1_640.jpg"
-            src="https://designmodo.com/startup/app/app-dist/i/blocks/light/navigation_1_640.jpg"
-          />
+          <div className="h-full w-full space-y-2 overflow-y-auto px-2">
+            {React.Children.toArray(
+              blocks.map((block) => <BlockCard block={block} closePopover={() => setActivePanel(OUTLINE_KEY)} />),
+            )}
+          </div>
         </div>
       </div>
     </>

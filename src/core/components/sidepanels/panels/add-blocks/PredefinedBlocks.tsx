@@ -57,7 +57,7 @@ const BlockCard = ({ block, closePopover }: { block: any; closePopover: () => vo
   );
 };
 
-export const PredefinedBlocks = () => {
+const PredefinedBlocks = () => {
   const { data: predefinedBlocks } = useUILibraryBlocks();
   const chaiBlocks = useChaiBlocks();
   const customBlocks = filter(values(chaiBlocks), { category: "custom" });
@@ -101,3 +101,5 @@ export const PredefinedBlocks = () => {
     </div>
   );
 };
+
+export default PredefinedBlocks;
