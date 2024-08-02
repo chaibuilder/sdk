@@ -44,8 +44,8 @@ const AskAIPrompt = ({ blockId }: { blockId: string | undefined }) => {
             ref={promptRef}
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            placeholder={t("Ask AI to edit something")}
-            className="w-full border border-gray-400 focus:border-0"
+            placeholder={t("Ask AI to edit content")}
+            className="w-full border border-gray-400 focus:border"
             rows={3}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
