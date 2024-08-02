@@ -58,6 +58,8 @@ const FONTS = [
   { title: "Lustria", value: "Lustria" },
   { title: "Ovo", value: "Ovo" },
   { title: "Suranna", value: "Suranna" },
+  { title: "Bebas Neue", value: "Bebas Neue" },
+  { title: "Manrope", value: "Manrope" },
 ];
 
 const BrandingOptions = (): React.JSX.Element => {

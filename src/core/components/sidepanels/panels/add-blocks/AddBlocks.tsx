@@ -14,7 +14,7 @@ import {
   TabsTrigger,
 } from "../../../../../ui";
 import { CoreBlock } from "./CoreBlock";
-import { PredefinedBlocks } from "./PredefinedBlocks";
+import PredefinedBlocks from "./PredefinedBlocks";
 import { showPredefinedBlockCategoryAtom } from "../../../../atoms/ui";
 import { useBuilderProp, useUILibraryBlocks } from "../../../../hooks";
 import ImportHTML from "./ImportHTML";
