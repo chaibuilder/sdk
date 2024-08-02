@@ -1,7 +1,7 @@
 import { Component2Icon, Half2Icon, PlusIcon } from "@radix-ui/react-icons";
 import React, { lazy, LazyExoticComponent, Suspense, useState } from "react";
 import { useAtom } from "jotai";
-import { each, get, isEmpty, find, values, filter } from "lodash-es";
+import { each, filter, find, get, isEmpty, values } from "lodash-es";
 import { Button, Skeleton, Tabs, TabsContent, TabsList, TabsTrigger } from "../../../ui";
 import { activePanelAtom } from "../../atoms/ui";
 import { useBuilderProp, useUILibraryBlocks } from "../../hooks";
@@ -17,7 +17,7 @@ const AddBlocksPanel = lazy(() => import("./panels/add-blocks/AddBlocks.tsx"));
 const ArboristPanel = lazy(() => import("./panels/outline/treeview/ListTree.tsx"));
 const BrandingOptions = lazy(() => import("./panels/branding/BrandingOptions"));
 const ImagesPanel = lazy(() => import("./panels/images/ImagesPanel"));
-const PanelPredefinedBlocks = lazy(() => import("./panels/add-blocks/PanelPredefinedBlocks.tsx"));
+const UILibrariesPanel = lazy(() => import("./panels/add-blocks/UILibrariesPanel.tsx"));
 
 let timeout: any = null;
 
@@ -47,7 +47,7 @@ const SidePanels = () => {
     [OUTLINE_KEY]: ArboristPanel,
     "branding-options": BrandingOptions,
     images: ImagesPanel,
-    "ui-library": PanelPredefinedBlocks,
+    "ui-library": UILibrariesPanel,
   };
   each(topComponents, ({ name, panel }) => {
     panels[name] = panel;
@@ -95,7 +95,7 @@ const SidePanels = () => {
               <PlusIcon className="text-xl" />
             </Button>
           ) : (
-            <div className="flex flex-col gap-1 rounded-md border bg-zinc-500 p-1">
+            <div className="flex flex-col gap-1 rounded-md bg-gray-200 p-1">
               <Button
                 onClick={() => {
                   handleChangePanel("add-blocks");
@@ -164,7 +164,9 @@ const SidePanels = () => {
               </div>
             }>
             <div
-              className={cn("relative z-[100] h-full max-h-full overflow-y-auto overflow-x-hidden bg-background p-1")}
+              className={cn(
+                "relative z-[100] h-full max-h-full overflow-y-auto overflow-x-hidden border-r bg-background p-1 shadow-md",
+              )}
               onMouseEnter={() => {
                 if (hideTimeout) clearTimeout(hideTimeout);
               }}>
