@@ -1,21 +1,23 @@
-import { Half2Icon, PlusIcon } from "@radix-ui/react-icons";
+import { Component2Icon, Half2Icon, PlusIcon } from "@radix-ui/react-icons";
 import React, { lazy, LazyExoticComponent, Suspense, useState } from "react";
 import { useAtom } from "jotai";
-import { each, get } from "lodash-es";
+import { each, get, isEmpty, find, values, filter } from "lodash-es";
 import { Button, Skeleton, Tabs, TabsContent, TabsList, TabsTrigger } from "../../../ui";
 import { activePanelAtom } from "../../atoms/ui";
-import { useBuilderProp } from "../../hooks";
+import { useBuilderProp, useUILibraryBlocks } from "../../hooks";
 import { DatabaseIcon, ListTreeIcon } from "lucide-react";
 import { PageDataProviders } from "./PageDataProviders.tsx";
 import { useTranslation } from "react-i18next";
 import { OUTLINE_KEY } from "../../constants/STRINGS.ts";
 import { HotKeys } from "../HotKeys.tsx";
 import { cn } from "../../functions/Functions.ts";
+import { useChaiBlocks } from "@chaibuilder/runtime";
 
 const AddBlocksPanel = lazy(() => import("./panels/add-blocks/AddBlocks.tsx"));
 const ArboristPanel = lazy(() => import("./panels/outline/treeview/ListTree.tsx"));
 const BrandingOptions = lazy(() => import("./panels/branding/BrandingOptions"));
 const ImagesPanel = lazy(() => import("./panels/images/ImagesPanel"));
+const PanelPredefinedBlocks = lazy(() => import("./panels/add-blocks/PanelPredefinedBlocks.tsx"));
 
 let timeout: any = null;
 
@@ -31,11 +33,21 @@ const SidePanels = () => {
   const [hideTimeout, setHideTimeout] = useState<any>(null);
   const { t } = useTranslation();
 
+  const allChaiBlocks = useChaiBlocks();
+  const filterChaiBlock = useBuilderProp("filterChaiBlock", () => true);
+  const chaiBlocks = filter(allChaiBlocks, filterChaiBlock);
+
+  const { data: predefinedBlocks, isLoading } = useUILibraryBlocks();
+
+  const hasUiBlocks =
+    (!isLoading && !isEmpty(predefinedBlocks)) || find(values(chaiBlocks), { category: "custom" }) !== undefined;
+
   const panels: { [key: string]: React.ComponentType<any> } = {
     "add-blocks": AddBlocksPanel,
     [OUTLINE_KEY]: ArboristPanel,
     "branding-options": BrandingOptions,
     images: ImagesPanel,
+    "ui-library": PanelPredefinedBlocks,
   };
   each(topComponents, ({ name, panel }) => {
     panels[name] = panel;
@@ -73,14 +85,33 @@ const SidePanels = () => {
       ) : null}
       <div className="z-[100] flex h-full w-fit flex-col items-center justify-between border-b border-r border-border bg-background pt-2">
         <div className="relative z-[100] flex w-14 flex-col items-center space-y-2">
-          <Button
-            onClick={() => {
-              handleChangePanel("add-blocks");
-            }}
-            size="sm"
-            variant={activePanel === "add-blocks" ? "default" : "outline"}>
-            <PlusIcon className="text-xl" />
-          </Button>
+          {!hasUiBlocks ? (
+            <Button
+              onClick={() => {
+                handleChangePanel("add-blocks");
+              }}
+              size="sm"
+              variant={activePanel === "add-blocks" ? "default" : "outline"}>
+              <PlusIcon className="text-xl" />
+            </Button>
+          ) : (
+            <div className="flex flex-col gap-1 rounded-md border bg-zinc-500 p-1">
+              <Button
+                onClick={() => {
+                  handleChangePanel("add-blocks");
+                }}
+                size="sm"
+                variant={activePanel === "add-blocks" ? "default" : "outline"}>
+                <PlusIcon className="text-xl" />
+              </Button>
+              <Button
+                onClick={() => handleChangePanel("ui-library")}
+                size="sm"
+                variant={activePanel === "ui-library" ? "default" : "outline"}>
+                <Component2Icon className="text-xl" />
+              </Button>
+            </div>
+          )}
           <Button
             onClick={() => handleChangePanel(OUTLINE_KEY)}
             size="sm"
@@ -93,6 +124,7 @@ const SidePanels = () => {
             variant={activePanel === "branding-options" ? "default" : "outline"}>
             <Half2Icon className="w-4 max-w-[40px] text-xs" />
           </Button>
+
           {React.Children.toArray(
             topComponents.map(({ name, icon: PanelIcon }) => (
               <Suspense fallback={<Skeleton className="h-10" />}>
@@ -121,7 +153,7 @@ const SidePanels = () => {
       {activePanel !== OUTLINE_KEY ? (
         <div
           className={
-            "absolute left-14 z-[50] h-full w-fit translate-x-0 border-r bg-background transition-all duration-500 ease-in-out"
+            "absolute left-14 z-[50] h-[100vh] w-fit translate-x-0 border-r bg-background transition-all duration-500 ease-in-out"
           }>
           <Suspense
             fallback={
@@ -132,7 +164,7 @@ const SidePanels = () => {
               </div>
             }>
             <div
-              className={cn("relative z-[100] h-full max-h-[98%] overflow-y-auto overflow-x-hidden bg-background p-1")}
+              className={cn("relative z-[100] h-full max-h-full overflow-y-auto overflow-x-hidden bg-background p-1")}
               onMouseEnter={() => {
                 if (hideTimeout) clearTimeout(hideTimeout);
               }}>

@@ -1,12 +1,20 @@
 import { filter, first, get, groupBy, has, isArray, isEmpty, keys, map, mergeWith, noop, values } from "lodash-es";
-import React, { useCallback, useMemo, useState } from "react";
-import { useAddBlock, useBuilderProp, useSelectedBlockIds, useUILibraryBlocks } from "../../../../hooks";
+import React, { useCallback, useMemo, useState, useRef } from "react";
+import {
+  useAddBlock,
+  useBuilderProp,
+  useSelectedBlockIds,
+  useTranslation,
+  useUILibraryBlocks,
+} from "../../../../hooks";
 import { syncBlocksWithDefaults, useChaiBlocks } from "@chaibuilder/runtime";
 import { Loader } from "lucide-react";
 import { useAtom } from "jotai";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../../ui";
+
 import { activePanelAtom } from "../../../../atoms/ui.ts";
 import { OUTLINE_KEY } from "../../../../constants/STRINGS.ts";
+import { CaretRightIcon } from "@radix-ui/react-icons";
+import clsx from "clsx";
 
 const BlockCard = ({ block, closePopover }: { block: any; closePopover: () => void }) => {
   const [isAdding, setIsAdding] = useState(false);
@@ -34,7 +42,7 @@ const BlockCard = ({ block, closePopover }: { block: any; closePopover: () => vo
     <>
       <div
         onClick={isAdding ? () => {} : addBlock}
-        className="relative cursor-pointer overflow-hidden rounded-md border border-transparent duration-200 hover:scale-x-105 hover:border-foreground/20 hover:shadow-2xl">
+        className="relative cursor-pointer overflow-hidden rounded-md border border-transparent duration-200 hover:scale-x-105 hover:border-foreground/20 hover:shadow-xl">
         {isAdding && (
           <div className="absolute flex h-full w-full items-center justify-center bg-black bg-opacity-70">
             <Loader className="animate-spin" size={15} color="white" />{" "}
@@ -57,7 +65,7 @@ const BlockCard = ({ block, closePopover }: { block: any; closePopover: () => vo
   );
 };
 
-const PredefinedBlocks = () => {
+const PanelPredefinedBlocks = () => {
   const { data: predefinedBlocks } = useUILibraryBlocks();
   const chaiBlocks = useChaiBlocks();
   const customBlocks = filter(values(chaiBlocks), { category: "custom" });
@@ -72,34 +80,66 @@ const PredefinedBlocks = () => {
 
   const [selectedGroup, setGroup] = useState(first(keys(mergedGroups)) || "");
   const [, setActivePanel] = useAtom(activePanelAtom);
+  const [hoverGroup, setHoverGroup] = useState("");
   const blocks = get(mergedGroups, selectedGroup, []);
+  const { t } = useTranslation();
+  const timeoutRef = useRef(null);
+
+  const handleMouseOver = (group) => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    timeoutRef.current = setTimeout(() => {
+      setHoverGroup(group);
+      setGroup(group);
+    }, 500);
+  };
 
   return (
-    <div className="relative flex h-full max-h-full flex-col overflow-hidden py-2">
-      <div className={"sticky top-0 flex w-full items-center p-3"}>
-        <Select value={selectedGroup} onValueChange={(value) => setGroup(value)}>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select a provider" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="">Choose</SelectItem>
+    <>
+      <div className="relative flex h-full max-h-full overflow-hidden">
+        <div className="z-20 flex h-full max-h-full w-60 flex-col overflow-hidden bg-white">
+          <div className="mb-2 flex flex-col justify-between rounded-md bg-background/30 p-1">
+            <h1 className="flex flex-col items-baseline px-1 text-xl font-semibold xl:flex-col">{t("ui_library")}</h1>
+            <span className="p-0 text-xs font-light leading-3 opacity-80 xl:pl-1">
+              {t("(Click to add custom blocks to page)")}
+            </span>
+          </div>
+          <div className={"sticky top-0 flex w-full flex-col items-center gap-1 px-1"}>
             {React.Children.toArray(
               map(mergedGroups, (_groupedBlocks, group) => (
-                <SelectItem key={group} value={group}>
-                  {group}
-                </SelectItem>
+                <div
+                  data-hover-group={group}
+                  onMouseOver={() => handleMouseOver(group)}
+                  key={group}
+                  className="flex h-10 w-full items-center justify-between rounded-md border-2 border-zinc-200 p-2 text-sm transition-all ease-in-out hover:bg-zinc-200">
+                  <span>{group}</span>
+                  <CaretRightIcon className="ml-2 h-5 w-5" />
+                </div>
               )),
             )}
-          </SelectContent>
-        </Select>
+          </div>
+        </div>
+        <div
+          onMouseEnter={() => {
+            if (timeoutRef.current) {
+              clearTimeout(timeoutRef.current);
+            }
+          }}
+          className={clsx(
+            "fixed top-0 z-10 flex h-full max-h-full w-60 flex-col gap-2 bg-white px-2 py-2 transition-all ease-linear",
+            selectedGroup === hoverGroup && "translate-x-60",
+          )}>
+          <div className="h-full w-full space-y-2 overflow-y-auto px-2">
+            {React.Children.toArray(
+              blocks.map((block) => <BlockCard block={block} closePopover={() => setActivePanel(OUTLINE_KEY)} />),
+            )}
+          </div>
+        </div>
       </div>
-      <div className="h-full w-full space-y-2 overflow-y-auto px-2">
-        {React.Children.toArray(
-          blocks.map((block) => <BlockCard block={block} closePopover={() => setActivePanel(OUTLINE_KEY)} />),
-        )}
-      </div>
-    </div>
+    </>
   );
 };
 
-export default PredefinedBlocks;
+export default PanelPredefinedBlocks;

@@ -5,6 +5,7 @@ import { ChaiBlock, ChaiBuilderEditor } from "./core/main";
 import { loadWebBlocks } from "./blocks/web";
 import "./__dev/data-providers/data";
 import { ChaiBuilderAI } from "./ai";
+import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
 
 loadWebBlocks();
 
@@ -48,6 +49,19 @@ function ChaiBuilderDefault() {
         const response = await cbAi.askAi(prompt, blocks);
         console.log("response", response);
         return response;
+      }}
+      // @ts-ignore
+      getExternalPredefinedBlock={async (block) => {
+        const response = await fetch("https://chaibuilder.com/preline/" + block.uuid + ".html");
+        const html = await response.text();
+        const htmlWithoutChaiStudio = html.replace(/<chaistudio>([\s\S]*?)<\/chaistudio>/g, "");
+
+        return getBlocksFromHTML(htmlWithoutChaiStudio) as ChaiBlock[];
+      }}
+      // @ts-ignore
+      getUILibraryBlocks={async () => {
+        const blocks = await fetch("https://chaibuilder.com/preline/blocks.json");
+        return (await blocks.json()).map((b) => ({ ...b, preview: "https://chaibuilder.com" + b.preview }));
       }}
     />
   );
