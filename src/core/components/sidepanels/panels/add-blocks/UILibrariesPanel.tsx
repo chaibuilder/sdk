@@ -82,7 +82,7 @@ const UILibrariesPanel = () => {
   const { t } = useTranslation();
   const timeoutRef = useRef(null);
 
-  const handleMouseEnter = (group) => {
+  const handleMouseEnter = (group: string) => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;

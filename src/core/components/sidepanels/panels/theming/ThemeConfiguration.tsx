@@ -7,6 +7,7 @@ import { Color, Numeric, SelectOption } from "@chaibuilder/runtime/controls";
 import { isEqual, noop } from "lodash-es";
 import { ColorField } from "../../../../../ui/widgets/rjsf/widgets/color.tsx";
 import { useBlocksContainer } from "../../../../hooks/useBrandingOptions.ts";
+import { useTranslation } from "react-i18next";
 
 const FONTS = [
   { title: "Roboto", value: "Roboto" },
@@ -62,11 +63,12 @@ const FONTS = [
   { title: "Manrope", value: "Manrope" },
 ];
 
-const BrandingOptions = (): React.JSX.Element => {
+const ThemeConfiguration = (): React.JSX.Element => {
   const onSaveBrandingOptions = useBuilderProp("onSaveBrandingOptions", noop);
   const [brandingOptions, setBrandingOptions] = useBrandingOptions();
   const [container] = useBlocksContainer();
   const brandingRef = React.useRef(brandingOptions);
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     // on unmount
@@ -155,7 +157,7 @@ const BrandingOptions = (): React.JSX.Element => {
   return (
     <div className="flex h-full w-60 select-none flex-col">
       <div className="rounded-md bg-background/30 p-1">
-        <h1 className="px-1 font-semibold">Branding Options</h1>
+        <h1 className="px-1 font-semibold">{t("Theme Configuration")}</h1>
       </div>
       <div className="-mx-2">
         <Form
@@ -176,4 +178,4 @@ const BrandingOptions = (): React.JSX.Element => {
   );
 };
 
-export default BrandingOptions;
+export default ThemeConfiguration;
