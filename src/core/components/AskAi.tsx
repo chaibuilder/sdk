@@ -1,12 +1,31 @@
 import { useTranslation } from "react-i18next";
 import { useAskAi } from "../hooks/useAskAi.ts";
 import { useEffect, useRef, useState } from "react";
-import { Button, Skeleton, Tabs, TabsContent, TabsList, TabsTrigger, Textarea } from "../../ui";
-import { Loader, SparklesIcon } from "lucide-react";
-import { useSelectedBlockIds } from "../hooks";
-import { first } from "lodash-es";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+  Button,
+  Skeleton,
+  Textarea,
+  useToast,
+} from "../../ui";
+import { EditIcon, Loader, SparklesIcon } from "lucide-react";
+import { useBuilderProp, useSelectedBlockIds } from "../hooks";
+import { first, noop } from "lodash-es";
 import { FaSpinner } from "react-icons/fa";
 import { QuickPrompts } from "./QuickPrompts.tsx";
+import { Cross2Icon } from "@radix-ui/react-icons";
 
 const AskAIPrompt = ({ blockId }: { blockId: string | undefined }) => {
   const { t } = useTranslation();
@@ -32,79 +51,213 @@ const AskAIPrompt = ({ blockId }: { blockId: string | undefined }) => {
     );
 
   return (
-    <div className="">
-      <Tabs defaultValue={"ask-ai"} className="w-full">
-        <TabsList className="w-full">
-          <TabsTrigger value={"ask-ai"} className="w-full">
-            <SparklesIcon className={"mr-2 h-3"} /> {t("Ask AI")} (GPT-4o mini)
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value={"ask-ai"} className="flex flex-col gap-2 px-2">
+    <div className="mt-4">
+      <h2 className="mb-1 text-sm font-semibold leading-none tracking-tight">{t("Ask AI")} (GPT-4o mini)</h2>
+      <Textarea
+        ref={promptRef}
+        value={prompt}
+        onChange={(e) => setPrompt(e.target.value)}
+        placeholder={t("Ask AI to edit content")}
+        className="w-full border border-gray-400 focus:border"
+        rows={3}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            askAi(blockId, prompt, onComplete);
+          }
+        }}
+      />
+
+      <div className="my-2 flex items-center gap-2">
+        {!loading ? (
+          <Button
+            disabled={prompt.trim().length < 5 || loading}
+            onClick={() => askAi(blockId, prompt, onComplete)}
+            variant="default"
+            className="w-fit"
+            size="sm">
+            {loading ? (
+              <>
+                <Loader className="h-5 w-5 animate-spin" />
+                {t("Generating... Please wait")}
+              </>
+            ) : (
+              t("Edit with AI")
+            )}
+          </Button>
+        ) : null}
+        {loading ? (
+          <div className="flex flex-col gap-2">
+            <Skeleton className="flex w-full items-center space-x-1 px-4 py-1 pl-2">
+              <FaSpinner className="h-4 w-4 animate-spin text-gray-500" />
+              <p className="text-xs">{t("Generating... Please wait")}</p>
+            </Skeleton>
+            <Button variant="destructive" onClick={() => stop()} className="hidden w-fit" size="sm">
+              {t("Stop")}
+            </Button>
+          </div>
+        ) : null}
+      </div>
+      <div className="max-w-full">
+        {error && (
+          <p className="break-words rounded border border-red-500 bg-red-100 p-1 text-xs text-red-500">
+            {error.message}
+          </p>
+        )}
+      </div>
+      <QuickPrompts onClick={(prompt: string) => askAi(blockId, prompt, onComplete)} />
+    </div>
+  );
+};
+
+const SetAiContext = ({ onOpen }: { onOpen: Function }) => {
+  const { t } = useTranslation();
+  const aiContext = useBuilderProp("aiContext", "");
+  const [context, setContext] = useState(aiContext);
+  const promptRef = useRef(null);
+  const savePageContext = useBuilderProp("saveAiContextCallback", noop);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [opened, setOpened] = useState(false);
+  const { toast } = useToast();
+  const btnRef = useRef(null);
+
+  useEffect(() => {
+    if (aiContext) {
+      setContext(aiContext);
+    }
+  }, [aiContext]);
+
+  const saveContext = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      await savePageContext(context);
+      toast({
+        title: t("AI Context updated"),
+        description: t("You can now ask AI to edit your content"),
+        variant: "default",
+      });
+      btnRef.current.click();
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Accordion
+      onValueChange={(value) => {
+        onOpen(value !== "");
+        setOpened(value !== "");
+      }}
+      type="single"
+      collapsible
+      className="-mx-2 -mt-2 bg-gray-100 px-2">
+      <AccordionItem value="set-context">
+        {/*  @ts-ignore */}
+        <AccordionTrigger ref={btnRef} hideArrow className="py-2 hover:no-underline">
+          <div className="flex w-full items-center justify-between">
+            <span className="font-semibold">{t("Set Context For AI")}</span>
+            <Button variant="default" size={"sm"}>
+              <span>{t(opened ? "Cancel" : "Edit")}</span> &nbsp;
+              {opened ? <Cross2Icon className="h-4 w-4" /> : <EditIcon className="h-4 w-4" />}
+            </Button>
+          </div>
+        </AccordionTrigger>
+        <AccordionContent>
+          {/*<h2 className="mb-1 text-sm font-semibold leading-none tracking-tight"> {t("Enter page details")}</h2>*/}
           <Textarea
             ref={promptRef}
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            placeholder={t("Ask AI to edit content")}
-            className="w-full border border-gray-400 focus:border"
-            rows={3}
+            value={context}
+            onChange={(e) => setContext(e.target.value)}
+            placeholder={t("Tell about this page. Eg: This page is about ...")}
+            className="w-full border border-gray-400 bg-background focus:border"
+            rows={10}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 e.preventDefault();
-                askAi(blockId, prompt, onComplete);
+                saveContext();
               }
             }}
           />
-
-          <div className="flex items-center gap-2">
-            {!loading ? (
-              <Button
-                disabled={prompt.trim().length < 5 || loading}
-                onClick={() => askAi(blockId, prompt, onComplete)}
-                variant="default"
-                className="w-fit"
-                size="sm">
-                {loading ? (
-                  <>
-                    <Loader className="h-5 w-5 animate-spin" />
-                    {t("Generating... Please wait")}
-                  </>
-                ) : (
-                  t("Edit with AI")
-                )}
-              </Button>
-            ) : null}
-            {loading ? (
-              <div className="flex flex-col gap-2">
-                <Skeleton className="flex w-full items-center space-x-1 px-4 py-1 pl-2">
-                  <FaSpinner className="h-4 w-4 animate-spin text-gray-500" />
-                  <p className="text-xs">{t("Generating... Please wait")}</p>
-                </Skeleton>
-                <Button variant="destructive" onClick={() => stop()} className="hidden w-fit" size="sm">
-                  {t("Stop")}
-                </Button>
-              </div>
+          {aiContext.trim().length === 0 ? (
+            <p className="mt-2 text-xs text-gray-500">
+              {t(
+                "Eg: This page is about an AI assistant app called Chai Studio. It allows users to create beautiful webpages and edit content with AI.",
+              )}
+            </p>
+          ) : null}
+          <div className="mt-2 flex items-center">
+            <Button
+              disabled={context.trim().length < 5}
+              onClick={() => saveContext()}
+              variant="default"
+              className="w-fit"
+              size="sm">
+              {loading ? (
+                <>
+                  <Loader className="h-5 w-5 animate-spin" />
+                  {t("Generating... Please wait")}
+                </>
+              ) : (
+                t("Save")
+              )}
+            </Button>
+            {aiContext.trim().length > 0 ? (
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button disabled={aiContext.trim().length === 0} variant="ghost" className="w-fit" size="sm">
+                    {loading ? (
+                      <>
+                        <Loader className="h-5 w-5 animate-spin" />
+                        {t("Generating... Please wait")}
+                      </>
+                    ) : (
+                      t("Delete")
+                    )}
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>{t("Remove context?")}</AlertDialogTitle>
+                    <AlertDialogDescription></AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>{t("Cancel")}</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => {
+                        setContext("");
+                        saveContext();
+                      }}>
+                      Yes, Delete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             ) : null}
           </div>
-          <div className="max-w-full">
+          <div className="mt-2 max-w-full">
             {error && (
               <p className="break-words rounded border border-red-500 bg-red-100 p-1 text-xs text-red-500">
                 {error.message}
               </p>
             )}
           </div>
-          <QuickPrompts onClick={(prompt: string) => askAi(blockId, prompt, onComplete)} />
-        </TabsContent>
-      </Tabs>
-    </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 };
 
 export const AskAI = () => {
   const [ids] = useSelectedBlockIds();
-
+  const [hideAskAI, setHideAskAI] = useState(false);
   return (
-    <div className="absolute inset-0 z-50 h-full w-full bg-white p-2">
-      <AskAIPrompt blockId={first(ids)} />
+    <div className="absolute inset-0 z-50 h-full w-full bg-background p-2">
+      <SetAiContext onOpen={(value) => setHideAskAI(value)} />
+      {hideAskAI ? null : <AskAIPrompt blockId={first(ids)} />}
     </div>
   );
 };

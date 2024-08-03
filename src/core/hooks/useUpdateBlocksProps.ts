@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 import { ChaiBlock } from "../types/ChaiBlock.ts";
-import { chunk, isString, keys, omit } from "lodash";
+import { chunk, isString, keys, omit } from "lodash-es";
 
 /**
  *

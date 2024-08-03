@@ -74,6 +74,8 @@ export interface ChaiBuilderEditorProps {
   fetchMediaCallback?: (limit?: number, offset?: number) => Promise<any[]>;
   uploadMediaCallback?: (file: File) => Promise<{ url: string }>;
   askAiCallBack?: (prompt: string, blocks: ChaiBlock[]) => Promise<AskAiResponse>;
+  saveAiContextCallback?: (content: string) => Promise<true | Error>;
+  aiContext?: string;
 
   getExternalPredefinedBlock?: (
     block: PredefinedBlock,
