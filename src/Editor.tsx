@@ -1,6 +1,6 @@
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
-import { lsBlocksAtom, lsBrandingOptionsAtom } from "./__dev/atoms-dev.ts";
+import { lsAiContextAtom, lsBlocksAtom, lsBrandingOptionsAtom } from "./__dev/atoms-dev.ts";
 import { ChaiBlock, ChaiBuilderEditor } from "./core/main";
 import { loadWebBlocks } from "./blocks/web";
 import "./__dev/data-providers/data";
@@ -9,8 +9,7 @@ import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
 
 loadWebBlocks();
 
-const websiteDescription = "Chai Builder is an open source visual builder for websites.";
-const cbAi = new ChaiBuilderAI(websiteDescription, import.meta.env.VITE_OPENAI_API_KEY as string);
+const cbAi = new ChaiBuilderAI("", import.meta.env.VITE_OPENAI_API_KEY as string);
 
 let PreviewMessage = () => {
   const { t } = useTranslation();
@@ -28,10 +27,11 @@ let PreviewMessage = () => {
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
   const [brandingOptions] = useAtom(lsBrandingOptionsAtom);
+  const [aiContext, setAiContext] = useAtom(lsAiContextAtom);
 
   return (
     <ChaiBuilderEditor
-      unsplashAccessKey={"XgYBCm-XCHecRMsbfhw6oZWGkltco1U5TYMEd0LXZeA"}
+      unsplashAccessKey={import.meta.env.VITE_UNSPLASH_ACCESS_KEY}
       showDebugLogs={true}
       autoSaveSupport={false}
       previewComponent={PreviewMessage}
@@ -46,10 +46,15 @@ function ChaiBuilderDefault() {
         return true;
       }}
       askAiCallBack={async (prompt: string, blocks: ChaiBlock[]) => {
-        const response = await cbAi.askAi(prompt, blocks);
-        console.log("response", response);
-        return response;
+        cbAi.set("websiteDescription", aiContext);
+        return await cbAi.askAi(prompt, blocks);
       }}
+      saveAiContextCallback={async (aiContext: string) => {
+        console.log("context", aiContext);
+        setAiContext(aiContext);
+        return true;
+      }}
+      aiContext={aiContext}
       // @ts-ignore
       getExternalPredefinedBlock={async (block) => {
         const response = await fetch("https://chaibuilder.com/preline/" + block.uuid + ".html");

@@ -43,6 +43,7 @@ export type AskAiResponse = {
 };
 
 export interface ChaiBuilderEditorProps {
+  htmlDir?: "ltr" | "rtl";
   hideSaveButton?: boolean;
   filterChaiBlock?: (block: any) => boolean;
   showDebugLogs?: boolean;
