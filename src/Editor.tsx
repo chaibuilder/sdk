@@ -6,6 +6,8 @@ import { loadWebBlocks } from "./blocks/web";
 import "./__dev/data-providers/data";
 import { ChaiBuilderAI } from "./ai";
 import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
+import { useState } from "react";
+import { UILibrary, UiLibraryBlock } from "./core/types/chaiBuilderEditorProps.ts";
 
 loadWebBlocks();
 
@@ -28,6 +30,10 @@ function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
   const [brandingOptions] = useAtom(lsBrandingOptionsAtom);
   const [aiContext, setAiContext] = useAtom(lsAiContextAtom);
+  const [uiLibraries] = useState([
+    { uuid: "preline", name: "Preline UI" },
+    { uuid: "hero", name: "Hero" },
+  ]);
 
   return (
     <ChaiBuilderEditor
@@ -50,24 +56,26 @@ function ChaiBuilderDefault() {
         return await cbAi.askAi(prompt, blocks);
       }}
       saveAiContextCallback={async (aiContext: string) => {
-        console.log("context", aiContext);
         setAiContext(aiContext);
         return true;
       }}
       aiContext={aiContext}
-      // @ts-ignore
-      getExternalPredefinedBlock={async (block) => {
-        const response = await fetch("https://chaibuilder.com/preline/" + block.uuid + ".html");
+      getUILibraryBlock={async (uiLibrary: UILibrary, uiLibBlock: UiLibraryBlock) => {
+        const response = await fetch("https://chaibuilder.com/" + uiLibrary.uuid + "/" + uiLibBlock.uuid + ".html");
         const html = await response.text();
         const htmlWithoutChaiStudio = html.replace(/<chaistudio>([\s\S]*?)<\/chaistudio>/g, "");
-
         return getBlocksFromHTML(htmlWithoutChaiStudio) as ChaiBlock[];
       }}
-      // @ts-ignore
-      getUILibraryBlocks={async () => {
-        const blocks = await fetch("https://chaibuilder.com/preline/blocks.json");
-        return (await blocks.json()).map((b) => ({ ...b, preview: "https://chaibuilder.com" + b.preview }));
+      getUILibraryBlocks={async (uiLibrary: UILibrary) => {
+        try {
+          const response = await fetch("https://chaibuilder.com/" + uiLibrary.uuid + "/blocks.json");
+          const blocks = await response.json();
+          return blocks.map((b) => ({ ...b, preview: "https://chaibuilder.com" + b.preview }));
+        } catch (error) {
+          return [];
+        }
       }}
+      uiLibraries={uiLibraries}
     />
   );
 }

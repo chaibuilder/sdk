@@ -1,26 +1,29 @@
-import { filter, first, get, groupBy, has, isArray, isEmpty, keys, map, mergeWith, noop, values } from "lodash-es";
-import React, { useCallback, useMemo, useRef, useState } from "react";
-import {
-  useAddBlock,
-  useBuilderProp,
-  useSelectedBlockIds,
-  useTranslation,
-  useUILibraryBlocks,
-} from "../../../../hooks";
-import { syncBlocksWithDefaults, useChaiBlocks } from "@chaibuilder/runtime";
+import { first, get, has, isEmpty, noop } from "lodash-es";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useAddBlock, useBuilderProp, useSelectedBlockIds, useTranslation } from "../../../../hooks";
+import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { Loader } from "lucide-react";
-import { useAtom } from "jotai";
+import { atom, useAtom } from "jotai";
 
 import { activePanelAtom } from "../../../../atoms/ui.ts";
-import { OUTLINE_KEY } from "../../../../constants/STRINGS.ts";
-import { CaretRightIcon } from "@radix-ui/react-icons";
-import clsx from "clsx";
-import { ScrollArea } from "../../../../../ui";
 import { cn } from "../../../../functions/Functions.ts";
+import { CaretRightIcon } from "@radix-ui/react-icons";
+import { ScrollArea, Skeleton } from "../../../../../ui";
+import { OUTLINE_KEY } from "../../../../constants/STRINGS.ts";
+import { groupBy, map } from "lodash";
+import { UILibrary, UiLibraryBlock } from "../../../../types/chaiBuilderEditorProps.ts";
 
-const BlockCard = ({ block, closePopover }: { block: any; closePopover: () => void }) => {
+const BlockCard = ({
+  block,
+  closePopover,
+  library,
+}: {
+  library: UILibrary;
+  block: UiLibraryBlock;
+  closePopover: () => void;
+}) => {
   const [isAdding, setIsAdding] = useState(false);
-  const getExternalPredefinedBlock = useBuilderProp("getExternalPredefinedBlock", noop());
+  const getUILibraryBlock = useBuilderProp("getUILibraryBlock", noop);
   const { addCoreBlock, addPredefinedBlock } = useAddBlock();
   const [ids] = useSelectedBlockIds();
 
@@ -33,7 +36,7 @@ const BlockCard = ({ block, closePopover }: { block: any; closePopover: () => vo
         return;
       }
       setIsAdding(true);
-      const uiBlocks = await getExternalPredefinedBlock(block);
+      const uiBlocks = await getUILibraryBlock(library, block);
       if (!isEmpty(uiBlocks)) addPredefinedBlock(syncBlocksWithDefaults(uiBlocks), first(ids));
       closePopover();
     },
@@ -52,10 +55,10 @@ const BlockCard = ({ block, closePopover }: { block: any; closePopover: () => vo
           </div>
         )}
         {block.preview ? (
-          <img src={block.preview} className="min-h-[25px] w-full rounded-md" alt={block.label} />
+          <img src={block.preview} className="min-h-[25px] w-full rounded-md" alt={block.name} />
         ) : (
           <div className="flex h-20 items-center justify-center rounded-md border border-border border-gray-300 bg-gray-200">
-            <p className={"max-w-xs text-center text-sm text-gray-700"}>{block.label}</p>
+            <p className={"max-w-xs text-center text-sm text-gray-700"}>{block.name}</p>
           </div>
         )}
       </div>
@@ -63,20 +66,31 @@ const BlockCard = ({ block, closePopover }: { block: any; closePopover: () => vo
   );
 };
 
-const UILibrariesPanel = () => {
-  const { data: predefinedBlocks } = useUILibraryBlocks();
-  const chaiBlocks = useChaiBlocks();
-  const customBlocks = filter(values(chaiBlocks), { category: "custom" });
-  const customGroupsList: Record<string, any[]> = groupBy(customBlocks, "group");
-  const groupsList: Record<string, any[]> = groupBy(predefinedBlocks, "group");
-  const mergedGroups = useMemo(() => {
-    return mergeWith(customGroupsList, groupsList, (a: any, b: any) => {
-      // Concatenate arrays for the same key
-      if (isArray(a) && isArray(b)) return [...a, ...b];
-    });
-  }, [customGroupsList, groupsList]);
+const useLibraryBlocks = (library?: UILibrary) => {
+  const getBlocks = useBuilderProp("getUILibraryBlocks", noop);
+  const [blocks, setBlocks] = useState<UiLibraryBlock[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    (async () => {
+      if (!library) return;
+      setIsLoading(true);
+      const libraryBlocks: UiLibraryBlock[] = await getBlocks(library);
+      setBlocks(libraryBlocks);
+      setIsLoading(false);
+    })();
+  }, []);
+  return { data: blocks, isLoading };
+};
 
-  const [selectedGroup, setGroup] = useState(first(keys(mergedGroups)) || "");
+const selectedLibraryAtom = atom<string>("");
+const UILibrarySection = () => {
+  const [selectedLibrary] = useAtom(selectedLibraryAtom);
+  const uiLibraries = useBuilderProp("uiLibraries", []);
+  const library = uiLibraries.find((library) => library.uuid === selectedLibrary) || first(uiLibraries);
+  const { data: libraryBlocks, isLoading } = useLibraryBlocks(library);
+
+  const mergedGroups = groupBy(libraryBlocks, "group");
+  const [selectedGroup, setGroup] = useState("Hero");
   const [, setActivePanel] = useAtom(activePanelAtom);
   const blocks = get(mergedGroups, selectedGroup, []);
   const { t } = useTranslation();
@@ -94,20 +108,23 @@ const UILibrariesPanel = () => {
     }, 300);
   };
 
+  if (isLoading) return <Skeleton className="h-full w-full" />;
+
   return (
     <>
-      <div className="relative flex h-full max-h-full overflow-hidden">
-        <div className="z-20 flex h-full max-h-full w-40 flex-col overflow-hidden bg-white">
+      <div className="relative flex h-full max-h-full w-[460px] flex-col overflow-hidden bg-background">
+        <div className="sticky top-0 flex h-fit flex-col">
           <div className="mb-2 flex flex-col justify-between rounded-md bg-background/30 p-1">
             <h1 className="flex w-full flex-col items-baseline truncate px-1 text-sm font-semibold xl:flex-col">
-              {t("Library")}:&nbsp;{t("Preline UI")}
+              {t("Library")}:&nbsp;{library.name}
             </h1>
             <span className="p-0 text-[9px] font-light leading-3 opacity-80 xl:pl-1">
               {t("Click to add blocks to page")}
             </span>
           </div>
-          <hr />
-          <div className={"sticky top-0 mt-2 flex h-full w-full flex-col items-center gap-1 px-1"}>
+        </div>
+        <div className={"flex h-[95%] border-t border-gray-300 pt-2"}>
+          <div className={"flex h-full w-40 flex-col gap-1 px-1"}>
             {React.Children.toArray(
               map(mergedGroups, (_groupedBlocks, group) => (
                 <div
@@ -125,31 +142,26 @@ const UILibrariesPanel = () => {
               )),
             )}
           </div>
-        </div>
-        <div
-          onMouseEnter={() => {
-            if (timeoutRef.current) {
-              clearTimeout(timeoutRef.current);
-            }
-          }}
-          className={clsx(
-            "fixed top-0 z-10 flex h-full max-h-full w-80 flex-col gap-2 border-l border-gray-300 bg-white px-2 py-2 transition-all ease-linear",
-            selectedGroup ? "translate-x-40" : "-z-10 -translate-x-40",
-          )}>
-          <div className="h--[90%] w-full overflow-hidden">
-            <ScrollArea className="h-full space-y-2 px-2">
-              {React.Children.toArray(
-                blocks.map((block) => <BlockCard block={block} closePopover={() => setActivePanel(OUTLINE_KEY)} />),
-              )}
-              <br />
-              <br />
-              <br />
-            </ScrollArea>
-          </div>
+          <ScrollArea
+            onMouseEnter={() => (timeoutRef.current ? clearTimeout(timeoutRef.current) : null)}
+            className="z-10 -mt-2 flex h-full max-h-full w-[300px] flex-col gap-2 border-l border-gray-300 px-2 transition-all ease-linear">
+            {React.Children.toArray(
+              blocks.map((block: UiLibraryBlock) => (
+                <BlockCard block={block} library={library} closePopover={() => setActivePanel(OUTLINE_KEY)} />
+              )),
+            )}
+            <br />
+            <br />
+            <br />
+          </ScrollArea>
         </div>
       </div>
     </>
   );
+};
+
+const UILibrariesPanel = () => {
+  return <UILibrarySection />;
 };
 
 export default UILibrariesPanel;

@@ -1,17 +1,16 @@
 import { Component2Icon, PlusIcon } from "@radix-ui/react-icons";
 import React, { lazy, LazyExoticComponent, Suspense, useState } from "react";
 import { useAtom } from "jotai";
-import { each, filter, find, get, isEmpty, values } from "lodash-es";
+import { each, get } from "lodash-es";
 import { Button, Skeleton, Tabs, TabsContent, TabsList, TabsTrigger } from "../../../ui";
 import { activePanelAtom } from "../../atoms/ui";
-import { useBuilderProp, useUILibraryBlocks } from "../../hooks";
+import { useBuilderProp } from "../../hooks";
 import { DatabaseIcon, ListTreeIcon, PaletteIcon } from "lucide-react";
 import { PageDataProviders } from "./PageDataProviders.tsx";
 import { useTranslation } from "react-i18next";
 import { OUTLINE_KEY } from "../../constants/STRINGS.ts";
 import { HotKeys } from "../HotKeys.tsx";
 import { cn } from "../../functions/Functions.ts";
-import { useChaiBlocks } from "@chaibuilder/runtime";
 
 const AddBlocksPanel = lazy(() => import("./panels/add-blocks/AddBlocks.tsx"));
 const ArboristPanel = lazy(() => import("./panels/outline/treeview/ListTree.tsx"));
@@ -32,15 +31,8 @@ const SidePanels = () => {
   const [_activePanel, _setActivePanel] = useState(activePanel);
   const [hideTimeout, setHideTimeout] = useState<any>(null);
   const { t } = useTranslation();
-
-  const allChaiBlocks = useChaiBlocks();
-  const filterChaiBlock = useBuilderProp("filterChaiBlock", () => true);
-  const chaiBlocks = filter(allChaiBlocks, filterChaiBlock);
-
-  const { data: predefinedBlocks, isLoading } = useUILibraryBlocks();
-
-  const hasUiBlocks =
-    (!isLoading && !isEmpty(predefinedBlocks)) || find(values(chaiBlocks), { category: "custom" }) !== undefined;
+  const uiLibraries = useBuilderProp("uiLibraries", []);
+  const hasUiBlocks = uiLibraries.length > 0;
 
   const panels: { [key: string]: React.ComponentType<any> } = {
     "add-blocks": AddBlocksPanel,

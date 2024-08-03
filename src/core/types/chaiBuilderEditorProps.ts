@@ -2,9 +2,23 @@ import { ChaiBlock } from "./ChaiBlock";
 import React, { ReactNode } from "react";
 import { ChaiPage, PredefinedBlock } from "./index";
 
-interface UILibrary {
-  name: string;
+type RichText = string;
+
+export type UiLibraryBlock = {
   uuid: string;
+  group: string;
+  name?: string;
+  preview?: string;
+  tags?: string[];
+  description?: string;
+};
+
+export interface UILibrary {
+  uuid: string;
+  name: string;
+  blocks: UiLibraryBlock[];
+  link?: string;
+  description?: RichText;
 }
 
 interface Block {
@@ -14,7 +28,7 @@ interface Block {
 
 type ReactComponentType = React.ComponentType<any>;
 
-type Breakpoint = {
+export type Breakpoint = {
   title: string;
   content: string;
   breakpoint: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | string;
@@ -26,6 +40,7 @@ type SavePageData = {
   blocks: ChaiBlock[];
   providers?: DataProvider[];
   brandingOptions?: Record<string, any>;
+  themeConfiguration?: Record<string, any>;
 };
 
 type DataProvider = { providerKey: string; args: Record<string, any> };
@@ -80,9 +95,11 @@ export interface ChaiBuilderEditorProps {
 
   getExternalPredefinedBlock?: (
     block: PredefinedBlock,
-  ) => Promise<PredefinedBlock & { blocks: ChaiBlock[]; html: string }>;
-  getUILibraryBlocks?: (libraryUuid: string) => Promise<PredefinedBlock[]>;
-  uiLibraries?: UILibrary[];
+  ) => Promise<PredefinedBlock & { blocks: ChaiBlock[]; html: string }>; // deprecated
+
+  uiLibraries?: Omit<UILibrary, "blocks">[];
+  getUILibraryBlocks?: (library: UILibrary) => Promise<UiLibraryBlock[]>;
+  getUILibraryBlock?: (library: UILibrary, uiLibBlock: UiLibraryBlock) => Promise<ChaiBlock[]>;
 
   subPages?: Block[];
   subPagesSupport?: boolean;
