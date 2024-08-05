@@ -24,7 +24,7 @@ export const useSavePage = () => {
       onSaveStateChange("SAVING");
       const pageData = getPageData();
       await onSavePage({ blocks: pageData.blocks, providers });
-      await onSave({ blocks: pageData.blocks, providers, brandingOptions });
+      await onSave({ blocks: pageData.blocks, providers, brandingOptions, themeConfiguration: brandingOptions });
       setTimeout(() => {
         setSaveState("SAVED");
         onSaveStateChange("SAVED");

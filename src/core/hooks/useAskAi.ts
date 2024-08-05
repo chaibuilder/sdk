@@ -1,11 +1,10 @@
-import { filter, find, flattenDeep } from "lodash-es";
+import { cloneDeep, filter, find, flattenDeep, set } from "lodash-es";
 import { useBuilderProp } from "./useBuilderProp.ts";
 import { useCallback, useState } from "react";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
 import { ChaiBlock } from "../types/ChaiBlock.ts";
-import { useUpdateMultipleBlocksProps } from "./useUpdateBlocksProps.ts";
+import { useStreamMultipleBlocksProps } from "./useUpdateBlocksProps.ts";
 import { atom, useAtom } from "jotai";
-import { cloneDeep, set } from "lodash";
 
 function getChildBlocks(allBlocks: ChaiBlock[], blockId: string, blocks: any[]) {
   blocks.push(find(allBlocks, { _id: blockId }) as ChaiBlock);
@@ -28,7 +27,7 @@ export const useAskAi = () => {
   const [processing, setProcessing] = useAtom(askAiProcessingAtom);
   const [error, setError] = useState(null);
   const callBack = useBuilderProp("askAiCallBack", null);
-  const updateBlockProps = useUpdateMultipleBlocksProps();
+  const updateBlockProps = useStreamMultipleBlocksProps();
   const [blocks] = useBlocksStore();
   return {
     askAi: useCallback(
@@ -52,7 +51,7 @@ export const useAskAi = () => {
           if (onComplete) onComplete();
         }
       },
-      [callBack],
+      [callBack, blocks],
     ),
     loading: processing,
     error,

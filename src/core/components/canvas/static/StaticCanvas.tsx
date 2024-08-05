@@ -46,6 +46,7 @@ const StaticCanvas = (): React.JSX.Element => {
   const [, setCanvasIframe] = useAtom(canvasIframeAtom);
   const [stylingBlocks, setStylingBlocks] = useSelectedStylingBlocks();
   const loadingCanvas = useBuilderProp("loading", false);
+  const htmlDir = useBuilderProp("htmlDir", "ltr");
 
   useEffect(() => {
     const { clientWidth, clientHeight } = wrapperRef.current as HTMLDivElement;
@@ -90,6 +91,7 @@ const StaticCanvas = (): React.JSX.Element => {
 
   const iframeContent: string = useMemo(() => {
     let initialHTML = IframeInitialContent;
+    initialHTML = initialHTML.replace("__HTML_DIR__", htmlDir);
     if (networkMode === "offline") {
       initialHTML = initialHTML.replace(
         "https://old.chaibuilder.com/offline/tailwind.cdn.js",

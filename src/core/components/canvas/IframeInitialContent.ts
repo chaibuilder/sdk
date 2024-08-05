@@ -1,5 +1,5 @@
 export const IframeInitialContent: string = `<!doctype html>
-<html lang="en" class="scroll-smooth h-full overflow-y-auto">
+<html lang="en" dir="__HTML_DIR__" class="scroll-smooth h-full overflow-y-auto">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

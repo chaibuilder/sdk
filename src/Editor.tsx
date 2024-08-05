@@ -1,16 +1,17 @@
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
-import { lsBlocksAtom, lsBrandingOptionsAtom } from "./__dev/atoms-dev.ts";
+import { lsAiContextAtom, lsBlocksAtom, lsBrandingOptionsAtom } from "./__dev/atoms-dev.ts";
 import { ChaiBlock, ChaiBuilderEditor } from "./core/main";
 import { loadWebBlocks } from "./blocks/web";
 import "./__dev/data-providers/data";
 import { ChaiBuilderAI } from "./ai";
 import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
+import { useState } from "react";
+import { UILibrary, UiLibraryBlock } from "./core/types/chaiBuilderEditorProps.ts";
 
 loadWebBlocks();
 
-const websiteDescription = "Chai Builder is an open source visual builder for websites.";
-const cbAi = new ChaiBuilderAI(websiteDescription, import.meta.env.VITE_OPENAI_API_KEY as string);
+const cbAi = new ChaiBuilderAI("", import.meta.env.VITE_OPENAI_API_KEY as string);
 
 let PreviewMessage = () => {
   const { t } = useTranslation();
@@ -28,10 +29,15 @@ let PreviewMessage = () => {
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
   const [brandingOptions] = useAtom(lsBrandingOptionsAtom);
+  const [aiContext, setAiContext] = useAtom(lsAiContextAtom);
+  const [uiLibraries] = useState([
+    { uuid: "preline", name: "Preline UI" },
+    { uuid: "hero", name: "Hero" },
+  ]);
 
   return (
     <ChaiBuilderEditor
-      unsplashAccessKey={"XgYBCm-XCHecRMsbfhw6oZWGkltco1U5TYMEd0LXZeA"}
+      unsplashAccessKey={import.meta.env.VITE_UNSPLASH_ACCESS_KEY}
       showDebugLogs={true}
       autoSaveSupport={false}
       previewComponent={PreviewMessage}
@@ -46,23 +52,30 @@ function ChaiBuilderDefault() {
         return true;
       }}
       askAiCallBack={async (prompt: string, blocks: ChaiBlock[]) => {
-        const response = await cbAi.askAi(prompt, blocks);
-        console.log("response", response);
-        return response;
+        cbAi.set("websiteDescription", aiContext);
+        return await cbAi.askAi(prompt, blocks);
       }}
-      // @ts-ignore
-      getExternalPredefinedBlock={async (block) => {
-        const response = await fetch("https://chaibuilder.com/preline/" + block.uuid + ".html");
+      saveAiContextCallback={async (aiContext: string) => {
+        setAiContext(aiContext);
+        return true;
+      }}
+      aiContext={aiContext}
+      getUILibraryBlock={async (uiLibrary: UILibrary, uiLibBlock: UiLibraryBlock) => {
+        const response = await fetch("https://chaibuilder.com/" + uiLibrary.uuid + "/" + uiLibBlock.uuid + ".html");
         const html = await response.text();
         const htmlWithoutChaiStudio = html.replace(/<chaistudio>([\s\S]*?)<\/chaistudio>/g, "");
-
         return getBlocksFromHTML(htmlWithoutChaiStudio) as ChaiBlock[];
       }}
-      // @ts-ignore
-      getUILibraryBlocks={async () => {
-        const blocks = await fetch("https://chaibuilder.com/preline/blocks.json");
-        return (await blocks.json()).map((b) => ({ ...b, preview: "https://chaibuilder.com" + b.preview }));
+      getUILibraryBlocks={async (uiLibrary: UILibrary) => {
+        try {
+          const response = await fetch("https://chaibuilder.com/" + uiLibrary.uuid + "/blocks.json");
+          const blocks = await response.json();
+          return blocks.map((b) => ({ ...b, preview: "https://chaibuilder.com" + b.preview }));
+        } catch (error) {
+          return [];
+        }
       }}
+      uiLibraries={uiLibraries}
     />
   );
 }

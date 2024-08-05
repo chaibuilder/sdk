@@ -1,5 +1,5 @@
-import React, { Suspense, useEffect, useState } from "react";
-import { filter, find, first, groupBy, includes, isEmpty, map, reject, uniq, values } from "lodash-es";
+import React, { useEffect, useState } from "react";
+import { filter, first, groupBy, includes, isEmpty, map, reject, uniq, values } from "lodash-es";
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
 import {
@@ -8,15 +8,13 @@ import {
   AccordionItem,
   AccordionTrigger,
   ScrollArea,
-  Skeleton,
   Tabs,
   TabsList,
   TabsTrigger,
 } from "../../../../../ui";
 import { CoreBlock } from "./CoreBlock";
-import PredefinedBlocks from "./PredefinedBlocks";
 import { showPredefinedBlockCategoryAtom } from "../../../../atoms/ui";
-import { useBuilderProp, useUILibraryBlocks } from "../../../../hooks";
+import { useBuilderProp } from "../../../../hooks";
 import ImportHTML from "./ImportHTML";
 import { useChaiBlocks } from "@chaibuilder/runtime";
 
@@ -28,7 +26,6 @@ const AddBlocksPanel = () => {
   const [, setCategory] = useAtom(showPredefinedBlockCategoryAtom);
   const importHTMLSupport = useBuilderProp("importHTMLSupport", true);
   const filterChaiBlock = useBuilderProp("filterChaiBlock", () => true);
-  const { data: predefinedBlocks, isLoading } = useUILibraryBlocks();
   const chaiBlocks = filter(allChaiBlocks, filterChaiBlock);
 
   const groupedBlocks = groupBy(chaiBlocks, "category") as Record<string, any[]>;
@@ -40,9 +37,6 @@ const AddBlocksPanel = () => {
       setActive(first(uniqueTypeGroup) as string);
     }
   }, [uniqueTypeGroup, active]);
-
-  const hasUiBlocks =
-    (!isLoading && !isEmpty(predefinedBlocks)) || find(values(chaiBlocks), { category: "custom" }) !== undefined;
 
   return (
     <div className="flex h-full w-72 flex-col overflow-hidden">
@@ -60,17 +54,8 @@ const AddBlocksPanel = () => {
         }}
         value={tab}
         className="h-max">
-        <TabsList
-          className={
-            "grid w-full " +
-            (hasUiBlocks && importHTMLSupport
-              ? "grid-cols-3"
-              : (hasUiBlocks && !importHTMLSupport) || (!hasUiBlocks && importHTMLSupport)
-                ? "grid-cols-2"
-                : "grid-cols-1")
-          }>
+        <TabsList className={"grid w-full " + (importHTMLSupport ? "grid-cols-2" : "grid-cols-1")}>
           <TabsTrigger value="core">{t("Blocks")}</TabsTrigger>
-          {hasUiBlocks ? <TabsTrigger value="ui-blocks">{t("ui_library")}</TabsTrigger> : null}
           {importHTMLSupport ? <TabsTrigger value="html">{t("import")}</TabsTrigger> : null}
         </TabsList>
       </Tabs>
@@ -101,11 +86,6 @@ const AddBlocksPanel = () => {
             )}
           </div>
         </ScrollArea>
-      )}
-      {tab === "ui-blocks" && (
-        <Suspense fallback={<Skeleton className="h-32 w-full" />}>
-          <PredefinedBlocks />
-        </Suspense>
       )}
       {tab === "html" && importHTMLSupport ? <ImportHTML /> : null}
     </div>
