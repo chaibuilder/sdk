@@ -1,7 +1,7 @@
 import { Component2Icon, PlusIcon } from "@radix-ui/react-icons";
 import React, { lazy, LazyExoticComponent, Suspense, useState } from "react";
 import { useAtom } from "jotai";
-import { each, get, isEmpty, find, values, filter } from "lodash-es";
+import { each, get } from "lodash-es";
 import { Button, Skeleton, Tabs, TabsContent, TabsList, TabsTrigger } from "../../../ui";
 import { activePanelAtom } from "../../atoms/ui";
 import { useBuilderProp } from "../../hooks";
@@ -11,7 +11,6 @@ import { useTranslation } from "react-i18next";
 import { OUTLINE_KEY } from "../../constants/STRINGS.ts";
 import { HotKeys } from "../HotKeys.tsx";
 import { cn } from "../../functions/Functions.ts";
-import { useChaiBlocks } from "@chaibuilder/runtime";
 
 const AddBlocksPanel = lazy(() => import("./panels/add-blocks/AddBlocks.tsx"));
 const ArboristPanel = lazy(() => import("./panels/outline/treeview/ListTree.tsx"));
@@ -34,15 +33,6 @@ const SidePanels = () => {
   const { t } = useTranslation();
   const uiLibraries = useBuilderProp("uiLibraries", []);
   const hasUiBlocks = uiLibraries.length > 0;
-
-  const allChaiBlocks = useChaiBlocks();
-  const filterChaiBlock = useBuilderProp("filterChaiBlock", () => true);
-  const chaiBlocks = filter(allChaiBlocks, filterChaiBlock);
-
-  const { data: predefinedBlocks, isLoading } = useUILibraryBlocks();
-
-  const hasUiBlocks =
-    (!isLoading && !isEmpty(predefinedBlocks)) || find(values(chaiBlocks), { category: "custom" }) !== undefined;
 
   const panels: { [key: string]: React.ComponentType<any> } = {
     "add-blocks": AddBlocksPanel,
@@ -122,6 +112,7 @@ const SidePanels = () => {
             variant={activePanel === "theme-configuration" ? "default" : "outline"}>
             <PaletteIcon className="w-4 max-w-[40px] text-xs" />
           </Button>
+
           {React.Children.toArray(
             topComponents.map(({ name, icon: PanelIcon }) => (
               <Suspense fallback={<Skeleton className="h-10" />}>
