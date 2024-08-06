@@ -5,7 +5,7 @@
   "author": "Suraj Air",
   "license": "BSD-3-Clause",
   "homepage": "https://chaibuilder.com",
-  "version": "1.2.40",
+  "version": "1.2.41",
   "type": "module",
   "repository": {
     "type": "git",
@@ -87,11 +87,10 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@ai-sdk/openai": "^0.0.37",
     "@chaibuilder/runtime": "0.2.7",
     "@floating-ui/dom": "1.4.5",
     "@floating-ui/react-dom": "2.0.1",
-    "@mhsdesign/jit-browser-tailwindcss": "0.4.0",
+    "@mhsdesign/jit-browser-tailwindcss": "0.4.1",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-context-menu": "^2.1.5",
@@ -123,7 +122,6 @@
     "@tailwindcss/line-clamp": "^0.4.4",
     "@tailwindcss/typography": "^0.5.10",
     "@tanstack/react-query": "^5.8.4",
-    "ai": "^3.2.32",
     "class-variance-authority": "0.6.1",
     "clsx": "1.2.1",
     "cmdk": "0.2.0",
@@ -158,6 +156,8 @@
     "unsplash-js": "^7.0.18"
   },
   "devDependencies": {
+    "ai": "^3.2.32",
+    "@ai-sdk/openai": "^0.0.37",
     "@commitlint/cli": "17.7.1",
     "@commitlint/config-conventional": "17.7.0",
     "@emotion/react": "^11.11.1",
