@@ -211,3 +211,9 @@ export const getBlockDefaultTranslation = (
       return "";
   }
 };
+
+export const convertDotNotationToObject = (key: string, value: any) => {
+    const result = {};
+    set(result, key, value);
+    return result;
+}
