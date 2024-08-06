@@ -35,7 +35,6 @@ const LinkField = ({ schema, formData, onChange }: FieldProps) => {
         {type === "page" ? (
           <select
             name="href"
-            placeholder="Choose Page"
             value={href}
             onChange={(e) => onChange({ ...formData, href: e.target.value })}>
             <option value="">Choose page</option>
