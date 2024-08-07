@@ -24,6 +24,7 @@ const ImageBlock = (
     ...styles,
     src: image,
     alt: alt,
+    loading: "lazy",
     height: height,
     width: width,
   });
