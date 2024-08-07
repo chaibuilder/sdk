@@ -4,14 +4,14 @@ import { lsAiContextAtom, lsBlocksAtom, lsBrandingOptionsAtom } from "./__dev/at
 import { ChaiBlock, ChaiBuilderEditor } from "./core/main";
 import { loadWebBlocks } from "./blocks/web";
 import "./__dev/data-providers/data";
-// import { ChaiBuilderAI } from "./ai";
+import { ChaiBuilderAI } from "./ai";
 import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
 import { useState } from "react";
 import { UILibrary, UiLibraryBlock } from "./core/types/chaiBuilderEditorProps.ts";
 
 loadWebBlocks();
 
-//const cbAi = new ChaiBuilderAI("", import.meta.env.VITE_OPENAI_API_KEY as string);
+const cbAi = new ChaiBuilderAI("", import.meta.env.VITE_OPENAI_API_KEY as string);
 
 let PreviewMessage = () => {
   const { t } = useTranslation();
@@ -51,15 +51,15 @@ function ChaiBuilderDefault() {
         await new Promise((resolve) => setTimeout(resolve, 2000));
         return true;
       }}
-      // askAiCallBack={async (prompt: string, blocks: ChaiBlock[]) => {
-      //   cbAi.set("websiteDescription", aiContext);
-      //   return await cbAi.askAi(prompt, blocks);
-      // }}
-      // saveAiContextCallback={async (aiContext: string) => {
-      //   setAiContext(aiContext);
-      //   return true;
-      // }}
-      // aiContext={aiContext}
+      askAiCallBack={async (prompt: string, blocks: ChaiBlock[]) => {
+        cbAi.set("websiteDescription", aiContext);
+        return await cbAi.askAi(prompt, blocks);
+      }}
+      saveAiContextCallback={async (aiContext: string) => {
+        setAiContext(aiContext);
+        return true;
+      }}
+      aiContext={aiContext}
       getUILibraryBlock={async (uiLibrary: UILibrary, uiLibBlock: UiLibraryBlock) => {
         const response = await fetch("https://chaibuilder.com/" + uiLibrary.uuid + "/" + uiLibBlock.uuid + ".html");
         const html = await response.text();
