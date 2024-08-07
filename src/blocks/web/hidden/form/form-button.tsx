@@ -11,7 +11,7 @@ const FormButtonBlock = (
     inputStyles: Record<string, string>;
   },
 ) => {
-  const { blockProps, inBuilder, label, placeholder, styles, inputStyles, icon, iconPos } = block;
+  const { blockProps, inBuilder, label, styles, inputStyles, icon, iconPos } = block;
   const fieldId = generateUUID();
 
   // alpine js attrs
@@ -26,8 +26,7 @@ const FormButtonBlock = (
       {...inputStyles}
       {...styles}
       {...(blockProps || {})}
-      type={inBuilder ? "button" : "submit"}
-      placeholder={placeholder}>
+      type={inBuilder ? "button" : "submit"}>
       {label}
       {icon && <span className={iconPos} dangerouslySetInnerHTML={{ __html: icon }} />}
     </button>

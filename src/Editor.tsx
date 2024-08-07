@@ -4,16 +4,13 @@ import { lsAiContextAtom, lsBlocksAtom, lsBrandingOptionsAtom } from "./__dev/at
 import { ChaiBlock, ChaiBuilderEditor } from "./core/main";
 import { loadWebBlocks } from "./blocks/web";
 import "./__dev/data-providers/data";
-import { ChaiBuilderAI } from "./ai";
 import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
 import { useState } from "react";
 import { UILibrary, UiLibraryBlock } from "./core/types/chaiBuilderEditorProps.ts";
 
 loadWebBlocks();
 
-const cbAi = new ChaiBuilderAI("", import.meta.env.VITE_OPENAI_API_KEY as string);
-
-let PreviewMessage = () => {
+const PreviewMessage = () => {
   const { t } = useTranslation();
   return (
     <div className={"text-sm font-normal"}>
@@ -50,10 +47,6 @@ function ChaiBuilderDefault() {
         localStorage.setItem("chai-builder-branding-options", JSON.stringify(brandingOptions));
         await new Promise((resolve) => setTimeout(resolve, 2000));
         return true;
-      }}
-      askAiCallBack={async (prompt: string, blocks: ChaiBlock[]) => {
-        cbAi.set("websiteDescription", aiContext);
-        return await cbAi.askAi(prompt, blocks);
       }}
       saveAiContextCallback={async (aiContext: string) => {
         setAiContext(aiContext);
