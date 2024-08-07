@@ -10,12 +10,18 @@ import {
   DropdownMenuTrigger,
 } from "../../ui";
 import { useAskAi } from "../hooks/useAskAi.ts";
+import { FaRecycle } from "react-icons/fa";
 
 const QUICK_PROMPTS = [
   {
     name: "Improve writing",
     icon: FaFilePen,
     prompt: "Improving writing in all text elements. Replacing placeholder content with meaningful relevant content.",
+  },
+  {
+    name: "Replace placeholder content",
+    icon: FaRecycle,
+    prompt: "Discard current placeholder content and replace with meaningful relevant content.",
   },
   // {
   //   name: "Change tone",

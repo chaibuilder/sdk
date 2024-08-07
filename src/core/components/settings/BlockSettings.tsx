@@ -8,6 +8,7 @@ import { useCallback, useMemo, useState } from "react";
 import { getBlockComponent } from "@chaibuilder/runtime";
 import { JSONForm } from "./JSONForm.tsx";
 import { CanvasSettings } from "./CanvasSettings.tsx";
+import { convertDotNotationToObject } from "../../functions/Controls.ts";
 
 /**
  *
@@ -40,7 +41,7 @@ export default function BlockSettings() {
   const updateRealtime = ({ formData: newData }: IChangeEvent, id?: string) => {
     if (id) {
       const path = id.replace("root.", "") as string;
-      updateBlockPropsRealtime([selectedBlock._id], { [path]: get(newData, path) } as any);
+      updateBlockPropsRealtime([selectedBlock._id], convertDotNotationToObject(path, get(newData, path.split("."))) as any);
       debouncedCall({ formData: newData }, id, { [path]: get(prevFormData, path) });
     }
   };
