@@ -1,11 +1,16 @@
+
+
 import { DragEvent } from "react";
-import { noop, throttle } from "lodash-es";
+import { noop, throttle, find, first } from "lodash-es";
 import { useFrame } from "../../../frame";
-import { useAddBlockByDrop } from "../../../hooks/useAddBlockByDrop.ts";
+
 import { useAtom } from "jotai";
-import { draggingFlagAtom } from "../../../atoms/ui.ts";
+import { draggedBlockIdAtom, draggingFlagAtom } from "../../../atoms/ui.ts";
 import { useFeature } from "flagged";
 import { useHighlightBlockId, useSelectedBlockIds } from "../../../hooks";
+import { useBlocksStore, useBlocksStoreUndoableActions } from "../../../history/useBlocksStoreUndoableActions.ts";
+
+import { canAcceptChildBlock } from "../../../functions/block-helpers.ts";
 
 let iframeDocument: null | HTMLDocument = null;
 let possiblePositions: number[] = [];
@@ -119,13 +124,27 @@ function removePlaceholder() {
   placeholder.style.display = "none";
 }
 
+const useCanMove = () => {
+  const [blocks] = useBlocksStore();
+  return (ids: string[], newParentId: string | null) => {
+    const newParentType = find(blocks, { _id: newParentId })?._type;
+    const blockType = first(ids.map((id) => find(blocks, { _id: id })?._type));
+    return canAcceptChildBlock(newParentType, blockType);
+  };
+};
+
 export const useDnd = () => {
   const { document } = useFrame();
   const [isDragging, setIsDragging] = useAtom(draggingFlagAtom);
-  const addOnDrop = useAddBlockByDrop();
+
   const dndEnabled = useFeature("dnd");
   const [, setHighlight] = useHighlightBlockId();
   const [, setBlockIds] = useSelectedBlockIds();
+  const { moveBlocks } = useBlocksStoreUndoableActions();
+  const canMove = useCanMove();
+  const [blocks] = useBlocksStore();
+  const [, setDraggedBlockId] = useAtom(draggedBlockIdAtom);
+
   iframeDocument = document as HTMLDocument;
   return {
     isDragging,
@@ -135,17 +154,24 @@ export const useDnd = () => {
       ? noop
       : (ev: DragEvent) => {
           dropTarget?.classList.remove("outline", "outline-green-300", "outline-2", "-outline-offset-2");
-          const data: string = JSON.parse(ev.dataTransfer.getData("text/plain") as string);
+          const data: { _id: string } = JSON.parse(ev.dataTransfer.getData("text/plain") as string);
           // get the block id from the attribute data-block-id from target
           let blockId = (ev.target as HTMLElement).getAttribute("data-block-id");
+
           if (blockId === null) {
             const parent = (ev.target as HTMLElement).parentElement;
             blockId = parent.getAttribute("data-block-id");
           }
 
-          addOnDrop({ block: data, dropTargetId: blockId || null, relativeIndex: dropIndex });
+          
+
+          const index = blocks.findIndex((block) => block._id === blockId);
+          if (canMove([data._id], blockId)) {
+            moveBlocks([data._id], blockId, index + dropIndex);
+            removePlaceholder();
+          }
           setIsDragging(false);
-          removePlaceholder();
+          setDraggedBlockId("");
           setTimeout(() => {
             removePlaceholder();
           }, 300);
@@ -180,6 +206,7 @@ export const useDnd = () => {
       : () => {
           setIsDragging(false);
           removePlaceholder();
+          setDraggedBlockId("");
         },
   };
 };
