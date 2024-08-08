@@ -1,7 +1,7 @@
-import { first, get, has, isEmpty, noop } from "lodash-es";
+import { capitalize, first, get, groupBy, has, isEmpty, map, noop, values } from "lodash-es";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useAddBlock, useBuilderProp, useSelectedBlockIds, useTranslation } from "../../../../hooks";
-import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
+import { syncBlocksWithDefaults, useChaiBlocks } from "@chaibuilder/runtime";
 import { Loader } from "lucide-react";
 import { atom, useAtom } from "jotai";
 
@@ -10,7 +10,6 @@ import { cn } from "../../../../functions/Functions.ts";
 import { CaretRightIcon } from "@radix-ui/react-icons";
 import { ScrollArea, Skeleton } from "../../../../../ui";
 import { OUTLINE_KEY } from "../../../../constants/STRINGS.ts";
-import { groupBy, map } from "lodash";
 import { UILibrary, UiLibraryBlock } from "../../../../types/chaiBuilderEditorProps.ts";
 
 const BlockCard = ({
@@ -86,10 +85,13 @@ const selectedLibraryAtom = atom<string>("");
 const UILibrarySection = () => {
   const [selectedLibrary] = useAtom(selectedLibraryAtom);
   const uiLibraries = useBuilderProp("uiLibraries", []);
+  const registeredBlocks = useChaiBlocks();
+  const customBlocks = values(registeredBlocks).filter((block) => block.category === "custom");
+
   const library = uiLibraries.find((library) => library.uuid === selectedLibrary) || first(uiLibraries);
   const { data: libraryBlocks, isLoading } = useLibraryBlocks(library);
 
-  const mergedGroups = groupBy(libraryBlocks, "group");
+  const mergedGroups = groupBy([...libraryBlocks, ...customBlocks], "group");
   const [selectedGroup, setGroup] = useState("Hero");
   const [, setActivePanel] = useAtom(activePanelAtom);
   const blocks = get(mergedGroups, selectedGroup, []);
@@ -116,7 +118,7 @@ const UILibrarySection = () => {
         <div className="sticky top-0 flex h-fit flex-col">
           <div className="mb-2 flex flex-col justify-between rounded-md bg-background/30 p-1">
             <h1 className="flex w-full flex-col items-baseline truncate px-1 text-sm font-semibold xl:flex-col">
-              {t("Library")}:&nbsp;{library.name}
+              {t("Library")}:&nbsp;{get(library, "name", get(library, "label", ""))}
             </h1>
             <span className="p-0 text-[9px] font-light leading-3 opacity-80 xl:pl-1">
               {t("Click to add blocks to page")}
@@ -136,7 +138,7 @@ const UILibrarySection = () => {
                     "flex w-full cursor-pointer items-center justify-between rounded-md p-1 text-sm transition-all ease-in-out hover:bg-gray-200",
                     group === selectedGroup ? "bg-blue-500 text-white hover:bg-blue-600" : "",
                   )}>
-                  <span>{group}</span>
+                  <span>{capitalize(group)}</span>
                   <CaretRightIcon className="ml-2 h-5 w-5" />
                 </div>
               )),

@@ -7,6 +7,7 @@ import "./__dev/data-providers/data";
 import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
 import { useState } from "react";
 import { UILibrary, UiLibraryBlock } from "./core/types/chaiBuilderEditorProps.ts";
+import "./__dev/RowCol.tsx";
 
 loadWebBlocks();
 
