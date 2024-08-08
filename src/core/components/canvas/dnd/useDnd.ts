@@ -157,14 +157,14 @@ function removePlaceholder() {
   placeholder.style.display = "none";
 }
 
-const useCanMove = () => {
-  const [blocks] = useBlocksStore();
-  return (ids: string[], newParentId: string | null) => {
-    const newParentType = find(blocks, { _id: newParentId })?._type;
-    const blockType = first(ids.map((id) => find(blocks, { _id: id })?._type));
-    return canAcceptChildBlock(newParentType, blockType);
-  };
-};
+// const useCanMove = () => {
+//   const [blocks] = useBlocksStore();
+//   return (ids: string[], newParentId: string | null) => {
+//     const newParentType = find(blocks, { _id: newParentId })?._type;
+//     const blockType = first(ids.map((id) => find(blocks, { _id: id })?._type));
+//     return canAcceptChildBlock(newParentType, blockType);
+//   };
+// };
 
 export const useDnd = () => {
   const { document } = useFrame();
@@ -174,7 +174,7 @@ export const useDnd = () => {
   const [, setHighlight] = useHighlightBlockId();
   const [, setBlockIds] = useSelectedBlockIds();
   const { moveBlocks } = useBlocksStoreUndoableActions();
-  const canMove = useCanMove();
+  // const canMove = useCanMove();
   const [blocks] = useBlocksStore();
   const [, setDraggedBlockId] = useAtom(draggedBlockIdAtom);
 
@@ -258,7 +258,6 @@ export const useDnd = () => {
             "-outline-offset-2",
             "bg-orange-300/30",
           );
-          adjacentParents = [];
         },
     onMouseOut: !dndEnabled
       ? noop
@@ -266,7 +265,6 @@ export const useDnd = () => {
           setIsDragging(false);
           removePlaceholder();
           setDraggedBlockId("");
-          adjacentParents = [];
         },
   };
 };
