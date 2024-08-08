@@ -1,5 +1,3 @@
-
-
 import { DragEvent } from "react";
 import { noop, throttle, find, first } from "lodash-es";
 import { useFrame } from "../../../frame";
@@ -41,7 +39,7 @@ const positionPlaceholder = (target: HTMLElement, orientation: "vertical" | "hor
   const closest = possiblePositions.reduce((prev, curr) =>
     Math.abs(curr - mousePosition) < Math.abs(prev - mousePosition) ? curr : prev,
   );
-  dropIndex = possiblePositions.indexOf(closest);
+
   if (orientation === "vertical") {
     placeholder.style.top = target.offsetTop + closest + "px";
     placeholder.style.left = target.offsetLeft + paddingLeft + "px";
@@ -50,6 +48,45 @@ const positionPlaceholder = (target: HTMLElement, orientation: "vertical" | "hor
     placeholder.style.left = target.offsetLeft + closest + "px";
   }
 };
+
+function calculateDropIndex(
+  target: HTMLElement,
+  mousePosition: number,
+  orientation: "vertical" | "horizontal",
+  blocks: any,
+) {
+  const targetBlockId = target.getAttribute("data-block-id");
+  if (!targetBlockId) return null;
+
+  const targetBlock = blocks.find((block) => block._id === targetBlockId);
+  if (!targetBlock) return null;
+
+  // Get all siblings within the same parent
+  const parentBlockId = targetBlock._parent;
+  const siblingBlocks = blocks.filter((block) => block._parent === parentBlockId);
+
+  // Gather positions of all sibling blocks
+  const siblingPositions: number[] = [];
+  siblingBlocks.forEach((block) => {
+    const blockElement = document.querySelector(`[data-block-id="${block._id}"]`) as HTMLElement;
+    if (blockElement) {
+      const position = orientation === "vertical" ? blockElement.offsetTop : blockElement.offsetLeft;
+      siblingPositions.push(position);
+    }
+  });
+
+  let closestIndex = 0;
+  let closestDistance = Infinity;
+  siblingPositions.forEach((position, index) => {
+    const distance = Math.abs(position - mousePosition);
+    if (distance < closestDistance) {
+      closestDistance = distance;
+      closestIndex = index;
+    }
+  });
+
+  return closestIndex;
+}
 
 const calculatePossiblePositions = (target: HTMLElement) => {
   const orientation = getOrientation(target);
@@ -96,6 +133,8 @@ function getOrientation(target: HTMLElement) {
     } else if (gridTemplateColumns.includes("auto")) {
       return "horizontal";
     }
+  } else if (display === "inline-block") {
+    return "vertical";
   }
 
   return display === "block" ? "vertical" : "horizontal";
@@ -112,12 +151,6 @@ const throttledDragOver = throttle((e: DragEvent) => {
     positionPlaceholder(target, orientation, x);
   }
 }, 200);
-
-const dragOver = (e: DragEvent) => {
-  e.preventDefault();
-  e.stopPropagation();
-  throttledDragOver(e);
-};
 
 function removePlaceholder() {
   const placeholder = iframeDocument?.getElementById("placeholder") as HTMLElement;
@@ -149,27 +182,39 @@ export const useDnd = () => {
   return {
     isDragging,
     "data-dnd": "branch",
-    onDragOver: dndEnabled ? dragOver : noop,
+    onDragOver: (e: DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      throttledDragOver(e);
+    },
     onDrop: !dndEnabled
       ? noop
       : (ev: DragEvent) => {
-          dropTarget?.classList.remove("outline", "outline-green-300", "outline-2", "-outline-offset-2");
+          dropTarget?.classList.remove(
+            "outline-dashed",
+            "outline-orange-300",
+            "outline-2",
+            "-outline-offset-2",
+            "bg-orange-300/30",
+          );
           const data: { _id: string } = JSON.parse(ev.dataTransfer.getData("text/plain") as string);
           // get the block id from the attribute data-block-id from target
-          let blockId = (ev.target as HTMLElement).getAttribute("data-block-id");
+          const block = ev.target as HTMLElement;
+          let blockId = block.getAttribute("data-block-id");
 
           if (blockId === null) {
             const parent = (ev.target as HTMLElement).parentElement;
             blockId = parent.getAttribute("data-block-id");
           }
 
-          
+          const orientation = getOrientation(block);
+          const mousePosition = orientation === "vertical" ? ev.clientY : ev.clientX;
 
-          const index = blocks.findIndex((block) => block._id === blockId);
-          if (canMove([data._id], blockId)) {
-            moveBlocks([data._id], blockId, index + dropIndex);
-            removePlaceholder();
-          }
+          dropIndex = calculateDropIndex(block, mousePosition, orientation, blocks);
+
+          moveBlocks([data._id], blockId, dropIndex);
+
+          removePlaceholder();
           setIsDragging(false);
           setDraggedBlockId("");
           setTimeout(() => {
@@ -186,7 +231,14 @@ export const useDnd = () => {
           possiblePositions = [];
           const target = event.target as HTMLElement;
           calculatePossiblePositions(target);
-          target.classList.add("outline", "outline-green-300", "outline-2", "-outline-offset-2");
+          target.classList.add(
+            "outline-dashed",
+            "outline-orange-300",
+            "outline-2",
+            "-outline-offset-2",
+            "bg-orange-300/30",
+          );
+
           setIsDragging(true);
           setHighlight("");
           setBlockIds([]);
@@ -199,7 +251,14 @@ export const useDnd = () => {
           event.stopPropagation();
           event.preventDefault();
           const target = event.target as HTMLElement;
-          target.classList.remove("outline", "outline-green-300", "outline-2", "-outline-offset-2");
+          target.classList.remove(
+            "outline-dashed",
+            "outline-orange-300",
+            "outline-2",
+            "-outline-offset-2",
+            "bg-orange-300/30",
+          );
+          adjacentParents = [];
         },
     onMouseOut: !dndEnabled
       ? noop
@@ -207,6 +266,7 @@ export const useDnd = () => {
           setIsDragging(false);
           removePlaceholder();
           setDraggedBlockId("");
+          adjacentParents = [];
         },
   };
 };
