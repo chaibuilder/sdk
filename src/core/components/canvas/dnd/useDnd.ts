@@ -1,5 +1,5 @@
 import { DragEvent } from "react";
-import { noop, throttle, find, first } from "lodash-es";
+import { noop, throttle } from "lodash-es";
 import { useFrame } from "../../../frame";
 
 import { useAtom } from "jotai";
@@ -8,7 +8,7 @@ import { useFeature } from "flagged";
 import { useHighlightBlockId, useSelectedBlockIds } from "../../../hooks";
 import { useBlocksStore, useBlocksStoreUndoableActions } from "../../../history/useBlocksStoreUndoableActions.ts";
 
-import { canAcceptChildBlock } from "../../../functions/block-helpers.ts";
+//import { canAcceptChildBlock } from "../../../functions/block-helpers.ts";
 
 let iframeDocument: null | HTMLDocument = null;
 let possiblePositions: number[] = [];
@@ -62,15 +62,17 @@ function calculateDropIndex(
   if (!targetBlock) return null;
 
   // Get all siblings within the same parent
-  const parentBlockId = targetBlock._parent;
-  const siblingBlocks = blocks.filter((block) => block._parent === parentBlockId);
 
-  // Gather positions of all sibling blocks
+  const siblingBlocks = blocks.filter((block) => block._parent === targetBlockId);
+
+  // Gather positions of all sibling blocksBlo
   const siblingPositions: number[] = [];
-  siblingBlocks.forEach((block) => {
-    const blockElement = document.querySelector(`[data-block-id="${block._id}"]`) as HTMLElement;
-    if (blockElement) {
-      const position = orientation === "vertical" ? blockElement.offsetTop : blockElement.offsetLeft;
+
+  siblingBlocks.forEach((sibling) => {
+    const siblingElement = iframeDocument?.querySelector(`[data-block-id="${sibling._id}"]`) as HTMLElement;
+
+    if (siblingElement) {
+      const position = orientation === "vertical" ? siblingElement.offsetTop : siblingElement.offsetLeft;
       siblingPositions.push(position);
     }
   });
@@ -134,7 +136,7 @@ function getOrientation(target: HTMLElement) {
       return "horizontal";
     }
   } else if (display === "inline-block") {
-    return "vertical";
+    return "horizontal";
   }
 
   return display === "block" ? "vertical" : "horizontal";
@@ -156,15 +158,6 @@ function removePlaceholder() {
   const placeholder = iframeDocument?.getElementById("placeholder") as HTMLElement;
   placeholder.style.display = "none";
 }
-
-// const useCanMove = () => {
-//   const [blocks] = useBlocksStore();
-//   return (ids: string[], newParentId: string | null) => {
-//     const newParentType = find(blocks, { _id: newParentId })?._type;
-//     const blockType = first(ids.map((id) => find(blocks, { _id: id })?._type));
-//     return canAcceptChildBlock(newParentType, blockType);
-//   };
-// };
 
 export const useDnd = () => {
   const { document } = useFrame();
@@ -197,10 +190,13 @@ export const useDnd = () => {
             "-outline-offset-2",
             "bg-orange-300/30",
           );
+
           const data: { _id: string } = JSON.parse(ev.dataTransfer.getData("text/plain") as string);
           // get the block id from the attribute data-block-id from target
           const block = ev.target as HTMLElement;
           let blockId = block.getAttribute("data-block-id");
+
+          console.log(blockId);
 
           if (blockId === null) {
             const parent = (ev.target as HTMLElement).parentElement;
@@ -211,9 +207,9 @@ export const useDnd = () => {
           const mousePosition = orientation === "vertical" ? ev.clientY : ev.clientX;
 
           dropIndex = calculateDropIndex(block, mousePosition, orientation, blocks);
+          console.log("dropIndex", dropIndex);
 
           moveBlocks([data._id], blockId, dropIndex);
-
           removePlaceholder();
           setIsDragging(false);
           setDraggedBlockId("");
@@ -238,7 +234,6 @@ export const useDnd = () => {
             "-outline-offset-2",
             "bg-orange-300/30",
           );
-
           setIsDragging(true);
           setHighlight("");
           setBlockIds([]);
