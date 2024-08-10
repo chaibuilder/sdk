@@ -1,19 +1,20 @@
 import { ChaiBlock } from "../types/ChaiBlock.ts";
-import { isEmpty } from "lodash-es";
+import { getDuplicatedBlocks } from "../functions/Blocks.ts";
+import { each, filter, range } from "lodash";
 
 function sortBlocks(blocks: Partial<ChaiBlock>[]) {
   const sortedBlocks = [];
-  const blockMap = new Map();
+  const blockMap = new Map<string, Partial<ChaiBlock>>();
 
   // Create a map of all blocks
   blocks.forEach((block) => {
-    blockMap.set(block._id, block);
+    blockMap.set(block._id!, block);
   });
 
   // Helper function to add a block and its children to the sortedBlocks array
-  function addBlockAndChildren(blockId) {
-    const block = blockMap.get(blockId);
-    if (!sortedBlocks.includes(block)) {
+  function addBlockAndChildren(blockId: string | undefined) {
+    const block = blockMap.get(blockId!);
+    if (block && !sortedBlocks.includes(block)) {
       sortedBlocks.push(block);
       blocks.forEach((b) => {
         if (b._parent === blockId) {
@@ -33,70 +34,49 @@ function sortBlocks(blocks: Partial<ChaiBlock>[]) {
   return sortedBlocks;
 }
 
-export const moveBlocksWithChildren = (
-  _blocks: Partial<ChaiBlock>[],
-  idsToMove: string[],
-  newParent: string | undefined | null,
-  position: number,
-): Partial<ChaiBlock>[] => {
-  if (isEmpty(idsToMove)) return sortBlocks(_blocks);
+function findDescendants(tree: Partial<ChaiBlock>[], nodeId: string): Partial<ChaiBlock>[] {
+  const descendants: Partial<ChaiBlock>[] = [];
+  const stack = [nodeId];
 
-  // Helper function to find all children of a block recursively
-  function findAllChildren(blocks: Partial<ChaiBlock>[], parentId: string): Partial<ChaiBlock>[] {
-    const children = blocks.filter((block) => block._parent === parentId);
-    let allChildren = [...children];
-    children.forEach((child) => {
-      allChildren = allChildren.concat(findAllChildren(blocks, child._id!));
-    });
-    return allChildren;
+  while (stack.length > 0) {
+    const currentId = stack.pop()!;
+    const children = tree.filter((node) => node._parent === currentId);
+    descendants.push(...children);
+    stack.push(...children.map((child) => child._id!));
   }
 
-  // Find all blocks to move including their children
-  const blocksToMove = idsToMove.reduce((acc: Partial<ChaiBlock>[], id: string) => {
-    const block = _blocks.find((b) => b._id === id);
-    if (block) {
-      // Add the block and its children to the blocksToMove array
-      const children = findAllChildren(_blocks, id);
-      acc.push(block, ...children);
-    }
-    return acc;
-  }, []);
+  return descendants;
+}
 
-  // Remove blocks to move from the original array
-  _blocks = _blocks.filter((block) => !blocksToMove.includes(block));
-
-  // Update the _parent property of the blocks to move
-  blocksToMove.forEach((block) => {
-    if (idsToMove.includes(block._id!)) {
-      block._parent = newParent;
-    }
+const getAbsoluteDropIndexForPosition = (
+  blocks: Partial<ChaiBlock>[],
+  newParentId: string | undefined | null,
+  newPosition: number,
+) => {
+  let newPositionIndex = newParentId ? blocks.findIndex((block) => block._id === newParentId) : 0;
+  const children = filter(blocks, (block) => (newParentId ? block._parent === newParentId : !block._parent));
+  each(range(newPosition), (index) => {
+    const childBlocks = [children[index], ...findDescendants(blocks, children[index]._id!)];
+    newPositionIndex += childBlocks.length;
   });
-
-  // Find the correct insertion index based on newParent and position
-  let insertIndex;
-  if (!newParent) {
-    insertIndex = position;
-  } else {
-    // Find the index of the newParent block
-    const parentIndex = _blocks.findIndex((block) => block._id === newParent);
-    if (parentIndex === -1) {
-      // If newParent is not found, insert at the specified position
-      insertIndex = position;
-    } else {
-      // Calculate the insertion index
-      insertIndex = parentIndex + 1;
-      let currentPos = 0;
-      while (currentPos < position && insertIndex < _blocks.length) {
-        if (_blocks[insertIndex]._parent === newParent) {
-          currentPos++;
-        }
-        insertIndex++;
-      }
-    }
-  }
-
-  // Insert the blocks to move at the calculated position
-  _blocks.splice(insertIndex, 0, ...blocksToMove);
-
-  return sortBlocks(_blocks);
+  return newPositionIndex;
 };
+
+function moveBlocksWithChildren(
+  _blocks: Partial<ChaiBlock>[],
+  idToMove: string,
+  newParentId: string | undefined | null,
+  newPosition: number,
+): Partial<ChaiBlock>[] {
+  let newBlocks = _blocks;
+  const blockToMove = _blocks.find((block) => block._id === idToMove);
+  const blocksToRemove = [blockToMove, ...findDescendants(_blocks, idToMove)];
+  const duplicatedBlocks = getDuplicatedBlocks(_blocks, idToMove, newParentId);
+  const absoluteDropIndex = getAbsoluteDropIndexForPosition(_blocks, newParentId, newPosition);
+  _blocks.splice(absoluteDropIndex, 0, ...duplicatedBlocks);
+  newBlocks = _blocks;
+  newBlocks = newBlocks.filter((block) => !blocksToRemove.includes(block));
+  return sortBlocks(newBlocks);
+}
+
+export { moveBlocksWithChildren };

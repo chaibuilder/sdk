@@ -17,7 +17,11 @@ export const nestedToFlatArray = (nestedJson: Array<ChaiBlock>, parent: string |
     }),
   );
 
-export function duplicateBlocks(blocks: Array<ChaiBlock>, id: string, _parent: string | null): Array<ChaiBlock> {
+export function duplicateBlocks(
+  blocks: Partial<ChaiBlock>[],
+  id: string,
+  _parent: string | null,
+): Partial<ChaiBlock>[] {
   const children = filter(blocks, (c) => c._parent === id);
   const newBlocks: Array<any> = [];
   for (let i = 0; i < children.length; i++) {
@@ -42,7 +46,7 @@ export function duplicateBlocks(blocks: Array<ChaiBlock>, id: string, _parent: s
   return flatten(newBlocks);
 }
 
-export function convertToBlocksTree(blocks: ChaiBlock[]) {
+export function convertToBlocksTree(blocks: Partial<ChaiBlock>[]) {
   // Create a map to store nodes by their ids
   const idMap = {};
   blocks.forEach((item) => {
@@ -91,7 +95,7 @@ export const getSlots = (block: ChaiBlock) => {
  * @param newParentId
  */
 export const getDuplicatedBlocks = (
-  currentBlocks: ChaiBlock[],
+  currentBlocks: Partial<ChaiBlock>[],
   id: string,
   newParentId: string | null = null,
 ): ChaiBlock[] => {

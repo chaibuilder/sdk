@@ -1,7 +1,7 @@
 import { Component2Icon, PlusIcon } from "@radix-ui/react-icons";
 import React, { lazy, LazyExoticComponent, Suspense, useState } from "react";
 import { useAtom } from "jotai";
-import { each, get } from "lodash-es";
+import { each, get, values } from "lodash-es";
 import { Button, Skeleton, Tabs, TabsContent, TabsList, TabsTrigger } from "../../../ui";
 import { activePanelAtom } from "../../atoms/ui";
 import { useBuilderProp } from "../../hooks";
@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { OUTLINE_KEY } from "../../constants/STRINGS.ts";
 import { HotKeys } from "../HotKeys.tsx";
 import { cn } from "../../functions/Functions.ts";
+import { useChaiBlocks } from "@chaibuilder/runtime";
 
 const AddBlocksPanel = lazy(() => import("./panels/add-blocks/AddBlocks.tsx"));
 const ArboristPanel = lazy(() => import("./panels/outline/treeview/ListTree.tsx"));
@@ -32,7 +33,9 @@ const SidePanels = () => {
   const [hideTimeout, setHideTimeout] = useState<any>(null);
   const { t } = useTranslation();
   const uiLibraries = useBuilderProp("uiLibraries", []);
-  const hasUiBlocks = uiLibraries.length > 0;
+  const registeredBlocks = useChaiBlocks();
+  const hasCustomBlocks = values(registeredBlocks).find((block) => block.category === "custom") !== undefined;
+  const hasUiBlocks = uiLibraries.length > 0 || hasCustomBlocks;
 
   const panels: { [key: string]: React.ComponentType<any> } = {
     "add-blocks": AddBlocksPanel,

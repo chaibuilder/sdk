@@ -11,13 +11,15 @@ const RowComponent = () => {
 registerChaiBlock(ColComponent, {
   type: "Col",
   label: "Col",
-  category: "core",
-  group: "basic",
+  category: "custom",
+  group: "layout",
+  preview: "https://placehold.it/200x50",
 });
 
 registerChaiBlock(RowComponent, {
   type: "Row",
   label: "Row",
-  category: "core",
-  group: "basic",
+  category: "custom",
+  group: "layout",
+  preview: "https://placehold.it/400x50",
 });

@@ -19,7 +19,13 @@ export const useBlocksStoreManager = () => {
       setBlocks((prevBlocks) => removeNestedBlocks(prevBlocks, blockIds));
     },
     moveBlocks: (blockIds: string[], newParent: string | null, position: number) => {
-      setBlocks((prevBlocks) => moveBlocksWithChildren(prevBlocks, blockIds, newParent, position));
+      setBlocks((prevBlocks) => {
+        let blocks = prevBlocks;
+        for (let i = 0; i < blockIds.length; i++) {
+          blocks = moveBlocksWithChildren(blocks, blockIds[i], newParent, position);
+        }
+        return blocks;
+      });
     },
     updateBlocksProps: (blocks: Partial<ChaiBlock>[]) => {
       setBlocks((prevBlocks: ChaiBlock[]) => {

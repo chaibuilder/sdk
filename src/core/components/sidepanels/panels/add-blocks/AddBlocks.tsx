@@ -60,7 +60,7 @@ const AddBlocksPanel = () => {
         </TabsList>
       </Tabs>
       {tab === "core" && (
-        <ScrollArea className="-mx-1.5 h-full">
+        <ScrollArea className="-mx-1.5 h-[calc(100vh-156px)] overflow-y-auto">
           <div className="mt-2 w-full">
             {React.Children.toArray(
               map(uniqueTypeGroup, (group: string) =>
