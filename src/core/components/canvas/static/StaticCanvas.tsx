@@ -22,7 +22,8 @@ import { BlockActionsStatic } from "../BlockFloatingActions.tsx";
 import { HeadTags } from "./HeadTags.tsx";
 import { Skeleton } from "../../../../ui";
 import { ChaiBlock } from "../../../types/ChaiBlock";
-import { StaticBlocksRenderer } from "./StaticBlocksRenderer.tsx"; // const FrameComponent = Frame.default;
+import { StaticBlocksRenderer } from "./StaticBlocksRenderer.tsx";
+import { Provider } from "react-wrap-balancer"; // const FrameComponent = Frame.default;
 
 // const FrameComponent = Frame.default;
 
@@ -127,18 +128,20 @@ const StaticCanvas = (): React.JSX.Element => {
           selectedBlockElement={first(selectedElements)}
         />
         <HeadTags model="page" />
-        <Canvas>
-          {loadingCanvas ? (
-            <div className="h-full p-4">
-              <Skeleton className="h-full" />
-            </div>
-          ) : (
-            <StaticBlocksRenderer />
-          )}
-        </Canvas>
+        <Provider>
+          <Canvas>
+            {loadingCanvas ? (
+              <div className="h-full p-4">
+                <Skeleton className="h-full" />
+              </div>
+            ) : (
+              <StaticBlocksRenderer />
+            )}
+          </Canvas>
+        </Provider>
         <br />
 
-        <div id={"placeholder"} className={"absolute z-[99999] max-w-full bg-green-500 transition-transform"}></div>
+        <div id={"placeholder"} className={"absolute z-[99999] h-4 max-w-full bg-green-500 transition-transform"}></div>
       </ChaiFrame>
     </div>
   );

@@ -167,7 +167,7 @@ export const Canvas = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div
-      data-block-id={"container"}
+      data-block-id={"canvas"}
       id="canvas"
       onClick={handleCanvasClick}
       onDoubleClick={handleDblClick}

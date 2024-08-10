@@ -34,6 +34,7 @@ export const IframeInitialContent: string = `<!doctype html>
         user-select: text;
     }
     .frame-root .frame-content { height: 100%; }
+    .drop-target { outline: 1px solid green !important; outline-offset: -1px; }
     </style>    
     <style id="hidden-blocks"></style>
     <style id="selected-block"></style>

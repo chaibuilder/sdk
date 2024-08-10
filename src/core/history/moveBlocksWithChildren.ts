@@ -76,6 +76,9 @@ function moveBlocksWithChildren(
   _blocks.splice(absoluteDropIndex, 0, ...duplicatedBlocks);
   newBlocks = _blocks;
   newBlocks = newBlocks.filter((block) => !blocksToRemove.includes(block));
+
+  //TODO: Handle the content of new parent and old parent
+
   return sortBlocks(newBlocks);
 }
 
