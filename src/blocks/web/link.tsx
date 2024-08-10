@@ -18,7 +18,7 @@ const LinkBlock = (
   const { blockProps, link, children, styles, inBuilder, content } = props;
 
   if (!children && isEmpty(styles?.className) && isEmpty(content)) {
-    return <EmptySlot blockProps={blockProps} inBuilder={inBuilder} />;
+    return <EmptySlot inBuilder={inBuilder} />;
   }
 
   if (inBuilder) {
@@ -69,7 +69,7 @@ registerChaiBlock(LinkBlock, {
       default: { type: "page", target: "_self", href: "" },
     }),
   },
-  canAcceptBlock: () => true,
+  canAcceptBlock: (type: string) => type !== "Link",
 });
 
 export default LinkBlock;

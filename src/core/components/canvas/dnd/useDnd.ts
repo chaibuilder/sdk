@@ -1,17 +1,16 @@
 import { DragEvent } from "react";
-import { throttle } from "lodash-es";
+import { has, throttle } from "lodash-es";
 import { useFrame } from "../../../frame";
 
 import { useAtom } from "jotai";
 import { draggedBlockIdAtom, draggingFlagAtom } from "../../../atoms/ui.ts";
 import { useAddBlock, useHighlightBlockId, useSelectedBlockIds } from "../../../hooks";
 import { useBlocksStoreUndoableActions } from "../../../history/useBlocksStoreUndoableActions.ts";
-import { has } from "lodash";
 import { getOrientation } from "./getOrientation.ts";
 import { draggedBlockAtom, dropTargetAtom } from "./atoms.ts";
 
 let iframeDocument: null | HTMLDocument = null;
-let possiblePositions: number[] = [];
+let possiblePositions: [number, number, number][] = [];
 let dropTarget: HTMLElement | null = null;
 let dropIndex: number | null = null;
 
@@ -29,24 +28,24 @@ const positionPlaceholder = (target: HTMLElement, orientation: "vertical" | "hor
   if (!iframeDocument || !target) return;
   const placeholder = iframeDocument?.getElementById("placeholder") as HTMLElement;
 
-  // get padding of the target element
-  const { paddingLeft, paddingTop } = getPadding(target);
-
-  placeholder.style.width = orientation === "vertical" ? target.clientWidth + paddingTop + "px" : "2px";
-  placeholder.style.height = orientation === "vertical" ? "2px" : target.clientHeight + paddingLeft + "px";
-  placeholder.style.display = "block";
-
-  const closest = possiblePositions.reduce(
+  const positions = possiblePositions.map(([position]) => {
+    return position;
+  });
+  const closest = positions.reduce(
     (prev, curr) => (Math.abs(curr - mousePosition) < Math.abs(prev - mousePosition) ? curr : prev),
     0,
   );
-
+  if (!possiblePositions[closest]) return;
+  const values = possiblePositions[closest];
+  placeholder.style.width = orientation === "vertical" ? values[2] + "px" : "2px";
+  placeholder.style.height = orientation === "vertical" ? "2px" : values[2] + "px";
+  placeholder.style.display = "block";
   if (orientation === "vertical") {
-    placeholder.style.top = target.offsetTop + closest + "px";
-    placeholder.style.left = target.offsetLeft + "px";
+    placeholder.style.top = values[0] + "px";
+    placeholder.style.left = values[1] + "px";
   } else {
-    placeholder.style.top = target.offsetTop + "px";
-    placeholder.style.left = target.offsetLeft + closest + "px";
+    placeholder.style.top = values[1] + "px";
+    placeholder.style.left = values[0] + "px";
   }
 };
 
@@ -70,17 +69,13 @@ const calculatePossiblePositions = (target: HTMLElement) => {
 
   // Calculate positions based on child elements and their margins
   possiblePositions = [];
-  const totalChildren = target.children.length;
-  Array.from(target.children).forEach((child: HTMLElement, index: number) => {
+  Array.from(target.children).forEach((child: HTMLElement) => {
     // if has class pointer-none, skip
     if (child.classList.contains("pointer-events-none")) return;
     const position = isHorizontal ? child.offsetLeft : child.offsetTop;
     // First child, consider starting position with its margin
-    possiblePositions.push(position);
-    if (index === totalChildren - 1) {
-      // Last child, consider ending position with its margin
-      possiblePositions.push(position + (isHorizontal ? child.offsetWidth : child.offsetHeight));
-    }
+    const size = isHorizontal ? [child.offsetTop, child.clientHeight] : [child.offsetLeft, child.clientWidth];
+    possiblePositions.push([position, size[0], size[1]]);
   });
 };
 

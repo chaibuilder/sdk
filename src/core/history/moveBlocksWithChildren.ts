@@ -1,6 +1,6 @@
 import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { getDuplicatedBlocks } from "../functions/Blocks.ts";
-import { filter } from "lodash";
+import { filter } from "lodash-es";
 
 function sortBlocks(blocks: Partial<ChaiBlock>[]) {
   const sortedBlocks = [];
@@ -76,6 +76,7 @@ function moveBlocksWithChildren(
   newParentId: string | undefined | null,
   newPosition: number,
 ): Partial<ChaiBlock>[] {
+  if (!idToMove) return _blocks;
   let newBlocks = _blocks;
   const blockToMove = _blocks.find((block) => block._id === idToMove);
   blockToMove._parent = newParentId;
