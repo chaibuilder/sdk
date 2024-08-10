@@ -17,6 +17,7 @@ let dropTarget: HTMLElement | null = null;
 let dropIndex: number | null = null;
 
 function getPadding(target: HTMLElement) {
+  if (!target) return { paddingLeft: 0, paddingTop: 0, paddingRight: 0, paddingBottom: 0 };
   const style = window.getComputedStyle(target);
   const paddingLeft = parseInt(style.paddingLeft, 10) as number;
   const paddingTop = parseInt(style.paddingTop, 10) as number;
@@ -67,22 +68,19 @@ function calculateDropIndex(mousePosition: number, positions: number[]) {
 
 const calculatePossiblePositions = (target: HTMLElement) => {
   const orientation = getOrientation(target);
-  const style = window.getComputedStyle(target);
   const isHorizontal = orientation === "horizontal";
 
-  // Get padding values
-  const paddingLeft = parseInt(style.paddingLeft);
-  const paddingTop = parseInt(style.paddingTop);
-
   // Calculate positions based on child elements and their margins
-  let currentPosition = isHorizontal ? paddingLeft : paddingTop;
-  possiblePositions = [currentPosition];
-
-  Array.from(target.children).forEach((child: HTMLElement) => {
+  possiblePositions = [];
+  const totalChildren = target.children.length;
+  Array.from(target.children).forEach((child: HTMLElement, index: number) => {
     const position = isHorizontal ? child.offsetLeft : child.offsetTop;
     // First child, consider starting position with its margin
     possiblePositions.push(position);
-    // Move the current position across this child
+    if (index === totalChildren - 1) {
+      // Last child, consider ending position with its margin
+      possiblePositions.push(position + (isHorizontal ? child.offsetWidth : child.offsetHeight));
+    }
   });
 };
 
@@ -124,7 +122,6 @@ export const useDnd = () => {
     onDrop: (ev: DragEvent) => {
       dropTarget?.classList.remove("drop-target");
       const block = dropTarget as HTMLElement;
-      console.log("block", block);
       const orientation = getOrientation(block);
       const mousePosition = orientation === "vertical" ? ev.clientY : ev.clientX;
       dropIndex = calculateDropIndex(mousePosition, possiblePositions);
@@ -135,6 +132,7 @@ export const useDnd = () => {
         setTimeout(() => {
           removePlaceholder();
         }, 300);
+        possiblePositions = [];
         return;
       }
 
@@ -168,6 +166,7 @@ export const useDnd = () => {
       event.preventDefault();
       possiblePositions = [];
       calculatePossiblePositions(target);
+      console.log("dropTarget", possiblePositions);
       target.classList.add("drop-target");
       setIsDragging(true);
       setHighlight("");

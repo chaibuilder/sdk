@@ -1,6 +1,6 @@
 import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { getDuplicatedBlocks } from "../functions/Blocks.ts";
-import { each, filter, range } from "lodash";
+import { filter } from "lodash";
 
 function sortBlocks(blocks: Partial<ChaiBlock>[]) {
   const sortedBlocks = [];
@@ -53,12 +53,20 @@ const getAbsoluteDropIndexForPosition = (
   newParentId: string | undefined | null,
   newPosition: number,
 ) => {
-  let newPositionIndex = newParentId ? blocks.findIndex((block) => block._id === newParentId) : 0;
+  let parentPosition = 0;
+  for (let i = 0; i < blocks.length; i++) {
+    if (!newParentId) break;
+    if (newParentId && blocks[i]._parent === newParentId) {
+      parentPosition = i;
+      break;
+    }
+  }
+  let newPositionIndex = parentPosition;
   const children = filter(blocks, (block) => (newParentId ? block._parent === newParentId : !block._parent));
-  each(range(newPosition), (index) => {
-    const childBlocks = [children[index], ...findDescendants(blocks, children[index]._id!)];
+  for (let i = 0; i < newPosition; i++) {
+    const childBlocks = [children[i], ...findDescendants(blocks, children[i]._id!)];
     newPositionIndex += childBlocks.length;
-  });
+  }
   return newPositionIndex;
 };
 
@@ -70,6 +78,7 @@ function moveBlocksWithChildren(
 ): Partial<ChaiBlock>[] {
   let newBlocks = _blocks;
   const blockToMove = _blocks.find((block) => block._id === idToMove);
+  blockToMove._parent = newParentId;
   const blocksToRemove = [blockToMove, ...findDescendants(_blocks, idToMove)];
   const duplicatedBlocks = getDuplicatedBlocks(_blocks, idToMove, newParentId);
   const absoluteDropIndex = getAbsoluteDropIndexForPosition(_blocks, newParentId, newPosition);
@@ -78,7 +87,6 @@ function moveBlocksWithChildren(
   newBlocks = newBlocks.filter((block) => !blocksToRemove.includes(block));
 
   //TODO: Handle the content of new parent and old parent
-
   return sortBlocks(newBlocks);
 }
 

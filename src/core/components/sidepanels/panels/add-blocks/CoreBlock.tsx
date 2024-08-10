@@ -37,6 +37,7 @@ export const CoreBlock = ({ block }: { block: any }) => {
             type="button"
             onDragStart={(ev) => {
               ev.dataTransfer.setData("text/plain", JSON.stringify(omit(block, ["component", "icon"])));
+              ev.dataTransfer.setDragImage(new Image(), 0, 0);
               // @ts-ignore
               setDraggedBlock(omit(block, ["component", "icon"]));
               setTimeout(() => {
@@ -45,7 +46,7 @@ export const CoreBlock = ({ block }: { block: any }) => {
                 setActivePanel(OUTLINE_KEY);
               }, 200);
             }}
-            draggable={dndEnabled ? "true" : "false"}
+            draggable={"true"}
             className={
               "space-y-2 rounded-lg border border-border p-3 text-center hover:bg-slate-300/50 " +
               (dndEnabled ? "cursor-grab" : "cursor-pointer")
