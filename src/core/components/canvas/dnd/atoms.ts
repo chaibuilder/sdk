@@ -1,3 +1,5 @@
 import { atom } from "jotai";
 
-export const draggedBlockAtom = atom<any | null>(null);
+export const draggedBlockAtom = atom(null);
+
+export const dropTargetAtom = atom(null);

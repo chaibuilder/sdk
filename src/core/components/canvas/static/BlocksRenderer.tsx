@@ -10,6 +10,8 @@ import { useAtom } from "jotai";
 import { inlineEditingActiveAtom } from "../../../atoms/ui.ts";
 import { useBlocksStore } from "../../../history/useBlocksStoreUndoableActions.ts";
 import { useCanvasSettings } from "../../../hooks/useCanvasSettings.ts";
+import { draggedBlockAtom, dropTargetAtom } from "../dnd/atoms.ts";
+import { canAcceptChildBlock } from "../../../functions/block-helpers.ts";
 
 // FIXME:  Duplicate code in CanvasRenderer.tsx
 const getSlots = (block: ChaiBlock) => {
@@ -62,6 +64,8 @@ function applyBindings(block: ChaiBlock, chaiData: any): ChaiBlock {
 
 export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
   const [allBlocks] = useBlocksStore();
+  const [draggedBlock] = useAtom(draggedBlockAtom);
+  const [dropTargetId] = useAtom(dropTargetAtom);
   const [canvasSettings] = useCanvasSettings();
   const getStyles = useCallback((block: ChaiBlock) => getStyleAttrs(block), []);
 
@@ -111,7 +115,11 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
                 blockProps: {
                   "data-block-id": block._id,
                   "data-block-type": block._type,
-                  "data-dnd": has(chaiBlock, "canAcceptBlock") ? "branch" : "leaf",
+                  ...(draggedBlock
+                    ? // @ts-ignore
+                      { "data-dnd": canAcceptChildBlock(block._type, draggedBlock?._type) ? "yes" : "no" }
+                    : {}),
+                  ...(dropTargetId === block._id ? { "data-drop": "yes" } : {}),
                 },
                 index,
                 ...applyBindings(block, chaiData),

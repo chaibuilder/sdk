@@ -24,7 +24,7 @@ const LinkBlock = (
   if (inBuilder) {
     if (children) {
       return (
-        <span data-simulate={"a"} {...blockProps} {...styles}>
+        <span {...blockProps} {...styles}>
           {children}
         </span>
       );
@@ -33,7 +33,6 @@ const LinkBlock = (
         ...blockProps,
         ...styles,
         dangerouslySetInnerHTML: { __html: content },
-        "data-simulate": "a",
       });
     }
   }

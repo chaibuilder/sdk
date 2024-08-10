@@ -13,8 +13,9 @@ import {
 } from "../../hooks";
 import { useResizeObserver } from "@react-hookz/web";
 import { useAtom } from "jotai";
-import { draggedBlockIdAtom, inlineEditingActiveAtom } from "../../atoms/ui.ts";
+import { inlineEditingActiveAtom } from "../../atoms/ui.ts";
 import { useFeature } from "flagged";
+import { draggedBlockAtom } from "./dnd/atoms.ts";
 
 /**
  * @param block
@@ -23,15 +24,16 @@ import { useFeature } from "flagged";
 const BlockActionLabel = ({ block, label }: any) => {
   const [, setSelected] = useSelectedBlockIds();
   const [, setHighlighted] = useHighlightBlockId();
-  const [, setDraggedBlockId] = useAtom(draggedBlockIdAtom);
+  const [, setDraggedBlock] = useAtom(draggedBlockAtom);
   const dndSupport = useFeature("dnd");
   return (
     <div
       className="mr-10 flex cursor-grab items-center space-x-1 px-1"
       draggable={dndSupport ? "true" : "false"}
       onDragStart={(ev) => {
-        ev.dataTransfer.setData("text/plain", JSON.stringify(pick(block, ["_id", "_type"])));
-        setDraggedBlockId(block._id);
+        ev.dataTransfer.setData("text/plain", JSON.stringify(pick(block, ["_id", "_type", "_name"])));
+        //@ts-ignore
+        setDraggedBlock(block);
         setTimeout(() => {
           setSelected([]);
           setHighlighted(null);

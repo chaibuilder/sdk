@@ -8,8 +8,7 @@ import { useAddBlock, useHighlightBlockId, useSelectedBlockIds } from "../../../
 import { useBlocksStoreUndoableActions } from "../../../history/useBlocksStoreUndoableActions.ts";
 import { has } from "lodash";
 import { getOrientation } from "./getOrientation.ts";
-import { draggedBlockAtom } from "./atoms.ts";
-import { canAcceptChildBlock } from "../../../functions/block-helpers.ts";
+import { draggedBlockAtom, dropTargetAtom } from "./atoms.ts";
 
 let iframeDocument: null | HTMLDocument = null;
 let possiblePositions: number[] = [];
@@ -27,15 +26,14 @@ function getPadding(target: HTMLElement) {
 }
 
 const positionPlaceholder = (target: HTMLElement, orientation: "vertical" | "horizontal", mousePosition: number) => {
-  if (!iframeDocument) return;
-  const targetRect = target.getBoundingClientRect();
+  if (!iframeDocument || !target) return;
   const placeholder = iframeDocument?.getElementById("placeholder") as HTMLElement;
 
   // get padding of the target element
-  const { paddingLeft, paddingTop, paddingRight, paddingBottom } = getPadding(target);
+  const { paddingLeft, paddingTop } = getPadding(target);
 
-  placeholder.style.width = orientation === "vertical" ? targetRect.width - paddingLeft - paddingRight + "px" : "2px";
-  placeholder.style.height = orientation === "vertical" ? "2px" : targetRect.height - paddingTop - paddingBottom + "px";
+  placeholder.style.width = orientation === "vertical" ? target.clientWidth + paddingTop + "px" : "2px";
+  placeholder.style.height = orientation === "vertical" ? "2px" : target.clientHeight + paddingLeft + "px";
   placeholder.style.display = "block";
 
   const closest = possiblePositions.reduce(
@@ -45,9 +43,9 @@ const positionPlaceholder = (target: HTMLElement, orientation: "vertical" | "hor
 
   if (orientation === "vertical") {
     placeholder.style.top = target.offsetTop + closest + "px";
-    placeholder.style.left = target.offsetLeft + paddingLeft + "px";
+    placeholder.style.left = target.offsetLeft + "px";
   } else {
-    placeholder.style.top = target.offsetTop + paddingTop + "px";
+    placeholder.style.top = target.offsetTop + "px";
     placeholder.style.left = target.offsetLeft + closest + "px";
   }
 };
@@ -74,6 +72,8 @@ const calculatePossiblePositions = (target: HTMLElement) => {
   possiblePositions = [];
   const totalChildren = target.children.length;
   Array.from(target.children).forEach((child: HTMLElement, index: number) => {
+    // if has class pointer-none, skip
+    if (child.classList.contains("pointer-events-none")) return;
     const position = isHorizontal ? child.offsetLeft : child.offsetTop;
     // First child, consider starting position with its margin
     possiblePositions.push(position);
@@ -99,6 +99,14 @@ const throttledDragOver = throttle((e: DragEvent) => {
 function removePlaceholder() {
   const placeholder = iframeDocument?.getElementById("placeholder") as HTMLElement;
   placeholder.style.display = "none";
+  removeClassFromElements("pointer-none");
+}
+
+function removeClassFromElements(className: string): void {
+  const elements = document.querySelectorAll(`.${className}`);
+  elements.forEach((element) => {
+    element.classList.remove(className);
+  });
 }
 
 export const useDnd = () => {
@@ -109,7 +117,8 @@ export const useDnd = () => {
   const [, setBlockIds] = useSelectedBlockIds();
   const { moveBlocks } = useBlocksStoreUndoableActions();
   const [, setDraggedBlockId] = useAtom(draggedBlockIdAtom);
-  const [draggedBlock] = useAtom(draggedBlockAtom);
+  const [draggedBlock, setDraggedBlock] = useAtom(draggedBlockAtom);
+  const [, setDropTarget] = useAtom(dropTargetAtom);
 
   iframeDocument = document as HTMLDocument;
   return {
@@ -133,6 +142,12 @@ export const useDnd = () => {
           removePlaceholder();
         }, 300);
         possiblePositions = [];
+        setIsDragging(false);
+        setDraggedBlockId("");
+        //@ts-ignore
+        setDraggedBlock(null);
+        //@ts-ignore
+        setDropTarget(null);
         return;
       }
 
@@ -145,28 +160,24 @@ export const useDnd = () => {
         blockId = parent.getAttribute("data-block-id");
       }
 
+      //@ts-ignore
       moveBlocks([data._id], blockId, dropIndex);
       removePlaceholder();
       setIsDragging(false);
       setDraggedBlockId("");
-      setTimeout(() => {
-        removePlaceholder();
-      }, 300);
+      setTimeout(() => removePlaceholder(), 300);
     },
     onDragEnter: (e: DragEvent) => {
-      const type = draggedBlock?.type || draggedBlock?._type;
       const event = e;
       const target = event.target as HTMLElement;
-      const dropTargetType = target.getAttribute("data-block-type");
-
-      if (!canAcceptChildBlock(dropTargetType, type)) return;
-
       dropTarget = target;
+      const dropTargetId = target.getAttribute("data-block-id");
+      //@ts-ignore
+      setDropTarget(dropTargetId);
       event.stopPropagation();
       event.preventDefault();
       possiblePositions = [];
       calculatePossiblePositions(target);
-      console.log("dropTarget", possiblePositions);
       target.classList.add("drop-target");
       setIsDragging(true);
       setHighlight("");
