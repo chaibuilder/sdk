@@ -156,7 +156,6 @@
     "unsplash-js": "^7.0.18"
   },
   "devDependencies": {
-    "ai": "^3.2.32",
     "@ai-sdk/openai": "^0.0.37",
     "@commitlint/cli": "17.7.1",
     "@commitlint/config-conventional": "17.7.0",
@@ -175,6 +174,7 @@
     "@typescript-eslint/eslint-plugin": "^6.9.1",
     "@typescript-eslint/parser": "^6.9.1",
     "@vitejs/plugin-react-swc": "^3.4.1",
+    "ai": "^3.2.32",
     "autoprefixer": "^10.4.16",
     "better-docs": "^2.7.2",
     "better-sqlite3": "^9.1.1",

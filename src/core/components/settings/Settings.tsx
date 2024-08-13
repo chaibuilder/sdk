@@ -3,13 +3,12 @@ import { useThrottledCallback } from "@react-hookz/web";
 import { get, isNaN, isNull, startsWith } from "lodash-es";
 import { useTranslation } from "react-i18next";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
-import { ScrollArea, Tabs, TabsContent, TabsList, TabsTrigger } from "../../../ui";
+import { ScrollArea } from "../../../ui";
 import BlockSettings from "./BlockSettings";
 import BlockStyling from "./BlockStyling";
 import { BlockSettingsContext } from "./SettingsContext";
 import { useSelectedBlock } from "../../hooks";
 import { ErrorBoundary } from "../ErrorBoundary.tsx";
-import { CustomAttributes } from "./new-panel/CustomAttribute.tsx";
 
 const MAPPER: { [key: string]: number } = {
   px: 1,
@@ -103,24 +102,10 @@ const Settings: React.FC = () => {
           />
         ) : null}
 
-        <Tabs defaultValue="settings" className="flex h-full w-full flex-col py-1 text-xs">
-          <TabsList className="mx-1 grid grid-cols-3">
-            <TabsTrigger value="settings">{t("settings")}</TabsTrigger>
-            <TabsTrigger value="styling">{t("styling")}</TabsTrigger>
-            <TabsTrigger value="attrs">{t("Attributes")}</TabsTrigger>
-          </TabsList>
-          <TabsContent value="settings" className="no-scrollbar h-full flex-1 overflow-y-auto overflow-x-hidden">
-            <ScrollArea className="no-scrollbar max-h-full flex-1 overflow-x-hidden overflow-y-hidden pb-5">
-              <BlockSettings />
-            </ScrollArea>
-          </TabsContent>
-          <TabsContent value="styling" className="h-full flex-1 overflow-y-auto overflow-x-hidden">
-            <BlockStyling />
-          </TabsContent>
-          <TabsContent value="attrs" className="h-full flex-1 overflow-y-auto overflow-x-hidden">
-            <CustomAttributes />
-          </TabsContent>
-        </Tabs>
+        <ScrollArea className="no-scrollbar max-h-full flex-1 overflow-x-hidden overflow-y-hidden bg-gray-100 pb-5">
+          <BlockSettings />
+          <BlockStyling />
+        </ScrollArea>
       </BlockSettingsContext.Provider>
     </ErrorBoundary>
   );

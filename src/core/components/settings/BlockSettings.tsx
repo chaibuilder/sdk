@@ -1,7 +1,7 @@
 import { IChangeEvent } from "@rjsf/core";
 import { capitalize, cloneDeep, debounce, each, get, isEmpty, keys, map } from "lodash-es";
 import { useBuilderProp, useSelectedBlock, useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "../../hooks";
-import { ChaiControlDefinition, SingleLineText } from "@chaibuilder/runtime/controls";
+import { ChaiControlDefinition } from "@chaibuilder/runtime/controls";
 import DataBindingSetting from "../../../ui/widgets/rjsf/widgets/data-binding";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../ui";
 import { useCallback, useMemo, useState } from "react";
@@ -41,16 +41,12 @@ export default function BlockSettings() {
   const updateRealtime = ({ formData: newData }: IChangeEvent, id?: string) => {
     if (id) {
       const path = id.replace("root.", "") as string;
-      updateBlockPropsRealtime([selectedBlock._id], convertDotNotationToObject(path, get(newData, path.split("."))) as any);
+      updateBlockPropsRealtime(
+        [selectedBlock._id],
+        convertDotNotationToObject(path, get(newData, path.split("."))) as any,
+      );
       debouncedCall({ formData: newData }, id, { [path]: get(prevFormData, path) });
     }
-  };
-
-  const nameProperties = {
-    _name: SingleLineText({
-      title: "Name",
-      default: get(selectedBlock, "_name", selectedBlock._type),
-    }),
   };
 
   const bindingProps = keys(get(formData, "_bindings", {}));
@@ -64,8 +60,6 @@ export default function BlockSettings() {
 
   return (
     <div className="overflow-x-hidden">
-      <JSONForm id={selectedBlock?._id} onChange={updateRealtime} formData={formData} properties={nameProperties} />
-      <hr className="mt-4" />
       <CanvasSettings />
       {dataBindingSupported ? (
         <Accordion type="multiple" defaultValue={["STATIC", "BINDING"]} className="h-full w-full">
@@ -120,7 +114,6 @@ export default function BlockSettings() {
           properties={staticContentProperties}
         />
       )}
-      <div className="pb-60"></div>
     </div>
   );
 }

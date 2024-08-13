@@ -1,4 +1,5 @@
 import { ManualClasses } from "../components/settings/new-panel/ManualClasses.tsx";
+import { CustomAttributes } from "../components/settings/new-panel/CustomAttribute.tsx";
 
 const BASIC_UNITS: string[] = ["px", "%", "em", "rem", "ch", "vh", "vw"];
 
@@ -27,6 +28,74 @@ export const GRID_CHILD_SECTION = {
 };
 
 export const SETTINGS_SECTIONS = [
+  {
+    heading: "Styles",
+    items: [
+      { component: ManualClasses },
+      { type: "arbitrary", label: "layout.width", units: BASIC_UNITS.concat("auto"), property: "width" },
+      { type: "arbitrary", label: "layout.height", units: BASIC_UNITS.concat("auto"), property: "height" },
+      {
+        styleType: "multiple",
+        label: "layout.margin",
+        negative: true,
+        units: [...BASIC_UNITS, "auto"],
+        options: [
+          { key: "margin", label: "layout.margin_all" },
+          { key: "marginX", label: "layout.margin_lr" },
+          { key: "marginY", label: "layout.margin_tb" },
+          { key: "marginTop", label: "layout.margin_top" },
+          { key: "marginRight", label: "layout.margin_right" },
+          { key: "marginBottom", label: "layout.margin_bottom" },
+          { key: "marginLeft", label: "layout.margin_left" },
+        ],
+      },
+      {
+        styleType: "multiple",
+        label: "layout.padding",
+        options: [
+          { key: "padding", label: "layout.padding_all" },
+          { key: "paddingX", label: "layout.padding_lr" },
+          { key: "paddingY", label: "layout.padding_tb" },
+          { key: "paddingTop", label: "layout.padding_top" },
+          { key: "paddingRight", label: "layout.padding_right" },
+          { key: "paddingBottom", label: "layout.padding_bottom" },
+          { key: "paddingLeft", label: "layout.padding_left" },
+        ],
+      },
+      {
+        styleType: "accordion",
+        heading: "Typography",
+        items: [
+          { type: "dropdown", property: "textAlign", label: "typography.align" },
+          { type: "dropdown", property: "fontFamily", label: "typography.font" },
+          { type: "arbitrary", property: "fontSize", label: "typography.size", units: BASIC_UNITS },
+          { type: "arbitrary", property: "lineHeight", label: "typography.height", units: BASIC_UNITS.concat("-") },
+          { type: "range", property: "fontWeight", label: "typography.weight" },
+          { type: "color", property: "textColor", label: "typography.color" },
+        ],
+      },
+      {
+        styleType: "accordion",
+        heading: "Background",
+        items: [
+          { type: "color", label: "background.bgcolor", property: "backgroundColor" },
+          { type: "dropdown", label: "background.attachment", property: "backgroundAttachment" },
+          { type: "dropdown", label: "background.clipping", property: "backgroundClip" },
+          { type: "dropdown", label: "background.origin", property: "backgroundOrigin" },
+          { type: "dropdown", label: "background.position", property: "backgroundPosition" },
+          { type: "dropdown", label: "background.repeat", property: "backgroundRepeat" },
+          { type: "dropdown", label: "background.size", property: "backgroundSize" },
+        ],
+      },
+    ],
+  },
+  {
+    heading: "Attributes",
+    items: [{ component: CustomAttributes }],
+  },
+];
+
+export const SETTINGS_SECTIONS_ALL = [
   {
     heading: "layout.heading",
     items: [

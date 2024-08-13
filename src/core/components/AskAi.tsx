@@ -27,7 +27,7 @@ import { FaSpinner } from "react-icons/fa";
 import { QuickPrompts } from "./QuickPrompts.tsx";
 import { Cross2Icon } from "@radix-ui/react-icons";
 
-const AskAIPrompt = ({ blockId }: { blockId: string | undefined }) => {
+export const AskAIPrompt = ({ blockId }: { blockId: string | undefined }) => {
   const { t } = useTranslation();
   const { askAi, loading, error } = useAskAi();
   const [prompt, setPrompt] = useState("");
@@ -58,12 +58,12 @@ const AskAIPrompt = ({ blockId }: { blockId: string | undefined }) => {
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
         placeholder={t("Ask AI to edit content")}
-        className="w-full border border-gray-400 focus:border"
+        className="w-full border border-gray-400 focus:border-0"
         rows={3}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             e.preventDefault();
-            askAi(blockId, prompt, onComplete);
+            askAi("content", blockId, prompt, onComplete);
           }
         }}
       />
@@ -72,7 +72,7 @@ const AskAIPrompt = ({ blockId }: { blockId: string | undefined }) => {
         {!loading ? (
           <Button
             disabled={prompt.trim().length < 5 || loading}
-            onClick={() => askAi(blockId, prompt, onComplete)}
+            onClick={() => askAi("content", blockId, prompt, onComplete)}
             variant="default"
             className="w-fit"
             size="sm">
@@ -105,7 +105,7 @@ const AskAIPrompt = ({ blockId }: { blockId: string | undefined }) => {
           </p>
         )}
       </div>
-      <QuickPrompts onClick={(prompt: string) => askAi(blockId, prompt, onComplete)} />
+      <QuickPrompts onClick={(prompt: string) => askAi("content", blockId, prompt, onComplete)} />
     </div>
   );
 };

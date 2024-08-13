@@ -14,16 +14,6 @@ let possiblePositions: [number, number, number][] = [];
 let dropTarget: HTMLElement | null = null;
 let dropIndex: number | null = null;
 
-function getPadding(target: HTMLElement) {
-  if (!target) return { paddingLeft: 0, paddingTop: 0, paddingRight: 0, paddingBottom: 0 };
-  const style = window.getComputedStyle(target);
-  const paddingLeft = parseInt(style.paddingLeft, 10) as number;
-  const paddingTop = parseInt(style.paddingTop, 10) as number;
-  const paddingRight = parseInt(style.paddingRight, 10) as number;
-  const paddingBottom = parseInt(style.paddingBottom, 10) as number;
-  return { paddingLeft, paddingTop, paddingRight, paddingBottom };
-}
-
 const positionPlaceholder = (target: HTMLElement, orientation: "vertical" | "horizontal", mousePosition: number) => {
   if (!iframeDocument || !target) return;
   const placeholder = iframeDocument?.getElementById("placeholder") as HTMLElement;
@@ -49,11 +39,11 @@ const positionPlaceholder = (target: HTMLElement, orientation: "vertical" | "hor
   }
 };
 
-function calculateDropIndex(mousePosition: number, positions: number[]) {
+function calculateDropIndex(mousePosition: number, positions: [number, number, number][]) {
   let closestIndex = 0;
   let closestDistance = Infinity;
   positions.forEach((position, index) => {
-    const distance = Math.abs(position - mousePosition);
+    const distance = Math.abs(position[0] - mousePosition);
     if (distance < closestDistance) {
       closestDistance = distance;
       closestIndex = index;

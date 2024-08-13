@@ -88,7 +88,7 @@
   }
 
   .rjsf {
-    @apply px-4;
+    @apply px-2;
   }
 
   .rjsf .form-group {
@@ -140,7 +140,7 @@
   }
 
   .rjsf .form-group > textarea {
-    @apply text-xs px-2 py-1 mt-1 text-gray-700 dark:text-gray-200 bg-gray-200 dark:bg-gray-700 border-gray-600 rounded-sm shadow-sm focus:outline-none focus:ring-primary focus:border-primary;
+    @apply text-xs px-2 py-1 mt-1 text-gray-700 dark:text-gray-200 dark:bg-gray-700 border-gray-600 rounded-sm shadow-sm focus:outline-none focus:ring-primary focus:border-primary;
   }
 
   .form-group > fieldset {
