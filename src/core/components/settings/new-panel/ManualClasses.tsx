@@ -8,6 +8,7 @@ import { CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { ALL_TW_CLASSES } from "../../../constants/CLASSES_LIST";
 import {
   useAddClassesToBlocks,
+  useBuilderProp,
   useRemoveClassesFromBlocks,
   useSelectedBlock,
   useSelectedBlockIds,
@@ -43,6 +44,7 @@ export function ManualClasses() {
   const addClassesToBlocks = useAddClassesToBlocks();
   const removeClassesFromBlocks = useRemoveClassesFromBlocks();
   const [selectedIds] = useSelectedBlockIds();
+  const askAiCallBack = useBuilderProp("askAiCallBack", null);
   const [newCls, setNewCls] = useState("");
   const { toast } = useToast();
   const prop = first(styleBlock)?.prop as string;
@@ -91,7 +93,7 @@ export function ManualClasses() {
     autoCorrect: "off",
     autoCapitalize: "off",
     spellCheck: false,
-    placeholder: t("Enter class name"),
+    placeholder: t("Enter classes separated by space"),
     value: newCls,
     onKeyDown: (e: any) => {
       if (e.key === "Enter" && newCls.trim() !== "") {
@@ -135,17 +137,19 @@ export function ManualClasses() {
             </TooltipContent>
           </Tooltip>
         </div>
-        <Popover>
-          <PopoverTrigger>
-            <Button variant="default" className="h-6 w-fit" size="sm">
-              <SparklesIcon className="h-4 w-4" />
-              <span className="ml-2">{t("Ask AI")}</span>
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent side="left" className="p-2">
-            <AskAIStyles blockId={block?._id} />
-          </PopoverContent>
-        </Popover>
+        {askAiCallBack ? (
+          <Popover>
+            <PopoverTrigger>
+              <Button variant="default" className="h-6 w-fit" size="sm">
+                <SparklesIcon className="h-4 w-4" />
+                <span className="ml-2">{t("Ask AI")}</span>
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent side="left" className="p-2">
+              <AskAIStyles blockId={block?._id} />
+            </PopoverContent>
+          </Popover>
+        ) : null}
       </Label>
       <div className={"relative flex items-center gap-x-3"}>
         <div className="relative flex w-full items-center gap-x-3">
@@ -175,17 +179,12 @@ export function ManualClasses() {
           <PlusIcon />
         </Button>
       </div>
-      <div className="flex w-full flex-wrap gap-2">
-        {isEmpty(classes) && (
-          <div className="flex h-10 w-full items-center justify-center text-center text-sm text-gray-400">
-            {t("No class added")}
-          </div>
-        )}
+      <div className="flex w-full flex-wrap gap-2 overflow-x-hidden">
         {React.Children.toArray(
           classes.map((cls: string) => (
             <div
               key={cls}
-              className="group relative flex max-w-[260px] cursor-default items-center gap-x-1 truncate rounded border border-blue-600 bg-blue-500 p-px px-1.5 text-[11px] text-white hover:border-blue-900">
+              className="group relative flex max-w-[260px] cursor-default items-center gap-x-1 truncate rounded border border-gray-300 bg-gray-200 p-px px-1.5 text-[11px] text-gray-600 hover:border-gray-300">
               {cls}
               <Cross2Icon
                 onClick={() => removeClassesFromBlocks(selectedIds, [cls])}

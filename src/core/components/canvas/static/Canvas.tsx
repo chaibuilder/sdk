@@ -91,7 +91,7 @@ const useHandleCanvasDblClick = () => {
 
 const useHandleCanvasClick = () => {
   const [, setStyleBlockIds] = useSelectedStylingBlocks();
-  const [, setIds] = useSelectedBlockIds();
+  const [ids, setIds] = useSelectedBlockIds();
   const [, setHighlighted] = useHighlightBlockId();
   const [editingBlockId] = useAtom(inlineEditingActiveAtom);
   const [treeRef] = useAtom(treeRefAtom);
@@ -99,7 +99,6 @@ const useHandleCanvasClick = () => {
     if (editingBlockId) {
       return;
     }
-    treeRef.closeAll();
     e.stopPropagation();
     const chaiBlock: HTMLElement = getTargetedBlock(e.target);
     if (chaiBlock?.getAttribute("data-block-id") && chaiBlock?.getAttribute("data-block-id") === "container") {
@@ -108,15 +107,24 @@ const useHandleCanvasClick = () => {
       setHighlighted("");
       return;
     }
+
     if (chaiBlock?.getAttribute("data-block-parent")) {
       // check if target element has data-styles-prop attribute
       const styleProp = chaiBlock.getAttribute("data-style-prop") as string;
       const styleId = chaiBlock.getAttribute("data-style-id") as string;
       const blockId = chaiBlock.getAttribute("data-block-parent") as string;
+      if (!ids.includes(blockId)) {
+        treeRef.closeAll();
+      }
+
       setStyleBlockIds([{ id: styleId, prop: styleProp, blockId }]);
       setIds([blockId]);
     } else if (chaiBlock?.getAttribute("data-block-id")) {
-      setIds([chaiBlock.getAttribute("data-block-id")]);
+      let blockId = chaiBlock.getAttribute("data-block-id");
+      if (!ids.includes(blockId)) {
+        treeRef.closeAll();
+      }
+      setIds([blockId]);
     }
     setHighlighted("");
   };
