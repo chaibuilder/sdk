@@ -18,7 +18,7 @@ const IconBlock = (
   const iStyles = addForcedClasses(styles, cn(width ? `w-[${width}px]` : "", height ? `h-[${height}px]` : ""));
 
   if (isEmpty(icon)) {
-    return <EmptySlot blockProps={blockProps} text="" inBuilder={inBuilder} className="h-8 w-14" />;
+    return <EmptySlot inBuilder={inBuilder} className="h-8 w-14" />;
   }
 
   const svg = icon.replace(/<svg /g, '<svg class="w-[inherit] h-[inherit]" ');

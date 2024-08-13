@@ -16,7 +16,7 @@ const BoxBlock = React.memo(
     const { blockProps, inBuilder, backgroundImage, children, tag = "div", styles } = props;
     let nestedChildren = children;
     if (!children) {
-      nestedChildren = <EmptySlot blockProps={{}} styles={{}} inBuilder={inBuilder} />;
+      nestedChildren = <EmptySlot inBuilder={inBuilder} />;
     }
 
     let cssStyles = {};

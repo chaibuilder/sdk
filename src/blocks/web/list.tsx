@@ -17,7 +17,7 @@ const ListBlock = (
   const className = cn(get(styles, "className", ""), listType);
 
   if (!children && isEmpty(styles?.className)) {
-    return <EmptySlot inBuilder={inBuilder} blockProps={blockProps} text="LIST ITEM" />;
+    return <EmptySlot inBuilder={inBuilder} />;
   }
 
   return React.createElement(

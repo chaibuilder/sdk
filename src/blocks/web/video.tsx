@@ -57,8 +57,7 @@ const VideoBlock = React.memo(
     const muted = autoplay || get(controls, "muted", true);
     const loop = get(controls, "loop", false);
 
-    if (isEmpty(url))
-      return <EmptySlot inBuilder={inBuilder} blockProps={blockProps} text="VIDEO URL" className="h-36" />;
+    if (isEmpty(url)) return <EmptySlot inBuilder={inBuilder} className="h-36" />;
 
     let embedURL = getEmbedURL(url);
     let videoElement = null;

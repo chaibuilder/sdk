@@ -15,7 +15,7 @@ const LinkBlock = ({ blockProps, styles, href, content, target, children }: any)
 const LinkBuilder = ({ blockProps, styles, content, children }: any) => {
   let nestedChildren = children;
   if (!children) {
-    nestedChildren = <EmptySlot blockProps={{}} styles={{}} />;
+    nestedChildren = <EmptySlot />;
   }
   return (
     <span {...blockProps} {...styles}>
