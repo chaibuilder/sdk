@@ -1,74 +1,48 @@
 import { ChaiBlock } from "../types/ChaiBlock.ts";
-import { getDuplicatedBlocks } from "../functions/Blocks.ts";
-import { filter } from "lodash-es";
+import { getBlocksTree } from "../functions/split-blocks.ts";
+import TreeModel from "tree-model";
 
-function sortBlocks(blocks: Partial<ChaiBlock>[]) {
-  const sortedBlocks = [];
-  const blockMap = new Map<string, Partial<ChaiBlock>>();
-
-  // Create a map of all blocks
-  blocks.forEach((block) => {
-    blockMap.set(block._id!, block);
+// Convert the tree back to a flat array
+function flattenTree(node: TreeModel.Node<Partial<ChaiBlock>>): Partial<ChaiBlock>[] {
+  let flatArray: ChaiBlock[] = [];
+  node.walk((n) => {
+    delete n.model.children;
+    flatArray.push(n.model);
+    return true; // Continue traversal
   });
-
-  // Helper function to add a block and its children to the sortedBlocks array
-  function addBlockAndChildren(blockId: string | undefined) {
-    const block = blockMap.get(blockId!);
-    if (block && !sortedBlocks.includes(block)) {
-      sortedBlocks.push(block);
-      blocks.forEach((b) => {
-        if (b._parent === blockId) {
-          addBlockAndChildren(b._id);
-        }
-      });
-    }
-  }
-
-  // Start adding blocks from the top-level parents
-  blocks.forEach((block) => {
-    if (!block._parent) {
-      addBlockAndChildren(block._id);
-    }
-  });
-
-  return sortedBlocks;
+  return flatArray;
 }
 
-function findDescendants(tree: Partial<ChaiBlock>[], nodeId: string): Partial<ChaiBlock>[] {
-  const descendants: Partial<ChaiBlock>[] = [];
-  const stack = [nodeId];
-
-  while (stack.length > 0) {
-    const currentId = stack.pop()!;
-    const children = tree.filter((node) => node._parent === currentId);
-    descendants.push(...children);
-    stack.push(...children.map((child) => child._id!));
-  }
-
-  return descendants;
+// Function to find a node by its _id
+function findNodeById(node: TreeModel.Node<Partial<ChaiBlock>>, id: string): TreeModel.Node<Partial<ChaiBlock>> | null {
+  return node.first((n) => n.model._id === id) || null;
 }
 
-const getAbsoluteDropIndexForPosition = (
-  blocks: Partial<ChaiBlock>[],
-  newParentId: string | undefined | null,
-  newPosition: number,
-) => {
-  let parentPosition = 0;
-  for (let i = 0; i < blocks.length; i++) {
-    if (!newParentId) break;
-    if (newParentId && blocks[i]._parent === newParentId) {
-      parentPosition = i;
-      break;
+function moveNode(
+  rootNode: TreeModel.Node<Partial<ChaiBlock>>,
+  nodeIdToMove: string,
+  newParentId: string,
+  position: number,
+): boolean {
+  const nodeToMove = findNodeById(rootNode, nodeIdToMove);
+  const newParentNode = findNodeById(rootNode, newParentId);
+  if (nodeToMove && newParentNode) {
+    nodeToMove.drop();
+    // Insert the node at the new parent at the specified position
+    if (!newParentNode.children) {
+      newParentNode.model.children = [];
     }
+    try {
+      newParentNode.addChildAtIndex(nodeToMove, position);
+    } catch (error) {
+      console.error("Error adding child to parent:", error);
+      return false;
+    }
+    return true;
   }
-  let newPositionIndex = parentPosition;
-  const children = filter(blocks, (block) => (newParentId ? block._parent === newParentId : !block._parent));
-  for (let i = 0; i < newPosition; i++) {
-    const childBlocks = [children[i], ...findDescendants(blocks, children[i]._id!)];
-    newPositionIndex += childBlocks.length;
-  }
-  return newPositionIndex;
-};
+
+  return false;
+}
 
 function moveBlocksWithChildren(
   _blocks: Partial<ChaiBlock>[],
@@ -77,18 +51,17 @@ function moveBlocksWithChildren(
   newPosition: number,
 ): Partial<ChaiBlock>[] {
   if (!idToMove) return _blocks;
-  let newBlocks = _blocks;
-  const blockToMove = _blocks.find((block) => block._id === idToMove);
-  blockToMove._parent = newParentId;
-  const blocksToRemove = [blockToMove, ...findDescendants(_blocks, idToMove)];
-  const duplicatedBlocks = getDuplicatedBlocks(_blocks, idToMove, newParentId);
-  const absoluteDropIndex = getAbsoluteDropIndexForPosition(_blocks, newParentId, newPosition);
-  _blocks.splice(absoluteDropIndex, 0, ...duplicatedBlocks);
-  newBlocks = _blocks;
-  newBlocks = newBlocks.filter((block) => !blocksToRemove.includes(block));
-
-  //TODO: Handle the content of new parent and old parent
-  return sortBlocks(newBlocks);
+  newParentId = newParentId || "root";
+  const tree = new TreeModel();
+  const root = tree.parse({ _id: "root", children: getBlocksTree(_blocks) });
+  if (moveNode(root, idToMove, newParentId, newPosition)) {
+    const newBlocks = flattenTree(root);
+    const movedBlock = newBlocks.find((block) => block._id === idToMove);
+    if (movedBlock) movedBlock._parent = newParentId === "root" ? null : newParentId;
+    newBlocks.shift();
+    return newBlocks;
+  }
+  return _blocks;
 }
 
 export { moveBlocksWithChildren };

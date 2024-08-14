@@ -23,14 +23,14 @@ import { canAcceptChildBlock } from "../../../../../functions/block-helpers.ts";
 import { find, first } from "lodash-es";
 import { treeRefAtom } from "../../../../../atoms/ui.ts";
 import {
+  close,
   defaultShortcuts,
+  open,
   selectFirst,
   selectLast,
   selectNext,
-  selectPrev,
   selectParent,
-  open,
-  close,
+  selectPrev,
 } from "./DefaultShortcuts.tsx";
 
 const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {

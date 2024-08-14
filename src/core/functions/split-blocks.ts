@@ -9,7 +9,7 @@ import { convertToBlocksTree } from "./Blocks.ts";
  * FIXME: Add tests
  * @type {FlatToNested}
  */
-export function getBlocksTree(blocks: ChaiBlock[]) {
+export function getBlocksTree(blocks: Partial<ChaiBlock>[]) {
   return convertToBlocksTree(blocks);
 }
 

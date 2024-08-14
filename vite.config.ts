@@ -71,6 +71,7 @@ export default defineConfig({
         "flagged",
         "fuse.js",
         "himalaya",
+        "tree-model",
         "html-formatter",
         "i18next",
         "jotai",

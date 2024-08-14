@@ -16,7 +16,6 @@ import {
 } from "../../../hooks";
 import {
   Button,
-  Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -125,7 +124,7 @@ export function ManualClasses() {
       className={`flex ${
         suggestions.length > 0 ? "min-h-[300px]" : "min-h-max"
       } w-full flex-col gap-y-1.5 overflow-y-auto border-b-2 bg-gray-100 pb-4`}>
-      <Label className="flex items-center justify-between gap-x-2">
+      <div className="flex items-center justify-between gap-x-2">
         <div className="flex items-center gap-x-2">
           <span>{t("Classes")}</span>
           <Tooltip>
@@ -150,7 +149,7 @@ export function ManualClasses() {
             </PopoverContent>
           </Popover>
         ) : null}
-      </Label>
+      </div>
       <div className={"relative flex items-center gap-x-3"}>
         <div className="relative flex w-full items-center gap-x-3">
           <Autosuggest

@@ -40,9 +40,9 @@ test("Move block with children", () => {
   const blocks = [
     { _id: "1", _parent: undefined },
     { _id: "2", _parent: "1" },
-    { _id: "3", _parent: "1" },
     { _id: "4", _parent: "2" },
     { _id: "5", _parent: "2" },
+    { _id: "3", _parent: "1" },
     { _id: "6", _parent: "3" },
   ];
 
@@ -51,7 +51,9 @@ test("Move block with children", () => {
   const position = 0;
 
   const updatedBlocks = moveBlocksWithChildren(blocks, idsToMove[0], newParent, position);
-  expect(updatedBlocks).toHaveLength(5);
+  expect(updatedBlocks).toHaveLength(6);
+  expect(updatedBlocks[0]._id).toBe("2");
+  expect(updatedBlocks[0]._parent).toBe(null);
 });
 
 test("Move multiple blocks", () => {
