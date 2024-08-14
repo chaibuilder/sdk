@@ -66,6 +66,13 @@ export const AskAIStyles = ({ blockId }: { blockId: string | undefined }) => {
           </div>
         ) : null}
       </div>
+      <div className="max-w-full">
+        {error && (
+          <p className="break-words rounded border border-red-500 bg-red-100 p-1 text-xs text-red-500">
+            {error.message}
+          </p>
+        )}
+      </div>
     </div>
   );
 };
