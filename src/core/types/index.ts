@@ -25,7 +25,7 @@ export type StylingAttributes = {
   "data-style-prop": string;
 };
 
-export type BrandingOptions = {
+export type ThemeConfiguration = {
   bodyTextLightColor?: string;
   bodyTextDarkColor?: string;
   bodyBgLightColor?: string;
