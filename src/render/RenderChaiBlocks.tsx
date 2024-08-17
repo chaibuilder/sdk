@@ -58,11 +58,13 @@ export function RenderChaiBlocks({
   parent,
   classPrefix = "",
   externalData = {},
+  blockModifierCallback,
 }: {
   blocks: ChaiBlock[];
   parent?: string;
   classPrefix?: string;
   externalData?: Record<string, any>;
+  blockModifierCallback?: (block: ChaiBlock) => ChaiBlock;
 }) {
   const allBlocks = blocks;
   const getStyles = (block: ChaiBlock) => getStyleAttrs(block, classPrefix);
@@ -106,6 +108,9 @@ export function RenderChaiBlocks({
             // @ts-ignore
             const Component: React.FC<any> = (blockDefinition as { component: React.FC<ChaiBlock> }).component;
             syncedBlock = { ...(blockDefinition as any).defaults, ...block };
+            if (blockModifierCallback) {
+              syncedBlock = blockModifierCallback(syncedBlock);
+            }
             return React.createElement(
               Component,
               omit(
