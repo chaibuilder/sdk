@@ -1,29 +1,25 @@
-import { useTranslation } from "react-i18next";
 import { useDarkMode } from "../../../hooks";
-import { Label, Switch } from "../../../../ui";
+import { Switch } from "../../../../ui";
+import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 
 export function DarkMode() {
   const [darkMode, setDarkMode] = useDarkMode();
-  const { t } = useTranslation();
-
   return (
     <div className="flex items-center">
-      <Label htmlFor="dark-mode-switch">{t("dark_mode")}</Label>
+      <SunIcon className="size-4 shrink-0" />
       <Switch
         id="dark-mode-switch"
         checked={darkMode}
         onCheckedChange={() => {
           setDarkMode(!darkMode);
         }}
-        className={`${darkMode ? "bg-violet-600" : "bg-violet-300"}
-          relative ml-2 inline-flex h-[20px] w-[40px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}>
-        <span className="sr-only">{t("use_setting")}</span>
+        className={`${darkMode ? "bg-violet-600" : "bg-violet-300"} relative ml-2 inline-flex h-[20px] w-[40px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}>
         <span
           aria-hidden="true"
-          className={`${darkMode ? "translate-x-5" : "translate-x-0"}
-            pointer-events-none -mt-px inline-block h-[18px] w-[20px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
+          className={`${darkMode ? "translate-x-5" : "translate-x-0"} pointer-events-none -mt-px inline-block h-[18px] w-[20px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
         />
       </Switch>
+      <MoonIcon className="size-4 ml-3 shrink-0" />
     </div>
   );
 }
