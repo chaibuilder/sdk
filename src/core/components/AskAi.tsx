@@ -52,7 +52,9 @@ export const AskAIPrompt = ({ blockId }: { blockId: string | undefined }) => {
 
   return (
     <div className="mt-4">
-      <h2 className="mb-1 text-sm font-semibold leading-none tracking-tight">{t("Ask AI")} (GPT-4o mini)</h2>
+      <h2 className="mb-2 text-xs font-semibold leading-none tracking-tight text-gray-500">
+        {t("Ask AI")} (GPT-4o mini)
+      </h2>
       <Textarea
         ref={promptRef}
         value={prompt}
@@ -154,12 +156,12 @@ const SetAiContext = ({ onOpen }: { onOpen: Function }) => {
       }}
       type="single"
       collapsible
-      className="-mx-2 -mt-2 bg-gray-100 px-2">
+      className="rounded-md border bg-gray-100 px-2">
       <AccordionItem value="set-context">
         {/*  @ts-ignore */}
-        <AccordionTrigger ref={btnRef} hideArrow className="py-2 hover:no-underline">
+        <AccordionTrigger ref={btnRef} hideArrow className="py-1 hover:no-underline">
           <div className="flex w-full items-center justify-between">
-            <span className="font-semibold">{t("Set Context For AI")}</span>
+            <span className="font-semibold">{t("AI Context")}</span>
             <Button variant="default" size={"sm"}>
               <span>{t(opened ? "Cancel" : "Edit")}</span> &nbsp;
               {opened ? <Cross2Icon className="h-4 w-4" /> : <EditIcon className="h-4 w-4" />}
