@@ -36,7 +36,7 @@ export const AskAIStyles = ({ blockId }: { blockId: string | undefined }) => {
         }}
       />
 
-      <div className="my-2 flex items-center gap-2">
+      <div className="flex items-center gap-2 my-2">
         {!loading ? (
           <Button
             disabled={prompt.trim().length < 5 || loading}
@@ -46,7 +46,7 @@ export const AskAIStyles = ({ blockId }: { blockId: string | undefined }) => {
             size="sm">
             {loading ? (
               <>
-                <Loader className="h-5 w-5 animate-spin" />
+                <Loader className="w-5 h-5 animate-spin" />
                 {t("Generating... Please wait")}
               </>
             ) : (
@@ -56,8 +56,8 @@ export const AskAIStyles = ({ blockId }: { blockId: string | undefined }) => {
         ) : null}
         {loading ? (
           <div className="flex flex-col gap-2">
-            <Skeleton className="flex w-full items-center space-x-1 px-4 py-1 pl-2">
-              <FaSpinner className="h-4 w-4 animate-spin text-gray-500" />
+            <Skeleton className="flex items-center w-full px-4 py-1 pl-2 space-x-1">
+              <FaSpinner className="w-4 h-4 text-gray-500 animate-spin" />
               <p className="text-xs">{t("Generating... Please wait")}</p>
             </Skeleton>
             <Button variant="destructive" onClick={() => stop()} className="hidden w-fit" size="sm">
@@ -68,7 +68,7 @@ export const AskAIStyles = ({ blockId }: { blockId: string | undefined }) => {
       </div>
       <div className="max-w-full">
         {error && (
-          <p className="break-words rounded border border-red-500 bg-red-100 p-1 text-xs text-red-500">
+          <p className="p-1 text-xs text-red-500 break-words bg-red-100 border border-red-500 rounded">
             {error.message}
           </p>
         )}

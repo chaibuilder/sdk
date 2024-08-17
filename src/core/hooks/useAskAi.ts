@@ -59,7 +59,7 @@ export const useAskAi = () => {
           if (onComplete) onComplete();
         }
       },
-      [callBack, blocks],
+      [callBack, setProcessing, blocks, updateBlockPropsAll, updateBlocksWithStream],
     ),
     loading: processing,
     error,
