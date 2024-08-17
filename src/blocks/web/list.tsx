@@ -37,7 +37,7 @@ registerChaiBlock(ListBlock, {
     styles: Styles({ default: "" }),
     listType: SelectOption({
       title: "List type",
-      default: "list-disc",
+      default: "list-none",
       options: [
         { value: "list-none", title: "None" },
         { value: "list-disc", title: "Disc" },
