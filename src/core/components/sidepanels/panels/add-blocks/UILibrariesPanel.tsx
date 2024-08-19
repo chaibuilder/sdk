@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useAddBlock, useBuilderProp, useSelectedBlockIds, useTranslation } from "../../../../hooks";
 import { syncBlocksWithDefaults, useChaiBlocks } from "@chaibuilder/runtime";
 import { Loader } from "lucide-react";
-import { atom, useAtom } from "jotai";
+import { useAtom } from "jotai";
 
 import { activePanelAtom } from "../../../../atoms/ui.ts";
 import { cn } from "../../../../functions/Functions.ts";
@@ -12,6 +12,9 @@ import { ScrollArea, Skeleton } from "../../../../../ui";
 import { OUTLINE_KEY } from "../../../../constants/STRINGS.ts";
 import { UILibrary, UiLibraryBlock } from "../../../../types/chaiBuilderEditorProps.ts";
 import { ChaiBlock } from "../../../../types/ChaiBlock.ts";
+import { atomWithStorage } from "jotai/utils";
+import { memoize } from "lodash";
+import { UILibrariesSelect } from "./UiLibrariesSelect.tsx";
 
 const BlockCard = ({
   block,
@@ -76,24 +79,24 @@ const BlockCard = ({
 };
 
 const useLibraryBlocks = (library?: UILibrary) => {
-  const getBlocks = useBuilderProp("getUILibraryBlocks", noop);
+  const getBlocks = memoize(useBuilderProp("getUILibraryBlocks", noop));
   const [blocks, setBlocks] = useState<UiLibraryBlock[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     (async () => {
-      if (!library) return;
+      if (!library || isLoading) return;
       setIsLoading(true);
       const libraryBlocks: UiLibraryBlock[] = await getBlocks(library);
-      setBlocks(libraryBlocks);
+      setBlocks(libraryBlocks || []);
       setIsLoading(false);
     })();
-  }, []);
+  }, [library]);
   return { data: blocks, isLoading };
 };
 
-const selectedLibraryAtom = atom<string>("");
+const selectedLibraryAtom = atomWithStorage<string>("_selectedLibrary", "");
 const UILibrarySection = () => {
-  const [selectedLibrary] = useAtom(selectedLibraryAtom);
+  const [selectedLibrary, setLibrary] = useAtom(selectedLibraryAtom);
   const uiLibraries = useBuilderProp("uiLibraries", []);
   const registeredBlocks = useChaiBlocks();
   const customBlocks = values(registeredBlocks).filter((block) => block.category === "custom");
@@ -128,11 +131,8 @@ const UILibrarySection = () => {
         <div className="sticky top-0 flex h-fit flex-col">
           <div className="mb-2 flex flex-col justify-between rounded-md bg-background/30 p-1">
             <h1 className="flex w-full flex-col items-baseline truncate px-1 text-sm font-semibold xl:flex-col">
-              {t("Library")}:&nbsp;{get(library, "name", get(library, "label", ""))}
+              <UILibrariesSelect library={library.uuid} setLibrary={setLibrary} uiLibraries={uiLibraries} />
             </h1>
-            <span className="p-0 text-[9px] font-light leading-3 opacity-80 xl:pl-1">
-              {t("Click to add blocks to page")}
-            </span>
           </div>
         </div>
         <div className={"flex h-[95%] border-t border-gray-300 pt-2"}>
@@ -156,12 +156,17 @@ const UILibrarySection = () => {
           </div>
           <ScrollArea
             onMouseEnter={() => (timeoutRef.current ? clearTimeout(timeoutRef.current) : null)}
-            className="z-10 -mt-2 flex h-full max-h-full w-[300px] flex-col gap-2 border-l border-gray-300 px-2 transition-all ease-linear">
-            {React.Children.toArray(
-              blocks.map((block: UiLibraryBlock) => (
-                <BlockCard block={block} library={library} closePopover={() => setActivePanel(OUTLINE_KEY)} />
-              )),
-            )}
+            className="z-10 -mt-2 flex h-full max-h-full w-[300px] flex-col gap-2 border-l border-gray-300 transition-all ease-linear">
+            <div className="sticky top-0 z-30 border-b border-gray-300 bg-gray-200 p-2 text-[9px] font-light leading-3 text-gray-500">
+              {t("Click on a block to add it to the page")}
+            </div>
+            <div className="flex flex-col gap-2 px-2">
+              {React.Children.toArray(
+                blocks.map((block: UiLibraryBlock) => (
+                  <BlockCard block={block} library={library} closePopover={() => setActivePanel(OUTLINE_KEY)} />
+                )),
+              )}
+            </div>
             <br />
             <br />
             <br />
