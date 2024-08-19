@@ -128,13 +128,15 @@ const UILibrarySection = () => {
   return (
     <>
       <div className="relative flex h-full max-h-full w-[460px] flex-col overflow-hidden bg-background">
-        <div className="sticky top-0 flex h-fit flex-col">
-          <div className="mb-2 flex flex-col justify-between rounded-md bg-background/30 p-1">
-            <h1 className="flex w-full flex-col items-baseline truncate px-1 text-sm font-semibold xl:flex-col">
-              <UILibrariesSelect library={library.uuid} setLibrary={setLibrary} uiLibraries={uiLibraries} />
-            </h1>
+        {library?.uuid ? (
+          <div className="sticky top-0 flex h-fit flex-col">
+            <div className="mb-2 flex flex-col justify-between rounded-md bg-background/30 p-1">
+              <h1 className="flex w-full flex-col items-baseline truncate px-1 text-sm font-semibold xl:flex-col">
+                <UILibrariesSelect library={library?.uuid} setLibrary={setLibrary} uiLibraries={uiLibraries} />
+              </h1>
+            </div>
           </div>
-        </div>
+        ) : null}
         <div className={"flex h-[95%] border-t border-gray-300 pt-2"}>
           <div className={"flex h-full w-40 flex-col gap-1 px-1"}>
             {React.Children.toArray(

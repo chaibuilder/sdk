@@ -28,6 +28,9 @@ export function UILibrariesSelect({
 }) {
   const [open, setOpen] = React.useState(false);
   const { t } = useTranslation();
+
+  if (!library) return null;
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
