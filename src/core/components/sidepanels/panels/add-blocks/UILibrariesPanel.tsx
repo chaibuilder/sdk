@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useAddBlock, useBuilderProp, useSelectedBlockIds, useTranslation } from "../../../../hooks";
 import { syncBlocksWithDefaults, useChaiBlocks } from "@chaibuilder/runtime";
 import { Loader } from "lucide-react";
-import { useAtom } from "jotai";
+import { atom, useAtom } from "jotai";
 
 import { activePanelAtom } from "../../../../atoms/ui.ts";
 import { cn } from "../../../../functions/Functions.ts";
@@ -13,7 +13,6 @@ import { OUTLINE_KEY } from "../../../../constants/STRINGS.ts";
 import { UILibrary, UiLibraryBlock } from "../../../../types/chaiBuilderEditorProps.ts";
 import { ChaiBlock } from "../../../../types/ChaiBlock.ts";
 import { atomWithStorage } from "jotai/utils";
-import { memoize } from "lodash";
 import { UILibrariesSelect } from "./UiLibrariesSelect.tsx";
 
 const BlockCard = ({
@@ -78,23 +77,26 @@ const BlockCard = ({
   );
 };
 
+const libraryBlocksAtom = atom<{ [uuid: string]: { loading: boolean; blocks: any[] } }>({});
+
 const useLibraryBlocks = (library?: UILibrary) => {
-  const getBlocks = memoize(useBuilderProp("getUILibraryBlocks", noop));
-  const [blocks, setBlocks] = useState<UiLibraryBlock[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [libraryBlocks, setLibraryBlocks] = useAtom(libraryBlocksAtom);
+  const getBlocks = useBuilderProp("getUILibraryBlocks", noop);
+  const blocks = get(libraryBlocks, `${library?.uuid}.blocks`, []);
+  const isLoading = get(libraryBlocks, `${library?.uuid}.loading`, false);
   useEffect(() => {
     (async () => {
-      if (!library || isLoading) return;
-      setIsLoading(true);
+      if (isLoading || blocks.length > 0) return;
+      setLibraryBlocks((prev) => ({ ...prev, [library?.uuid]: { loading: true, blocks: [] } }));
       const libraryBlocks: UiLibraryBlock[] = await getBlocks(library);
-      setBlocks(libraryBlocks || []);
-      setIsLoading(false);
+      setLibraryBlocks((prev) => ({ ...prev, [library?.uuid]: { loading: false, blocks: libraryBlocks || [] } }));
     })();
-  }, [library]);
+  }, [library, blocks, isLoading]);
+
   return { data: blocks, isLoading };
 };
 
-const selectedLibraryAtom = atomWithStorage<string>("_selectedLibrary", "");
+const selectedLibraryAtom = atomWithStorage<string | null>("_selectedLibrary", null);
 const UILibrarySection = () => {
   const [selectedLibrary, setLibrary] = useAtom(selectedLibraryAtom);
   const uiLibraries = useBuilderProp("uiLibraries", []);

@@ -58,7 +58,7 @@ export function UILibrariesSelect({
                   key={uiLibrary.uuid}
                   value={uiLibrary.uuid}
                   onSelect={(currentValue) => {
-                    setLibrary(currentValue === library ? "" : currentValue);
+                    setLibrary(currentValue);
                     setOpen(false);
                   }}>
                   {uiLibrary.name}
