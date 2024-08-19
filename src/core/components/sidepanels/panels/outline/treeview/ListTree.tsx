@@ -20,7 +20,7 @@ import { DefaultDragPreview } from "./DefaultDragPreview.tsx";
 import { useBlocksStoreUndoableActions } from "../../../../../history/useBlocksStoreUndoableActions.ts";
 import { BlockContextMenu } from "../BlockContextMenu.tsx";
 import { canAcceptChildBlock } from "../../../../../functions/block-helpers.ts";
-import { find, first } from "lodash-es";
+import { find, first, isEmpty } from "lodash-es";
 import { treeRefAtom } from "../../../../../atoms/ui.ts";
 import {
   close,
@@ -32,6 +32,7 @@ import {
   selectParent,
   selectPrev,
 } from "./DefaultShortcuts.tsx";
+import { useTranslation } from "react-i18next";
 
 const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const outlineItems = useBuilderProp("outlineMenuItems", []);
@@ -170,6 +171,7 @@ const ListTree = () => {
   const canMove = useCanMove();
   const treeRef = useRef(null);
   const [, setTreeRef] = useAtom(treeRefAtom);
+  const { t } = useTranslation();
 
   const clearSelection = () => {
     setIds([]);
@@ -257,6 +259,18 @@ const ListTree = () => {
       }
     }
   };
+
+  if (isEmpty(treeData))
+    return (
+      <div>
+        <div className="flex h-full w-full items-center justify-center p-8 text-center">
+          <p className="mb-1.5 text-sm text-gray-400">
+            {t("Page is empty.")}
+            <br /> {t("Add blocks to get started by clicking the")} <span className="font-bold">(+)</span> {t("button")}
+          </p>
+        </div>
+      </div>
+    );
 
   return (
     <div className={cn("-mx-1 -mt-1 flex h-full select-none flex-col space-y-1")} onClick={() => clearSelection()}>
