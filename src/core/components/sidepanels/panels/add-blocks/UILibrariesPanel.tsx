@@ -11,6 +11,7 @@ import { CaretRightIcon } from "@radix-ui/react-icons";
 import { ScrollArea, Skeleton } from "../../../../../ui";
 import { OUTLINE_KEY } from "../../../../constants/STRINGS.ts";
 import { UILibrary, UiLibraryBlock } from "../../../../types/chaiBuilderEditorProps.ts";
+import { ChaiBlock } from "../../../../types/ChaiBlock.ts";
 
 const BlockCard = ({
   block,
@@ -26,6 +27,11 @@ const BlockCard = ({
   const { addCoreBlock, addPredefinedBlock } = useAddBlock();
   const [ids] = useSelectedBlockIds();
 
+  const isTopLevelSection = (block: ChaiBlock) => {
+    const isPageSection = has(block, "styles_attrs.data-page-section");
+    return block._type === "Box" && isPageSection;
+  };
+
   const addBlock = useCallback(
     async (e: any) => {
       e.stopPropagation();
@@ -36,7 +42,11 @@ const BlockCard = ({
       }
       setIsAdding(true);
       const uiBlocks = await getUILibraryBlock(library, block);
-      if (!isEmpty(uiBlocks)) addPredefinedBlock(syncBlocksWithDefaults(uiBlocks), first(ids));
+      let parent = first(ids);
+      if (isTopLevelSection(first(uiBlocks))) {
+        parent = null;
+      }
+      if (!isEmpty(uiBlocks)) addPredefinedBlock(syncBlocksWithDefaults(uiBlocks), parent);
       closePopover();
     },
     [block],
