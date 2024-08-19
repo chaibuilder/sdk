@@ -105,6 +105,9 @@ const Settings: React.FC = () => {
         <ScrollArea className="no-scrollbar max-h-full flex-1 overflow-x-hidden overflow-y-hidden bg-gray-100 pb-5">
           <BlockSettings />
           <BlockStyling />
+          <br />
+          <br />
+          <br />
         </ScrollArea>
       </BlockSettingsContext.Provider>
     </ErrorBoundary>
