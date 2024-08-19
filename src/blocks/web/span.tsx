@@ -29,7 +29,7 @@ registerChaiBlock(SpanBlock, {
   group: "typography",
   props: {
     styles: Styles({ default: "" }),
-    content: MultilineText({ title: "Content", default: "Enter your content" }),
+    content: MultilineText({ title: "Content", default: "" }),
   },
   canAcceptBlock: () => true,
 });

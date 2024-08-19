@@ -1,5 +1,5 @@
 import React from "react";
-import { each, filter, get, isEmpty, isString, memoize, omit } from "lodash-es";
+import { each, filter, get, has, isEmpty, isString, memoize, omit } from "lodash-es";
 import { twMerge } from "tailwind-merge";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { SLOT_KEY, STYLES_KEY } from "../core/constants/STRINGS.ts";
@@ -26,7 +26,11 @@ const generateClassNames = memoize((styles: string, classPrefix: string) => {
 });
 
 function getElementAttrs(block: ChaiBlock, key: string) {
-  return get(block, `${key}_attrs`, {}) as Record<string, string>;
+  const attrs = get(block, `${key}_attrs`, {}) as Record<string, string>;
+  if (has(attrs, "data-ai-key")) {
+    delete attrs["data-ai-key"];
+  }
+  return attrs;
 }
 
 function getStyleAttrs(block: ChaiBlock, classPrefix: string) {

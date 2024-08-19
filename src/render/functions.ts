@@ -1,8 +1,7 @@
-import { get, last } from "lodash-es";
+import { flattenDeep, get, last } from "lodash-es";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { STYLES_KEY } from "../core/constants/STRINGS.ts";
 import { ThemeConfiguration } from "../core/types/index.ts";
-import { flattenDeep } from "lodash";
 
 export const getBrandingClasses = (brandingOptions: ThemeConfiguration, prefix: string = "") => {
   const textLight = get(brandingOptions, "bodyTextLightColor", "#64748b");
