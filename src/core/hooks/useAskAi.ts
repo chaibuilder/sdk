@@ -3,7 +3,7 @@ import { useBuilderProp } from "./useBuilderProp.ts";
 import { useCallback, useState } from "react";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
 import { ChaiBlock } from "../types/ChaiBlock.ts";
-import { useStreamMultipleBlocksProps } from "./useUpdateBlocksProps.ts";
+import { useStreamMultipleBlocksProps, useUpdateMultipleBlocksProps } from "./useUpdateBlocksProps.ts";
 import { atom, useAtom } from "jotai";
 
 function getChildBlocks(allBlocks: ChaiBlock[], blockId: string, blocks: any[]) {
@@ -27,23 +27,31 @@ export const useAskAi = () => {
   const [processing, setProcessing] = useAtom(askAiProcessingAtom);
   const [error, setError] = useState(null);
   const callBack = useBuilderProp("askAiCallBack", null);
-  const updateBlockProps = useStreamMultipleBlocksProps();
+  const updateBlocksWithStream = useStreamMultipleBlocksProps();
+  const updateBlockPropsAll = useUpdateMultipleBlocksProps();
   const [blocks] = useBlocksStore();
   return {
     askAi: useCallback(
-      async (blockId: string, prompt: string, onComplete?: () => void) => {
+      async (type: "styles" | "content", blockId: string, prompt: string, onComplete?: () => void) => {
         if (!callBack) return;
         setProcessing(true);
         setError(null);
         try {
-          const aiBlocks = cloneDeep(getBlockWithChildren(blockId, blocks));
+          const aiBlocks =
+            type === "content"
+              ? cloneDeep(getBlockWithChildren(blockId, blocks))
+              : [cloneDeep(blocks.find((block) => block._id === blockId))];
           set(aiBlocks, "0._parent", null);
-          const { blocks: updatedBlocks, error } = await callBack(prompt, aiBlocks);
+          const { blocks: updatedBlocks, error } = await callBack(type, prompt, aiBlocks);
           if (error) {
             setError(error);
             return;
           }
-          updateBlockProps(updatedBlocks);
+          if (type === "styles") {
+            updateBlockPropsAll(updatedBlocks);
+          } else {
+            updateBlocksWithStream(updatedBlocks);
+          }
         } catch (e) {
           setError(e);
         } finally {
@@ -51,7 +59,7 @@ export const useAskAi = () => {
           if (onComplete) onComplete();
         }
       },
-      [callBack, blocks],
+      [callBack, setProcessing, blocks, updateBlockPropsAll, updateBlocksWithStream],
     ),
     loading: processing,
     error,

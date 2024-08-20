@@ -17,7 +17,7 @@ const FormBlock = (
   const { blockProps, errorMessage, name, _type, successMessage, action, styles, children } = props;
   let nestedChildren = children;
   if (!children) {
-    nestedChildren = <EmptySlot blockProps={{}} text="FORM FIELDS" />;
+    nestedChildren = <EmptySlot />;
   }
 
   const alpineAttrs = {

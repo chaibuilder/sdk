@@ -85,7 +85,7 @@ const TableBlock = (
 ) => {
   const { blockProps, children, styles } = props;
   if (!children) {
-    return <EmptySlot blockProps={blockProps} text="TABLE HEAD / BODY" />;
+    return <EmptySlot />;
   }
   return React.createElement("table", { ...blockProps, ...styles }, children);
 };
@@ -113,7 +113,7 @@ const TableHeadBlock = (
 ) => {
   const { blockProps, children, styles } = props;
   if (!children) {
-    return <EmptySlot blockProps={blockProps} text="TABLE ROW" />;
+    return <EmptySlot />;
   }
   return React.createElement("thead", { ...blockProps, ...styles }, children);
 };
@@ -141,7 +141,7 @@ const TableBodyBlock = (
 ) => {
   const { blockProps, children, styles } = props;
   if (!children) {
-    return <EmptySlot blockProps={blockProps} text="TABLE ROW" />;
+    return <EmptySlot />;
   }
   return React.createElement("tbody", { ...blockProps, ...styles }, children);
 };
@@ -169,7 +169,7 @@ const TableRowBlock = (
 ) => {
   const { blockProps, children, styles } = props;
   if (!children) {
-    return <EmptySlot blockProps={blockProps} text="TABLE CELL" />;
+    return <EmptySlot />;
   }
 
   return React.createElement("tr", { ...blockProps, ...styles }, children);
@@ -199,7 +199,7 @@ const TableCellBlock = (
   const { blockProps, children, content, styles } = props;
 
   if (!children && isEmpty(content)) {
-    return <EmptySlot blockProps={blockProps} />;
+    return <EmptySlot />;
   }
 
   if (!children) {

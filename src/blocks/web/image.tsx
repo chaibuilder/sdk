@@ -17,7 +17,7 @@ const ImageBlock = (
 ) => {
   const { blockProps, image, styles, alt, height, width } = block;
 
-  if (isEmpty(image)) return <EmptySlot blockProps={blockProps} text="IMAGE URL" className="h-36" />;
+  if (isEmpty(image)) return <EmptySlot className="h-36" />;
 
   return React.createElement("img", {
     ...blockProps,

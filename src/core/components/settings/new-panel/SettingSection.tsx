@@ -3,8 +3,8 @@ import { flatten, has, intersection, map } from "lodash-es";
 import { MultipleChoices } from "../choices/MultipleChoices";
 import { BlockStyle } from "../choices/BlockStyle";
 import { useSelectedBlockCurrentClasses } from "../../../hooks";
-import { AccordionContent, AccordionItem, AccordionTrigger } from "../../../../ui";
 import { useTranslation } from "react-i18next";
+import { AccordionContent, AccordionItem, AccordionTrigger } from "../../../../ui";
 
 const NestedOptions = ({ heading, items }: any) => {
   const { t } = useTranslation();
@@ -84,44 +84,13 @@ export const StylingGroup = ({ section }: any) => {
     [currentClasses],
   );
 
-  const isAnyPropertySet: boolean = useMemo(() => {
-    if (currentClasses.length > 0 && section.heading === "classes.heading") {
-      return true;
-    }
-    const getItemProperties = (items: any[]) =>
-      flatten(
-        items.map((item) => {
-          if (item.styleType === "multiple") {
-            return flatten(map(item.options, "key"));
-          }
-          return item.property;
-        }),
-      );
-    const properties: Array<string> = flatten(
-      section.items.map((item: any) => {
-        if (item.styleType === "accordion") {
-          return getItemProperties(item.items);
-        }
-        if (item.styleType === "multiple") {
-          return flatten(map(item.options, "key"));
-        }
-        return item.property;
-      }),
-    );
-    const setProps = map(currentClasses, "property");
-    return intersection(properties, setProps).length > 0;
-  }, [currentClasses, section.heading, section.items]);
-
   const contextValue = useMemo(() => ({}), []);
 
   return (
     <SectionContext.Provider value={contextValue}>
       <AccordionItem value={section.heading}>
-        <AccordionTrigger className="px-3 py-2 text-xs hover:no-underline">
-          <div className="flex items-center gap-x-2">
-            <div className={`h-[8px] w-[8px] rounded-full ${isAnyPropertySet ? "bg-blue-500" : "bg-gray-300"}`} />
-            {t(section.heading)}
-          </div>
+        <AccordionTrigger className="bg-gray-200 px-3 py-2 text-xs hover:no-underline">
+          <div className="flex items-center gap-x-2">{t(section.heading)}</div>
         </AccordionTrigger>
         <AccordionContent className="bg-gray-100 px-3.5 py-2">
           {React.Children.toArray(

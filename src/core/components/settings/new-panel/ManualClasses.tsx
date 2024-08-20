@@ -8,13 +8,26 @@ import { CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { ALL_TW_CLASSES } from "../../../constants/CLASSES_LIST";
 import {
   useAddClassesToBlocks,
+  useBuilderProp,
   useRemoveClassesFromBlocks,
   useSelectedBlock,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
 } from "../../../hooks";
-import { Button, Label, Tooltip, TooltipContent, TooltipTrigger, useToast } from "../../../../ui";
+import {
+  Button,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+  useToast,
+} from "../../../../ui";
 import { STYLES_KEY } from "../../../constants/STRINGS.ts";
+import { useTranslation } from "react-i18next";
+import { SparklesIcon } from "lucide-react";
+import { AskAIStyles } from "../AskAiStyle.tsx";
 
 const fuse = new Fuse(ALL_TW_CLASSES, {
   isCaseSensitive: false,
@@ -24,11 +37,13 @@ const fuse = new Fuse(ALL_TW_CLASSES, {
 });
 
 export function ManualClasses() {
+  const { t } = useTranslation();
   const [styleBlock] = useSelectedStylingBlocks();
   const block = useSelectedBlock();
   const addClassesToBlocks = useAddClassesToBlocks();
   const removeClassesFromBlocks = useRemoveClassesFromBlocks();
   const [selectedIds] = useSelectedBlockIds();
+  const askAiCallBack = useBuilderProp("askAiCallBack", null);
   const [newCls, setNewCls] = useState("");
   const { toast } = useToast();
   const prop = first(styleBlock)?.prop as string;
@@ -61,7 +76,7 @@ export function ManualClasses() {
     } else {
       classMatches = fuse.search(search);
     }
-    setSuggestions(map(classMatches, "item"));
+    return setSuggestions(map(classMatches, "item"));
   };
 
   const handleSuggestionsClearRequested = () => {
@@ -77,7 +92,7 @@ export function ManualClasses() {
     autoCorrect: "off",
     autoCapitalize: "off",
     spellCheck: false,
-    placeholder: "Enter class name",
+    placeholder: t("Enter classes separated by space"),
     value: newCls,
     onKeyDown: (e: any) => {
       if (e.key === "Enter" && newCls.trim() !== "") {
@@ -106,21 +121,36 @@ export function ManualClasses() {
 
   return (
     <div
-      className={`no-scrollbar flex ${
+      className={`flex ${
         suggestions.length > 0 ? "min-h-[300px]" : "min-h-max"
-      } w-full flex-col gap-y-5 overflow-y-auto bg-gray-100 px-px`}>
-      <Label className="mt-2 flex items-center gap-x-2">
-        <span>Add Tailwind classes</span>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <CopyIcon onClick={onClickCopy} className={"cursor-pointer"} />
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Copy classes to clipboard</p>
-          </TooltipContent>
-        </Tooltip>
-      </Label>
-      <div className="relative -mt-4 flex items-center gap-x-3">
+      } w-full flex-col gap-y-1.5 overflow-y-auto border-b-2 bg-gray-100 pb-4`}>
+      <div className="flex items-center justify-between gap-x-2">
+        <div className="flex items-center gap-x-2">
+          <span>{t("Classes")}</span>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <CopyIcon onClick={onClickCopy} className={"cursor-pointer"} />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{t("Copy classes to clipboard")}</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+        {askAiCallBack ? (
+          <Popover>
+            <PopoverTrigger>
+              <Button variant="default" className="h-6 w-fit" size="sm">
+                <SparklesIcon className="h-4 w-4" />
+                <span className="ml-2">{t("Ask AI")}</span>
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent side="left" className="p-2">
+              <AskAIStyles blockId={block?._id} />
+            </PopoverContent>
+          </Popover>
+        ) : null}
+      </div>
+      <div className={"relative flex items-center gap-x-3"}>
         <div className="relative flex w-full items-center gap-x-3">
           <Autosuggest
             suggestions={suggestions}
@@ -134,11 +164,10 @@ export function ManualClasses() {
             }}
             theme={{
               suggestion: "bg-transparent",
-              suggestionHighlighted: "bg-gray-700 ",
+              suggestionHighlighted: "!bg-gray-300 ",
               suggestionsContainerOpen:
                 "absolute bg-gray-100 z-50 max-h-[230px] overflow-y-auto w-full  border border-gray-600 rounded-md",
-            }}
-          />
+            }}></Autosuggest>
         </div>
         <Button
           variant="outline"
@@ -149,21 +178,16 @@ export function ManualClasses() {
           <PlusIcon />
         </Button>
       </div>
-      <div className="flex w-full flex-wrap gap-2">
-        {isEmpty(classes) && (
-          <div className="flex h-10 w-full items-center justify-center text-center text-sm text-gray-400">
-            No class added
-          </div>
-        )}
+      <div className="flex w-full flex-wrap gap-2 overflow-x-hidden">
         {React.Children.toArray(
           classes.map((cls: string) => (
             <div
               key={cls}
-              className="group relative truncate max-w-[260px] flex cursor-default items-center gap-x-1 rounded-full border border-blue-600 bg-blue-500 p-px px-1.5 text-[11px] text-white hover:border-blue-900">
+              className="group relative flex max-w-[260px] cursor-default items-center gap-x-1 truncate rounded border border-gray-300 bg-gray-200 p-px px-1.5 text-[11px] text-gray-600 hover:border-gray-300">
               {cls}
               <Cross2Icon
                 onClick={() => removeClassesFromBlocks(selectedIds, [cls])}
-                className="invisible absolute right-1 hover:text-white group-hover:visible group-hover:cursor-pointer "
+                className="invisible absolute right-1 rounded-full bg-red-400 hover:text-white group-hover:visible group-hover:cursor-pointer"
               />
             </div>
           )),

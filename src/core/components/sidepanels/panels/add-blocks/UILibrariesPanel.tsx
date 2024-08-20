@@ -11,6 +11,9 @@ import { CaretRightIcon } from "@radix-ui/react-icons";
 import { ScrollArea, Skeleton } from "../../../../../ui";
 import { OUTLINE_KEY } from "../../../../constants/STRINGS.ts";
 import { UILibrary, UiLibraryBlock } from "../../../../types/chaiBuilderEditorProps.ts";
+import { ChaiBlock } from "../../../../types/ChaiBlock.ts";
+import { atomWithStorage } from "jotai/utils";
+import { UILibrariesSelect } from "./UiLibrariesSelect.tsx";
 
 const BlockCard = ({
   block,
@@ -26,6 +29,11 @@ const BlockCard = ({
   const { addCoreBlock, addPredefinedBlock } = useAddBlock();
   const [ids] = useSelectedBlockIds();
 
+  const isTopLevelSection = (block: ChaiBlock) => {
+    const isPageSection = has(block, "styles_attrs.data-page-section");
+    return block._type === "Box" && isPageSection;
+  };
+
   const addBlock = useCallback(
     async (e: any) => {
       e.stopPropagation();
@@ -36,7 +44,11 @@ const BlockCard = ({
       }
       setIsAdding(true);
       const uiBlocks = await getUILibraryBlock(library, block);
-      if (!isEmpty(uiBlocks)) addPredefinedBlock(syncBlocksWithDefaults(uiBlocks), first(ids));
+      let parent = first(ids);
+      if (isTopLevelSection(first(uiBlocks))) {
+        parent = null;
+      }
+      if (!isEmpty(uiBlocks)) addPredefinedBlock(syncBlocksWithDefaults(uiBlocks), parent);
       closePopover();
     },
     [block],
@@ -65,25 +77,28 @@ const BlockCard = ({
   );
 };
 
+const libraryBlocksAtom = atom<{ [uuid: string]: { loading: boolean; blocks: any[] } }>({});
+
 const useLibraryBlocks = (library?: UILibrary) => {
+  const [libraryBlocks, setLibraryBlocks] = useAtom(libraryBlocksAtom);
   const getBlocks = useBuilderProp("getUILibraryBlocks", noop);
-  const [blocks, setBlocks] = useState<UiLibraryBlock[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const blocks = get(libraryBlocks, `${library?.uuid}.blocks`, []);
+  const isLoading = get(libraryBlocks, `${library?.uuid}.loading`, false);
   useEffect(() => {
     (async () => {
-      if (!library) return;
-      setIsLoading(true);
+      if (isLoading || blocks.length > 0) return;
+      setLibraryBlocks((prev) => ({ ...prev, [library?.uuid]: { loading: true, blocks: [] } }));
       const libraryBlocks: UiLibraryBlock[] = await getBlocks(library);
-      setBlocks(libraryBlocks);
-      setIsLoading(false);
+      setLibraryBlocks((prev) => ({ ...prev, [library?.uuid]: { loading: false, blocks: libraryBlocks || [] } }));
     })();
-  }, []);
+  }, [library, blocks, isLoading]);
+
   return { data: blocks, isLoading };
 };
 
-const selectedLibraryAtom = atom<string>("");
+const selectedLibraryAtom = atomWithStorage<string | null>("_selectedLibrary", null);
 const UILibrarySection = () => {
-  const [selectedLibrary] = useAtom(selectedLibraryAtom);
+  const [selectedLibrary, setLibrary] = useAtom(selectedLibraryAtom);
   const uiLibraries = useBuilderProp("uiLibraries", []);
   const registeredBlocks = useChaiBlocks();
   const customBlocks = values(registeredBlocks).filter((block) => block.category === "custom");
@@ -115,16 +130,15 @@ const UILibrarySection = () => {
   return (
     <>
       <div className="relative flex h-full max-h-full w-[460px] flex-col overflow-hidden bg-background">
-        <div className="sticky top-0 flex h-fit flex-col">
-          <div className="mb-2 flex flex-col justify-between rounded-md bg-background/30 p-1">
-            <h1 className="flex w-full flex-col items-baseline truncate px-1 text-sm font-semibold xl:flex-col">
-              {t("Library")}:&nbsp;{get(library, "name", get(library, "label", ""))}
-            </h1>
-            <span className="p-0 text-[9px] font-light leading-3 opacity-80 xl:pl-1">
-              {t("Click to add blocks to page")}
-            </span>
+        {library?.uuid ? (
+          <div className="sticky top-0 flex h-fit flex-col">
+            <div className="mb-2 flex flex-col justify-between rounded-md bg-background/30 p-1">
+              <h1 className="flex w-full flex-col items-baseline truncate px-1 text-sm font-semibold xl:flex-col">
+                <UILibrariesSelect library={library?.uuid} setLibrary={setLibrary} uiLibraries={uiLibraries} />
+              </h1>
+            </div>
           </div>
-        </div>
+        ) : null}
         <div className={"flex h-[95%] border-t border-gray-300 pt-2"}>
           <div className={"flex h-full w-40 flex-col gap-1 px-1"}>
             {React.Children.toArray(
@@ -146,12 +160,17 @@ const UILibrarySection = () => {
           </div>
           <ScrollArea
             onMouseEnter={() => (timeoutRef.current ? clearTimeout(timeoutRef.current) : null)}
-            className="z-10 -mt-2 flex h-full max-h-full w-[300px] flex-col gap-2 border-l border-gray-300 px-2 transition-all ease-linear">
-            {React.Children.toArray(
-              blocks.map((block: UiLibraryBlock) => (
-                <BlockCard block={block} library={library} closePopover={() => setActivePanel(OUTLINE_KEY)} />
-              )),
-            )}
+            className="z-10 -mt-2 flex h-full max-h-full w-[300px] flex-col gap-2 border-l border-gray-300 transition-all ease-linear">
+            <div className="sticky top-0 z-30 border-b border-gray-300 bg-gray-200 p-2 text-[9px] font-light leading-3 text-gray-500">
+              {t("Click on a block to add it to the page")}
+            </div>
+            <div className="flex flex-col gap-2 px-2">
+              {React.Children.toArray(
+                blocks.map((block: UiLibraryBlock) => (
+                  <BlockCard block={block} library={library} closePopover={() => setActivePanel(OUTLINE_KEY)} />
+                )),
+              )}
+            </div>
             <br />
             <br />
             <br />

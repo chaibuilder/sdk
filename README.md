@@ -1,4 +1,4 @@
-# Chai Builder - Open Source Visual Builder
+# Chai Builder - Open Source Tailwind Builder
 
 Chai Builder is an Open Source Low Code React + Tailwind CSS Visual Builder. 
 It allows you to create web pages & email templates visually by dragging and dropping elements onto the canvas. 

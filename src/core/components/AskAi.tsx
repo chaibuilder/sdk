@@ -27,7 +27,7 @@ import { FaSpinner } from "react-icons/fa";
 import { QuickPrompts } from "./QuickPrompts.tsx";
 import { Cross2Icon } from "@radix-ui/react-icons";
 
-const AskAIPrompt = ({ blockId }: { blockId: string | undefined }) => {
+export const AskAIPrompt = ({ blockId }: { blockId: string | undefined }) => {
   const { t } = useTranslation();
   const { askAi, loading, error } = useAskAi();
   const [prompt, setPrompt] = useState("");
@@ -52,18 +52,20 @@ const AskAIPrompt = ({ blockId }: { blockId: string | undefined }) => {
 
   return (
     <div className="mt-4">
-      <h2 className="mb-1 text-sm font-semibold leading-none tracking-tight">{t("Ask AI")} (GPT-4o mini)</h2>
+      <h2 className="mb-2 text-xs font-semibold leading-none tracking-tight text-gray-500">
+        {t("Ask AI")} (GPT-4o mini)
+      </h2>
       <Textarea
         ref={promptRef}
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
         placeholder={t("Ask AI to edit content")}
-        className="w-full border border-gray-400 focus:border"
+        className="w-full border border-gray-400 focus:border-0"
         rows={3}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             e.preventDefault();
-            askAi(blockId, prompt, onComplete);
+            askAi("content", blockId, prompt, onComplete);
           }
         }}
       />
@@ -72,7 +74,7 @@ const AskAIPrompt = ({ blockId }: { blockId: string | undefined }) => {
         {!loading ? (
           <Button
             disabled={prompt.trim().length < 5 || loading}
-            onClick={() => askAi(blockId, prompt, onComplete)}
+            onClick={() => askAi("content", blockId, prompt, onComplete)}
             variant="default"
             className="w-fit"
             size="sm">
@@ -105,7 +107,7 @@ const AskAIPrompt = ({ blockId }: { blockId: string | undefined }) => {
           </p>
         )}
       </div>
-      <QuickPrompts onClick={(prompt: string) => askAi(blockId, prompt, onComplete)} />
+      <QuickPrompts onClick={(prompt: string) => askAi("content", blockId, prompt, onComplete)} />
     </div>
   );
 };
@@ -154,12 +156,12 @@ const SetAiContext = ({ onOpen }: { onOpen: Function }) => {
       }}
       type="single"
       collapsible
-      className="-mx-2 -mt-2 bg-gray-100 px-2">
+      className="rounded-md border bg-gray-100 px-2">
       <AccordionItem value="set-context">
         {/*  @ts-ignore */}
-        <AccordionTrigger ref={btnRef} hideArrow className="py-2 hover:no-underline">
+        <AccordionTrigger ref={btnRef} hideArrow className="py-1 hover:no-underline">
           <div className="flex w-full items-center justify-between">
-            <span className="font-semibold">{t("Set Context For AI")}</span>
+            <span className="font-semibold">{t("AI Context")}</span>
             <Button variant="default" size={"sm"}>
               <span>{t(opened ? "Cancel" : "Edit")}</span> &nbsp;
               {opened ? <Cross2Icon className="h-4 w-4" /> : <EditIcon className="h-4 w-4" />}

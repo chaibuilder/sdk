@@ -195,18 +195,12 @@ const SidePanels = () => {
             </Tabs>
           ) : (
             <>
-              <Tabs defaultValue={OUTLINE_KEY} className="flex h-full w-full flex-col py-1">
-                <TabsList className="mx-1 grid h-10 grid-cols-1">
-                  <TabsTrigger value={OUTLINE_KEY}>
-                    <ListTreeIcon className={"mr-2 h-3"} /> {t("Outline")}
-                  </TabsTrigger>
-                </TabsList>
-                <TabsContent
-                  value={OUTLINE_KEY}
-                  className="no-scrollbar h-full flex-1 overflow-y-auto overflow-x-hidden">
-                  {React.createElement(ArboristPanel)}
-                </TabsContent>
-              </Tabs>
+              <div className="sticky top-0 -m-1 flex h-fit items-center justify-center border-b bg-gray-100 py-2 pb-[9px] text-sm">
+                <ListTreeIcon className={"mr-2 h-3"} /> {t("Outline")}
+              </div>
+              <div className="no-scrollbar h-full flex-1 overflow-y-auto overflow-x-hidden pt-2">
+                {React.createElement(ArboristPanel)}
+              </div>
             </>
           )}
         </Suspense>

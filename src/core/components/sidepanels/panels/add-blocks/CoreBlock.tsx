@@ -8,8 +8,10 @@ import { useAddBlock, useHighlightBlockId, useSelectedBlockIds } from "../../../
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { useFeature } from "flagged";
 import { OUTLINE_KEY } from "../../../../constants/STRINGS.ts";
+import { draggedBlockAtom } from "../../../canvas/dnd/atoms.ts";
 
 export const CoreBlock = ({ block }: { block: any }) => {
+  const [, setDraggedBlock] = useAtom(draggedBlockAtom);
   const { type, icon, label } = block;
   const { addCoreBlock, addPredefinedBlock } = useAddBlock();
   const [ids, setSelected] = useSelectedBlockIds();
@@ -35,13 +37,16 @@ export const CoreBlock = ({ block }: { block: any }) => {
             type="button"
             onDragStart={(ev) => {
               ev.dataTransfer.setData("text/plain", JSON.stringify(omit(block, ["component", "icon"])));
+              ev.dataTransfer.setDragImage(new Image(), 0, 0);
+              // @ts-ignore
+              setDraggedBlock(omit(block, ["component", "icon"]));
               setTimeout(() => {
                 setSelected([]);
                 setHighlighted(null);
                 setActivePanel(OUTLINE_KEY);
               }, 200);
             }}
-            draggable={dndEnabled ? "true" : "false"}
+            draggable={"true"}
             className={
               "space-y-2 rounded-lg border border-border p-3 text-center hover:bg-slate-300/50 " +
               (dndEnabled ? "cursor-grab" : "cursor-pointer")

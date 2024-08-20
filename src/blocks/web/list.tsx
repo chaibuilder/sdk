@@ -17,7 +17,7 @@ const ListBlock = (
   const className = cn(get(styles, "className", ""), listType);
 
   if (!children && isEmpty(styles?.className)) {
-    return <EmptySlot inBuilder={inBuilder} blockProps={blockProps} text="LIST ITEM" />;
+    return <EmptySlot inBuilder={inBuilder} />;
   }
 
   return React.createElement(
@@ -37,7 +37,7 @@ registerChaiBlock(ListBlock, {
     styles: Styles({ default: "" }),
     listType: SelectOption({
       title: "List type",
-      default: "list-disc",
+      default: "list-none",
       options: [
         { value: "list-none", title: "None" },
         { value: "list-disc", title: "Disc" },

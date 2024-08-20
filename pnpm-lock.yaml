@@ -108,6 +108,7 @@ specifiers:
   tailwindcss-animate: 1.0.6
   tailwindcss-palette-generator: ^0.6.5
   tippy.js: ^6.3.7
+  tree-model: ^1.0.7
   ts-jest: ^29.1.1
   ts-node: ^10.9.2
   typescript: ^5.2.2
@@ -183,6 +184,7 @@ dependencies:
   tailwind-merge: 2.3.0
   tailwindcss-palette-generator: 0.6.5_tailwindcss@3.3.5
   tippy.js: 6.3.7
+  tree-model: 1.0.7
   undo-manager: 1.1.1
   unsplash-js: 7.0.18
 
@@ -7648,6 +7650,10 @@ packages:
     dependencies:
       to-regex-range: 5.0.1
 
+  /find-insert-index/0.0.1:
+    resolution: {integrity: sha512-eIqFuQzY7XwpAJ3sHWKFNGLx1nm3w/IhmFASETcx5sUuCaOUd3xDqRK/376SzXMVVJQaJUCPlS7L841T0xpFjQ==}
+    dev: false
+
   /find-root/1.1.0:
     resolution: {integrity: sha512-NKfW6bec6GfKc0SGx1e07QZY9PE99u0Bft/0rzSD5k3sO/vwkVUpDUKVm5Gpp5Ue3YfShPFTX2070tDs5kB9Ng==}
     dev: true
@@ -9447,6 +9453,10 @@ packages:
   /merge2/1.4.1:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
+
+  /mergesort/0.0.1:
+    resolution: {integrity: sha512-WKghTBzqAvTt9rG5TWS78Dmk2kCCL9VkkX8Zi9kKfJ4iqYpvcGGpeYtkhPHa9NZAPLivZiZsdO/LBG3ENayDmQ==}
+    dev: false
 
   /micromatch/4.0.5:
     resolution: {integrity: sha512-DMy+ERcEW2q8Z2Po+WNXuw3c5YaUSFjAO5GsJqfEl7UjvtIuFKO6ZrKvcItdy98dwFI2N1tg3zNIdKaQT+aNdA==}
@@ -11974,6 +11984,13 @@ packages:
     dependencies:
       punycode: 2.3.1
     dev: true
+
+  /tree-model/1.0.7:
+    resolution: {integrity: sha512-oP4LUbCVtD2gcjcRaeI4L5hY60tHzB+AK/bthIJ2Pq1EUUOio5/xFzPWnGoBZlhtqpqbOkhFDzKIwKLOn0kccQ==}
+    dependencies:
+      find-insert-index: 0.0.1
+      mergesort: 0.0.1
+    dev: false
 
   /trim-newlines/3.0.1:
     resolution: {integrity: sha512-c1PTsA3tYrIsLGkJkzHF+w9F2EyxfXGo4UyJc4pFL++FMjnq0HJS69T3M7d//gKrFKwy429bouPescbjecU+Zw==}

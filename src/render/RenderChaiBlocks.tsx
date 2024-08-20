@@ -1,5 +1,5 @@
 import React from "react";
-import { each, filter, get, isEmpty, isString, memoize, omit } from "lodash-es";
+import { each, filter, get, has, isEmpty, isString, memoize, omit } from "lodash-es";
 import { twMerge } from "tailwind-merge";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { SLOT_KEY, STYLES_KEY } from "../core/constants/STRINGS.ts";
@@ -26,7 +26,11 @@ const generateClassNames = memoize((styles: string, classPrefix: string) => {
 });
 
 function getElementAttrs(block: ChaiBlock, key: string) {
-  return get(block, `${key}_attrs`, {}) as Record<string, string>;
+  const attrs = get(block, `${key}_attrs`, {}) as Record<string, string>;
+  if (has(attrs, "data-ai-key")) {
+    delete attrs["data-ai-key"];
+  }
+  return attrs;
 }
 
 function getStyleAttrs(block: ChaiBlock, classPrefix: string) {
@@ -58,11 +62,13 @@ export function RenderChaiBlocks({
   parent,
   classPrefix = "",
   externalData = {},
+  blockModifierCallback,
 }: {
   blocks: ChaiBlock[];
   parent?: string;
   classPrefix?: string;
   externalData?: Record<string, any>;
+  blockModifierCallback?: (block: ChaiBlock) => ChaiBlock;
 }) {
   const allBlocks = blocks;
   const getStyles = (block: ChaiBlock) => getStyleAttrs(block, classPrefix);
@@ -106,6 +112,9 @@ export function RenderChaiBlocks({
             // @ts-ignore
             const Component: React.FC<any> = (blockDefinition as { component: React.FC<ChaiBlock> }).component;
             syncedBlock = { ...(blockDefinition as any).defaults, ...block };
+            if (blockModifierCallback) {
+              syncedBlock = blockModifierCallback(syncedBlock);
+            }
             return React.createElement(
               Component,
               omit(

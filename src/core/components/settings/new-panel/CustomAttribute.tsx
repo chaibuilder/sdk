@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
-import { filter, find, forEach, get, isEmpty, kebabCase, map, set, startsWith } from "lodash-es";
+import { filter, find, forEach, get, isEmpty, map, set, startsWith } from "lodash-es";
 import {
   useSelectedBlock,
   useSelectedStylingBlocks,
@@ -18,14 +18,15 @@ const NewAttributePair = ({ onAdd }: { onAdd: Function }) => {
 
   const emitAdd = () => {
     if (!isEmpty(item.key)) {
-      onAdd({ ...item, key: kebabCase(item.key) });
+      onAdd({ ...item, key: item.key });
       setItem({ key: "", value: "" });
     }
   };
   return (
-    <div className={`flex flex-col gap-1 border-gray-200 px-1`}>
+    <div className={`flex flex-col gap-1 border-gray-200`}>
       <Input
         name="key"
+        className="h-6"
         onChange={(e) => setItem({ ...item, key: e.target.value })}
         value={item.key}
         placeholder={t("Name")}
@@ -42,6 +43,7 @@ const NewAttributePair = ({ onAdd }: { onAdd: Function }) => {
       />
       <div className="flex items-center gap-x-1.5">
         <Input
+          className="h-6"
           name="value"
           onChange={(e) => setItem({ ...item, value: e.target.value })}
           value={item.value}
@@ -128,65 +130,63 @@ export const CustomAttributes = () => {
   );
 
   return (
-    <div className="px-2">
-      <div className="no-scrollbar flex min-h-max flex-col gap-y-2 overflow-y-auto">
-        <div className="flex flex-col">
-          <div>
-            <ul className="overflow-hidden rounded-md bg-gray-100 p-2 text-xs text-gray-700">
-              {isEmpty(attributes) ? (
-                <li className="flex h-16 items-center justify-center">
-                  <p>{t("No custom attributes added yet")}</p>
-                </li>
-              ) : (
-                <li>
-                  <span className="font-bold">{t("Attributes")}</span>
-                </li>
-              )}
-              {React.Children.toArray(
-                map(attributes, (item: { key: string; value: string }) => {
-                  return (
-                    <li className="group flex max-w-full items-center justify-between">
-                      <Tooltip delayDuration={1000}>
-                        <TooltipTrigger asChild>
-                          <div className="w-[90%] cursor-default truncate px-1 hover:bg-gray-200">
-                            {item.key}
-                            &nbsp;<span className="font-bold text-orange-500">=</span>&nbsp;
-                            {item.value}
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent className="max-w-[200px]">
-                          <div>
-                            {t("Name")}: {item.key}
-                          </div>
-                          <div>
-                            {t("Value")}: {item.value}
-                          </div>
-                        </TooltipContent>
-                      </Tooltip>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <button
-                            disabled={startsWith(item.value, "dnd-")}
-                            className="invisible group-hover:visible"
-                            onClick={() => removeAttribute(attributes.indexOf(item))}>
-                            <DeleteIcon className="w-4 text-gray-500" />
-                          </button>
-                        </TooltipTrigger>
-                        <TooltipContent className="max-w-[200px]">
-                          {startsWith(item.value, "dnd-")
-                            ? t("Predefined attribute. Cannot be deleted")
-                            : t("Remove attribute")}
-                        </TooltipContent>
-                      </Tooltip>
-                    </li>
-                  );
-                }),
-              )}
-            </ul>
-          </div>
-          <div className="py-2" />
-          <NewAttributePair onAdd={(newAttr: Record<"key" | "value", string>) => onAdd(newAttr)} />
+    <div className="mb-20 flex min-h-max flex-col gap-y-2 overflow-y-auto">
+      <div className="flex flex-col">
+        <div>
+          <ul className="overflow-hidden rounded-md bg-gray-100 text-xs text-gray-700">
+            {isEmpty(attributes) ? (
+              <li className="flex h-4 items-center justify-center">
+                <p>{t("No attributes added")}</p>
+              </li>
+            ) : null}
+            {React.Children.toArray(
+              map(attributes, (item: { key: string; value: string }) => {
+                return (
+                  <li className="group flex w-full max-w-full items-center justify-between">
+                    <Tooltip delayDuration={1000}>
+                      <TooltipTrigger asChild>
+                        <div className="max-w-[230px] cursor-default truncate px-1 hover:bg-gray-200">
+                          {item.key}
+                          {item.value.trim() ? (
+                            <>
+                              &nbsp;<span className="font-bold text-orange-500">=</span>&nbsp;
+                              {item.value.trim()}
+                            </>
+                          ) : null}
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-[200px]">
+                        <div>
+                          {t("Name")}: {item.key}
+                        </div>
+                        <div>
+                          {t("Value")}: {item.value}
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          disabled={startsWith(item.value, "dnd-")}
+                          className="invisible group-hover:visible"
+                          onClick={() => removeAttribute(attributes.indexOf(item))}>
+                          <DeleteIcon className="w-4 text-gray-500" />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-[200px]">
+                        {startsWith(item.value, "dnd-")
+                          ? t("Predefined attribute. Cannot be deleted")
+                          : t("Remove attribute")}
+                      </TooltipContent>
+                    </Tooltip>
+                  </li>
+                );
+              }),
+            )}
+          </ul>
         </div>
+        <div className="py-2" />
+        <NewAttributePair onAdd={(newAttr: Record<"key" | "value", string>) => onAdd(newAttr)} />
       </div>
     </div>
   );

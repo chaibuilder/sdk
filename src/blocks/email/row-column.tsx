@@ -31,7 +31,7 @@ registerChaiBlock(RowBlock, {
 const ColumnBlock = ({ blockProps, styles, children, align }: any) => {
   let nestedChildren = children;
   if (!children) {
-    nestedChildren = <EmptySlot blockProps={{}} styles={{}} />;
+    nestedChildren = <EmptySlot />;
   }
 
   return (

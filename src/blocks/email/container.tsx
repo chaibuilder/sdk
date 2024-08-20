@@ -5,7 +5,7 @@ import EmptySlot from "../empty-slot.tsx";
 const ContainerBlock = ({ blockProps, styles, children, inBuilder }) => {
   let nestedChildren = children;
   if (!children) {
-    nestedChildren = <EmptySlot blockProps={{}} styles={{}} inBuilder={inBuilder} />;
+    nestedChildren = <EmptySlot inBuilder={inBuilder} />;
   }
   return (
     <Container {...blockProps} {...styles}>

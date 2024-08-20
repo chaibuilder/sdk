@@ -18,7 +18,7 @@ import getPalette from "tailwindcss-palette-generator";
 // @ts-ignore
 
 export const HeadTags = ({ model }: { model: string }) => {
-  const [brandingOptions] = useBrandingOptions();
+  const [customTheme] = useBrandingOptions();
   const [selectedBlockIds] = useSelectedBlockIds();
   const [darkMode] = useDarkMode();
   const [highlightedId] = useHighlightBlockId();
@@ -41,18 +41,29 @@ export const HeadTags = ({ model }: { model: string }) => {
     else iframeDoc?.documentElement.classList.remove("dark");
   }, [darkMode, iframeDoc]);
 
-  const headingFont: string = get(brandingOptions, "headingFont", "DM Sans");
-  const bodyFont: string = get(brandingOptions, "bodyFont", "DM Sans");
+  const headingFont: string = get(customTheme, "headingFont", "DM Sans");
+  const bodyFont: string = get(customTheme, "bodyFont", "DM Sans");
 
   useEffect(() => {
-    const primary = get(brandingOptions, "primaryColor", "#000");
-    const secondary = get(brandingOptions, "secondaryColor", "#FFF");
-    const colors = getPalette([
+    const primary = get(customTheme, "primaryColor", "#000");
+    const secondary = get(customTheme, "secondaryColor", "#FFF");
+    const BG_LIGHT_MODE = get(customTheme, "bodyBgLightColor", "#fff");
+    const BG_DARK_MODE = get(customTheme, "bodyBgDarkColor", "#000");
+    const TEXT_DARK_MODE = get(customTheme, "bodyTextDarkColor", "#000");
+    const TEXT_LIGHT_MODE = get(customTheme, "bodyTextLightColor", "#fff");
+
+    const palette = getPalette([
       { color: primary, name: "primary" },
       { color: secondary, name: "secondary" },
     ]);
+    const colors: Record<string, string> = {
+      "bg-light": BG_LIGHT_MODE,
+      "bg-dark": BG_DARK_MODE,
+      "text-dark": TEXT_DARK_MODE,
+      "text-light": TEXT_LIGHT_MODE,
+    };
 
-    const borderRadius = get(brandingOptions, "roundedCorners", "0");
+    const borderRadius = get(customTheme, "roundedCorners", "0");
     // @ts-ignore
     if (!iframeWin || !iframeWin.tailwind) return;
     // @ts-ignore
@@ -60,20 +71,27 @@ export const HeadTags = ({ model }: { model: string }) => {
       darkMode: "class",
       theme: {
         extend: {
+          container: {
+            center: true,
+            padding: "1rem",
+            screens: {
+              "2xl": "1400px",
+            },
+          },
           fontFamily: {
             heading: [headingFont],
             body: [bodyFont],
           },
           borderRadius: {
-            global: `${!borderRadius ? "0" : borderRadius}px`,
+            DEFAULT: `${!borderRadius ? "0" : borderRadius}px`,
           },
-          colors,
+          colors: { ...colors, ...palette },
         },
       },
 
       plugins: [typography, forms, aspectRatio, iframeWin.tailwind.plugin.withOptions(() => prelinePlugin)],
     };
-  }, [brandingOptions, iframeWin, headingFont, bodyFont]);
+  }, [customTheme, iframeWin, headingFont, bodyFont]);
 
   useEffect(() => {
     if (!selectedBlockStyle) return;
@@ -108,13 +126,13 @@ export const HeadTags = ({ model }: { model: string }) => {
 
   // set body background color
   useEffect(() => {
-    const textLight = get(brandingOptions, "bodyTextLightColor", "#64748b");
-    const textDark = get(brandingOptions, "bodyTextDarkColor", "#94a3b8");
-    const bgLight = get(brandingOptions, "bodyBgLightColor", "#FFFFFF");
-    const bgDark = get(brandingOptions, "bodyBgDarkColor", "#0f172a");
+    const textLight = get(customTheme, "bodyTextLightColor", "#64748b");
+    const textDark = get(customTheme, "bodyTextDarkColor", "#94a3b8");
+    const bgLight = get(customTheme, "bodyBgLightColor", "#FFFFFF");
+    const bgDark = get(customTheme, "bodyBgDarkColor", "#0f172a");
     // @ts-ignore
     iframeDoc.body.className = `font-body antialiased text-[${textLight}] bg-[${bgLight}] dark:text-[${textDark}] dark:bg-[${bgDark}]`;
-  }, [brandingOptions, iframeDoc, model]);
+  }, [customTheme, iframeDoc, model]);
 
   return model === "page" ? (
     <>
