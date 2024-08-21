@@ -189,18 +189,18 @@ export const useDnd = () => {
       setHighlight("");
       setBlockIds([]);
     },
-    onDragLeave: (e: DragEvent) => {
-      const event = e;
-      event.stopPropagation();
-      event.preventDefault();
-      const target = event.target as HTMLElement;
-      if (target && target.classList.contains("drop-target")) {
-        target.classList.remove("drop-target");
-        if (dropTarget === target) {
-          dropTarget = null;
-        }
-      }
-      removePlaceholder();
-    },
+    // onDragLeave: (e: DragEvent) => {
+    //   const event = e;
+    //   event.stopPropagation();
+    //   event.preventDefault();
+    //   const target = event.target as HTMLElement;
+    //   if (target && target.classList.contains("drop-target")) {
+    //     target.classList.remove("drop-target");
+    //     if (dropTarget === target) {
+    //       dropTarget = null;
+    //     }
+    //   }
+    //   removePlaceholder();
+    // },
   };
 };
