@@ -13,11 +13,12 @@ import "./image";
 import "./slot";
 import "./video";
 import "./custom-html";
+import "./custom-script";
 import "./divider";
 import "./text";
 
-import "./interactive/accordion.tsx";
-import "./interactive/collapse.tsx";
+// import "./interactive/accordion.tsx";
+// import "./interactive/collapse.tsx";
 // import "./interactive/dark-mode.tsx";
 // hidden
 import "./hidden/body";
