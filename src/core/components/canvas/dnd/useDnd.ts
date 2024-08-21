@@ -21,12 +21,17 @@ const positionPlaceholder = (target: HTMLElement, orientation: "vertical" | "hor
   const positions = possiblePositions.map(([position]) => {
     return position;
   });
+
   const closest = positions.reduce(
     (prev, curr) => (Math.abs(curr - mousePosition) < Math.abs(prev - mousePosition) ? curr : prev),
     0,
   );
-  if (!possiblePositions[closest]) return;
-  const values = possiblePositions[closest];
+
+  const closestIndex = positions.indexOf(closest);
+
+  if (!possiblePositions[closestIndex]) return;
+  const values = possiblePositions[closestIndex];
+
   placeholder.style.width = orientation === "vertical" ? values[2] + "px" : "2px";
   placeholder.style.height = orientation === "vertical" ? "2px" : values[2] + "px";
   placeholder.style.display = "block";
@@ -57,15 +62,21 @@ const calculatePossiblePositions = (target: HTMLElement) => {
   const orientation = getOrientation(target);
   const isHorizontal = orientation === "horizontal";
 
-  // Calculate positions based on child elements and their margins
   possiblePositions = [];
-  Array.from(target.children).forEach((child: HTMLElement) => {
-    // if has class pointer-none, skip
+
+  Array.from(target.children).forEach((child: HTMLElement, index) => {
+    // Skip elements with class 'pointer-events-none'
     if (child.classList.contains("pointer-events-none")) return;
+
     const position = isHorizontal ? child.offsetLeft : child.offsetTop;
-    // First child, consider starting position with its margin
     const size = isHorizontal ? [child.offsetTop, child.clientHeight] : [child.offsetLeft, child.clientWidth];
     possiblePositions.push([position, size[0], size[1]]);
+
+    // Handle last child
+    if (index === target.children.length - 1) {
+      const lastPosition = isHorizontal ? child.offsetLeft + child.clientWidth : child.offsetTop + child.clientHeight;
+      possiblePositions.push([lastPosition, size[0], size[1]]);
+    }
   });
 };
 
@@ -85,13 +96,21 @@ function removePlaceholder() {
   const placeholder = iframeDocument?.getElementById("placeholder") as HTMLElement;
   placeholder.style.display = "none";
   removeClassFromElements("pointer-none");
+  removeDataDrop();
 }
 
 function removeClassFromElements(className: string): void {
-  const elements = document.querySelectorAll(`.${className}`);
+  const elements = iframeDocument?.querySelectorAll(`.${className}`);
   elements.forEach((element) => {
     element.classList.remove(className);
   });
+}
+
+function removeDataDrop(): void {
+  const element = iframeDocument?.querySelector('[data-drop="yes"]');
+  if (element) {
+    element.removeAttribute("data-drop");
+  }
 }
 
 export const useDnd = () => {
@@ -137,7 +156,6 @@ export const useDnd = () => {
       }
 
       // get the block id from the attribute data-block-id from target
-
       let blockId = block.getAttribute("data-block-id");
 
       if (blockId === null) {

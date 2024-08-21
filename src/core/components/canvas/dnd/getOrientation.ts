@@ -2,8 +2,9 @@ export function getOrientation(target: HTMLElement): "vertical" | "horizontal" {
   const computedStyle = window.getComputedStyle(target);
   const display = computedStyle.display;
 
-  if (display === "flex") {
+  if (display === "flex" || display === "inline-flex") {
     const flexDirection = computedStyle.flexDirection;
+
     return flexDirection === "column" || flexDirection === "column-reverse" ? "vertical" : "horizontal";
   } else if (display === "grid") {
     const gridAutoFlow = computedStyle.gridAutoFlow;

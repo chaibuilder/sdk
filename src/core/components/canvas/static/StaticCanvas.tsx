@@ -142,8 +142,9 @@ const StaticCanvas = (): React.JSX.Element => {
         <br />
 
         <div
-          id={"placeholder"}
-          className={"pointer-events-none absolute z-[99999] max-w-full bg-green-500 transition-transform"}></div>
+          id="placeholder"
+          className="pointer-events-none absolute z-[99999] max-w-full bg-green-500 transition-transform"
+        />
       </ChaiFrame>
     </div>
   );
