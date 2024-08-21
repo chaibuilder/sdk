@@ -83,14 +83,13 @@ const calculatePossiblePositions = (target: HTMLElement) => {
 const throttledDragOver = throttle((e: DragEvent) => {
   const target = e.target as HTMLElement;
   const orientation = getOrientation(target);
+
   if (orientation === "vertical") {
-    const y = e.clientY - target.offsetTop;
-    positionPlaceholder(target, orientation, y);
+    positionPlaceholder(target, orientation, e.clientY);
   } else {
-    const x = e.clientX - target.offsetLeft;
-    positionPlaceholder(target, orientation, x);
+    positionPlaceholder(target, orientation, e.clientX);
   }
-}, 200);
+}, 0);
 
 function removePlaceholder() {
   const placeholder = iframeDocument?.getElementById("placeholder") as HTMLElement;
@@ -140,6 +139,8 @@ export const useDnd = () => {
       dropIndex = calculateDropIndex(mousePosition, possiblePositions);
       const data = draggedBlock;
       const id = block.getAttribute("data-block-id");
+
+      //This is for moving blocks from the sidebar panel
       if (!has(data, "_id")) {
         addCoreBlock(data, id === "canvas" ? null : id, dropIndex);
         setTimeout(() => {
@@ -168,6 +169,7 @@ export const useDnd = () => {
       removePlaceholder();
       setIsDragging(false);
       setDraggedBlockId("");
+      possiblePositions = [];
       setTimeout(() => removePlaceholder(), 300);
     },
     onDragEnter: (e: DragEvent) => {
@@ -181,18 +183,24 @@ export const useDnd = () => {
       event.preventDefault();
       possiblePositions = [];
       calculatePossiblePositions(target);
+      console.log(possiblePositions, e.clientX, e.clientY);
       target.classList.add("drop-target");
       setIsDragging(true);
       setHighlight("");
       setBlockIds([]);
     },
-    // onDragLeave: (e: DragEvent) => {
-    //   const event = e;
-    //   dropTarget = null;
-    //   event.stopPropagation();
-    //   event.preventDefault();
-    //   const target = event.target as HTMLElement;
-    //   target.classList.remove("drop-target");
-    // },
+    onDragLeave: (e: DragEvent) => {
+      const event = e;
+      event.stopPropagation();
+      event.preventDefault();
+      const target = event.target as HTMLElement;
+      if (target && target.classList.contains("drop-target")) {
+        target.classList.remove("drop-target");
+        if (dropTarget === target) {
+          dropTarget = null;
+        }
+      }
+      removePlaceholder();
+    },
   };
 };

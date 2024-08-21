@@ -101,7 +101,7 @@ registerChaiBlock(ListItemBlock, {
     styles: Styles({ default: "" }),
     content: MultilineText({ title: "Content", default: "List item" }),
   },
-  canAcceptBlock: () => true,
+  canAcceptBlock: (type: string) => type !== "ListItem" ,
   canBeNested: (type: string) => type === "List",
 });
 
