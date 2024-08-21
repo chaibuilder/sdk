@@ -7,6 +7,7 @@ import { BindingWidget } from "../../../ui/widgets/rjsf/widgets/binding.tsx";
 import { IconPickerField, ImagePickerField, LinkField, RTEField } from "../../../ui";
 import validator from "@rjsf/validator-ajv8";
 import { useThrottledCallback } from "@react-hookz/web";
+import { CodeEditor } from "../../../ui/widgets/rjsf/widgets/Code.tsx";
 
 type JSONFormType = {
   id?: string;
@@ -51,6 +52,7 @@ export const JSONForm = memo(({ id, properties, formData, onChange }: JSONFormTy
         richtext: RTEField,
         icon: IconPickerField,
         image: ImagePickerField,
+        code: CodeEditor,
       }}
       fields={{ link: LinkField }}
       idSeparator="."

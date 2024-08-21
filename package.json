@@ -87,7 +87,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@chaibuilder/runtime": "0.2.7",
+    "@chaibuilder/runtime": "0.2.8",
     "@floating-ui/dom": "1.4.5",
     "@floating-ui/react-dom": "2.0.1",
     "@mhsdesign/jit-browser-tailwindcss": "0.4.1",
