@@ -35,6 +35,7 @@ export const IframeInitialContent: string = `<!doctype html>
     }
     .frame-root .frame-content { height: 100%; }
     [data-drop="yes"] { outline: 2px dashed orange !important; outline-offset: -2px }
+    [data-dnd="yes"] { pointer-events: auto !important}
     [data-dnd="no"] { pointer-events: none !important; }
     </style>    
     <style id="hidden-blocks"></style>
