@@ -1,32 +1,39 @@
 import Editor from "@monaco-editor/react";
-import { Button, useToast } from "../../../../ui";
+import { Button } from "../../../../ui";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
-import { useAtom } from "jotai/index";
-import { codeEditorOpenAtom } from "../../../atoms/ui.ts";
+import { useCallback, useEffect, useState } from "react";
+import { useCodeEditor } from "../../../hooks/useCodeEditor.ts";
+import { useSelectedBlockIds, useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "../../../hooks";
+import { Cross2Icon } from "@radix-ui/react-icons";
 
 export default function CodeEditor() {
   const { t } = useTranslation();
   const [dirty, setDirty] = useState(false);
-  const [, setCode] = useState("");
-  const [, setShowCodeEditor] = useAtom(codeEditorOpenAtom);
-  const { toast } = useToast();
-  const closeCodeEditor = () => {
+  const [code, setCode] = useState("");
+  const [codeEditor, setCodeEditor] = useCodeEditor();
+  const [ids] = useSelectedBlockIds();
+  const updateBlockProps = useUpdateBlocksProps();
+  const updateRealTime = useUpdateBlocksPropsRealtime();
+  const saveCodeContentRealTime = useCallback((value: string) => {
+    updateRealTime([codeEditor.blockId], { [codeEditor.blockProp]: value });
+  }, []);
+
+  const saveCodeContent = useCallback(() => {
     if (dirty) {
-      toast({
-        title: t("Unsaved changes"),
-        description: t("You have unsaved changes. Please save before closing the code editor or cancel"),
-        variant: "destructive",
-      });
-      return;
+      updateBlockProps([codeEditor.blockId], { [codeEditor.blockProp]: code });
     }
-    setShowCodeEditor(false);
-    setDirty(false);
-    setCode("");
-  };
+  }, [dirty, code]);
+
+  useEffect(() => {
+    if (!ids.includes(codeEditor?.blockId)) {
+      saveCodeContent();
+      // @ts-ignore
+      setCodeEditor(null);
+    }
+  }, [ids]);
+
   return (
     <div className="h-full rounded-t-lg border-t-4 border-black bg-black text-white">
-      {dirty ? <button onClick={closeCodeEditor} className="fixed inset-0 z-[100000] bg-gray-400/10"></button> : null}
       <div className="relative z-[100001] h-full w-full flex-col gap-y-1">
         <div className="-mt-1 flex items-center justify-between px-2 py-2">
           <h3 className="space-x-3 text-sm font-semibold">
@@ -37,23 +44,30 @@ export default function CodeEditor() {
           </h3>
           <div className="flex gap-x-2">
             <Button
-              onClick={() => setShowCodeEditor(false)}
+              // @ts-ignore
+              onClick={() => setCodeEditor(null)}
               size={"sm"}
-              variant={"outline"}
-              className={"h-6 w-fit text-red-600"}>
-              {t("Close")}
+              variant={"destructive"}
+              className={"h-6 w-fit"}>
+              <Cross2Icon />
             </Button>
           </div>
         </div>
         <Editor
+          onMount={(editor) => {
+            console.log(editor, code);
+            editor.setValue(codeEditor.initialCode);
+          }}
           onChange={(value) => {
+            console.log(value);
             setDirty(true);
             setCode(value);
+            saveCodeContentRealTime(value);
           }}
           height="100%"
           defaultLanguage="html"
           theme={"vs-dark"}
-          defaultValue=""
+          defaultValue={""}
           options={{
             minimap: {
               enabled: false,

@@ -1,19 +1,32 @@
 import { WidgetProps } from "@rjsf/utils";
 import { useTranslation } from "react-i18next";
-import { useAtom } from "jotai/index";
-import { codeEditorOpenAtom } from "../../../../core/atoms/ui.ts";
 import { Button } from "../../../radix/components/ui/button.tsx";
+import { useCodeEditor } from "../../../../core/hooks/useCodeEditor.ts";
+import { useSelectedBlock } from "../../../../core/hooks";
+import { ChaiBlock } from "../../../../core/types/ChaiBlock.ts";
 
 const CodeEditor = ({ id, placeholder, value }: WidgetProps) => {
   const { t } = useTranslation();
-  const [, setShowCodeEditor] = useAtom(codeEditorOpenAtom);
+  const [, setCodeEditor] = useCodeEditor();
+  const selectedBlock = useSelectedBlock() as ChaiBlock;
   if (typeof window === "undefined") return null;
 
-  console.log(id, value, placeholder);
+  const openCodeEditor = () => {
+    const blockId = selectedBlock?._id;
+    const blockProp = id.replace("root.", "");
+    // @ts-ignore
+    setCodeEditor({ blockId, blockProp, placeholder, initialCode: value });
+  };
+
   return (
-    <div className={"flex flex-col gap-y-1"}>
-      <Button onClick={() => setShowCodeEditor(true)} size={"sm"} variant={"outline"} className={"mt-2 w-fit"}>
-        {t("Open in Code Editor")}
+    <div className={"mt-2 flex flex-col gap-y-1"}>
+      <button
+        onClick={openCodeEditor}
+        className="text-pretty w-[90%] max-w-full cursor-default truncate rounded border bg-white p-2 text-left text-[10px]">
+        {value.substring(0, 46)}
+      </button>
+      <Button onClick={openCodeEditor} size={"sm"} variant={"outline"} className={"w-fit"}>
+        {t("Open code editor")}
       </Button>
     </div>
   );

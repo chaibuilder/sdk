@@ -4,13 +4,12 @@ import { Skeleton } from "../../../ui";
 import { StaticCanvas } from "./static/StaticCanvas";
 import { ErrorBoundary } from "../ErrorBoundary";
 import { Resizable } from "re-resizable";
-import { codeEditorOpenAtom } from "../../atoms/ui.ts";
-import { useAtom } from "jotai";
+import { useCodeEditor } from "../../hooks/useCodeEditor.ts";
 
 const CodeEditor = React.lazy(() => import("./static/CodeEditor"));
 
 const CanvasArea: React.FC = () => {
-  const [showCodeEditor] = useAtom(codeEditorOpenAtom);
+  const [codeEditor] = useCodeEditor();
   return (
     <div className="flex h-full w-full flex-col">
       <CanvasTopBar />
@@ -20,7 +19,7 @@ const CanvasArea: React.FC = () => {
             <StaticCanvas />
           </ErrorBoundary>
         </Suspense>
-        {showCodeEditor ? (
+        {codeEditor ? (
           <Suspense fallback={<Skeleton className="h-full" />}>
             <Resizable enable={{ top: true, bottom: false }} className="max-h-[400px] min-h-[200px]">
               <CodeEditor />
