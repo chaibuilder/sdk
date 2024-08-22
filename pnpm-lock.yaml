@@ -10,6 +10,7 @@ specifiers:
   '@floating-ui/dom': 1.4.5
   '@floating-ui/react-dom': 2.0.1
   '@mhsdesign/jit-browser-tailwindcss': 0.4.1
+  '@monaco-editor/react': ^4.6.0
   '@nozbe/watermelondb': ^0.27.1
   '@playwright/test': ^1.39.0
   '@radix-ui/react-accordion': ^1.1.2
@@ -88,6 +89,7 @@ specifiers:
   prettier: ^3.3.0
   prettier-plugin-tailwindcss: ^0.6.1
   prop-types: ^15.8.1
+  re-resizable: ^6.9.17
   react: ^18.2.0
   react-arborist: ^3.4.0
   react-autosuggest: 10.1.0
@@ -123,6 +125,7 @@ dependencies:
   '@floating-ui/dom': 1.4.5
   '@floating-ui/react-dom': 2.0.1_biqbaboplfbrettd7655fr4n2y
   '@mhsdesign/jit-browser-tailwindcss': 0.4.1_ts-node@10.9.2
+  '@monaco-editor/react': 4.6.0_biqbaboplfbrettd7655fr4n2y
   '@radix-ui/react-accordion': 1.1.2_wh7xiv6sbfr3hrvugl4gvagpl4
   '@radix-ui/react-alert-dialog': 1.0.5_wh7xiv6sbfr3hrvugl4gvagpl4
   '@radix-ui/react-context-menu': 2.1.5_wh7xiv6sbfr3hrvugl4gvagpl4
@@ -167,6 +170,7 @@ dependencies:
   lodash-es: 4.17.21
   lucide-react: 0.244.0_react@18.2.0
   preline: 2.3.0
+  re-resizable: 6.9.17_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
   react-arborist: 3.4.0_pikd2mlpdc3g5bl6cxdgvund7m
   react-autosuggest: 10.1.0_react@18.2.0
@@ -2493,6 +2497,26 @@ packages:
   /@microsoft/tsdoc/0.14.2:
     resolution: {integrity: sha512-9b8mPpKrfeGRuhFH5iO1iwCLeIIsV6+H1sRfxbkoGXIyQE2BTsPd9zqSqQJ+pv5sJ/hT5M1zvOFL02MnEezFug==}
     dev: true
+
+  /@monaco-editor/loader/1.4.0:
+    resolution: {integrity: sha512-00ioBig0x642hytVspPl7DbQyaSWRaolYie/UFNjoTdvoKPzo6xrXLhTk9ixgIKcLH5b5vDOjVNiGyY+uDCUlg==}
+    peerDependencies:
+      monaco-editor: '>= 0.21.0 < 1'
+    dependencies:
+      state-local: 1.0.7
+    dev: false
+
+  /@monaco-editor/react/4.6.0_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-RFkU9/i7cN2bsq/iTkurMWOEErmYcY6JiQI3Jn+WeR/FGISH8JbHERjpS9oRuSOPvDMJI0Z8nJeKkbOs9sBYQw==}
+    peerDependencies:
+      monaco-editor: '>= 0.25.0 < 1'
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@monaco-editor/loader': 1.4.0
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
 
   /@mswjs/cookies/1.1.0:
     resolution: {integrity: sha512-0ZcCVQxifZmhwNBoQIrystCb+2sWBY2Zw8lpfJBPCHGCA/HWqehITeCRVIv4VMy8MPlaHo2w2pTHFV2pFfqKPw==}
@@ -10482,6 +10506,16 @@ packages:
       strip-json-comments: 2.0.1
     dev: true
 
+  /re-resizable/6.9.17_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-OBqd1BwVXpEJJn/yYROG+CbeqIDBWIp6wathlpB0kzZWWZIY1gPTsgK2yJEui5hOvkCdC2mcexF2V3DZVfLq2g==}
+    peerDependencies:
+      react: ^16.13.1 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.13.1 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
   /react-ace/9.5.0_biqbaboplfbrettd7655fr4n2y:
     resolution: {integrity: sha512-4l5FgwGh6K7A0yWVMQlPIXDItM4Q9zzXRqOae8KkCl6MkOob7sC1CzHxZdOGvV+QioKWbX2p5HcdOVUv6cAdSg==}
     peerDependencies:
@@ -11516,6 +11550,10 @@ packages:
       as-table: 1.0.55
       get-source: 2.0.12
     dev: true
+
+  /state-local/1.0.7:
+    resolution: {integrity: sha512-HTEHMNieakEnoe33shBYcZ7NX83ACUjCu8c40iOGEZsngj9zRnkqS9j1pqQPXwobB0ZcVTk27REb7COQ0UR59w==}
+    dev: false
 
   /statuses/2.0.1:
     resolution: {integrity: sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==}

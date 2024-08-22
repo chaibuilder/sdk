@@ -11,13 +11,15 @@ const CustomHTMLBlock = React.memo(
       styles: Record<string, string>;
     },
   ) => {
-    const { blockProps, styles, content, inBuilder } = props;
+    const { blockProps, styles, htmlCode, inBuilder } = props;
+    //remove all script tags from htmlCode
+    const htmlCodeWithoutScriptTags = htmlCode.replace(/<script.*?>.*?<\/script>/g, "");
     return (
       <div className={"relative"}>
         {inBuilder ? <div {...blockProps} {...styles} className="absolute z-20 h-full w-full" /> : null}
         {React.createElement("div", {
           ...styles,
-          dangerouslySetInnerHTML: { __html: content },
+          dangerouslySetInnerHTML: { __html: inBuilder ? htmlCodeWithoutScriptTags : htmlCode },
         })}
       </div>
     );
@@ -32,7 +34,7 @@ registerChaiBlock(CustomHTMLBlock, {
   group: "advanced",
   props: {
     styles: Styles({ default: "" }),
-    content: Code({
+    htmlCode: Code({
       title: "HTML Code",
       default: "<div><p>HTML Snippet goes here...</p></div>",
       placeholder: "Enter custom HTML code here",

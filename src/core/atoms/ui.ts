@@ -1,14 +1,12 @@
 import { atom } from "jotai";
 import { TreeApi } from "react-arborist";
+import { atomWithStorage } from "jotai/utils";
 
 export const readOnlyModeAtom: any = atom<boolean>(false);
 readOnlyModeAtom.debugLabel = "readOnlyModeAtom";
 
 export const networkModeAtom: any = atom<string>("online");
 networkModeAtom.debugLabel = "networkModeAtom";
-
-export const codeEditorOpenAtom: any = atom(false);
-codeEditorOpenAtom.debugLabel = "codeEditorOpenAtom";
 
 /**
  * @atom
@@ -52,3 +50,9 @@ canvasSettingsAtom.debugLabel = "canvasSettingsAtom";
 
 export const aiAssistantActiveAtom = atom(false);
 aiAssistantActiveAtom.debugLabel = "askAiActiveBlockAtom";
+
+export const codeEditorOpenAtom = atom(false);
+codeEditorOpenAtom.debugLabel = "codeEditorOpenAtom";
+
+export const codeEditorHeightAtom = atomWithStorage("codeEditorHeight", 500);
+codeEditorHeightAtom.debugLabel = "codeEditorHeightAtom";

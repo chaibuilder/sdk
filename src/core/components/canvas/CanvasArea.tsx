@@ -3,17 +3,38 @@ import { CanvasTopBar } from "./topbar/CanvasTopBar";
 import { Skeleton } from "../../../ui";
 import { StaticCanvas } from "./static/StaticCanvas";
 import { ErrorBoundary } from "../ErrorBoundary";
+import { Resizable } from "re-resizable";
+import { codeEditorHeightAtom, codeEditorOpenAtom } from "../../atoms/ui.ts";
+import { useAtom } from "jotai";
+
+const CodeEditor = React.lazy(() => import("./static/CodeEditor"));
 
 const CanvasArea: React.FC = () => {
+  const [height, setHeight] = useAtom(codeEditorHeightAtom);
+  const [showCodeEditor] = useAtom(codeEditorOpenAtom);
   return (
     <div className="flex h-full w-full flex-col">
       <CanvasTopBar />
-      <div className="relative h-full overflow-hidden bg-slate-800/90 bg-[linear-gradient(to_right,#222_0.5px,transparent_0.5px),linear-gradient(to_bottom,#222_0.5px,transparent_0.5px)] bg-[size:12px_12px] px-2">
+      <div className="relative flex h-full flex-col overflow-hidden bg-slate-800/90 bg-[linear-gradient(to_right,#222_0.5px,transparent_0.5px),linear-gradient(to_bottom,#222_0.5px,transparent_0.5px)] bg-[size:12px_12px] px-2">
         <Suspense fallback={<Skeleton className="h-full" />}>
           <ErrorBoundary>
             <StaticCanvas />
           </ErrorBoundary>
         </Suspense>
+        {showCodeEditor ? (
+          <Suspense fallback={<Skeleton className="h-full" />}>
+            <Resizable
+              defaultSize={{
+                height: height,
+              }}
+              onResizeStop={(_e, _direction, _ref, d) => {
+                setHeight(height + d.height);
+              }}
+              className="max-h-[500px] min-h-[200px] rounded-t-md bg-background">
+              <CodeEditor />
+            </Resizable>
+          </Suspense>
+        ) : null}
       </div>
     </div>
   );

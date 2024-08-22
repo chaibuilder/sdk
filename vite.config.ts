@@ -77,6 +77,8 @@ export default defineConfig({
         "jotai",
         "preline",
         "prop-types",
+        "@monaco-editor/react",
+        "re-resizable",
         "lodash",
         "lodash-es",
         "lucide-react",

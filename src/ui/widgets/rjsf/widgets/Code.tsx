@@ -4,9 +4,12 @@ import { WidgetProps } from "@rjsf/utils";
 import { Textarea } from "../../../radix/components/ui/textarea.tsx";
 import { Button } from "../../../radix/components/ui/button.tsx";
 import { useTranslation } from "react-i18next";
+import { useAtom } from "jotai/index";
+import { codeEditorOpenAtom } from "../../../../core/atoms/ui.ts";
 
 const CodeEditor = ({ id, placeholder, value, onChange, onBlur }: WidgetProps) => {
   const { t } = useTranslation();
+  const [, setShowCodeEditor] = useAtom(codeEditorOpenAtom);
   if (typeof window === "undefined") return null;
 
   return (
@@ -21,7 +24,7 @@ const CodeEditor = ({ id, placeholder, value, onChange, onBlur }: WidgetProps) =
         placeholder={placeholder}
         className="mt-1 block rounded-md bg-white font-mono text-xs"
       />
-      <Button size={"sm"} variant={"outline"} className={"w-fit"}>
+      <Button onClick={() => setShowCodeEditor(true)} size={"sm"} variant={"outline"} className={"w-fit"}>
         {t("Open in Code Editor")}
       </Button>
     </div>
