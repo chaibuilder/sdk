@@ -185,7 +185,7 @@ export const useDnd = () => {
       event.preventDefault();
       possiblePositions = [];
       calculatePossiblePositions(target);
-      console.log(possiblePositions, e.clientX, e.clientY);
+
       target.classList.add("drop-target");
       setIsDragging(true);
       setHighlight("");
