@@ -33,10 +33,7 @@ const LinkField = ({ schema, formData, onChange }: FieldProps) => {
           ))}
         </select>
         {type === "page" ? (
-          <select
-            name="href"
-            value={href}
-            onChange={(e) => onChange({ ...formData, href: e.target.value })}>
+          <select name="href" value={href} onChange={(e) => onChange({ ...formData, href: e.target.value || "#" })}>
             <option value="">Choose page</option>
             {map(pages, (page: any) => (
               <option key={page.uuid} value={page.slug}>
@@ -49,7 +46,7 @@ const LinkField = ({ schema, formData, onChange }: FieldProps) => {
             name="href"
             type="text"
             value={href}
-            onChange={(e) => onChange({ ...formData, href: e.target.value })}
+            onChange={(e) => onChange({ ...formData, href: e.target.value || "#" })}
             placeholder={
               type === "page" || type === "url" ? "Enter URL" : type === "scroll" ? "#ElementID" : "Enter detail"
             }

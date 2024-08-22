@@ -39,7 +39,7 @@ const LinkBlock = (
 
   if (children) {
     return (
-      <a href={link.href || "#/"} target={link.target} {...blockProps} {...styles}>
+      <a href={link?.href || "#/"} target={link?.target} {...blockProps} {...styles}>
         {children}
       </a>
     );
@@ -49,8 +49,8 @@ const LinkBlock = (
     ...blockProps,
     ...styles,
     "data-ai-key": "content",
-    href: link.href || "#",
-    target: link.target || "_self",
+    href: link?.href || "#",
+    target: link?.target || "_self",
     dangerouslySetInnerHTML: { __html: content },
   });
 };
@@ -66,7 +66,7 @@ registerChaiBlock(LinkBlock, {
     content: SingleLineText({ title: "Content", default: "" }),
     link: Link({
       title: "Link",
-      default: { type: "page", target: "_self", href: "" },
+      default: { type: "page", target: "_self", href: "#" },
     }),
   },
   canAcceptBlock: (type: string) => type !== "Link",
