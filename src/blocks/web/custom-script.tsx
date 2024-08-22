@@ -3,6 +3,7 @@ import { registerChaiBlock } from "@chaibuilder/runtime";
 import { Code } from "@chaibuilder/runtime/controls";
 import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
 import { DiJavascript } from "react-icons/di";
+import EmptySlot from "../empty-slot.tsx";
 
 const CustomScript = React.memo(
   (
@@ -10,8 +11,13 @@ const CustomScript = React.memo(
       script: string;
     },
   ) => {
-    const { script, inBuilder } = props;
-    if (inBuilder) return null;
+    const { script, inBuilder, blockProps } = props;
+    if (inBuilder)
+      return (
+        <div {...blockProps}>
+          <EmptySlot />
+        </div>
+      );
     return <div dangerouslySetInnerHTML={{ __html: script }}></div>;
   },
 );
