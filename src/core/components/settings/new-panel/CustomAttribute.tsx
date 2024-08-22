@@ -147,10 +147,10 @@ export const CustomAttributes = () => {
                       <TooltipTrigger asChild>
                         <div className="max-w-[230px] cursor-default truncate px-1 hover:bg-gray-200">
                           {item.key}
-                          {item.value.trim() ? (
+                          {item.value.toString().trim() ? (
                             <>
                               &nbsp;<span className="font-bold text-orange-500">=</span>&nbsp;
-                              {item.value.trim()}
+                              {item.value.toString().trim()}
                             </>
                           ) : null}
                         </div>
@@ -160,7 +160,7 @@ export const CustomAttributes = () => {
                           {t("Name")}: {item.key}
                         </div>
                         <div>
-                          {t("Value")}: {item.value}
+                          {t("Value")}: {item.value.toString()}
                         </div>
                       </TooltipContent>
                     </Tooltip>
@@ -174,7 +174,7 @@ export const CustomAttributes = () => {
                         </button>
                       </TooltipTrigger>
                       <TooltipContent className="max-w-[200px]">
-                        {startsWith(item.value, "dnd-")
+                        {startsWith(item.value.toString(), "dnd-")
                           ? t("Predefined attribute. Cannot be deleted")
                           : t("Remove attribute")}
                       </TooltipContent>

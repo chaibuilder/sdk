@@ -127,75 +127,7 @@ const getStyles = (node: Node, propKey: string = "styles"): Record<string, strin
   return { [propKey]: `${STYLES_KEY},` };
 };
 
-const getInteractiveBlock = (node: Node) => {
-  // interactive nodes as the ones with one of the following class
-  const interactiveClasses = {
-    "hs-collapse-toggle": "CollapseToggle",
-    "hs-collapse": "Collapse",
-    "hs-accordion-group": "AccordionGroup",
-    "hs-accordion": "Accordion",
-    "hs-accordion-toggle": "AccordionToggle",
-    "hs-accordion-content": "AccordionContent",
-  };
-  const additionalClassesToRemove = {
-    Accordion: "active",
-    CollapseToggle: "open",
-  };
-  // return the values based on the key. Key can be a class name or a data attribute
-  const classAttr = find(node.attributes, { key: "class" }) as { value: string } | undefined;
-  if (classAttr) {
-    const classes = classAttr.value.split(" ");
-    for (const className of classes) {
-      if (interactiveClasses[className]) {
-        const blockType = interactiveClasses[className];
-        const newClasses = classAttr.value.replace(className, "");
-        node.attributes = node.attributes.map((attr) => (attr.key === "class" ? { ...attr, value: newClasses } : attr));
-        if (additionalClassesToRemove[blockType]) {
-          node.attributes = node.attributes.map((attr) =>
-            attr.key === "class"
-              ? { ...attr, value: attr.value.replace(additionalClassesToRemove[blockType], "") }
-              : attr,
-          );
-        }
-        return blockType;
-      }
-    }
-  }
-  const interactiveAttrs = {};
-  // {
-  //   "data-hs-overlay": "OverlayTrigger",
-  //   "data-hs-remove-element": "RemoveElementButton",
-  //   "data-hs-tab": "Tab",
-  //   "data-hs-theme-click-value": "DarkModeButton",
-  //   'role="tablist"': "TabList",
-  //   'role="tab"': "TabItem",
-  //   'role="tabpanel"': "TabPanel",
-  // };
-
-  //loop through they keys in interactiveAttrs and check if the key matches
-  for (const key in interactiveAttrs) {
-    if (node.attributes.some((attr) => attr.key === key)) {
-      return interactiveAttrs[key];
-    }
-  }
-
-  // return the values based on the key. Key can be a attribute name or a role with value
-  const attrAttr = find(node.attributes, { key: "role" }) as { value: string } | undefined;
-  if (attrAttr) {
-    const key = `role="${attrAttr.value}"`;
-    if (interactiveAttrs[key]) {
-      return interactiveAttrs[key];
-    }
-  }
-};
-
 const getBlockProps = (node: Node): Record<string, any> => {
-  //check if the node has class hs-accordion
-  const interactiveNode: string | undefined = getInteractiveBlock(node);
-  if (interactiveNode) {
-    return { _type: interactiveNode };
-  }
-
   switch (node.tagName) {
     // self closing tags
     case "img":
