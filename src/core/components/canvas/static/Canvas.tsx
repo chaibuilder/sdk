@@ -114,7 +114,7 @@ const useHandleCanvasClick = () => {
       const styleId = chaiBlock.getAttribute("data-style-id") as string;
       const blockId = chaiBlock.getAttribute("data-block-parent") as string;
       if (!ids.includes(blockId)) {
-        treeRef.closeAll();
+        treeRef?.closeAll();
       }
 
       setStyleBlockIds([{ id: styleId, prop: styleProp, blockId }]);
@@ -122,7 +122,7 @@ const useHandleCanvasClick = () => {
     } else if (chaiBlock?.getAttribute("data-block-id")) {
       let blockId = chaiBlock.getAttribute("data-block-id");
       if (!ids.includes(blockId)) {
-        treeRef.closeAll();
+        treeRef?.closeAll();
       }
       setIds([blockId]);
     }
