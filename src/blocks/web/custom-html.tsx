@@ -40,6 +40,7 @@ registerChaiBlock(CustomHTMLBlock, {
       placeholder: "Enter custom HTML code here",
     }),
   },
+  canAcceptBlock: () => false,
 });
 
 export default CustomHTMLBlock;

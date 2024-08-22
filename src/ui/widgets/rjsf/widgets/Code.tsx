@@ -23,7 +23,9 @@ const CodeEditor = ({ id, placeholder, value }: WidgetProps) => {
       <button
         onClick={openCodeEditor}
         className="text-pretty w-[90%] max-w-full cursor-default truncate rounded border bg-white p-2 text-left text-[10px]">
-        {value.substring(0, 46)}
+        {value.trim().length > 0
+          ? value.substring(0, 46)
+          : placeholder || "Eg: <script>console.log('Hello, world!');</script>"}
       </button>
       <Button onClick={openCodeEditor} size={"sm"} variant={"outline"} className={"w-fit"}>
         {t("Open code editor")}

@@ -35,6 +35,7 @@ registerChaiBlock(CustomScript, {
       placeholder: "<script>console.log('Hello, world!');</script>",
     }),
   },
+  canAcceptBlock: () => false,
 });
 
 export default CustomScript;

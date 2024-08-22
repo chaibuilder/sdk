@@ -40,7 +40,7 @@ export const useAddBlock = (): AddBlocks => {
         parentBlockId = parentId;
       }
 
-      const canAdd = parentBlock ? canAcceptChildBlock(parentBlock._type, block._type) : true;
+      const canAdd = parentBlock ? canAcceptChildBlock(parentBlock?._type, block._type) : true;
       if (!canAdd && parentBlock) {
         blocks[0]._parent = parentBlock._parent;
         parentBlockId = parentBlock._parent;
@@ -90,7 +90,7 @@ export const useAddBlock = (): AddBlocks => {
         parentBlockId = parentId;
       }
 
-      const canAdd = true;
+      const canAdd = canAcceptChildBlock(parentBlock?._type, newBlock._type);
       if (!canAdd && parentBlock) {
         newBlock._parent = parentBlock._parent;
         parentBlockId = parentBlock._parent;
