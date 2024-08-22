@@ -84,8 +84,10 @@ const throttledDragOver = throttle((e: DragEvent) => {
   const target = e.target as HTMLElement;
   const orientation = getOrientation(target);
 
+  const IframeScrollTop = iframeDocument?.defaultView?.pageYOffset;
+
   if (orientation === "vertical") {
-    positionPlaceholder(target, orientation, e.clientY);
+    positionPlaceholder(target, orientation, e.clientY + IframeScrollTop);
   } else {
     positionPlaceholder(target, orientation, e.clientX);
   }
