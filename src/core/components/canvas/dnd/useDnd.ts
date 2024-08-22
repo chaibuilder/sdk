@@ -84,7 +84,7 @@ const throttledDragOver = throttle((e: DragEvent) => {
   const target = e.target as HTMLElement;
   const orientation = getOrientation(target);
 
-  const IframeScrollTop = iframeDocument?.defaultView?.pageYOffset;
+  const IframeScrollTop = iframeDocument?.defaultView?.scrollY;
 
   if (orientation === "vertical") {
     positionPlaceholder(target, orientation, e.clientY + IframeScrollTop);
@@ -137,7 +137,7 @@ export const useDnd = () => {
       dropTarget?.classList.remove("drop-target");
       const block = dropTarget as HTMLElement;
       const orientation = getOrientation(block);
-      const mousePosition = orientation === "vertical" ? ev.clientY : ev.clientX;
+      const mousePosition = orientation === "vertical" ? ev.clientY + iframeDocument?.defaultView?.scrollY : ev.clientX;
       dropIndex = calculateDropIndex(mousePosition, possiblePositions);
       const data = draggedBlock;
       const id = block.getAttribute("data-block-id");
@@ -185,7 +185,7 @@ export const useDnd = () => {
       event.preventDefault();
       possiblePositions = [];
       calculatePossiblePositions(target);
-
+      console.log(possiblePositions,  e.clientY, iframeDocument.defaultView.scrollY);
       target.classList.add("drop-target");
       setIsDragging(true);
       setHighlight("");
