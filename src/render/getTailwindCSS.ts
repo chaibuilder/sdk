@@ -8,14 +8,14 @@ import twAspectRatio from "@tailwindcss/aspect-ratio";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { addPrefixToClasses, ChaiPageData } from "./functions.ts";
 import { STYLES_KEY } from "../core/constants/STRINGS.ts";
-import { ThemeConfiguration } from "../core/types/index";
+import { ThemeConfiguration } from "../core/types";
 import getPalette from "tailwindcss-palette-generator";
 
 export async function getTailwindCSS(
   customTheme: any,
   markupString: string[],
   safelist: string[] = [],
-  prefix: string = "c-",
+  prefix: string = "",
   includeBaseStyles: boolean = false,
 ) {
   const primary = get(customTheme, "primaryColor", "#000");
@@ -26,8 +26,8 @@ export async function getTailwindCSS(
   const borderRadius = get(customTheme, "roundedCorners", "0");
   const BG_LIGHT_MODE = get(customTheme, "bodyBgLightColor", "#fff");
   const BG_DARK_MODE = get(customTheme, "bodyBgDarkColor", "#000");
-  const TEXT_DARK_MODE = get(customTheme, "bodyTextDarkColor", "#000");
-  const TEXT_LIGHT_MODE = get(customTheme, "bodyTextLightColor", "#fff");
+  const TEXT_DARK_MODE = get(customTheme, "bodyTextDarkColor", "#FFF");
+  const TEXT_LIGHT_MODE = get(customTheme, "bodyTextLightColor", "#000");
 
   const colors: Record<string, string> = {
     "bg-light": BG_LIGHT_MODE,

@@ -1,7 +1,7 @@
 import { DragPreviewProps } from "react-arborist";
 import { memo, useMemo } from "react";
 import { useBlocksStore } from "../../../../../hooks";
-import { ChaiBlock } from "../../../../../types";
+import { ChaiBlock } from "../../../../../types/types.ts";
 import { TypeIcon } from "../TypeIcon";
 
 const Overlay = memo(function Overlay({ children, isDragging }: { children: JSX.Element; isDragging: boolean }) {
