@@ -61,7 +61,9 @@ export type ChaiPageData = {
 export const convertToBlocks = (jsonString: string): ChaiBlock[] => {
   if (!jsonString) return [];
   try {
-    return JSON.parse(jsonString);
+    const blocks = JSON.parse(jsonString);
+    //remove the blocks whose _type starts with @chai
+    return blocks.filter((block) => !block._type.startsWith("@chai"));
   } catch (error) {
     return [{ _type: "Paragraph", _id: "error", content: "Invalid JSON. Please check the JSON string." }];
   }
