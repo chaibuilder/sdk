@@ -45,6 +45,7 @@ specifiers:
   '@tailwindcss/typography': ^0.5.10
   '@tanstack/eslint-plugin-query': ^5.8.4
   '@tanstack/react-query': ^5.8.4
+  '@testing-library/react': ^16.0.0
   '@testing-library/react-hooks': ^8.0.1
   '@types/better-sqlite3': ^7.6.7
   '@types/jest': ^29.5.7
@@ -98,7 +99,7 @@ specifiers:
   react-email: ^2.1.3
   react-hotkeys-hook: 4.4.1
   react-i18next: 13.0.1
-  react-icons: ^4.11.0
+  react-icons: 5.3.0
   react-icons-picker: ^1.0.9
   react-json-view-lite: ^1.4.0
   react-quill: ^2.0.0
@@ -179,8 +180,8 @@ dependencies:
   react-email: 2.1.3_lftkgawb62lo6pikx3b7h4etqe
   react-hotkeys-hook: 4.4.1_biqbaboplfbrettd7655fr4n2y
   react-i18next: 13.0.1_hv3wqpusfuaxw6ocr52s2col5q
-  react-icons: 4.11.0_react@18.2.0
-  react-icons-picker: 1.0.9_l3n2gwfjidpn4poq4bsylgjfrq
+  react-icons: 5.3.0_react@18.2.0
+  react-icons-picker: 1.0.9_jyn66wu4jph7e5ar5ummzrpzhu
   react-json-view-lite: 1.4.0_react@18.2.0
   react-quill: 2.0.0_biqbaboplfbrettd7655fr4n2y
   react-wrap-balancer: 1.1.0_react@18.2.0
@@ -201,6 +202,7 @@ devDependencies:
   '@nozbe/watermelondb': 0.27.1
   '@playwright/test': 1.39.0
   '@tanstack/eslint-plugin-query': 5.8.4_5iy6f2d3forlnf27wdbuobyvmm
+  '@testing-library/react': 16.0.0_wh7xiv6sbfr3hrvugl4gvagpl4
   '@testing-library/react-hooks': 8.0.1_uhnvbqyidce6nup7tsgrqjnqhy
   '@types/better-sqlite3': 7.6.7
   '@types/jest': 29.5.7
@@ -1015,7 +1017,7 @@ packages:
     resolution: {integrity: sha512-m4HEDZleaaCH+XgDDsPF15Ht6wTLsgDTeR3WYj9Q/k76JtWhrJjcP4+/XlG8LGT/Rol9qUfOIztXeA84ATpqPQ==}
     dependencies:
       '@babel/helper-module-imports': 7.22.15
-      '@babel/runtime': 7.23.2
+      '@babel/runtime': 7.24.7
       '@emotion/hash': 0.9.1
       '@emotion/memoize': 0.8.1
       '@emotion/serialize': 1.1.2
@@ -4928,6 +4930,28 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-error-boundary: 3.1.4_react@18.2.0
+    dev: true
+
+  /@testing-library/react/16.0.0_wh7xiv6sbfr3hrvugl4gvagpl4:
+    resolution: {integrity: sha512-guuxUKRWQ+FgNX0h0NS0FIq3Q3uLtWVpBzcLOggmfMoUpgBnzBzvLLd4fbm6yS8ydJd94cIfY4yP9qUQjM2KwQ==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      '@testing-library/dom': ^10.0.0
+      '@types/react': ^18.0.0
+      '@types/react-dom': ^18.0.0
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.24.7
+      '@types/react': 18.2.34
+      '@types/react-dom': 18.2.14
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: true
 
   /@tootallnate/once/2.0.0:
@@ -10711,7 +10735,7 @@ packages:
     peerDependencies:
       react: '>=16.13.1'
     dependencies:
-      '@babel/runtime': 7.23.2
+      '@babel/runtime': 7.24.7
       react: 18.2.0
     dev: true
 
@@ -10765,7 +10789,7 @@ packages:
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
-  /react-icons-picker/1.0.9_l3n2gwfjidpn4poq4bsylgjfrq:
+  /react-icons-picker/1.0.9_jyn66wu4jph7e5ar5ummzrpzhu:
     resolution: {integrity: sha512-EkBJ5UcHjMQQSGqNkNupZ0vfmskAUvg26bsTKXt/I8ddqybIGHJBHs4qOMy9b2elOoWQk3ZRBviXQGe1x+Z+fQ==}
     peerDependencies:
       react: ^18.2.0
@@ -10774,11 +10798,11 @@ packages:
     dependencies:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      react-icons: 4.11.0_react@18.2.0
+      react-icons: 5.3.0_react@18.2.0
     dev: false
 
-  /react-icons/4.11.0_react@18.2.0:
-    resolution: {integrity: sha512-V+4khzYcE5EBk/BvcuYRq6V/osf11ODUM2J8hg2FDSswRrGvqiYUYPRy4OdrWaQOBj4NcpJfmHZLNaD+VH0TyA==}
+  /react-icons/5.3.0_react@18.2.0:
+    resolution: {integrity: sha512-DnUk8aFbTyQPSkCfF8dbX6kQjXA9DktMeJqfjrg6cK9vwQVMxmcA3BfP4QoiztVmEHtwlTgLFsPuH2NskKT6eg==}
     peerDependencies:
       react: '*'
     dependencies:
