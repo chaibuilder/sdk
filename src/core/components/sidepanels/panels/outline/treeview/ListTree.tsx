@@ -33,7 +33,7 @@ import {
   selectPrev,
 } from "./DefaultShortcuts.tsx";
 import { useTranslation } from "react-i18next";
-import { MdDataObject } from "react-icons/md";
+import { VscJson } from "react-icons/vsc";
 import { BsLightningFill } from "react-icons/bs";
 import { TbEyeDown } from "react-icons/tb";
 
@@ -141,7 +141,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
                   node.deselect();
                 }}>
                 <span>{data?._name || data?._type.split("/").pop()}</span>
-                {interactives.includes("data") && <MdDataObject className="h-3 w-3 text-orange-600" />}
+                {interactives.includes("data") && <VscJson className="h-3 w-3 text-orange-600" />}
                 {interactives.includes("event") && <BsLightningFill className="h-3 w-3 text-yellow-500" />}
                 {interactives.includes("show") && <TbEyeDown className="h-3 w-3 text-orange-600" />}
               </div>
