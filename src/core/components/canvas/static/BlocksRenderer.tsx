@@ -117,7 +117,11 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
                   "data-block-type": block._type,
                   ...(draggedBlock
                     ? // @ts-ignore
-                      { "data-dnd": canAcceptChildBlock(block._type, draggedBlock?._type) ? "yes" : "no" }
+                      {
+                        "data-dnd": canAcceptChildBlock(block._type, (draggedBlock as ChaiBlock)?._type) ? "yes" : "no",
+
+                        "data-dnd-dragged": (draggedBlock as ChaiBlock)._id === block._id ? "yes" : "no",
+                      }
                     : {}),
                   ...(dropTargetId === block._id ? { "data-drop": "yes" } : {}),
                 },
