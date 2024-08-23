@@ -2,10 +2,19 @@ import Editor from "@monaco-editor/react";
 import { Button } from "../../../../ui";
 import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useState } from "react";
-import { useCodeEditor } from "../../../hooks/useCodeEditor.ts";
-import { useSelectedBlockIds, useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "../../../hooks";
+import { useCodeEditor, useSelectedBlockIds, useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "../../../hooks";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { useThrottledCallback } from "@react-hookz/web";
+
+/**
+ * Try to fix the HTML code
+ * @param html
+ */
+const sanitizeHTML = (html: string) => {
+  const doc = document.createElement("div");
+  doc.innerHTML = html;
+  return doc.innerHTML;
+};
 
 export default function CodeEditor() {
   const { t } = useTranslation();
@@ -17,7 +26,8 @@ export default function CodeEditor() {
   const updateRealTime = useUpdateBlocksPropsRealtime();
   const saveCodeContentRealTime = useThrottledCallback(
     (value: string) => {
-      updateRealTime([codeEditor.blockId], { [codeEditor.blockProp]: value });
+      const html = sanitizeHTML(value);
+      updateRealTime([codeEditor.blockId], { [codeEditor.blockProp]: html });
     },
     [],
     300,
@@ -25,7 +35,8 @@ export default function CodeEditor() {
 
   const saveCodeContent = useCallback(() => {
     if (dirty) {
-      updateBlockProps([codeEditor.blockId], { [codeEditor.blockProp]: code });
+      const html = sanitizeHTML(code);
+      updateBlockProps([codeEditor.blockId], { [codeEditor.blockProp]: html });
     }
   }, [dirty, code]);
 
@@ -37,8 +48,14 @@ export default function CodeEditor() {
     }
   }, [ids]);
 
+  const handleClickOutside = () => {
+    // @ts-ignore
+    setCodeEditor(null);
+  };
+
   return (
     <div className="h-full rounded-t-lg border-t-4 border-black bg-black text-white">
+      <button onClick={handleClickOutside} className="fixed inset-0 z-[100000] cursor-default bg-gray-400/20"></button>
       <div className="relative z-[100001] h-full w-full flex-col gap-y-1">
         <div className="-mt-1 flex items-center justify-between px-2 py-2">
           <h3 className="space-x-3 text-sm font-semibold">
