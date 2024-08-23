@@ -6,8 +6,9 @@ import { SettingsWatcher } from "./Settings.tsx";
 import { Frame } from "../../core/frame/Frame.tsx";
 import { useBlocksStore } from "../../core/history/useBlocksStoreUndoableActions.ts";
 import { useBrandingOptions } from "../../core/hooks";
-import { RenderChaiBlocks } from "../../render";
 import { Button } from "../../ui";
+import ReactDOM from "react-dom/server";
+import { RenderChaiBlocks } from "../../render";
 
 interface BreakpointItemType {
   content: string;
@@ -61,7 +62,7 @@ const getFonts = (options: any) => {
   `;
 };
 
-export const IframeInitialContent = (fonts: string): string => `<!doctype html>
+export const IframeInitialContent = (fonts: string, html: string): string => `<!doctype html>
 <html class="scroll-smooth h-full no-scrollbar overflow-y-auto">
   <head>
     <meta charset="UTF-8">
@@ -83,32 +84,33 @@ export const IframeInitialContent = (fonts: string): string => `<!doctype html>
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
   </head>
   <body class="font-body antialiased h-full">
-    <div class="frame-root h-full"></div>
+    <div class="frame-root h-full">
+    ${html}
+    </div>  
     <script src="//unpkg.com/alpinejs" defer></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
-    AOS.init();
-    function addClickEventToLinks() {
-      document.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', function(event) {
-          event.preventDefault();
+      AOS.init();
+      function addClickEventToLinks() {
+        document.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', function(event) {
+            event.preventDefault();
+          });
+        });
+      }
+      // Initialize the observer
+      const observer = new MutationObserver((mutationsList) => {
+        mutationsList.forEach(mutation => {
+          if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+            addClickEventToLinks();
+          }
         });
       });
-    }
-    // Initialize the observer
-    const observer = new MutationObserver((mutationsList) => {
-      mutationsList.forEach(mutation => {
-        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-          addClickEventToLinks();
-        }
-      });
-    });
-    // Start observing the document body for added nodes
-    observer.observe(document.body, { childList: true, subtree: true });
-    // Call the function once in case links are already present
-    addClickEventToLinks();
+      // Start observing the document body for added nodes
+      observer.observe(document.body, { childList: true, subtree: true });
+      // Call the function once in case links are already present
+      addClickEventToLinks();
     </script>
-</script>
   </body>
 </html>`;
 
@@ -131,7 +133,7 @@ const PreviewWeb = () => {
   const [width, setWidth] = useState(1200);
 
   const setIframeWidth = (newWidth: number) => setWidth(newWidth);
-
+  const html = ReactDOM.renderToString(<RenderChaiBlocks blocks={localBlocks} />);
   return (
     <div className="flex h-screen w-screen flex-col overflow-hidden bg-gray-100">
       <div className="flex h-16 items-center justify-center border-b border-gray-200 shadow-sm">
@@ -144,9 +146,9 @@ const PreviewWeb = () => {
       <Frame
         style={{ width: `${width}px` }}
         className="no-scrollbar mx-auto h-full overflow-y-auto border bg-white"
-        initialContent={IframeInitialContent(getFonts(brandingOptions))}>
+        initialContent={IframeInitialContent(getFonts(brandingOptions), html)}>
         <SettingsWatcher />
-        <RenderChaiBlocks blocks={localBlocks} />
+        <div></div>
       </Frame>
     </div>
   );
