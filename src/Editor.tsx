@@ -8,6 +8,7 @@ import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
 import { useState } from "react";
 import { UILibrary, UiLibraryBlock } from "./core/types/chaiBuilderEditorProps.ts";
 import "./__dev/RowCol.tsx";
+import PreviewWeb from "./__dev/preview/WebPreview.tsx";
 
 loadWebBlocks();
 
@@ -29,8 +30,8 @@ function ChaiBuilderDefault() {
   const [brandingOptions] = useAtom(lsBrandingOptionsAtom);
   const [aiContext, setAiContext] = useAtom(lsAiContextAtom);
   const [uiLibraries] = useState([
-    { uuid: "preline", name: "Preline UI" },
-    { uuid: "hero", name: "Hero" },
+    { uuid: "preline", name: "Preline" },
+    { uuid: "chaiblocks", name: "Chai Blocks" },
   ]);
 
   return (
@@ -38,7 +39,7 @@ function ChaiBuilderDefault() {
       unsplashAccessKey={import.meta.env.VITE_UNSPLASH_ACCESS_KEY}
       showDebugLogs={true}
       autoSaveSupport={false}
-      previewComponent={PreviewMessage}
+      previewComponent={PreviewWeb}
       topBarComponents={{ left: [PreviewMessage] }}
       blocks={blocks}
       brandingOptions={brandingOptions}
@@ -54,11 +55,17 @@ function ChaiBuilderDefault() {
         return true;
       }}
       aiContext={aiContext}
+      askAiCallBack={async (type: "styles" | "content", prompt: string, blocks: ChaiBlock[]) => {
+        console.log("askAiCallBack", type, prompt, blocks);
+        return new Promise((resolve) => resolve({ error: new Error("Not implemented") }));
+      }}
       getUILibraryBlock={async (uiLibrary: UILibrary, uiLibBlock: UiLibraryBlock) => {
         const response = await fetch("https://chaibuilder.com/" + uiLibrary.uuid + "/" + uiLibBlock.uuid + ".html");
         const html = await response.text();
-        const htmlWithoutChaiStudio = html.replace(/<chaistudio>([\s\S]*?)<\/chaistudio>/g, "");
-        return getBlocksFromHTML(htmlWithoutChaiStudio) as ChaiBlock[];
+        const htmlWithoutChaiStudio = html
+          .replace(/---([\s\S]*?)---/g, "")
+          .replace(/<chaistudio>([\s\S]*?)<\/chaistudio>/g, "");
+        return getBlocksFromHTML(`<div>${htmlWithoutChaiStudio}</div>`) as ChaiBlock[];
       }}
       getUILibraryBlocks={async (uiLibrary: UILibrary) => {
         try {
