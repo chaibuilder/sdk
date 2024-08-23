@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useCodeEditor } from "../../../hooks/useCodeEditor.ts";
 import { useSelectedBlockIds, useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "../../../hooks";
 import { Cross2Icon } from "@radix-ui/react-icons";
+import { useThrottledCallback } from "@react-hookz/web";
 
 export default function CodeEditor() {
   const { t } = useTranslation();
@@ -14,9 +15,13 @@ export default function CodeEditor() {
   const [ids] = useSelectedBlockIds();
   const updateBlockProps = useUpdateBlocksProps();
   const updateRealTime = useUpdateBlocksPropsRealtime();
-  const saveCodeContentRealTime = useCallback((value: string) => {
-    updateRealTime([codeEditor.blockId], { [codeEditor.blockProp]: value });
-  }, []);
+  const saveCodeContentRealTime = useThrottledCallback(
+    (value: string) => {
+      updateRealTime([codeEditor.blockId], { [codeEditor.blockProp]: value });
+    },
+    [],
+    300,
+  );
 
   const saveCodeContent = useCallback(() => {
     if (dirty) {
@@ -55,11 +60,9 @@ export default function CodeEditor() {
         </div>
         <Editor
           onMount={(editor) => {
-            console.log(editor, code);
             editor.setValue(codeEditor.initialCode);
           }}
           onChange={(value) => {
-            console.log(value);
             setDirty(true);
             setCode(value);
             saveCodeContentRealTime(value);
