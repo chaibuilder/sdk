@@ -86,6 +86,29 @@ export const IframeInitialContent = (fonts: string): string => `<!doctype html>
     <div class="frame-root h-full"></div>
     <script src="//unpkg.com/alpinejs" defer></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+    AOS.init();
+    function addClickEventToLinks() {
+      document.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', function(event) {
+          event.preventDefault();
+        });
+      });
+    }
+    // Initialize the observer
+    const observer = new MutationObserver((mutationsList) => {
+      mutationsList.forEach(mutation => {
+        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+          addClickEventToLinks();
+        }
+      });
+    });
+    // Start observing the document body for added nodes
+    observer.observe(document.body, { childList: true, subtree: true });
+    // Call the function once in case links are already present
+    addClickEventToLinks();
+    </script>
+</script>
   </body>
 </html>`;
 
