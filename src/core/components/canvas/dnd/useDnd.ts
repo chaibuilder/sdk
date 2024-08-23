@@ -142,19 +142,27 @@ export const useDnd = () => {
       const data = draggedBlock;
       const id = block.getAttribute("data-block-id");
 
-      //This is for moving blocks from the sidebar panel
-      if (!has(data, "_id")) {
-        addCoreBlock(data, id === "canvas" ? null : id, dropIndex);
-        setTimeout(() => {
-          removePlaceholder();
-        }, 300);
-        possiblePositions = [];
+      const resetDragState = () => {
+        removePlaceholder();
         setIsDragging(false);
         setDraggedBlockId("");
         //@ts-ignore
         setDraggedBlock(null);
         //@ts-ignore
         setDropTarget(null);
+        possiblePositions = [];
+      };
+
+      //if the draggedItem is the same as the dropTarget, reset the drag state.
+      if (data === dropTarget) {
+        resetDragState();
+        return;
+      }
+
+      // This is for moving blocks from the sidebar panel
+      if (!has(data, "_id")) {
+        addCoreBlock(data, id === "canvas" ? null : id, dropIndex);
+        setTimeout(resetDragState, 300);
         return;
       }
 
@@ -168,11 +176,8 @@ export const useDnd = () => {
 
       //@ts-ignore
       moveBlocks([data._id], blockId, dropIndex);
-      removePlaceholder();
-      setIsDragging(false);
-      setDraggedBlockId("");
-      possiblePositions = [];
-      setTimeout(() => removePlaceholder(), 300);
+      resetDragState();
+      setTimeout(removePlaceholder, 300);
     },
     onDragEnter: (e: DragEvent) => {
       const event = e;
@@ -185,7 +190,7 @@ export const useDnd = () => {
       event.preventDefault();
       possiblePositions = [];
       calculatePossiblePositions(target);
-      console.log(possiblePositions,  e.clientY, iframeDocument.defaultView.scrollY);
+      console.log(possiblePositions, e.clientY, iframeDocument.defaultView.scrollY);
       target.classList.add("drop-target");
       setIsDragging(true);
       setHighlight("");
