@@ -1,7 +1,7 @@
 import { DragEvent } from "react";
 import { has, throttle } from "lodash-es";
 import { useFrame } from "../../../frame";
-
+import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { useAtom } from "jotai";
 import { draggedBlockIdAtom, draggingFlagAtom } from "../../../atoms/ui.ts";
 
@@ -146,7 +146,7 @@ export const useDnd = () => {
       e.stopPropagation();
       throttledDragOver(e);
     },
-    onDrop: (ev: DragEvent) => {
+    onDrop: async (ev: DragEvent) => {
       dropTarget?.classList.remove("drop-target");
       const block = dropTarget as HTMLElement;
       const orientation = getOrientation(block);
