@@ -34,8 +34,10 @@ import { useUILibraryBlocks } from "./useUiLibraries";
 import { useUndoManager } from "../history/useUndoManager";
 import { useCopyToClipboard } from "./useCopyToClipboard";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
+import { useCodeEditor } from "./useCodeEditor.ts";
 
 export {
+  useCodeEditor,
   useBlocksStore,
   useUndoManager,
   useBuilderReset,
