@@ -1,4 +1,4 @@
-import React, { memo, MouseEvent, useEffect, useRef } from "react";
+import React, { memo, MouseEvent, useEffect, useMemo, useRef } from "react";
 import { useAtom } from "jotai";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { MoveHandler, NodeRendererProps, RenameHandler, Tree } from "react-arborist";
@@ -33,6 +33,9 @@ import {
   selectPrev,
 } from "./DefaultShortcuts.tsx";
 import { useTranslation } from "react-i18next";
+import { MdDataObject } from "react-icons/md";
+import { BsLightningFill } from "react-icons/bs";
+import { TbEyeDown } from "react-icons/tb";
 
 const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const outlineItems = useBuilderProp("outlineMenuItems", []);
@@ -77,6 +80,27 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
     return () => clearTimeout(timedToggle);
   }, [willReceiveDrop, node]);
 
+  const interactives = useMemo(() => {
+    const keys = Object.keys(data);
+    const alpineAttrs = [];
+    for (let i = 0; i < keys.length; i++) {
+      if (keys[i].endsWith("_attrs")) {
+        const attrs = data[keys[i]];
+        const attrsKeys = Object.keys(attrs).join("|");
+        if (attrsKeys.match(/x-data/)) {
+          alpineAttrs.push("data");
+        }
+        if (attrsKeys.match(/x-on:|@click/)) {
+          alpineAttrs.push("event");
+        }
+        if (attrsKeys.match(/x-show/)) {
+          alpineAttrs.push("show");
+        }
+      }
+    }
+    return alpineAttrs;
+  }, [data]);
+
   return (
     <BlockContextMenu id={id}>
       <div
@@ -110,13 +134,16 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
               <Input node={node} />
             ) : (
               <div
-                className="ml-2 truncate text-[11px]"
+                className={"ml-2 flex items-center gap-x-1 truncate text-[11px]"}
                 onDoubleClick={(e) => {
                   e.stopPropagation();
                   node.edit();
                   node.deselect();
                 }}>
-                {data?._name || data?._type.split("/").pop()}
+                <span>{data?._name || data?._type.split("/").pop()}</span>
+                {interactives.includes("data") && <MdDataObject className="h-3 w-3 text-orange-600" />}
+                {interactives.includes("event") && <BsLightningFill className="h-3 w-3 text-yellow-500" />}
+                {interactives.includes("show") && <TbEyeDown className="h-3 w-3 text-orange-600" />}
               </div>
             )}
           </div>
