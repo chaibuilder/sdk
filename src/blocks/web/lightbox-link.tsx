@@ -87,11 +87,11 @@ registerChaiBlock(LightBoxLinkBlock, {
       ],
     }),
     autoplay: Checkbox({ title: "Autoplay video", default: false }),
-    maxWidth: Numeric({ title: "Max Width", default: 800 }),
-    backdropColor: SingleLineText({ title: "Backdrop Color", default: "rgba(95,164,255,0.8)" }),
-    galleryName: Numeric({ title: "Max Width", default: 800 }),
+    maxWidth: Numeric({ title: "Max Width", default: "" }),
+    backdropColor: SingleLineText({ title: "Backdrop Color", default: "" }),
+    galleryName: SingleLineText({ title: "Gallery name", default: "" }),
   },
-  canAcceptBlock: (type: string) => type !== "Link",
+  canAcceptBlock: (type: string) => type !== "Link" && type !== "LightBoxLink",
 });
 
 export default LightBoxLinkBlock;
