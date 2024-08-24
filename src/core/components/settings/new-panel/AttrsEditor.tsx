@@ -38,7 +38,7 @@ export default React.memo(function Component({ preloadedAttributes = [], onAttri
       setError("Attribute keys cannot start with '@'");
       return;
     }
-    if (newKey && newValue) {
+    if (newKey) {
       const newAttributes = [...attributes, { key: newKey, value: newValue }];
       onAttributesChange(newAttributes);
       setAttributes(attributes);
@@ -65,7 +65,7 @@ export default React.memo(function Component({ preloadedAttributes = [], onAttri
       setError("Attribute keys cannot start with '@'");
       return;
     }
-    if (editIndex !== null && newKey && newValue) {
+    if (editIndex !== null && newKey) {
       const newAttributes = [...attributes];
       newAttributes[editIndex] = { key: newKey, value: newValue };
       onAttributesChange(newAttributes);
@@ -128,7 +128,7 @@ export default React.memo(function Component({ preloadedAttributes = [], onAttri
         {error && <p className="text-xs text-red-500">{error}</p>}
       </form>
 
-      <div className="mt-4 max-h-60 space-y-1 overflow-y-auto">
+      <div className="mt-4 space-y-1 overflow-y-auto">
         {attributes.map((attr, index) => (
           <div key={index} className="flex items-center justify-between rounded bg-muted p-1.5 text-sm">
             <div className="mr-2 flex flex-col">
