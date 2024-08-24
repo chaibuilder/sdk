@@ -1,5 +1,5 @@
 import React from "react";
-import { each, filter, get, has, isEmpty, isString, memoize, omit } from "lodash-es";
+import { each, filter, get, has, includes, isEmpty, isString, keys, memoize, omit } from "lodash-es";
 import { twMerge } from "tailwind-merge";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { SLOT_KEY, STYLES_KEY } from "../core/constants/STRINGS.ts";
@@ -30,7 +30,8 @@ function getElementAttrs(block: ChaiBlock, key: string) {
   if (has(attrs, "data-ai-key")) {
     delete attrs["data-ai-key"];
   }
-  if (has(attrs, "x-show")) {
+  const attrsKeys = keys(attrs).join(" ");
+  if (includes(attrsKeys, "x-show") && !includes(attrsKeys, "x-transition")) {
     attrs["x-transition"] = "";
   }
   return attrs;
