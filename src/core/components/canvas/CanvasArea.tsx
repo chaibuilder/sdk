@@ -4,7 +4,7 @@ import { Skeleton } from "../../../ui";
 import { StaticCanvas } from "./static/StaticCanvas";
 import { ErrorBoundary } from "../ErrorBoundary";
 import { Resizable } from "re-resizable";
-import { useCodeEditor } from "../../hooks/useCodeEditor.ts";
+import { useCodeEditor } from "../../hooks";
 
 const CodeEditor = React.lazy(() => import("./static/CodeEditor"));
 

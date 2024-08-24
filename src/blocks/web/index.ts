@@ -7,6 +7,7 @@ import "./span";
 import "./rte";
 import "./button";
 import "./link";
+import "./lightbox-link";
 import "./list";
 import "./icon";
 import "./image";
