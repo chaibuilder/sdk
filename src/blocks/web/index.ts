@@ -17,6 +17,7 @@ import "./custom-html";
 import "./custom-script";
 import "./divider";
 import "./text";
+import "./dark-mode";
 
 // import "./interactive/accordion.tsx";
 // import "./interactive/collapse.tsx";

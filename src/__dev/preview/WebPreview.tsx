@@ -63,7 +63,8 @@ const getFonts = (options: any) => {
 };
 
 export const IframeInitialContent = (fonts: string, html: string): string => `<!doctype html>
-<html class="scroll-smooth h-full no-scrollbar overflow-y-auto">
+<html class="scroll-smooth h-full no-scrollbar overflow-y-auto" x-data="{darkMode: 'light'}"
+      x-bind:class="{'dark': darkMode === 'dark' || (darkMode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)}">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
