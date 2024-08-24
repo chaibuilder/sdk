@@ -1,5 +1,5 @@
 import React, { Suspense, useCallback } from "react";
-import { each, filter, find, get, has, isEmpty, isNull, isString, memoize } from "lodash-es";
+import { each, filter, find, get, has, includes, isEmpty, isNull, isString, memoize, omit } from "lodash-es";
 import { twMerge } from "tailwind-merge";
 import { ChaiBlock } from "../../../types/ChaiBlock";
 import { SLOT_KEY, STYLES_KEY } from "../../../constants/STRINGS.ts";
@@ -7,7 +7,7 @@ import { StylingAttributes } from "../../../types/index";
 import { getBlockComponent } from "@chaibuilder/runtime";
 import { useChaiExternalData } from "./useChaiExternalData.ts";
 import { useAtom } from "jotai";
-import { inlineEditingActiveAtom } from "../../../atoms/ui.ts";
+import { inlineEditingActiveAtom, xShowBlocksAtom } from "../../../atoms/ui.ts";
 import { useBlocksStore } from "../../../history/useBlocksStoreUndoableActions.ts";
 import { useCanvasSettings } from "../../../hooks/useCanvasSettings.ts";
 import { draggedBlockAtom, dropTargetAtom } from "../dnd/atoms.ts";
@@ -35,10 +35,11 @@ function getElementAttrs(block: ChaiBlock, key: string) {
 }
 
 function getStyleAttrs(block: ChaiBlock) {
-  const styles: { [key: string]: StylingAttributes } = {};
+  const styles: { [key: string]: StylingAttributes | string } = {};
   Object.keys(block).forEach((key) => {
     if (isString(block[key]) && block[key].startsWith(STYLES_KEY)) {
       const styleName = generateClassNames(block[key]);
+      styles["__key"] = key;
       styles[key] = {
         className: styleName,
         "data-style-prop": key,
@@ -64,6 +65,7 @@ function applyBindings(block: ChaiBlock, chaiData: any): ChaiBlock {
 
 export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
   const [allBlocks] = useBlocksStore();
+  const [xShowBlocks] = useAtom(xShowBlocksAtom);
   const [draggedBlock] = useAtom(draggedBlockAtom);
   const [dropTargetId] = useAtom(dropTargetAtom);
   const [canvasSettings] = useCanvasSettings();
@@ -109,6 +111,11 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
             ? chaiBlock?.getBlockStateFrom(block, allBlocks)
             : [];
           const blockState = getCanvasSettings(blockStateFrom);
+          const htmlAttrs = getStyles(block);
+          const attrKey = get(htmlAttrs, "__key", "styles");
+          if (has(htmlAttrs, attrKey + ".x-show") && !includes(xShowBlocks, block._id)) {
+            return null;
+          }
           return (
             <Suspense>
               {React.createElement(Component, {
@@ -123,7 +130,7 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
                 },
                 index,
                 ...applyBindings(block, chaiData),
-                ...getStyles(block),
+                ...omit(htmlAttrs, ["__key"]),
                 ...attrs,
                 inBuilder: true,
                 blockState,

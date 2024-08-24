@@ -56,3 +56,6 @@ codeEditorOpenAtom.debugLabel = "codeEditorOpenAtom";
 
 export const codeEditorHeightAtom = atomWithStorage("codeEditorHeight", 500);
 codeEditorHeightAtom.debugLabel = "codeEditorHeightAtom";
+
+export const xShowBlocksAtom = atom<string[]>([]);
+xShowBlocksAtom.debugLabel = "xShowBlocksAtom";

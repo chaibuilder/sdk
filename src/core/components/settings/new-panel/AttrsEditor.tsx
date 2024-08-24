@@ -133,7 +133,7 @@ export default React.memo(function Component({ preloadedAttributes = [], onAttri
           <div key={index} className="flex items-center justify-between rounded bg-muted p-1.5 text-sm">
             <div className="mr-2 flex flex-col">
               <span className="truncate font-semibold">{attr.key}</span>
-              <span className="text-wrap max-w-[200px] text-muted-foreground">{attr.value}</span>
+              <span className="text-wrap max-w-[200px] text-muted-foreground">{attr.value.toString()}</span>
             </div>
             <div className="flex-shrink-0">
               <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => startEdit(index)}>

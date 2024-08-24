@@ -5,6 +5,7 @@ import { capitalize, filter, find, flatMapDeep, flatten, forEach, get, includes,
 import { ChaiBlock } from "../types/types.ts";
 import { STYLES_KEY } from "../constants/STRINGS.ts";
 import { getVideoURLFromHTML, hasVideoEmbed } from "./import-video.ts";
+import { has, startsWith } from "lodash";
 
 type Node = {
   type: "element" | "text" | "comment";
@@ -82,7 +83,7 @@ const getTextContent = (nodes: Node[]): string => {
  * @param value
  * @returns For boolean attributes without content marking true and passing if value is null
  */
-const getSanitizedValue = (value: any) => (value === null ? true : value);
+const getSanitizedValue = (value: any) => (value === null ? "" : value);
 
 /**
  *
@@ -111,7 +112,14 @@ const getAttrs = (node: Node) => {
       }
       set(attrs, replacers[key], getSanitizedValue(value));
     } else if (!includes(["style", "class", "srcset"], key)) {
-      set(attrs, `styles_attrs.${key}`, getSanitizedValue(value));
+      if (!has(attrs, "styles_attrs")) {
+        // @ts-ignore
+        attrs.styles_attrs = {};
+      }
+      if (startsWith(key, "@")) {
+        key = key.replace("@", "x-on:");
+      }
+      attrs.styles_attrs[`${key}`] = getSanitizedValue(value);
     }
   });
 

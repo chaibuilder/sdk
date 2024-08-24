@@ -60,7 +60,6 @@ export default function BlockSettings() {
 
   return (
     <div className="overflow-x-hidden">
-      <CanvasSettings />
       {dataBindingSupported ? (
         <Accordion type="multiple" defaultValue={["STATIC", "BINDING"]} className="h-full w-full">
           <AccordionItem value="BINDING">
@@ -114,6 +113,7 @@ export default function BlockSettings() {
           properties={staticContentProperties}
         />
       )}
+      <CanvasSettings />
     </div>
   );
 }

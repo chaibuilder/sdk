@@ -30,6 +30,9 @@ function getElementAttrs(block: ChaiBlock, key: string) {
   if (has(attrs, "data-ai-key")) {
     delete attrs["data-ai-key"];
   }
+  if (has(attrs, "x-show")) {
+    attrs["x-transition"] = "";
+  }
   return attrs;
 }
 
