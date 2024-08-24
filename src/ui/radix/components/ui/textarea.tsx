@@ -12,6 +12,9 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({ classNa
     )}
     ref={ref}
     {...props}
+    autoCapitalize={"off"}
+    autoCorrect={"off"}
+    spellCheck={"false"}
   />
 ));
 Textarea.displayName = "Textarea";

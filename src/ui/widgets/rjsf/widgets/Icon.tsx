@@ -70,6 +70,9 @@ const IconPickerField = ({ value, onChange }: WidgetProps) => {
         />
       </div>
       <textarea
+        autoCapitalize={"off"}
+        autoCorrect={"off"}
+        spellCheck={"false"}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="h-full w-full rounded-sm border border-foreground/20 px-2 py-1 text-xs shadow-sm focus:border-gray-500/80 focus:outline-none focus:ring-0"

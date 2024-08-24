@@ -1,7 +1,7 @@
 import { WidgetProps } from "@rjsf/utils";
 import { isEmpty } from "lodash-es";
 import ImagePickerModal from "../../../../core/components/sidepanels/panels/images/ImagePickerModal.tsx";
-import { useBuilderProp } from "../../../../core/builder.ts";
+import { useBuilderProp } from "../../../../core/hooks";
 
 const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
   const uploadImageCallback = useBuilderProp("uploadMediaCallback");
@@ -31,6 +31,9 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
           </>
         )}
         <input
+          autoCapitalize={"off"}
+          autoCorrect={"off"}
+          spellCheck={"false"}
           type="url"
           className="text-xs"
           placeholder="Enter image URL"

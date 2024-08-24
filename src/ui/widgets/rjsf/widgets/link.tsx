@@ -43,6 +43,9 @@ const LinkField = ({ schema, formData, onChange }: FieldProps) => {
           </select>
         ) : (
           <input
+            autoCapitalize={"off"}
+            autoCorrect={"off"}
+            spellCheck={"false"}
             name="href"
             type="text"
             value={href}
@@ -55,6 +58,9 @@ const LinkField = ({ schema, formData, onChange }: FieldProps) => {
         {(type === "page" || type === "url") && (
           <div className="flex items-center gap-x-2">
             <input
+              autoCapitalize={"off"}
+              autoCorrect={"off"}
+              spellCheck={"false"}
               type="checkbox"
               defaultChecked={target === "_blank"}
               className="cursor-pointer rounded-md border border-border"

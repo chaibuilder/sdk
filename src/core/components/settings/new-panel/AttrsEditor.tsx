@@ -98,6 +98,9 @@ export default React.memo(function Component({ preloadedAttributes = [], onAttri
               Key
             </Label>
             <Input
+              autoCapitalize={"off"}
+              autoCorrect={"off"}
+              spellCheck={"false"}
               id="attrKey"
               ref={keyInputRef}
               value={newKey}
@@ -111,6 +114,9 @@ export default React.memo(function Component({ preloadedAttributes = [], onAttri
               Value
             </Label>
             <Textarea
+              autoCapitalize={"off"}
+              autoCorrect={"off"}
+              spellCheck={"false"}
               id="attrValue"
               rows={2}
               ref={valueTextareaRef}
