@@ -1,21 +1,22 @@
 import { WidgetProps } from "@rjsf/utils";
 import { useTranslation } from "react-i18next";
 import { Button } from "../../../radix/components/ui/button.tsx";
-import { useCodeEditor } from "../../../../core/hooks/useCodeEditor.ts";
-import { useSelectedBlock } from "../../../../core/hooks";
+import { useCodeEditor, useSelectedBlock } from "../../../../core/hooks";
 import { ChaiBlock } from "../../../../core/types/ChaiBlock.ts";
+import { get } from "lodash-es";
 
-const CodeEditor = ({ id, placeholder, value }: WidgetProps) => {
+const CodeEditor = ({ id, placeholder }: WidgetProps) => {
   const { t } = useTranslation();
   const [, setCodeEditor] = useCodeEditor();
   const selectedBlock = useSelectedBlock() as ChaiBlock;
   if (typeof window === "undefined") return null;
-
+  const blockProp = id.replace("root.", "");
+  const value = get(selectedBlock, blockProp, "");
   const openCodeEditor = () => {
     const blockId = selectedBlock?._id;
-    const blockProp = id.replace("root.", "");
+
     // @ts-ignore
-    setCodeEditor({ blockId, blockProp, placeholder, initialCode: value });
+    setCodeEditor({ blockId, blockProp, placeholder, initialCode: get(selectedBlock, blockProp, value) });
   };
 
   return (
