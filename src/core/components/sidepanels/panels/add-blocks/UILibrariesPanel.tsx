@@ -1,6 +1,12 @@
 import { capitalize, first, get, groupBy, has, isEmpty, map, noop, values } from "lodash-es";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useAddBlock, useBuilderProp, useSelectedBlockIds, useTranslation } from "../../../../hooks";
+import {
+  useAddBlock,
+  useBuilderProp,
+  useHighlightBlockId,
+  useSelectedBlockIds,
+  useTranslation,
+} from "../../../../hooks";
 import { syncBlocksWithDefaults, useChaiBlocks } from "@chaibuilder/runtime";
 import { Loader } from "lucide-react";
 import { atom, useAtom } from "jotai";
@@ -8,12 +14,16 @@ import { atom, useAtom } from "jotai";
 import { activePanelAtom } from "../../../../atoms/ui.ts";
 import { cn } from "../../../../functions/Functions.ts";
 import { CaretRightIcon } from "@radix-ui/react-icons";
-import { ScrollArea, Skeleton } from "../../../../../ui";
+import { ScrollArea, Skeleton, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../ui";
 import { OUTLINE_KEY } from "../../../../constants/STRINGS.ts";
 import { UILibrary, UiLibraryBlock } from "../../../../types/chaiBuilderEditorProps.ts";
 import { ChaiBlock } from "../../../../types/ChaiBlock.ts";
 import { atomWithStorage } from "jotai/utils";
 import { UILibrariesSelect } from "./UiLibrariesSelect.tsx";
+import { useFeature } from "flagged";
+
+import { draggedBlockAtom } from "../../../canvas/dnd/atoms.ts";
+import clsx from "clsx";
 
 const BlockCard = ({
   block,
@@ -27,7 +37,11 @@ const BlockCard = ({
   const [isAdding, setIsAdding] = useState(false);
   const getUILibraryBlock = useBuilderProp("getUILibraryBlock", noop);
   const { addCoreBlock, addPredefinedBlock } = useAddBlock();
-  const [ids] = useSelectedBlockIds();
+  const [ids, setSelected] = useSelectedBlockIds();
+  const [, setHighlighted] = useHighlightBlockId();
+
+  const [, setDraggedBlock] = useAtom(draggedBlockAtom);
+  const dndEnabled = useFeature("dnd");
 
   const isTopLevelSection = (block: ChaiBlock) => {
     const isPageSection = has(block, "styles_attrs.data-page-section");
@@ -54,26 +68,67 @@ const BlockCard = ({
     [block],
   );
 
+  const handleDragStart = async (ev) => {
+    const uiBlocks = await getUILibraryBlock(library, block);
+    let parent = first(ids);
+    if (isTopLevelSection(first(uiBlocks))) {
+      parent = null;
+    }
+
+    if (!isEmpty(uiBlocks)) {
+      const convertedBlock = { blocks: uiBlocks, uiLibrary: true, parent: parent };
+      ev.dataTransfer.setData("text/plain", JSON.stringify(convertedBlock));
+
+      if (block.preview) {
+        const img = new Image();
+        img.src = block.preview;
+        img.onload = () => {
+          ev.dataTransfer.setDragImage(img, 0, 0);
+        };
+      } else {
+        ev.dataTransfer.setDragImage(new Image(), 0, 0);
+      }
+
+      //@ts-ignore
+      setDraggedBlock(convertedBlock);
+      setTimeout(() => {
+        setSelected([]);
+        setHighlighted(null);
+        closePopover();
+      }, 200);
+    }
+  };
+
   return (
-    <>
-      <div
-        onClick={isAdding ? () => {} : addBlock}
-        className="relative mt-2 cursor-pointer overflow-hidden rounded-md border border-gray-300 bg-white duration-200 hover:border-blue-500 hover:shadow-xl">
-        {isAdding && (
-          <div className="absolute flex h-full w-full items-center justify-center bg-black/70">
-            <Loader className="animate-spin" size={15} color="white" />{" "}
-            <span className="pl-2 text-sm text-white">Adding...</span>
-          </div>
-        )}
-        {block.preview ? (
-          <img src={block.preview} className="min-h-[25px] w-full rounded-md" alt={block.name} />
-        ) : (
-          <div className="flex h-20 items-center justify-center rounded-md border border-border border-gray-300 bg-gray-200">
-            <p className={"max-w-xs text-center text-sm text-gray-700"}>{block.name}</p>
-          </div>
-        )}
-      </div>
-    </>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <div
+          onClick={isAdding ? () => {} : addBlock}
+          draggable={true}
+          onDragStart={handleDragStart}
+          className={clsx(
+            "relative mt-2 cursor-pointer overflow-hidden rounded-md border border-gray-300 bg-white duration-200 hover:border-blue-500 hover:shadow-xl",
+            dndEnabled ? "cursor-grab" : "cursor-pointer",
+          )}>
+          {isAdding && (
+            <div className="absolute flex h-full w-full items-center justify-center bg-black/70">
+              <Loader className="animate-spin" size={15} color="white" />
+              <span className="pl-2 text-sm text-white">Adding...</span>
+            </div>
+          )}
+          {block.preview ? (
+            <img src={block.preview} className="min-h-[25px] w-full rounded-md" alt={block.name} />
+          ) : (
+            <div className="flex h-20 items-center justify-center rounded-md border border-border border-gray-300 bg-gray-200">
+              <p className="max-w-xs text-center text-sm text-gray-700">{block.name}</p>
+            </div>
+          )}
+        </div>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>{block.name}</p>
+      </TooltipContent>
+    </Tooltip>
   );
 };
 

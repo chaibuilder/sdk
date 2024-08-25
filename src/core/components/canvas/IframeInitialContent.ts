@@ -37,6 +37,8 @@ export const IframeInitialContent: string = `<!doctype html>
     [data-drop="yes"] { outline: 2px dashed orange !important; outline-offset: -2px }
     [data-dnd="yes"] { pointer-events: auto !important}
     [data-dnd="no"] { pointer-events: none !important; }
+    [data-dnd-dragged="yes"] { opacity: 0.6; pointer-events: none; }
+    [data-dnd-dragged="no"] { opacity: 1; pointer-events: auto !important; }
     </style>    
     <style id="hidden-blocks"></style>
     <style id="selected-block"></style>

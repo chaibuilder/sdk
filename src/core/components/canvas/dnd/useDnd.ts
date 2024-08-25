@@ -1,9 +1,10 @@
 import { DragEvent } from "react";
 import { has, throttle } from "lodash-es";
 import { useFrame } from "../../../frame";
-
+import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { useAtom } from "jotai";
 import { draggedBlockIdAtom, draggingFlagAtom } from "../../../atoms/ui.ts";
+
 import { useAddBlock, useHighlightBlockId, useSelectedBlockIds } from "../../../hooks";
 import { useBlocksStoreUndoableActions } from "../../../history/useBlocksStoreUndoableActions.ts";
 import { getOrientation } from "./getOrientation.ts";
@@ -117,13 +118,25 @@ function removeDataDrop(): void {
 export const useDnd = () => {
   const { document } = useFrame();
   const [isDragging, setIsDragging] = useAtom(draggingFlagAtom);
-  const { addCoreBlock } = useAddBlock();
+  const { addCoreBlock, addPredefinedBlock } = useAddBlock();
+
   const [, setHighlight] = useHighlightBlockId();
   const [, setBlockIds] = useSelectedBlockIds();
   const { moveBlocks } = useBlocksStoreUndoableActions();
   const [, setDraggedBlockId] = useAtom(draggedBlockIdAtom);
   const [draggedBlock, setDraggedBlock] = useAtom(draggedBlockAtom);
   const [, setDropTarget] = useAtom(dropTargetAtom);
+
+  const resetDragState = () => {
+    removePlaceholder();
+    setIsDragging(false);
+    setDraggedBlockId("");
+    //@ts-ignore
+    setDraggedBlock(null);
+    //@ts-ignore
+    setDropTarget(null);
+    possiblePositions = [];
+  };
 
   iframeDocument = document as HTMLDocument;
   return {
@@ -133,7 +146,7 @@ export const useDnd = () => {
       e.stopPropagation();
       throttledDragOver(e);
     },
-    onDrop: (ev: DragEvent) => {
+    onDrop: async (ev: DragEvent) => {
       dropTarget?.classList.remove("drop-target");
       const block = dropTarget as HTMLElement;
       const orientation = getOrientation(block);
@@ -142,19 +155,16 @@ export const useDnd = () => {
       const data = draggedBlock;
       const id = block.getAttribute("data-block-id");
 
-      //This is for moving blocks from the sidebar panel
+      //if the draggedItem is the same as the dropTarget, reset the drag state.
+      if (data === dropTarget) {
+        resetDragState();
+        return;
+      }
+
+      // This is for moving blocks from the sidebar Panel and UiLibraryPanel
       if (!has(data, "_id")) {
         addCoreBlock(data, id === "canvas" ? null : id, dropIndex);
-        setTimeout(() => {
-          removePlaceholder();
-        }, 300);
-        possiblePositions = [];
-        setIsDragging(false);
-        setDraggedBlockId("");
-        //@ts-ignore
-        setDraggedBlock(null);
-        //@ts-ignore
-        setDropTarget(null);
+        setTimeout(resetDragState, 300);
         return;
       }
 
@@ -168,11 +178,8 @@ export const useDnd = () => {
 
       //@ts-ignore
       moveBlocks([data._id], blockId, dropIndex);
-      removePlaceholder();
-      setIsDragging(false);
-      setDraggedBlockId("");
-      possiblePositions = [];
-      setTimeout(() => removePlaceholder(), 300);
+      resetDragState();
+      setTimeout(removePlaceholder, 300);
     },
     onDragEnter: (e: DragEvent) => {
       const event = e;
@@ -185,24 +192,10 @@ export const useDnd = () => {
       event.preventDefault();
       possiblePositions = [];
       calculatePossiblePositions(target);
-      console.log(possiblePositions,  e.clientY, iframeDocument.defaultView.scrollY);
       target.classList.add("drop-target");
       setIsDragging(true);
       setHighlight("");
       setBlockIds([]);
     },
-    // onDragLeave: (e: DragEvent) => {
-    //   const event = e;
-    //   event.stopPropagation();
-    //   event.preventDefault();
-    //   const target = event.target as HTMLElement;
-    //   if (target && target.classList.contains("drop-target")) {
-    //     target.classList.remove("drop-target");
-    //     if (dropTarget === target) {
-    //       dropTarget = null;
-    //     }
-    //   }
-    //   removePlaceholder();
-    // },
   };
 };
