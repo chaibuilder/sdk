@@ -1,7 +1,7 @@
 import { DragEvent } from "react";
 import { has, throttle } from "lodash-es";
 import { useFrame } from "../../../frame";
-import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
+
 import { useAtom } from "jotai";
 import { draggedBlockIdAtom, draggingFlagAtom } from "../../../atoms/ui.ts";
 
@@ -118,7 +118,7 @@ function removeDataDrop(): void {
 export const useDnd = () => {
   const { document } = useFrame();
   const [isDragging, setIsDragging] = useAtom(draggingFlagAtom);
-  const { addCoreBlock, addPredefinedBlock } = useAddBlock();
+  const { addCoreBlock } = useAddBlock();
 
   const [, setHighlight] = useHighlightBlockId();
   const [, setBlockIds] = useSelectedBlockIds();

@@ -39,8 +39,9 @@ import { TbEyeDown } from "react-icons/tb";
 
 const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const outlineItems = useBuilderProp("outlineMenuItems", []);
-  const [, setHighlighted] = useHighlightBlockId();
 
+  const [, setHighlighted] = useHighlightBlockId();
+  let previousState: boolean | null = null;
   const hasChildren = node.children.length > 0;
 
   const { id, data, isSelected, willReceiveDrop, isDragging, isEditing, handleClick } = node;
@@ -51,6 +52,26 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
     event.stopPropagation();
     /*Toggle the node open and close State*/
     node.toggle();
+  };
+
+  const handleDragStart = (node: any) => {
+    if (node.isInternal) {
+      previousState = node.isOpen;
+      if (node.isOpen) {
+        node.close();
+      }
+    }
+  };
+
+  const handleDragEnd = (node: any) => {
+    if (node.isInternal && previousState !== null) {
+      if (previousState) {
+        node.open();
+      } else {
+        node.close();
+      }
+      previousState = null; // Reset the previous state
+    }
   };
 
   const handleNodeClickWithoutPropagating = (e: any) => {
@@ -72,13 +93,13 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   useEffect(() => {
     //TODO: Come back to this later. Might lead to a performance issue
     const timedToggle = setTimeout(() => {
-      if (willReceiveDrop && !node.isOpen) {
+      if (willReceiveDrop && !node.isOpen && !isDragging) {
         node.toggle();
       }
     }, 500);
 
     return () => clearTimeout(timedToggle);
-  }, [willReceiveDrop, node]);
+  }, [willReceiveDrop, node, isDragging]);
 
   const interactives = useMemo(() => {
     const keys = Object.keys(data);
@@ -101,6 +122,28 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
     return alpineAttrs;
   }, [data]);
 
+  const setDropAttribute = (id: string, value: string) => {
+    const iframeHTML = document.querySelector("iframe");
+    const innerDoc = iframeHTML.contentDocument || iframeHTML.contentWindow.document;
+    const dropTarget = innerDoc.querySelector(`[data-block-id=${id}]`) as HTMLElement;
+  
+    if (dropTarget) {
+      dropTarget.setAttribute("data-drop", value);
+    }
+  
+    const rect = dropTarget.getBoundingClientRect();
+    const iframeRect = iframeHTML.getBoundingClientRect();
+    const isInViewport =
+      rect.top >= iframeRect.top &&
+      rect.left >= iframeRect.left &&
+      rect.bottom <= iframeRect.bottom &&
+      rect.right <= iframeRect.right;
+  
+    if (!isInViewport) {
+      innerDoc.documentElement.scrollTop = dropTarget.offsetTop - iframeRect.top;
+    }
+  };
+
   return (
     <BlockContextMenu id={id}>
       <div
@@ -109,6 +152,20 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
         style={style}
         data-node-id={id}
         ref={dragHandle}
+        onDragStart={() => handleDragStart(node)}
+        onDragEnd={() => handleDragEnd(node)}
+        onDragOver={(e) => {
+          e.preventDefault();
+          setDropAttribute(id, "yes");
+        }}
+        onDragLeave={(e) => {
+          e.preventDefault();
+          setDropAttribute(id, "no");
+        }}
+        onDrop={(e) => {
+          e.preventDefault();
+          setDropAttribute(id, "no");
+        }}
         className={cn(
           "group flex !h-fit w-full items-center justify-between space-x-px py-px outline-none",
           isSelected ? "bg-blue-500 text-white" : "text-gray-600 hover:bg-gray-200 dark:hover:bg-gray-800",
