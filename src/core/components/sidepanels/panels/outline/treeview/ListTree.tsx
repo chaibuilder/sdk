@@ -139,7 +139,6 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
       rect.left >= iframeRect.left &&
       rect.bottom <= iframeRect.bottom &&
       rect.right <= iframeRect.right;
-
     if (!isInViewport) {
       innerDoc.documentElement.scrollTop = dropTarget.offsetTop - iframeRect.top;
     }
