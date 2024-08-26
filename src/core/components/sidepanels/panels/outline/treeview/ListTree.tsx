@@ -7,7 +7,7 @@ import { cn } from "../../../../../functions/Functions.ts";
 import {
   useBlocksStore,
   useBuilderProp,
-  useHighlightBlockId,
+  //useHighlightBlockId,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
   useUpdateBlocksProps,
@@ -21,7 +21,7 @@ import { useBlocksStoreUndoableActions } from "../../../../../history/useBlocksS
 import { BlockContextMenu } from "../BlockContextMenu.tsx";
 import { canAcceptChildBlock } from "../../../../../functions/block-helpers.ts";
 import { find, first, isEmpty } from "lodash-es";
-import { treeRefAtom } from "../../../../../atoms/ui.ts";
+import { canvasIframeAtom, treeRefAtom } from "../../../../../atoms/ui.ts";
 import {
   close,
   defaultShortcuts,
@@ -40,13 +40,16 @@ import { TbEyeDown } from "react-icons/tb";
 const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const outlineItems = useBuilderProp("outlineMenuItems", []);
 
-  const [, setHighlighted] = useHighlightBlockId();
+  //const [, setHighlighted] = useHighlightBlockId();
+
+  const [iframe] = useAtom<HTMLIFrameElement>(canvasIframeAtom);
+
   let previousState: boolean | null = null;
   const hasChildren = node.children.length > 0;
 
   const { id, data, isSelected, willReceiveDrop, isDragging, isEditing, handleClick } = node;
 
-  const debouncedSetHighlighted = useDebouncedCallback((id) => setHighlighted(id), [], 300);
+  //const debouncedSetHighlighted = useDebouncedCallback((id) => setHighlighted(id), [], 300);
 
   const handleToggle = (event: any) => {
     event.stopPropagation();
@@ -123,22 +126,21 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   }, [data]);
 
   const setDropAttribute = (id: string, value: string) => {
-    const iframeHTML = document.querySelector("iframe");
-    const innerDoc = iframeHTML.contentDocument || iframeHTML.contentWindow.document;
+    const innerDoc = iframe.contentDocument || iframe.contentWindow.document;
     const dropTarget = innerDoc.querySelector(`[data-block-id=${id}]`) as HTMLElement;
-  
+
     if (dropTarget) {
       dropTarget.setAttribute("data-drop", value);
     }
-  
+
     const rect = dropTarget.getBoundingClientRect();
-    const iframeRect = iframeHTML.getBoundingClientRect();
+    const iframeRect = iframe.getBoundingClientRect();
     const isInViewport =
       rect.top >= iframeRect.top &&
       rect.left >= iframeRect.left &&
       rect.bottom <= iframeRect.bottom &&
       rect.right <= iframeRect.right;
-  
+
     if (!isInViewport) {
       innerDoc.documentElement.scrollTop = dropTarget.offsetTop - iframeRect.top;
     }
@@ -148,7 +150,6 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
     <BlockContextMenu id={id}>
       <div
         onClick={handleNodeClickWithoutPropagating}
-        onMouseEnter={() => debouncedSetHighlighted(id)}
         style={style}
         data-node-id={id}
         ref={dragHandle}
