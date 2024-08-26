@@ -125,7 +125,6 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   }, [data]);
 
   const setDropAttribute = (id: string, value: string) => {
-<<<<<<< HEAD
     const innerDoc = iframe.contentDocument || iframe.contentWindow.document;
     const dropTarget = innerDoc.querySelector(`[data-block-id=${id}]`) as HTMLElement;
 
@@ -135,27 +134,11 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
 
     const rect = dropTarget.getBoundingClientRect();
     const iframeRect = iframe.getBoundingClientRect();
-=======
-    const iframeHTML = document.querySelector("iframe");
-    const innerDoc = iframeHTML.contentDocument || iframeHTML.contentWindow.document;
-    const dropTarget = innerDoc.querySelector(`[data-block-id=${id}]`) as HTMLElement;
-  
-    if (dropTarget) {
-      dropTarget.setAttribute("data-drop", value);
-    }
-  
-    const rect = dropTarget.getBoundingClientRect();
-    const iframeRect = iframeHTML.getBoundingClientRect();
->>>>>>> 0523540 (feat: added drop effect in outline)
     const isInViewport =
       rect.top >= iframeRect.top &&
       rect.left >= iframeRect.left &&
       rect.bottom <= iframeRect.bottom &&
       rect.right <= iframeRect.right;
-<<<<<<< HEAD
-=======
-  
->>>>>>> 0523540 (feat: added drop effect in outline)
     if (!isInViewport) {
       innerDoc.documentElement.scrollTop = dropTarget.offsetTop - iframeRect.top;
     }

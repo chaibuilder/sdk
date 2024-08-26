@@ -146,7 +146,7 @@ export const useDnd = () => {
       e.stopPropagation();
       throttledDragOver(e);
     },
-    onDrop: async (ev: DragEvent) => {
+    onDrop: (ev: DragEvent) => {
       dropTarget?.classList.remove("drop-target");
       const block = dropTarget as HTMLElement;
       const orientation = getOrientation(block);
