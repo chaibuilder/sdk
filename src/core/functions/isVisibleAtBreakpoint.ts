@@ -1,12 +1,13 @@
 type Breakpoint = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
-const isHiddenAtBreakpoint = (classes: string, breakpoint: Breakpoint): boolean => {
+const isVisibleAtBreakpoint = (classes: string, breakpoint: Breakpoint): boolean => {
   const breakpoints: Breakpoint[] = ["xs", "sm", "md", "lg", "xl", "2xl"];
   const breakpointIndex = breakpoints.indexOf(breakpoint);
 
   const classArray = classes.split(" ");
 
-  let visibilityState = new Array(breakpoints.length).fill(null);
+  // Initialize all breakpoints as hidden
+  let visibilityState = new Array(breakpoints.length).fill(false);
 
   for (const cls of classArray) {
     let [prefix, baseClass] = cls.split(":");
@@ -19,15 +20,15 @@ const isHiddenAtBreakpoint = (classes: string, breakpoint: Breakpoint): boolean 
     const classBreakpointIndex = breakpoints.indexOf(prefix as Breakpoint);
 
     if (classBreakpointIndex <= breakpointIndex) {
-      const isVisible = !["hidden"].includes(baseClass);
+      const isVisible = ["block", "flex", "inline", "inline-block", "inline-flex", "grid", "table"].includes(baseClass);
       for (let i = classBreakpointIndex; i < breakpoints.length; i++) {
         visibilityState[i] = isVisible;
       }
     }
   }
 
-  // If no visibility class was applied for the current breakpoint, default to visible
-  return visibilityState[breakpointIndex] ?? true;
+  // Return the visibility state for the current breakpoint
+  return visibilityState[breakpointIndex];
 };
 
-export { isHiddenAtBreakpoint };
+export { isVisibleAtBreakpoint };

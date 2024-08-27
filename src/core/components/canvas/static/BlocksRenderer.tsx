@@ -1,9 +1,8 @@
 import React, { Suspense, useCallback } from "react";
-import { each, filter, find, get, has, includes, isEmpty, isNull, isString, memoize, omit } from "lodash-es";
+import { each, filter, find, get, has, isEmpty, isNull, isString, memoize, omit } from "lodash-es";
 import { twMerge } from "tailwind-merge";
 import { ChaiBlock } from "../../../types/ChaiBlock";
 import { SLOT_KEY, STYLES_KEY } from "../../../constants/STRINGS.ts";
-import { StylingAttributes } from "../../../types/index";
 import { getBlockComponent } from "@chaibuilder/runtime";
 import { useChaiExternalData } from "./useChaiExternalData.ts";
 import { useAtom } from "jotai";
@@ -12,6 +11,9 @@ import { useBlocksStore } from "../../../history/useBlocksStoreUndoableActions.t
 import { useCanvasSettings } from "../../../hooks/useCanvasSettings.ts";
 import { draggedBlockAtom, dropTargetAtom } from "../dnd/atoms.ts";
 import { canAcceptChildBlock } from "../../../functions/block-helpers.ts";
+import { useCanvasWidth } from "../../../hooks";
+import { includes } from "lodash";
+import { isVisibleAtBreakpoint } from "../../../functions/isVisibleAtBreakpoint.ts";
 
 // FIXME:  Duplicate code in CanvasRenderer.tsx
 const getSlots = (block: ChaiBlock) => {
@@ -34,19 +36,23 @@ function getElementAttrs(block: ChaiBlock, key: string) {
   return get(block, `${key}_attrs`, {}) as Record<string, string>;
 }
 
-function getStyleAttrs(block: ChaiBlock) {
-  const styles: { [key: string]: StylingAttributes | string } = {};
+function getStyleAttrs(block: ChaiBlock, breakpoint: any) {
+  const styles: Record<string, any> = {};
   Object.keys(block).forEach((key) => {
     if (isString(block[key]) && block[key].startsWith(STYLES_KEY)) {
-      const styleName = generateClassNames(block[key]);
-      styles["__key"] = key;
+      const className = generateClassNames(block[key]);
+      const attrs = getElementAttrs(block, key);
       styles[key] = {
-        className: styleName,
+        className,
         "data-style-prop": key,
         "data-block-parent": block._id,
         "data-style-id": `${key}-${block._id}`,
-        ...getElementAttrs(block, key),
+        ...attrs,
       };
+      const alpineAttrs = has(attrs, "x-show") || has(attrs, "x-if");
+      if (alpineAttrs) {
+        styles["__isHidden"] = alpineAttrs && !isVisibleAtBreakpoint(className, breakpoint);
+      }
     }
   });
   return styles;
@@ -68,8 +74,9 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
   const [xShowBlocks] = useAtom(xShowBlocksAtom);
   const [draggedBlock] = useAtom(draggedBlockAtom);
   const [dropTargetId] = useAtom(dropTargetAtom);
+  const [, breakpoint] = useCanvasWidth();
   const [canvasSettings] = useCanvasSettings();
-  const getStyles = useCallback((block: ChaiBlock) => getStyleAttrs(block), []);
+  const getStyles = useCallback((block: ChaiBlock) => getStyleAttrs(block, breakpoint), [breakpoint]);
 
   const [chaiData] = useChaiExternalData();
   const [editingBlockId] = useAtom(inlineEditingActiveAtom);
@@ -112,21 +119,20 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
             : [];
           const blockState = getCanvasSettings(blockStateFrom);
           const htmlAttrs = getStyles(block);
-          const attrKey = get(htmlAttrs, "__key", "styles");
-          if (has(htmlAttrs, attrKey + ".x-show") && !includes(xShowBlocks, block._id)) {
+          if (get(htmlAttrs, "__isHidden", false) && !includes(xShowBlocks, block._id)) {
             return null;
           }
           return (
             <Suspense>
               {React.createElement(Component, {
                 blockProps: {
+                  ...(includes(xShowBlocks, block._id) ? { "force-show": "" } : {}),
                   "data-block-id": block._id,
                   "data-block-type": block._type,
                   ...(draggedBlock
                     ? // @ts-ignore
                       {
                         "data-dnd": canAcceptChildBlock(block._type, (draggedBlock as ChaiBlock)?._type) ? "yes" : "no",
-
                         "data-dnd-dragged": (draggedBlock as ChaiBlock)._id === block._id ? "yes" : "no",
                       }
                     : {}),
@@ -134,7 +140,7 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
                 },
                 index,
                 ...applyBindings(block, chaiData),
-                ...omit(htmlAttrs, ["__key"]),
+                ...omit(htmlAttrs, ["__isHidden"]),
                 ...attrs,
                 inBuilder: true,
                 blockState,

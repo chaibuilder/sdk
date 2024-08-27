@@ -7,7 +7,6 @@ import { cn } from "../../../../../functions/Functions.ts";
 import {
   useBlocksStore,
   useBuilderProp,
-  //useHighlightBlockId,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
   useUpdateBlocksProps,
@@ -114,10 +113,10 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
         if (attrsKeys.match(/x-data/)) {
           alpineAttrs.push("data");
         }
-        if (attrsKeys.match(/x-on:|@click/)) {
+        if (attrsKeys.match(/x-on/)) {
           alpineAttrs.push("event");
         }
-        if (attrsKeys.match(/x-show/)) {
+        if (attrsKeys.match(/x-show|x-if/)) {
           alpineAttrs.push("show");
         }
       }
