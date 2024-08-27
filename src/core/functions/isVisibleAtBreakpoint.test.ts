@@ -11,6 +11,13 @@ describe("isVisibleAtBreakpoint", () => {
 
   test("block class makes visible", () => {
     expect(isVisibleAtBreakpoint("block", "md")).toBe(true);
+    expect(isVisibleAtBreakpoint("md:block", "md")).toBe(true);
+    expect(
+      isVisibleAtBreakpoint(
+        "overflow-hidden transition-all duration-300 basis-full grow md:block md:w-auto md:basis-auto md:order-2 md:col-span-6",
+        "xl",
+      ),
+    ).toBe(true);
   });
 
   test("responsive classes", () => {
