@@ -138,7 +138,7 @@ export function ManualClasses() {
         </div>
         {askAiCallBack ? (
           <Popover>
-            <PopoverTrigger>
+            <PopoverTrigger asChild>
               <Button variant="default" className="h-6 w-fit" size="sm">
                 <SparklesIcon className="h-4 w-4" />
                 <span className="ml-2">{t("Ask AI")}</span>

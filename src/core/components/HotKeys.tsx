@@ -30,7 +30,7 @@ export const HotKeys = memo(() => {
     <Dialog>
       <DialogTrigger>
         <Tooltip>
-          <TooltipTrigger>
+          <TooltipTrigger asChild>
             <div className="flex w-10 items-center justify-center">
               <KeyboardIcon />
             </div>
