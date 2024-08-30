@@ -124,6 +124,7 @@ const useHandleCanvasClick = () => {
       if (!ids.includes(blockId)) {
         treeRef?.closeAll();
       }
+      setStyleBlockIds([]);
       setIds([blockId]);
     }
     setHighlighted("");
