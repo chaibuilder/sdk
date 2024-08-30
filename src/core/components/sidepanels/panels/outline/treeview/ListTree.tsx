@@ -7,6 +7,7 @@ import { cn } from "../../../../../functions/Functions.ts";
 import {
   useBlocksStore,
   useBuilderProp,
+  useCutBlockIds,
   //useHighlightBlockId,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
@@ -41,6 +42,8 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const outlineItems = useBuilderProp("outlineMenuItems", []);
 
   //const [, setHighlighted] = useHighlightBlockId();
+
+  const [cutBlocksIds] = useCutBlockIds();
 
   const [iframe] = useAtom<HTMLIFrameElement>(canvasIframeAtom);
 
@@ -172,6 +175,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
           isSelected ? "bg-blue-500 text-white" : "text-gray-600 hover:bg-gray-200 dark:hover:bg-gray-800",
           willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
           isDragging && "opacity-20",
+          cutBlocksIds.includes(id) && "opacity-60 pointer-events-none",
         )}>
         <div className="flex items-center">
           <div
