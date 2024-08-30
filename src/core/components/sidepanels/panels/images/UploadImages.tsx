@@ -4,7 +4,7 @@ import { atom, useAtom } from "jotai";
 import { ScrollArea } from "../../../../../ui";
 import { useBuilderProp } from "../../../../hooks";
 import { useTranslation } from "react-i18next";
-import { Upload } from "lucide-react";
+import { Loader, Upload } from "lucide-react";
 
 const uploadedMediaAtom = atom<
   {
@@ -22,7 +22,7 @@ const UploadImages = ({ isModalView, onSelect }: { isModalView: boolean; onSelec
   const fetchImages = useBuilderProp("fetchMediaCallback");
 
   const [images, setImages] = useAtom(uploadedMediaAtom);
-  const [uploading, setIsUploading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [, setFile] = useState<File>();
   const [error, setError] = useState("");
@@ -75,7 +75,7 @@ const UploadImages = ({ isModalView, onSelect }: { isModalView: boolean; onSelec
         <div className="flex flex-col items-center rounded-lg">
           <label
             htmlFor="image-upload"
-            className="flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100">
+            className="flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100">
             <div className="flex flex-col items-center justify-center pb-6 pt-5">
               <Upload className="mb-3 h-10 w-10 text-gray-400" />
               <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
@@ -83,6 +83,13 @@ const UploadImages = ({ isModalView, onSelect }: { isModalView: boolean; onSelec
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">{t("SVG, PNG, JPG or GIF (Max. 2mb)")}</p>
             </div>
+            {isUploading ? (
+              <div className="flex h-full w-full items-center justify-center">
+                <Loader className="h-6 w-6 animate-spin" />
+                <span className="ml-2 text-sm text-gray-500">{t("Uploading...")}</span>
+              </div>
+            ) : null}
+            {error && <p className="pb-2 text-xs text-red-500">{error || t("Something went wrong")}</p>}
           </label>
         </div>
         <input
