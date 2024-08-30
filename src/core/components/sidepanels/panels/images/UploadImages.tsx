@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { isEmpty, map } from "lodash-es";
-import { Cross1Icon, GearIcon, UploadIcon } from "@radix-ui/react-icons";
 import { atom, useAtom } from "jotai";
 import { ScrollArea } from "../../../../../ui";
 import { useBuilderProp } from "../../../../hooks";
+import { useTranslation } from "react-i18next";
+import { Upload } from "lucide-react";
 
 const uploadedMediaAtom = atom<
   {
@@ -16,13 +17,14 @@ const uploadedMediaAtom = atom<
 
 // @TODO: Loading media and showing skeleton for uploaded images and unsplash images
 const UploadImages = ({ isModalView, onSelect }: { isModalView: boolean; onSelect: (_url: string) => void }) => {
+  const { t } = useTranslation();
   const uploadImage = useBuilderProp("uploadMediaCallback");
   const fetchImages = useBuilderProp("fetchMediaCallback");
 
   const [images, setImages] = useAtom(uploadedMediaAtom);
-  const [isUploading, setIsUploading] = useState(false);
+  const [uploading, setIsUploading] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
-  const [file, setFile] = useState<File>();
+  const [, setFile] = useState<File>();
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -37,10 +39,19 @@ const UploadImages = ({ isModalView, onSelect }: { isModalView: boolean; onSelec
   }, []);
 
   const onChange = (e: any) => {
-    if (e && e?.target?.files?.length > 0) setFile(e.target.files[0]);
+    setError("");
+    // check if the file is an image else set error
+    if (e && e?.target?.files?.length > 0) {
+      const file = e.target.files[0];
+      if (file.type.startsWith("image")) {
+        onUpload(file);
+      } else {
+        setError(t("Please select an image"));
+      }
+    }
   };
 
-  const onUpload = async () => {
+  const onUpload = async (file: File) => {
     if (!uploadImage) return;
     setIsUploading(true);
     try {
@@ -59,53 +70,42 @@ const UploadImages = ({ isModalView, onSelect }: { isModalView: boolean; onSelec
   };
 
   return (
-    <>
-      {file ? (
-        <div className="relative flex w-full flex-col items-center justify-center rounded-md border bg-slate-50 p-2 px-1">
-          <img
-            src={URL.createObjectURL(file)}
-            alt=""
-            className="h-auto max-h-96 w-full max-w-sm rounded-md object-contain"
-          />
-          {error && <div className="w-full pt-2 text-center text-sm text-red-500">{error}</div>}
-          <div className="flex w-full items-center justify-center gap-2 pt-2">
-            <button
-              type="button"
-              onClick={onUpload}
-              disabled={isUploading}
-              className="flex items-center rounded-full bg-blue-500 px-3 py-1 text-sm text-white hover:bg-blue-600 hover:text-white">
-              {isUploading ? <GearIcon className="animate-spin" /> : <UploadIcon className="animate-bounce" />}
-              &nbsp; {isUploading ? "Uploading..." : "Upload"}
-            </button>
-            {!isUploading && (
-              <button
-                type="button"
-                className="flex items-center rounded-full border border-gray-300 px-3 py-1 text-sm hover:bg-gray-200"
-                onClick={() => setFile(undefined)}>
-                <Cross1Icon />
-                &nbsp; Cancel
-              </button>
-            )}
-          </div>
+    <div>
+      <label htmlFor={isModalView ? "upload-in-modal" : "upload-in-panel"}>
+        <div className="flex flex-col items-center rounded-lg">
+          <label
+            htmlFor="image-upload"
+            className="flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100">
+            <div className="flex flex-col items-center justify-center pb-6 pt-5">
+              <Upload className="mb-3 h-10 w-10 text-gray-400" />
+              <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                <span className="font-semibold">{t("Click to upload")}</span>
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">{t("SVG, PNG, JPG or GIF (Max. 2mb)")}</p>
+            </div>
+          </label>
         </div>
-      ) : (
-        <label htmlFor={isModalView ? "upload-in-modal" : "upload-in-panel"}>
-          <div className="flex w-full cursor-pointer flex-col items-center justify-center rounded-md border border-dashed border-blue-900 bg-gray-200 py-8 hover:bg-blue-50">
-            <div className="text-3xl">+</div>
-            <div>Click to choose file</div>
-          </div>
-          <input type="file" id={isModalView ? "upload-in-modal" : "upload-in-panel"} hidden onChange={onChange} />
-        </label>
-      )}
+        <input
+          type="file"
+          id={isModalView ? "image-upload" : "image-upload"}
+          accept="image/*"
+          hidden
+          onChange={onChange}
+        />
+      </label>
       <ScrollArea className={`-mx-2 flex h-full flex-col pb-8 pt-2 ${isModalView ? "px-2" : ""} pt-2`}>
         {isEmpty(images) && isFetching && (
           <div className="flex flex-col items-center justify-center py-6">
-            <div className="animate-pulse font-medium">Fetching...</div>
+            <div className="animate-pulse font-medium">{t("Fetching...")}</div>
           </div>
         )}
         {isEmpty(images) && !isFetching && (
-          <div className="flex flex-col items-center justify-center py-6">
-            <div className="font-medium">No Images</div>
+          <div className="flex h-full flex-col items-center justify-center text-center">
+            <div className="mb-4 h-12 rounded-full p-6"></div>
+            <h3 className="mb-2 text-sm font-semibold">{t("No images found")}</h3>
+            <p className="mb-4 max-w-sm text-muted-foreground">
+              {t("It looks like you haven't uploaded any images yet. Start by clicking the upload button above.")}
+            </p>
           </div>
         )}
         {isModalView ? (
@@ -143,7 +143,7 @@ const UploadImages = ({ isModalView, onSelect }: { isModalView: boolean; onSelec
           </Button>
         )} */}
       </ScrollArea>
-    </>
+    </div>
   );
 };
 
