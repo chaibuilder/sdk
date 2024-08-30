@@ -1,8 +1,61 @@
-import { CopyIcon, TrashIcon } from "@radix-ui/react-icons";
+import { CopyIcon, TrashIcon, ScissorsIcon, CardStackPlusIcon, CardStackIcon } from "@radix-ui/react-icons";
 import React, { useCallback } from "react";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "../../../../../ui";
-import { useDuplicateBlocks, useRemoveBlocks, useSelectedBlock, useSelectedBlockIds } from "../../../../hooks";
+import {
+  useCopyBlockIds,
+  useCutBlockIds,
+  useDuplicateBlocks,
+  usePasteBlocks,
+  useRemoveBlocks,
+  useSelectedBlock,
+  useSelectedBlockIds,
+} from "../../../../hooks";
 import { canDeleteBlock, canDuplicateBlock } from "../../../../functions/block-helpers.ts";
+
+const CopyPasteBlocks = () => {
+  const [selectedIds] = useSelectedBlockIds();
+  const { canPaste, pasteBlocks } = usePasteBlocks();
+  const [, setCopiedBlockIds] = useCopyBlockIds();
+
+  const selectedBlock = useSelectedBlock();
+
+  return (
+    <>
+      <ContextMenuItem
+        // @ts-ignore
+        disabled={!canDuplicateBlock(selectedBlock?._type)}
+        onClick={() => setCopiedBlockIds(selectedIds)}
+        className="flex items-center gap-x-4 text-xs">
+        <CopyIcon /> Copy
+      </ContextMenuItem>
+      {canPaste(selectedIds[0]) && (
+        <ContextMenuItem
+          // @ts-ignore
+          className="flex items-center gap-x-4 text-xs"
+          onClick={() => {
+            pasteBlocks(selectedIds);
+          }}>
+          <CardStackIcon /> Paste
+        </ContextMenuItem>
+      )}
+    </>
+  );
+};
+
+const CutBlocks = () => {
+  const [selectedIds] = useSelectedBlockIds();
+  const [, setCutBlockIds] = useCutBlockIds();
+
+  return (
+    <ContextMenuItem
+      // @ts-ignore
+
+      className="flex items-center gap-x-4 text-xs"
+      onClick={() => setCutBlockIds(selectedIds)}>
+      <ScissorsIcon /> Cut
+    </ContextMenuItem>
+  );
+};
 
 const RemoveBlocks = () => {
   const [selectedIds] = useSelectedBlockIds();
@@ -35,8 +88,10 @@ const BlockContextMenuContent = () => {
         disabled={!canDuplicateBlock(selectedBlock?._type)}
         className="flex items-center gap-x-4 text-xs"
         onClick={duplicate}>
-        <CopyIcon /> Duplicate
+        <CardStackPlusIcon /> Duplicate
       </ContextMenuItem>
+      <CutBlocks />
+      <CopyPasteBlocks />
       <RemoveBlocks />
     </ContextMenuContent>
   );
