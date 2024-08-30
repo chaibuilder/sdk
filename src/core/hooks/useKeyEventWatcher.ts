@@ -4,16 +4,19 @@ import { useRemoveBlocks } from "./useRemoveBlocks";
 import { useDuplicateBlocks } from "./useDuplicateBlocks";
 import { useUndoManager } from "../history/useUndoManager.ts";
 
-export const useKeyEventWatcher = () => {
+export const useKeyEventWatcher = (doc: Document) => {
   const [ids, setIds] = useSelectedBlockIds();
   const removeBlocks = useRemoveBlocks();
   const duplicateBlocks = useDuplicateBlocks();
   const { undo, redo } = useUndoManager();
 
-  useHotkeys("esc", () => setIds([]), {}, [setIds]);
-  useHotkeys("ctrl+d,command+d", () => duplicateBlocks(ids), { preventDefault: true }, [ids, duplicateBlocks]);
-  useHotkeys("ctrl+z,command+z", () => undo(), {}, [undo]);
-  useHotkeys("ctrl+y,command+y", () => redo(), {}, [redo]);
+  useHotkeys("esc", () => setIds([]), { document: doc }, [setIds]);
+  useHotkeys("ctrl+d,command+d", () => duplicateBlocks(ids), { document: doc, preventDefault: true }, [
+    ids,
+    duplicateBlocks,
+  ]);
+  useHotkeys("ctrl+z,command+z", () => undo(), { document: doc }, [undo]);
+  useHotkeys("ctrl+y,command+y", () => redo(), { document: doc }, [redo]);
 
   useHotkeys(
     "del, backspace",
@@ -21,7 +24,7 @@ export const useKeyEventWatcher = () => {
       event.preventDefault();
       removeBlocks(ids);
     },
-    {},
+    { document: doc },
     [ids, removeBlocks],
   );
 };

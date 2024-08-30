@@ -41,7 +41,7 @@ const RootLayout: ComponentType = () => {
     if (!isDevelopment()) e.preventDefault();
   };
 
-  useKeyEventWatcher();
+  useKeyEventWatcher(document);
   useExpandTree();
   useAutoSave();
 
