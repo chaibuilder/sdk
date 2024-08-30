@@ -46,7 +46,7 @@ export const BlockContextMenu = ({ children }: { children: React.ReactNode | nul
   return (
     <>
       <ContextMenu>
-        <ContextMenuTrigger>{children}</ContextMenuTrigger>
+        <ContextMenuTrigger asChild>{children}</ContextMenuTrigger>
         <BlockContextMenuContent />
       </ContextMenu>
     </>
