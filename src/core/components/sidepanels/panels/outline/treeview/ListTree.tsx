@@ -8,6 +8,10 @@ import {
   useBlocksStore,
   useBuilderProp,
   useCutBlockIds,
+<<<<<<< HEAD
+=======
+  //useHighlightBlockId,
+>>>>>>> 57c7fd2f18480122aa3f74ff1623df04a0a9f2a6
   useSelectedBlockIds,
   useSelectedStylingBlocks,
   useUpdateBlocksProps,
@@ -173,7 +177,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
           isSelected ? "bg-blue-500 text-white" : "text-gray-600 hover:bg-gray-200 dark:hover:bg-gray-800",
           willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
           isDragging && "opacity-20",
-          cutBlocksIds.includes(id) && "pointer-events-none opacity-60",
+          cutBlocksIds.includes(id) && "opacity-60 pointer-events-none",
         )}>
         <div className="flex items-center">
           <div
