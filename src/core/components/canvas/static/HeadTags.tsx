@@ -13,7 +13,6 @@ import { draggedBlockIdAtom } from "../../../atoms/ui.ts";
 import typography from "@tailwindcss/typography";
 import forms from "@tailwindcss/forms";
 import aspectRatio from "@tailwindcss/aspect-ratio";
-import { prelinePlugin } from "./Preline.ts";
 import getPalette from "tailwindcss-palette-generator";
 // @ts-ignore
 
@@ -89,7 +88,7 @@ export const HeadTags = ({ model }: { model: string }) => {
         },
       },
 
-      plugins: [typography, forms, aspectRatio, iframeWin.tailwind.plugin.withOptions(() => prelinePlugin)],
+      plugins: [typography, forms, aspectRatio],
     };
   }, [customTheme, iframeWin, headingFont, bodyFont]);
 
