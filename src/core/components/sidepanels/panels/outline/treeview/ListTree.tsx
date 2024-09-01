@@ -8,10 +8,6 @@ import {
   useBlocksStore,
   useBuilderProp,
   useCutBlockIds,
-<<<<<<< HEAD
-=======
-  //useHighlightBlockId,
->>>>>>> 57c7fd2f18480122aa3f74ff1623df04a0a9f2a6
   useSelectedBlockIds,
   useSelectedStylingBlocks,
   useUpdateBlocksProps,
