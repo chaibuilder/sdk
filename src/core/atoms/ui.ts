@@ -39,9 +39,6 @@ inlineEditingActiveAtom.debugLabel = "inlineEditingActiveAtom";
 export const draggingFlagAtom = atom(false);
 draggingFlagAtom.debugLabel = "draggingFlagAtom";
 
-export const draggedBlockIdAtom = atom("");
-draggedBlockIdAtom.debugLabel = "draggedBlockIdAtom";
-
 export const treeRefAtom = atom<TreeApi<any> | null>(null);
 treeRefAtom.debugLabel = "treeRefAtom";
 

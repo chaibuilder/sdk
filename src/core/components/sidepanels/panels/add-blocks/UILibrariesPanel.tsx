@@ -109,7 +109,7 @@ const BlockCard = ({
           draggable={true}
           onDragStart={handleDragStart}
           className={clsx(
-            "relative mt-2 cursor-pointer overflow-hidden rounded-md border border-gray-300 bg-white duration-200 hover:border-blue-500 hover:shadow-xl",
+            "relative mt-2 cursor-move overflow-hidden rounded-md border border-gray-300 bg-white duration-200 hover:border-blue-500 hover:shadow-xl",
             dndEnabled ? "cursor-grab" : "cursor-pointer",
           )}>
           {isAdding && (

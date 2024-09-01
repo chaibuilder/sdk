@@ -3,12 +3,12 @@ import { has, throttle } from "lodash-es";
 import { useFrame } from "../../../frame";
 
 import { useAtom } from "jotai";
-import { draggedBlockIdAtom, draggingFlagAtom } from "../../../atoms/ui.ts";
+import { draggingFlagAtom } from "../../../atoms/ui.ts";
 
 import { useAddBlock, useHighlightBlockId, useSelectedBlockIds } from "../../../hooks";
 import { useBlocksStoreUndoableActions } from "../../../history/useBlocksStoreUndoableActions.ts";
 import { getOrientation } from "./getOrientation.ts";
-import { draggedBlockAtom, dropTargetAtom } from "./atoms.ts";
+import { draggedBlockAtom, dropTargetBlockIdAtom } from "./atoms.ts";
 
 let iframeDocument: null | HTMLDocument = null;
 let possiblePositions: [number, number, number][] = [];
@@ -123,14 +123,12 @@ export const useDnd = () => {
   const [, setHighlight] = useHighlightBlockId();
   const [, setBlockIds] = useSelectedBlockIds();
   const { moveBlocks } = useBlocksStoreUndoableActions();
-  const [, setDraggedBlockId] = useAtom(draggedBlockIdAtom);
   const [draggedBlock, setDraggedBlock] = useAtom(draggedBlockAtom);
-  const [, setDropTarget] = useAtom(dropTargetAtom);
+  const [, setDropTarget] = useAtom(dropTargetBlockIdAtom);
 
   const resetDragState = () => {
     removePlaceholder();
     setIsDragging(false);
-    setDraggedBlockId("");
     //@ts-ignore
     setDraggedBlock(null);
     //@ts-ignore
@@ -147,19 +145,12 @@ export const useDnd = () => {
       throttledDragOver(e);
     },
     onDrop: (ev: DragEvent) => {
-      dropTarget?.classList.remove("drop-target");
       const block = dropTarget as HTMLElement;
       const orientation = getOrientation(block);
       const mousePosition = orientation === "vertical" ? ev.clientY + iframeDocument?.defaultView?.scrollY : ev.clientX;
       dropIndex = calculateDropIndex(mousePosition, possiblePositions);
       const data = draggedBlock;
       const id = block.getAttribute("data-block-id");
-
-      //if the draggedItem is the same as the dropTarget, reset the drag state.
-      if (data === dropTarget) {
-        resetDragState();
-        return;
-      }
 
       // This is for moving blocks from the sidebar Panel and UiLibraryPanel
       if (!has(data, "_id")) {
@@ -192,10 +183,18 @@ export const useDnd = () => {
       event.preventDefault();
       possiblePositions = [];
       calculatePossiblePositions(target);
-      target.classList.add("drop-target");
       setIsDragging(true);
       setHighlight("");
       setBlockIds([]);
+    },
+    onDragLeave: (e) => {
+      const dropTargetId = e.target.getAttribute("data-block-id");
+      if ("canvas" !== dropTargetId) return;
+      //@ts-ignore
+      setDropTarget(null);
+      setIsDragging(false);
+      removePlaceholder();
+      possiblePositions = [];
     },
   };
 };

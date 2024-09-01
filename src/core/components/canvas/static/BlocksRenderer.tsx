@@ -9,7 +9,7 @@ import { useAtom } from "jotai";
 import { inlineEditingActiveAtom, xShowBlocksAtom } from "../../../atoms/ui.ts";
 import { useBlocksStore } from "../../../history/useBlocksStoreUndoableActions.ts";
 import { useCanvasSettings } from "../../../hooks/useCanvasSettings.ts";
-import { draggedBlockAtom, dropTargetAtom } from "../dnd/atoms.ts";
+import { draggedBlockAtom } from "../dnd/atoms.ts";
 import { canAcceptChildBlock } from "../../../functions/block-helpers.ts";
 import { useCanvasWidth } from "../../../hooks";
 import { includes } from "lodash";
@@ -73,7 +73,6 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
   const [allBlocks] = useBlocksStore();
   const [xShowBlocks] = useAtom(xShowBlocksAtom);
   const [draggedBlock] = useAtom(draggedBlockAtom);
-  const [dropTargetId] = useAtom(dropTargetAtom);
   const [, breakpoint] = useCanvasWidth();
   const [canvasSettings] = useCanvasSettings();
   const getStyles = useCallback((block: ChaiBlock) => getStyleAttrs(block, breakpoint), [breakpoint]);
@@ -132,11 +131,9 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
                   ...(draggedBlock
                     ? // @ts-ignore
                       {
-                        "data-dnd": canAcceptChildBlock(block._type, (draggedBlock as ChaiBlock)?._type) ? "yes" : "no",
-                        "data-dnd-dragged": (draggedBlock as ChaiBlock)._id === block._id ? "yes" : "no",
+                        "data-dnd": canAcceptChildBlock(block._type, draggedBlock?._type) ? "yes" : "no",
                       }
                     : {}),
-                  ...(dropTargetId === block._id ? { "data-drop": "yes" } : {}),
                 },
                 index,
                 ...applyBindings(block, chaiData),

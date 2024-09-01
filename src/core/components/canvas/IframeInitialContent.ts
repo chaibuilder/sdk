@@ -46,6 +46,7 @@ export const IframeInitialContent: string = `<!doctype html>
     <style id="selected-styling-block"></style>
     <style id="highlighted-block"></style>
     <style id="dragged-block"></style>
+    <style id="drop-target-block"></style>
 
   </head>
   <body class="font-body antialiased h-full">
