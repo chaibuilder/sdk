@@ -169,7 +169,7 @@ export const useDnd = () => {
       }
 
       //@ts-ignore
-      moveBlocks([data._id], blockId, dropIndex);
+      moveBlocks([data._id], blockId === "canvas" ? null : blockId, dropIndex);
       resetDragState();
       setTimeout(removePlaceholder, 300);
     },

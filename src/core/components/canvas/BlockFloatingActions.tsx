@@ -52,6 +52,7 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
   const removeBlock = useRemoveBlocks();
   const duplicateBlock = useDuplicateBlocks();
   const [, setSelectedIds] = useSelectedBlockIds();
+  const [, setHighlighted] = useHighlightBlockId();
   const [, setStyleBlocks] = useSelectedStylingBlocks();
   const [editingBlockId] = useAtom(inlineEditingActiveAtom);
   const { floatingStyles, refs, update } = useFloating({
@@ -80,6 +81,10 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
         onClick={(e) => {
           e.stopPropagation();
           e.preventDefault();
+        }}
+        onMouseEnter={(e) => {
+          e.stopPropagation();
+          setHighlighted(null);
         }}
         onKeyDown={(e) => e.stopPropagation()}
         className="z-[99999] flex h-6 items-center bg-blue-500 py-2 text-xs text-white">

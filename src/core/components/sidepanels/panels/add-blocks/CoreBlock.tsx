@@ -6,7 +6,6 @@ import { activePanelAtom } from "../../../../atoms/ui";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../../ui";
 import { useAddBlock, useHighlightBlockId, useSelectedBlockIds } from "../../../../hooks";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
-import { useFeature } from "flagged";
 import { OUTLINE_KEY } from "../../../../constants/STRINGS.ts";
 import { draggedBlockAtom } from "../../../canvas/dnd/atoms.ts";
 
@@ -26,8 +25,6 @@ export const CoreBlock = ({ block }: { block: any }) => {
     }
     setActivePanel(OUTLINE_KEY);
   };
-  const dndEnabled = useFeature("dnd");
-
   return (
     <>
       <Tooltip>
@@ -47,10 +44,7 @@ export const CoreBlock = ({ block }: { block: any }) => {
               }, 200);
             }}
             draggable={"true"}
-            className={
-              "space-y-2 rounded-lg border border-border p-3 text-center hover:bg-slate-300/50 " +
-              (dndEnabled ? "cursor-grab" : "cursor-pointer")
-            }>
+            className={"cursor-grab space-y-2 rounded-lg border border-border p-3 text-center hover:bg-slate-300/50"}>
             {createElement(icon || BoxIcon, { className: "w-4 h-4 mx-auto" })}
             <p className="text-xs">{label || type}</p>
           </button>

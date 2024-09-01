@@ -20,7 +20,6 @@ import { UILibrary, UiLibraryBlock } from "../../../../types/chaiBuilderEditorPr
 import { ChaiBlock } from "../../../../types/ChaiBlock.ts";
 import { atomWithStorage } from "jotai/utils";
 import { UILibrariesSelect } from "./UiLibrariesSelect.tsx";
-import { useFeature } from "flagged";
 
 import { draggedBlockAtom } from "../../../canvas/dnd/atoms.ts";
 import clsx from "clsx";
@@ -43,7 +42,6 @@ const BlockCard = ({
   const name = get(block, "name", get(block, "label"));
 
   const [, setDraggedBlock] = useAtom(draggedBlockAtom);
-  const dndEnabled = useFeature("dnd");
 
   const isTopLevelSection = (block: ChaiBlock) => {
     const isPageSection = has(block, "styles_attrs.data-page-section");
@@ -109,8 +107,7 @@ const BlockCard = ({
           draggable={true}
           onDragStart={handleDragStart}
           className={clsx(
-            "relative mt-2 cursor-move overflow-hidden rounded-md border border-gray-300 bg-white duration-200 hover:border-blue-500 hover:shadow-xl",
-            dndEnabled ? "cursor-grab" : "cursor-pointer",
+            "relative mt-2 cursor-grab cursor-move overflow-hidden rounded-md border border-gray-300 bg-white duration-200 hover:border-blue-500 hover:shadow-xl",
           )}>
           {isAdding && (
             <div className="absolute flex h-full w-full items-center justify-center bg-black/70">

@@ -11,7 +11,6 @@ import { Quill } from "react-quill";
 import { useAtom } from "jotai";
 import { inlineEditingActiveAtom, treeRefAtom } from "../../../atoms/ui.ts";
 import { useDnd } from "../dnd/useDnd.ts";
-import { dropTargetBlockIdAtom } from "../dnd/atoms.ts";
 
 function getTargetedBlock(target) {
   // check if target is a block by checking attr data-block-id else get .closest('[data-block-id]')
@@ -174,7 +173,6 @@ export const Canvas = ({ children }: { children: React.ReactNode }) => {
   const handleCanvasClick = useHandleCanvasClick();
   const handleMouseMove = useHandleMouseMove();
   const dnd = useDnd();
-  const [dropTargetId] = useAtom(dropTargetBlockIdAtom);
 
   return (
     <div
@@ -185,7 +183,6 @@ export const Canvas = ({ children }: { children: React.ReactNode }) => {
       onMouseMove={handleMouseMove}
       {...omit(dnd, "isDragging")}
       className={`relative mb-5 h-full max-w-full px-1 ` + (dnd.isDragging ? "dragging" : "")}>
-      <div>Target: {dropTargetId}</div>
       {children}
     </div>
   );
