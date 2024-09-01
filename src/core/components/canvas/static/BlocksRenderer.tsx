@@ -11,7 +11,7 @@ import { useBlocksStore } from "../../../history/useBlocksStoreUndoableActions.t
 import { useCanvasSettings } from "../../../hooks/useCanvasSettings.ts";
 import { draggedBlockAtom, dropTargetAtom } from "../dnd/atoms.ts";
 import { canAcceptChildBlock } from "../../../functions/block-helpers.ts";
-import { useCanvasWidth } from "../../../hooks";
+import { useCanvasWidth, useCutBlockIds } from "../../../hooks";
 import { includes } from "lodash";
 import { isVisibleAtBreakpoint } from "../../../functions/isVisibleAtBreakpoint.ts";
 
@@ -82,6 +82,7 @@ function isDescendant(parentId: string, blockId: string, allBlocks: ChaiBlock[])
 export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
   const [allBlocks] = useBlocksStore();
   const [xShowBlocks] = useAtom(xShowBlocksAtom);
+  const [cutBlockIds] = useCutBlockIds();
   const [draggedBlock] = useAtom<any>(draggedBlockAtom);
   const [dropTargetId] = useAtom(dropTargetAtom);
   const [, breakpoint] = useCanvasWidth();
@@ -145,10 +146,12 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
                     ? // @ts-ignore
                       {
                         "data-dnd": canAcceptChildBlock(block._type, (draggedBlock as ChaiBlock)?._type) ? "yes" : "no",
-                        "data-dnd-dragged": (draggedBlock as ChaiBlock)._id === block._id || isChildOfDraggedBlock ? "yes" : "no",
+                        "data-dnd-dragged":
+                          (draggedBlock as ChaiBlock)._id === block._id || isChildOfDraggedBlock ? "yes" : "no",
                       }
                     : {}),
                   ...(dropTargetId === block._id && !isChildOfDraggedBlock ? { "data-drop": "yes" } : {}),
+                  ...(includes(cutBlockIds, block._id) ? { "data-cut-block": "yes" } : {}),
                 },
                 index,
                 ...applyBindings(block, chaiData),

@@ -37,7 +37,6 @@ export const usePasteBlocks = (): {
   canPaste: (newParentId: string) => boolean;
   pasteBlocks: Function;
 } => {
-  
   // @ts-ignore
   const copiedBlockIds: Array<string> = useAtomValue(copiedBlockIdsAtom);
   const [cutBlockIds, setCutBlockIds] = useCutBlockIds();
@@ -66,7 +65,7 @@ export const usePasteBlocks = (): {
         } else {
           moveCutBlocks(cutBlockIds, newParentId);
         }
-        setCutBlockIds(() => []);
+        setCutBlockIds([]);
       },
       [cutBlockIds, copiedBlockIds, duplicateBlocks, moveCutBlocks, setCutBlockIds],
     ),

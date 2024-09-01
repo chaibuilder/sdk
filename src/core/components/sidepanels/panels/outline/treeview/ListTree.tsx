@@ -42,8 +42,6 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
 
   //const [, setHighlighted] = useHighlightBlockId();
 
-  const [cutBlocksIds] = useCutBlockIds();
-
   const [iframe] = useAtom<HTMLIFrameElement>(canvasIframeAtom);
 
   let previousState: boolean | null = null;
@@ -173,7 +171,6 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
           isSelected ? "bg-blue-500 text-white" : "text-gray-600 hover:bg-gray-200 dark:hover:bg-gray-800",
           willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
           isDragging && "opacity-20",
-          cutBlocksIds.includes(id) && "opacity-60 pointer-events-none",
         )}>
         <div className="flex items-center">
           <div
@@ -252,6 +249,7 @@ const useCanMove = () => {
 const ListTree = () => {
   const [treeData] = useAtom(treeDSBlocks);
   const [ids, setIds] = useSelectedBlockIds();
+  const [cutBlocksIds] = useCutBlockIds();
   const updateBlockProps = useUpdateBlocksProps();
   const [, setStyleBlocks] = useSelectedStylingBlocks();
   const { moveBlocks } = useBlocksStoreUndoableActions();
@@ -265,10 +263,22 @@ const ListTree = () => {
     setStyleBlocks([]);
   };
 
+  const filterTreeData = (data, cutIds) => {
+    return data
+      .filter((node) => !cutIds.includes(node._id))
+      .map((node) => ({
+        ...node,
+        children: node.children ? filterTreeData(node.children, cutIds) : [],
+      }));
+  };
+
+  const filteredTreeData = filterTreeData(treeData, cutBlocksIds);
+
   useEffect(() => {
     //@ts-ignore
     setTreeRef(treeRef.current);
   }, [treeRef.current]);
+
 
   const onRename: RenameHandler<any> = ({ id, name, node }) => {
     updateBlockProps([id], { _name: name }, node.data._name);
@@ -378,7 +388,7 @@ const ListTree = () => {
           openByDefault={false}
           onMove={onMove}
           rowHeight={20}
-          data={treeData}
+          data={filteredTreeData}
           renderCursor={DefaultCursor}
           onSelect={onSelect}
           childrenAccessor={(d: any) => d.children}
