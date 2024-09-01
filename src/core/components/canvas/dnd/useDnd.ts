@@ -147,19 +147,22 @@ export const useDnd = () => {
       throttledDragOver(e);
     },
     onDrop: (ev: DragEvent) => {
-      dropTarget?.classList.remove("drop-target");
       const block = dropTarget as HTMLElement;
       const orientation = getOrientation(block);
       const mousePosition = orientation === "vertical" ? ev.clientY + iframeDocument?.defaultView?.scrollY : ev.clientX;
       dropIndex = calculateDropIndex(mousePosition, possiblePositions);
       const data = draggedBlock;
       const id = block.getAttribute("data-block-id");
-
+      const isDropTargetAllowed = dropTarget.getAttribute("data-dnd-dragged") === "yes" ? false : true;
+      
+      console.log(isDropTargetAllowed);
       //if the draggedItem is the same as the dropTarget, reset the drag state.
-      if (data === dropTarget) {
+      if (data === dropTarget || !isDropTargetAllowed) {
         resetDragState();
         return;
       }
+
+    
 
       // This is for moving blocks from the sidebar Panel and UiLibraryPanel
       if (!has(data, "_id")) {
@@ -186,13 +189,15 @@ export const useDnd = () => {
       const target = event.target as HTMLElement;
       dropTarget = target;
       const dropTargetId = target.getAttribute("data-block-id");
+      const isdropTargetAllowed = target.getAttribute("data-dnd-dragged") === "yes" ? false : true;
       //@ts-ignore
       setDropTarget(dropTargetId);
       event.stopPropagation();
       event.preventDefault();
       possiblePositions = [];
-      calculatePossiblePositions(target);
-      target.classList.add("drop-target");
+      if (isdropTargetAllowed) {
+        calculatePossiblePositions(target);
+      }
       setIsDragging(true);
       setHighlight("");
       setBlockIds([]);
