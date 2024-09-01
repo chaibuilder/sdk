@@ -42,8 +42,6 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
 
   //const [, setHighlighted] = useHighlightBlockId();
 
-  const [cutBlocksIds] = useCutBlockIds();
-
   const [iframe] = useAtom<HTMLIFrameElement>(canvasIframeAtom);
 
   let previousState: boolean | null = null;
@@ -281,6 +279,7 @@ const ListTree = () => {
     //@ts-ignore
     setTreeRef(treeRef.current);
   }, [treeRef.current]);
+
 
   const onRename: RenameHandler<any> = ({ id, name, node }) => {
     updateBlockProps([id], { _name: name }, node.data._name);
