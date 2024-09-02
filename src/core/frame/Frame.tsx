@@ -15,6 +15,7 @@ export class Frame extends Component {
     head: PropTypes.node,
     initialContent: PropTypes.string,
     mountTarget: PropTypes.string,
+    className: PropTypes.string,
     contentDidMount: PropTypes.func,
     contentDidUpdate: PropTypes.func,
     children: PropTypes.oneOfType([PropTypes.element, PropTypes.arrayOf(PropTypes.element)]),
