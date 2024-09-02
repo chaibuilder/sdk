@@ -8,6 +8,7 @@ import { useAddBlock, useHighlightBlockId, useSelectedBlockIds } from "../../../
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { OUTLINE_KEY } from "../../../../constants/STRINGS.ts";
 import { draggedBlockAtom } from "../../../canvas/dnd/atoms.ts";
+import { useFeature } from "flagged";
 
 export const CoreBlock = ({ block }: { block: any }) => {
   const [, setDraggedBlock] = useAtom(draggedBlockAtom);
@@ -25,6 +26,7 @@ export const CoreBlock = ({ block }: { block: any }) => {
     }
     setActivePanel(OUTLINE_KEY);
   };
+  const dnd = useFeature("dnd");
   return (
     <>
       <Tooltip>
@@ -43,8 +45,10 @@ export const CoreBlock = ({ block }: { block: any }) => {
                 setActivePanel(OUTLINE_KEY);
               }, 200);
             }}
-            draggable={"true"}
-            className={"cursor-grab space-y-2 rounded-lg border border-border p-3 text-center hover:bg-slate-300/50"}>
+            draggable={dnd ? "true" : "false"}
+            className={
+              "cursor-pointer space-y-2 rounded-lg border border-border p-3 text-center hover:bg-slate-300/50"
+            }>
             {createElement(icon || BoxIcon, { className: "w-4 h-4 mx-auto" })}
             <p className="text-xs">{label || type}</p>
           </button>

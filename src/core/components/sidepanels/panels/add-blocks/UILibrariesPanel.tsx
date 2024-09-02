@@ -23,6 +23,7 @@ import { UILibrariesSelect } from "./UiLibrariesSelect.tsx";
 
 import { draggedBlockAtom } from "../../../canvas/dnd/atoms.ts";
 import clsx from "clsx";
+import { useFeature } from "flagged";
 
 const BlockCard = ({
   block,
@@ -40,7 +41,7 @@ const BlockCard = ({
   const [ids, setSelected] = useSelectedBlockIds();
   const [, setHighlighted] = useHighlightBlockId();
   const name = get(block, "name", get(block, "label"));
-
+  const dnd = useFeature("dnd");
   const [, setDraggedBlock] = useAtom(draggedBlockAtom);
 
   const isTopLevelSection = (block: ChaiBlock) => {
@@ -104,10 +105,10 @@ const BlockCard = ({
       <TooltipTrigger asChild>
         <div
           onClick={isAdding ? () => {} : addBlock}
-          draggable={true}
+          draggable={dnd ? "true" : "false"}
           onDragStart={handleDragStart}
           className={clsx(
-            "relative mt-2 cursor-grab cursor-move overflow-hidden rounded-md border border-gray-300 bg-white duration-200 hover:border-blue-500 hover:shadow-xl",
+            "relative mt-2 cursor-pointer overflow-hidden rounded-md border border-gray-300 bg-white duration-200 hover:border-blue-500 hover:shadow-xl",
           )}>
           {isAdding && (
             <div className="absolute flex h-full w-full items-center justify-center bg-black/70">
