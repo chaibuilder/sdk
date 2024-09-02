@@ -1,7 +1,6 @@
 import { atom } from "jotai";
 import { TreeApi } from "react-arborist";
 import { atomWithStorage } from "jotai/utils";
-import { ChaiBlock } from "../main";
 
 export const readOnlyModeAtom: any = atom<boolean>(false);
 readOnlyModeAtom.debugLabel = "readOnlyModeAtom";
