@@ -31,6 +31,7 @@ const BlockCard = ({
   library,
 }: {
   library: UILibrary;
+  // TODO: I think it should be "block: UiLibraryBlock | ChaiBuilderBlock"
   block: UiLibraryBlock;
   closePopover: () => void;
 }) => {
@@ -39,6 +40,7 @@ const BlockCard = ({
   const { addCoreBlock, addPredefinedBlock } = useAddBlock();
   const [ids, setSelected] = useSelectedBlockIds();
   const [, setHighlighted] = useHighlightBlockId();
+  const name = get(block, "name", get(block, "label"));
 
   const [, setDraggedBlock] = useAtom(draggedBlockAtom);
   const dndEnabled = useFeature("dnd");
@@ -117,16 +119,16 @@ const BlockCard = ({
             </div>
           )}
           {block.preview ? (
-            <img src={block.preview} className="min-h-[25px] w-full rounded-md" alt={block.name} />
+            <img src={block.preview} className="min-h-[25px] w-full rounded-md" alt={name} />
           ) : (
             <div className="flex h-20 items-center justify-center rounded-md border border-border border-gray-300 bg-gray-200">
-              <p className="max-w-xs text-center text-sm text-gray-700">{block.name}</p>
+              <p className="max-w-xs text-center text-sm text-gray-700">{name}</p>
             </div>
           )}
         </div>
       </TooltipTrigger>
       <TooltipContent>
-        <p>{block.name}</p>
+        <p>{name}</p>
       </TooltipContent>
     </Tooltip>
   );
@@ -141,7 +143,7 @@ const useLibraryBlocks = (library?: UILibrary) => {
   const isLoading = get(libraryBlocks, `${library?.uuid}.loading`, false);
   useEffect(() => {
     (async () => {
-      if (isLoading || blocks.length > 0) return;
+      if (isLoading || blocks.length > 0 || !library) return;
       setLibraryBlocks((prev) => ({ ...prev, [library?.uuid]: { loading: true, blocks: [] } }));
       const libraryBlocks: UiLibraryBlock[] = await getBlocks(library);
       setLibraryBlocks((prev) => ({ ...prev, [library?.uuid]: { loading: false, blocks: libraryBlocks || [] } }));
