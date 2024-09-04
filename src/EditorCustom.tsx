@@ -1,32 +1,17 @@
 import { useAtom } from "jotai";
-import { useTranslation } from "react-i18next";
 import { lsAiContextAtom, lsBlocksAtom, lsBrandingOptionsAtom } from "./__dev/atoms-dev.ts";
 import { ChaiBlock, ChaiBuilderEditor } from "./core/main";
 import { loadWebBlocks } from "./blocks/web";
-import "./__dev/data-providers/data";
 import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
 import { useState } from "react";
 import { UILibrary, UiLibraryBlock } from "./core/types/chaiBuilderEditorProps.ts";
-import "./__dev/RowCol.tsx";
 import PreviewWeb from "./__dev/preview/WebPreview.tsx";
 import axios from "axios";
+import CustomLayout from "./__dev/CustomLayout.tsx";
 
 loadWebBlocks();
 
-const PreviewMessage = () => {
-  const { t } = useTranslation();
-  return (
-    <div className={"text-sm font-normal"}>
-      {t("dev_mode_message")}{" "}
-      <a target={"_blank"} className="text-orange-500 underline" href={"/preview"}>
-        /preview
-      </a>{" "}
-      {t("to_see_page_preview")}
-    </div>
-  );
-};
-
-function ChaiBuilderDefault() {
+function ChaiBuilderCustom() {
   const [blocks] = useAtom(lsBlocksAtom);
   const [brandingOptions] = useAtom(lsBrandingOptionsAtom);
   const [aiContext, setAiContext] = useAtom(lsAiContextAtom);
@@ -35,11 +20,11 @@ function ChaiBuilderDefault() {
   ]);
   return (
     <ChaiBuilderEditor
+      customRootLayout={CustomLayout}
       unsplashAccessKey={import.meta.env.VITE_UNSPLASH_ACCESS_KEY}
       showDebugLogs={true}
       autoSaveSupport={false}
       previewComponent={PreviewWeb}
-      topBarComponents={{ left: [PreviewMessage] }}
       blocks={blocks}
       brandingOptions={brandingOptions}
       onSave={async ({ blocks, providers, brandingOptions }: any) => {
@@ -79,4 +64,4 @@ function ChaiBuilderDefault() {
   );
 }
 
-export default ChaiBuilderDefault;
+export default ChaiBuilderCustom;

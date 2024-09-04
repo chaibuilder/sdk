@@ -8,6 +8,7 @@ export type UiLibraryBlock = {
   uuid: string;
   group: string;
   name?: string;
+  path: string;
   preview?: string;
   tags?: string[];
   description?: string;
@@ -16,7 +17,8 @@ export type UiLibraryBlock = {
 export interface UILibrary {
   uuid: string;
   name: string;
-  blocks: UiLibraryBlock[];
+  url: string;
+  blocks?: UiLibraryBlock[];
   link?: string;
   description?: RichText;
 }
@@ -57,7 +59,13 @@ export type AskAiResponse = {
   error?: any;
 };
 
+export type ChaiBuilderInstance = {
+  setBlocks: (blocks: ChaiBlock[]) => void;
+};
+
 export interface ChaiBuilderEditorProps {
+  onLoad?: (editorInstance: ChaiBuilderInstance) => void;
+  customRootLayout?: React.ComponentType;
   htmlDir?: "ltr" | "rtl";
   hideSaveButton?: boolean;
   filterChaiBlock?: (block: any) => boolean;

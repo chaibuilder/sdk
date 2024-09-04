@@ -5,7 +5,7 @@
   "author": "Suraj Air",
   "license": "BSD-3-Clause",
   "homepage": "https://chaibuilder.com",
-  "version": "1.2.62",
+  "version": "1.2.63",
   "type": "module",
   "repository": {
     "type": "git",
@@ -156,7 +156,8 @@
     "tippy.js": "^6.3.7",
     "tree-model": "^1.0.7",
     "undo-manager": "^1.1.1",
-    "unsplash-js": "^7.0.18"
+    "unsplash-js": "^7.0.18",
+    "framer-motion": "^11.4.0"
   },
   "devDependencies": {
     "@ai-sdk/openai": "^0.0.37",
@@ -180,6 +181,7 @@
     "@vitejs/plugin-react-swc": "^3.4.1",
     "ai": "^3.2.32",
     "autoprefixer": "^10.4.16",
+    "axios": "^1.7.7",
     "better-docs": "^2.7.2",
     "better-sqlite3": "^9.1.1",
     "cheerio": "1.0.0-rc.12",

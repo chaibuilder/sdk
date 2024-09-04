@@ -17,8 +17,9 @@ import { showPredefinedBlockCategoryAtom } from "../../../../atoms/ui";
 import { useBuilderProp } from "../../../../hooks";
 import ImportHTML from "./ImportHTML";
 import { useChaiBlocks } from "@chaibuilder/runtime";
+import { cn } from "../../../../functions/Functions.ts";
 
-const AddBlocksPanel = () => {
+const AddBlocksPanel = ({ className }: { className?: string }) => {
   const { t } = useTranslation();
   const [tab, setTab] = useState<string>("core");
   const [active, setActive] = useState<string>("basic");
@@ -39,7 +40,7 @@ const AddBlocksPanel = () => {
   }, [uniqueTypeGroup, active]);
 
   return (
-    <div className="flex h-full w-72 flex-col overflow-hidden">
+    <div className={cn("flex h-full w-72 flex-col overflow-hidden", className)}>
       <div className="mb-2 flex flex-col justify-between rounded-md bg-background/30 p-1">
         <h1 className="flex flex-col items-baseline px-1 text-xl font-semibold xl:flex-col">{t("add_block")}</h1>
         <span className="p-0 text-xs font-light leading-3 opacity-80 xl:pl-1">

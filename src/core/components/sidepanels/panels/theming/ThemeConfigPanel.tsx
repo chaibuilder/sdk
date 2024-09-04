@@ -63,7 +63,7 @@ const FONTS = [
   { title: "Manrope", value: "Manrope" },
 ];
 
-const ThemeConfiguration = (): React.JSX.Element => {
+const ThemeConfigPanel = (): React.JSX.Element => {
   const onSaveBrandingOptions = useBuilderProp("onSaveBrandingOptions", noop);
   const [brandingOptions, setBrandingOptions] = useBrandingOptions();
   const [container] = useBlocksContainer();
@@ -178,4 +178,4 @@ const ThemeConfiguration = (): React.JSX.Element => {
   );
 };
 
-export default ThemeConfiguration;
+export default ThemeConfigPanel;

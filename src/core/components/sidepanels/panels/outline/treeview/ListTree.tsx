@@ -368,7 +368,7 @@ const ListTree = () => {
         }}>
         <Tree
           ref={treeRef}
-          height={800}
+          height={window.innerHeight - 160}
           className="no-scrollbar !h-full max-w-full !overflow-y-auto !overflow-x-hidden"
           selection={ids[0] || ""}
           onRename={onRename}

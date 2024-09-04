@@ -2,6 +2,7 @@ import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
+import ChaiBuilderCustom from "./EditorCustom.tsx";
 
 async function enableMocking() {
   if (import.meta.env.MODE !== "development") {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <ChaiBuilderDefault />,
+  },
+  {
+    path: "/custom",
+    element: <ChaiBuilderCustom />,
   },
   {
     path: "/preview",

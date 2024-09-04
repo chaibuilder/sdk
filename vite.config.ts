@@ -67,6 +67,7 @@ export default defineConfig({
         "tailwindcss-palette-generator",
         "clsx",
         "cmdk",
+        "framer-motion",
         "date-fns",
         "flagged",
         "fuse.js",

@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { CanvasTopBar } from "./topbar/CanvasTopBar";
 import { Skeleton } from "../../../ui";
-import { StaticCanvas } from "./static/StaticCanvas";
+import StaticCanvas from "./static/StaticCanvas";
 import { ErrorBoundary } from "../ErrorBoundary";
 import { Resizable } from "re-resizable";
 import { useCodeEditor } from "../../hooks";

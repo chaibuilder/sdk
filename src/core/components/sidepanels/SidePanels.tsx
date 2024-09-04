@@ -15,7 +15,7 @@ import { useChaiBlocks } from "@chaibuilder/runtime";
 
 const AddBlocksPanel = lazy(() => import("./panels/add-blocks/AddBlocks.tsx"));
 const ArboristPanel = lazy(() => import("./panels/outline/treeview/ListTree.tsx"));
-const ThemeConfiguration = lazy(() => import("./panels/theming/ThemeConfiguration.tsx"));
+const ThemeConfiguration = lazy(() => import("./panels/theming/ThemeConfigPanel.tsx"));
 const ImagesPanel = lazy(() => import("./panels/images/ImagesPanel"));
 const UILibrariesPanel = lazy(() => import("./panels/add-blocks/UILibrariesPanel.tsx"));
 
