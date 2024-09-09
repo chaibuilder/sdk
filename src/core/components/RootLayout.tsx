@@ -7,7 +7,7 @@ import { useAtom } from "jotai";
 import { builderSaveStateAtom, useSavePage } from "../hooks/useSavePage.ts";
 import "./canvas/static/BlocksExternalDataProvider.tsx";
 import { useBuilderProp } from "../hooks";
-import { TooltipProvider } from "../../ui";
+import { ScrollArea, TooltipProvider } from "../../ui";
 import { useIntervalEffect } from "@react-hookz/web";
 import { aiAssistantActiveAtom } from "../atoms/ui.ts";
 import { AskAI } from "./AskAi.tsx";
@@ -87,10 +87,12 @@ const RootLayout: ComponentType = () => {
               </Suspense>
             </div>
             <div className="relative flex h-[100%] w-[280px] min-w-[280px] border-l border-border pb-10">
-              <Suspense>
-                <Settings />
-              </Suspense>
-              {aiAssistantActive ? <AskAI /> : null}
+              <ScrollArea className="h-full w-full overflow-y-auto">
+                <Suspense>
+                  <Settings />
+                </Suspense>
+                {aiAssistantActive ? <AskAI /> : null}
+              </ScrollArea>
             </div>
           </main>
         </div>

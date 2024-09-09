@@ -14,7 +14,7 @@ export default function BlockStyling() {
   }
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex flex-col">
       <StylingHelpers />
       <Accordion defaultValue={["Styles"]} type="multiple" className="w-full">
         {flexChild && <StylingGroup section={FLEX_CHILD_SECTION} />}

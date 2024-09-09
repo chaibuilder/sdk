@@ -19,7 +19,7 @@ import ImportHTML from "./ImportHTML";
 import { useChaiBlocks } from "@chaibuilder/runtime";
 import { cn } from "../../../../functions/Functions.ts";
 
-const AddBlocksPanel = ({ className }: { className?: string }) => {
+const AddBlocksPanel = ({ className, showHeading = true }: { showHeading?: boolean; className?: string }) => {
   const { t } = useTranslation();
   const [tab, setTab] = useState<string>("core");
   const [active, setActive] = useState<string>("basic");
@@ -40,13 +40,15 @@ const AddBlocksPanel = ({ className }: { className?: string }) => {
   }, [uniqueTypeGroup, active]);
 
   return (
-    <div className={cn("flex h-full w-72 flex-col overflow-hidden", className)}>
-      <div className="mb-2 flex flex-col justify-between rounded-md bg-background/30 p-1">
-        <h1 className="flex flex-col items-baseline px-1 text-xl font-semibold xl:flex-col">{t("add_block")}</h1>
-        <span className="p-0 text-xs font-light leading-3 opacity-80 xl:pl-1">
-          {tab === "html" ? t("enter_paste_tailwind_html") : t("click_to_add_block")}
-        </span>
-      </div>
+    <div className={cn("flex h-full w-full flex-col overflow-hidden", className)}>
+      {showHeading ? (
+        <div className="mb-2 flex flex-col justify-between rounded-md bg-background/30 p-1">
+          <h1 className="flex flex-col items-baseline px-1 text-xl font-semibold xl:flex-col">{t("add_block")}</h1>
+          <span className="p-0 text-xs font-light leading-3 opacity-80 xl:pl-1">
+            {tab === "html" ? t("enter_paste_tailwind_html") : t("click_to_add_block")}
+          </span>
+        </div>
+      ) : null}
 
       <Tabs
         onValueChange={(_tab) => {
@@ -54,7 +56,7 @@ const AddBlocksPanel = ({ className }: { className?: string }) => {
           setTab(_tab);
         }}
         value={tab}
-        className="h-max">
+        className={cn("h-max", !importHTMLSupport ? "hidden" : "")}>
         <TabsList className={"grid w-full " + (importHTMLSupport ? "grid-cols-2" : "grid-cols-1")}>
           <TabsTrigger value="core">{t("Blocks")}</TabsTrigger>
           {importHTMLSupport ? <TabsTrigger value="html">{t("import")}</TabsTrigger> : null}

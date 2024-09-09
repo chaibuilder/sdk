@@ -92,21 +92,23 @@ const Settings: React.FC = () => {
 
   return (
     <ErrorBoundary>
-      <BlockSettingsContext.Provider value={{ setDragData }}>
-        {dragData.dragging ? (
-          <div
-            onMouseMove={updateStyle}
-            onMouseUp={() => dragStopped()}
-            className="absolute inset-0 z-30 cursor-row-resize bg-gray-300/10"
-          />
-        ) : null}
+      <div className={"flex w-full flex-col"}>
+        <BlockSettingsContext.Provider value={{ setDragData }}>
+          {dragData.dragging ? (
+            <div
+              onMouseMove={updateStyle}
+              onMouseUp={() => dragStopped()}
+              className="absolute inset-0 z-30 cursor-row-resize bg-gray-300/10"
+            />
+          ) : null}
 
-        <BlockSettings />
-        <BlockStyling />
+          <BlockSettings />
+          <BlockStyling />
+        </BlockSettingsContext.Provider>
         <br />
         <br />
         <br />
-      </BlockSettingsContext.Provider>
+      </div>
     </ErrorBoundary>
   );
 };
