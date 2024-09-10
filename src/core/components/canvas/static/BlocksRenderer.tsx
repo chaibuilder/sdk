@@ -9,9 +9,9 @@ import { useAtom } from "jotai";
 import { inlineEditingActiveAtom, xShowBlocksAtom } from "../../../atoms/ui.ts";
 import { useBlocksStore } from "../../../history/useBlocksStoreUndoableActions.ts";
 import { useCanvasSettings } from "../../../hooks/useCanvasSettings.ts";
-import { draggedBlockAtom } from "../dnd/atoms.ts";
+import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
 import { canAcceptChildBlock } from "../../../functions/block-helpers.ts";
-import { useCanvasWidth } from "../../../hooks";
+import { useCanvasWidth, useCutBlockIds } from "../../../hooks";
 import { includes } from "lodash";
 import { isVisibleAtBreakpoint } from "../../../functions/isVisibleAtBreakpoint.ts";
 
@@ -69,10 +69,22 @@ function applyBindings(block: ChaiBlock, chaiData: any): ChaiBlock {
   return block;
 }
 
+function isDescendant(parentId: string, blockId: string, allBlocks: ChaiBlock[]): boolean {
+  const parentBlock = find(allBlocks, { _id: parentId });
+  if (!parentBlock) return false;
+
+  const childBlocks = filter(allBlocks, { _parent: parentId });
+  if (childBlocks.some((child) => child._id === blockId)) return true;
+
+  return childBlocks.some((child) => isDescendant(child._id, blockId, allBlocks));
+}
+
 export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
   const [allBlocks] = useBlocksStore();
   const [xShowBlocks] = useAtom(xShowBlocksAtom);
-  const [draggedBlock] = useAtom(draggedBlockAtom);
+  const [cutBlockIds] = useCutBlockIds();
+  const [draggedBlock] = useAtom<any>(draggedBlockAtom);
+  const [dropTargetId] = useAtom(dropTargetBlockIdAtom);
   const [, breakpoint] = useCanvasWidth();
   const [canvasSettings] = useCanvasSettings();
   const getStyles = useCallback((block: ChaiBlock) => getStyleAttrs(block, breakpoint), [breakpoint]);
@@ -121,6 +133,8 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
           if (get(htmlAttrs, "__isHidden", false) && !includes(xShowBlocks, block._id)) {
             return null;
           }
+          const isChildOfDraggedBlock = draggedBlock && isDescendant(draggedBlock._id, block._id, allBlocks);
+
           return (
             <Suspense>
               {React.createElement(Component, {
@@ -131,9 +145,13 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
                   ...(draggedBlock
                     ? // @ts-ignore
                       {
-                        "data-dnd": canAcceptChildBlock(block._type, draggedBlock?._type) ? "yes" : "no",
+                        "data-dnd": canAcceptChildBlock(block._type, (draggedBlock as ChaiBlock)?._type) ? "yes" : "no",
+                        "data-dnd-dragged":
+                          (draggedBlock as ChaiBlock)._id === block._id || isChildOfDraggedBlock ? "yes" : "no",
                       }
                     : {}),
+                  ...(dropTargetId === block._id && !isChildOfDraggedBlock ? { "data-drop": "yes" } : {}),
+                  ...(includes(cutBlockIds, block._id) ? { "data-cut-block": "yes" } : {}),
                 },
                 index,
                 ...applyBindings(block, chaiData),

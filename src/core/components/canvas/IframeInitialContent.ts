@@ -40,6 +40,7 @@ export const IframeInitialContent: string = `<!doctype html>
     [data-dnd-dragged="yes"] { opacity: 0.6; pointer-events: none; }
     [data-dnd-dragged="no"] { opacity: 1; pointer-events: auto !important; }
     [force-show] { display: block !important; }
+    [data-cut-block="yes"] { pointer-events: none !important; display: none !important; }
     </style>    
     <style id="hidden-blocks"></style>
     <style id="selected-block"></style>

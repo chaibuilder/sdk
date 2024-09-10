@@ -54,9 +54,11 @@ function moveBlocksWithChildren(
   newParentId = newParentId || "root";
   const tree = new TreeModel();
   const root = tree.parse({ _id: "root", children: getBlocksTree(_blocks) });
+
   if (moveNode(root, idToMove, newParentId, newPosition)) {
     const newBlocks = flattenTree(root);
     const movedBlock = newBlocks.find((block) => block._id === idToMove);
+
     if (movedBlock) movedBlock._parent = newParentId === "root" ? null : newParentId;
     newBlocks.shift();
     return newBlocks;
