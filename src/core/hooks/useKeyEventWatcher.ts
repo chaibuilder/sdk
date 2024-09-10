@@ -16,8 +16,6 @@ export const useKeyEventWatcher = (doc?: Document) => {
   const [, setCopyBlockIds] = useCopyBlockIds();
   const { canPaste, pasteBlocks } = usePasteBlocks();
 
-
-  useHotkeys("esc", () => setIds([]), {}, [setIds]);
   useHotkeys("ctrl+z,command+z", () => undo(), {}, [undo]);
   useHotkeys("ctrl+y,command+y", () => redo(), {}, [redo]);
   useHotkeys("ctrl+x,command+x", () => setCutBlockIds(ids), {}, [ids, setCutBlockIds]);
