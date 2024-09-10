@@ -9,7 +9,7 @@ import { useAtom } from "jotai";
 import { inlineEditingActiveAtom, xShowBlocksAtom } from "../../../atoms/ui.ts";
 import { useBlocksStore } from "../../../history/useBlocksStoreUndoableActions.ts";
 import { useCanvasSettings } from "../../../hooks/useCanvasSettings.ts";
-import { draggedBlockAtom, dropTargetAtom } from "../dnd/atoms.ts";
+import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
 import { canAcceptChildBlock } from "../../../functions/block-helpers.ts";
 import { useCanvasWidth, useCutBlockIds } from "../../../hooks";
 import { includes } from "lodash";
@@ -84,7 +84,7 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
   const [xShowBlocks] = useAtom(xShowBlocksAtom);
   const [cutBlockIds] = useCutBlockIds();
   const [draggedBlock] = useAtom<any>(draggedBlockAtom);
-  const [dropTargetId] = useAtom(dropTargetAtom);
+  const [dropTargetId] = useAtom(dropTargetBlockIdAtom);
   const [, breakpoint] = useCanvasWidth();
   const [canvasSettings] = useCanvasSettings();
   const getStyles = useCallback((block: ChaiBlock) => getStyleAttrs(block, breakpoint), [breakpoint]);
