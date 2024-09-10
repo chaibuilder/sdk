@@ -14,8 +14,8 @@ import {
 import { useResizeObserver } from "@react-hookz/web";
 import { useAtom } from "jotai";
 import { inlineEditingActiveAtom } from "../../atoms/ui.ts";
-import { useFeature } from "flagged";
 import { draggedBlockAtom } from "./dnd/atoms.ts";
+import { useFeature } from "flagged";
 
 /**
  * @param block
@@ -25,11 +25,11 @@ const BlockActionLabel = ({ block, label }: any) => {
   const [, setSelected] = useSelectedBlockIds();
   const [, setHighlighted] = useHighlightBlockId();
   const [, setDraggedBlock] = useAtom(draggedBlockAtom);
-  const dndSupport = useFeature("dnd");
+  const dnd = useFeature("dnd");
   return (
     <div
-      className="mr-10 flex cursor-grab items-center space-x-1 px-1"
-      draggable={dndSupport ? "true" : "false"}
+      className="mr-10 flex cursor-default items-center space-x-1 px-1"
+      draggable={dnd ? "true" : "false"}
       onDragStart={(ev) => {
         ev.dataTransfer.setData("text/plain", JSON.stringify(pick(block, ["_id", "_type", "_name"])));
         //@ts-ignore
@@ -54,6 +54,7 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
   const removeBlock = useRemoveBlocks();
   const duplicateBlock = useDuplicateBlocks();
   const [, setSelectedIds] = useSelectedBlockIds();
+  const [, setHighlighted] = useHighlightBlockId();
   const [, setStyleBlocks] = useSelectedStylingBlocks();
   const [editingBlockId] = useAtom(inlineEditingActiveAtom);
   const { floatingStyles, refs, update } = useFloating({
@@ -82,6 +83,10 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
         onClick={(e) => {
           e.stopPropagation();
           e.preventDefault();
+        }}
+        onMouseEnter={(e) => {
+          e.stopPropagation();
+          setHighlighted(null);
         }}
         onKeyDown={(e) => e.stopPropagation()}
         className="z-[99999] flex h-6 items-center bg-blue-500 py-2 text-xs text-white">

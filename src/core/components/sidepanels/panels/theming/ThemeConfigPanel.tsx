@@ -8,6 +8,7 @@ import { isEqual, noop } from "lodash-es";
 import { ColorField } from "../../../../../ui/widgets/rjsf/widgets/color.tsx";
 import { useBlocksContainer } from "../../../../hooks/useBrandingOptions.ts";
 import { useTranslation } from "react-i18next";
+import { cn } from "../../../../functions/Functions.ts";
 
 const FONTS = [
   { title: "Roboto", value: "Roboto" },
@@ -63,7 +64,13 @@ const FONTS = [
   { title: "Manrope", value: "Manrope" },
 ];
 
-const ThemeConfiguration = (): React.JSX.Element => {
+const ThemeConfigPanel = ({
+  showHeading = true,
+  className = "",
+}: {
+  className?: string;
+  showHeading?: boolean;
+}): React.JSX.Element => {
   const onSaveBrandingOptions = useBuilderProp("onSaveBrandingOptions", noop);
   const [brandingOptions, setBrandingOptions] = useBrandingOptions();
   const [container] = useBlocksContainer();
@@ -155,10 +162,12 @@ const ThemeConfiguration = (): React.JSX.Element => {
   });
 
   return (
-    <div className="flex h-full w-60 select-none flex-col">
-      <div className="rounded-md bg-background/30 p-1">
-        <h1 className="px-1 font-semibold">{t("Theme Configuration")}</h1>
-      </div>
+    <div className={cn("flex h-full w-60 select-none flex-col", className)}>
+      {showHeading ? (
+        <div className="rounded-md bg-background/30 p-1">
+          <h1 className="px-1 font-semibold">{t("Theme Configuration")}</h1>
+        </div>
+      ) : null}
       <div className="-mx-2">
         <Form
           widgets={{ color: ColorField }}
@@ -178,4 +187,4 @@ const ThemeConfiguration = (): React.JSX.Element => {
   );
 };
 
-export default ThemeConfiguration;
+export default ThemeConfigPanel;

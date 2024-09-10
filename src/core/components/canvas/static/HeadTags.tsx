@@ -9,12 +9,12 @@ import {
   useSelectedStylingBlocks,
 } from "../../../hooks";
 import { useAtom } from "jotai";
-import { draggedBlockIdAtom } from "../../../atoms/ui.ts";
 import typography from "@tailwindcss/typography";
 import forms from "@tailwindcss/forms";
 import aspectRatio from "@tailwindcss/aspect-ratio";
-import { prelinePlugin } from "./Preline.ts";
 import getPalette from "tailwindcss-palette-generator";
+import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
+import plugin from "tailwindcss/plugin";
 // @ts-ignore
 
 export const HeadTags = ({ model }: { model: string }) => {
@@ -23,7 +23,8 @@ export const HeadTags = ({ model }: { model: string }) => {
   const [darkMode] = useDarkMode();
   const [highlightedId] = useHighlightBlockId();
   const [stylingBlockIds] = useSelectedStylingBlocks();
-  const [draggedBlockId] = useAtom(draggedBlockIdAtom);
+  const [draggedBlock] = useAtom(draggedBlockAtom);
+  const [dropTargetId] = useAtom(dropTargetBlockIdAtom);
 
   const { document: iframeDoc, window: iframeWin } = useFrame();
 
@@ -34,7 +35,9 @@ export const HeadTags = ({ model }: { model: string }) => {
   const [selectedStylingBlocks] = useState<HTMLStyleElement>(
     iframeDoc?.getElementById("selected-styling-block") as HTMLStyleElement,
   );
-  const [draggedBlock] = useState<HTMLStyleElement>(iframeDoc?.getElementById("dragged-block") as HTMLStyleElement);
+  const [draggedBlockStyle] = useState<HTMLStyleElement>(
+    iframeDoc?.getElementById("dragged-block") as HTMLStyleElement,
+  );
 
   useEffect(() => {
     if (darkMode) iframeDoc?.documentElement.classList.add("dark");
@@ -89,7 +92,27 @@ export const HeadTags = ({ model }: { model: string }) => {
         },
       },
 
-      plugins: [typography, forms, aspectRatio, iframeWin.tailwind.plugin.withOptions(() => prelinePlugin)],
+      plugins: [
+        typography,
+        forms,
+        aspectRatio,
+        plugin(function ({ addBase, theme }: any) {
+          addBase({
+            "h1,h2,h3,h4,h5,h6": {
+              fontFamily: theme("fontFamily.heading"),
+            },
+            body: {
+              fontFamily: theme("fontFamily.body"),
+              color: theme("colors.text-light"),
+              backgroundColor: theme("colors.bg-light"),
+            },
+            ".dark body": {
+              color: theme("colors.text-dark"),
+              backgroundColor: theme("colors.bg-dark"),
+            },
+          });
+        }),
+      ],
     };
   }, [customTheme, iframeWin, headingFont, bodyFont]);
 
@@ -103,12 +126,10 @@ export const HeadTags = ({ model }: { model: string }) => {
   }, [selectedBlockIds, selectedBlockStyle]);
 
   useEffect(() => {
-    if (!draggedBlockId) {
-      draggedBlock.textContent = "";
-      return;
-    }
-    draggedBlock.textContent = `[data-block-id="${draggedBlockId}"]{ pointer-events: none !important; opacity: 0.2 !important}`;
-  }, [draggedBlockId]);
+    draggedBlockStyle.textContent = draggedBlock
+      ? `[data-block-id="${draggedBlock._id}"], [data-block-id="${draggedBlock._id}"] > * { pointer-events: none !important; opacity: 0.6 !important}`
+      : "";
+  }, [draggedBlock, draggedBlockStyle]);
 
   useEffect(() => {
     if (!highlightedBlockStyle) return;
@@ -124,45 +145,28 @@ export const HeadTags = ({ model }: { model: string }) => {
             }`;
   }, [stylingBlockIds, selectedStylingBlocks]);
 
-  // set body background color
   useEffect(() => {
-    const textLight = get(customTheme, "bodyTextLightColor", "#64748b");
-    const textDark = get(customTheme, "bodyTextDarkColor", "#94a3b8");
-    const bgLight = get(customTheme, "bodyBgLightColor", "#FFFFFF");
-    const bgDark = get(customTheme, "bodyBgDarkColor", "#0f172a");
-    // @ts-ignore
-    iframeDoc.body.className = `font-body antialiased text-[${textLight}] bg-[${bgLight}] dark:text-[${textDark}] dark:bg-[${bgDark}]`;
-  }, [customTheme, iframeDoc, model]);
+    iframeDoc.querySelector(`#drop-target-block`).innerHTML = dropTargetId
+      ? `[data-block-id="${dropTargetId}"]{ outline: 1px dashed orange !important; outline-offset: -1px;}`
+      : "";
+  }, [dropTargetId]);
 
-  return model === "page" ? (
+  return (
     <>
-      {headingFont && (
+      {(headingFont || bodyFont) && (
         <link
-          id="heading-font"
           rel="stylesheet"
-          type="text/css"
-          href={`https://fonts.googleapis.com/css2?family=${headingFont.replace(
-            / /g,
-            "+",
-          )}:wght@300;400;500;600;700;800;900&display=swap`}
-          media="all"
+          href={`https://fonts.googleapis.com/css2?family=${
+            headingFont
+              ? `${headingFont.replace(/ /g, "+")}:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900`
+              : ""
+          }${headingFont && bodyFont && headingFont !== bodyFont ? "&" : ""}${
+            bodyFont && bodyFont !== headingFont
+              ? `family=${bodyFont.replace(/ /g, "+")}:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900`
+              : ""
+          }&display=swap`}
         />
-      )}
-      {bodyFont && headingFont !== bodyFont && (
-        <link
-          id="body-font"
-          rel="stylesheet"
-          type="text/css"
-          href={`https://fonts.googleapis.com/css2?family=${bodyFont.replace(
-            / /g,
-            "+",
-          )}:wght@300;400;500;600;700;800;900&display=swap`}
-          media="all"
-        />
-      )}
-      {headingFont && (
-        <style>{`h1,h2,h3,h4,h5,h6{font-family: "${headingFont}",ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";}`}</style>
       )}
     </>
-  ) : null;
+  );
 };

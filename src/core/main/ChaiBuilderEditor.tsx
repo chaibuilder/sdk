@@ -3,7 +3,7 @@ import "../index.css";
 import { DevTools } from "jotai-devtools";
 import i18n from "../locales/load";
 import { FlagsProvider } from "flagged";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { omit } from "lodash-es";
 import { FEATURE_TOGGLES } from "../../FEATURE_TOGGLES.tsx";
 import { chaiBuilderPropsAtom } from "../atoms/builder.ts";
@@ -12,24 +12,24 @@ import { RootLayout } from "../components/RootLayout";
 import { builderStore } from "../atoms/store.ts";
 import { Toaster } from "../../ui";
 import { useBrandingOptions, useBuilderReset } from "../hooks";
-import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { ChaiBuilderEditorProps } from "../types/chaiBuilderEditorProps.ts";
 import { dataProvidersAtom } from "../hooks/usePageDataProviders.ts";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
-import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { MobileMessage } from "./MobileMessage.tsx";
 import { setDebugLogs } from "../functions/logging.ts";
+import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 
 const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   const [, setAllBlocks] = useBlocksStore();
   const [, setBrandingOptions] = useBrandingOptions();
   const reset = useBuilderReset();
+  const RootLayoutComponent = useMemo(() => props.customRootLayout || RootLayout, [props.customRootLayout]);
 
   useEffect(() => {
     builderStore.set(
       // @ts-ignore
       chaiBuilderPropsAtom,
-      omit(props, ["blocks", "subPages", "brandingOptions", "dataProviders"]),
+      omit(props, ["blocks", "subPages", "brandingOptions", "dataProviders", "customRootLayout"]),
     );
   }, [props]);
 
@@ -56,7 +56,7 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
     setBrandingOptions(props.brandingOptions);
   }, [props.brandingOptions, setBrandingOptions]);
 
-  return <RootLayout />;
+  return <RootLayoutComponent />;
 };
 
 /**

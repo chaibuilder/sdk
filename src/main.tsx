@@ -2,17 +2,18 @@ import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
+import ChaiBuilderCustom from "./EditorCustom.tsx";
 
 async function enableMocking() {
   if (import.meta.env.MODE !== "development") {
     return;
   }
 
-  const { worker } = await import("./__dev/mock/browser");
+  // const { worker } = await import("./__dev/mock/browser");
 
   // `worker.start()` returns a Promise that resolves
   // once the Service Worker is up and ready to intercept requests.
-  return worker.start();
+  return true;
 }
 
 const ChaiBuilderDefault = lazy(() => import("./Editor.tsx"));
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <ChaiBuilderDefault />,
+  },
+  {
+    path: "/custom",
+    element: <ChaiBuilderCustom />,
   },
   {
     path: "/preview",

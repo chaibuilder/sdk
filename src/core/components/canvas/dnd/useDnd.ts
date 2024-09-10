@@ -3,12 +3,12 @@ import { has, throttle } from "lodash-es";
 import { useFrame } from "../../../frame";
 
 import { useAtom } from "jotai";
-import { draggedBlockIdAtom, draggingFlagAtom } from "../../../atoms/ui.ts";
+import { draggingFlagAtom } from "../../../atoms/ui.ts";
 
 import { useAddBlock, useHighlightBlockId, useSelectedBlockIds } from "../../../hooks";
 import { useBlocksStoreUndoableActions } from "../../../history/useBlocksStoreUndoableActions.ts";
 import { getOrientation } from "./getOrientation.ts";
-import { draggedBlockAtom, dropTargetAtom } from "./atoms.ts";
+import { draggedBlockAtom, dropTargetBlockIdAtom } from "./atoms.ts";
 
 let iframeDocument: null | HTMLDocument = null;
 let possiblePositions: [number, number, number][] = [];
@@ -123,14 +123,13 @@ export const useDnd = () => {
   const [, setHighlight] = useHighlightBlockId();
   const [, setBlockIds] = useSelectedBlockIds();
   const { moveBlocks } = useBlocksStoreUndoableActions();
-  const [, setDraggedBlockId] = useAtom(draggedBlockIdAtom);
   const [draggedBlock, setDraggedBlock] = useAtom(draggedBlockAtom);
-  const [, setDropTarget] = useAtom(dropTargetAtom);
+  const [, setDropTarget] = useAtom(dropTargetBlockIdAtom);
 
   const resetDragState = () => {
     removePlaceholder();
     setIsDragging(false);
-    setDraggedBlockId("");
+    setBlockIds([draggedBlock._id]);
     //@ts-ignore
     setDraggedBlock(null);
     //@ts-ignore
@@ -153,17 +152,14 @@ export const useDnd = () => {
       dropIndex = calculateDropIndex(mousePosition, possiblePositions);
       const data = draggedBlock;
       const id = block.getAttribute("data-block-id");
+
       const isDropTargetAllowed = dropTarget.getAttribute("data-dnd-dragged") === "yes" ? false : true;
-      
-      console.log(isDropTargetAllowed);
+     
       //if the draggedItem is the same as the dropTarget, reset the drag state.
       if (data === dropTarget || !isDropTargetAllowed) {
         resetDragState();
         return;
       }
-
-    
-
       // This is for moving blocks from the sidebar Panel and UiLibraryPanel
       if (!has(data, "_id")) {
         addCoreBlock(data, id === "canvas" ? null : id, dropIndex);
@@ -180,7 +176,7 @@ export const useDnd = () => {
       }
 
       //@ts-ignore
-      moveBlocks([data._id], blockId, dropIndex);
+      moveBlocks([data._id], blockId === "canvas" ? null : blockId, dropIndex);
       resetDragState();
       setTimeout(removePlaceholder, 300);
     },
@@ -201,6 +197,15 @@ export const useDnd = () => {
       setIsDragging(true);
       setHighlight("");
       setBlockIds([]);
+    },
+    onDragLeave: (e) => {
+      const dropTargetId = e.target.getAttribute("data-block-id");
+      if ("canvas" !== dropTargetId) return;
+      //@ts-ignore
+      setDropTarget(null);
+      setIsDragging(false);
+      removePlaceholder();
+      possiblePositions = [];
     },
   };
 };

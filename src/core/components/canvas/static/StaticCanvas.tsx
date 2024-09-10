@@ -150,4 +150,4 @@ const StaticCanvas = (): React.JSX.Element => {
   );
 };
 
-export { StaticCanvas };
+export default StaticCanvas;

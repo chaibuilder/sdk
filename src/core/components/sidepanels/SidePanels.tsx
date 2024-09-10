@@ -15,9 +15,19 @@ import { useChaiBlocks } from "@chaibuilder/runtime";
 
 const AddBlocksPanel = lazy(() => import("./panels/add-blocks/AddBlocks.tsx"));
 const ArboristPanel = lazy(() => import("./panels/outline/treeview/ListTree.tsx"));
-const ThemeConfiguration = lazy(() => import("./panels/theming/ThemeConfiguration.tsx"));
+const ThemeConfiguration = lazy(() => import("./panels/theming/ThemeConfigPanel.tsx"));
 const ImagesPanel = lazy(() => import("./panels/images/ImagesPanel"));
 const UILibrariesPanel = lazy(() => import("./panels/add-blocks/UILibrariesPanel.tsx"));
+
+const AddBlocks = () => {
+  return (
+    <div className="w-72">
+      <Suspense fallback={<div className="h-full w-full animate-pulse rounded-md bg-gray-100" />}>
+        <AddBlocksPanel />
+      </Suspense>
+    </div>
+  );
+};
 
 let timeout: any = null;
 
@@ -38,7 +48,7 @@ const SidePanels = () => {
   const hasUiBlocks = uiLibraries.length > 0 || hasCustomBlocks;
 
   const panels: { [key: string]: React.ComponentType<any> } = {
-    "add-blocks": AddBlocksPanel,
+    "add-blocks": AddBlocks,
     [OUTLINE_KEY]: ArboristPanel,
     "theme-configuration": ThemeConfiguration,
     images: ImagesPanel,

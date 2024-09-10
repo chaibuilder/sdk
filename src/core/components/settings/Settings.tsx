@@ -3,7 +3,6 @@ import { useThrottledCallback } from "@react-hookz/web";
 import { get, isNaN, isNull, startsWith } from "lodash-es";
 import { useTranslation } from "react-i18next";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
-import { ScrollArea } from "../../../ui";
 import BlockSettings from "./BlockSettings";
 import BlockStyling from "./BlockStyling";
 import { BlockSettingsContext } from "./SettingsContext";
@@ -93,23 +92,23 @@ const Settings: React.FC = () => {
 
   return (
     <ErrorBoundary>
-      <BlockSettingsContext.Provider value={{ setDragData }}>
-        {dragData.dragging ? (
-          <div
-            onMouseMove={updateStyle}
-            onMouseUp={() => dragStopped()}
-            className="absolute inset-0 z-30 cursor-row-resize bg-gray-300/10"
-          />
-        ) : null}
+      <div className={"flex w-full flex-col"}>
+        <BlockSettingsContext.Provider value={{ setDragData }}>
+          {dragData.dragging ? (
+            <div
+              onMouseMove={updateStyle}
+              onMouseUp={() => dragStopped()}
+              className="absolute inset-0 z-30 cursor-row-resize bg-gray-300/10"
+            />
+          ) : null}
 
-        <ScrollArea className="no-scrollbar max-h-full flex-1 overflow-x-hidden overflow-y-hidden bg-gray-100 pb-5">
           <BlockSettings />
           <BlockStyling />
-          <br />
-          <br />
-          <br />
-        </ScrollArea>
-      </BlockSettingsContext.Provider>
+        </BlockSettingsContext.Provider>
+        <br />
+        <br />
+        <br />
+      </div>
     </ErrorBoundary>
   );
 };

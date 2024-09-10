@@ -58,6 +58,7 @@ specifiers:
   '@vitejs/plugin-react-swc': ^3.4.1
   ai: ^3.2.32
   autoprefixer: ^10.4.16
+  axios: ^1.7.7
   better-docs: ^2.7.2
   better-sqlite3: ^9.1.1
   cheerio: 1.0.0-rc.12
@@ -71,6 +72,7 @@ specifiers:
   eslint-plugin-react-hooks: ^4.6.0
   eslint-plugin-react-refresh: ^0.4.4
   flagged: 2.0.9
+  framer-motion: ^11.4.0
   fuse.js: 6.6.2
   himalaya: ^1.1.0
   html-formatter: 0.1.9
@@ -162,6 +164,7 @@ dependencies:
   clsx: 1.2.1
   cmdk: 0.2.0_uhnvbqyidce6nup7tsgrqjnqhy
   flagged: 2.0.9_react@18.2.0
+  framer-motion: 11.4.0_biqbaboplfbrettd7655fr4n2y
   fuse.js: 6.6.2
   himalaya: 1.1.0
   html-formatter: 0.1.9
@@ -215,6 +218,7 @@ devDependencies:
   '@vitejs/plugin-react-swc': 3.4.1_vite@5.0.12
   ai: 3.2.34_react@18.2.0+zod@3.23.8
   autoprefixer: 10.4.16_postcss@8.4.31
+  axios: 1.7.7
   better-docs: 2.7.2_v2m5e27vhdewzwhryxwfaorcca
   better-sqlite3: 9.1.1
   cheerio: 1.0.0-rc.12
@@ -5909,6 +5913,16 @@ packages:
       postcss-value-parser: 4.2.0
     dev: true
 
+  /axios/1.7.7:
+    resolution: {integrity: sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==}
+    dependencies:
+      follow-redirects: 1.15.6
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+    dev: true
+
   /babel-jest/29.7.0_@babel+core@7.23.2:
     resolution: {integrity: sha512-BrvGY3xZSwEcCzKvKsCi2GgHqDqsYkOP4/by5xCgIwGXQxIEh+8ew3gmrE1y7XRR6LHZIj6yLYnUi/mm2KXKBg==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
@@ -7740,6 +7754,16 @@ packages:
   /flatted/3.2.9:
     resolution: {integrity: sha512-36yxDn5H7OFZQla0/jFJmbIKTdZAQHngCedGxiMmpNfEZM0sdEeT+WczLQrjK6D7o2aiyLYDnkw0R3JK0Qv1RQ==}
 
+  /follow-redirects/1.15.6:
+    resolution: {integrity: sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dev: true
+
   /foreground-child/2.0.0:
     resolution: {integrity: sha512-dCIq9FpEcyQyXKCkyzmlPTFNgrCzPudOe+mhvJU5zAtlBnGVy2yKxtfsxK2tQBThwq225jcvBjpw1Gr40uzZCA==}
     engines: {node: '>=8.0.0'}
@@ -7784,6 +7808,25 @@ packages:
       tslib: 2.6.2
     optionalDependencies:
       '@emotion/is-prop-valid': 0.8.8
+    dev: false
+
+  /framer-motion/11.4.0_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-gHKUZr88OTMFubkIPkaIZxxX18PhQ6IbYxBoXUVdBLQQKZ3teH2BtxMVVRUsuzIfKs259MlL0elgAiZf82fiHg==}
+    peerDependencies:
+      '@emotion/is-prop-valid': '*'
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    peerDependenciesMeta:
+      '@emotion/is-prop-valid':
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      tslib: 2.6.2
     dev: false
 
   /fs-constants/1.0.0:
@@ -10360,6 +10403,10 @@ packages:
   /proto-list/1.2.4:
     resolution: {integrity: sha512-vtK/94akxsTMhe0/cbfpR+syPuszcuwhqVjJq26CuNDgFGj682oRBXOP5MJpv2r7JtE8MsiepGIqvvOTBwn2vA==}
     dev: false
+
+  /proxy-from-env/1.1.0:
+    resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
+    dev: true
 
   /pseudomap/1.0.2:
     resolution: {integrity: sha512-b/YwNhb8lk1Zz2+bXXpS/LK9OisiZZ1SNsSLxN1x2OXVEhW2Ckr/7mWE5vrC1ZTiJlD9g19jWszTmJsB+oEpFQ==}

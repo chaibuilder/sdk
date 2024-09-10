@@ -13,7 +13,7 @@ export const canAcceptChildBlock = memoize((parentType: string, childType: strin
   if (!parentType) return true; // this is root
   const blockDefinition = getBlockComponent(parentType) as BlockDefinition;
   if (!blockDefinition) return false;
-  return has(blockDefinition, "canAcceptBlock") ? blockDefinition.canAcceptBlock(childType) : false;
+  return has(blockDefinition, "canAcceptBlock") ? blockDefinition.canAcceptBlock(childType) : false; //defaults to false
 });
 
 export const canBeNestedInside = memoize((parentType: string, childType: string) => {
