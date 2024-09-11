@@ -3,11 +3,11 @@ import { RJSFSchema, UiSchema } from "@rjsf/utils";
 import { includes } from "lodash-es";
 import { getBlockJSONFromSchemas, getBlockJSONFromUISchemas } from "../../functions/Controls.ts";
 import RjForm from "@rjsf/core";
-import { BindingWidget } from "../../../ui/widgets/rjsf/widgets/binding.tsx";
-import { IconPickerField, ImagePickerField, LinkField, RTEField } from "../../../ui";
+import { BindingWidget } from "../../rjsf-widgets/binding.tsx";
+import { IconPickerField, ImagePickerField, LinkField, RTEField } from "../../rjsf-widgets";
 import validator from "@rjsf/validator-ajv8";
 import { useThrottledCallback } from "@react-hookz/web";
-import { CodeEditor } from "../../../ui/widgets/rjsf/widgets/Code.tsx";
+import { CodeEditor } from "../../rjsf-widgets/Code.tsx";
 
 type JSONFormType = {
   id?: string;

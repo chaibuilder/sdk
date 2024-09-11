@@ -1,7 +1,7 @@
 import { FieldProps } from "@rjsf/utils";
 import { map } from "lodash-es";
 import { useEffect, useState } from "react";
-import { useBuilderProp } from "../../../../core/hooks";
+import { useBuilderProp } from "../hooks";
 
 const LinkField = ({ schema, formData, onChange }: FieldProps) => {
   const [pages, setPages] = useState([]);

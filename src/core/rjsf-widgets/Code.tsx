@@ -1,8 +1,8 @@
 import { WidgetProps } from "@rjsf/utils";
 import { useTranslation } from "react-i18next";
-import { Button } from "../../../radix/components/ui/button.tsx";
-import { useCodeEditor, useSelectedBlock } from "../../../../core/hooks";
-import { ChaiBlock } from "../../../../core/types/ChaiBlock.ts";
+import { Button } from "../../ui/shadcn/components/ui/button.tsx";
+import { useCodeEditor, useSelectedBlock } from "../hooks";
+import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { get } from "lodash-es";
 
 const CodeEditor = ({ id, placeholder }: WidgetProps) => {

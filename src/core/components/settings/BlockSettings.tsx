@@ -2,7 +2,7 @@ import { IChangeEvent } from "@rjsf/core";
 import { capitalize, cloneDeep, debounce, each, get, isEmpty, keys, map } from "lodash-es";
 import { useBuilderProp, useSelectedBlock, useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "../../hooks";
 import { ChaiControlDefinition } from "@chaibuilder/runtime/controls";
-import DataBindingSetting from "../../../ui/widgets/rjsf/widgets/data-binding";
+import DataBindingSetting from "../../rjsf-widgets/data-binding.tsx";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../ui";
 import { useCallback, useMemo, useState } from "react";
 import { getBlockComponent } from "@chaibuilder/runtime";

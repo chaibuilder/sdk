@@ -39,11 +39,11 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "../../..";
+} from "../../ui";
 import { getBlockComponent, getChaiDataProviders } from "@chaibuilder/runtime";
-import { ErrorBoundary } from "../../../../core/components/ErrorBoundary.tsx";
-import { useSelectedBlock } from "../../../../core/hooks";
-import { useChaiExternalData } from "../../../../core/components/canvas/static/useChaiExternalData.ts";
+import { ErrorBoundary } from "../components/ErrorBoundary.tsx";
+import { useSelectedBlock } from "../hooks";
+import { useChaiExternalData } from "../components/canvas/static/useChaiExternalData.ts";
 import { allExpanded, defaultStyles, JsonView } from "react-json-view-lite";
 import "react-json-view-lite/dist/index.css";
 
