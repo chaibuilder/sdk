@@ -6,7 +6,7 @@ import twForms from "@tailwindcss/forms";
 import twTypography from "@tailwindcss/typography";
 import twAspectRatio from "@tailwindcss/aspect-ratio";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
-import { addPrefixToClasses, ChaiPageData } from "./functions.ts";
+import { addPrefixToClasses } from "./functions.ts";
 import { STYLES_KEY } from "../core/constants/STRINGS.ts";
 import { ThemeConfiguration } from "../core/types";
 import getPalette from "tailwindcss-palette-generator";
@@ -110,7 +110,7 @@ const addPrefixToBlockStyles = (blocks: ChaiBlock[], prefix: string) => {
   });
 };
 
-export const getBlocksTailwindCSS = (
+const getBlocksTailwindCSS = (
   blocks: ChaiBlock[],
   theme: any,
   prefix: string = "",
@@ -123,15 +123,6 @@ export const getBlocksTailwindCSS = (
     prefix,
     includeBaseStyles,
   );
-};
-
-export const getStylesForPageData = async (
-  pageData: ChaiPageData,
-  classPrefix: string = "",
-  includeBaseStyles: boolean = false,
-): Promise<string> => {
-  const blocks = pageData.page.blocks;
-  return await getBlocksTailwindCSS(blocks, pageData.project.brandingOptions, classPrefix, includeBaseStyles);
 };
 
 export const getStylesForBlocks = async (

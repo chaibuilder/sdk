@@ -1,7 +1,7 @@
 import { flattenDeep, get, last } from "lodash-es";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { STYLES_KEY } from "../core/constants/STRINGS.ts";
-import { ThemeConfiguration } from "../core/types/index.ts";
+import { ThemeConfiguration } from "../core/types";
 
 export const getBrandingClasses = (brandingOptions: ThemeConfiguration, prefix: string = "") => {
   const textLight = get(brandingOptions, "bodyTextLightColor", "#64748b");
@@ -32,30 +32,6 @@ export const addPrefixToClasses = (classes: string, prefix: string = "") => {
     return newClasses.join(" ");
   });
   return flattenDeep(array).join(" ");
-};
-
-export type ChaiPageData = {
-  page: {
-    blocks: ChaiBlock[];
-    seoData?: Record<string, string>;
-    slug?: string;
-    name?: string;
-    providers?: { providerKey: string; args: Record<string, any> }[];
-  };
-  subPages?: {
-    uuid: string;
-    blocks: ChaiBlock[];
-    providers: { providerKey: string; args: Record<string, any> }[];
-  }[];
-  project: {
-    name?: string;
-    favicon?: string;
-    brandingOptions: Record<string, string | number>;
-    seoData?: Record<string, string>;
-    primaryLanguage?: string;
-    languages?: string[];
-    homepage?: string;
-  };
 };
 
 export const convertToBlocks = (jsonString: string): ChaiBlock[] => {

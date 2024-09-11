@@ -1,4 +1,9 @@
-export function chaiBuilderTheme(theme: Record<string, any> = {}) {
+import tailwindTypography from "@tailwindcss/typography";
+import tailwindForms from "@tailwindcss/forms";
+import tailwindAspectRatio from "@tailwindcss/aspect-ratio";
+import tailwindAnimate from "tailwindcss-animate";
+
+function shadcnTheme() {
   return {
     colors: {
       border: "hsl(var(--border))",
@@ -54,6 +59,28 @@ export function chaiBuilderTheme(theme: Record<string, any> = {}) {
       "accordion-down": "accordion-down 0.2s ease-out",
       "accordion-up": "accordion-up 0.2s ease-out",
     },
-    ...theme,
   };
 }
+
+const getChaiBuilderTailwindConfig = (content: string[]) => {
+  return {
+    darkMode: "class",
+    content: [
+      ...content,
+      "node_modules/@chaibuilder/sdk/dist/*.{js,cjs}",
+      "node_modules/@chaibuilder/runtime/dist/*.{js,cjs}",
+    ],
+    theme: {
+      container: {
+        center: true,
+        padding: "2rem",
+        screens: {
+          "2xl": "1400px",
+        },
+      },
+      extend: shadcnTheme(),
+    },
+    plugins: [tailwindAnimate, tailwindTypography, tailwindForms, tailwindAspectRatio],
+  };
+};
+export { getChaiBuilderTailwindConfig };

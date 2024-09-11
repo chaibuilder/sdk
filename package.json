@@ -46,21 +46,6 @@
       "require": "./dist/ui.cjs",
       "types": "./dist/ui.d.ts"
     },
-    "./lib": {
-      "import": "./dist/lib.js",
-      "require": "./dist/lib.cjs",
-      "types": "./dist/lib.d.ts"
-    },
-    "./server": {
-      "import": "./dist/server.js",
-      "require": "./dist/server.cjs",
-      "types": "./dist/server.d.ts"
-    },
-    "./studio": {
-      "import": "./dist/studio.js",
-      "require": "./dist/studio.cjs",
-      "types": "./dist/studio.d.ts"
-    },
     "./tailwind": {
       "import": "./dist/tailwind.js",
       "require": "./dist/tailwind.cjs",
@@ -74,16 +59,6 @@
       "import": "./dist/web-blocks.js",
       "require": "./dist/web-blocks.cjs",
       "types": "./dist/web-blocks.d.ts"
-    },
-    "./email": {
-      "import": "./dist/email.js",
-      "require": "./dist/email.cjs",
-      "types": "./dist/email.d.ts"
-    },
-    "./email-blocks": {
-      "import": "./dist/email-blocks.js",
-      "require": "./dist/email-blocks.cjs",
-      "types": "./dist/email-blocks.d.ts"
     }
   },
   "dependencies": {
