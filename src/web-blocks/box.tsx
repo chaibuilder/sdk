@@ -1,34 +1,31 @@
 import * as React from "react";
 import { Image, SelectOption, Styles } from "@chaibuilder/runtime/controls";
-import { registerChaiBlock } from "@chaibuilder/runtime";
 import EmptySlot from "./empty-slot.tsx";
 
-const BoxBlock = React.memo(
-  (
-    props: any & {
-      children: React.ReactNode;
-      styles: any;
-      tag: string;
-      backgroundImage: string;
-      blockProps: Record<string, string>;
-    },
-  ) => {
-    const { blockProps, inBuilder, backgroundImage, children, tag = "div", styles } = props;
-    let nestedChildren = children;
-    if (!children) {
-      nestedChildren = <EmptySlot inBuilder={inBuilder} />;
-    }
-
-    let cssStyles = {};
-    if (backgroundImage) {
-      cssStyles = { backgroundImage: `url(${backgroundImage})` };
-    }
-
-    return React.createElement(tag, { ...blockProps, ...styles, style: cssStyles }, nestedChildren);
+const Component = (
+  props: any & {
+    children: React.ReactNode;
+    styles: any;
+    tag: string;
+    backgroundImage: string;
+    blockProps: Record<string, string>;
   },
-);
+) => {
+  const { blockProps, inBuilder, backgroundImage, children, tag = "div", styles } = props;
+  let nestedChildren = children;
+  if (!children) {
+    nestedChildren = <EmptySlot inBuilder={inBuilder} />;
+  }
 
-registerChaiBlock(BoxBlock, {
+  let cssStyles = {};
+  if (backgroundImage) {
+    cssStyles = { backgroundImage: `url(${backgroundImage})` };
+  }
+
+  return React.createElement(tag, { ...blockProps, ...styles, style: cssStyles }, nestedChildren);
+};
+
+const Config = {
   type: "Box",
   label: "Box",
   category: "core",
@@ -61,6 +58,6 @@ registerChaiBlock(BoxBlock, {
     backgroundImage: Image({ title: "Background Image" }),
   },
   canAcceptBlock: () => true,
-});
+};
 
-export default BoxBlock;
+export { Component, Config };

@@ -1,7 +1,7 @@
 import { useAtom } from "jotai";
 import { lsAiContextAtom, lsBlocksAtom, lsBrandingOptionsAtom } from "./__dev/atoms-dev.ts";
 import { ChaiBlock, ChaiBuilderEditor } from "./core/main";
-import { loadWebBlocks } from "./blocks/web";
+import { loadWebBlocks } from "./web-blocks";
 import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
 import { useState } from "react";
 import { UILibrary, UiLibraryBlock } from "./core/types/chaiBuilderEditorProps.ts";

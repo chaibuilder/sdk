@@ -13,13 +13,13 @@ export default defineConfig({
         core: resolve(__dirname, "src/core/main/index.ts"),
         render: resolve(__dirname, "src/render/index.ts"),
         ui: resolve(__dirname, "src/ui/index.ts"),
-        "web-blocks": resolve(__dirname, "src/blocks/web/index.ts"),
+        "web-blocks": resolve(__dirname, "src/web-blocks/index.ts"),
         tailwind: resolve(__dirname, "src/tailwind/index.ts"),
       },
       formats: ["es", "cjs"],
     },
     rollupOptions: {
-      treeshake: false,
+      treeshake: true,
       // make sure to externalize deps that shouldn't be bundled
       // into your library
       external: [

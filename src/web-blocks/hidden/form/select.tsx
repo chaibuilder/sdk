@@ -2,8 +2,8 @@ import { DropdownMenuIcon } from "@radix-ui/react-icons";
 import { get, map } from "lodash-es";
 import { Checkbox, List, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import { ChaiBlock } from "../../../../core/types/ChaiBlock.ts";
-import { generateUUID } from "../../../../core/functions/Functions.ts";
+import { ChaiBlock } from "../../../core/types/ChaiBlock.ts";
+import { generateUUID } from "../../../core/functions/Functions.ts";
 
 const SelectBlock = (
   block: ChaiBlock & {
@@ -54,12 +54,7 @@ const SelectBlock = (
   return (
     <div {...styles}>
       {showLabel && <label htmlFor={fieldId}>{label}</label>}
-      <select
-        {...inputStyles}
-        id={fieldId}
-        required={required}
-        multiple={_multiple as boolean}
-        name={fieldName}>
+      <select {...inputStyles} id={fieldId} required={required} multiple={_multiple as boolean} name={fieldName}>
         <option value="" disabled selected hidden>
           {placeholder}
         </option>

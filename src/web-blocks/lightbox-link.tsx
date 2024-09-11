@@ -3,9 +3,9 @@ import { isEmpty } from "lodash-es";
 import { ImageIcon } from "@radix-ui/react-icons";
 import { Checkbox, Numeric, SelectOption, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import EmptySlot from "../empty-slot.tsx";
+import EmptySlot from "./empty-slot.tsx";
 import { addForcedClasses } from "./helper.ts";
-import { ChaiBlockStyles, ChaiRenderBlockProps } from "../../core/types/types.ts";
+import { ChaiBlockStyles, ChaiRenderBlockProps } from "../core/types/types.ts";
 
 type LightBoxLinkProps = {
   href: string;

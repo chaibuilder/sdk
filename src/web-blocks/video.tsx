@@ -3,7 +3,7 @@ import { VideoIcon } from "@radix-ui/react-icons";
 import { get, isEmpty, omit, pick } from "lodash-es";
 import { Checkbox, Model, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import EmptySlot from "../empty-slot.tsx";
+import EmptySlot from "./empty-slot.tsx";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
 const YOUTUBE_REGEX = /^(https?:\/\/)?(www\.)?youtube\.com\/(watch\?v=|embed\/)([a-zA-Z0-9_-]{11})/;

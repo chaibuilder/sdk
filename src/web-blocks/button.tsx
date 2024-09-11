@@ -1,10 +1,9 @@
 import * as React from "react";
 import { ButtonIcon } from "@radix-ui/react-icons";
 import { Icon, Numeric, SelectOption, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
-import { registerChaiBlock } from "@chaibuilder/runtime";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
-const ButtonBlock = (
+const Component = (
   block: ChaiBlock & {
     blockProps: Record<string, string>;
     styles: Record<string, string>;
@@ -36,7 +35,7 @@ const ButtonBlock = (
   );
 };
 
-registerChaiBlock(ButtonBlock, {
+const Config = {
   type: "Button",
   label: "Button",
   category: "core",
@@ -56,6 +55,6 @@ registerChaiBlock(ButtonBlock, {
       ],
     }),
   },
-});
+};
 
-export default ButtonBlock;
+export { Component, Config };

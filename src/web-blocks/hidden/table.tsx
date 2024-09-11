@@ -9,9 +9,9 @@ import {
   ViewHorizontalIcon,
 } from "@radix-ui/react-icons";
 import { isEmpty } from "lodash-es";
-import EmptySlot from "../../empty-slot.tsx";
-import { ChaiBlock } from "../../../core/types/ChaiBlock.ts";
-import { generateUUID } from "../../../core/functions/Functions.ts";
+import EmptySlot from "../empty-slot.tsx";
+import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
+import { generateUUID } from "../../core/functions/Functions.ts";
 
 const getDefaultBlocks = (type: string): ChaiBlock[] => {
   const td = (id: string, content: string) => ({

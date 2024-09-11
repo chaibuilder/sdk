@@ -1,6 +1,5 @@
 import * as React from "react";
 import { CodeIcon } from "@radix-ui/react-icons";
-import { registerChaiBlock } from "@chaibuilder/runtime";
 import { Code, Styles } from "@chaibuilder/runtime/controls";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
@@ -28,7 +27,7 @@ const CustomHTMLBlock = (
   );
 };
 
-registerChaiBlock(CustomHTMLBlock, {
+const Config = {
   type: "CustomHTML",
   label: "Custom HTML",
   category: "core",
@@ -43,6 +42,6 @@ registerChaiBlock(CustomHTMLBlock, {
     }),
   },
   canAcceptBlock: () => false,
-});
+};
 
-export { CustomHTMLBlock };
+export { CustomHTMLBlock as Component, Config };

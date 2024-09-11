@@ -3,7 +3,7 @@ import { ImageIcon } from "@radix-ui/react-icons";
 import { Image, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import { isEmpty } from "lodash-es";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import EmptySlot from "../empty-slot.tsx";
+import EmptySlot from "./empty-slot.tsx";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
 const ImageBlock = (
