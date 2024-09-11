@@ -61,7 +61,6 @@ function ChaiBuilderDefault() {
       getUILibraryBlock={async (uiLibrary: UILibrary, uiLibBlock: UiLibraryBlock) => {
         const response = await fetch(uiLibrary.url + "/blocks/" + uiLibBlock.path);
         const html = await response.text();
-        console.log(html);
         const htmlWithoutChaiStudio = html.replace(/---([\s\S]*?)---/g, "");
         return getBlocksFromHTML(`${htmlWithoutChaiStudio}`) as ChaiBlock[];
       }}
