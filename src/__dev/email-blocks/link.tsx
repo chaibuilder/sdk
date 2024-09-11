@@ -2,7 +2,7 @@ import { Link } from "@react-email/components";
 import { registerChaiBlock } from "@chaibuilder/runtime";
 import { Link as link, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import { Link1Icon } from "@radix-ui/react-icons";
-import EmptySlot from "../empty-slot.tsx";
+import EmptySlot from "../../web-blocks/empty-slot.tsx";
 
 const LinkBlock = ({ blockProps, styles, href, content, target, children }: any) => {
   return (

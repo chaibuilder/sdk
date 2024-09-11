@@ -2,7 +2,7 @@ import { Column, Row } from "@react-email/components";
 import { registerChaiBlock } from "@chaibuilder/runtime";
 import { SelectOption, Styles } from "@chaibuilder/runtime/controls";
 import { ImageIcon } from "@radix-ui/react-icons";
-import EmptySlot from "../empty-slot.tsx";
+import EmptySlot from "../../web-blocks/empty-slot.tsx";
 
 const RowBlock = ({ blockProps, styles, children }: any) => {
   return (

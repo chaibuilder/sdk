@@ -1,6 +1,6 @@
 import { registerChaiBlock } from "@chaibuilder/runtime";
 import { Code } from "@chaibuilder/runtime/controls";
-import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
+import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { DiJavascript } from "react-icons/di";
 
 const CustomScript = (

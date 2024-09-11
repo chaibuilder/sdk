@@ -4,7 +4,7 @@ import { Icon, Numeric, Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
 import { isEmpty } from "lodash-es";
 import EmptySlot from "../empty-slot.tsx";
-import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
+import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { cn } from "../../core/functions/Functions.ts";
 import { addForcedClasses } from "./helper.ts";
 

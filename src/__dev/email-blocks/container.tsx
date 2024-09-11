@@ -1,6 +1,6 @@
 import { Container } from "@react-email/components";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import EmptySlot from "../empty-slot.tsx";
+import EmptySlot from "../../web-blocks/empty-slot.tsx";
 
 const ContainerBlock = ({ blockProps, styles, children, inBuilder }) => {
   let nestedChildren = children;

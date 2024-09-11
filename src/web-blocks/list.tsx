@@ -3,9 +3,9 @@ import { ColumnsIcon, RowsIcon } from "@radix-ui/react-icons";
 import { get, isEmpty } from "lodash-es";
 import { MultilineText, SelectOption, Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import EmptySlot from "../empty-slot.tsx";
-import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
-import { cn } from "../../core/functions/Functions.ts";
+import EmptySlot from "./empty-slot.tsx";
+import { ChaiBlock } from "../core/types/ChaiBlock.ts";
+import { cn } from "../core/functions/Functions.ts";
 
 const ListBlock = (
   props: ChaiBlock & {
@@ -101,7 +101,7 @@ registerChaiBlock(ListItemBlock, {
     styles: Styles({ default: "" }),
     content: MultilineText({ title: "Content", default: "List item" }),
   },
-  canAcceptBlock: (type: string) => type !== "ListItem" ,
+  canAcceptBlock: (type: string) => type !== "ListItem",
   canBeNested: (type: string) => type === "List",
 });
 

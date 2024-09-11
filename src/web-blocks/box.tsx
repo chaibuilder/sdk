@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Image, SelectOption, Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import EmptySlot from "../empty-slot.tsx";
+import EmptySlot from "./empty-slot.tsx";
 
 const BoxBlock = React.memo(
   (

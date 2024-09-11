@@ -2,7 +2,7 @@ import * as React from "react";
 import { HeadingIcon } from "@radix-ui/react-icons";
 import { MultilineText, SelectOption, Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
+import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
 /**
  * Heading component

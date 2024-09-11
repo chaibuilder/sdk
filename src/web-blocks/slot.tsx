@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
-import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
+import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { cn } from "../../core/functions/Functions.ts";
 
 const SlotBlock = (

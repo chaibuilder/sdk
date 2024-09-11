@@ -2,7 +2,7 @@ import * as React from "react";
 import { CodeIcon } from "@radix-ui/react-icons";
 import { registerChaiBlock } from "@chaibuilder/runtime";
 import { Code, Styles } from "@chaibuilder/runtime/controls";
-import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
+import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
 const CustomHTMLBlock = (
   props: ChaiBlock & {

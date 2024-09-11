@@ -1,14 +1,12 @@
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
 import { lsAiContextAtom, lsBlocksAtom, lsBrandingOptionsAtom } from "./__dev/atoms-dev.ts";
+import PreviewWeb from "./__dev/preview/WebPreview.tsx";
 import { ChaiBlock, ChaiBuilderEditor } from "./core/main";
-import { loadWebBlocks } from "./blocks/web";
-import "./__dev/data-providers/data";
+import { loadWebBlocks } from "./web-blocks";
 import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
 import { useState } from "react";
 import { UILibrary, UiLibraryBlock } from "./core/types/chaiBuilderEditorProps.ts";
-import "./__dev/RowCol.tsx";
-import PreviewWeb from "./__dev/preview/WebPreview.tsx";
 import axios from "axios";
 
 loadWebBlocks();
