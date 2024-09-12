@@ -1,4 +1,4 @@
-import { get, map } from "lodash";
+import { get, map } from "lodash-es";
 import { DesktopIcon, LaptopIcon, MobileIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import clsx from "clsx";
