@@ -9,7 +9,7 @@ import {
 } from "../../../hooks";
 import AttrsEditor from "./AttrsEditor.tsx";
 
-export const CustomAttributes = React.memo(() => {
+export const BlockAttributesEditor = React.memo(() => {
   const block = useSelectedBlock();
   const [attributes, setAttributes] = useState([] as Array<{ key: string; value: string }>);
   const [selectedStylingBlock] = useSelectedStylingBlocks();
@@ -40,7 +40,7 @@ export const CustomAttributes = React.memo(() => {
   );
 
   return (
-    <div className="mb-20 flex min-h-max flex-col gap-y-2 overflow-y-auto">
+    <div className="flex-col gap-y-2">
       <div className="flex flex-col">
         <div>
           <AttrsEditor preloadedAttributes={attributes} onAttributesChange={updateAttributes} />

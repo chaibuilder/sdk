@@ -30,20 +30,16 @@ interface BreakpointCardProps extends BreakpointItemType {
 
 const TabletIcon = ({ landscape = false }) => (
   <svg
-    className={landscape ? "rotate-90" : ""}
+    className={"text-white " + (landscape ? "rotate-90" : "")}
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 13 13"
     xmlSpace="preserve"
     width={13}
+    fill="currentColor"
     height={13}>
     <g strokeWidth={0} />
     <g strokeLinecap="round" strokeLinejoin="round" />
-    <path
-      d="M10.65 0H2.349a.851.851 0 0 0-.851.852v11.299c0 .47.382.852.851.852h8.3a.851.851 0 0 0 .851-.852V.852A.851.851 0 0 0 10.65 0zM6.599 12.466a.367.367 0 1 1 0-.735.367.367 0 0 1 0 .735zm3.9-1.267H2.5V1h8.001v10.199z"
-      style={{
-        fill: "#000",
-      }}
-    />
+    <path d="M10.65 0H2.349a.851.851 0 0 0-.851.852v11.299c0 .47.382.852.851.852h8.3a.851.851 0 0 0 .851-.852V.852A.851.851 0 0 0 10.65 0zM6.599 12.466a.367.367 0 1 1 0-.735.367.367 0 0 1 0 .735zm3.9-1.267H2.5V1h8.001v10.199z" />
   </svg>
 );
 

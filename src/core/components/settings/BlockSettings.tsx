@@ -18,7 +18,7 @@ export default function BlockSettings() {
   const selectedBlock = useSelectedBlock() as any;
   const updateBlockPropsRealtime = useUpdateBlocksPropsRealtime();
   const updateBlockProps = useUpdateBlocksProps();
-  const coreBlock = getBlockComponent(selectedBlock._type);
+  const coreBlock = getBlockComponent(selectedBlock?._type);
   const formData = { ...selectedBlock };
   const [prevFormData, setPrevFormData] = useState(formData);
   const dataBindingSupported = useBuilderProp("dataBindingSupport", false);

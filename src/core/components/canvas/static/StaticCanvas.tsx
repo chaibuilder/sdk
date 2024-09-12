@@ -25,8 +25,6 @@ import { ChaiBlock } from "../../../types/ChaiBlock";
 import { StaticBlocksRenderer } from "./StaticBlocksRenderer.tsx";
 import { Provider } from "react-wrap-balancer"; // const FrameComponent = Frame.default;
 
-// const FrameComponent = Frame.default;
-
 const getElementByStyleId = (doc: any, styleId: string): HTMLElement =>
   doc.querySelector(`[data-style-id="${styleId}"]`) as HTMLElement;
 

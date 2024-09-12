@@ -85,7 +85,7 @@ export default React.memo(function Component({ preloadedAttributes = [], onAttri
   };
 
   return (
-    <div className={"px-1"}>
+    <div className={"max-w-full"}>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -128,7 +128,7 @@ export default React.memo(function Component({ preloadedAttributes = [], onAttri
             />
           </div>
         </div>
-        <Button type="submit" className="h-8 w-full text-sm">
+        <Button type="submit" variant="secondary" className="h-8 w-fit text-sm">
           {editIndex !== null ? "Save" : "Add"}
         </Button>
         {error && <p className="text-xs text-red-500">{error}</p>}

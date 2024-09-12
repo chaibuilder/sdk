@@ -1,7 +1,7 @@
 import "react-quill/dist/quill.snow.css";
 import "../index.css";
 import { DevTools } from "jotai-devtools";
-import i18n from "../locales/load";
+import { i18n } from "../locales/load";
 import { FlagsProvider } from "flagged";
 import { useEffect, useMemo } from "react";
 import { omit } from "lodash-es";

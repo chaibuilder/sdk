@@ -279,7 +279,6 @@ const ListTree = () => {
     setTreeRef(treeRef.current);
   }, [treeRef.current]);
 
-
   const onRename: RenameHandler<any> = ({ id, name, node }) => {
     updateBlockProps([id], { _name: name }, node.data._name);
   };
@@ -373,7 +372,7 @@ const ListTree = () => {
     <div className={cn("-mx-1 -mt-1 flex h-full select-none flex-col space-y-1")} onClick={() => clearSelection()}>
       <div
         id="outline-view"
-        className="no-scrollbar h-full overflow-y-auto p-1 px-2 text-xs"
+        className="no-scrollbar h-full overflow-y-auto text-xs"
         onKeyDown={(e) => {
           if (!treeRef.current.isEditing) {
             handleKeyDown(e);

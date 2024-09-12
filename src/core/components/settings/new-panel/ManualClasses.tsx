@@ -123,7 +123,7 @@ export function ManualClasses() {
     <div
       className={`flex ${
         suggestions.length > 0 ? "min-h-[300px]" : "min-h-max"
-      } w-full flex-col gap-y-1.5 overflow-y-auto border-b-2 bg-gray-100 pb-4`}>
+      } w-full flex-col gap-y-1.5 overflow-y-auto pb-4`}>
       <div className="flex items-center justify-between gap-x-2">
         <div className="flex items-center gap-x-2">
           <span>{t("Classes")}</span>
