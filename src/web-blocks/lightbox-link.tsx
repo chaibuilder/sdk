@@ -2,7 +2,6 @@ import * as React from "react";
 import { isEmpty } from "lodash-es";
 import { ImageIcon } from "@radix-ui/react-icons";
 import { Checkbox, Numeric, SelectOption, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
-import { registerChaiBlock } from "@chaibuilder/runtime";
 import EmptySlot from "./empty-slot.tsx";
 import { addForcedClasses } from "./helper.ts";
 import { ChaiBlockStyles, ChaiRenderBlockProps } from "../core/types/types.ts";
@@ -66,7 +65,7 @@ const LightBoxLinkBlock = (props: ChaiRenderBlockProps<LightBoxLinkProps>) => {
   });
 };
 
-registerChaiBlock(LightBoxLinkBlock, {
+const Config = {
   type: "LightBoxLink",
   label: "LightBox Link",
   category: "core",
@@ -92,6 +91,6 @@ registerChaiBlock(LightBoxLinkBlock, {
     galleryName: SingleLineText({ title: "Gallery name", default: "" }),
   },
   canAcceptBlock: (type: string) => type !== "Link" && type !== "LightBoxLink",
-});
+};
 
-export default LightBoxLinkBlock;
+export { LightBoxLinkBlock as Component, Config };

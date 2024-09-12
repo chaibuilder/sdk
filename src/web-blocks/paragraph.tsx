@@ -1,7 +1,6 @@
 import * as React from "react";
 import { TextIcon } from "@radix-ui/react-icons";
 import { MultilineText, Styles } from "@chaibuilder/runtime/controls";
-import { registerChaiBlock } from "@chaibuilder/runtime";
 import { isNull } from "lodash-es";
 
 /**
@@ -30,7 +29,7 @@ const ParagraphBlock = (
   });
 };
 
-registerChaiBlock(ParagraphBlock as React.FC<any>, {
+const Config = {
   type: "Paragraph",
   label: "Paragraph",
   category: "core",
@@ -45,6 +44,6 @@ registerChaiBlock(ParagraphBlock as React.FC<any>, {
     }),
   },
   canAcceptBlock: (type) => type === "Span" || type === "Link" || type === "Text",
-});
+};
 
-export default ParagraphBlock;
+export { ParagraphBlock as Component, Config };

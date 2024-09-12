@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Styles } from "@chaibuilder/runtime/controls";
-import { registerChaiBlock } from "@chaibuilder/runtime";
 
 const EmptyBox = React.memo(
   (
@@ -14,7 +13,7 @@ const EmptyBox = React.memo(
   },
 );
 
-registerChaiBlock(EmptyBox, {
+const Config = {
   type: "EmptyBox",
   label: "Empty Box",
   category: "core",
@@ -23,6 +22,6 @@ registerChaiBlock(EmptyBox, {
     styles: Styles({ default: "" }),
   },
   canAcceptBlock: () => false,
-});
+};
 
-export default EmptyBox;
+export { EmptyBox as Component, Config };

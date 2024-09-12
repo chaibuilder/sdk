@@ -1,5 +1,4 @@
 import { MultilineText } from "@chaibuilder/runtime/controls";
-import { registerChaiBlock } from "@chaibuilder/runtime";
 import { SpaceBetweenVerticallyIcon } from "@radix-ui/react-icons";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
@@ -20,7 +19,7 @@ const RawTextBlock = (
   return `${props.content}`;
 };
 
-registerChaiBlock(RawTextBlock, {
+const Config = {
   type: "Text",
   label: "Text",
   hidden: true,
@@ -30,6 +29,6 @@ registerChaiBlock(RawTextBlock, {
   props: {
     content: MultilineText({ title: "Content", defaultValue: "" }),
   },
-});
+};
 
-export default RawTextBlock;
+export { RawTextBlock as Component, Config };

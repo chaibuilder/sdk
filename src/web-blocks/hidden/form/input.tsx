@@ -1,8 +1,6 @@
-import * as React from "react";
 import { InputIcon } from "@radix-ui/react-icons";
 import { map } from "lodash-es";
 import { Checkbox, SelectOption, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
-import { registerChaiBlock } from "@chaibuilder/runtime";
 import { generateUUID } from "../../../core/functions/Functions.ts";
 import { ChaiBlock } from "../../../core/types/ChaiBlock.ts";
 
@@ -64,7 +62,7 @@ const InputBlock = (
   );
 };
 
-registerChaiBlock(InputBlock as React.FC<any>, {
+const Config = {
   type: "Input",
   label: "Input",
   category: "core",
@@ -95,6 +93,6 @@ registerChaiBlock(InputBlock as React.FC<any>, {
     }),
     required: Checkbox({ title: "Required", default: false }),
   },
-});
+};
 
-export default InputBlock;
+export { InputBlock as Component, Config };

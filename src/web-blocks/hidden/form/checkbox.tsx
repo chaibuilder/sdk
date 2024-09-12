@@ -1,6 +1,5 @@
 import { CheckboxIcon } from "@radix-ui/react-icons";
 import { Checkbox, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
-import { registerChaiBlock } from "@chaibuilder/runtime";
 import { ChaiBlock } from "../../../core/types/ChaiBlock.ts";
 import { generateUUID } from "../../../core/functions/Functions.ts";
 
@@ -44,7 +43,7 @@ const CheckboxBlock = (
   );
 };
 
-registerChaiBlock(CheckboxBlock, {
+const Config = {
   type: "Checkbox",
   label: "Checkbox",
   category: "core",
@@ -58,6 +57,6 @@ registerChaiBlock(CheckboxBlock, {
     checked: Checkbox({ title: "Checked", default: false }),
     required: Checkbox({ title: "Required", default: false }),
   },
-});
+};
 
-export default CheckboxBlock;
+export { CheckboxBlock as Component, Config };

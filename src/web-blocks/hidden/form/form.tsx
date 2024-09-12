@@ -1,7 +1,6 @@
 import * as React from "react";
-import { GroupIcon, LetterCaseToggleIcon } from "@radix-ui/react-icons";
+import { GroupIcon } from "@radix-ui/react-icons";
 import { RichText, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
-import { registerChaiBlock } from "@chaibuilder/runtime";
 import EmptySlot from "../../empty-slot.tsx";
 import { ChaiBlock } from "../../../core/types/ChaiBlock.ts";
 
@@ -44,9 +43,7 @@ const FormBlock = (
   );
 };
 
-export default FormBlock;
-
-registerChaiBlock(FormBlock, {
+const Config = {
   type: "Form",
   label: "Form",
   category: "core",
@@ -69,35 +66,6 @@ registerChaiBlock(FormBlock, {
     }),
   },
   canAcceptBlock: () => true,
-});
-
-const LabelBlock = (
-  props: ChaiBlock & {
-    children: React.ReactNode;
-    styles: any;
-    content: string;
-    blockProps: Record<string, string>;
-  },
-) => {
-  const { blockProps, content, styles, children } = props;
-  const labelProps = { ...styles, ...blockProps };
-
-  if (children) return React.createElement("label", labelProps, children);
-  return React.createElement("label", {
-    ...labelProps,
-    dangerouslySetInnerHTML: { __html: content },
-  });
 };
 
-registerChaiBlock(LabelBlock, {
-  type: "Label",
-  label: "Label",
-  category: "core",
-  icon: LetterCaseToggleIcon,
-  group: "form",
-  hidden: true,
-  props: {
-    styles: Styles({ default: "" }),
-    content: SingleLineText({ title: "Content", default: "Label", ai: { html: false } }),
-  },
-});
+export { FormBlock as Component, Config };

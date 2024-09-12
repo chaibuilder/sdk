@@ -1,7 +1,6 @@
 import * as React from "react";
 import { SketchLogoIcon } from "@radix-ui/react-icons";
 import { Icon, Numeric, Styles } from "@chaibuilder/runtime/controls";
-import { registerChaiBlock } from "@chaibuilder/runtime";
 import { isEmpty } from "lodash-es";
 import EmptySlot from "./empty-slot.tsx";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
@@ -29,7 +28,7 @@ const IconBlock = (
   });
 };
 
-registerChaiBlock(IconBlock, {
+const Config = {
   type: "Icon",
   label: "Icon",
   category: "core",
@@ -44,6 +43,6 @@ registerChaiBlock(IconBlock, {
     width: Numeric({ title: "Width", default: "" }),
     height: Numeric({ title: "Height", default: "" }),
   },
-});
+};
 
-export default IconBlock;
+export { IconBlock as Component, Config };

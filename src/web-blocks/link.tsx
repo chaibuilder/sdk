@@ -2,7 +2,6 @@ import * as React from "react";
 import { isEmpty } from "lodash-es";
 import { Link1Icon } from "@radix-ui/react-icons";
 import { Link, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
-import { registerChaiBlock } from "@chaibuilder/runtime";
 import EmptySlot from "./empty-slot.tsx";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
@@ -55,7 +54,7 @@ const LinkBlock = (
   });
 };
 
-registerChaiBlock(LinkBlock, {
+const Config = {
   type: "Link",
   label: "Link",
   category: "core",
@@ -70,6 +69,6 @@ registerChaiBlock(LinkBlock, {
     }),
   },
   canAcceptBlock: (type: string) => type !== "Link",
-});
+};
 
-export default LinkBlock;
+export { LinkBlock as Component, Config };

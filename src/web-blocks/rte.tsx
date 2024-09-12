@@ -1,7 +1,6 @@
 import * as React from "react";
 import { CursorTextIcon } from "@radix-ui/react-icons";
 import { RichText, Styles } from "@chaibuilder/runtime/controls";
-import { registerChaiBlock } from "@chaibuilder/runtime";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
 /**
@@ -30,7 +29,7 @@ const RichTextBlock = (
   );
 };
 
-registerChaiBlock(RichTextBlock as React.FC<any>, {
+const Config = {
   type: "RichText",
   label: "Rich Text",
   category: "core",
@@ -43,6 +42,6 @@ registerChaiBlock(RichTextBlock as React.FC<any>, {
       default: "<p>This is a rich text block. You can add text, and other content here.</p>",
     }),
   },
-});
+};
 
-export default RichTextBlock;
+export { RichTextBlock as Component, Config };

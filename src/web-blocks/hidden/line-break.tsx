@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Styles } from "@chaibuilder/runtime/controls";
-import { registerChaiBlock } from "@chaibuilder/runtime";
 import { SpaceBetweenVerticallyIcon } from "@radix-ui/react-icons";
 import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
 
@@ -9,7 +8,7 @@ const LineBreakComponent = (props: ChaiBlock & { styles: any; blockProps: Record
   return React.createElement("br", { ...blockProps, ...styles });
 };
 
-registerChaiBlock(LineBreakComponent, {
+const Config = {
   type: "LineBreak",
   label: "Line Break",
   category: "core",
@@ -19,6 +18,6 @@ registerChaiBlock(LineBreakComponent, {
   props: {
     styles: Styles({ default: "" }),
   },
-});
+};
 
-export default LineBreakComponent;
+export { LineBreakComponent as Component, Config };

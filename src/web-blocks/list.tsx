@@ -1,8 +1,7 @@
 import * as React from "react";
-import { ColumnsIcon, RowsIcon } from "@radix-ui/react-icons";
+import { RowsIcon } from "@radix-ui/react-icons";
 import { get, isEmpty } from "lodash-es";
-import { MultilineText, SelectOption, Styles } from "@chaibuilder/runtime/controls";
-import { registerChaiBlock } from "@chaibuilder/runtime";
+import { SelectOption, Styles } from "@chaibuilder/runtime/controls";
 import EmptySlot from "./empty-slot.tsx";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { cn } from "../core/functions/Functions.ts";
@@ -27,7 +26,7 @@ const ListBlock = (
   );
 };
 
-registerChaiBlock(ListBlock, {
+const Config = {
   type: "List",
   label: "List",
   icon: RowsIcon,
@@ -70,39 +69,6 @@ registerChaiBlock(ListBlock, {
       content: "Item 3",
     },
   ],
-});
-
-const ListItemBlock = (
-  props: ChaiBlock & {
-    content: string;
-    blockProps: Record<string, string>;
-    styles: Record<string, string>;
-  },
-) => {
-  const { blockProps, content, styles, children, tag } = props;
-  if (!children) {
-    return React.createElement(tag || "li", {
-      ...styles,
-      ...blockProps,
-      "data-ai-key": "content",
-      dangerouslySetInnerHTML: { __html: content },
-    });
-  }
-  return React.createElement(tag || "li", { ...styles, ...blockProps }, children);
 };
 
-registerChaiBlock(ListItemBlock, {
-  type: "ListItem",
-  label: "List Item",
-  icon: ColumnsIcon,
-  category: "core",
-  group: "basic",
-  props: {
-    styles: Styles({ default: "" }),
-    content: MultilineText({ title: "Content", default: "List item" }),
-  },
-  canAcceptBlock: (type: string) => type !== "ListItem",
-  canBeNested: (type: string) => type === "List",
-});
-
-export default ListBlock;
+export { ListBlock as Component, Config };

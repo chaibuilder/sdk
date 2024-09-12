@@ -1,7 +1,6 @@
 import * as React from "react";
 import { HeadingIcon } from "@radix-ui/react-icons";
 import { MultilineText, SelectOption, Styles } from "@chaibuilder/runtime/controls";
-import { registerChaiBlock } from "@chaibuilder/runtime";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
 /**
@@ -29,7 +28,7 @@ const HeadingBlock = (
   });
 };
 
-registerChaiBlock(HeadingBlock, {
+const Config = {
   type: "Heading",
   label: "Heading",
   category: "core",
@@ -53,6 +52,6 @@ registerChaiBlock(HeadingBlock, {
     content: MultilineText({ title: "Content", default: "Heading goes here" }),
   },
   canAcceptBlock: (type) => type === "Span" || type === "Text",
-});
+};
 
-export default HeadingBlock;
+export { HeadingBlock as Component, Config };

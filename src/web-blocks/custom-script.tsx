@@ -1,4 +1,3 @@
-import { registerChaiBlock } from "@chaibuilder/runtime";
 import { Code } from "@chaibuilder/runtime/controls";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { DiJavascript } from "react-icons/di";
@@ -13,7 +12,7 @@ const CustomScript = (
   return <div dangerouslySetInnerHTML={{ __html: scripts }}></div>;
 };
 
-registerChaiBlock(CustomScript, {
+const Config = {
   type: "CustomScript",
   label: "Custom Script",
   category: "core",
@@ -27,6 +26,6 @@ registerChaiBlock(CustomScript, {
     }),
   },
   canAcceptBlock: () => false,
-});
+};
 
-export default CustomScript;
+export { CustomScript as Component, Config };

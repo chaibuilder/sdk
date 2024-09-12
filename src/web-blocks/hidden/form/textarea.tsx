@@ -1,10 +1,9 @@
 import { InputIcon } from "@radix-ui/react-icons";
 import { Checkbox, Numeric, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
-import { registerChaiBlock } from "@chaibuilder/runtime";
 import { ChaiBlock } from "../../../core/types/ChaiBlock.ts";
 import { generateUUID } from "../../../core/functions/Functions.ts";
 
-const InputBlock = (
+const TextAreaBlock = (
   block: ChaiBlock & {
     blockProps: Record<string, string>;
     styles: Record<string, string>;
@@ -39,7 +38,7 @@ const InputBlock = (
   );
 };
 
-registerChaiBlock(InputBlock, {
+const Config = {
   type: "TextArea",
   label: "TextArea",
   category: "core",
@@ -58,6 +57,6 @@ registerChaiBlock(InputBlock, {
     }),
     _rows: Numeric({ title: "Rows", default: 3 }),
   },
-});
+};
 
-export default InputBlock;
+export { TextAreaBlock as Component, Config };

@@ -1,6 +1,5 @@
 import { ButtonIcon } from "@radix-ui/react-icons";
 import { Icon, SelectOption, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
-import { registerChaiBlock } from "@chaibuilder/runtime";
 import { generateUUID } from "../../../core/functions/Functions.ts";
 import { ChaiBlock } from "../../../core/types/ChaiBlock.ts";
 
@@ -33,7 +32,7 @@ const FormButtonBlock = (
   );
 };
 
-registerChaiBlock(FormButtonBlock, {
+const Config = {
   type: "FormButton",
   label: "Submit Button",
   category: "core",
@@ -55,6 +54,6 @@ registerChaiBlock(FormButtonBlock, {
       ],
     }),
   },
-});
+};
 
-export default FormButtonBlock;
+export { FormButtonBlock as Component, Config };

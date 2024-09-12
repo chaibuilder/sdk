@@ -2,7 +2,6 @@ import * as React from "react";
 import { VideoIcon } from "@radix-ui/react-icons";
 import { get, isEmpty, omit, pick } from "lodash-es";
 import { Checkbox, Model, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
-import { registerChaiBlock } from "@chaibuilder/runtime";
 import EmptySlot from "./empty-slot.tsx";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
@@ -103,7 +102,7 @@ const VideoBlock = React.memo(
   },
 );
 
-registerChaiBlock(VideoBlock, {
+const Config = {
   type: "Video",
   label: "Video",
   category: "core",
@@ -125,6 +124,6 @@ registerChaiBlock(VideoBlock, {
       },
     }),
   },
-});
+};
 
-export default VideoBlock;
+export { VideoBlock as Component, Config };

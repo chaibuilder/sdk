@@ -2,7 +2,6 @@ import * as React from "react";
 import { ImageIcon } from "@radix-ui/react-icons";
 import { Image, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import { isEmpty } from "lodash-es";
-import { registerChaiBlock } from "@chaibuilder/runtime";
 import EmptySlot from "./empty-slot.tsx";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
@@ -30,7 +29,7 @@ const ImageBlock = (
   });
 };
 
-registerChaiBlock(ImageBlock, {
+const Config = {
   type: "Image",
   label: "Image",
   category: "core",
@@ -46,6 +45,6 @@ registerChaiBlock(ImageBlock, {
     width: SingleLineText({ title: "Width", default: "" }),
     height: SingleLineText({ title: "Height", default: "" }),
   },
-});
+};
 
-export default ImageBlock;
+export { ImageBlock as Component, Config };

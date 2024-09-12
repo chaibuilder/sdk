@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Image, Styles } from "@chaibuilder/runtime/controls";
-import { registerChaiBlock } from "@chaibuilder/runtime";
 
 const BodyBlock = (
   props: any & {
@@ -21,7 +20,7 @@ const BodyBlock = (
   return React.createElement("div", { ...blockProps, ...styles, style: cssStyles }, children);
 };
 
-registerChaiBlock(BodyBlock, {
+const Config = {
   type: "Body",
   label: "Body",
   category: "core",
@@ -35,6 +34,6 @@ registerChaiBlock(BodyBlock, {
   canDelete: () => false,
   canMove: () => false,
   canDuplicate: () => false,
-});
+};
 
-export default BodyBlock;
+export { BodyBlock as Component, Config };
