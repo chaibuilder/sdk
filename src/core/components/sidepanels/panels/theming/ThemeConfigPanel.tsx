@@ -5,7 +5,7 @@ import Form, { IChangeEvent } from "@rjsf/core";
 import { useBrandingOptions, useBuilderProp } from "../../../../hooks";
 import { Color, Numeric, SelectOption } from "@chaibuilder/runtime/controls";
 import { isEqual, noop } from "lodash-es";
-import { ColorField } from "../../../../../ui/widgets/rjsf/widgets/color.tsx";
+import { ColorField } from "../../../../rjsf-widgets/color.tsx";
 import { useBlocksContainer } from "../../../../hooks/useBrandingOptions.ts";
 import { useTranslation } from "react-i18next";
 import { cn } from "../../../../functions/Functions.ts";

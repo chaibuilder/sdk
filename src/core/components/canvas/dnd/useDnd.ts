@@ -154,9 +154,9 @@ export const useDnd = () => {
       const id = block.getAttribute("data-block-id");
 
       const isDropTargetAllowed = dropTarget.getAttribute("data-dnd-dragged") === "yes" ? false : true;
-     
+
       //if the draggedItem is the same as the dropTarget, reset the drag state.
-      if (data === dropTarget || !isDropTargetAllowed) {
+      if (data?._id === id || !isDropTargetAllowed) {
         resetDragState();
         return;
       }
