@@ -1,7 +1,7 @@
 import { get } from "lodash-es";
 import getPalette from "tailwindcss-palette-generator";
 
-export type ChaiBuilderTailwindTheme = {
+export type ChaiBuilderTailwindTheme<T extends Record<string, unknown> = {}> = {
   primaryColor: string;
   secondaryColor: string;
   headingFont: string;
@@ -11,7 +11,7 @@ export type ChaiBuilderTailwindTheme = {
   bodyBgDarkColor: string;
   bodyTextLightColor: string;
   bodyTextDarkColor: string;
-};
+} & T;
 
 export const getChaiBuilderTheme = (theme: ChaiBuilderTailwindTheme) => {
   const primary = get(theme, "primaryColor", "#000");

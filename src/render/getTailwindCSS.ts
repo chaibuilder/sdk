@@ -1,88 +1,27 @@
-import { get, replace, startsWith } from "lodash-es";
+import { replace, startsWith } from "lodash-es";
 import { createTailwindcss } from "@mhsdesign/jit-browser-tailwindcss";
-import defaultTheme from "tailwindcss/defaultTheme";
-import plugin from "tailwindcss/plugin";
 import twForms from "@tailwindcss/forms";
 import twTypography from "@tailwindcss/typography";
 import twAspectRatio from "@tailwindcss/aspect-ratio";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { addPrefixToClasses } from "./functions.ts";
 import { STYLES_KEY } from "../core/constants/STRINGS.ts";
-import { ThemeConfiguration } from "../core/types";
-import getPalette from "tailwindcss-palette-generator";
+import { ChaiBuilderTailwindTheme, getChaiBuilderTheme } from "../tailwind/getChaiBuilderTheme.ts";
+import { chaiBuilderPlugin } from "../tailwind";
 
-export async function getTailwindCSS(
-  customTheme: any,
+async function getTailwindCSS(
+  theme: ChaiBuilderTailwindTheme,
   markupString: string[],
   safelist: string[] = [],
   prefix: string = "",
   includeBaseStyles: boolean = false,
 ) {
-  const primary = get(customTheme, "primaryColor", "#000");
-  const secondary = get(customTheme, "secondaryColor", "#ccc");
-
-  const headingFont = get(customTheme, "headingFont", "Inter");
-  const bodyFont = get(customTheme, "bodyFont", "Inter");
-  const borderRadius = get(customTheme, "roundedCorners", "0");
-  const BG_LIGHT_MODE = get(customTheme, "bodyBgLightColor", "#fff");
-  const BG_DARK_MODE = get(customTheme, "bodyBgDarkColor", "#000");
-  const TEXT_DARK_MODE = get(customTheme, "bodyTextDarkColor", "#FFF");
-  const TEXT_LIGHT_MODE = get(customTheme, "bodyTextLightColor", "#000");
-
-  const colors: Record<string, string> = {
-    "bg-light": BG_LIGHT_MODE,
-    "bg-dark": BG_DARK_MODE,
-    "text-dark": TEXT_DARK_MODE,
-    "text-light": TEXT_LIGHT_MODE,
-  };
-
-  const palette = getPalette([
-    { color: primary, name: "primary" },
-    { color: secondary, name: "secondary" },
-  ]);
-
   const tailwind = createTailwindcss({
     tailwindConfig: {
       darkMode: "class",
       safelist,
-      theme: {
-        container: {
-          center: true,
-          padding: "1rem",
-          screens: { "2xl": "1400px" },
-        },
-        fontFamily: {
-          heading: [headingFont, ...defaultTheme.fontFamily.sans],
-          body: [bodyFont, ...defaultTheme.fontFamily.sans],
-        },
-        extend: {
-          borderRadius: {
-            DEFAULT: `${!borderRadius ? "0px" : borderRadius}px`,
-          },
-          colors: { ...colors, ...palette },
-        },
-      },
-      plugins: [
-        twForms,
-        twTypography,
-        twAspectRatio,
-        plugin(function ({ addBase, theme }: any) {
-          addBase({
-            "h1,h2,h3,h4,h5,h6": {
-              fontFamily: theme("fontFamily.heading"),
-            },
-            body: {
-              fontFamily: theme("fontFamily.body"),
-              color: theme("colors.text-light"),
-              backgroundColor: theme("colors.bg-light"),
-            },
-            ".dark body": {
-              color: theme("colors.text-dark"),
-              backgroundColor: theme("colors.bg-dark"),
-            },
-          });
-        }),
-      ],
+      theme: getChaiBuilderTheme(theme),
+      plugins: [twForms, twTypography, twAspectRatio, chaiBuilderPlugin],
       corePlugins: { preflight: includeBaseStyles },
       ...(prefix ? { prefix: `${prefix}` } : {}),
     },
@@ -127,7 +66,7 @@ const getBlocksTailwindCSS = (
 
 export const getStylesForBlocks = async (
   blocks: ChaiBlock[],
-  theme: ThemeConfiguration,
+  theme: ChaiBuilderTailwindTheme | {} = {},
   classPrefix: string = "",
   includeBaseStyles: boolean = true,
 ): Promise<string> => {
