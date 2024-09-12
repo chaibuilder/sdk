@@ -1,4 +1,3 @@
-import * as React from "react";
 import { CursorTextIcon } from "@radix-ui/react-icons";
 import { RichText, Styles } from "@chaibuilder/runtime/controls";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";

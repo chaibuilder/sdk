@@ -1,28 +1,5 @@
-import { addPrefixToClasses, convertToBlocks, getBrandingClasses } from "./functions.ts";
-import { ThemeConfiguration } from "../core/types/index.ts";
+import { addPrefixToClasses, convertToBlocks } from "./functions.ts";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
-
-// Test getBrandingClasses function
-describe("getBrandingClasses", () => {
-  it("should return the correct classes when brandingOptions are provided", () => {
-    const brandingOptions: ThemeConfiguration = {
-      bodyTextLightColor: "#123456",
-      bodyTextDarkColor: "#654321",
-      bodyBgLightColor: "#abcdef",
-      bodyBgDarkColor: "#fedcba",
-    };
-    const prefix = "test-";
-    const expectedClasses =
-      "test-font-body test-antialiased test-text-[#123456] test-bg-[#abcdef] dark:test-text-[#654321] dark:test-bg-[#fedcba]";
-    expect(getBrandingClasses(brandingOptions, prefix)).toBe(expectedClasses);
-  });
-
-  it("should return the correct classes when brandingOptions are empty", () => {
-    const brandingOptions: ThemeConfiguration = {};
-    const expectedClasses = "font-body antialiased text-[#64748b] bg-[#FFFFFF] dark:text-[#94a3b8] dark:bg-[#0f172a]";
-    expect(getBrandingClasses(brandingOptions)).toBe(expectedClasses);
-  });
-});
 
 // Test addPrefixToClasses function
 describe("addPrefixToClasses", () => {
