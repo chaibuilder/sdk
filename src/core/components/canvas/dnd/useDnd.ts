@@ -130,7 +130,6 @@ export const useDnd = () => {
   const resetDragState = () => {
     removePlaceholder();
     setIsDragging(false);
-    setDraggedBlockId("");
     //@ts-ignore
     setDraggedBlock(null);
     //@ts-ignore

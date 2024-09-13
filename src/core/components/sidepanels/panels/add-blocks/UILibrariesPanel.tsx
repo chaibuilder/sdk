@@ -25,9 +25,6 @@ import { useFeature } from "flagged";
 import { draggedBlockAtom } from "../../../canvas/dnd/atoms.ts";
 import clsx from "clsx";
 
-import { draggedBlockAtom } from "../../../canvas/dnd/atoms.ts";
-import clsx from "clsx";
-import { useFeature } from "flagged";
 
 const BlockCard = ({
   block,
