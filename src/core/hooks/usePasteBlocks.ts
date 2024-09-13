@@ -61,7 +61,7 @@ export const usePasteBlocks = (): {
     pasteBlocks: useCallback(
       (newParentId: string | string[]) => {
         if (!isEmpty(copiedBlockIds)) {
-          duplicateBlocks(copiedBlockIds, newParentId);
+          duplicateBlocks(copiedBlockIds, newParentId[0]);
         } else {
           moveCutBlocks(cutBlockIds, newParentId);
         }
