@@ -11,6 +11,7 @@ import { ScrollArea, TooltipProvider } from "../../ui";
 import { useIntervalEffect } from "@react-hookz/web";
 import { aiAssistantActiveAtom } from "../atoms/ui.ts";
 import { AskAI } from "./AskAi.tsx";
+import { CanvasTopBar } from "./canvas/topbar/CanvasTopBar.tsx";
 
 const SidePanels = lazy(() => import("./sidepanels/SidePanels"));
 const TopBar = lazy(() => import("./topbar/Topbar"));
@@ -82,6 +83,7 @@ const RootLayout: ComponentType = () => {
               </Suspense>
             </div>
             <div className="h-full flex-1 bg-slate-800/20">
+              <CanvasTopBar />
               <Suspense>
                 <CanvasArea />
               </Suspense>

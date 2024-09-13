@@ -1,6 +1,6 @@
 import { ChaiBlock } from "../types/ChaiBlock";
 import { ChaiBuilderEditorProps } from "../types/chaiBuilderEditorProps.ts";
-import ChaiBuilderCanvas from "../components/canvas/static/StaticCanvas.tsx";
+import ChaiBuilderCanvas from "../components/canvas/CanvasArea.tsx";
 import ThemeOptions from "../components/sidepanels/panels/theming/ThemeConfigPanel.tsx";
 import Outline from "../components/sidepanels/panels/outline/treeview/ListTree.tsx";
 import ImportHTML from "../components/sidepanels/panels/add-blocks/ImportHTML.tsx";
