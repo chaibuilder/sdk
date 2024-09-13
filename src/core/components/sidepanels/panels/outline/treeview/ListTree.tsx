@@ -170,8 +170,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
           "group flex !h-fit w-full items-center justify-between space-x-px !rounded-md py-px outline-none",
           isSelected ? "bg-blue-500 text-white" : "text-gray-600 hover:bg-gray-200 dark:hover:bg-gray-800",
           willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
-          isDragging && "opacity-20",
-          cutBlocksIds.includes(id) && "pointer-events-none opacity-60",
+          isDragging && "opacity-20"
         )}>
         <div className="flex items-center">
           <div
