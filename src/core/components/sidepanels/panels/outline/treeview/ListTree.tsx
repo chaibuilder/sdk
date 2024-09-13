@@ -167,7 +167,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
           setDropAttribute(id, "no");
         }}
         className={cn(
-          "group flex !h-fit w-full items-center justify-between space-x-px py-px outline-none",
+          "group flex !h-fit w-full items-center justify-between space-x-px !rounded-md py-px outline-none",
           isSelected ? "bg-blue-500 text-white" : "text-gray-600 hover:bg-gray-200 dark:hover:bg-gray-800",
           willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
           isDragging && "opacity-20",
@@ -373,7 +373,7 @@ const ListTree = () => {
     <div className={cn("-mx-1 -mt-1 flex h-full select-none flex-col space-y-1")} onClick={() => clearSelection()}>
       <div
         id="outline-view"
-        className="no-scrollbar h-full overflow-y-auto p-1 px-2 text-xs"
+        className="no-scrollbar h-full overflow-y-auto text-xs"
         onKeyDown={(e) => {
           if (!treeRef.current.isEditing) {
             handleKeyDown(e);

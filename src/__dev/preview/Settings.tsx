@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { get } from "lodash";
+import { get } from "lodash-es";
 import getPalette from "tailwindcss-palette-generator";
 import { useFrame } from "../../core/frame";
 import { useBrandingOptions } from "../../core/hooks";

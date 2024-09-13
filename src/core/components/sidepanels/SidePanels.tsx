@@ -14,7 +14,7 @@ import { cn } from "../../functions/Functions.ts";
 import { useChaiBlocks } from "@chaibuilder/runtime";
 
 const AddBlocksPanel = lazy(() => import("./panels/add-blocks/AddBlocks.tsx"));
-const ArboristPanel = lazy(() => import("./panels/outline/treeview/ListTree.tsx"));
+const Outline = lazy(() => import("./panels/outline/treeview/ListTree.tsx"));
 const ThemeConfiguration = lazy(() => import("./panels/theming/ThemeConfigPanel.tsx"));
 const ImagesPanel = lazy(() => import("./panels/images/ImagesPanel"));
 const UILibrariesPanel = lazy(() => import("./panels/add-blocks/UILibrariesPanel.tsx"));
@@ -49,7 +49,7 @@ const SidePanels = () => {
 
   const panels: { [key: string]: React.ComponentType<any> } = {
     "add-blocks": AddBlocks,
-    [OUTLINE_KEY]: ArboristPanel,
+    [OUTLINE_KEY]: Outline,
     "theme-configuration": ThemeConfiguration,
     images: ImagesPanel,
     "ui-libraries": UILibrariesPanel,
@@ -166,7 +166,7 @@ const SidePanels = () => {
             }>
             <div
               className={cn(
-                "relative z-[100] h-full max-h-full overflow-y-auto overflow-x-hidden border-r bg-background p-1 shadow-md",
+                "relative z-[100] h-full max-h-full overflow-y-auto overflow-x-hidden border-r bg-background p-1 py-2 shadow-md",
               )}
               onMouseEnter={() => {
                 if (hideTimeout) clearTimeout(hideTimeout);
@@ -196,8 +196,10 @@ const SidePanels = () => {
                   {t("Data")}
                 </TabsTrigger>
               </TabsList>
-              <TabsContent value={OUTLINE_KEY} className="no-scrollbar h-full flex-1 overflow-y-auto overflow-x-hidden">
-                {React.createElement(ArboristPanel)}
+              <TabsContent
+                value={OUTLINE_KEY}
+                className="no-scrollbar h-full flex-1 overflow-y-auto overflow-x-hidden py-2">
+                {React.createElement(Outline)}
               </TabsContent>
               <TabsContent value="data-provider" className="flex-1 overflow-y-auto overflow-x-hidden">
                 <PageDataProviders />
@@ -208,8 +210,8 @@ const SidePanels = () => {
               <div className="sticky top-0 -m-1 flex h-fit items-center justify-center border-b bg-gray-100 py-2 pb-[9px] text-sm">
                 <ListTreeIcon className={"mr-2 h-3"} /> {t("Outline")}
               </div>
-              <div className="no-scrollbar h-full flex-1 overflow-y-auto overflow-x-hidden pt-2">
-                {React.createElement(ArboristPanel)}
+              <div className="no-scrollbar h-full flex-1 overflow-y-auto overflow-x-hidden py-2 pt-4">
+                {React.createElement(Outline)}
               </div>
             </>
           )}

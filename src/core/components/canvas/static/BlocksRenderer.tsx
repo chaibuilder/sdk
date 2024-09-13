@@ -1,5 +1,5 @@
 import React, { Suspense, useCallback } from "react";
-import { each, filter, find, get, has, isEmpty, isNull, isString, memoize, omit } from "lodash-es";
+import { each, filter, find, get, has, includes, isEmpty, isNull, isString, memoize, omit } from "lodash-es";
 import { twMerge } from "tailwind-merge";
 import { ChaiBlock } from "../../../types/ChaiBlock";
 import { SLOT_KEY, STYLES_KEY } from "../../../constants/STRINGS.ts";
@@ -12,7 +12,6 @@ import { useCanvasSettings } from "../../../hooks/useCanvasSettings.ts";
 import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
 import { canAcceptChildBlock } from "../../../functions/block-helpers.ts";
 import { useCanvasWidth, useCutBlockIds } from "../../../hooks";
-import { includes } from "lodash";
 import { isVisibleAtBreakpoint } from "../../../functions/isVisibleAtBreakpoint.ts";
 
 // FIXME:  Duplicate code in CanvasRenderer.tsx

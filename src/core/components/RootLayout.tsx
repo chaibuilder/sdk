@@ -15,7 +15,7 @@ import { AskAI } from "./AskAi.tsx";
 const SidePanels = lazy(() => import("./sidepanels/SidePanels"));
 const TopBar = lazy(() => import("./topbar/Topbar"));
 const CanvasArea = lazy(() => import("./canvas/CanvasArea"));
-const Settings = lazy(() => import("./settings/Settings"));
+const SettingsPanel = lazy(() => import("./settings/SettingsPanel.tsx"));
 
 const useAutoSave = () => {
   const { savePage } = useSavePage();
@@ -89,7 +89,7 @@ const RootLayout: ComponentType = () => {
             <div className="relative flex h-[100%] w-[280px] min-w-[280px] border-l border-border pb-10">
               <ScrollArea className="h-full w-full overflow-y-auto">
                 <Suspense>
-                  <Settings />
+                  <SettingsPanel />
                 </Suspense>
                 {aiAssistantActive ? <AskAI /> : null}
               </ScrollArea>

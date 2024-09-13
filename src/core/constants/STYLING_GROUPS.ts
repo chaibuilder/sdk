@@ -1,5 +1,4 @@
 import { ManualClasses } from "../components/settings/new-panel/ManualClasses.tsx";
-import { CustomAttributes } from "../components/settings/new-panel/CustomAttribute.tsx";
 
 const BASIC_UNITS: string[] = ["px", "%", "em", "rem", "ch", "vh", "vw"];
 
@@ -88,10 +87,6 @@ export const SETTINGS_SECTIONS = [
         ],
       },
     ],
-  },
-  {
-    heading: "Attributes",
-    items: [{ component: CustomAttributes }],
   },
 ];
 

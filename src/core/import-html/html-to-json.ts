@@ -1,11 +1,23 @@
 // @ts-ignore
 import { parse, stringify } from "himalaya";
 import { cn, generateUUID } from "../functions/Functions.ts";
-import { capitalize, filter, find, flatMapDeep, flatten, forEach, get, includes, isEmpty, set } from "lodash-es";
+import {
+  capitalize,
+  filter,
+  find,
+  flatMapDeep,
+  flatten,
+  forEach,
+  get,
+  has,
+  includes,
+  isEmpty,
+  set,
+  startsWith,
+} from "lodash-es";
 import { ChaiBlock } from "../types/types.ts";
 import { STYLES_KEY } from "../constants/STRINGS.ts";
 import { getVideoURLFromHTML, hasVideoEmbed } from "./import-video.ts";
-import { has, startsWith } from "lodash";
 
 type Node = {
   type: "element" | "text" | "comment";

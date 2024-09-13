@@ -3,7 +3,7 @@
 import React, { Suspense, useState } from "react";
 import { motion } from "framer-motion";
 import { Image, Layers, Settings, Type } from "lucide-react";
-import { BlockSettings, Breakpoints, BuilderCanvas, Outline, UndoRedo } from "../core/main";
+import { BlockPropsEditor, ChaiBuilderCanvas, Outline, ScreenSizes, UndoRedo } from "../core/main";
 import { ScrollArea, TooltipProvider } from "../ui";
 
 const Toolbar = () => {
@@ -23,7 +23,7 @@ export default function CustomLayout() {
 
   const menuItems = [
     { icon: <Layers size={24} />, label: "Layers", component: Outline },
-    { icon: <Settings size={24} />, label: "Settings", component: BlockSettings },
+    { icon: <Settings size={24} />, label: "Settings", component: BlockPropsEditor },
     { icon: <Type size={24} />, label: "Typography", component: () => <div>Typography</div> },
     { icon: <Image size={24} />, label: "Images", component: () => <div>Images</div> },
   ];
@@ -39,7 +39,7 @@ export default function CustomLayout() {
         <div className="flex h-16 items-center justify-between bg-blue-600 px-4 text-white">
           <h1 className="ml-4 text-xl font-bold">Custom Layout</h1>
           <div className={`flex items-center space-x-2`}>
-            <Breakpoints />
+            <ScreenSizes />
             |
             <UndoRedo />
           </div>
@@ -91,7 +91,7 @@ export default function CustomLayout() {
               <Toolbar />
               <div className="mt-1 w-full flex-1">
                 <Suspense fallback={<div>Loading...</div>}>
-                  <BuilderCanvas />
+                  <ChaiBuilderCanvas />
                 </Suspense>
               </div>
             </div>

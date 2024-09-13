@@ -17,8 +17,6 @@ async function enableMocking() {
 }
 
 const ChaiBuilderDefault = lazy(() => import("./Editor.tsx"));
-const ChaiBuilderEmail = lazy(() => import("./EmailBuilder.tsx"));
-const ChaiStudio = lazy(() => import("./ChaiStudio.tsx"));
 const Preview = lazy(() => import("./Preview.tsx"));
 const RJSF = lazy(() => import("./RJSF.tsx"));
 
@@ -34,14 +32,6 @@ const router = createBrowserRouter([
   {
     path: "/preview",
     element: <Preview />,
-  },
-  {
-    path: "/email",
-    element: <ChaiBuilderEmail />,
-  },
-  {
-    path: "/studio",
-    element: <ChaiStudio />,
   },
   {
     path: "/rjsf",

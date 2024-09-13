@@ -27,7 +27,7 @@ import { FaSpinner } from "react-icons/fa";
 import { QuickPrompts } from "./QuickPrompts.tsx";
 import { Cross2Icon } from "@radix-ui/react-icons";
 
-export const AskAIPrompt = ({ blockId }: { blockId: string | undefined }) => {
+export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
   const { t } = useTranslation();
   const { askAi, loading, error } = useAskAi();
   const [prompt, setPrompt] = useState("");
@@ -112,7 +112,7 @@ export const AskAIPrompt = ({ blockId }: { blockId: string | undefined }) => {
   );
 };
 
-const SetAiContext = ({ onOpen }: { onOpen: Function }) => {
+export const AISetContext = () => {
   const { t } = useTranslation();
   const aiContext = useBuilderProp("aiContext", "");
   const [context, setContext] = useState(aiContext);
@@ -151,7 +151,6 @@ const SetAiContext = ({ onOpen }: { onOpen: Function }) => {
   return (
     <Accordion
       onValueChange={(value) => {
-        onOpen(value !== "");
         setOpened(value !== "");
       }}
       type="single"
@@ -255,11 +254,10 @@ const SetAiContext = ({ onOpen }: { onOpen: Function }) => {
 
 export const AskAI = () => {
   const [ids] = useSelectedBlockIds();
-  const [hideAskAI, setHideAskAI] = useState(false);
   return (
     <div className="absolute inset-0 z-50 h-full w-full bg-background p-2">
-      <SetAiContext onOpen={(value) => setHideAskAI(value)} />
-      {hideAskAI ? null : <AskAIPrompt blockId={first(ids)} />}
+      <AISetContext />
+      <AIUserPrompt blockId={first(ids)} />
     </div>
   );
 };
