@@ -20,10 +20,11 @@ import { UILibrary, UiLibraryBlock } from "../../../../types/chaiBuilderEditorPr
 import { ChaiBlock } from "../../../../types/ChaiBlock.ts";
 import { atomWithStorage } from "jotai/utils";
 import { UILibrariesSelect } from "./UiLibrariesSelect.tsx";
+import { useFeature } from "flagged";
 
 import { draggedBlockAtom } from "../../../canvas/dnd/atoms.ts";
 import clsx from "clsx";
-import { useFeature } from "flagged";
+
 
 const BlockCard = ({
   block,

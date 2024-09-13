@@ -126,10 +126,10 @@ export const useDnd = () => {
   const [draggedBlock, setDraggedBlock] = useAtom(draggedBlockAtom);
   const [, setDropTarget] = useAtom(dropTargetBlockIdAtom);
 
+ 
   const resetDragState = () => {
     removePlaceholder();
     setIsDragging(false);
-    setBlockIds([draggedBlock._id]);
     //@ts-ignore
     setDraggedBlock(null);
     //@ts-ignore
