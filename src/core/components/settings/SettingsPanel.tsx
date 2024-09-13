@@ -32,7 +32,7 @@ const SettingsPanel: React.FC = () => {
 
         <div
           onClick={() => setShowAttributes(!showAttributes)}
-          className="flex items-center justify-between border-b border-gray-300 py-2 text-sm font-bold hover:bg-gray-50">
+          className="flex cursor-default items-center justify-between border-b border-gray-300 py-2 text-sm font-bold hover:bg-gray-50">
           <span>Attributes</span>
           <span>
             <ChevronDown className={"h-4 w-4 text-gray-500 " + (showAttributes ? "rotate-180" : "")} />
