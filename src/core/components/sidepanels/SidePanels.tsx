@@ -166,7 +166,7 @@ const SidePanels = () => {
             }>
             <div
               className={cn(
-                "relative z-[100] h-full max-h-full overflow-y-auto overflow-x-hidden border-r bg-background p-1 py-2 shadow-md",
+                "relative z-[100] h-full max-h-full overflow-y-auto overflow-x-hidden border-r bg-background px-4 py-2 shadow-md",
               )}
               onMouseEnter={() => {
                 if (hideTimeout) clearTimeout(hideTimeout);

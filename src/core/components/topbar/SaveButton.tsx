@@ -1,13 +1,13 @@
 import { useMemo } from "react";
 import { Button } from "../../../ui";
-import { useBuilderProp, useSavePage, useTranslation } from "../../hooks";
-import { FaCircleCheck } from "react-icons/fa6";
+import { useBuilderProp, useSavePage } from "../../hooks";
+import { FaCheck } from "react-icons/fa6";
+import { useTranslation } from "react-i18next";
 
 export const SaveButton = () => {
   const { savePage, saveState } = useSavePage();
-  const { t } = useTranslation();
   const hideButton = useBuilderProp("hideSaveButton", false);
-
+  const { t } = useTranslation();
   const classes = useMemo(() => {
     switch (saveState) {
       case "SAVING":
@@ -30,10 +30,10 @@ export const SaveButton = () => {
         e.preventDefault();
         savePage();
       }}
-      className={`flex h-auto w-fit items-center gap-x-2 rounded-full p-1.5 px-3 ${classes}`}
+      className={`flex h-auto w-fit items-center gap-x-2 p-1 px-2 ${classes}`}
       size="sm"
       variant="outline">
-      <FaCircleCheck className={"text-lg"} />
+      <FaCheck className={"text-sm text-white"} />
       <span className={"text-sm"}>
         {saveState === "SAVING" ? "Saving..." : saveState === "SAVED" ? t("Saved") : t("Unsaved")}
       </span>

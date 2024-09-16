@@ -24,12 +24,6 @@ export default React.memo(function Component({ preloadedAttributes = [], onAttri
   const valueTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    if (keyInputRef.current) {
-      keyInputRef.current.focus();
-    }
-  }, [attributes]);
-
-  useEffect(() => {
     setAttributes(preloadedAttributes);
   }, [preloadedAttributes]);
 

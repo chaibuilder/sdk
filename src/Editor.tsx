@@ -1,5 +1,4 @@
 import { useAtom } from "jotai";
-import { useTranslation } from "react-i18next";
 import { lsAiContextAtom, lsBlocksAtom, lsBrandingOptionsAtom } from "./__dev/atoms-dev.ts";
 import PreviewWeb from "./__dev/preview/WebPreview.tsx";
 import { ChaiBlock, ChaiBuilderEditor } from "./core/main";
@@ -10,19 +9,6 @@ import { UILibrary, UiLibraryBlock } from "./core/types/chaiBuilderEditorProps.t
 import axios from "axios";
 
 loadWebBlocks();
-
-const PreviewMessage = () => {
-  const { t } = useTranslation();
-  return (
-    <div className={"text-sm font-normal"}>
-      {t("dev_mode_message")}{" "}
-      <a target={"_blank"} className="text-orange-500 underline" href={"/preview"}>
-        /preview
-      </a>{" "}
-      {t("to_see_page_preview")}
-    </div>
-  );
-};
 
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
@@ -37,7 +23,7 @@ function ChaiBuilderDefault() {
       showDebugLogs={true}
       autoSaveSupport={false}
       previewComponent={PreviewWeb}
-      topBarComponents={{ left: [PreviewMessage] }}
+      topBarComponents={{ left: [] }}
       blocks={blocks}
       brandingOptions={brandingOptions}
       onSave={async ({ blocks, providers, brandingOptions }: any) => {

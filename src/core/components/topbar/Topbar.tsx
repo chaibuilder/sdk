@@ -32,7 +32,7 @@ const Topbar = () => {
           )),
         )}
       </div>
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center space-x-1">
         <Languages />
         <Preview />
         <Separator orientation="vertical" />

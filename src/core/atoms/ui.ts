@@ -8,6 +8,8 @@ readOnlyModeAtom.debugLabel = "readOnlyModeAtom";
 export const networkModeAtom: any = atom<string>("online");
 networkModeAtom.debugLabel = "networkModeAtom";
 
+export const addBlockModalOpenAtom = atom<string>("");
+
 /**
  * @atom
  * Stores the id of the layer that is currently being edited

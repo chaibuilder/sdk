@@ -162,27 +162,25 @@ const ThemeConfigPanel = ({
   });
 
   return (
-    <div className={cn("flex h-full w-60 select-none flex-col", className)}>
+    <div className={cn("flex h-full w-full select-none flex-col", className)}>
       {showHeading ? (
         <div className="rounded-md bg-background/30 p-1">
           <h1 className="px-1 font-semibold">{t("Theme Configuration")}</h1>
         </div>
       ) : null}
-      <div className="mx-2">
-        <Form
-          widgets={{ color: ColorField }}
-          idSeparator="."
-          autoComplete="off"
-          omitExtraData
-          liveOmit
-          liveValidate
-          uiSchema={uiSchema}
-          schema={propsSchema}
-          formData={brandingOptions}
-          validator={validator}
-          onChange={updateRealtime}
-        />
-      </div>
+      <Form
+        widgets={{ color: ColorField }}
+        idSeparator="."
+        autoComplete="off"
+        omitExtraData
+        liveOmit
+        liveValidate
+        uiSchema={uiSchema}
+        schema={propsSchema}
+        formData={brandingOptions}
+        validator={validator}
+        onChange={updateRealtime}
+      />
     </div>
   );
 };

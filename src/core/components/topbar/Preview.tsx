@@ -14,7 +14,7 @@ export const Preview = function Preview() {
         e.preventDefault();
         setPreviewMode(true);
       }}
-      className={`flex h-auto w-fit items-center gap-x-2 rounded-full bg-gray-200 px-3 py-1`}
+      className={`flex h-auto w-fit items-center gap-x-2 bg-gray-200 p-1 px-2`}
       size="sm"
       variant="outline">
       <EyeOpenIcon className={"text-xs"} />

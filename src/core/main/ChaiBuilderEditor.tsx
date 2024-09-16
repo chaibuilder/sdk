@@ -8,7 +8,7 @@ import { omit } from "lodash-es";
 import { FEATURE_TOGGLES } from "../../FEATURE_TOGGLES.tsx";
 import { chaiBuilderPropsAtom } from "../atoms/builder.ts";
 import { ErrorBoundary } from "../components/ErrorBoundary";
-import { RootLayout } from "../components/RootLayout";
+import { RootLayout } from "../components/layout/RootLayout.tsx";
 import { builderStore } from "../atoms/store.ts";
 import { Toaster } from "../../ui";
 import { useBrandingOptions, useBuilderReset } from "../hooks";
@@ -18,11 +18,15 @@ import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
 import { MobileMessage } from "./MobileMessage.tsx";
 import { setDebugLogs } from "../functions/logging.ts";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
+import { useAtom } from "jotai/index";
+import { builderSaveStateAtom } from "../hooks/useSavePage.ts";
+import { PreviewScreen } from "../components/PreviewScreen.tsx";
 
 const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   const [, setAllBlocks] = useBlocksStore();
   const [, setBrandingOptions] = useBrandingOptions();
   const reset = useBuilderReset();
+  const [saveState] = useAtom(builderSaveStateAtom);
   const RootLayoutComponent = useMemo(() => props.customRootLayout || RootLayout, [props.customRootLayout]);
 
   useEffect(() => {
@@ -56,6 +60,18 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
     setBrandingOptions(props.brandingOptions);
   }, [props.brandingOptions, setBrandingOptions]);
 
+  useEffect(() => {
+    if (saveState !== "SAVED") {
+      window.onbeforeunload = () => "";
+    } else {
+      window.onbeforeunload = null;
+    }
+
+    return () => {
+      window.onbeforeunload = null;
+    };
+  }, [saveState]);
+
   return <RootLayoutComponent />;
 };
 
@@ -72,8 +88,9 @@ const ChaiBuilderEditor = (props: ChaiBuilderEditorProps) => {
         <DevTools />
         <MobileMessage />
         <ChaiBuilderComponent {...props} />
+        <PreviewScreen />
+        <Toaster />
       </FlagsProvider>
-      <Toaster />
     </ErrorBoundary>
   );
 };

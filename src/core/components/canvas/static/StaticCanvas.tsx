@@ -23,7 +23,8 @@ import { HeadTags } from "./HeadTags.tsx";
 import { Skeleton } from "../../../../ui";
 import { ChaiBlock } from "../../../types/ChaiBlock";
 import { StaticBlocksRenderer } from "./StaticBlocksRenderer.tsx";
-import { Provider } from "react-wrap-balancer"; // const FrameComponent = Frame.default;
+import { Provider } from "react-wrap-balancer";
+import { AddBlockAtBottom } from "./AddBlockAtBottom.tsx"; // const FrameComponent = Frame.default;
 
 const getElementByStyleId = (doc: any, styleId: string): HTMLElement =>
   doc.querySelector(`[data-style-id="${styleId}"]`) as HTMLElement;
@@ -143,6 +144,7 @@ const StaticCanvas = (): React.JSX.Element => {
           id="placeholder"
           className="pointer-events-none absolute z-[99999] max-w-full bg-green-500 transition-transform"
         />
+        <AddBlockAtBottom />
       </ChaiFrame>
     </div>
   );

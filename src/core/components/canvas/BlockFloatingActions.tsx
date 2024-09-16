@@ -1,7 +1,7 @@
 import { flip } from "@floating-ui/dom";
 import { shift, useFloating } from "@floating-ui/react-dom";
 import { get, isEmpty, pick } from "lodash-es";
-import { ArrowUpIcon, CopyIcon, DragHandleDots2Icon, TrashIcon } from "@radix-ui/react-icons";
+import { ArrowUpIcon, CopyIcon, DragHandleDots2Icon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
 import { canDeleteBlock, canDuplicateBlock } from "../../functions/block-helpers.ts";
 import { ChaiBlock } from "../../types/ChaiBlock";
 import {
@@ -16,6 +16,7 @@ import { useAtom } from "jotai";
 import { inlineEditingActiveAtom } from "../../atoms/ui.ts";
 import { draggedBlockAtom } from "./dnd/atoms.ts";
 import { useFeature } from "flagged";
+import { useAddBlocksModal } from "../../hooks/useAddBlocks.ts";
 
 /**
  * @param block
@@ -55,6 +56,7 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
   const duplicateBlock = useDuplicateBlocks();
   const [, setSelectedIds] = useSelectedBlockIds();
   const [, setHighlighted] = useHighlightBlockId();
+  const [, setOpen] = useAddBlocksModal();
   const [, setStyleBlocks] = useSelectedStylingBlocks();
   const [editingBlockId] = useAtom(inlineEditingActiveAtom);
   const { floatingStyles, refs, update } = useFloating({
@@ -90,18 +92,19 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
         }}
         onKeyDown={(e) => e.stopPropagation()}
         className="z-[99999] flex h-6 items-center bg-blue-500 py-2 text-xs text-white">
+        {parentId && (
+          <ArrowUpIcon
+            className="hover:scale-105"
+            onClick={() => {
+              setStyleBlocks([]);
+              setSelectedIds([parentId]);
+            }}
+          />
+        )}
         <BlockActionLabel label={label} block={block} />
 
         <div className="flex gap-2 px-1">
-          {parentId && (
-            <ArrowUpIcon
-              className="hover:scale-105"
-              onClick={() => {
-                setStyleBlocks([]);
-                setSelectedIds([parentId]);
-              }}
-            />
-          )}
+          <PlusIcon className="hover:scale-105" onClick={() => setOpen(block?._id)} />
           {canDuplicateBlock(get(block, "_type", "")) ? (
             <CopyIcon className="hover:scale-105" onClick={() => duplicateBlock([block?._id])} />
           ) : null}

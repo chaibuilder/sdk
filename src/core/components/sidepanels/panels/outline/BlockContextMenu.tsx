@@ -1,5 +1,6 @@
-import { CopyIcon, TrashIcon, ScissorsIcon, CardStackPlusIcon, CardStackIcon } from "@radix-ui/react-icons";
+import { CardStackIcon, CardStackPlusIcon, CopyIcon, ScissorsIcon, TrashIcon } from "@radix-ui/react-icons";
 import React, { useCallback } from "react";
+import { PlusIcon } from "lucide-react";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "../../../../../ui";
 import {
   useCopyBlockIds,
@@ -10,13 +11,15 @@ import {
   useSelectedBlock,
   useSelectedBlockIds,
 } from "../../../../hooks";
-import { canDeleteBlock, canDuplicateBlock } from "../../../../functions/block-helpers.ts";
+import { canAddChildBlock, canDeleteBlock, canDuplicateBlock } from "../../../../functions/block-helpers.ts";
+import { useTranslation } from "react-i18next";
+import { useAddBlocksModal } from "../../../../hooks/useAddBlocks.ts";
 
 const CopyPasteBlocks = () => {
   const [selectedIds] = useSelectedBlockIds();
   const { canPaste, pasteBlocks } = usePasteBlocks();
   const [, setCopiedBlockIds] = useCopyBlockIds();
-
+  const { t } = useTranslation();
   const selectedBlock = useSelectedBlock();
 
   return (
@@ -35,7 +38,7 @@ const CopyPasteBlocks = () => {
           onClick={() => {
             pasteBlocks(selectedIds);
           }}>
-          <CardStackIcon /> Paste
+          <CardStackIcon /> {t("Paste")}
         </ContextMenuItem>
       )}
     </>
@@ -45,14 +48,11 @@ const CopyPasteBlocks = () => {
 const CutBlocks = () => {
   const [selectedIds] = useSelectedBlockIds();
   const [, setCutBlockIds] = useCutBlockIds();
+  const { t } = useTranslation();
 
   return (
-    <ContextMenuItem
-      // @ts-ignore
-
-      className="flex items-center gap-x-4 text-xs"
-      onClick={() => setCutBlockIds(selectedIds)}>
-      <ScissorsIcon /> Cut
+    <ContextMenuItem className="flex items-center gap-x-4 text-xs" onClick={() => setCutBlockIds(selectedIds)}>
+      <ScissorsIcon /> {t("Cut")}
     </ContextMenuItem>
   );
 };
@@ -61,6 +61,7 @@ const RemoveBlocks = () => {
   const [selectedIds] = useSelectedBlockIds();
   const removeBlocks = useRemoveBlocks();
   const selectedBlock = useSelectedBlock();
+  const { t } = useTranslation();
 
   return (
     <ContextMenuItem
@@ -68,15 +69,17 @@ const RemoveBlocks = () => {
       disabled={!canDeleteBlock(selectedBlock?._type)}
       className="flex items-center gap-x-4 text-xs"
       onClick={() => removeBlocks(selectedIds)}>
-      <TrashIcon /> Remove
+      <TrashIcon /> {t("Remove")}
     </ContextMenuItem>
   );
 };
 
 const BlockContextMenuContent = () => {
+  const { t } = useTranslation();
   const [selectedIds] = useSelectedBlockIds();
   const duplicateBlocks = useDuplicateBlocks();
   const selectedBlock = useSelectedBlock();
+  const [, setOpen] = useAddBlocksModal();
 
   const duplicate = useCallback(() => {
     duplicateBlocks(selectedIds);
@@ -85,10 +88,16 @@ const BlockContextMenuContent = () => {
   return (
     <ContextMenuContent className="text-xs">
       <ContextMenuItem
+        disabled={!canAddChildBlock(selectedBlock?._type)}
+        className="flex items-center gap-x-4 text-xs"
+        onClick={() => setOpen(selectedBlock?._id)}>
+        <PlusIcon size={"14"} /> {t("Add block")}
+      </ContextMenuItem>
+      <ContextMenuItem
         disabled={!canDuplicateBlock(selectedBlock?._type)}
         className="flex items-center gap-x-4 text-xs"
         onClick={duplicate}>
-        <CardStackPlusIcon /> Duplicate
+        <CardStackPlusIcon /> {t("Duplicate")}
       </ContextMenuItem>
       <CutBlocks />
       <CopyPasteBlocks />

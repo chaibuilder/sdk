@@ -13,13 +13,13 @@ import {
   useUpdateBlocksProps,
 } from "../../../../../hooks";
 import { TriangleRightIcon } from "@radix-ui/react-icons";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../../../ui";
+import { Button, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../../ui";
 import { TypeIcon } from "../TypeIcon.tsx";
 import { DefaultCursor } from "./DefaultCursor.tsx";
 import { DefaultDragPreview } from "./DefaultDragPreview.tsx";
 import { useBlocksStoreUndoableActions } from "../../../../../history/useBlocksStoreUndoableActions.ts";
 import { BlockContextMenu } from "../BlockContextMenu.tsx";
-import { canAcceptChildBlock } from "../../../../../functions/block-helpers.ts";
+import { canAcceptChildBlock, canAddChildBlock } from "../../../../../functions/block-helpers.ts";
 import { find, first, isEmpty } from "lodash-es";
 import { canvasIframeAtom, treeRefAtom } from "../../../../../atoms/ui.ts";
 import {
@@ -36,9 +36,14 @@ import { useTranslation } from "react-i18next";
 import { VscJson } from "react-icons/vsc";
 import { BsLightningFill } from "react-icons/bs";
 import { TbEyeDown } from "react-icons/tb";
+import { useAddBlocksModal } from "../../../../../hooks/useAddBlocks.ts";
+import { ROOT_TEMP_KEY } from "../../../../../constants/STRINGS.ts";
+import { PlusIcon } from "lucide-react";
 
 const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const outlineItems = useBuilderProp("outlineMenuItems", []);
+  const [, setOpen] = useAddBlocksModal();
+  const { t } = useTranslation();
 
   //const [, setHighlighted] = useHighlightBlockId();
 
@@ -145,6 +150,14 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
     }
   };
 
+  if (id === ROOT_TEMP_KEY) {
+    return (
+      <button onClick={() => setOpen(ROOT_TEMP_KEY)} className="w-full p-1 hover:bg-gray-200">
+        + {t("Add block")}
+      </button>
+    );
+  }
+
   return (
     <BlockContextMenu id={id}>
       <div
@@ -167,7 +180,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
           setDropAttribute(id, "no");
         }}
         className={cn(
-          "group flex !h-fit w-full items-center justify-between space-x-px !rounded-md py-px outline-none",
+          "group flex !h-fit w-full items-center justify-between space-x-px !rounded py-px outline-none",
           isSelected ? "bg-blue-500 text-white" : "text-gray-600 hover:bg-gray-200 dark:hover:bg-gray-800",
           willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
           isDragging && "opacity-20"
@@ -206,6 +219,17 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
           </div>
         </div>
         <div className="invisible flex items-center space-x-1 pr-2 group-hover:visible">
+          {canAddChildBlock(data?._type) ? (
+            <Tooltip>
+              <TooltipTrigger
+                onClick={() => setOpen(id)}
+                className="cursor-pointer rounded bg-transparent hover:bg-white hover:text-blue-500"
+                asChild>
+                <PlusIcon size={"14"} />
+              </TooltipTrigger>
+              <TooltipContent className="z-[9999]">{t("Add block")}</TooltipContent>
+            </Tooltip>
+          ) : null}
           {outlineItems.map((outlineItem) => (
             <Tooltip>
               <TooltipTrigger
@@ -257,22 +281,25 @@ const ListTree = () => {
   const treeRef = useRef(null);
   const [, setTreeRef] = useAtom(treeRefAtom);
   const { t } = useTranslation();
+  const [, setOpen] = useAddBlocksModal();
 
   const clearSelection = () => {
     setIds([]);
     setStyleBlocks([]);
   };
 
-  const filterTreeData = (data, cutIds) => {
-    return data
-      .filter((node) => !cutIds.includes(node._id))
-      .map((node) => ({
-        ...node,
-        children: node.children ? filterTreeData(node.children, cutIds) : [],
-      }));
-  };
-
-  const filteredTreeData = filterTreeData(treeData, cutBlocksIds);
+  const filteredTreeData = useMemo(() => {
+    const filterTreeData = (data, cutIds) => {
+      return data
+        .filter((node) => !cutIds.includes(node._id))
+        .map((node) => ({
+          ...node,
+          children: node.children ? filterTreeData(node.children, cutIds) : [],
+        }));
+    };
+    const nodes = filterTreeData(treeData, cutBlocksIds);
+    return [...nodes, { _type: ROOT_TEMP_KEY, _id: ROOT_TEMP_KEY, children: [] }];
+  }, [treeData, cutBlocksIds]);
 
   useEffect(() => {
     //@ts-ignore
@@ -306,7 +333,12 @@ const ListTree = () => {
   };
 
   const debouncedDisableDrop = useDebouncedCallback(
-    ({ parentNode, dragNodes }) => !canAcceptChildBlock(parentNode?.data._type, dragNodes[0]?.data._type),
+    ({ parentNode, dragNodes }) => {
+      return (
+        parentNode?.data._type === ROOT_TEMP_KEY ||
+        !canAcceptChildBlock(parentNode?.data._type, dragNodes[0]?.data._type)
+      );
+    },
     [],
     300,
   );
@@ -363,7 +395,11 @@ const ListTree = () => {
         <div className="flex h-full w-full items-center justify-center p-8 text-center">
           <p className="mb-1.5 text-sm text-gray-400">
             {t("Page is empty.")}
-            <br /> {t("Add blocks to get started by clicking the")} <span className="font-bold">(+)</span> {t("button")}
+            <br />
+            <br />
+            <Button onClick={() => setOpen(ROOT_TEMP_KEY)} variant="default" size="sm">
+              {t("Add Block")}
+            </Button>
           </p>
         </div>
       </div>
@@ -388,7 +424,7 @@ const ListTree = () => {
           openByDefault={false}
           onMove={onMove}
           rowHeight={20}
-          data={filteredTreeData}
+          data={[...filteredTreeData]}
           renderCursor={DefaultCursor}
           onSelect={onSelect}
           childrenAccessor={(d: any) => d.children}

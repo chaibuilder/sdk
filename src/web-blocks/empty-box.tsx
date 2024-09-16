@@ -21,7 +21,6 @@ const Config = {
   props: {
     styles: Styles({ default: "" }),
   },
-  canAcceptBlock: () => false,
 };
 
 export { EmptyBox as Component, Config };
