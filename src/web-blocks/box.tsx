@@ -1,6 +1,9 @@
 import * as React from "react";
 import { Image, SelectOption, Styles } from "@chaibuilder/runtime/controls";
 import EmptySlot from "./empty-slot.tsx";
+import i18next from "i18next";
+
+export const t = (key: string) => i18next.t(key);
 
 const Component = (
   props: any & {
@@ -27,35 +30,35 @@ const Component = (
 
 const Config = {
   type: "Box",
-  label: "Box",
+  label: t("web_blocks.box"),
   category: "core",
   group: "basic",
   props: {
     styles: Styles({ default: "" }),
     tag: SelectOption({
-      title: "Tag",
+      title: t("web_blocks.box.tag"),
       default: "div",
       options: [
-        { value: "div", title: "div" },
-        { value: "header", title: "header" },
-        { value: "footer", title: "footer" },
-        { value: "section", title: "section" },
-        { value: "article", title: "article" },
-        { value: "aside", title: "aside" },
-        { value: "main", title: "main" },
-        { value: "nav", title: "nav" },
-        { value: "figure", title: "figure" },
-        { value: "details", title: "details" },
-        { value: "summary", title: "summary" },
-        { value: "dialog", title: "dialog" },
-        { value: "strike", title: "strike" },
-        { value: "caption", title: "caption" },
-        { value: "legend", title: "legend" },
-        { value: "figcaption", title: "figcaption" },
-        { value: "mark", title: "mark" },
+        { value: "div", title: t("web_blocks.box.div") },
+        { value: "header", title: t("web_blocks.box.header") },
+        { value: "footer", title: t("web_blocks.box.footer") },
+        { value: "section", title: t("web_blocks.box.section") },
+        { value: "article", title: t("web_blocks.box.article") },
+        { value: "aside", title: t("web_blocks.box.aside") },
+        { value: "main", title: t("web_blocks.box.main") },
+        { value: "nav", title: t("web_blocks.box.nav") },
+        { value: "figure", title: t("web_blocks.box.figure") },
+        { value: "details", title: t("web_blocks.box.details") },
+        { value: "summary", title: t("web_blocks.box.summary") },
+        { value: "dialog", title: t("web_blocks.box.dialog") },
+        { value: "strike", title: t("web_blocks.box.strike") },
+        { value: "caption", title: t("web_blocks.box.caption") },
+        { value: "legend", title: t("web_blocks.box.legend") },
+        { value: "figcaption", title: t("web_blocks.box.figcaption") },
+        { value: "mark", title: t("web_blocks.box.mark") },
       ],
     }),
-    backgroundImage: Image({ title: "Background Image" }),
+    backgroundImage: Image({ title: t("web_blocks.box.background_image") }),
   },
   canAcceptBlock: () => true,
 };

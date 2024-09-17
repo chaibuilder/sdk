@@ -37,7 +37,7 @@ import { Component as CheckboxBlock, Config as CheckboxBlockConfig } from "./hid
 const loadWebBlocks = () => {
   registerChaiBlock(Box, BoxConfig);
   registerChaiBlock(EmptyBox, EmptyBoxConfig);
-  registerChaiBlock(Button, ButtonConfig());
+  registerChaiBlock(Button, ButtonConfig);
   registerChaiBlock(HeadingBlock, HeadingBlockConfig);
   registerChaiBlock(ParagraphBlock, ParagraphBlockConfig);
   registerChaiBlock(SpanBlock, SpanBlockConfig);
