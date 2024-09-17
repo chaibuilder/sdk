@@ -108,40 +108,40 @@ const ThemeConfigPanel = ({
 
   let brandingProperties: Record<string, any> = {
     headingFont: SelectOption({
-      title: "Heading font",
+      title: t("Heading font"),
       default: headingFont,
       options: FONTS,
     }),
     bodyFont: SelectOption({
-      title: "Body font",
+      title: t("Body font"),
       default: bodyFont,
       options: FONTS,
     }),
     roundedCorners: Numeric({
-      title: "Rounded Corner",
+      title: t("Rounded Corner"),
       default: parseInt(roundedCorners || 5, 10),
     }),
-    primaryColor: Color({ title: "Primary", default: primaryColor }),
-    secondaryColor: Color({ title: "Secondary", default: secondaryColor }),
+    primaryColor: Color({ title: t("Primary"), default: primaryColor }),
+    secondaryColor: Color({ title: t("Secondary"), default: secondaryColor }),
   };
 
   if (!container) {
     brandingProperties = {
       ...brandingProperties,
       bodyBgLightColor: Color({
-        title: "Background",
+        title: t("Background"),
         default: bodyBgLightColor,
       }),
       bodyTextLightColor: Color({
-        title: "Text color",
+        title: t("Text color"),
         default: bodyTextDarkColor,
       }),
       bodyBgDarkColor: Color({
-        title: "Background (Dark mode)",
+        title: t("Background (Dark mode)"),
         default: bodyBgDarkColor,
       }),
       bodyTextDarkColor: Color({
-        title: "Text color(Dark mode)",
+        title: t("Text color (Dark mode)"),
         default: bodyTextLightColor,
       }),
     };
@@ -168,7 +168,7 @@ const ThemeConfigPanel = ({
           <h1 className="px-1 font-semibold">{t("Theme Configuration")}</h1>
         </div>
       ) : null}
-      <div className="-mx-2">
+      <div className="mx-2">
         <Form
           widgets={{ color: ColorField }}
           idSeparator="."
