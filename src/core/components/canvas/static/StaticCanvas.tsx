@@ -136,6 +136,7 @@ const StaticCanvas = (): React.JSX.Element => {
             ) : (
               <StaticBlocksRenderer />
             )}
+            <AddBlockAtBottom />
           </Canvas>
         </Provider>
         <br />
@@ -144,7 +145,6 @@ const StaticCanvas = (): React.JSX.Element => {
           id="placeholder"
           className="pointer-events-none absolute z-[99999] max-w-full bg-green-500 transition-transform"
         />
-        <AddBlockAtBottom />
       </ChaiFrame>
     </div>
   );

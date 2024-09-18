@@ -1,11 +1,9 @@
 import { useAtom } from "jotai";
 import { lsAiContextAtom, lsBlocksAtom, lsBrandingOptionsAtom } from "./__dev/atoms-dev.ts";
 import PreviewWeb from "./__dev/preview/WebPreview.tsx";
-import { ChaiBlock, ChaiBuilderEditor } from "./core/main";
+import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML } from "./core/main";
 import { loadWebBlocks } from "./web-blocks";
-import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
 import { useState } from "react";
-import { UILibrary, UiLibraryBlock } from "./core/types/chaiBuilderEditorProps.ts";
 import axios from "axios";
 
 loadWebBlocks();
@@ -15,7 +13,8 @@ function ChaiBuilderDefault() {
   const [brandingOptions] = useAtom(lsBrandingOptionsAtom);
   const [aiContext, setAiContext] = useAtom(lsAiContextAtom);
   const [uiLibraries] = useState([
-    { uuid: "community-blocks", name: "Community blocks", url: "https://community-blocks.vercel.app" },
+    { uuid: "community-blocks", name: "Community blocks", url: "https://chai-ui-blocks.vercel.app" },
+    { uuid: "ui-blocks", name: "UI Blocks", url: "https://chaibuilder.com/preline" },
   ]);
   return (
     <ChaiBuilderEditor
@@ -25,6 +24,7 @@ function ChaiBuilderDefault() {
       previewComponent={PreviewWeb}
       topBarComponents={{ left: [] }}
       blocks={blocks}
+      locale={"pt-BR"}
       brandingOptions={brandingOptions}
       onSave={async ({ blocks, providers, brandingOptions }: any) => {
         localStorage.setItem("chai-builder-blocks", JSON.stringify(blocks));
@@ -42,13 +42,15 @@ function ChaiBuilderDefault() {
         console.log("askAiCallBack", type, prompt, blocks);
         return new Promise((resolve) => resolve({ error: new Error("Not implemented") }));
       }}
-      getUILibraryBlock={async (uiLibrary: UILibrary, uiLibBlock: UiLibraryBlock) => {
-        const response = await fetch(uiLibrary.url + "/blocks/" + uiLibBlock.path);
+      getUILibraryBlock={async (uiLibrary, uiLibBlock) => {
+        const response = await fetch(
+          uiLibrary.url + "/blocks/" + uiLibBlock.uuid ? uiLibBlock.uuid + "html" : uiLibBlock.path,
+        );
         const html = await response.text();
         const htmlWithoutChaiStudio = html.replace(/---([\s\S]*?)---/g, "");
         return getBlocksFromHTML(`${htmlWithoutChaiStudio}`) as ChaiBlock[];
       }}
-      getUILibraryBlocks={async (uiLibrary: UILibrary) => {
+      getUILibraryBlocks={async (uiLibrary) => {
         try {
           const response = await axios.get(uiLibrary.url + "/blocks.json");
           const blocks = await response.data;

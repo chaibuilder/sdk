@@ -152,7 +152,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
 
   if (id === ROOT_TEMP_KEY) {
     return (
-      <button onClick={() => setOpen(ROOT_TEMP_KEY)} className="w-full p-1 hover:bg-gray-200">
+      <button onClick={() => setOpen(ROOT_TEMP_KEY)} className="mb-10 w-full rounded bg-gray-100 p-1 hover:bg-gray-200">
         + {t("Add block")}
       </button>
     );

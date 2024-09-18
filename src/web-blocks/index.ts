@@ -26,13 +26,13 @@ import { Component as TextBlock, Config as LayersConfig } from "./text";
 import { Component as BodyBlock, Config as BodyBlockConfig } from "./hidden/body";
 import { Component as LineBreakBlock, Config as LineBreakBlockConfig } from "./hidden/line-break";
 // import "./hidden/table";
-import { Component as FormBlock, Config as FormBlockConfig } from "./hidden/form/form";
-import { Component as FormButtonBlock, Config as FormButtonBlockConfig } from "./hidden/form/form-button";
-import { Component as InputBlock, Config as InputBlockConfig } from "./hidden/form/input";
-import { Component as RadioBlock, Config as RadioBlockConfig } from "./hidden/form/radio";
-import { Component as SelectBlock, Config as SelectBlockConfig } from "./hidden/form/select";
-import { Component as TextAreaBlock, Config as TextAreaBlockConfig } from "./hidden/form/textarea";
-import { Component as CheckboxBlock, Config as CheckboxBlockConfig } from "./hidden/form/checkbox";
+import { Component as FormBlock, Config as FormBlockConfig } from "./form/form";
+import { Component as FormButtonBlock, Config as FormButtonBlockConfig } from "./form/form-button";
+import { Component as InputBlock, Config as InputBlockConfig } from "./form/input";
+import { Component as RadioBlock, Config as RadioBlockConfig } from "./form/radio";
+import { Component as SelectBlock, Config as SelectBlockConfig } from "./form/select";
+import { Component as TextAreaBlock, Config as TextAreaBlockConfig } from "./form/textarea";
+import { Component as CheckboxBlock, Config as CheckboxBlockConfig } from "./form/checkbox";
 
 const loadWebBlocks = () => {
   registerChaiBlock(Box, BoxConfig);

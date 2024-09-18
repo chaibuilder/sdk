@@ -1,18 +1,7 @@
 import { useState } from "react";
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
-import {
-  Alert,
-  AlertTitle,
-  Button,
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  Label,
-  Textarea,
-} from "../../../../../ui";
+import { Button, Card, CardContent, CardDescription, CardFooter, CardHeader, Label, Textarea } from "../../../../../ui";
 import { useAddBlock, useSelectedBlockIds } from "../../../../hooks";
 import { activePanelAtom } from "../../../../atoms/ui";
 import { first } from "lodash-es";
@@ -59,9 +48,6 @@ const ImportHTML = () => {
         <Button disabled={code.trim() === ""} onClick={() => importComponents()} size="sm" className="w-full">
           {t("import_html")}
         </Button>
-        <Alert variant="default" className="mt-2 border-none p-1 text-gray-400">
-          <AlertTitle className="text-xs font-normal leading-4">{t("note_imported_html")}</AlertTitle>
-        </Alert>
       </CardFooter>
     </Card>
   );

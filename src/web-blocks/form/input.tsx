@@ -1,8 +1,8 @@
 import { InputIcon } from "@radix-ui/react-icons";
 import { map } from "lodash-es";
 import { Checkbox, SelectOption, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
-import { generateUUID } from "../../../core/functions/Functions.ts";
-import { ChaiBlock } from "../../../core/types/ChaiBlock.ts";
+import { generateUUID } from "../../core/functions/Functions.ts";
+import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
 
 const InputBlock = (
   block: ChaiBlock & {
@@ -68,7 +68,6 @@ const Config = {
   category: "core",
   icon: InputIcon,
   group: "form",
-  hidden: true,
   props: {
     styles: Styles({ default: "" }),
     fieldName: SingleLineText({ title: "Field Name", default: "input" }),

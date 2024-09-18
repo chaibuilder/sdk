@@ -125,7 +125,7 @@ const useHandleCanvasClick = () => {
         treeRef?.closeAll();
       }
       setStyleBlockIds([]);
-      setIds([blockId]);
+      setIds(blockId === "canvas" ? [] : [blockId]);
     }
     setHighlighted("");
   };
@@ -182,7 +182,7 @@ export const Canvas = ({ children }: { children: React.ReactNode }) => {
       onDoubleClick={handleDblClick}
       onMouseMove={handleMouseMove}
       {...omit(dnd, "isDragging")}
-      className={`relative mb-5 h-full max-w-full px-1 ` + (dnd.isDragging ? "dragging" : "")}>
+      className={`relative mb-5 h-full max-w-full p-1 ` + (dnd.isDragging ? "dragging" : "") + " overflow-hidden"}>
       {children}
     </div>
   );

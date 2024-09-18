@@ -1,8 +1,8 @@
 import * as React from "react";
 import { GroupIcon } from "@radix-ui/react-icons";
 import { RichText, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
-import EmptySlot from "../../empty-slot.tsx";
-import { ChaiBlock } from "../../../core/types/ChaiBlock.ts";
+import EmptySlot from "../empty-slot.tsx";
+import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
 
 const FormBlock = (
   props: ChaiBlock & {
@@ -49,7 +49,6 @@ const Config = {
   category: "core",
   icon: GroupIcon,
   group: "form",
-  hidden: true,
   props: {
     styles: Styles({ default: "" }),
     action: SingleLineText({

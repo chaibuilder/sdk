@@ -6,7 +6,6 @@ import {
   Command,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
   CommandList,
   Popover,
@@ -34,8 +33,8 @@ export function UILibrariesSelect({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <div className="flex items-center gap-x-2">
-          <span>{t("Choose Library")}</span>
+        <div className="flex flex-col gap-y-1">
+          <span className="text-xs font-bold text-gray-500">{t("UI Library")}</span>
           <Button
             variant="outline"
             size="sm"
@@ -49,7 +48,6 @@ export function UILibrariesSelect({
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search library..." className="h-9" />
           <CommandList>
             <CommandEmpty>No library found.</CommandEmpty>
             <CommandGroup>

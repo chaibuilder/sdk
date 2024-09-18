@@ -17,7 +17,7 @@ import { showPredefinedBlockCategoryAtom } from "../../../../atoms/ui";
 import { useBlocksStore, useBuilderProp } from "../../../../hooks";
 import ImportHTML from "./ImportHTML";
 import { useChaiBlocks } from "@chaibuilder/runtime";
-import { mergeClasses } from "../../../../main";
+import { mergeClasses, UILibraries } from "../../../../main";
 import { useAddBlocksModal } from "../../../../hooks/useAddBlocks.ts";
 import { find } from "lodash";
 import { canAcceptChildBlock, canBeNestedInside } from "../../../../functions/block-helpers.ts";
@@ -59,7 +59,7 @@ export const ChaiBuilderBlocks = ({ groups, blocks }: any) => {
 
 const AddBlocksPanel = ({ className, showHeading = true }: { showHeading?: boolean; className?: string }) => {
   const { t } = useTranslation();
-  const [tab, setTab] = useState<string>("core");
+  const [tab, setTab] = useState<string>("library");
   const [active, setActive] = useState<string>("basic");
   const allChaiBlocks = useChaiBlocks();
   const [, setCategory] = useAtom(showPredefinedBlockCategoryAtom);
@@ -95,8 +95,10 @@ const AddBlocksPanel = ({ className, showHeading = true }: { showHeading?: boole
         }}
         value={tab}
         className={mergeClasses("h-max", !importHTMLSupport ? "hidden" : "")}>
-        <TabsList className={"grid w-full " + (importHTMLSupport ? "grid-cols-2" : "grid-cols-1")}>
+        <TabsList className={"grid w-full " + (importHTMLSupport ? "grid-cols-3" : "grid-cols-1")}>
+          <TabsTrigger value="library">{t("Library")}</TabsTrigger>
           <TabsTrigger value="core">{t("Blocks")}</TabsTrigger>
+
           {importHTMLSupport ? <TabsTrigger value="html">{t("import")}</TabsTrigger> : null}
         </TabsList>
       </Tabs>
@@ -107,6 +109,7 @@ const AddBlocksPanel = ({ className, showHeading = true }: { showHeading?: boole
           </div>
         </ScrollArea>
       )}
+      {tab === "library" && <UILibraries />}
       {tab === "html" && importHTMLSupport ? <ImportHTML /> : null}
     </div>
   );

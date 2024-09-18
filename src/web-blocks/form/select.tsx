@@ -1,8 +1,8 @@
 import { DropdownMenuIcon } from "@radix-ui/react-icons";
 import { get, map } from "lodash-es";
 import { Checkbox, List, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
-import { ChaiBlock } from "../../../core/types/ChaiBlock.ts";
-import { generateUUID } from "../../../core/functions/Functions.ts";
+import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
+import { generateUUID } from "../../core/functions/Functions.ts";
 
 const SelectBlock = (
   block: ChaiBlock & {
@@ -76,7 +76,6 @@ const Config = {
   category: "core",
   icon: DropdownMenuIcon,
   group: "form",
-  hidden: true,
   props: {
     styles: Styles({ default: "" }),
     fieldName: SingleLineText({ title: "Field Name", default: "select" }),

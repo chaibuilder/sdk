@@ -1,7 +1,7 @@
 import { InputIcon } from "@radix-ui/react-icons";
 import { Checkbox, Numeric, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
-import { ChaiBlock } from "../../../core/types/ChaiBlock.ts";
-import { generateUUID } from "../../../core/functions/Functions.ts";
+import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
+import { generateUUID } from "../../core/functions/Functions.ts";
 
 const TextAreaBlock = (
   block: ChaiBlock & {
@@ -44,7 +44,6 @@ const Config = {
   category: "core",
   icon: InputIcon,
   group: "form",
-  hidden: true,
   props: {
     fieldName: SingleLineText({ title: "Field Name", default: "textarea" }),
     showLabel: Checkbox({ title: "Show label", default: true }),
