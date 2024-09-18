@@ -4,6 +4,7 @@ import { Link1Icon } from "@radix-ui/react-icons";
 import { Link, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import EmptySlot from "./empty-slot.tsx";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
+import { t } from "./box.tsx";
 
 const LinkBlock = (
   props: ChaiBlock & {
@@ -56,15 +57,15 @@ const LinkBlock = (
 
 const Config = {
   type: "Link",
-  label: "Link",
+  label: t("web_blocks.link"),
   category: "core",
   icon: Link1Icon,
   group: "basic",
   props: {
     styles: Styles({ default: "" }),
-    content: SingleLineText({ title: "Content", default: "" }),
+    content: SingleLineText({ title: t("web_blocks.content"), default: "" }),
     link: Link({
-      title: "Link",
+      title: t("web_blocks.link"),
       default: { type: "page", target: "_self", href: "#" },
     }),
   },

@@ -4,6 +4,7 @@ import { Image, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import { isEmpty } from "lodash-es";
 import EmptySlot from "./empty-slot.tsx";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
+import { t } from "./box";
 
 const ImageBlock = (
   block: ChaiBlock & {
@@ -31,7 +32,7 @@ const ImageBlock = (
 
 const Config = {
   type: "Image",
-  label: "Image",
+  label: t("web_blocks.image"),
   category: "core",
   icon: ImageIcon,
   group: "media",
@@ -41,9 +42,9 @@ const Config = {
       title: "Image",
       default: "https://fakeimg.pl/400x200?text=Choose&font=bebas",
     }),
-    alt: SingleLineText({ title: "Alt", default: "" }),
-    width: SingleLineText({ title: "Width", default: "" }),
-    height: SingleLineText({ title: "Height", default: "" }),
+    alt: SingleLineText({ title: t("web_blocks.alt"), default: "" }),
+    width: SingleLineText({ title: t("web_blocks.width"), default: "" }),
+    height: SingleLineText({ title: t("web_blocks.height"), default: "" }),
   },
 };
 

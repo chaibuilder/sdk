@@ -1,6 +1,7 @@
 import { Code } from "@chaibuilder/runtime/controls";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { DiJavascript } from "react-icons/di";
+import { t } from "./box.tsx";
 
 const CustomScript = (
   props: ChaiBlock & {
@@ -14,7 +15,7 @@ const CustomScript = (
 
 const Config = {
   type: "CustomScript",
-  label: "Custom Script",
+  label: t("web_blocks.custom_script"),
   category: "core",
   icon: DiJavascript,
   group: "advanced",

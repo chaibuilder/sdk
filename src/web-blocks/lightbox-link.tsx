@@ -5,6 +5,7 @@ import { Checkbox, Numeric, SelectOption, SingleLineText, Styles } from "@chaibu
 import EmptySlot from "./empty-slot.tsx";
 import { addForcedClasses } from "./helper.ts";
 import { ChaiBlockStyles, ChaiRenderBlockProps } from "../core/types/types.ts";
+import { t } from "./box";
 
 type LightBoxLinkProps = {
   href: string;
@@ -67,28 +68,28 @@ const LightBoxLinkBlock = (props: ChaiRenderBlockProps<LightBoxLinkProps>) => {
 
 const Config = {
   type: "LightBoxLink",
-  label: "LightBox Link",
+  label: t("web_blocks.lightbox_link"),
   category: "core",
   icon: ImageIcon,
   group: "basic",
   props: {
     styles: Styles({ default: "" }),
-    content: SingleLineText({ title: "Content", default: "Link text or drop blocks inside" }),
-    href: SingleLineText({ title: "Href", default: "" }),
+    content: SingleLineText({ title: t("web_blocks.content"), default: "Link text or drop blocks inside" }),
+    href: SingleLineText({ title: t("web_blocks.href"), default: "" }),
     hrefType: SelectOption({
-      title: "Type",
+      title: t("web_blocks.type"),
       default: "video",
       options: [
-        { value: "video", title: "video " },
-        { value: "iframe", title: "iframe" },
-        { value: "inline", title: "inline" },
-        { value: "ajax", title: "ajax" },
+        { value: "video", title: t("web_blocks.video") },
+        { value: "iframe", title: t("web_blocks.iframe") },
+        { value: "inline", title: t("web_blocks.inline") },
+        { value: "ajax", title: t("web_blocks.ajax") },
       ],
     }),
-    autoplay: Checkbox({ title: "Autoplay video", default: false }),
-    maxWidth: Numeric({ title: "Max Width", default: "" }),
-    backdropColor: SingleLineText({ title: "Backdrop Color", default: "" }),
-    galleryName: SingleLineText({ title: "Gallery name", default: "" }),
+    autoplay: Checkbox({ title: t("web_blocks.autoplay"), default: false }),
+    maxWidth: Numeric({ title: t("web_blocks.max_width"), default: "" }),
+    backdropColor: SingleLineText({ title: t("web_blocks.backdrop_color"), default: "" }),
+    galleryName: SingleLineText({ title: t("web_blocks.gallery_name"), default: "" }),
   },
   canAcceptBlock: (type: string) => type !== "Link" && type !== "LightBoxLink",
 };

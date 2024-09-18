@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Styles } from "@chaibuilder/runtime/controls";
-
+import { t } from "./box.tsx";
 const EmptyBox = React.memo(
   (
     props: any & {
@@ -15,7 +15,7 @@ const EmptyBox = React.memo(
 
 const Config = {
   type: "EmptyBox",
-  label: "Empty Box",
+  label: t("web_blocks.empty_box"),
   category: "core",
   group: "basic",
   props: {

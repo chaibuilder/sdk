@@ -37,13 +37,12 @@ const Config = {
   props: {
     styles: Styles({ default: "" }),
     htmlCode: Code({
-      title: t("web_blocks.custom_html.html_code"),
-      default: "<div><p>" + t("web_blocks.custom_html.default_snippet") + "</p></div>",
-      placeholder: t("web_blocks.custom_html.placeholder"),
+      title: t("web_blocks.html_code"),
+      default: "<div><p>" + t("web_blocks.default_snippet") + "</p></div>",
+      placeholder: t("web_blocks.placeholder"),
     }),
   },
   canAcceptBlock: () => false,
 };
-
 
 export { CustomHTMLBlock as Component, Config };
