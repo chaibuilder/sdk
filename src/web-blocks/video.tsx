@@ -4,6 +4,7 @@ import { get, isEmpty, omit, pick } from "lodash-es";
 import { Checkbox, Model, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import EmptySlot from "./empty-slot.tsx";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
+import { t } from "./box.tsx";
 
 const YOUTUBE_REGEX = /^(https?:\/\/)?(www\.)?youtube\.com\/(watch\?v=|embed\/)([a-zA-Z0-9_-]{11})/;
 const VIMEO_REGEX = /^(https?:\/\/)?(www\.)?player.vimeo\.com/;
@@ -104,7 +105,7 @@ const VideoBlock = React.memo(
 
 const Config = {
   type: "Video",
-  label: "Video",
+  label: t("web_blocks.video"),
   category: "core",
   icon: VideoIcon,
   group: "media",

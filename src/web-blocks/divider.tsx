@@ -2,7 +2,7 @@ import * as React from "react";
 import { DividerHorizontalIcon } from "@radix-ui/react-icons";
 import { Styles } from "@chaibuilder/runtime/controls";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
-
+import { t } from "./box.tsx";
 /**
  * Divider component
  * @param props
@@ -20,7 +20,7 @@ const DividerBlock = (
 
 const Config = {
   type: "Divider",
-  label: "Divider",
+  label: t("web_blocks.divider"),
   category: "core",
   icon: DividerHorizontalIcon,
   group: "basic",

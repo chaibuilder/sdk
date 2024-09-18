@@ -45,7 +45,7 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   }, [props.blocks]);
 
   useEffect(() => {
-    i18n.changeLanguage(props.locale || "pt-BR");
+    i18n.changeLanguage(props.locale || "en");
   }, [props.locale]);
 
   useEffect(() => {

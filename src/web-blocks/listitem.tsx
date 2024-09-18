@@ -2,7 +2,7 @@ import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import * as React from "react";
 import { ColumnsIcon } from "@radix-ui/react-icons";
 import { MultilineText, Styles } from "@chaibuilder/runtime/controls";
-
+import { t } from "./box.tsx";
 export const ListItemBlock = (
   props: ChaiBlock & {
     content: string;
@@ -24,13 +24,13 @@ export const ListItemBlock = (
 
 const Config = {
   type: "ListItem",
-  label: "List Item",
+  label: t("web_blocks.listitem"),
   icon: ColumnsIcon,
   category: "core",
   group: "basic",
   props: {
     styles: Styles({ default: "" }),
-    content: MultilineText({ title: "Content", default: "List item" }),
+    content: MultilineText({ title: t("web_blocks.content"), default: "List item" }),
   },
   canAcceptBlock: (type: string) => type !== "ListItem",
   canBeNested: (type: string) => type === "List",
