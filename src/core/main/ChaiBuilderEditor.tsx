@@ -15,7 +15,7 @@ import { useBrandingOptions, useBuilderReset } from "../hooks";
 import { ChaiBuilderEditorProps } from "../types/chaiBuilderEditorProps.ts";
 import { dataProvidersAtom } from "../hooks/usePageDataProviders.ts";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
-import { MobileMessage } from "./MobileMessage.tsx";
+import { SmallScreenMessage } from "./SmallScreenMessage.tsx";
 import { setDebugLogs } from "../functions/logging.ts";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { useAtom } from "jotai/index";
@@ -28,7 +28,7 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   const [, setBrandingOptions] = useBrandingOptions();
   const reset = useBuilderReset();
   const [saveState] = useAtom(builderSaveStateAtom);
-  const RootLayoutComponent = useMemo(() => props.customRootLayout || RootLayout, [props.customRootLayout]);
+  const RootLayoutComponent = useMemo(() => props.layout || RootLayout, [props.layout]);
 
   useEffect(() => {
     builderStore.set(
@@ -94,7 +94,7 @@ const ChaiBuilderEditor = (props: ChaiBuilderEditorProps) => {
     <ErrorBoundary>
       <FlagsProvider features={{ ...FEATURE_TOGGLES, ..._flags }}>
         <DevTools />
-        <MobileMessage />
+        <SmallScreenMessage />
         <ChaiBuilderComponent {...props} />
         <PreviewScreen />
         <Toaster />

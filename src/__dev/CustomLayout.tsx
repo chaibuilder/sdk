@@ -60,7 +60,7 @@ export default function CustomLayout() {
       <div className="flex h-screen flex-col overflow-hidden">
         {/* Topbar */}
         <div className="flex h-16 items-center justify-between bg-neutral-900 px-4 text-white">
-          <h1 className="ml-4 text-xl font-bold">Custom Layout</h1>
+          <h1 className="ml-4 font-bold">Custom Layout Example</h1>
           <div className={`flex items-center space-x-2`}>
             <ScreenSizes />
             |

@@ -66,7 +66,7 @@ export type ChaiBuilderInstance = {
 export interface ChaiBuilderEditorProps {
   translations?: Record<string, Record<string, any>>;
   onLoad?: (editorInstance: ChaiBuilderInstance) => void;
-  customRootLayout?: React.ComponentType;
+  layout?: React.ComponentType;
   htmlDir?: "ltr" | "rtl";
   hideSaveButton?: boolean;
   filterChaiBlock?: (block: any) => boolean;

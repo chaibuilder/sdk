@@ -1,4 +1,4 @@
-export const MobileMessage = () => {
+export const SmallScreenMessage = () => {
   return (
     <section className="h-screen w-screen bg-gray-900 py-12 sm:py-16 lg:py-20 xl:hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
