@@ -393,5 +393,14 @@
   "navbar": "Navbar",
   "icons": "Icons",
   "testimonials": "Testimonials",
-  "blog": "Blog"
+  "blog": "Blog",
+  "ai_quick_prompts": {
+    "improve_writing": "Improve writing",
+    "replace_placeholder_content": "Replace placeholder content",
+    "fix_grammar": "Fix grammar",
+    "make_longer": "Make longer",
+    "make_shorter": "Make shorter",
+    "add_emojis": "Add emojis",
+    "randomize": "Randomize"
+  }
 }

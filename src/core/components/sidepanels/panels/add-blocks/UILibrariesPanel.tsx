@@ -186,8 +186,8 @@ const UILibrarySection = () => {
             <UILibrariesSelect library={library?.uuid} setLibrary={setLibrary} uiLibraries={uiLibraries} />
             <div className="mt-2 flex flex-col">
               <span className="text-xs font-bold text-gray-500">{t("groups")}</span>
-              <hr />
-              <ScrollArea className="h-full flex-1 overflow-y-auto">
+              <hr className="mt-1" />
+              <ScrollArea className="mt-2 h-full flex-1 overflow-y-auto">
                 {React.Children.toArray(
                   map(mergedGroups, (_groupedBlocks, group) => (
                     <div
@@ -196,10 +196,10 @@ const UILibrarySection = () => {
                       key={group}
                       onClick={() => setGroup(group)}
                       className={cn(
-                        "flex w-full cursor-pointer items-center justify-between rounded-md p-1 text-sm transition-all ease-in-out hover:bg-gray-200",
+                        "flex w-full cursor-pointer items-center justify-between rounded-md p-2 text-sm transition-all ease-in-out hover:bg-gray-200",
                         group === selectedGroup ? "bg-blue-500 text-white hover:bg-blue-600" : "",
                       )}>
-                      <span>{t(group.toLowerCase())}</span>
+                      <span>{capitalize(t(group.toLowerCase()))}</span>
                       <CaretRightIcon className="ml-2 h-5 w-5" />
                     </div>
                   )),

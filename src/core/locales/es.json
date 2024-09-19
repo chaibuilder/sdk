@@ -392,5 +392,14 @@
   "navbar": "Barra de navegación",
   "icons": "Iconos",
   "testimonials": "Testimonios",
-  "blog": "Blog"
+  "blog": "Blog",
+  "ai_quick_prompts": {
+    "improve_writing": "Mejorar escritura",
+    "replace_placeholder_content": "Reemplazar contenido de marcador",
+    "fix_grammar": "Corregir gramática",
+    "make_longer": "Hacer más largo",
+    "make_shorter": "Hacer más corto",
+    "add_emojis": "Agregar emojis",
+    "randomize": "Aleatorizar"
+  }
 }

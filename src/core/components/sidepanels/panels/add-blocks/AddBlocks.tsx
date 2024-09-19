@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { filter, first, groupBy, includes, isEmpty, map, reject, uniq, values } from "lodash-es";
+import { capitalize, filter, find, first, groupBy, includes, isEmpty, map, reject, uniq, values } from "lodash-es";
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
 import {
@@ -19,9 +19,7 @@ import ImportHTML from "./ImportHTML";
 import { useChaiBlocks } from "@chaibuilder/runtime";
 import { mergeClasses, UILibraries } from "../../../../main";
 import { useAddBlocksModal } from "../../../../hooks/useAddBlocks.ts";
-import { find } from "lodash";
 import { canAcceptChildBlock, canBeNestedInside } from "../../../../functions/block-helpers.ts";
-
 
 export const ChaiBuilderBlocks = ({ groups, blocks }: any) => {
   const { t } = useTranslation();
@@ -34,9 +32,9 @@ export const ChaiBuilderBlocks = ({ groups, blocks }: any) => {
         <Accordion type="single" value={group} collapsible className="w-full">
           <AccordionItem value={group}>
             <AccordionTrigger className="rounded-md bg-gray-100 px-4 py-2 capitalize hover:no-underline">
-              {t(group.toLowerCase())}
+              {capitalize(t(group.toLowerCase()))}
             </AccordionTrigger>
-            <AccordionContent className="p-3">
+            <AccordionContent className="mx-auto max-w-xl p-3">
               <div className="grid grid-cols-4 gap-2">
                 {React.Children.toArray(
                   reject(filter(values(blocks), { group }), { hidden: true }).map((block) => {
