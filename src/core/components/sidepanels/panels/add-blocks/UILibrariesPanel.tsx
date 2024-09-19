@@ -185,7 +185,7 @@ const UILibrarySection = () => {
           <div className={"flex h-full w-52 flex-col gap-1 px-1"}>
             <UILibrariesSelect library={library?.uuid} setLibrary={setLibrary} uiLibraries={uiLibraries} />
             <div className="mt-2 flex flex-col">
-              <span className="text-xs font-bold text-gray-500">{t("Groups")}</span>
+              <span className="text-xs font-bold text-gray-500">{t("groups")}</span>
               <hr />
               <ScrollArea className="h-full flex-1 overflow-y-auto">
                 {React.Children.toArray(

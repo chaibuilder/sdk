@@ -19,7 +19,7 @@ export const AddBlocksDialog = () => {
     <AlertDialog open={!isEmpty(open)} onOpenChange={() => (open ? setOpen("") : "")}>
       <AlertDialogContent className="max-h-[80vh] max-w-5xl overflow-hidden">
         <AlertDialogHeader>
-          <AlertDialogTitle>{t("Add blocks")}</AlertDialogTitle>
+          <AlertDialogTitle>{t("add_block")}</AlertDialogTitle>
         </AlertDialogHeader>
         <div className="no-scrollbar h-[500px] max-h-full overflow-hidden">
           <AddBlocksPanel showHeading={false} />

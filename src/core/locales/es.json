@@ -377,5 +377,12 @@
   "media": "Medios",
   "advanced": "Avanzado",
   "form": "Formulario",
-  "choose_icon_or_enter_svg": "Elija un icono o ingrese un SVG"
+  "choose_icon_or_enter_svg": "Elija un icono o ingrese un SVG",
+  "groups": "Grupos",
+  "ui_libraries": "Bibliotecas de UI",
+  "accordions": "Acordion",
+  "buttons": "Botón",
+  "layouts": "Layouts",
+  "choose_library": "Escoja una biblioteca",
+  "no_library_found": "No se encontró ninguna biblioteca."
 }
