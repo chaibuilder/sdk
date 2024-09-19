@@ -10,7 +10,7 @@ export const useCanvasScale = (dimension: { height: number; width: number }) => 
     if (width < canvasWidth) {
       const newScale: number = parseFloat((width / canvasWidth).toFixed(2).toString());
       let heightObj = {};
-      const scaledHeight = height * newScale;
+      const scaledHeight = (height + 20) * newScale;
       const scaledWidth = width * newScale;
       if (height) {
         heightObj = {
