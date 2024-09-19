@@ -384,5 +384,13 @@
   "buttons": "Botão",
   "layouts": "Layouts",
   "choose_library": "Escolha uma biblioteca",
-  "no_library_found": "Nenhuma biblioteca encontrada."
+  "no_library_found": "Nenhuma biblioteca encontrada.",
+  "faq": "Perguntas Frequentes",
+  "hero": "Herói",
+  "features": "Recursos",
+  "footer": "Rodapé",
+  "navbar": "Barra de Navegação",
+  "icons": "Ícones",
+  "testimonials": "Depoimentos",
+  "blog": "Blog"
 }

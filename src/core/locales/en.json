@@ -385,5 +385,13 @@
   "buttons": "Buttons",
   "layouts": "Layouts",
   "choose_library": "Choose library",
-  "no_library_found": "No library found."
+  "no_library_found": "No library found.",
+  "faq": "FAQ",
+  "hero": "Hero",
+  "features": "Features",
+  "footer": "Footer",
+  "navbar": "Navbar",
+  "icons": "Icons",
+  "testimonials": "Testimonials",
+  "blog": "Blog"
 }
