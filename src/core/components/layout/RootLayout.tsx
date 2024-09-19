@@ -7,7 +7,7 @@ import { useBuilderProp, useSavePage } from "../../hooks";
 import "../canvas/static/BlocksExternalDataProvider.tsx";
 import { ScrollArea, TooltipProvider } from "../../../ui";
 import { useIntervalEffect } from "@react-hookz/web";
-import { aiAssistantActiveAtom } from "../../atoms/ui.ts";
+import { aiAssistantActiveAtom, selectedLibraryAtom } from "../../atoms/ui.ts";
 import { motion } from "framer-motion";
 import { Layers, PaintBucketIcon } from "lucide-react";
 import { Outline, ThemeOptions } from "../../main";
@@ -21,8 +21,8 @@ import { useTranslation } from "react-i18next";
 const TopBar = lazy(() => import("../topbar/Topbar.tsx"));
 
 const menuItems = [
-  { icon: <Layers size={24} />, label: "Outline", component: Outline },
-  { icon: <PaintBucketIcon size={24} />, label: "Theme", component: () => <ThemeOptions showHeading={false} /> },
+  { icon: <Layers size={20} />, label: "Outline", component: Outline },
+  { icon: <PaintBucketIcon size={20} />, label: "Theme", component: () => <ThemeOptions showHeading={false} /> },
 ];
 
 const useAutoSave = () => {
@@ -48,6 +48,7 @@ const RootLayout: ComponentType = () => {
     if (!isDevelopment()) e.preventDefault();
   };
 
+  useAtom(selectedLibraryAtom);
   useKeyEventWatcher();
   useExpandTree();
   useAutoSave();
@@ -70,13 +71,12 @@ const RootLayout: ComponentType = () => {
             </Suspense>
           </div>
           <main className="relative flex h-full flex-1 flex-row">
-            <div className="flex w-16 flex-col items-center bg-neutral-900 py-4">
-              <AddBlocksDialog />
+            <div className="flex w-12 flex-col items-center border-r py-2">
               {menuItems.map((item, index) => (
                 <button
                   key={index}
-                  className={`mb-4 rounded-lg p-2 text-white transition-colors ${
-                    activePanelIndex === index ? "bg-blue-500 text-white" : "hover:bg-blue-500"
+                  className={`mb-4 rounded-lg p-2 text-gray-500 transition-colors ${
+                    activePanelIndex === index ? "bg-primary text-white" : "hover:bg-primary hover:text-white"
                   }`}
                   onClick={() => handleMenuItemClick(index)}>
                   {item.icon}
@@ -86,8 +86,8 @@ const RootLayout: ComponentType = () => {
             {/* Side Panel */}
             <motion.div
               className="h-full max-h-full overflow-hidden border-r border-border"
-              initial={{ width: 275 }}
-              animate={{ width: activePanelIndex !== null ? 275 : 0 }}
+              initial={{ width: 250 }}
+              animate={{ width: activePanelIndex !== null ? 250 : 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}>
               {activePanelIndex !== null && (
                 <ScrollArea className="h-full">
@@ -118,6 +118,7 @@ const RootLayout: ComponentType = () => {
             </div>
           </main>
         </div>
+        <AddBlocksDialog />
       </TooltipProvider>
     </div>
   );

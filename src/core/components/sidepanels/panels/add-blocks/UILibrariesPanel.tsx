@@ -9,7 +9,6 @@ import { CaretRightIcon } from "@radix-ui/react-icons";
 import { ScrollArea, Skeleton, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../ui";
 import { UILibrary, UiLibraryBlock } from "../../../../types/chaiBuilderEditorProps.ts";
 import { ChaiBlock } from "../../../../types/ChaiBlock.ts";
-import { atomWithStorage } from "jotai/utils";
 import { UILibrariesSelect } from "./UiLibrariesSelect.tsx";
 import { useFeature } from "flagged";
 
@@ -17,6 +16,7 @@ import { draggedBlockAtom } from "../../../canvas/dnd/atoms.ts";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { useAddBlocksModal } from "../../../../hooks/useAddBlocks.ts";
+import { selectedLibraryAtom } from "../../../../atoms/ui.ts";
 
 const BlockCard = ({
   block,
@@ -110,7 +110,7 @@ const BlockCard = ({
             </div>
           )}
           {block.preview ? (
-            <img src={block.preview} className="min-h-[25px] w-full rounded-md" alt={name} />
+            <img src={block.preview} className="min-h-[45px] w-full rounded-md" alt={name} />
           ) : (
             <div className="flex h-20 items-center justify-center rounded-md border border-border border-gray-300 bg-gray-200">
               <p className="max-w-xs text-center text-sm text-gray-700">{name}</p>
@@ -134,25 +134,26 @@ const useLibraryBlocks = (library?: UILibrary) => {
   const getBlocks = useBuilderProp("getUILibraryBlocks", noop);
   const blocks = get(libraryBlocks, `${library?.uuid}.blocks`, null);
   const state = get(libraryBlocks, `${library?.uuid}.loading`, "idle");
+  const loadingRef = useRef("idle");
   useEffect(() => {
     (async () => {
-      if (state === "complete") return;
+      if (state === "complete" || loadingRef.current === "loading") return;
+      loadingRef.current = "loading";
       setLibraryBlocks((prev) => ({ ...prev, [library?.uuid]: { loading: "loading", blocks: [] } }));
       const libraryBlocks: UiLibraryBlock[] = await getBlocks(library);
+      loadingRef.current = "idle";
       setLibraryBlocks((prev) => ({ ...prev, [library?.uuid]: { loading: "complete", blocks: libraryBlocks || [] } }));
     })();
-  }, [library, blocks, state]);
+  }, [library, blocks, state, loadingRef]);
 
   return { data: blocks || [], isLoading: state === "loading" };
 };
 
-const selectedLibraryAtom = atomWithStorage<string | null>("_selectedLibrary", null);
 const UILibrarySection = () => {
   const [selectedLibrary, setLibrary] = useAtom(selectedLibraryAtom);
   const uiLibraries = useBuilderProp("uiLibraries", []);
   const registeredBlocks = useChaiBlocks();
   const customBlocks = values(registeredBlocks).filter((block) => block.category === "custom");
-
   const library = uiLibraries.find((library) => library.uuid === selectedLibrary) || first(uiLibraries);
   const { data: libraryBlocks, isLoading } = useLibraryBlocks(library);
 
@@ -183,24 +184,27 @@ const UILibrarySection = () => {
         <div className={"flex h-full pt-2"}>
           <div className={"flex h-full w-52 flex-col gap-1 px-1"}>
             <UILibrariesSelect library={library?.uuid} setLibrary={setLibrary} uiLibraries={uiLibraries} />
-            <div className="mt-2">
+            <div className="mt-2 flex flex-col">
               <span className="text-xs font-bold text-gray-500">{t("Groups")}</span>
-              {React.Children.toArray(
-                map(mergedGroups, (_groupedBlocks, group) => (
-                  <div
-                    onMouseEnter={() => handleMouseEnter(group)}
-                    onMouseLeave={() => clearTimeout(timeoutRef.current)}
-                    key={group}
-                    onClick={() => setGroup(group)}
-                    className={cn(
-                      "flex w-full cursor-pointer items-center justify-between rounded-md p-1 text-sm transition-all ease-in-out hover:bg-gray-200",
-                      group === selectedGroup ? "bg-blue-500 text-white hover:bg-blue-600" : "",
-                    )}>
-                    <span>{capitalize(group)}</span>
-                    <CaretRightIcon className="ml-2 h-5 w-5" />
-                  </div>
-                )),
-              )}
+              <hr />
+              <ScrollArea className="h-full flex-1 overflow-y-auto">
+                {React.Children.toArray(
+                  map(mergedGroups, (_groupedBlocks, group) => (
+                    <div
+                      onMouseEnter={() => handleMouseEnter(group)}
+                      onMouseLeave={() => clearTimeout(timeoutRef.current)}
+                      key={group}
+                      onClick={() => setGroup(group)}
+                      className={cn(
+                        "flex w-full cursor-pointer items-center justify-between rounded-md p-1 text-sm transition-all ease-in-out hover:bg-gray-200",
+                        group === selectedGroup ? "bg-blue-500 text-white hover:bg-blue-600" : "",
+                      )}>
+                      <span>{capitalize(group)}</span>
+                      <CaretRightIcon className="ml-2 h-5 w-5" />
+                    </div>
+                  )),
+                )}
+              </ScrollArea>
             </div>
           </div>
           <ScrollArea

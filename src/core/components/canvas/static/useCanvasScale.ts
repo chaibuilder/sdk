@@ -10,11 +10,13 @@ export const useCanvasScale = (dimension: { height: number; width: number }) => 
     if (width < canvasWidth) {
       const newScale: number = parseFloat((width / canvasWidth).toFixed(2).toString());
       let heightObj = {};
-      const scaledHeight = height * newScale;
+      const scaledHeight = (height + 20) * newScale;
+      const scaledWidth = width * newScale;
       if (height) {
         heightObj = {
           // Eureka! This is the formula to calculate the height of the scaled element. Thank you ChatGPT 4
           height: 100 + ((height - scaledHeight) / scaledHeight) * 100 + "%",
+          width: 100 + ((width - scaledWidth) / scaledWidth) * 100 + "%",
         };
       }
       setScale({
@@ -23,7 +25,7 @@ export const useCanvasScale = (dimension: { height: number; width: number }) => 
         transform: `scale(${newScale})`,
         transformOrigin: "top left",
         ...heightObj,
-        maxWidth: "none",
+        maxWidth: "none", // TODO: Add max-width to the wrapper
       });
 
       setZoom(newScale * 100);

@@ -2,7 +2,7 @@ import { flip } from "@floating-ui/dom";
 import { shift, useFloating } from "@floating-ui/react-dom";
 import { get, isEmpty, pick } from "lodash-es";
 import { ArrowUpIcon, CopyIcon, DragHandleDots2Icon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
-import { canDeleteBlock, canDuplicateBlock } from "../../functions/block-helpers.ts";
+import { canAddChildBlock, canDeleteBlock, canDuplicateBlock } from "../../functions/block-helpers.ts";
 import { ChaiBlock } from "../../types/ChaiBlock";
 import {
   useDuplicateBlocks,
@@ -104,7 +104,9 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
         <BlockActionLabel label={label} block={block} />
 
         <div className="flex gap-2 px-1">
-          <PlusIcon className="hover:scale-105" onClick={() => setOpen(block?._id)} />
+          {canAddChildBlock(get(block, "_type", "")) && (
+            <PlusIcon className="hover:scale-105" onClick={() => setOpen(block?._id)} />
+          )}
           {canDuplicateBlock(get(block, "_type", "")) ? (
             <CopyIcon className="hover:scale-105" onClick={() => duplicateBlock([block?._id])} />
           ) : null}

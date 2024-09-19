@@ -42,7 +42,7 @@ const Config = {
   icon: ButtonIcon,
   group: "basic",
   props: {
-    content: SingleLineText({ title: "web_blocks.label", default: "default" }),
+    content: SingleLineText({ title: "web_blocks.label", default: "Button" }),
     styles: Styles({ default: "text-white bg-primary px-4 py-2 rounded-global flex items-center" }),
     icon: Icon({ title: "web_blocks.icon", default: `` }),
     iconSize: Numeric({ title: "web_blocks.icon_size", default: 24 }),
