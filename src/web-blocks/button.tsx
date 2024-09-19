@@ -44,7 +44,7 @@ const Config = {
   group: "basic",
   props: {
     content: SingleLineText({ title: t("web_blocks.label"), default: t("web_blocks.default") }),
-    styles: Styles({ default: "text-white bg-primary px-4 py-2 rounded-global flex items-center" }),
+    styles: Styles({ default: "text-white bg-primary px-4 py-2 rounded flex items-center" }),
     icon: Icon({ title: t("web_blocks.icon"), default: `` }),
     iconSize: Numeric({ title: t("web_blocks.icon_size"), default: 24 }),
     iconPos: SelectOption({
