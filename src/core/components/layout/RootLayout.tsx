@@ -7,7 +7,7 @@ import { useBuilderProp, useSavePage } from "../../hooks";
 import "../canvas/static/BlocksExternalDataProvider.tsx";
 import { ScrollArea, TooltipProvider } from "../../../ui";
 import { useIntervalEffect } from "@react-hookz/web";
-import { aiAssistantActiveAtom } from "../../atoms/ui.ts";
+import { aiAssistantActiveAtom, selectedLibraryAtom } from "../../atoms/ui.ts";
 import { motion } from "framer-motion";
 import { Layers, PaintBucketIcon } from "lucide-react";
 import { Outline, ThemeOptions } from "../../main";
@@ -47,6 +47,7 @@ const RootLayout: ComponentType = () => {
     if (!isDevelopment()) e.preventDefault();
   };
 
+  useAtom(selectedLibraryAtom);
   useKeyEventWatcher();
   useExpandTree();
   useAutoSave();

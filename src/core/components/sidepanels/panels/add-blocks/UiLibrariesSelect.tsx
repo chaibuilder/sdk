@@ -34,7 +34,7 @@ export function UILibrariesSelect({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <div className="flex flex-col gap-y-1">
-          <span className="text-xs font-bold text-gray-500">{t("UI Library")}</span>
+          <span className="text-xs font-bold text-gray-500">{t("Choose Library")}</span>
           <Button
             variant="outline"
             size="sm"
