@@ -4,7 +4,6 @@ import { get, isEmpty, omit, pick } from "lodash-es";
 import { Checkbox, Model, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import EmptySlot from "./empty-slot.tsx";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
-import { t } from "./box.tsx";
 
 const YOUTUBE_REGEX = /^(https?:\/\/)?(www\.)?youtube\.com\/(watch\?v=|embed\/)([a-zA-Z0-9_-]{11})/;
 const VIMEO_REGEX = /^(https?:\/\/)?(www\.)?player.vimeo\.com/;
@@ -105,23 +104,23 @@ const VideoBlock = React.memo(
 
 const Config = {
   type: "Video",
-  label: t("web_blocks.video"),
+  label: "web_blocks.video",
   category: "core",
   icon: VideoIcon,
   group: "media",
   props: {
     styles: Styles({ default: "" }),
     url: SingleLineText({
-      title: "Video URL",
+      title: "web_blocks.video_url",
       default: "https://www.youtube.com/watch?v=9xwazD5SyVg&ab_channel=MaximilianMustermann",
     }),
     controls: Model({
-      title: "Controls",
+      title: "web_blocks.controls",
       properties: {
-        autoPlay: Checkbox({ title: "Autoplay", default: true }),
-        controls: Checkbox({ title: "Show controls", default: false }),
-        loop: Checkbox({ title: "Loop", default: false }),
-        muted: Checkbox({ title: "Muted", default: true }),
+        autoPlay: Checkbox({ title: "web_blocks.autoplay", default: true }),
+        controls: Checkbox({ title: "web_blocks.controls", default: false }),
+        loop: Checkbox({ title: "web_blocks.loop", default: false }),
+        muted: Checkbox({ title: "web_blocks.muted", default: true }),
       },
     }),
   },

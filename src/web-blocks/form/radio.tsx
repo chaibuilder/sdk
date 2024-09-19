@@ -38,16 +38,16 @@ const RadioBlock = (
 
 const Config = {
   type: "Radio",
-  label: "Radio",
+  label: "web_blocks.radio",
   category: "core",
   icon: RadiobuttonIcon,
   group: "form",
   props: {
     styles: Styles({ default: "flex items-center w-max gap-x-2" }),
-    fieldName: SingleLineText({ title: "Field Name", default: "radio" }),
-    label: SingleLineText({ title: "Label", default: "Label" }),
-    checked: Checkbox({ title: "Checked", default: false }),
-    required: Checkbox({ title: "Required", default: false }),
+    fieldName: SingleLineText({ title: "web_blocks.field_name", default: "radio" }),
+    label: SingleLineText({ title: "web_blocks.label", default: "Label" }),
+    checked: Checkbox({ title: "web_blocks.checked", default: false }),
+    required: Checkbox({ title: "web_blocks.required", default: false }),
   },
 };
 

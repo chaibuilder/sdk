@@ -14,7 +14,7 @@ export const PreviewScreen = () => {
     <div className={cn("fixed inset-0 z-[999] bg-background", isPreviewOn ? "block" : "hidden")}>
       <Button size="sm" className="absolute right-0 top-0 m-4 space-x-2" onClick={() => setPreviewMode(false)}>
         <EyeClosedIcon />
-        <span>{t("Close Preview")}</span>
+        <span>{t("close_preview")}</span>
       </Button>
       <div>
         {previewComponent ? (

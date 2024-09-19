@@ -45,7 +45,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
       <div className="p-4 text-center">
         <div className="space-y-4 rounded-xl p-4">
           <SparklesIcon className="mx-auto text-3xl" />
-          <h1>{t("no_block_selected_for_ask_ai")}</h1>
+          <h1>{t("please_select_a_block_to_ask_ai")}</h1>
         </div>
       </div>
     );
@@ -53,13 +53,13 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
   return (
     <div className="mt-4">
       <h2 className="mb-2 text-xs font-semibold leading-none tracking-tight text-gray-500">
-        {t("Ask AI")} (GPT-4o mini)
+        {t("ask_ai")} (GPT-4o mini)
       </h2>
       <Textarea
         ref={promptRef}
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
-        placeholder={t("Ask AI to edit content")}
+        placeholder={t("ask_ai_to_edit_content")}
         className="w-full border border-gray-400 focus:border-0"
         rows={3}
         onKeyDown={(e) => {
@@ -81,10 +81,10 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
             {loading ? (
               <>
                 <Loader className="h-5 w-5 animate-spin" />
-                {t("Generating... Please wait")}
+                {t("generating_please_wait")}
               </>
             ) : (
-              t("Edit with AI")
+              t("edit_with_ai")
             )}
           </Button>
         ) : null}
@@ -92,7 +92,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
           <div className="flex flex-col gap-2">
             <Skeleton className="flex w-full items-center space-x-1 px-4 py-1 pl-2">
               <FaSpinner className="h-4 w-4 animate-spin text-gray-500" />
-              <p className="text-xs">{t("Generating... Please wait")}</p>
+              <p className="text-xs">{t("generating_please_wait")}</p>
             </Skeleton>
             <Button variant="destructive" onClick={() => stop()} className="hidden w-fit" size="sm">
               {t("Stop")}
@@ -136,8 +136,8 @@ export const AISetContext = () => {
       setError(null);
       await savePageContext(context);
       toast({
-        title: t("AI Context updated"),
-        description: t("You can now ask AI to edit your content"),
+        title: t("ai_context_updated"),
+        description: t("you_can_now_ask_ai_to_edit_your_content"),
         variant: "default",
       });
       btnRef.current.click();
@@ -160,9 +160,9 @@ export const AISetContext = () => {
         {/*  @ts-ignore */}
         <AccordionTrigger ref={btnRef} hideArrow className="py-1 hover:no-underline">
           <div className="flex w-full items-center justify-between">
-            <span className="font-semibold">{t("AI Context")}</span>
+            <span className="font-semibold">{t("ai_context")}</span>
             <Button variant="default" size={"sm"}>
-              <span>{t(opened ? "Cancel" : "Edit")}</span> &nbsp;
+              <span>{t(opened ? "cancel" : "edit")}</span> &nbsp;
               {opened ? <Cross2Icon className="h-4 w-4" /> : <EditIcon className="h-4 w-4" />}
             </Button>
           </div>
@@ -173,7 +173,7 @@ export const AISetContext = () => {
             ref={promptRef}
             value={context}
             onChange={(e) => setContext(e.target.value)}
-            placeholder={t("Tell about this page. Eg: This page is about ...")}
+            placeholder={t("tell_about_this_page_eg_this_page_is_about")}
             className="w-full border border-gray-400 bg-background focus:border"
             rows={10}
             onKeyDown={(e) => {
@@ -186,7 +186,7 @@ export const AISetContext = () => {
           {aiContext.trim().length === 0 ? (
             <p className="mt-2 text-xs text-gray-500">
               {t(
-                "Eg: This page is about an AI assistant app called Chai Studio. It allows users to create beautiful webpages and edit content with AI.",
+                "eg_this_page_is_about_an_ai_assistant_app_called_chai_studio_it_allows_users_to_create_beautiful_webpages_and_edit_content_with_ai",
               )}
             </p>
           ) : null}
@@ -200,10 +200,10 @@ export const AISetContext = () => {
               {loading ? (
                 <>
                   <Loader className="h-5 w-5 animate-spin" />
-                  {t("Generating... Please wait")}
+                  {t("generating_please_wait")}
                 </>
               ) : (
-                t("Save")
+                t("save")
               )}
             </Button>
             {aiContext.trim().length > 0 ? (
@@ -213,20 +213,20 @@ export const AISetContext = () => {
                     {loading ? (
                       <>
                         <Loader className="h-5 w-5 animate-spin" />
-                        {t("Generating... Please wait")}
+                        {t("generating_please_wait")}
                       </>
                     ) : (
-                      t("Delete")
+                      t("delete")
                     )}
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>{t("Remove context?")}</AlertDialogTitle>
+                    <AlertDialogTitle>{t("remove_context?")}</AlertDialogTitle>
                     <AlertDialogDescription></AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel>{t("Cancel")}</AlertDialogCancel>
+                    <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
                     <AlertDialogAction
                       onClick={() => {
                         setContext("");

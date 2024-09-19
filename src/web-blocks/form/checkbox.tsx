@@ -45,16 +45,16 @@ const CheckboxBlock = (
 
 const Config = {
   type: "Checkbox",
-  label: "Checkbox",
+  label: "web_blocks.checkbox",
   category: "core",
   icon: CheckboxIcon,
   group: "form",
   props: {
     fieldName: SingleLineText({ title: "Field Name", default: "checkbox" }),
     styles: Styles({ default: "flex items-center gap-x-2" }),
-    label: SingleLineText({ title: "Label", default: "Label" }),
-    checked: Checkbox({ title: "Checked", default: false }),
-    required: Checkbox({ title: "Required", default: false }),
+    label: SingleLineText({ title: "web_blocks.label", default: "Label" }),
+    checked: Checkbox({ title: "web_blocks.checked", default: false }),
+    required: Checkbox({ title: "web_blocks.required", default: false }),
   },
 };
 

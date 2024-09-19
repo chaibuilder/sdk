@@ -2,7 +2,7 @@ import * as React from "react";
 import { CodeIcon } from "@radix-ui/react-icons";
 import { Code, Styles } from "@chaibuilder/runtime/controls";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
-import { t } from "./box.tsx";
+
 
 const CustomHTMLBlock = (
   props: ChaiBlock & {
@@ -30,16 +30,16 @@ const CustomHTMLBlock = (
 
 const Config = {
   type: "CustomHTML",
-  label: t("web_blocks.custom_html"),
+  label: "web_blocks.custom_html",
   category: "core",
   icon: CodeIcon,
   group: "advanced",
   props: {
     styles: Styles({ default: "" }),
     htmlCode: Code({
-      title: t("web_blocks.html_code"),
-      default: "<div><p>" + t("web_blocks.default_snippet") + "</p></div>",
-      placeholder: t("web_blocks.placeholder"),
+      title: "web_blocks.html_code",
+      default: "<div><p>" + "web_blocks.default_snippet" + "</p></div>",
+      placeholder: "web_blocks.placeholder",
     }),
   },
   canAcceptBlock: () => false,

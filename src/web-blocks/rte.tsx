@@ -1,7 +1,6 @@
 import { CursorTextIcon } from "@radix-ui/react-icons";
 import { RichText, Styles } from "@chaibuilder/runtime/controls";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
-import { t } from "./box.tsx";
 /**
  * Heading component
  * @param props
@@ -30,14 +29,14 @@ const RichTextBlock = (
 
 const Config = {
   type: "RichText",
-  label: t("web_blocks.richtext"),
+  label: "web_blocks.richtext",
   category: "core",
   icon: CursorTextIcon,
   group: "typography",
   props: {
     styles: Styles({ default: "" }),
     content: RichText({
-      title: t("web_blocks.content"),
+      title: "web_blocks.content",
       default: "<p>This is a rich text block. You can add text, and other content here.</p>",
     }),
   },

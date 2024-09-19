@@ -72,27 +72,27 @@ const SelectBlock = (
 
 const Config = {
   type: "Select",
-  label: "Select",
+  label: "web_blocks.select",
   category: "core",
   icon: DropdownMenuIcon,
   group: "form",
   props: {
     styles: Styles({ default: "" }),
-    fieldName: SingleLineText({ title: "Field Name", default: "select" }),
-    showLabel: Checkbox({ title: "Show label", default: true }),
+    fieldName: SingleLineText({ title: "web_blocks.field_name", default: "select" }),
+    showLabel: Checkbox({ title: "web_blocks.show_label", default: true }),
     inputStyles: Styles({ default: "w-full p-1" }),
-    label: SingleLineText({ title: "Label", default: "Label" }),
+    label: SingleLineText({ title: "web_blocks.label", default: "Label" }),
     placeholder: SingleLineText({
-      title: "Placeholder",
+      title: "web_blocks.placeholder",
       default: "Placeholder",
     }),
-    required: Checkbox({ title: "Required", default: false }),
-    _multiple: Checkbox({ title: "Multiple Choice", default: false }),
+    required: Checkbox({ title: "web_blocks.required", default: false }),
+    _multiple: Checkbox({ title: "web_blocks.multiple", default: false }),
     options: List({
-      title: "Options",
+      title: "web_blocks.options",
       itemProperties: {
-        label: SingleLineText({ title: "Label", default: "" }),
-        value: SingleLineText({ title: "Value", default: "" }),
+        label: SingleLineText({ title: "web_blocks.label", default: "" }),
+        value: SingleLineText({ title: "web_blocks.value", default: "" }),
       },
     }),
   },

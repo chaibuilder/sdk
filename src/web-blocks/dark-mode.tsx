@@ -1,13 +1,11 @@
 import { MoonIcon } from "@radix-ui/react-icons";
-import { t } from "./box.tsx";
-
 const DarkMode = () => {
   return null;
 };
 
 const Config = {
   type: "Dark Mode",
-  label: t("web_blocks.dark_mode"),
+  label: "web_blocks.dark_mode",
   category: "core",
   icon: MoonIcon,
   group: "advanced",

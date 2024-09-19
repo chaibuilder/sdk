@@ -8,6 +8,7 @@ import { IconPickerField, ImagePickerField, LinkField, RTEField } from "../../rj
 import validator from "@rjsf/validator-ajv8";
 import { useThrottledCallback } from "@react-hookz/web";
 import { CodeEditor } from "../../rjsf-widgets/Code.tsx";
+import { useTranslation } from "react-i18next";
 
 type JSONFormType = {
   id?: string;
@@ -24,12 +25,13 @@ export const JSONForm = memo(({ id, properties, formData, onChange }: JSONFormTy
   const [form, setForm] = useState<any>(formData);
   const propsSchema: RJSFSchema = { type: "object", properties: {} };
   const uiSchema: UiSchema = {};
+  const { t } = useTranslation();
 
   Object.keys(properties).forEach((key) => {
     const control = properties[key];
     if (includes(["slot", "styles"], control.type)) return;
     const propKey = key;
-    propsSchema.properties[propKey] = getBlockJSONFromSchemas(control);
+    propsSchema.properties[propKey] = getBlockJSONFromSchemas(control, t);
     uiSchema[propKey] = getBlockJSONFromUISchemas(control);
   });
 

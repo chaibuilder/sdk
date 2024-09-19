@@ -6,6 +6,7 @@ export const Preview = () => {
   const { t } = useTranslation();
   const previewLink = useBuilderProp("previewLink", false);
   if (!previewLink) return null;
+  
   return (
     <div className="flex items-center">
       <Tooltip>
