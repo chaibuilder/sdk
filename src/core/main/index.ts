@@ -8,6 +8,7 @@ import BlockPropsEditor from "../components/settings/BlockSettings.tsx";
 import BlockStyleEditor from "../components/settings/BlockStyling.tsx";
 import UILibrariesPanel from "../components/sidepanels/panels/add-blocks/UILibrariesPanel.tsx";
 import i18n from "../locales/load";
+import AddBlocksPanel from "../components/sidepanels/panels/add-blocks/AddBlocks.tsx";
 
 export { AISetContext, AIUserPrompt } from "../components/AskAi.tsx";
 export { BlockAttributesEditor } from "../components/settings/new-panel/BlockAttributesEditor.tsx";
@@ -24,6 +25,7 @@ export {
   BlockStyleEditor,
   i18n,
   UILibrariesPanel as UILibraries,
+  AddBlocksPanel,
 };
 export * from "../hooks";
 export { generateUUID as generateBlockId, cn as mergeClasses } from "../functions/Functions.ts";
