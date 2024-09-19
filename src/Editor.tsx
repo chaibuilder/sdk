@@ -43,10 +43,10 @@ function ChaiBuilderDefault() {
         return new Promise((resolve) => resolve({ error: new Error("Not implemented") }));
       }}
       getUILibraryBlock={async (uiLibrary, uiLibBlock) => {
-        const response = await fetch(
-          uiLibrary.url + "/blocks/" + uiLibBlock.uuid ? uiLibBlock.uuid + "html" : uiLibBlock.path,
+        const response = await axios.get(
+          uiLibrary.url + "/blocks/" + (!uiLibBlock.path ? uiLibBlock.uuid + ".html" : uiLibBlock.path),
         );
-        const html = await response.text();
+        const html = await response.data;
         const htmlWithoutChaiStudio = html.replace(/---([\s\S]*?)---/g, "");
         return getBlocksFromHTML(`${htmlWithoutChaiStudio}`) as ChaiBlock[];
       }}

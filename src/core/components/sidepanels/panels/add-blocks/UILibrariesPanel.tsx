@@ -184,25 +184,27 @@ const UILibrarySection = () => {
         <div className={"flex h-full pt-2"}>
           <div className={"flex h-full w-52 flex-col gap-1 px-1"}>
             <UILibrariesSelect library={library?.uuid} setLibrary={setLibrary} uiLibraries={uiLibraries} />
-            <div className="mt-2">
+            <div className="mt-2 flex flex-col">
               <span className="text-xs font-bold text-gray-500">{t("Groups")}</span>
               <hr />
-              {React.Children.toArray(
-                map(mergedGroups, (_groupedBlocks, group) => (
-                  <div
-                    onMouseEnter={() => handleMouseEnter(group)}
-                    onMouseLeave={() => clearTimeout(timeoutRef.current)}
-                    key={group}
-                    onClick={() => setGroup(group)}
-                    className={cn(
-                      "flex w-full cursor-pointer items-center justify-between rounded-md p-1 text-sm transition-all ease-in-out hover:bg-gray-200",
-                      group === selectedGroup ? "bg-blue-500 text-white hover:bg-blue-600" : "",
-                    )}>
-                    <span>{capitalize(group)}</span>
-                    <CaretRightIcon className="ml-2 h-5 w-5" />
-                  </div>
-                )),
-              )}
+              <ScrollArea className="h-full flex-1 overflow-y-auto">
+                {React.Children.toArray(
+                  map(mergedGroups, (_groupedBlocks, group) => (
+                    <div
+                      onMouseEnter={() => handleMouseEnter(group)}
+                      onMouseLeave={() => clearTimeout(timeoutRef.current)}
+                      key={group}
+                      onClick={() => setGroup(group)}
+                      className={cn(
+                        "flex w-full cursor-pointer items-center justify-between rounded-md p-1 text-sm transition-all ease-in-out hover:bg-gray-200",
+                        group === selectedGroup ? "bg-blue-500 text-white hover:bg-blue-600" : "",
+                      )}>
+                      <span>{capitalize(group)}</span>
+                      <CaretRightIcon className="ml-2 h-5 w-5" />
+                    </div>
+                  )),
+                )}
+              </ScrollArea>
             </div>
           </div>
           <ScrollArea

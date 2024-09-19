@@ -8,7 +8,7 @@ export const AddBlockAtBottom = () => {
   return (
     <button
       onClick={() => setOpen(ROOT_TEMP_KEY)}
-      className="mt-1 block w-full rounded-md bg-gray-100 p-2 text-black hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700">
+      className="mb-10 mt-1 block w-full rounded-md bg-gray-100 p-2 text-black hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700">
       {t("+ Add block")}
     </button>
   );

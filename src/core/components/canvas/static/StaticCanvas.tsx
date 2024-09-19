@@ -137,10 +137,11 @@ const StaticCanvas = (): React.JSX.Element => {
                 <StaticBlocksRenderer />
               )}
               <AddBlockAtBottom />
+              <br />
+              <br />
+              <br />
             </Canvas>
           </Provider>
-          <br />
-
           <div
             id="placeholder"
             className="pointer-events-none absolute z-[99999] max-w-full bg-green-500 transition-transform"
