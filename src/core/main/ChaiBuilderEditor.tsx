@@ -21,6 +21,7 @@ import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { useAtom } from "jotai/index";
 import { builderSaveStateAtom } from "../hooks/useSavePage.ts";
 import { PreviewScreen } from "../components/PreviewScreen.tsx";
+import { each } from "lodash";
 
 const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   const [, setAllBlocks] = useBlocksStore();
@@ -33,7 +34,7 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
     builderStore.set(
       // @ts-ignore
       chaiBuilderPropsAtom,
-      omit(props, ["blocks", "subPages", "brandingOptions", "dataProviders", "customRootLayout"]),
+      omit(props, ["blocks", "subPages", "brandingOptions", "dataProviders", "customRootLayout", "translations"]),
     );
   }, [props]);
 
@@ -55,6 +56,13 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   useEffect(() => {
     setDebugLogs(props.showDebugLogs);
   }, [props.showDebugLogs]);
+
+  useEffect(() => {
+    if (!props.translations) return;
+    each(props.translations, (translations: any, lng: string) => {
+      i18n.addResourceBundle(lng, "translation", translations, true, true);
+    });
+  }, [props.translations]);
 
   useEffect(() => {
     setBrandingOptions(props.brandingOptions);

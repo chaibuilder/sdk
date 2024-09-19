@@ -64,6 +64,7 @@ export type ChaiBuilderInstance = {
 };
 
 export interface ChaiBuilderEditorProps {
+  translations?: Record<string, Record<string, any>>;
   onLoad?: (editorInstance: ChaiBuilderInstance) => void;
   customRootLayout?: React.ComponentType;
   htmlDir?: "ltr" | "rtl";
