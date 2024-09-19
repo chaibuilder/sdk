@@ -46,16 +46,29 @@ export const getBlockJSONFromUISchemas = (control: ChaiControlDefinition) => {
   }
 };
 
-export const getBlockJSONFromSchemas = (control: ChaiControlDefinition) => {
+export const getBlockJSONFromSchemas = (control: ChaiControlDefinition, t: any) => {
   switch (control.type) {
-    case "singular":
-      return (control as ControlDefinition).schema;
+    case "singular": {
+      const singularSchema = (control as ControlDefinition).schema;
+      if (singularSchema.title) {
+        singularSchema.title = t(singularSchema.title);
+      }
+      if (singularSchema.oneOf && Array.isArray(singularSchema.oneOf)) {
+        singularSchema.oneOf = singularSchema.oneOf.map((item) => {
+          if (item.title) {
+            item.title = t(item.title);
+          }
+          return item;
+        });
+      }
+      return singularSchema;
+    }
     case "model":
       // eslint-disable-next-line no-case-declarations
       const { properties: modelProperties, title: modelTitle } = control as ModelControlDefinition;
       // eslint-disable-next-line no-case-declarations
       const modelProps: Record<string, any> = {
-        title: modelTitle,
+        title: t(modelTitle),
         type: "object",
         properties: {},
       };
@@ -64,7 +77,7 @@ export const getBlockJSONFromSchemas = (control: ChaiControlDefinition) => {
         const control = modelProperties[key];
         if (includes(["slot", "styles"], control.type)) return;
         const propKey = key;
-        modelProps.properties[propKey] = getBlockJSONFromSchemas(control);
+        modelProps.properties[propKey] = getBlockJSONFromSchemas(control, t);
       });
       return modelProps;
     case "list":
@@ -72,7 +85,7 @@ export const getBlockJSONFromSchemas = (control: ChaiControlDefinition) => {
       const { itemProperties, title: listTitle } = control as ListControlDefinition;
       // eslint-disable-next-line no-case-declarations
       const listProps: Record<string, any> = {
-        title: listTitle,
+        title: t(listTitle),
         type: "array",
         items: {
           type: "object",
@@ -84,8 +97,8 @@ export const getBlockJSONFromSchemas = (control: ChaiControlDefinition) => {
         const control = itemProperties[key];
         if (includes(["slot", "styles"], control.type)) return;
         const propKey = key;
-        listProps.items.properties[propKey] = getBlockJSONFromSchemas(control);
-        set(listProps.items, "title", get(control, "itemTitle", `${listTitle} item`));
+        listProps.items.properties[propKey] = getBlockJSONFromSchemas(control, t);
+        set(listProps.items, "title", get(control, "itemTitle", `${t(listTitle)} item`));
       });
       return listProps;
     default:
@@ -213,7 +226,7 @@ export const getBlockDefaultTranslation = (
 };
 
 export const convertDotNotationToObject = (key: string, value: any) => {
-    const result = {};
-    set(result, key, value);
-    return result;
-}
+  const result = {};
+  set(result, key, value);
+  return result;
+};

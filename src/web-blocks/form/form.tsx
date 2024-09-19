@@ -45,22 +45,22 @@ const FormBlock = (
 
 const Config = {
   type: "Form",
-  label: "Form",
+  label: "web_blocks.form",
   category: "core",
   icon: GroupIcon,
   group: "form",
   props: {
     styles: Styles({ default: "" }),
     action: SingleLineText({
-      title: "Submit URL",
+      title: "web_blocks.submit_url",
       default: "/api/form/submit",
     }),
     errorMessage: RichText({
-      title: "Error Message",
+      title: "web_blocks.error_message",
       default: "Something went wrong. Please try again",
     }),
     successMessage: RichText({
-      title: "Success Message",
+      title: "web_blocks.success_message",
       default: "Thank you for your submission.",
     }),
   },

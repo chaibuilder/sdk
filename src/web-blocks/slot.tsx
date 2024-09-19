@@ -3,7 +3,7 @@ import { Styles } from "@chaibuilder/runtime/controls";
 import { registerChaiBlock } from "@chaibuilder/runtime";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { cn } from "../core/functions/Functions.ts";
-import { t } from "./box";
+
 
 const SlotBlock = (
   props: ChaiBlock & { children: React.ReactNode } & {
@@ -29,7 +29,7 @@ const SlotBlock = (
 
 registerChaiBlock(SlotBlock, {
   type: "Slot",
-  label: t("web_blocks.slot"),
+  label: "web_blocks.slot",
   group: "basic",
   category: "core",
   hidden: true,

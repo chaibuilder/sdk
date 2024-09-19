@@ -2,7 +2,7 @@ import * as React from "react";
 import { HeadingIcon } from "@radix-ui/react-icons";
 import { MultilineText, SelectOption, Styles } from "@chaibuilder/runtime/controls";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
-import { t } from "./box.tsx";
+
 /**
  * Heading component
  * @param props
@@ -30,13 +30,13 @@ const HeadingBlock = (
 
 const Config = {
   type: "Heading",
-  label: t("web_blocks.heading"),
+  label: "web_blocks.heading",
   category: "core",
   icon: HeadingIcon,
   group: "typography",
   props: {
     level: SelectOption({
-      title: "Level",
+      title: "web_blocks.level",
       default: "h1",
       binding: false,
       options: [
@@ -49,7 +49,7 @@ const Config = {
       ],
     }),
     styles: Styles({ default: "text-3xl" }),
-    content: MultilineText({ title: "Content", default: "Heading goes here" }),
+    content: MultilineText({ title: "web_blocks.content", default: "Heading goes here" }),
   },
   canAcceptBlock: (type) => type === "Span" || type === "Text",
 };

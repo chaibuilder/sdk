@@ -19,7 +19,7 @@ const SettingsPanel: React.FC = () => {
       <div className="p-4 text-center">
         <div className="space-y-4 rounded-xl p-4">
           <MixerHorizontalIcon className="mx-auto text-3xl" />
-          <h1>{t("no_block_selected_for_styling")}</h1>
+          <h1>{t("please_select_a_block_to_ask_ai")}</h1>
         </div>
       </div>
     );

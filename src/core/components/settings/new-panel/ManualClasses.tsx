@@ -29,6 +29,7 @@ import { useTranslation } from "react-i18next";
 import { SparklesIcon } from "lucide-react";
 import { AskAIStyles } from "../AskAiStyle.tsx";
 
+
 const fuse = new Fuse(ALL_TW_CLASSES, {
   isCaseSensitive: false,
   threshold: 0.2,
@@ -92,7 +93,7 @@ export function ManualClasses() {
     autoCorrect: "off",
     autoCapitalize: "off",
     spellCheck: false,
-    placeholder: t("Enter classes separated by space"),
+    placeholder: t("enter_classes_separated_by_space"),
     value: newCls,
     onKeyDown: (e: any) => {
       if (e.key === "Enter" && newCls.trim() !== "") {
@@ -104,18 +105,19 @@ export function ManualClasses() {
   };
 
   const onClickCopy = () => {
+   
     if (navigator.clipboard === undefined) {
       toast({
-        title: "Clipboard not supported",
-        description: "Please use Chrome, Firefox or Safari",
+        title: t("clipboard_not_supported"),
+        description: t("please_use_chrome_firefox_or_safari"),
         variant: "destructive",
       });
       return;
     }
     navigator.clipboard.writeText(classes.join(" "));
     toast({
-      title: "Copied",
-      description: "Classes copied to clipboard",
+      title: t("copied"),
+      description: t("classes_copied_to_clipboard"),
     });
   };
 
@@ -126,13 +128,13 @@ export function ManualClasses() {
       } w-full flex-col gap-y-1.5 overflow-y-auto pb-4`}>
       <div className="flex items-center justify-between gap-x-2">
         <div className="flex items-center gap-x-2">
-          <span>{t("Classes")}</span>
+          <span>{t("classes")}</span>
           <Tooltip>
             <TooltipTrigger asChild>
               <CopyIcon onClick={onClickCopy} className={"cursor-pointer"} />
             </TooltipTrigger>
             <TooltipContent>
-              <p>{t("Copy classes to clipboard")}</p>
+              <p>{t("copy_classes_to_clipboard")}</p>
             </TooltipContent>
           </Tooltip>
         </div>
@@ -141,7 +143,7 @@ export function ManualClasses() {
             <PopoverTrigger asChild>
               <Button variant="default" className="h-6 w-fit" size="sm">
                 <SparklesIcon className="h-4 w-4" />
-                <span className="ml-2">{t("Ask AI")}</span>
+                <span className="ml-2">{t("ask_ai")}</span>
               </Button>
             </PopoverTrigger>
             <PopoverContent side="left" className="p-2">

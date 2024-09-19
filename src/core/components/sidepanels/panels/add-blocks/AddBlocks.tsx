@@ -22,7 +22,9 @@ import { useAddBlocksModal } from "../../../../hooks/useAddBlocks.ts";
 import { find } from "lodash";
 import { canAcceptChildBlock, canBeNestedInside } from "../../../../functions/block-helpers.ts";
 
+
 export const ChaiBuilderBlocks = ({ groups, blocks }: any) => {
+  const { t } = useTranslation();
   const [allBlocks] = useBlocksStore();
   const [parentId] = useAddBlocksModal();
   const parentType = find(allBlocks, (block) => block._id === parentId)?._type;
@@ -32,7 +34,7 @@ export const ChaiBuilderBlocks = ({ groups, blocks }: any) => {
         <Accordion type="single" value={group} collapsible className="w-full">
           <AccordionItem value={group}>
             <AccordionTrigger className="rounded-md bg-gray-100 px-4 py-2 capitalize hover:no-underline">
-              {group}
+              {t(group.toLowerCase())}
             </AccordionTrigger>
             <AccordionContent className="p-3">
               <div className="grid grid-cols-4 gap-2">
@@ -96,8 +98,8 @@ const AddBlocksPanel = ({ className, showHeading = true }: { showHeading?: boole
         value={tab}
         className={mergeClasses("h-max", !importHTMLSupport ? "hidden" : "")}>
         <TabsList className={"grid w-full " + (importHTMLSupport ? "grid-cols-3" : "grid-cols-1")}>
-          <TabsTrigger value="library">{t("Library")}</TabsTrigger>
-          <TabsTrigger value="core">{t("Blocks")}</TabsTrigger>
+          <TabsTrigger value="library">{t("library")}</TabsTrigger>
+          <TabsTrigger value="core">{t("blocks")}</TabsTrigger>
 
           {importHTMLSupport ? <TabsTrigger value="html">{t("import")}</TabsTrigger> : null}
         </TabsList>

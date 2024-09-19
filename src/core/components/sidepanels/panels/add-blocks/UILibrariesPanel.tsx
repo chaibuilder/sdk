@@ -185,7 +185,7 @@ const UILibrarySection = () => {
           <div className={"flex h-full w-52 flex-col gap-1 px-1"}>
             <UILibrariesSelect library={library?.uuid} setLibrary={setLibrary} uiLibraries={uiLibraries} />
             <div className="mt-2 flex flex-col">
-              <span className="text-xs font-bold text-gray-500">{t("Groups")}</span>
+              <span className="text-xs font-bold text-gray-500">{t("groups")}</span>
               <hr />
               <ScrollArea className="h-full flex-1 overflow-y-auto">
                 {React.Children.toArray(
@@ -199,7 +199,7 @@ const UILibrarySection = () => {
                         "flex w-full cursor-pointer items-center justify-between rounded-md p-1 text-sm transition-all ease-in-out hover:bg-gray-200",
                         group === selectedGroup ? "bg-blue-500 text-white hover:bg-blue-600" : "",
                       )}>
-                      <span>{capitalize(group)}</span>
+                      <span>{t(group.toLowerCase())}</span>
                       <CaretRightIcon className="ml-2 h-5 w-5" />
                     </div>
                   )),

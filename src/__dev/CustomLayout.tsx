@@ -14,6 +14,7 @@ import {
   useSelectedBlock,
 } from "../core/main";
 import { ScrollArea, TooltipProvider } from "../ui";
+import { useTranslation } from "react-i18next";
 
 const BlockEditor = () => {
   const [showAttributes, setShowAttributes] = useState(true);
@@ -41,6 +42,7 @@ const BlockEditor = () => {
 
 export default function CustomLayout() {
   const [activePanelIndex, setActivePanelIndex] = useState<number | null>(0);
+  const { t } = useTranslation();
 
   const menuItems = [
     { icon: <Layers size={24} />, label: "Outline", component: Outline },
@@ -91,7 +93,7 @@ export default function CustomLayout() {
             {activePanelIndex !== null && (
               <ScrollArea className="h-full">
                 <div className="flex flex-col p-4">
-                  <h2 className="h-10 text-base font-bold">{menuItems[activePanelIndex].label}</h2>
+                  <h2 className="h-10 text-base font-bold">{t(menuItems[activePanelIndex].label)}</h2>
 
                   <div className="flex-1">
                     <Suspense fallback={<div>Loading...</div>}>

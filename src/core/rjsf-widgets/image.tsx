@@ -2,10 +2,12 @@ import { WidgetProps } from "@rjsf/utils";
 import { isEmpty } from "lodash-es";
 import ImagePickerModal from "../components/sidepanels/panels/images/ImagePickerModal.tsx";
 import { useBuilderProp } from "../hooks";
+import { useTranslation } from "react-i18next";
 
 const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
   const uploadImageCallback = useBuilderProp("uploadMediaCallback");
   const unsplashImageCallback = useBuilderProp("unsplashAccessKey");
+  const { t } = useTranslation();
 
   const missingUploadImageCallback = uploadImageCallback === undefined;
   const missingUnsplashImageCallback = unsplashImageCallback === undefined;
@@ -24,7 +26,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
           <>
             <ImagePickerModal onSelect={onChange}>
               <small className="cursor-pointer rounded-full bg-gray-600 px-2 py-1 text-center text-xs text-white hover:bg-gray-500 dark:bg-gray-700">
-                {value || !isEmpty(value) ? "Replace Image" : "Choose Image"}
+                {value || !isEmpty(value) ? t("replace_image") : t("choose_image")}
               </small>
             </ImagePickerModal>
             <small className="-pl-4 pt-2 text-center text-xs text-gray-600">OR</small>
@@ -36,7 +38,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
           spellCheck={"false"}
           type="url"
           className="text-xs"
-          placeholder="Enter image URL"
+          placeholder={t("enter_image_url")}
           value={value}
           onBlur={({ target: { value: url } }) => onBlur(id, url)}
           onChange={(e) => onChange(e.target.value)}

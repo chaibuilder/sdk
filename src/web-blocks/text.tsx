@@ -1,7 +1,6 @@
 import { MultilineText } from "@chaibuilder/runtime/controls";
 import { SpaceBetweenVerticallyIcon } from "@radix-ui/react-icons";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
-import { t } from "./box.tsx";
 
 const RawTextBlock = (
   props: ChaiBlock & {
@@ -22,13 +21,13 @@ const RawTextBlock = (
 
 const Config = {
   type: "Text",
-  label: t("web_blocks.text"),
+  label: "web_blocks.text",
   hidden: true,
   category: "core",
   group: "typography",
   icon: SpaceBetweenVerticallyIcon,
   props: {
-    content: MultilineText({ title: t("web_blocks.content"), defaultValue: "" }),
+    content: MultilineText({ title: "web_blocks.content", defaultValue: "" }),
   },
 };
 

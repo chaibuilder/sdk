@@ -5,7 +5,6 @@ import { SelectOption, Styles } from "@chaibuilder/runtime/controls";
 import EmptySlot from "./empty-slot.tsx";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { cn } from "../core/functions/Functions.ts";
-import { t } from "./box.tsx";
 const ListBlock = (
   props: ChaiBlock & {
     blockProps: Record<string, string>;
@@ -28,19 +27,19 @@ const ListBlock = (
 
 const Config = {
   type: "List",
-  label: t("web_blocks.list"),
+  label: "web_blocks.list",
   icon: RowsIcon,
   category: "core",
   group: "basic",
   props: {
     styles: Styles({ default: "" }),
     listType: SelectOption({
-      title: t("web_blocks.list_type"),
+      title: "web_blocks.list_type",
       default: "list-none",
       options: [
-        { value: "list-none", title: t("web_blocks.none") },
-        { value: "list-disc", title: t("web_blocks.disc") },
-        { value: "list-decimal", title: t("web_blocks.number") },
+        { value: "list-none", title: "web_blocks.none" },
+        { value: "list-disc", title: "web_blocks.disc" },
+        { value: "list-decimal", title: "web_blocks.number" },
       ],
     }),
   },

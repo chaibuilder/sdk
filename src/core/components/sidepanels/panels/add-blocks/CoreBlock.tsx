@@ -10,6 +10,7 @@ import { OUTLINE_KEY, ROOT_TEMP_KEY } from "../../../../constants/STRINGS.ts";
 import { draggedBlockAtom } from "../../../canvas/dnd/atoms.ts";
 import { useFeature } from "flagged";
 import { useAddBlocksModal } from "../../../../hooks/useAddBlocks.ts";
+import { useTranslation } from "react-i18next";
 
 export const CoreBlock = ({ block, disabled }: { block: any; disabled: boolean }) => {
   const [, setDraggedBlock] = useAtom(draggedBlockAtom);
@@ -30,6 +31,7 @@ export const CoreBlock = ({ block, disabled }: { block: any; disabled: boolean }
     setActivePanel(OUTLINE_KEY);
   };
   const dnd = useFeature("dnd");
+  const { t } = useTranslation();
   return (
     <>
       <Tooltip>
@@ -54,11 +56,11 @@ export const CoreBlock = ({ block, disabled }: { block: any; disabled: boolean }
               "cursor-pointer space-y-2 rounded-lg border border-border p-3 text-center hover:bg-slate-300/50 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400"
             }>
             {createElement(icon || BoxIcon, { className: "w-4 h-4 mx-auto" })}
-            <p className="truncate text-xs">{label || type}</p>
+            <p className="truncate text-xs">{t(label || type)}</p>
           </button>
         </TooltipTrigger>
         <TooltipContent>
-          <p>{label || type}</p>
+          <p>{t(label || type)}</p>
         </TooltipContent>
       </Tooltip>
     </>

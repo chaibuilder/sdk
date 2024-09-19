@@ -16,6 +16,7 @@ import { AskAI } from "../AskAi.tsx";
 import { CanvasTopBar } from "../canvas/topbar/CanvasTopBar.tsx";
 import CanvasArea from "../canvas/CanvasArea.tsx";
 import { AddBlocksDialog } from "./AddBlocksDialog.tsx";
+import { useTranslation } from "react-i18next";
 
 const TopBar = lazy(() => import("../topbar/Topbar.tsx"));
 
@@ -57,6 +58,7 @@ const RootLayout: ComponentType = () => {
     setActivePanelIndex(activePanelIndex === index ? null : index);
   };
 
+  const { t } = useTranslation(); 
   return (
     <div className="h-screen w-screen bg-background text-foreground">
       <TooltipProvider>
@@ -90,8 +92,7 @@ const RootLayout: ComponentType = () => {
               {activePanelIndex !== null && (
                 <ScrollArea className="h-full">
                   <div className="flex flex-col p-2">
-                    <h2 className="h-10 text-base font-bold">{menuItems[activePanelIndex].label}</h2>
-
+                    <h2 className="h-10 text-base font-bold">{t(menuItems[activePanelIndex].label)}</h2>
                     <div className="flex-1">
                       <Suspense fallback={<div>Loading...</div>}>
                         {React.createElement(menuItems[activePanelIndex].component, {})}

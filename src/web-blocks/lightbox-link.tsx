@@ -5,7 +5,7 @@ import { Checkbox, Numeric, SelectOption, SingleLineText, Styles } from "@chaibu
 import EmptySlot from "./empty-slot.tsx";
 import { addForcedClasses } from "./helper.ts";
 import { ChaiBlockStyles, ChaiRenderBlockProps } from "../core/types/types.ts";
-import { t } from "./box";
+
 
 type LightBoxLinkProps = {
   href: string;
@@ -65,31 +65,30 @@ const LightBoxLinkBlock = (props: ChaiRenderBlockProps<LightBoxLinkProps>) => {
     dangerouslySetInnerHTML: { __html: content },
   });
 };
-
 const Config = {
   type: "LightBoxLink",
-  label: t("web_blocks.lightbox_link"),
+  label: "web_blocks.lightbox_link",
   category: "core",
   icon: ImageIcon,
   group: "basic",
   props: {
     styles: Styles({ default: "" }),
-    content: SingleLineText({ title: t("web_blocks.content"), default: "Link text or drop blocks inside" }),
-    href: SingleLineText({ title: t("web_blocks.href"), default: "" }),
+    content: SingleLineText({ title: "web_blocks.content", default: "Link text or drop blocks inside" }),
+    href: SingleLineText({ title: "web_blocks.href", default: "" }),
     hrefType: SelectOption({
-      title: t("web_blocks.type"),
+      title: "web_blocks.type",
       default: "video",
       options: [
-        { value: "video", title: t("web_blocks.video") },
-        { value: "iframe", title: t("web_blocks.iframe") },
-        { value: "inline", title: t("web_blocks.inline") },
-        { value: "ajax", title: t("web_blocks.ajax") },
+        { value: "video", title: "web_blocks.video" },
+        { value: "iframe", title: "web_blocks.iframe" },
+        { value: "inline", title: "web_blocks.inline" },
+        { value: "ajax", title: "web_blocks.ajax" },
       ],
     }),
-    autoplay: Checkbox({ title: t("web_blocks.autoplay"), default: false }),
-    maxWidth: Numeric({ title: t("web_blocks.max_width"), default: "" }),
-    backdropColor: SingleLineText({ title: t("web_blocks.backdrop_color"), default: "" }),
-    galleryName: SingleLineText({ title: t("web_blocks.gallery_name"), default: "" }),
+    autoplay: Checkbox({ title: "web_blocks.autoplay", default: false }),
+    maxWidth: Numeric({ title: "web_blocks.max_width", default: "" }),
+    backdropColor: SingleLineText({ title: "backdrop_color", default: "" }),
+    galleryName: SingleLineText({ title: "web_blocks.gallery_name", default: "" }),
   },
   canAcceptBlock: (type: string) => type !== "Link" && type !== "LightBoxLink",
 };

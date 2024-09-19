@@ -33,11 +33,12 @@ const NestedOptions = ({ heading, items }: any) => {
     const setProps = map(currentClasses, "property");
     return intersection(properties, setProps).length > 0;
   }, [currentClasses, items]);
+
   return (
     <details>
       <summary className="my-px cursor-default rounded-md bg-gray-50 p-px px-2 text-[11px] text-foreground">
         <div className="inline">
-          {t(heading)}
+          {t(heading.toLowerCase())}
           {isAnyPropertySet ? (
             <span
               className={`ml-1 mr-2 inline-block h-[8px] w-[8px] rounded-full ${

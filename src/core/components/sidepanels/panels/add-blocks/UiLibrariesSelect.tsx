@@ -34,14 +34,14 @@ export function UILibrariesSelect({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <div className="flex flex-col gap-y-1">
-          <span className="text-xs font-bold text-gray-500">{t("Choose Library")}</span>
+          <span className="text-xs font-bold text-gray-500">{t("choose_library")}</span>
           <Button
             variant="outline"
             size="sm"
             role="combobox"
             aria-expanded={open}
             className="w-[200px] justify-between">
-            {library ? uiLibraries.find((uiLibrary) => uiLibrary.uuid === library)?.name : t("Select library")}
+            {library ? t(uiLibraries.find((uiLibrary) => uiLibrary.uuid === library)?.name) : t("choose_library")}
             <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </div>
@@ -49,7 +49,7 @@ export function UILibrariesSelect({
       <PopoverContent className="w-[200px] p-0">
         <Command>
           <CommandList>
-            <CommandEmpty>No library found.</CommandEmpty>
+            <CommandEmpty>{t("no_library_found")}</CommandEmpty>
             <CommandGroup>
               {uiLibraries.map((uiLibrary) => (
                 <CommandItem

@@ -153,7 +153,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   if (id === ROOT_TEMP_KEY) {
     return (
       <button onClick={() => setOpen(ROOT_TEMP_KEY)} className="mb-10 w-full rounded bg-gray-100 p-1 hover:bg-gray-200">
-        + {t("Add block")}
+        + {t("add_block")}
       </button>
     );
   }
@@ -394,11 +394,11 @@ const ListTree = () => {
       <div>
         <div className="flex h-full w-full items-center justify-center p-8 text-center">
           <p className="mb-1.5 text-sm text-gray-400">
-            {t("Page is empty.")}
+            {t("page_is_empty")}
             <br />
             <br />
             <Button onClick={() => setOpen(ROOT_TEMP_KEY)} variant="default" size="sm">
-              {t("Add Block")}
+              {t("add_block")}
             </Button>
           </p>
         </div>

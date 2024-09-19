@@ -2,7 +2,6 @@ import * as React from "react";
 import { TextIcon } from "@radix-ui/react-icons";
 import { MultilineText, Styles } from "@chaibuilder/runtime/controls";
 import { isNull } from "lodash-es";
-import { t } from "./box.tsx";
 
 /**
  * Heading component
@@ -32,14 +31,14 @@ const ParagraphBlock = (
 
 const Config = {
   type: "Paragraph",
-  label: t("web_blocks.paragraph"),
+  label: "web_blocks.paragraph",
   category: "core",
   icon: TextIcon,
   group: "typography",
   props: {
     styles: Styles({ default: "" }),
     content: MultilineText({
-      title: t("web_blocks.content"),
+      title: "web_blocks.content",
       default:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.",
     }),

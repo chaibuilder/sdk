@@ -1,7 +1,6 @@
 import * as React from "react";
 import { MultilineText, Styles } from "@chaibuilder/runtime/controls";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
-import { t } from "./box.tsx";
 
 const SpanBlock = (
   props: ChaiBlock & {
@@ -24,12 +23,12 @@ const SpanBlock = (
 
 const Config = {
   type: "Span",
-  label: t("web_blocks.span"),
+  label: "web_blocks.span",
   category: "core",
   group: "typography",
   props: {
     styles: Styles({ default: "" }),
-    content: MultilineText({ title: t("web_blocks.content"), default: "" }),
+    content: MultilineText({ title: "web_blocks.content", default: "" }),
   },
   canAcceptBlock: () => true,
 };

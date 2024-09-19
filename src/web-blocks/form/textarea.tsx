@@ -40,21 +40,21 @@ const TextAreaBlock = (
 
 const Config = {
   type: "TextArea",
-  label: "TextArea",
+  label: "web_blocks.textarea",
   category: "core",
   icon: InputIcon,
   group: "form",
   props: {
-    fieldName: SingleLineText({ title: "Field Name", default: "textarea" }),
-    showLabel: Checkbox({ title: "Show label", default: true }),
+    fieldName: SingleLineText({ title: "web_blocks.field_name", default: "textarea" }),
+    showLabel: Checkbox({ title: "web_blocks.show_label", default: true }),
     styles: Styles({ default: "" }),
     inputStyles: Styles({ default: "w-full p-1" }),
-    label: SingleLineText({ title: "Label", default: "Label" }),
+    label: SingleLineText({ title: "web_blocks.label", default: "Label" }),
     placeholder: SingleLineText({
-      title: "Placeholder",
+      title: "web_blocks.placeholder",
       default: "Placeholder",
     }),
-    _rows: Numeric({ title: "Rows", default: 3 }),
+    _rows: Numeric({ title: "web_blocks.rows", default: 3 }),
   },
 };
 
