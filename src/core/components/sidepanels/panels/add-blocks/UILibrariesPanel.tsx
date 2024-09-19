@@ -199,7 +199,7 @@ const UILibrarySection = () => {
                         "flex w-full cursor-pointer items-center justify-between rounded-md p-1 text-sm transition-all ease-in-out hover:bg-gray-200",
                         group === selectedGroup ? "bg-blue-500 text-white hover:bg-blue-600" : "",
                       )}>
-                      <span>{capitalize(group)}</span>
+                      <span>{t(group.toLowerCase())}</span>
                       <CaretRightIcon className="ml-2 h-5 w-5" />
                     </div>
                   )),
