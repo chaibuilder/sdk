@@ -7,6 +7,7 @@ import { activePanelAtom } from "../../../../atoms/ui";
 import { first } from "lodash-es";
 import { getBlocksFromHTML } from "../../../../import-html/html-to-json";
 import { OUTLINE_KEY } from "../../../../constants/STRINGS.ts";
+import { useAddBlocksModal } from "../../../../hooks/useAddBlocks.ts";
 
 const ImportHTML = () => {
   const { t } = useTranslation();
@@ -14,11 +15,13 @@ const ImportHTML = () => {
   const { addPredefinedBlock } = useAddBlock();
   const [ids]: any = useSelectedBlockIds();
   const [, setActivePanel] = useAtom(activePanelAtom);
+  const [, setOpen] = useAddBlocksModal();
 
   const importComponents = () => {
     const blocks = getBlocksFromHTML(code);
     addPredefinedBlock([...blocks], first(ids) || null);
     setCode("");
+    setOpen("");
     setActivePanel(OUTLINE_KEY);
   };
 

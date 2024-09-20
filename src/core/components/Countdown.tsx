@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 
+const SECONDS = 4;
+
 export default function Countdown() {
-  const [timeLeft, setTimeLeft] = useState(3);
+  const [timeLeft, setTimeLeft] = useState(SECONDS);
   const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
@@ -12,24 +14,24 @@ export default function Countdown() {
       return () => clearTimeout(timer);
     } else if (timeLeft <= 0) {
       setIsActive(false);
-      setTimeLeft(3);
+      setTimeLeft(SECONDS);
     }
   }, [isActive, timeLeft]);
 
   const startTimer = () => {
     setIsActive(true);
-    setTimeLeft(3);
+    setTimeLeft(SECONDS);
   };
 
   useEffect(() => {
-    if (timeLeft === 3) {
+    if (timeLeft === SECONDS) {
       startTimer();
     }
   }, [timeLeft]);
 
   const radius = 18;
   const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference * (1 - (3 - timeLeft) / 3);
+  const strokeDashoffset = circumference * (1 - (SECONDS - timeLeft) / SECONDS);
 
   return (
     <div className="relative h-4 w-4">

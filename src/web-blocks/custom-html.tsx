@@ -3,7 +3,6 @@ import { CodeIcon } from "@radix-ui/react-icons";
 import { Code, Styles } from "@chaibuilder/runtime/controls";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
-
 const CustomHTMLBlock = (
   props: ChaiBlock & {
     blockProps: Record<string, string>;
@@ -38,7 +37,7 @@ const Config = {
     styles: Styles({ default: "" }),
     htmlCode: Code({
       title: "web_blocks.html_code",
-      default: "<div><p>" + "web_blocks.default_snippet" + "</p></div>",
+      default: "<div><p>Enter your HTML code here...</p></div>",
       placeholder: "web_blocks.placeholder",
     }),
   },

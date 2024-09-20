@@ -20,7 +20,7 @@ export const AskAIStyles = ({ blockId }: { blockId: string | undefined }) => {
   const onComplete = (response?: AskAiResponse) => {
     const { usage } = response || {};
     if (!error && usage) setUsage(usage);
-    setTimeout(() => setUsage(undefined), 3000);
+    setTimeout(() => setUsage(undefined), 4000);
     if (!error) setPrompt("");
   };
 
