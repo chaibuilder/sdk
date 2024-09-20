@@ -1,23 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { isEmpty, startCase } from "lodash-es";
+import { isEmpty } from "lodash-es";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
 import { createApi } from "unsplash-js";
-import {
-  Button,
-  Input,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  ScrollArea,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../../../../../ui";
+import { Button, Input, Popover, PopoverContent, PopoverTrigger, ScrollArea } from "../../../../../ui";
 import { useBuilderProp } from "../../../../hooks";
 import { useDebouncedState } from "@react-hookz/web";
 import { Loader } from "lucide-react";
+import ChaiSelect from "../../../ChaiSelect.tsx";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const fetchImage = async (payload: any, accessKey: string) =>
@@ -89,12 +78,12 @@ const UnsplashImages = ({ isModalView, onSelect }: { isModalView: boolean; onSel
 
   if (isEmpty(unsplashAccessKey)) {
     return (
-      <div className="h-full flex flex-col items-center justify-center">
+      <div className="flex h-full flex-col items-center justify-center">
         <p className="max-w-3xl text-center text-gray-500">
           To enable Unsplash, kindly provide your
           <a
             href="https://unsplash.com/documentation#public-authentication"
-            className="underline px-1 hover:text-blue-400"
+            className="px-1 underline hover:text-blue-400"
             target="_blank"
             rel="noopener noreferrer">
             Unsplash Access Key
@@ -123,43 +112,67 @@ const UnsplashImages = ({ isModalView, onSelect }: { isModalView: boolean; onSel
             className="z-[9999] flex w-max items-center justify-center">
             <div>
               <div className="py-1 text-sm font-medium">Orientation</div>
-              <Select defaultValue={orientation} onValueChange={(_v) => setOrientation(_v as any)}>
-                <SelectTrigger className="h-auto w-40 p-1 px-3">
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent className="z-[9999]">
-                  <SelectItem value={""}>All</SelectItem>
-                  <SelectItem value="landscape">Landscape</SelectItem>
-                  <SelectItem value="portrait">Portrait</SelectItem>
-                  <SelectItem value="squarish">Square</SelectItem>
-                </SelectContent>
-              </Select>
+              <ChaiSelect
+                options={[
+                  {
+                    value: "",
+                    label: "All",
+                  },
+                  {
+                    value: "landscape",
+                    label: "Landscape",
+                  },
+                  {
+                    value: "portrait",
+                    label: "Portrait",
+                  },
+                  {
+                    value: "squarish",
+                    label: "Square",
+                  },
+                ]}
+                defaultValue={orientation}
+                onValueChange={(_v) => setOrientation(_v as any)}
+              />
               <div className="pb-1 pt-2 text-sm font-medium">Color</div>
-              <Select defaultValue={color} onValueChange={(_v) => setColor(_v as any)}>
-                <SelectTrigger className="h-auto w-40 p-1 px-3">
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent className="z-[9999]">
-                  <SelectItem value={""}>All</SelectItem>
-                  {[
-                    "black_and_white",
-                    "black",
-                    "white",
-                    "yellow",
-                    "orange",
-                    "red",
-                    "purple",
-                    "magenta",
-                    "green",
-                    "teal",
-                    "blue",
-                  ].map((_color) => (
-                    <SelectItem key={_color} value={_color}>
-                      {startCase(_color)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <ChaiSelect
+                options={[
+                  {
+                    value: "",
+                    label: "All",
+                  },
+                  {
+                    value: "black_and_white",
+                    label: "Black and White",
+                  },
+                  {
+                    value: "black",
+                    label: "Black",
+                  },
+                  {
+                    value: "white",
+                    label: "White",
+                  },
+                  {
+                    value: "night",
+                    label: "Night",
+                  },
+                  {
+                    value: "warm",
+                    label: "Warm",
+                  },
+                  {
+                    value: "cool",
+                    label: "Cool",
+                  },
+                  {
+                    value: "sepia",
+                    label: "Sepia",
+                  },
+                ]}
+                defaultValue={color}
+                onValueChange={(_v) => setColor(_v as any)}
+              />
             </div>
           </PopoverContent>
         </Popover>
@@ -209,7 +222,7 @@ const UnsplashImages = ({ isModalView, onSelect }: { isModalView: boolean; onSel
         )}
         {isFetching && (
           <div className="flex items-center justify-center py-8">
-            <Loader className="animate-spin w-6 h-6" /> &nbsp;Loading...
+            <Loader className="h-6 w-6 animate-spin" /> &nbsp;Loading...
           </div>
         )}
         {!isEmpty(images) && page < totalPages && !isFetching && (

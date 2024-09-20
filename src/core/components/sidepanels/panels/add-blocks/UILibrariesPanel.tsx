@@ -173,7 +173,13 @@ const UILibrarySection = () => {
     }, 300);
   };
 
-  if (isLoading) return <Skeleton className="h-full w-full" />;
+  if (isLoading)
+    return (
+      <div className="mt-4 grid h-full w-full grid-cols-12 gap-2">
+        <Skeleton className="col-span-3 h-full" />
+        <Skeleton className="col-span-9 h-full" />
+      </div>
+    );
 
   return (
     <>

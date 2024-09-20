@@ -23,7 +23,7 @@ const TopBar = lazy(() => import("../topbar/Topbar.tsx"));
 
 const menuItems = [
   { icon: <Layers size={20} />, label: "sidebar.outline", component: Outline },
-  { icon: <EditIcon size={20} />, label: "sidebar.edit_block", component: SettingsPanel },
+  { icon: <EditIcon size={16} />, label: "sidebar.edit_block", component: SettingsPanel },
   { icon: <LightningBoltIcon className="size-5" />, label: "sidebar.ai_assistant", component: AskAI },
   {
     icon: <PaintBucketIcon size={20} />,
