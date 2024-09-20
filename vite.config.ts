@@ -62,6 +62,7 @@ export default defineConfig({
         "tailwindcss-palette-generator",
         "clsx",
         "cmdk",
+        "react-event-hook",
         "framer-motion",
         "date-fns",
         "flagged",

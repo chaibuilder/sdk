@@ -225,7 +225,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
                 asChild>
                 <PlusIcon size={"18"} />
               </TooltipTrigger>
-              <TooltipContent className="isolate">{t("Add block")}</TooltipContent>
+              <TooltipContent className="isolate z-[9999]">{t("Add block")}</TooltipContent>
             </Tooltip>
           ) : null}
           {outlineItems.map((outlineItem) => (
@@ -235,7 +235,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
                 asChild>
                 {React.createElement(outlineItem.item, { blockId: id })}
               </TooltipTrigger>
-              <TooltipContent className="isolate">{outlineItem.tooltip}</TooltipContent>
+              <TooltipContent className="isolate z-10">{outlineItem.tooltip}</TooltipContent>
             </Tooltip>
           ))}
         </div>

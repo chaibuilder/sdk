@@ -18,6 +18,7 @@ import { useTranslation } from "react-i18next";
 import { LightningBoltIcon } from "@radix-ui/react-icons";
 import SettingsPanel from "../settings/SettingsPanel.tsx";
 import { AskAI } from "../AskAi.tsx";
+import { BUILDER_EVENTS, useChaiBuilderMsgListener } from "../../events.ts";
 
 const TopBar = lazy(() => import("../topbar/Topbar.tsx"));
 
@@ -46,6 +47,12 @@ const useAutoSave = () => {
  * RootLayout is a React component that renders the main layout of the application.
  */
 const RootLayout: ComponentType = () => {
+  const [activePanelIndex, setActivePanelIndex] = useState(0);
+  useChaiBuilderMsgListener(({ name }) => {
+    if (name === BUILDER_EVENTS.SHOW_SETTINGS) {
+      setActivePanelIndex(1);
+    }
+  });
   const topComponents = useBuilderProp("sideBarComponents.top", []);
   /**
    * Prevents the context menu from appearing in production mode.
@@ -60,7 +67,6 @@ const RootLayout: ComponentType = () => {
   useExpandTree();
   useAutoSave();
 
-  const [activePanelIndex, setActivePanelIndex] = useState(0);
   const handleMenuItemClick = (index: number) => {
     setActivePanelIndex(activePanelIndex === index ? null : index);
   };

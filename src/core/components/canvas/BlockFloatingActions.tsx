@@ -1,7 +1,7 @@
 import { flip } from "@floating-ui/dom";
 import { shift, useFloating } from "@floating-ui/react-dom";
 import { get, isEmpty, pick } from "lodash-es";
-import { ArrowUpIcon, CopyIcon, DragHandleDots2Icon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
+import { ArrowUpIcon, CopyIcon, DragHandleDots2Icon, GearIcon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
 import { canAddChildBlock, canDeleteBlock, canDuplicateBlock } from "../../functions/block-helpers.ts";
 import { ChaiBlock } from "../../types/ChaiBlock";
 import {
@@ -17,6 +17,7 @@ import { inlineEditingActiveAtom } from "../../atoms/ui.ts";
 import { draggedBlockAtom } from "./dnd/atoms.ts";
 import { useFeature } from "flagged";
 import { useAddBlocksModal } from "../../hooks/useAddBlocks.ts";
+import { BUILDER_EVENTS, emitChaiBuilderMsg } from "../../events.ts";
 
 /**
  * @param block
@@ -91,7 +92,7 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
           setHighlighted(null);
         }}
         onKeyDown={(e) => e.stopPropagation()}
-        className="z-[99999] flex h-6 items-center bg-blue-500 py-2 text-xs text-white">
+        className="isolate z-10 flex h-6 items-center bg-blue-500 py-2 text-xs text-white">
         {parentId && (
           <ArrowUpIcon
             className="hover:scale-105"
@@ -110,6 +111,10 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
           {canDuplicateBlock(get(block, "_type", "")) ? (
             <CopyIcon className="hover:scale-105" onClick={() => duplicateBlock([block?._id])} />
           ) : null}
+          <GearIcon
+            className="text-white hover:scale-105"
+            onClick={() => emitChaiBuilderMsg({ name: BUILDER_EVENTS.SHOW_SETTINGS })}
+          />
           {canDeleteBlock(get(block, "_type", "")) ? (
             <TrashIcon className="hover:scale-105" onClick={() => removeBlock([block?._id])} />
           ) : null}
