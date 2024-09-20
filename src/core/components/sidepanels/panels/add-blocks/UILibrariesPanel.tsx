@@ -17,6 +17,7 @@ import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { useAddBlocksModal } from "../../../../hooks/useAddBlocks.ts";
 import { selectedLibraryAtom } from "../../../../atoms/ui.ts";
+import { filter } from "lodash";
 
 const BlockCard = ({
   block,
@@ -181,6 +182,10 @@ const UILibrarySection = () => {
       </div>
     );
 
+  // split the blocks into 2 arrays
+
+  const firstBlocks = filter(blocks, (_block, index: number) => index % 2 === 0);
+  const secondBlocks = filter(blocks, (_block, index: number) => index % 2 === 1);
   return (
     <>
       <div className="relative flex h-full max-h-full flex-col overflow-hidden bg-background">
@@ -214,11 +219,20 @@ const UILibrarySection = () => {
             onMouseEnter={() => (timeoutRef.current ? clearTimeout(timeoutRef.current) : null)}
             className="z-10 -mt-2 flex h-full max-h-full w-full flex-col gap-2 border-l border-gray-300 transition-all ease-linear">
             <div className="grid grid-cols-2 gap-2 px-2">
-              {React.Children.toArray(
-                blocks.map((block: UiLibraryBlock) => (
-                  <BlockCard block={block} library={library} closePopover={() => setOpen("")} />
-                )),
-              )}
+              <div className="flex flex-col gap-1">
+                {React.Children.toArray(
+                  firstBlocks.map((block: UiLibraryBlock) => (
+                    <BlockCard block={block} library={library} closePopover={() => setOpen("")} />
+                  )),
+                )}
+              </div>
+              <div className="flex flex-col gap-1">
+                {React.Children.toArray(
+                  secondBlocks.map((block: UiLibraryBlock) => (
+                    <BlockCard block={block} library={library} closePopover={() => setOpen("")} />
+                  )),
+                )}
+              </div>
             </div>
             <br />
             <br />
