@@ -57,7 +57,7 @@ function ChaiBuilderDefault() {
         try {
           const response = await axios.get(uiLibrary.url + "/blocks.json");
           const blocks = await response.data;
-          return blocks.map((b) => ({ ...b, preview: uiLibrary.url + b.preview }));
+          return blocks.map((b) => ({ ...b, preview: uiLibrary.url.replace("chaiblocks", "") + b.preview }));
         } catch (error) {
           return [];
         }

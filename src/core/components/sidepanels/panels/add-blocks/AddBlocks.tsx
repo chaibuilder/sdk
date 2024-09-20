@@ -20,6 +20,9 @@ import { useChaiBlocks } from "@chaibuilder/runtime";
 import { mergeClasses, UILibraries } from "../../../../main";
 import { useAddBlocksModal } from "../../../../hooks/useAddBlocks.ts";
 import { canAcceptChildBlock, canBeNestedInside } from "../../../../functions/block-helpers.ts";
+import { sortBy } from "lodash";
+
+const CORE_GROUPS = ["basic", "typography", "media", "layout", "form", "advanced", "other"];
 
 export const ChaiBuilderBlocks = ({ groups, blocks }: any) => {
   const { t } = useTranslation();
@@ -27,32 +30,34 @@ export const ChaiBuilderBlocks = ({ groups, blocks }: any) => {
   const [parentId] = useAddBlocksModal();
   const parentType = find(allBlocks, (block) => block._id === parentId)?._type;
   return React.Children.toArray(
-    map(groups, (group: string) =>
-      reject(filter(values(blocks), { group }), { hidden: true }).length ? (
-        <Accordion type="single" value={group} collapsible className="w-full">
-          <AccordionItem value={group}>
-            <AccordionTrigger className="rounded-md bg-gray-100 px-4 py-2 capitalize hover:no-underline">
-              {capitalize(t(group.toLowerCase()))}
-            </AccordionTrigger>
-            <AccordionContent className="mx-auto max-w-xl p-3">
-              <div className="grid grid-cols-4 gap-2">
-                {React.Children.toArray(
-                  reject(filter(values(blocks), { group }), { hidden: true }).map((block) => {
-                    return (
-                      <CoreBlock
-                        block={block}
-                        disabled={
-                          !canAcceptChildBlock(parentType, block.type) || !canBeNestedInside(parentType, block.type)
-                        }
-                      />
-                    );
-                  }),
-                )}
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      ) : null,
+    map(
+      sortBy(groups, (group: string) => (CORE_GROUPS.indexOf(group) === -1 ? 99 : CORE_GROUPS.indexOf(group))),
+      (group: string) =>
+        reject(filter(values(blocks), { group }), { hidden: true }).length ? (
+          <Accordion type="single" value={group} collapsible className="w-full">
+            <AccordionItem value={group}>
+              <AccordionTrigger className="rounded-md bg-gray-100 px-4 py-2 capitalize hover:no-underline">
+                {capitalize(t(group.toLowerCase()))}
+              </AccordionTrigger>
+              <AccordionContent className="mx-auto max-w-xl p-3">
+                <div className="grid grid-cols-4 gap-2">
+                  {React.Children.toArray(
+                    reject(filter(values(blocks), { group }), { hidden: true }).map((block) => {
+                      return (
+                        <CoreBlock
+                          block={block}
+                          disabled={
+                            !canAcceptChildBlock(parentType, block.type) || !canBeNestedInside(parentType, block.type)
+                          }
+                        />
+                      );
+                    }),
+                  )}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        ) : null,
     ),
   );
 };
