@@ -37,7 +37,7 @@ const Config = {
   props: {
     level: SelectOption({
       title: "web_blocks.level",
-      default: "h1",
+      default: "h2",
       binding: false,
       options: [
         { value: "h1", title: "h1" },
