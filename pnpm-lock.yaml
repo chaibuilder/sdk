@@ -174,6 +174,7 @@ dependencies:
   react-colorful: 5.6.1_biqbaboplfbrettd7655fr4n2y
   react-dom: 18.2.0_react@18.2.0
   react-email: 2.1.3_lftkgawb62lo6pikx3b7h4etqe
+  react-event-hook: 3.1.2_biqbaboplfbrettd7655fr4n2y
   react-hotkeys-hook: 4.4.1_biqbaboplfbrettd7655fr4n2y
   react-i18next: 13.0.1_hv3wqpusfuaxw6ocr52s2col5q
   react-icons: 5.3.0_react@18.2.0
@@ -229,7 +230,6 @@ devDependencies:
   prettier: 3.3.0
   prettier-plugin-tailwindcss: 0.6.1_prettier@3.3.0
   prop-types: 15.8.1
-  react-event-hook: 3.1.2_biqbaboplfbrettd7655fr4n2y
   react-router-dom: 6.19.0_biqbaboplfbrettd7655fr4n2y
   tailwindcss: 3.3.5_ts-node@10.9.2
   tailwindcss-animate: 1.0.6_tailwindcss@3.3.5
@@ -10760,7 +10760,7 @@ packages:
     dependencies:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-    dev: true
+    dev: false
 
   /react-frame-component/5.2.6_v2m5e27vhdewzwhryxwfaorcca:
     resolution: {integrity: sha512-CwkEM5VSt6nFwZ1Op8hi3JB5rPseZlmnp5CGiismVTauE6S4Jsc4TNMlT0O7Cts4WgIC3ZBAQ2p1Mm9XgLbj+w==}
