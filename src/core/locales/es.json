@@ -401,5 +401,15 @@
     "make_shorter": "Hacer más corto",
     "add_emojis": "Agregar emojis",
     "randomize": "Aleatorizar"
-  }
+  },
+  "sidebar": {
+    "outline": "Contorno",
+    "edit_block": "Editar bloque",
+    "ai_assistant": "Asistente de IA",
+    "theme": "Tema"
+  },
+  "remove_context": "Eliminar contexto",
+  "yes_delete": "Sí, Eliminar",
+  "ai_context_updated": "Contexto de IA actualizado",
+  "you_can_now_ask_ai_to_edit_your_content": "Ahora puedes preguntarle al AI que edite tu contenido."
 }

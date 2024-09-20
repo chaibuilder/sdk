@@ -409,5 +409,9 @@
     "edit_block": "Edit Block",
     "ai_assistant": "AI Assistant",
     "theme": "Theme"
-  }
+  },
+  "remove_context": "Remove context",
+  "yes_delete": "Yes, Delete",
+  "ai_context_updated": "AI Context Updated",
+  "you_can_now_ask_ai_to_edit_your_content": "You can now ask AI to edit your content."
 }
