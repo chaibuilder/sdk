@@ -223,7 +223,7 @@ export const AISetContext = () => {
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>{t("remove_context?")}</AlertDialogTitle>
+                    <AlertDialogTitle>{t("remove_context")} ?</AlertDialogTitle>
                     <AlertDialogDescription></AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
@@ -233,7 +233,7 @@ export const AISetContext = () => {
                         setContext("");
                         saveContext();
                       }}>
-                      Yes, Delete
+                      {t("yes_delete")}
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
