@@ -7,6 +7,7 @@ import { useState } from "react";
 import axios from "axios";
 import ptBR from "./__dev/pt-BR.json";
 import es from "./__dev/es.json";
+import { LayersIcon } from "lucide-react";
 
 loadWebBlocks();
 
@@ -62,6 +63,15 @@ function ChaiBuilderDefault() {
         }
       }}
       uiLibraries={uiLibraries}
+      sideBarComponents={{
+        top: [
+          {
+            icon: <LayersIcon size={20} />,
+            label: "SEO Panel",
+            component: () => <div>SEO Panel</div>,
+          },
+        ],
+      }}
     />
   );
 }

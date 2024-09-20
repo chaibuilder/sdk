@@ -127,7 +127,7 @@ export interface ChaiBuilderEditorProps {
 
   sideBarComponents?: {
     bottom?: ReactComponentType[];
-    top?: { icon: ReactComponentType | string; name: string; panel: ReactComponentType }[];
+    top?: { icon: ReactNode; label: string; component: ReactComponentType }[];
   };
 
   topBarComponents?: {

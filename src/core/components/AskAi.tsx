@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useAskAi } from "../hooks/useAskAi.ts";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Accordion,
   AccordionContent,

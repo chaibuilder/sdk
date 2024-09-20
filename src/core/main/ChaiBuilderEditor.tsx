@@ -4,7 +4,7 @@ import { DevTools } from "jotai-devtools";
 import i18n from "../locales/load";
 import { FlagsProvider } from "flagged";
 import { useEffect, useMemo } from "react";
-import { omit } from "lodash-es";
+import { each, omit } from "lodash-es";
 import { FEATURE_TOGGLES } from "../../FEATURE_TOGGLES.tsx";
 import { chaiBuilderPropsAtom } from "../atoms/builder.ts";
 import { ErrorBoundary } from "../components/ErrorBoundary";
@@ -21,7 +21,6 @@ import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { useAtom } from "jotai/index";
 import { builderSaveStateAtom } from "../hooks/useSavePage.ts";
 import { PreviewScreen } from "../components/PreviewScreen.tsx";
-import { each } from "lodash";
 
 const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   const [, setAllBlocks] = useBlocksStore();

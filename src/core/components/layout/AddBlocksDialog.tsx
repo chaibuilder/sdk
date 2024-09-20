@@ -8,7 +8,7 @@ import {
 } from "../../../ui";
 import { useTranslation } from "react-i18next";
 import AddBlocksPanel from "../sidepanels/panels/add-blocks/AddBlocks.tsx";
-import { isEmpty } from "lodash";
+import { isEmpty } from "lodash-es";
 import { useAddBlocksModal } from "../../hooks/useAddBlocks.ts";
 
 export const AddBlocksDialog = () => {

@@ -46,6 +46,7 @@ const useAutoSave = () => {
  * RootLayout is a React component that renders the main layout of the application.
  */
 const RootLayout: ComponentType = () => {
+  const topComponents = useBuilderProp("sideBarComponents.top", []);
   /**
    * Prevents the context menu from appearing in production mode.
    * @param {MouseEvent<HTMLDivElement>} e - The mouse event.
@@ -65,6 +66,7 @@ const RootLayout: ComponentType = () => {
   };
 
   const { t } = useTranslation();
+  const sidebarMenuItems = [...menuItems, ...topComponents];
   return (
     <div className="h-screen w-screen bg-background text-foreground">
       <TooltipProvider>
@@ -78,7 +80,7 @@ const RootLayout: ComponentType = () => {
           </div>
           <main className="relative flex h-full flex-1 flex-row">
             <div className="flex w-12 flex-col items-center border-r py-2">
-              {menuItems.map((item, index) => (
+              {sidebarMenuItems.map((item, index) => (
                 <button
                   key={index}
                   className={`mb-2 rounded-lg p-2 text-gray-500 transition-colors ${
@@ -99,12 +101,12 @@ const RootLayout: ComponentType = () => {
                 <ScrollArea className="no-scrollbar h-full">
                   <div className="flex flex-col p-2">
                     <h2 className="-mt-1 flex h-10 items-center space-x-1 text-base font-bold">
-                      {menuItems[activePanelIndex].icon}
-                      <span>{t(menuItems[activePanelIndex].label)}</span>
+                      {sidebarMenuItems[activePanelIndex].icon}
+                      <span>{t(sidebarMenuItems[activePanelIndex].label)}</span>
                     </h2>
                     <div className="flex-1 pr-2">
                       <Suspense fallback={<div>Loading...</div>}>
-                        {React.createElement(menuItems[activePanelIndex].component, {})}
+                        {React.createElement(sidebarMenuItems[activePanelIndex].component, {})}
                       </Suspense>
                     </div>
                   </div>
