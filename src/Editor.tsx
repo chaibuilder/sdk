@@ -16,7 +16,7 @@ function ChaiBuilderDefault() {
   const [aiContext, setAiContext] = useAtom(lsAiContextAtom);
   const [uiLibraries] = useState([
     { uuid: "community-blocks", name: "Community blocks", url: "https://chai-ui-blocks.vercel.app" },
-    { uuid: "ui-blocks", name: "UI Blocks", url: "https://chaibuilder.com/preline" },
+    { uuid: "chaiblocks", name: "UI Blocks", url: "https://chaibuilder.com/chaiblocks" },
   ]);
   return (
     <ChaiBuilderEditor
@@ -25,7 +25,6 @@ function ChaiBuilderDefault() {
       showDebugLogs={true}
       autoSaveSupport={false}
       previewComponent={PreviewWeb}
-      topBarComponents={{ left: [] }}
       blocks={blocks}
       locale={"en"}
       brandingOptions={brandingOptions}
@@ -47,7 +46,7 @@ function ChaiBuilderDefault() {
       }}
       getUILibraryBlock={async (uiLibrary, uiLibBlock) => {
         const response = await axios.get(
-          uiLibrary.url + "/blocks/" + (!uiLibBlock.path ? uiLibBlock.uuid + ".html" : uiLibBlock.path),
+          uiLibrary.url + (!uiLibBlock.path ? "/" + uiLibBlock.uuid + ".html" : "/blocks/" + uiLibBlock.path),
         );
         const html = await response.data;
         const htmlWithoutChaiStudio = html.replace(/---([\s\S]*?)---/g, "");

@@ -255,7 +255,7 @@ export const AISetContext = () => {
 export const AskAI = () => {
   const [ids] = useSelectedBlockIds();
   return (
-    <div className="absolute inset-0 z-50 h-full w-full bg-background p-2">
+    <div>
       <AISetContext />
       <AIUserPrompt blockId={first(ids)} />
     </div>

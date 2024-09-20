@@ -45,16 +45,12 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const [, setOpen] = useAddBlocksModal();
   const { t } = useTranslation();
 
-  //const [, setHighlighted] = useHighlightBlockId();
-
   const [iframe] = useAtom<HTMLIFrameElement>(canvasIframeAtom);
 
   let previousState: boolean | null = null;
   const hasChildren = node.children.length > 0;
 
   const { id, data, isSelected, willReceiveDrop, isDragging, isEditing, handleClick } = node;
-
-  //const debouncedSetHighlighted = useDebouncedCallback((id) => setHighlighted(id), [], 300);
 
   const handleToggle = (event: any) => {
     event.stopPropagation();
@@ -152,7 +148,9 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
 
   if (id === ROOT_TEMP_KEY) {
     return (
-      <button onClick={() => setOpen(ROOT_TEMP_KEY)} className="mb-10 w-full rounded bg-gray-100 p-1 hover:bg-gray-200">
+      <button
+        onClick={() => setOpen(ROOT_TEMP_KEY)}
+        className="mb-10 mt-5 w-full rounded bg-gray-100 p-1 hover:bg-gray-200">
         + {t("add_block")}
       </button>
     );
@@ -180,10 +178,10 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
           setDropAttribute(id, "no");
         }}
         className={cn(
-          "group flex !h-fit w-full items-center justify-between space-x-px !rounded py-px outline-none",
+          "group flex !h-full w-full items-center justify-between space-x-px !rounded py-px outline-none",
           isSelected ? "bg-blue-500 text-white" : "text-gray-600 hover:bg-gray-200 dark:hover:bg-gray-800",
           willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
-          isDragging && "opacity-20"
+          isDragging && "opacity-20",
         )}>
         <div className="flex items-center">
           <div
@@ -223,11 +221,11 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
             <Tooltip>
               <TooltipTrigger
                 onClick={() => setOpen(id)}
-                className="cursor-pointer rounded bg-transparent hover:bg-white hover:text-blue-500"
+                className="cursor-pointer rounded bg-transparent hover:bg-white hover:text-black"
                 asChild>
-                <PlusIcon size={"14"} />
+                <PlusIcon size={"18"} />
               </TooltipTrigger>
-              <TooltipContent className="z-[9999]">{t("Add block")}</TooltipContent>
+              <TooltipContent className="isolate">{t("Add block")}</TooltipContent>
             </Tooltip>
           ) : null}
           {outlineItems.map((outlineItem) => (
@@ -237,7 +235,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
                 asChild>
                 {React.createElement(outlineItem.item, { blockId: id })}
               </TooltipTrigger>
-              <TooltipContent className="z-[9999]">{outlineItem.tooltip}</TooltipContent>
+              <TooltipContent className="isolate">{outlineItem.tooltip}</TooltipContent>
             </Tooltip>
           ))}
         </div>
@@ -305,7 +303,6 @@ const ListTree = () => {
     //@ts-ignore
     setTreeRef(treeRef.current);
   }, [treeRef.current]);
-
 
   const onRename: RenameHandler<any> = ({ id, name, node }) => {
     updateBlockProps([id], { _name: name }, node.data._name);
@@ -406,7 +403,7 @@ const ListTree = () => {
     );
 
   return (
-    <div className={cn("-mx-1 -mt-1 flex h-full select-none flex-col space-y-1")} onClick={() => clearSelection()}>
+    <div className={cn("flex h-full select-none flex-col space-y-1")} onClick={() => clearSelection()}>
       <div
         id="outline-view"
         className="no-scrollbar h-full overflow-y-auto text-xs"
@@ -423,7 +420,7 @@ const ListTree = () => {
           onRename={onRename}
           openByDefault={false}
           onMove={onMove}
-          rowHeight={20}
+          rowHeight={25}
           data={[...filteredTreeData]}
           renderCursor={DefaultCursor}
           onSelect={onSelect}

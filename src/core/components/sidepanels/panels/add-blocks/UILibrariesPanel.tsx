@@ -53,9 +53,6 @@ const BlockCard = ({
       setIsAdding(true);
       const uiBlocks = await getUILibraryBlock(library, block);
       let parent = first(ids);
-      if (isTopLevelSection(first(uiBlocks))) {
-        parent = null;
-      }
       if (!isEmpty(uiBlocks)) addPredefinedBlock(syncBlocksWithDefaults(uiBlocks), parent);
       closePopover();
     },

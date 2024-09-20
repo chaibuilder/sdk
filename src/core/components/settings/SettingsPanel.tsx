@@ -19,14 +19,14 @@ const SettingsPanel: React.FC = () => {
       <div className="p-4 text-center">
         <div className="space-y-4 rounded-xl p-4">
           <MixerHorizontalIcon className="mx-auto text-3xl" />
-          <h1>{t("please_select_a_block_to_ask_ai")}</h1>
+          <h1>{t("please_select_a_block_to_edit")}</h1>
         </div>
       </div>
     );
 
   return (
     <ErrorBoundary>
-      <div className={"relative flex w-full flex-col px-2 pr-4"}>
+      <div className={"relative flex w-full flex-col"}>
         <BlockSettings />
         <BlockStyling />
 
