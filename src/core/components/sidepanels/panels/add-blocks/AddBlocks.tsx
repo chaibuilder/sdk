@@ -1,5 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { capitalize, filter, find, first, groupBy, includes, isEmpty, map, reject, uniq, values } from "lodash-es";
+import {
+  capitalize,
+  filter,
+  find,
+  first,
+  groupBy,
+  includes,
+  isEmpty,
+  map,
+  reject,
+  sortBy,
+  uniq,
+  values,
+} from "lodash-es";
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
 import {
@@ -20,7 +33,6 @@ import { useChaiBlocks } from "@chaibuilder/runtime";
 import { mergeClasses, UILibraries } from "../../../../main";
 import { useAddBlocksModal } from "../../../../hooks/useAddBlocks.ts";
 import { canAcceptChildBlock, canBeNestedInside } from "../../../../functions/block-helpers.ts";
-import { sortBy } from "lodash";
 
 const CORE_GROUPS = ["basic", "typography", "media", "layout", "form", "advanced", "other"];
 

@@ -5,6 +5,7 @@ import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
 import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { useStreamMultipleBlocksProps, useUpdateMultipleBlocksProps } from "./useUpdateBlocksProps.ts";
 import { atom, useAtom } from "jotai";
+import { AskAiResponse } from "../types/chaiBuilderEditorProps.ts";
 
 function getChildBlocks(allBlocks: ChaiBlock[], blockId: string, blocks: any[]) {
   blocks.push(find(allBlocks, { _id: blockId }) as ChaiBlock);
@@ -32,7 +33,12 @@ export const useAskAi = () => {
   const [blocks] = useBlocksStore();
   return {
     askAi: useCallback(
-      async (type: "styles" | "content", blockId: string, prompt: string, onComplete?: () => void) => {
+      async (
+        type: "styles" | "content",
+        blockId: string,
+        prompt: string,
+        onComplete?: (response?: AskAiResponse) => void,
+      ) => {
         if (!callBack) return;
         setProcessing(true);
         setError(null);
@@ -42,7 +48,8 @@ export const useAskAi = () => {
               ? cloneDeep(getBlockWithChildren(blockId, blocks))
               : [cloneDeep(blocks.find((block) => block._id === blockId))];
           set(aiBlocks, "0._parent", null);
-          const { blocks: updatedBlocks, error } = await callBack(type, prompt, aiBlocks);
+          const askAiResponse = await callBack(type, prompt, aiBlocks);
+          const { blocks: updatedBlocks, error } = askAiResponse;
           if (error) {
             setError(error);
             return;
@@ -52,6 +59,7 @@ export const useAskAi = () => {
           } else {
             updateBlocksWithStream(updatedBlocks);
           }
+          if (onComplete) onComplete(askAiResponse);
         } catch (e) {
           setError(e);
         } finally {

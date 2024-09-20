@@ -43,7 +43,7 @@ function ChaiBuilderDefault() {
       aiContext={aiContext}
       askAiCallBack={async (type: "styles" | "content", prompt: string, blocks: ChaiBlock[]) => {
         console.log("askAiCallBack", type, prompt, blocks);
-        return new Promise((resolve) => resolve({ error: new Error("Not implemented") }));
+        return { blocks: [], usage: { completionTokens: 151, promptTokens: 227, totalTokens: 378 } };
       }}
       uploadMediaCallback={async () => {
         return { url: "https://picsum.photos/200" };

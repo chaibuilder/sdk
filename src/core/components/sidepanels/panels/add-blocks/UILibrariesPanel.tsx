@@ -1,4 +1,4 @@
-import { capitalize, first, get, groupBy, has, isEmpty, map, noop, values } from "lodash-es";
+import { capitalize, filter, first, get, groupBy, has, isEmpty, map, noop, values } from "lodash-es";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useAddBlock, useBuilderProp, useHighlightBlockId, useSelectedBlockIds } from "../../../../hooks";
 import { syncBlocksWithDefaults, useChaiBlocks } from "@chaibuilder/runtime";
@@ -17,7 +17,6 @@ import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { useAddBlocksModal } from "../../../../hooks/useAddBlocks.ts";
 import { selectedLibraryAtom } from "../../../../atoms/ui.ts";
-import { filter } from "lodash";
 
 const BlockCard = ({
   block,

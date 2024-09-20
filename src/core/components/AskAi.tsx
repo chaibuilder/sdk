@@ -25,18 +25,24 @@ import { useBuilderProp, useSelectedBlockIds } from "../hooks";
 import { first, noop } from "lodash-es";
 import { FaSpinner } from "react-icons/fa";
 import { QuickPrompts } from "./QuickPrompts.tsx";
+import { AskAiResponse } from "../types/chaiBuilderEditorProps.ts";
+import Countdown from "./Countdown.tsx";
 
 export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
   const { t } = useTranslation();
   const { askAi, loading, error } = useAskAi();
   const [prompt, setPrompt] = useState("");
   const [open, setOpen] = useState(true);
+  const [usage, setUsage] = useState<AskAiResponse["usage"] | undefined>();
   const promptRef = useRef(null);
   useEffect(() => {
     promptRef.current?.focus();
   }, []);
 
-  const onComplete = () => {
+  const onComplete = (response?: AskAiResponse) => {
+    const { usage } = response || {};
+    if (!error && usage) setUsage(usage);
+    setTimeout(() => setUsage(undefined), 3000);
     if (!error) setPrompt("");
   };
 
@@ -62,6 +68,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 e.preventDefault();
+                setUsage(undefined);
                 askAi("content", blockId, prompt, onComplete);
               }
             }}
@@ -71,7 +78,10 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
             {!loading ? (
               <Button
                 disabled={prompt.trim().length < 5 || loading}
-                onClick={() => askAi("content", blockId, prompt, onComplete)}
+                onClick={() => {
+                  setUsage(undefined);
+                  askAi("content", blockId, prompt, onComplete);
+                }}
                 variant="default"
                 className="w-fit"
                 size="sm">
@@ -97,6 +107,16 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
               </div>
             ) : null}
           </div>
+          {usage ? (
+            <div className="max-w-full">
+              <p className="mb-1 flex justify-between break-words rounded border border-blue-500 bg-blue-100 p-1 text-xs text-blue-500">
+                <span>
+                  {t("Total tokens used")}: {usage.totalTokens}
+                </span>
+                <Countdown />
+              </p>
+            </div>
+          ) : null}
           <div className="max-w-full">
             {error && (
               <p className="break-words rounded border border-red-500 bg-red-100 p-1 text-xs text-red-500">
@@ -104,7 +124,12 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
               </p>
             )}
           </div>
-          <QuickPrompts onClick={(prompt: string) => askAi("content", blockId, prompt, onComplete)} />
+          <QuickPrompts
+            onClick={(prompt: string) => {
+              setUsage(undefined);
+              askAi("content", blockId, prompt, onComplete);
+            }}
+          />
         </div>
       ) : open ? (
         <div className="p-4 text-center">
