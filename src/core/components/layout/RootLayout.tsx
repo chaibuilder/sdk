@@ -5,7 +5,7 @@ import { useExpandTree } from "../../hooks/useExpandTree.ts";
 import { useAtom } from "jotai";
 import { useBuilderProp, useSavePage } from "../../hooks";
 import "../canvas/static/BlocksExternalDataProvider.tsx";
-import { ScrollArea, TooltipProvider } from "../../../ui";
+import { TooltipProvider } from "../../../ui";
 import { useIntervalEffect } from "@react-hookz/web";
 import { selectedLibraryAtom } from "../../atoms/ui.ts";
 import { motion } from "framer-motion";
@@ -98,19 +98,19 @@ const RootLayout: ComponentType = () => {
               animate={{ width: activePanelIndex !== null ? 280 : 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}>
               {activePanelIndex !== null && (
-                <ScrollArea className="no-scrollbar h-full">
-                  <div className="flex flex-col p-2">
+                <div className="no-scrollbar overflow h-full overflow-x-hidden">
+                  <div className="flex flex-col p-3">
                     <h2 className="-mt-1 flex h-10 items-center space-x-1 text-base font-bold">
                       {sidebarMenuItems[activePanelIndex].icon}
                       <span>{t(sidebarMenuItems[activePanelIndex].label)}</span>
                     </h2>
-                    <div className="flex-1 pr-2">
+                    <div className="flex-1">
                       <Suspense fallback={<div>Loading...</div>}>
                         {React.createElement(sidebarMenuItems[activePanelIndex].component, {})}
                       </Suspense>
                     </div>
                   </div>
-                </ScrollArea>
+                </div>
               )}
             </motion.div>
             <div className="h-full flex-1 bg-slate-800/20">

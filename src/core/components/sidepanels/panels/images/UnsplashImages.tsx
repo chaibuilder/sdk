@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { isEmpty } from "lodash-es";
-import { MixerHorizontalIcon } from "@radix-ui/react-icons";
 import { createApi } from "unsplash-js";
-import { Button, Input, Popover, PopoverContent, PopoverTrigger, ScrollArea } from "../../../../../ui";
+import { Button, Input, ScrollArea } from "../../../../../ui";
 import { useBuilderProp } from "../../../../hooks";
 import { useDebouncedState } from "@react-hookz/web";
 import { Loader } from "lucide-react";
 import ChaiSelect from "../../../ChaiSelect.tsx";
+import { useTranslation } from "react-i18next";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const fetchImage = async (payload: any, accessKey: string) =>
@@ -29,7 +29,7 @@ const UnsplashImages = ({ isModalView, onSelect }: { isModalView: boolean; onSel
   const [totalPages, setTotalPages] = useState(0);
   const [debouncedQuery, setDebouncedQuery] = useDebouncedState("", 1000);
   const [isFetching, setIsFetching] = useState(false);
-
+  const { t } = useTranslation();
   const searchPhotos = async (event?: React.FormEvent) => {
     if (isEmpty(debouncedQuery)) return;
 
@@ -95,7 +95,7 @@ const UnsplashImages = ({ isModalView, onSelect }: { isModalView: boolean; onSel
 
   return (
     <>
-      <form className="flex items-center rounded-md border bg-gray-100 p-px">
+      <form className="flex items-center gap-x-2 rounded-md border bg-gray-100 p-px">
         <Input
           type="text"
           name="query"
@@ -103,79 +103,73 @@ const UnsplashImages = ({ isModalView, onSelect }: { isModalView: boolean; onSel
           placeholder={`Try "dog" or "apple"`}
           onChange={(e) => setDebouncedQuery(e.target.value)}
         />
-        <Popover>
-          <PopoverTrigger asChild className="h-full w-10 cursor-pointer p-2.5 hover:bg-slate-200">
-            <MixerHorizontalIcon />
-          </PopoverTrigger>
-          <PopoverContent
-            side={isModalView ? "bottom" : "right"}
-            className="z-[9999] flex w-max items-center justify-center">
-            <div>
-              <div className="py-1 text-sm font-medium">Orientation</div>
-              <ChaiSelect
-                options={[
-                  {
-                    value: "",
-                    label: "All",
-                  },
-                  {
-                    value: "landscape",
-                    label: "Landscape",
-                  },
-                  {
-                    value: "portrait",
-                    label: "Portrait",
-                  },
-                  {
-                    value: "squarish",
-                    label: "Square",
-                  },
-                ]}
-                defaultValue={orientation}
-                onValueChange={(_v) => setOrientation(_v as any)}
-              />
-              <div className="pb-1 pt-2 text-sm font-medium">Color</div>
-              <ChaiSelect
-                options={[
-                  {
-                    value: "",
-                    label: "All",
-                  },
-                  {
-                    value: "black_and_white",
-                    label: "Black and White",
-                  },
-                  {
-                    value: "black",
-                    label: "Black",
-                  },
-                  {
-                    value: "white",
-                    label: "White",
-                  },
-                  {
-                    value: "night",
-                    label: "Night",
-                  },
-                  {
-                    value: "warm",
-                    label: "Warm",
-                  },
-                  {
-                    value: "cool",
-                    label: "Cool",
-                  },
-                  {
-                    value: "sepia",
-                    label: "Sepia",
-                  },
-                ]}
-                defaultValue={color}
-                onValueChange={(_v) => setColor(_v as any)}
-              />
-            </div>
-          </PopoverContent>
-        </Popover>
+        <div>
+          <ChaiSelect
+            className="w-40"
+            placeholder={t("Orientation")}
+            options={[
+              {
+                value: "",
+                label: "All",
+              },
+              {
+                value: "landscape",
+                label: "Landscape",
+              },
+              {
+                value: "portrait",
+                label: "Portrait",
+              },
+              {
+                value: "squarish",
+                label: "Square",
+              },
+            ]}
+            defaultValue={orientation}
+            onValueChange={(_v) => setOrientation(_v as any)}
+          />
+        </div>
+        <div>
+          <ChaiSelect
+            placeholder={t("Color")}
+            options={[
+              {
+                value: "",
+                label: "All",
+              },
+              {
+                value: "black_and_white",
+                label: "Black and White",
+              },
+              {
+                value: "black",
+                label: "Black",
+              },
+              {
+                value: "white",
+                label: "White",
+              },
+              {
+                value: "night",
+                label: "Night",
+              },
+              {
+                value: "warm",
+                label: "Warm",
+              },
+              {
+                value: "cool",
+                label: "Cool",
+              },
+              {
+                value: "sepia",
+                label: "Sepia",
+              },
+            ]}
+            defaultValue={color}
+            onValueChange={(_v) => setColor(_v as any)}
+          />
+        </div>
       </form>
       <ScrollArea
         className={`h-full ${

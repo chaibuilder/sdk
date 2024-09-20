@@ -128,7 +128,7 @@
   }
 
   .rjsf > .form-group > fieldset > * {
-    @apply border-b border-border pb-3 pt-1;
+    @apply border-none border-border pb-1 pt-1;
   }
 
   .rjsf .form-group > .checkbox > label > span {

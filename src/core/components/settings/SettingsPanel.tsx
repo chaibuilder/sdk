@@ -28,6 +28,7 @@ const SettingsPanel: React.FC = () => {
     <ErrorBoundary>
       <div className={"relative flex w-full flex-col"}>
         <BlockSettings />
+        <br />
         <BlockStyling />
 
         <div

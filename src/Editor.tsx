@@ -22,7 +22,7 @@ function ChaiBuilderDefault() {
   return (
     <ChaiBuilderEditor
       translations={{ "pt-BR": ptBR, es: es }}
-      unsplashAccessKey={import.meta.env.VITE_UNSPLASH_ACCESS_KEY}
+      unsplashAccessKey={"import.meta.env.VITE_UNSPLASH_ACCESS_KEY"}
       showDebugLogs={true}
       autoSaveSupport={false}
       previewComponent={PreviewWeb}
@@ -44,6 +44,9 @@ function ChaiBuilderDefault() {
       askAiCallBack={async (type: "styles" | "content", prompt: string, blocks: ChaiBlock[]) => {
         console.log("askAiCallBack", type, prompt, blocks);
         return new Promise((resolve) => resolve({ error: new Error("Not implemented") }));
+      }}
+      uploadMediaCallback={async () => {
+        return { url: "https://picsum.photos/200" };
       }}
       getUILibraryBlock={async (uiLibrary, uiLibBlock) => {
         const response = await axios.get(
