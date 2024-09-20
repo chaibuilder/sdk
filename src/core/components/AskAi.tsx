@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useAskAi } from "../hooks/useAskAi.ts";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -20,17 +20,17 @@ import {
   Textarea,
   useToast,
 } from "../../ui";
-import { EditIcon, Loader, SparklesIcon } from "lucide-react";
+import { ChevronDown, Loader, SparklesIcon } from "lucide-react";
 import { useBuilderProp, useSelectedBlockIds } from "../hooks";
 import { first, noop } from "lodash-es";
 import { FaSpinner } from "react-icons/fa";
 import { QuickPrompts } from "./QuickPrompts.tsx";
-import { Cross2Icon } from "@radix-ui/react-icons";
 
 export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
   const { t } = useTranslation();
   const { askAi, loading, error } = useAskAi();
   const [prompt, setPrompt] = useState("");
+  const [open, setOpen] = useState(true);
   const promptRef = useRef(null);
   useEffect(() => {
     promptRef.current?.focus();
@@ -40,74 +40,80 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
     if (!error) setPrompt("");
   };
 
-  if (!blockId)
-    return (
-      <div className="p-4 text-center">
-        <div className="space-y-4 rounded-xl p-4">
-          <SparklesIcon className="mx-auto text-3xl" />
-          <h1>{t("please_select_a_block_to_ask_ai")}</h1>
-        </div>
-      </div>
-    );
-
   return (
-    <div className="mt-4">
-      <h2 className="mb-2 text-xs font-semibold leading-none tracking-tight text-gray-500">
-        {t("ask_ai")} (GPT-4o mini)
-      </h2>
-      <Textarea
-        ref={promptRef}
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
-        placeholder={t("ask_ai_to_edit_content")}
-        className="w-full border border-gray-400 focus:border-0"
-        rows={3}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            askAi("content", blockId, prompt, onComplete);
-          }
-        }}
-      />
+    <div className="">
+      <div
+        onClick={() => setOpen(!open)}
+        className="flex cursor-default items-center justify-between border-b border-gray-300 py-2 text-sm font-bold text-gray-600 hover:bg-gray-50">
+        <span>{t("ask_ai")}</span>
+        <span>
+          <ChevronDown className={"h-4 w-4 text-gray-500 " + (open ? "rotate-180" : "")} />
+        </span>
+      </div>
+      {open && blockId ? (
+        <div className="mt-2">
+          <Textarea
+            ref={promptRef}
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            placeholder={t("ask_ai_to_edit_content")}
+            className="w-full border border-gray-400 focus:border-0"
+            rows={3}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                askAi("content", blockId, prompt, onComplete);
+              }
+            }}
+          />
 
-      <div className="my-2 flex items-center gap-2">
-        {!loading ? (
-          <Button
-            disabled={prompt.trim().length < 5 || loading}
-            onClick={() => askAi("content", blockId, prompt, onComplete)}
-            variant="default"
-            className="w-fit"
-            size="sm">
+          <div className="my-2 flex items-center gap-2">
+            {!loading ? (
+              <Button
+                disabled={prompt.trim().length < 5 || loading}
+                onClick={() => askAi("content", blockId, prompt, onComplete)}
+                variant="default"
+                className="w-fit"
+                size="sm">
+                {loading ? (
+                  <>
+                    <Loader className="h-5 w-5 animate-spin" />
+                    {t("generating_please_wait")}
+                  </>
+                ) : (
+                  t("edit_with_ai")
+                )}
+              </Button>
+            ) : null}
             {loading ? (
-              <>
-                <Loader className="h-5 w-5 animate-spin" />
-                {t("generating_please_wait")}
-              </>
-            ) : (
-              t("edit_with_ai")
-            )}
-          </Button>
-        ) : null}
-        {loading ? (
-          <div className="flex flex-col gap-2">
-            <Skeleton className="flex w-full items-center space-x-1 px-4 py-1 pl-2">
-              <FaSpinner className="h-4 w-4 animate-spin text-gray-500" />
-              <p className="text-xs">{t("generating_please_wait")}</p>
-            </Skeleton>
-            <Button variant="destructive" onClick={() => stop()} className="hidden w-fit" size="sm">
-              {t("Stop")}
-            </Button>
+              <div className="flex flex-col gap-2">
+                <Skeleton className="flex w-full items-center space-x-1 px-4 py-1 pl-2">
+                  <FaSpinner className="h-4 w-4 animate-spin text-gray-500" />
+                  <p className="text-xs">{t("generating_please_wait")}</p>
+                </Skeleton>
+                <Button variant="destructive" onClick={() => stop()} className="hidden w-fit" size="sm">
+                  {t("Stop")}
+                </Button>
+              </div>
+            ) : null}
           </div>
-        ) : null}
-      </div>
-      <div className="max-w-full">
-        {error && (
-          <p className="break-words rounded border border-red-500 bg-red-100 p-1 text-xs text-red-500">
-            {error.message}
-          </p>
-        )}
-      </div>
-      <QuickPrompts onClick={(prompt: string) => askAi("content", blockId, prompt, onComplete)} />
+          <div className="max-w-full">
+            {error && (
+              <p className="break-words rounded border border-red-500 bg-red-100 p-1 text-xs text-red-500">
+                {error.message}
+              </p>
+            )}
+          </div>
+          <QuickPrompts onClick={(prompt: string) => askAi("content", blockId, prompt, onComplete)} />
+        </div>
+      ) : open ? (
+        <div className="p-4 text-center">
+          <div className="space-y-4 rounded-xl p-4">
+            <SparklesIcon className="mx-auto text-3xl" />
+            <h1>{t("please_select_a_block_to_ask_ai")}</h1>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 };
@@ -120,7 +126,7 @@ export const AISetContext = () => {
   const savePageContext = useBuilderProp("saveAiContextCallback", noop);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [opened, setOpened] = useState(false);
+  const [, setOpened] = useState(false);
   const { toast } = useToast();
   const btnRef = useRef(null);
 
@@ -154,17 +160,12 @@ export const AISetContext = () => {
         setOpened(value !== "");
       }}
       type="single"
-      collapsible
-      className="rounded-md border bg-gray-100 px-2">
-      <AccordionItem value="set-context">
+      collapsible>
+      <AccordionItem value="set-context" className="border-none">
         {/*  @ts-ignore */}
-        <AccordionTrigger ref={btnRef} hideArrow className="py-1 hover:no-underline">
+        <AccordionTrigger ref={btnRef} className="border-b py-2 text-gray-600 hover:no-underline">
           <div className="flex w-full items-center justify-between">
-            <span className="font-semibold">{t("ai_context")}</span>
-            <Button variant="default" size={"sm"}>
-              <span>{t(opened ? "cancel" : "edit")}</span> &nbsp;
-              {opened ? <Cross2Icon className="h-4 w-4" /> : <EditIcon className="h-4 w-4" />}
-            </Button>
+            <span className="font-bold">{t("ai_context")}</span>
           </div>
         </AccordionTrigger>
         <AccordionContent>
@@ -255,7 +256,7 @@ export const AISetContext = () => {
 export const AskAI = () => {
   const [ids] = useSelectedBlockIds();
   return (
-    <div>
+    <div className="mt-2">
       <AISetContext />
       <AIUserPrompt blockId={first(ids)} />
     </div>

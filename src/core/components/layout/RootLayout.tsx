@@ -22,10 +22,14 @@ import { AskAI } from "../AskAi.tsx";
 const TopBar = lazy(() => import("../topbar/Topbar.tsx"));
 
 const menuItems = [
-  { icon: <Layers size={20} />, label: "Outline", component: Outline },
-  { icon: <EditIcon size={20} />, label: "Edit Block", component: SettingsPanel },
-  { icon: <LightningBoltIcon className="size-5" />, label: "AI Assistant", component: AskAI },
-  { icon: <PaintBucketIcon size={20} />, label: "Theme", component: () => <ThemeOptions showHeading={false} /> },
+  { icon: <Layers size={20} />, label: "sidebar.outline", component: Outline },
+  { icon: <EditIcon size={20} />, label: "sidebar.edit_block", component: SettingsPanel },
+  { icon: <LightningBoltIcon className="size-5" />, label: "sidebar.ai_assistant", component: AskAI },
+  {
+    icon: <PaintBucketIcon size={20} />,
+    label: "sidebar.theme",
+    component: () => <ThemeOptions showHeading={false} />,
+  },
 ];
 
 const useAutoSave = () => {

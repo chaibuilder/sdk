@@ -403,5 +403,11 @@
     "make_shorter": "Make shorter",
     "add_emojis": "Add emojis",
     "randomize": "Randomize"
+  },
+  "sidebar": {
+    "outline": "Outline",
+    "edit_block": "Edit Block",
+    "ai_assistant": "AI Assistant",
+    "theme": "Theme"
   }
 }
