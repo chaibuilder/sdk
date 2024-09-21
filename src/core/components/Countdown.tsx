@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const SECONDS = 4;
+const SECONDS = 10;
 
 export default function Countdown() {
   const [timeLeft, setTimeLeft] = useState(SECONDS);

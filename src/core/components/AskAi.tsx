@@ -35,6 +35,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
   const [open, setOpen] = useState(true);
   const [usage, setUsage] = useState<AskAiResponse["usage"] | undefined>();
   const promptRef = useRef(null);
+  const timerRef = useRef(null);
   useEffect(() => {
     promptRef.current?.focus();
   }, []);
@@ -42,7 +43,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
   const onComplete = (response?: AskAiResponse) => {
     const { usage } = response || {};
     if (!error && usage) setUsage(usage);
-    setTimeout(() => setUsage(undefined), 4000);
+    timerRef.current = setTimeout(() => setUsage(undefined), 10000);
     if (!error) setPrompt("");
   };
 
@@ -68,6 +69,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 e.preventDefault();
+                if (timerRef.current) clearTimeout(timerRef.current);
                 setUsage(undefined);
                 askAi("content", blockId, prompt, onComplete);
               }
@@ -79,6 +81,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
               <Button
                 disabled={prompt.trim().length < 5 || loading}
                 onClick={() => {
+                  if (timerRef.current) clearTimeout(timerRef.current);
                   setUsage(undefined);
                   askAi("content", blockId, prompt, onComplete);
                 }}
@@ -126,6 +129,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
           </div>
           <QuickPrompts
             onClick={(prompt: string) => {
+              if (timerRef.current) clearTimeout(timerRef.current);
               setUsage(undefined);
               askAi("content", blockId, prompt, onComplete);
             }}

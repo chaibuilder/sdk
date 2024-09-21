@@ -12,6 +12,7 @@ export const AskAIStyles = ({ blockId }: { blockId: string | undefined }) => {
   const { askAi, loading, error } = useAskAi();
   const [prompt, setPrompt] = useState("");
   const promptRef = useRef(null);
+  const timerRef = useRef(null);
   const [usage, setUsage] = useState<AskAiResponse["usage"] | undefined>();
   useEffect(() => {
     promptRef.current?.focus();
@@ -20,7 +21,7 @@ export const AskAIStyles = ({ blockId }: { blockId: string | undefined }) => {
   const onComplete = (response?: AskAiResponse) => {
     const { usage } = response || {};
     if (!error && usage) setUsage(usage);
-    setTimeout(() => setUsage(undefined), 4000);
+    timerRef.current = setTimeout(() => setUsage(undefined), 10000);
     if (!error) setPrompt("");
   };
 
@@ -37,6 +38,8 @@ export const AskAIStyles = ({ blockId }: { blockId: string | undefined }) => {
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             e.preventDefault();
+            if (timerRef.current) clearTimeout(timerRef.current);
+            setUsage(undefined);
             askAi("styles", blockId, prompt, onComplete);
           }
         }}
@@ -47,6 +50,7 @@ export const AskAIStyles = ({ blockId }: { blockId: string | undefined }) => {
           <Button
             disabled={prompt.trim().length < 5 || loading}
             onClick={() => {
+              if (timerRef.current) clearTimeout(timerRef.current);
               setUsage(undefined);
               askAi("styles", blockId, prompt, onComplete);
             }}
