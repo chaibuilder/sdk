@@ -50,6 +50,7 @@ export default defineConfig({
         "@react-hookz/web",
         "react-arborist",
         "@react-email/render",
+        "react-error-boundary",
         "@react-email/components",
         "@rjsf/core",
         "@rjsf/utils",

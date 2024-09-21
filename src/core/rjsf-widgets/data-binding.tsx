@@ -9,6 +9,7 @@ import {
   isEmpty,
   last,
   map,
+  noop,
   omit,
   set,
   split,
@@ -41,11 +42,12 @@ import {
   TooltipTrigger,
 } from "../../ui";
 import { getBlockComponent, getChaiDataProviders } from "@chaibuilder/runtime";
-import { ErrorBoundary } from "../components/ErrorBoundary.tsx";
-import { useSelectedBlock } from "../hooks";
+import { ErrorBoundary } from "react-error-boundary";
+import { useBuilderProp, useSelectedBlock } from "../hooks";
 import { useChaiExternalData } from "../components/canvas/static/useChaiExternalData.ts";
 import { allExpanded, defaultStyles, JsonView } from "react-json-view-lite";
 import "react-json-view-lite/dist/index.css";
+import { FallbackError } from "../components/FallbackError.tsx";
 
 // * Object to Path and Data Type
 function getPathAndTypes(obj) {
@@ -71,6 +73,7 @@ function getPathAndTypes(obj) {
 }
 
 const ViewData = ({ data, fullView }: { data: any; fullView?: boolean }) => {
+  const onErrorFn = useBuilderProp("onError", noop);
   if (!data) return null;
   const type = typeof data;
 
@@ -78,7 +81,7 @@ const ViewData = ({ data, fullView }: { data: any; fullView?: boolean }) => {
     return typeof data === "object" ? (
       <>
         <div className="h-3" />
-        <ErrorBoundary>
+        <ErrorBoundary fallback={<FallbackError />} onError={onErrorFn}>
           <JsonView
             data={data}
             shouldExpandNode={allExpanded}

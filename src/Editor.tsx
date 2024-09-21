@@ -5,8 +5,6 @@ import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML } from "./core/main";
 import { loadWebBlocks } from "./web-blocks";
 import { useState } from "react";
 import axios from "axios";
-import ptBR from "./__dev/pt-BR.json";
-import es from "./__dev/es.json";
 import { LayersIcon } from "lucide-react";
 
 loadWebBlocks();
@@ -21,13 +19,11 @@ function ChaiBuilderDefault() {
   ]);
   return (
     <ChaiBuilderEditor
-      translations={{ "pt-BR": ptBR, es: es }}
       unsplashAccessKey={"import.meta.env.VITE_UNSPLASH_ACCESS_KEY"}
       showDebugLogs={true}
       autoSaveSupport={false}
       previewComponent={PreviewWeb}
       blocks={blocks}
-      locale={"en"}
       brandingOptions={brandingOptions}
       onSave={async ({ blocks, providers, brandingOptions }: any) => {
         localStorage.setItem("chai-builder-blocks", JSON.stringify(blocks));

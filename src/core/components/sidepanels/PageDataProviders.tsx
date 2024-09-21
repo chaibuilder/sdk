@@ -21,18 +21,21 @@ import {
   SelectValue,
 } from "../../../ui";
 import { useEffect, useMemo, useState } from "react";
-import { filter, find, isEmpty, isNull, map } from "lodash-es";
+import { filter, find, isEmpty, isNull, map, noop } from "lodash-es";
 import { useTranslation } from "react-i18next";
 import { usePageDataProviders } from "../../hooks/usePageDataProviders.ts";
 import { useAtom } from "jotai";
 import { builderSaveStateAtom } from "../../hooks/useSavePage.ts";
 import { allExpanded, defaultStyles, JsonView } from "react-json-view-lite";
-import { ErrorBoundary } from "../ErrorBoundary.tsx";
+import { ErrorBoundary } from "react-error-boundary";
 import "react-json-view-lite/dist/index.css";
+import { FallbackError } from "../FallbackError.tsx";
+import { useBuilderProp } from "../../hooks";
 
 const ViewProviderData = ({ provider, onClose }) => {
   const { t } = useTranslation();
   const [json, setJson] = useState(null);
+  const onErrorFn = useBuilderProp("onError", noop);
 
   useEffect(() => {
     if (provider) {
@@ -52,7 +55,7 @@ const ViewProviderData = ({ provider, onClose }) => {
           </DialogTitle>
           <DialogDescription>{provider.description}</DialogDescription>
         </DialogHeader>
-        <ErrorBoundary>
+        <ErrorBoundary fallback={<FallbackError />} onError={onErrorFn}>
           <JsonView
             data={json}
             shouldExpandNode={allExpanded}

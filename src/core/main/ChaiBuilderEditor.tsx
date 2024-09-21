@@ -4,10 +4,10 @@ import { DevTools } from "jotai-devtools";
 import i18n from "../locales/load";
 import { FlagsProvider } from "flagged";
 import { useEffect, useMemo } from "react";
-import { each, omit } from "lodash-es";
+import { each, noop, omit } from "lodash-es";
 import { FEATURE_TOGGLES } from "../../FEATURE_TOGGLES.tsx";
 import { chaiBuilderPropsAtom } from "../atoms/builder.ts";
-import { ErrorBoundary } from "../components/ErrorBoundary";
+import { ErrorBoundary } from "react-error-boundary";
 import { RootLayout } from "../components/layout/RootLayout.tsx";
 import { builderStore } from "../atoms/store.ts";
 import { Toaster } from "../../ui";
@@ -21,6 +21,7 @@ import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { useAtom } from "jotai/index";
 import { builderSaveStateAtom } from "../hooks/useSavePage.ts";
 import { PreviewScreen } from "../components/PreviewScreen.tsx";
+import { FallbackError } from "../components/FallbackError.tsx";
 
 const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   const [, setAllBlocks] = useBlocksStore();
@@ -81,7 +82,6 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
 
   return <RootLayoutComponent />;
 };
-
 /**
  * ChaiBuilder is the main entry point for the Chai Builder Studio.
  * @param props
@@ -89,16 +89,25 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
  */
 const ChaiBuilderEditor = (props: ChaiBuilderEditorProps) => {
   const _flags = props._flags || {};
+  const onErrorFn = props.onError || noop;
   return (
-    <ErrorBoundary>
-      <FlagsProvider features={{ ...FEATURE_TOGGLES, ..._flags }}>
-        <DevTools />
-        <SmallScreenMessage />
-        <ChaiBuilderComponent {...props} />
-        <PreviewScreen />
-        <Toaster />
-      </FlagsProvider>
-    </ErrorBoundary>
+    <div className="h-screen w-screen">
+      <ErrorBoundary fallback={<FallbackError />} onError={onErrorFn}>
+        <FlagsProvider features={{ ...FEATURE_TOGGLES, ..._flags }}>
+          <button
+            onClick={() => {
+              throw new Error("DEmo");
+            }}>
+            New
+          </button>
+          <DevTools />
+          <SmallScreenMessage />
+          <ChaiBuilderComponent {...props} />
+          <PreviewScreen />
+          <Toaster />
+        </FlagsProvider>
+      </ErrorBoundary>
+    </div>
   );
 };
 

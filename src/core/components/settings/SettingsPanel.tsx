@@ -1,18 +1,20 @@
 import React, { useState } from "react";
-import { isNull } from "lodash-es";
+import { isNull, noop } from "lodash-es";
 import { useTranslation } from "react-i18next";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
 import BlockSettings from "./BlockSettings";
 import BlockStyling from "./BlockStyling";
-import { useSelectedBlock } from "../../hooks";
-import { ErrorBoundary } from "../ErrorBoundary.tsx";
+import { useBuilderProp, useSelectedBlock } from "../../hooks";
+import { ErrorBoundary } from "react-error-boundary";
 import { BlockAttributesEditor } from "./new-panel/BlockAttributesEditor.tsx";
 import { ChevronDown } from "lucide-react";
+import { FallbackError } from "../FallbackError.tsx";
 
 const SettingsPanel: React.FC = () => {
   const selectedBlock = useSelectedBlock();
   const { t } = useTranslation();
   const [showAttributes, setShowAttributes] = useState(true);
+  const onErrorFn = useBuilderProp("onError", noop);
 
   if (isNull(selectedBlock))
     return (
@@ -25,7 +27,7 @@ const SettingsPanel: React.FC = () => {
     );
 
   return (
-    <ErrorBoundary>
+    <ErrorBoundary fallback={<FallbackError />} onError={onErrorFn}>
       <div className={"relative flex w-full flex-col"}>
         <BlockSettings />
         <br />

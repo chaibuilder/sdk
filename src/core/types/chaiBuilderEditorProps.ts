@@ -64,6 +64,7 @@ export type ChaiBuilderInstance = {
 };
 
 export interface ChaiBuilderEditorProps {
+  onError?: (error: Error) => void;
   translations?: Record<string, Record<string, any>>;
   onLoad?: (editorInstance: ChaiBuilderInstance) => void;
   layout?: React.ComponentType;
