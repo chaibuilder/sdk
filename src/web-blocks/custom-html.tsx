@@ -41,7 +41,6 @@ const Config = {
       placeholder: "web_blocks.placeholder",
     }),
   },
-  canAcceptBlock: () => false,
 };
 
 export { CustomHTMLBlock as Component, Config };

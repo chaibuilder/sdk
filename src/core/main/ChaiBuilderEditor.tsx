@@ -94,12 +94,6 @@ const ChaiBuilderEditor = (props: ChaiBuilderEditorProps) => {
     <div className="h-screen w-screen">
       <ErrorBoundary fallback={<FallbackError />} onError={onErrorFn}>
         <FlagsProvider features={{ ...FEATURE_TOGGLES, ..._flags }}>
-          <button
-            onClick={() => {
-              throw new Error("DEmo");
-            }}>
-            New
-          </button>
           <DevTools />
           <SmallScreenMessage />
           <ChaiBuilderComponent {...props} />
