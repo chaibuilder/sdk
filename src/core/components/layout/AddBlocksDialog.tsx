@@ -22,7 +22,7 @@ export const AddBlocksDialog = () => {
 
   return (
     <AlertDialog open={open} onOpenChange={() => (open ? setOpen(false) : "")}>
-      <AlertDialogContent className="max-h-[80vh] max-w-5xl overflow-hidden">
+      <AlertDialogContent className="max-w-5xl overflow-hidden">
         <AlertDialogHeader className="flex flex-row items-center justify-between">
           <AlertDialogTitle>{t("add_block")}</AlertDialogTitle>
           <button

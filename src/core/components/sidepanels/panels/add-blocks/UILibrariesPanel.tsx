@@ -184,14 +184,14 @@ const UILibrarySection = ({ parentId }: { parentId?: string }) => {
   const secondBlocks = filter(blocks, (_block, index: number) => index % 2 === 1);
   return (
     <>
-      <div className="relative mt-2 flex h-full max-h-full flex-col overflow-hidden bg-background">
+      <div className="relative mt-2 flex h-full max-h-full overflow-hidden bg-background">
         <div className={"flex h-full pt-2"}>
-          <div className={"flex h-full w-60 flex-col gap-1 px-1 pr-2"}>
+          <div className={"flex h-full max-h-full w-60 flex-col gap-1 px-1 pr-2"}>
             <UILibrariesSelect library={library?.uuid} setLibrary={setLibrary} uiLibraries={uiLibraries} />
-            <div className="mt-2 flex h-full max-h-full flex-col">
+            <div className="mt-2 flex h-full max-h-full flex-1 flex-col">
               <span className="text-xs font-bold text-gray-500">{t("groups")}</span>
               <hr className="mt-1" />
-              <ScrollArea className="no-scrollbar mt-2 h-full max-h-full overflow-y-auto">
+              <div className="no-scrollbar mt-2 h-full max-h-full flex-1 overflow-y-auto pb-20">
                 {React.Children.toArray(
                   map(mergedGroups, (_groupedBlocks, group) => (
                     <div
@@ -208,7 +208,7 @@ const UILibrarySection = ({ parentId }: { parentId?: string }) => {
                     </div>
                   )),
                 )}
-              </ScrollArea>
+              </div>
             </div>
           </div>
           <ScrollArea

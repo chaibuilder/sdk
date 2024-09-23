@@ -14,7 +14,7 @@ export function UILibrariesSelect({
   const { t } = useTranslation();
   if (!library) return null;
   return (
-    <div>
+    <div className="h-12">
       <p className="text-xs font-bold text-gray-500">{t("choose_library")}</p>
       <ChaiSelect
         className="mt-1"

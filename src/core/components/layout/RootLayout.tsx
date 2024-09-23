@@ -74,11 +74,9 @@ const RootLayout: ComponentType = () => {
   const { t } = useTranslation();
   const sidebarMenuItems = [...menuItems, ...topComponents];
   return (
-    <div className="h-screen w-screen bg-background text-foreground">
+    <div className="h-screen max-h-full w-screen bg-background text-foreground">
       <TooltipProvider>
-        <div
-          onContextMenu={preventContextMenu}
-          className="flex h-screen flex-col overflow-hidden bg-background text-foreground">
+        <div onContextMenu={preventContextMenu} className="flex h-screen flex-col bg-background text-foreground">
           <div className="h-14 w-screen shrink-0 border-b border-border">
             <Suspense>
               <TopBar />
@@ -99,7 +97,7 @@ const RootLayout: ComponentType = () => {
             </div>
             {/* Side Panel */}
             <motion.div
-              className="h-full max-h-full overflow-hidden border-r border-border"
+              className="h-full max-h-full border-r border-border"
               initial={{ width: 280 }}
               animate={{ width: activePanelIndex !== null ? 280 : 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}>
@@ -119,7 +117,7 @@ const RootLayout: ComponentType = () => {
                 </div>
               )}
             </motion.div>
-            <div className="h-full flex-1 bg-slate-800/20">
+            <div className="flex h-full max-h-full flex-1 flex-col bg-slate-800/20">
               <CanvasTopBar />
               <Suspense>
                 <CanvasArea />

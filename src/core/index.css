@@ -62,6 +62,15 @@
   --ring: 217.2 32.6% 17.5%;
 }
 
+.no-scrollbar{
+  -ms-overflow-style: none !important;  /* Internet Explorer 10+ */
+  scrollbar-width: none !important;  /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;  /* Safari and Chrome */
+}
+
 .rjsf {
   padding-left: 0rem;
   padding-right: 0rem;
