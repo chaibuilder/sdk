@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Styles } from "@chaibuilder/runtime/controls";
+import { Image, Styles } from "@chaibuilder/runtime/controls";
 
 const EmptyBox = React.memo(
   (
@@ -20,6 +20,7 @@ const Config = {
   group: "basic",
   props: {
     styles: Styles({ default: "" }),
+    backgroundImage: Image({ title: "web_blocks.background_image" }),
   },
 };
 

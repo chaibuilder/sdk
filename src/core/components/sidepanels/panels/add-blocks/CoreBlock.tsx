@@ -2,33 +2,29 @@ import { useAtom } from "jotai";
 import { capitalize, has, isFunction, omit } from "lodash-es";
 import { createElement } from "react";
 import { BoxIcon } from "@radix-ui/react-icons";
-import { activePanelAtom } from "../../../../atoms/ui";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../../ui";
 import { useAddBlock, useHighlightBlockId, useSelectedBlockIds } from "../../../../hooks";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
-import { OUTLINE_KEY, ROOT_TEMP_KEY } from "../../../../constants/STRINGS.ts";
 import { draggedBlockAtom } from "../../../canvas/dnd/atoms.ts";
 import { useFeature } from "flagged";
-import { useAddBlocksModal } from "../../../../hooks/useAddBlocks.ts";
 import { useTranslation } from "react-i18next";
+import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../../../events.ts";
 
-export const CoreBlock = ({ block, disabled }: { block: any; disabled: boolean }) => {
+export const CoreBlock = ({ block, disabled, parentId }: { block: any; disabled: boolean; parentId?: string }) => {
   const [, setDraggedBlock] = useAtom(draggedBlockAtom);
   const { type, icon, label } = block;
   const { addCoreBlock, addPredefinedBlock } = useAddBlock();
   const [, setSelected] = useSelectedBlockIds();
   const [, setHighlighted] = useHighlightBlockId();
-  const [, setActivePanel] = useAtom(activePanelAtom);
-  const [openId, setOpen] = useAddBlocksModal();
   const addBlockToPage = () => {
+    console.log("addBlockToPage", block, parentId);
     if (has(block, "blocks")) {
       const blocks = isFunction(block.blocks) ? block.blocks() : block.blocks;
-      addPredefinedBlock(syncBlocksWithDefaults(blocks), openId === ROOT_TEMP_KEY ? null : openId);
+      addPredefinedBlock(syncBlocksWithDefaults(blocks), parentId || null);
     } else {
-      addCoreBlock(block, openId === ROOT_TEMP_KEY ? null : openId);
+      addCoreBlock(block, parentId || null);
     }
-    setOpen("");
-    setActivePanel(OUTLINE_KEY);
+    emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK });
   };
   const dnd = useFeature("dnd");
   const { t } = useTranslation();
@@ -48,7 +44,6 @@ export const CoreBlock = ({ block, disabled }: { block: any; disabled: boolean }
               setTimeout(() => {
                 setSelected([]);
                 setHighlighted(null);
-                setActivePanel(OUTLINE_KEY);
               }, 200);
             }}
             draggable={dnd ? "true" : "false"}

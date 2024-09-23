@@ -39,6 +39,7 @@ import { TbEyeDown } from "react-icons/tb";
 import { useAddBlocksModal } from "../../../../../hooks/useAddBlocks.ts";
 import { ROOT_TEMP_KEY } from "../../../../../constants/STRINGS.ts";
 import { PlusIcon } from "lucide-react";
+import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../../../../events.ts";
 
 const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const outlineItems = useBuilderProp("outlineMenuItems", []);
@@ -149,7 +150,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   if (id === ROOT_TEMP_KEY) {
     return (
       <button
-        onClick={() => setOpen(ROOT_TEMP_KEY)}
+        onClick={() => emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK })}
         className="mb-10 mt-5 w-full rounded bg-gray-100 p-1 hover:bg-gray-200">
         + {t("add_block")}
       </button>
@@ -279,7 +280,6 @@ const ListTree = () => {
   const treeRef = useRef(null);
   const [, setTreeRef] = useAtom(treeRefAtom);
   const { t } = useTranslation();
-  const [, setOpen] = useAddBlocksModal();
 
   const clearSelection = () => {
     setIds([]);
@@ -394,8 +394,11 @@ const ListTree = () => {
             {t("page_is_empty")}
             <br />
             <br />
-            <Button onClick={() => setOpen(ROOT_TEMP_KEY)} variant="default" size="sm">
-              {t("add_block")}
+            <Button
+              onClick={() => emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK })}
+              variant="default"
+              size="sm">
+              + {t("add_block")}
             </Button>
           </p>
         </div>

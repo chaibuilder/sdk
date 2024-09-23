@@ -1,28 +1,20 @@
 import { useState } from "react";
-import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
 import { Button, Card, CardContent, CardDescription, CardFooter, CardHeader, Label, Textarea } from "../../../../../ui";
-import { useAddBlock, useSelectedBlockIds } from "../../../../hooks";
-import { activePanelAtom } from "../../../../atoms/ui";
-import { first } from "lodash-es";
+import { useAddBlock } from "../../../../hooks";
 import { getBlocksFromHTML } from "../../../../import-html/html-to-json";
-import { OUTLINE_KEY } from "../../../../constants/STRINGS.ts";
-import { useAddBlocksModal } from "../../../../hooks/useAddBlocks.ts";
+import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../../../events.ts";
 
-const ImportHTML = () => {
+const ImportHTML = ({ parentId }: { parentId?: string }) => {
   const { t } = useTranslation();
   const [code, setCode] = useState("");
   const { addPredefinedBlock } = useAddBlock();
-  const [ids]: any = useSelectedBlockIds();
-  const [, setActivePanel] = useAtom(activePanelAtom);
-  const [, setOpen] = useAddBlocksModal();
 
   const importComponents = () => {
     const blocks = getBlocksFromHTML(code);
-    addPredefinedBlock([...blocks], first(ids) || null);
+    addPredefinedBlock([...blocks], parentId);
     setCode("");
-    setOpen("");
-    setActivePanel(OUTLINE_KEY);
+    emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK });
   };
 
   return (

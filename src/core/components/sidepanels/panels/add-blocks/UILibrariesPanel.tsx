@@ -17,21 +17,21 @@ import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { useAddBlocksModal } from "../../../../hooks/useAddBlocks.ts";
 import { selectedLibraryAtom } from "../../../../atoms/ui.ts";
+import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../../../events.ts";
 
 const BlockCard = ({
   block,
-  closePopover,
   library,
+  parentId = undefined,
 }: {
   library: UILibrary;
-  // TODO: I think it should be "block: UiLibraryBlock | ChaiBuilderBlock"
   block: UiLibraryBlock;
-  closePopover: () => void;
+  parentId?: string;
 }) => {
   const [isAdding, setIsAdding] = useState(false);
   const getUILibraryBlock = useBuilderProp("getUILibraryBlock", noop);
   const { addCoreBlock, addPredefinedBlock } = useAddBlock();
-  const [ids, setSelected] = useSelectedBlockIds();
+  const [, setSelected] = useSelectedBlockIds();
   const [, setHighlighted] = useHighlightBlockId();
   const name = get(block, "name", get(block, "label"));
   const dnd = useFeature("dnd");
@@ -46,22 +46,21 @@ const BlockCard = ({
     async (e: any) => {
       e.stopPropagation();
       if (has(block, "component")) {
-        addCoreBlock(block, first(ids));
-        closePopover();
+        addCoreBlock(block, parentId);
+        emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK });
         return;
       }
       setIsAdding(true);
       const uiBlocks = await getUILibraryBlock(library, block);
-      let parent = first(ids);
-      if (!isEmpty(uiBlocks)) addPredefinedBlock(syncBlocksWithDefaults(uiBlocks), parent);
-      closePopover();
+      if (!isEmpty(uiBlocks)) addPredefinedBlock(syncBlocksWithDefaults(uiBlocks), parentId);
+      emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK });
     },
     [block],
   );
 
   const handleDragStart = async (ev) => {
     const uiBlocks = await getUILibraryBlock(library, block);
-    let parent = first(ids);
+    let parent = parentId;
     if (isTopLevelSection(first(uiBlocks))) {
       parent = null;
     }
@@ -146,7 +145,7 @@ const useLibraryBlocks = (library?: UILibrary) => {
   return { data: blocks || [], isLoading: state === "loading" };
 };
 
-const UILibrarySection = () => {
+const UILibrarySection = ({ parentId }: { parentId?: string }) => {
   const [selectedLibrary, setLibrary] = useAtom(selectedLibraryAtom);
   const uiLibraries = useBuilderProp("uiLibraries", []);
   const registeredBlocks = useChaiBlocks();
@@ -187,14 +186,14 @@ const UILibrarySection = () => {
   const secondBlocks = filter(blocks, (_block, index: number) => index % 2 === 1);
   return (
     <>
-      <div className="relative flex h-full max-h-full flex-col overflow-hidden bg-background">
+      <div className="relative mt-2 flex h-full max-h-full flex-col overflow-hidden bg-background">
         <div className={"flex h-full pt-2"}>
-          <div className={"flex h-full w-52 flex-col gap-1 px-1"}>
+          <div className={"flex h-full w-60 flex-col gap-1 px-1 pr-2"}>
             <UILibrariesSelect library={library?.uuid} setLibrary={setLibrary} uiLibraries={uiLibraries} />
-            <div className="mt-2 flex flex-col">
+            <div className="mt-2 flex h-full max-h-full flex-col">
               <span className="text-xs font-bold text-gray-500">{t("groups")}</span>
               <hr className="mt-1" />
-              <ScrollArea className="mt-2 h-full flex-1 overflow-y-auto">
+              <ScrollArea className="no-scrollbar mt-2 h-full max-h-full overflow-y-auto">
                 {React.Children.toArray(
                   map(mergedGroups, (_groupedBlocks, group) => (
                     <div
@@ -221,14 +220,14 @@ const UILibrarySection = () => {
               <div className="flex flex-col gap-1">
                 {React.Children.toArray(
                   firstBlocks.map((block: UiLibraryBlock) => (
-                    <BlockCard block={block} library={library} closePopover={() => setOpen("")} />
+                    <BlockCard parentId={parentId} block={block} library={library} closePopover={() => setOpen("")} />
                   )),
                 )}
               </div>
               <div className="flex flex-col gap-1">
                 {React.Children.toArray(
                   secondBlocks.map((block: UiLibraryBlock) => (
-                    <BlockCard block={block} library={library} closePopover={() => setOpen("")} />
+                    <BlockCard parentId={parentId} block={block} library={library} closePopover={() => setOpen("")} />
                   )),
                 )}
               </div>
@@ -243,8 +242,8 @@ const UILibrarySection = () => {
   );
 };
 
-const UILibrariesPanel = () => {
-  return <UILibrarySection />;
+const UILibrariesPanel = ({ parentId }: { parentId?: string }) => {
+  return <UILibrarySection parentId={parentId} />;
 };
 
 export default UILibrariesPanel;

@@ -31,15 +31,13 @@ import { useBlocksStore, useBuilderProp } from "../../../../hooks";
 import ImportHTML from "./ImportHTML";
 import { useChaiBlocks } from "@chaibuilder/runtime";
 import { mergeClasses, UILibraries } from "../../../../main";
-import { useAddBlocksModal } from "../../../../hooks/useAddBlocks.ts";
 import { canAcceptChildBlock, canBeNestedInside } from "../../../../functions/block-helpers.ts";
 
 const CORE_GROUPS = ["basic", "typography", "media", "layout", "form", "advanced", "other"];
 
-export const ChaiBuilderBlocks = ({ groups, blocks }: any) => {
+export const ChaiBuilderBlocks = ({ groups, blocks, parentId }: any) => {
   const { t } = useTranslation();
   const [allBlocks] = useBlocksStore();
-  const [parentId] = useAddBlocksModal();
   const parentType = find(allBlocks, (block) => block._id === parentId)?._type;
   return React.Children.toArray(
     map(
@@ -57,6 +55,7 @@ export const ChaiBuilderBlocks = ({ groups, blocks }: any) => {
                     reject(filter(values(blocks), { group }), { hidden: true }).map((block) => {
                       return (
                         <CoreBlock
+                          parentId={parentId}
                           block={block}
                           disabled={
                             !canAcceptChildBlock(parentType, block.type) || !canBeNestedInside(parentType, block.type)
@@ -74,7 +73,15 @@ export const ChaiBuilderBlocks = ({ groups, blocks }: any) => {
   );
 };
 
-const AddBlocksPanel = ({ className, showHeading = true }: { showHeading?: boolean; className?: string }) => {
+const AddBlocksPanel = ({
+  className,
+  showHeading = true,
+  parentId = undefined,
+}: {
+  parentId?: string;
+  showHeading?: boolean;
+  className?: string;
+}) => {
   const { t } = useTranslation();
   const [tab, setTab] = useState<string>("library");
   const [active, setActive] = useState<string>("basic");
@@ -122,12 +129,12 @@ const AddBlocksPanel = ({ className, showHeading = true }: { showHeading?: boole
       {tab === "core" && (
         <ScrollArea className="-mx-1.5 h-[calc(100vh-156px)] overflow-y-auto">
           <div className="mt-2 w-full">
-            <ChaiBuilderBlocks groups={uniqueTypeGroup} blocks={groupedBlocks.core} />
+            <ChaiBuilderBlocks parentId={parentId} groups={uniqueTypeGroup} blocks={groupedBlocks.core} />
           </div>
         </ScrollArea>
       )}
-      {tab === "library" && <UILibraries />}
-      {tab === "html" && importHTMLSupport ? <ImportHTML /> : null}
+      {tab === "library" && <UILibraries parentId={parentId} />}
+      {tab === "html" && importHTMLSupport ? <ImportHTML parentId={parentId} /> : null}
     </div>
   );
 };

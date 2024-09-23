@@ -18,7 +18,7 @@ import { useTranslation } from "react-i18next";
 import { LightningBoltIcon } from "@radix-ui/react-icons";
 import SettingsPanel from "../settings/SettingsPanel.tsx";
 import { AskAI } from "../AskAi.tsx";
-import { BUILDER_EVENTS, useChaiBuilderMsgListener } from "../../events.ts";
+import { CHAI_BUILDER_EVENTS, useChaiBuilderMsgListener } from "../../events.ts";
 
 const TopBar = lazy(() => import("../topbar/Topbar.tsx"));
 
@@ -49,7 +49,7 @@ const useAutoSave = () => {
 const RootLayout: ComponentType = () => {
   const [activePanelIndex, setActivePanelIndex] = useState(0);
   useChaiBuilderMsgListener(({ name }) => {
-    if (name === BUILDER_EVENTS.SHOW_SETTINGS) {
+    if (name === CHAI_BUILDER_EVENTS.SHOW_BLOCK_SETTINGS) {
       setActivePanelIndex(1);
     }
   });

@@ -4,6 +4,8 @@ const { useChaiBuilderMsgListener, emitChaiBuilderMsg } = createEvent("chaiBuild
 
 export { useChaiBuilderMsgListener, emitChaiBuilderMsg };
 
-export const BUILDER_EVENTS = {
-  SHOW_SETTINGS: "SHOW_SETTINGS",
+export const CHAI_BUILDER_EVENTS = {
+  OPEN_ADD_BLOCK: "OPEN_ADD_BLOCK",
+  CLOSE_ADD_BLOCK: "CLOSE_ADD_BLOCK",
+  SHOW_BLOCK_SETTINGS: "SHOW_BLOCK_SETTINGS",
 };

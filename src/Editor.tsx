@@ -14,7 +14,7 @@ function ChaiBuilderDefault() {
   const [brandingOptions] = useAtom(lsBrandingOptionsAtom);
   const [aiContext, setAiContext] = useAtom(lsAiContextAtom);
   const [uiLibraries] = useState([
-    { uuid: "community-blocks", name: "Community blocks", url: "https://chai-ui-blocks.vercel.app" },
+    { uuid: "meraki-ui", name: "Meraki UI", url: "https://chai-ui-blocks.vercel.app" },
     { uuid: "chaiblocks", name: "UI Blocks", url: "https://chaibuilder.com/chaiblocks" },
   ]);
   return (

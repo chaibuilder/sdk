@@ -13,7 +13,7 @@ import {
 } from "../../../../hooks";
 import { canAddChildBlock, canDeleteBlock, canDuplicateBlock } from "../../../../functions/block-helpers.ts";
 import { useTranslation } from "react-i18next";
-import { useAddBlocksModal } from "../../../../hooks/useAddBlocks.ts";
+import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../../../events.ts";
 
 const CopyPasteBlocks = () => {
   const [selectedIds] = useSelectedBlockIds();
@@ -79,7 +79,6 @@ const BlockContextMenuContent = () => {
   const [selectedIds] = useSelectedBlockIds();
   const duplicateBlocks = useDuplicateBlocks();
   const selectedBlock = useSelectedBlock();
-  const [, setOpen] = useAddBlocksModal();
 
   const duplicate = useCallback(() => {
     duplicateBlocks(selectedIds);
@@ -90,7 +89,7 @@ const BlockContextMenuContent = () => {
       <ContextMenuItem
         disabled={!canAddChildBlock(selectedBlock?._type)}
         className="flex items-center gap-x-4 text-xs"
-        onClick={() => setOpen(selectedBlock?._id)}>
+        onClick={() => emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, data: selectedBlock })}>
         <PlusIcon size={"14"} /> {t("Add block")}
       </ContextMenuItem>
       <ContextMenuItem

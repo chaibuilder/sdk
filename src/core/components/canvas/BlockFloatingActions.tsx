@@ -16,8 +16,7 @@ import { useAtom } from "jotai";
 import { inlineEditingActiveAtom } from "../../atoms/ui.ts";
 import { draggedBlockAtom } from "./dnd/atoms.ts";
 import { useFeature } from "flagged";
-import { useAddBlocksModal } from "../../hooks/useAddBlocks.ts";
-import { BUILDER_EVENTS, emitChaiBuilderMsg } from "../../events.ts";
+import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../events.ts";
 
 /**
  * @param block
@@ -57,7 +56,6 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
   const duplicateBlock = useDuplicateBlocks();
   const [, setSelectedIds] = useSelectedBlockIds();
   const [, setHighlighted] = useHighlightBlockId();
-  const [, setOpen] = useAddBlocksModal();
   const [, setStyleBlocks] = useSelectedStylingBlocks();
   const [editingBlockId] = useAtom(inlineEditingActiveAtom);
   const { floatingStyles, refs, update } = useFloating({
@@ -106,14 +104,17 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
 
         <div className="flex gap-2 px-1">
           {canAddChildBlock(get(block, "_type", "")) && (
-            <PlusIcon className="hover:scale-105" onClick={() => setOpen(block?._id)} />
+            <PlusIcon
+              className="hover:scale-105"
+              onClick={() => emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, data: block })}
+            />
           )}
           {canDuplicateBlock(get(block, "_type", "")) ? (
             <CopyIcon className="hover:scale-105" onClick={() => duplicateBlock([block?._id])} />
           ) : null}
           <GearIcon
             className="text-white hover:scale-105"
-            onClick={() => emitChaiBuilderMsg({ name: BUILDER_EVENTS.SHOW_SETTINGS })}
+            onClick={() => emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.SHOW_BLOCK_SETTINGS, data: block })}
           />
           {canDeleteBlock(get(block, "_type", "")) ? (
             <TrashIcon className="hover:scale-105" onClick={() => removeBlock([block?._id])} />
