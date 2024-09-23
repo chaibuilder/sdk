@@ -15,7 +15,6 @@ import { useFeature } from "flagged";
 import { draggedBlockAtom } from "../../../canvas/dnd/atoms.ts";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
-import { useAddBlocksModal } from "../../../../hooks/useAddBlocks.ts";
 import { selectedLibraryAtom } from "../../../../atoms/ui.ts";
 import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../../../events.ts";
 
@@ -84,7 +83,7 @@ const BlockCard = ({
       setTimeout(() => {
         setSelected([]);
         setHighlighted(null);
-        closePopover();
+        emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK });
       }, 200);
     }
   };
@@ -157,7 +156,6 @@ const UILibrarySection = ({ parentId }: { parentId?: string }) => {
   const [selectedGroup, setGroup] = useState("Hero");
   const blocks = get(mergedGroups, selectedGroup, []);
   const timeoutRef = useRef(null);
-  const [, setOpen] = useAddBlocksModal();
   const { t } = useTranslation();
 
   const handleMouseEnter = (group: string) => {
@@ -220,14 +218,14 @@ const UILibrarySection = ({ parentId }: { parentId?: string }) => {
               <div className="flex flex-col gap-1">
                 {React.Children.toArray(
                   firstBlocks.map((block: UiLibraryBlock) => (
-                    <BlockCard parentId={parentId} block={block} library={library} closePopover={() => setOpen("")} />
+                    <BlockCard parentId={parentId} block={block} library={library} />
                   )),
                 )}
               </div>
               <div className="flex flex-col gap-1">
                 {React.Children.toArray(
                   secondBlocks.map((block: UiLibraryBlock) => (
-                    <BlockCard parentId={parentId} block={block} library={library} closePopover={() => setOpen("")} />
+                    <BlockCard parentId={parentId} block={block} library={library} />
                   )),
                 )}
               </div>
