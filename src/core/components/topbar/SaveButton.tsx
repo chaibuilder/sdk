@@ -1,23 +1,13 @@
-import { useMemo } from "react";
 import { Button } from "../../../ui";
 import { useBuilderProp, useSavePage } from "../../hooks";
 import { FaCheck } from "react-icons/fa6";
 import { useTranslation } from "react-i18next";
+import { cn } from "../../functions/Functions.ts";
 
 export const SaveButton = () => {
   const { savePage, saveState } = useSavePage();
   const hideButton = useBuilderProp("hideSaveButton", false);
   const { t } = useTranslation();
-  const classes = useMemo(() => {
-    switch (saveState) {
-      case "SAVING":
-        return "animate-pulse bg-gray-300 text-gray-900";
-      case "SAVED":
-        return "bg-green-500 text-white hover:bg-green-600 hover:text-white";
-      default:
-        return "bg-gray-200 text-gray-500 hover:bg-gray-100";
-    }
-  }, [saveState]);
 
   if (hideButton) {
     return null;
@@ -30,7 +20,12 @@ export const SaveButton = () => {
         e.preventDefault();
         savePage();
       }}
-      className={`flex h-auto w-fit items-center gap-x-2 p-1 px-2 ${classes}`}
+      className={cn("flex h-auto w-fit items-center gap-x-2 p-1 px-2",
+        // UNSAVED sate
+        "bg-gray-200 text-gray-500 hover:bg-gray-100", {
+        "animate-pulse bg-gray-300 text-gray-900": saveState === "SAVING",
+        "bg-green-500 text-white hover:bg-green-600 hover:text-white": saveState === "SAVED",
+        })}
       size="sm"
       variant="outline">
       <FaCheck className={"text-sm text-white"} />
