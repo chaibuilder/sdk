@@ -5,7 +5,6 @@ import {
   useSelectedBlock,
   useSelectedStylingBlocks,
   useUpdateBlocksProps,
-  useUpdateBlocksPropsRealtime,
 } from "../../../hooks";
 import AttrsEditor from "./AttrsEditor.tsx";
 
@@ -13,7 +12,6 @@ export const BlockAttributesEditor = React.memo(() => {
   const block = useSelectedBlock();
   const [attributes, setAttributes] = useState([] as Array<{ key: string; value: string }>);
   const [selectedStylingBlock] = useSelectedStylingBlocks();
-  const updateBlockPropsRealtime = useUpdateBlocksPropsRealtime();
   const updateBlockProps = useUpdateBlocksProps();
 
   const attrKey = `${get(selectedStylingBlock, "0.prop")}_attrs`;
@@ -36,7 +34,7 @@ export const BlockAttributesEditor = React.memo(() => {
       });
       updateBlockProps([get(block, "_id")], { [attrKey]: _attrs });
     },
-    [block, updateBlockPropsRealtime, attrKey],
+    [block, updateBlockProps, attrKey],
   );
 
   return (
