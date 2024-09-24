@@ -18,8 +18,8 @@ npm install @chaibuilder/sdk @chaibuilder/runtime tailwindcss
 Step 2: Add a custom tailwind config.
 Create a new file: `tailwind.chaibuilder.config.ts`. <br /> Pass the path to your source files.
 ```tsx
-import { chaiBuilderTailwindConfig } from "@chaibuilder/sdk/tailwind";
-export default chaiBuilderTailwindConfig(["./src/**/*.{js,ts,jsx,tsx}"]);
+import { getChaiBuilderTailwindConfig } from "@chaibuilder/sdk/tailwind";
+export default getChaiBuilderTailwindConfig(["./src/**/*.{js,ts,jsx,tsx}"]);
 
 ```
 
@@ -36,8 +36,10 @@ Step 4: Add the builder to your page.
 ```tsx
 import "./chaibuilder.tailwind.css";
 import "@chaibuilder/sdk/styles";
-import "@chaibuilder/sdk/web-blocks";
+import {loadWebBlocks} from "@chaibuilder/sdk/web-blocks";
 import { ChaiBuilderEditor } from "@chaibuilder/sdk";
+
+loadWebBlocks();
 
 const BuilderFullPage = () => {
   return  (
