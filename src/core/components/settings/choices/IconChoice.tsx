@@ -22,8 +22,8 @@ export const IconChoices = ({ property, onChange }: any) => {
               type="button"
               disabled={!canChange}
               onClick={() => onChange(cls, property)}
-              className={`cursor-pointer rounded border border-gray-600 p-1 disabled:cursor-not-allowed  ${
-                pureClsName === cls ? " bg-blue-500 text-white" : "disabled:bg-gray-600 disabled:text-gray-400"
+              className={`cursor-pointer rounded border border-border p-1 disabled:cursor-not-allowed ${
+                pureClsName === cls ? "bg-blue-500 text-white" : "disabled:bg-gray-600 disabled:text-gray-400"
               }`}>
               {React.createElement(get(EDITOR_ICONS, cls, BoxIcon))}
             </button>

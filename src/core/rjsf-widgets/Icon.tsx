@@ -1,7 +1,7 @@
 import { WidgetProps } from "@rjsf/utils";
 import IconPicker, { IconPickerItem } from "react-icons-picker";
 import ReactDOM from "react-dom";
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const getSvgMarkup = (icon: string) => {
   try {
@@ -31,7 +31,7 @@ const getSvgMarkup = (icon: string) => {
 };
 
 const IconPickerField = ({ value, onChange }: WidgetProps) => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const handleIconChange = (icon: string) => {
     onChange("<svg />");
     const svgMarkup = getSvgMarkup(icon);
@@ -77,7 +77,7 @@ const IconPickerField = ({ value, onChange }: WidgetProps) => {
         spellCheck={"false"}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="h-full w-full rounded-sm border border-foreground/20 px-2 py-1 text-xs shadow-sm focus:border-gray-500/80 focus:outline-none focus:ring-0"
+        className="h-full w-full rounded-sm border border-foreground/20 px-2 py-1 text-xs shadow-sm focus:outline-none focus:ring-0"
         placeholder={t("choose_icon_or_enter_svg")}
       />
     </div>

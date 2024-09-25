@@ -32,7 +32,7 @@ const ChaiSelect: React.FC<ChaiSelectProps> = ({
   return (
     <div className={mergeClasses("relative inline-block w-full", className)}>
       <select
-        className="focus:shadow-outline w-full appearance-none rounded border border-gray-300 bg-white px-4 py-1 pr-8 text-sm leading-tight shadow hover:border-gray-400 focus:outline-none"
+        className="focus:shadow-outline w-full appearance-none rounded border border-border px-4 py-1 pr-8 text-sm leading-tight shadow hover:border-gray-400 focus:outline-none"
         value={selectedValue}
         onChange={handleChange}>
         <option value="" disabled>

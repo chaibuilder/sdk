@@ -392,7 +392,7 @@ const NewDataBindingPair = ({
   useEffect(() => setDataType(() => getDataType(item.key, "PROP")), [item.key]);
 
   return (
-    <div className={`relative flex flex-col rounded-md border border-gray-200 p-2`}>
+    <div className={`relative flex flex-col rounded-md border border-border p-2`}>
       <div className="text-sm font-normal text-gray-500">{item.key}</div>
       <div className="font-medium leading-5">{item.value}</div>
       <ViewData data={get(dataProvider, item.value, "")} />

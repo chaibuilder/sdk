@@ -29,7 +29,6 @@ import { useTranslation } from "react-i18next";
 import { SparklesIcon } from "lucide-react";
 import { AskAIStyles } from "../AskAiStyle.tsx";
 
-
 const fuse = new Fuse(ALL_TW_CLASSES, {
   isCaseSensitive: false,
   threshold: 0.2,
@@ -105,7 +104,6 @@ export function ManualClasses() {
   };
 
   const onClickCopy = () => {
-   
     if (navigator.clipboard === undefined) {
       toast({
         title: t("clipboard_not_supported"),
@@ -162,18 +160,18 @@ export function ManualClasses() {
             renderSuggestion={renderSuggestion}
             inputProps={inputProps}
             containerProps={{
-              className: "relative h-8 w-full gap-y-1 py-1 border-gray-600",
+              className: "relative h-8 w-full gap-y-1 py-1 border-border",
             }}
             theme={{
               suggestion: "bg-transparent",
               suggestionHighlighted: "!bg-gray-300 ",
               suggestionsContainerOpen:
-                "absolute bg-gray-100 z-50 max-h-[230px] overflow-y-auto w-full  border border-gray-600 rounded-md",
+                "absolute bg-gray-100 z-50 max-h-[230px] overflow-y-auto w-full  border border-border rounded-md",
             }}></Autosuggest>
         </div>
         <Button
           variant="outline"
-          className="h-6 border-gray-700"
+          className="h-6 border-border"
           onClick={addNewClasses}
           disabled={newCls.trim() === ""}
           size="sm">
@@ -185,7 +183,7 @@ export function ManualClasses() {
           classes.map((cls: string) => (
             <div
               key={cls}
-              className="group relative flex max-w-[260px] cursor-default items-center gap-x-1 truncate rounded border border-gray-300 bg-gray-200 p-px px-1.5 text-[11px] text-gray-600 hover:border-gray-300">
+              className="group relative flex max-w-[260px] cursor-default items-center gap-x-1 truncate rounded border border-border bg-gray-200 p-px px-1.5 text-[11px] text-gray-600 hover:border-gray-300 dark:bg-gray-800">
               {cls}
               <Cross2Icon
                 onClick={() => removeClassesFromBlocks(selectedIds, [cls])}
