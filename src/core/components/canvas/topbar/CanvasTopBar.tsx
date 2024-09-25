@@ -13,7 +13,7 @@ const CanvasTopBar: React.FC = () => {
   const [zoom] = useCanvasZoom();
 
   return (
-    <div className="flex h-10 items-center justify-between border-b bg-background/70 px-2">
+    <div className="flex h-10 items-center justify-between border-b border-border bg-background/70 px-2">
       <div className="flex h-full space-x-2">
         <Breakpoints />
         <Separator orientation="vertical" />

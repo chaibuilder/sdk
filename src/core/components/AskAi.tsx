@@ -51,7 +51,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
     <div className="">
       <div
         onClick={() => setOpen(!open)}
-        className="flex cursor-default items-center justify-between border-b border-gray-300 py-2 text-sm font-bold text-gray-600 hover:bg-gray-50">
+        className="flex cursor-default items-center justify-between border-b border-border py-2 text-sm font-bold hover:bg-gray-50 dark:hover:bg-gray-800">
         <span>{t("ask_ai")}</span>
         <span>
           <ChevronDown className={"h-4 w-4 text-gray-500 " + (open ? "rotate-180" : "")} />
@@ -192,7 +192,7 @@ export const AISetContext = () => {
       collapsible>
       <AccordionItem value="set-context" className="border-none">
         {/*  @ts-ignore */}
-        <AccordionTrigger ref={btnRef} className="border-b py-2 text-gray-600 hover:no-underline">
+        <AccordionTrigger ref={btnRef} className="border-b border-border py-2 hover:no-underline">
           <div className="flex w-full items-center justify-between">
             <span className="font-bold">{t("ai_context")}</span>
           </div>
@@ -204,7 +204,7 @@ export const AISetContext = () => {
             value={context}
             onChange={(e) => setContext(e.target.value)}
             placeholder={t("tell_about_this_page_eg_this_page_is_about")}
-            className="w-full border border-gray-400 bg-background focus:border"
+            className="w-full border border-border bg-background focus:border"
             rows={10}
             onKeyDown={(e) => {
               if (e.key === "Enter") {

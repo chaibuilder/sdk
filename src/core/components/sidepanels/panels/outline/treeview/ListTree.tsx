@@ -149,7 +149,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
     return (
       <button
         onClick={() => emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK })}
-        className="mb-10 mt-5 w-full rounded bg-gray-100 p-1 hover:bg-gray-200">
+        className="mb-10 mt-5 w-full rounded bg-gray-100 p-1 hover:bg-gray-200 dark:bg-gray-800">
         + {t("add_block")}
       </button>
     );
@@ -178,7 +178,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
         }}
         className={cn(
           "group flex !h-full w-full items-center justify-between space-x-px !rounded py-px outline-none",
-          isSelected ? "bg-blue-500 text-white" : "text-gray-600 hover:bg-gray-200 dark:hover:bg-gray-800",
+          isSelected ? "bg-blue-500 text-white" : "hover:bg-gray-200 dark:hover:bg-gray-800",
           willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
           isDragging && "opacity-20",
         )}>

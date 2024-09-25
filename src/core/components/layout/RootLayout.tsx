@@ -83,7 +83,7 @@ const RootLayout: ComponentType = () => {
             </Suspense>
           </div>
           <main className="relative flex h-full flex-1 flex-row">
-            <div className="flex w-12 flex-col items-center border-r py-2">
+            <div className="flex w-12 flex-col items-center border-r border-border py-2">
               {sidebarMenuItems.map((item, index) => (
                 <button
                   key={index}
