@@ -24,7 +24,7 @@ const TopBar = lazy(() => import("../topbar/Topbar.tsx"));
 
 const menuItems = [
   { icon: <Layers size={20} />, label: "sidebar.outline", component: Outline },
-  { icon: <EditIcon size={16} />, label: "sidebar.edit_block", component: SettingsPanel },
+  // { icon: <EditIcon size={16} />, label: "sidebar.edit_block", component: SettingsPanel },
   { icon: <LightningBoltIcon className="size-5" />, label: "sidebar.ai_assistant", component: AskAI },
   {
     icon: <PaintBucketIcon size={20} />,
@@ -123,6 +123,27 @@ const RootLayout: ComponentType = () => {
                 <CanvasArea />
               </Suspense>
             </div>
+            <motion.div
+              className="h-full max-h-full border-l border-border"
+              initial={{ width: 280 }}
+              animate={{ width: 280 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}>
+              {activePanelIndex !== null && (
+                <div className="no-scrollbar overflow h-full overflow-x-hidden">
+                  <div className="flex flex-col p-3">
+                    <h2 className="-mt-1 flex h-10 items-center space-x-1 text-base font-bold">
+                      <EditIcon size={"16"} />
+                      <span>{t("Block Settings")}</span>
+                    </h2>
+                    <div className="flex-1">
+                      <Suspense fallback={<div>Loading...</div>}>
+                        <SettingsPanel />
+                      </Suspense>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </motion.div>
           </main>
         </div>
         <AddBlocksDialog />
