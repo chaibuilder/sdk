@@ -26,7 +26,7 @@ export const MultipleChoices = ({
 
   return (
     <div
-      className={`mb-2 border-gray-800 py-2 first:pt-0 last:pb-0 ${borderB ? "border-b" : ""} ${
+      className={`mb-2 border-border py-2 first:pt-0 last:pb-0 ${borderB ? "border-b" : ""} ${
         borderT ? "border-t" : ""
       }`}>
       <div className="flex flex-row text-xs">
@@ -41,7 +41,7 @@ export const MultipleChoices = ({
                       type="button"
                       onClick={() => setSelectedProp(key)}
                       className={`relative cursor-pointer rounded-full p-1 text-[8px] ${
-                        key === selectedProp ? " bg-[#3E57F0] text-white" : "text-gray-600 dark:text-gray-300"
+                        key === selectedProp ? "bg-[#3E57F0] text-white" : "text-gray-600 dark:text-gray-300"
                       }`}>
                       {React.createElement("div", {
                         className: hasAnyClassSet(key) ? "-bottom-1.5 absolute bg-[#3E57F0] h-[2px] left-0 w-full" : "",

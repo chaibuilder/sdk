@@ -46,11 +46,11 @@ export const HotKeys = memo(() => {
         </DialogHeader>
         <div>
           <div className="grid grid-cols-2">
-            <div className={"mr-8 flex flex-col space-y-2 border-r border-gray-200"}>
+            <div className={"mr-8 flex flex-col space-y-2 border-r border-border"}>
               {Object.keys(keys).map((key) => {
                 return (
                   <div key={key} className="flex items-center space-x-4">
-                    <Badge variant={"outline"} className={"border border-gray-600 p-1 px-2"}>
+                    <Badge variant={"outline"} className={"border border-border p-1 px-2"}>
                       {t(key)}
                     </Badge>
                     <div>{t(keys[key])}</div>
@@ -62,7 +62,7 @@ export const HotKeys = memo(() => {
               {Object.keys(keys2).map((key) => {
                 return (
                   <div key={key} className="flex items-center space-x-4">
-                    <Badge variant={"outline"} className={"border border-gray-600 p-1 px-2"}>
+                    <Badge variant={"outline"} className={"border border-border p-1 px-2"}>
                       {t(key)}
                     </Badge>
                     <div>{t(keys2[key])}</div>

@@ -64,7 +64,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             placeholder={t("ask_ai_to_edit_content")}
-            className="w-full border border-gray-400 focus:border-0"
+            className="w-full border border-border focus:border-0"
             rows={3}
             onKeyDown={(e) => {
               if (e.key === "Enter") {

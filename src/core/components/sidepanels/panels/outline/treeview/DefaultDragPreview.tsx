@@ -32,7 +32,7 @@ export const DefaultDragPreview = memo(({ id, isDragging, mouse }: Omit<DragPrev
     <div>
       <Overlay isDragging={isDragging}>
         <div
-          className="pointer-events-none absolute z-50 rounded border border-gray-200 bg-gray-100/80 font-semibold text-blue-600 shadow-md dark:border-gray-700 dark:bg-gray-800"
+          className="pointer-events-none absolute z-50 rounded border border-border bg-gray-100/80 font-semibold text-blue-600 shadow-md dark:border-gray-700 dark:bg-gray-800"
           style={style}>
           <button type="button" className="flex !cursor-grab items-center p-0.5" aria-label={`Type: ${block?._type}`}>
             <div className="-mt-0.5 h-3 w-3">
