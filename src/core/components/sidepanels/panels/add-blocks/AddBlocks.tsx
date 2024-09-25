@@ -1,18 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {
-  capitalize,
-  filter,
-  find,
-  first,
-  groupBy,
-  includes,
-  isEmpty,
-  map,
-  reject,
-  sortBy,
-  uniq,
-  values,
-} from "lodash-es";
+import React, { useState } from "react";
+import { capitalize, filter, find, map, reject, sortBy, values } from "lodash-es";
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
 import {
@@ -29,13 +16,13 @@ import { CoreBlock } from "./CoreBlock";
 import { showPredefinedBlockCategoryAtom } from "../../../../atoms/ui";
 import { useBlocksStore, useBuilderProp } from "../../../../hooks";
 import ImportHTML from "./ImportHTML";
-import { useChaiBlocks } from "@chaibuilder/runtime";
 import { mergeClasses, UILibraries } from "../../../../main";
 import { canAcceptChildBlock, canBeNestedInside } from "../../../../functions/block-helpers.ts";
+import { DefaultChaiBlocks } from "./DefaultBlocks.tsx";
 
 const CORE_GROUPS = ["basic", "typography", "media", "layout", "form", "advanced", "other"];
 
-export const ChaiBuilderBlocks = ({ groups, blocks, parentId }: any) => {
+export const ChaiBuilderBlocks = ({ groups, blocks, parentId, gridCols = "grid-cols-4" }: any) => {
   const { t } = useTranslation();
   const [allBlocks] = useBlocksStore();
   const parentType = find(allBlocks, (block) => block._id === parentId)?._type;
@@ -50,7 +37,7 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId }: any) => {
                 {capitalize(t(group.toLowerCase()))}
               </AccordionTrigger>
               <AccordionContent className="mx-auto max-w-xl p-3">
-                <div className="grid grid-cols-4 gap-2">
+                <div className={"grid gap-2 " + gridCols}>
                   {React.Children.toArray(
                     reject(filter(values(blocks), { group }), { hidden: true }).map((block) => {
                       return (
@@ -84,23 +71,8 @@ const AddBlocksPanel = ({
 }) => {
   const { t } = useTranslation();
   const [tab, setTab] = useState<string>("library");
-  const [active, setActive] = useState<string>("basic");
-  const allChaiBlocks = useChaiBlocks();
   const [, setCategory] = useAtom(showPredefinedBlockCategoryAtom);
   const importHTMLSupport = useBuilderProp("importHTMLSupport", true);
-  const filterChaiBlock = useBuilderProp("filterChaiBlock", () => true);
-  const chaiBlocks = filter(allChaiBlocks, filterChaiBlock);
-
-  const groupedBlocks = groupBy(chaiBlocks, "category") as Record<string, any[]>;
-  const uniqueTypeGroup = uniq(map(groupedBlocks.core, "group"));
-
-  // * setting active tab if not already selected from current unique list
-  useEffect(() => {
-    if (!includes(uniqueTypeGroup, active) && !isEmpty(uniqueTypeGroup) && !isEmpty(active)) {
-      setActive(first(uniqueTypeGroup) as string);
-    }
-  }, [uniqueTypeGroup, active]);
-
   return (
     <div className={mergeClasses("flex h-full w-full flex-col overflow-hidden", className)}>
       {showHeading ? (
@@ -129,7 +101,7 @@ const AddBlocksPanel = ({
       {tab === "core" && (
         <ScrollArea className="-mx-1.5 h-[calc(100vh-156px)] overflow-y-auto">
           <div className="mt-2 w-full">
-            <ChaiBuilderBlocks parentId={parentId} groups={uniqueTypeGroup} blocks={groupedBlocks.core} />
+            <DefaultChaiBlocks gridCols={"grid-cols-4"} parentId={parentId} />
           </div>
         </ScrollArea>
       )}

@@ -14,6 +14,7 @@ export { emitChaiBuilderMsg, useChaiBuilderMsgListener, CHAI_BUILDER_EVENTS } fr
 export { AISetContext, AIUserPrompt } from "../components/AskAi.tsx";
 export { BlockAttributesEditor } from "../components/settings/new-panel/BlockAttributesEditor.tsx";
 export { ChaiBuilderEditor } from "./ChaiBuilderEditor";
+export { DefaultChaiBlocks } from "../components/sidepanels/panels/add-blocks/DefaultBlocks.tsx";
 export { DarkMode as DarkModeSwitcher } from "../components/canvas/topbar/DarkMode.tsx";
 export { Breakpoints as ScreenSizes } from "../components/canvas/topbar/Breakpoints.tsx";
 export { UndoRedo } from "../components/canvas/topbar/UndoRedo.tsx";
