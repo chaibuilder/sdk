@@ -36,14 +36,12 @@ import { useTranslation } from "react-i18next";
 import { VscJson } from "react-icons/vsc";
 import { BsLightningFill } from "react-icons/bs";
 import { TbEyeDown } from "react-icons/tb";
-import { useAddBlocksModal } from "../../../../../hooks/useAddBlocks.ts";
 import { ROOT_TEMP_KEY } from "../../../../../constants/STRINGS.ts";
 import { PlusIcon } from "lucide-react";
 import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../../../../events.ts";
 
 const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const outlineItems = useBuilderProp("outlineMenuItems", []);
-  const [, setOpen] = useAddBlocksModal();
   const { t } = useTranslation();
 
   const [iframe] = useAtom<HTMLIFrameElement>(canvasIframeAtom);
@@ -221,7 +219,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
           {canAddChildBlock(data?._type) ? (
             <Tooltip>
               <TooltipTrigger
-                onClick={() => setOpen(id)}
+                onClick={() => emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, data: { _id: id } })}
                 className="cursor-pointer rounded bg-transparent hover:bg-white hover:text-black"
                 asChild>
                 <PlusIcon size={"18"} />
