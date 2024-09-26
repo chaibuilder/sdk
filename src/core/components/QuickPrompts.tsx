@@ -1,14 +1,7 @@
 import { ShuffleIcon, SmileIcon } from "lucide-react";
 import { ArrowDownIcon, ArrowUpIcon, CheckIcon } from "@radix-ui/react-icons";
 import { FaFilePen } from "react-icons/fa6";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../../ui";
+import { Popover, PopoverContent, PopoverTrigger } from "../../ui";
 import { useAskAi } from "../hooks/useAskAi.ts";
 import { FaRecycle } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
@@ -71,22 +64,21 @@ export function QuickPrompts({ onClick }: { onClick: (prompt: string) => void })
       <ul className="space-y-2">
         {QUICK_PROMPTS.map(({ name, icon: Icon, subMenus, prompt }: any) =>
           subMenus ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <li className="flex cursor-pointer items-center space-x-2 hover:bg-gray-100" key={name}>
+            <Popover>
+              <PopoverTrigger asChild>
+                <li
+                  className="flex cursor-pointer items-center space-x-2 rounded p-1 pl-2 text-sm hover:bg-gray-100"
+                  key={name}>
                   <Icon className="h-4 w-4" />
                   <span>{name}</span>
                 </li>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Billing</DropdownMenuItem>
-                <DropdownMenuItem>Team</DropdownMenuItem>
-                <DropdownMenuItem>Subscription</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+              </PopoverTrigger>
+              <PopoverContent side={"right"}>
+                <ul>
+                  <li>Happy</li>
+                </ul>
+              </PopoverContent>
+            </Popover>
           ) : (
             <li
               onClick={() => onClick(prompt)}

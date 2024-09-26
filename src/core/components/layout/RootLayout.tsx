@@ -106,7 +106,7 @@ const RootLayout: ComponentType = () => {
             <div className="flex w-12 flex-col items-center justify-between border-r py-2">
               <div className="flex flex-col">
                 {sidebarMenuItems.map((item, index) => (
-                  <Tooltip>
+                  <Tooltip key={"button" + index}>
                     <TooltipTrigger asChild>
                       <button
                         key={index}
