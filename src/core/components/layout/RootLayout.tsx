@@ -20,7 +20,7 @@ import SettingsPanel from "../settings/SettingsPanel.tsx";
 import { AskAI } from "../AskAi.tsx";
 import { CHAI_BUILDER_EVENTS, useChaiBuilderMsgListener } from "../../events.ts";
 import { ChooseLayout } from "./ChooseLayout.tsx";
-import { compact } from "lodash-es";
+import { compact, get } from "lodash-es";
 import { LAYOUT_VARIANTS } from "../../constants/LAYOUT_VARIANTS.ts";
 
 const TopBar = lazy(() => import("../topbar/Topbar.tsx"));
@@ -114,7 +114,7 @@ const RootLayout: ComponentType = () => {
                           activePanelIndex === index ? "bg-primary text-white" : "hover:bg-primary hover:text-white"
                         }`}
                         onClick={() => handleMenuItemClick(index)}>
-                        {item.icon}
+                        {get(item, "icon", null)}
                       </button>
                     </TooltipTrigger>
                     <TooltipContent side={"right"}>
@@ -148,12 +148,12 @@ const RootLayout: ComponentType = () => {
                 <div className="no-scrollbar overflow h-full overflow-x-hidden">
                   <div className="flex flex-col p-3">
                     <h2 className="-mt-1 flex h-10 items-center space-x-1 text-base font-bold">
-                      {sidebarMenuItems[activePanelIndex].icon}
+                      {get(sidebarMenuItems, `${activePanelIndex}.icon`, null)}
                       <span>{t(sidebarMenuItems[activePanelIndex].label)}</span>
                     </h2>
                     <div className="flex-1">
                       <Suspense fallback={<div>Loading...</div>}>
-                        {React.createElement(sidebarMenuItems[activePanelIndex].component, {})}
+                        {React.createElement(get(sidebarMenuItems, `${activePanelIndex}.component`, null), {})}
                       </Suspense>
                     </div>
                   </div>
