@@ -9,6 +9,7 @@ import { useAddBlock, useHighlightBlockId, useSelectedBlockIds } from "../../../
 import { useBlocksStoreUndoableActions } from "../../../history/useBlocksStoreUndoableActions.ts";
 import { getOrientation } from "./getOrientation.ts";
 import { draggedBlockAtom, dropTargetBlockIdAtom } from "./atoms.ts";
+import { useFeature } from "flagged";
 
 let iframeDocument: null | HTMLDocument = null;
 let possiblePositions: [number, number, number][] = [];
@@ -125,8 +126,10 @@ export const useDnd = () => {
   const { moveBlocks } = useBlocksStoreUndoableActions();
   const [draggedBlock, setDraggedBlock] = useAtom(draggedBlockAtom);
   const [, setDropTarget] = useAtom(dropTargetBlockIdAtom);
+  const dnd = useFeature("dnd");
 
- 
+  if (!dnd) return {};
+
   const resetDragState = () => {
     removePlaceholder();
     setIsDragging(false);
