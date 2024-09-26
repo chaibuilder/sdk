@@ -28,7 +28,7 @@ const SettingsPanel: React.FC = () => {
 
   return (
     <ErrorBoundary fallback={<FallbackError />} onError={onErrorFn}>
-      <div className={"relative flex w-full flex-col"}>
+      <div className={"relative flex max-h-full w-full flex-col"}>
         <BlockSettings />
         <br />
         <BlockStyling />

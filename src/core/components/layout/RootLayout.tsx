@@ -74,15 +74,17 @@ const RootLayout: ComponentType = () => {
   const { t } = useTranslation();
   const sidebarMenuItems = [...menuItems, ...topComponents];
   return (
-    <div className="h-screen max-h-full w-screen bg-background text-foreground">
+    <div className="h-screen max-h-full w-screen overflow-x-hidden bg-background text-foreground">
       <TooltipProvider>
-        <div onContextMenu={preventContextMenu} className="flex h-screen flex-col bg-background text-foreground">
+        <div
+          onContextMenu={preventContextMenu}
+          className="flex h-screen max-h-full flex-col bg-background text-foreground">
           <div className="h-14 w-screen shrink-0 border-b border-border">
             <Suspense>
               <TopBar />
             </Suspense>
           </div>
-          <main className="relative flex h-full flex-1 flex-row">
+          <main className="relative flex h-[calc(100vh-56px)] max-w-full flex-1 flex-row">
             <div className="flex w-12 flex-col items-center border-r py-2">
               {sidebarMenuItems.map((item, index) => (
                 <button
@@ -128,21 +130,19 @@ const RootLayout: ComponentType = () => {
               initial={{ width: 280 }}
               animate={{ width: 280 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}>
-              {activePanelIndex !== null && (
-                <div className="no-scrollbar overflow h-full overflow-x-hidden">
-                  <div className="flex flex-col p-3">
-                    <h2 className="-mt-1 flex h-10 items-center space-x-1 text-base font-bold">
-                      <EditIcon size={"16"} />
-                      <span>{t("Block Settings")}</span>
-                    </h2>
-                    <div className="flex-1">
-                      <Suspense fallback={<div>Loading...</div>}>
-                        <SettingsPanel />
-                      </Suspense>
-                    </div>
+              <div className="no-scrollbar overflow h-full max-h-full overflow-x-hidden">
+                <div className="flex max-h-full flex-col p-3">
+                  <h2 className="-mt-1 flex h-10 items-center space-x-1 text-base font-bold">
+                    <EditIcon size={"16"} />
+                    <span>{t("Block Settings")}</span>
+                  </h2>
+                  <div className="flex-1">
+                    <Suspense fallback={<div>Loading...</div>}>
+                      <SettingsPanel />
+                    </Suspense>
                   </div>
                 </div>
-              )}
+              </div>
             </motion.div>
           </main>
         </div>
