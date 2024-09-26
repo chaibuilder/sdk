@@ -87,8 +87,10 @@ const RootLayout: ComponentType = () => {
               {sidebarMenuItems.map((item, index) => (
                 <button
                   key={index}
-                  className={`mb-2 rounded-lg p-2 text-gray-300 transition-colors dark:text-gray-800 ${
-                    activePanelIndex === index ? "bg-primary text-foreground" : "hover:bg-primary hover:text-foreground"
+                  className={`mb-2 rounded-lg p-2 text-gray-300 transition-colors dark:text-gray-300 ${
+                    activePanelIndex === index
+                      ? "bg-primary text-foreground dark:bg-primary dark:text-gray-800"
+                      : "hover:bg-primary hover:text-foreground dark:hover:bg-primary dark:hover:text-gray-800"
                   }`}
                   onClick={() => handleMenuItemClick(index)}>
                   {item.icon}
