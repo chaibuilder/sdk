@@ -3,7 +3,7 @@ import { isDevelopment } from "../../import-html/general.ts";
 import { useKeyEventWatcher } from "../../hooks/useKeyEventWatcher.ts";
 import { useExpandTree } from "../../hooks/useExpandTree.ts";
 import { useAtom } from "jotai";
-import { useBuilderProp, useSavePage } from "../../hooks";
+import { useBuilderProp, useLayoutVariant, useSavePage } from "../../hooks";
 import "../canvas/static/BlocksExternalDataProvider.tsx";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../ui";
 import { useIntervalEffect } from "@react-hookz/web";
@@ -22,7 +22,6 @@ import { CHAI_BUILDER_EVENTS, useChaiBuilderMsgListener } from "../../events.ts"
 import { ChooseLayout } from "./ChooseLayout.tsx";
 import { compact } from "lodash-es";
 import { LAYOUT_VARIANTS } from "../../constants/LAYOUT_VARIANTS.ts";
-import { useLayoutVariant } from "../../hooks/useLayoutVariant.ts";
 
 const TopBar = lazy(() => import("../topbar/Topbar.tsx"));
 
@@ -35,6 +34,23 @@ const useAutoSave = () => {
     savePage();
   }, autoSaveInterval * 1000);
 };
+
+function useSidebarMenuItems(layoutVariant: string) {
+  const singleSidePanel = layoutVariant === LAYOUT_VARIANTS.SINGLE_SIDE_PANEL;
+  return useMemo(() => {
+    const items = [
+      { icon: <Layers size={20} />, label: "sidebar.outline", component: Outline },
+      singleSidePanel ? { icon: <EditIcon size={16} />, label: "sidebar.edit_block", component: SettingsPanel } : null,
+      { icon: <LightningBoltIcon className="size-5" />, label: "sidebar.ai_assistant", component: AskAI },
+      {
+        icon: <PaintBucketIcon size={20} />,
+        label: "sidebar.theme",
+        component: () => <ThemeOptions showHeading={false} />,
+      },
+    ];
+    return compact(items);
+  }, [layoutVariant]);
+}
 
 /**
  * RootLayout is a React component that renders the main layout of the application.
@@ -66,21 +82,7 @@ const RootLayout: ComponentType = () => {
     setActivePanelIndex(activePanelIndex === index ? null : index);
   };
 
-  const menuItems = useMemo(() => {
-    const menuItems = [
-      { icon: <Layers size={20} />, label: "sidebar.outline", component: Outline },
-      layoutVariant === LAYOUT_VARIANTS.SINGLE_SIDE_PANEL
-        ? { icon: <EditIcon size={16} />, label: "sidebar.edit_block", component: SettingsPanel }
-        : null,
-      { icon: <LightningBoltIcon className="size-5" />, label: "sidebar.ai_assistant", component: AskAI },
-      {
-        icon: <PaintBucketIcon size={20} />,
-        label: "sidebar.theme",
-        component: () => <ThemeOptions showHeading={false} />,
-      },
-    ];
-    return compact(menuItems);
-  }, [layoutVariant]);
+  const menuItems = useSidebarMenuItems(layoutVariant);
 
   const { t } = useTranslation();
   const sidebarMenuItems = [...menuItems, ...topComponents];
