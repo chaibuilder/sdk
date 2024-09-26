@@ -1,6 +1,7 @@
 import { ChaiBlock } from "./ChaiBlock";
 import React, { ReactNode } from "react";
 import { ChaiPage, PredefinedBlock } from "./index";
+import { LayoutVariant } from "../constants/LAYOUT_VARIANTS.ts";
 
 type RichText = string;
 
@@ -68,6 +69,7 @@ export interface ChaiBuilderEditorProps {
   translations?: Record<string, Record<string, any>>;
   onLoad?: (editorInstance: ChaiBuilderInstance) => void;
   layout?: React.ComponentType;
+  layoutVariant?: LayoutVariant;
   htmlDir?: "ltr" | "rtl";
   hideSaveButton?: boolean;
   filterChaiBlock?: (block: any) => boolean;

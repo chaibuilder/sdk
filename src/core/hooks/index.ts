@@ -36,6 +36,8 @@ import { useCopyToClipboard } from "./useCopyToClipboard";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
 import { useCodeEditor } from "./useCodeEditor.ts";
 
+export { useLayoutVariant } from "./useLayoutVariant.ts";
+export { useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 export {
   useCodeEditor,
   useBlocksStore,

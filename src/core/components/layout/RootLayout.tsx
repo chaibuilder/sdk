@@ -1,15 +1,15 @@
-import React, { ComponentType, lazy, MouseEvent, Suspense, useState } from "react";
+import React, { ComponentType, lazy, MouseEvent, Suspense, useMemo, useState } from "react";
 import { isDevelopment } from "../../import-html/general.ts";
 import { useKeyEventWatcher } from "../../hooks/useKeyEventWatcher.ts";
 import { useExpandTree } from "../../hooks/useExpandTree.ts";
 import { useAtom } from "jotai";
 import { useBuilderProp, useSavePage } from "../../hooks";
 import "../canvas/static/BlocksExternalDataProvider.tsx";
-import { TooltipProvider } from "../../../ui";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../ui";
 import { useIntervalEffect } from "@react-hookz/web";
 import { selectedLibraryAtom } from "../../atoms/ui.ts";
 import { motion } from "framer-motion";
-import { EditIcon, Layers, PaintBucketIcon } from "lucide-react";
+import { EditIcon, Layers, LayoutTemplate, PaintBucketIcon } from "lucide-react";
 import { Outline, ThemeOptions } from "../../main";
 import { CanvasTopBar } from "../canvas/topbar/CanvasTopBar.tsx";
 import CanvasArea from "../canvas/CanvasArea.tsx";
@@ -19,19 +19,12 @@ import { LightningBoltIcon } from "@radix-ui/react-icons";
 import SettingsPanel from "../settings/SettingsPanel.tsx";
 import { AskAI } from "../AskAi.tsx";
 import { CHAI_BUILDER_EVENTS, useChaiBuilderMsgListener } from "../../events.ts";
+import { ChooseLayout } from "./ChooseLayout.tsx";
+import { compact } from "lodash-es";
+import { LAYOUT_VARIANTS } from "../../constants/LAYOUT_VARIANTS.ts";
+import { useLayoutVariant } from "../../hooks/useLayoutVariant.ts";
 
 const TopBar = lazy(() => import("../topbar/Topbar.tsx"));
-
-const menuItems = [
-  { icon: <Layers size={20} />, label: "sidebar.outline", component: Outline },
-  // { icon: <EditIcon size={16} />, label: "sidebar.edit_block", component: SettingsPanel },
-  { icon: <LightningBoltIcon className="size-5" />, label: "sidebar.ai_assistant", component: AskAI },
-  {
-    icon: <PaintBucketIcon size={20} />,
-    label: "sidebar.theme",
-    component: () => <ThemeOptions showHeading={false} />,
-  },
-];
 
 const useAutoSave = () => {
   const { savePage } = useSavePage();
@@ -48,6 +41,8 @@ const useAutoSave = () => {
  */
 const RootLayout: ComponentType = () => {
   const [activePanelIndex, setActivePanelIndex] = useState(0);
+  const [layoutVariant] = useLayoutVariant();
+  const [chooseLayout, setChooseLayout] = useState(false);
   useChaiBuilderMsgListener(({ name }) => {
     if (name === CHAI_BUILDER_EVENTS.SHOW_BLOCK_SETTINGS) {
       setActivePanelIndex(1);
@@ -71,6 +66,22 @@ const RootLayout: ComponentType = () => {
     setActivePanelIndex(activePanelIndex === index ? null : index);
   };
 
+  const menuItems = useMemo(() => {
+    const menuItems = [
+      { icon: <Layers size={20} />, label: "sidebar.outline", component: Outline },
+      layoutVariant === LAYOUT_VARIANTS.SINGLE_SIDE_PANEL
+        ? { icon: <EditIcon size={16} />, label: "sidebar.edit_block", component: SettingsPanel }
+        : null,
+      { icon: <LightningBoltIcon className="size-5" />, label: "sidebar.ai_assistant", component: AskAI },
+      {
+        icon: <PaintBucketIcon size={20} />,
+        label: "sidebar.theme",
+        component: () => <ThemeOptions showHeading={false} />,
+      },
+    ];
+    return compact(menuItems);
+  }, [layoutVariant]);
+
   const { t } = useTranslation();
   const sidebarMenuItems = [...menuItems, ...topComponents];
   return (
@@ -85,17 +96,40 @@ const RootLayout: ComponentType = () => {
             </Suspense>
           </div>
           <main className="relative flex h-[calc(100vh-56px)] max-w-full flex-1 flex-row">
-            <div className="flex w-12 flex-col items-center border-r py-2">
-              {sidebarMenuItems.map((item, index) => (
-                <button
-                  key={index}
-                  className={`mb-2 rounded-lg p-2 text-gray-500 transition-colors ${
-                    activePanelIndex === index ? "bg-primary text-white" : "hover:bg-primary hover:text-white"
-                  }`}
-                  onClick={() => handleMenuItemClick(index)}>
-                  {item.icon}
-                </button>
-              ))}
+            <div className="flex w-12 flex-col items-center justify-between border-r py-2">
+              <div className="flex flex-col">
+                {sidebarMenuItems.map((item, index) => (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        key={index}
+                        className={`mb-2 rounded-lg p-2 text-gray-500 transition-colors ${
+                          activePanelIndex === index ? "bg-primary text-white" : "hover:bg-primary hover:text-white"
+                        }`}
+                        onClick={() => handleMenuItemClick(index)}>
+                        {item.icon}
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent side={"right"}>
+                      <p>{t(item.label)}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                ))}
+              </div>
+              <div className="flex flex-col">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={() => setChooseLayout(true)}
+                      className={`mb-2 rounded-lg p-2 text-gray-500 transition-colors hover:bg-primary hover:text-white`}>
+                      <LayoutTemplate size={20} />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent side={"right"}>
+                    <p>{t("Choose Builder Layout")}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
             </div>
             {/* Side Panel */}
             <motion.div
@@ -125,28 +159,31 @@ const RootLayout: ComponentType = () => {
                 <CanvasArea />
               </Suspense>
             </div>
-            <motion.div
-              className="h-full max-h-full border-l border-border"
-              initial={{ width: 280 }}
-              animate={{ width: 280 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}>
-              <div className="no-scrollbar overflow h-full max-h-full overflow-x-hidden">
-                <div className="flex max-h-full flex-col p-3">
-                  <h2 className="-mt-1 flex h-10 items-center space-x-1 text-base font-bold">
-                    <EditIcon size={"16"} />
-                    <span>{t("Block Settings")}</span>
-                  </h2>
-                  <div className="flex-1">
-                    <Suspense fallback={<div>Loading...</div>}>
-                      <SettingsPanel />
-                    </Suspense>
+            {layoutVariant !== LAYOUT_VARIANTS.SINGLE_SIDE_PANEL ? (
+              <motion.div
+                className="h-full max-h-full border-l border-border"
+                initial={{ width: 280 }}
+                animate={{ width: 280 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}>
+                <div className="no-scrollbar overflow h-full max-h-full overflow-x-hidden">
+                  <div className="flex max-h-full flex-col p-3">
+                    <h2 className="-mt-1 flex h-10 items-center space-x-1 text-base font-bold">
+                      <EditIcon size={"16"} />
+                      <span>{t("Block Settings")}</span>
+                    </h2>
+                    <div className="flex-1">
+                      <Suspense fallback={<div>Loading...</div>}>
+                        <SettingsPanel />
+                      </Suspense>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            ) : null}
           </main>
         </div>
         <AddBlocksDialog />
+        <ChooseLayout open={chooseLayout} close={() => setChooseLayout(false)} />
       </TooltipProvider>
     </div>
   );
