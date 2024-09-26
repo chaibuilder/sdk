@@ -10,6 +10,7 @@ import UILibrariesPanel from "../components/sidepanels/panels/add-blocks/UILibra
 import i18n from "../locales/load";
 import AddBlocksPanel from "../components/sidepanels/panels/add-blocks/AddBlocks.tsx";
 
+export { AddBlocksDialog } from "../components/layout/AddBlocksDialog.tsx";
 export { emitChaiBuilderMsg, useChaiBuilderMsgListener, CHAI_BUILDER_EVENTS } from "../events.ts";
 export { AISetContext, AIUserPrompt } from "../components/AskAi.tsx";
 export { BlockAttributesEditor } from "../components/settings/new-panel/BlockAttributesEditor.tsx";

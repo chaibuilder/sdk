@@ -101,7 +101,7 @@ const StaticCanvas = (): React.JSX.Element => {
       initialHTML = initialHTML.replace("https://unpkg.com/aos@next/dist/aos.js", "/offline/aos.js");
     }
     return initialHTML;
-  }, [networkMode]);
+  }, [networkMode, htmlDir]);
 
   return (
     <ResizableCanvasWrapper onMount={setNewWidth} onResize={setNewWidth}>

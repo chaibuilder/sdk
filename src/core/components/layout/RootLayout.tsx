@@ -52,6 +52,10 @@ function useSidebarMenuItems(layoutVariant: string) {
   }, [layoutVariant]);
 }
 
+function isDualLayout(layoutVariant: string) {
+  return layoutVariant !== LAYOUT_VARIANTS.SINGLE_SIDE_PANEL;
+}
+
 /**
  * RootLayout is a React component that renders the main layout of the application.
  */
@@ -86,8 +90,9 @@ const RootLayout: ComponentType = () => {
 
   const { t } = useTranslation();
   const sidebarMenuItems = [...menuItems, ...topComponents];
+  const htmlDir = useBuilderProp("htmlDir", "ltr");
   return (
-    <div className="h-screen max-h-full w-screen overflow-x-hidden bg-background text-foreground">
+    <div dir={htmlDir} className="h-screen max-h-full w-screen overflow-x-hidden bg-background text-foreground">
       <TooltipProvider>
         <div
           onContextMenu={preventContextMenu}
@@ -161,7 +166,7 @@ const RootLayout: ComponentType = () => {
                 <CanvasArea />
               </Suspense>
             </div>
-            {layoutVariant !== LAYOUT_VARIANTS.SINGLE_SIDE_PANEL ? (
+            {isDualLayout(layoutVariant) ? (
               <motion.div
                 className="h-full max-h-full border-l border-border"
                 initial={{ width: 280 }}
