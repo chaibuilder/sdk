@@ -15,10 +15,10 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
   return (
     <div className="mt-1.5 flex items-center gap-x-3">
       {value ? (
-        <img src={value} className="h-20 w-20 overflow-hidden rounded-md border object-cover" alt="" />
+        <img src={value} className="h-20 w-20 overflow-hidden rounded-md border border-border object-cover" alt="" />
       ) : (
         <ImagePickerModal onSelect={onChange}>
-          <div className="h-20 w-20 cursor-pointer rounded-md border bg-[radial-gradient(#AAA,transparent_1px)] duration-300 [background-size:10px_10px] hover:border-gray-400"></div>
+          <div className="h-20 w-20 cursor-pointer rounded-md border border-border bg-[radial-gradient(#AAA,transparent_1px)] duration-300 [background-size:10px_10px]"></div>
         </ImagePickerModal>
       )}
       <div className="flex w-3/5 flex-col">
@@ -26,7 +26,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
           <>
             <ImagePickerModal onSelect={onChange}>
               <small className="h-6 cursor-pointer rounded-md bg-primary px-2 py-1 text-center text-xs text-white hover:bg-gray-500 dark:bg-gray-700">
-                {value || !isEmpty(value) ? t("replace_image") : t("choose_image")}
+                {value || !isEmpty(value) ? t("Replace image") : t("Choose image")}
               </small>
             </ImagePickerModal>
             <small className="-pl-4 pt-2 text-center text-xs text-gray-600">OR</small>

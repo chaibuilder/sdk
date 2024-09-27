@@ -35,13 +35,13 @@ const ImportHTML = ({ parentId }: { parentId?: string }) => {
             rows={12}
             value={code}
             placeholder={t("enter_code_snippet")}
-            className="resize-none overflow-x-auto whitespace-pre bg-gray-100 font-mono text-xs font-normal"
+            className="resize-none overflow-x-auto whitespace-pre bg-background font-mono text-xs font-normal"
           />
         </div>
       </CardContent>
       <CardFooter className="flex flex-col justify-end p-3">
         <Button disabled={code.trim() === ""} onClick={() => importComponents()} size="sm" className="w-full">
-          {t("import_html")}
+          {t("Import HTML")}
         </Button>
       </CardFooter>
     </Card>

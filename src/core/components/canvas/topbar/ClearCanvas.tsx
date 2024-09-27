@@ -35,13 +35,13 @@ export const ClearCanvas = () => {
             <EraserIcon /> {t("Clear")}
           </Button>
         </AlertDialogTrigger>
-        <AlertDialogContent>
+        <AlertDialogContent className={"border-border"}>
           <AlertDialogHeader>
-            <AlertDialogTitle>{t("Clear Canvas")}</AlertDialogTitle>
-            <AlertDialogDescription>{t("Are you sure you want to clear the whole canvas?")}</AlertDialogDescription>
+            <AlertDialogTitle className="text-foreground">{t("Clear Canvas")}</AlertDialogTitle>
+            <AlertDialogDescription>{t("Are you sure you want to clear the page?")}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>{t("Cancel")}</AlertDialogCancel>
+            <AlertDialogCancel className="text-foreground">{t("Cancel")}</AlertDialogCancel>
             <AlertDialogAction onClick={clearCanvas}>{t("Yes")}</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

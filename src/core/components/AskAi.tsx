@@ -51,7 +51,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
     <div className="">
       <div
         onClick={() => setOpen(!open)}
-        className="flex cursor-pointer items-center justify-between border-b border-border py-2 text-sm font-bold hover:underline">
+        className="flex cursor-pointer items-center justify-between border-b border-border py-2 text-sm font-bold text-muted-foreground hover:underline">
         <span>{t("Ask AI")}</span>
         <span>
           <ChevronDown className={"h-4 w-4 text-gray-500 " + (open ? "rotate-180" : "")} />
@@ -139,8 +139,8 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
         </div>
       ) : open ? (
         <div className="p-4 text-center">
-          <div className="space-y-4 rounded-xl p-4">
-            <SparklesIcon className="mx-auto text-3xl" />
+          <div className="space-y-4 rounded-xl p-4 text-muted-foreground">
+            <SparklesIcon className="mx-auto text-3xl text-muted-foreground" />
             <h1>{t("Please select a block to Ask AI")}</h1>
           </div>
         </div>
@@ -196,7 +196,7 @@ export const AISetContext = () => {
         {/*  @ts-ignore */}
         <AccordionTrigger ref={btnRef} className="border-b border-border py-2">
           <div className="flex w-full items-center justify-between">
-            <span className="font-bold">{t("AI Context")}</span>
+            <span className="font-bold text-muted-foreground">{t("AI Context")}</span>
           </div>
         </AccordionTrigger>
         <AccordionContent>

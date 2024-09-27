@@ -125,7 +125,7 @@ export function ManualClasses() {
         suggestions.length > 0 ? "min-h-[300px]" : "min-h-max"
       } w-full flex-col gap-y-1.5 overflow-y-auto pb-4`}>
       <div className="flex items-center justify-between gap-x-2">
-        <div className="flex items-center gap-x-2">
+        <div className="flex items-center gap-x-2 text-muted-foreground">
           <span>{t("classes")}</span>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -141,7 +141,7 @@ export function ManualClasses() {
             <PopoverTrigger asChild>
               <Button variant="default" className="h-6 w-fit" size="sm">
                 <SparklesIcon className="h-4 w-4" />
-                <span className="ml-2">{t("ask_ai")}</span>
+                <span className="ml-2">{t("Ask AI")}</span>
               </Button>
             </PopoverTrigger>
             <PopoverContent side="left" className="p-2">
@@ -183,7 +183,7 @@ export function ManualClasses() {
           classes.map((cls: string) => (
             <div
               key={cls}
-              className="group relative flex max-w-[260px] cursor-default items-center gap-x-1 truncate rounded border border-border bg-gray-200 p-px px-1.5 text-[11px] text-gray-600 hover:border-gray-300 dark:bg-gray-800">
+              className="group relative flex max-w-[260px] cursor-default items-center gap-x-1 truncate rounded border border-border bg-gray-200 p-px px-1.5 text-[11px] text-gray-600 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
               {cls}
               <Cross2Icon
                 onClick={() => removeClassesFromBlocks(selectedIds, [cls])}

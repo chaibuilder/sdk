@@ -32,8 +32,8 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, gridCols = "grid-c
       (group: string) =>
         reject(filter(values(blocks), { group }), { hidden: true }).length ? (
           <Accordion type="single" value={group} collapsible className="w-full">
-            <AccordionItem value={group}>
-              <AccordionTrigger className="rounded-md bg-gray-100 px-4 py-2 capitalize hover:no-underline">
+            <AccordionItem value={group} className={"border-border"}>
+              <AccordionTrigger className="rounded-md bg-background px-4 py-2 capitalize text-foreground hover:no-underline">
                 {capitalize(t(group.toLowerCase()))}
               </AccordionTrigger>
               <AccordionContent className="mx-auto max-w-xl p-3">
@@ -77,7 +77,7 @@ const AddBlocksPanel = ({
     <div className={mergeClasses("flex h-full w-full flex-col overflow-hidden", className)}>
       {showHeading ? (
         <div className="mb-2 flex flex-col justify-between rounded-md bg-background/30 p-1">
-          <h1 className="flex flex-col items-baseline px-1 text-xl font-semibold xl:flex-col">{t("add_block")}</h1>
+          <h1 className="flex flex-col items-baseline px-1 text-xl font-semibold xl:flex-col">{t("Add block")}</h1>
           <span className="p-0 text-xs font-light leading-3 opacity-80 xl:pl-1">
             {tab === "html" ? t("enter_paste_tailwind_html") : t("click_to_add_block")}
           </span>
@@ -94,7 +94,6 @@ const AddBlocksPanel = ({
         <TabsList className={"grid w-full " + (importHTMLSupport ? "grid-cols-3" : "grid-cols-1")}>
           <TabsTrigger value="library">{t("library")}</TabsTrigger>
           <TabsTrigger value="core">{t("blocks")}</TabsTrigger>
-
           {importHTMLSupport ? <TabsTrigger value="html">{t("import")}</TabsTrigger> : null}
         </TabsList>
       </Tabs>

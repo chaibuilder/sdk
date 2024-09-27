@@ -185,7 +185,7 @@ export const AdvanceChoices = (props: RangeOptionsType) => {
             </Tooltip>
           </>
         ) : (
-          <div className={`group relative  flex items-center ${lift ? "z-auto" : ""}`}>
+          <div className={`group relative flex items-center ${lift ? "z-auto" : ""}`}>
             <div className="flex items-center rounded-md border border-border">
               {["none", "auto"].indexOf(unit) !== -1 ? null : (
                 <input
@@ -235,7 +235,7 @@ export const AdvanceChoices = (props: RangeOptionsType) => {
                     setShowUnits(false);
                   }}
                   value={lift ? draggedVal : value}
-                  className={"h-6 w-14 rounded rounded-r-none bg-background pl-2 text-sm focus-visible:outline-0 ".concat(
+                  className={"h-6 w-14 rounded rounded-r-none border border-transparent bg-background pl-2 text-sm focus-visible:outline-0".concat(
                     " ",
                     error ? "border-red-500 text-red-500" : "border-foreground/20",
                   )}

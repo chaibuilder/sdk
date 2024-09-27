@@ -190,7 +190,7 @@ const UILibrarySection = ({ parentId }: { parentId?: string }) => {
             <UILibrariesSelect library={library?.uuid} setLibrary={setLibrary} uiLibraries={uiLibraries} />
             <div className="mt-2 flex h-full max-h-full w-full flex-1 flex-col">
               <span className="text-xs font-bold text-gray-500">{t("groups")}</span>
-              <hr className="mt-1" />
+              <hr className="mt-1 border-border" />
               <div className="no-scrollbar mt-2 h-full max-h-full flex-1 overflow-y-auto pb-20">
                 {React.Children.toArray(
                   map(mergedGroups, (_groupedBlocks, group) => (
@@ -200,7 +200,7 @@ const UILibrarySection = ({ parentId }: { parentId?: string }) => {
                       key={group}
                       onClick={() => setGroup(group)}
                       className={cn(
-                        "flex w-full cursor-pointer items-center justify-between rounded-md p-2 text-sm transition-all ease-in-out hover:bg-gray-200",
+                        "flex w-full cursor-pointer items-center justify-between rounded-md p-2 text-sm text-foreground transition-all ease-in-out hover:bg-gray-200 dark:hover:bg-gray-800",
                         group === selectedGroup ? "bg-blue-500 text-white hover:bg-blue-600" : "",
                       )}>
                       <span>{capitalize(t(group.toLowerCase()))}</span>

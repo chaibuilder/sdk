@@ -19,7 +19,7 @@ const SettingsPanel: React.FC = () => {
   if (isNull(selectedBlock))
     return (
       <div className="p-4 text-center">
-        <div className="space-y-4 rounded-xl p-4">
+        <div className="space-y-4 rounded-xl p-4 text-muted-foreground">
           <MixerHorizontalIcon className="mx-auto text-3xl" />
           <h1>{t("please_select_a_block_to_edit")}</h1>
         </div>
@@ -35,7 +35,7 @@ const SettingsPanel: React.FC = () => {
 
         <div
           onClick={() => setShowAttributes(!showAttributes)}
-          className="flex cursor-default items-center justify-between border-b border-border py-2 text-sm font-bold hover:bg-gray-50">
+          className="flex cursor-pointer items-center justify-between border-b border-border py-2 text-sm font-bold text-muted-foreground hover:underline">
           <span>{t("Attributes")}</span>
           <span>
             <ChevronDown className={"h-4 w-4 text-gray-500 " + (showAttributes ? "rotate-180" : "")} />

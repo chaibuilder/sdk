@@ -59,7 +59,7 @@ export default function BlockSettings() {
   }, [coreBlock, bindingProps, dataBindingSupported]);
 
   return (
-    <div className="overflow-x-hidden">
+    <div className="overflow-x-hidden px-px">
       {dataBindingSupported ? (
         <Accordion type="multiple" defaultValue={["STATIC", "BINDING"]} className="h-full w-full">
           <AccordionItem value="BINDING">

@@ -73,7 +73,7 @@ export const ColorChoice = ({ property, onChange }: any) => {
   }, [newColor, onChange, property]);
 
   return (
-    <div className="flex flex-row divide-x divide-solid divide-border rounded-lg border border-border text-xs">
+    <div className="flex flex-row divide-x divide-solid divide-border rounded-lg border border-transparent text-xs">
       <div className="grow text-center">
         <DropDown
           disabled={!canChange}

@@ -48,7 +48,7 @@ export const CoreBlock = ({ block, disabled, parentId }: { block: any; disabled:
             }}
             draggable={dnd ? "true" : "false"}
             className={
-              "cursor-pointer space-y-2 rounded-lg border border-border p-3 text-center hover:bg-slate-300/50 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400"
+              "cursor-pointer space-y-2 rounded-lg border border-border p-3 text-center hover:bg-slate-300/50 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400 dark:border-gray-700 dark:text-white dark:hover:bg-slate-800/50 dark:disabled:bg-gray-900 dark:disabled:text-foreground"
             }>
             {createElement(icon || BoxIcon, { className: "w-4 h-4 mx-auto" })}
             <p className="truncate text-xs">{capitalize(t(label || type))}</p>

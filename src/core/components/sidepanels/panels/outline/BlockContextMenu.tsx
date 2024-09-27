@@ -85,7 +85,7 @@ const BlockContextMenuContent = () => {
   }, [selectedIds, duplicateBlocks]);
 
   return (
-    <ContextMenuContent className="text-xs">
+    <ContextMenuContent className="border-border text-xs">
       <ContextMenuItem
         disabled={!canAddChildBlock(selectedBlock?._type)}
         className="flex items-center gap-x-4 text-xs"

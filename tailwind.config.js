@@ -1,7 +1,3 @@
-import { getChaiBuilderTailwindConfig } from "./src/tailwind/getChaiBuilderTailwindConfig.ts";
+import { getChaiBuilderTailwindConfig } from "./src/tailwind";
 
-export default getChaiBuilderTailwindConfig([
-  "./index.html",
-  "./core/**/*.{js,ts,jsx,tsx}",
-  "./src/**/*.{js,ts,jsx,tsx}",
-]);
+export default getChaiBuilderTailwindConfig(["./index.html", "./src/**/*.{js,ts,jsx,tsx}"]);

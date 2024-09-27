@@ -36,7 +36,7 @@ const NestedOptions = ({ heading, items }: any) => {
 
   return (
     <details>
-      <summary className="my-px cursor-default rounded-md bg-gray-50 p-px px-2 text-[11px] text-foreground">
+      <summary className="my-px cursor-default rounded-md bg-gray-50 p-px px-2 text-[11px] text-foreground dark:bg-gray-800">
         <div className="inline">
           {t(heading.toLowerCase())}
           {isAnyPropertySet ? (
@@ -89,7 +89,7 @@ export const StylingGroup = ({ section }: any) => {
   return (
     <SectionContext.Provider value={contextValue}>
       <AccordionItem value={section.heading} className="border-none">
-        <AccordionTrigger className="border-b border-border py-2 text-xs hover:no-underline">
+        <AccordionTrigger className="border-b border-border py-2 text-xs">
           <div className="flex items-center">
             <div className="flex items-center gap-x-2 text-sm font-bold">{t(section.heading)}</div>
           </div>
