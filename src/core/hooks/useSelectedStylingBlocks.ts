@@ -13,6 +13,7 @@ export const selectedStylingBlocksAtom = atom<TStyleBlock[]>([]);
 selectedStylingBlocksAtom.debugLabel = "selectedStylingBlocksAtom";
 
 /**
- *
+ * @group Hooks
+ * @returns {TStyleBlock[]} selected styling blocks
  */
 export const useSelectedStylingBlocks = () => useAtom(selectedStylingBlocksAtom);

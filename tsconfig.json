@@ -22,5 +22,9 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src", "lib"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": [{ "path": "./tsconfig.node.json" }],
+  "typedocOptions": {
+    "entryPoints": ["src/core/components","src/core/hooks", "src/core/miscellaneous", "src/render", "src/tailwind", "src/web-blocks"],
+    "out": "docs"
+  }
 }

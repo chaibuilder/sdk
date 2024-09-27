@@ -26,6 +26,9 @@ export const useUpdateMultipleBlocksProps = () => {
   );
 };
 
+/**
+ *
+ */
 const useFakeStreamEffect = () => {
   const { updateBlocksRuntime } = useBlocksStoreUndoableActions();
   return useCallback(

@@ -34,6 +34,11 @@ import { Component as SelectBlock, Config as SelectBlockConfig } from "./form/se
 import { Component as TextAreaBlock, Config as TextAreaBlockConfig } from "./form/textarea";
 import { Component as CheckboxBlock, Config as CheckboxBlockConfig } from "./form/checkbox";
 
+/*
+ * Register all web blocks.
+ * This function should be called  in places where Builder is rendered or pages are rendered.
+ * @returns void
+ */
 const loadWebBlocks = () => {
   registerChaiBlock(Box, BoxConfig);
   registerChaiBlock(EmptyBox, EmptyBoxConfig);

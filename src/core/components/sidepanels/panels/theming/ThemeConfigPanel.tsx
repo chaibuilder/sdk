@@ -2,9 +2,8 @@ import * as React from "react";
 import { RJSFSchema, UiSchema } from "@rjsf/utils";
 import validator from "@rjsf/validator-ajv8";
 import Form, { IChangeEvent } from "@rjsf/core";
-import { useBrandingOptions, useBuilderProp } from "../../../../hooks";
+import { useBrandingOptions } from "../../../../hooks";
 import { Color, Numeric, SelectOption } from "@chaibuilder/runtime/controls";
-import { isEqual, noop } from "lodash-es";
 import { ColorField } from "../../../../rjsf-widgets/color.tsx";
 import { useBlocksContainer } from "../../../../hooks/useBrandingOptions.ts";
 import { useTranslation } from "react-i18next";
@@ -71,21 +70,10 @@ const ThemeConfigPanel = ({
   className?: string;
   showHeading?: boolean;
 }): React.JSX.Element => {
-  const onSaveBrandingOptions = useBuilderProp("onSaveBrandingOptions", noop);
   const [brandingOptions, setBrandingOptions] = useBrandingOptions();
   const [container] = useBlocksContainer();
   const brandingRef = React.useRef(brandingOptions);
   const { t } = useTranslation();
-
-  React.useEffect(() => {
-    // on unmount
-    return () => {
-      if (!isEqual(brandingOptions, brandingRef.current)) {
-        onSaveBrandingOptions(brandingRef.current);
-      }
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const updateRealtime = ({ formData }: IChangeEvent, id?: string) => {
     if (id) {

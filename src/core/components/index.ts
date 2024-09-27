@@ -1,5 +1,3 @@
-import { ChaiBlock } from "../types/ChaiBlock";
-import { ChaiBuilderEditorProps } from "../types";
 import ChaiBuilderCanvas from "../components/canvas/CanvasArea.tsx";
 import ThemeOptions from "../components/sidepanels/panels/theming/ThemeConfigPanel.tsx";
 import Outline from "../components/sidepanels/panels/outline/treeview/ListTree.tsx";
@@ -11,7 +9,6 @@ import i18n from "../locales/load";
 import AddBlocksPanel from "../components/sidepanels/panels/add-blocks/AddBlocks.tsx";
 
 export { AddBlocksDialog } from "../components/layout/AddBlocksDialog.tsx";
-export { emitChaiBuilderMsg, useChaiBuilderMsgListener, CHAI_BUILDER_EVENTS } from "../events.ts";
 export { AISetContext, AIUserPrompt } from "../components/AskAi.tsx";
 export { BlockAttributesEditor } from "../components/settings/new-panel/BlockAttributesEditor.tsx";
 export { ChaiBuilderEditor } from "../components/ChaiBuilderEditor.tsx";
@@ -30,7 +27,5 @@ export {
   UILibrariesPanel as UILibraries,
   AddBlocksPanel,
 };
-export * from "../hooks";
-export { generateUUID as generateBlockId, cn as mergeClasses } from "../functions/Functions.ts";
-export { getBlocksFromHTML } from "../import-html/html-to-json.ts";
-export type { ChaiBlock, ChaiBuilderEditorProps };
+
+export * from "../types";

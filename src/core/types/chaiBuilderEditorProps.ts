@@ -1,7 +1,7 @@
 import { ChaiBlock } from "./ChaiBlock";
 import React, { ReactNode } from "react";
-import { ChaiPage, PredefinedBlock } from "./index";
 import { LayoutVariant } from "../constants/LAYOUT_VARIANTS.ts";
+import { ChaiPage } from "./index.ts";
 
 type RichText = string;
 
@@ -22,11 +22,6 @@ export interface UILibrary {
   blocks?: UiLibraryBlock[];
   link?: string;
   description?: RichText;
-}
-
-interface Block {
-  type: string;
-  [key: string]: any;
 }
 
 type ReactComponentType = React.ComponentType<any>;
@@ -65,27 +60,72 @@ export type ChaiBuilderInstance = {
 };
 
 export interface ChaiBuilderEditorProps {
+  /**
+   * onError callback function
+   * @param error
+   */
   onError?: (error: Error) => void;
+  /**
+   * Translations object
+   */
   translations?: Record<string, Record<string, any>>;
+  /**
+   * onLoad callback function
+   * @param editorInstance
+   */
   onLoad?: (editorInstance: ChaiBuilderInstance) => void;
+  /**
+   * Custom layout component
+   */
   layout?: React.ComponentType;
+  /**
+   * Layout variant. Not supported with custom layout
+   */
   layoutVariant?: LayoutVariant;
+  /**
+   * HTML direction.
+   */
   htmlDir?: "ltr" | "rtl";
-  hideSaveButton?: boolean;
+  /**
+   * Filter function for blocks to be shown in the builder
+   */
   filterChaiBlock?: (block: any) => boolean;
+  /**
+   * Show debug logs
+   */
   showDebugLogs?: boolean;
+  /**
+   * Auto save support
+   */
   autoSaveSupport?: boolean;
+  /**
+   * Auto save interval in seconds
+   */
   autoSaveInterval?: TimeInSeconds;
+  /**
+   * Breakpoints
+   */
   breakpoints?: Breakpoint[];
+  /**
+   * Editable
+   */
   editable?: boolean;
 
+  /**
+   * Loading state
+   */
   loading?: boolean;
 
+  /**
+   * Locale
+   */
   locale?: string;
 
   nonEditableComponent?: ReactComponentType;
 
-  canvas?: React.FC<any>;
+  /**
+   * Canvas component. Not supported with custom layout
+   */
   canvasTopBarComponents?: { right?: ReactComponentType[] };
 
   previewLink?: string;
@@ -95,8 +135,6 @@ export interface ChaiBuilderEditorProps {
 
   darkMode?: boolean;
 
-  dndOptions?: any;
-
   importHTMLSupport?: boolean;
 
   fetchMediaCallback?: (limit?: number, offset?: number) => Promise<any[]>;
@@ -105,44 +143,64 @@ export interface ChaiBuilderEditorProps {
   saveAiContextCallback?: (content: string) => Promise<true | Error>;
   aiContext?: string;
 
-  getExternalPredefinedBlock?: (
-    block: PredefinedBlock,
-  ) => Promise<PredefinedBlock & { blocks: ChaiBlock[]; html: string }>; // deprecated
-
   uiLibraries?: Omit<UILibrary, "blocks">[];
   getUILibraryBlocks?: (library: UILibrary) => Promise<UiLibraryBlock[]>;
   getUILibraryBlock?: (library: UILibrary, uiLibBlock: UiLibraryBlock) => Promise<ChaiBlock[]>;
 
-  subPages?: Block[];
-  subPagesSupport?: boolean;
+  // subPages?: Block[];
+  // subPagesSupport?: boolean;
 
   blocks?: ChaiBlock[];
-  onSaveBlocks?: ({ blocks, providers }: any) => Promise<any>; // deprecated
-  onSavePage?: ({ blocks, providers }: SavePageData) => Promise<boolean | Error>; // deprecated
+
   onSave?: ({ blocks, providers }: SavePageData) => Promise<boolean | Error>;
 
   brandingOptions?: Record<string, string>;
-  onSaveBrandingOptions?: (brandingOptions: Record<string, any>) => Promise<boolean | Error>; // deprecated
 
+  /**
+   * Theme configuration
+   */
+  themeConfiguration?: Record<string, string>;
+  /**
+   * onSaveStateChange callback function
+   * @param syncStatus
+   */
   onSaveStateChange?: (syncStatus: "UNSAVED" | "SAVED" | "SAVING") => void;
 
+  /**
+   * Preview component
+   */
   previewComponent?: ReactComponentType;
 
+  /**
+   * Sidebar components. Not supported with custom layout
+   */
   sideBarComponents?: {
     bottom?: ReactComponentType[];
     top?: { icon: ReactNode; label: string; component: ReactComponentType }[];
   };
 
+  /**
+   * Topbar components. Not supported with custom layout
+   */
   topBarComponents?: {
     center?: ReactComponentType[];
     left?: ReactComponentType[];
     right?: ReactComponentType[];
   };
 
+  /**
+   * Outline menu items
+   */
   outlineMenuItems?: OutlineMenuItems;
 
+  /**
+   * getPages callback function
+   */
   getPages?: () => Promise<ChaiPage[]>;
 
+  /**
+   * Unsplash access key
+   */
   unsplashAccessKey?: string;
   _flags?: Record<string, boolean>;
 }

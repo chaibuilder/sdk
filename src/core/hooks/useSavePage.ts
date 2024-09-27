@@ -11,7 +11,6 @@ builderSaveStateAtom.debugLabel = "builderSaveStateAtom";
 
 export const useSavePage = () => {
   const [saveState, setSaveState] = useAtom(builderSaveStateAtom);
-  const onSavePage = useBuilderProp("onSavePage", async (_args) => {});
   const onSave = useBuilderProp("onSave", async (_args) => {});
   const onSaveStateChange = useBuilderProp("onSaveStateChange", noop);
   const getPageData = useGetPageData();
@@ -23,7 +22,6 @@ export const useSavePage = () => {
       setSaveState("SAVING");
       onSaveStateChange("SAVING");
       const pageData = getPageData();
-      await onSavePage({ blocks: pageData.blocks, providers });
       await onSave({ blocks: pageData.blocks, providers, brandingOptions, themeConfiguration: brandingOptions });
       setTimeout(() => {
         setSaveState("SAVED");

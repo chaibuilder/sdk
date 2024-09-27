@@ -1,14 +1,14 @@
 import "react-quill/dist/quill.snow.css";
 import "../index.css";
 import { DevTools } from "jotai-devtools";
-import i18n from "../locales/load";
+import i18n from "../locales/load.ts";
 import { FlagsProvider } from "flagged";
-import { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { each, noop, omit } from "lodash-es";
 import { FEATURE_TOGGLES } from "../../FEATURE_TOGGLES.tsx";
 import { chaiBuilderPropsAtom } from "../atoms/builder.ts";
 import { ErrorBoundary } from "react-error-boundary";
-import { RootLayout } from "../components/layout/RootLayout.tsx";
+import { RootLayout } from "./layout/RootLayout.tsx";
 import { builderStore } from "../atoms/store.ts";
 import { Toaster } from "../../ui";
 import { useBrandingOptions, useBuilderReset } from "../hooks";
@@ -20,8 +20,8 @@ import { setDebugLogs } from "../functions/logging.ts";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { useAtom } from "jotai/index";
 import { builderSaveStateAtom } from "../hooks/useSavePage.ts";
-import { PreviewScreen } from "../components/PreviewScreen.tsx";
-import { FallbackError } from "../components/FallbackError.tsx";
+import { PreviewScreen } from "./PreviewScreen.tsx";
+import { FallbackError } from "./FallbackError.tsx";
 
 const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   const [, setAllBlocks] = useBlocksStore();
@@ -84,10 +84,8 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
 };
 /**
  * ChaiBuilder is the main entry point for the Chai Builder Studio.
- * @param props
- * @constructor
  */
-const ChaiBuilderEditor = (props: ChaiBuilderEditorProps) => {
+const ChaiBuilderEditor: React.FC<ChaiBuilderEditorProps> = (props: ChaiBuilderEditorProps) => {
   const _flags = props._flags || {};
   const onErrorFn = props.onError || noop;
   return (
