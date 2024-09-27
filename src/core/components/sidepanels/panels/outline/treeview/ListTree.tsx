@@ -8,6 +8,7 @@ import {
   useBlocksStore,
   useBuilderProp,
   useCutBlockIds,
+  useHiddenBlockIds,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
   useUpdateBlocksProps,
@@ -37,13 +38,13 @@ import { VscJson } from "react-icons/vsc";
 import { BsLightningFill } from "react-icons/bs";
 import { TbEyeDown } from "react-icons/tb";
 import { ROOT_TEMP_KEY } from "../../../../../constants/STRINGS.ts";
-import { PlusIcon } from "lucide-react";
+import { EyeOff, PlusIcon } from "lucide-react";
 import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../../../../events.ts";
 
 const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const outlineItems = useBuilderProp("outlineMenuItems", []);
   const { t } = useTranslation();
-
+  const [hiddenBlocks, , toggleHidden] = useHiddenBlockIds();
   const [iframe] = useAtom<HTMLIFrameElement>(canvasIframeAtom);
 
   let previousState: boolean | null = null;
@@ -53,6 +54,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
 
   const handleToggle = (event: any) => {
     event.stopPropagation();
+    if (hiddenBlocks.includes(id)) return;
     /*Toggle the node open and close State*/
     node.toggle();
   };
@@ -181,6 +183,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
           isSelected ? "bg-blue-500 text-white" : "hover:bg-gray-200 dark:hover:bg-gray-800",
           willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
           isDragging && "opacity-20",
+          hiddenBlocks.includes(id) ? "opacity-50" : "",
         )}>
         <div className="flex items-center">
           <div
@@ -216,7 +219,18 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
           </div>
         </div>
         <div className="invisible flex items-center space-x-1 pr-2 group-hover:visible">
-          {canAddChildBlock(data?._type) ? (
+          {!hiddenBlocks.includes(id) &&
+            outlineItems.map((outlineItem) => (
+              <Tooltip>
+                <TooltipTrigger
+                  className="cursor-pointer rounded bg-transparent hover:bg-white hover:text-blue-500"
+                  asChild>
+                  {React.createElement(outlineItem.item, { blockId: id })}
+                </TooltipTrigger>
+                <TooltipContent className="isolate z-10">{outlineItem.tooltip}</TooltipContent>
+              </Tooltip>
+            ))}
+          {canAddChildBlock(data?._type) && !hiddenBlocks.includes(id) ? (
             <Tooltip>
               <TooltipTrigger
                 onClick={() => emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, data: { _id: id } })}
@@ -227,16 +241,21 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
               <TooltipContent className="isolate z-[9999]">{t("Add block")}</TooltipContent>
             </Tooltip>
           ) : null}
-          {outlineItems.map((outlineItem) => (
-            <Tooltip>
-              <TooltipTrigger
-                className="cursor-pointer rounded bg-transparent hover:bg-white hover:text-blue-500"
-                asChild>
-                {React.createElement(outlineItem.item, { blockId: id })}
-              </TooltipTrigger>
-              <TooltipContent className="isolate z-10">{outlineItem.tooltip}</TooltipContent>
-            </Tooltip>
-          ))}
+          <Tooltip>
+            <TooltipTrigger
+              onClick={(event) => {
+                event.stopPropagation();
+                toggleHidden(id);
+                if (node.isOpen) {
+                  node.toggle();
+                }
+              }}
+              className="cursor-pointer rounded bg-transparent hover:bg-white hover:text-black"
+              asChild>
+              <EyeOff size={"15"} />
+            </TooltipTrigger>
+            <TooltipContent className="isolate z-[9999]">{t("Add block")}</TooltipContent>
+          </Tooltip>
         </div>
       </div>
     </BlockContextMenu>

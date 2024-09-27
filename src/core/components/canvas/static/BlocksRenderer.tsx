@@ -11,7 +11,7 @@ import { useBlocksStore } from "../../../history/useBlocksStoreUndoableActions.t
 import { useCanvasSettings } from "../../../hooks/useCanvasSettings.ts";
 import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
 import { canAcceptChildBlock } from "../../../functions/block-helpers.ts";
-import { useCanvasWidth, useCutBlockIds } from "../../../hooks";
+import { useCanvasWidth, useCutBlockIds, useHiddenBlockIds } from "../../../hooks";
 import { isVisibleAtBreakpoint } from "../../../functions/isVisibleAtBreakpoint.ts";
 
 // FIXME:  Duplicate code in CanvasRenderer.tsx
@@ -86,6 +86,7 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
   const [dropTargetId] = useAtom(dropTargetBlockIdAtom);
   const [, breakpoint] = useCanvasWidth();
   const [canvasSettings] = useCanvasSettings();
+  const [hiddenBlocks] = useHiddenBlockIds();
   const getStyles = useCallback((block: ChaiBlock) => getStyleAttrs(block, breakpoint), [breakpoint]);
 
   const [chaiData] = useChaiExternalData();
@@ -105,7 +106,7 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
       {React.Children.toArray(
         blocks.map((block: ChaiBlock, index: number) => {
           // If the block is being edited, we don't want to render it
-          if (editingBlockId === block._id) return null;
+          if (editingBlockId === block._id || hiddenBlocks.includes(block._id)) return null;
 
           const slots = getSlots(block);
           const attrs: any = {};
