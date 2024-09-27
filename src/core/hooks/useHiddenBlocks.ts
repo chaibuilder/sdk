@@ -14,5 +14,5 @@ export const useHiddenBlockIds = () => {
     [setBlockIds],
   );
 
-  return [blockIds, setBlockIds, toggleHidden];
+  return [blockIds, setBlockIds, toggleHidden] as const;
 };
