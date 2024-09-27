@@ -206,7 +206,7 @@ export const AISetContext = () => {
             value={context}
             onChange={(e) => setContext(e.target.value)}
             placeholder={t("Tell about this page eg this page is about")}
-            className="w-full"
+            className="mt-1 w-full"
             rows={10}
             onKeyDown={(e) => {
               if (e.key === "Enter") {

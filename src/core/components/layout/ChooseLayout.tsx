@@ -26,12 +26,12 @@ function LayoutCard({ disabled = false, description, title, selected, onSelect, 
   return (
     <Card
       aria-disabled={disabled}
-      className={`cursor-pointer transition-all ${selected ? "ring-2 ring-secondary" : ""} ${disabled ? "cursor-not-allowed opacity-50" : ""}`}
+      className={`cursor-pointer border-border transition-all ${selected ? "ring-2 ring-secondary" : ""} ${disabled ? "cursor-not-allowed opacity-50" : ""}`}
       onClick={onSelect}>
       <CardContent className="p-4">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold">{title}</h3>
-          {selected && <CheckIcon className="h-6 w-6 rounded-full bg-primary p-px text-white" />}
+          {selected && <CheckIcon className="h-6 w-6 rounded-full bg-background p-px text-foreground" />}
         </div>
         <p className="mb-4 text-sm text-muted-foreground">{description}</p>
         {children}
@@ -52,9 +52,9 @@ export const ChooseLayout = ({ open, close }: { open: boolean; close: () => void
   };
   return (
     <AlertDialog open={open} onOpenChange={() => (open ? close() : "")}>
-      <AlertDialogContent className="max-w-4xl overflow-hidden">
+      <AlertDialogContent className="max-w-4xl overflow-hidden border-border">
         <AlertDialogHeader className="flex flex-row items-center justify-between">
-          <AlertDialogTitle>{t("Choose Builder Layout")}</AlertDialogTitle>
+          <AlertDialogTitle className="text-foreground">{t("Choose Builder Layout")}</AlertDialogTitle>
           <button
             onClick={() => close()}
             className="text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300">

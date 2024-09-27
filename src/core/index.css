@@ -107,6 +107,9 @@
   @apply rounded p-2 relative;
 }
 
+[type='text']:focus, input:where(:not([type])):focus, [type='email']:focus, [type='url']:focus, [type='password']:focus, [type='number']:focus, [type='date']:focus, [type='datetime-local']:focus, [type='month']:focus, [type='search']:focus, [type='tel']:focus, [type='time']:focus, [type='week']:focus, [multiple]:focus, textarea:focus, select:focus{
+  @apply outline-none ring-1 ring-transparent border-border !important;
+}
 
 /* ------------------------ Props Editor ------------------------ */
 
