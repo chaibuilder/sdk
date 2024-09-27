@@ -51,8 +51,8 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
     <div className="">
       <div
         onClick={() => setOpen(!open)}
-        className="flex cursor-default items-center justify-between border-b border-border py-2 text-sm font-bold hover:bg-gray-50 dark:hover:bg-gray-800">
-        <span>{t("ask_ai")}</span>
+        className="flex cursor-pointer items-center justify-between border-b border-border py-2 text-sm font-bold hover:underline">
+        <span>{t("Ask AI")}</span>
         <span>
           <ChevronDown className={"h-4 w-4 text-gray-500 " + (open ? "rotate-180" : "")} />
         </span>
@@ -63,8 +63,8 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
             ref={promptRef}
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            placeholder={t("ask_ai_to_edit_content")}
-            className="w-full border border-border focus:border-0"
+            placeholder={t("Ask AI to edit content")}
+            className="w-full"
             rows={3}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
@@ -102,7 +102,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
               <div className="flex flex-col gap-2">
                 <Skeleton className="flex w-full items-center space-x-1 px-4 py-1 pl-2">
                   <FaSpinner className="h-4 w-4 animate-spin text-gray-500" />
-                  <p className="text-xs">{t("generating_please_wait")}</p>
+                  <p className="text-xs">{t("Generating... Please wait...")}</p>
                 </Skeleton>
                 <Button variant="destructive" onClick={() => stop()} className="hidden w-fit" size="sm">
                   {t("Stop")}
@@ -127,6 +127,8 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
               </p>
             )}
           </div>
+          <br />
+
           <QuickPrompts
             onClick={(prompt: string) => {
               if (timerRef.current) clearTimeout(timerRef.current);
@@ -139,7 +141,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
         <div className="p-4 text-center">
           <div className="space-y-4 rounded-xl p-4">
             <SparklesIcon className="mx-auto text-3xl" />
-            <h1>{t("please_select_a_block_to_ask_ai")}</h1>
+            <h1>{t("Please select a block to Ask AI")}</h1>
           </div>
         </div>
       ) : null}
@@ -171,8 +173,8 @@ export const AISetContext = () => {
       setError(null);
       await savePageContext(context);
       toast({
-        title: t("ai_context_updated"),
-        description: t("you_can_now_ask_ai_to_edit_your_content"),
+        title: t("Updated AI Context"),
+        description: t("You can now Ask AI to edit your content"),
         variant: "default",
       });
       btnRef.current.click();
@@ -192,9 +194,9 @@ export const AISetContext = () => {
       collapsible>
       <AccordionItem value="set-context" className="border-none">
         {/*  @ts-ignore */}
-        <AccordionTrigger ref={btnRef} className="border-b border-border py-2 hover:no-underline">
+        <AccordionTrigger ref={btnRef} className="border-b border-border py-2">
           <div className="flex w-full items-center justify-between">
-            <span className="font-bold">{t("ai_context")}</span>
+            <span className="font-bold">{t("AI Context")}</span>
           </div>
         </AccordionTrigger>
         <AccordionContent>
@@ -203,8 +205,8 @@ export const AISetContext = () => {
             ref={promptRef}
             value={context}
             onChange={(e) => setContext(e.target.value)}
-            placeholder={t("tell_about_this_page_eg_this_page_is_about")}
-            className="w-full border border-border bg-background focus:border"
+            placeholder={t("Tell about this page eg this page is about")}
+            className="w-full"
             rows={10}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
@@ -216,7 +218,7 @@ export const AISetContext = () => {
           {aiContext.trim().length === 0 ? (
             <p className="mt-2 text-xs text-gray-500">
               {t(
-                "eg_this_page_is_about_an_ai_assistant_app_called_chai_studio_it_allows_users_to_create_beautiful_webpages_and_edit_content_with_ai",
+                "Eg: This page is about an AI assistant app called Chai Studio. It allows users to create beautiful webpages and edit content with AI.",
               )}
             </p>
           ) : null}
@@ -230,10 +232,10 @@ export const AISetContext = () => {
               {loading ? (
                 <>
                   <Loader className="h-5 w-5 animate-spin" />
-                  {t("generating_please_wait")}
+                  {t("Generating... Please wait...")}
                 </>
               ) : (
-                t("save")
+                t("Save")
               )}
             </Button>
             {aiContext.trim().length > 0 ? (
@@ -243,26 +245,26 @@ export const AISetContext = () => {
                     {loading ? (
                       <>
                         <Loader className="h-5 w-5 animate-spin" />
-                        {t("generating_please_wait")}
+                        {t("Generating... Please wait...")}
                       </>
                     ) : (
-                      t("delete")
+                      t("Delete")
                     )}
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>{t("remove_context")} ?</AlertDialogTitle>
+                    <AlertDialogTitle>{t("Delete context")} ?</AlertDialogTitle>
                     <AlertDialogDescription></AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+                    <AlertDialogCancel>{t("Cancel")}</AlertDialogCancel>
                     <AlertDialogAction
                       onClick={() => {
                         setContext("");
                         saveContext();
                       }}>
-                      {t("yes_delete")}
+                      {t("Yes, Delete")}
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>

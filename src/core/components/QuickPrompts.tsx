@@ -8,12 +8,12 @@ import { useTranslation } from "react-i18next";
 
 const QUICK_PROMPTS = [
   {
-    name: "ai_quick_prompts.improve_writing",
+    name: "Improve writing",
     icon: FaFilePen,
     prompt: "Improving writing in all text elements. Replacing placeholder content with meaningful relevant content.",
   },
   {
-    name: "ai_quick_prompts.replace_placeholder_content",
+    name: "Replace placeholder content",
     icon: FaRecycle,
     prompt: "Discard current placeholder content and replace with meaningful relevant content.",
   },
@@ -24,7 +24,7 @@ const QUICK_PROMPTS = [
   //   prompt: "Change tone in all text elements. Rewrite all text elements in a more _TONE_ tone.",
   // },
   {
-    name: "ai_quick_prompts.fix_grammar",
+    name: "Fix grammar",
     icon: CheckIcon,
     prompt: "Fix grammar in all text elements. Ensuring the text is grammatically correct and free of errors.",
   },
@@ -35,22 +35,22 @@ const QUICK_PROMPTS = [
   //   prompt: "Translate all text elements to a __LANG__ language.",
   // },
   {
-    name: "ai_quick_prompts.make_longer",
+    name: "Make longer",
     icon: ArrowUpIcon,
     prompt: "Make all text elements longer.",
   },
   {
-    name: "ai_quick_prompts.make_shorter",
+    name: "Make shorter",
     icon: ArrowDownIcon,
     prompt: "Make all text elements shorter.",
   },
   {
-    name: "ai_quick_prompts.add_emojis",
+    name: "Add emojis",
     icon: SmileIcon,
     prompt: "Add emojis to text elements if relevant.",
   },
   {
-    name: "ai_quick_prompts.randomize",
+    name: "Randomize",
     icon: ShuffleIcon,
     prompt: "Randomize all text elements.",
   },
@@ -67,7 +67,7 @@ export function QuickPrompts({ onClick }: { onClick: (prompt: string) => void })
             <Popover>
               <PopoverTrigger asChild>
                 <li
-                  className="flex cursor-pointer items-center space-x-2 rounded p-1 pl-2 text-sm hover:bg-gray-100"
+                  className="flex cursor-pointer items-center space-x-2 rounded p-1 pl-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
                   key={name}>
                   <Icon className="h-4 w-4" />
                   <span>{name}</span>
@@ -82,7 +82,7 @@ export function QuickPrompts({ onClick }: { onClick: (prompt: string) => void })
           ) : (
             <li
               onClick={() => onClick(prompt)}
-              className="flex cursor-pointer items-center space-x-2 rounded p-1 pl-2 text-sm hover:bg-gray-100"
+              className="flex cursor-pointer items-center space-x-2 rounded p-1 text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
               key={name}>
               <Icon className="h-4 w-4" />
               <span>{t(name)}</span>

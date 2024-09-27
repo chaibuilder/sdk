@@ -5,7 +5,7 @@ import { useExpandTree } from "../../hooks/useExpandTree.ts";
 import { useAtom } from "jotai";
 import { useBuilderProp, useLayoutVariant, useSavePage } from "../../hooks";
 import "../canvas/static/BlocksExternalDataProvider.tsx";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../ui";
+import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../ui";
 import { useIntervalEffect } from "@react-hookz/web";
 import { selectedLibraryAtom } from "../../atoms/ui.ts";
 import { motion } from "framer-motion";
@@ -103,19 +103,18 @@ const RootLayout: ComponentType = () => {
             </Suspense>
           </div>
           <main className="relative flex h-[calc(100vh-56px)] max-w-full flex-1 flex-row">
-            <div className="flex w-12 flex-col items-center justify-between border-r py-2">
+            <div className="flex w-12 flex-col items-center justify-between border-r border-border py-2">
               <div className="flex flex-col">
                 {sidebarMenuItems.map((item, index) => (
                   <Tooltip key={"button" + index}>
                     <TooltipTrigger asChild>
-                      <button
+                      <Button
                         key={index}
-                        className={`mb-2 rounded-lg p-2 text-gray-500 transition-colors ${
-                          activePanelIndex === index ? "bg-primary text-white" : "hover:bg-primary hover:text-white"
-                        }`}
+                        variant={activePanelIndex === index ? "default" : "ghost"}
+                        className={`mb-2 rounded-lg p-2 transition-colors`}
                         onClick={() => handleMenuItemClick(index)}>
                         {get(item, "icon", null)}
-                      </button>
+                      </Button>
                     </TooltipTrigger>
                     <TooltipContent side={"right"}>
                       <p>{t(item.label)}</p>
