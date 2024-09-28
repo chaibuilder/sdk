@@ -13,7 +13,7 @@ import {
   useSelectedStylingBlocks,
   useUpdateBlocksProps,
 } from "../../../../../hooks";
-import { TriangleRightIcon } from "@radix-ui/react-icons";
+import { EyeOpenIcon, TriangleRightIcon } from "@radix-ui/react-icons";
 import { Button, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../../ui";
 import { TypeIcon } from "../TypeIcon.tsx";
 import { DefaultCursor } from "./DefaultCursor.tsx";
@@ -40,6 +40,7 @@ import { TbEyeDown } from "react-icons/tb";
 import { ROOT_TEMP_KEY } from "../../../../../constants/STRINGS.ts";
 import { EyeOff, PlusIcon } from "lucide-react";
 import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../../../../events.ts";
+import { BiCollapseVertical, BiExpandVertical } from "react-icons/bi";
 
 const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const outlineItems = useBuilderProp("outlineMenuItems", []);
@@ -86,7 +87,9 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
      * and allowing to select current block.
      */
     e.stopPropagation();
-    if (!node.isOpen) node.toggle();
+    if (!node.isOpen && !hiddenBlocks.includes(id)) {
+      node.toggle();
+    }
     /**
      * It will work when a node is clicked.
      * The onSelect in the parent Tree Component
@@ -98,7 +101,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   useEffect(() => {
     //TODO: Come back to this later. Might lead to a performance issue
     const timedToggle = setTimeout(() => {
-      if (willReceiveDrop && !node.isOpen && !isDragging) {
+      if (willReceiveDrop && !node.isOpen && !isDragging && !hiddenBlocks.includes(id)) {
         node.toggle();
       }
     }, 500);
@@ -163,7 +166,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
         onClick={handleNodeClickWithoutPropagating}
         style={style}
         data-node-id={id}
-        ref={dragHandle}
+        ref={hiddenBlocks.includes(id) ? null : dragHandle}
         onDragStart={() => handleDragStart(node)}
         onDragEnd={() => handleDragEnd(node)}
         onDragOver={(e) => {
@@ -290,6 +293,7 @@ const ListTree = () => {
   const [treeData] = useAtom(treeDSBlocks);
   const [ids, setIds] = useSelectedBlockIds();
   const [cutBlocksIds] = useCutBlockIds();
+  const [, setHiddenBlocks] = useHiddenBlockIds();
   const updateBlockProps = useUpdateBlocksProps();
   const [, setStyleBlocks] = useSelectedStylingBlocks();
   const { moveBlocks } = useBlocksStoreUndoableActions();
@@ -432,6 +436,37 @@ const ListTree = () => {
             handleKeyDown(e);
           }
         }}>
+        <div className="mb-2 flex items-center justify-end gap-x-2 pb-2 text-xs text-muted-foreground">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                onClick={() => setHiddenBlocks([])}
+                variant="outline"
+                className="h-fit p-1 disabled:cursor-not-allowed disabled:opacity-50"
+                size="sm">
+                <EyeOpenIcon className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent className="isolate z-[9999]">{t("Show hidden blocks")}</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button className="h-fit p-1" onClick={() => treeRef?.current?.openAll()} variant="outline" size="sm">
+                <BiExpandVertical size={"14"} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent className="isolate z-[9999]">{t("Expand all")}</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button className="h-fit p-1" onClick={() => treeRef?.current?.closeAll()} variant="outline" size="sm">
+                <BiCollapseVertical size={"14"} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent className="isolate z-[9999]">{t("Collapse all")}</TooltipContent>
+          </Tooltip>
+        </div>
         <Tree
           ref={treeRef}
           height={window.innerHeight - 160}

@@ -21,7 +21,7 @@ import { AskAI } from "../AskAi.tsx";
 import { CHAI_BUILDER_EVENTS, useChaiBuilderMsgListener } from "../../events.ts";
 import { ChooseLayout } from "./ChooseLayout.tsx";
 import { compact, get } from "lodash-es";
-import { LAYOUT_VARIANTS } from "../../constants/LAYOUT_VARIANTS.ts";
+import { LAYOUT_MODE } from "../../constants/LAYOUT_MODE.ts";
 
 const TopBar = lazy(() => import("../topbar/Topbar.tsx"));
 
@@ -36,10 +36,18 @@ const useAutoSave = () => {
 };
 
 function useSidebarMenuItems(layoutVariant: string) {
-  const singleSidePanel = layoutVariant === LAYOUT_VARIANTS.SINGLE_SIDE_PANEL;
+  const singleSidePanel = layoutVariant === LAYOUT_MODE.SINGLE_SIDE_PANEL;
   return useMemo(() => {
     const items = [
-      { icon: <Layers size={20} />, label: "sidebar.outline", component: Outline },
+      {
+        icon: <Layers size={20} />,
+        label: "sidebar.outline",
+        component: () => (
+          <div className="-mt-8">
+            <Outline />
+          </div>
+        ),
+      },
       singleSidePanel ? { icon: <EditIcon size={16} />, label: "sidebar.edit_block", component: SettingsPanel } : null,
       { icon: <LightningBoltIcon className="size-5" />, label: "sidebar.ai_assistant", component: AskAI },
       {
@@ -53,7 +61,7 @@ function useSidebarMenuItems(layoutVariant: string) {
 }
 
 function isDualLayout(layoutVariant: string) {
-  return layoutVariant !== LAYOUT_VARIANTS.SINGLE_SIDE_PANEL;
+  return layoutVariant !== LAYOUT_MODE.SINGLE_SIDE_PANEL;
 }
 
 /**

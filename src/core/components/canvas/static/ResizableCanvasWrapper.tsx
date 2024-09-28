@@ -17,7 +17,7 @@ export const ResizableCanvasWrapper = ({ children, onMount, onResize }: any) => 
     onMount(clientWidth);
   }, []);
   return (
-    <div id={"main-content"} className="h-full w-full p-10 pb-0" ref={mainContentRef}>
+    <div id={"main-content"} className="h-full w-full p-8 pb-0" ref={mainContentRef}>
       {children}
     </div>
   );

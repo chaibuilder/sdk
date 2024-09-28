@@ -54,7 +54,7 @@ const IconPickerField = ({ value, onChange }: WidgetProps) => {
             position: "relative",
             height: "48px",
             width: "48px",
-            border: "1px solid #BBBBBB",
+            border: "1px solid #999",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -77,8 +77,10 @@ const IconPickerField = ({ value, onChange }: WidgetProps) => {
         spellCheck={"false"}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="h-full w-full rounded-sm border border-foreground/20 px-2 py-1 text-xs shadow-sm focus:outline-none focus:ring-0"
         placeholder={t("choose_icon_or_enter_svg")}
+        className={
+          "no-scrollbar disabled:opacity-50; mt-1 flex w-full rounded-md border border-border bg-background px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed"
+        }
       />
     </div>
   );

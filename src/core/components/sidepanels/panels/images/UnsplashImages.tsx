@@ -95,11 +95,11 @@ const UnsplashImages = ({ isModalView, onSelect }: { isModalView: boolean; onSel
 
   return (
     <>
-      <form className="flex items-center gap-x-2 rounded-md border bg-gray-100 p-px">
+      <form className="flex items-center gap-x-2 rounded-md border border-border bg-background p-px">
         <Input
           type="text"
           name="query"
-          className="input"
+          className="text-foreground"
           placeholder={`Try "dog" or "apple"`}
           onChange={(e) => setDebouncedQuery(e.target.value)}
         />
