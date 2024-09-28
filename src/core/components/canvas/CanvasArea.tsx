@@ -6,6 +6,7 @@ import { Resizable } from "re-resizable";
 import { useBuilderProp, useCodeEditor } from "../../hooks";
 import { FallbackError } from "../FallbackError.tsx";
 import { noop } from "lodash-es";
+import { Breadcrumb } from "./Breadcrumb.tsx";
 
 const CodeEditor = React.lazy(() => import("./static/CodeEditor"));
 
@@ -27,6 +28,7 @@ const CanvasArea: React.FC = () => {
             </Resizable>
           </Suspense>
         ) : null}
+        <Breadcrumb />
       </div>
     </div>
   );

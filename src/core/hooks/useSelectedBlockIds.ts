@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from "react";
 import { atom, useAtom, useAtomValue } from "jotai";
-import { cloneDeep, filter, get as getProp, get, includes, isEmpty, map, without } from "lodash-es";
+import { cloneDeep, compact, filter, get, get as getProp, includes, isEmpty, map, without } from "lodash-es";
 import { atomWithStorage } from "jotai/utils";
 import { presentBlocksAtom } from "../atoms/blocks";
 import { ChaiBlock } from "../types/ChaiBlock";
@@ -118,7 +118,7 @@ export const selectedBlockHierarchy = atom((get) => {
  * TODO: Add test cases for this hook
  */
 export const useSelectedBlockHierarchy = () => {
-  return useAtomValue(selectedBlockHierarchy);
+  return compact(useAtomValue(selectedBlockHierarchy));
 };
 
 export const useSelectedBlockCanvasSetting = () => {
