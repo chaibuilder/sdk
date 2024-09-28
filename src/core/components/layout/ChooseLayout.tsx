@@ -9,7 +9,7 @@ import {
 } from "../../../ui";
 import { useTranslation } from "react-i18next";
 import { CheckIcon, Cross2Icon } from "@radix-ui/react-icons";
-import { LAYOUT_VARIANTS, LayoutVariant } from "../../constants/LAYOUT_VARIANTS.ts";
+import { LAYOUT_MODE, LayoutVariant } from "../../constants/LAYOUT_MODE.ts";
 import { useLayoutVariant } from "../../hooks";
 
 interface LayoutCardProps {
@@ -66,8 +66,8 @@ export const ChooseLayout = ({ open, close }: { open: boolean; close: () => void
             <LayoutCard
               title={t("Single side panel")}
               description={t("Suitable for smaller screens. Bigger canvas size.")}
-              selected={layoutVariant === LAYOUT_VARIANTS.SINGLE_SIDE_PANEL}
-              onSelect={() => handleLayoutSelect(LAYOUT_VARIANTS.SINGLE_SIDE_PANEL)}>
+              selected={layoutVariant === LAYOUT_MODE.SINGLE_SIDE_PANEL}
+              onSelect={() => handleLayoutSelect(LAYOUT_MODE.SINGLE_SIDE_PANEL)}>
               <div className="flex flex-col rounded border border-border">
                 <div className="borde-b h-4 border-b border-border"></div>
                 <div className="flex h-32">
@@ -79,8 +79,8 @@ export const ChooseLayout = ({ open, close }: { open: boolean; close: () => void
             <LayoutCard
               title={t("Dual side panel")}
               description={t("Suitable for larger screens. Blocks settings is always visible.")}
-              selected={layoutVariant === LAYOUT_VARIANTS.DUAL_SIDE_PANEL}
-              onSelect={() => handleLayoutSelect(LAYOUT_VARIANTS.DUAL_SIDE_PANEL)}>
+              selected={layoutVariant === LAYOUT_MODE.DUAL_SIDE_PANEL}
+              onSelect={() => handleLayoutSelect(LAYOUT_MODE.DUAL_SIDE_PANEL)}>
               <div className="flex flex-col rounded border border-border">
                 <div className="borde-b h-4 border-b border-border"></div>
                 <div className="flex h-32">

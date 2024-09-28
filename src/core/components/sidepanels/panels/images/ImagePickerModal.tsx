@@ -14,7 +14,7 @@ const ImagePickerModal = ({ children, onSelect }: { children: React.JSX.Element;
   return (
     <Dialog open={open} onOpenChange={(_open: boolean) => setOpen(_open)}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="flex h-3/4 max-w-5xl">
+      <DialogContent className="flex h-3/4 max-w-5xl border-border">
         <div className="h-full w-full">
           <ImagesPanel isModalView onSelect={handleSelect} />
         </div>

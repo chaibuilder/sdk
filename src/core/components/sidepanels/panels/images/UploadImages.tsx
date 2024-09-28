@@ -75,7 +75,7 @@ const UploadImages = ({ isModalView, onSelect }: { isModalView: boolean; onSelec
         <div className="flex flex-col items-center rounded-lg">
           <label
             htmlFor="image-upload"
-            className="flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-gray-50 hover:bg-gray-100">
+            className="flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-border">
             <div className="flex flex-col items-center justify-center pb-6 pt-5">
               <Upload className="mb-3 h-10 w-10 text-gray-400" />
               <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">

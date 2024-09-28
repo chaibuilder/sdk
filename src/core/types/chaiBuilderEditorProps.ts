@@ -1,6 +1,6 @@
 import { ChaiBlock } from "./ChaiBlock";
 import React, { ReactNode } from "react";
-import { LayoutVariant } from "../constants/LAYOUT_VARIANTS.ts";
+import { LayoutVariant } from "../constants/LAYOUT_MODE.ts";
 import { ChaiPage } from "./index.ts";
 
 type RichText = string;
