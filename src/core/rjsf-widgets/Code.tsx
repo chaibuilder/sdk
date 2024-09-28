@@ -23,7 +23,7 @@ const CodeEditor = ({ id, placeholder }: WidgetProps) => {
     <div className={"mt-2 flex flex-col gap-y-1"}>
       <button
         onClick={openCodeEditor}
-        className="text-pretty w-[90%] max-w-full cursor-default truncate rounded border bg-white p-2 text-left text-[10px]">
+        className="text-pretty w-[90%] max-w-full cursor-default truncate rounded border border-border bg-background p-2 text-left text-[10px]">
         {value.trim().length > 0
           ? value.substring(0, 46)
           : placeholder || "Eg: <script>console.log('Hello, world!');</script>"}

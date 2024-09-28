@@ -134,7 +134,7 @@ export const HeadTags = ({ model }: { model: string }) => {
   useEffect(() => {
     if (!highlightedBlockStyle) return;
     highlightedBlockStyle.textContent = highlightedId
-      ? `[data-style-id="${highlightedId}"]{ outline: 1px solid #42a1fc !important; outline-offset: -1px;}`
+      ? `[data-style-id="${highlightedId}"], [data-block-id="${highlightedId}"]{ outline: 1px solid #42a1fc !important; outline-offset: -1px;}`
       : "";
   }, [highlightedId, selectedBlockIds, highlightedBlockStyle]);
 

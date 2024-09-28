@@ -9,6 +9,7 @@ import {
   useBuilderProp,
   useCutBlockIds,
   useHiddenBlockIds,
+  useHighlightBlockId,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
   useUpdateBlocksProps,
@@ -46,6 +47,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const outlineItems = useBuilderProp("outlineMenuItems", []);
   const { t } = useTranslation();
   const [hiddenBlocks, , toggleHidden] = useHiddenBlockIds();
+  const [, setHighlighted] = useHighlightBlockId();
   const [iframe] = useAtom<HTMLIFrameElement>(canvasIframeAtom);
 
   let previousState: boolean | null = null;
@@ -163,6 +165,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   return (
     <BlockContextMenu id={id}>
       <div
+        onMouseEnter={() => setHighlighted(id)}
         onClick={handleNodeClickWithoutPropagating}
         style={style}
         data-node-id={id}
