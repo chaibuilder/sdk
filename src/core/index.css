@@ -62,10 +62,15 @@
   display: none !important;  /* Safari and Chrome */
 }
 
+[role="treeitem"] {
+  @apply focus-visible:!outline-0;
+}
+
 
 .rjsf input[type="color"] {
   @apply p-0 w-14 -mt-1 border-none !important;
 }
+
 
 .rjsf {
   @apply px-0;
