@@ -185,7 +185,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
           setDropAttribute(id, "no");
         }}
         className={cn(
-          "group flex !h-full w-full items-center justify-between space-x-px !rounded py-px outline-none",
+          "group flex !h-full w-full items-center justify-between space-x-px !rounded py-px text-foreground/80 outline-none",
           isSelected ? "bg-blue-500 text-white" : "hover:bg-gray-200 dark:hover:bg-gray-800",
           willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
           isDragging && "opacity-20",
@@ -413,9 +413,9 @@ const ListTree = () => {
   if (isEmpty(treeData))
     return (
       <div>
-        <div className="flex h-full w-full items-center justify-center p-8 text-center">
+        <div className="mt-10 flex h-full w-full items-center justify-center p-8 text-center">
           <p className="mb-1.5 text-sm text-gray-400">
-            {t("page_is_empty")}
+            {t("This page is empty")}
             <br />
             <br />
             <Button

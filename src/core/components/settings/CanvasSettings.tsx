@@ -22,11 +22,11 @@ export const CanvasSettings = () => {
 
   return (
     <div className="py-2 text-xs hover:no-underline">
-      <div className="flex items-center gap-x-2 border-b border-border bg-gray-200 px-4 py-2 font-normal">
-        {selectedBlock._name || selectedBlock._type} &nbsp;
-        {t("visibility settings")}
+      <div className="flex items-center gap-x-2 border-b border-border bg-background py-2 font-normal text-muted-foreground">
+        {selectedBlock._name || selectedBlock._type}
+        &nbsp;{t("visibility settings")}
       </div>
-      <div className="flex items-center space-x-2 px-2 pt-2">
+      <div className="flex items-center space-x-2 pt-2">
         <Switch
           id="show-on-canvas"
           checked={isChecked}
