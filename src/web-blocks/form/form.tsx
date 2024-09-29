@@ -20,11 +20,11 @@ const FormBlock = (
   }
 
   const alpineAttrs = {
-    "x-data": "useForm",
+    "x-data": "{}",
     "x-on:submit.prevent": "post",
   };
   const formResponseAttr = {
-    "x-html": "formResponse",
+    "x-html": "",
     ":class": "{'text-red-500': formStatus === 'ERROR', 'text-green-500': formStatus === 'SUCCESS'}",
   };
   return (
