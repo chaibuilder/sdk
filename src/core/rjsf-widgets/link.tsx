@@ -56,14 +56,14 @@ const LinkField = ({ schema, formData, onChange }: FieldProps) => {
           />
         )}
         {(type === "page" || type === "url") && (
-          <div className="flex items-center gap-x-2">
+          <div className="flex items-center gap-x-2 text-muted-foreground">
             <input
               autoCapitalize={"off"}
               autoCorrect={"off"}
               spellCheck={"false"}
               type="checkbox"
               defaultChecked={target === "_blank"}
-              className="cursor-pointer rounded-md border border-border"
+              className="!w-fit cursor-pointer rounded-md border border-border"
               onChange={() => onChange({ ...formData, target: target === "_blank" ? "_self" : "_blank" })}
             />
             <span className="pt-1 text-xs">Open in new tab</span>
