@@ -40,7 +40,7 @@ const ImportHTML = ({ parentId }: { parentId?: string }) => {
         </div>
       </CardContent>
       <CardFooter className="flex flex-col justify-end p-3">
-        <Button disabled={code.trim() === ""} onClick={() => importComponents()} size="sm" className="w-full">
+        <Button disabled={code.trim() === ""} onClick={() => importComponents()} size="sm" className="w-fit">
           {t("Import HTML")}
         </Button>
       </CardFooter>

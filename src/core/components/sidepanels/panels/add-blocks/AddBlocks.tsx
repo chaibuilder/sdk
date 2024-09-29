@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { capitalize, filter, find, map, reject, sortBy, values } from "lodash-es";
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
@@ -19,6 +19,7 @@ import ImportHTML from "./ImportHTML";
 import { mergeClasses, UILibraries } from "../../../../main";
 import { canAcceptChildBlock, canBeNestedInside } from "../../../../functions/block-helpers.ts";
 import { DefaultChaiBlocks } from "./DefaultBlocks.tsx";
+import { atomWithStorage } from "jotai/utils";
 
 const CORE_GROUPS = ["basic", "typography", "media", "layout", "form", "advanced", "other"];
 
@@ -60,6 +61,8 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, gridCols = "grid-c
   );
 };
 
+const addBlockTabAtom = atomWithStorage<string>("__add_block_tab", "library");
+
 const AddBlocksPanel = ({
   className,
   showHeading = true,
@@ -70,7 +73,7 @@ const AddBlocksPanel = ({
   className?: string;
 }) => {
   const { t } = useTranslation();
-  const [tab, setTab] = useState<string>("library");
+  const [tab, setTab] = useAtom(addBlockTabAtom);
   const [, setCategory] = useAtom(showPredefinedBlockCategoryAtom);
   const importHTMLSupport = useBuilderProp("importHTMLSupport", true);
   return (
@@ -90,8 +93,8 @@ const AddBlocksPanel = ({
           setTab(_tab);
         }}
         value={tab}
-        className={mergeClasses("h-max", !importHTMLSupport ? "hidden" : "")}>
-        <TabsList className={"grid w-full " + (importHTMLSupport ? "grid-cols-3" : "grid-cols-1")}>
+        className={mergeClasses("h-max")}>
+        <TabsList className={"grid w-full " + (importHTMLSupport ? "grid-cols-3" : "grid-cols-2")}>
           <TabsTrigger value="library">{t("library")}</TabsTrigger>
           <TabsTrigger value="core">{t("blocks")}</TabsTrigger>
           {importHTMLSupport ? <TabsTrigger value="html">{t("import")}</TabsTrigger> : null}
