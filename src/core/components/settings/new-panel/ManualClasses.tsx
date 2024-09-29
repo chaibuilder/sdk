@@ -164,9 +164,9 @@ export function ManualClasses() {
             }}
             theme={{
               suggestion: "bg-transparent",
-              suggestionHighlighted: "!bg-gray-300 ",
+              suggestionHighlighted: "!bg-gray-300 dark:!bg-gray-800 cursor-pointer",
               suggestionsContainerOpen:
-                "absolute bg-gray-100 z-50 max-h-[230px] overflow-y-auto w-full  border border-border rounded-md",
+                "absolute bg-background no-scrollbar z-50 max-h-[230px] overflow-y-auto w-full  border border-border rounded-md",
             }}></Autosuggest>
         </div>
         <Button
