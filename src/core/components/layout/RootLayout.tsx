@@ -22,6 +22,7 @@ import { CHAI_BUILDER_EVENTS, useChaiBuilderMsgListener } from "../../events.ts"
 import { ChooseLayout } from "./ChooseLayout.tsx";
 import { compact, get } from "lodash-es";
 import { LAYOUT_MODE } from "../../constants/LAYOUT_MODE.ts";
+import { HotKeys } from "../HotKeys.tsx";
 
 const TopBar = lazy(() => import("../topbar/Topbar.tsx"));
 
@@ -130,19 +131,18 @@ const RootLayout: ComponentType = () => {
                   </Tooltip>
                 ))}
               </div>
-              <div className="flex flex-col">
+              <div className="flex flex-col space-y-1">
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <button
-                      onClick={() => setChooseLayout(true)}
-                      className={`mb-2 rounded-lg p-2 text-gray-500 transition-colors hover:bg-primary hover:text-white`}>
+                    <Button variant="ghost" onClick={() => setChooseLayout(true)}>
                       <LayoutTemplate size={20} />
-                    </button>
+                    </Button>
                   </TooltipTrigger>
                   <TooltipContent side={"right"}>
                     <p>{t("Choose Builder Layout")}</p>
                   </TooltipContent>
                 </Tooltip>
+                <HotKeys />
               </div>
             </div>
             {/* Side Panel */}

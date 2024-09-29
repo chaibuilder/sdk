@@ -1,5 +1,6 @@
 import {
   Badge,
+  Button,
   Dialog,
   DialogContent,
   DialogHeader,
@@ -11,9 +12,8 @@ import {
 } from "../../ui";
 import { KeyboardIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
-import { memo } from "react";
 
-export const HotKeys = memo(() => {
+export const HotKeys = () => {
   const { t } = useTranslation();
   const keys: { [key: string]: string } = {
     "ctrl + Z": "Undo",
@@ -31,18 +31,18 @@ export const HotKeys = memo(() => {
       <DialogTrigger>
         <Tooltip>
           <TooltipTrigger asChild>
-            <div className="flex w-10 items-center justify-center">
+            <Button variant="ghost">
               <KeyboardIcon />
-            </div>
+            </Button>
           </TooltipTrigger>
-          <TooltipContent>
+          <TooltipContent side={"right"}>
             <p>{t("Keyboard shortcuts")}</p>
           </TooltipContent>
         </Tooltip>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[525px]">
+      <DialogContent className="border-border sm:max-w-[525px]">
         <DialogHeader>
-          <DialogTitle>{t("Keyboard shortcuts")}</DialogTitle>
+          <DialogTitle className="text-foreground">{t("Keyboard shortcuts")}</DialogTitle>
         </DialogHeader>
         <div>
           <div className="grid grid-cols-2">
@@ -53,7 +53,7 @@ export const HotKeys = memo(() => {
                     <Badge variant={"outline"} className={"border border-border p-1 px-2"}>
                       {t(key)}
                     </Badge>
-                    <div>{t(keys[key])}</div>
+                    <div className="text-muted-foreground">{t(keys[key])}</div>
                   </div>
                 );
               })}
@@ -65,7 +65,7 @@ export const HotKeys = memo(() => {
                     <Badge variant={"outline"} className={"border border-border p-1 px-2"}>
                       {t(key)}
                     </Badge>
-                    <div>{t(keys2[key])}</div>
+                    <div className="text-muted-foreground">{t(keys2[key])}</div>
                   </div>
                 );
               })}
@@ -75,4 +75,4 @@ export const HotKeys = memo(() => {
       </DialogContent>
     </Dialog>
   );
-});
+};
