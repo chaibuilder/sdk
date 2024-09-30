@@ -27,7 +27,7 @@
     "e2e": "playwright test",
     "e2e:report": "playwright show-report",
     "e2e:ui": "playwright test --ui",
-    "docs": "typedoc --plugin typedoc-github-theme",
+    "docs": "typedoc --plugin typedoc-plugin-clarity",
     "prepare": "husky"
   },
   "exports": {
@@ -180,6 +180,7 @@
     "ts-node": "^10.9.2",
     "typedoc": "^0.26.7",
     "typedoc-github-theme": "^0.1.2",
+    "typedoc-plugin-clarity": "^1.6.0",
     "typescript": "^5.2.2",
     "vite": "^5.0.12",
     "vite-plugin-dts": "^3.6.3",

@@ -25,6 +25,7 @@
   "references": [{ "path": "./tsconfig.node.json" }],
   "typedocOptions": {
     "entryPoints": ["src/core/components","src/core/hooks", "src/core/miscellaneous", "src/render", "src/tailwind", "src/web-blocks"],
-    "out": "docs"
+    "out": "docs",
+    "clarityId": "ob67ec4zlo"
   }
 }
