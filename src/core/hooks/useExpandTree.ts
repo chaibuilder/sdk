@@ -38,5 +38,3 @@ export const useExpandTree = () => {
     setExpandedIds(expandedIds);
   }, [ids, pageBlocks, setExpandedIds]);
 };
-
-export const useExpandedIds = (): string[] => useAtomValue(expandedIdsAtom);

@@ -1,5 +1,4 @@
 import React, { LazyExoticComponent, Suspense } from "react";
-import { Languages } from "./Languages";
 import { Separator, Skeleton } from "../../../ui";
 import { SaveButton } from "./SaveButton";
 import { useBuilderProp } from "../../hooks";
@@ -33,7 +32,6 @@ const Topbar = () => {
         )}
       </div>
       <div className="flex items-center space-x-1">
-        <Languages />
         <Preview />
         <Separator orientation="vertical" />
         {editable ? <SaveButton /> : null}
