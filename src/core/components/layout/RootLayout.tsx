@@ -15,13 +15,12 @@ import { CanvasTopBar } from "../canvas/topbar/CanvasTopBar.tsx";
 import CanvasArea from "../canvas/CanvasArea.tsx";
 import { AddBlocksDialog } from "./AddBlocksDialog.tsx";
 import { useTranslation } from "react-i18next";
-import { LightningBoltIcon } from "@radix-ui/react-icons";
+import { GearIcon, LightningBoltIcon } from "@radix-ui/react-icons";
 import SettingsPanel from "../settings/SettingsPanel.tsx";
 import { AskAI } from "../AskAi.tsx";
 import { CHAI_BUILDER_EVENTS, useChaiBuilderMsgListener } from "../../events.ts";
 import { ChooseLayout } from "./ChooseLayout.tsx";
 import { compact, get } from "lodash-es";
-import { LAYOUT_MODE } from "../../constants/LAYOUT_MODE.ts";
 import { HotKeys } from "../HotKeys.tsx";
 
 const TopBar = lazy(() => import("../topbar/Topbar.tsx"));
@@ -37,7 +36,7 @@ const useAutoSave = () => {
 };
 
 function useSidebarMenuItems(layoutVariant: string) {
-  const singleSidePanel = layoutVariant === LAYOUT_MODE.SINGLE_SIDE_PANEL;
+  const singleSidePanel = layoutVariant === "SINGLE_SIDE_PANEL";
   return useMemo(() => {
     const items = [
       {
@@ -49,7 +48,9 @@ function useSidebarMenuItems(layoutVariant: string) {
           </div>
         ),
       },
-      singleSidePanel ? { icon: <EditIcon size={16} />, label: "sidebar.edit_block", component: SettingsPanel } : null,
+      singleSidePanel
+        ? { icon: <GearIcon className="size-5" />, label: "sidebar.edit_block", component: SettingsPanel }
+        : null,
       { icon: <LightningBoltIcon className="size-5" />, label: "sidebar.ai_assistant", component: AskAI },
       {
         icon: <PaintBucketIcon size={20} />,
@@ -58,11 +59,11 @@ function useSidebarMenuItems(layoutVariant: string) {
       },
     ];
     return compact(items);
-  }, [layoutVariant]);
+  }, [singleSidePanel]);
 }
 
 function isDualLayout(layoutVariant: string) {
-  return layoutVariant !== LAYOUT_MODE.SINGLE_SIDE_PANEL;
+  return layoutVariant !== "SINGLE_SIDE_PANEL";
 }
 
 /**

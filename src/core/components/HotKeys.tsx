@@ -32,7 +32,7 @@ export const HotKeys = () => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button variant="ghost">
-              <KeyboardIcon />
+              <KeyboardIcon className="size-8" />
             </Button>
           </TooltipTrigger>
           <TooltipContent side={"right"}>

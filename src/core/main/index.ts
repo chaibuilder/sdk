@@ -32,5 +32,6 @@ export {
 };
 export * from "../hooks";
 export { generateUUID as generateBlockId, cn as mergeClasses } from "../functions/Functions.ts";
+export { getClassValueAndUnit } from "../functions/Helpers.ts";
 export { getBlocksFromHTML } from "../import-html/html-to-json.ts";
 export type { ChaiBlock, ChaiBuilderEditorProps };
