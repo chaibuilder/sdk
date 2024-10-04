@@ -48,9 +48,9 @@ const ViewProviderData = ({ provider, onClose }) => {
 
   return (
     <Dialog onOpenChange={(open) => (!open ? onClose() : "")} defaultOpen={true}>
-      <DialogContent>
+      <DialogContent className={"border-border"}>
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle className={"text-foreground"}>
             {t("data_provider")}: {provider.name}
           </DialogTitle>
           <DialogDescription>{provider.description}</DialogDescription>
@@ -177,13 +177,13 @@ export const PageDataProviders = () => {
       </div>
       <br />
 
-      <div className={`border-t ${providers.length ? "block" : "hidden"}`}>
+      <div className={`border-t border-border ${providers.length ? "block" : "hidden"}`}>
         <p className="flex-1 pb-1.5 pt-4 text-xs font-medium text-gray-500">{t("page_data_providers")}:</p>
         <div className="space-y-2">
           {providers.map((dataProvider) => (
             <div
               key={dataProvider.providerKey}
-              className="w-full rounded-lg border bg-card text-card-foreground shadow-sm"
+              className="w-full rounded-lg border border-border bg-card text-card-foreground shadow-sm"
               data-v0-t="card">
               <div className="flex flex-col space-y-1.5 px-4 pt-4">
                 <div className="flex items-center justify-between">

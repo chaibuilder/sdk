@@ -6,8 +6,22 @@ import { loadWebBlocks } from "./web-blocks";
 import { useState } from "react";
 import axios from "axios";
 import { LayersIcon } from "lucide-react";
+import { registerChaiDataProvider } from "@chaibuilder/runtime";
 
 loadWebBlocks();
+
+registerChaiDataProvider("blogs", {
+  name: "Blogs",
+  description: "This is a description",
+  // @ts-ignore
+  dataFn: async () => ({
+    title: "This is my home page",
+    description: "This is my home page description",
+    keywords: "home page, home, page",
+    image: "https://picsum.photos/200",
+    socialMediaImage: "https://picsum.photos/200",
+  }),
+});
 
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
@@ -19,6 +33,7 @@ function ChaiBuilderDefault() {
   ]);
   return (
     <ChaiBuilderEditor
+      dataBindingSupport
       unsplashAccessKey={"import.meta.env.VITE_UNSPLASH_ACCESS_KEY"}
       showDebugLogs={true}
       autoSaveSupport={false}

@@ -31,8 +31,8 @@ export const HotKeys = () => {
       <DialogTrigger>
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button variant="ghost">
-              <KeyboardIcon className="size-8" />
+            <Button className={`mb-2 rounded-lg p-2 transition-colors`} variant="ghost">
+              <KeyboardIcon className="size-4" />
             </Button>
           </TooltipTrigger>
           <TooltipContent side={"right"}>

@@ -61,9 +61,9 @@ export default function BlockSettings() {
   return (
     <div className="overflow-x-hidden px-px">
       {dataBindingSupported ? (
-        <Accordion type="multiple" defaultValue={["STATIC", "BINDING"]} className="h-full w-full">
+        <Accordion type="multiple" defaultValue={["STATIC", "BINDING"]} className="mt-4 h-full w-full">
           <AccordionItem value="BINDING">
-            <AccordionTrigger className="bg-gray-100 px-3 py-2 text-xs hover:no-underline">
+            <AccordionTrigger className="py-2">
               <div className="flex items-center gap-x-2">
                 <div
                   className={`h-[8px] w-[8px] rounded-full ${
@@ -73,7 +73,7 @@ export default function BlockSettings() {
                 Data Binding
               </div>
             </AccordionTrigger>
-            <AccordionContent className="px-4 pt-4">
+            <AccordionContent className="pt-4">
               <DataBindingSetting
                 bindingData={get(selectedBlock, "_bindings", {})}
                 onChange={(_bindings) => {
@@ -83,7 +83,7 @@ export default function BlockSettings() {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="STATIC">
-            <AccordionTrigger className="bg-gray-100 px-3 py-2 text-xs hover:no-underline">
+            <AccordionTrigger className="py-2">
               <div className="flex items-center gap-x-2">
                 <div className={`h-[8px] w-[8px] rounded-full bg-blue-500`} />
                 Static Content
@@ -91,7 +91,7 @@ export default function BlockSettings() {
             </AccordionTrigger>
             <AccordionContent className="pt-4">
               {!isEmpty(bindingProps) ? (
-                <div className="mx-4 mb-1 mt-0 rounded-sm border border-orange-500 bg-orange-100 p-1 text-xs text-orange-500">
+                <div className="mb-1 mt-0 rounded-sm border border-orange-500 bg-orange-100 p-1 text-xs text-orange-500">
                   Data binding is set for <b>{map(bindingProps, capitalize).join(", ")}</b>{" "}
                   {bindingProps.length === 1 ? "property" : "properties"}. Remove data binding to edit static content.
                 </div>

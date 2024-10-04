@@ -22,6 +22,8 @@ import { CHAI_BUILDER_EVENTS, useChaiBuilderMsgListener } from "../../events.ts"
 import { ChooseLayout } from "./ChooseLayout.tsx";
 import { compact, get } from "lodash-es";
 import { HotKeys } from "../HotKeys.tsx";
+import { PageDataProviders } from "../sidepanels/PageDataProviders.tsx";
+import { AiFillDatabase } from "react-icons/ai";
 
 const TopBar = lazy(() => import("../topbar/Topbar.tsx"));
 
@@ -37,6 +39,8 @@ const useAutoSave = () => {
 
 function useSidebarMenuItems(layoutVariant: string) {
   const singleSidePanel = layoutVariant === "SINGLE_SIDE_PANEL";
+  const { t } = useTranslation();
+  const dataBindingSupport = useBuilderProp("dataBindingSupport", false);
   return useMemo(() => {
     const items = [
       {
@@ -51,6 +55,9 @@ function useSidebarMenuItems(layoutVariant: string) {
       singleSidePanel
         ? { icon: <GearIcon className="size-5" />, label: "sidebar.edit_block", component: SettingsPanel }
         : null,
+      dataBindingSupport
+        ? { icon: <AiFillDatabase className="size-3" />, label: t("Data Providers"), component: PageDataProviders }
+        : null,
       { icon: <LightningBoltIcon className="size-5" />, label: "sidebar.ai_assistant", component: AskAI },
       {
         icon: <PaintBucketIcon size={20} />,
@@ -59,7 +66,7 @@ function useSidebarMenuItems(layoutVariant: string) {
       },
     ];
     return compact(items);
-  }, [singleSidePanel]);
+  }, [singleSidePanel, dataBindingSupport]);
 }
 
 function isDualLayout(layoutVariant: string) {
