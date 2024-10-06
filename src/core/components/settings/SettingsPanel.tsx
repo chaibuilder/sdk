@@ -9,10 +9,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { BlockAttributesEditor } from "./new-panel/BlockAttributesEditor.tsx";
 import { ChevronDown } from "lucide-react";
 import { FallbackError } from "../FallbackError.tsx";
-
-const shouldShowAttributes = (type: string) => {
-  return type !== "GlobalBlock";
-};
+import { GlobalBlockSettings } from "./GlobalBlockSettings.tsx";
 
 const SettingsPanel: React.FC = () => {
   const selectedBlock = useSelectedBlock();
@@ -30,6 +27,8 @@ const SettingsPanel: React.FC = () => {
       </div>
     );
 
+  if (selectedBlock?._type === "GlobalBlock") return <GlobalBlockSettings />;
+
   return (
     <ErrorBoundary fallback={<FallbackError />} onError={onErrorFn}>
       <div className={"relative flex max-h-full w-full flex-col"}>
@@ -37,7 +36,7 @@ const SettingsPanel: React.FC = () => {
         <br />
         <BlockStyling />
 
-        {shouldShowAttributes(selectedBlock?._type) ? (
+        {showAttributes ? (
           <>
             <div
               onClick={() => setShowAttributes(!showAttributes)}

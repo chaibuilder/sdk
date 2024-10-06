@@ -2,7 +2,7 @@ import { atom, useAtom } from "jotai/index";
 import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { forEach, get, has } from "lodash-es";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useBuilderProp } from "./useBuilderProp.ts";
 
 type GlobalBlocksState = Record<
@@ -62,5 +62,33 @@ export const useWatchGlobalBlocks = () => {
           }));
         });
     });
-  }, [globalBlocks, globalBlocksList, globalBlocksLoadingState, setGlobalBlocksLoadingState]);
+  }, [
+    getGlobalBlockBlocks,
+    globalBlocks,
+    globalBlocksList,
+    globalBlocksLoadingState,
+    setGlobalBlocks,
+    setGlobalBlocksLoadingState,
+  ]);
+};
+
+type GlobalBlockList = Record<string, { name?: string; description?: string }>;
+const globalBlocksListAtom = atom<GlobalBlockList>({});
+export const useGlobalBlocksList = () => {
+  const [loading, setLoading] = useState(false);
+  const [globalBlocksList, setGlobalBlocksList] = useAtom(globalBlocksListAtom);
+  const getGlobalBlocks = useBuilderProp("getGlobalBlocks", async () => []);
+  const fetchGlobalBlocks = useCallback(async () => {
+    setLoading(true);
+    const globalBlocks = await getGlobalBlocks();
+    setGlobalBlocksList(globalBlocks as any);
+    setLoading(false);
+  }, [getGlobalBlocks, setGlobalBlocksList]);
+
+  useEffect(() => {
+    fetchGlobalBlocks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return { data: globalBlocksList, isLoading: loading, refetch: fetchGlobalBlocks };
 };
