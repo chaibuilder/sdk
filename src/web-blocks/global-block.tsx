@@ -1,6 +1,5 @@
 import * as React from "react";
 import { GlobeIcon } from "lucide-react";
-import { GlobalBlockSettings } from "../core/components/settings/GlobalBlockSettings.tsx";
 import { SingleLineText } from "@chaibuilder/runtime/controls";
 
 const Component = (
@@ -33,7 +32,6 @@ const Config = {
   props: {
     globalBlock: SingleLineText({ title: "global block", default: "", hidden: true }),
   },
-  propsEditor: GlobalBlockSettings,
 };
 
 export { Component, Config };

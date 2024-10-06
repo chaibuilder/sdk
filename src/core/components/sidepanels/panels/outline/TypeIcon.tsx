@@ -1,32 +1,32 @@
 import React from "react";
 import {
+  BorderAllIcon,
+  BorderTopIcon,
   BoxIcon,
+  BoxModelIcon,
   ButtonIcon,
-  CursorTextIcon,
-  DividerHorizontalIcon,
-  HeadingIcon,
-  ImageIcon,
-  Link1Icon,
-  RowsIcon,
-  SketchLogoIcon,
-  TextIcon,
-  VideoIcon,
+  CheckboxIcon,
   CodeIcon,
   ColumnsIcon,
-  SpaceBetweenVerticallyIcon,
-  GroupIcon,
-  CheckboxIcon,
-  InputIcon,
-  RadiobuttonIcon,
-  DropdownMenuIcon,
-  TableIcon,
-  BorderTopIcon,
-  BorderAllIcon,
-  ViewHorizontalIcon,
+  CursorTextIcon,
+  DividerHorizontalIcon,
   DragHandleHorizontalIcon,
-  BoxModelIcon,
+  DropdownMenuIcon,
+  GroupIcon,
+  HeadingIcon,
+  ImageIcon,
+  InputIcon,
+  Link1Icon,
+  RadiobuttonIcon,
+  RowsIcon,
+  SketchLogoIcon,
+  SpaceBetweenVerticallyIcon,
+  TableIcon,
+  TextIcon,
+  VideoIcon,
+  ViewHorizontalIcon,
 } from "@radix-ui/react-icons";
-import { DatabaseIcon } from "lucide-react";
+import { DatabaseIcon, GlobeIcon } from "lucide-react";
 
 type Props = {
   type?: string;
@@ -34,6 +34,8 @@ type Props = {
 
 export const TypeIcon: React.FC<Props> = (props) => {
   switch (props.type) {
+    case "GlobalBlock":
+      return <GlobeIcon className="h-4 w-4" />;
     case "Image":
       return <ImageIcon />;
     case "Heading":

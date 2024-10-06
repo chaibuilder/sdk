@@ -4,11 +4,12 @@ import { useBuilderProp, useSelectedBlock, useUpdateBlocksProps, useUpdateBlocks
 import { ChaiControlDefinition } from "@chaibuilder/runtime/controls";
 import DataBindingSetting from "../../rjsf-widgets/data-binding.tsx";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../ui";
-import React, { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { getBlockComponent } from "@chaibuilder/runtime";
 import { JSONForm } from "./JSONForm.tsx";
 import { CanvasSettings } from "./CanvasSettings.tsx";
 import { convertDotNotationToObject } from "../../functions/Controls.ts";
+import { GlobalBlockSettings } from "./GlobalBlockSettings.tsx";
 
 /**
  *
@@ -63,8 +64,6 @@ export default function BlockSettings() {
     each(bindingProps, (key: string) => delete controls[key]);
     return controls;
   }, [coreBlock, bindingProps, dataBindingSupported]);
-
-  const propsEditor = get(coreBlock, "propsEditor", null);
 
   return (
     <div className="overflow-x-hidden px-px">
@@ -121,7 +120,7 @@ export default function BlockSettings() {
           properties={staticContentProperties}
         />
       ) : null}
-      {propsEditor ? React.createElement(propsEditor) : null}
+      {selectedBlock?._type === "GlobalBlock" ? <GlobalBlockSettings /> : null}
       <CanvasSettings />
     </div>
   );

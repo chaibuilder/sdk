@@ -1,8 +1,6 @@
 import * as React from "react";
 import { Image, SelectOption, Styles } from "@chaibuilder/runtime/controls";
 import EmptySlot from "./empty-slot.tsx";
-import i18next from "i18next";
-export const t = (key: string) => i18next.t(key);
 
 const Component = (
   props: any & {
