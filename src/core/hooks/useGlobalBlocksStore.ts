@@ -20,14 +20,18 @@ const globalBlocksStoreAtom = atom<Record<string, ChaiBlock[]>>({});
 const globalBlocksLoadingStateAtom = atom<GlobalBlocksState>({});
 
 export const useGlobalBlocksStore = () => {
-  const [globalBlocks] = useAtom(globalBlocksStoreAtom);
+  const [globalBlocks, setGlobalBlocks] = useAtom(globalBlocksStoreAtom);
   const getGlobalBlocks = useCallback(
     (block: ChaiBlock) => {
       return get(globalBlocks, block?.globalBlock, []);
     },
     [globalBlocks],
   );
-  return { getGlobalBlocks };
+  const reset = useCallback(() => {
+    setGlobalBlocks({});
+  }, [setGlobalBlocks]);
+
+  return { getGlobalBlocks, reset };
 };
 
 export const useWatchGlobalBlocks = () => {

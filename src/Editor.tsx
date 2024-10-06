@@ -84,29 +84,47 @@ function ChaiBuilderDefault() {
         ],
       }}
       getGlobalBlockBlocks={async (globalBlockKey: string) => {
-        console.log(globalBlockKey);
-        return globalBlockKey === "header"
-          ? [
-              {
-                _type: "Heading",
-                content: "Header",
-                _id: "header",
-                level: "h1",
-                styles: "#styles:,text-center text-3xl font-bold p-4 bg-gray-100",
-              },
-            ]
-          : [
-              {
-                _type: "Heading",
-                content: "Footer",
-                _id: "footer",
-                level: "h1",
-                styles: "#styles:,text-center text-2xl font-bold",
-              },
-            ];
+        const blocks =
+          globalBlockKey === "header"
+            ? [
+                {
+                  _type: "Heading",
+                  content: "Header",
+                  _id: "header",
+                  level: "h1",
+                  styles: "#styles:,text-center text-3xl font-bold p-4 bg-gray-100",
+                },
+              ]
+            : [
+                {
+                  _type: "Heading",
+                  content: "Footer",
+                  _id: "footer",
+                  level: "h1",
+                  styles: "#styles:,text-center text-2xl font-bold",
+                },
+              ];
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve(blocks);
+          }, 1000);
+        });
       }}
       getGlobalBlocks={async () => {
-        return { header: {}, footer: {} };
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve({
+              header: {
+                name: "Header",
+                description: "Header",
+              },
+              footer: {
+                name: "Footer",
+                description: "Footer",
+              },
+            });
+          }, 1000);
+        });
       }}
     />
   );

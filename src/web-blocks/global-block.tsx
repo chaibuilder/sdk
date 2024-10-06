@@ -1,6 +1,7 @@
 import * as React from "react";
-import { SelectOption } from "@chaibuilder/runtime/controls";
 import { GlobeIcon } from "lucide-react";
+import { GlobalBlockSettings } from "../core/components/settings/GlobalBlockSettings.tsx";
+import { SingleLineText } from "@chaibuilder/runtime/controls";
 
 const Component = (
   props: any & {
@@ -15,7 +16,7 @@ const Component = (
       <div
         className="flex flex-col items-center justify-center gap-y-1 rounded-lg bg-gray-100 py-4 dark:bg-gray-800"
         {...blockProps}>
-        <h1>Global Block</h1>
+        <h1>Global Block - {globalBlock}</h1>
         <p>Choose a block from the sidebar to add it to this page.</p>
       </div>
     );
@@ -30,14 +31,9 @@ const Config = {
   category: "core",
   group: "advanced",
   props: {
-    globalBlock: SelectOption({
-      title: "Choose Global Block",
-      options: [
-        { value: "header", title: "Header" },
-        { value: "footer", title: "Footer" },
-      ],
-    }),
+    globalBlock: SingleLineText({ title: "global block", default: "", hidden: true }),
   },
+  propsEditor: GlobalBlockSettings,
 };
 
 export { Component, Config };

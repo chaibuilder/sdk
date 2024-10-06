@@ -5,6 +5,7 @@ import { useSetAtom } from "jotai";
 import { aiAssistantActiveAtom, historyStatesAtom } from "../atoms/ui";
 import { useUndoManager } from "../history/useUndoManager.ts";
 import { useAtom } from "jotai/index";
+import { useGlobalBlocksStore } from "./useGlobalBlocksStore.ts";
 
 export const useBuilderReset = () => {
   const setNewState = useSetAtom(historyStatesAtom);
@@ -13,6 +14,7 @@ export const useBuilderReset = () => {
   const [, setHighlighted] = useHighlightBlockId();
   const [, setStylingHighlighted] = useSelectedStylingBlocks();
   const [, setAiAssistantActive] = useAtom(aiAssistantActiveAtom);
+  const { reset: resetGlobalBlocks } = useGlobalBlocksStore();
   return () => {
     setSelectedIds([]);
     setStylingHighlighted([]);
@@ -20,5 +22,6 @@ export const useBuilderReset = () => {
     clear();
     setAiAssistantActive(false);
     setNewState({ undoCount: 0, redoCount: 0 });
+    resetGlobalBlocks();
   };
 };

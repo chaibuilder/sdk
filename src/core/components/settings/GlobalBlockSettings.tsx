@@ -10,7 +10,7 @@ export const GlobalBlockSettings = () => {
     <div>
       <label className="text-sm">Choose a global block</label>
       <select
-        className="w-full rounded-md border border-gray-300 p-1 dark:border-gray-600"
+        className="h-8 w-full rounded-md border border-gray-300 p-0 px-2 text-xs dark:border-gray-600"
         value={selectedBlock?.globalBlock || ""}
         onChange={(e) => {
           updateBlockProps([selectedBlock._id], { globalBlock: e.target.value });
@@ -23,9 +23,8 @@ export const GlobalBlockSettings = () => {
         ))}
       </select>
       <div className={"mt-2 text-xs"}>
-        Refresh global blocks list
-        <Button size={"sm"} variant={"ghost"} onClick={refetch}>
-          {isLoading ? "Loading..." : "Refresh"}
+        <Button size={"sm"} variant={"outline"} onClick={refetch} className="text-xs">
+          {isLoading ? "Loading..." : "Refresh List"}
         </Button>
       </div>
     </div>

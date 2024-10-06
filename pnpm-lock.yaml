@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@ai-sdk/openai': ^0.0.37
-  '@chaibuilder/runtime': 0.2.8
+  '@chaibuilder/runtime': 0.2.10
   '@commitlint/cli': 17.7.1
   '@commitlint/config-conventional': 17.7.0
   '@emotion/react': ^11.11.1
@@ -124,7 +124,7 @@ specifiers:
   zod: ^3.23.8
 
 dependencies:
-  '@chaibuilder/runtime': 0.2.8_kgsil3qmwkuaypzeupjafsqja4
+  '@chaibuilder/runtime': 0.2.10_kgsil3qmwkuaypzeupjafsqja4
   '@floating-ui/dom': 1.4.5
   '@floating-ui/react-dom': 2.0.1_biqbaboplfbrettd7655fr4n2y
   '@mhsdesign/jit-browser-tailwindcss': 0.4.1_ts-node@10.9.2
@@ -772,8 +772,8 @@ packages:
       statuses: 2.0.1
     dev: true
 
-  /@chaibuilder/runtime/0.2.8_kgsil3qmwkuaypzeupjafsqja4:
-    resolution: {integrity: sha512-mAXrQdaE+aED10UhxOEGDgrq2GTcrYz7ePxyXjTWMVwws3o2dXxDtyNZCWkIAk8DcA3M7HAVM2OrH+UqUvCmHg==}
+  /@chaibuilder/runtime/0.2.10_kgsil3qmwkuaypzeupjafsqja4:
+    resolution: {integrity: sha512-j0ysJH7+scInq1tqGpRr0T54zR/3yfWf5l6OinPkLvkT5TfLRdgtD9MSRonrUuNhPw/jrb7F2U9YxvIuUa5NSA==}
     dependencies:
       '@radix-ui/react-icons': 1.3.0_react@18.2.0
       clsx: 2.1.0

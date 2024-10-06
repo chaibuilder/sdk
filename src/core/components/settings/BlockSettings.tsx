@@ -4,7 +4,7 @@ import { useBuilderProp, useSelectedBlock, useUpdateBlocksProps, useUpdateBlocks
 import { ChaiControlDefinition } from "@chaibuilder/runtime/controls";
 import DataBindingSetting from "../../rjsf-widgets/data-binding.tsx";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../ui";
-import { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { getBlockComponent } from "@chaibuilder/runtime";
 import { JSONForm } from "./JSONForm.tsx";
 import { CanvasSettings } from "./CanvasSettings.tsx";
@@ -53,10 +53,18 @@ export default function BlockSettings() {
 
   const staticContentProperties = useMemo(() => {
     const controls = cloneDeep(get(coreBlock, "props", {})) as { [key: string]: ChaiControlDefinition };
+    // remove the hidden props
+    each(controls, (control: ChaiControlDefinition, key: string) => {
+      if (get(control, "hidden", false)) {
+        delete controls[key];
+      }
+    });
     if (!dataBindingSupported) return controls;
     each(bindingProps, (key: string) => delete controls[key]);
     return controls;
   }, [coreBlock, bindingProps, dataBindingSupported]);
+
+  const propsEditor = get(coreBlock, "propsEditor", null);
 
   return (
     <div className="overflow-x-hidden px-px">
@@ -105,14 +113,15 @@ export default function BlockSettings() {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-      ) : (
+      ) : !isEmpty(staticContentProperties) ? (
         <JSONForm
           id={selectedBlock?._id}
           onChange={updateRealtime}
           formData={formData}
           properties={staticContentProperties}
         />
-      )}
+      ) : null}
+      {propsEditor ? React.createElement(propsEditor) : null}
       <CanvasSettings />
     </div>
   );
