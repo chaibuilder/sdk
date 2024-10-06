@@ -30,10 +30,13 @@ import { useUndoManager } from "../history/useUndoManager";
 import { useCopyToClipboard } from "./useCopyToClipboard";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
 import { useCodeEditor } from "./useCodeEditor.ts";
+import { useGlobalBlocksList, useGlobalBlocksStore } from "./useGlobalBlocksStore.ts";
 
 export { useLayoutVariant } from "./useLayoutVariant.ts";
 export { useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 export {
+  useGlobalBlocksList,
+  useGlobalBlocksStore,
   useCodeEditor,
   useBlocksStore,
   useUndoManager,
