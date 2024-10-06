@@ -41,6 +41,7 @@ function useSidebarMenuItems(layoutVariant: string) {
   const singleSidePanel = layoutVariant === "SINGLE_SIDE_PANEL";
   const { t } = useTranslation();
   const dataBindingSupport = useBuilderProp("dataBindingSupport", false);
+  const askAICallback = useBuilderProp("askAiCallBack", null);
   return useMemo(() => {
     const items = [
       {
@@ -58,7 +59,7 @@ function useSidebarMenuItems(layoutVariant: string) {
       dataBindingSupport
         ? { icon: <AiFillDatabase className="size-3" />, label: t("Data Providers"), component: PageDataProviders }
         : null,
-      { icon: <LightningBoltIcon className="size-5" />, label: "sidebar.ai_assistant", component: AskAI },
+      askAICallback ? { icon: <LightningBoltIcon className="size-5" />, label: "sidebar.ai_assistant", component: AskAI } : null,
       {
         icon: <PaintBucketIcon size={20} />,
         label: "sidebar.theme",
