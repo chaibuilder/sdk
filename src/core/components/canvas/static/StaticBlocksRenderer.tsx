@@ -9,7 +9,7 @@ export const StaticBlocksRenderer = () => {
 
   const blocksHtml = isEmpty(blocks) ? null : (
     <BlocksExternalDataProvider>
-      <BlocksRendererStatic blocks={filter(blocks, (block: ChaiBlock) => isEmpty(block._parent))} />
+      <BlocksRendererStatic allBlocks={blocks} blocks={filter(blocks, (block: ChaiBlock) => isEmpty(block._parent))} />
     </BlocksExternalDataProvider>
   );
 

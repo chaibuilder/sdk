@@ -2,30 +2,16 @@ import React, { Suspense, useCallback } from "react";
 import { each, filter, find, get, has, includes, isEmpty, isNull, isString, memoize, omit } from "lodash-es";
 import { twMerge } from "tailwind-merge";
 import { ChaiBlock } from "../../../types/ChaiBlock";
-import { SLOT_KEY, STYLES_KEY } from "../../../constants/STRINGS.ts";
+import { STYLES_KEY } from "../../../constants/STRINGS.ts";
 import { getBlockComponent } from "@chaibuilder/runtime";
 import { useChaiExternalData } from "./useChaiExternalData.ts";
 import { useAtom } from "jotai";
 import { inlineEditingActiveAtom, xShowBlocksAtom } from "../../../atoms/ui.ts";
-import { useBlocksStore } from "../../../history/useBlocksStoreUndoableActions.ts";
 import { useCanvasSettings } from "../../../hooks/useCanvasSettings.ts";
 import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
 import { canAcceptChildBlock } from "../../../functions/block-helpers.ts";
-import { useCanvasWidth, useCutBlockIds, useHiddenBlockIds } from "../../../hooks";
+import { useCanvasWidth, useCutBlockIds, useGlobalBlocksStore, useHiddenBlockIds } from "../../../hooks";
 import { isVisibleAtBreakpoint } from "../../../functions/isVisibleAtBreakpoint.ts";
-import { useGlobalBlocksStore } from "../../../hooks/useGlobalBlocksStore.ts";
-
-// FIXME:  Duplicate code in CanvasRenderer.tsx
-const getSlots = (block: ChaiBlock) => {
-  // loop over all keys and find the ones that start with slot
-  const slots: { [key: string]: string[] } = {};
-  Object.keys(block).forEach((key) => {
-    if (isString(block[key]) && block[key].startsWith(SLOT_KEY)) {
-      slots[key] = block[key].replace(SLOT_KEY, "").split(",");
-    }
-  });
-  return slots;
-};
 
 const generateClassNames = memoize((styles: string) => {
   const stylesArray = styles.replace(STYLES_KEY, "").split(",");
@@ -79,8 +65,11 @@ function isDescendant(parentId: string, blockId: string, allBlocks: ChaiBlock[])
   return childBlocks.some((child) => isDescendant(child._id, blockId, allBlocks));
 }
 
-export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
-  const [allBlocks] = useBlocksStore();
+const RenderGlobalBlock = ({ blocks, allBlocks }: { blocks: ChaiBlock[]; allBlocks: ChaiBlock[] }) => {
+  return <BlocksRendererStatic allBlocks={allBlocks} blocks={blocks} />;
+};
+
+export function BlocksRendererStatic({ blocks, allBlocks }: { blocks: ChaiBlock[]; allBlocks: ChaiBlock[] }) {
   const [xShowBlocks] = useAtom(xShowBlocksAtom);
   const [cutBlockIds] = useCutBlockIds();
   const [draggedBlock] = useAtom<any>(draggedBlockAtom);
@@ -100,7 +89,7 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
         return { ...acc, ...settings };
       }, {});
     },
-    [canvasSettings, allBlocks],
+    [canvasSettings],
   );
 
   return (
@@ -109,24 +98,19 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
         blocks.map((block: ChaiBlock, index: number) => {
           // If the block is being edited, we don't want to render it
           if (editingBlockId === block._id || hiddenBlocks.includes(block._id)) return null;
-
-          const slots = getSlots(block);
           const attrs: any = {};
-          if (!isEmpty(slots)) {
-            Object.keys(slots).forEach((key) => {
-              attrs[key] = React.Children.toArray(
-                slots[key].map((slotId: string) => (
-                  <BlocksRendererStatic blocks={[find(allBlocks, { _id: slotId }) as ChaiBlock]} />
-                )),
-              );
-            });
-          }
-
           // if global block get the blocks from global blocks atom
+          const childBlocks = filter(allBlocks, { _parent: block._id });
 
-          const childBlocks =
-            block._type === "GlobalBlock" ? getGlobalBlocks(block) : filter(allBlocks, { _parent: block._id });
-          attrs.children = childBlocks.length ? <BlocksRendererStatic blocks={childBlocks} /> : null;
+          attrs.children =
+            childBlocks.length > 0 ? <BlocksRendererStatic allBlocks={allBlocks} blocks={childBlocks} /> : null;
+
+          if (block._type === "GlobalBlock") {
+            const blocks = getGlobalBlocks(block);
+            attrs.children = (
+              <RenderGlobalBlock blocks={filter(blocks, (block: ChaiBlock) => !block._parent)} allBlocks={blocks} />
+            );
+          }
 
           const chaiBlock = getBlockComponent(block._type) as any;
           const Component = get(chaiBlock, "builderComponent", get(chaiBlock, "component", null));
