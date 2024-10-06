@@ -11,8 +11,8 @@ import { ErrorBoundary } from "react-error-boundary";
 import { RootLayout } from "./layout/RootLayout.tsx";
 import { builderStore } from "../atoms/store.ts";
 import { Toaster } from "../../ui";
-import { useBrandingOptions, useBuilderReset } from "../hooks";
-import { ChaiBuilderEditorProps } from "../types/chaiBuilderEditorProps.ts";
+import { useBrandingOptions, useBuilderProp, useBuilderReset, useSavePage } from "../hooks";
+import { ChaiBuilderEditorProps } from "../types";
 import { dataProvidersAtom } from "../hooks/usePageDataProviders.ts";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
 import { SmallScreenMessage } from "./SmallScreenMessage.tsx";
@@ -22,6 +22,21 @@ import { useAtom } from "jotai/index";
 import { builderSaveStateAtom } from "../hooks/useSavePage.ts";
 import { PreviewScreen } from "./PreviewScreen.tsx";
 import { FallbackError } from "./FallbackError.tsx";
+import { selectedLibraryAtom } from "../atoms/ui.ts";
+import { useKeyEventWatcher } from "../hooks/useKeyEventWatcher.ts";
+import { useExpandTree } from "../hooks/useExpandTree.ts";
+import { useIntervalEffect } from "@react-hookz/web";
+import { useWatchGlobalBlocks } from "../hooks/useGlobalBlocksStore.ts";
+
+const useAutoSave = () => {
+  const { savePage } = useSavePage();
+  const autoSaveSupported = useBuilderProp("autoSaveSupport", true);
+  const autoSaveInterval = useBuilderProp("autoSaveInterval", 60);
+  useIntervalEffect(() => {
+    if (!autoSaveSupported) return;
+    savePage();
+  }, autoSaveInterval * 1000);
+};
 
 const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   const [, setAllBlocks] = useBlocksStore();
@@ -29,6 +44,11 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   const reset = useBuilderReset();
   const [saveState] = useAtom(builderSaveStateAtom);
   const RootLayoutComponent = useMemo(() => props.layout || RootLayout, [props.layout]);
+  useAtom(selectedLibraryAtom);
+  useKeyEventWatcher();
+  useExpandTree();
+  useAutoSave();
+  useWatchGlobalBlocks();
 
   useEffect(() => {
     builderStore.set(

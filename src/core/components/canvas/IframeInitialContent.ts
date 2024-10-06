@@ -36,7 +36,7 @@ export const IframeInitialContent: string = `<!doctype html>
     .frame-root .frame-content { height: 100%; }
     [data-drop="yes"] { outline: 2px dashed orange !important; outline-offset: -2px }
     [data-dnd="yes"] { pointer-events: auto !important}
-    [data-dnd="no"] { pointer-events: none !important; }
+    [data-dnd="no"],[data-block-type="GlobalBlock"] > * { pointer-events: none !important; }
     [data-dnd-dragged="yes"] { opacity: 0.6; pointer-events: none; }
     [data-dnd-dragged="no"] { opacity: 1; pointer-events: auto !important; }
     [force-show] { display: block !important; }

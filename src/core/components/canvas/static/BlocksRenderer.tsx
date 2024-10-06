@@ -13,6 +13,7 @@ import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
 import { canAcceptChildBlock } from "../../../functions/block-helpers.ts";
 import { useCanvasWidth, useCutBlockIds, useHiddenBlockIds } from "../../../hooks";
 import { isVisibleAtBreakpoint } from "../../../functions/isVisibleAtBreakpoint.ts";
+import { useGlobalBlocksStore } from "../../../hooks/useGlobalBlocksStore.ts";
 
 // FIXME:  Duplicate code in CanvasRenderer.tsx
 const getSlots = (block: ChaiBlock) => {
@@ -87,6 +88,7 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
   const [, breakpoint] = useCanvasWidth();
   const [canvasSettings] = useCanvasSettings();
   const [hiddenBlocks] = useHiddenBlockIds();
+  const { getGlobalBlocks } = useGlobalBlocksStore();
   const getStyles = useCallback((block: ChaiBlock) => getStyleAttrs(block, breakpoint), [breakpoint]);
 
   const [chaiData] = useChaiExternalData();
@@ -119,7 +121,11 @@ export function BlocksRendererStatic({ blocks }: { blocks: ChaiBlock[] }) {
               );
             });
           }
-          const childBlocks = filter(allBlocks, { _parent: block._id });
+
+          // if global block get the blocks from global blocks atom
+
+          const childBlocks =
+            block._type === "GlobalBlock" ? getGlobalBlocks(block) : filter(allBlocks, { _parent: block._id });
           attrs.children = childBlocks.length ? <BlocksRendererStatic blocks={childBlocks} /> : null;
 
           const chaiBlock = getBlockComponent(block._type) as any;

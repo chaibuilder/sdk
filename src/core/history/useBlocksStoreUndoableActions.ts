@@ -5,7 +5,7 @@ import { useUndoManager } from "./useUndoManager.ts";
 import { useBlocksStoreManager } from "./useBlocksStoreManager.ts";
 import { each, first, keys, map } from "lodash-es";
 
-export const useBlocksStore = (): [ChaiBlock[], Function] => {
+export const useBlocksStore = () => {
   return useAtom<ChaiBlock[]>(presentBlocksAtom);
 };
 

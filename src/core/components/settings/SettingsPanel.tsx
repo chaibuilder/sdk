@@ -10,6 +10,10 @@ import { BlockAttributesEditor } from "./new-panel/BlockAttributesEditor.tsx";
 import { ChevronDown } from "lucide-react";
 import { FallbackError } from "../FallbackError.tsx";
 
+const shouldShowAttributes = (type: string) => {
+  return type !== "GlobalBlock";
+};
+
 const SettingsPanel: React.FC = () => {
   const selectedBlock = useSelectedBlock();
   const { t } = useTranslation();
@@ -33,15 +37,19 @@ const SettingsPanel: React.FC = () => {
         <br />
         <BlockStyling />
 
-        <div
-          onClick={() => setShowAttributes(!showAttributes)}
-          className="flex cursor-pointer items-center justify-between border-b border-border py-2 text-sm font-bold text-muted-foreground hover:underline">
-          <span>{t("Attributes")}</span>
-          <span>
-            <ChevronDown className={"h-4 w-4 text-gray-500 " + (showAttributes ? "rotate-180" : "")} />
-          </span>
-        </div>
-        {showAttributes && <BlockAttributesEditor />}
+        {shouldShowAttributes(selectedBlock?._type) ? (
+          <>
+            <div
+              onClick={() => setShowAttributes(!showAttributes)}
+              className="flex cursor-pointer items-center justify-between border-b border-border py-2 text-sm font-bold text-muted-foreground hover:underline">
+              <span>{t("Attributes")}</span>
+              <span>
+                <ChevronDown className={"h-4 w-4 text-gray-500 " + (showAttributes ? "rotate-180" : "")} />
+              </span>
+            </div>
+            {showAttributes && <BlockAttributesEditor />}
+          </>
+        ) : null}
         <br />
         <br />
         <br />

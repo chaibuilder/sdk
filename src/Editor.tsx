@@ -14,13 +14,10 @@ registerChaiDataProvider("blogs", {
   name: "Blogs",
   description: "This is a description",
   // @ts-ignore
-  dataFn: async () => ({
-    title: "This is my home page",
-    description: "This is my home page description",
-    keywords: "home page, home, page",
-    image: "https://picsum.photos/200",
-    socialMediaImage: "https://picsum.photos/200",
-  }),
+  dataFn: async () => {
+    const response = await fetch("https://api.restful-api.dev/objects/7");
+    return await response.json();
+  },
 });
 
 function ChaiBuilderDefault() {
@@ -33,7 +30,6 @@ function ChaiBuilderDefault() {
   ]);
   return (
     <ChaiBuilderEditor
-      dataBindingSupport
       unsplashAccessKey={"import.meta.env.VITE_UNSPLASH_ACCESS_KEY"}
       showDebugLogs={true}
       autoSaveSupport={false}
@@ -41,6 +37,7 @@ function ChaiBuilderDefault() {
       blocks={blocks}
       brandingOptions={brandingOptions}
       onSave={async ({ blocks, providers, brandingOptions }: any) => {
+        console.log(blocks, providers, brandingOptions);
         localStorage.setItem("chai-builder-blocks", JSON.stringify(blocks));
         localStorage.setItem("chai-builder-providers", JSON.stringify(providers));
         localStorage.setItem("chai-builder-branding-options", JSON.stringify(brandingOptions));
@@ -52,10 +49,10 @@ function ChaiBuilderDefault() {
         return true;
       }}
       aiContext={aiContext}
-      askAiCallBack={async (type: "styles" | "content", prompt: string, blocks: ChaiBlock[]) => {
-        console.log("askAiCallBack", type, prompt, blocks);
-        return { blocks: [], usage: { completionTokens: 151, promptTokens: 227, totalTokens: 378 } };
-      }}
+      // askAiCallBack={async (type: "styles" | "content", prompt: string, blocks: ChaiBlock[]) => {
+      //   console.log("askAiCallBack", type, prompt, blocks);
+      //   return { blocks: [], usage: { completionTokens: 151, promptTokens: 227, totalTokens: 378 } };
+      // }}
       uploadMediaCallback={async () => {
         return { url: "https://picsum.photos/200" };
       }}
@@ -85,6 +82,31 @@ function ChaiBuilderDefault() {
             component: () => <div>SEO Panel</div>,
           },
         ],
+      }}
+      getGlobalBlockBlocks={async (globalBlockKey: string) => {
+        console.log(globalBlockKey);
+        return globalBlockKey === "header"
+          ? [
+              {
+                _type: "Heading",
+                content: "Header",
+                _id: "header",
+                level: "h1",
+                styles: "#styles:,text-center text-3xl font-bold p-4 bg-gray-100",
+              },
+            ]
+          : [
+              {
+                _type: "Heading",
+                content: "Footer",
+                _id: "footer",
+                level: "h1",
+                styles: "#styles:,text-center text-2xl font-bold",
+              },
+            ];
+      }}
+      getGlobalBlocks={async () => {
+        return { header: {}, footer: {} };
       }}
     />
   );

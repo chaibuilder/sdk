@@ -1,13 +1,8 @@
 import React, { ComponentType, lazy, MouseEvent, Suspense, useMemo, useState } from "react";
 import { isDevelopment } from "../../import-html/general.ts";
-import { useKeyEventWatcher } from "../../hooks/useKeyEventWatcher.ts";
-import { useExpandTree } from "../../hooks/useExpandTree.ts";
-import { useAtom } from "jotai";
-import { useBuilderProp, useLayoutVariant, useSavePage } from "../../hooks";
+import { useBuilderProp, useLayoutVariant } from "../../hooks";
 import "../canvas/static/BlocksExternalDataProvider.tsx";
 import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../ui";
-import { useIntervalEffect } from "@react-hookz/web";
-import { selectedLibraryAtom } from "../../atoms/ui.ts";
 import { motion } from "framer-motion";
 import { EditIcon, Layers, LayoutTemplate, PaintBucketIcon } from "lucide-react";
 import { Outline, ThemeOptions } from "../../main";
@@ -26,16 +21,6 @@ import { PageDataProviders } from "../sidepanels/PageDataProviders.tsx";
 import { AiFillDatabase } from "react-icons/ai";
 
 const TopBar = lazy(() => import("../topbar/Topbar.tsx"));
-
-const useAutoSave = () => {
-  const { savePage } = useSavePage();
-  const autoSaveSupported = useBuilderProp("autoSaveSupport", true);
-  const autoSaveInterval = useBuilderProp("autoSaveInterval", 60);
-  useIntervalEffect(() => {
-    if (!autoSaveSupported) return;
-    savePage();
-  }, autoSaveInterval * 1000);
-};
 
 function useSidebarMenuItems(layoutVariant: string) {
   const singleSidePanel = layoutVariant === "SINGLE_SIDE_PANEL";
@@ -59,7 +44,9 @@ function useSidebarMenuItems(layoutVariant: string) {
       dataBindingSupport
         ? { icon: <AiFillDatabase className="size-3" />, label: t("Data Providers"), component: PageDataProviders }
         : null,
-      askAICallback ? { icon: <LightningBoltIcon className="size-5" />, label: "sidebar.ai_assistant", component: AskAI } : null,
+      askAICallback
+        ? { icon: <LightningBoltIcon className="size-5" />, label: "sidebar.ai_assistant", component: AskAI }
+        : null,
       {
         icon: <PaintBucketIcon size={20} />,
         label: "sidebar.theme",
@@ -67,7 +54,7 @@ function useSidebarMenuItems(layoutVariant: string) {
       },
     ];
     return compact(items);
-  }, [singleSidePanel, dataBindingSupport]);
+  }, [singleSidePanel, dataBindingSupport, t, askAICallback]);
 }
 
 function isDualLayout(layoutVariant: string) {
@@ -94,11 +81,6 @@ const RootLayout: ComponentType = () => {
   const preventContextMenu = (e: MouseEvent<HTMLDivElement>) => {
     if (!isDevelopment()) e.preventDefault();
   };
-
-  useAtom(selectedLibraryAtom);
-  useKeyEventWatcher();
-  useExpandTree();
-  useAutoSave();
 
   const handleMenuItemClick = (index: number) => {
     setActivePanelIndex(activePanelIndex === index ? null : index);

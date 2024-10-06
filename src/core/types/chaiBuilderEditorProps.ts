@@ -147,19 +147,27 @@ export interface ChaiBuilderEditorProps {
   getUILibraryBlocks?: (library: UILibrary) => Promise<UiLibraryBlock[]>;
   getUILibraryBlock?: (library: UILibrary, uiLibBlock: UiLibraryBlock) => Promise<ChaiBlock[]>;
 
-  // subPages?: Block[];
-  // subPagesSupport?: boolean;
+  /**
+   * Get Global blocks
+   */
 
+  getGlobalBlocks?: () => Promise<Record<string, { name?: string; description?: string }>>;
+
+  /**
+   * Get all blocks of a global block
+   */
+  getGlobalBlockBlocks?: (globalBlockKey: string) => Promise<ChaiBlock[]>;
+
+  /**
+   * Blocks for the page
+   */
   blocks?: ChaiBlock[];
 
   onSave?: ({ blocks, providers }: SavePageData) => Promise<boolean | Error>;
 
   brandingOptions?: Record<string, string>;
+  theme?: Record<string, string>;
 
-  /**
-   * Theme configuration
-   */
-  themeConfiguration?: Record<string, string>;
   /**
    * onSaveStateChange callback function
    * @param syncStatus

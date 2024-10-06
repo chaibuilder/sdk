@@ -19,6 +19,7 @@ import { Component as VideoBlock, Config as VideoBlockConfig } from "./video";
 import { Component as CustomScript, Config as CustomScriptConfig } from "./custom-script";
 import { Component as DividerBlock, Config as DividerBlockConfig } from "./divider";
 import { Component as DarkMode, Config as DarkModeConfig } from "./dark-mode";
+import { Component as GlobalBlock, Config as GlobalBlockConfig } from "./global-block";
 import { Component as TextBlock, Config as LayersConfig } from "./text";
 // import "./slot";
 //
@@ -74,6 +75,7 @@ const loadWebBlocks = () => {
   registerChaiBlock(DividerBlock, DividerBlockConfig);
   // @ts-ignore
   registerChaiBlock(DarkMode, DarkModeConfig);
+  registerChaiBlock(GlobalBlock, GlobalBlockConfig);
 };
 
 export { loadWebBlocks };
