@@ -53,24 +53,26 @@
   --chart-5: 340 75% 55%;
 }
 
-.no-scrollbar{
-  -ms-overflow-style: none !important;  /* Internet Explorer 10+ */
-  scrollbar-width: none !important;  /* Firefox */
+.sheet-hide-close-btn > button {
+  display: none !important;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none !important; /* Internet Explorer 10+ */
+  scrollbar-width: none !important; /* Firefox */
 }
 
 .no-scrollbar::-webkit-scrollbar {
-  display: none !important;  /* Safari and Chrome */
+  display: none !important; /* Safari and Chrome */
 }
 
 [role="treeitem"] {
   @apply focus-visible:!outline-0;
 }
 
-
 .rjsf input[type="color"] {
-  @apply p-0 w-14 -mt-1 border-none !important;
+  @apply -mt-1 w-14 border-none p-0 !important;
 }
-
 
 .rjsf {
   @apply px-0;
@@ -84,20 +86,20 @@
   @apply text-xs font-normal text-muted-foreground;
 }
 .rjsf .form-group select {
-  @apply flex mt-1 w-full rounded-md border border-border bg-background px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50;
+  @apply mt-1 flex w-full rounded-md border border-border bg-background px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50;
 }
 .rjsf .form-group input {
-  @apply flex mt-1 w-full rounded-md border border-border bg-background px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50;
+  @apply mt-1 flex w-full rounded-md border border-border bg-background px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50;
 }
 .rjsf .form-group > textarea {
-  @apply no-scrollbar flex mt-1 w-full rounded-md border border-border bg-background px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50;
+  @apply no-scrollbar mt-1 flex w-full rounded-md border border-border bg-background px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50;
 }
 .rjsf > div > button[type="submit"] {
   @apply hidden;
 }
 
 .rjsf > .form-group > fieldset > * {
-  @apply border-none border-border pb-1 pt-1 mb-2;
+  @apply mb-2 border-none border-border pb-1 pt-1;
 }
 
 .rjsf .form-group > .checkbox > label > span {
@@ -109,11 +111,26 @@
 }
 
 .array-item-list .array-item {
-  @apply rounded p-2 relative;
+  @apply relative rounded p-2;
 }
 
-[type='text']:focus, input:where(:not([type])):focus, [type='email']:focus, [type='url']:focus, [type='password']:focus, [type='number']:focus, [type='date']:focus, [type='datetime-local']:focus, [type='month']:focus, [type='search']:focus, [type='tel']:focus, [type='time']:focus, [type='week']:focus, [multiple]:focus, textarea:focus, select:focus{
-  @apply outline-none ring-1 ring-transparent border-border !important;
+[type="text"]:focus,
+input:where(:not([type])):focus,
+[type="email"]:focus,
+[type="url"]:focus,
+[type="password"]:focus,
+[type="number"]:focus,
+[type="date"]:focus,
+[type="datetime-local"]:focus,
+[type="month"]:focus,
+[type="search"]:focus,
+[type="tel"]:focus,
+[type="time"]:focus,
+[type="week"]:focus,
+[multiple]:focus,
+textarea:focus,
+select:focus {
+  @apply border-border outline-none ring-1 ring-transparent !important;
 }
 
 /* ------------------------ Props Editor ------------------------ */
