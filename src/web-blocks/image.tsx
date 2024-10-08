@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ImageIcon } from "@radix-ui/react-icons";
-import { Image, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
+import { Checkbox, Image, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import { isEmpty } from "lodash-es";
 import EmptySlot from "./empty-slot.tsx";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
@@ -12,9 +12,10 @@ const ImageBlock = (
     width: number;
     alt: string;
     styles: Record<string, string>;
+    lazyLoading: boolean;
   },
 ) => {
-  const { blockProps, image, styles, alt, height, width } = block;
+  const { blockProps, image, styles, alt, height, width, lazyLoading } = block;
 
   if (isEmpty(image)) return <EmptySlot className="h-36" />;
 
@@ -23,7 +24,7 @@ const ImageBlock = (
     ...styles,
     src: image,
     alt: alt,
-    loading: "lazy",
+    loading: lazyLoading ? "lazy" : "eager",
     height: height,
     width: width,
   });
@@ -44,6 +45,7 @@ const Config = {
     alt: SingleLineText({ title: "web_blocks.alt", default: "" }),
     width: SingleLineText({ title: "web_blocks.width", default: "" }),
     height: SingleLineText({ title: "web_blocks.height", default: "" }),
+    lazyLoading: Checkbox({ title: "Lazy Load", default: true }),
   },
 };
 
