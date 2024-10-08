@@ -17,7 +17,7 @@ const SpanBlock = (
     ...styles,
     ...blockProps,
     "data-ai-key": "content",
-    dangerouslySetInnerHTML: { __html: content },
+    dangerouslySetInnerHTML: { __html: content || "" },
   });
 };
 
@@ -28,7 +28,7 @@ const Config = {
   group: "typography",
   props: {
     styles: Styles({ default: "" }),
-    content: MultilineText({ title: "web_blocks.content", default: "" }),
+    content: MultilineText({ title: "Content", default: "" }),
   },
   canAcceptBlock: () => true,
 };

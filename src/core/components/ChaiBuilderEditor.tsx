@@ -1,6 +1,5 @@
 import "react-quill/dist/quill.snow.css";
 import "../index.css";
-import { DevTools } from "jotai-devtools";
 import i18n from "../locales/load.ts";
 import { FlagsProvider } from "flagged";
 import React, { useEffect, useMemo } from "react";
@@ -112,7 +111,6 @@ const ChaiBuilderEditor: React.FC<ChaiBuilderEditorProps> = (props: ChaiBuilderE
     <div className="h-screen w-screen">
       <ErrorBoundary fallback={<FallbackError />} onError={onErrorFn}>
         <FlagsProvider features={{ ...FEATURE_TOGGLES, ..._flags }}>
-          <DevTools />
           <SmallScreenMessage />
           <ChaiBuilderComponent {...props} />
           <PreviewScreen />

@@ -133,6 +133,14 @@ select:focus {
   @apply border-border outline-none ring-1 ring-transparent !important;
 }
 
+.rjsf [type="checkbox"] {
+  @apply !w-6 !p-0;
+}
+
+.rjsf [type="checkbox"]:checked {
+  @apply bg-primary;
+}
+
 /* ------------------------ Props Editor ------------------------ */
 
 .array-item-list > :not([hidden]) ~ :not([hidden]) {

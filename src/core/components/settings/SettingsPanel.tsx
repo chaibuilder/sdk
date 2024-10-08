@@ -19,19 +19,15 @@ function BlockAttributesToggle() {
   }
   return (
     <>
-      {showAttributes ? (
-        <>
-          <div
-            onClick={() => setShowAttributes(!showAttributes)}
-            className="flex cursor-pointer items-center justify-between border-b border-border py-2 text-sm font-bold text-muted-foreground hover:underline">
-            <span>{t("Attributes")}</span>
-            <span>
-              <ChevronDown className={"h-4 w-4 text-gray-500 " + (showAttributes ? "rotate-180" : "")} />
-            </span>
-          </div>
-          {showAttributes && <BlockAttributesEditor />}
-        </>
-      ) : null}
+      <div
+        onClick={() => setShowAttributes(!showAttributes)}
+        className="flex cursor-pointer items-center justify-between border-b border-border py-2 text-sm font-bold text-muted-foreground hover:underline">
+        <span>{t("Attributes")}</span>
+        <span>
+          <ChevronDown className={"h-4 w-4 text-gray-500 " + (showAttributes ? "rotate-180" : "")} />
+        </span>
+      </div>
+      {showAttributes && <BlockAttributesEditor />}
     </>
   );
 }

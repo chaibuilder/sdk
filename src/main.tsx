@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import ChaiBuilderCustom from "./EditorCustom.tsx";
+import { DevTools } from "jotai-devtools";
 
 async function enableMocking() {
   if (import.meta.env.MODE !== "development") {
@@ -42,6 +43,7 @@ const router = createBrowserRouter([
 enableMocking().then(() => {
   ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
+      <DevTools />
       <RouterProvider router={router} />
     </React.StrictMode>,
   );
