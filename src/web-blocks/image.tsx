@@ -32,7 +32,7 @@ const ImageBlock = (
 
 const Config = {
   type: "Image",
-  label: "web_blocks.image",
+  label: "Image",
   category: "core",
   icon: ImageIcon,
   group: "media",
@@ -42,9 +42,9 @@ const Config = {
       title: "Image",
       default: "https://fakeimg.pl/400x200?text=Choose&font=bebas",
     }),
-    alt: SingleLineText({ title: "web_blocks.alt", default: "" }),
-    width: SingleLineText({ title: "web_blocks.width", default: "" }),
-    height: SingleLineText({ title: "web_blocks.height", default: "" }),
+    alt: SingleLineText({ title: "Alt text", default: "", ai: true, i18n: true }),
+    width: SingleLineText({ title: "Width", default: "" }),
+    height: SingleLineText({ title: "Height", default: "" }),
     lazyLoading: Checkbox({ title: "Lazy Load", default: true }),
   },
 };

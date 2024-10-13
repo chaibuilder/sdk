@@ -49,7 +49,7 @@ const Config = {
       ],
     }),
     styles: Styles({ default: "text-3xl" }),
-    content: MultilineText({ title: "web_blocks.content", default: "Heading goes here" }),
+    content: MultilineText({ title: "Content", default: "Heading goes here", ai: true, i18n: true }),
   },
   canAcceptBlock: (type) => type === "Span" || type === "Text",
 };

@@ -56,15 +56,15 @@ const LinkBlock = (
 
 const Config = {
   type: "Link",
-  label: "web_blocks.link",
+  label: "Link",
   category: "core",
   icon: Link1Icon,
   group: "basic",
   props: {
     styles: Styles({ default: "" }),
-    content: SingleLineText({ title: "web_blocks.content", default: "" }),
+    content: SingleLineText({ title: "Content", default: "", ai: true, i18n: true }),
     link: Link({
-      title: "web_blocks.link",
+      title: "Link",
       default: { type: "page", target: "_self", href: "#" },
     }),
   },

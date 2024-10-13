@@ -64,7 +64,7 @@ const InputBlock = (
 
 const Config = {
   type: "Input",
-  label: "web_blocks.input",
+  label: "Input",
   category: "core",
   icon: InputIcon,
   group: "form",
@@ -72,7 +72,7 @@ const Config = {
     styles: Styles({ default: "" }),
     fieldName: SingleLineText({ title: "Field Name", default: "input" }),
     inputType: SelectOption({
-      title: "web_blocks.type",
+      title: "Type",
       options: map(
         ["text", "email", "password", "number", "tel", "file", "hidden", "range", "submit", "color", "date", "time"],
         (type) => ({
@@ -82,15 +82,15 @@ const Config = {
       ),
       default: "text",
     }),
-    value: SingleLineText({ title: "web_blocks.value", default: "" }),
-    showLabel: Checkbox({ title: "web_blocks.show_label", default: true }),
+    value: SingleLineText({ title: "Value", default: "", ai: true, i18n: true }),
+    showLabel: Checkbox({ title: "Show Label", default: true }),
     inputStyles: Styles({ default: "w-full p-1" }),
-    label: SingleLineText({ title: "web_blocks.label", default: "Label" }),
+    label: SingleLineText({ title: "Label", default: "Label", ai: true, i18n: true }),
     placeholder: SingleLineText({
-      title: "web_blocks.placeholder",
+      title: "Placeholder",
       default: "Placeholder",
     }),
-    required: Checkbox({ title: "web_blocks.required", default: false }),
+    required: Checkbox({ title: "Required", default: false }),
   },
 };
 

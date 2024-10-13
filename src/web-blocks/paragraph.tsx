@@ -31,16 +31,19 @@ const ParagraphBlock = (
 
 const Config = {
   type: "Paragraph",
-  label: "web_blocks.paragraph",
+  label: "Paragraph",
   category: "core",
   icon: TextIcon,
   group: "typography",
   props: {
     styles: Styles({ default: "" }),
     content: MultilineText({
-      title: "web_blocks.content",
-      default:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.",
+      title: "Content",
+      default: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. 
+        Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus 
+        nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.`,
+      ai: true,
+      i18n: true,
     }),
   },
   canAcceptBlock: (type) => type === "Span" || type === "Link" || type === "Text",

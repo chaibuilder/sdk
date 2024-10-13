@@ -5,7 +5,7 @@
   "author": "Suraj Air",
   "license": "BSD-3-Clause",
   "homepage": "https://chaibuilder.com",
-  "version": "1.2.97",
+  "version": "1.2.98",
   "type": "module",
   "repository": {
     "type": "git",
@@ -62,7 +62,7 @@
     }
   },
   "dependencies": {
-    "@chaibuilder/runtime": "0.2.10",
+    "@chaibuilder/runtime": "0.2.12",
     "@floating-ui/dom": "1.4.5",
     "@floating-ui/react-dom": "2.0.1",
     "@mhsdesign/jit-browser-tailwindcss": "0.4.1",
@@ -126,7 +126,7 @@
     "react-quill": "^2.0.0",
     "react-wrap-balancer": "^1.1.0",
     "tailwind-merge": "2.3.0",
-    "tailwindcss-palette-generator": "^0.6.5",
+    "tailwindcss-palette-generator": "0.7.0",
     "tree-model": "^1.0.7",
     "undo-manager": "^1.1.1",
     "unsplash-js": "^7.0.18"

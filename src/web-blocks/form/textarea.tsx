@@ -45,16 +45,16 @@ const Config = {
   icon: InputIcon,
   group: "form",
   props: {
-    fieldName: SingleLineText({ title: "web_blocks.field_name", default: "textarea" }),
-    showLabel: Checkbox({ title: "web_blocks.show_label", default: true }),
+    fieldName: SingleLineText({ title: "Field Name", default: "textarea" }),
+    showLabel: Checkbox({ title: "Show Label", default: true }),
     styles: Styles({ default: "" }),
     inputStyles: Styles({ default: "w-full p-1" }),
-    label: SingleLineText({ title: "web_blocks.label", default: "Label" }),
+    label: SingleLineText({ title: "Label", default: "Label", ai: true, i18n: true }),
     placeholder: SingleLineText({
-      title: "web_blocks.placeholder",
+      title: "Placeholder",
       default: "Placeholder",
     }),
-    _rows: Numeric({ title: "web_blocks.rows", default: 3 }),
+    _rows: Numeric({ title: "Rows", default: 3 }),
   },
 };
 

@@ -23,12 +23,12 @@ const SpanBlock = (
 
 const Config = {
   type: "Span",
-  label: "web_blocks.span",
+  label: "Span",
   category: "core",
   group: "typography",
   props: {
     styles: Styles({ default: "" }),
-    content: MultilineText({ title: "Content", default: "" }),
+    content: MultilineText({ title: "Content", default: "", ai: true, i18n: true }),
   },
   canAcceptBlock: () => true,
 };

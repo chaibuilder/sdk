@@ -24,13 +24,13 @@ export const ListItemBlock = (
 
 const Config = {
   type: "ListItem",
-  label: "web_blocks.listitem",
+  label: "List Item",
   icon: ColumnsIcon,
   category: "core",
   group: "basic",
   props: {
     styles: Styles({ default: "" }),
-    content: MultilineText({ title: "web_blocks.content", default: "List item" }),
+    content: MultilineText({ title: "Content", default: "List item", ai: true, i18n: true }),
   },
   canAcceptBlock: (type: string) => type !== "ListItem",
   canBeNested: (type: string) => type === "List",

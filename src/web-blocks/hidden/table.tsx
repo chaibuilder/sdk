@@ -221,7 +221,7 @@ registerChaiBlock(TableCellBlock, {
   icon: DragHandleHorizontalIcon,
   props: {
     styles: Styles({ default: "" }),
-    content: RichText({ title: "Content", default: "Table cell item", ai: { html: true } }),
+    content: RichText({ title: "Content", default: "Table cell item", ai: true, i18n: true }),
   },
 });
 

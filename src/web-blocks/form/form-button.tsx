@@ -34,22 +34,22 @@ const FormButtonBlock = (
 
 const Config = {
   type: "FormButton",
-  label: "web_blocks.submit_button",
+  label: "Submit Button",
   category: "core",
   icon: ButtonIcon,
   group: "form",
   props: {
-    label: SingleLineText({ title: "web_blocks.label", default: "Submit" }),
+    label: SingleLineText({ title: "Label", default: "Submit", ai: true, i18n: true }),
     styles: Styles({
       default: "text-white bg-primary disabled:bg-gray-400 px-4 py-2 rounded-global flex items-center gap-x-2",
     }),
     icon: Icon({ title: "Icon", default: "" }),
     iconPos: SelectOption({
-      title: "web_blocks.icon_position",
+      title: "Icon Position",
       default: "order-last",
       options: [
-        { title: "web_blocks.start", value: "order-first" },
-        { title: "web_blocks.end", value: "order-last" },
+        { title: "Start", value: "order-first" },
+        { title: "End", value: "order-last" },
       ],
     }),
   },

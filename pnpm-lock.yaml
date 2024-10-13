@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@ai-sdk/openai': ^0.0.37
-  '@chaibuilder/runtime': 0.2.10
+  '@chaibuilder/runtime': 0.2.12
   '@commitlint/cli': 17.7.1
   '@commitlint/config-conventional': 17.7.0
   '@emotion/react': ^11.11.1
@@ -109,7 +109,7 @@ specifiers:
   tailwind-merge: 2.3.0
   tailwindcss: ^3.3.5
   tailwindcss-animate: 1.0.6
-  tailwindcss-palette-generator: ^0.6.5
+  tailwindcss-palette-generator: 0.7.0
   tree-model: ^1.0.7
   ts-jest: ^29.1.1
   ts-node: ^10.9.2
@@ -124,7 +124,7 @@ specifiers:
   zod: ^3.23.8
 
 dependencies:
-  '@chaibuilder/runtime': 0.2.10_kgsil3qmwkuaypzeupjafsqja4
+  '@chaibuilder/runtime': 0.2.12_kgsil3qmwkuaypzeupjafsqja4
   '@floating-ui/dom': 1.4.5
   '@floating-ui/react-dom': 2.0.1_biqbaboplfbrettd7655fr4n2y
   '@mhsdesign/jit-browser-tailwindcss': 0.4.1_ts-node@10.9.2
@@ -188,7 +188,7 @@ dependencies:
   react-quill: 2.0.0_biqbaboplfbrettd7655fr4n2y
   react-wrap-balancer: 1.1.0_react@18.2.0
   tailwind-merge: 2.3.0
-  tailwindcss-palette-generator: 0.6.5_tailwindcss@3.3.5
+  tailwindcss-palette-generator: 0.7.0_tailwindcss@3.3.5
   tree-model: 1.0.7
   undo-manager: 1.1.1
   unsplash-js: 7.0.18
@@ -772,8 +772,8 @@ packages:
       statuses: 2.0.1
     dev: true
 
-  /@chaibuilder/runtime/0.2.10_kgsil3qmwkuaypzeupjafsqja4:
-    resolution: {integrity: sha512-j0ysJH7+scInq1tqGpRr0T54zR/3yfWf5l6OinPkLvkT5TfLRdgtD9MSRonrUuNhPw/jrb7F2U9YxvIuUa5NSA==}
+  /@chaibuilder/runtime/0.2.12_kgsil3qmwkuaypzeupjafsqja4:
+    resolution: {integrity: sha512-P6GX0PzUt+bEkNhOtz52G8FSB6stDPLwIcqxCqJ4ZARdXUXkfwu63tUxJ3z/wl19Ry3ndVZYTtmw9Md+VRI2zA==}
     dependencies:
       '@radix-ui/react-icons': 1.3.0_react@18.2.0
       clsx: 2.1.0
@@ -12017,8 +12017,8 @@ packages:
       tailwindcss: 3.3.5_ts-node@10.9.2
     dev: false
 
-  /tailwindcss-palette-generator/0.6.5_tailwindcss@3.3.5:
-    resolution: {integrity: sha512-B82r4McwKnwc1enJh/vbVqKhhte4JS4bQltPm6OKNejnZf4xgDqCiW2aviAiXnjni3fTldL0K4Gsrkq/DvhkiA==}
+  /tailwindcss-palette-generator/0.7.0_tailwindcss@3.3.5:
+    resolution: {integrity: sha512-pyujKTeGnaNOvjLhH1tzhY8Mjgw/txsZl4pzDfeGxWkRt6gMlXCye1OqXUFmdXcmxSL+9gtot+WOWa0kupXM9w==}
     engines: {node: '>=18'}
     peerDependencies:
       tailwindcss: '>=3.4.0 || insiders'

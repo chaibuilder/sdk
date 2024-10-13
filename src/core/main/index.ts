@@ -35,3 +35,4 @@ export { generateUUID as generateBlockId, cn as mergeClasses } from "../function
 export { getClassValueAndUnit } from "../functions/Helpers.ts";
 export { getBlocksFromHTML } from "../import-html/html-to-json.ts";
 export type { ChaiBlock, ChaiBuilderEditorProps };
+export { registerChaiBlock } from "@chaibuilder/runtime";

@@ -21,13 +21,13 @@ const RawTextBlock = (
 
 const Config = {
   type: "Text",
-  label: "web_blocks.text",
+  label: "Text",
   hidden: true,
   category: "core",
   group: "typography",
   icon: SpaceBetweenVerticallyIcon,
   props: {
-    content: MultilineText({ title: "web_blocks.content", defaultValue: "" }),
+    content: MultilineText({ title: "Content", default: "", ai: true, i18n: true }),
   },
 };
 

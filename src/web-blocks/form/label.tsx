@@ -22,13 +22,13 @@ export const LabelBlock = (
 };
 const Config = {
   type: "Label",
-  label: "web_blocks.label",
+  label: "Label",
   category: "core",
   icon: LetterCaseToggleIcon,
   group: "form",
   props: {
     styles: Styles({ default: "" }),
-    content: SingleLineText({ title: "web_blocks.label", default: "Label", ai: { html: false } }),
+    content: SingleLineText({ title: "Label", default: "Label", ai: true, i18n: true }),
   },
 };
 

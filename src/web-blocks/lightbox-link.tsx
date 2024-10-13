@@ -72,7 +72,7 @@ const Config = {
   group: "basic",
   props: {
     styles: Styles({ default: "" }),
-    content: SingleLineText({ title: "Content", default: "Link text or drop blocks inside" }),
+    content: SingleLineText({ title: "Content", default: "Link text or drop blocks inside", ai: true, i18n: true }),
     href: SingleLineText({ title: "Href", default: "" }),
     hrefType: SelectOption({
       title: "Type",

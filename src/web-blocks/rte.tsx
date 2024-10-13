@@ -29,14 +29,16 @@ const RichTextBlock = (
 
 const Config = {
   type: "RichText",
-  label: "web_blocks.richtext",
+  label: "Rich Text",
   category: "core",
   icon: CursorTextIcon,
   group: "typography",
   props: {
     styles: Styles({ default: "" }),
     content: RichText({
-      title: "web_blocks.content",
+      title: "Content",
+      ai: true,
+      i18n: true,
       default: "<p>This is a rich text block. You can add text, and other content here.</p>",
     }),
   },

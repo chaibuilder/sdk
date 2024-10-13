@@ -104,23 +104,24 @@ const VideoBlock = React.memo(
 
 const Config = {
   type: "Video",
-  label: "web_blocks.video",
+  label: "Video",
   category: "core",
   icon: VideoIcon,
   group: "media",
   props: {
     styles: Styles({ default: "" }),
     url: SingleLineText({
-      title: "web_blocks.video_url",
+      title: "Video URL",
       default: "https://www.youtube.com/watch?v=9xwazD5SyVg&ab_channel=MaximilianMustermann",
+      i18n: true,
     }),
     controls: Model({
-      title: "web_blocks.controls",
+      title: "Controls",
       properties: {
-        autoPlay: Checkbox({ title: "web_blocks.autoplay", default: true }),
-        controls: Checkbox({ title: "web_blocks.controls", default: false }),
-        loop: Checkbox({ title: "web_blocks.loop", default: false }),
-        muted: Checkbox({ title: "web_blocks.muted", default: true }),
+        autoPlay: Checkbox({ title: "Autoplay", default: true }),
+        controls: Checkbox({ title: "Controls", default: false }),
+        loop: Checkbox({ title: "Loop", default: false }),
+        muted: Checkbox({ title: "Muted", default: true }),
       },
     }),
   },
