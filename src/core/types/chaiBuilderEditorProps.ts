@@ -147,6 +147,8 @@ export interface ChaiBuilderEditorProps {
   getUILibraryBlocks?: (library: UILibrary) => Promise<UiLibraryBlock[]>;
   getUILibraryBlock?: (library: UILibrary, uiLibBlock: UiLibraryBlock) => Promise<ChaiBlock[]>;
 
+  getRSCBlock?: (block: ChaiBlock) => Promise<string>;
+
   /**
    * Get Global blocks
    */

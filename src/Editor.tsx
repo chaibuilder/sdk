@@ -6,17 +6,21 @@ import { loadWebBlocks } from "./web-blocks";
 import { useState } from "react";
 import axios from "axios";
 import { LayersIcon } from "lucide-react";
-import { registerChaiDataProvider } from "@chaibuilder/runtime";
+import { registerChaiBlock } from "@chaibuilder/runtime";
+import { SingleLineText } from "@chaibuilder/runtime/controls";
+import { get } from "lodash";
 
 loadWebBlocks();
 
-registerChaiDataProvider("blogs", {
-  name: "Blogs",
-  description: "This is a description",
+registerChaiBlock(null, {
+  type: "RSCBlock",
+  label: "RSC Block",
+  group: "Server",
+  category: "core",
   // @ts-ignore
-  dataFn: async () => {
-    const response = await fetch("https://api.restful-api.dev/objects/7");
-    return await response.json();
+  server: true,
+  props: {
+    content: SingleLineText({ title: "Content", default: "This is a RSC Block" }),
   },
 });
 
@@ -82,6 +86,13 @@ function ChaiBuilderDefault() {
             component: () => <div>SEO Panel</div>,
           },
         ],
+      }}
+      getRSCBlock={async (block: ChaiBlock) => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve(`${get(block, "content", "")}`);
+          }, 2000);
+        });
       }}
       getGlobalBlockBlocks={async (globalBlockKey: string) => {
         const blocks =

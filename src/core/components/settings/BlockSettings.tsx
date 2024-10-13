@@ -1,15 +1,32 @@
 import { IChangeEvent } from "@rjsf/core";
 import { capitalize, cloneDeep, debounce, each, get, isEmpty, keys, map } from "lodash-es";
-import { useBuilderProp, useSelectedBlock, useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "../../hooks";
+import {
+  useBuilderProp,
+  useSelectedBlock,
+  useTranslation,
+  useUpdateBlocksProps,
+  useUpdateBlocksPropsRealtime,
+} from "../../hooks";
 import { ChaiControlDefinition } from "@chaibuilder/runtime/controls";
 import DataBindingSetting from "../../rjsf-widgets/data-binding.tsx";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../ui";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Button } from "../../../ui";
 import { useCallback, useMemo, useState } from "react";
 import { getBlockComponent } from "@chaibuilder/runtime";
 import { JSONForm } from "./JSONForm.tsx";
 import { CanvasSettings } from "./CanvasSettings.tsx";
 import { convertDotNotationToObject } from "../../functions/Controls.ts";
 import { GlobalBlockSettings } from "./GlobalBlockSettings.tsx";
+import { useRSCBlocksStore } from "../../hooks/useWatchRSCBlocks.ts";
+
+const ResetRSCBlockButton = ({ blockId }: { blockId: string }) => {
+  const { t } = useTranslation();
+  const { reset } = useRSCBlocksStore();
+  return (
+    <Button size="sm" variant="outline" onClick={() => reset(blockId)}>
+      {t("Reload")}
+    </Button>
+  );
+};
 
 /**
  *
@@ -64,6 +81,8 @@ export default function BlockSettings() {
     each(bindingProps, (key: string) => delete controls[key]);
     return controls;
   }, [coreBlock, bindingProps, dataBindingSupported]);
+
+  const isRSCBlock = get(coreBlock, "server", false);
 
   return (
     <div className="overflow-x-hidden px-px">
@@ -121,6 +140,7 @@ export default function BlockSettings() {
         />
       ) : null}
       {selectedBlock?._type === "GlobalBlock" ? <GlobalBlockSettings /> : null}
+      {isRSCBlock ? <ResetRSCBlockButton blockId={selectedBlock?._id} /> : null}
       <CanvasSettings />
     </div>
   );

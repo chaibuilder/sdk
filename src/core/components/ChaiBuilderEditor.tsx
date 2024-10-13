@@ -26,7 +26,7 @@ import { useKeyEventWatcher } from "../hooks/useKeyEventWatcher.ts";
 import { useExpandTree } from "../hooks/useExpandTree.ts";
 import { useIntervalEffect } from "@react-hookz/web";
 import { useWatchGlobalBlocks } from "../hooks/useGlobalBlocksStore.ts";
-
+import { useWatchRSCBlocks } from "../hooks/useWatchRSCBlocks.ts";
 const useAutoSave = () => {
   const { savePage } = useSavePage();
   const autoSaveSupported = useBuilderProp("autoSaveSupport", true);
@@ -48,6 +48,7 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   useExpandTree();
   useAutoSave();
   useWatchGlobalBlocks();
+  useWatchRSCBlocks();
 
   useEffect(() => {
     builderStore.set(

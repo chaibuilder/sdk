@@ -12,6 +12,7 @@ import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
 import { canAcceptChildBlock } from "../../../functions/block-helpers.ts";
 import { useCanvasWidth, useCutBlockIds, useGlobalBlocksStore, useHiddenBlockIds } from "../../../hooks";
 import { isVisibleAtBreakpoint } from "../../../functions/isVisibleAtBreakpoint.ts";
+import { RSCBlock } from "./RSCBlock.tsx";
 
 const generateClassNames = memoize((styles: string) => {
   const stylesArray = styles.replace(STYLES_KEY, "").split(",");
@@ -113,7 +114,11 @@ export function BlocksRendererStatic({ blocks, allBlocks }: { blocks: ChaiBlock[
           }
 
           const chaiBlock = getBlockComponent(block._type) as any;
-          const Component = get(chaiBlock, "builderComponent", get(chaiBlock, "component", null));
+
+          const isRSCBlock = get(chaiBlock, "server", false);
+          const Component = isRSCBlock
+            ? RSCBlock
+            : get(chaiBlock, "builderComponent", get(chaiBlock, "component", null));
           if (isNull(Component)) return <noscript>{`<!-- ${block?._type} not registered -->`}</noscript>;
           const blockStateFrom = has(chaiBlock, "getBlockStateFrom")
             ? chaiBlock?.getBlockStateFrom(block, allBlocks)
@@ -125,24 +130,29 @@ export function BlocksRendererStatic({ blocks, allBlocks }: { blocks: ChaiBlock[
           }
           const isChildOfDraggedBlock = draggedBlock && isDescendant(draggedBlock._id, block._id, allBlocks);
 
+          const blockProps = {
+            ...(includes(xShowBlocks, block._id) ? { "force-show": "" } : {}),
+            "data-block-id": block._id,
+            "data-block-type": block._type,
+            ...(draggedBlock
+              ? // @ts-ignore
+                {
+                  "data-dnd": canAcceptChildBlock(block._type, (draggedBlock as ChaiBlock)?._type) ? "yes" : "no",
+                  "data-dnd-dragged":
+                    (draggedBlock as ChaiBlock)._id === block._id || isChildOfDraggedBlock ? "yes" : "no",
+                }
+              : {}),
+            ...(dropTargetId === block._id && !isChildOfDraggedBlock ? { "data-drop": "yes" } : {}),
+            ...(includes(cutBlockIds, block._id) ? { "data-cut-block": "yes" } : {}),
+          };
+          if (isRSCBlock) {
+            return <RSCBlock block={block} blockProps={blockProps} />;
+          }
+
           return (
             <Suspense>
               {React.createElement(Component, {
-                blockProps: {
-                  ...(includes(xShowBlocks, block._id) ? { "force-show": "" } : {}),
-                  "data-block-id": block._id,
-                  "data-block-type": block._type,
-                  ...(draggedBlock
-                    ? // @ts-ignore
-                      {
-                        "data-dnd": canAcceptChildBlock(block._type, (draggedBlock as ChaiBlock)?._type) ? "yes" : "no",
-                        "data-dnd-dragged":
-                          (draggedBlock as ChaiBlock)._id === block._id || isChildOfDraggedBlock ? "yes" : "no",
-                      }
-                    : {}),
-                  ...(dropTargetId === block._id && !isChildOfDraggedBlock ? { "data-drop": "yes" } : {}),
-                  ...(includes(cutBlockIds, block._id) ? { "data-cut-block": "yes" } : {}),
-                },
+                blockProps,
                 index,
                 ...applyBindings(block, chaiData),
                 ...omit(htmlAttrs, ["__isHidden"]),
