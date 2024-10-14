@@ -15,6 +15,7 @@ export default defineConfig({
         ui: resolve(__dirname, "src/ui/index.ts"),
         "web-blocks": resolve(__dirname, "src/web-blocks/index.ts"),
         tailwind: resolve(__dirname, "src/tailwind/index.ts"),
+        runtime: resolve(__dirname, "src/runtime.ts"),
       },
       formats: ["es", "cjs"],
     },

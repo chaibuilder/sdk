@@ -5,7 +5,7 @@
   "author": "Suraj Air",
   "license": "BSD-3-Clause",
   "homepage": "https://chaibuilder.com",
-  "version": "1.2.99",
+  "version": "1.2.100",
   "type": "module",
   "repository": {
     "type": "git",
@@ -59,6 +59,11 @@
       "import": "./dist/web-blocks.js",
       "require": "./dist/web-blocks.cjs",
       "types": "./dist/web-blocks.d.ts"
+    },
+    "./runtime": {
+      "import": "./dist/runtime.js",
+      "require": "./dist/runtime.cjs",
+      "types": "./dist/runtime.d.ts"
     }
   },
   "dependencies": {
