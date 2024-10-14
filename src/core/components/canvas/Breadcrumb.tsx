@@ -16,7 +16,7 @@ export const Breadcrumb = () => {
           <Button onClick={() => setSelected([])} variant={"ghost"} className="h-fit p-1 text-xs font-normal">
             Body
           </Button>
-          <ChevronRight size={16} />
+          <ChevronRight className="rtl:rotate-180" size={16} />
         </li>
         {reverse(hierarchy).map((block, index) => (
           <li key={index} className="inline-flex items-center">
@@ -30,7 +30,7 @@ export const Breadcrumb = () => {
               <TypeIcon type={block?._type} />
               {block._name || block._type}
             </Button>
-            {index !== hierarchy.length - 1 && <ChevronRight size={16} />}
+            {index !== hierarchy.length - 1 && <ChevronRight className="rtl:rotate-180" size={16} />}
           </li>
         ))}
       </ol>

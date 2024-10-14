@@ -326,7 +326,7 @@ const ListTree = () => {
   useEffect(() => {
     //@ts-ignore
     setTreeRef(treeRef.current);
-  }, [treeRef.current]);
+  }, [setTreeRef, treeRef]);
 
   const onRename: RenameHandler<any> = ({ id, name, node }) => {
     updateBlockProps([id], { _name: name }, node.data._name);
@@ -422,7 +422,7 @@ const ListTree = () => {
               onClick={() => emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK })}
               variant="default"
               size="sm">
-              + {t("add_block")}
+              + {t("Add Block")}
             </Button>
           </p>
         </div>

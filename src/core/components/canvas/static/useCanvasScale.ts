@@ -1,9 +1,10 @@
-import { useCanvasWidth, useCanvasZoom } from "../../../hooks";
+import { useBuilderProp, useCanvasWidth, useCanvasZoom } from "../../../hooks";
 import { useCallback, useEffect, useState } from "react";
 
 export const useCanvasScale = (dimension: { height: number; width: number }) => {
   const [canvasWidth] = useCanvasWidth();
   const [, setZoom] = useCanvasZoom();
+  const htmlDir = useBuilderProp("htmlDir", "ltr") as "ltr" | "rtl";
   const [scale, setScale] = useState({});
   const updateScale = useCallback(() => {
     const { width, height } = dimension;
@@ -23,7 +24,7 @@ export const useCanvasScale = (dimension: { height: number; width: number }) => 
         position: "relative",
         top: 0,
         transform: `scale(${newScale})`,
-        transformOrigin: "top left",
+        transformOrigin: htmlDir === "rtl" ? "top right" : "top left",
         ...heightObj,
         maxWidth: "none", // TODO: Add max-width to the wrapper
       });
@@ -33,7 +34,7 @@ export const useCanvasScale = (dimension: { height: number; width: number }) => 
       setScale({});
       setZoom(100);
     }
-  }, [canvasWidth, dimension, setZoom]);
+  }, [canvasWidth, dimension, htmlDir, setZoom]);
 
   useEffect(() => {
     updateScale();

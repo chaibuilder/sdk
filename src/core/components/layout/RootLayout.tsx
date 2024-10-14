@@ -146,7 +146,9 @@ const RootLayout: ComponentType = () => {
                 <div className="no-scrollbar overflow h-full overflow-x-hidden">
                   <div className="flex flex-col p-3">
                     <h2 className="-mt-1 flex h-10 items-center space-x-1 text-base font-bold">
-                      {get(sidebarMenuItems, `${activePanelIndex}.icon`, null)}
+                      <span className="rtl:ml-2 rtl:inline-block">
+                        {get(sidebarMenuItems, `${activePanelIndex}.icon`, null)}
+                      </span>
                       <span>{t(sidebarMenuItems[activePanelIndex].label)}</span>
                     </h2>
                     <div className="flex-1">
@@ -173,7 +175,7 @@ const RootLayout: ComponentType = () => {
                 <div className="no-scrollbar overflow h-full max-h-full overflow-x-hidden">
                   <div className="flex max-h-full flex-col p-3">
                     <h2 className="-mt-1 flex h-10 items-center space-x-1 text-base font-bold">
-                      <EditIcon size={"16"} />
+                      <EditIcon size={"16"} className="rtl:ml-2" />
                       <span>{t("Block Settings")}</span>
                     </h2>
                     <div className="flex-1">
