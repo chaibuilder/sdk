@@ -1,18 +1,33 @@
 import { useCallback } from "react";
 import { useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 import { ChaiBlock } from "../types/ChaiBlock.ts";
-import { chunk, isString, keys, omit } from "lodash-es";
+import { chunk, isString, keys, omit, forEach, isEmpty, set, unset, memoize } from "lodash-es";
+import { useLanguages } from "./useLanguages.ts";
+
+const updatePropsForLanguage = memoize((props: Record<string, any>, selectedLang: string) => {
+  const updatedProps = { ...props };
+  forEach(keys(props), (key) => {
+    if (key === "content" && !isEmpty(selectedLang)) {
+      const _key = `${key}-${selectedLang}`;
+      set(updatedProps, _key, props[key]);
+      unset(updatedProps, key);
+    }
+  });
+  return updatedProps;
+});
 
 /**
  *
  */
 export const useUpdateBlocksProps = () => {
   const { updateBlocks } = useBlocksStoreUndoableActions();
+  const { selectedLang } = useLanguages();
   return useCallback(
     (blockIds: Array<string>, props: Record<string, any>, prevPropsState?: Record<string, any>) => {
-      updateBlocks(blockIds, props, prevPropsState);
+      const updatedProps = updatePropsForLanguage(props, selectedLang);
+      updateBlocks(blockIds, updatedProps, prevPropsState);
     },
-    [updateBlocks],
+    [updateBlocks, selectedLang],
   );
 };
 
@@ -68,10 +83,13 @@ export const useStreamMultipleBlocksProps = () => {
 
 export const useUpdateBlocksPropsRealtime = () => {
   const { updateBlocksRuntime } = useBlocksStoreUndoableActions();
+  const { selectedLang } = useLanguages();
+
   return useCallback(
     (blockIds: Array<string>, props: Record<string, any>) => {
-      updateBlocksRuntime(blockIds, props);
+      const updatedProps = updatePropsForLanguage(props, selectedLang);
+      updateBlocksRuntime(blockIds, updatedProps);
     },
-    [updateBlocksRuntime],
+    [updateBlocksRuntime, selectedLang],
   );
 };
