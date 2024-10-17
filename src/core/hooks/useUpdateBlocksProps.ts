@@ -1,13 +1,18 @@
 import { useCallback } from "react";
 import { useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 import { ChaiBlock } from "../types/ChaiBlock.ts";
-import { chunk, isString, keys, omit, forEach, isEmpty, set, unset, memoize } from "lodash-es";
+import { get, chunk, isString, keys, omit, forEach, isEmpty, set, unset, memoize } from "lodash-es";
 import { useLanguages } from "./useLanguages.ts";
+import { useSelectedBlock } from "./useSelectedBlockIds.ts";
+import { getBlockComponent } from "@chaibuilder/runtime";
 
-const updatePropsForLanguage = memoize((props: Record<string, any>, selectedLang: string) => {
+const updatePropsForLanguage = memoize((props: Record<string, any>, selectedLang: string, selectedBlock: ChaiBlock) => {
+  const chaiBlock = getBlockComponent(get(selectedBlock, "_type"));
+  if (!chaiBlock) return props;
+
   const updatedProps = { ...props };
   forEach(keys(props), (key) => {
-    if (key === "content" && !isEmpty(selectedLang)) {
+    if (!isEmpty(selectedLang) && get(chaiBlock, ["props", key, "i18n"])) {
       const _key = `${key}-${selectedLang}`;
       set(updatedProps, _key, props[key]);
       unset(updatedProps, key);
@@ -22,9 +27,11 @@ const updatePropsForLanguage = memoize((props: Record<string, any>, selectedLang
 export const useUpdateBlocksProps = () => {
   const { updateBlocks } = useBlocksStoreUndoableActions();
   const { selectedLang } = useLanguages();
+  const selectedBlock = useSelectedBlock();
+
   return useCallback(
     (blockIds: Array<string>, props: Record<string, any>, prevPropsState?: Record<string, any>) => {
-      const updatedProps = updatePropsForLanguage(props, selectedLang);
+      const updatedProps = updatePropsForLanguage(props, selectedLang, selectedBlock);
       updateBlocks(blockIds, updatedProps, prevPropsState);
     },
     [updateBlocks, selectedLang],
@@ -84,10 +91,11 @@ export const useStreamMultipleBlocksProps = () => {
 export const useUpdateBlocksPropsRealtime = () => {
   const { updateBlocksRuntime } = useBlocksStoreUndoableActions();
   const { selectedLang } = useLanguages();
+  const selectedBlock = useSelectedBlock();
 
   return useCallback(
     (blockIds: Array<string>, props: Record<string, any>) => {
-      const updatedProps = updatePropsForLanguage(props, selectedLang);
+      const updatedProps = updatePropsForLanguage(props, selectedLang, selectedBlock);
       updateBlocksRuntime(blockIds, updatedProps);
     },
     [updateBlocksRuntime, selectedLang],

@@ -85,12 +85,12 @@ const RenderGlobalBlock = ({ blocks, allBlocks }: { blocks: ChaiBlock[]; allBloc
   return <BlocksRendererStatic allBlocks={allBlocks} blocks={blocks} />;
 };
 
-function applyLanguage(_block: ChaiBlock, selectedLang: string) {
+function applyLanguage(_block: ChaiBlock, selectedLang: string, chaiBlock) {
   if (isEmpty(selectedLang)) return _block;
 
   const block = cloneDeep(_block);
   forEach(keys(block), (key) => {
-    if (key === "content" && !isEmpty(selectedLang)) {
+    if (get(chaiBlock, ["props", key, "i18n"]) && !isEmpty(selectedLang)) {
       block[key] = get(block, `${key}-${selectedLang}`, block[key]);
     }
   });
@@ -182,7 +182,7 @@ export function BlocksRendererStatic({ blocks, allBlocks }: { blocks: ChaiBlock[
               {React.createElement(Component, {
                 blockProps,
                 index,
-                ...applyBindings(applyLanguage(block, selectedLang), chaiData),
+                ...applyBindings(applyLanguage(block, selectedLang, chaiBlock), chaiData),
                 ...omit(htmlAttrs, ["__isHidden"]),
                 ...attrs,
                 inBuilder: true,

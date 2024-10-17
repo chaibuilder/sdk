@@ -75,12 +75,12 @@ function applyBindings(block: ChaiBlock, chaiData: any): ChaiBlock {
   return block;
 }
 
-function applyLanguage(_block: ChaiBlock, lang: string) {
+function applyLanguage(_block: ChaiBlock, lang: string, blockDefinition) {
   if (isEmpty(lang)) return _block;
-
   const block = cloneDeep(_block);
+
   forEach(keys(block), (key) => {
-    if (key === "content" && !isEmpty(lang)) {
+    if (get(blockDefinition, ["props", key, "i18n"]) && !isEmpty(lang)) {
       block[key] = get(block, `${key}-${lang}`, block[key]);
     }
   });
@@ -157,7 +157,7 @@ export function RenderChaiBlocks({
                   inBuilder: false,
                   ...syncedBlock,
                   index,
-                  ...applyBindings(applyLanguage(block, lang), externalData),
+                  ...applyBindings(applyLanguage(block, lang, blockDefinition), externalData),
                   ...getStyles(syncedBlock),
                   ...attrs,
                 },
