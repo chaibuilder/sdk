@@ -12,7 +12,7 @@ const updatePropsForLanguage = memoize((props: Record<string, any>, selectedLang
 
   const updatedProps = { ...props };
   forEach(keys(props), (key) => {
-    if (!isEmpty(selectedLang) && get(chaiBlock, ["props", key, "i18n"])) {
+    if (get(chaiBlock, ["props", key, "i18n"]) && !isEmpty(selectedLang)) {
       const _key = `${key}-${selectedLang}`;
       set(updatedProps, _key, props[key]);
       unset(updatedProps, key);
