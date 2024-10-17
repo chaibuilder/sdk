@@ -6,6 +6,7 @@ import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { useStreamMultipleBlocksProps, useUpdateMultipleBlocksProps } from "./useUpdateBlocksProps.ts";
 import { atom, useAtom } from "jotai";
 import { AskAiResponse } from "../types/chaiBuilderEditorProps.ts";
+import { useLanguages } from "./useLanguages.ts";
 
 function getChildBlocks(allBlocks: ChaiBlock[], blockId: string, blocks: any[]) {
   blocks.push(find(allBlocks, { _id: blockId }) as ChaiBlock);
@@ -22,8 +23,16 @@ const getBlockWithChildren = (blockId: string, allBlocks: ChaiBlock[]) => {
   return blocks;
 };
 
+function promptWithLanguage(prompt: string, currentLang: string, type: string) {
+  if (!currentLang || type !== "content") return prompt;
+
+  const languagePrompt = `Please provide the response in "${currentLang}" language.`;
+  return `${prompt}\n\n${languagePrompt}`;
+}
+
 export const askAiProcessingAtom = atom(false);
 
+// update prompt for content type for lang support
 export const useAskAi = () => {
   const [processing, setProcessing] = useAtom(askAiProcessingAtom);
   const [error, setError] = useState(null);
@@ -31,6 +40,9 @@ export const useAskAi = () => {
   const updateBlocksWithStream = useStreamMultipleBlocksProps();
   const updateBlockPropsAll = useUpdateMultipleBlocksProps();
   const [blocks] = useBlocksStore();
+  const { selectedLang, fallbackLang } = useLanguages();
+  const currentLang = selectedLang.length ? selectedLang : fallbackLang;
+
   return {
     askAi: useCallback(
       async (
@@ -48,7 +60,7 @@ export const useAskAi = () => {
               ? cloneDeep(getBlockWithChildren(blockId, blocks))
               : [cloneDeep(blocks.find((block) => block._id === blockId))];
           set(aiBlocks, "0._parent", null);
-          const askAiResponse = await callBack(type, prompt, aiBlocks);
+          const askAiResponse = await callBack(type, promptWithLanguage(prompt, currentLang, type), aiBlocks);
           const { blocks: updatedBlocks, error } = askAiResponse;
           if (error) {
             setError(error);
