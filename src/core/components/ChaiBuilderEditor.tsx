@@ -16,7 +16,6 @@ import { dataProvidersAtom } from "../hooks/usePageDataProviders.ts";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
 import { SmallScreenMessage } from "./SmallScreenMessage.tsx";
 import { setDebugLogs } from "../functions/logging.ts";
-import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { useAtom } from "jotai/index";
 import { builderSaveStateAtom } from "../hooks/useSavePage.ts";
 import { PreviewScreen } from "./PreviewScreen.tsx";
@@ -42,7 +41,6 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   const [, setAllBlocks] = useBlocksStore();
   const [, setBrandingOptions] = useBrandingOptions();
   const reset = useBuilderReset();
-  const { selectedLang } = useLanguages();
   const [saveState] = useAtom(builderSaveStateAtom);
   const RootLayoutComponent = useMemo(() => props.layout || RootLayout, [props.layout]);
   useAtom(selectedLibraryAtom);
@@ -66,11 +64,7 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
 
   useEffect(() => {
     // @ts-ignore
-    if (isEmpty(selectedLang)) {
-      setAllBlocks(syncBlocksWithDefaults(props.blocks || []) as ChaiBlock[]);
-    } else {
-      setAllBlocks((props.blocks || []) as ChaiBlock[]);
-    }
+    setAllBlocks((props.blocks || []) as ChaiBlock[]);
     reset();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.blocks]);
