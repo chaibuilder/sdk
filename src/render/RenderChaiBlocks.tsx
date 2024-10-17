@@ -1,5 +1,18 @@
 import React from "react";
-import { each, filter, get, has, includes, isEmpty, isString, keys, memoize, omit } from "lodash-es";
+import {
+  each,
+  filter,
+  get,
+  has,
+  includes,
+  isEmpty,
+  isString,
+  keys,
+  memoize,
+  omit,
+  cloneDeep,
+  forEach,
+} from "lodash-es";
 import { twMerge } from "tailwind-merge";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { SLOT_KEY, STYLES_KEY } from "../core/constants/STRINGS.ts";
@@ -61,18 +74,33 @@ function applyBindings(block: ChaiBlock, chaiData: any): ChaiBlock {
   });
   return block;
 }
+
+function applyLanguage(_block: ChaiBlock, lang: string) {
+  if (isEmpty(lang)) return _block;
+
+  const block = cloneDeep(_block);
+  forEach(keys(block), (key) => {
+    if (key === "content" && !isEmpty(lang)) {
+      block[key] = get(block, `${key}-${lang}`, block[key]);
+    }
+  });
+  return block;
+}
+
 export function RenderChaiBlocks({
   blocks,
   parent,
   classPrefix = "",
   externalData = {},
   blockModifierCallback,
+  lang,
 }: {
   blocks: ChaiBlock[];
   parent?: string;
   classPrefix?: string;
   externalData?: Record<string, any>;
   blockModifierCallback?: (block: ChaiBlock) => ChaiBlock;
+  lang?: string;
 }) {
   const allBlocks = blocks;
   const getStyles = (block: ChaiBlock) => getStyleAttrs(block, classPrefix);
@@ -94,6 +122,7 @@ export function RenderChaiBlocks({
                     classPrefix={classPrefix}
                     blocks={allBlocks}
                     parent={slotId}
+                    lang={lang}
                   />
                 )),
               );
@@ -107,6 +136,7 @@ export function RenderChaiBlocks({
                 classPrefix={classPrefix}
                 parent={block._id}
                 blocks={allBlocks}
+                lang={lang}
               />
             ) : null;
 
@@ -127,7 +157,7 @@ export function RenderChaiBlocks({
                   inBuilder: false,
                   ...syncedBlock,
                   index,
-                  ...applyBindings(block, externalData),
+                  ...applyBindings(applyLanguage(block, lang), externalData),
                   ...getStyles(syncedBlock),
                   ...attrs,
                 },

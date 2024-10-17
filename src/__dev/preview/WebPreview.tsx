@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { SettingsWatcher } from "./Settings.tsx";
 import { Frame } from "../../core/frame/Frame.tsx";
 import { useBlocksStore } from "../../core/history/useBlocksStoreUndoableActions.ts";
-import { useBrandingOptions } from "../../core/hooks";
+import { useBrandingOptions, useLanguages } from "../../core/hooks";
 import { Button } from "../../ui";
 import ReactDOM from "react-dom/server";
 import { RenderChaiBlocks } from "../../render";
@@ -130,11 +130,12 @@ const PreviewWeb = () => {
   const [blocks] = useBlocksStore();
   const [brandingOptions] = useBrandingOptions();
   const [localBlocks] = useState(blocks);
+  const { selectedLang } = useLanguages();
 
   const [width, setWidth] = useState(1200);
 
   const setIframeWidth = (newWidth: number) => setWidth(newWidth);
-  const html = ReactDOM.renderToString(<RenderChaiBlocks blocks={localBlocks} />);
+  const html = ReactDOM.renderToString(<RenderChaiBlocks lang={selectedLang} blocks={localBlocks} />);
   return (
     <div className="flex h-screen w-screen flex-col overflow-hidden bg-gray-100">
       <div className="flex h-16 items-center justify-center border-b border-gray-200 shadow-sm">

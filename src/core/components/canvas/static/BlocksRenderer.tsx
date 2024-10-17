@@ -1,5 +1,20 @@
 import React, { Suspense, useCallback } from "react";
-import { each, filter, find, get, has, includes, isEmpty, isNull, isString, memoize, omit } from "lodash-es";
+import {
+  each,
+  filter,
+  find,
+  get,
+  has,
+  includes,
+  isEmpty,
+  isNull,
+  isString,
+  memoize,
+  omit,
+  cloneDeep,
+  forEach,
+  keys,
+} from "lodash-es";
 import { twMerge } from "tailwind-merge";
 import { ChaiBlock } from "../../../types/ChaiBlock";
 import { STYLES_KEY } from "../../../constants/STRINGS.ts";
@@ -10,7 +25,7 @@ import { inlineEditingActiveAtom, xShowBlocksAtom } from "../../../atoms/ui.ts";
 import { useCanvasSettings } from "../../../hooks/useCanvasSettings.ts";
 import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
 import { canAcceptChildBlock } from "../../../functions/block-helpers.ts";
-import { useCanvasWidth, useCutBlockIds, useGlobalBlocksStore, useHiddenBlockIds } from "../../../hooks";
+import { useCanvasWidth, useCutBlockIds, useGlobalBlocksStore, useHiddenBlockIds, useLanguages } from "../../../hooks";
 import { isVisibleAtBreakpoint } from "../../../functions/isVisibleAtBreakpoint.ts";
 import { RSCBlock } from "./RSCBlock.tsx";
 
@@ -70,7 +85,20 @@ const RenderGlobalBlock = ({ blocks, allBlocks }: { blocks: ChaiBlock[]; allBloc
   return <BlocksRendererStatic allBlocks={allBlocks} blocks={blocks} />;
 };
 
+function applyLanguage(_block: ChaiBlock, selectedLang: string) {
+  if (isEmpty(selectedLang)) return _block;
+
+  const block = cloneDeep(_block);
+  forEach(keys(block), (key) => {
+    if (key === "content" && !isEmpty(selectedLang)) {
+      block[key] = get(block, `${key}-${selectedLang}`, block[key]);
+    }
+  });
+  return block;
+}
+
 export function BlocksRendererStatic({ blocks, allBlocks }: { blocks: ChaiBlock[]; allBlocks: ChaiBlock[] }) {
+  const { selectedLang } = useLanguages();
   const [xShowBlocks] = useAtom(xShowBlocksAtom);
   const [cutBlockIds] = useCutBlockIds();
   const [draggedBlock] = useAtom<any>(draggedBlockAtom);
@@ -154,7 +182,7 @@ export function BlocksRendererStatic({ blocks, allBlocks }: { blocks: ChaiBlock[
               {React.createElement(Component, {
                 blockProps,
                 index,
-                ...applyBindings(block, chaiData),
+                ...applyBindings(applyLanguage(block, selectedLang), chaiData),
                 ...omit(htmlAttrs, ["__isHidden"]),
                 ...attrs,
                 inBuilder: true,
