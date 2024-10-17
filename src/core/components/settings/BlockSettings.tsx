@@ -2,6 +2,7 @@ import { IChangeEvent } from "@rjsf/core";
 import { capitalize, cloneDeep, debounce, each, get, isEmpty, keys, map } from "lodash-es";
 import {
   useBuilderProp,
+  useLanguages,
   useSelectedBlock,
   useTranslation,
   useUpdateBlocksProps,
@@ -17,6 +18,7 @@ import { CanvasSettings } from "./CanvasSettings.tsx";
 import { convertDotNotationToObject } from "../../functions/Controls.ts";
 import { GlobalBlockSettings } from "./GlobalBlockSettings.tsx";
 import { useRSCBlocksStore } from "../../hooks/useWatchRSCBlocks.ts";
+import { forEach } from "lodash";
 
 const ResetRSCBlockButton = ({ blockId }: { blockId: string }) => {
   const { t } = useTranslation();
@@ -28,16 +30,28 @@ const ResetRSCBlockButton = ({ blockId }: { blockId: string }) => {
   );
 };
 
+const formDataWithSelectedLang = (formData, selectedLang: string) => {
+  const updatedFormData = cloneDeep(formData);
+  forEach(keys(formData), (key) => {
+    if (key === "content" && !isEmpty(selectedLang)) {
+      updatedFormData.content = get(formData, `${key}-${selectedLang}`);
+    }
+  });
+
+  return updatedFormData;
+};
+
 /**
  *
  * @returns Block Setting
  */
 export default function BlockSettings() {
+  const { selectedLang } = useLanguages();
   const selectedBlock = useSelectedBlock() as any;
   const updateBlockPropsRealtime = useUpdateBlocksPropsRealtime();
   const updateBlockProps = useUpdateBlocksProps();
   const coreBlock = getBlockComponent(selectedBlock?._type);
-  const formData = { ...selectedBlock };
+  const formData = formDataWithSelectedLang(selectedBlock, selectedLang);
   const [prevFormData, setPrevFormData] = useState(formData);
   const dataBindingSupported = useBuilderProp("dataBindingSupport", false);
 
@@ -53,7 +67,7 @@ export default function BlockSettings() {
       updateProps({ formData } as IChangeEvent, id, oldPropState);
       setPrevFormData(formData);
     }, 1500),
-    [selectedBlock?._id],
+    [selectedBlock?._id, selectedLang],
   );
 
   const updateRealtime = ({ formData: newData }: IChangeEvent, id?: string) => {
