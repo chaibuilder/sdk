@@ -1,5 +1,5 @@
 import { IChangeEvent } from "@rjsf/core";
-import { capitalize, cloneDeep, debounce, each, get, isEmpty, keys, map } from "lodash-es";
+import { capitalize, cloneDeep, debounce, each, get, isEmpty, keys, map, forEach } from "lodash-es";
 import {
   useBuilderProp,
   useLanguages,
@@ -18,7 +18,6 @@ import { CanvasSettings } from "./CanvasSettings.tsx";
 import { convertDotNotationToObject } from "../../functions/Controls.ts";
 import { GlobalBlockSettings } from "./GlobalBlockSettings.tsx";
 import { useRSCBlocksStore } from "../../hooks/useWatchRSCBlocks.ts";
-import { forEach } from "lodash";
 
 const ResetRSCBlockButton = ({ blockId }: { blockId: string }) => {
   const { t } = useTranslation();
