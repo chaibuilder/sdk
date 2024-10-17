@@ -222,4 +222,10 @@ export interface ChaiBuilderEditorProps {
    */
   unsplashAccessKey?: string;
   _flags?: Record<string, boolean>;
+
+  /**
+   * Content locale
+   */
+  fallbackLang?: string;
+  languages?: Array<string>;
 }
