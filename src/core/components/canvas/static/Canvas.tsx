@@ -31,7 +31,7 @@ function destroyQuill(quill) {
   quill.container.parentNode.removeChild(quill.container);
 
   // If there's a separate toolbar, hide or remove it
-  var toolbar = document.querySelector(".ql-toolbar");
+  const toolbar = document.querySelector(".ql-toolbar");
   if (toolbar) {
     toolbar.parentNode.removeChild(toolbar);
   }
@@ -120,7 +120,7 @@ const useHandleCanvasClick = () => {
       setStyleBlockIds([{ id: styleId, prop: styleProp, blockId }]);
       setIds([blockId]);
     } else if (chaiBlock?.getAttribute("data-block-id")) {
-      let blockId = chaiBlock.getAttribute("data-block-id");
+      const blockId = chaiBlock.getAttribute("data-block-id");
       if (!ids.includes(blockId)) {
         treeRef?.closeAll();
       }

@@ -82,6 +82,12 @@ export interface ChaiBuilderEditorProps {
    * Layout variant. Not supported with custom layout
    */
   layoutVariant?: LayoutVariant;
+
+  /**
+   * Custom media Manager component
+   */
+  mediaManagerComponent?: React.ComponentType<{ onSelect: (url: string) => void }>;
+
   /**
    * HTML direction.
    */
@@ -121,6 +127,9 @@ export interface ChaiBuilderEditorProps {
    */
   locale?: string;
 
+  /**
+   * Non editable component
+   */
   nonEditableComponent?: ReactComponentType;
 
   /**
