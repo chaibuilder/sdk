@@ -29,11 +29,11 @@ const ResetRSCBlockButton = ({ blockId }: { blockId: string }) => {
   );
 };
 
-const formDataWithSelectedLang = (formData, selectedLang: string) => {
+const formDataWithSelectedLang = (formData, selectedLang: string, coreBlock) => {
   const updatedFormData = cloneDeep(formData);
   forEach(keys(formData), (key) => {
-    if (key === "content" && !isEmpty(selectedLang)) {
-      updatedFormData.content = get(formData, `${key}-${selectedLang}`);
+    if (get(coreBlock, ["props", key, "i18n"]) && !isEmpty(selectedLang)) {
+      updatedFormData[key] = get(formData, `${key}-${selectedLang}`);
     }
   });
 
@@ -50,7 +50,7 @@ export default function BlockSettings() {
   const updateBlockPropsRealtime = useUpdateBlocksPropsRealtime();
   const updateBlockProps = useUpdateBlocksProps();
   const coreBlock = getBlockComponent(selectedBlock?._type);
-  const formData = formDataWithSelectedLang(selectedBlock, selectedLang);
+  const formData = formDataWithSelectedLang(selectedBlock, selectedLang, coreBlock);
   const [prevFormData, setPrevFormData] = useState(formData);
   const dataBindingSupported = useBuilderProp("dataBindingSupport", false);
 
