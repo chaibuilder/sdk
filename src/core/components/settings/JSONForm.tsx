@@ -40,7 +40,7 @@ export const JSONForm = memo(({ id, properties, formData, onChange }: JSONFormTy
 
   useEffect(() => {
     setForm(formData);
-  }, [id]);
+  }, [id, selectedLang]);
 
   const throttledChange = useThrottledCallback(
     async ({ formData }: any, id?: string) => {
