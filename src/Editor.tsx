@@ -35,7 +35,7 @@ function ChaiBuilderDefault() {
   return (
     <ChaiBuilderEditor
       fallbackLang="fr"
-      languages={["en", "hi"]}
+      languages={["en"]}
       unsplashAccessKey={"import.meta.env.VITE_UNSPLASH_ACCESS_KEY"}
       showDebugLogs={true}
       autoSaveSupport={false}
