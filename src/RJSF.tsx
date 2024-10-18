@@ -23,7 +23,7 @@ Object.keys(properties).forEach((key) => {
   const control = properties[key];
   if (includes(["slot", "styles"], control.type)) return;
   const propKey = key;
-  propsSchema.properties[propKey] = getBlockJSONFromSchemas(control, t);
+  propsSchema.properties[propKey] = getBlockJSONFromSchemas(control, t, "");
   uiSchema[propKey] = getBlockJSONFromUISchemas(control);
 });
 

@@ -9,6 +9,7 @@ import validator from "@rjsf/validator-ajv8";
 import { useThrottledCallback } from "@react-hookz/web";
 import { CodeEditor } from "../../rjsf-widgets/Code.tsx";
 import { useTranslation } from "react-i18next";
+import { useLanguages } from "../../hooks/useLanguages.ts";
 
 type JSONFormType = {
   id?: string;
@@ -26,12 +27,14 @@ export const JSONForm = memo(({ id, properties, formData, onChange }: JSONFormTy
   const propsSchema: RJSFSchema = { type: "object", properties: {} };
   const uiSchema: UiSchema = {};
   const { t } = useTranslation();
+  const { selectedLang, fallbackLang, languages } = useLanguages();
+  const lang = languages.length === 0 ? "" : selectedLang.length ? selectedLang : fallbackLang;
 
   Object.keys(properties).forEach((key) => {
     const control = properties[key];
     if (includes(["slot", "styles"], control.type)) return;
     const propKey = key;
-    propsSchema.properties[propKey] = getBlockJSONFromSchemas(control, t);
+    propsSchema.properties[propKey] = getBlockJSONFromSchemas(control, t, lang);
     uiSchema[propKey] = getBlockJSONFromUISchemas(control);
   });
 
