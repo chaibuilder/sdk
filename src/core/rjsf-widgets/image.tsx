@@ -9,8 +9,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
   const unsplashImageCallback = useBuilderProp("unsplashAccessKey");
   const { t } = useTranslation();
 
-  const missingUploadImageCallback = uploadImageCallback === undefined;
-  const missingUnsplashImageCallback = unsplashImageCallback === undefined;
+  const showImagePicker = uploadImageCallback !== undefined || unsplashImageCallback !== undefined;
 
   return (
     <div className="mt-1.5 flex items-center gap-x-3">
@@ -22,7 +21,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
         </ImagePickerModal>
       )}
       <div className="flex w-3/5 flex-col">
-        {!(missingUploadImageCallback && missingUnsplashImageCallback) && (
+        {showImagePicker && (
           <>
             <ImagePickerModal onSelect={onChange}>
               <small className="h-6 cursor-pointer rounded-md bg-primary px-2 py-1 text-center text-xs text-white hover:bg-gray-500 dark:bg-gray-700">
@@ -47,4 +46,5 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
     </div>
   );
 };
+
 export { ImagePickerField };
