@@ -8,7 +8,7 @@ import axios from "axios";
 import { LayersIcon } from "lucide-react";
 import { registerChaiBlock } from "@chaibuilder/runtime";
 import { SingleLineText } from "@chaibuilder/runtime/controls";
-import { get } from "lodash";
+import { get } from "lodash-es";
 
 loadWebBlocks();
 
@@ -35,7 +35,7 @@ function ChaiBuilderDefault() {
   return (
     <ChaiBuilderEditor
       fallbackLang="fr"
-      languages={["en"]}
+      languages={["en", "hi"]}
       unsplashAccessKey={"import.meta.env.VITE_UNSPLASH_ACCESS_KEY"}
       showDebugLogs={true}
       autoSaveSupport={false}

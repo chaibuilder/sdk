@@ -1,7 +1,7 @@
 import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../../../ui";
 import { GlobeIcon } from "@radix-ui/react-icons";
 import { useLanguages } from "../../../hooks";
-import { isEmpty, map, uniq, forEach, get } from "lodash";
+import { isEmpty, map, uniq, forEach, get } from "lodash-es";
 import { useMemo } from "react";
 import { LANGUAGES } from "../../../constants/LANGUAGES";
 
