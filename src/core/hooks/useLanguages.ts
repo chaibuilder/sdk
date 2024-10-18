@@ -25,7 +25,7 @@ export const useLanguages = () => {
   };
 
   return {
-    languages,
+    languages: languages?.filter((_lang) => _lang !== fallbackLang),
     fallbackLang,
     selectedLang,
     setSelectedLang,

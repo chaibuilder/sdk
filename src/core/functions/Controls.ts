@@ -1,4 +1,4 @@
-import { each, forIn, get, has, includes, isEmpty, map, set } from "lodash-es";
+import { each, forIn, get, has, includes, isEmpty, map, set, endsWith } from "lodash-es";
 import {
   ChaiControlDefinition,
   ControlDefinition,
@@ -8,6 +8,11 @@ import {
 } from "@chaibuilder/runtime/controls";
 import { generateUUID } from "./Functions.ts";
 import { I18N_KEY, SLOT_KEY } from "../constants/STRINGS.ts";
+
+const titleWithLang = (title: string, lang: string, isI18nProp: boolean) => {
+  if (endsWith(title, `(${lang})`) || isEmpty(lang) || !isI18nProp) return title;
+  return `${title} (${lang})`;
+};
 
 export const getBlockJSONFromUISchemas = (control: ChaiControlDefinition) => {
   switch (control.type) {
@@ -46,12 +51,12 @@ export const getBlockJSONFromUISchemas = (control: ChaiControlDefinition) => {
   }
 };
 
-export const getBlockJSONFromSchemas = (control: ChaiControlDefinition, t: any) => {
+export const getBlockJSONFromSchemas = (control: ChaiControlDefinition, t: any, lang: string) => {
   switch (control.type) {
     case "singular": {
       const singularSchema = (control as ControlDefinition).schema;
       if (singularSchema.title) {
-        singularSchema.title = t(singularSchema.title);
+        singularSchema.title = titleWithLang(t(singularSchema.title), lang, get(control, "i18n"));
       }
       if (singularSchema.oneOf && Array.isArray(singularSchema.oneOf)) {
         singularSchema.oneOf = singularSchema.oneOf.map((item) => {
@@ -68,7 +73,7 @@ export const getBlockJSONFromSchemas = (control: ChaiControlDefinition, t: any) 
       const { properties: modelProperties, title: modelTitle } = control as ModelControlDefinition;
       // eslint-disable-next-line no-case-declarations
       const modelProps: Record<string, any> = {
-        title: t(modelTitle),
+        title: titleWithLang(t(modelTitle), lang, get(control, "i18n")),
         type: "object",
         properties: {},
       };
@@ -77,7 +82,7 @@ export const getBlockJSONFromSchemas = (control: ChaiControlDefinition, t: any) 
         const control = modelProperties[key];
         if (includes(["slot", "styles"], control.type)) return;
         const propKey = key;
-        modelProps.properties[propKey] = getBlockJSONFromSchemas(control, t);
+        modelProps.properties[propKey] = getBlockJSONFromSchemas(control, t, lang);
       });
       return modelProps;
     case "list":
@@ -85,7 +90,7 @@ export const getBlockJSONFromSchemas = (control: ChaiControlDefinition, t: any) 
       const { itemProperties, title: listTitle } = control as ListControlDefinition;
       // eslint-disable-next-line no-case-declarations
       const listProps: Record<string, any> = {
-        title: t(listTitle),
+        title: titleWithLang(t(listTitle), lang, get(control, "i18n")),
         type: "array",
         items: {
           type: "object",
@@ -97,8 +102,12 @@ export const getBlockJSONFromSchemas = (control: ChaiControlDefinition, t: any) 
         const control = itemProperties[key];
         if (includes(["slot", "styles"], control.type)) return;
         const propKey = key;
-        listProps.items.properties[propKey] = getBlockJSONFromSchemas(control, t);
-        set(listProps.items, "title", get(control, "itemTitle", `${t(listTitle)} item`));
+        listProps.items.properties[propKey] = getBlockJSONFromSchemas(control, t, lang);
+        set(
+          listProps.items,
+          "title",
+          titleWithLang(get(control, "itemTitle", `${t(listTitle)} item`), lang, get(control, "i18n")),
+        );
       });
       return listProps;
     default:
