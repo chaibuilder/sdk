@@ -20,7 +20,7 @@ async function getTailwindCSS(
     tailwindConfig: {
       darkMode: "class",
       safelist,
-      theme: getChaiBuilderTheme(theme),
+      theme: { extend: getChaiBuilderTheme(theme) },
       plugins: [twForms, twTypography, twAspectRatio, chaiBuilderPlugin],
       corePlugins: { preflight: includeBaseStyles },
       ...(prefix ? { prefix: `${prefix}` } : {}),
@@ -57,7 +57,7 @@ const getBlocksTailwindCSS = (
 ) => {
   return getTailwindCSS(
     theme,
-    [replace(JSON.stringify(addPrefixToBlockStyles(blocks, prefix)), /#styles:/g, "")],
+    [replace(JSON.stringify(addPrefixToBlockStyles(blocks, prefix)), /#styles:,?/g, "")],
     [],
     prefix,
     includeBaseStyles,
@@ -66,7 +66,7 @@ const getBlocksTailwindCSS = (
 
 export const getStylesForBlocks = async (
   blocks: ChaiBlock[],
-  theme: ChaiBuilderTailwindTheme | {} = {},
+  theme: ChaiBuilderTailwindTheme | Record<string, string> = {},
   classPrefix: string = "",
   includeBaseStyles: boolean = true,
 ): Promise<string> => {
