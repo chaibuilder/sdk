@@ -1,6 +1,7 @@
 import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { useBlocksStore } from "./useBlocksStoreUndoableActions.ts";
 import { find, omit } from "lodash-es";
+import { merge } from "lodash";
 import { removeNestedBlocks } from "../hooks/useRemoveBlocks.ts";
 import { insertBlocksAtPosition } from "./InsertBlocksAtPosition.ts";
 import { moveBlocksWithChildren } from "./moveBlocksWithChildren.ts";
@@ -33,7 +34,7 @@ export const useBlocksStoreManager = () => {
         return prevBlocks.map((block) => {
           if (blocksIds.includes(block._id)) {
             const props = find(blocks, { _id: block._id });
-            return { ...block, ...omit(props, "_id") };
+            return merge({}, block, {...omit(props, "_id")});
           }
           return block;
         });
