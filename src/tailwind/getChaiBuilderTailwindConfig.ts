@@ -65,19 +65,8 @@ function shadcnTheme() {
 const getChaiBuilderTailwindConfig = (content: string[]) => {
   return {
     darkMode: "class",
-    content: [
-      ...content,
-      "node_modules/@chaibuilder/sdk/dist/*.{js,cjs}",
-      "node_modules/@chaibuilder/runtime/dist/*.{js,cjs}",
-    ],
+    content: [...content, "node_modules/@chaibuilder/sdk/dist/*.{js,cjs}"],
     theme: {
-      container: {
-        center: true,
-        padding: "2rem",
-        screens: {
-          "2xl": "1400px",
-        },
-      },
       extend: shadcnTheme(),
     },
     plugins: [tailwindAnimate, tailwindTypography, tailwindForms, tailwindAspectRatio],

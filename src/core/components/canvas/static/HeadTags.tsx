@@ -12,12 +12,13 @@ import { useAtom } from "jotai";
 import typography from "@tailwindcss/typography";
 import forms from "@tailwindcss/forms";
 import aspectRatio from "@tailwindcss/aspect-ratio";
-import getPalette from "tailwindcss-palette-generator";
+import { tailwindcssPaletteGenerator } from "@bobthered/tailwindcss-palette-generator";
 import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
 import plugin from "tailwindcss/plugin";
+import { set } from "lodash-es";
 // @ts-ignore
 
-export const HeadTags = ({ model }: { model: string }) => {
+export const HeadTags = () => {
   const [customTheme] = useBrandingOptions();
   const [selectedBlockIds] = useSelectedBlockIds();
   const [darkMode] = useDarkMode();
@@ -55,10 +56,15 @@ export const HeadTags = ({ model }: { model: string }) => {
     const TEXT_DARK_MODE = get(customTheme, "bodyTextDarkColor", "#000");
     const TEXT_LIGHT_MODE = get(customTheme, "bodyTextLightColor", "#fff");
 
-    const palette = getPalette([
-      { color: primary, name: "primary" },
-      { color: secondary, name: "secondary" },
-    ]);
+    const palette = tailwindcssPaletteGenerator({
+      colors: [primary, secondary],
+      names: ["primary", "secondary"],
+    });
+
+    // add DEFAULT color
+    set(palette, "primary.DEFAULT", primary);
+    set(palette, "secondary.DEFAULT", secondary);
+
     const colors: Record<string, string> = {
       "bg-light": BG_LIGHT_MODE,
       "bg-dark": BG_DARK_MODE,

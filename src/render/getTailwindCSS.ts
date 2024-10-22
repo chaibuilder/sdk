@@ -1,11 +1,9 @@
-import { replace, startsWith } from "lodash-es";
+import { replace } from "lodash-es";
 import { createTailwindcss } from "@mhsdesign/jit-browser-tailwindcss";
 import twForms from "@tailwindcss/forms";
 import twTypography from "@tailwindcss/typography";
 import twAspectRatio from "@tailwindcss/aspect-ratio";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
-import { addPrefixToClasses } from "./functions.ts";
-import { STYLES_KEY } from "../core/constants/STRINGS.ts";
 import { ChaiBuilderTailwindTheme, getChaiBuilderTheme } from "../tailwind/getChaiBuilderTheme.ts";
 import { chaiBuilderPlugin } from "../tailwind";
 
@@ -35,40 +33,14 @@ async function getTailwindCSS(
   );
 }
 
-const addPrefixToBlockStyles = (blocks: ChaiBlock[], prefix: string) => {
-  return blocks.map((block: any) => {
-    // loop through all block keys and check if it starts with #styles:
-    // if it does, then replace "#styles:" with the empty string
-    const blocksStyles = {};
-    Object.keys(block).forEach((key) => {
-      if (startsWith(block[key], STYLES_KEY)) {
-        blocksStyles[key] = addPrefixToClasses(block[key], prefix);
-      }
-    });
-    return blocksStyles;
-  });
-};
-
-const getBlocksTailwindCSS = (
-  blocks: ChaiBlock[],
-  theme: any,
-  prefix: string = "",
-  includeBaseStyles: boolean = false,
-) => {
-  return getTailwindCSS(
-    theme,
-    [replace(JSON.stringify(addPrefixToBlockStyles(blocks, prefix)), /#styles:,?/g, "")],
-    [],
-    prefix,
-    includeBaseStyles,
-  );
+const getBlocksTailwindCSS = (blocks: ChaiBlock[], theme: any, includeBaseStyles: boolean = false) => {
+  return getTailwindCSS(theme, [replace(JSON.stringify(blocks), /#styles:,?/g, "")], [], "", includeBaseStyles);
 };
 
 export const getStylesForBlocks = async (
   blocks: ChaiBlock[],
   theme: ChaiBuilderTailwindTheme | Record<string, string> = {},
-  classPrefix: string = "",
   includeBaseStyles: boolean = true,
 ): Promise<string> => {
-  return await getBlocksTailwindCSS(blocks, theme, classPrefix, includeBaseStyles);
+  return await getBlocksTailwindCSS(blocks, theme, includeBaseStyles);
 };

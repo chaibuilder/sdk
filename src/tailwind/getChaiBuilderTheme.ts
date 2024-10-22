@@ -1,7 +1,7 @@
-import { get } from "lodash-es";
-import getPalette from "tailwindcss-palette-generator";
+import { get, set } from "lodash-es";
+import { tailwindcssPaletteGenerator } from "@bobthered/tailwindcss-palette-generator";
 
-export type ChaiBuilderTailwindTheme<T extends Record<string, unknown> = {}> = {
+export type ChaiBuilderTailwindTheme<T extends Record<string, unknown> = Record<string, unknown>> = {
   primaryColor: string;
   secondaryColor: string;
   headingFont: string;
@@ -26,10 +26,14 @@ export const getChaiBuilderTheme = (theme: ChaiBuilderTailwindTheme) => {
   const TEXT_LIGHT_MODE = get(theme, "bodyTextLightColor", "#000");
   const TEXT_DARK_MODE = get(theme, "bodyTextDarkColor", "#fff");
 
-  const palette = getPalette([
-    { color: primary, name: "primary" },
-    { color: secondary, name: "secondary" },
-  ]);
+  const palette = tailwindcssPaletteGenerator({
+    colors: [primary, secondary],
+    names: ["primary", "secondary"],
+  });
+
+  set(palette, "primary.DEFAULT", primary);
+  set(palette, "secondary.DEFAULT", secondary);
+
   const colors: Record<string, string> = {
     "bg-light": BG_LIGHT_MODE,
     "bg-dark": BG_DARK_MODE,

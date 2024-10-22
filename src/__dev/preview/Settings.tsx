@@ -1,8 +1,6 @@
-"use client";
-
 import { useEffect, useState } from "react";
-import { get } from "lodash-es";
-import getPalette from "tailwindcss-palette-generator";
+import { get, set } from "lodash-es";
+import { tailwindcssPaletteGenerator } from "@bobthered/tailwindcss-palette-generator";
 import { useFrame } from "../../core/frame";
 import { useBrandingOptions } from "../../core/hooks";
 
@@ -19,10 +17,13 @@ const getTailwindConfig = (options: any, w: Window) => {
   const TEXT_LIGHT_MODE = get(options, "bodyTextLightColor", "#000");
   const TEXT_DARK_MODE = get(options, "bodyTextDarkColor", "#fff");
 
-  const palette = getPalette([
-    { color: primary, name: "primary" },
-    { color: secondary, name: "secondary" },
-  ]);
+  const palette = tailwindcssPaletteGenerator({
+    colors: [primary, secondary],
+    names: ["primary", "secondary"],
+  });
+  set(palette, "primary.DEFAULT", primary);
+  set(palette, "secondary.DEFAULT", secondary);
+
   const colors: Record<string, string> = {
     "bg-light": BG_LIGHT_MODE,
     "bg-dark": BG_DARK_MODE,

@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@ai-sdk/openai': ^0.0.37
+  '@bobthered/tailwindcss-palette-generator': ^4.0.0
   '@chaibuilder/runtime': 0.2.12
   '@commitlint/cli': 17.7.1
   '@commitlint/config-conventional': 17.7.0
@@ -107,7 +108,6 @@ specifiers:
   tailwind-merge: 2.3.0
   tailwindcss: ^3.3.5
   tailwindcss-animate: 1.0.6
-  tailwindcss-palette-generator: 0.7.0
   tree-model: ^1.0.7
   ts-jest: ^29.1.1
   ts-node: ^10.9.2
@@ -122,6 +122,7 @@ specifiers:
   zod: ^3.23.8
 
 dependencies:
+  '@bobthered/tailwindcss-palette-generator': 4.0.0
   '@chaibuilder/runtime': 0.2.12_kgsil3qmwkuaypzeupjafsqja4
   '@floating-ui/dom': 1.4.5
   '@floating-ui/react-dom': 2.0.1_biqbaboplfbrettd7655fr4n2y
@@ -186,7 +187,6 @@ dependencies:
   react-quill: 2.0.0_biqbaboplfbrettd7655fr4n2y
   react-wrap-balancer: 1.1.0_react@18.2.0
   tailwind-merge: 2.3.0
-  tailwindcss-palette-generator: 0.7.0_tailwindcss@3.3.5
   tree-model: 1.0.7
   undo-manager: 1.1.1
   unsplash-js: 7.0.18
@@ -749,6 +749,10 @@ packages:
   /@bcoe/v8-coverage/0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
+
+  /@bobthered/tailwindcss-palette-generator/4.0.0:
+    resolution: {integrity: sha512-M+5Ttd0YY7kKzUBoiq81Qu2WZfvodlSMGRb2NT4Yl954j871pf5vTBasHAOla9nJhq94ZHWY6Lp8h8pm8y2H7g==}
+    dev: false
 
   /@bundled-es-modules/cookie/2.0.0:
     resolution: {integrity: sha512-Or6YHg/kamKHpxULAdSqhGqnWFneIXu1NKvvfBBzKGwpVsYuFIQ5aBPHDnnoR3ghW1nvSkALd+EF9iMtY7Vjxw==}
@@ -6354,10 +6358,6 @@ packages:
     optionalDependencies:
       fsevents: 2.3.3
 
-  /chroma-js/2.4.2:
-    resolution: {integrity: sha512-U9eDw6+wt7V8z5NncY2jJfZa+hUH8XEj8FQHgFJTrUFnJfXYf4Ml4adI2vXZOjqRDpFWtYVWypDfZwnJ+HIR4A==}
-    dev: false
-
   /chrome-trace-event/1.0.3:
     resolution: {integrity: sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg==}
     engines: {node: '>=6.0'}
@@ -11870,16 +11870,6 @@ packages:
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders'
     dependencies:
-      tailwindcss: 3.3.5_ts-node@10.9.2
-    dev: false
-
-  /tailwindcss-palette-generator/0.7.0_tailwindcss@3.3.5:
-    resolution: {integrity: sha512-pyujKTeGnaNOvjLhH1tzhY8Mjgw/txsZl4pzDfeGxWkRt6gMlXCye1OqXUFmdXcmxSL+9gtot+WOWa0kupXM9w==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      tailwindcss: '>=3.4.0 || insiders'
-    dependencies:
-      chroma-js: 2.4.2
       tailwindcss: 3.3.5_ts-node@10.9.2
     dev: false
 

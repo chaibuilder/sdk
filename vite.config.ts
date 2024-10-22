@@ -61,7 +61,7 @@ export default defineConfig({
         "@tailwindcss/line-clamp",
         "@tailwindcss/typography",
         "class-variance-authority",
-        "tailwindcss-palette-generator",
+        "@bobthered/tailwindcssPaletteGenerator",
         "clsx",
         "cmdk",
         "react-event-hook",

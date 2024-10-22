@@ -126,7 +126,7 @@ const StaticCanvas = (): React.JSX.Element => {
             block={selectedBlock as unknown as ChaiBlock}
             selectedBlockElement={first(selectedElements)}
           />
-          <HeadTags model="page" />
+          <HeadTags />
           <Provider>
             <Canvas>
               {loadingCanvas ? (
