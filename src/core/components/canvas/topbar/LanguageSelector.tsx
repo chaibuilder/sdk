@@ -1,9 +1,11 @@
 import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../../../ui";
-import { GlobeIcon } from "@radix-ui/react-icons";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { useLanguages } from "../../../hooks";
 import { isEmpty, map, uniq, forEach, get } from "lodash-es";
 import { useMemo } from "react";
 import { LANGUAGES } from "../../../constants/LANGUAGES";
+import { FaLanguage, FaStar } from "react-icons/fa6";
+import { mergeClasses } from "../../../main";
 
 export const LanguageSelector: React.FC = () => {
   const { fallbackLang, languages, selectedLang, setSelectedLang } = useLanguages();
@@ -11,21 +13,22 @@ export const LanguageSelector: React.FC = () => {
 
   const langOptions = useMemo(() => {
     const options = [];
-    forEach(uniq([...languages, fallbackLang]), (key) => {
+    forEach(uniq([fallbackLang, ...languages]), (key) => {
       const value = get(LANGUAGES, key);
       if (value) options.push({ key, value, default: key === fallbackLang });
     });
     return options;
   }, [fallbackLang, languages]);
 
-  if (isEmpty(languages)) {
+  if (isEmpty(languages) && currentLang === "en") {
+    return null;
+  }
+
+  if (isEmpty(languages) && currentLang !== "en") {
     return (
-      <div className="flex items-center gap-x-1 text-sm">
-        <GlobeIcon className="h-4 w-4" />
+      <div className="flex items-center gap-x-1 text-sm text-blue-500 hover:text-blue-600">
+        <FaLanguage className="h-4 w-4" />
         {get(LANGUAGES, currentLang)}
-        {currentLang === fallbackLang && (
-          <span className="h-full pl-1 text-[10px] leading-4 text-green-400">Default</span>
-        )}
       </div>
     );
   }
@@ -33,23 +36,24 @@ export const LanguageSelector: React.FC = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button size="sm" variant="outline" className="flex items-center gap-x-1 text-blue-500 hover:text-blue-600">
-          <GlobeIcon className="h-4 w-4" />
-          <div className="flex items-end">
+        <Button size="sm" variant="ghost" className="flex items-center gap-x-1 text-blue-500 hover:text-blue-600">
+          <FaLanguage className="h-4 w-4" />
+          <div className="flex items-center space-x-2">
             <div> {get(LANGUAGES, currentLang)}</div>
-            {currentLang === fallbackLang && (
-              <span className="h-full pl-1 text-[10px] leading-4 text-gray-400">Default</span>
-            )}
+            <ChevronDownIcon className="h-4 w-4" />
           </div>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent className="border-border">
         {map(langOptions, (option) => (
-          <DropdownMenuItem className="flex cursor-pointer items-end" onClick={() => setSelectedLang(option.key)}>
-            <div>{option.value}</div>
-            {option.key === fallbackLang && (
-              <span className="h-full pl-1 text-[10px] leading-4 text-green-400">Default</span>
+          <DropdownMenuItem
+            className={mergeClasses(
+              "flex cursor-pointer items-center text-sm",
+              option.key === currentLang && "!bg-blue-500 text-white hover:!text-white",
             )}
+            onClick={() => setSelectedLang(option.key)}>
+            <div>{option.value}</div>
+            {option.key === fallbackLang ? <FaStar className="ml-2 h-4 w-4 text-yellow-400" /> : null}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
