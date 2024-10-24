@@ -8,8 +8,12 @@ const EmptyBox = React.memo(
       blockProps: Record<string, string>;
     },
   ) => {
-    const { blockProps, styles } = props;
-    return React.createElement("div", { ...blockProps, ...styles });
+    const { blockProps, styles, backgroundImage } = props;
+    let cssStyles = {};
+    if (backgroundImage) {
+      cssStyles = { backgroundImage: `url(${backgroundImage})` };
+    }
+    return React.createElement("div", { ...blockProps, ...styles, style: cssStyles });
   },
 );
 
@@ -20,7 +24,7 @@ const Config = {
   group: "basic",
   props: {
     styles: Styles({ default: "" }),
-    backgroundImage: Image({ title: "web_blocks.background_image" }),
+    backgroundImage: Image({ title: "Background Image" }),
   },
 };
 

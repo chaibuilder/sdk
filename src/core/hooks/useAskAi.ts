@@ -60,7 +60,10 @@ export const useAskAi = () => {
               ? cloneDeep(getBlockWithChildren(blockId, blocks))
               : [cloneDeep(blocks.find((block) => block._id === blockId))];
           set(aiBlocks, "0._parent", null);
-          const askAiResponse = await callBack(type, promptWithLanguage(prompt, currentLang, type), aiBlocks);
+
+          const lang = selectedLang === fallbackLang ? "" : selectedLang;
+          const askAiResponse = await callBack(type, promptWithLanguage(prompt, currentLang, type), aiBlocks, lang);
+
           const { blocks: updatedBlocks, error } = askAiResponse;
           if (error) {
             setError(error);
@@ -79,7 +82,16 @@ export const useAskAi = () => {
           if (onComplete) onComplete();
         }
       },
-      [callBack, setProcessing, blocks, updateBlockPropsAll, updateBlocksWithStream],
+      [
+        callBack,
+        setProcessing,
+        blocks,
+        selectedLang,
+        fallbackLang,
+        currentLang,
+        updateBlockPropsAll,
+        updateBlocksWithStream,
+      ],
     ),
     loading: processing,
     error,

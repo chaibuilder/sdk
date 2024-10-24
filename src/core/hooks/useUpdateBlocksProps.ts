@@ -34,7 +34,7 @@ export const useUpdateBlocksProps = () => {
       const updatedProps = updatePropsForLanguage(props, selectedLang, selectedBlock);
       updateBlocks(blockIds, updatedProps, prevPropsState);
     },
-    [updateBlocks, selectedLang],
+    [selectedLang, selectedBlock, updateBlocks],
   );
 };
 
@@ -84,7 +84,7 @@ export const useStreamMultipleBlocksProps = () => {
       }
       updateMultipleBlocksProps(blocks);
     },
-    [updateMultipleBlocksProps],
+    [streamEffect, updateMultipleBlocksProps],
   );
 };
 
@@ -98,6 +98,6 @@ export const useUpdateBlocksPropsRealtime = () => {
       const updatedProps = updatePropsForLanguage(props, selectedLang, selectedBlock);
       updateBlocksRuntime(blockIds, updatedProps);
     },
-    [updateBlocksRuntime, selectedLang],
+    [selectedLang, selectedBlock, updateBlocksRuntime],
   );
 };

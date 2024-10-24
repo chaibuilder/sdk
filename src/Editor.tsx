@@ -9,6 +9,7 @@ import { LayersIcon } from "lucide-react";
 import { registerChaiBlock } from "@chaibuilder/runtime";
 import { SingleLineText } from "@chaibuilder/runtime/controls";
 import { get } from "lodash-es";
+import { map, pick } from "lodash-es";
 
 loadWebBlocks();
 
@@ -55,10 +56,16 @@ function ChaiBuilderDefault() {
         return true;
       }}
       aiContext={aiContext}
-      // askAiCallBack={async (type: "styles" | "content", prompt: string, blocks: ChaiBlock[]) => {
-      //   console.log("askAiCallBack", type, prompt, blocks);
-      //   return { blocks: [], usage: { completionTokens: 151, promptTokens: 227, totalTokens: 378 } };
-      // }}
+      askAiCallBack={async (type: "styles" | "content", prompt: string, blocks: ChaiBlock[], lang: string = "") => {
+        console.log("askAiCallBack", type, prompt, blocks, lang);
+        return {
+          blocks: map(blocks, (b) => ({
+            ...pick(b, ["_id"]),
+            content: `AI Generated Content with current time ${new Date().toISOString()}`,
+          })),
+          usage: { completionTokens: 151, promptTokens: 227, totalTokens: 378 },
+        };
+      }}
       uploadMediaCallback={async () => {
         return { url: "https://picsum.photos/200" };
       }}
