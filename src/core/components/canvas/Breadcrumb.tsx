@@ -3,12 +3,13 @@ import { ChevronRight } from "lucide-react";
 import { useSelectedBlockHierarchy, useSelectedBlockIds } from "../../hooks/useSelectedBlockIds.ts";
 import { reverse } from "lodash-es";
 import { TypeIcon } from "../sidepanels/panels/outline/TypeIcon.tsx";
-import { useHighlightBlockId } from "../../hooks";
+import { useBlockHighlight } from "../../hooks/useBlockHighlight";
 
 export const Breadcrumb = () => {
   const hierarchy = useSelectedBlockHierarchy();
   const [, setSelected] = useSelectedBlockIds();
-  const [, setHighlighted] = useHighlightBlockId();
+  const { highlightBlock } = useBlockHighlight();
+
   return (
     <div className="-mx-2 border-t border-border bg-background px-2 py-1 text-xs text-muted-foreground">
       <ol className="flex items-center whitespace-nowrap">
@@ -22,7 +23,7 @@ export const Breadcrumb = () => {
           <li key={index} className="inline-flex items-center">
             <Button
               onMouseEnter={() => {
-                setHighlighted(block?._id);
+                highlightBlock(block?._id);
               }}
               onClick={() => setSelected([block?._id])}
               variant={"ghost"}

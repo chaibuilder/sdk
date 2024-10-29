@@ -32,7 +32,7 @@ import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
 import { useCodeEditor } from "./useCodeEditor.ts";
 import { useGlobalBlocksList, useGlobalBlocksStore } from "./useGlobalBlocksStore.ts";
 import { useLanguages } from "./useLanguages.ts";
-
+import { useBlockHighlight } from "./useBlockHighlight.ts";
 export { useLayoutVariant } from "./useLayoutVariant.ts";
 export { useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 export {
@@ -56,6 +56,7 @@ export {
   useDuplicateBlocks,
   useHiddenBlockIds,
   useHighlightBlockId,
+  useBlockHighlight,
   usePasteBlocks,
   usePreviewMode,
   useBrandingOptions,

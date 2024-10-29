@@ -1,11 +1,6 @@
 import React, { useEffect } from "react";
 import { useFrame } from "../../../frame";
-import {
-  useHighlightBlockId,
-  useSelectedBlockIds,
-  useSelectedStylingBlocks,
-  useUpdateBlocksProps,
-} from "../../../hooks";
+import { useSelectedBlockIds, useSelectedStylingBlocks, useUpdateBlocksProps } from "../../../hooks";
 import { first, isEmpty, omit, throttle } from "lodash-es";
 import { Quill } from "react-quill";
 import { useAtom } from "jotai";
@@ -13,11 +8,19 @@ import { inlineEditingActiveAtom, treeRefAtom } from "../../../atoms/ui.ts";
 import { useDnd } from "../dnd/useDnd.ts";
 
 function getTargetedBlock(target) {
-  // check if target is a block by checking attr data-block-id else get .closest('[data-block-id]')
+  // First check if the target is the canvas itself
+  if (target.getAttribute("data-block-id") === "canvas") {
+    return null;
+  }
+
+  // Then check for other blocks
   if (target.getAttribute("data-block-id")) {
     return target;
   }
-  return target.closest("[data-block-id]");
+
+  // When looking for parent blocks, exclude the canvas
+  const closest = target.closest("[data-block-id]");
+  return closest?.getAttribute("data-block-id") === "canvas" ? null : closest;
 }
 
 function destroyQuill(quill) {
@@ -43,7 +46,6 @@ function destroyQuill(quill) {
 const useHandleCanvasDblClick = () => {
   const INLINE_EDITABLE_BLOCKS = ["Heading", "Paragraph", "Text", "Link", "Span", "Button"];
   const updateContent = useUpdateBlocksProps();
-  const [, setHighlightedId] = useHighlightBlockId();
   const [editingBlockId, setEditingBlockId] = useAtom(inlineEditingActiveAtom);
 
   return (e) => {
@@ -72,7 +74,10 @@ const useHandleCanvasDblClick = () => {
       newBlock.removeEventListener("blur", blurListener, true);
       destroyQuill(quill);
       setEditingBlockId("");
-      setHighlightedId("");
+      if (lastHighlighted) {
+        lastHighlighted.removeAttribute("data-highlighted");
+        lastHighlighted = null;
+      }
     }
     newBlock.addEventListener("blur", blurListener, true);
 
@@ -92,19 +97,20 @@ const useHandleCanvasDblClick = () => {
 const useHandleCanvasClick = () => {
   const [, setStyleBlockIds] = useSelectedStylingBlocks();
   const [ids, setIds] = useSelectedBlockIds();
-  const [, setHighlighted] = useHighlightBlockId();
   const [editingBlockId] = useAtom(inlineEditingActiveAtom);
   const [treeRef] = useAtom(treeRefAtom);
+
   return (e: any) => {
-    if (editingBlockId) {
-      return;
-    }
+    if (editingBlockId) return;
     e.stopPropagation();
     const chaiBlock: HTMLElement = getTargetedBlock(e.target);
     if (chaiBlock?.getAttribute("data-block-id") && chaiBlock?.getAttribute("data-block-id") === "container") {
       setIds([]);
       setStyleBlockIds([]);
-      setHighlighted("");
+      if (lastHighlighted) {
+        lastHighlighted.removeAttribute("data-highlighted");
+        lastHighlighted = null;
+      }
       return;
     }
 
@@ -127,30 +133,59 @@ const useHandleCanvasClick = () => {
       setStyleBlockIds([]);
       setIds(blockId === "canvas" ? [] : [blockId]);
     }
-    setHighlighted("");
+    if (lastHighlighted) {
+      lastHighlighted.removeAttribute("data-highlighted");
+      lastHighlighted = null;
+    }
   };
 };
 
-const handleMouseMove = throttle((e: any, setHighlightedId) => {
-  const chaiBlock: HTMLElement = getTargetedBlock(e.target);
-  if (chaiBlock?.getAttribute("data-style-id")) {
-    setHighlightedId(chaiBlock.getAttribute("data-style-id"));
+let lastHighlighted: HTMLElement | null = null;
+
+const handleMouseMove = throttle((e: any) => {
+  if (lastHighlighted) {
+    lastHighlighted.removeAttribute("data-highlighted");
   }
-}, 100);
+
+  const chaiBlock = getTargetedBlock(e.target);
+  if (chaiBlock) {
+    chaiBlock.setAttribute("data-highlighted", "true");
+    lastHighlighted = chaiBlock;
+  } else {
+    lastHighlighted = null;
+  }
+}, 16);
 
 const useHandleMouseMove = () => {
-  const [, setHighlightedId] = useHighlightBlockId();
   const [editingBlockId] = useAtom(inlineEditingActiveAtom);
   return (e: any) => {
     if (editingBlockId) return;
-    handleMouseMove(e, setHighlightedId);
+    handleMouseMove(e);
   };
+};
+
+const clearHighlight = () => {
+  if (lastHighlighted) {
+    lastHighlighted.removeAttribute("data-highlighted");
+    lastHighlighted = null;
+  }
+};
+
+const useHandleMouseLeave = () => {
+  return clearHighlight;
 };
 
 export const Canvas = ({ children }: { children: React.ReactNode }) => {
   const { document } = useFrame();
   const [ids] = useSelectedBlockIds();
   const [styleIds, setSelectedStylingBlocks] = useSelectedStylingBlocks();
+
+  // Add cleanup effect
+  useEffect(() => {
+    return () => {
+      clearHighlight();
+    };
+  }, []);
 
   useEffect(() => {
     setTimeout(() => {
@@ -172,6 +207,7 @@ export const Canvas = ({ children }: { children: React.ReactNode }) => {
   const handleDblClick = useHandleCanvasDblClick();
   const handleCanvasClick = useHandleCanvasClick();
   const handleMouseMove = useHandleMouseMove();
+  const handleMouseLeave = useHandleMouseLeave();
   const dnd = useDnd();
 
   return (
@@ -181,11 +217,13 @@ export const Canvas = ({ children }: { children: React.ReactNode }) => {
       onClick={handleCanvasClick}
       onDoubleClick={handleDblClick}
       onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       {...omit(dnd, "isDragging")}
       className={`relative h-full max-w-full p-px ` + (dnd.isDragging ? "dragging" : "") + ""}>
       {children}
     </div>
   );
 };
+
 export const getElementByDataBlockId = (doc: any, blockId: string): HTMLElement =>
   doc.querySelector(`[data-block-id="${blockId}"]`) as HTMLElement;

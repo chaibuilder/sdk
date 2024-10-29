@@ -1,6 +1,6 @@
 import { capitalize, filter, first, get, groupBy, has, isEmpty, map, noop, values } from "lodash-es";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useAddBlock, useBuilderProp, useHighlightBlockId, useSelectedBlockIds } from "../../../../hooks";
+import { useAddBlock, useBuilderProp, useSelectedBlockIds } from "../../../../hooks";
 import { syncBlocksWithDefaults, useChaiBlocks } from "@chaibuilder/runtime";
 import { Loader } from "lucide-react";
 import { atom, useAtom } from "jotai";
@@ -17,6 +17,7 @@ import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { selectedLibraryAtom } from "../../../../atoms/ui.ts";
 import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../../../events.ts";
+import { useBlockHighlight } from "../../../../hooks";
 
 const BlockCard = ({
   block,
@@ -31,7 +32,7 @@ const BlockCard = ({
   const getUILibraryBlock = useBuilderProp("getUILibraryBlock", noop);
   const { addCoreBlock, addPredefinedBlock } = useAddBlock();
   const [, setSelected] = useSelectedBlockIds();
-  const [, setHighlighted] = useHighlightBlockId();
+  const { clearHighlight } = useBlockHighlight();
   const name = get(block, "name", get(block, "label"));
   const dnd = useFeature("dnd");
   const [, setDraggedBlock] = useAtom(draggedBlockAtom);
@@ -82,7 +83,7 @@ const BlockCard = ({
       setDraggedBlock(convertedBlock);
       setTimeout(() => {
         setSelected([]);
-        setHighlighted(null);
+        clearHighlight();
         emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK });
       }, 200);
     }
