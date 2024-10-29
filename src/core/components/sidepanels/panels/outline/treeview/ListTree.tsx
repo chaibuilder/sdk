@@ -9,7 +9,6 @@ import {
   useBuilderProp,
   useCutBlockIds,
   useHiddenBlockIds,
-  useHighlightBlockId,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
   useUpdateBlocksProps,
@@ -42,17 +41,17 @@ import { ROOT_TEMP_KEY } from "../../../../../constants/STRINGS.ts";
 import { EyeOff, PlusIcon } from "lucide-react";
 import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../../../../events.ts";
 import { BiCollapseVertical, BiExpandVertical } from "react-icons/bi";
+import { useBlockHighlight } from "../../../../../hooks/useBlockHighlight";
 
 const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const outlineItems = useBuilderProp("outlineMenuItems", []);
   const { t } = useTranslation();
   const [hiddenBlocks, , toggleHidden] = useHiddenBlockIds();
-  const [, setHighlighted] = useHighlightBlockId();
   const [iframe] = useAtom<HTMLIFrameElement>(canvasIframeAtom);
 
   let previousState: boolean | null = null;
   const hasChildren = node.children.length > 0;
-
+  const { highlightBlock } = useBlockHighlight();
   const { id, data, isSelected, willReceiveDrop, isDragging, isEditing, handleClick } = node;
 
   const handleToggle = (event: any) => {
@@ -165,7 +164,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   return (
     <BlockContextMenu id={id}>
       <div
-        onMouseEnter={() => setHighlighted(id)}
+        onMouseEnter={() => highlightBlock(id)}
         onClick={handleNodeClickWithoutPropagating}
         style={style}
         data-node-id={id}

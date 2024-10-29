@@ -1,4 +1,4 @@
-import { useHighlightBlockId } from "./useHighlightBlockId";
+import { useBlockHighlight } from "./useBlockHighlight";
 import { useSelectedBlockIds } from "./useSelectedBlockIds";
 import { useSelectedStylingBlocks } from "./useSelectedStylingBlocks";
 import { useSetAtom } from "jotai";
@@ -11,14 +11,15 @@ export const useBuilderReset = () => {
   const setNewState = useSetAtom(historyStatesAtom);
   const { clear } = useUndoManager();
   const [, setSelectedIds] = useSelectedBlockIds();
-  const [, setHighlighted] = useHighlightBlockId();
+  const { clearHighlight } = useBlockHighlight();
   const [, setStylingHighlighted] = useSelectedStylingBlocks();
   const [, setAiAssistantActive] = useAtom(aiAssistantActiveAtom);
   const { reset: resetGlobalBlocks } = useGlobalBlocksStore();
+
   return () => {
     setSelectedIds([]);
     setStylingHighlighted([]);
-    setHighlighted("");
+    clearHighlight();
     clear();
     setAiAssistantActive(false);
     setNewState({ undoCount: 0, redoCount: 0 });

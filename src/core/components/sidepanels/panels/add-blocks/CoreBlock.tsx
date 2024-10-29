@@ -3,7 +3,7 @@ import { capitalize, has, isFunction, omit } from "lodash-es";
 import { createElement } from "react";
 import { BoxIcon } from "@radix-ui/react-icons";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../../ui";
-import { useAddBlock, useHighlightBlockId, useSelectedBlockIds } from "../../../../hooks";
+import { useAddBlock, useBlockHighlight, useSelectedBlockIds } from "../../../../hooks";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { draggedBlockAtom } from "../../../canvas/dnd/atoms.ts";
 import { useFeature } from "flagged";
@@ -15,7 +15,7 @@ export const CoreBlock = ({ block, disabled, parentId }: { block: any; disabled:
   const { type, icon, label } = block;
   const { addCoreBlock, addPredefinedBlock } = useAddBlock();
   const [, setSelected] = useSelectedBlockIds();
-  const [, setHighlighted] = useHighlightBlockId();
+  const { clearHighlight } = useBlockHighlight();
   const addBlockToPage = () => {
     if (has(block, "blocks")) {
       const blocks = isFunction(block.blocks) ? block.blocks() : block.blocks;
@@ -42,7 +42,7 @@ export const CoreBlock = ({ block, disabled, parentId }: { block: any; disabled:
               setDraggedBlock(omit(block, ["component", "icon"]));
               setTimeout(() => {
                 setSelected([]);
-                setHighlighted(null);
+                clearHighlight();
               }, 200);
             }}
             draggable={dnd ? "true" : "false"}

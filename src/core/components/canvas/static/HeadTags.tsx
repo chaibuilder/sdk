@@ -4,7 +4,6 @@ import { useFrame } from "../../../frame";
 import {
   useBrandingOptions,
   useDarkMode,
-  useHighlightBlockId,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
 } from "../../../hooks";
@@ -22,7 +21,7 @@ export const HeadTags = () => {
   const [customTheme] = useBrandingOptions();
   const [selectedBlockIds] = useSelectedBlockIds();
   const [darkMode] = useDarkMode();
-  const [highlightedId] = useHighlightBlockId();
+  
   const [stylingBlockIds] = useSelectedStylingBlocks();
   const [draggedBlock] = useAtom(draggedBlockAtom);
   const [dropTargetId] = useAtom(dropTargetBlockIdAtom);
@@ -139,10 +138,8 @@ export const HeadTags = () => {
 
   useEffect(() => {
     if (!highlightedBlockStyle) return;
-    highlightedBlockStyle.textContent = highlightedId
-      ? `[data-style-id="${highlightedId}"], [data-block-id="${highlightedId}"]{ outline: 1px solid #42a1fc !important; outline-offset: -1px;}`
-      : "";
-  }, [highlightedId, selectedBlockIds, highlightedBlockStyle]);
+    highlightedBlockStyle.textContent = `[data-highlighted="true"]{ outline: 1px solid #42a1fc !important; outline-offset: -1px;}`;
+  }, [highlightedBlockStyle]);
 
   useEffect(() => {
     if (!selectedStylingBlocks) return;
