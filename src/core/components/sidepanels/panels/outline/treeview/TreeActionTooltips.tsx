@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 import { useHiddenBlockIds } from "../../../../../hooks";
 
-const CollapseAllTooltip = forwardRef((props, ref: any) => {
+const CollapseAllTooltip = forwardRef((_props, ref: any) => {
   const { t } = useTranslation();
 
   return (
@@ -29,7 +29,7 @@ const CollapseAllTooltip = forwardRef((props, ref: any) => {
   );
 });
 
-const ExpandAllTooltip = forwardRef((props, ref: any) => {
+const ExpandAllTooltip = forwardRef((_props, ref: any) => {
   const { t } = useTranslation();
 
   return (
