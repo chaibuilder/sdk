@@ -72,7 +72,7 @@ const shouldAddText = (node: Node, block: any) => {
   return (
     node.children.length === 1 &&
     includes(
-      ["Heading", "Paragraph", "Span", "ListItem", "Button", "Label", "TableCell", "Link", "LightBoxLink", "RichText"],
+      ["Heading", "Paragraph", "Span", "ListItem", "Button", "Label", "TableCell", "Link", "RichText"],
       block._type,
     )
   );
@@ -154,6 +154,20 @@ const getStyles = (node: Node, propKey: string = "styles"): Record<string, strin
 };
 
 const getBlockProps = (node: Node): Record<string, any> => {
+  const attributes = get(node, "attributes", []);
+  const isRichText = attributes.find((attr) => attr.key === "chai-richtext");
+  const isLightboxLink = attributes.find((attr) => attr.key === "chai-lightbox");
+
+  // Check for special attributes first
+  if (isRichText) {
+    return { _type: "RichText" };
+  }
+
+  if (isLightboxLink) {
+    return { _type: "LightBoxLink" };
+  }
+  
+  // Default block props based on tag
   switch (node.tagName) {
     // self closing tags
     case "img":
@@ -235,12 +249,6 @@ const getBlockProps = (node: Node): Record<string, any> => {
     case "tfoot":
       return { _type: "TableFooter" };
     case "div": {
-      const isRichText = get(node, "attributes", []).find((attr) => attr.key === "chai-richtext");
-
-      if (isRichText) {
-        return { _type: "RichText" };
-      }
-
       const type = get(node, "children", []).length > 0 ? "Box" : "EmptyBox";
       return {
         _type: type,
@@ -266,14 +274,6 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
     let block: Partial<ChaiBlock> = { _id: generateUUID() };
     if (parent) block._parent = parent.block._id;
 
-    /**
-     * @handling_textcontent
-     * Checking if parent exist
-     * If parent has only one children and current node type is text
-     * checking does parent block type support content
-     * setting parent content to current node text content
-     * returning empty node
-     */
     if (node.type === "text") {
       if (isEmpty(get(node, "content", ""))) return [] as any;
       if (parent) {
@@ -293,8 +293,7 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
       ...getStyles(node),
     };
 
-    // node has a x-name attribute. set the _name of the block to the value of x-name and
-    // remove the attribute from the node
+    // Handle x-name attribute
     if (node.attributes) {
       const xName = node.attributes.find((attr) => attr.key === NAME_ATTRIBUTE);
       if (xName) {
@@ -302,11 +301,31 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
       }
     }
 
+    // Check for special attributes
+    const attributes = get(node, "attributes", []);
+    const isRichText = attributes.find((attr) => attr.key === "chai-richtext");
+    const isLightboxLink = attributes.find((attr) => attr.key === "chai-lightbox");
+
+    if (isRichText) {
+      block._type = "RichText";
+      block.content = stringify(node.children);
+      return [block] as ChaiBlock[];
+    }
+
+    if (isLightboxLink) {
+      block._type = "LightBoxLink";
+      block = {
+        ...block,
+        href: attributes.find((attr) => attr.key === "href")?.value || "",
+        hrefType: attributes.find((attr) => attr.key === "data-vbtype")?.value || "video",
+        autoplay: attributes.find((attr) => attr.key === "data-autoplay")?.value === "true",
+        maxWidth: attributes.find((attr) => attr.key === "data-maxwidth")?.value?.replace("px", "") || "",
+        backdropColor: attributes.find((attr) => attr.key === "data-overlay")?.value || "",
+        galleryName: attributes.find((attr) => attr.key === "data-gall")?.value || "",
+      };
+    }
+
     if (block._type === "Input") {
-      /**
-       * hanlding input tag mapping type to input type
-       * setting block _type to non-standard inputs like checkbox, radio, range, file
-       */
       const inputType = block.inputType || "text";
       if (inputType === "checkbox") set(block, "_type", "Checkbox");
       else if (inputType === "radio") set(block, "_type", "Radio");
@@ -321,11 +340,6 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
       block.content = innerHTML;
       return [block] as ChaiBlock[];
     } else if (node.tagName === "svg") {
-      /**
-       * handling svg tag
-       * if svg tag just pass html stringify content as icon
-       */
-
       const svgHeight = find(node.attributes, { key: "height" });
       const svgWidth = find(node.attributes, { key: "width" });
       const height = get(svgHeight, "value") ? `[${get(svgHeight, "value")}px]` : "24px";
@@ -337,36 +351,13 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
       block.icon = stringify([node]);
       return [block] as ChaiBlock[];
     } else if (node.tagName == "option" && parent && parent.block?._type === "Select") {
-      /**
-       * mapping select options as underscore options
-       * for label extracting string from all option child and mapping all attributes
-       */
       parent.block.options.push({
         label: getTextContent(node.children),
         ...getAttrs(node),
       });
       return [] as any;
-    } else if (block._type === "LightBoxLink") {
-      const style_attributes = get(node, "attributes", []);
-      const lightbox_attrs = {
-        href: style_attributes.find((attr) => attr.key === "href")?.value || "",
-        hrefType: style_attributes.find((attr) => attr.key === "data-vbtype")?.value || "video",
-        autoplay: style_attributes.find((attr) => attr.key === "data-autoplay")?.value === "true",
-        maxWidth: style_attributes.find((attr) => attr.key === "data-maxwidth")?.value?.replace("px", "") || "",
-        backdropColor: style_attributes.find((attr) => attr.key === "data-overlay")?.value || "",
-        galleryName: style_attributes.find((attr) => attr.key === "data-gall")?.value || "",
-      };
-
-      block = {
-        ...block,
-        ...lightbox_attrs,
-      };
-    } else if (block._type === "RichText") {
-      block.content = stringify(node.children);
-
-      return [block] as ChaiBlock[];
     }
-    
+
     const children = traverseNodes(node.children, { block, node });
     return [block, ...children] as ChaiBlock[];
   });
