@@ -71,17 +71,10 @@ const ATTRIBUTE_MAP: Record<string, Record<string, string>> = {
 const shouldAddText = (node: Node, block: any) => {
   return (
     node.children.length === 1 &&
-    includes([
-      "Heading", 
-      "Paragraph", 
-      "Span", 
-      "ListItem", 
-      "Button", 
-      "Label", 
-      "TableCell", 
-      "Link",
-      "LightBoxLink"
-    ], block._type)
+    includes(
+      ["Heading", "Paragraph", "Span", "ListItem", "Button", "Label", "TableCell", "Link", "LightBoxLink", "RichText"],
+      block._type,
+    )
   );
 };
 
@@ -210,7 +203,7 @@ const getBlockProps = (node: Node): Record<string, any> => {
     case "p":
       return { _type: "Paragraph", content: "" };
     case "a": {
-      const isLightboxLink = get(node, "attributes", []).find((attr) => attr.key === "data-lightbox");
+      const isLightboxLink = get(node, "attributes", []).find((attr) => attr.key === "chai-lightbox");
       return { _type: isLightboxLink ? "LightBoxLink" : "Link" };
     }
     case "form":
@@ -241,14 +234,20 @@ const getBlockProps = (node: Node): Record<string, any> => {
       return { _type: "TableBody" };
     case "tfoot":
       return { _type: "TableFooter" };
+    case "div": {
+      const isRichText = get(node, "attributes", []).find((attr) => attr.key === "chai-richtext");
 
-    default:
+      if (isRichText) {
+        return { _type: "RichText" };
+      }
+
       const type = get(node, "children", []).length > 0 ? "Box" : "EmptyBox";
       return {
         _type: type,
         tag: node.tagName,
         _name: type == "EmptyBox" ? type : node.tagName === "div" ? type : capitalize(node.tagName),
       };
+    }
   }
 };
 
@@ -362,8 +361,12 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
         ...block,
         ...lightbox_attrs,
       };
-    }
+    } else if (block._type === "RichText") {
+      block.content = stringify(node.children);
 
+      return [block] as ChaiBlock[];
+    }
+    
     const children = traverseNodes(node.children, { block, node });
     return [block, ...children] as ChaiBlock[];
   });
