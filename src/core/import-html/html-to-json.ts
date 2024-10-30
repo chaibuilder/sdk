@@ -155,8 +155,8 @@ const getStyles = (node: Node, propKey: string = "styles"): Record<string, strin
 
 const getBlockProps = (node: Node): Record<string, any> => {
   const attributes = get(node, "attributes", []);
-  const isRichText = attributes.find((attr) => attr.key === "chai-richtext");
-  const isLightboxLink = attributes.find((attr) => attr.key === "chai-lightbox");
+  const isRichText = attributes.find((attr) => attr.key === "data-chai-richtext");
+  const isLightboxLink = attributes.find((attr) => attr.key === "data-chai-lightbox");
 
   // Check for special attributes first
   if (isRichText) {
@@ -217,7 +217,7 @@ const getBlockProps = (node: Node): Record<string, any> => {
     case "p":
       return { _type: "Paragraph", content: "" };
     case "a": {
-      const isLightboxLink = get(node, "attributes", []).find((attr) => attr.key === "chai-lightbox");
+      const isLightboxLink = get(node, "attributes", []).find((attr) => attr.key === "data-chai-lightbox");
       return { _type: isLightboxLink ? "LightBoxLink" : "Link" };
     }
     case "form":
@@ -312,17 +312,19 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
 
     // Check for special attributes
     const attributes = get(node, "attributes", []);
-    const isRichText = attributes.find((attr) => attr.key === "chai-richtext");
-    const isLightboxLink = attributes.find((attr) => attr.key === "chai-lightbox");
+    const isRichText = attributes.find((attr) => attr.key === "data-chai-richtext");
+    const isLightboxLink = attributes.find((attr) => attr.key === "data-chai-lightbox");
 
     if (isRichText) {
-      block._type = "RichText";
       block.content = stringify(node.children);
+      // Remove the chai-richtext attribute from attrs
+      if (block.attrs) {
+        delete block.attrs['data-chai-richtext'];
+      }
       return [block] as ChaiBlock[];
     }
 
     if (isLightboxLink) {
-      block._type = "LightBoxLink";
       block = {
         ...block,
         href: attributes.find((attr) => attr.key === "href")?.value || "",
@@ -332,6 +334,19 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
         backdropColor: attributes.find((attr) => attr.key === "data-overlay")?.value || "",
         galleryName: attributes.find((attr) => attr.key === "data-gall")?.value || "",
       };
+
+      // Remove all lightbox-related attributes from attrs
+      if (block.attrs) {
+        const attrsToRemove = [
+          'data-chai-lightbox',
+          'data-vbtype',
+          'data-autoplay',
+          'data-maxwidth',
+          'data-overlay',
+          'data-gall'
+        ];
+        attrsToRemove.forEach(attr => delete block.attrs[attr]);
+      }
     }
 
     if (block._type === "Input") {
