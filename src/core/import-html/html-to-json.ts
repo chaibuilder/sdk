@@ -310,43 +310,45 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
       }
     }
 
-    // Check for special attributes
-    const attributes = get(node, "attributes", []);
-    const isRichText = attributes.find((attr) => attr.key === "data-chai-richtext");
-    const isLightboxLink = attributes.find((attr) => attr.key === "data-chai-lightbox");
+    const style_attributes = get(node, "attributes", []);
+    const isRichText = style_attributes.find((attr) => attr.key === "data-chai-richtext");
+    const isLightboxLink = style_attributes.find((attr) => attr.key === "data-chai-lightbox");
 
     if (isRichText) {
       block.content = stringify(node.children);
-      // Remove the chai-richtext attribute from attrs
-      if (block.attrs) {
-        delete block.attrs['data-chai-richtext'];
-      }
+      // Remove richtext attribute
+      delete block.attrs?.['data-chai-richtext'];
+      block.styles_attrs = style_attributes.filter(attr => attr.key !== "data-chai-richtext");
       return [block] as ChaiBlock[];
     }
 
     if (isLightboxLink) {
+      const lightboxAttrs = [
+        'data-chai-lightbox',
+        'data-vbtype',
+        'data-autoplay',
+        'data-maxwidth',
+        'data-overlay',
+        'data-gall'
+      ];
+
       block = {
         ...block,
-        href: attributes.find((attr) => attr.key === "href")?.value || "",
-        hrefType: attributes.find((attr) => attr.key === "data-vbtype")?.value || "video",
-        autoplay: attributes.find((attr) => attr.key === "data-autoplay")?.value === "true",
-        maxWidth: attributes.find((attr) => attr.key === "data-maxwidth")?.value?.replace("px", "") || "",
-        backdropColor: attributes.find((attr) => attr.key === "data-overlay")?.value || "",
-        galleryName: attributes.find((attr) => attr.key === "data-gall")?.value || "",
+        href: style_attributes.find((attr) => attr.key === "href")?.value || "",
+        hrefType: style_attributes.find((attr) => attr.key === "data-vbtype")?.value || "video",
+        autoplay: style_attributes.find((attr) => attr.key === "data-autoplay")?.value === "true",
+        maxWidth: style_attributes.find((attr) => attr.key === "data-maxwidth")?.value?.replace("px", "") || "",
+        backdropColor: style_attributes.find((attr) => attr.key === "data-overlay")?.value || "",
+        galleryName: style_attributes.find((attr) => attr.key === "data-gall")?.value || "",
       };
 
-      // Remove all lightbox-related attributes from attrs
-      if (block.attrs) {
-        const attrsToRemove = [
-          'data-chai-lightbox',
-          'data-vbtype',
-          'data-autoplay',
-          'data-maxwidth',
-          'data-overlay',
-          'data-gall'
-        ];
-        attrsToRemove.forEach(attr => delete block.attrs[attr]);
-      }
+      // Remove from attrs
+      lightboxAttrs.forEach(attr => {
+        if (block.attrs) delete block.attrs[attr];
+      });
+
+      // Remove from style_attributes
+      block.styles_attrs = style_attributes.filter(attr => !lightboxAttrs.includes(attr.key));
     }
 
     if (block._type === "Input") {
