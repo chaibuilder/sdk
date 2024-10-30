@@ -83,6 +83,7 @@ export const IframeInitialContent = (fonts: string, html: string): string => `<!
     </style>   
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/venobox@2.1.8/dist/venobox.min.css">
   </head>
   <body class="font-body antialiased h-full">
     <div class="frame-root h-full">
@@ -90,8 +91,12 @@ export const IframeInitialContent = (fonts: string, html: string): string => `<!
     </div>  
     <script src="//unpkg.com/alpinejs" defer></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/venobox@2.1.8/dist/venobox.min.js"></script>
     <script>
       AOS.init();
+      new VenoBox({
+        selector: '.cb-lightbox',
+      });
       function addClickEventToLinks() {
         document.querySelectorAll('a').forEach(link => {
           link.addEventListener('click', function(event) {

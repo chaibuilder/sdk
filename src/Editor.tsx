@@ -35,11 +35,11 @@ function ChaiBuilderDefault() {
   ]);
   return (
     <ChaiBuilderEditor
-      fallbackLang="fr"
-      languages={["en"]}
+      // fallbackLang="fr"
+      // languages={["en"]}
       unsplashAccessKey={"import.meta.env.VITE_UNSPLASH_ACCESS_KEY"}
-      showDebugLogs={true}
-      autoSaveSupport={false}
+      autoSaveSupport={true}
+      autoSaveInterval={5}
       previewComponent={PreviewWeb}
       blocks={blocks}
       brandingOptions={brandingOptions}
@@ -48,7 +48,7 @@ function ChaiBuilderDefault() {
         localStorage.setItem("chai-builder-blocks", JSON.stringify(blocks));
         localStorage.setItem("chai-builder-providers", JSON.stringify(providers));
         localStorage.setItem("chai-builder-branding-options", JSON.stringify(brandingOptions));
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        await new Promise((resolve) => setTimeout(resolve, 100));
         return true;
       }}
       saveAiContextCallback={async (aiContext: string) => {
