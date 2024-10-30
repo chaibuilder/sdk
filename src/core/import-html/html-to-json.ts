@@ -166,7 +166,7 @@ const getBlockProps = (node: Node): Record<string, any> => {
   if (isLightboxLink) {
     return { _type: "LightBoxLink" };
   }
-  
+
   // Default block props based on tag
   switch (node.tagName) {
     // self closing tags
@@ -274,6 +274,14 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
     let block: Partial<ChaiBlock> = { _id: generateUUID() };
     if (parent) block._parent = parent.block._id;
 
+     /**
+     * @handling_textcontent
+     * Checking if parent exist
+     * If parent has only one children and current node type is text
+     * checking does parent block type support content
+     * setting parent content to current node text content
+     * returning empty node
+     */
     if (node.type === "text") {
       if (isEmpty(get(node, "content", ""))) return [] as any;
       if (parent) {
@@ -293,7 +301,8 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
       ...getStyles(node),
     };
 
-    // Handle x-name attribute
+    // node has a x-name attribute. set the _name of the block to the value of x-name and
+    // remove the attribute from the node
     if (node.attributes) {
       const xName = node.attributes.find((attr) => attr.key === NAME_ATTRIBUTE);
       if (xName) {
@@ -326,6 +335,10 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
     }
 
     if (block._type === "Input") {
+      /**
+       * hanlding input tag mapping type to input type
+       * setting block _type to non-standard inputs like checkbox, radio, range, file
+       */
       const inputType = block.inputType || "text";
       if (inputType === "checkbox") set(block, "_type", "Checkbox");
       else if (inputType === "radio") set(block, "_type", "Radio");
@@ -340,6 +353,10 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
       block.content = innerHTML;
       return [block] as ChaiBlock[];
     } else if (node.tagName === "svg") {
+      /**
+       * handling svg tag
+       * if svg tag just pass html stringify content as icon
+       */
       const svgHeight = find(node.attributes, { key: "height" });
       const svgWidth = find(node.attributes, { key: "width" });
       const height = get(svgHeight, "value") ? `[${get(svgHeight, "value")}px]` : "24px";
@@ -351,6 +368,10 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
       block.icon = stringify([node]);
       return [block] as ChaiBlock[];
     } else if (node.tagName == "option" && parent && parent.block?._type === "Select") {
+      /**
+       * mapping select options as underscore options
+       * for label extracting string from all option child and mapping all attributes
+       */
       parent.block.options.push({
         label: getTextContent(node.children),
         ...getAttrs(node),
