@@ -95,7 +95,7 @@ export const IframeInitialContent = (fonts: string, html: string): string => `<!
     <script>
       AOS.init();
       new VenoBox({
-        selector: '[data-lightbox]',
+        selector: '[chai-lightbox]',
       });
       function addClickEventToLinks() {
         document.querySelectorAll('a').forEach(link => {
