@@ -71,7 +71,17 @@ const ATTRIBUTE_MAP: Record<string, Record<string, string>> = {
 const shouldAddText = (node: Node, block: any) => {
   return (
     node.children.length === 1 &&
-    includes(["Heading", "Paragraph", "Span", "ListItem", "Button", "Label", "TableCell", "Link"], block._type)
+    includes([
+      "Heading", 
+      "Paragraph", 
+      "Span", 
+      "ListItem", 
+      "Button", 
+      "Label", 
+      "TableCell", 
+      "Link",
+      "LightBoxLink"
+    ], block._type)
   );
 };
 
@@ -199,8 +209,10 @@ const getBlockProps = (node: Node): Record<string, any> => {
       return { _type: "Span", tag: node.tagName };
     case "p":
       return { _type: "Paragraph", content: "" };
-    case "a":
-      return { _type: "Link" };
+    case "a": {
+      const isLightboxLink = get(node, "attributes", []).find((attr) => attr.key === "data-lightbox");
+      return { _type: isLightboxLink ? "LightBoxLink" : "Link" };
+    }
     case "form":
       return { _type: "Form" };
     case "label":
@@ -335,6 +347,21 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
         ...getAttrs(node),
       });
       return [] as any;
+    } else if (block._type === "LightBoxLink") {
+      const style_attributes = get(node, "attributes", []);
+      const lightbox_attrs = {
+        href: style_attributes.find((attr) => attr.key === "href")?.value || "",
+        hrefType: style_attributes.find((attr) => attr.key === "data-vbtype")?.value || "video",
+        autoplay: style_attributes.find((attr) => attr.key === "data-autoplay")?.value === "true",
+        maxWidth: style_attributes.find((attr) => attr.key === "data-maxwidth")?.value?.replace("px", "") || "",
+        backdropColor: style_attributes.find((attr) => attr.key === "data-overlay")?.value || "",
+        galleryName: style_attributes.find((attr) => attr.key === "data-gall")?.value || "",
+      };
+
+      block = {
+        ...block,
+        ...lightbox_attrs,
+      };
     }
 
     const children = traverseNodes(node.children, { block, node });
