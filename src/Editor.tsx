@@ -39,7 +39,7 @@ function ChaiBuilderDefault() {
       // languages={["en"]}
       unsplashAccessKey={"import.meta.env.VITE_UNSPLASH_ACCESS_KEY"}
       autoSaveSupport={true}
-      autoSaveInterval={5}
+      autoSaveInterval={15}
       previewComponent={PreviewWeb}
       blocks={blocks}
       brandingOptions={brandingOptions}

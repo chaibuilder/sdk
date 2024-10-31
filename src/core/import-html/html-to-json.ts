@@ -155,8 +155,8 @@ const getStyles = (node: Node, propKey: string = "styles"): Record<string, strin
 
 const getBlockProps = (node: Node): Record<string, any> => {
   const attributes = get(node, "attributes", []);
-  const isRichText = attributes.find((attr) => attr.key === "data-chai-richtext");
-  const isLightboxLink = attributes.find((attr) => attr.key === "data-chai-lightbox");
+  const isRichText = attributes.find((attr) => attr.key === "data-chai-richtext" || attr.key === "chai-richtext");
+  const isLightboxLink = attributes.find((attr) => attr.key === "data-chai-lightbox" || attr.key === "chai-lightbox");
 
   // Check for special attributes first
   if (isRichText) {
@@ -216,10 +216,8 @@ const getBlockProps = (node: Node): Record<string, any> => {
       return { _type: "Span", tag: node.tagName };
     case "p":
       return { _type: "Paragraph", content: "" };
-    case "a": {
-      const isLightboxLink = get(node, "attributes", []).find((attr) => attr.key === "data-chai-lightbox");
-      return { _type: isLightboxLink ? "LightBoxLink" : "Link" };
-    }
+    case "a":
+      return { _type: "Link" };
     case "form":
       return { _type: "Form" };
     case "label":
@@ -274,7 +272,7 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
     let block: Partial<ChaiBlock> = { _id: generateUUID() };
     if (parent) block._parent = parent.block._id;
 
-     /**
+    /**
      * @handling_textcontent
      * Checking if parent exist
      * If parent has only one children and current node type is text
@@ -293,6 +291,14 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
       return { ...block, _type: "Text", content: get(node, "content", "") };
     }
 
+    const styleAttributes = get(node, "attributes", []);
+    const isRichText = styleAttributes.find(
+      (attr) => attr.key === "data-chai-richtext" || attr.key === "chai-richtext",
+    );
+    const isLightboxLink = styleAttributes.find(
+      (attr) => attr.key === "data-chai-lightbox" || attr.key === "chai-lightbox",
+    );
+
     // * Adding default block props, default attrs and default style
     block = {
       ...block,
@@ -310,45 +316,41 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
       }
     }
 
-    const style_attributes = get(node, "attributes", []);
-    const isRichText = style_attributes.find((attr) => attr.key === "data-chai-richtext");
-    const isLightboxLink = style_attributes.find((attr) => attr.key === "data-chai-lightbox");
-
     if (isRichText) {
       block.content = stringify(node.children);
-      // Remove richtext attribute
-      delete block.attrs?.['data-chai-richtext'];
-      block.styles_attrs = style_attributes.filter(attr => attr.key !== "data-chai-richtext");
+      if (has(block, "styles_attrs.data-chai-richtext")) {
+        delete block.styles_attrs["data-chai-richtext"];
+      }
+      if (has(block, "styles_attrs.chai-richtext")) {
+        delete block.styles_attrs["chai-richtext"];
+      }
       return [block] as ChaiBlock[];
     }
 
     if (isLightboxLink) {
       const lightboxAttrs = [
-        'data-chai-lightbox',
-        'data-vbtype',
-        'data-autoplay',
-        'data-maxwidth',
-        'data-overlay',
-        'data-gall'
+        "data-chai-lightbox",
+        "chai-lightbox",
+        "data-vbtype",
+        "data-autoplay",
+        "data-maxwidth",
+        "data-overlay",
+        "data-gall",
+        "href",
       ];
 
       block = {
         ...block,
-        href: style_attributes.find((attr) => attr.key === "href")?.value || "",
-        hrefType: style_attributes.find((attr) => attr.key === "data-vbtype")?.value || "video",
-        autoplay: style_attributes.find((attr) => attr.key === "data-autoplay")?.value === "true",
-        maxWidth: style_attributes.find((attr) => attr.key === "data-maxwidth")?.value?.replace("px", "") || "",
-        backdropColor: style_attributes.find((attr) => attr.key === "data-overlay")?.value || "",
-        galleryName: style_attributes.find((attr) => attr.key === "data-gall")?.value || "",
+        href: styleAttributes.find((attr) => attr.key === "href")?.value || "",
+        hrefType: styleAttributes.find((attr) => attr.key === "data-vbtype")?.value || "video",
+        autoplay: styleAttributes.find((attr) => attr.key === "data-autoplay")?.value === "true",
+        maxWidth: styleAttributes.find((attr) => attr.key === "data-maxwidth")?.value?.replace("px", "") || "",
+        backdropColor: styleAttributes.find((attr) => attr.key === "data-overlay")?.value || "",
+        galleryName: styleAttributes.find((attr) => attr.key === "data-gall")?.value || "",
       };
-
-      // Remove from attrs
-      lightboxAttrs.forEach(attr => {
-        if (block.attrs) delete block.attrs[attr];
+      forEach(lightboxAttrs, (attr) => {
+        if (has(block, `styles_attrs.${attr}`)) delete block.styles_attrs[attr];
       });
-
-      // Remove from style_attributes
-      block.styles_attrs = style_attributes.filter(attr => !lightboxAttrs.includes(attr.key));
     }
 
     if (block._type === "Input") {
@@ -395,6 +397,8 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
       });
       return [] as any;
     }
+
+    console.log(block);
 
     const children = traverseNodes(node.children, { block, node });
     return [block, ...children] as ChaiBlock[];
