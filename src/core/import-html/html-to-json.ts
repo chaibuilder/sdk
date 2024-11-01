@@ -246,7 +246,8 @@ const getBlockProps = (node: Node): Record<string, any> => {
       return { _type: "TableBody" };
     case "tfoot":
       return { _type: "TableFooter" };
-    case "div": {
+
+    default: {
       const type = get(node, "children", []).length > 0 ? "Box" : "EmptyBox";
       return {
         _type: type,
@@ -397,8 +398,6 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
       });
       return [] as any;
     }
-
-    console.log(block);
 
     const children = traverseNodes(node.children, { block, node });
     return [block, ...children] as ChaiBlock[];
