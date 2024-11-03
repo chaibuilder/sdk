@@ -51,7 +51,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
 
   let previousState: boolean | null = null;
   const hasChildren = node.children.length > 0;
-  const { highlightBlock } = useBlockHighlight();
+  const { highlightBlock, clearHighlight } = useBlockHighlight();
   const { id, data, isSelected, willReceiveDrop, isDragging, isEditing, handleClick } = node;
 
   const handleToggle = (event: any) => {
@@ -165,6 +165,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
     <BlockContextMenu id={id}>
       <div
         onMouseEnter={() => highlightBlock(id)}
+        onMouseLeave={() => clearHighlight()}
         onClick={handleNodeClickWithoutPropagating}
         style={style}
         data-node-id={id}
