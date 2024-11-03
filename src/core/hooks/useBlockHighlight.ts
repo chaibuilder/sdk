@@ -1,6 +1,7 @@
 import { useAtom } from "jotai";
 import { canvasIframeAtom } from "../atoms/ui";
 
+//module-level variable to track the last highlighted block
 let lastHighlighted: HTMLElement | null = null;
 
 export const useBlockHighlight = () => {
@@ -29,5 +30,5 @@ export const useBlockHighlight = () => {
     }
   };
 
-  return { highlightBlock, clearHighlight };
+  return { highlightBlock, clearHighlight, lastHighlighted };
 };
