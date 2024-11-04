@@ -37,7 +37,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
           spellCheck={"false"}
           type="url"
           className="text-xs"
-          placeholder={t("enter_image_url")}
+          placeholder={t("Enter image URL")}
           value={value}
           onBlur={({ target: { value: url } }) => onBlur(id, url)}
           onChange={(e) => onChange(e.target.value)}

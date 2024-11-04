@@ -29,7 +29,7 @@ export const SaveButton = () => {
       variant="outline">
       <FaCheck className={"text-sm text-white"} />
       <span className={"text-sm"}>
-        {saveState === "SAVING" ? t("saving") : saveState === "SAVED" ? t("saved") : t("unsaved")}
+        {saveState === "SAVING" ? t("Saving") : saveState === "SAVED" ? t("Saved") : t("Unsaved")}
       </span>
     </Button>
   );

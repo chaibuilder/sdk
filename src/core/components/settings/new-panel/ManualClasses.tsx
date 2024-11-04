@@ -92,7 +92,7 @@ export function ManualClasses() {
     autoCorrect: "off",
     autoCapitalize: "off",
     spellCheck: false,
-    placeholder: t("enter_classes_separated_by_space"),
+    placeholder: t("Enter classes separated by space"),
     value: newCls,
     onKeyDown: (e: any) => {
       if (e.key === "Enter" && newCls.trim() !== "") {
@@ -106,16 +106,16 @@ export function ManualClasses() {
   const onClickCopy = () => {
     if (navigator.clipboard === undefined) {
       toast({
-        title: t("clipboard_not_supported"),
-        description: t("please_use_chrome_firefox_or_safari"),
+        title: t("Clipboard not supported"),
+        description: t("Please use Chrome, Firefox or Safari"),
         variant: "destructive",
       });
       return;
     }
     navigator.clipboard.writeText(classes.join(" "));
     toast({
-      title: t("copied"),
-      description: t("classes_copied_to_clipboard"),
+      title: t("Copied"),
+      description: t("Classes copied to clipboard"),
     });
   };
 
@@ -132,7 +132,7 @@ export function ManualClasses() {
               <CopyIcon onClick={onClickCopy} className={"cursor-pointer"} />
             </TooltipTrigger>
             <TooltipContent>
-              <p>{t("copy_classes_to_clipboard")}</p>
+              <p>{t("Copy classes to clipboard")}</p>
             </TooltipContent>
           </Tooltip>
         </div>

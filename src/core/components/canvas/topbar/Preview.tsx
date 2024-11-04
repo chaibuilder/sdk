@@ -28,12 +28,12 @@ export const Preview = () => {
                 <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
                 <circle cx="12" cy="12" r="3"></circle>
               </svg>
-              &nbsp;{t("preview")}
+              &nbsp;{t("Preview")}
             </Button>
           </a>
         </TooltipTrigger>
         <TooltipContent>
-          <p>{t("preview")}</p>
+          <p>{t("Preview")}</p>
         </TooltipContent>
       </Tooltip>
     </div>

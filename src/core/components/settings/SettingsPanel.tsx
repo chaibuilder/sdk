@@ -42,7 +42,7 @@ const SettingsPanel: React.FC = () => {
       <div className="p-4 text-center">
         <div className="space-y-4 rounded-xl p-4 text-muted-foreground">
           <MixerHorizontalIcon className="mx-auto text-3xl" />
-          <h1>{t("please_select_a_block_to_edit")}</h1>
+          <h1>{t("Please select a block to edit settings or styles")}</h1>
         </div>
       </div>
     );

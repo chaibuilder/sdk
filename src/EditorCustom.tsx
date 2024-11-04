@@ -8,8 +8,8 @@ import { UILibrary, UiLibraryBlock } from "./core/types/chaiBuilderEditorProps.t
 import PreviewWeb from "./__dev/preview/WebPreview.tsx";
 import axios from "axios";
 import CustomLayout from "./__dev/CustomLayout.tsx";
-import ptBR from "./__dev/pt-BR.json";
-import es from "./__dev/es.json";
+// import ptBR from "./__dev/pt-BR.json";
+// import es from "./__dev/es.json";
 
 loadWebBlocks();
 
@@ -23,7 +23,7 @@ function ChaiBuilderCustom() {
   return (
     <ChaiBuilderEditor
       locale={"pt-BR"}
-      translations={{ "pt-BR": ptBR, es: es }}
+      // translations={{ "pt-BR": ptBR, es: es }}
       layout={CustomLayout}
       unsplashAccessKey={import.meta.env.VITE_UNSPLASH_ACCESS_KEY}
       showDebugLogs={true}

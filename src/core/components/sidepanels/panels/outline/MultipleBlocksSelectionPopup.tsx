@@ -17,8 +17,7 @@ export const MultipleBlocksSelectionPopup = () => {
 
   return (
     <Card className="fixed bottom-10 left-1/2 z-50 mx-auto max-w-xl -translate-x-1/2 rounded-xl p-5 shadow-2xl">
-      <p className="mb-2 text-sm">{t("blocks_selected", { length })}</p>
-
+      <p className="mb-2 text-sm">{t("{length} blocks selected.", { length })}</p>
       <div className="flex w-full justify-between">
         <div className="items-stretch space-x-3 sm:flex">
           <Button
@@ -26,28 +25,28 @@ export const MultipleBlocksSelectionPopup = () => {
             onClick={() => setCutIds(selectedIds)}
             size="sm"
             className="flex items-center gap-x-4 border">
-            <ScissorsIcon /> {t("cut")}
+            <ScissorsIcon /> {t("Cut")}
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => setCopyIds(selectedIds)}
             className="flex items-center gap-x-4 border">
-            <ClipboardIcon /> {t("copy")}
+            <ClipboardIcon /> {t("Copy")}
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => removeBlocks(selectedIds)}
             className="flex items-center gap-x-4 border">
-            <TrashIcon /> {t("delete")}
+            <TrashIcon /> {t("Delete")}
           </Button>
           <Button
             variant="outline"
             onClick={() => setSelectedIds([])}
             size="sm"
             className="flex items-center gap-x-4 border">
-            <CircleBackslashIcon /> {t("clear_selection")}
+            <CircleBackslashIcon /> {t("Clear Selection")}
           </Button>
         </div>
       </div>

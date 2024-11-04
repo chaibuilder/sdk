@@ -11,7 +11,7 @@ const getSvgMarkup = (icon: string) => {
     container.appendChild(iconPickerContainer);
 
     iconPickerContainer.hidden = true;
-    let iconPickerMarkup = iconPickerContainer.innerHTML;
+    const iconPickerMarkup = iconPickerContainer.innerHTML;
     setTimeout(() => container.removeChild(iconPickerContainer), 100);
 
     // // * Removing height and width from svg
@@ -77,7 +77,7 @@ const IconPickerField = ({ value, onChange }: WidgetProps) => {
         spellCheck={"false"}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder={t("choose_icon_or_enter_svg")}
+        placeholder={t("Choose Icon or SVG")}
         className={
           "no-scrollbar disabled:opacity-50; mt-1 flex w-full rounded-md border border-border bg-background px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed"
         }

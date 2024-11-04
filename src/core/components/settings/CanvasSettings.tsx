@@ -24,7 +24,7 @@ export const CanvasSettings = () => {
     <div className="py-2 text-xs hover:no-underline">
       <div className="flex items-center gap-x-2 border-b border-border bg-background py-2 font-normal text-muted-foreground">
         {selectedBlock._name || selectedBlock._type}
-        &nbsp;{t("visibility settings")}
+        &nbsp;{t("Visibility settings")}
       </div>
       <div className="flex items-center space-x-2 pt-2">
         <Switch

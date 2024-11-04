@@ -91,10 +91,10 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
                 {loading ? (
                   <>
                     <Loader className="h-5 w-5 animate-spin" />
-                    {t("generating_please_wait")}
+                    {t("Generating... Please wait...")}
                   </>
                 ) : (
-                  t("edit_with_ai")
+                  t("Edit with AI")
                 )}
               </Button>
             ) : null}

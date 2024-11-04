@@ -156,7 +156,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
       <button
         onClick={() => emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK })}
         className="mb-10 mt-5 w-full rounded bg-gray-100 p-1 hover:bg-gray-200 dark:bg-gray-800">
-        + {t("add_block")}
+        + {t("Add Block")}
       </button>
     );
   }

@@ -18,7 +18,7 @@ export const Preview = function Preview() {
       size="sm"
       variant="outline">
       <EyeOpenIcon className={"text-xs"} />
-      <span className={"text-sm"}>{t("preview")}</span>
+      <span className={"text-sm"}>{t("Preview")}</span>
     </Button>
   );
 };

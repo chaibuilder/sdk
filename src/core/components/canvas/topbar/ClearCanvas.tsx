@@ -37,7 +37,7 @@ export const ClearCanvas = () => {
         </AlertDialogTrigger>
         <AlertDialogContent className={"border-border"}>
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-foreground">{t("Clear Canvas")}</AlertDialogTitle>
+            <AlertDialogTitle className="text-foreground">{t("Clear whole canvas? ")}</AlertDialogTitle>
             <AlertDialogDescription>{t("Are you sure you want to clear the page?")}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

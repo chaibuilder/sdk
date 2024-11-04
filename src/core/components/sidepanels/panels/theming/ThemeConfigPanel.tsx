@@ -96,40 +96,40 @@ const ThemeConfigPanel = ({
 
   let brandingProperties: Record<string, any> = {
     headingFont: SelectOption({
-      title: t("theme_config.heading_font"),
+      title: t("Theme Config.Heading Font"),
       default: headingFont,
       options: FONTS,
     }),
     bodyFont: SelectOption({
-      title: t("theme_config.body_font"),
+      title: t("Theme Config.Body Font"),
       default: bodyFont,
       options: FONTS,
     }),
     roundedCorners: Numeric({
-      title: t("theme_config.rounded_corner"),
+      title: t("Theme Config.Rounded Corner"),
       default: parseInt(roundedCorners || 5, 10),
     }),
-    primaryColor: Color({ title: t("theme_config.primary"), default: primaryColor }),
-    secondaryColor: Color({ title: t("theme_config.secondary"), default: secondaryColor }),
+    primaryColor: Color({ title: t("Theme Config.Primary"), default: primaryColor }),
+    secondaryColor: Color({ title: t("Theme Config.Secondary"), default: secondaryColor }),
   };
 
   if (!container) {
     brandingProperties = {
       ...brandingProperties,
       bodyBgLightColor: Color({
-        title: t("theme_config.background"),
+        title: t("Theme Config.Background"),
         default: bodyBgLightColor,
       }),
       bodyTextLightColor: Color({
-        title: t("theme_config.text_color"),
+        title: t("Theme Config.Text Color"),
         default: bodyTextDarkColor,
       }),
       bodyBgDarkColor: Color({
-        title: t("theme_config.background_dark_mode"),
+        title: t("Theme Config.Background Dark Mode"),
         default: bodyBgDarkColor,
       }),
       bodyTextDarkColor: Color({
-        title: t("theme_config.text_color_dark_mode"),
+        title: t("Theme Config.Text Color Dark Mode"),
         default: bodyTextLightColor,
       }),
     };

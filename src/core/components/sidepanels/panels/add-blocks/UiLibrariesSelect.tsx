@@ -15,7 +15,7 @@ export function UILibrariesSelect({
   if (!library) return null;
   return (
     <div className="h-12">
-      <p className="text-xs font-bold text-gray-500">{t("choose_library")}</p>
+      <p className="text-xs font-bold text-gray-500">{t("Choose library")}</p>
       <ChaiSelect
         className="mt-1"
         options={uiLibraries.map((uiLibrary) => ({
