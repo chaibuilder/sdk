@@ -26,7 +26,7 @@ type Node = {
   children: Node[];
 };
 
-const NAME_ATTRIBUTE = "$name";
+const NAME_ATTRIBUTES = ["chai-name", "data-chai-name"];
 
 const ATTRIBUTE_MAP: Record<string, Record<string, string>> = {
   img: { alt: "alt", width: "width", height: "height", src: "image" },
@@ -113,7 +113,7 @@ const getAttrs = (node: Node) => {
   const attributes: Array<{ key: string; value: string }> = node.attributes as any;
 
   forEach(attributes, ({ key, value }) => {
-    if (key === NAME_ATTRIBUTE) return;
+    if (includes(NAME_ATTRIBUTES, key)) return;
     if (replacers[key]) {
       // for img tag if the src is not absolute then replace with placeholder image
       if (node.tagName === "img" && key === "src" && !value.startsWith("http")) {
@@ -311,7 +311,7 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
     // node has a x-name attribute. set the _name of the block to the value of x-name and
     // remove the attribute from the node
     if (node.attributes) {
-      const xName = node.attributes.find((attr) => attr.key === NAME_ATTRIBUTE);
+      const xName = node.attributes.find((attr) => includes(NAME_ATTRIBUTES, attr.key));
       if (xName) {
         block._name = xName.value;
       }
