@@ -202,7 +202,6 @@ const UnsplashImages = ({ isModalView, onSelect }: { isModalView: boolean; onSel
           </div>
         ) : (
           images.map((pic) => (
-            // TODO: Drag and Drop Image to Canvas from Here use `pic.urls.[small, regular, full]` for image quality
             <div className="w-full px-2 py-1" key={pic.id}>
               <div className="relative overflow-hidden rounded-md bg-cover bg-no-repeat">
                 <img
