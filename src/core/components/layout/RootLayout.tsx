@@ -31,25 +31,23 @@ function useSidebarMenuItems(layoutVariant: string) {
     const items = [
       {
         icon: <Layers size={20} />,
-        label: "sidebar.outline",
+        label: "Outline",
         component: () => (
           <div className="-mt-8">
             <Outline />
           </div>
         ),
       },
-      singleSidePanel
-        ? { icon: <GearIcon className="size-5" />, label: "sidebar.edit_block", component: SettingsPanel }
-        : null,
+      singleSidePanel ? { icon: <GearIcon className="size-5" />, label: "Edit Block", component: SettingsPanel } : null,
       dataBindingSupport
         ? { icon: <AiFillDatabase className="size-3" />, label: t("Data Providers"), component: PageDataProviders }
         : null,
       askAICallback
-        ? { icon: <LightningBoltIcon className="size-5" />, label: "sidebar.ai_assistant", component: AskAI }
+        ? { icon: <LightningBoltIcon className="size-5" />, label: "AI Assistant", component: AskAI }
         : null,
       {
         icon: <PaintBucketIcon size={20} />,
-        label: "sidebar.theme",
+        label: "Theme",
         component: () => <ThemeOptions showHeading={false} />,
       },
     ];

@@ -10,6 +10,8 @@ import { registerChaiBlock } from "@chaibuilder/runtime";
 import { SingleLineText } from "@chaibuilder/runtime/controls";
 import { get } from "lodash-es";
 import { map, pick } from "lodash-es";
+import lngEn from "./core/locales/en.json";
+import lngPtBR from "./core/locales/ptBR.json";
 
 loadWebBlocks();
 
@@ -35,8 +37,10 @@ function ChaiBuilderDefault() {
   ]);
   return (
     <ChaiBuilderEditor
-      fallbackLang="fr"
-      languages={["en"]}
+      // fallbackLang="fr"
+      locale="en"
+      languages={["en", "pt"]}
+      translations={{ en: lngEn, pt: lngPtBR }}
       unsplashAccessKey={"import.meta.env.VITE_UNSPLASH_ACCESS_KEY"}
       autoSaveSupport={true}
       autoSaveInterval={15}

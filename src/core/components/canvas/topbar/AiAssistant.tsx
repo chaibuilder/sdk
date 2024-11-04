@@ -14,7 +14,7 @@ export const AiAssistant = () => {
     <div className="flex items-center space-x-2">
       <Label htmlFor="ai-assistant" className="flex items-center gap-x-1 text-sm text-yellow-600">
         <SparklesIcon className="w-4" />
-        {t("ai_assistant")}
+        {t("AI Assistant")}
       </Label>
       <Switch
         className={"scale-90"}
@@ -22,7 +22,7 @@ export const AiAssistant = () => {
         onCheckedChange={(state) => {
           setAiAssistantActive(state);
         }}
-        id="ai-assitantt"
+        id="ai-assistant"
       />
     </div>
   );

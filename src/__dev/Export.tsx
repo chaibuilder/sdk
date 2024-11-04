@@ -19,7 +19,9 @@ const ExportModal: React.FC<ExportModalProps> = React.memo(({ content, handleCli
       try {
         await copy(text);
         toast({ title: t("Copied"), description: t("Email template copied!") });
-      } catch (error) {}
+      } catch (error) {
+        toast({ title: t("Error"), description: t("Failed to copy template") });
+      }
     },
     [copy],
   );

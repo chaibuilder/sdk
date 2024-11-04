@@ -27,12 +27,12 @@ export const AskAIStyles = ({ blockId }: { blockId: string | undefined }) => {
 
   return (
     <div className="">
-      <h2 className="mb-1 text-sm font-semibold leading-none tracking-tight">{t("ask_ai")}</h2>
+      <h2 className="mb-1 text-sm font-semibold leading-none tracking-tight">{t("Ask AI")}</h2>
       <Textarea
         ref={promptRef}
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
-        placeholder={t("ask_ai_to_edit_styles")}
+        placeholder={t("Ask AI to edit styles")}
         className="w-full border border-border focus:border-0"
         rows={3}
         onKeyDown={(e) => {
@@ -60,10 +60,10 @@ export const AskAIStyles = ({ blockId }: { blockId: string | undefined }) => {
             {loading ? (
               <>
                 <Loader className="h-5 w-5 animate-spin" />
-                {t("generating_please_wait")}
+                {t("Generating... Please wait...")}
               </>
             ) : (
-              t("edit_with_ai")
+              t("Edit with AI")
             )}
           </Button>
         ) : null}
@@ -71,10 +71,10 @@ export const AskAIStyles = ({ blockId }: { blockId: string | undefined }) => {
           <div className="flex flex-col gap-2">
             <Skeleton className="flex w-full items-center space-x-1 px-4 py-1 pl-2">
               <FaSpinner className="h-4 w-4 animate-spin text-gray-500" />
-              <p className="text-xs">{t("generating_please_wait")}</p>
+              <p className="text-xs">{t("Generating... Please wait...")}</p>
             </Skeleton>
             <Button variant="destructive" onClick={() => stop()} className="hidden w-fit" size="sm">
-              {t("stop")}
+              {t("Stop")}
             </Button>
           </div>
         ) : null}

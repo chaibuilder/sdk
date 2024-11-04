@@ -20,12 +20,12 @@ const ImportHTML = ({ parentId }: { parentId?: string }) => {
   return (
     <Card className="border-border/0 p-0 shadow-none">
       <CardHeader className="p-3">
-        <CardDescription>{t("html_snippet_description")}</CardDescription>
+        <CardDescription>{t("Use HTML snippets from Tailwind CSS component libraries")}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-2 px-3 py-0">
         <div className="space-y-1">
           <Label htmlFor="current" className="text-sm">
-            {t("tailwind_html_snippet")}
+            {t("Tailwind HTML snippet")}
           </Label>
           <Textarea
             autoFocus
@@ -34,7 +34,7 @@ const ImportHTML = ({ parentId }: { parentId?: string }) => {
             onChange={(evt) => setCode(evt.target.value)}
             rows={12}
             value={code}
-            placeholder={t("enter_code_snippet")}
+            placeholder={t("Enter your code snippet here")}
             className="resize-none overflow-x-auto whitespace-pre bg-background font-mono text-xs font-normal"
           />
         </div>
