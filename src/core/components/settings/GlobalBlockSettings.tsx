@@ -1,5 +1,5 @@
 import { useGlobalBlocksList, useSelectedBlock, useUpdateBlocksProps } from "../../hooks";
-import { startCase } from "lodash-es";
+import { startCase, get } from "lodash-es";
 
 export const GlobalBlockSettings = () => {
   const selectedBlock = useSelectedBlock() as any;
@@ -14,7 +14,7 @@ export const GlobalBlockSettings = () => {
         onChange={(e) => {
           updateBlockProps([selectedBlock._id], {
             globalBlock: e.target.value,
-            _name: `Global: ${startCase(e.target.value)}`,
+            _name: `Global: ${startCase(get(list, e.target.value, "")?.name)}`,
           });
         }}>
         <option value="">Select a global block</option>
