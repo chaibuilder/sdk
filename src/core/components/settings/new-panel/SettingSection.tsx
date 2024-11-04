@@ -5,6 +5,7 @@ import { BlockStyle } from "../choices/BlockStyle";
 import { useSelectedBlockCurrentClasses } from "../../../hooks";
 import { useTranslation } from "react-i18next";
 import { AccordionContent, AccordionItem, AccordionTrigger } from "../../../../ui";
+import { startCase } from "lodash-es";
 
 const NestedOptions = ({ heading, items }: any) => {
   const { t } = useTranslation();
@@ -38,7 +39,7 @@ const NestedOptions = ({ heading, items }: any) => {
     <details>
       <summary className="my-px cursor-default rounded-md bg-gray-50 p-px px-2 text-[11px] text-foreground dark:bg-gray-800">
         <div className="inline">
-          {t(heading.toLowerCase())}
+          {startCase(t(heading.toLowerCase()))}
           {isAnyPropertySet ? (
             <span
               className={`ml-1 mr-2 inline-block h-[8px] w-[8px] rounded-full ${
@@ -91,7 +92,7 @@ export const StylingGroup = ({ section }: any) => {
       <AccordionItem value={section.heading} className="border-none">
         <AccordionTrigger className="border-b border-border py-2 text-xs">
           <div className="flex items-center">
-            <div className="flex items-center gap-x-2 text-sm font-bold">{t(section.heading)}</div>
+            <div className="flex items-center gap-x-2 text-sm font-bold">{startCase(t(section.heading))}</div>
           </div>
         </AccordionTrigger>
         <AccordionContent className="py-2">
