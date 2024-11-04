@@ -232,7 +232,7 @@ export const AISetContext = () => {
               {loading ? (
                 <>
                   <Loader className="h-5 w-5 animate-spin" />
-                  {t("Generating... Please wait...")}
+                  {t("Saving... Please wait...")}
                 </>
               ) : (
                 t("Save")
@@ -245,7 +245,7 @@ export const AISetContext = () => {
                     {loading ? (
                       <>
                         <Loader className="h-5 w-5 animate-spin" />
-                        {t("Generating... Please wait...")}
+                        {t("Deleting... Please wait...")}
                       </>
                     ) : (
                       t("Delete")
