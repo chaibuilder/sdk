@@ -7,7 +7,6 @@ import { DarkMode } from "./DarkMode";
 import { Breakpoints } from "./Breakpoints";
 import { ClearCanvas } from "./ClearCanvas";
 import { useBuilderProp, useCanvasZoom } from "../../../hooks";
-import { LanguageSelector } from "./LanguageSelector";
 
 const CanvasTopBar: React.FC = () => {
   const darkModeSupport = useBuilderProp("darkMode", true);
@@ -32,7 +31,6 @@ const CanvasTopBar: React.FC = () => {
         <UndoRedo />
       </div>
       <div className="flex h-full items-center space-x-2">
-        <LanguageSelector />
         <ClearCanvas />
       </div>
     </div>
