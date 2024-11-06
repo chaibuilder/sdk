@@ -76,9 +76,12 @@ const useHandleCanvasDblClick = () => {
       destroyQuill(quill);
       setEditingBlockId("");
       clearHighlight();
+      newBlock.remove();
     }
     newBlock.addEventListener("blur", blurListener, true);
-
+    newBlock.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
     newBlock.addEventListener("keydown", (e) => {
       if (e.key === "Enter" || e.key === "Escape") {
         blurListener();
