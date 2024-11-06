@@ -6,7 +6,7 @@ import { useBuilderProp } from "../hooks";
 const LinkField = ({ schema, formData, onChange }: FieldProps) => {
   const [pages, setPages] = useState([]);
   const getPages = useBuilderProp("getPages", () => []);
-  const { type = "page", href = "", target = "self" } = formData;
+  const { type = "page", href = "#", target = "self" } = formData;
 
   useEffect(() => {
     (async () => {
@@ -33,7 +33,7 @@ const LinkField = ({ schema, formData, onChange }: FieldProps) => {
           ))}
         </select>
         {type === "page" ? (
-          <select name="href" value={href} onChange={(e) => onChange({ ...formData, href: e.target.value || "#" })}>
+          <select name="href" value={href} onChange={(e) => onChange({ ...formData, href: e.target.value })}>
             <option value="">Choose page</option>
             {map(pages, (page: any) => (
               <option key={page.uuid} value={page.slug}>
@@ -49,7 +49,7 @@ const LinkField = ({ schema, formData, onChange }: FieldProps) => {
             name="href"
             type="text"
             value={href}
-            onChange={(e) => onChange({ ...formData, href: e.target.value || "#" })}
+            onChange={(e) => onChange({ ...formData, href: e.target.value })}
             placeholder={
               type === "page" || type === "url" ? "Enter URL" : type === "scroll" ? "#ElementID" : "Enter detail"
             }
