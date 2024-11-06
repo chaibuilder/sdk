@@ -2,6 +2,7 @@ import { ChaiBlock } from "./ChaiBlock";
 import React, { ReactNode } from "react";
 import { LayoutVariant } from "../constants/LAYOUT_MODE.ts";
 import { ChaiPage } from "./index.ts";
+import { uniqueId } from "lodash";
 
 type RichText = string;
 
@@ -57,6 +58,17 @@ export type AskAiResponse = {
 
 export type ChaiBuilderInstance = {
   setBlocks: (blocks: ChaiBlock[]) => void;
+};
+
+export type Collection = {
+  key: string;
+  name: string;
+};
+
+export type CollectionItem = {
+  id: string;
+  name: string;
+  slug?: string;
 };
 
 export interface ChaiBuilderEditorProps {
@@ -218,7 +230,7 @@ export interface ChaiBuilderEditorProps {
   outlineMenuItems?: OutlineMenuItems;
 
   /**
-   * getPages callback function
+   * Deprecated: getPages callback function. use collections instead
    */
   getPages?: () => Promise<ChaiPage[]>;
 
@@ -233,4 +245,10 @@ export interface ChaiBuilderEditorProps {
    */
   fallbackLang?: string;
   languages?: Array<string>;
+
+  /**
+   * Collections props
+   */
+  collections?: Collection[];
+  searchCollectionItems?: (collectionKey: string, query: string) => Promise<CollectionItem[] | Error>;
 }

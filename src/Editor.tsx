@@ -200,6 +200,17 @@ function ChaiBuilderDefault() {
           }, 1000);
         });
       }}
+      collections={[{ key: "pages", name: "Pages" }]}
+      searchCollectionItems={async (collectionKey: string, query: string) => {
+        console.log("searchCollectionItems", collectionKey, query);
+        if (collectionKey === "pages") {
+          return [
+            { id: "uuid-1", name: "Page 1" },
+            { id: "uuid-2", name: "Page 2" },
+          ];
+        }
+        return [];
+      }}
     />
   );
 }
