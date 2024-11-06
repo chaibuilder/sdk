@@ -18,11 +18,17 @@ export const useSavePage = () => {
   const [brandingOptions] = useBrandingOptions();
 
   const savePage = useThrottledCallback(
-    async () => {
+    async (autoSave: boolean = false) => {
       setSaveState("SAVING");
       onSaveStateChange("SAVING");
       const pageData = getPageData();
-      await onSave({ blocks: pageData.blocks, providers, brandingOptions, themeConfiguration: brandingOptions });
+      await onSave({
+        autoSave,
+        blocks: pageData.blocks,
+        providers,
+        brandingOptions,
+        themeConfiguration: brandingOptions,
+      });
       setTimeout(() => {
         setSaveState("SAVED");
         onSaveStateChange("SAVED");

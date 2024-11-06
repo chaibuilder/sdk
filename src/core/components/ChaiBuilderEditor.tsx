@@ -33,7 +33,7 @@ const useAutoSave = () => {
   const autoSaveInterval = useBuilderProp("autoSaveInterval", 60);
   useIntervalEffect(() => {
     if (!autoSaveSupported) return;
-    savePage();
+    savePage(true);
   }, autoSaveInterval * 1000);
 };
 

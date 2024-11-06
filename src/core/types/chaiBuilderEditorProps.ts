@@ -35,6 +35,7 @@ export type Breakpoint = {
 };
 
 type SavePageData = {
+  autoSave: boolean;
   blocks: ChaiBlock[];
   providers?: DataProvider[];
   brandingOptions?: Record<string, any>;
