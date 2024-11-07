@@ -2,7 +2,6 @@ import * as React from "react";
 import { isEmpty } from "lodash-es";
 import { Link1Icon } from "@radix-ui/react-icons";
 import { Link, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
-import EmptySlot from "./empty-slot.tsx";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
 const LinkBlock = (
@@ -16,23 +15,29 @@ const LinkBlock = (
 ) => {
   const { blockProps, link, children, styles, inBuilder, content } = props;
 
-  if (!children && isEmpty(styles?.className) && isEmpty(content)) {
-    return <EmptySlot inBuilder={inBuilder} />;
+  let emptyStyles = {};
+  if (!children && isEmpty(content)) {
+    emptyStyles = { minHeight: "50px", display: "flex", alignItems: "center", justifyContent: "center" };
   }
 
   if (inBuilder) {
     if (children) {
       return (
-        <span {...blockProps} {...styles}>
+        <span {...blockProps} style={emptyStyles} {...styles}>
           {children}
         </span>
       );
     } else {
-      return React.createElement("span", {
-        ...blockProps,
-        ...styles,
-        dangerouslySetInnerHTML: { __html: content },
-      });
+      return React.createElement(
+        "span",
+        {
+          ...blockProps,
+          ...styles,
+          style: emptyStyles,
+          "data-ai-key": "content",
+        },
+        content,
+      );
     }
   }
 
@@ -44,14 +49,17 @@ const LinkBlock = (
     );
   }
 
-  return React.createElement("a", {
-    ...blockProps,
-    ...styles,
-    "data-ai-key": "content",
-    href: link?.href || "#",
-    target: link?.target || "_self",
-    dangerouslySetInnerHTML: { __html: content },
-  });
+  return React.createElement(
+    "a",
+    {
+      ...blockProps,
+      ...styles,
+      "data-ai-key": "content",
+      href: link?.href || "#",
+      target: link?.target || "_self",
+    },
+    content,
+  );
 };
 
 const Config = {

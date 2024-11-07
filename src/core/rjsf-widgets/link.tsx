@@ -2,7 +2,7 @@ import { FieldProps } from "@rjsf/utils";
 import { map, split, get, isEmpty, debounce } from "lodash-es";
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useBuilderProp, useTranslation } from "../hooks";
-import { SearchIcon, X } from "lucide-react";
+import { X } from "lucide-react";
 import { CollectionItem } from "../types/chaiBuilderEditorProps";
 
 const CollectionField = ({
@@ -15,6 +15,7 @@ const CollectionField = ({
   onChange: FieldProps["onChange"];
 }) => {
   const { t } = useTranslation();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const searchCollectionItems = useBuilderProp("searchCollectionItems", (_: string, __: any) => []);
 
   const [loading, setLoading] = useState("");
@@ -43,7 +44,7 @@ const CollectionField = ({
       }
       setLoading("");
     })();
-  }, [formData.href]);
+  }, [formData?.href, searchCollectionItems]);
 
   const getCollectionItems = useCallback(
     debounce(async (query: string) => {
@@ -103,6 +104,7 @@ const CollectionField = ({
     setCollectionsItems([]);
     setSelectedIndex(-1);
     setIsSearching(false);
+    onChange({ ...formData, href: "" });
   };
 
   const handleSearch = (query: string) => {
@@ -132,10 +134,10 @@ const CollectionField = ({
             disabled={loading === "FETCHING_INIT_VALUE"}
             className="w-full rounded-md border border-gray-300 p-2 pr-16"
           />
-          <div className="absolute right-2 bottom-2 flex items-center gap-1.5">
+          <div className="absolute bottom-2 right-2 top-3 flex items-center gap-1.5">
             {searchQuery && (
               <button onClick={clearSearch} className="text-gray-400 hover:text-gray-600" title={t("Clear search")}>
-                <X className="size-4" />
+                <X className="h-4 w-4" />
               </button>
             )}
           </div>
@@ -145,7 +147,7 @@ const CollectionField = ({
       {(loading === "FETCHING_COLLECTION_ITEMS" ||
         !isEmpty(collectionItems) ||
         (isSearching && isEmpty(collectionItems))) && (
-        <div className="mt-2 max-h-40 overflow-y-auto rounded-md border border-gray-300">
+        <div className="absolute z-40 mt-2 max-h-40 w-full overflow-y-auto rounded-md border border-border bg-background shadow-lg">
           {loading === "FETCHING_COLLECTION_ITEMS" ? (
             <div className="space-y-1 p-2">
               <div className="h-6 w-full animate-pulse rounded bg-gray-200" />
@@ -181,7 +183,7 @@ const CollectionField = ({
 
 const LinkField = ({ schema, formData, onChange }: FieldProps) => {
   const { t } = useTranslation();
-  const { type = "page", href = "#", target = "self" } = formData;
+  const { type = "collection", href = "#", target = "self" } = formData;
   const collections = useBuilderProp("collections", []);
 
   return (
