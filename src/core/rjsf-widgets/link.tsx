@@ -1,8 +1,8 @@
 import { FieldProps } from "@rjsf/utils";
 import { map, split, get, isEmpty, debounce } from "lodash-es";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useBuilderProp, useTranslation } from "../hooks";
-import { SearchIcon } from "lucide-react";
+import { SearchIcon, X } from "lucide-react";
 import { CollectionItem } from "../types/chaiBuilderEditorProps";
 
 const CollectionField = ({
@@ -18,9 +18,12 @@ const CollectionField = ({
   const searchCollectionItems = useBuilderProp("searchCollectionItems", (_: string, __: any) => []);
 
   const [loading, setLoading] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
   const [collection, setCollection] = useState("pages");
   const [searchQuery, setSearchQuery] = useState("");
   const [collectionItems, setCollectionsItems] = useState<CollectionItem[]>([]);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const listRef = useRef<HTMLUListElement>(null);
 
   const currentCollectionName = collections?.find((_collection) => _collection.key === collection)?.name;
 
@@ -30,6 +33,7 @@ const CollectionField = ({
     setCollection(_collection);
     setSearchQuery("");
     setCollectionsItems([]);
+    setSelectedIndex(-1);
 
     (async () => {
       setLoading("FETCHING_INIT_VALUE");
@@ -50,6 +54,7 @@ const CollectionField = ({
         setCollectionsItems(collectionItemResponse);
       }
       setLoading("");
+      setSelectedIndex(-1);
     }, 300),
     [collection],
   );
@@ -58,6 +63,53 @@ const CollectionField = ({
     const href = ["collection", collection, collectionItem.id];
     if (!href[1]) return;
     onChange({ ...formData, href: href.join(":") });
+    setIsSearching(false);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        setSelectedIndex((prev) => (prev < collectionItems.length - 1 ? prev + 1 : prev));
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        setSelectedIndex((prev) => (prev > 0 ? prev - 1 : prev));
+        break;
+      case "Enter":
+        e.preventDefault();
+        if (collectionItems.length === 0) return;
+
+        if (selectedIndex >= 0) {
+          handleSelect(collectionItems[selectedIndex]);
+        }
+        break;
+      case "Escape":
+        e.preventDefault();
+        clearSearch();
+        break;
+    }
+  };
+
+  useEffect(() => {
+    if (selectedIndex >= 0 && listRef.current) {
+      const selectedElement = listRef.current.children[selectedIndex] as HTMLElement;
+      selectedElement?.scrollIntoView({ block: "nearest" });
+    }
+  }, [selectedIndex]);
+
+  const clearSearch = () => {
+    setSearchQuery("");
+    setCollectionsItems([]);
+    setSelectedIndex(-1);
+    setIsSearching(false);
+  };
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    setIsSearching(!isEmpty(query));
+    setLoading("FETCHING_COLLECTION_ITEMS");
+    getCollectionItems(query);
   };
 
   return (
@@ -74,36 +126,54 @@ const CollectionField = ({
           <input
             type="text"
             value={searchQuery}
-            onChange={(e) => {
-              setSearchQuery(e.target.value);
-              setLoading("FETCHING_COLLECTION_ITEMS");
-              getCollectionItems(e.target.value);
-            }}
+            onChange={(e) => handleSearch(e.target.value)}
+            onKeyDown={handleKeyDown}
             placeholder={t(`Search ${currentCollectionName}`)}
             disabled={loading === "FETCHING_INIT_VALUE"}
-            className="w-full rounded-md border border-gray-300 p-2"
+            className="w-full rounded-md border border-gray-300 p-2 pr-16"
           />
-          <SearchIcon className="absolute right-2 top-2 hidden h-5 w-5 pt-0.5 text-gray-400 group-hover:block" />
+          <div className="absolute right-2 bottom-2 flex items-center gap-1.5">
+            {searchQuery && (
+              <button onClick={clearSearch} className="text-gray-400 hover:text-gray-600" title={t("Clear search")}>
+                <X className="size-4" />
+              </button>
+            )}
+          </div>
         </div>
       )}
-      {loading === "FETCHING_COLLECTION_ITEMS" ? (
-        <div className="space-y-1 pt-2">
-          <div className="h-6 w-full animate-pulse rounded bg-gray-200" />
-          <div className="h-6 w-full animate-pulse rounded bg-gray-200" />
+
+      {(loading === "FETCHING_COLLECTION_ITEMS" ||
+        !isEmpty(collectionItems) ||
+        (isSearching && isEmpty(collectionItems))) && (
+        <div className="mt-2 max-h-40 overflow-y-auto rounded-md border border-gray-300">
+          {loading === "FETCHING_COLLECTION_ITEMS" ? (
+            <div className="space-y-1 p-2">
+              <div className="h-6 w-full animate-pulse rounded bg-gray-200" />
+              <div className="h-6 w-full animate-pulse rounded bg-gray-200" />
+            </div>
+          ) : isSearching && isEmpty(collectionItems) ? (
+            <div className="flex items-center justify-center p-4 text-sm text-gray-500">
+              {t("No results found for")} "{searchQuery}"
+            </div>
+          ) : (
+            <ul ref={listRef}>
+              {map(collectionItems?.slice(0, 20), (item, index) => (
+                <li
+                  key={item.id}
+                  onClick={() => handleSelect(item)}
+                  className={`cursor-pointer p-2 text-xs ${
+                    formData?.href?.includes(item.id)
+                      ? "bg-blue-200"
+                      : index === selectedIndex
+                        ? "bg-gray-100"
+                        : "hover:bg-gray-100"
+                  }`}>
+                  {item.name} {item.slug && <small className="font-light text-gray-500">( {item.slug} )</small>}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
-      ) : (
-        !isEmpty(collectionItems) && (
-          <ul className="mt-2 max-h-40 overflow-y-auto rounded-md border border-gray-300">
-            {map(collectionItems?.slice(0, 20), (item) => (
-              <li
-                key={item.id}
-                onClick={() => handleSelect(item)}
-                className={`cursor-pointer p-2 text-xs ${formData?.href?.includes(item.id) ? "bg-blue-200" : "hover:bg-gray-100"}`}>
-                {item.name} {item.slug && <small className="font-light text-gray-500">( {item.slug} )</small>}
-              </li>
-            ))}
-          </ul>
-        )
       )}
     </div>
   );
