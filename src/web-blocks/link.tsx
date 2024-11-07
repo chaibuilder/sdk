@@ -65,7 +65,7 @@ const Config = {
     content: SingleLineText({ title: "Content", default: "", ai: true, i18n: true }),
     link: Link({
       title: "Link",
-      default: { type: "page", target: "_self", href: "#" },
+      default: { type: "collection", target: "_self", href: "" },
     }),
   },
   canAcceptBlock: (type: string) => type !== "Link",
