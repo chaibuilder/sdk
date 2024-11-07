@@ -9,7 +9,7 @@ import { LayersIcon } from "lucide-react";
 import { registerChaiBlock } from "@chaibuilder/runtime";
 import { SingleLineText } from "@chaibuilder/runtime/controls";
 import { get } from "lodash-es";
-import { map, pick } from "lodash-es";
+import { map, pick, isArray } from "lodash-es";
 import lngPtBR from "./__dev/ptBR.json";
 
 loadWebBlocks();
@@ -201,13 +201,20 @@ function ChaiBuilderDefault() {
         });
       }}
       collections={[{ key: "pages", name: "Pages" }]}
-      searchCollectionItems={async (collectionKey: string, query: string) => {
+      searchCollectionItems={async (collectionKey: string, query: string | string[]) => {
         console.log("searchCollectionItems", collectionKey, query);
         if (collectionKey === "pages") {
-          return [
-            { id: "uuid-1", name: "Page 1" },
+          const items = [
+            { id: "uuid-1", name: "Page 1", slug: "/page-1" },
             { id: "uuid-2", name: "Page 2" },
+            { id: "uuid-3", name: "About", slug: "/about" },
+            { id: "uuid-4", name: "Contact" },
           ];
+          await new Promise((r) => setTimeout(r, 500));
+          return items.filter((item) => {
+            if (isArray(query)) return query?.includes(item.id);
+            return item.name.toLowerCase().includes(query.toString().toLowerCase());
+          });
         }
         return [];
       }}
