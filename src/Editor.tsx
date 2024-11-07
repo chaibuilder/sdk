@@ -46,7 +46,6 @@ function ChaiBuilderDefault() {
       blocks={blocks}
       brandingOptions={brandingOptions}
       onSave={async ({ blocks, providers, brandingOptions }: any) => {
-        console.log(blocks, providers, brandingOptions);
         localStorage.setItem("chai-builder-blocks", JSON.stringify(blocks));
         localStorage.setItem("chai-builder-providers", JSON.stringify(providers));
         localStorage.setItem("chai-builder-branding-options", JSON.stringify(brandingOptions));
@@ -202,7 +201,7 @@ function ChaiBuilderDefault() {
       }}
       collections={[{ key: "pages", name: "Pages" }]}
       searchCollectionItems={async (collectionKey: string, query: string | string[]) => {
-        console.log("searchCollectionItems", collectionKey, query);
+        console.log("searchCollectionItems", collectionKey, query, "query");
         if (collectionKey === "pages") {
           const items = [
             { id: "uuid-1", name: "Page 1", slug: "/page-1" },

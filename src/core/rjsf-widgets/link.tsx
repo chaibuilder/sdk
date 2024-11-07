@@ -1,24 +1,26 @@
 import { FieldProps } from "@rjsf/utils";
-import { map, split, get, isEmpty, debounce } from "lodash-es";
-import { useEffect, useState, useCallback, useRef } from "react";
+import { map, split, get, isEmpty } from "lodash-es";
+import { useEffect, useState, useRef } from "react";
 import { useBuilderProp, useTranslation } from "../hooks";
 import { X } from "lucide-react";
 import { CollectionItem } from "../types/chaiBuilderEditorProps";
+import { useDebouncedCallback } from "@react-hookz/web";
+import { startsWith } from "lodash-es";
 
 const CollectionField = ({
-  formData,
+  href,
   collections,
   onChange,
 }: {
-  formData: { href: string };
+  href: string;
   collections: any[];
-  onChange: FieldProps["onChange"];
+  onChange: (href: string) => void;
 }) => {
   const { t } = useTranslation();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const searchCollectionItems = useBuilderProp("searchCollectionItems", (_: string, __: any) => []);
-
-  const [loading, setLoading] = useState("");
+  const [initialLoaded, setInitialLoaded] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [collection, setCollection] = useState("pages");
   const [searchQuery, setSearchQuery] = useState("");
@@ -29,7 +31,8 @@ const CollectionField = ({
   const currentCollectionName = collections?.find((_collection) => _collection.key === collection)?.name;
 
   useEffect(() => {
-    const initHref = split(formData?.href || "", ":");
+    if (!href || loading || !startsWith(href, "collection:") || initialLoaded) return;
+    const initHref = split(href, ":");
     const _collection = get(initHref, 1, "pages") || "pages";
     setCollection(_collection);
     setSearchQuery("");
@@ -37,34 +40,40 @@ const CollectionField = ({
     setSelectedIndex(-1);
 
     (async () => {
-      setLoading("FETCHING_INIT_VALUE");
+      setLoading(true);
       const initalValue = await searchCollectionItems(_collection, [get(initHref, 2, "pages")]);
       if (initalValue && Array.isArray(initalValue)) {
         setSearchQuery(get(initalValue, [0, "name"], ""));
       }
-      setLoading("");
+      setInitialLoaded(true);
+      setLoading(false);
     })();
-  }, [formData?.href, searchCollectionItems]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [href]);
 
-  const getCollectionItems = useCallback(
-    debounce(async (query: string) => {
+  const getCollectionItems = useDebouncedCallback(
+    async (query: string) => {
       if (isEmpty(query)) {
         setCollectionsItems([]);
       } else {
         const collectionItemResponse = await searchCollectionItems(collection, query);
         setCollectionsItems(collectionItemResponse);
       }
-      setLoading("");
+      setLoading(false);
       setSelectedIndex(-1);
-    }, 300),
+    },
     [collection],
+    300,
   );
 
   const handleSelect = (collectionItem: CollectionItem) => {
     const href = ["collection", collection, collectionItem.id];
     if (!href[1]) return;
-    onChange({ ...formData, href: href.join(":") });
+    onChange(href.join(":"));
+    setSearchQuery(collectionItem.name);
     setIsSearching(false);
+    setCollectionsItems([]);
+    setSelectedIndex(-1);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -104,13 +113,13 @@ const CollectionField = ({
     setCollectionsItems([]);
     setSelectedIndex(-1);
     setIsSearching(false);
-    onChange({ ...formData, href: "" });
+    onChange("");
   };
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
     setIsSearching(!isEmpty(query));
-    setLoading("FETCHING_COLLECTION_ITEMS");
+    setLoading(true);
     getCollectionItems(query);
   };
 
@@ -131,7 +140,6 @@ const CollectionField = ({
             onChange={(e) => handleSearch(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={t(`Search ${currentCollectionName}`)}
-            disabled={loading === "FETCHING_INIT_VALUE"}
             className="w-full rounded-md border border-gray-300 p-2 pr-16"
           />
           <div className="absolute bottom-2 right-2 top-3 flex items-center gap-1.5">
@@ -144,11 +152,9 @@ const CollectionField = ({
         </div>
       )}
 
-      {(loading === "FETCHING_COLLECTION_ITEMS" ||
-        !isEmpty(collectionItems) ||
-        (isSearching && isEmpty(collectionItems))) && (
+      {(loading || !isEmpty(collectionItems) || (isSearching && isEmpty(collectionItems))) && (
         <div className="absolute z-40 mt-2 max-h-40 w-full overflow-y-auto rounded-md border border-border bg-background shadow-lg">
-          {loading === "FETCHING_COLLECTION_ITEMS" ? (
+          {loading ? (
             <div className="space-y-1 p-2">
               <div className="h-6 w-full animate-pulse rounded bg-gray-200" />
               <div className="h-6 w-full animate-pulse rounded bg-gray-200" />
@@ -164,7 +170,7 @@ const CollectionField = ({
                   key={item.id}
                   onClick={() => handleSelect(item)}
                   className={`cursor-pointer p-2 text-xs ${
-                    formData?.href?.includes(item.id)
+                    href?.includes(item.id)
                       ? "bg-blue-200"
                       : index === selectedIndex
                         ? "bg-gray-100"
@@ -183,8 +189,10 @@ const CollectionField = ({
 
 const LinkField = ({ schema, formData, onChange }: FieldProps) => {
   const { t } = useTranslation();
-  const { type = "collection", href = "#", target = "self" } = formData;
+  const { type = "collection", href = "", target = "self" } = formData;
   const collections = useBuilderProp("collections", []);
+
+  const linkType = type === "collection" && isEmpty(collections) ? "url" : type;
 
   return (
     <div>
@@ -206,8 +214,12 @@ const LinkField = ({ schema, formData, onChange }: FieldProps) => {
             ),
           )}
         </select>
-        {type === "collection" && !isEmpty(collections) ? (
-          <CollectionField formData={formData} collections={collections} onChange={onChange} />
+        {linkType === "collection" && !isEmpty(collections) ? (
+          <CollectionField
+            href={href}
+            collections={collections}
+            onChange={(href: string) => onChange({ ...formData, href })}
+          />
         ) : (
           <input
             autoCapitalize={"off"}
@@ -217,12 +229,10 @@ const LinkField = ({ schema, formData, onChange }: FieldProps) => {
             type="text"
             value={href}
             onChange={(e) => onChange({ ...formData, href: e.target.value })}
-            placeholder={t(
-              type === "page" || type === "url" ? "Enter URL" : type === "scroll" ? "#ElementID" : "Enter details",
-            )}
+            placeholder={t(type === "url" ? "Enter URL" : type === "scroll" ? "#ElementID" : "Enter details")}
           />
         )}
-        {type === "url" && (
+        {linkType === "url" && (
           <div className="flex items-center gap-x-2 text-muted-foreground">
             <input
               autoCapitalize={"off"}
