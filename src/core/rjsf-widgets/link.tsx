@@ -1,6 +1,6 @@
 import { FieldProps } from "@rjsf/utils";
-import { map, split, get, isEmpty } from "lodash-es";
-import { useEffect, useState } from "react";
+import { map, split, get, isEmpty, debounce } from "lodash-es";
+import { useEffect, useState, useCallback } from "react";
 import { useBuilderProp, useTranslation } from "../hooks";
 import { SearchIcon } from "lucide-react";
 import { CollectionItem } from "../types/chaiBuilderEditorProps";
@@ -41,17 +41,18 @@ const CollectionField = ({
     })();
   }, [formData.href]);
 
-  const getCollectionItems = async (query: string) => {
-    setSearchQuery(query);
-    if (isEmpty(query)) {
-      setCollectionsItems([]);
-      return;
-    }
-    setLoading("FETCHING_COLLECTION_ITEMS");
-    const collectionItemResponse = await searchCollectionItems(collection, query);
-    setLoading("");
-    setCollectionsItems(collectionItemResponse);
-  };
+  const getCollectionItems = useCallback(
+    debounce(async (query: string) => {
+      if (isEmpty(query)) {
+        setCollectionsItems([]);
+      } else {
+        const collectionItemResponse = await searchCollectionItems(collection, query);
+        setCollectionsItems(collectionItemResponse);
+      }
+      setLoading("");
+    }, 300),
+    [collection],
+  );
 
   const handleSelect = (collectionItem: CollectionItem) => {
     const href = ["collection", collection, collectionItem.id];
@@ -73,7 +74,11 @@ const CollectionField = ({
           <input
             type="text"
             value={searchQuery}
-            onChange={(e) => getCollectionItems(e.target.value)}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setLoading("FETCHING_COLLECTION_ITEMS");
+              getCollectionItems(e.target.value);
+            }}
             placeholder={t(`Search ${currentCollectionName}`)}
             disabled={loading === "FETCHING_INIT_VALUE"}
             className="w-full rounded-md border border-gray-300 p-2"
