@@ -469,5 +469,8 @@
     "Fetching...": "Fetching...",
     "No images found": "No images found",
     "It looks like you haven't uploaded any images yet. Start by clicking the upload button above.": "It looks like you haven't uploaded any images yet. Start by clicking the upload button above.",
-    "Open Code Editor": "Open Code Editor"
+    "Open Code Editor": "Open Code Editor",
+    "Clear search": "Clear search",
+    "No results found for": "No results found for",
+    "Search {collectionName}": "Search {collectionName}"
 }

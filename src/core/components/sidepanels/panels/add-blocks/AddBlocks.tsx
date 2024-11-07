@@ -95,9 +95,9 @@ const AddBlocksPanel = ({
         value={tab}
         className={mergeClasses("h-max")}>
         <TabsList className={"grid w-full " + (importHTMLSupport ? "grid-cols-3" : "grid-cols-2")}>
-          <TabsTrigger value="library">{t("library")}</TabsTrigger>
-          <TabsTrigger value="core">{t("blocks")}</TabsTrigger>
-          {importHTMLSupport ? <TabsTrigger value="html">{t("import")}</TabsTrigger> : null}
+          <TabsTrigger value="library">{t("Library")}</TabsTrigger>
+          <TabsTrigger value="core">{t("Blocks")}</TabsTrigger>
+          {importHTMLSupport ? <TabsTrigger value="html">{t("Import")}</TabsTrigger> : null}
         </TabsList>
       </Tabs>
       {tab === "core" && (
