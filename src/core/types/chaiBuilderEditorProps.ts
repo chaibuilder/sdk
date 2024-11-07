@@ -250,5 +250,5 @@ export interface ChaiBuilderEditorProps {
    * Collections props
    */
   collections?: Collection[];
-  searchCollectionItems?: (collectionKey: string, query: string | string[]) => Promise<CollectionItem[] | Error>;
+  searchCollectionItems?: (collectionKey: string, query: string) => Promise<CollectionItem[] | Error>;
 }

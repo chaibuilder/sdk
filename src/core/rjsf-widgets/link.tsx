@@ -146,7 +146,7 @@ const LinkField = ({ schema, formData, onChange }: FieldProps) => {
             value={href}
             onChange={(e) => onChange({ ...formData, href: e.target.value })}
             placeholder={t(
-              type === "page" || type === "url" ? "Enter URL" : type === "scroll" ? "#ElementID" : "Enter detail",
+              type === "page" || type === "url" ? "Enter URL" : type === "scroll" ? "#ElementID" : "Enter details",
             )}
           />
         )}
