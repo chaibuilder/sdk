@@ -119,7 +119,7 @@ const RootLayout: ComponentType = () => {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button variant="ghost" onClick={() => setChooseLayout(true)}>
-                      <LayoutTemplate size={20} />
+                      <LayoutTemplate size={15} />
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent side={"right"}>
