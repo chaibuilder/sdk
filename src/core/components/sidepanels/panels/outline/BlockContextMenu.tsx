@@ -13,7 +13,8 @@ import {
 } from "../../../../hooks";
 import { canAddChildBlock, canDeleteBlock, canDuplicateBlock } from "../../../../functions/block-helpers.ts";
 import { useTranslation } from "react-i18next";
-import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../../../events.ts";
+import { CHAI_BUILDER_EVENTS } from "../../../../events.ts";
+import { pubsub } from "../../../../pubsub.ts";
 
 const CopyPasteBlocks = () => {
   const [selectedIds] = useSelectedBlockIds();
@@ -89,7 +90,7 @@ const BlockContextMenuContent = () => {
       <ContextMenuItem
         disabled={!canAddChildBlock(selectedBlock?._type)}
         className="flex items-center gap-x-4 text-xs"
-        onClick={() => emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, data: selectedBlock })}>
+        onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, selectedBlock)}>
         <PlusIcon size={"14"} /> {t("Add block")}
       </ContextMenuItem>
       <ContextMenuItem

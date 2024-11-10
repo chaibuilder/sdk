@@ -16,7 +16,8 @@ import { useAtom } from "jotai";
 import { inlineEditingActiveAtom } from "../../atoms/ui.ts";
 import { draggedBlockAtom } from "./dnd/atoms.ts";
 import { useFeature } from "flagged";
-import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../events.ts";
+import { CHAI_BUILDER_EVENTS } from "../../events.ts";
+import { pubsub } from "../../pubsub.ts";
 
 /**
  * @param block
@@ -106,7 +107,7 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
           {canAddChildBlock(get(block, "_type", "")) && (
             <PlusIcon
               className="hover:scale-105"
-              onClick={() => emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, data: block })}
+              onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, block)}
             />
           )}
           {canDuplicateBlock(get(block, "_type", "")) ? (
@@ -114,7 +115,7 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
           ) : null}
           <GearIcon
             className="text-white hover:scale-105"
-            onClick={() => emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.SHOW_BLOCK_SETTINGS, data: block })}
+            onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.SHOW_BLOCK_SETTINGS, block)}
           />
           {canDeleteBlock(get(block, "_type", "")) ? (
             <TrashIcon className="hover:scale-105" onClick={() => removeBlock([block?._id])} />

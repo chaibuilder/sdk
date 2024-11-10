@@ -2,22 +2,21 @@ import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle } 
 import { useTranslation } from "react-i18next";
 import AddBlocksPanel from "../sidepanels/panels/add-blocks/AddBlocks.tsx";
 import { Cross2Icon } from "@radix-ui/react-icons";
-import { CHAI_BUILDER_EVENTS, useChaiBuilderMsgListener } from "../../events.ts";
+import { CHAI_BUILDER_EVENTS } from "../../events.ts";
 import { useState } from "react";
+import { usePubSub } from "../../hooks/usePubSub.ts";
 
 export const AddBlocksDialog = () => {
   const { t } = useTranslation();
   const [parentId, setParentId] = useState<string>("");
   const [open, setOpen] = useState(false);
-  useChaiBuilderMsgListener(({ name, data = undefined }) => {
-    if (name === CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK) {
-      setParentId(data?._id);
-      setOpen(true);
-    }
-    if (name === CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK) {
-      setParentId("");
-      setOpen(false);
-    }
+  usePubSub(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, (data: { _id: string }) => {
+    setParentId(data._id);
+    setOpen(true);
+  });
+  usePubSub(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK, () => {
+    setParentId("");
+    setOpen(false);
   });
 
   return (

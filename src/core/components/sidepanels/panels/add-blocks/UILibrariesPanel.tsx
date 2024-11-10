@@ -16,8 +16,9 @@ import { draggedBlockAtom } from "../../../canvas/dnd/atoms.ts";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { selectedLibraryAtom } from "../../../../atoms/ui.ts";
-import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../../../events.ts";
+import { CHAI_BUILDER_EVENTS } from "../../../../events.ts";
 import { useBlockHighlight } from "../../../../hooks";
+import { pubsub } from "../../../../pubsub.ts";
 
 const BlockCard = ({
   block,
@@ -47,13 +48,13 @@ const BlockCard = ({
       e.stopPropagation();
       if (has(block, "component")) {
         addCoreBlock(block, parentId);
-        emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK });
+        pubsub.publish(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK);
         return;
       }
       setIsAdding(true);
       const uiBlocks = await getUILibraryBlock(library, block);
       if (!isEmpty(uiBlocks)) addPredefinedBlock(syncBlocksWithDefaults(uiBlocks), parentId);
-      emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK });
+      pubsub.publish(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK);
     },
     [block],
   );
@@ -84,7 +85,7 @@ const BlockCard = ({
       setTimeout(() => {
         setSelected([]);
         clearHighlight();
-        emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK });
+        pubsub.publish(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK);
       }, 200);
     }
   };

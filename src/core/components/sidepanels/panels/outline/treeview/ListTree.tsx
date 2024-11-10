@@ -39,9 +39,10 @@ import { BsLightningFill } from "react-icons/bs";
 import { TbEyeDown } from "react-icons/tb";
 import { ROOT_TEMP_KEY } from "../../../../../constants/STRINGS.ts";
 import { EyeOff, PlusIcon } from "lucide-react";
-import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../../../../events.ts";
+import { CHAI_BUILDER_EVENTS } from "../../../../../events.ts";
 import { BiCollapseVertical, BiExpandVertical } from "react-icons/bi";
 import { useBlockHighlight } from "../../../../../hooks/useBlockHighlight";
+import { pubsub } from "../../../../../pubsub.ts";
 
 const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const outlineItems = useBuilderProp("outlineMenuItems", []);
@@ -154,7 +155,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   if (id === ROOT_TEMP_KEY) {
     return (
       <button
-        onClick={() => emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK })}
+        onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK)}
         className="mb-10 mt-5 w-full rounded bg-gray-100 p-1 hover:bg-gray-200 dark:bg-gray-800">
         + {t("Add block")}
       </button>
@@ -239,7 +240,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
           {canAddChildBlock(data?._type) && !hiddenBlocks.includes(id) ? (
             <Tooltip>
               <TooltipTrigger
-                onClick={() => emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, data: { _id: id } })}
+                onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, { _id: id })}
                 className="cursor-pointer rounded bg-transparent hover:bg-white hover:text-black"
                 asChild>
                 <PlusIcon size={"18"} />
@@ -418,10 +419,7 @@ const ListTree = () => {
             {t("This page is empty")}
             <br />
             <br />
-            <Button
-              onClick={() => emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK })}
-              variant="default"
-              size="sm">
+            <Button onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK)} variant="default" size="sm">
               + {t("Add Block")}
             </Button>
           </p>

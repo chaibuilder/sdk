@@ -26,6 +26,7 @@ import { useIntervalEffect } from "@react-hookz/web";
 import { useWatchGlobalBlocks } from "../hooks/useGlobalBlocksStore.ts";
 import { useWatchRSCBlocks } from "../hooks/useWatchRSCBlocks.ts";
 import { ChaiBlock } from "../types/ChaiBlock.ts";
+
 const useAutoSave = () => {
   const { savePage } = useSavePage();
   const autoSaveSupported = useBuilderProp("autoSaveSupport", true);

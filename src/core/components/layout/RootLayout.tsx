@@ -13,10 +13,11 @@ import { useTranslation } from "react-i18next";
 import { GearIcon, LightningBoltIcon } from "@radix-ui/react-icons";
 import SettingsPanel from "../settings/SettingsPanel.tsx";
 import { AskAI } from "../AskAi.tsx";
-import { CHAI_BUILDER_EVENTS, useChaiBuilderMsgListener } from "../../events.ts";
+import { CHAI_BUILDER_EVENTS } from "../../events.ts";
 import { ChooseLayout } from "./ChooseLayout.tsx";
 import { compact, get } from "lodash-es";
 import { HotKeys } from "../HotKeys.tsx";
+import { usePubSub } from "../../hooks/usePubSub.ts";
 
 const TopBar = lazy(() => import("../topbar/Topbar.tsx"));
 
@@ -57,10 +58,8 @@ const RootLayout: ComponentType = () => {
   const [activePanelIndex, setActivePanelIndex] = useState(0);
   const [layoutVariant] = useLayoutVariant();
   const [chooseLayout, setChooseLayout] = useState(false);
-  useChaiBuilderMsgListener(({ name }) => {
-    if (name === CHAI_BUILDER_EVENTS.SHOW_BLOCK_SETTINGS) {
-      setActivePanelIndex(1);
-    }
+  usePubSub(CHAI_BUILDER_EVENTS.SHOW_BLOCK_SETTINGS, () => {
+    setActivePanelIndex(1);
   });
   const topComponents = useBuilderProp("sideBarComponents.top", []);
   /**

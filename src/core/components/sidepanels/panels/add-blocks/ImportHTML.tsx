@@ -3,7 +3,8 @@ import { useTranslation } from "react-i18next";
 import { Button, Card, CardContent, CardDescription, CardFooter, CardHeader, Label, Textarea } from "../../../../../ui";
 import { useAddBlock } from "../../../../hooks";
 import { getBlocksFromHTML } from "../../../../import-html/html-to-json";
-import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../../../events.ts";
+import { CHAI_BUILDER_EVENTS } from "../../../../events.ts";
+import { pubsub } from "../../../../pubsub.ts";
 
 const ImportHTML = ({ parentId }: { parentId?: string }) => {
   const { t } = useTranslation();
@@ -14,7 +15,7 @@ const ImportHTML = ({ parentId }: { parentId?: string }) => {
     const blocks = getBlocksFromHTML(code);
     addPredefinedBlock([...blocks], parentId);
     setCode("");
-    emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK });
+    pubsub.publish(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK);
   };
 
   return (

@@ -64,7 +64,6 @@ export default defineConfig({
         "@bobthered/tailwindcssPaletteGenerator",
         "clsx",
         "cmdk",
-        "react-event-hook",
         "framer-motion",
         "date-fns",
         "flagged",

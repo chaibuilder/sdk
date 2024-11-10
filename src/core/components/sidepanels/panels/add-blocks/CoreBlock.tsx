@@ -8,7 +8,8 @@ import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { draggedBlockAtom } from "../../../canvas/dnd/atoms.ts";
 import { useFeature } from "flagged";
 import { useTranslation } from "react-i18next";
-import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../../../events.ts";
+import { CHAI_BUILDER_EVENTS } from "../../../../events.ts";
+import { pubsub } from "../../../../pubsub.ts";
 
 export const CoreBlock = ({ block, disabled, parentId }: { block: any; disabled: boolean; parentId?: string }) => {
   const [, setDraggedBlock] = useAtom(draggedBlockAtom);
@@ -23,7 +24,7 @@ export const CoreBlock = ({ block, disabled, parentId }: { block: any; disabled:
     } else {
       addCoreBlock(block, parentId || null);
     }
-    emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK });
+    pubsub.publish(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK);
   };
   const dnd = useFeature("dnd");
   const { t } = useTranslation();
