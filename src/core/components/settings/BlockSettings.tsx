@@ -52,7 +52,7 @@ export default function BlockSettings() {
   const coreBlock = getBlockComponent(selectedBlock?._type);
   const formData = formDataWithSelectedLang(selectedBlock, selectedLang, coreBlock);
   const [prevFormData, setPrevFormData] = useState(formData);
-  const dataBindingSupported = useBuilderProp("dataBindingSupport", false);
+  const dataBindingSupported = false;
 
   const updateProps = ({ formData: newData }: IChangeEvent, id?: string, oldState?: any) => {
     if (id && prevFormData?._id === selectedBlock._id) {

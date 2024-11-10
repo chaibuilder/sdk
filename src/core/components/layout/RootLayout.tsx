@@ -17,15 +17,12 @@ import { CHAI_BUILDER_EVENTS, useChaiBuilderMsgListener } from "../../events.ts"
 import { ChooseLayout } from "./ChooseLayout.tsx";
 import { compact, get } from "lodash-es";
 import { HotKeys } from "../HotKeys.tsx";
-import { PageDataProviders } from "../sidepanels/PageDataProviders.tsx";
-import { AiFillDatabase } from "react-icons/ai";
 
 const TopBar = lazy(() => import("../topbar/Topbar.tsx"));
 
 function useSidebarMenuItems(layoutVariant: string) {
   const singleSidePanel = layoutVariant === "SINGLE_SIDE_PANEL";
   const { t } = useTranslation();
-  const dataBindingSupport = useBuilderProp("dataBindingSupport", false);
   const askAICallback = useBuilderProp("askAiCallBack", null);
   return useMemo(() => {
     const items = [
@@ -38,16 +35,15 @@ function useSidebarMenuItems(layoutVariant: string) {
           </div>
         ),
       },
-      singleSidePanel ? { icon: <GearIcon className="size-5" />, label: "Edit Block", component: SettingsPanel } : null,
-      dataBindingSupport
-        ? { icon: <AiFillDatabase className="size-3" />, label: t("Data Providers"), component: PageDataProviders }
+      singleSidePanel
+        ? { icon: <GearIcon className="size-5" />, label: t("Edit Block"), component: SettingsPanel }
         : null,
       askAICallback
-        ? { icon: <LightningBoltIcon className="size-5" />, label: "AI Assistant", component: AskAI }
+        ? { icon: <LightningBoltIcon className="size-5" />, label: t("AI Assistant"), component: AskAI }
         : null,
     ];
     return compact(items);
-  }, [singleSidePanel, dataBindingSupport, t, askAICallback]);
+  }, [singleSidePanel, t, askAICallback]);
 }
 
 function isDualLayout(layoutVariant: string) {

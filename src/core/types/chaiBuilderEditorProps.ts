@@ -151,9 +151,6 @@ export interface ChaiBuilderEditorProps {
 
   previewLink?: string;
 
-  dataBindingSupport?: boolean;
-  dataProviders?: DataProvider[];
-
   darkMode?: boolean;
 
   importHTMLSupport?: boolean;
