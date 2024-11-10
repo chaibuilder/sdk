@@ -40,6 +40,7 @@ export const JSONForm = memo(({ id, properties, formData, onChange }: JSONFormTy
 
   useEffect(() => {
     setForm(formData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, selectedLang]);
 
   const throttledChange = useThrottledCallback(

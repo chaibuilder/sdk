@@ -19,7 +19,6 @@ const CollectionField = ({
   const { t } = useTranslation();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const searchCollectionItems = useBuilderProp("searchCollectionItems", (_: string, __: any) => []);
-  const [initialLoaded, setInitialLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [collection, setCollection] = useState("pages");
@@ -31,7 +30,7 @@ const CollectionField = ({
   const currentCollectionName = collections?.find((_collection) => _collection.key === collection)?.name;
 
   useEffect(() => {
-    if (!href || loading || !startsWith(href, "collection:") || initialLoaded) return;
+    if (!href || loading || !startsWith(href, "collection:")) return;
     const initHref = split(href, ":");
     const _collection = get(initHref, 1, "pages") || "pages";
     setCollection(_collection);
@@ -40,13 +39,10 @@ const CollectionField = ({
     setSelectedIndex(-1);
 
     (async () => {
-      setLoading(true);
       const initalValue = await searchCollectionItems(_collection, [get(initHref, 2, "pages")]);
       if (initalValue && Array.isArray(initalValue)) {
         setSearchQuery(get(initalValue, [0, "name"], ""));
       }
-      setInitialLoaded(true);
-      setLoading(false);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [href]);
