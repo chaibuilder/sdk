@@ -21,7 +21,7 @@ const CollectionField = ({
   const searchCollectionItems = useBuilderProp("searchCollectionItems", (_: string, __: any) => []);
   const [loading, setLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
-  const [collection, setCollection] = useState("pages");
+  const [collection, setCollection] = useState("page");
   const [searchQuery, setSearchQuery] = useState("");
   const [collectionItems, setCollectionsItems] = useState<CollectionItem[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
@@ -32,14 +32,14 @@ const CollectionField = ({
   useEffect(() => {
     if (!href || loading || !startsWith(href, "collection:")) return;
     const initHref = split(href, ":");
-    const _collection = get(initHref, 1, "pages") || "pages";
+    const _collection = get(initHref, 1, "page") || "page";
     setCollection(_collection);
     setSearchQuery("");
     setCollectionsItems([]);
     setSelectedIndex(-1);
 
     (async () => {
-      const initalValue = await searchCollectionItems(_collection, [get(initHref, 2, "pages")]);
+      const initalValue = await searchCollectionItems(_collection, [get(initHref, 2, "page")]);
       if (initalValue && Array.isArray(initalValue)) {
         setSearchQuery(get(initalValue, [0, "name"], ""));
       }
