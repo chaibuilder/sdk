@@ -4,8 +4,8 @@ import { useBuilderProp, useLayoutVariant } from "../../hooks";
 import "../canvas/static/BlocksExternalDataProvider.tsx";
 import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../ui";
 import { motion } from "framer-motion";
-import { EditIcon, Layers, LayoutTemplate, PaintBucketIcon } from "lucide-react";
-import { Outline, ThemeOptions } from "../../main";
+import { EditIcon, Layers, LayoutTemplate } from "lucide-react";
+import { Outline } from "../../main";
 import { CanvasTopBar } from "../canvas/topbar/CanvasTopBar.tsx";
 import CanvasArea from "../canvas/CanvasArea.tsx";
 import { AddBlocksDialog } from "./AddBlocksDialog.tsx";
@@ -45,11 +45,6 @@ function useSidebarMenuItems(layoutVariant: string) {
       askAICallback
         ? { icon: <LightningBoltIcon className="size-5" />, label: "AI Assistant", component: AskAI }
         : null,
-      {
-        icon: <PaintBucketIcon size={20} />,
-        label: "Theme",
-        component: () => <ThemeOptions showHeading={false} />,
-      },
     ];
     return compact(items);
   }, [singleSidePanel, dataBindingSupport, t, askAICallback]);

@@ -5,7 +5,6 @@ import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML } from "./core/main";
 import { loadWebBlocks } from "./web-blocks";
 import { useState } from "react";
 import axios from "axios";
-import { LayersIcon } from "lucide-react";
 import { registerChaiBlock } from "@chaibuilder/runtime";
 import { SingleLineText } from "@chaibuilder/runtime/controls";
 import { get } from "lodash-es";
@@ -89,13 +88,7 @@ function ChaiBuilderDefault() {
       }}
       uiLibraries={uiLibraries}
       sideBarComponents={{
-        top: [
-          {
-            icon: <LayersIcon size={20} />,
-            label: "SEO Panel",
-            component: () => <div>SEO Panel</div>,
-          },
-        ],
+        top: [],
       }}
       getRSCBlock={async (block: ChaiBlock) => {
         return new Promise((resolve) => {
@@ -125,56 +118,6 @@ function ChaiBuilderDefault() {
                   _type: "Box",
                   _id: "rnqzul",
                   _name: "Box",
-                },
-                {
-                  styles: "#styles:,bg-primary-500 flex w-12 items-center justify-center",
-                  tag: "div",
-                  backgroundImage: "",
-                  _type: "Box",
-                  _id: "nuxByk",
-                  _name: "Box",
-                  _parent: "rnqzul",
-                },
-                {
-                  styles: "#styles:, w-24px h-24px h-6 w-6 fill-current text-white",
-                  icon: "<svg viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'><path d='M20 3.33331C10.8 3.33331 3.33337 10.8 3.33337 20C3.33337 29.2 10.8 36.6666 20 36.6666C29.2 36.6666 36.6667 29.2 36.6667 20C36.6667 10.8 29.2 3.33331 20 3.33331ZM21.6667 28.3333H18.3334V25H21.6667V28.3333ZM21.6667 21.6666H18.3334V11.6666H21.6667V21.6666Z'></path></svg>",
-                  width: "",
-                  height: "",
-                  _type: "Icon",
-                  _id: "yBzaww",
-                  _parent: "nuxByk",
-                },
-                {
-                  styles: "#styles:,-mx-3 px-4 py-2",
-                  tag: "div",
-                  backgroundImage: "",
-                  _type: "Box",
-                  _id: "vpsyBs",
-                  _name: "Box",
-                  _parent: "rnqzul",
-                },
-                {
-                  styles: "#styles:,mx-3",
-                  tag: "div",
-                  backgroundImage: "",
-                  _type: "Box",
-                  _id: "qpmfDy",
-                  _name: "Box",
-                  _parent: "vpsyBs",
-                },
-                {
-                  styles: "#styles:,text-primary-500 dark:text-primary-400 font-semibold",
-                  content: "Info",
-                  _type: "Span",
-                  _id: "aiozhz",
-                  _parent: "qpmfDy",
-                },
-                {
-                  styles: "#styles:,text-sm text-gray-600 dark:text-gray-200",
-                  content: " This channel archived by the owner! ",
-                  _type: "Paragraph",
-                  _id: "wzntdv",
-                  _parent: "qpmfDy",
                 },
               ];
         return new Promise((resolve) => {
