@@ -158,8 +158,6 @@ export interface ChaiBuilderEditorProps {
 
   importHTMLSupport?: boolean;
 
-  fetchMediaCallback?: (limit?: number, offset?: number) => Promise<any[]>;
-  uploadMediaCallback?: (file: File) => Promise<{ url: string }>;
   askAiCallBack?: (
     type: "styles" | "content",
     prompt: string,

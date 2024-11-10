@@ -66,9 +66,6 @@ function ChaiBuilderDefault() {
           usage: { completionTokens: 151, promptTokens: 227, totalTokens: 378 },
         };
       }}
-      uploadMediaCallback={async () => {
-        return { url: "https://picsum.photos/200" };
-      }}
       getUILibraryBlock={async (uiLibrary, uiLibBlock) => {
         const response = await axios.get(
           uiLibrary.url + (!uiLibBlock.path ? "/" + uiLibBlock.uuid + ".html" : "/blocks/" + uiLibBlock.path),
