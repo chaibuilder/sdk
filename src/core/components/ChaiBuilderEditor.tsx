@@ -12,7 +12,6 @@ import { builderStore } from "../atoms/store.ts";
 import { Toaster } from "../../ui";
 import { useBrandingOptions, useBuilderProp, useBuilderReset, useSavePage } from "../hooks";
 import { ChaiBuilderEditorProps } from "../types";
-import { dataProvidersAtom } from "../hooks/usePageDataProviders.ts";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
 import { SmallScreenMessage } from "./SmallScreenMessage.tsx";
 import { setDebugLogs } from "../functions/logging.ts";
@@ -57,10 +56,6 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
       omit(props, ["blocks", "subPages", "brandingOptions", "dataProviders", "customRootLayout", "translations"]),
     );
   }, [props]);
-
-  useEffect(() => {
-    builderStore.set(dataProvidersAtom, props.dataProviders || []);
-  }, [props.dataProviders]);
 
   useEffect(() => {
     // @ts-ignore
