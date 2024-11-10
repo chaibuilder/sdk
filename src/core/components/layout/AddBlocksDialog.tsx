@@ -10,8 +10,8 @@ export const AddBlocksDialog = () => {
   const { t } = useTranslation();
   const [parentId, setParentId] = useState<string>("");
   const [open, setOpen] = useState(false);
-  usePubSub(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, (data: { _id: string }) => {
-    setParentId(data._id);
+  usePubSub(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, (data: { _id: string } | undefined) => {
+    setParentId(data ? data._id : null);
     setOpen(true);
   });
   usePubSub(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK, () => {
