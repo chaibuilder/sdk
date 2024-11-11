@@ -35,7 +35,8 @@ function ChaiBuilderDefault() {
   ]);
   return (
     <ChaiBuilderEditor
-      // fallbackLang="fr"
+      fallbackLang="fr"
+      languages={["pt", "en"]}
       // locale="pt"
       translations={{ pt: lngPtBR }}
       autoSaveSupport={true}
@@ -60,7 +61,6 @@ function ChaiBuilderDefault() {
         return {
           blocks: map(blocks, (b) => ({
             ...pick(b, ["_id"]),
-            content: `AI Generated Content with current time ${new Date().toISOString()}`,
           })),
           usage: { completionTokens: 151, promptTokens: 227, totalTokens: 378 },
         };

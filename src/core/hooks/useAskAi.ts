@@ -1,4 +1,4 @@
-import { cloneDeep, filter, find, flattenDeep, set } from "lodash-es";
+import { cloneDeep, filter, find, flattenDeep } from "lodash-es";
 import { useBuilderProp } from "./useBuilderProp.ts";
 import { useCallback, useState } from "react";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
@@ -7,6 +7,11 @@ import { useStreamMultipleBlocksProps, useUpdateMultipleBlocksProps } from "./us
 import { atom, useAtom } from "jotai";
 import { AskAiResponse } from "../types/chaiBuilderEditorProps.ts";
 import { useLanguages } from "./useLanguages.ts";
+import { compact, startsWith } from "lodash-es";
+import { STYLES_KEY } from "../constants/STRINGS.ts";
+import { pick, get, has } from "lodash-es";
+import { getBlockComponent } from "@chaibuilder/runtime";
+import { isEmpty } from "lodash";
 
 function getChildBlocks(allBlocks: ChaiBlock[], blockId: string, blocks: any[]) {
   blocks.push(find(allBlocks, { _id: blockId }) as ChaiBlock);
@@ -23,12 +28,25 @@ const getBlockWithChildren = (blockId: string, allBlocks: ChaiBlock[]) => {
   return blocks;
 };
 
-function promptWithLanguage(prompt: string, currentLang: string, type: string) {
-  if (!currentLang || type !== "content") return prompt;
-
-  const languagePrompt = `Please provide the response in "${currentLang}" language.`;
-  return `${prompt}\n\n${languagePrompt}`;
-}
+const pickOnlyAIProps = (blocks: ChaiBlock[], lang: string) => {
+  return compact(
+    blocks.map((block) => {
+      const keys = ["_id", "_type", "_parent"];
+      const newBlock = pick(block, keys);
+      const registeredBlock = getBlockComponent(block._type);
+      const aiProps = {};
+      for (const key in block) {
+        if (keys.includes(key)) continue;
+        if (get(registeredBlock, `props.${key}.ai`, false)) {
+          aiProps[key] = get(block, `${key}-${lang}`, block[key]);
+        }
+      }
+      if (isEmpty(aiProps)) return false;
+      if (has(newBlock, "_parent") && isEmpty(newBlock._parent)) delete newBlock._parent;
+      return { ...newBlock, ...aiProps };
+    }),
+  );
+};
 
 export const askAiProcessingAtom = atom(false);
 
@@ -41,7 +59,19 @@ export const useAskAi = () => {
   const updateBlockPropsAll = useUpdateMultipleBlocksProps();
   const [blocks] = useBlocksStore();
   const { selectedLang, fallbackLang } = useLanguages();
-  const currentLang = selectedLang.length ? selectedLang : fallbackLang;
+
+  const getBlockForStyles = (blockId: string, blocks: ChaiBlock[]) => {
+    const block = cloneDeep(blocks.find((block) => block._id === blockId));
+    for (const key in block) {
+      const value = block[key];
+      if (typeof value === "string" && startsWith(value, STYLES_KEY)) {
+        block[key] = compact(flattenDeep(value.replace(STYLES_KEY, "").split(","))).join(" ");
+      } else {
+        if (key !== "_id") delete block[key];
+      }
+    }
+    return block;
+  };
 
   return {
     askAi: useCallback(
@@ -55,14 +85,13 @@ export const useAskAi = () => {
         setProcessing(true);
         setError(null);
         try {
+          const lang = selectedLang === fallbackLang ? "" : selectedLang;
           const aiBlocks =
             type === "content"
-              ? cloneDeep(getBlockWithChildren(blockId, blocks))
-              : [cloneDeep(blocks.find((block) => block._id === blockId))];
-          set(aiBlocks, "0._parent", null);
+              ? pickOnlyAIProps(cloneDeep(getBlockWithChildren(blockId, blocks)), selectedLang)
+              : [getBlockForStyles(blockId, blocks)];
 
-          const lang = selectedLang === fallbackLang ? "" : selectedLang;
-          const askAiResponse = await callBack(type, promptWithLanguage(prompt, currentLang, type), aiBlocks, lang);
+          const askAiResponse = await callBack(type, prompt, aiBlocks, lang);
 
           const { blocks: updatedBlocks, error } = askAiResponse;
           if (error) {
@@ -70,7 +99,15 @@ export const useAskAi = () => {
             return;
           }
           if (type === "styles") {
-            updateBlockPropsAll(updatedBlocks);
+            const blocks = updatedBlocks.map((block) => {
+              for (const key in block) {
+                if (key !== "_id") {
+                  block[key] = `${STYLES_KEY},${block[key]}`;
+                }
+              }
+              return block;
+            });
+            updateBlockPropsAll(blocks);
           } else {
             updateBlocksWithStream(updatedBlocks);
           }
@@ -82,16 +119,7 @@ export const useAskAi = () => {
           if (onComplete) onComplete();
         }
       },
-      [
-        callBack,
-        setProcessing,
-        blocks,
-        selectedLang,
-        fallbackLang,
-        currentLang,
-        updateBlockPropsAll,
-        updateBlocksWithStream,
-      ],
+      [callBack, setProcessing, blocks, selectedLang, fallbackLang, updateBlockPropsAll, updateBlocksWithStream],
     ),
     loading: processing,
     error,
