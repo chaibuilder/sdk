@@ -12,6 +12,7 @@ import { STYLES_KEY } from "../constants/STRINGS.ts";
 import { pick, get, has } from "lodash-es";
 import { getBlockComponent } from "@chaibuilder/runtime";
 import { isEmpty } from "lodash";
+import { LANGUAGES } from "../constants/LANGUAGES.ts";
 
 function getChildBlocks(allBlocks: ChaiBlock[], blockId: string, blocks: any[]) {
   blocks.push(find(allBlocks, { _id: blockId }) as ChaiBlock);
@@ -48,6 +49,11 @@ const pickOnlyAIProps = (blocks: ChaiBlock[], lang: string) => {
   );
 };
 
+const addLangToPrompt = (prompt: string, currentLang: string, type: string) => {
+  if (!currentLang || type !== "content") return prompt;
+  return `${prompt}. Generate content in ${get(LANGUAGES, currentLang, currentLang)} language.`;
+};
+
 export const askAiProcessingAtom = atom(false);
 
 // update prompt for content type for lang support
@@ -59,6 +65,7 @@ export const useAskAi = () => {
   const updateBlockPropsAll = useUpdateMultipleBlocksProps();
   const [blocks] = useBlocksStore();
   const { selectedLang, fallbackLang } = useLanguages();
+  const currentLang = selectedLang.length ? selectedLang : fallbackLang;
 
   const getBlockForStyles = (blockId: string, blocks: ChaiBlock[]) => {
     const block = cloneDeep(blocks.find((block) => block._id === blockId));
@@ -91,7 +98,7 @@ export const useAskAi = () => {
               ? pickOnlyAIProps(cloneDeep(getBlockWithChildren(blockId, blocks)), selectedLang)
               : [getBlockForStyles(blockId, blocks)];
 
-          const askAiResponse = await callBack(type, prompt, aiBlocks, lang);
+          const askAiResponse = await callBack(type, addLangToPrompt(prompt, currentLang, type), aiBlocks, lang);
 
           const { blocks: updatedBlocks, error } = askAiResponse;
           if (error) {
@@ -119,7 +126,16 @@ export const useAskAi = () => {
           if (onComplete) onComplete();
         }
       },
-      [callBack, setProcessing, blocks, selectedLang, fallbackLang, updateBlockPropsAll, updateBlocksWithStream],
+      [
+        callBack,
+        setProcessing,
+        selectedLang,
+        fallbackLang,
+        blocks,
+        currentLang,
+        updateBlockPropsAll,
+        updateBlocksWithStream,
+      ],
     ),
     loading: processing,
     error,
