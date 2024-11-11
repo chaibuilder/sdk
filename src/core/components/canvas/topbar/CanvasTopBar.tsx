@@ -4,6 +4,7 @@ import { ZoomInIcon } from "@radix-ui/react-icons";
 import { UndoRedo } from "./UndoRedo";
 import { Separator } from "../../../../ui";
 import { DarkMode } from "./DarkMode";
+import { ThemeConfig } from "./ThemeConfig";
 import { Breakpoints } from "./Breakpoints";
 import { ClearCanvas } from "./ClearCanvas";
 import { useBuilderProp, useCanvasZoom } from "../../../hooks";
@@ -29,6 +30,7 @@ const CanvasTopBar: React.FC = () => {
         </div>
         <Separator orientation="vertical" />
         <UndoRedo />
+        <ThemeConfig />
       </div>
       <div className="flex h-full items-center space-x-2">
         <ClearCanvas />

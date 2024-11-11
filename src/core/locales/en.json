@@ -136,13 +136,23 @@
     "Theme Config": {
         "Heading Font": "Heading Font",
         "Body Font": "Body Font",
-        "Rounded Corner": "Rounded Corners",
+        "Select heading font": "Select heading font", 
+        "Select body font": "Select body font",
+        "Fonts": "Fonts",
+        "Colors": "Colors",
         "Primary": "Primary",
         "Secondary": "Secondary",
+        "Border Radius": "Border Radius",
+        "Rounded Corner": "Rounded Corners",
+        "Light Mode": "Light Mode",
+        "Dark Mode": "Dark Mode",
         "Background": "Background",
         "Text Color": "Text Color",
         "Background Dark Mode": "Background (Dark Mode)",
-        "Text Color Dark Mode": "Text Color (Dark Mode)"
+        "Text Color Dark Mode": "Text Color (Dark Mode)",
+        "Preview": "Preview",
+        "Light Mode Preview": "Light Mode Preview",
+        "Dark Mode Preview": "Dark Mode Preview"
     },
     "flex.heading": "Flex Child",
     "flex.basis": "Basis",
@@ -472,5 +482,9 @@
     "Open Code Editor": "Open Code Editor",
     "Clear search": "Clear search",
     "No results found for": "No results found for",
-    "Search {collectionName}": "Search {collectionName}"
+    "Search {collectionName}": "Search {collectionName}",
+  
+  "Website Theme Configuration": "Website Theme Configuration",
+  "Open theme configuration": "Open theme configuration",
+  "Theme Configuration": "Theme Configuration"
 }

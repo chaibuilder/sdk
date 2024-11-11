@@ -16,6 +16,7 @@ export { DefaultChaiBlocks } from "../components/sidepanels/panels/add-blocks/De
 export { DarkMode as DarkModeSwitcher } from "../components/canvas/topbar/DarkMode.tsx";
 export { Breakpoints as ScreenSizes } from "../components/canvas/topbar/Breakpoints.tsx";
 export { UndoRedo } from "../components/canvas/topbar/UndoRedo.tsx";
+export { ThemeConfig } from "../components/canvas/topbar/ThemeConfig.tsx";
 export {
   ChaiBuilderCanvas,
   ThemeOptions,
