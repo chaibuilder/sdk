@@ -95,7 +95,6 @@ export default defineConfig({
         "react-email",
         "tailwind-merge",
         "tailwindcss-animate",
-        "unsplash-js",
       ],
     },
   },

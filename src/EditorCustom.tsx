@@ -25,7 +25,6 @@ function ChaiBuilderCustom() {
       locale={"pt-BR"}
       // translations={{ "pt-BR": ptBR, es: es }}
       layout={CustomLayout}
-      unsplashAccessKey={import.meta.env.VITE_UNSPLASH_ACCESS_KEY}
       showDebugLogs={true}
       autoSaveSupport={false}
       previewComponent={PreviewWeb}

@@ -1,7 +1,6 @@
 import { ChaiBlock } from "./ChaiBlock";
 import React, { ReactNode } from "react";
 import { LayoutVariant } from "../constants/LAYOUT_MODE.ts";
-import { ChaiPage } from "./index.ts";
 
 type RichText = string;
 
@@ -224,15 +223,6 @@ export interface ChaiBuilderEditorProps {
    */
   outlineMenuItems?: OutlineMenuItems;
 
-  /**
-   * Deprecated: getPages callback function. use collections instead
-   */
-  getPages?: () => Promise<ChaiPage[]>;
-
-  /**
-   * Unsplash access key
-   */
-  unsplashAccessKey?: string;
   _flags?: Record<string, boolean>;
 
   /**

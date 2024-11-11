@@ -132,8 +132,7 @@
     "react-wrap-balancer": "^1.1.0",
     "tailwind-merge": "2.3.0",
     "tree-model": "^1.0.7",
-    "undo-manager": "^1.1.1",
-    "unsplash-js": "^7.0.18"
+    "undo-manager": "^1.1.1"
   },
   "devDependencies": {
     "@ai-sdk/openai": "^0.0.37",

@@ -38,7 +38,6 @@ function ChaiBuilderDefault() {
       // fallbackLang="fr"
       // locale="pt"
       translations={{ pt: lngPtBR }}
-      unsplashAccessKey={"import.meta.env.VITE_UNSPLASH_ACCESS_KEY"}
       autoSaveSupport={true}
       autoSaveInterval={15}
       previewComponent={PreviewWeb}
