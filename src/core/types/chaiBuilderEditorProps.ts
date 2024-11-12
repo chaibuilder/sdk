@@ -25,6 +25,18 @@ export interface UILibrary {
 
 type ReactComponentType = React.ComponentType<any>;
 
+export type CssVariableNameWithDefault = Record<string, any>;
+export type ChaiBuilderThemeOptions = {
+  fontFamily: false | Record<string, CssVariableNameWithDefault>;
+  borderRadius: false | CssVariableNameWithDefault;
+  colors:
+    | false
+    | {
+        group: string;
+        items: Record<string, CssVariableNameWithDefault>;
+      }[];
+};
+
 export type Breakpoint = {
   title: string;
   content: string;
@@ -70,7 +82,15 @@ export type CollectionItem = {
   slug?: string;
 };
 
+export type ChaiBuilderThemeValues = {
+  fontFamily: Record<string, string>;
+  borderRadius: string;
+  colors: Record<string, Record<"light" | "dark", string>>;
+};
+
 export interface ChaiBuilderEditorProps {
+  themeOptions?: (defaultThemeOptions: ChaiBuilderThemeOptions) => ChaiBuilderThemeOptions;
+  theme?: ChaiBuilderThemeValues;
   /**
    * onError callback function
    * @param error
@@ -186,9 +206,6 @@ export interface ChaiBuilderEditorProps {
   blocks?: ChaiBlock[];
 
   onSave?: ({ blocks, providers }: SavePageData) => Promise<boolean | Error>;
-
-  brandingOptions?: Record<string, string>;
-  theme?: Record<string, string>;
 
   /**
    * onSaveStateChange callback function

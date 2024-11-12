@@ -2,12 +2,13 @@ import * as React from "react";
 import { RJSFSchema, UiSchema } from "@rjsf/utils";
 import validator from "@rjsf/validator-ajv8";
 import Form, { IChangeEvent } from "@rjsf/core";
-import { useBrandingOptions } from "../../../../hooks";
+import { useBrandingOptions, useBuilderProp } from "../../../../hooks";
 import { Color, Numeric, SelectOption } from "@chaibuilder/runtime/controls";
 import { ColorField } from "../../../../rjsf-widgets/color.tsx";
 import { useBlocksContainer } from "../../../../hooks/useBrandingOptions.ts";
 import { useTranslation } from "react-i18next";
 import { cn } from "../../../../functions/Functions.ts";
+import { ChaiBuilderThemeOptions } from "../../../../types/chaiBuilderEditorProps.ts";
 
 const FONTS = [
   { title: "Roboto", value: "Roboto" },
@@ -63,6 +64,23 @@ const FONTS = [
   { title: "Manrope", value: "Manrope" },
 ];
 
+const defaultThemeOptions: ChaiBuilderThemeOptions = {
+  fontFamily: {
+    heading: { "--font-heading": "Inter" },
+    body: { "--font-body": "Inter" },
+  },
+  borderRadius: { "--radius": "0.375rem" },
+  colors: [
+    {
+      group: "Body bg and fg",
+      items: {
+        background: { "--color-background": "#fff" },
+        foreground: { "--color-foreground": "#171717" },
+      },
+    },
+  ],
+};
+
 const ThemeConfigPanel = ({
   showHeading = true,
   className = "",
@@ -70,6 +88,12 @@ const ThemeConfigPanel = ({
   className?: string;
   showHeading?: boolean;
 }): React.JSX.Element => {
+  const themeOptionsFn = useBuilderProp(
+    "themeOptions",
+    (_defaultTheme: ChaiBuilderThemeOptions) => defaultThemeOptions,
+  );
+  const themeOptions = themeOptionsFn(defaultThemeOptions);
+  console.log(themeOptions);
   const [brandingOptions, setBrandingOptions] = useBrandingOptions();
   const [container] = useBlocksContainer();
   const brandingRef = React.useRef(brandingOptions);
