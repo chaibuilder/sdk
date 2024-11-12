@@ -146,7 +146,7 @@ export const ThemeConfig: React.FC<ThemeConfigProps> = React.memo(({ className =
             </TabsContent>
           </Tabs>
 
-          <div className="space-y-4">
+          {/* <div className="space-y-4">
             <h4 className="text-sm font-medium">{t("Theme Config.Preview")}</h4>
             <div className="grid grid-cols-2 gap-4">
               <ThemePreview
@@ -172,7 +172,7 @@ export const ThemeConfig: React.FC<ThemeConfigProps> = React.memo(({ className =
                 t={t}
               />
             </div>
-          </div>
+          </div> */}
         </div>
       </DialogContent>
     </Dialog>
