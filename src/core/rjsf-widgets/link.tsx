@@ -30,13 +30,15 @@ const CollectionField = ({
   const currentCollectionName = collections?.find((_collection) => _collection.key === collection)?.name;
 
   useEffect(() => {
+    setSearchQuery("");
+    setCollectionsItems([]);
+    setSelectedIndex(-1);
+    setIsSearching(false);
+
     if (!href || loading || !startsWith(href, "collection:")) return;
     const initHref = split(href, ":");
     const _collection = get(initHref, 1, "page") || "page";
     setCollection(_collection);
-    setSearchQuery("");
-    setCollectionsItems([]);
-    setSelectedIndex(-1);
 
     (async () => {
       const initalValue = await searchCollectionItems(_collection, [get(initHref, 2, "page")]);
