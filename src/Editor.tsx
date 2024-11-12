@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import { lsAiContextAtom, lsBlocksAtom, lsBrandingOptionsAtom } from "./__dev/atoms-dev.ts";
+import { lsAiContextAtom, lsBlocksAtom } from "./__dev/atoms-dev.ts";
 import PreviewWeb from "./__dev/preview/WebPreview.tsx";
 import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML } from "./core/main";
 import { loadWebBlocks } from "./web-blocks";
@@ -10,6 +10,7 @@ import { SingleLineText } from "@chaibuilder/runtime/controls";
 import { get } from "lodash-es";
 import { map, pick, isArray } from "lodash-es";
 import lngPtBR from "./__dev/ptBR.json";
+import { ChaiBuilderThemeOptions } from "./core/types/chaiBuilderEditorProps.ts";
 
 loadWebBlocks();
 
@@ -27,7 +28,6 @@ registerChaiBlock(null, {
 
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
-  const [brandingOptions] = useAtom(lsBrandingOptionsAtom);
   const [aiContext, setAiContext] = useAtom(lsAiContextAtom);
   const [uiLibraries] = useState([
     { uuid: "meraki-ui", name: "Meraki UI", url: "https://chai-ui-blocks.vercel.app" },
@@ -37,13 +37,49 @@ function ChaiBuilderDefault() {
     <ChaiBuilderEditor
       fallbackLang="fr"
       languages={["pt", "en"]}
+      themeOptions={(defaultTheme: ChaiBuilderThemeOptions) => ({
+        fontFamily: {
+          ...defaultTheme.fontFamily,
+          customFont: { "--font-new": "Inter" },
+        },
+        borderRadius: { "--radius": "0.375rem" },
+        colors: [
+          {
+            group: "Body bg and fg",
+            items: {
+              background: { "--color-background": "#fff" },
+              foreground: { "--color-foreground": "#171717" },
+              warning: { "--color-warning": "#ffc107" },
+            },
+          },
+        ],
+      })}
+      // theme={{
+      //   fontFamily: {
+      //     heading: "Inter",
+      //     body: "Inter",
+      //     lato: "Lato",
+      //   },
+      //   borderRadius: "0.375rem",
+      //   colors: {
+      //     background: { light: "#fff", dark: "#171717" },
+      //     foreground: { light: "#171717", dark: "#fff" },
+      //     primary: { light: "#007bff", dark: "#007bff" },
+      //     primaryForeground: { light: "#fff", dark: "#fff" },
+      //     secondary: { light: "#6c757d", dark: "#6c757d" },
+      //     secondaryForeground: { light: "#fff", dark: "#fff" },
+      //     success: { light: "#28a745", dark: "#28a745" },
+      //     danger: { light: "#dc3545", dark: "#dc3545" },
+      //     warning: { light: "#ffc107", dark: "#ffc107" },
+      //     info: { light: "#17a2b8", dark: "#17a2b8" },
+      //   },
+      // }}
       // locale="pt"
       translations={{ pt: lngPtBR }}
       autoSaveSupport={true}
       autoSaveInterval={15}
       previewComponent={PreviewWeb}
       blocks={blocks}
-      brandingOptions={brandingOptions}
       onSave={async ({ blocks, providers, brandingOptions }: any) => {
         localStorage.setItem("chai-builder-blocks", JSON.stringify(blocks));
         localStorage.setItem("chai-builder-providers", JSON.stringify(providers));
