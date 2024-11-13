@@ -3,9 +3,8 @@ import { useState } from "react";
 import { first, get, isEmpty, map, reject } from "lodash-es";
 // @ts-ignore
 import Autosuggest from "react-autosuggest";
-import Fuse from "fuse.js";
 import { CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
-import { ALL_TW_CLASSES } from "../../../constants/CLASSES_LIST";
+import { useFuseSearch } from "../../../constants/CLASSES_LIST";
 import {
   useAddClassesToBlocks,
   useBuilderProp,
@@ -29,14 +28,8 @@ import { useTranslation } from "react-i18next";
 import { SparklesIcon } from "lucide-react";
 import { AskAIStyles } from "../AskAiStyle.tsx";
 
-const fuse = new Fuse(ALL_TW_CLASSES, {
-  isCaseSensitive: false,
-  threshold: 0.2,
-  minMatchCharLength: 2,
-  keys: ["name"],
-});
-
 export function ManualClasses() {
+  const fuse = useFuseSearch();
   const { t } = useTranslation();
   const [styleBlock] = useSelectedStylingBlocks();
   const block = useSelectedBlock();

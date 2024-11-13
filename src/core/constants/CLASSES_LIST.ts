@@ -1,5 +1,9 @@
 import { flatten, flattenDeep, map, range, values } from "lodash-es";
 import { CLASS_VALUES } from "./CLASS_VALUES";
+import { useMemo } from "react";
+import Fuse from "fuse.js";
+import { useThemeOptions } from "../hooks/useTheme";
+import { keys } from "lodash";
 
 type ClassListType = {
   [key: string]: {
@@ -996,8 +1000,7 @@ const colorOptions = {
   ringOffsetColor: "ring-offset",
 };
 
-const soloColors = ["current", "inherit", "transparent", "black", "white", "primary", "secondary"];
-const chaiColors = ["primary", "secondary"];
+const soloColors = ["current", "inherit", "transparent", "black", "white"];
 const shadedColors = [
   "slate",
   "gray",
@@ -1027,9 +1030,6 @@ const colorKeys = map(values(colorOptions), (val) => val);
 
 const ALL_COLORS = flattenDeep([
   ...map(soloColors, (color) => flatten(map(colorKeys, (key) => `${key}-${color}`))),
-  ...map(chaiColors, (color) =>
-    flattenDeep(map(colorKeys, (key) => flattenDeep(map(shades, (shade) => `${key}-${color}-${shade}`)))),
-  ),
   ...map(shadedColors, (color) =>
     flattenDeep(map(colorKeys, (key) => flattenDeep(map(shades, (shade) => `${key}-${color}-${shade}`)))),
   ),
@@ -1045,3 +1045,29 @@ export const ALL_TW_CLASSES = map(
     name: cls,
   }),
 );
+
+export const useFuseSearch = () => {
+  const themeOptions = useThemeOptions();
+  const themeClasses = useMemo(() => {
+    let classes = [];
+    if (themeOptions.colors) {
+      const colors = flattenDeep(map(themeOptions.colors, ({ items }) => keys(items)));
+      classes = flattenDeep(map(colors, (color) => flatten(map(colorKeys, (key) => `${key}-${color}`))));
+    }
+    if (themeOptions.fontFamily) {
+      classes = [...classes, ...map(keys(themeOptions.fontFamily), (key) => `${key}`)];
+    }
+    return map(classes, (cls) => ({ name: cls }));
+  }, [themeOptions]);
+
+  return useMemo(
+    () =>
+      new Fuse([...ALL_TW_CLASSES, ...themeClasses], {
+        isCaseSensitive: false,
+        threshold: 0.2,
+        minMatchCharLength: 2,
+        keys: ["name"],
+      }),
+    [themeClasses],
+  );
+};
