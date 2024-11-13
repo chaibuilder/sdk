@@ -4,9 +4,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../../../../ui/shadcn/components/ui/select.tsx";
-import { Label } from "../../../../ui/shadcn/components/ui/label.tsx";
-import { ScrollArea } from "../../../../ui/shadcn/components/ui/scroll-area.tsx";
+} from "../../../../../ui/shadcn/components/ui/select.tsx";
+import { Label } from "../../../../../ui/shadcn/components/ui/label.tsx";
+import { ScrollArea } from "../../../../../ui/shadcn/components/ui/scroll-area.tsx";
 
 const FONTS = [
   { title: "Roboto", value: "Roboto" },

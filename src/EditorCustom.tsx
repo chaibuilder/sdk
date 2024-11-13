@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import { lsAiContextAtom, lsBlocksAtom, lsBrandingOptionsAtom } from "./__dev/atoms-dev.ts";
+import { lsAiContextAtom, lsBlocksAtom } from "./__dev/atoms-dev.ts";
 import { ChaiBlock, ChaiBuilderEditor } from "./core/main";
 import { loadWebBlocks } from "./web-blocks";
 import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
@@ -15,7 +15,6 @@ loadWebBlocks();
 
 function ChaiBuilderCustom() {
   const [blocks] = useAtom(lsBlocksAtom);
-  const [brandingOptions] = useAtom(lsBrandingOptionsAtom);
   const [aiContext, setAiContext] = useAtom(lsAiContextAtom);
   const [uiLibraries] = useState([
     { uuid: "community-blocks", name: "Community blocks", url: "https://community-blocks.vercel.app" },
@@ -29,7 +28,6 @@ function ChaiBuilderCustom() {
       autoSaveSupport={false}
       previewComponent={PreviewWeb}
       blocks={blocks}
-      brandingOptions={brandingOptions}
       onSave={async ({ blocks, providers, brandingOptions }: any) => {
         localStorage.setItem("chai-builder-blocks", JSON.stringify(blocks));
         localStorage.setItem("chai-builder-providers", JSON.stringify(providers));

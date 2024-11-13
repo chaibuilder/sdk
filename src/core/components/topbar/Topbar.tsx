@@ -4,7 +4,7 @@ import { SaveButton } from "./SaveButton";
 import { useBuilderProp } from "../../hooks";
 import { Preview } from "./Preview.tsx";
 import { LanguageSelector } from "../canvas/topbar/LanguageSelector.tsx";
-import { ThemeOption } from "./ThemeOption.tsx";
+//import { ThemeOption } from "./ThemeOption.tsx";
 
 const Topbar = () => {
   const leftComponents: LazyExoticComponent<any>[] = useBuilderProp("topBarComponents.left", []);
@@ -34,8 +34,8 @@ const Topbar = () => {
         )}
       </div>
       <div className="flex items-center space-x-1">
-        <ThemeOption />
-        <Separator orientation="vertical" />
+        {/* <ThemeOption />
+        <Separator orientation="vertical" /> */}
         <LanguageSelector />
         <Separator orientation="vertical" />
         <Preview />
