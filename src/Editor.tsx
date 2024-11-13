@@ -11,7 +11,7 @@ import { get } from "lodash-es";
 import { map, pick, isArray } from "lodash-es";
 import lngPtBR from "./__dev/ptBR.json";
 import { ChaiBuilderThemeOptions } from "./core/types/chaiBuilderEditorProps.ts";
-import { themeValuesAtom } from "./core/atoms/theme.ts";
+import { defaultThemeValues, customThemeValuesAtom } from "./core/atoms/theme.ts";
 import { Paintbrush } from "lucide-react";
 
 loadWebBlocks();
@@ -31,11 +31,12 @@ registerChaiBlock(null, {
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
   const [aiContext, setAiContext] = useAtom(lsAiContextAtom);
-  const [themeValues] = useAtom(themeValuesAtom);
+  const [customThemeValues] = useAtom(customThemeValuesAtom);
   const [uiLibraries] = useState([
     { uuid: "meraki-ui", name: "Meraki UI", url: "https://chai-ui-blocks.vercel.app" },
     { uuid: "chaiblocks", name: "UI Blocks", url: "https://chaibuilder.com/chaiblocks" },
   ]);
+
   return (
     <ChaiBuilderEditor
       fallbackLang="fr"
@@ -50,70 +51,133 @@ function ChaiBuilderDefault() {
           {
             group: "Base",
             items: {
-              background: { "--background": "#FFFFFF" },
-              foreground: { "--foreground": "#1C2127" },
+              light: {
+                background: { "--background": "#FFFFFF" },
+                foreground: { "--foreground": "#1C2127" },
+              },
+              dark: {
+                background: { "--background": "#1C2127" },
+                foreground: { "--foreground": "#FFFFFF" },
+              },
             },
           },
           {
             group: "Muted",
             items: {
-              muted: { "--muted": "#F1F5F9" },
-              mutedForeground: { "--muted-foreground": "#64748B" },
+              light: {
+                muted: { "--muted": "#F1F5F9" },
+                mutedForeground: { "--muted-foreground": "#64748B" },
+              },
+              dark: {
+                muted: { "--muted": "#2D3748" },
+                mutedForeground: { "--muted-foreground": "#A0AEC0" },
+              },
             },
           },
           {
             group: "Card",
             items: {
-              card: { "--card": "#FFFFFF" },
-              cardForeground: { "--card-foreground": "#1C2127" },
+              light: {
+                card: { "--card": "#FFFFFF" },
+                cardForeground: { "--card-foreground": "#1C2127" },
+              },
+              dark: {
+                card: { "--card": "#1C2127" },
+                cardForeground: { "--card-foreground": "#FFFFFF" },
+              },
             },
           },
           {
             group: "Popover",
             items: {
-              popover: { "--popover": "#FFFFFF" },
-              popoverForeground: { "--popover-foreground": "#1C2127" },
+              light: {
+                popover: { "--popover": "#FFFFFF" },
+                popoverForeground: { "--popover-foreground": "#1C2127" },
+              },
+              dark: {
+                popover: { "--popover": "#1C2127" },
+                popoverForeground: { "--popover-foreground": "#FFFFFF" },
+              },
             },
           },
           {
             group: "Border & Input",
             items: {
-              border: { "--border": "#E2E8F0" },
-              input: { "--input": "#E2E8F0" },
-              ring: { "--ring": "#94A3B8" },
+              light: {
+                border: { "--border": "#E2E8F0" },
+                input: { "--input": "#E2E8F0" },
+                ring: { "--ring": "#94A3B8" },
+              },
+              dark: {
+                border: { "--border": "#2D3748" },
+                input: { "--input": "#2D3748" },
+                ring: { "--ring": "#4A5568" },
+              },
             },
           },
           {
             group: "Primary",
             items: {
-              primary: { "--primary": "#1C2127" },
-              primaryForeground: { "--primary-foreground": "#F8FAFC" },
+              light: {
+                primary: { "--primary": "#1C2127" },
+                primaryForeground: { "--primary-foreground": "#F8FAFC" },
+              },
+              dark: {
+                primary: { "--primary": "#F8FAFC" },
+                primaryForeground: { "--primary-foreground": "#1C2127" },
+              },
             },
           },
           {
             group: "Secondary",
             items: {
-              secondary: { "--secondary": "#F1F5F9" },
-              secondaryForeground: { "--secondary-foreground": "#1C2127" },
+              light: {
+                secondary: { "--secondary": "#F1F5F9" },
+                secondaryForeground: { "--secondary-foreground": "#1C2127" },
+              },
+              dark: {
+                secondary: { "--secondary": "#2D3748" },
+                secondaryForeground: { "--secondary-foreground": "#F8FAFC" },
+              },
             },
           },
           {
             group: "Accent",
             items: {
-              accent: { "--accent": "#F1F5F9" },
-              accentForeground: { "--accent-foreground": "#1C2127" },
+              light: {
+                accent: { "--accent": "#F1F5F9" },
+                accentForeground: { "--accent-foreground": "#1C2127" },
+              },
+              dark: {
+                accent: { "--accent": "#2D3748" },
+                accentForeground: { "--accent-foreground": "#F8FAFC" },
+              },
             },
           },
           {
             group: "Destructive",
             items: {
-              destructive: { "--destructive": "#FF0000" },
-              destructiveForeground: { "--destructive-foreground": "#F8FAFC" },
+              light: {
+                destructive: { "--destructive": "#FF0000" },
+                destructiveForeground: { "--destructive-foreground": "#F8FAFC" },
+              },
+              dark: {
+                destructive: { "--destructive": "#FF0000" },
+                destructiveForeground: { "--destructive-foreground": "#F8FAFC" },
+              },
             },
           },
         ],
       })}
-      theme={themeValues}
+      themePresets={[
+        {
+          preset: defaultThemeValues,
+        },
+        {
+          custom: customThemeValues,
+        },
+      ]}
+      theme={defaultThemeValues}
       // locale="pt"
       translations={{ pt: lngPtBR }}
       autoSaveSupport={true}

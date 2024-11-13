@@ -26,6 +26,7 @@ export interface UILibrary {
 type ReactComponentType = React.ComponentType<any>;
 
 export type CssVariableNameWithDefault = Record<string, any>;
+
 export type ChaiBuilderThemeOptions = {
   fontFamily: false | Record<string, CssVariableNameWithDefault>;
   borderRadius: false | CssVariableNameWithDefault;
@@ -33,7 +34,10 @@ export type ChaiBuilderThemeOptions = {
     | false
     | {
         group: string;
-        items: Record<string, CssVariableNameWithDefault>;
+        items: {
+          light: Record<string, CssVariableNameWithDefault>;
+          dark: Record<string, CssVariableNameWithDefault>;
+        };
       }[];
 };
 
@@ -89,6 +93,7 @@ export type ChaiBuilderThemeValues = {
 };
 
 export interface ChaiBuilderEditorProps {
+  themePresets?: Record<string, ChaiBuilderThemeValues>[];
   themeOptions?: (defaultThemeOptions: ChaiBuilderThemeOptions) => ChaiBuilderThemeOptions;
   theme?: ChaiBuilderThemeValues;
   /**

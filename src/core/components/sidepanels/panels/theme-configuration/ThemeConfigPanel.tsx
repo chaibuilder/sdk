@@ -16,7 +16,14 @@ import { cn } from "../../../../functions/Functions.ts";
 import { BorderRadiusInput, FontSelector, ColorPickerInput } from "./index.ts";
 import { ChaiBuilderThemeOptions } from "../../../../types/chaiBuilderEditorProps.ts";
 import { useAtom } from "jotai";
-import { themeValuesAtom } from "../../../../atoms/theme.ts";
+import { customThemeValuesAtom, defaultThemeValues } from "../../../../atoms/theme.ts";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../../../../ui/shadcn/components/ui/select";
 
 interface ThemeConfigProps {
   className?: string;
@@ -30,48 +37,64 @@ const defaultThemeStructure: ChaiBuilderThemeOptions = {
 
 const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "" }) => {
   const [currentMode, setCurrentMode] = React.useState<"light" | "dark">("light");
+  const [configMode, setConfigMode] = React.useState<"preset" | "custom">("custom");
+  const [customThemeValues, setCustomThemeValues] = useAtom(customThemeValuesAtom);
+
+  // Get the active theme values based on the mode
+  const activeThemeValues = configMode === "preset" ? defaultThemeValues : customThemeValues;
 
   const getThemeFromProps = useBuilderProp("themeOptions", (themeOptions: ChaiBuilderThemeOptions) => themeOptions);
-  const [themeValues, setThemeValues] = useAtom(themeValuesAtom);
-
   const activeThemeOptions: ChaiBuilderThemeOptions = getThemeFromProps(defaultThemeStructure);
 
   const { t } = useTranslation();
 
-  // Font update handler
+  // Handle switching between preset and custom
+  const handleConfigModeChange = (mode: "preset" | "custom") => {
+    setConfigMode(mode);
+    if (mode === "custom" && !customThemeValues) {
+      // Initialize custom theme with default values if not set
+      setCustomThemeValues({ ...defaultThemeValues });
+    }
+  };
+
+  // Only allow changes when in custom mode
   const handleFontChange = (key: string, newValue: string) => {
-    setThemeValues((prev) => ({
-      ...prev,
-      fontFamily: {
-        ...prev.fontFamily,
-        [key]: newValue,
-      },
-    }));
-  };
-
-  // Border radius update handler
-  const handleBorderRadiusChange = (value: string) => {
-    setThemeValues((prev) => ({
-      ...prev,
-      borderRadius: `${value}rem`,
-    }));
-  };
-
-  // Color update handler
-  const handleColorChange = (key: string, newValue: string) => {
-    setThemeValues((prev) => ({
-      ...prev,
-      colors: {
-        ...prev.colors,
-        [key]: {
-          ...prev.colors[key],
-          [currentMode]: newValue,
+    if (configMode === "custom") {
+      setCustomThemeValues((prev) => ({
+        ...prev,
+        fontFamily: {
+          ...prev.fontFamily,
+          [key]: newValue,
         },
-      },
-    }));
+      }));
+    }
   };
 
-  // Group rendering function
+  const handleBorderRadiusChange = (value: string) => {
+    if (configMode === "custom") {
+      setCustomThemeValues((prev) => ({
+        ...prev,
+        borderRadius: `${value}rem`,
+      }));
+    }
+  };
+
+  const handleColorChange = (key: string, newValue: string) => {
+    if (configMode === "custom") {
+      setCustomThemeValues((prev) => ({
+        ...prev,
+        colors: {
+          ...prev.colors,
+          [key]: {
+            ...prev.colors[key],
+            [currentMode]: newValue,
+          },
+        },
+      }));
+    }
+  };
+
+  // Updated group rendering function
   const renderColorGroup = (group: any) => (
     <AccordionItem value={group.group} key={group.group}>
       <AccordionTrigger className="hover:no-underline">
@@ -81,16 +104,18 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
       </AccordionTrigger>
       <AccordionContent>
         <div className="grid grid-cols-1 gap-4 bg-white">
-          {Object.entries(group.items).map(([key, value]: [string, any]) => {
-            const cssVariable = Object.keys(value)[0];
-            const themeColor = themeValues?.colors?.[key]?.[currentMode];
+          {Object.entries(group.items[currentMode]).map(([key, value]: [string, any]) => {
+            const cssVariable = Object.values(value)[0];
+            const colorKey = key.replace(/([A-Z])/g, "-$1").toLowerCase();
+            const themeColor = activeThemeValues.colors[colorKey]?.[currentMode];
 
             return (
               <div key={key} className="space-y-2">
                 <Label>{key}</Label>
                 <ColorPickerInput
-                  value={themeColor || value[cssVariable]}
-                  onChange={(newValue: string) => handleColorChange(key, newValue)}
+                  disabled={configMode === "preset"}
+                  value={(themeColor || cssVariable) as string}
+                  onChange={(newValue: string) => handleColorChange(colorKey, newValue)}
                 />
               </div>
             );
@@ -102,51 +127,76 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
 
   return (
     <div className={cn("h-full w-full space-y-6", className)}>
-      {/* Fonts Section */}
-      <div className="grid grid-cols-2 gap-4">
-        {Object.entries(activeThemeOptions?.fontFamily || {}).map(([key, value]: [string, any]) => (
-          <FontSelector
-            key={key}
-            label={key}
-            value={themeValues.fontFamily[key] || value[Object.keys(value)[0]]}
-            onChange={(newValue: string) => handleFontChange(key, newValue)}
-            placeholder={`Select ${key} font`}
-          />
-        ))}
+      {/* Theme Configuration Mode Selector */}
+      <div className="space-y-2">
+        <Label>{t("Configuration Mode")}</Label>
+        <Select value={configMode} onValueChange={handleConfigModeChange}>
+          <SelectTrigger>
+            <SelectValue placeholder="Select mode" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="preset">{t("Preset Theme")}</SelectItem>
+            <SelectItem value="custom">{t("Custom Theme")}</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
-      {/* Border Radius Section */}
-      <div className="space-y-4">
-        <h4 className="text-sm font-medium">{t("Border Radius")}</h4>
-        <div className="flex items-center gap-4">
-          <BorderRadiusInput onChange={handleBorderRadiusChange} />
-          <span className="w-12 text-sm">{themeValues.borderRadius}</span>
-        </div>
-      </div>
+      {/* Theme Configuration Form */}
+      <div className={cn("space-y-6", className)}>
+        {/* Fonts Section */}
+        {activeThemeOptions?.fontFamily && (
+          <div className="grid grid-cols-2 gap-4">
+            {Object.entries(activeThemeOptions.fontFamily).map(([key, value]: [string, any]) => (
+              <FontSelector
+                key={key}
+                label={key}
+                value={activeThemeValues.fontFamily[key] || value[Object.keys(value)[0]]}
+                onChange={(newValue: string) => handleFontChange(key, newValue)}
+                placeholder={`Select ${key} font`}
+                disabled={configMode === "preset"}
+              />
+            ))}
+          </div>
+        )}
 
-      {/* Colors Section with Tabs */}
-      <div className="space-y-4">
-        <Tabs
-          defaultValue="light"
-          className="w-full"
-          onValueChange={(value) => setCurrentMode(value as "light" | "dark")}>
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="light">{t("Light Mode")}</TabsTrigger>
-            <TabsTrigger value="dark">{t("Dark Mode")}</TabsTrigger>
-          </TabsList>
-          <TabsContent value="light" className="space-y-6">
-            <Accordion type="multiple" className="w-full">
-              {Array.isArray(activeThemeOptions?.colors) &&
-                activeThemeOptions?.colors?.map((group: any) => renderColorGroup(group))}
-            </Accordion>
-          </TabsContent>
-          <TabsContent value="dark" className="space-y-6">
-            <Accordion type="multiple" className="w-full">
-              {Array.isArray(activeThemeOptions?.colors) &&
-                activeThemeOptions?.colors?.map((group: any) => renderColorGroup(group))}
-            </Accordion>
-          </TabsContent>
-        </Tabs>
+        {/* Border Radius Section */}
+        {activeThemeOptions?.borderRadius && (
+          <div className="space-y-4">
+            <h4 className="text-sm font-medium">{t("Border Radius")}</h4>
+            <div className="flex items-center gap-4">
+              <BorderRadiusInput
+                disabled={configMode === "preset"}
+                onChange={handleBorderRadiusChange}
+              />
+              <span className="w-12 text-sm">{activeThemeValues.borderRadius}</span>
+            </div>
+          </div>
+        )}
+
+        {/* Colors Section with Tabs */}
+        {activeThemeOptions?.colors && (
+          <div className="space-y-4">
+            <Tabs
+              defaultValue="light"
+              className="w-full"
+              onValueChange={(value) => setCurrentMode(value as "light" | "dark")}>
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="light">{t("Light Mode")}</TabsTrigger>
+                <TabsTrigger value="dark">{t("Dark Mode")}</TabsTrigger>
+              </TabsList>
+              <TabsContent value="light" className="space-y-6">
+                <Accordion type="multiple" className="w-full">
+                  {activeThemeOptions.colors.map((group) => renderColorGroup(group))}
+                </Accordion>
+              </TabsContent>
+              <TabsContent value="dark" className="space-y-6">
+                <Accordion type="multiple" className="w-full">
+                  {activeThemeOptions.colors.map((group) => renderColorGroup(group))}
+                </Accordion>
+              </TabsContent>
+            </Tabs>
+          </div>
+        )}
       </div>
     </div>
   );
