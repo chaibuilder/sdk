@@ -2,7 +2,7 @@ import { get } from "lodash-es";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useCurrentClassByProperty } from "./BlockStyle";
 import { DropDown } from "./DropdownChoices";
-import { CLASSES_LIST } from "../../../constants/CLASSES_LIST";
+import { useTailwindClassList } from "../../../constants/CLASSES_LIST";
 import { StyleContext } from "./StyleContext";
 
 export const COLOR_PROP = {
@@ -64,13 +64,15 @@ export const ColorChoice = ({ property, onChange }: any) => {
     setNewColor({ color: "", shade: "" });
   }, [currentClass]);
 
+  const { match } = useTailwindClassList();
+
   useEffect(() => {
     const prop = get(COLOR_PROP, property, "");
     const cls = `${prop}-${newColor.color}${newColor.shade ? `-${newColor.shade}` : ""}`;
-    if (cls.match(new RegExp(get(CLASSES_LIST, `${property}.regExp`, "") as string))) {
+    if (match(property, cls)) {
       onChange(cls, property);
     }
-  }, [newColor, onChange, property]);
+  }, [match, newColor, onChange, property]);
 
   return (
     <div className="flex flex-row divide-x divide-solid divide-border rounded-lg border border-transparent text-xs">

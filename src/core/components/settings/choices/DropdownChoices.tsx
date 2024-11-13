@@ -1,14 +1,15 @@
 import { get } from "lodash-es";
 import React, { useContext, useMemo } from "react";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
-import { CLASSES_LIST } from "../../../constants/CLASSES_LIST";
+import { useTailwindClassList } from "../../../constants/CLASSES_LIST";
 import { useCurrentClassByProperty } from "./BlockStyle";
 import { StyleContext } from "./StyleContext";
 import { Input, Tooltip, TooltipContent, TooltipTrigger } from "../../../../ui";
 import { useUndoManager } from "../../../hooks";
 
 export const DropDownChoices = ({ label, property, onChange }: any) => {
-  const classes = useMemo(() => get(CLASSES_LIST, `${property}.classes`, [""]), [property]);
+  const { getClasses } = useTailwindClassList();
+  const classes = getClasses(property);
   const currentClass = useCurrentClassByProperty(property);
   const pureClsName = useMemo(() => get(currentClass, "cls", ""), [currentClass]);
   const { canChange } = useContext(StyleContext);
