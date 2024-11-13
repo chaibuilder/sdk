@@ -2,9 +2,8 @@ import { useThrottledCallback } from "@react-hookz/web";
 import { atom, useAtom } from "jotai";
 import { useGetPageData } from "./useGetPageData";
 import { useBuilderProp } from "./useBuilderProp";
-import { usePageDataProviders } from "./usePageDataProviders.ts";
-import { useBrandingOptions } from "./useBrandingOptions.ts";
 import { noop } from "lodash-es";
+import { useTheme } from "./useTheme.ts";
 
 export const builderSaveStateAtom = atom<"SAVED" | "UNSAVED" | "SAVING">("SAVED"); // SAVING
 builderSaveStateAtom.debugLabel = "builderSaveStateAtom";
@@ -14,8 +13,7 @@ export const useSavePage = () => {
   const onSave = useBuilderProp("onSave", async (_args) => {});
   const onSaveStateChange = useBuilderProp("onSaveStateChange", noop);
   const getPageData = useGetPageData();
-  const [providers] = usePageDataProviders();
-  const [brandingOptions] = useBrandingOptions();
+  const [theme] = useTheme();
 
   const savePage = useThrottledCallback(
     async (autoSave: boolean = false) => {
@@ -25,9 +23,7 @@ export const useSavePage = () => {
       await onSave({
         autoSave,
         blocks: pageData.blocks,
-        providers,
-        brandingOptions,
-        themeConfiguration: brandingOptions,
+        theme,
       });
       setTimeout(() => {
         setSaveState("SAVED");
@@ -35,7 +31,7 @@ export const useSavePage = () => {
       }, 100);
       return true;
     },
-    [getPageData, setSaveState, brandingOptions, onSave, onSaveStateChange],
+    [getPageData, setSaveState, theme, onSave, onSaveStateChange],
     3000, // save only every 5 seconds
   );
 

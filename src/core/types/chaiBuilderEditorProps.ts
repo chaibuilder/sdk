@@ -53,9 +53,7 @@ export type Breakpoint = {
 type SavePageData = {
   autoSave: boolean;
   blocks: ChaiBlock[];
-  providers?: DataProvider[];
-  brandingOptions?: Record<string, any>;
-  themeConfiguration?: Record<string, any>;
+  theme?: Record<string, any>;
 };
 
 type DataProvider = { providerKey: string; args: Record<string, any> };
@@ -211,7 +209,7 @@ export interface ChaiBuilderEditorProps {
    */
   blocks?: ChaiBlock[];
 
-  onSave?: ({ blocks, providers }: SavePageData) => Promise<boolean | Error>;
+  onSave?: ({ blocks, theme, autoSave }: SavePageData) => Promise<boolean | Error>;
 
   /**
    * onSaveStateChange callback function
