@@ -1,7 +1,8 @@
 import { atom } from "jotai";
 import { ChaiBuilderThemeValues } from "../types/chaiBuilderEditorProps";
 
-const defaultThemeValues: ChaiBuilderThemeValues = {
+// Make this readonly
+export const defaultThemeValues: Readonly<ChaiBuilderThemeValues> = {
   fontFamily: {
     heading: "Inter",
     body: "Inter",
@@ -45,6 +46,7 @@ const defaultThemeValues: ChaiBuilderThemeValues = {
     destructive: { light: "#FF0000", dark: "#7E1D1D" },
     destructiveForeground: { light: "#F8FAFC", dark: "#F8FAFC" },
   },
-};
+} as const;
 
-export const themeValuesAtom = atom<ChaiBuilderThemeValues>(defaultThemeValues);
+// Create a new atom for changeable theme values, initialized with default values
+export const customThemeValuesAtom = atom<ChaiBuilderThemeValues>({ ...defaultThemeValues });

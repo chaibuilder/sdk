@@ -67,11 +67,13 @@ const FontSelector = ({
   value,
   onChange,
   placeholder,
+  disabled,
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
   placeholder: string;
+  disabled: boolean;
 }) => {
   return (
     <div className="space-y-2">
@@ -80,10 +82,14 @@ const FontSelector = ({
         <SelectTrigger>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
-        <SelectContent className="z-[9999] ">
+        <SelectContent className="z-[9999]">
           <ScrollArea className="max-h-[400px] overflow-y-auto">
             {FONTS.map((font) => (
-              <SelectItem key={font.value} value={font.value} className="transition-colors ease-in hover:bg-gray-200">
+              <SelectItem
+                disabled={disabled}
+                key={font.value}
+                value={font.value}
+                className="transition-colors ease-in hover:bg-gray-200">
                 {font.title}
               </SelectItem>
             ))}
