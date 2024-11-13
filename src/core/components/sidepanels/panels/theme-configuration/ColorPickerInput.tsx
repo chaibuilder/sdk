@@ -1,4 +1,4 @@
-import { Input } from "../../../../ui/shadcn/components/ui/input.tsx";
+import { Input } from "../../../../../ui/shadcn/components/ui/input.tsx";
 import { debounce } from "lodash";
 
 const ColorPickerInput = ({ value, onChange }: { value: string; onChange: (value: string) => void }) => {

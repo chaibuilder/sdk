@@ -1,7 +1,7 @@
 import { useAtom } from "jotai";
 import { lsAiContextAtom, lsBlocksAtom } from "./__dev/atoms-dev.ts";
 import PreviewWeb from "./__dev/preview/WebPreview.tsx";
-import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML } from "./core/main";
+import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML, ThemeOptions } from "./core/main";
 import { loadWebBlocks } from "./web-blocks";
 import { useState } from "react";
 import axios from "axios";
@@ -12,6 +12,7 @@ import { map, pick, isArray } from "lodash-es";
 import lngPtBR from "./__dev/ptBR.json";
 import { ChaiBuilderThemeOptions } from "./core/types/chaiBuilderEditorProps.ts";
 import { themeValuesAtom } from "./core/atoms/theme.ts";
+import { Paintbrush } from "lucide-react";
 
 loadWebBlocks();
 
@@ -30,7 +31,7 @@ registerChaiBlock(null, {
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
   const [aiContext, setAiContext] = useAtom(lsAiContextAtom);
-  const [themeValues] = useAtom(themeValuesAtom)
+  const [themeValues] = useAtom(themeValuesAtom);
   const [uiLibraries] = useState([
     { uuid: "meraki-ui", name: "Meraki UI", url: "https://chai-ui-blocks.vercel.app" },
     { uuid: "chaiblocks", name: "UI Blocks", url: "https://chaibuilder.com/chaiblocks" },
@@ -158,15 +159,21 @@ function ChaiBuilderDefault() {
         }
       }}
       uiLibraries={uiLibraries}
-      sideBarComponents={{
-        top: [],
-      }}
       getRSCBlock={async (block: ChaiBlock) => {
         return new Promise((resolve) => {
           setTimeout(() => {
             resolve(`${get(block, "content", "")}`);
           }, 2000);
         });
+      }}
+      sideBarComponents={{
+        top: [
+          {
+            icon: <Paintbrush size={20} />,
+            label: "Theme",
+            component: () => <ThemeOptions className="w-full" />,
+          },
+        ],
       }}
       getGlobalBlockBlocks={async (globalBlockKey: string) => {
         const blocks =
