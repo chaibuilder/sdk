@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import { lsAiContextAtom, lsBlocksAtom } from "./__dev/atoms-dev.ts";
+import { lsAiContextAtom, lsBlocksAtom, lsThemeAtom } from "./__dev/atoms-dev.ts";
 import PreviewWeb from "./__dev/preview/WebPreview.tsx";
 import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML, ThemeOptions } from "./core/main";
 import { loadWebBlocks } from "./web-blocks";
@@ -11,6 +11,7 @@ import { get } from "lodash-es";
 import { map, pick, isArray } from "lodash-es";
 import lngPtBR from "./__dev/ptBR.json";
 import { Paintbrush } from "lucide-react";
+import RightTop from "./__dev/RightTop.tsx";
 
 loadWebBlocks();
 
@@ -28,6 +29,7 @@ registerChaiBlock(null, {
 
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
+  const [theme] = useAtom(lsThemeAtom);
   const [aiContext, setAiContext] = useAtom(lsAiContextAtom);
   const [uiLibraries] = useState([
     { uuid: "meraki-ui", name: "Meraki UI", url: "https://chai-ui-blocks.vercel.app" },
@@ -40,17 +42,14 @@ function ChaiBuilderDefault() {
       languages={["pt", "en"]}
       // locale="pt"
       translations={{ pt: lngPtBR }}
-      theme={{
-        borderRadius: "0rem",
-      }}
+      theme={theme}
       autoSaveSupport={true}
       autoSaveInterval={15}
       previewComponent={PreviewWeb}
       blocks={blocks}
-      onSave={async ({ blocks, providers, brandingOptions }: any) => {
+      onSave={async ({ blocks, theme }: any) => {
         localStorage.setItem("chai-builder-blocks", JSON.stringify(blocks));
-        localStorage.setItem("chai-builder-providers", JSON.stringify(providers));
-        localStorage.setItem("chai-builder-branding-options", JSON.stringify(brandingOptions));
+        localStorage.setItem("chai-builder-theme", JSON.stringify(theme));
         await new Promise((resolve) => setTimeout(resolve, 100));
         return true;
       }}
@@ -92,6 +91,9 @@ function ChaiBuilderDefault() {
             resolve(`${get(block, "content", "")}`);
           }, 2000);
         });
+      }}
+      topBarComponents={{
+        right: [RightTop],
       }}
       sideBarComponents={{
         top: [
