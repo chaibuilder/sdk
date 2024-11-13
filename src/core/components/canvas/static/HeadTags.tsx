@@ -1,27 +1,27 @@
-import { get, map } from "lodash-es";
-import { useEffect, useState } from "react";
+import { map } from "lodash-es";
+import { useEffect, useMemo, useState } from "react";
 import { useFrame } from "../../../frame";
-import {
-  useBrandingOptions,
-  useDarkMode,
-  useSelectedBlockIds,
-  useSelectedStylingBlocks,
-} from "../../../hooks";
+import { useDarkMode, useSelectedBlockIds, useSelectedStylingBlocks } from "../../../hooks";
 import { useAtom } from "jotai";
 import typography from "@tailwindcss/typography";
 import forms from "@tailwindcss/forms";
 import aspectRatio from "@tailwindcss/aspect-ratio";
-import { tailwindcssPaletteGenerator } from "@bobthered/tailwindcss-palette-generator";
 import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
 import plugin from "tailwindcss/plugin";
-import { set } from "lodash-es";
+import { getChaiThemeOptions, getChaiThemeVariables, getThemeFonts } from "./ChaiThemeFn.ts";
+import { useTheme, useThemeOptions } from "../../../hooks/useTheme.ts";
+import { ChaiBuilderThemeValues } from "../../../types/chaiBuilderEditorProps.ts";
+import { pick } from "lodash";
 // @ts-ignore
 
 export const HeadTags = () => {
-  const [customTheme] = useBrandingOptions();
+  const [chaiTheme] = useTheme();
+
+  const chaiThemeOptions = useThemeOptions();
+  console.log(chaiTheme, chaiThemeOptions);
   const [selectedBlockIds] = useSelectedBlockIds();
   const [darkMode] = useDarkMode();
-  
+
   const [stylingBlockIds] = useSelectedStylingBlocks();
   const [draggedBlock] = useAtom(draggedBlockAtom);
   const [dropTargetId] = useAtom(dropTargetBlockIdAtom);
@@ -44,34 +44,7 @@ export const HeadTags = () => {
     else iframeDoc?.documentElement.classList.remove("dark");
   }, [darkMode, iframeDoc]);
 
-  const headingFont: string = get(customTheme, "headingFont", "DM Sans");
-  const bodyFont: string = get(customTheme, "bodyFont", "DM Sans");
-
   useEffect(() => {
-    const primary = get(customTheme, "primaryColor", "#000");
-    const secondary = get(customTheme, "secondaryColor", "#FFF");
-    const BG_LIGHT_MODE = get(customTheme, "bodyBgLightColor", "#fff");
-    const BG_DARK_MODE = get(customTheme, "bodyBgDarkColor", "#000");
-    const TEXT_DARK_MODE = get(customTheme, "bodyTextDarkColor", "#000");
-    const TEXT_LIGHT_MODE = get(customTheme, "bodyTextLightColor", "#fff");
-
-    const palette = tailwindcssPaletteGenerator({
-      colors: [primary, secondary],
-      names: ["primary", "secondary"],
-    });
-
-    // add DEFAULT color
-    set(palette, "primary.DEFAULT", primary);
-    set(palette, "secondary.DEFAULT", secondary);
-
-    const colors: Record<string, string> = {
-      "bg-light": BG_LIGHT_MODE,
-      "bg-dark": BG_DARK_MODE,
-      "text-dark": TEXT_DARK_MODE,
-      "text-light": TEXT_LIGHT_MODE,
-    };
-
-    const borderRadius = get(customTheme, "roundedCorners", "0");
     // @ts-ignore
     if (!iframeWin || !iframeWin.tailwind) return;
     // @ts-ignore
@@ -86,14 +59,7 @@ export const HeadTags = () => {
               "2xl": "1400px",
             },
           },
-          fontFamily: {
-            heading: [headingFont],
-            body: [bodyFont],
-          },
-          borderRadius: {
-            DEFAULT: `${!borderRadius ? "0" : borderRadius}px`,
-          },
-          colors: { ...colors, ...palette },
+          ...getChaiThemeOptions(chaiThemeOptions),
         },
       },
 
@@ -108,18 +74,14 @@ export const HeadTags = () => {
             },
             body: {
               fontFamily: theme("fontFamily.body"),
-              color: theme("colors.text-light"),
-              backgroundColor: theme("colors.bg-light"),
-            },
-            ".dark body": {
-              color: theme("colors.text-dark"),
-              backgroundColor: theme("colors.bg-dark"),
+              color: theme("colors.foreground"),
+              backgroundColor: theme("colors.background"),
             },
           });
         }),
       ],
     };
-  }, [customTheme, iframeWin, headingFont, bodyFont]);
+  }, [chaiTheme, chaiThemeOptions, iframeWin]);
 
   useEffect(() => {
     if (!selectedBlockStyle) return;
@@ -152,24 +114,17 @@ export const HeadTags = () => {
     iframeDoc.querySelector(`#drop-target-block`).innerHTML = dropTargetId
       ? `[data-block-id="${dropTargetId}"]{ outline: 1px dashed orange !important; outline-offset: -1px;}`
       : "";
-  }, [dropTargetId]);
+  }, [dropTargetId, iframeDoc]);
 
+  const themeVariables = useMemo(
+    () => getChaiThemeVariables(chaiTheme as Partial<ChaiBuilderThemeValues>),
+    [chaiTheme],
+  );
+  const fonts = useMemo(() => getThemeFonts(pick(chaiTheme, ["fontFamily"])), [chaiTheme]);
   return (
     <>
-      {(headingFont || bodyFont) && (
-        <link
-          rel="stylesheet"
-          href={`https://fonts.googleapis.com/css2?family=${
-            headingFont
-              ? `${headingFont.replace(/ /g, "+")}:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900`
-              : ""
-          }${headingFont && bodyFont && headingFont !== bodyFont ? "&" : ""}${
-            bodyFont && bodyFont !== headingFont
-              ? `family=${bodyFont.replace(/ /g, "+")}:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900`
-              : ""
-          }&display=swap`}
-        />
-      )}
+      <style id="chai-theme">{themeVariables}</style>
+      <span id="chai-fonts" dangerouslySetInnerHTML={{ __html: fonts }} />
     </>
   );
 };
