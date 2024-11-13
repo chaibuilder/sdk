@@ -3,12 +3,13 @@ import React, { useContext, useMemo } from "react";
 import { BoxIcon } from "@radix-ui/react-icons";
 import { EDITOR_ICONS } from "../../../constants/ICONS";
 import { useCurrentClassByProperty } from "./BlockStyle";
-import { CLASSES_LIST } from "../../../constants/CLASSES_LIST";
+import { useTailwindClassList } from "../../../constants/CLASSES_LIST";
 import { StyleContext } from "./StyleContext";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../ui";
 
 export const IconChoices = ({ property, onChange }: any) => {
-  const classes = useMemo(() => get(CLASSES_LIST, `${property}.classes`, [""]), [property]);
+  const { getClasses } = useTailwindClassList();
+  const classes = getClasses(property);
   const { canChange } = useContext(StyleContext);
   const currentClass = useCurrentClassByProperty(property);
   const pureClsName = useMemo(() => get(currentClass, "cls", ""), [currentClass]);

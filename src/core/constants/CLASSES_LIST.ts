@@ -1,9 +1,9 @@
 import { flatten, flattenDeep, map, range, values } from "lodash-es";
 import { CLASS_VALUES } from "./CLASS_VALUES";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import Fuse from "fuse.js";
 import { useThemeOptions } from "../hooks/useTheme";
-import { keys } from "lodash";
+import { each, get, keys, set } from "lodash";
 
 type ClassListType = {
   [key: string]: {
@@ -15,7 +15,7 @@ type ClassListType = {
 export const CLASSES_LIST: ClassListType = {
   textColor: {
     classes: [],
-    regExp: "text-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "text-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
   // LAYOUT
   aspectRatio: {
@@ -404,7 +404,7 @@ export const CLASSES_LIST: ClassListType = {
 
   fromColor: {
     classes: [],
-    regExp: "from-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "from-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
   margin: {
     classes: map(CLASS_VALUES.margin, (val) => `m-${val}`),
@@ -612,7 +612,7 @@ export const CLASSES_LIST: ClassListType = {
 
   textDecorationColor: {
     classes: [],
-    regExp: "decoration-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "decoration-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
 
   textTransform: {
@@ -643,7 +643,7 @@ export const CLASSES_LIST: ClassListType = {
 
   backgroundColor: {
     classes: [],
-    regExp: "bg-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "bg-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
 
   backgroundAttachment: {
@@ -690,11 +690,11 @@ export const CLASSES_LIST: ClassListType = {
 
   viaColor: {
     classes: [],
-    regExp: "via-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "via-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
   toColor: {
     classes: [],
-    regExp: "to-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "to-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
 
   position: {
@@ -769,7 +769,7 @@ export const CLASSES_LIST: ClassListType = {
 
   borderColor: {
     classes: [],
-    regExp: "border-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "border-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
 
   border: {
@@ -792,7 +792,7 @@ export const CLASSES_LIST: ClassListType = {
   },
   divideColor: {
     classes: [],
-    regExp: "divide-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "divide-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
   divideStyle: {
     classes: map(["solid", "dashed", "dotted", "double", "none"], (v) => `divide-${v}`),
@@ -811,7 +811,7 @@ export const CLASSES_LIST: ClassListType = {
 
   outlineColor: {
     classes: [],
-    regExp: "outline-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "outline-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
   ringWidth: {
     classes: map([0, 1, 2, 4, 8, "inset"], (v) => `ring-${v}`),
@@ -824,18 +824,18 @@ export const CLASSES_LIST: ClassListType = {
   },
   ringOffsetColor: {
     classes: [],
-    regExp: "ring-offset-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "ring-offset-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
   ringColor: {
     classes: [],
-    regExp: "ring-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "ring-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
   // Effects
   // FIXME: "add shadow class
 
   boxShadowColor: {
     classes: [],
-    regExp: "shadow-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "shadow-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
   opacity: {
     classes: map([0, 5, 10, 20, 25, 30, 40, 50, 60, 70, 75, 80, 90, 95, 100], (v) => `opacity-${v}`),
@@ -945,7 +945,7 @@ export const CLASSES_LIST: ClassListType = {
   // interactivity
   accentColor: {
     classes: [],
-    regExp: "accent-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "accent-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
   appearance: { classes: ["appearance-none"], regExp: "appearance-none" },
   cursor: {
@@ -963,7 +963,7 @@ export const CLASSES_LIST: ClassListType = {
   },
   caretColor: {
     classes: [],
-    regExp: "caret-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "caret-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
   pointerEvents: {
     classes: ["pointer-events-none", "pointer-events-auto"],
@@ -975,10 +975,10 @@ export const CLASSES_LIST: ClassListType = {
   },
 
   // SVG
-  fill: { classes: [], regExp: "caret-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)" },
+  fill: { classes: [], regExp: "caret-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)" },
   stroke: {
     classes: [],
-    regExp: "caret-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "caret-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
   strokeWidth: {
     classes: ["stroke-0", "stroke-1", "stroke-2"],
@@ -1070,4 +1070,33 @@ export const useFuseSearch = () => {
       }),
     [themeClasses],
   );
+};
+
+export const useTailwindClassList = () => {
+  const themeOptions = useThemeOptions();
+  const classesList = useMemo(() => {
+    if (themeOptions.colors) {
+      const colors = flattenDeep(map(themeOptions.colors, ({ items }) => keys(items)));
+      each(CLASSES_LIST, (value, key) => {
+        set(CLASSES_LIST, `${key}.regExp`, value.regExp.replace("__THEME_COLORS_REGEXP__", colors.join("|")));
+      });
+    }
+    return CLASSES_LIST;
+  }, [themeOptions]);
+
+  const match = useCallback(
+    (property: string, cls: string) => {
+      const pattern = get(classesList, `${property}.regExp`, "") as string;
+      return cls.match(new RegExp(pattern));
+    },
+    [classesList],
+  );
+
+  const getClasses = useCallback(
+    (property: string, defaultValue: string[] = []) => {
+      return get(classesList, `${property}.classes`, defaultValue) as Array<string>;
+    },
+    [classesList],
+  );
+  return { match, getClasses };
 };
