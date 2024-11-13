@@ -16,7 +16,6 @@ import { cn } from "../../../../functions/Functions.ts";
 import { BorderRadiusInput, FontSelector, ColorPickerInput } from "./index.ts";
 import { ChaiBuilderThemeOptions } from "../../../../types/chaiBuilderEditorProps.ts";
 import { useAtom } from "jotai";
-import { customThemeValuesAtom, defaultThemeValues } from "../../../../atoms/theme.ts";
 import {
   Select,
   SelectContent,
@@ -24,6 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../../../ui/shadcn/components/ui/select";
+import { useTheme } from "../../../../hooks/useTheme.ts";
 
 interface ThemeConfigProps {
   className?: string;
@@ -38,10 +38,10 @@ const defaultThemeStructure: ChaiBuilderThemeOptions = {
 const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "" }) => {
   const [currentMode, setCurrentMode] = React.useState<"light" | "dark">("light");
   const [configMode, setConfigMode] = React.useState<"preset" | "custom">("custom");
-  const [customThemeValues, setCustomThemeValues] = useAtom(customThemeValuesAtom);
+  const [customThemeValues, setCustomThemeValues] = useTheme();
 
   // Get the active theme values based on the mode
-  const activeThemeValues = configMode === "preset" ? defaultThemeValues : customThemeValues;
+  const activeThemeValues: any = customThemeValues;
 
   const getThemeFromProps = useBuilderProp("themeOptions", (themeOptions: ChaiBuilderThemeOptions) => themeOptions);
   const activeThemeOptions: ChaiBuilderThemeOptions = getThemeFromProps(defaultThemeStructure);
@@ -53,44 +53,43 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
     setConfigMode(mode);
     if (mode === "custom" && !customThemeValues) {
       // Initialize custom theme with default values if not set
-      setCustomThemeValues({ ...defaultThemeValues });
     }
   };
 
   // Only allow changes when in custom mode
   const handleFontChange = (key: string, newValue: string) => {
     if (configMode === "custom") {
-      setCustomThemeValues((prev) => ({
-        ...prev,
-        fontFamily: {
-          ...prev.fontFamily,
-          [key]: newValue,
-        },
-      }));
+      // setCustomThemeValues((prev) => ({
+      //   ...prev,
+      //   fontFamily: {
+      //     ...prev.fontFamily,
+      //     [key]: newValue,
+      //   },
+      // }));
     }
   };
 
   const handleBorderRadiusChange = (value: string) => {
     if (configMode === "custom") {
-      setCustomThemeValues((prev) => ({
-        ...prev,
-        borderRadius: `${value}rem`,
-      }));
+      // setCustomThemeValues((prev) => ({
+      //   ...prev,
+      //   borderRadius: `${value}rem`,
+      // }));
     }
   };
 
   const handleColorChange = (key: string, newValue: string) => {
     if (configMode === "custom") {
-      setCustomThemeValues((prev) => ({
-        ...prev,
-        colors: {
-          ...prev.colors,
-          [key]: {
-            ...prev.colors[key],
-            [currentMode]: newValue,
-          },
-        },
-      }));
+      // setCustomThemeValues((prev) => ({
+      //   ...prev,
+      //   colors: {
+      //     ...prev.colors,
+      //     [key]: {
+      //       ...prev.colors[key],
+      //       [currentMode]: newValue,
+      //     },
+      //   },
+      // }));
     }
   };
 
@@ -164,10 +163,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
           <div className="space-y-4">
             <h4 className="text-sm font-medium">{t("Border Radius")}</h4>
             <div className="flex items-center gap-4">
-              <BorderRadiusInput
-                disabled={configMode === "preset"}
-                onChange={handleBorderRadiusChange}
-              />
+              <BorderRadiusInput disabled={configMode === "preset"} onChange={handleBorderRadiusChange} />
               <span className="w-12 text-sm">{activeThemeValues.borderRadius}</span>
             </div>
           </div>

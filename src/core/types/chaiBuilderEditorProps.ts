@@ -25,19 +25,20 @@ export interface UILibrary {
 
 type ReactComponentType = React.ComponentType<any>;
 
-export type CssVariableNameWithDefault = Record<string, any>;
+type CSSVariableName = string;
+type HSLColor = string;
+export type CssVariableNameWithDefault = Record<CSSVariableName, any>;
+type VariableKey = string;
+export type BorderRadiusValue = false | string;
 
 export type ChaiBuilderThemeOptions = {
-  fontFamily: false | Record<string, CssVariableNameWithDefault>;
-  borderRadius: false | CssVariableNameWithDefault;
+  fontFamily: false | Record<VariableKey, string>;
+  borderRadius: BorderRadiusValue;
   colors:
     | false
     | {
         group: string;
-        items: {
-          light: Record<string, CssVariableNameWithDefault>;
-          dark: Record<string, CssVariableNameWithDefault>;
-        };
+        items: Record<VariableKey, [HSLColor, HSLColor]>;
       }[];
 };
 
@@ -89,13 +90,13 @@ export type CollectionItem = {
 export type ChaiBuilderThemeValues = {
   fontFamily: Record<string, string>;
   borderRadius: string;
-  colors: Record<string, Record<"light" | "dark", string>>;
+  colors: Record<string, string[]>;
 };
 
 export interface ChaiBuilderEditorProps {
   themePresets?: Record<string, ChaiBuilderThemeValues>[];
   themeOptions?: (defaultThemeOptions: ChaiBuilderThemeOptions) => ChaiBuilderThemeOptions;
-  theme?: ChaiBuilderThemeValues;
+  theme?: Partial<ChaiBuilderThemeValues>;
   /**
    * onError callback function
    * @param error
