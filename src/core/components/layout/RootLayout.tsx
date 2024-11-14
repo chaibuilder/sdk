@@ -1,7 +1,7 @@
 import React, { ComponentType, lazy, MouseEvent, Suspense, useMemo, useState } from "react";
 import { isDevelopment } from "../../import-html/general.ts";
 import { useBuilderProp } from "../../hooks";
-import { useThemeSelected } from "../../hooks/useTheme.ts";
+import { useRightPanel } from "../../hooks/useTheme.ts";
 import "../canvas/static/BlocksExternalDataProvider.tsx";
 import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../ui";
 import { motion } from "framer-motion";
@@ -17,6 +17,8 @@ import { CHAI_BUILDER_EVENTS } from "../../events.ts";
 import { ChooseLayout } from "./ChooseLayout.tsx";
 import { compact, get } from "lodash-es";
 import { usePubSub } from "../../hooks/usePubSub.ts";
+import { AskAI } from "../AskAi.tsx";
+import { LightningBoltIcon } from "@radix-ui/react-icons";
 
 const TopBar = lazy(() => import("../topbar/Topbar.tsx"));
 
@@ -46,7 +48,7 @@ const RootLayout: ComponentType = () => {
   const [activePanelIndex, setActivePanelIndex] = useState(0);
   const [chooseLayout, setChooseLayout] = useState(false);
 
-  const { themeSelected, selectThemeSettings } = useThemeSelected();
+  const [panel, setRightPanel] = useRightPanel();
 
   usePubSub(CHAI_BUILDER_EVENTS.SHOW_BLOCK_SETTINGS, () => {
     setActivePanelIndex(1);
@@ -143,24 +145,43 @@ const RootLayout: ComponentType = () => {
                 <div className="flex max-h-full flex-col p-3">
                   <h2 className="-mt-1 flex h-10 items-center space-x-1 text-base font-bold">
                     <div className="flex grow items-center gap-2">
-                      {themeSelected ? (
-                        <>
-                          <Settings className="h-4 w-4 rtl:ml-2" />
-                        </>
-                      ) : (
-                        <EditIcon size={16} className="rtl:ml-2" />
-                      )}
                       <div className="flex w-full items-center justify-between gap-2">
-                        {t(themeSelected ? "Theme Settings" : "Block Settings")}{" "}
-                        {themeSelected && (
-                          <X className="h-4 w-4 cursor-pointer" onClick={() => selectThemeSettings()} />
+                        {panel === "ai" ? (
+                          <>
+                            <div className="flex items-center gap-2">
+                              <LightningBoltIcon className="rtl:ml-2" /> {t("AI Assistant")}
+                            </div>
+                          </>
+                        ) : (
+                          <div className="flex w-full items-center justify-between gap-2">
+                            {panel === "theme" ? (
+                              <>
+                                <span className="flex items-center gap-2">
+                                  <Settings className="h-4 w-4 rtl:ml-2" />
+                                  {t("Theme Settings")}
+                                </span>
+                                <Button
+                                  onClick={() => setRightPanel("block")}
+                                  variant="ghost"
+                                  size="icon"
+                                  className="text-xs text-gray-400">
+                                  <X className="h-4 w-4 rtl:ml-2" />
+                                </Button>
+                              </>
+                            ) : (
+                              <div className="flex items-center gap-2">
+                                <EditIcon size={16} className="rtl:ml-2" />
+                                {t("Block Settings")}
+                              </div>
+                            )}
+                          </div>
                         )}
                       </div>
                     </div>
                   </h2>
                   <div className="flex-1">
                     <Suspense fallback={<div>Loading...</div>}>
-                      {themeSelected ? <ThemeConfigPanel /> : <SettingsPanel />}
+                      {panel === "ai" ? <AskAI /> : panel === "theme" ? <ThemeConfigPanel /> : <SettingsPanel />}
                     </Suspense>
                   </div>
                 </div>

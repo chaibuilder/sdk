@@ -2,12 +2,12 @@ import { Check, Eye, Globe, Paintbrush, Upload } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui";
 import { Button } from "../ui";
 import { useSavePage } from "../core/hooks";
-import { useThemeSelected } from "../core/hooks/useTheme.ts";
+import { useRightPanel } from "../core/hooks/useTheme.ts";
 
 export default function RightTop() {
   const { savePage } = useSavePage();
 
-  const { selectThemeSettings } = useThemeSelected();
+  const [panel, setRightPanel] = useRightPanel();
   return (
     <div className="flex items-center gap-2 rounded-lg bg-background p-2">
       <DropdownMenu>
@@ -38,12 +38,10 @@ export default function RightTop() {
         Preview
       </Button>
       <Button
-        variant="ghost"
+        variant={panel === "theme" ? "secondary" : "ghost"}
         size="sm"
         className="gap-2"
-        onClick={() => {
-          selectThemeSettings();
-        }}>
+        onClick={() => setRightPanel(panel !== "theme" ? "theme" : "block")}>
         <Paintbrush className="h-4 w-4" />
         Theme
       </Button>

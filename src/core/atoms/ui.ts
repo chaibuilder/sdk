@@ -48,7 +48,7 @@ export const canvasSettingsAtom = atom({});
 canvasSettingsAtom.debugLabel = "canvasSettingsAtom";
 
 export const aiAssistantActiveAtom = atom(false);
-aiAssistantActiveAtom.debugLabel = "askAiActiveBlockAtom";
+aiAssistantActiveAtom.debugLabel = "aiAssistantActiveAtom";
 
 export const codeEditorOpenAtom = atom(false);
 codeEditorOpenAtom.debugLabel = "codeEditorOpenAtom";

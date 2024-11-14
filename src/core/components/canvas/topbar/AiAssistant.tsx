@@ -1,12 +1,13 @@
 import { Label, Switch } from "../../../../ui";
-import { useAtom } from "jotai";
-import { aiAssistantActiveAtom } from "../../../atoms/ui.ts";
 import { SparklesIcon } from "lucide-react";
 import { useBuilderProp } from "../../../hooks";
 import { useTranslation } from "react-i18next";
+import { useAiAssistant } from "../../../hooks/useAskAi.ts";
+import { useRightPanel } from "../../../hooks/useTheme.ts";
 
 export const AiAssistant = () => {
-  const [active, setAiAssistantActive] = useAtom(aiAssistantActiveAtom);
+  const setAiAssistantActive = useAiAssistant();
+  const [panel] = useRightPanel();
   const askAiCallBack = useBuilderProp("askAiCallBack", null);
   const { t } = useTranslation();
   if (!askAiCallBack) return null;
@@ -18,7 +19,7 @@ export const AiAssistant = () => {
       </Label>
       <Switch
         className={"scale-90"}
-        checked={active}
+        checked={panel === "ai"}
         onCheckedChange={(state) => {
           setAiAssistantActive(state);
         }}

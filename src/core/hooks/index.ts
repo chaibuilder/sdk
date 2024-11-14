@@ -33,9 +33,13 @@ import { useCodeEditor } from "./useCodeEditor.ts";
 import { useGlobalBlocksList, useGlobalBlocksStore } from "./useGlobalBlocksStore.ts";
 import { useLanguages } from "./useLanguages.ts";
 import { useBlockHighlight } from "./useBlockHighlight.ts";
+import { useAskAi } from "./useAskAi.ts";
+import { useRightPanel } from "./useTheme.ts";
 export { useLayoutVariant } from "./useLayoutVariant.ts";
 export { useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 export {
+  useAskAi,
+  useRightPanel,
   useGlobalBlocksList,
   useGlobalBlocksStore,
   useCodeEditor,
