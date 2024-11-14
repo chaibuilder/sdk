@@ -1,7 +1,7 @@
 import { useAtom } from "jotai";
 import { lsAiContextAtom, lsBlocksAtom, lsThemeAtom } from "./__dev/atoms-dev.ts";
 import PreviewWeb from "./__dev/preview/WebPreview.tsx";
-import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML, ThemeOptions } from "./core/main";
+import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML } from "./core/main";
 import { loadWebBlocks } from "./web-blocks";
 import { useState } from "react";
 import axios from "axios";
@@ -10,8 +10,10 @@ import { SingleLineText } from "@chaibuilder/runtime/controls";
 import { get } from "lodash-es";
 import { map, pick, isArray } from "lodash-es";
 import lngPtBR from "./__dev/ptBR.json";
-import { Paintbrush } from "lucide-react";
 import RightTop from "./__dev/RightTop.tsx";
+import { redPreset } from "./core/constants/THEME_PRESETS.ts";
+import { bluePreset } from "./core/constants/THEME_PRESETS.ts";
+import { orangePreset } from "./core/constants/THEME_PRESETS.ts";
 
 loadWebBlocks();
 
@@ -30,6 +32,7 @@ registerChaiBlock(null, {
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
   const [theme] = useAtom(lsThemeAtom);
+
   const [aiContext, setAiContext] = useAtom(lsAiContextAtom);
   const [uiLibraries] = useState([
     { uuid: "meraki-ui", name: "Meraki UI", url: "https://chai-ui-blocks.vercel.app" },
@@ -41,6 +44,13 @@ function ChaiBuilderDefault() {
       fallbackLang="fr"
       languages={["pt", "en"]}
       // locale="pt"
+      themeOptions={(defaultThemeOptions) => {
+        return {
+          ...defaultThemeOptions,
+          borderRadius: "0.5rem"
+        };
+      }}
+      themePresets={[{ orange: orangePreset }, { red: redPreset }, { blue: bluePreset }]}
       translations={{ pt: lngPtBR }}
       theme={theme}
       autoSaveSupport={true}
@@ -95,15 +105,15 @@ function ChaiBuilderDefault() {
       topBarComponents={{
         right: [RightTop],
       }}
-      sideBarComponents={{
-        top: [
-          {
-            icon: <Paintbrush size={20} />,
-            label: "Theme",
-            component: () => <ThemeOptions className="w-full" />,
-          },
-        ],
-      }}
+      // sideBarComponents={{
+      //   top: [
+      //     {
+      //       icon: <Paintbrush size={20} />,
+      //       label: "Theme",
+      //       component: () => <ThemeOptions className="w-full" />,
+      //     },
+      //   ],
+      // }}
       getGlobalBlockBlocks={async (globalBlockKey: string) => {
         const blocks =
           globalBlockKey === "header"

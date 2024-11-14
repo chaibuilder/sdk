@@ -1,14 +1,13 @@
-"use client";
-
-import { useState } from "react";
-import { Check, Eye, Globe, Moon, Sun, Upload } from "lucide-react";
+import { Check, Eye, Globe, Paintbrush, Upload } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui";
 import { Button } from "../ui";
 import { useSavePage } from "../core/hooks";
+import { useThemeSelected } from "../core/hooks/useTheme.ts";
 
 export default function RightTop() {
-  const [isDark, setIsDark] = useState(false);
   const { savePage } = useSavePage();
+
+  const { selectThemeSettings } = useThemeSelected();
   return (
     <div className="flex items-center gap-2 rounded-lg bg-background p-2">
       <DropdownMenu>
@@ -38,9 +37,14 @@ export default function RightTop() {
         <Eye className="h-4 w-4" />
         Preview
       </Button>
-
-      <Button variant="ghost" size="sm" className="gap-2" onClick={() => setIsDark(!isDark)}>
-        {isDark ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+      <Button
+        variant="ghost"
+        size="sm"
+        className="gap-2"
+        onClick={() => {
+          selectThemeSettings();
+        }}>
+        <Paintbrush className="h-4 w-4" />
         Theme
       </Button>
 

@@ -10,12 +10,10 @@ import {
 } from "../../../../../ui/shadcn/components/ui/accordion.tsx";
 
 import { Label } from "../../../../../ui/shadcn/components/ui/label.tsx";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "../../../../../ui/shadcn/components/ui/tabs.tsx";
 
 import { cn } from "../../../../functions/Functions.ts";
 import { BorderRadiusInput, FontSelector, ColorPickerInput } from "./index.ts";
-import { ChaiBuilderThemeOptions } from "../../../../types/chaiBuilderEditorProps.ts";
-import { useAtom } from "jotai";
+
 import {
   Select,
   SelectContent,
@@ -23,77 +21,68 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../../../ui/shadcn/components/ui/select";
-import { useTheme } from "../../../../hooks/useTheme.ts";
+import { useTheme, useThemeOptions } from "../../../../hooks/useTheme.ts";
+import { Switch } from "../../../../../ui/shadcn/components/ui/switch";
+import { Button } from "../../../../../ui/shadcn/components/ui/button";
+import { Sun, Moon } from "lucide-react";
+import { ChaiBuilderThemeValues } from "../../../../types/chaiBuilderEditorProps.ts";
+import { ScrollArea } from "../../../../../ui/index.ts";
 
 interface ThemeConfigProps {
   className?: string;
 }
 
-const defaultThemeStructure: ChaiBuilderThemeOptions = {
-  fontFamily: {},
-  borderRadius: {},
-  colors: [],
-};
-
 const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "" }) => {
   const [currentMode, setCurrentMode] = React.useState<"light" | "dark">("light");
-  const [configMode, setConfigMode] = React.useState<"preset" | "custom">("custom");
-  const [customThemeValues, setCustomThemeValues] = useTheme();
+  const [selectedPreset, setSelectedPreset] = React.useState<string>("");
+  const themePresets = useBuilderProp("themePresets", (presets) => presets) || [];
 
-  // Get the active theme values based on the mode
-  const activeThemeValues: any = customThemeValues;
+  const [customThemeValues, setChaiTheme] = useTheme();
 
-  const getThemeFromProps = useBuilderProp("themeOptions", (themeOptions: ChaiBuilderThemeOptions) => themeOptions);
-  const activeThemeOptions: ChaiBuilderThemeOptions = getThemeFromProps(defaultThemeStructure);
+  const chaiThemeOptions = useThemeOptions();
 
   const { t } = useTranslation();
 
-  // Handle switching between preset and custom
-  const handleConfigModeChange = (mode: "preset" | "custom") => {
-    setConfigMode(mode);
-    if (mode === "custom" && !customThemeValues) {
-      // Initialize custom theme with default values if not set
-    }
+  const handlePresetChange = (presetName: string) => {
+    setSelectedPreset(presetName);
   };
 
-  // Only allow changes when in custom mode
   const handleFontChange = (key: string, newValue: string) => {
-    if (configMode === "custom") {
-      // setCustomThemeValues((prev) => ({
-      //   ...prev,
-      //   fontFamily: {
-      //     ...prev.fontFamily,
-      //     [key]: newValue,
-      //   },
-      // }));
-    }
+    // if (selectedPreset === "custom") {
+    //   setCustomThemeValues((prev: any) => ({
+    //     ...prev,
+    //     fontFamily: {
+    //       ...prev.fontFamily,
+    //       [key]: newValue,
+    //     },
+    //   }));
+    // }
   };
 
   const handleBorderRadiusChange = (value: string) => {
-    if (configMode === "custom") {
-      // setCustomThemeValues((prev) => ({
-      //   ...prev,
-      //   borderRadius: `${value}rem`,
-      // }));
-    }
+    // if (selectedPreset === "custom") {
+    //   setCustomThemeValues((prev: any) => ({
+    //     ...prev,
+    //     borderRadius: `${value}rem`,
+    //   }));
+    // }
   };
 
   const handleColorChange = (key: string, newValue: string) => {
-    if (configMode === "custom") {
-      // setCustomThemeValues((prev) => ({
-      //   ...prev,
-      //   colors: {
-      //     ...prev.colors,
-      //     [key]: {
-      //       ...prev.colors[key],
-      //       [currentMode]: newValue,
-      //     },
-      //   },
-      // }));
-    }
+    // if (selectedPreset === "custom") {
+    //   setCustomThemeValues((prev: any) => ({
+    //     ...prev,
+    //     colors: {
+    //       ...prev.colors,
+    //       [key]: [
+    //         currentMode === "light" ? newValue : prev.colors?.[key]?.[0] || "",
+    //         currentMode === "dark" ? newValue : prev.colors?.[key]?.[1] || "",
+    //       ],
+    //     },
+    //   }));
+    // }
   };
 
-  // Updated group rendering function
   const renderColorGroup = (group: any) => (
     <AccordionItem value={group.group} key={group.group}>
       <AccordionTrigger className="hover:no-underline">
@@ -103,19 +92,27 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
       </AccordionTrigger>
       <AccordionContent>
         <div className="grid grid-cols-1 gap-4 bg-white">
-          {Object.entries(group.items[currentMode]).map(([key, value]: [string, any]) => {
-            const cssVariable = Object.values(value)[0];
-            const colorKey = key.replace(/([A-Z])/g, "-$1").toLowerCase();
-            const themeColor = activeThemeValues.colors[colorKey]?.[currentMode];
+          {Object.entries(group.items).map(([key, values]: [string, [string, string]]) => {
+            const defaultValue = values[currentMode === "light" ? 0 : 1];
+            const themeColor = customThemeValues.colors?.[key]?.[currentMode === "light" ? 0 : 1];
 
             return (
-              <div key={key} className="space-y-2">
-                <Label>{key}</Label>
+              <div key={key} className="flex items-center gap-2">
                 <ColorPickerInput
-                  disabled={configMode === "preset"}
-                  value={(themeColor || cssVariable) as string}
-                  onChange={(newValue: string) => handleColorChange(colorKey, newValue)}
+                  disabled={selectedPreset === "preset"}
+                  value={(themeColor || defaultValue) as string}
+                  onChange={(newValue: string) => handleColorChange(key, newValue)}
                 />
+                <Label>
+                  {key
+                    .split(/(?=[A-Z])/)
+                    .join(" ")
+                    .replace(/-/g, " ")
+                    .split(" ")
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(" ") + (!key.toLowerCase().includes("foreground") ? " Background" : "")}
+                </Label>
+                
               </div>
             );
           })}
@@ -125,76 +122,97 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   );
 
   return (
-    <div className={cn("h-full w-full space-y-6", className)}>
-      {/* Theme Configuration Mode Selector */}
-      <div className="space-y-2">
-        <Label>{t("Configuration Mode")}</Label>
-        <Select value={configMode} onValueChange={handleConfigModeChange}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select mode" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="preset">{t("Preset Theme")}</SelectItem>
-            <SelectItem value="custom">{t("Custom Theme")}</SelectItem>
-          </SelectContent>
-        </Select>
+    <ScrollArea className={cn("h-full w-full space-y-6", className)}>
+      <div className="flex gap-2">
+        <div className="w-[70%]">
+          <Label>{t("Presets")}</Label>
+          <Select value={selectedPreset} onValueChange={handlePresetChange}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select preset" />
+            </SelectTrigger>
+            <SelectContent>
+              {Array.isArray(themePresets) && themePresets.map((preset: any) => (
+                <SelectItem key={Object.keys(preset)[0]} value={Object.keys(preset)[0]}>
+                  {Object.keys(preset)[0]}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex w-[30%] items-end">
+          <Button
+            className="w-full text-sm"
+            variant="default"
+            onClick={() => {
+              if (!Array.isArray(themePresets)) return;
+              const selectedTheme = themePresets.find((preset: any) => Object.keys(preset)[0] === selectedPreset);
+              if (selectedTheme) {
+                const themeValues: ChaiBuilderThemeValues = Object.values(selectedTheme)[0];
+
+                setChaiTheme((prev) => ({
+                  ...prev,
+                  ...themeValues,
+                }));
+              }
+            }}>
+            Apply
+          </Button>
+        </div>
       </div>
 
-      {/* Theme Configuration Form */}
       <div className={cn("space-y-6", className)}>
         {/* Fonts Section */}
-        {activeThemeOptions?.fontFamily && (
-          <div className="grid grid-cols-2 gap-4">
-            {Object.entries(activeThemeOptions.fontFamily).map(([key, value]: [string, any]) => (
+        {chaiThemeOptions?.fontFamily && (
+          <div className="grid gap-4">
+            {Object.entries(chaiThemeOptions.fontFamily).map(([key, value]: [string, any]) => (
               <FontSelector
                 key={key}
                 label={key}
-                value={activeThemeValues.fontFamily[key] || value[Object.keys(value)[0]]}
+                value={customThemeValues.fontFamily[key] || value[Object.keys(value)[0]]}
                 onChange={(newValue: string) => handleFontChange(key, newValue)}
                 placeholder={`Select ${key} font`}
-                disabled={configMode === "preset"}
+                disabled={selectedPreset === "preset"}
               />
             ))}
           </div>
         )}
 
         {/* Border Radius Section */}
-        {activeThemeOptions?.borderRadius && (
+        {chaiThemeOptions?.borderRadius && (
           <div className="space-y-4">
             <h4 className="text-sm font-medium">{t("Border Radius")}</h4>
             <div className="flex items-center gap-4">
-              <BorderRadiusInput disabled={configMode === "preset"} onChange={handleBorderRadiusChange} />
-              <span className="w-12 text-sm">{activeThemeValues.borderRadius}</span>
+              <BorderRadiusInput disabled={selectedPreset === "preset"} onChange={handleBorderRadiusChange} />
+              <span className="w-12 text-sm">{customThemeValues.borderRadius}</span>
             </div>
           </div>
         )}
 
-        {/* Colors Section with Tabs */}
-        {activeThemeOptions?.colors && (
+        {/* Colors Section with Mode Switch */}
+        {chaiThemeOptions?.colors && (
           <div className="space-y-4">
-            <Tabs
-              defaultValue="light"
-              className="w-full"
-              onValueChange={(value) => setCurrentMode(value as "light" | "dark")}>
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="light">{t("Light Mode")}</TabsTrigger>
-                <TabsTrigger value="dark">{t("Dark Mode")}</TabsTrigger>
-              </TabsList>
-              <TabsContent value="light" className="space-y-6">
-                <Accordion type="multiple" className="w-full">
-                  {activeThemeOptions.colors.map((group) => renderColorGroup(group))}
-                </Accordion>
-              </TabsContent>
-              <TabsContent value="dark" className="space-y-6">
-                <Accordion type="multiple" className="w-full">
-                  {activeThemeOptions.colors.map((group) => renderColorGroup(group))}
-                </Accordion>
-              </TabsContent>
-            </Tabs>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <h4 className="text-sm font-medium">{t("Colors")}</h4>
+              </div>
+              <div className="flex items-center gap-2">
+                <Sun className="size-4 transition-all" />
+                <Switch
+                  checked={currentMode === "dark"}
+                  onCheckedChange={(checked) => setCurrentMode(checked ? "dark" : "light")}
+                  className="data-[state=checked]:bg-slate-800 data-[state=unchecked]:bg-slate-200"
+                />
+                <Moon className="size-4" />
+              </div>
+            </div>
+
+            <Accordion type="multiple" className="w-full">
+              {chaiThemeOptions.colors.map((group) => renderColorGroup(group))}
+            </Accordion>
           </div>
         )}
       </div>
-    </div>
+    </ScrollArea>
   );
 });
 

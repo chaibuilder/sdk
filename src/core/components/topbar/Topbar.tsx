@@ -10,6 +10,7 @@ const Topbar = () => {
   const leftComponents: LazyExoticComponent<any>[] = useBuilderProp("topBarComponents.left", []);
   const centerComponents: LazyExoticComponent<any>[] = useBuilderProp("topBarComponents.center", []);
   const rightComponents: LazyExoticComponent<any>[] = useBuilderProp("topBarComponents.right", []);
+  
   return (
     <div className="flex h-14 items-center justify-between px-2">
       <div className="flex items-center space-x-2">

@@ -92,7 +92,7 @@ export type ChaiBuilderThemeValues = {
 };
 
 export interface ChaiBuilderEditorProps {
-  themePresets?: Record<string, ChaiBuilderThemeValues>[];
+  themePresets?: Record<string, Partial<ChaiBuilderThemeValues>>[];
   themeOptions?: (defaultThemeOptions: ChaiBuilderThemeOptions) => ChaiBuilderThemeOptions;
   theme?: Partial<ChaiBuilderThemeValues>;
   /**

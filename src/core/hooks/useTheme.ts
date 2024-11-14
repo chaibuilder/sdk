@@ -3,6 +3,7 @@ import { BorderRadiusValue, ChaiBuilderThemeOptions, ChaiBuilderThemeValues } fr
 import { useBuilderProp } from "./useBuilderProp";
 import { useMemo } from "react";
 import { isEmpty, merge } from "lodash";
+import { useSelectedBlockIds } from "./useSelectedBlockIds";
 
 /**
  * 
@@ -180,6 +181,7 @@ export const useTheme = () => {
   const defaultThemeValues = useMemo(() => getDefaultThemeValues(options), [options]);
   const theme = useBuilderProp("theme", {});
   const [chaiTheme, setChaiTheme] = useAtom(chaiThemeValuesAtom);
+
   return [
     { ...defaultThemeValues, ...(!isEmpty(theme) && theme), ...(!isEmpty(chaiTheme) && chaiTheme) },
     setChaiTheme,
@@ -190,4 +192,17 @@ export const useThemeOptions = () => {
   const getThemeOptions = useBuilderProp("themeOptions", (themeOptions: ChaiBuilderThemeOptions) => themeOptions);
   const defaultOptions = useMemo(() => getThemeOptions(defaultThemeOptions), [getThemeOptions]);
   return defaultOptions as ChaiBuilderThemeOptions;
+};
+
+
+const themeSelectedAtom = atom<boolean>(false);
+
+export const useThemeSelected = () => {
+  const [themeSelected, setThemeSelected] = useAtom(themeSelectedAtom);
+
+  const selectThemeSettings = () => {
+    setThemeSelected((prev) => !prev);
+  };
+
+  return {themeSelected, selectThemeSettings};
 };
