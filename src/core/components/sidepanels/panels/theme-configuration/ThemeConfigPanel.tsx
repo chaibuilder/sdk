@@ -110,9 +110,15 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
                     .replace(/-/g, " ")
                     .split(" ")
                     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                    .join(" ") + (!key.toLowerCase().includes("foreground") ? " Background" : "")}
+                    .join(" ") +
+                    (!key.toLowerCase().includes("foreground") &&
+                    !key.toLowerCase().includes("border") &&
+                    !key.toLowerCase().includes("input") &&
+                    !key.toLowerCase().includes("ring") &&
+                    !key.toLowerCase().includes("background")
+                      ? " Background"
+                      : "")}
                 </Label>
-                
               </div>
             );
           })}
@@ -131,11 +137,12 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
               <SelectValue placeholder="Select preset" />
             </SelectTrigger>
             <SelectContent>
-              {Array.isArray(themePresets) && themePresets.map((preset: any) => (
-                <SelectItem key={Object.keys(preset)[0]} value={Object.keys(preset)[0]}>
-                  {Object.keys(preset)[0]}
-                </SelectItem>
-              ))}
+              {Array.isArray(themePresets) &&
+                themePresets.map((preset: any) => (
+                  <SelectItem key={Object.keys(preset)[0]} value={Object.keys(preset)[0]}>
+                    {Object.keys(preset)[0]}
+                  </SelectItem>
+                ))}
             </SelectContent>
           </Select>
         </div>

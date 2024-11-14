@@ -5,7 +5,7 @@ import { useThemeSelected } from "../../hooks/useTheme.ts";
 import "../canvas/static/BlocksExternalDataProvider.tsx";
 import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../ui";
 import { motion } from "framer-motion";
-import { EditIcon, Layers, LayoutTemplate } from "lucide-react";
+import { EditIcon, Layers, LayoutTemplate, X } from "lucide-react";
 import { Outline } from "../../main";
 import { CanvasTopBar } from "../canvas/topbar/CanvasTopBar.tsx";
 import CanvasArea from "../canvas/CanvasArea.tsx";
@@ -63,7 +63,7 @@ const RootLayout: ComponentType = () => {
   const [layoutVariant] = useLayoutVariant();
   const [chooseLayout, setChooseLayout] = useState(false);
 
-  const { themeSelected } = useThemeSelected();
+  const { themeSelected, selectThemeSettings } = useThemeSelected();
 
   usePubSub(CHAI_BUILDER_EVENTS.SHOW_BLOCK_SETTINGS, () => {
     setActivePanelIndex(1);
@@ -172,12 +172,21 @@ const RootLayout: ComponentType = () => {
                 <div className="no-scrollbar overflow h-full max-h-full overflow-x-hidden">
                   <div className="flex max-h-full flex-col p-3">
                     <h2 className="-mt-1 flex h-10 items-center space-x-1 text-base font-bold">
-                      {themeSelected ? (
-                        <Settings className="rtl:ml-2 size-4" />
-                      ) : (
-                        <EditIcon size={"16"} className="rtl:ml-2" />
-                      )}
-                      <span>{t(themeSelected ? "Theme Settings" : "Block Settings")}</span>
+                      <div className="flex items-center gap-2 grow">
+                        {themeSelected ? (
+                          <>
+                            <Settings className="h-4 w-4 rtl:ml-2" />
+                          </>
+                        ) : (
+                          <EditIcon size={16} className="rtl:ml-2" />
+                        )}
+                        <div className="flex items-center gap-2 justify-between w-full">
+                          {t(themeSelected ? "Theme Settings" : "Block Settings")}{" "}
+                          {themeSelected && (
+                            <X className="h-4 w-4 cursor-pointer" onClick={() => selectThemeSettings()} />
+                          )}
+                        </div>
+                      </div>
                     </h2>
                     <div className="flex-1">
                       <Suspense fallback={<div>Loading...</div>}>
