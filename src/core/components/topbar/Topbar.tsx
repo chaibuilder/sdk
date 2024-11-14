@@ -1,10 +1,6 @@
 import React, { LazyExoticComponent, Suspense } from "react";
-import { Separator, Skeleton } from "../../../ui";
-import { SaveButton } from "./SaveButton";
+import { Skeleton } from "../../../ui";
 import { useBuilderProp } from "../../hooks";
-import { Preview } from "./Preview.tsx";
-import { LanguageSelector } from "../canvas/topbar/LanguageSelector.tsx";
-//import { ThemeOption } from "./ThemeOption.tsx";
 
 const Topbar = () => {
   const leftComponents: LazyExoticComponent<any>[] = useBuilderProp("topBarComponents.left", []);

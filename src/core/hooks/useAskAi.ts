@@ -11,7 +11,7 @@ import { compact, startsWith } from "lodash-es";
 import { STYLES_KEY } from "../constants/STRINGS.ts";
 import { pick, get, has } from "lodash-es";
 import { getBlockComponent } from "@chaibuilder/runtime";
-import { isEmpty } from "lodash";
+import { isEmpty } from "lodash-es";
 import { LANGUAGES } from "../constants/LANGUAGES.ts";
 
 function getChildBlocks(allBlocks: ChaiBlock[], blockId: string, blocks: any[]) {

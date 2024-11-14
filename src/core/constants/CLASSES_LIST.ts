@@ -3,7 +3,7 @@ import { CLASS_VALUES } from "./CLASS_VALUES";
 import { useCallback, useMemo } from "react";
 import Fuse from "fuse.js";
 import { useThemeOptions } from "../hooks/useTheme";
-import { each, get, keys, set } from "lodash";
+import { each, get, keys, set } from "lodash-es";
 
 type ClassListType = {
   [key: string]: {

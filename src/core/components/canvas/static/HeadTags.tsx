@@ -11,7 +11,7 @@ import plugin from "tailwindcss/plugin";
 import { getChaiThemeOptions, getChaiThemeVariables, getThemeFonts } from "./ChaiThemeFn.ts";
 import { useTheme, useThemeOptions } from "../../../hooks/useTheme.ts";
 import { ChaiBuilderThemeValues } from "../../../types/chaiBuilderEditorProps.ts";
-import { pick } from "lodash";
+import { pick } from "lodash-es";
 // @ts-ignore
 
 export const HeadTags = () => {

@@ -1,4 +1,4 @@
-import { debounce } from "lodash";
+import { debounce } from "lodash-es";
 
 const BorderRadiusInput = ({ onChange, disabled }: { onChange: (value: string) => void; disabled: boolean }) => {
   const throttledChange = debounce((value: string) => onChange(value), 200);

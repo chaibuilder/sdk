@@ -1,4 +1,4 @@
-import { flatten, isEmpty, keys, uniq } from "lodash";
+import { flatten, isEmpty, keys, uniq } from "lodash-es";
 import { ChaiBuilderThemeOptions, ChaiBuilderThemeValues } from "../../../types/chaiBuilderEditorProps.ts";
 
 export const getChaiThemeOptions = (chaiThemeOptions: ChaiBuilderThemeOptions) => {

@@ -10,7 +10,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { RootLayout } from "./layout/RootLayout.tsx";
 import { builderStore } from "../atoms/store.ts";
 import { Toaster } from "../../ui";
-import { useBrandingOptions, useBuilderProp, useBuilderReset, useSavePage } from "../hooks";
+import { useBuilderProp, useBuilderReset, useSavePage } from "../hooks";
 import { ChaiBuilderEditorProps } from "../types";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
 import { SmallScreenMessage } from "./SmallScreenMessage.tsx";
@@ -39,7 +39,6 @@ const useAutoSave = () => {
 
 const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   const [, setAllBlocks] = useBlocksStore();
-  const [, setBrandingOptions] = useBrandingOptions();
   const reset = useBuilderReset();
   const [saveState] = useAtom(builderSaveStateAtom);
   const RootLayoutComponent = useMemo(() => props.layout || RootLayout, [props.layout]);
@@ -79,10 +78,6 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
       i18n.addResourceBundle(lng, "translation", translations, true, true);
     });
   }, [props.translations]);
-
-  useEffect(() => {
-    setBrandingOptions(props.brandingOptions);
-  }, [props.brandingOptions, setBrandingOptions]);
 
   useEffect(() => {
     if (saveState !== "SAVED") {
