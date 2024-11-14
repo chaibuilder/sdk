@@ -1,36 +1,20 @@
-import { Input } from "../../../../../ui/shadcn/components/ui/input.tsx";
 import { debounce } from "lodash-es";
 
-const ColorPickerInput = ({
-  value,
-  onChange,
-  disabled,
-}: {
-  value: string;
-  onChange: (value: string) => void;
-  disabled: boolean;
-}) => {
+const ColorPickerInput = ({ value, onChange }: { value: string; onChange: (value: string) => void }) => {
   const handleColorChange = debounce((value: string) => onChange(value), 200);
 
   return (
-    <div className="relative flex size-5 cursor-pointer rounded-full border" style={{ backgroundColor: hslToHex(value) }}>
+    <div className="relative flex cursor-pointer rounded-full border" style={{ backgroundColor: value }}>
       <input
         type="color"
-        value={hslToHex(value)}
+        value={value.startsWith("#") ? value : "#000000"}
         onChange={(e) => {
-          const newHslValue = hexToHsl(e.target.value);
-          handleColorChange(newHslValue);
+          const hexValue = e.target.value;
+          if (/^#[0-9A-F]{6}$/i.test(hexValue)) {
+            handleColorChange(hexValue);
+          }
         }}
-        className="absolute inset-0 size-5 appearance-none rounded-full opacity-0"
-        disabled={disabled}
-      />
-      <Input
-        readOnly={disabled}
-        type="text"
-        value={value}
-        onChange={(e) => handleColorChange(e.target.value)}
-        className="flex-grow"
-        disabled={disabled}
+        className="size-5 border-none"
       />
     </div>
   );

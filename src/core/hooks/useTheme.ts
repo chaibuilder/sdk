@@ -14,65 +14,65 @@ const defaultThemeOptions: ChaiBuilderThemeOptions = {
     {
       group: "Body",
       items: {
-        background: ["0 0% 100%", "20 14% 4%"],
-        foreground: ["20 14% 4%", "210 40% 98%"],
+        background: ["#fff", "#000"],
+        foreground: ["#000", "#fff"],
       },
     },
     {
       group: "Primary",
       items: {
-        primary: ["47.9 95.8% 53.1%", "47.9 95.8% 53.1%"],
-        "primary-foreground": ["26 83.3% 14.1%", "26 83.3% 14.1%"],
+        primary: ["#000", "#fff"],
+        "primary-foreground": ["#fff", "#000"],
       },
     },
     {
       group: "Secondary",
       items: {
-        secondary: ["60 4.8% 95.9%", "12 6.5% 15.1%"],
-        "secondary-foreground": ["24 9.8% 10%", "210 40% 98%"],
+        secondary: ["#000", "#fff"],
+        "secondary-foreground": ["#fff", "#000"],
       },
     },
     {
       group: "Border, Input & Ring",
       items: {
-        border: ["20 5.9% 90%", "12 6.5% 15.1%"],
-        input: ["20 5.9% 90%", "12 6.5% 15.1%"],
-        ring: ["20 14.3% 4%", "210 40% 98%"],
+        border: ["#000", "#fff"],
+        input: ["#000", "#fff"],
+        ring: ["#000", "#fff"],
       },
     },
     {
       group: "Card",
       items: {
-        card: ["0 0% 100%", "20 14% 4%"],
-        "card-foreground": ["20 14% 4%", "210 40% 98%"],
+        card: ["#fff", "#000"],
+        "card-foreground": ["#000", "#fff"],
       },
     },
     {
       group: "Popover",
       items: {
-        popover: ["0 0% 100%", "20 14% 4%"],
-        "popover-foreground": ["20 14% 4%", "210 40% 98%"],
+        popover: ["#fff", "#000"],
+        "popover-foreground": ["#000", "#fff"],
       },
     },
     {
       group: "Muted",
       items: {
-        muted: ["60 4.8% 95.9%", "12 6.5% 15.1%"],
-        "muted-foreground": ["25 5.3% 44.7%", "210 40% 98%"],
+        muted: ["#000", "#fff"],
+        "muted-foreground": ["#fff", "#000"],
       },
     },
     {
       group: "Accent",
       items: {
-        accent: ["60 4.8% 95.9%", "12 6.5% 15.1%"],
-        "accent-foreground": ["24 9.8% 10%", "210 40% 98%"],
+        accent: ["#000", "#fff"],
+        "accent-foreground": ["#fff", "#000"],
       },
     },
     {
       group: "Destructive",
       items: {
-        destructive: ["0 84.2% 60.2%", "0 62.8% 30.6%"],
-        "destructive-foreground": ["210 40% 98%", "210 40% 98%"],
+        destructive: ["#000", "#fff"],
+        "destructive-foreground": ["#fff", "#000"],
       },
     },
   ],
@@ -121,7 +121,7 @@ export const useTheme = () => {
   return [
     { ...defaultThemeValues, ...(!isEmpty(theme) && theme), ...(!isEmpty(chaiTheme) && chaiTheme) },
     setChaiTheme,
-  ];
+  ] as const;
 };
 
 export const useThemeOptions = () => {

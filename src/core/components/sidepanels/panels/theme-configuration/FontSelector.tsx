@@ -7,6 +7,7 @@ import {
 } from "../../../../../ui/shadcn/components/ui/select.tsx";
 import { Label } from "../../../../../ui/shadcn/components/ui/label.tsx";
 import { ScrollArea } from "../../../../../ui/shadcn/components/ui/scroll-area.tsx";
+import { startCase } from "lodash";
 
 const FONTS = [
   { title: "Roboto", value: "Roboto" },
@@ -66,36 +67,24 @@ const FontSelector = ({
   label,
   value,
   onChange,
-  placeholder,
-  disabled,
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
-  placeholder: string;
-  disabled: boolean;
 }) => {
   return (
-    <div className="space-y-2">
-      <Label className="text-sm capitalize">{label}</Label>
-      <Select value={value} onValueChange={onChange}>
-        <SelectTrigger>
-          <SelectValue placeholder={placeholder} />
-        </SelectTrigger>
-        <SelectContent className="z-[9999]">
-          <ScrollArea className="max-h-[400px] overflow-y-auto">
-            {FONTS.map((font) => (
-              <SelectItem
-                disabled={disabled}
-                key={font.value}
-                value={font.value}
-                className="transition-colors ease-in hover:bg-gray-200">
-                {font.title}
-              </SelectItem>
-            ))}
-          </ScrollArea>
-        </SelectContent>
-      </Select>
+    <div className="">
+      <Label className="text-sm font-bold">{startCase(label)}</Label>
+      <select
+        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}>
+        {FONTS.map((font) => (
+          <option key={font.value} value={font.value}>
+            {font.title}
+          </option>
+        ))}
+      </select>
     </div>
   );
 };
