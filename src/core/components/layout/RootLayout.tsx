@@ -1,34 +1,28 @@
 import React, { ComponentType, lazy, MouseEvent, Suspense, useMemo, useState } from "react";
 import { isDevelopment } from "../../import-html/general.ts";
-import { useBuilderProp, useLayoutVariant } from "../../hooks";
+import { useBuilderProp } from "../../hooks";
 import { useThemeSelected } from "../../hooks/useTheme.ts";
 import "../canvas/static/BlocksExternalDataProvider.tsx";
 import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../ui";
 import { motion } from "framer-motion";
-import { EditIcon, Layers, LayoutTemplate, X } from "lucide-react";
+import { EditIcon, Layers, X } from "lucide-react";
 import { Outline } from "../../main";
 import { CanvasTopBar } from "../canvas/topbar/CanvasTopBar.tsx";
 import CanvasArea from "../canvas/CanvasArea.tsx";
 import { AddBlocksDialog } from "./AddBlocksDialog.tsx";
 import { useTranslation } from "react-i18next";
-import { LightningBoltIcon, GearIcon } from "@radix-ui/react-icons";
 import { Settings } from "lucide-react";
 import SettingsPanel from "../settings/SettingsPanel.tsx";
-import { AskAI } from "../AskAi.tsx";
 import { CHAI_BUILDER_EVENTS } from "../../events.ts";
 import { ChooseLayout } from "./ChooseLayout.tsx";
 import { compact, get } from "lodash-es";
-import { HotKeys } from "../HotKeys.tsx";
 import { usePubSub } from "../../hooks/usePubSub.ts";
 
 const TopBar = lazy(() => import("../topbar/Topbar.tsx"));
 
 const ThemeConfigPanel = lazy(() => import("../sidepanels/panels/theme-configuration/ThemeConfigPanel.tsx"));
 
-function useSidebarMenuItems(layoutVariant: string) {
-  const singleSidePanel = layoutVariant === "SINGLE_SIDE_PANEL";
-  const { t } = useTranslation();
-  const askAICallback = useBuilderProp("askAiCallBack", null);
+function useSidebarMenuItems() {
   return useMemo(() => {
     const items = [
       {
@@ -40,19 +34,9 @@ function useSidebarMenuItems(layoutVariant: string) {
           </div>
         ),
       },
-      singleSidePanel
-        ? { icon: <GearIcon className="size-5" />, label: t("Edit Block"), component: SettingsPanel }
-        : null,
-      askAICallback
-        ? { icon: <LightningBoltIcon className="size-5" />, label: t("AI Assistant"), component: AskAI }
-        : null,
     ];
     return compact(items);
-  }, [singleSidePanel, t, askAICallback]);
-}
-
-function isDualLayout(layoutVariant: string) {
-  return layoutVariant !== "SINGLE_SIDE_PANEL";
+  }, []);
 }
 
 /**
@@ -60,7 +44,6 @@ function isDualLayout(layoutVariant: string) {
  */
 const RootLayout: ComponentType = () => {
   const [activePanelIndex, setActivePanelIndex] = useState(0);
-  const [layoutVariant] = useLayoutVariant();
   const [chooseLayout, setChooseLayout] = useState(false);
 
   const { themeSelected, selectThemeSettings } = useThemeSelected();
@@ -82,7 +65,7 @@ const RootLayout: ComponentType = () => {
     setActivePanelIndex(activePanelIndex === index ? null : index);
   };
 
-  const menuItems = useSidebarMenuItems(layoutVariant);
+  const menuItems = useSidebarMenuItems();
 
   const { t } = useTranslation();
   const sidebarMenuItems = [...menuItems, ...topComponents];
@@ -119,19 +102,7 @@ const RootLayout: ComponentType = () => {
                   </Tooltip>
                 ))}
               </div>
-              <div className="flex flex-col space-y-1">
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button variant="ghost" onClick={() => setChooseLayout(true)}>
-                      <LayoutTemplate size={15} />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent side={"right"}>
-                    <p>{t("Choose Builder Layout")}</p>
-                  </TooltipContent>
-                </Tooltip>
-                <HotKeys />
-              </div>
+              <div className="flex flex-col space-y-1"></div>
             </div>
             {/* Side Panel */}
             <motion.div
@@ -163,40 +134,38 @@ const RootLayout: ComponentType = () => {
                 <CanvasArea />
               </Suspense>
             </div>
-            {isDualLayout(layoutVariant) ? (
-              <motion.div
-                className="h-full max-h-full border-l border-border"
-                initial={{ width: 280 }}
-                animate={{ width: 280 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}>
-                <div className="no-scrollbar overflow h-full max-h-full overflow-x-hidden">
-                  <div className="flex max-h-full flex-col p-3">
-                    <h2 className="-mt-1 flex h-10 items-center space-x-1 text-base font-bold">
-                      <div className="flex items-center gap-2 grow">
-                        {themeSelected ? (
-                          <>
-                            <Settings className="h-4 w-4 rtl:ml-2" />
-                          </>
-                        ) : (
-                          <EditIcon size={16} className="rtl:ml-2" />
+            <motion.div
+              className="h-full max-h-full border-l border-border"
+              initial={{ width: 280 }}
+              animate={{ width: 280 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}>
+              <div className="no-scrollbar overflow h-full max-h-full overflow-x-hidden">
+                <div className="flex max-h-full flex-col p-3">
+                  <h2 className="-mt-1 flex h-10 items-center space-x-1 text-base font-bold">
+                    <div className="flex grow items-center gap-2">
+                      {themeSelected ? (
+                        <>
+                          <Settings className="h-4 w-4 rtl:ml-2" />
+                        </>
+                      ) : (
+                        <EditIcon size={16} className="rtl:ml-2" />
+                      )}
+                      <div className="flex w-full items-center justify-between gap-2">
+                        {t(themeSelected ? "Theme Settings" : "Block Settings")}{" "}
+                        {themeSelected && (
+                          <X className="h-4 w-4 cursor-pointer" onClick={() => selectThemeSettings()} />
                         )}
-                        <div className="flex items-center gap-2 justify-between w-full">
-                          {t(themeSelected ? "Theme Settings" : "Block Settings")}{" "}
-                          {themeSelected && (
-                            <X className="h-4 w-4 cursor-pointer" onClick={() => selectThemeSettings()} />
-                          )}
-                        </div>
                       </div>
-                    </h2>
-                    <div className="flex-1">
-                      <Suspense fallback={<div>Loading...</div>}>
-                        {themeSelected ? <ThemeConfigPanel /> : <SettingsPanel />}
-                      </Suspense>
                     </div>
+                  </h2>
+                  <div className="flex-1">
+                    <Suspense fallback={<div>Loading...</div>}>
+                      {themeSelected ? <ThemeConfigPanel /> : <SettingsPanel />}
+                    </Suspense>
                   </div>
                 </div>
-              </motion.div>
-            ) : null}
+              </div>
+            </motion.div>
           </main>
         </div>
         <AddBlocksDialog />
