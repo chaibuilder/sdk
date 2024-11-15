@@ -1,12 +1,4 @@
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../../../../../ui/shadcn/components/ui/select.tsx";
 import { Label } from "../../../../../ui/shadcn/components/ui/label.tsx";
-import { ScrollArea } from "../../../../../ui/shadcn/components/ui/scroll-area.tsx";
 import { startCase } from "lodash";
 
 const FONTS = [
@@ -72,6 +64,7 @@ const FontSelector = ({
   value: string;
   onChange: (value: string) => void;
 }) => {
+
   return (
     <div className="">
       <Label className="text-sm font-bold">{startCase(label)}</Label>

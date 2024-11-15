@@ -2,21 +2,7 @@ import * as React from "react";
 
 import { useBuilderProp } from "../../../../hooks/index.ts";
 import { useTranslation } from "react-i18next";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-  Label,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  ScrollArea,
-  Button,
-  Switch,
-} from "../../../../../ui";
+import { Label, ScrollArea, Button, Switch } from "../../../../../ui";
 import { cn } from "../../../../functions/Functions.ts";
 import { BorderRadiusInput, FontSelector, ColorPickerInput } from "./index.ts";
 import { useTheme, useThemeOptions } from "../../../../hooks/useTheme.ts";
@@ -41,6 +27,20 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
 
   const handlePresetChange = (presetName: string) => {
     setSelectedPreset(presetName);
+  };
+
+  const applyPreset = () => {
+    const preset = (themePresets as any[]).find((p) => Object.keys(p)[0] === selectedPreset);
+    if (preset) {
+      const newThemeValues = Object.values(preset)[0];
+      if (newThemeValues && typeof newThemeValues === 'object') {
+        setThemeValues(newThemeValues);
+      } else {
+        console.error("Invalid preset structure:", newThemeValues);
+      }
+    } else {
+      console.error("Preset not found:", selectedPreset);
+    }
   };
 
   const handleFontChange = (key: string, newValue: string) => {
@@ -113,28 +113,33 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
 
   return (
     <ScrollArea className={cn("h-full w-full", className)}>
-      <div className="hidden gap-2">
-        <div className="w-[70%]">
-          <Label className="text-sm font-bold">{t("Presets")}</Label>
-          <select
-            value={selectedPreset}
-            onChange={(e) => handlePresetChange(e.target.value)}
-            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
-            <option value="">Select preset</option>
-            {Array.isArray(themePresets) &&
-              themePresets.map((preset: any) => (
-                <option key={Object.keys(preset)[0]} value={Object.keys(preset)[0]}>
-                  {Object.keys(preset)[0]}
-                </option>
-              ))}
-          </select>
+      {themePresets && (
+        <div className="flex gap-2 pb-2">
+          <div className="w-[70%]">
+            <Label className="text-sm font-bold">{t("Presets")}</Label>
+            <select
+              value={selectedPreset}
+              onChange={(e) => handlePresetChange(e.target.value)}
+              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
+              <option value="">Select preset</option>
+              {Array.isArray(themePresets) &&
+                themePresets.map((preset: any) => (
+                  <option key={Object.keys(preset)[0]} value={Object.keys(preset)[0]}>
+                    {Object.keys(preset)[0]}
+                  </option>
+                ))}
+            </select>
+          </div>
+          <div className="flex w-[30%] items-end">
+            <Button
+              className="w-full text-sm"
+              variant="default"
+              onClick={()=>{}}>
+              {t("Apply")}
+            </Button>
+          </div>
         </div>
-        <div className="flex w-[30%] items-end">
-          <Button className="w-full text-sm" variant="default" onClick={() => {}}>
-            {t("Apply")}
-          </Button>
-        </div>
-      </div>
+      )}
       <div className={cn("space-y-2", className)}>
         {/* Fonts Section */}
         {chaiThemeOptions?.fontFamily && (
@@ -143,7 +148,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
               <FontSelector
                 key={key}
                 label={key}
-                value={themeValues.fontFamily[key] || value[Object.keys(value)[0]]}
+                value={themeValues.fontFamily[key.replace(/font-/g, "")] || value[Object.keys(value)[0]]}
                 onChange={(newValue: string) => handleFontChange(key, newValue)}
               />
             ))}
@@ -179,9 +184,9 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
               </div>
             </div>
 
-            <Accordion type="multiple" className="w-full space-y-2">
+            <div className="w-full space-y-2" key={currentMode}>
               {chaiThemeOptions.colors.map((group) => renderColorGroup(group))}
-            </Accordion>
+            </div>
           </div>
         )}
       </div>

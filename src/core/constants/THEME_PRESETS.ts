@@ -1,6 +1,11 @@
 import { ChaiBuilderThemeValues } from "../types/chaiBuilderEditorProps";
 
 export const orangePreset: Partial<ChaiBuilderThemeValues> = {
+  fontFamily: {
+    heading: "Inter",
+    body: "Inter",
+  },
+  borderRadius: "12px",
   colors: {
     background: ["#FFFFFF", "#0A0A0A"],
     foreground: ["#0A0A0A", "#F9F9F9"],
@@ -18,14 +23,14 @@ export const orangePreset: Partial<ChaiBuilderThemeValues> = {
     input: ["#E6E6E6", "#262626"],
     ring: ["#F85C2C", "#E34817"],
   },
-  borderRadius: "12px",
+};
+
+export const redPreset: Partial<ChaiBuilderThemeValues> = {
   fontFamily: {
     heading: "Inter",
     body: "Inter",
   },
-};
-
-export const redPreset: Partial<ChaiBuilderThemeValues> = {
+  borderRadius: "12px",
   colors: {
     background: ["#FFFFFF", "#121212"],
     foreground: ["#121212", "#FFFFFF"],
@@ -42,15 +47,15 @@ export const redPreset: Partial<ChaiBuilderThemeValues> = {
     border: ["#E5E7EB", "#374151"],
     input: ["#E5E7EB", "#374151"],
     ring: ["#2563EB", "#3B82F6"],
-  },
-  borderRadius: "12px",
-  fontFamily: {
-    heading: "Inter",
-    body: "Inter",
   },
 };
 
 export const bluePreset: Partial<ChaiBuilderThemeValues> = {
+  fontFamily: {
+    heading: "Inter",
+    body: "Inter",
+  },
+  borderRadius: "12px",
   colors: {
     background: ["#FFFFFF", "#121212"],
     foreground: ["#121212", "#FFFFFF"],
@@ -67,10 +72,5 @@ export const bluePreset: Partial<ChaiBuilderThemeValues> = {
     border: ["#E5E7EB", "#374151"],
     input: ["#E5E7EB", "#374151"],
     ring: ["#2563EB", "#3B82F6"],
-  },
-  borderRadius: "12px",
-  fontFamily: {
-    heading: "Inter",
-    body: "Inter",
   },
 };

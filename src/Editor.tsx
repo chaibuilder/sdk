@@ -50,7 +50,7 @@ function ChaiBuilderDefault() {
       //     borderRadius: "10px",
       //   };
       // }}
-      // themePresets={[{ orange: orangePreset }, { red: redPreset }, { blue: bluePreset }]}
+       themePresets={[{ orange: orangePreset }, { red: redPreset }, { blue: bluePreset }]}
       translations={{ pt: lngPtBR }}
       // theme={theme}
       autoSaveSupport={true}
