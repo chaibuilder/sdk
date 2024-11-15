@@ -44,28 +44,23 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   };
 
   const handleFontChange = (key: string, newValue: string) => {
-    // if (selectedPreset === "custom") {
-    //   setCustomThemeValues((prev: any) => ({
-    //     ...prev,
-    //     fontFamily: {
-    //       ...prev.fontFamily,
-    //       [key]: newValue,
-    //     },
-    //   }));
-    // }
+    setThemeValues(() => ({
+      ...themeValues,
+      fontFamily: {
+        ...themeValues.fontFamily,
+        [key.replace(/font-/g, "")]: newValue,
+      },
+    }));
   };
 
   const handleBorderRadiusChange = (value: string) => {
-    // if (selectedPreset === "custom") {
-    //   setCustomThemeValues((prev: any) => ({
-    //     ...prev,
-    //     borderRadius: `${value}rem`,
-    //   }));
-    // }
+    setThemeValues(() => ({
+      ...themeValues,
+      borderRadius: `${value}px`,
+    }));
   };
 
   const handleColorChange = (key: string, newValue: string) => {
-    // console.log(key, newValue);
     setThemeValues(() => {
       const prevColor = get(themeValues, `colors.${key}`);
       if (currentMode === "light") {
@@ -140,7 +135,6 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
           </Button>
         </div>
       </div>
-      <br />
       <div className={cn("space-y-2", className)}>
         {/* Fonts Section */}
         {chaiThemeOptions?.fontFamily && (

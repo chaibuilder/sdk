@@ -44,12 +44,12 @@ function ChaiBuilderDefault() {
       fallbackLang="fr"
       languages={["pt", "en"]}
       // locale="pt"
-      themeOptions={(defaultThemeOptions) => {
-        return {
-          ...defaultThemeOptions,
-          borderRadius: "0.5rem",
-        };
-      }}
+      // themeOptions={(defaultThemeOptions) => {
+      //   return {
+      //     ...defaultThemeOptions,
+      //     borderRadius: "10px",
+      //   };
+      // }}
       // themePresets={[{ orange: orangePreset }, { red: redPreset }, { blue: bluePreset }]}
       translations={{ pt: lngPtBR }}
       // theme={theme}

@@ -9,7 +9,7 @@ const defaultThemeOptions: ChaiBuilderThemeOptions = {
     "font-heading": "Inter",
     "font-body": "Inter",
   },
-  borderRadius: "0.5rem",
+  borderRadius: "10px",
   colors: [
     {
       group: "Body",

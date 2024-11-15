@@ -18,7 +18,7 @@ export const orangePreset: Partial<ChaiBuilderThemeValues> = {
     input: ["#E6E6E6", "#262626"],
     ring: ["#F85C2C", "#E34817"],
   },
-  borderRadius: "0.5rem",
+  borderRadius: "12px",
   fontFamily: {
     heading: "Inter",
     body: "Inter",
@@ -43,7 +43,7 @@ export const redPreset: Partial<ChaiBuilderThemeValues> = {
     input: ["#E5E7EB", "#374151"],
     ring: ["#2563EB", "#3B82F6"],
   },
-  borderRadius: "0.5rem",
+  borderRadius: "12px",
   fontFamily: {
     heading: "Inter",
     body: "Inter",
@@ -68,7 +68,7 @@ export const bluePreset: Partial<ChaiBuilderThemeValues> = {
     input: ["#E5E7EB", "#374151"],
     ring: ["#2563EB", "#3B82F6"],
   },
-  borderRadius: "0.5rem",
+  borderRadius: "12px",
   fontFamily: {
     heading: "Inter",
     body: "Inter",

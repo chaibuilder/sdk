@@ -6,10 +6,10 @@ const BorderRadiusInput = ({ onChange, disabled }: { onChange: (value: string) =
     <input
       type="range"
       min="0"
-      step="0.5"
-      max="3"
+      step="1"
+      max="30"
       disabled={disabled}
-      defaultValue="1.5"
+      defaultValue="15"
       onChange={(e) => throttledChange(e.target.value)}
       className="flex-1"
     />
