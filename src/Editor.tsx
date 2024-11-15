@@ -47,6 +47,7 @@ function ChaiBuilderDefault() {
       }}
       aiContext={aiContext}
       askAiCallBack={async (type: "styles" | "content", prompt: string, blocks: ChaiBlock[], lang: string = "") => {
+        console.log("askAiCallBack", type, prompt, blocks, lang);
         return {
           blocks: map(blocks, (b) => ({
             ...pick(b, ["_id"]),

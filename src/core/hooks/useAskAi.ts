@@ -1,6 +1,6 @@
 import { cloneDeep, filter, find, flattenDeep } from "lodash-es";
 import { useBuilderProp } from "./useBuilderProp.ts";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
 import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { useStreamMultipleBlocksProps, useUpdateMultipleBlocksProps } from "./useUpdateBlocksProps.ts";
@@ -13,8 +13,7 @@ import { pick, get, has } from "lodash-es";
 import { getBlockComponent } from "@chaibuilder/runtime";
 import { isEmpty } from "lodash-es";
 import { LANGUAGES } from "../constants/LANGUAGES.ts";
-import { aiAssistantActiveAtom } from "../atoms/ui.ts";
-import { useRightPanel, useThemeEditor } from "./useTheme.ts";
+import { useRightPanel } from "./useTheme.ts";
 
 function getChildBlocks(allBlocks: ChaiBlock[], blockId: string, blocks: any[]) {
   blocks.push(find(allBlocks, { _id: blockId }) as ChaiBlock);
