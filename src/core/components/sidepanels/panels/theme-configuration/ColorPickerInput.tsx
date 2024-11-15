@@ -14,8 +14,9 @@ const ColorPickerInput = ({ value, onChange }: { value: string; onChange: (value
             handleColorChange(hexValue);
           }
         }}
-        className="size-5 border-none"
+        className="h-5 w-5 rounded-full border-0"
       />
+      <div className="pointer-events-none absolute inset-0 h-5 w-5 rounded-full" style={{ backgroundColor: value }} />
     </div>
   );
 };

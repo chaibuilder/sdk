@@ -21,7 +21,7 @@ import { cn } from "../../../../functions/Functions.ts";
 import { BorderRadiusInput, FontSelector, ColorPickerInput } from "./index.ts";
 import { useTheme, useThemeOptions } from "../../../../hooks/useTheme.ts";
 import { Sun, Moon } from "lucide-react";
-import { get } from "lodash";
+import { get, set } from "lodash";
 
 interface ThemeConfigProps {
   className?: string;
@@ -32,7 +32,8 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const [selectedPreset, setSelectedPreset] = React.useState<string>("");
   const themePresets = useBuilderProp("themePresets", (presets) => presets) || [];
 
-  const [themeValues] = useTheme();
+  const [themeValues, setThemeValues] = useTheme();
+  console.log(themeValues);
 
   const chaiThemeOptions = useThemeOptions();
 
@@ -64,32 +65,36 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   };
 
   const handleColorChange = (key: string, newValue: string) => {
-    // if (selectedPreset === "custom") {
-    //   setCustomThemeValues((prev: any) => ({
-    //     ...prev,
-    //     colors: {
-    //       ...prev.colors,
-    //       [key]: [
-    //         currentMode === "light" ? newValue : prev.colors?.[key]?.[0] || "",
-    //         currentMode === "dark" ? newValue : prev.colors?.[key]?.[1] || "",
-    //       ],
-    //     },
-    //   }));
-    // }
+    // console.log(key, newValue);
+    setThemeValues(() => {
+      const prevColor = get(themeValues, `colors.${key}`);
+      if (currentMode === "light") {
+        set(prevColor, 0, newValue);
+      } else {
+        set(prevColor, 1, newValue);
+      }
+      return {
+        ...themeValues,
+        colors: {
+          ...themeValues.colors,
+          [key]: prevColor,
+        },
+      };
+    });
   };
 
   const renderColorGroup = (group: any) => (
     <div className="grid grid-cols-1">
       {Object.entries(group.items).map(([key]: [string, [string, string]]) => {
         const themeColor = get(themeValues, `colors.${key}.${currentMode === "light" ? 0 : 1}`);
-        console.log(key, themeColor);
         return (
           <div key={key} className="flex items-center">
             <ColorPickerInput
               value={themeColor as string}
               onChange={(newValue: string) => handleColorChange(key, newValue)}
             />
-            <Label>
+            &nbsp;&nbsp;
+            <Label className="text-xs text-muted-foreground">
               {key
                 .split(/(?=[A-Z])/)
                 .join(" ")
