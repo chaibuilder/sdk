@@ -14,65 +14,65 @@ const defaultThemeOptions: ChaiBuilderThemeOptions = {
     {
       group: "Body",
       items: {
-        background: ["#fff", "#000"],
-        foreground: ["#000", "#fff"],
+        background: ["#FFFFFF", "#121212"],
+        foreground: ["#121212", "#FFFFFF"],
       },
     },
     {
       group: "Primary",
       items: {
-        primary: ["#000", "#fff"],
-        "primary-foreground": ["#fff", "#000"],
+        primary: ["#2563EB", "#3B82F6"],
+        "primary-foreground": ["#FFFFFF", "#FFFFFF"],
       },
     },
     {
       group: "Secondary",
       items: {
-        secondary: ["#000", "#fff"],
-        "secondary-foreground": ["#fff", "#000"],
+        secondary: ["#F3F4F6", "#374151"],
+        "secondary-foreground": ["#1F2937", "#F9FAFB"],
       },
     },
     {
       group: "Border, Input & Ring",
       items: {
-        border: ["#000", "#fff"],
-        input: ["#000", "#fff"],
-        ring: ["#000", "#fff"],
+        border: ["#E5E7EB", "#374151"],
+        input: ["#E5E7EB", "#374151"],
+        ring: ["#2563EB", "#3B82F6"],
       },
     },
     {
       group: "Card",
       items: {
-        card: ["#fff", "#000"],
-        "card-foreground": ["#000", "#fff"],
+        card: ["#FFFFFF", "#1F2937"],
+        "card-foreground": ["#121212", "#FFFFFF"],
       },
     },
     {
       group: "Popover",
       items: {
-        popover: ["#fff", "#000"],
-        "popover-foreground": ["#000", "#fff"],
+        popover: ["#FFFFFF", "#1F2937"],
+        "popover-foreground": ["#121212", "#FFFFFF"],
       },
     },
     {
       group: "Muted",
       items: {
-        muted: ["#000", "#fff"],
-        "muted-foreground": ["#fff", "#000"],
+        muted: ["#F3F4F6", "#374151"],
+        "muted-foreground": ["#6B7280", "#9CA3AF"],
       },
     },
     {
       group: "Accent",
       items: {
-        accent: ["#000", "#fff"],
-        "accent-foreground": ["#fff", "#000"],
+        accent: ["#F3F4F6", "#374151"],
+        "accent-foreground": ["#1F2937", "#FFFFFF"],
       },
     },
     {
       group: "Destructive",
       items: {
-        destructive: ["#000", "#fff"],
-        "destructive-foreground": ["#fff", "#000"],
+        destructive: ["#DC2626", "#EF4444"],
+        "destructive-foreground": ["#FFFFFF", "#FFFFFF"],
       },
     },
   ],

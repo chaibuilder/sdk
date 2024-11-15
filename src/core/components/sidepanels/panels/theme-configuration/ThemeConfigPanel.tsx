@@ -21,6 +21,7 @@ import { cn } from "../../../../functions/Functions.ts";
 import { BorderRadiusInput, FontSelector, ColorPickerInput } from "./index.ts";
 import { useTheme, useThemeOptions } from "../../../../hooks/useTheme.ts";
 import { Sun, Moon } from "lucide-react";
+import { get } from "lodash";
 
 interface ThemeConfigProps {
   className?: string;
@@ -31,7 +32,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const [selectedPreset, setSelectedPreset] = React.useState<string>("");
   const themePresets = useBuilderProp("themePresets", (presets) => presets) || [];
 
-  const [customThemeValues, setCustomThemeValues] = useTheme();
+  const [themeValues] = useTheme();
 
   const chaiThemeOptions = useThemeOptions();
 
@@ -79,9 +80,9 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
 
   const renderColorGroup = (group: any) => (
     <div className="grid grid-cols-1">
-      {Object.entries(group.items).map(([key, values]: [string, [string, string]]) => {
-        const themeColor = customThemeValues.colors?.[key]?.[currentMode === "light" ? 0 : 1];
-
+      {Object.entries(group.items).map(([key]: [string, [string, string]]) => {
+        const themeColor = get(themeValues, `colors.${key}.${currentMode === "light" ? 0 : 1}`);
+        console.log(key, themeColor);
         return (
           <div key={key} className="flex items-center">
             <ColorPickerInput
@@ -112,7 +113,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
 
   return (
     <ScrollArea className={cn("h-full w-full", className)}>
-      <div className="flex gap-2">
+      <div className="hidden gap-2">
         <div className="w-[70%]">
           <Label className="text-sm font-bold">{t("Presets")}</Label>
           <select
@@ -143,7 +144,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
               <FontSelector
                 key={key}
                 label={key}
-                value={customThemeValues.fontFamily[key] || value[Object.keys(value)[0]]}
+                value={themeValues.fontFamily[key] || value[Object.keys(value)[0]]}
                 onChange={(newValue: string) => handleFontChange(key, newValue)}
               />
             ))}
@@ -156,7 +157,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
             <h4 className="text-sm font-bold">{t("Border Radius")}</h4>
             <div className="flex items-center gap-4">
               <BorderRadiusInput disabled={selectedPreset === "preset"} onChange={handleBorderRadiusChange} />
-              <span className="w-12 text-sm">{customThemeValues.borderRadius}</span>
+              <span className="w-12 text-sm">{themeValues.borderRadius}</span>
             </div>
           </div>
         )}

@@ -47,12 +47,12 @@ function ChaiBuilderDefault() {
       themeOptions={(defaultThemeOptions) => {
         return {
           ...defaultThemeOptions,
-          borderRadius: "0.5rem"
+          borderRadius: "0.5rem",
         };
       }}
-      themePresets={[{ orange: orangePreset }, { red: redPreset }, { blue: bluePreset }]}
+      // themePresets={[{ orange: orangePreset }, { red: redPreset }, { blue: bluePreset }]}
       translations={{ pt: lngPtBR }}
-      theme={theme}
+      // theme={theme}
       autoSaveSupport={true}
       autoSaveInterval={15}
       previewComponent={PreviewWeb}
