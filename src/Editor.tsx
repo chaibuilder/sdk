@@ -11,9 +11,7 @@ import { get } from "lodash-es";
 import { map, pick, isArray } from "lodash-es";
 import lngPtBR from "./__dev/ptBR.json";
 import RightTop from "./__dev/RightTop.tsx";
-import { redPreset } from "./core/constants/THEME_PRESETS.ts";
-import { bluePreset } from "./core/constants/THEME_PRESETS.ts";
-import { orangePreset } from "./core/constants/THEME_PRESETS.ts";
+import { greenPreset, bluePreset, orangePreset } from "./core/constants/THEME_PRESETS.ts";
 
 loadWebBlocks();
 
@@ -50,7 +48,7 @@ function ChaiBuilderDefault() {
       //     borderRadius: "10px",
       //   };
       // }}
-       themePresets={[{ orange: orangePreset }, { red: redPreset }, { blue: bluePreset }]}
+      themePresets={[{ orange: orangePreset }, { green: greenPreset }, { blue: bluePreset }]}
       translations={{ pt: lngPtBR }}
       // theme={theme}
       autoSaveSupport={true}

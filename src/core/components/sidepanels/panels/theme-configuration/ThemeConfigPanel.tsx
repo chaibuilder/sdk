@@ -7,7 +7,8 @@ import { cn } from "../../../../functions/Functions.ts";
 import { BorderRadiusInput, FontSelector, ColorPickerInput } from "./index.ts";
 import { useTheme, useThemeOptions } from "../../../../hooks/useTheme.ts";
 import { Sun, Moon } from "lucide-react";
-import { get, set } from "lodash";
+import { get, set, capitalize } from "lodash-es";
+import { ChaiBuilderThemeValues } from "../../../../types/chaiBuilderEditorProps.ts";
 
 interface ThemeConfigProps {
   className?: string;
@@ -19,7 +20,6 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const themePresets = useBuilderProp("themePresets", (presets) => presets) || [];
 
   const [themeValues, setThemeValues] = useTheme();
-  console.log(themeValues);
 
   const chaiThemeOptions = useThemeOptions();
 
@@ -32,8 +32,14 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const applyPreset = () => {
     const preset = (themePresets as any[]).find((p) => Object.keys(p)[0] === selectedPreset);
     if (preset) {
-      const newThemeValues = Object.values(preset)[0];
-      if (newThemeValues && typeof newThemeValues === 'object') {
+      const newThemeValues = Object.values(preset)[0] as ChaiBuilderThemeValues;
+      if (
+        newThemeValues &&
+        typeof newThemeValues === "object" &&
+        "fontFamily" in newThemeValues &&
+        "borderRadius" in newThemeValues &&
+        "colors" in newThemeValues
+      ) {
         setThemeValues(newThemeValues);
       } else {
         console.error("Invalid preset structure:", newThemeValues);
@@ -116,7 +122,9 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
       {themePresets && (
         <div className="flex gap-2 pb-2">
           <div className="w-[70%]">
-            <Label className="text-sm font-bold">{t("Presets")}</Label>
+            <div className="flex w-full items-center justify-between">
+              <Label className="text-sm font-bold">{t("Presets")}</Label>
+            </div>
             <select
               value={selectedPreset}
               onChange={(e) => handlePresetChange(e.target.value)}
@@ -125,16 +133,13 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
               {Array.isArray(themePresets) &&
                 themePresets.map((preset: any) => (
                   <option key={Object.keys(preset)[0]} value={Object.keys(preset)[0]}>
-                    {Object.keys(preset)[0]}
+                    {capitalize(Object.keys(preset)[0])}
                   </option>
                 ))}
             </select>
           </div>
           <div className="flex w-[30%] items-end">
-            <Button
-              className="w-full text-sm"
-              variant="default"
-              onClick={()=>{}}>
+            <Button className="w-full text-sm" disabled={selectedPreset === ""} variant="default" onClick={applyPreset}>
               {t("Apply")}
             </Button>
           </div>
