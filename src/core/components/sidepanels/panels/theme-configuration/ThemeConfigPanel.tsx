@@ -9,6 +9,7 @@ import { useTheme, useThemeOptions } from "../../../../hooks/useTheme.ts";
 import { Sun, Moon } from "lucide-react";
 import { get, set, capitalize } from "lodash-es";
 import { ChaiBuilderThemeValues } from "../../../../types/chaiBuilderEditorProps.ts";
+import { useDebouncedCallback } from "@react-hookz/web";
 
 interface ThemeConfigProps {
   className?: string;
@@ -17,7 +18,7 @@ interface ThemeConfigProps {
 const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "" }) => {
   const [currentMode, setCurrentMode] = React.useState<"light" | "dark">("light");
   const [selectedPreset, setSelectedPreset] = React.useState<string>("");
-  const themePresets = useBuilderProp("themePresets", (presets) => presets) || [];
+  const themePresets = useBuilderProp("themePresets", []);
 
   const [themeValues, setThemeValues] = useTheme();
 
@@ -49,47 +50,59 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
     }
   };
 
-  const handleFontChange = (key: string, newValue: string) => {
-    setThemeValues(() => ({
-      ...themeValues,
-      fontFamily: {
-        ...themeValues.fontFamily,
-        [key.replace(/font-/g, "")]: newValue,
-      },
-    }));
-  };
-
-  const handleBorderRadiusChange = (value: string) => {
-    setThemeValues(() => ({
-      ...themeValues,
-      borderRadius: `${value}px`,
-    }));
-  };
-
-  const handleColorChange = (key: string, newValue: string) => {
-    setThemeValues(() => {
-      const prevColor = get(themeValues, `colors.${key}`);
-      if (currentMode === "light") {
-        set(prevColor, 0, newValue);
-      } else {
-        set(prevColor, 1, newValue);
-      }
-      return {
+  const handleFontChange = useDebouncedCallback(
+    (key: string, newValue: string) => {
+      setThemeValues(() => ({
         ...themeValues,
-        colors: {
-          ...themeValues.colors,
-          [key]: prevColor,
+        fontFamily: {
+          ...themeValues.fontFamily,
+          [key.replace(/font-/g, "")]: newValue,
         },
-      };
-    });
-  };
+      }));
+    },
+    [themeValues],
+    200,
+  );
+
+  const handleBorderRadiusChange = useDebouncedCallback(
+    (value: string) => {
+      setThemeValues(() => ({
+        ...themeValues,
+        borderRadius: `${value}px`,
+      }));
+    },
+    [themeValues],
+    200,
+  );
+
+  const handleColorChange = useDebouncedCallback(
+    (key: string, newValue: string) => {
+      setThemeValues(() => {
+        const prevColor = get(themeValues, `colors.${key}`);
+        if (currentMode === "light") {
+          set(prevColor, 0, newValue);
+        } else {
+          set(prevColor, 1, newValue);
+        }
+        return {
+          ...themeValues,
+          colors: {
+            ...themeValues.colors,
+            [key]: prevColor,
+          },
+        };
+      });
+    },
+    [themeValues],
+    200,
+  );
 
   const renderColorGroup = (group: any) => (
     <div className="grid grid-cols-1">
       {Object.entries(group.items).map(([key]: [string, [string, string]]) => {
         const themeColor = get(themeValues, `colors.${key}.${currentMode === "light" ? 0 : 1}`);
         return (
-          <div key={key} className="flex items-center">
+          <div key={key} className="mt-1 flex items-center">
             <ColorPickerInput
               value={themeColor as string}
               onChange={(newValue: string) => handleColorChange(key, newValue)}
@@ -119,7 +132,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
 
   return (
     <ScrollArea className={cn("h-full w-full", className)}>
-      {themePresets && (
+      {themePresets.length > 0 && (
         <div className="flex gap-2 pb-2">
           <div className="w-[70%]">
             <div className="flex w-full items-center justify-between">
@@ -189,7 +202,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
               </div>
             </div>
 
-            <div className="w-full space-y-2" key={currentMode}>
+            <div className="w-full space-y-4" key={currentMode}>
               {chaiThemeOptions.colors.map((group) => renderColorGroup(group))}
             </div>
           </div>

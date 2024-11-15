@@ -5,31 +5,17 @@ import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML } from "./core/main";
 import { loadWebBlocks } from "./web-blocks";
 import { useState } from "react";
 import axios from "axios";
-import { registerChaiBlock } from "@chaibuilder/runtime";
-import { SingleLineText } from "@chaibuilder/runtime/controls";
 import { get } from "lodash-es";
 import { map, pick, isArray } from "lodash-es";
 import lngPtBR from "./__dev/ptBR.json";
 import RightTop from "./__dev/RightTop.tsx";
-import { greenPreset, bluePreset, orangePreset } from "./core/constants/THEME_PRESETS.ts";
+import { greenPreset, bluePreset, orangePreset } from "./__dev/THEME_PRESETS.ts";
 
 loadWebBlocks();
 
-registerChaiBlock(null, {
-  type: "RSCBlock",
-  label: "RSC Block",
-  group: "Server",
-  category: "core",
-  // @ts-ignore
-  server: true,
-  props: {
-    content: SingleLineText({ title: "Content", default: "This is a RSC Block" }),
-  },
-});
-
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
-  const [theme] = useAtom(lsThemeAtom);
+  const [theme, setTheme] = useAtom(lsThemeAtom);
 
   const [aiContext, setAiContext] = useAtom(lsAiContextAtom);
   const [uiLibraries] = useState([
@@ -41,16 +27,9 @@ function ChaiBuilderDefault() {
     <ChaiBuilderEditor
       fallbackLang="fr"
       languages={["pt", "en"]}
-      // locale="pt"
-      // themeOptions={(defaultThemeOptions) => {
-      //   return {
-      //     ...defaultThemeOptions,
-      //     borderRadius: "10px",
-      //   };
-      // }}
       themePresets={[{ orange: orangePreset }, { green: greenPreset }, { blue: bluePreset }]}
       translations={{ pt: lngPtBR }}
-      // theme={theme}
+      theme={theme}
       autoSaveSupport={true}
       autoSaveInterval={15}
       previewComponent={PreviewWeb}
@@ -58,6 +37,7 @@ function ChaiBuilderDefault() {
       onSave={async ({ blocks, theme }: any) => {
         localStorage.setItem("chai-builder-blocks", JSON.stringify(blocks));
         localStorage.setItem("chai-builder-theme", JSON.stringify(theme));
+        setTheme(theme);
         await new Promise((resolve) => setTimeout(resolve, 100));
         return true;
       }}
@@ -67,7 +47,6 @@ function ChaiBuilderDefault() {
       }}
       aiContext={aiContext}
       askAiCallBack={async (type: "styles" | "content", prompt: string, blocks: ChaiBlock[], lang: string = "") => {
-        console.log("askAiCallBack", type, prompt, blocks, lang);
         return {
           blocks: map(blocks, (b) => ({
             ...pick(b, ["_id"]),

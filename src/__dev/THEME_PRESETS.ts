@@ -1,4 +1,4 @@
-import { ChaiBuilderThemeValues } from "../types/chaiBuilderEditorProps";
+import { ChaiBuilderThemeValues } from "../core/types/chaiBuilderEditorProps";
 
 export const orangePreset: Partial<ChaiBuilderThemeValues> = {
   fontFamily: {
@@ -31,8 +31,8 @@ export const orangePreset: Partial<ChaiBuilderThemeValues> = {
 
 export const greenPreset: Partial<ChaiBuilderThemeValues> = {
   fontFamily: {
-    heading: "Roboto",
-    body: "Roboto",
+    heading: "Playfair Display",
+    body: "Playfair Display",
   },
   borderRadius: "12px",
   colors: {

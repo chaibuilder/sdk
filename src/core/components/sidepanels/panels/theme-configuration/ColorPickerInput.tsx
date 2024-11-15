@@ -3,9 +3,10 @@ import { debounce } from "lodash-es";
 const ColorPickerInput = ({ value, onChange }: { value: string; onChange: (value: string) => void }) => {
   const handleColorChange = debounce((value: string) => onChange(value), 200);
 
-
   return (
-    <div className="relative flex size-5 cursor-pointer rounded-full border" style={{ backgroundColor: value }}>
+    <div
+      className="relative flex h-6 w-6 cursor-pointer rounded-lg border border-border"
+      style={{ backgroundColor: value }}>
       <input
         type="color"
         value={value.startsWith("#") ? value : "#000000"}
@@ -15,7 +16,7 @@ const ColorPickerInput = ({ value, onChange }: { value: string; onChange: (value
             handleColorChange(hexValue);
           }
         }}
-        className="absolute inset-0 h-5 w-5 cursor-pointer rounded-full border-0 opacity-0"
+        className="absolute inset-0 h-full w-full cursor-pointer rounded-lg border-0 opacity-0"
       />
     </div>
   );
