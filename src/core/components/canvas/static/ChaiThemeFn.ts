@@ -81,7 +81,7 @@ export const getChaiThemeVariables = (chaiTheme: Partial<ChaiBuilderThemeValues>
     ${
       chaiTheme.colors &&
       Object.entries(chaiTheme.colors)
-        .map(([key, value]) => `--${key}: ${value[1]};`)
+        .map(([key, value]) => `--${key}: ${hexToHSL(value[1])};`)
         .join("\n    ")
     }
   }`;
