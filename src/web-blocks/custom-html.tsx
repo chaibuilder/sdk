@@ -35,11 +35,11 @@ const Config = {
   group: "advanced",
   props: {
     styles: Styles({ default: "" }),
-    htmlCode: Code({
-      title: "web_blocks.html_code",
+    htmlCode: {
+      type: "string",
       default: "<div><p>Enter your HTML code here...</p></div>",
-      placeholder: "web_blocks.placeholder",
-    }),
+      ui: { "ui:widget": "code" },
+    },
   },
 };
 

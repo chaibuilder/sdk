@@ -4,10 +4,10 @@ import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { get, chunk, isString, keys, omit, forEach, isEmpty, set, unset, memoize } from "lodash-es";
 import { useLanguages } from "./useLanguages.ts";
 import { useSelectedBlock } from "./useSelectedBlockIds.ts";
-import { getBlockComponent } from "@chaibuilder/runtime";
+import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 
 const updatePropsForLanguage = memoize((props: Record<string, any>, selectedLang: string, selectedBlock: ChaiBlock) => {
-  const chaiBlock = getBlockComponent(get(selectedBlock, "_type"));
+  const chaiBlock = getRegisteredChaiBlock(get(selectedBlock, "_type"));
   if (!chaiBlock) return props;
 
   const updatedProps = { ...props };

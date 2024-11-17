@@ -1,16 +1,14 @@
 import * as React from "react";
-import { Image, SelectOption, Styles } from "@chaibuilder/runtime/controls";
+import { ChaiBlockComponentProps, registerChaiBlockSchema, StylesProp, ChaiStyles } from "@chaibuilder/runtime";
 import EmptySlot from "./empty-slot.tsx";
 
-const Component = (
-  props: any & {
-    children: React.ReactNode;
-    styles: any;
-    tag: string;
-    backgroundImage: string;
-    blockProps: Record<string, string>;
-  },
-) => {
+type BoxProps = {
+  tag: string;
+  backgroundImage: string;
+  styles: ChaiStyles;
+};
+
+const Component = (props: ChaiBlockComponentProps<BoxProps>) => {
   const { blockProps, inBuilder, backgroundImage, children, tag = "div", styles } = props;
   let nestedChildren = children;
   if (!children) {
@@ -27,36 +25,43 @@ const Component = (
 
 const Config = {
   type: "Box",
-  label: "web_blocks.box",
+  label: "Box",
   category: "core",
   group: "basic",
-  props: {
-    styles: Styles({ default: "" }),
-    tag: SelectOption({
-      title: "web_blocks.tag",
-      default: "div",
-      options: [
-        { value: "div", title: "web_blocks.div" },
-        { value: "header", title: "web_blocks.header" },
-        { value: "footer", title: "web_blocks.footer" },
-        { value: "section", title: "web_blocks.section" },
-        { value: "article", title: "web_blocks.article" },
-        { value: "aside", title: "web_blocks.aside" },
-        { value: "main", title: "web_blocks.main" },
-        { value: "nav", title: "web_blocks.nav" },
-        { value: "figure", title: "web_blocks.figure" },
-        { value: "details", title: "web_blocks.details" },
-        { value: "summary", title: "web_blocks.summary" },
-        { value: "dialog", title: "web_blocks.dialog" },
-        { value: "strike", title: "web_blocks.strike" },
-        { value: "caption", title: "web_blocks.caption" },
-        { value: "legend", title: "web_blocks.legend" },
-        { value: "figcaption", title: "web_blocks.figcaption" },
-        { value: "mark", title: "web_blocks.mark" },
-      ],
-    }),
-    backgroundImage: Image({ title: "web_blocks.background_image" }),
-  },
+  ...registerChaiBlockSchema({
+    properties: {
+      styles: StylesProp(""),
+      backgroundImage: {
+        type: "string",
+        title: "Background Image",
+        ui: { "ui:widget": "file" },
+      },
+      tag: {
+        type: "string",
+        default: "div",
+        title: "Tag",
+        oneOf: [
+          { const: "div", title: "div" },
+          { const: "header", title: "header" },
+          { const: "footer", title: "footer" },
+          { const: "section", title: "section" },
+          { const: "article", title: "article" },
+          { const: "aside", title: "aside" },
+          { const: "main", title: "main" },
+          { const: "nav", title: "nav" },
+          { const: "figure", title: "figure" },
+          { const: "details", title: "details" },
+          { const: "summary", title: "summary" },
+          { const: "dialog", title: "dialog" },
+          { const: "strike", title: "strike" },
+          { const: "caption", title: "caption" },
+          { const: "legend", title: "legend" },
+          { const: "figcaption", title: "figcaption" },
+          { const: "mark", title: "mark" },
+        ],
+      },
+    },
+  }),
   canAcceptBlock: () => true,
 };
 

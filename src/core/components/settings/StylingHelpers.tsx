@@ -11,7 +11,7 @@ import {
   ScrollArea,
 } from "../../../ui";
 import { useAddClassesToBlocks, useSelectedBlock, useSelectedStylingBlocks } from "../../hooks";
-import { getBlockComponent, useGlobalStylingPresets } from "@chaibuilder/runtime";
+import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { capitalize, first, get, has, isEmpty, keys, startCase } from "lodash-es";
 import { useTranslation } from "react-i18next";
 import { CaretDownIcon } from "@radix-ui/react-icons";
@@ -20,13 +20,12 @@ export const StylingHelpers = () => {
   const selectedBlock = useSelectedBlock() as any;
   const [stylingBlocks] = useSelectedStylingBlocks();
   const { t } = useTranslation();
-  const globalPresets = useGlobalStylingPresets();
   const addClassesToBlocks = useAddClassesToBlocks();
-  const coreBlock = getBlockComponent(selectedBlock._type);
+  const coreBlock = getRegisteredChaiBlock(selectedBlock._type);
   const propKey = get(first(stylingBlocks), "prop");
   const presets = get(coreBlock.props, `${propKey}.presets`, {});
 
-  if (isEmpty(globalPresets) && (!has(coreBlock, "props") || isEmpty(presets))) {
+  if (!has(coreBlock, "props") || isEmpty(presets)) {
     return null;
   }
 
@@ -61,22 +60,6 @@ export const StylingHelpers = () => {
                 <DropdownMenuGroup>
                   {keys(presets).map((key: string) => (
                     <DropdownMenuItem className="group text-xs" onClick={() => applyPreset(presets[key])}>
-                      {capitalize(startCase(t(key)))}
-                      <DropdownMenuShortcut className="invisible hover:font-bold hover:text-blue-600 group-hover:visible">
-                        {t("apply")}
-                      </DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuGroup>
-              </>
-            ) : null}
-            {!isEmpty(globalPresets) ? (
-              <>
-                <DropdownMenuLabel>{t("Global presets")}</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                  {keys(globalPresets).map((key: string) => (
-                    <DropdownMenuItem className="group text-xs" onClick={() => applyPreset(globalPresets[key])}>
                       {capitalize(startCase(t(key)))}
                       <DropdownMenuShortcut className="invisible hover:font-bold hover:text-blue-600 group-hover:visible">
                         {t("apply")}

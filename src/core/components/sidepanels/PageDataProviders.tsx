@@ -1,4 +1,3 @@
-import { getChaiDataProviders } from "@chaibuilder/runtime";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -90,7 +89,11 @@ function RemoveProviderConfirmation({
           <AlertDialogTitle
             dangerouslySetInnerHTML={{ __html: t("Remove Provider Confirmation").replace(`{name}`, name) }}
           />
-          <AlertDialogDescription>{t("Your data provider will be removed from this page and all added data binding will be not visible on blocks.")}</AlertDialogDescription>
+          <AlertDialogDescription>
+            {t(
+              "Your data provider will be removed from this page and all added data binding will be not visible on blocks.",
+            )}
+          </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>{t("Cancel")}</AlertDialogCancel>
@@ -105,7 +108,7 @@ function RemoveProviderConfirmation({
 
 export const PageDataProviders = () => {
   const { t } = useTranslation();
-  const providersList = useMemo(() => getChaiDataProviders(), []);
+  const providersList = useMemo(() => [], []);
   const [dataProviders, setChaiProviders] = usePageDataProviders();
   const [, setSaveState] = useAtom(builderSaveStateAtom);
 

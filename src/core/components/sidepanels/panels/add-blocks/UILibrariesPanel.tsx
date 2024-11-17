@@ -1,7 +1,7 @@
 import { capitalize, filter, first, get, groupBy, has, isEmpty, map, noop, values } from "lodash-es";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useAddBlock, useBuilderProp, useSelectedBlockIds } from "../../../../hooks";
-import { syncBlocksWithDefaults, useChaiBlocks } from "@chaibuilder/runtime";
+import { syncBlocksWithDefaults, useRegisteredChaiBlocks } from "@chaibuilder/runtime";
 import { Loader } from "lucide-react";
 import { atom, useAtom } from "jotai";
 import { cn } from "../../../../functions/Functions.ts";
@@ -56,7 +56,7 @@ const BlockCard = ({
       if (!isEmpty(uiBlocks)) addPredefinedBlock(syncBlocksWithDefaults(uiBlocks), parentId);
       pubsub.publish(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK);
     },
-    [block],
+    [addCoreBlock, addPredefinedBlock, block, getUILibraryBlock, library, parentId],
   );
 
   const handleDragStart = async (ev) => {
@@ -141,7 +141,7 @@ const useLibraryBlocks = (library?: UILibrary) => {
       loadingRef.current = "idle";
       setLibraryBlocks((prev) => ({ ...prev, [library?.uuid]: { loading: "complete", blocks: libraryBlocks || [] } }));
     })();
-  }, [library, blocks, state, loadingRef]);
+  }, [library, blocks, state, loadingRef, setLibraryBlocks, getBlocks]);
 
   return { data: blocks || [], isLoading: state === "loading" };
 };
@@ -149,7 +149,7 @@ const useLibraryBlocks = (library?: UILibrary) => {
 const UILibrarySection = ({ parentId }: { parentId?: string }) => {
   const [selectedLibrary, setLibrary] = useAtom(selectedLibraryAtom);
   const uiLibraries = useBuilderProp("uiLibraries", []);
-  const registeredBlocks = useChaiBlocks();
+  const registeredBlocks = useRegisteredChaiBlocks();
   const customBlocks = values(registeredBlocks).filter((block) => block.category === "custom");
   const library = uiLibraries.find((library) => library.uuid === selectedLibrary) || first(uiLibraries);
   const { data: libraryBlocks, isLoading } = useLibraryBlocks(library);

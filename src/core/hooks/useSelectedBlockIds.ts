@@ -1,11 +1,9 @@
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import { atom, useAtom, useAtomValue } from "jotai";
-import { cloneDeep, compact, filter, get, get as getProp, includes, isEmpty, map, without } from "lodash-es";
+import { compact, filter, get as getProp, includes, map, without } from "lodash-es";
 import { atomWithStorage } from "jotai/utils";
 import { presentBlocksAtom } from "../atoms/blocks";
 import { ChaiBlock } from "../types/ChaiBlock";
-import { getBlockComponent } from "@chaibuilder/runtime";
-import { ChaiControlDefinition } from "@chaibuilder/runtime/controls";
 
 /**
  * Core selected  ids atom
@@ -121,35 +119,10 @@ export const useSelectedBlockHierarchy = () => {
   return compact(useAtomValue(selectedBlockHierarchy));
 };
 
-export const useSelectedBlockCanvasSetting = () => {
-  const allParentBlocks = useSelectedBlockHierarchy();
-  return useMemo(() => {
-    for (let i = 0; i < allParentBlocks.length; i++) {
-      const coreBlock = getBlockComponent(allParentBlocks[i]._type);
-      const settings = cloneDeep(get(coreBlock, "blockState", {})) as { [key: string]: ChaiControlDefinition };
-      if (!isEmpty(settings)) return { settings, block: allParentBlocks[i] };
-    }
-    return {};
-  }, [allParentBlocks]);
-};
-
-export const useSelectedBlockCustomStylingStates = () => {
-  const allParentBlocks = useSelectedBlockHierarchy();
-  return useMemo<Record<string, string>>(() => {
-    let customStylingStates = {};
-    for (let i = 0; i < allParentBlocks.length; i++) {
-      const coreBlock = getBlockComponent(allParentBlocks[i]._type);
-      const states = get(coreBlock, "customStylingStates", {});
-      customStylingStates = { ...customStylingStates, ...states };
-    }
-    return customStylingStates;
-  }, [allParentBlocks]);
-};
-
 /**
  *
  */
-export const useSelectedBlockIds = (): [Array<string>, Function, Function] => {
+export const useSelectedBlockIds = () => {
   const [blockIds, setBlockIds] = useAtom(selectedBlockIdsAtom);
 
   const toggleSelectedBlockId = useCallback(
@@ -165,5 +138,5 @@ export const useSelectedBlockIds = (): [Array<string>, Function, Function] => {
     [setBlockIds],
   );
 
-  return [blockIds, setBlockIds, toggleSelectedBlockId];
+  return [blockIds, setBlockIds, toggleSelectedBlockId] as const;
 };

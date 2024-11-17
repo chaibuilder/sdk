@@ -10,7 +10,7 @@ import { useLanguages } from "./useLanguages.ts";
 import { compact, startsWith } from "lodash-es";
 import { STYLES_KEY } from "../constants/STRINGS.ts";
 import { pick, get, has } from "lodash-es";
-import { getBlockComponent } from "@chaibuilder/runtime";
+import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { isEmpty } from "lodash-es";
 import { LANGUAGES } from "../constants/LANGUAGES.ts";
 import { useRightPanel } from "./useTheme.ts";
@@ -35,7 +35,7 @@ const pickOnlyAIProps = (blocks: ChaiBlock[], lang: string) => {
     blocks.map((block) => {
       const keys = ["_id", "_type", "_parent"];
       const newBlock = pick(block, keys);
-      const registeredBlock = getBlockComponent(block._type);
+      const registeredBlock = getRegisteredChaiBlock(block._type);
       const aiProps = {};
       for (const key in block) {
         if (keys.includes(key)) continue;

@@ -16,7 +16,7 @@ import {
 import { twMerge } from "tailwind-merge";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { SLOT_KEY, STYLES_KEY } from "../core/constants/STRINGS.ts";
-import { getBlockComponent } from "@chaibuilder/runtime";
+import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { addPrefixToClasses } from "./functions.ts";
 
 const getSlots = (block: ChaiBlock) => {
@@ -140,7 +140,7 @@ export function RenderChaiBlocks({
               />
             ) : null;
 
-          const blockDefinition = getBlockComponent(block._type);
+          const blockDefinition = getRegisteredChaiBlock(block._type);
           if (blockDefinition !== null) {
             let syncedBlock: ChaiBlock = block;
             // @ts-ignore

@@ -19,7 +19,6 @@ async function enableMocking() {
 
 const ChaiBuilderDefault = lazy(() => import("./Editor.tsx"));
 const Preview = lazy(() => import("./Preview.tsx"));
-const RJSF = lazy(() => import("./RJSF.tsx"));
 
 const router = createBrowserRouter([
   {
@@ -33,10 +32,6 @@ const router = createBrowserRouter([
   {
     path: "/preview",
     element: <Preview />,
-  },
-  {
-    path: "/rjsf",
-    element: <RJSF />,
   },
 ]);
 

@@ -1,5 +1,5 @@
 import { get, has } from "lodash-es";
-import { getBlockComponent } from "@chaibuilder/runtime";
+import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 
 type BlockDefinition = {
   canAcceptBlock?: (target: string) => boolean;
@@ -11,31 +11,31 @@ type BlockDefinition = {
 
 export const canAcceptChildBlock = (parentType: string, childType: string) => {
   if (!parentType) return true; // this is root
-  const blockDefinition = getBlockComponent(parentType) as BlockDefinition;
+  const blockDefinition = getRegisteredChaiBlock(parentType) as BlockDefinition;
   if (!blockDefinition) return false;
   return has(blockDefinition, "canAcceptBlock") ? blockDefinition.canAcceptBlock(childType) : false; //defaults to false
 };
 
 export const canAddChildBlock = (parentType: string) => {
-  const blockDefinition = getBlockComponent(parentType) as BlockDefinition;
+  const blockDefinition = getRegisteredChaiBlock(parentType) as BlockDefinition;
   if (!blockDefinition) return false;
   return has(blockDefinition, "canAcceptBlock"); //defaults to false
 };
 
 export const canBeNestedInside = (parentType: string, childType: string) => {
-  const blockDefinition = getBlockComponent(childType) as BlockDefinition;
+  const blockDefinition = getRegisteredChaiBlock(childType) as BlockDefinition;
   if (!blockDefinition) return true;
   return has(blockDefinition, "canBeNested") ? blockDefinition.canBeNested(parentType) : true;
 };
 
 export const canDuplicateBlock = (type: string) => {
-  const blockDefinition = getBlockComponent(type) as BlockDefinition;
+  const blockDefinition = getRegisteredChaiBlock(type) as BlockDefinition;
   if (!blockDefinition) return true;
   return has(blockDefinition, "canDuplicate") ? blockDefinition.canDuplicate() : true;
 };
 
 export const canDeleteBlock = (type: string) => {
-  const blockDefinition = getBlockComponent(type) as BlockDefinition;
+  const blockDefinition = getRegisteredChaiBlock(type) as BlockDefinition;
   if (!blockDefinition) return true;
   return has(blockDefinition, "canDelete") ? blockDefinition.canDelete() : true;
 };

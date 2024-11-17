@@ -41,7 +41,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "../../ui";
-import { getBlockComponent, getChaiDataProviders } from "@chaibuilder/runtime";
+import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { ErrorBoundary } from "react-error-boundary";
 import { useBuilderProp, useSelectedBlock } from "../hooks";
 import { useChaiExternalData } from "../components/canvas/static/useChaiExternalData.ts";
@@ -134,7 +134,7 @@ const DataProvidersSuggester = ({
   appliedBindings: string[];
 }) => {
   const { paths: suggestedPath, pathsType: suggestedPathDataType } = getPathAndTypes(data);
-  const coreBlock = type === "PROP" ? getBlockComponent(data?._type) : {};
+  const coreBlock = type === "PROP" ? getRegisteredChaiBlock(data?._type) : {};
 
   const isProp = type === "PROP";
   const [open, setOpen] = useState(false);
@@ -426,7 +426,7 @@ const NewDataBindingPair = ({
 const DataBindingSetting = ({ bindingData, onChange }: { bindingData: any; onChange: (data: any) => void }) => {
   const selectedBlock = useSelectedBlock() as any;
   const [dataProvider] = useChaiExternalData();
-  const providers = getChaiDataProviders();
+  const providers = [];
   const [_formData, setFormData] = useState<Array<{ key: string; value: string }>>(
     map(bindingData, (value, key) => ({ key, value })),
   );

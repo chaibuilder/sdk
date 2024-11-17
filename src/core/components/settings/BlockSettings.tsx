@@ -7,16 +7,15 @@ import {
   useUpdateBlocksProps,
   useUpdateBlocksPropsRealtime,
 } from "../../hooks";
-import { ChaiControlDefinition } from "@chaibuilder/runtime/controls";
 import DataBindingSetting from "../../rjsf-widgets/data-binding.tsx";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Button } from "../../../ui";
 import { useCallback, useMemo, useState } from "react";
-import { getBlockComponent } from "@chaibuilder/runtime";
 import { JSONForm } from "./JSONForm.tsx";
 import { CanvasSettings } from "./CanvasSettings.tsx";
-import { convertDotNotationToObject } from "../../functions/Controls.ts";
 import { GlobalBlockSettings } from "./GlobalBlockSettings.tsx";
 import { useRSCBlocksStore } from "../../hooks/useWatchRSCBlocks.ts";
+import { getBlockFormSchemas, getRegisteredChaiBlock } from "@chaibuilder/runtime";
+import { set } from "lodash-es";
 
 const ResetRSCBlockButton = ({ blockId }: { blockId: string }) => {
   const { t } = useTranslation();
@@ -39,6 +38,12 @@ const formDataWithSelectedLang = (formData, selectedLang: string, coreBlock) => 
   return updatedFormData;
 };
 
+const convertDotNotationToObject = (key: string, value: any) => {
+  const result = {};
+  set(result, key, value);
+  return result;
+};
+
 /**
  *
  * @returns Block Setting
@@ -48,8 +53,8 @@ export default function BlockSettings() {
   const selectedBlock = useSelectedBlock() as any;
   const updateBlockPropsRealtime = useUpdateBlocksPropsRealtime();
   const updateBlockProps = useUpdateBlocksProps();
-  const coreBlock = getBlockComponent(selectedBlock?._type);
-  const formData = formDataWithSelectedLang(selectedBlock, selectedLang, coreBlock);
+  const registeredBlock = getRegisteredChaiBlock(selectedBlock?._type);
+  const formData = formDataWithSelectedLang(selectedBlock, selectedLang, registeredBlock);
   const [prevFormData, setPrevFormData] = useState(formData);
   const dataBindingSupported = false;
 
@@ -81,20 +86,15 @@ export default function BlockSettings() {
 
   const bindingProps = keys(get(formData, "_bindings", {}));
 
-  const staticContentProperties = useMemo(() => {
-    const controls = cloneDeep(get(coreBlock, "props", {})) as { [key: string]: ChaiControlDefinition };
-    // remove the hidden props
-    each(controls, (control: ChaiControlDefinition, key: string) => {
-      if (get(control, "hidden", false)) {
-        delete controls[key];
-      }
-    });
-    if (!dataBindingSupported) return controls;
-    each(bindingProps, (key: string) => delete controls[key]);
-    return controls;
-  }, [coreBlock, bindingProps, dataBindingSupported]);
+  const { schema, uiSchema } = useMemo(() => {
+    const type = selectedBlock?._type;
+    if (!type) {
+      return { schema: {}, uiSchema: {} };
+    }
+    return getBlockFormSchemas(type);
+  }, [selectedBlock]);
 
-  const isRSCBlock = get(coreBlock, "server", false);
+  const isRSCBlock = get(registeredBlock, "server", false);
 
   return (
     <div className="overflow-x-hidden px-px">
@@ -138,17 +138,19 @@ export default function BlockSettings() {
                 id={selectedBlock?._id}
                 onChange={updateRealtime}
                 formData={formData}
-                properties={staticContentProperties}
+                schema={schema}
+                uiSchema={uiSchema}
               />
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-      ) : !isEmpty(staticContentProperties) ? (
+      ) : !isEmpty(schema) ? (
         <JSONForm
           id={selectedBlock?._id}
           onChange={updateRealtime}
           formData={formData}
-          properties={staticContentProperties}
+          schema={schema}
+          uiSchema={uiSchema}
         />
       ) : null}
       {selectedBlock?._type === "GlobalBlock" ? <GlobalBlockSettings /> : null}

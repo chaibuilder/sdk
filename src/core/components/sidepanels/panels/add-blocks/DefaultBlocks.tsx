@@ -1,10 +1,10 @@
-import { useChaiBlocks } from "@chaibuilder/runtime";
+import { useRegisteredChaiBlocks } from "@chaibuilder/runtime";
 import { useBuilderProp } from "../../../../hooks";
 import { ChaiBuilderBlocks } from "./AddBlocks.tsx";
 import { filter, groupBy, map, uniq } from "lodash-es";
 
 export const DefaultChaiBlocks = ({ parentId, gridCols = "grid-cols-2" }: { parentId?: string; gridCols?: string }) => {
-  const allChaiBlocks = useChaiBlocks();
+  const allChaiBlocks = useRegisteredChaiBlocks();
   const filterChaiBlock = useBuilderProp("filterChaiBlock", () => true);
   const chaiBlocks = filter(allChaiBlocks, filterChaiBlock);
 

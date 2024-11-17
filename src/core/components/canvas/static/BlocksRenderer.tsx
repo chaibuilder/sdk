@@ -18,7 +18,7 @@ import {
 import { twMerge } from "tailwind-merge";
 import { ChaiBlock } from "../../../types/ChaiBlock";
 import { STYLES_KEY } from "../../../constants/STRINGS.ts";
-import { getBlockComponent } from "@chaibuilder/runtime";
+import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { useChaiExternalData } from "./useChaiExternalData.ts";
 import { useAtom } from "jotai";
 import { inlineEditingActiveAtom, xShowBlocksAtom } from "../../../atoms/ui.ts";
@@ -141,7 +141,7 @@ export function BlocksRendererStatic({ blocks, allBlocks }: { blocks: ChaiBlock[
             );
           }
 
-          const chaiBlock = getBlockComponent(block._type) as any;
+          const chaiBlock = getRegisteredChaiBlock(block._type) as any;
 
           const isRSCBlock = get(chaiBlock, "server", false);
           const Component = isRSCBlock

@@ -5,7 +5,7 @@ import { canAcceptChildBlock } from "../functions/block-helpers.ts";
 import { useSelectedBlockIds } from "./useSelectedBlockIds";
 import { ChaiBlock } from "../types/ChaiBlock";
 import { CoreBlock } from "../types/CoreBlock";
-import { getBlockDefaultProps } from "../functions/Controls.ts";
+import { getDefaultBlockProps } from "@chaibuilder/runtime";
 import { SLOT_KEY } from "../constants/STRINGS.ts";
 import { useBlocksStore, useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 
@@ -50,7 +50,7 @@ export const useAddBlock = (): AddBlocks => {
       setSelected([first(blocks)?._id]);
       return first(blocks);
     },
-    [allBlocks, setSelected],
+    [addBlocks, allBlocks, setSelected],
   );
 
   const addCoreBlock = useCallback(
@@ -61,7 +61,7 @@ export const useAddBlock = (): AddBlocks => {
       }
 
       const blockId = generateUUID();
-      const props: { [key: string]: any } = getBlockDefaultProps(coreBlock.props);
+      const props: { [key: string]: any } = getDefaultBlockProps(coreBlock.type);
       const slots: ChaiBlock[] = [];
       forIn(props, (value: any, key) => {
         if (startsWith(value, SLOT_KEY)) {
@@ -101,7 +101,7 @@ export const useAddBlock = (): AddBlocks => {
       setSelected([newBlock._id]);
       return newBlock;
     },
-    [addPredefinedBlock, allBlocks, setSelected],
+    [addBlocks, addPredefinedBlock, allBlocks, setSelected],
   );
 
   return { addCoreBlock, addPredefinedBlock };

@@ -4,7 +4,7 @@ import { forEach, get } from "lodash-es";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
 import { useCallback, useEffect, useMemo } from "react";
 import { useBuilderProp } from "./useBuilderProp.ts";
-import { useChaiBlocks } from "@chaibuilder/runtime";
+import { useRegisteredChaiBlocks } from "@chaibuilder/runtime";
 
 type ServerBlocksState = Record<
   string,
@@ -49,7 +49,7 @@ export const useWatchRSCBlocks = () => {
   const [blocksStore] = useBlocksStore();
   const [rscBlocks, setRSCBlocks] = useAtom(rscBlocksStoreAtom);
   const [rscBlocksLoadingState, setRSCBlocksLoadingState] = useAtom(rscBlocksLoadingStateAtom);
-  const allChaiBlocks = useChaiBlocks();
+  const allChaiBlocks = useRegisteredChaiBlocks();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getRSCBlockBlock = useBuilderProp("getRSCBlock", async (_block: ChaiBlock) => "");
   const rscBlocksList = useMemo(() => {
