@@ -43,31 +43,28 @@ const Config = {
   icon: ButtonIcon,
   group: "basic",
   ...registerChaiBlockSchema({
-    default: {
-      content: "Button",
-      icon: "",
-      iconSize: 24,
-      iconPos: "order-last",
-      styles: "#styles:,text-primary-foreground bg-primary px-4 py-2 rounded-lg flex items-center",
-    },
     properties: {
       styles: StylesProp("text-primary-foreground bg-primary px-4 py-2 rounded-lg flex items-center"),
       content: {
         type: "string",
         title: "Button label",
+        default: "Button",
       },
       icon: {
         type: "string",
         title: "Icon",
+        default: "",
         ui: { "ui:widget": "icon" },
       },
       iconSize: {
         type: "number",
         title: "Icon size",
+        default: 24,
       },
       iconPos: {
         type: "string",
         title: "Icon position",
+        default: "order-last",
         enum: ["order-first", "order-last"],
       },
     },

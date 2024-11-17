@@ -33,6 +33,7 @@ const Config = {
       styles: StylesProp(""),
       backgroundImage: {
         type: "string",
+        default: "",
         title: "Background Image",
         ui: { "ui:widget": "file" },
       },

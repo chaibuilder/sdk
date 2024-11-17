@@ -1,12 +1,11 @@
 import { useCallback } from "react";
-import { filter, find, first, forIn, has, startsWith } from "lodash-es";
+import { filter, find, first, has } from "lodash-es";
 import { generateUUID } from "../functions/Functions.ts";
 import { canAcceptChildBlock } from "../functions/block-helpers.ts";
 import { useSelectedBlockIds } from "./useSelectedBlockIds";
 import { ChaiBlock } from "../types/ChaiBlock";
 import { CoreBlock } from "../types/CoreBlock";
 import { getDefaultBlockProps } from "@chaibuilder/runtime";
-import { SLOT_KEY } from "../constants/STRINGS.ts";
 import { useBlocksStore, useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 
 type AddBlocks = {
@@ -62,20 +61,7 @@ export const useAddBlock = (): AddBlocks => {
 
       const blockId = generateUUID();
       const props: { [key: string]: any } = getDefaultBlockProps(coreBlock.type);
-      const slots: ChaiBlock[] = [];
-      forIn(props, (value: any, key) => {
-        if (startsWith(value, SLOT_KEY)) {
-          const slotId = value.replace(SLOT_KEY, "");
-          slots.push({
-            _id: slotId,
-            _type: "Slot",
-            _parent: blockId,
-            _name: coreBlock.props[key].name,
-            _styles: coreBlock.props[key].styles,
-            _emptyStyles: coreBlock.props[key].emptyStyles,
-          });
-        }
-      });
+      console.log("props", coreBlock);
 
       const newBlock: ChaiBlock = {
         _type: coreBlock.type,
@@ -95,7 +81,7 @@ export const useAddBlock = (): AddBlocks => {
         newBlock._parent = parentBlock._parent;
         parentBlockId = parentBlock._parent;
       }
-      const newBlocks: ChaiBlock[] = [newBlock, ...slots];
+      const newBlocks: ChaiBlock[] = [newBlock];
 
       addBlocks(newBlocks, parentBlockId, position);
       setSelected([newBlock._id]);
