@@ -1,5 +1,5 @@
 import { IChangeEvent } from "@rjsf/core";
-import { capitalize, cloneDeep, debounce, each, get, isEmpty, keys, map, forEach } from "lodash-es";
+import { capitalize, cloneDeep, debounce, get, isEmpty, keys, map, forEach } from "lodash-es";
 import {
   useLanguages,
   useSelectedBlock,
