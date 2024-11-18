@@ -1,17 +1,16 @@
-import { MultilineText } from "@chaibuilder/runtime/controls";
 import { SpaceBetweenVerticallyIcon } from "@radix-ui/react-icons";
-import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
-const RawTextBlock = (
-  props: ChaiBlock & {
-    content: string;
-    inBuilder: boolean;
-    blockProps: Record<string, string>;
-  },
-) => {
+import { ChaiBlockComponentProps, registerChaiBlockSchema, StylesProp, ChaiStyles } from "@chaibuilder/runtime";
+
+export type TextBlockProps = {
+  styles: ChaiStyles;
+  content: string;
+};
+
+const RawTextBlock = (props: ChaiBlockComponentProps<TextBlockProps>) => {
   if (props.inBuilder || props.forceWrapper) {
     return (
-      <span data-ai-key={"content"} {...props.blockProps}>
+      <span  {...props.blockProps}>
         {props.content}
       </span>
     );
@@ -26,9 +25,17 @@ const Config = {
   category: "core",
   group: "typography",
   icon: SpaceBetweenVerticallyIcon,
-  props: {
-    content: MultilineText({ title: "Content", default: "", ai: true, i18n: true }),
-  },
+  ...registerChaiBlockSchema({
+    properties: {
+      styles: StylesProp("text-black"),
+      content: {
+        type: "string",
+        default: "",
+      },
+    },
+  }),
+  aiProps: ["content"],
+  i18nProps: ["content"],
 };
 
 export { RawTextBlock as Component, Config };

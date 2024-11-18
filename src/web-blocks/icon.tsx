@@ -9,8 +9,8 @@ import { ChaiBlockComponentProps, registerChaiBlockSchema, StylesProp, ChaiStyle
 export type IconBlockProps = {
   styles: ChaiStyles;
   icon: string;
-  width: string;
-  height: string;
+  width: number;
+  height: number;
 };
 
 const IconBlock = (props: ChaiBlockComponentProps<IconBlockProps>) => {
@@ -45,13 +45,13 @@ const Config = {
         ui: { "ui:widget": "icon" },
       },
       width: {
-        type: "string",
-        default: "",
+        type: "number",
+        default: 16,
         title: "Width",
       },
       height: {
-        type: "string",
-        default: "",
+        type: "number",
+        default: 16,
         title: "Height",
       },
     },
