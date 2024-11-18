@@ -5,13 +5,12 @@ import { useRightPanel } from "../../hooks/useTheme.ts";
 import "../canvas/static/BlocksExternalDataProvider.tsx";
 import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../ui";
 import { motion } from "framer-motion";
-import { EditIcon, Layers, X } from "lucide-react";
+import { EditIcon, Layers, Paintbrush, X } from "lucide-react";
 import { Outline } from "../../main";
 import { CanvasTopBar } from "../canvas/topbar/CanvasTopBar.tsx";
 import CanvasArea from "../canvas/CanvasArea.tsx";
 import { AddBlocksDialog } from "./AddBlocksDialog.tsx";
 import { useTranslation } from "react-i18next";
-import { Settings } from "lucide-react";
 import SettingsPanel from "../settings/SettingsPanel.tsx";
 import { CHAI_BUILDER_EVENTS } from "../../events.ts";
 import { ChooseLayout } from "./ChooseLayout.tsx";
@@ -157,7 +156,7 @@ const RootLayout: ComponentType = () => {
                             {panel === "theme" ? (
                               <>
                                 <span className="flex items-center gap-2">
-                                  <Settings className="h-4 w-4 rtl:ml-2" />
+                                  <Paintbrush className="h-4 w-4 rtl:ml-2" />
                                   {t("Theme Settings")}
                                 </span>
                                 <Button
