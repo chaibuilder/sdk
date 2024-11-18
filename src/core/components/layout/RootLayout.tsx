@@ -140,9 +140,9 @@ const RootLayout: ComponentType = () => {
               initial={{ width: 280 }}
               animate={{ width: 280 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}>
-              <div className="no-scrollbar overflow h-full max-h-full overflow-x-hidden">
-                <div className="flex max-h-full flex-col p-3">
-                  <h2 className="-mt-1 flex h-10 items-center space-x-1 text-base font-bold">
+              <div className="no-scrollbar overflow h-full max-h-full overflow-hidden">
+                <div className="flex h-full max-h-full flex-col overflow-hidden p-3">
+                  <h2 className="-mt-1 flex items-center space-x-1 text-base font-bold">
                     <div className="flex grow items-center gap-2">
                       <div className="flex w-full items-center justify-between gap-2">
                         {panel === "ai" ? (
@@ -151,34 +151,25 @@ const RootLayout: ComponentType = () => {
                               <LightningBoltIcon className="rtl:ml-2" /> {t("AI Assistant")}
                             </div>
                           </>
-                        ) : (
+                        ) : panel === "theme" ? (
                           <div className="flex w-full items-center justify-between gap-2">
-                            {panel === "theme" ? (
-                              <>
-                                <span className="flex items-center gap-2">
-                                  <Paintbrush className="h-4 w-4 rtl:ml-2" />
-                                  {t("Theme Settings")}
-                                </span>
-                                <Button
-                                  onClick={() => setRightPanel("block")}
-                                  variant="ghost"
-                                  size="icon"
-                                  className="text-xs text-gray-400">
-                                  <X className="h-4 w-4 rtl:ml-2" />
-                                </Button>
-                              </>
-                            ) : (
-                              <div className="flex items-center gap-2">
-                                <EditIcon size={16} className="rtl:ml-2" />
-                                {t("Block Settings")}
-                              </div>
-                            )}
+                            <span className="flex items-center gap-2">
+                              <Paintbrush className="h-4 w-4 rtl:ml-2" />
+                              {t("Theme Settings")}
+                            </span>
+                            <Button
+                              onClick={() => setRightPanel("block")}
+                              variant="ghost"
+                              size="icon"
+                              className="text-xs text-gray-400">
+                              <X className="h-4 w-4 rtl:ml-2" />
+                            </Button>
                           </div>
-                        )}
+                        ) : null}
                       </div>
                     </div>
                   </h2>
-                  <div className="flex-1">
+                  <div className="flex max-h-full w-full">
                     <Suspense fallback={<div>Loading...</div>}>
                       {panel === "ai" ? <AskAI /> : panel === "theme" ? <ThemeConfigPanel /> : <SettingsPanel />}
                     </Suspense>

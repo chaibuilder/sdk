@@ -33,8 +33,8 @@ export const AskAIStyles = ({ blockId }: { blockId: string | undefined }) => {
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
         placeholder={t("Ask AI to edit styles")}
-        className="w-full border border-border focus:border-0"
-        rows={3}
+        className="no-scrollbar my-2 w-full border border-border p-2 text-xs"
+        rows={4}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             e.preventDefault();

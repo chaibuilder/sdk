@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { useBuilderProp } from "../../../../hooks/index.ts";
 import { useTranslation } from "react-i18next";
-import { Label, ScrollArea, Button } from "../../../../../ui";
+import { Label, Button } from "../../../../../ui";
 import { cn } from "../../../../functions/Functions.ts";
 import { BorderRadiusInput, FontSelector, ColorPickerInput } from "./index.ts";
 import { useTheme, useThemeOptions } from "../../../../hooks/useTheme.ts";
@@ -103,13 +103,12 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
       {Object.entries(group.items).map(([key]: [string, [string, string]]) => {
         const themeColor = get(themeValues, `colors.${key}.${isDarkMode ? 1 : 0}`);
         return (
-          <div key={key} className="mt-1 flex items-center">
+          <div key={key} className="mt-1 flex items-center gap-x-2">
             <ColorPickerInput
               value={themeColor as string}
               onChange={(newValue: string) => handleColorChange(key, newValue)}
             />
-            &nbsp;&nbsp;
-            <Label className="text-xs text-muted-foreground">
+            <Label className="text-xs font-normal leading-tight text-slate-600">
               {key
                 .split(/(?=[A-Z])/)
                 .join(" ")
@@ -132,17 +131,15 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   );
 
   return (
-    <ScrollArea className={cn("h-full w-full", className)}>
+    <div className={cn("no-scrollbar h-full w-full overflow-y-auto", className)}>
       {themePresets.length > 0 && (
-        <div className="flex gap-2 pb-2">
-          <div className="w-[70%]">
-            <div className="flex w-full items-center justify-between">
-              <Label className="text-sm font-bold">{t("Presets")}</Label>
-            </div>
+        <div className="flex gap-2 py-2">
+          <div className="w-full">
+            <Label className="text-sm text-slate-800">{t("Presets")}</Label>
             <select
               value={selectedPreset}
               onChange={(e) => handlePresetChange(e.target.value)}
-              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
+              className="w-full space-y-0.5 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
               <option value="">Select preset</option>
               {Array.isArray(themePresets) &&
                 themePresets.map((preset: any) => (
@@ -176,13 +173,10 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
 
         {/* Border Radius Section */}
         {chaiThemeOptions?.borderRadius && (
-          <div className="py-3">
-            <h4 className="text-sm font-bold">{t("Border Radius")}</h4>
-            <div className="flex items-center gap-4">
-              <BorderRadiusInput
-                value={themeValues.borderRadius}
-                onChange={handleBorderRadiusChange}
-              />
+          <div className="space-y-0.5 py-3">
+            <Label className="text-sm text-slate-800">{t("Border Radius")}</Label>
+            <div className="flex items-center gap-4 py-2">
+              <BorderRadiusInput value={themeValues.borderRadius} onChange={handleBorderRadiusChange} />
               <span className="w-12 text-sm">{themeValues.borderRadius}</span>
             </div>
           </div>
@@ -190,14 +184,9 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
 
         {/* Colors Section with Mode Switch */}
         {chaiThemeOptions?.colors && (
-          <div className="mt-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <h4 className="text-sm font-bold">{t("Colors")}</h4>
-              </div>
-            </div>
-
-            <div className="w-full space-y-4" key={isDarkMode ? "dark" : "light"}>
+          <div className="mt-4 space-y-0.5">
+            <Label className="text-sm text-slate-800">{t("Colors")}</Label>
+            <div className="w-full space-y-4 pt-2" key={isDarkMode ? "dark" : "light"}>
               {chaiThemeOptions.colors.map((group) => renderColorGroup(group))}
             </div>
           </div>
@@ -207,7 +196,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
       <br />
       <br />
       <br />
-    </ScrollArea>
+    </div>
   );
 });
 
