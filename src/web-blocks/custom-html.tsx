@@ -1,14 +1,8 @@
 import * as React from "react";
 import { CodeIcon } from "@radix-ui/react-icons";
-import { Code, Styles } from "@chaibuilder/runtime/controls";
-import { ChaiBlock } from "../core/types/ChaiBlock.ts";
+import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 
-const CustomHTMLBlock = (
-  props: ChaiBlock & {
-    blockProps: Record<string, string>;
-    styles: Record<string, string>;
-  },
-) => {
+const CustomHTMLBlock = (props: ChaiBlockComponentProps<{ htmlCode: string; styles: ChaiStyles }>) => {
   const { blockProps, styles, htmlCode, inBuilder } = props;
   return inBuilder ? (
     <div className={"relative"}>
@@ -33,14 +27,17 @@ const Config = {
   category: "core",
   icon: CodeIcon,
   group: "advanced",
-  props: {
-    styles: Styles({ default: "" }),
-    htmlCode: {
-      type: "string",
-      default: "<div><p>Enter your HTML code here...</p></div>",
-      ui: { "ui:widget": "code" },
+  ...registerChaiBlockSchema({
+    properties: {
+      styles: StylesProp(""),
+      htmlCode: {
+        type: "string",
+        default: "<div><p>Enter your HTML code here...</p></div>",
+        ui: { "ui:widget": "code" },
+      },
     },
-  },
+  }),
 };
 
 export { CustomHTMLBlock as Component, Config };
+export type CustomHTMLBlockProps = { htmlCode: string; styles: ChaiStyles };

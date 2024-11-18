@@ -2,7 +2,7 @@ import * as React from "react";
 import { ChaiBlockComponentProps, registerChaiBlockSchema, StylesProp, ChaiStyles } from "@chaibuilder/runtime";
 import EmptySlot from "./empty-slot.tsx";
 
-type BoxProps = {
+export type BoxProps = {
   tag: string;
   backgroundImage: string;
   styles: ChaiStyles;
