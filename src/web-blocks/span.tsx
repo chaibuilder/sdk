@@ -1,14 +1,13 @@
 import * as React from "react";
-import { MultilineText, Styles } from "@chaibuilder/runtime/controls";
-import { ChaiBlock } from "../core/types/ChaiBlock.ts";
+import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 
-const SpanBlock = (
-  props: ChaiBlock & {
-    children: React.ReactNode;
-    styles: any;
-    blockProps: Record<string, string>;
-  },
-) => {
+export type SpanProps = {
+  styles: ChaiStyles;
+  content: string;
+  tag: string;
+};
+
+const SpanBlock = (props: ChaiBlockComponentProps<SpanProps>) => {
   const { blockProps, styles, content, children = null, tag } = props;
 
   if (children) return React.createElement("span", { ...styles, ...blockProps }, children);
@@ -16,7 +15,6 @@ const SpanBlock = (
   return React.createElement(tag || "span", {
     ...styles,
     ...blockProps,
-    "data-ai-key": "content",
     dangerouslySetInnerHTML: { __html: content || "" },
   });
 };
@@ -26,10 +24,19 @@ const Config = {
   label: "Span",
   category: "core",
   group: "typography",
-  props: {
-    styles: Styles({ default: "" }),
-    content: MultilineText({ title: "Content", default: "", ai: true, i18n: true }),
-  },
+  ...registerChaiBlockSchema({
+    properties: {
+      styles: StylesProp(""),
+      content: {
+        type: "string",
+        title: "Content",
+        default: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        ui: { "ui:widget": "textarea", "ui:autosize": true, "ui:rows": 3 },
+      },
+    },
+  }),
+  aiProps: ["content"],
+  i18nProps: ["content"],
   canAcceptBlock: () => true,
 };
 

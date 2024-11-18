@@ -1,28 +1,17 @@
 import { CursorTextIcon } from "@radix-ui/react-icons";
-import { RichText, Styles } from "@chaibuilder/runtime/controls";
-import { ChaiBlock } from "../core/types/ChaiBlock.ts";
-/**
- * Heading component
- * @param props
- * @constructor
- */
-const RichTextBlock = (
-  props: ChaiBlock & {
-    blockProps: Record<string, string>;
-    styles: Record<string, string>;
-  },
-) => {
+import { ChaiBlockComponentProps, ChaiStyles, StylesProp } from "@chaibuilder/runtime";
+import { registerChaiBlockSchema } from "@chaibuilder/runtime";
+
+export type RichTextProps = {
+  styles: ChaiStyles;
+  content: string;
+};
+
+const RichTextBlock = (props: ChaiBlockComponentProps<RichTextProps>) => {
   const { blockProps, content, styles } = props;
-  // eslint-disable-next-line react/no-danger
   return (
     <div className="max-w-full">
-      <div
-        data-ai-key="content"
-        data-ai-type={"richtext"}
-        {...blockProps}
-        {...styles}
-        dangerouslySetInnerHTML={{ __html: content }}
-      />
+      <div {...blockProps} {...styles} dangerouslySetInnerHTML={{ __html: content }} />
     </div>
   );
 };
@@ -33,15 +22,19 @@ const Config = {
   category: "core",
   icon: CursorTextIcon,
   group: "typography",
-  props: {
-    styles: Styles({ default: "" }),
-    content: RichText({
-      title: "Content",
-      ai: true,
-      i18n: true,
-      default: "<p>This is a rich text block. You can add text, and other content here.</p>",
-    }),
-  },
+  ...registerChaiBlockSchema({
+    properties: {
+      styles: StylesProp(""),
+      content: {
+        type: "string",
+        title: "Content",
+        default: "<p>This is a rich text block. You can add text, and other content here.</p>",
+        ui: { "ui:widget": "richtext" },
+      },
+    },
+  }),
+  aiProps: ["content"],
+  i18nProps: ["content"],
 };
 
 export { RichTextBlock as Component, Config };
