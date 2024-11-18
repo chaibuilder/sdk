@@ -3,16 +3,16 @@ import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesPro
 import { generateUUID } from "../../core/functions/Functions";
 import { map } from "lodash-es";
 
-export type SelectProps = ChaiBlockComponentProps<{
+export type SelectProps = {
   showLabel: boolean;
   styles: ChaiStyles;
   inputStyles: ChaiStyles;
   required: boolean;
   _multiple: boolean;
   options: { label: string; value: string }[];
-}>;
+};
 
-const SelectBlock = (props: SelectProps) => {
+const SelectBlock = (props: ChaiBlockComponentProps<SelectProps>) => {
   const { blockProps, fieldName, label, placeholder, styles, inputStyles, required, showLabel, _multiple, options } =
     props;
   const fieldId = generateUUID();
