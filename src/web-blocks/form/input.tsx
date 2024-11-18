@@ -1,42 +1,25 @@
 import { InputIcon } from "@radix-ui/react-icons";
-import { map } from "lodash-es";
-import { Checkbox, SelectOption, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
-import { generateUUID } from "../../core/functions/Functions.ts";
-import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
+import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
+import { generateUUID } from "../../core/functions/Functions";
 
-const InputBlock = (
-  block: ChaiBlock & {
-    inBuilder: boolean;
-    blockProps: Record<string, string>;
-    styles: Record<string, string>;
-    inputStyles: Record<string, string>;
-    required: boolean;
-    value: string;
-    name: string;
-  },
-) => {
-  const {
-    blockProps,
-    label,
-    placeholder,
-    styles,
-    inputStyles,
-    showLabel,
-    required,
-    inputType = "text",
-    inBuilder,
-    fieldName,
-  } = block;
+export type InputProps = ChaiBlockComponentProps<{
+  fieldName: string;
+  showLabel: boolean;
+  styles: ChaiStyles;
+  inputStyles: ChaiStyles;
+  required: boolean;
+  inputType: string;
+}>;
+
+const InputBlock = (props: InputProps) => {
+  const { blockProps, fieldName, label, placeholder, styles, inputStyles, showLabel, required, inputType } = props;
   const fieldId = generateUUID();
 
-  if (!showLabel || inputType === "submit") {
-    if (inputType === "submit") blockProps.value = label;
-
+  if (!showLabel) {
     return (
       <input
         id={fieldId}
         name={fieldName}
-        readOnly={inBuilder}
         {...blockProps}
         {...inputStyles}
         {...styles}
@@ -46,12 +29,12 @@ const InputBlock = (
       />
     );
   }
+
   return (
     <div {...styles} {...blockProps}>
       {showLabel && <label htmlFor={fieldId}>{label}</label>}
       <input
         name={fieldName}
-        readOnly={inBuilder}
         {...inputStyles}
         id={fieldId}
         type={inputType}
@@ -64,34 +47,59 @@ const InputBlock = (
 
 const Config = {
   type: "Input",
-  label: "Input",
+  label: "web_blocks.input",
   category: "core",
   icon: InputIcon,
   group: "form",
-  props: {
-    styles: Styles({ default: "" }),
-    fieldName: SingleLineText({ title: "Field Name", default: "input" }),
-    inputType: SelectOption({
-      title: "Type",
-      options: map(
-        ["text", "email", "password", "number", "tel", "file", "hidden", "range", "submit", "color", "date", "time"],
-        (type) => ({
-          value: type,
-          title: type,
-        }),
-      ),
-      default: "text",
-    }),
-    value: SingleLineText({ title: "Value", default: "", ai: true, i18n: true }),
-    showLabel: Checkbox({ title: "Show Label", default: true }),
-    inputStyles: Styles({ default: "w-full p-1" }),
-    label: SingleLineText({ title: "Label", default: "Label", ai: true, i18n: true }),
-    placeholder: SingleLineText({
-      title: "Placeholder",
-      default: "Placeholder",
-    }),
-    required: Checkbox({ title: "Required", default: false }),
-  },
+  ...registerChaiBlockSchema({
+    properties: {
+      styles: StylesProp(""),
+      inputStyles: StylesProp("w-full p-1"),
+      showLabel: {
+        type: "boolean",
+        title: "Show Label",
+        default: true,
+      },
+      label: {
+        type: "string",
+        title: "Label",
+        default: "Label",
+        ai: true,
+        i18n: true,
+      },
+      placeholder: {
+        type: "string",
+        title: "Placeholder",
+        default: "Placeholder",
+      },
+      required: {
+        type: "boolean",
+        title: "Required",
+        default: false,
+      },
+      inputType: {
+        type: "string",
+        title: "Input Type",
+        default: "text",
+        enum: [
+          "text",
+          "email",
+          "password",
+          "number",
+          "tel",
+          "file",
+          "hidden",
+          "range",
+          "submit",
+          "color",
+          "date",
+          "time",
+        ],
+      },
+    },
+  }),
+  aiProps: ["label", "placeholder"],
+  i18nProps: ["label", "placeholder"],
 };
 
 export { InputBlock as Component, Config };
