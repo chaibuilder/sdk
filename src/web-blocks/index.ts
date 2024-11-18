@@ -24,8 +24,8 @@ import { Component as RichTextBlock, Config as RichTextConfig, RichTextProps } f
 // // import "./slot";
 // //
 // // // hidden
-// import { Component as BodyBlock, Config as BodyBlockConfig } from "./hidden/body";
-// import { Component as LineBreakBlock, Config as LineBreakBlockConfig } from "./hidden/line-break";
+import { Component as BodyBlock, Config as BodyBlockConfig, BodyProps } from "./hidden/body";
+import { Component as LineBreakBlock, Config as LineBreakBlockConfig, LineBreakProps } from "./hidden/line-break";
 // // import "./hidden/table";
 import { Component as FormBlock, Config as FormBlockConfig, FormProps } from "./form/form";
 import { Component as FormButtonBlock, Config as FormButtonBlockConfig, FormButtonProps } from "./form/form-button";
@@ -68,8 +68,8 @@ const loadWebBlocks = () => {
   registerChaiBlock<TextAreaProps>(TextAreaBlock, TextAreaBlockConfig);
 
   // // hidden
-  // registerChaiBlock(LineBreakBlock, LineBreakBlockConfig);
-  // registerChaiBlock(BodyBlock, BodyBlockConfig);
+  registerChaiBlock<LineBreakProps>(LineBreakBlock, LineBreakBlockConfig);
+  registerChaiBlock<BodyProps>(BodyBlock, BodyBlockConfig);
 
   // registerChaiBlock(CustomScript, CustomScriptConfig);
   // registerChaiBlock(DividerBlock, DividerBlockConfig);
