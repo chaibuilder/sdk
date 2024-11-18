@@ -4,7 +4,7 @@ import { Component as Box, Config as BoxConfig } from "./box";
 import { Component as Button, Config as ButtonConfig } from "./button";
 // import { Component as CustomHTML, Config as CustomHTMLConfig } from "./custom-html";
 // import { Component as EmptyBox, Config as EmptyBoxConfig } from "./empty-box";
-// import { Component as HeadingBlock, Config as HeadingBlockConfig } from "./heading";
+import { Component as HeadingBlock, Config as HeadingBlockConfig } from "./heading";
 // import { Component as ParagraphBlock, Config as ParagraphBlockConfig } from "./paragraph";
 // import { Component as SpanBlock, Config as SpanBlockConfig } from "./span";
 // import { Component as RichTextBlock, Config as RichTextConfig } from "./rte";
@@ -44,7 +44,7 @@ const loadWebBlocks = () => {
   registerChaiBlock(Box, BoxConfig);
   // registerChaiBlock(EmptyBox, EmptyBoxConfig);
   registerChaiBlock(Button, ButtonConfig);
-  // registerChaiBlock(HeadingBlock, HeadingBlockConfig);
+  registerChaiBlock(HeadingBlock, HeadingBlockConfig);
   // registerChaiBlock(ParagraphBlock, ParagraphBlockConfig);
   // registerChaiBlock(SpanBlock, SpanBlockConfig);
   // registerChaiBlock(RichTextBlock, RichTextConfig);

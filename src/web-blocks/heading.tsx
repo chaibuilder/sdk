@@ -1,20 +1,14 @@
 import * as React from "react";
 import { HeadingIcon } from "@radix-ui/react-icons";
-import { MultilineText, SelectOption, Styles } from "@chaibuilder/runtime/controls";
-import { ChaiBlock } from "../core/types/ChaiBlock.ts";
+import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 
-/**
- * Heading component
- * @param props
- * @constructor
- */
-const HeadingBlock = (
-  props: ChaiBlock & {
-    level: string;
-    blockProps: Record<string, string>;
-    styles: Record<string, string>;
-  },
-) => {
+type HeadingProps = {
+  level: string;
+  styles: ChaiStyles;
+  content: string;
+};
+
+const HeadingBlock = (props: ChaiBlockComponentProps<HeadingProps>) => {
   const { blockProps, styles, content, level = "h1", children = null } = props;
 
   if (children) return React.createElement(level, { ...styles, ...blockProps }, children);
@@ -22,8 +16,6 @@ const HeadingBlock = (
   return React.createElement(level, {
     ...styles,
     ...blockProps,
-    "data-ai-key": "content",
-    "data-ai-type": "html",
     dangerouslySetInnerHTML: { __html: content },
   });
 };
@@ -34,23 +26,25 @@ const Config = {
   category: "core",
   icon: HeadingIcon,
   group: "typography",
-  props: {
-    level: SelectOption({
-      title: "web_blocks.level",
-      default: "h2",
-      binding: false,
-      options: [
-        { value: "h1", title: "h1" },
-        { value: "h2", title: "h2" },
-        { value: "h3", title: "h3" },
-        { value: "h4", title: "h4" },
-        { value: "h5", title: "h5" },
-        { value: "h6", title: "h6" },
-      ],
-    }),
-    styles: Styles({ default: "text-3xl" }),
-    content: MultilineText({ title: "Content", default: "Heading goes here", ai: true, i18n: true }),
-  },
+  ...registerChaiBlockSchema({
+    properties: {
+      level: {
+        type: "string",
+        default: "h2",
+        title: "Level",
+        enum: ["h1", "h2", "h3", "h4", "h5", "h6"],
+      },
+      styles: StylesProp("text-3xl"),
+      content: {
+        type: "string",
+        default: "Heading goes here",
+        title: "Content",
+        ui: { "ui:widget": "textarea" },
+      },
+    },
+  }),
+  aiProps: ["content"],
+  i18nProps: ["content"],
   canAcceptBlock: (type) => type === "Span" || type === "Text",
 };
 
