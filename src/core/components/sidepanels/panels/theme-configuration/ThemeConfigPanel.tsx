@@ -2,11 +2,12 @@ import * as React from "react";
 
 import { useBuilderProp } from "../../../../hooks/index.ts";
 import { useTranslation } from "react-i18next";
-import { Label, ScrollArea, Button, Switch } from "../../../../../ui";
+import { Label, ScrollArea, Button } from "../../../../../ui";
 import { cn } from "../../../../functions/Functions.ts";
 import { BorderRadiusInput, FontSelector, ColorPickerInput } from "./index.ts";
 import { useTheme, useThemeOptions } from "../../../../hooks/useTheme.ts";
-import { Sun, Moon } from "lucide-react";
+import { useDarkMode } from "../../../../hooks";
+
 import { get, set, capitalize } from "lodash-es";
 import { ChaiBuilderThemeValues } from "../../../../types/chaiBuilderEditorProps.ts";
 import { useDebouncedCallback } from "@react-hookz/web";
@@ -16,7 +17,7 @@ interface ThemeConfigProps {
 }
 
 const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "" }) => {
-  const [currentMode, setCurrentMode] = React.useState<"light" | "dark">("light");
+  const [isDarkMode] = useDarkMode();
   const [selectedPreset, setSelectedPreset] = React.useState<string>("");
   const themePresets = useBuilderProp("themePresets", []);
 
@@ -79,7 +80,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
     (key: string, newValue: string) => {
       setThemeValues(() => {
         const prevColor = get(themeValues, `colors.${key}`);
-        if (currentMode === "light") {
+        if (!isDarkMode) {
           set(prevColor, 0, newValue);
         } else {
           set(prevColor, 1, newValue);
@@ -100,7 +101,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const renderColorGroup = (group: any) => (
     <div className="grid grid-cols-1">
       {Object.entries(group.items).map(([key]: [string, [string, string]]) => {
-        const themeColor = get(themeValues, `colors.${key}.${currentMode === "light" ? 0 : 1}`);
+        const themeColor = get(themeValues, `colors.${key}.${isDarkMode ? 1 : 0}`);
         return (
           <div key={key} className="mt-1 flex items-center">
             <ColorPickerInput
@@ -178,7 +179,11 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
           <div className="py-3">
             <h4 className="text-sm font-bold">{t("Border Radius")}</h4>
             <div className="flex items-center gap-4">
-              <BorderRadiusInput disabled={selectedPreset === "preset"} onChange={handleBorderRadiusChange} />
+              <BorderRadiusInput
+                value={themeValues.borderRadius}
+                disabled={selectedPreset === "preset"}
+                onChange={handleBorderRadiusChange}
+              />
               <span className="w-12 text-sm">{themeValues.borderRadius}</span>
             </div>
           </div>
@@ -191,18 +196,9 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
               <div className="flex items-center gap-2">
                 <h4 className="text-sm font-bold">{t("Colors")}</h4>
               </div>
-              <div className="flex items-center gap-2">
-                <Sun className="size-2 transition-all" />
-                <Switch
-                  checked={currentMode === "dark"}
-                  onCheckedChange={(checked) => setCurrentMode(checked ? "dark" : "light")}
-                  className="data-[state=checked]:bg-slate-800 data-[state=unchecked]:bg-slate-200"
-                />
-                <Moon className="size-2" />
-              </div>
             </div>
 
-            <div className="w-full space-y-4" key={currentMode}>
+            <div className="w-full space-y-4" key={isDarkMode ? "dark" : "light"}>
               {chaiThemeOptions.colors.map((group) => renderColorGroup(group))}
             </div>
           </div>
