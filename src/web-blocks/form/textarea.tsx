@@ -2,16 +2,16 @@ import { InputIcon } from "@radix-ui/react-icons";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { generateUUID } from "../../core/functions/Functions";
 
-export type TextAreaProps = ChaiBlockComponentProps<{
+export type TextAreaProps = {
   fieldName: string;
   showLabel: boolean;
   styles: ChaiStyles;
   inputStyles: ChaiStyles;
   required: boolean;
   _rows: number;
-}>;
+};
 
-const TextAreaBlock = (props: TextAreaProps) => {
+const TextAreaBlock = (props: ChaiBlockComponentProps<TextAreaProps>) => {
   const { blockProps, fieldName, label, placeholder, styles, inputStyles, _rows, showLabel } = props;
   const fieldId = generateUUID();
 
