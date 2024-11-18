@@ -2,7 +2,7 @@ import * as React from "react";
 import { ButtonIcon } from "@radix-ui/react-icons";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 
-type ButtonProps = ChaiBlockComponentProps<{
+export type ButtonProps = ChaiBlockComponentProps<{
   content: string;
   icon: string;
   iconSize: number;

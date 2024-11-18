@@ -1,13 +1,13 @@
 import { registerChaiBlock } from "@chaibuilder/runtime";
 
-import { Component as Box, Config as BoxConfig } from "./box";
-import { Component as Button, Config as ButtonConfig } from "./button";
-// import { Component as CustomHTML, Config as CustomHTMLConfig } from "./custom-html";
-// import { Component as EmptyBox, Config as EmptyBoxConfig } from "./empty-box";
-import { Component as HeadingBlock, Config as HeadingBlockConfig } from "./heading";
-// import { Component as ParagraphBlock, Config as ParagraphBlockConfig } from "./paragraph";
-// import { Component as SpanBlock, Config as SpanBlockConfig } from "./span";
-// import { Component as RichTextBlock, Config as RichTextConfig } from "./rte";
+import { Component as Box, Config as BoxConfig, BoxProps } from "./box";
+import { Component as Button, Config as ButtonConfig, ButtonProps } from "./button";
+import { Component as CustomHTML, Config as CustomHTMLConfig, CustomHTMLBlockProps } from "./custom-html";
+import { Component as EmptyBox, Config as EmptyBoxConfig, EmptyBoxProps } from "./empty-box";
+import { Component as HeadingBlock, Config as HeadingBlockConfig, HeadingProps } from "./heading";
+import { Component as ParagraphBlock, Config as ParagraphBlockConfig, ParagraphProps } from "./paragraph";
+import { Component as SpanBlock, Config as SpanBlockConfig, SpanProps } from "./span";
+import { Component as RichTextBlock, Config as RichTextConfig, RichTextProps } from "./rte";
 // //
 // import { Component as LinkBlock, Config as LinkBlockConfig } from "./link";
 // import { Component as LightBoxLinkBlock, Config as LightBoxLinkBlockConfig } from "./lightbox-link";
@@ -41,13 +41,13 @@ import { Component as HeadingBlock, Config as HeadingBlockConfig } from "./headi
  * @returns void
  */
 const loadWebBlocks = () => {
-  registerChaiBlock(Box, BoxConfig);
-  // registerChaiBlock(EmptyBox, EmptyBoxConfig);
-  registerChaiBlock(Button, ButtonConfig);
-  registerChaiBlock(HeadingBlock, HeadingBlockConfig);
-  // registerChaiBlock(ParagraphBlock, ParagraphBlockConfig);
-  // registerChaiBlock(SpanBlock, SpanBlockConfig);
-  // registerChaiBlock(RichTextBlock, RichTextConfig);
+  registerChaiBlock<BoxProps>(Box, BoxConfig);
+  registerChaiBlock<EmptyBoxProps>(EmptyBox, EmptyBoxConfig);
+  registerChaiBlock<ButtonProps>(Button, ButtonConfig);
+  registerChaiBlock<HeadingProps>(HeadingBlock, HeadingBlockConfig);
+  registerChaiBlock<ParagraphProps>(ParagraphBlock, ParagraphBlockConfig);
+  registerChaiBlock<SpanProps>(SpanBlock, SpanBlockConfig);
+  registerChaiBlock<RichTextProps>(RichTextBlock, RichTextConfig);
   // registerChaiBlock(LinkBlock, LinkBlockConfig);
   // registerChaiBlock(LightBoxLinkBlock, LightBoxLinkBlockConfig);
   // registerChaiBlock(ListBlock, ListBlockConfig);
@@ -55,7 +55,7 @@ const loadWebBlocks = () => {
   // registerChaiBlock(IconBlock, IconBlockConfig);
   // registerChaiBlock(ImageBlock, ImageBlockConfig);
   // registerChaiBlock(VideoBlock, VideoBlockConfig);
-  // registerChaiBlock(CustomHTML, CustomHTMLConfig);
+  registerChaiBlock<CustomHTMLBlockProps>(CustomHTML, CustomHTMLConfig);
   // registerChaiBlock(TextBlock, LayersConfig);
 
   // //forms

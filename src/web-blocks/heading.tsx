@@ -2,7 +2,7 @@ import * as React from "react";
 import { HeadingIcon } from "@radix-ui/react-icons";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 
-type HeadingProps = {
+export type HeadingProps = {
   level: string;
   styles: ChaiStyles;
   content: string;
