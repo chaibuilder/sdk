@@ -26,7 +26,7 @@ import { Component as RichTextBlock, Config as RichTextConfig, RichTextProps } f
 // // // hidden
 import { Component as BodyBlock, Config as BodyBlockConfig, BodyProps } from "./hidden/body";
 import { Component as LineBreakBlock, Config as LineBreakBlockConfig, LineBreakProps } from "./hidden/line-break";
-// // import "./hidden/table";
+import "./hidden/table";
 import { Component as FormBlock, Config as FormBlockConfig, FormProps } from "./form/form";
 import { Component as FormButtonBlock, Config as FormButtonBlockConfig, FormButtonProps } from "./form/form-button";
 import { Component as InputBlock, Config as InputBlockConfig, InputProps } from "./form/input";

@@ -1,6 +1,11 @@
 import * as React from "react";
-import { RichText, Styles } from "@chaibuilder/runtime/controls";
-import { registerChaiBlock } from "@chaibuilder/runtime";
+import {
+  ChaiBlockComponentProps,
+  ChaiStyles,
+  registerChaiBlock,
+  registerChaiBlockSchema,
+  StylesProp,
+} from "@chaibuilder/runtime";
 import {
   BorderAllIcon,
   BorderTopIcon,
@@ -13,7 +18,175 @@ import EmptySlot from "../empty-slot.tsx";
 import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
 import { generateUUID } from "../../core/functions/Functions.ts";
 
-const getDefaultBlocks = (type: string): ChaiBlock[] => {
+export type TableProps = {
+  styles: ChaiStyles;
+};
+
+export type TableHeadProps = {
+  styles: ChaiStyles;
+};
+
+export type TableBodyProps = {
+  styles: ChaiStyles;
+};
+
+export type TableRowProps = {
+  styles: ChaiStyles;
+};
+
+export type TableCellProps = {
+  styles: ChaiStyles;
+  content: string;
+};
+
+// * Components
+
+const TableBlock = (props: ChaiBlockComponentProps<TableProps>) => {
+  const { blockProps, children, styles } = props;
+  if (!children) {
+    return <EmptySlot />;
+  }
+  return React.createElement("table", { ...blockProps, ...styles }, children);
+};
+
+const TableHeadBlock = (props: ChaiBlockComponentProps<TableHeadProps>) => {
+  const { blockProps, children, styles } = props;
+  if (!children) {
+    return <EmptySlot />;
+  }
+  return React.createElement("thead", { ...blockProps, ...styles }, children);
+};
+
+const TableBodyBlock = (props: ChaiBlockComponentProps<TableBodyProps>) => {
+  const { blockProps, children, styles } = props;
+  if (!children) {
+    return <EmptySlot />;
+  }
+  return React.createElement("tbody", { ...blockProps, ...styles }, children);
+};
+
+const TableRowBlock = (props: ChaiBlockComponentProps<TableRowProps>) => {
+  const { blockProps, children, styles } = props;
+  if (!children) {
+    return <EmptySlot />;
+  }
+
+  return React.createElement("tr", { ...blockProps, ...styles }, children);
+};
+
+const TableCellBlock = (props: ChaiBlockComponentProps<TableCellProps>) => {
+  const { blockProps, children, content, styles } = props;
+
+  if (!children && isEmpty(content)) {
+    return <EmptySlot />;
+  }
+
+  if (!children) {
+    return React.createElement("td", {
+      ...blockProps,
+      ...styles,
+      dangerouslySetInnerHTML: { __html: content },
+    });
+  }
+  return React.createElement("td", { ...blockProps, ...styles }, children);
+};
+
+// * REGISTERING TABLE BLOCKS
+
+registerChaiBlock<TableProps>(TableBlock, {
+  type: "Table",
+  label: "Table",
+  category: "core",
+  group: "table",
+  hidden: true,
+  icon: TableIcon,
+  ...registerChaiBlockSchema({
+    properties: {
+      styles: StylesProp(""),
+    },
+  }),
+  blocks: getDefaultBlocks("Table"),
+});
+
+registerChaiBlock<TableHeadProps>(TableHeadBlock, {
+  type: "TableHead",
+  label: "Table Head",
+  category: "core",
+  group: "table",
+  hidden: true,
+  icon: BorderTopIcon,
+  ...registerChaiBlockSchema({
+    properties: {
+      styles: StylesProp(""),
+    },
+  }),
+  blocks: getDefaultBlocks("TableHead"),
+});
+
+registerChaiBlock<TableBodyProps>(TableBodyBlock, {
+  type: "TableBody",
+  label: "Table Body",
+  category: "core",
+  group: "table",
+  hidden: true,
+  icon: BorderAllIcon,
+  ...registerChaiBlockSchema({
+    properties: {
+      styles: StylesProp(""),
+    },
+  }),
+  blocks: getDefaultBlocks("TableBody"),
+});
+
+registerChaiBlock<TableRowProps>(TableRowBlock, {
+  type: "TableRow",
+  label: "Table Row",
+  category: "core",
+  group: "table",
+  hidden: true,
+  icon: ViewHorizontalIcon,
+  ...registerChaiBlockSchema({
+    properties: {
+      styles: StylesProp(""),
+    },
+  }),
+  blocks: getDefaultBlocks("TableRow"),
+});
+
+registerChaiBlock<TableCellProps>(TableCellBlock, {
+  type: "TableCell",
+  label: "Table Cell",
+  category: "core",
+  group: "table",
+  hidden: true,
+  icon: DragHandleHorizontalIcon,
+  ...registerChaiBlockSchema({
+    properties: {
+      styles: StylesProp(""),
+      content: {
+        type: "string",
+        default: "Heading goes here",
+        title: "Content",
+        ui: { "ui:widget": "textarea" },
+      },
+    },
+  }),
+  blocks: getDefaultBlocks("TableCell"),
+  i18nProps: ["content"],
+  aiProps: ["content"],
+});
+
+export default TableBlock;
+
+/**
+ *
+ *
+ *  Default blocks generator
+ *
+ *
+ */
+
+function getDefaultBlocks(type: string): ChaiBlock[] {
   const td = (id: string, content: string) => ({
     _id: generateUUID(),
     _parent: id,
@@ -73,156 +246,4 @@ const getDefaultBlocks = (type: string): ChaiBlock[] => {
   if (type === "TableBody") return tbody();
 
   return [];
-};
-
-const TableBlock = (
-  props: ChaiBlock & {
-    children: React.ReactNode;
-    styles: any;
-    tag: string;
-    blockProps: Record<string, string>;
-  },
-) => {
-  const { blockProps, children, styles } = props;
-  if (!children) {
-    return <EmptySlot />;
-  }
-  return React.createElement("table", { ...blockProps, ...styles }, children);
-};
-
-registerChaiBlock(TableBlock, {
-  type: "Table",
-  label: "Table",
-  category: "core",
-  group: "table",
-  hidden: true,
-  icon: TableIcon,
-  props: {
-    styles: Styles({ default: "" }),
-  },
-  blocks: getDefaultBlocks("Table"),
-});
-
-const TableHeadBlock = (
-  props: ChaiBlock & {
-    children: React.ReactNode;
-    styles: any;
-    tag: string;
-    blockProps: Record<string, string>;
-  },
-) => {
-  const { blockProps, children, styles } = props;
-  if (!children) {
-    return <EmptySlot />;
-  }
-  return React.createElement("thead", { ...blockProps, ...styles }, children);
-};
-
-registerChaiBlock(TableHeadBlock, {
-  type: "TableHead",
-  label: "Table Head",
-  category: "core",
-  group: "table",
-  hidden: true,
-  icon: BorderTopIcon,
-  props: {
-    styles: Styles({ default: "" }),
-  },
-  blocks: getDefaultBlocks("TableHead"),
-});
-
-const TableBodyBlock = (
-  props: ChaiBlock & {
-    children: React.ReactNode;
-    styles: any;
-    tag: string;
-    blockProps: Record<string, string>;
-  },
-) => {
-  const { blockProps, children, styles } = props;
-  if (!children) {
-    return <EmptySlot />;
-  }
-  return React.createElement("tbody", { ...blockProps, ...styles }, children);
-};
-
-registerChaiBlock(TableBodyBlock, {
-  type: "TableBody",
-  label: "Table Body",
-  category: "core",
-  group: "table",
-  hidden: true,
-  icon: BorderAllIcon,
-  props: {
-    styles: Styles({ default: "" }),
-  },
-  blocks: getDefaultBlocks("TableBody"),
-});
-
-const TableRowBlock = (
-  props: ChaiBlock & {
-    children: React.ReactNode;
-    styles: any;
-    tag: string;
-    blockProps: Record<string, string>;
-  },
-) => {
-  const { blockProps, children, styles } = props;
-  if (!children) {
-    return <EmptySlot />;
-  }
-
-  return React.createElement("tr", { ...blockProps, ...styles }, children);
-};
-
-registerChaiBlock(TableRowBlock, {
-  type: "TableRow",
-  label: "Table Row",
-  category: "core",
-  group: "table",
-  hidden: true,
-  icon: ViewHorizontalIcon,
-  props: {
-    styles: Styles({ default: "w-full" }),
-  },
-  blocks: getDefaultBlocks("TableRow"),
-});
-
-const TableCellBlock = (
-  props: ChaiBlock & {
-    children: React.ReactNode;
-    styles: any;
-    tag: string;
-    blockProps: Record<string, string>;
-  },
-) => {
-  const { blockProps, children, content, styles } = props;
-
-  if (!children && isEmpty(content)) {
-    return <EmptySlot />;
-  }
-
-  if (!children) {
-    return React.createElement("td", {
-      ...blockProps,
-      ...styles,
-      dangerouslySetInnerHTML: { __html: content },
-    });
-  }
-  return React.createElement("td", { ...blockProps, ...styles }, children);
-};
-
-registerChaiBlock(TableCellBlock, {
-  type: "TableCell",
-  label: "Table Cell",
-  category: "core",
-  group: "table",
-  hidden: true,
-  icon: DragHandleHorizontalIcon,
-  props: {
-    styles: Styles({ default: "" }),
-    content: RichText({ title: "Content", default: "Table cell item", ai: true, i18n: true }),
-  },
-});
-
-export default TableBlock;
+}
