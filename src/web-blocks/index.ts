@@ -13,7 +13,7 @@ import { Component as RichTextBlock, Config as RichTextConfig, RichTextProps } f
 // import { Component as LightBoxLinkBlock, Config as LightBoxLinkBlockConfig } from "./lightbox-link";
 // import { Component as ListBlock, Config as ListBlockConfig } from "./list";
 // import { Component as ListItemBlock, Config as ListItemBlockConfig } from "./listitem";
-// import { Component as IconBlock, Config as IconBlockConfig } from "./icon";
+import { Component as IconBlock, Config as IconBlockConfig, IconBlockProps } from "./icon";
 // import { Component as ImageBlock, Config as ImageBlockConfig } from "./image";
 // import { Component as VideoBlock, Config as VideoBlockConfig } from "./video";
 // import { Component as CustomScript, Config as CustomScriptConfig } from "./custom-script";
@@ -52,7 +52,7 @@ const loadWebBlocks = () => {
   // registerChaiBlock(LightBoxLinkBlock, LightBoxLinkBlockConfig);
   // registerChaiBlock(ListBlock, ListBlockConfig);
   // registerChaiBlock(ListItemBlock, ListItemBlockConfig);
-  // registerChaiBlock(IconBlock, IconBlockConfig);
+  registerChaiBlock<IconBlockProps>(IconBlock, IconBlockConfig);
   // registerChaiBlock(ImageBlock, ImageBlockConfig);
   // registerChaiBlock(VideoBlock, VideoBlockConfig);
   registerChaiBlock<CustomHTMLBlockProps>(CustomHTML, CustomHTMLConfig);
