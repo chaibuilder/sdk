@@ -9,6 +9,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { BlockAttributesEditor } from "./new-panel/BlockAttributesEditor.tsx";
 import { ChevronDown } from "lucide-react";
 import { FallbackError } from "../FallbackError.tsx";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../ui/index.ts";
 
 function BlockAttributesToggle() {
   const { t } = useTranslation();
@@ -21,7 +22,7 @@ function BlockAttributesToggle() {
     <>
       <div
         onClick={() => setShowAttributes(!showAttributes)}
-        className="flex cursor-pointer items-center justify-between border-b border-border py-2 text-sm font-bold text-muted-foreground hover:underline">
+        className="flex cursor-pointer items-center justify-between border-b border-border py-2 text-sm font-medium hover:underline">
         <span>{t("Attributes")}</span>
         <span>
           <ChevronDown className={"h-4 w-4 text-gray-500 " + (showAttributes ? "rotate-180" : "")} />
@@ -49,16 +50,27 @@ const SettingsPanel: React.FC = () => {
 
   return (
     <ErrorBoundary fallback={<FallbackError />} onError={onErrorFn}>
-      <div className={"relative flex max-h-full w-full flex-col"}>
-        <BlockSettings />
-        <br />
-        <BlockStyling />
-
-        <BlockAttributesToggle />
-        <br />
-        <br />
-        <br />
-      </div>
+      <Tabs defaultValue="settings" className="flex flex-1 flex-col">
+        <TabsList className="grid h-auto w-full grid-cols-2 p-1 py-1">
+          <TabsTrigger value="settings" className="text-xs">
+            Settings
+          </TabsTrigger>
+          <TabsTrigger value="styles" className="text-xs">
+            Styles
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="settings" className="no-scrollbar h-full max-h-min overflow-y-auto">
+          <BlockSettings />
+          <br />
+          <br />
+        </TabsContent>
+        <TabsContent value="styles" className="no-scrollbar h-full max-h-min overflow-y-auto">
+          <BlockStyling />
+          <BlockAttributesToggle />
+          <br />
+          <br />
+        </TabsContent>
+      </Tabs>
     </ErrorBoundary>
   );
 };

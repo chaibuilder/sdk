@@ -18,7 +18,7 @@ const BorderRadiusInput = ({ value, onChange, disabled }: BorderRadiusInputProps
       disabled={disabled}
       defaultValue={value.replace("px", "")}
       onChange={(e) => throttledChange(e.target.value)}
-      className="flex-1"
+      className="flex-1 cursor-pointer"
     />
   );
 };
