@@ -181,7 +181,6 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
             <div className="flex items-center gap-4">
               <BorderRadiusInput
                 value={themeValues.borderRadius}
-                disabled={selectedPreset === "preset"}
                 onChange={handleBorderRadiusChange}
               />
               <span className="w-12 text-sm">{themeValues.borderRadius}</span>
