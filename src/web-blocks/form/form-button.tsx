@@ -2,16 +2,16 @@ import { ButtonIcon } from "@radix-ui/react-icons";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { generateUUID } from "../../core/functions/Functions";
 
-export type FormButtonProps = ChaiBlockComponentProps<{
+export type FormButtonProps = {
   label: string;
   styles: ChaiStyles;
   inputStyles: ChaiStyles;
   icon: string;
   iconSize: number;
   iconPos: "order-first" | "order-last";
-}>;
+};
 
-const FormButtonBlock = (props: FormButtonProps) => {
+const FormButtonBlock = (props: ChaiBlockComponentProps<FormButtonProps>) => {
   const { blockProps, inBuilder, label, styles, inputStyles, icon, iconSize, iconPos } = props;
   const fieldId = generateUUID();
 

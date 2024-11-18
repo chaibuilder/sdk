@@ -2,16 +2,16 @@ import { CheckboxIcon } from "@radix-ui/react-icons";
 import { generateUUID } from "../../core/functions/Functions.ts";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 
-export type CheckboxProps = ChaiBlockComponentProps<{
+export type CheckboxProps = {
   label: string;
   styles: ChaiStyles;
   inputStyles: ChaiStyles;
   required: boolean;
   checked: boolean;
   showLabel: boolean;
-}>;
+};
 
-const CheckboxBlock = (props: CheckboxProps) => {
+const CheckboxBlock = (props: ChaiBlockComponentProps<CheckboxProps>) => {
   const { blockProps, fieldName, label, styles, inputStyles, required, checked, showLabel = true } = props;
   const fieldId = generateUUID();
 

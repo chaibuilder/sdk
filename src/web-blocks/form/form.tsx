@@ -2,14 +2,14 @@ import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesPro
 import EmptySlot from "../empty-slot";
 import { GroupIcon } from "lucide-react";
 
-export type FormProps = ChaiBlockComponentProps<{
+export type FormProps = {
   errorMessage: string;
   successMessage: string;
   action: string;
   styles: ChaiStyles;
-}>;
+};
 
-const FormBlock = (props: FormProps) => {
+const FormBlock = (props: ChaiBlockComponentProps<FormProps>) => {
   const { children, blockProps, errorMessage, successMessage, action, styles } = props;
   let nestedChildren = children;
   if (!children) {
