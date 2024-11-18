@@ -9,7 +9,7 @@ import { Component as ParagraphBlock, Config as ParagraphBlockConfig, ParagraphP
 import { Component as SpanBlock, Config as SpanBlockConfig, SpanProps } from "./span";
 import { Component as RichTextBlock, Config as RichTextConfig, RichTextProps } from "./rte";
 // //
-// import { Component as LinkBlock, Config as LinkBlockConfig } from "./link";
+ import { Component as LinkBlock, Config as LinkBlockConfig, LinkBlockProps } from "./link";
 // import { Component as LightBoxLinkBlock, Config as LightBoxLinkBlockConfig } from "./lightbox-link";
 // import { Component as ListBlock, Config as ListBlockConfig } from "./list";
 // import { Component as ListItemBlock, Config as ListItemBlockConfig } from "./listitem";
@@ -17,7 +17,7 @@ import { Component as RichTextBlock, Config as RichTextConfig, RichTextProps } f
 // import { Component as ImageBlock, Config as ImageBlockConfig } from "./image";
 // import { Component as VideoBlock, Config as VideoBlockConfig } from "./video";
 // import { Component as CustomScript, Config as CustomScriptConfig } from "./custom-script";
-// import { Component as DividerBlock, Config as DividerBlockConfig } from "./divider";
+ import { Component as DividerBlock, Config as DividerBlockConfig, DividerBlockProps } from "./divider";
 // import { Component as DarkMode, Config as DarkModeConfig } from "./dark-mode";
 // import { Component as GlobalBlock, Config as GlobalBlockConfig } from "./global-block";
 // import { Component as TextBlock, Config as LayersConfig } from "./text";
@@ -48,7 +48,7 @@ const loadWebBlocks = () => {
   registerChaiBlock<ParagraphProps>(ParagraphBlock, ParagraphBlockConfig);
   registerChaiBlock<SpanProps>(SpanBlock, SpanBlockConfig);
   registerChaiBlock<RichTextProps>(RichTextBlock, RichTextConfig);
-  // registerChaiBlock(LinkBlock, LinkBlockConfig);
+  registerChaiBlock<LinkBlockProps>(LinkBlock, LinkBlockConfig);
   // registerChaiBlock(LightBoxLinkBlock, LightBoxLinkBlockConfig);
   // registerChaiBlock(ListBlock, ListBlockConfig);
   // registerChaiBlock(ListItemBlock, ListItemBlockConfig);
@@ -72,7 +72,7 @@ const loadWebBlocks = () => {
   // registerChaiBlock(BodyBlock, BodyBlockConfig);
 
   // registerChaiBlock(CustomScript, CustomScriptConfig);
-  // registerChaiBlock(DividerBlock, DividerBlockConfig);
+  registerChaiBlock<DividerBlockProps>(DividerBlock, DividerBlockConfig);
   // // @ts-ignore
   // registerChaiBlock(DarkMode, DarkModeConfig);
   // registerChaiBlock(GlobalBlock, GlobalBlockConfig);
