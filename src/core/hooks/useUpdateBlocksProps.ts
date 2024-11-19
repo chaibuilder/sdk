@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 import { ChaiBlock } from "../types/ChaiBlock.ts";
-import { get, chunk, isString, keys, omit, forEach, isEmpty, set, unset, memoize } from "lodash-es";
+import { includes, get, chunk, isString, keys, omit, forEach, isEmpty, set, unset, memoize } from "lodash-es";
 import { useLanguages } from "./useLanguages.ts";
 import { useSelectedBlock } from "./useSelectedBlockIds.ts";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
@@ -12,7 +12,7 @@ const updatePropsForLanguage = memoize((props: Record<string, any>, selectedLang
 
   const updatedProps = { ...props };
   forEach(keys(props), (key) => {
-    if (get(chaiBlock, ["props", key, "i18n"]) && !isEmpty(selectedLang)) {
+    if (includes(get(chaiBlock, "i18nProps", []), key) && !isEmpty(selectedLang)) {
       const _key = `${key}-${selectedLang}`;
       set(updatedProps, _key, props[key]);
       unset(updatedProps, key);

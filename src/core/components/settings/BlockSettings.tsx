@@ -1,5 +1,5 @@
 import { IChangeEvent } from "@rjsf/core";
-import { capitalize, cloneDeep, debounce, get, isEmpty, keys, map, forEach } from "lodash-es";
+import { includes, set, capitalize, cloneDeep, debounce, get, isEmpty, keys, map, forEach } from "lodash-es";
 import {
   useLanguages,
   useSelectedBlock,
@@ -15,7 +15,6 @@ import { CanvasSettings } from "./CanvasSettings.tsx";
 import { GlobalBlockSettings } from "./GlobalBlockSettings.tsx";
 import { useRSCBlocksStore } from "../../hooks/useWatchRSCBlocks.ts";
 import { getBlockFormSchemas, getRegisteredChaiBlock } from "@chaibuilder/runtime";
-import { set } from "lodash-es";
 
 const ResetRSCBlockButton = ({ blockId }: { blockId: string }) => {
   const { t } = useTranslation();
@@ -30,7 +29,7 @@ const ResetRSCBlockButton = ({ blockId }: { blockId: string }) => {
 const formDataWithSelectedLang = (formData, selectedLang: string, coreBlock) => {
   const updatedFormData = cloneDeep(formData);
   forEach(keys(formData), (key) => {
-    if (get(coreBlock, ["props", key, "i18n"]) && !isEmpty(selectedLang)) {
+    if (includes(get(coreBlock, "i18nProps", []), key) && !isEmpty(selectedLang)) {
       updatedFormData[key] = get(formData, `${key}-${selectedLang}`);
     }
   });
