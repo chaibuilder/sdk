@@ -80,7 +80,7 @@ const Config = {
         type: "string",
         title: "Link",
         default: "_blank",
-        anyOf: [
+        oneOf: [
           {
             type: "string",
             title: "Open Page",
