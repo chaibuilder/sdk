@@ -4,21 +4,23 @@ import twForms from "@tailwindcss/forms";
 import twTypography from "@tailwindcss/typography";
 import twAspectRatio from "@tailwindcss/aspect-ratio";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
-import { ChaiBuilderTailwindTheme, getChaiBuilderTheme } from "../tailwind/getChaiBuilderTheme.ts";
+import { getChaiBuilderTheme } from "../tailwind/getChaiBuilderTheme.ts";
 import { chaiBuilderPlugin } from "../tailwind";
+import { ChaiBuilderThemeOptions } from "../core/types/chaiBuilderEditorProps.ts";
+import { defaultThemeOptions } from "../core/hooks/defaultThemeOptions.ts";
 
 async function getTailwindCSS(
-  theme: ChaiBuilderTailwindTheme,
+  themeOptions: ChaiBuilderThemeOptions,
   markupString: string[],
   safelist: string[] = [],
   prefix: string = "",
-  includeBaseStyles: boolean = false,
+  includeBaseStyles: boolean,
 ) {
   const tailwind = createTailwindcss({
     tailwindConfig: {
       darkMode: "class",
       safelist,
-      theme: { extend: getChaiBuilderTheme(theme) },
+      theme: { extend: getChaiBuilderTheme(themeOptions) },
       plugins: [twForms, twTypography, twAspectRatio, chaiBuilderPlugin],
       corePlugins: { preflight: includeBaseStyles },
       ...(prefix ? { prefix: `${prefix}` } : {}),
@@ -33,14 +35,18 @@ async function getTailwindCSS(
   );
 }
 
-const getBlocksTailwindCSS = (blocks: ChaiBlock[], theme: any, includeBaseStyles: boolean = false) => {
-  return getTailwindCSS(theme, [replace(JSON.stringify(blocks), /#styles:,?/g, "")], [], "", includeBaseStyles);
+const getBlocksTailwindCSS = (
+  blocks: ChaiBlock[],
+  themeOptions: ChaiBuilderThemeOptions,
+  includeBaseStyles: boolean,
+) => {
+  return getTailwindCSS(themeOptions, [replace(JSON.stringify(blocks), /#styles:,?/g, "")], [], "", includeBaseStyles);
 };
 
 export const getStylesForBlocks = async (
   blocks: ChaiBlock[],
-  theme: ChaiBuilderTailwindTheme | Record<string, string> = {},
-  includeBaseStyles: boolean = true,
+  themeOptions: ChaiBuilderThemeOptions = defaultThemeOptions,
+  includeBaseStyles: boolean = false,
 ): Promise<string> => {
-  return await getBlocksTailwindCSS(blocks, theme, includeBaseStyles);
+  return await getBlocksTailwindCSS(blocks, themeOptions, includeBaseStyles);
 };

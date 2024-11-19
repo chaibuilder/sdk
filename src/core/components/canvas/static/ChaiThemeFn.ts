@@ -34,6 +34,7 @@ function hexToHSL(hex: string) {
   let r = parseInt(result[1], 16);
   let g = parseInt(result[2], 16);
   let b = parseInt(result[3], 16);
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   (r /= 255), (g /= 255), (b /= 255);
   const max = Math.max(r, g, b),
     min = Math.min(r, g, b);
@@ -61,7 +62,7 @@ function hexToHSL(hex: string) {
   return `${Math.round(h * 360)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
 }
 
-export const getChaiThemeVariables = (chaiTheme: Partial<ChaiBuilderThemeValues>) => {
+export const getChaiThemeCssVariables = (chaiTheme: Partial<ChaiBuilderThemeValues>) => {
   return `:root {
     ${
       chaiTheme.fontFamily &&
@@ -87,7 +88,7 @@ export const getChaiThemeVariables = (chaiTheme: Partial<ChaiBuilderThemeValues>
   }`;
 };
 
-export const getThemeFonts = (chaiTheme: Pick<Partial<ChaiBuilderThemeValues>, "fontFamily">) => {
+export const getThemeFontsLinkMarkup = (chaiTheme: Pick<Partial<ChaiBuilderThemeValues>, "fontFamily">) => {
   if (isEmpty(chaiTheme.fontFamily)) return "";
   const links = uniq(Object.entries(chaiTheme.fontFamily).map(([, value]) => value));
   return links
