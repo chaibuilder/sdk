@@ -19,8 +19,8 @@ export const useCopyBlockIds = (): [Array<string>, (blocks: Array<CopiedBlock>) 
       setIds(blockIds);
       resetCutBlockIds([]);
       
-      // Store blocks data in session storage
-      sessionStorage.setItem('_chai_copied_blocks', JSON.stringify(blocks));
+      // Store blocks data in clipboard
+      navigator.clipboard.writeText(JSON.stringify(blocks));
     },
     [setIds, resetCutBlockIds],
   );
