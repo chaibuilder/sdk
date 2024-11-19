@@ -37,9 +37,10 @@ const pickOnlyAIProps = (blocks: ChaiBlock[], lang: string) => {
       const newBlock = pick(block, keys);
       const registeredBlock = getRegisteredChaiBlock(block._type);
       const aiProps = {};
+      const blockAiProps = get(registeredBlock, "aiProps", []);
       for (const key in block) {
         if (keys.includes(key)) continue;
-        if (get(registeredBlock, `props.${key}.ai`, false)) {
+        if (blockAiProps.includes(key)) {
           aiProps[key] = get(block, `${key}-${lang}`, block[key]);
         }
       }

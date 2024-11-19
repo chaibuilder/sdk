@@ -34,7 +34,7 @@ export const greenPreset: Partial<ChaiBuilderThemeValues> = {
     heading: "Playfair Display",
     body: "Playfair Display",
   },
-  borderRadius: "12px",
+  borderRadius: "0px",
   colors: {
     background: ["#FFFFFF", "#09090B"],
     foreground: ["#09090B", "#FFFFFF"],
@@ -63,7 +63,7 @@ export const bluePreset: Partial<ChaiBuilderThemeValues> = {
     heading: "Poppins",
     body: "Roboto",
   },
-  borderRadius: "12px",
+  borderRadius: "30px",
   colors: {
     background: ["#FFFFFF", "#09090B"],
     foreground: ["#09090B", "#FFFFFF"],

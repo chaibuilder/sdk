@@ -1,16 +1,13 @@
-import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
 import * as React from "react";
 import { LetterCaseToggleIcon } from "@radix-ui/react-icons";
-import { SingleLineText, Styles } from "@chaibuilder/runtime/controls";
+import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 
-export const LabelBlock = (
-  props: ChaiBlock & {
-    children: React.ReactNode;
-    styles: any;
-    content: string;
-    blockProps: Record<string, string>;
-  },
-) => {
+export type LabelProps = {
+  content: string;
+  styles: ChaiStyles;
+};
+
+export const LabelBlock = (props: ChaiBlockComponentProps<LabelProps>) => {
   const { blockProps, content, styles, children } = props;
   const labelProps = { ...styles, ...blockProps };
 
@@ -26,10 +23,16 @@ const Config = {
   category: "core",
   icon: LetterCaseToggleIcon,
   group: "form",
-  props: {
-    styles: Styles({ default: "" }),
-    content: SingleLineText({ title: "Label", default: "Label", ai: true, i18n: true }),
-  },
+  ...registerChaiBlockSchema({
+    properties: {
+      styles: StylesProp(),
+      content: {
+        type: "string",
+        title: "Content",
+        default: "",
+      },
+    },
+  }),
 };
 
 export { LabelBlock as Component, Config };

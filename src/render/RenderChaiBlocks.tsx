@@ -1,34 +1,10 @@
 import React from "react";
-import {
-  each,
-  filter,
-  get,
-  has,
-  includes,
-  isEmpty,
-  isString,
-  keys,
-  memoize,
-  omit,
-  cloneDeep,
-  forEach,
-} from "lodash-es";
+import { each, filter, get, includes, isEmpty, isString, keys, memoize, omit, cloneDeep, forEach } from "lodash-es";
 import { twMerge } from "tailwind-merge";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
-import { SLOT_KEY, STYLES_KEY } from "../core/constants/STRINGS.ts";
+import { STYLES_KEY } from "../core/constants/STRINGS.ts";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { addPrefixToClasses } from "./functions.ts";
-
-const getSlots = (block: ChaiBlock) => {
-  // loop over all keys and find the ones that start with slot
-  const slots: { [key: string]: string[] } = {};
-  Object.keys(block).forEach((key) => {
-    if (isString(block[key]) && block[key].startsWith(SLOT_KEY)) {
-      slots[key] = block[key].replace(SLOT_KEY, "").split(",");
-    }
-  });
-  return slots;
-};
 
 const generateClassNames = memoize((styles: string, classPrefix: string) => {
   const stylesArray = styles.replace(STYLES_KEY, "").split(",");
@@ -40,9 +16,6 @@ const generateClassNames = memoize((styles: string, classPrefix: string) => {
 
 function getElementAttrs(block: ChaiBlock, key: string) {
   const attrs = get(block, `${key}_attrs`, {}) as Record<string, string>;
-  if (has(attrs, "data-ai-key")) {
-    delete attrs["data-ai-key"];
-  }
   const attrsKeys = keys(attrs).join(" ");
   if (includes(attrsKeys, "x-show") && !includes(attrsKeys, "x-transition")) {
     attrs["x-transition"] = "";
@@ -78,9 +51,9 @@ function applyBindings(block: ChaiBlock, chaiData: any): ChaiBlock {
 function applyLanguage(_block: ChaiBlock, lang: string, blockDefinition) {
   if (isEmpty(lang)) return _block;
   const block = cloneDeep(_block);
-
+  const i18nProps = get(blockDefinition, "i18nProps", []);
   forEach(keys(block), (key) => {
-    if (get(blockDefinition, ["props", key, "i18n"]) && !isEmpty(lang)) {
+    if (i18nProps.includes(key) && !isEmpty(lang)) {
       block[key] = get(block, `${key}-${lang}`, block[key]);
     }
   });
@@ -94,6 +67,7 @@ export function RenderChaiBlocks({
   externalData = {},
   blockModifierCallback,
   lang,
+  metadata = {},
 }: {
   blocks: ChaiBlock[];
   parent?: string;
@@ -101,6 +75,7 @@ export function RenderChaiBlocks({
   externalData?: Record<string, any>;
   blockModifierCallback?: (block: ChaiBlock) => ChaiBlock;
   lang?: string;
+  metadata?: Record<string, any>;
 }) {
   const allBlocks = blocks;
   const getStyles = (block: ChaiBlock) => getStyleAttrs(block, classPrefix);
@@ -111,23 +86,7 @@ export function RenderChaiBlocks({
     <>
       {React.Children.toArray(
         filteredBlocks.map((block: ChaiBlock, index: number) => {
-          const slots = getSlots(block);
           const attrs: any = {};
-          if (!isEmpty(slots)) {
-            Object.keys(slots).forEach((key) => {
-              attrs[key] = React.Children.toArray(
-                slots[key].map((slotId: string) => (
-                  <RenderChaiBlocks
-                    externalData={externalData}
-                    classPrefix={classPrefix}
-                    blocks={allBlocks}
-                    parent={slotId}
-                    lang={lang}
-                  />
-                )),
-              );
-            });
-          }
           const blocks = filter(allBlocks, { _parent: block._id });
           attrs.children =
             blocks.length > 0 ? (
@@ -137,6 +96,7 @@ export function RenderChaiBlocks({
                 parent={block._id}
                 blocks={allBlocks}
                 lang={lang}
+                metadata={metadata}
               />
             ) : null;
 
@@ -160,6 +120,7 @@ export function RenderChaiBlocks({
                   ...applyBindings(applyLanguage(block, lang, blockDefinition), externalData),
                   ...getStyles(syncedBlock),
                   ...attrs,
+                  metadata,
                 },
                 ["_parent"],
               ),

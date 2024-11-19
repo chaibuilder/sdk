@@ -2,7 +2,7 @@ import { memo, useEffect, useState } from "react";
 import { FieldTemplateProps, RJSFSchema, UiSchema } from "@rjsf/utils";
 import RjForm from "@rjsf/core";
 import { BindingWidget } from "../../rjsf-widgets/binding.tsx";
-import { IconPickerField, ImagePickerField, RTEField } from "../../rjsf-widgets";
+import { IconPickerField, ImagePickerField, LinkField, RTEField } from "../../rjsf-widgets";
 import validator from "@rjsf/validator-ajv8";
 import { useThrottledCallback } from "@react-hookz/web";
 import { CodeEditor } from "../../rjsf-widgets/Code.tsx";

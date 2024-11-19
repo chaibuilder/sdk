@@ -35,7 +35,7 @@ const Config = {
         type: "string",
         default: "",
         title: "Background Image",
-        ui: { "ui:widget": "file" },
+        ui: { "ui:widget": "image" },
       },
       tag: {
         type: "string",

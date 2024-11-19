@@ -2,15 +2,15 @@ import * as React from "react";
 import { ButtonIcon } from "@radix-ui/react-icons";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 
-export type ButtonProps = ChaiBlockComponentProps<{
+export type ButtonProps = {
   content: string;
   icon: string;
   iconSize: number;
   iconPos: "order-first" | "order-last";
   styles: ChaiStyles;
-}>;
+};
 
-const Component = (props: ButtonProps) => {
+const Component = (props: ChaiBlockComponentProps<ButtonProps>) => {
   const { blockProps, iconSize, icon, content, styles, children, iconPos } = props;
   const _icon = icon;
 
