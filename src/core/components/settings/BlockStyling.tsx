@@ -94,10 +94,10 @@ export default function BlockStyling() {
       <div className="flex flex-col">
         <StylingHelpers />
         <Accordion defaultValue={["Styles"]} type="multiple" className="w-full">
-          {flexChild && <StylingGroup section={FLEX_CHILD_SECTION} />}
-          {gridChild ? <StylingGroup section={GRID_CHILD_SECTION} /> : null}
+          {flexChild && <StylingGroup section={FLEX_CHILD_SECTION} showAccordian={flexChild || gridChild} />}
+          {gridChild && <StylingGroup section={GRID_CHILD_SECTION} showAccordian={flexChild || gridChild} />}
           {SETTINGS_SECTIONS.map((section) => (
-            <StylingGroup key={section.heading} section={section} />
+            <StylingGroup key={section.heading} section={section} showAccordian={flexChild || gridChild} />
           ))}
         </Accordion>
       </div>

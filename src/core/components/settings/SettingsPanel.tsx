@@ -22,7 +22,7 @@ function BlockAttributesToggle() {
     <>
       <div
         onClick={() => setShowAttributes(!showAttributes)}
-        className="flex cursor-pointer items-center justify-between border-b border-border py-2 text-sm font-medium hover:underline">
+        className="flex cursor-pointer items-center justify-between border-t border-border py-3 text-xs font-medium hover:underline">
         <span>{t("Attributes")}</span>
         <span>
           <ChevronDown className={"h-4 w-4 text-gray-500 " + (showAttributes ? "rotate-180" : "")} />
@@ -64,9 +64,12 @@ const SettingsPanel: React.FC = () => {
           <br />
           <br />
         </TabsContent>
-        <TabsContent value="styles" className="no-scrollbar h-full max-h-min overflow-y-auto">
+        <TabsContent
+          value="styles"
+          className="no-scrollbar h-full max-h-min max-w-full overflow-y-auto overflow-x-hidden">
           <BlockStyling />
           <BlockAttributesToggle />
+          <br />
           <br />
           <br />
         </TabsContent>

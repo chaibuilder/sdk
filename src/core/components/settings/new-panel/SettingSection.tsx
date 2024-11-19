@@ -63,7 +63,7 @@ const NestedOptions = ({ heading, items }: any) => {
 
 const SectionContext = createContext({});
 
-export const StylingGroup = ({ section }: any) => {
+export const StylingGroup = ({ section, showAccordian }: any) => {
   const { t } = useTranslation();
   const currentClasses = useSelectedBlockCurrentClasses();
   const matchCondition = useCallback(
@@ -89,13 +89,35 @@ export const StylingGroup = ({ section }: any) => {
 
   return (
     <SectionContext.Provider value={contextValue}>
-      <AccordionItem value={section.heading} className="border-none">
-        <AccordionTrigger className="border-b border-border py-2 text-xs">
-          <div className="flex items-center">
-            <div className="flex items-center gap-x-2 text-sm font-medium">{startCase(t(section.heading))}</div>
-          </div>
-        </AccordionTrigger>
-        <AccordionContent className="py-2">
+      {showAccordian ? (
+        <AccordionItem value={section.heading} className="border-none">
+          <AccordionTrigger className="border-slate-150 border-t py-2 text-xs">
+            <div className="flex items-center py-2">
+              <div className="flex items-center gap-x-2 text-xs font-medium">{startCase(t(section.heading))}</div>
+            </div>
+          </AccordionTrigger>
+          <AccordionContent className="py-2">
+            {React.Children.toArray(
+              section.items.map((item: any) => {
+                if (has(item, "component")) {
+                  return React.createElement(item.component, { key: item.label });
+                }
+                if (!has(item, "styleType")) {
+                  return <BlockStyle key={item.label} {...item} />;
+                }
+                if (item.styleType === "multiple") {
+                  return <MultipleChoices key={item.label} {...item} />;
+                }
+                if (item.styleType === "accordion" && matchCondition(item?.conditions)) {
+                  return <NestedOptions key={item.label} {...item} />;
+                }
+                return null;
+              }),
+            )}
+          </AccordionContent>
+        </AccordionItem>
+      ) : (
+        <div className="py-2">
           {React.Children.toArray(
             section.items.map((item: any) => {
               if (has(item, "component")) {
@@ -113,8 +135,8 @@ export const StylingGroup = ({ section }: any) => {
               return null;
             }),
           )}
-        </AccordionContent>
-      </AccordionItem>
+        </div>
+      )}
     </SectionContext.Provider>
   );
 };
