@@ -122,6 +122,10 @@
   @apply hidden;
 }
 
+.field-object > fieldset {
+  @apply space-y-1;
+}
+
 [type="text"]:focus,
 input:where(:not([type])):focus,
 [type="email"]:focus,
