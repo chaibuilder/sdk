@@ -83,15 +83,7 @@ function ChaiBuilderDefault() {
       topBarComponents={{
         right: [RightTop],
       }}
-      // sideBarComponents={{
-      //   top: [
-      //     {
-      //       icon: <Paintbrush size={20} />,
-      //       label: "Theme",
-      //       component: () => <ThemeOptions className="w-full" />,
-      //     },
-      //   ],
-      // }}
+    
       getGlobalBlockBlocks={async (globalBlockKey: string) => {
         const blocks =
           globalBlockKey === "header"

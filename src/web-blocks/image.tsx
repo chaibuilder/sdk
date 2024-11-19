@@ -35,17 +35,6 @@ const Config = {
   category: "core",
   icon: ImageIcon,
   group: "media",
-  // props: {
-  //   styles: Styles({ default: "" }),
-  //   image: Image({
-  //     title: "Image",
-  //     default: "https://fakeimg.pl/400x200?text=Choose&font=bebas",
-  //   }),
-  //   alt: SingleLineText({ title: "Alt text", default: "", ai: true, i18n: true }),
-  //   width: SingleLineText({ title: "Width", default: "" }),
-  //   height: SingleLineText({ title: "Height", default: "" }),
-  //   lazyLoading: Checkbox({ title: "Lazy Load", default: true }),
-  // },
   ...registerChaiBlockSchema({
     properties: {
       styles: StylesProp(""),
@@ -55,11 +44,6 @@ const Config = {
         default: "https://fakeimg.pl/400x200?text=Choose&font=bebas",
         ui: {
           "ui:widget": "image",
-          "ui:options": {
-            buttonText: "Replace image",
-            placeholderText: "OR",
-            inputPlaceholder: "https://fakeimg.pl",
-          },
         },
       },
       alt: {
@@ -73,7 +57,7 @@ const Config = {
       height: {
         type: "number",
         title: "Height",
-        default: null,
+        default: "",
         ui: {
           "ui:placeholder": "Enter Here",
         },
@@ -81,7 +65,7 @@ const Config = {
       width: {
         type: "number",
         title: "Width",
-        default: null,
+        default: "",
         ui: {
           "ui:placeholder": "Enter Here",
         },
