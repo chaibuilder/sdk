@@ -1,14 +1,12 @@
 import * as React from "react";
 import { GlobeIcon } from "lucide-react";
-import { SingleLineText } from "@chaibuilder/runtime/controls";
+import { ChaiBlockComponentProps, registerChaiBlockSchema } from "@chaibuilder/runtime";
 
-const Component = (
-  props: any & {
-    children: React.ReactNode;
-    blockProps: Record<string, string>;
-    globalBlock?: string;
-  },
-) => {
+export type GlobalBlockProps = {
+  globalBlock: string;
+};
+
+const Component = (props: ChaiBlockComponentProps<GlobalBlockProps>) => {
   const { blockProps, inBuilder, children, globalBlock } = props;
   if (inBuilder && !globalBlock) {
     return (
@@ -29,9 +27,16 @@ const Config = {
   icon: GlobeIcon,
   category: "core",
   group: "advanced",
-  props: {
-    globalBlock: SingleLineText({ title: "global block", default: "", hidden: true }),
-  },
+  ...registerChaiBlockSchema({
+    properties: {
+      globalBlock: {
+        type: "string",
+        title: "Global Block",
+        default: "",
+        hidden: true,
+      },
+    },
+  }),
 };
 
 export { Component, Config };

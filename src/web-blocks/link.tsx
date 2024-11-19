@@ -77,43 +77,23 @@ const Config = {
         title: "Content",
       },
       link: {
-        type: "string",
+        type: "object",
         title: "Link",
-        default: "_blank",
-        oneOf: [
-          {
-            type: "string",
-            title: "Open Page",
-            enum: ["_blank"],
-          },
-          {
-            type: "string",
-            title: "Open URL",
-            enum: ["http"],
-          },
-          {
-            type: "string",
-            title: "Compose Email",
-            enum: ["mailto"],
-          },
-          {
-            type: "string",
-            title: "Call Number",
-            enum: ["tel"],
-          },
-          {
-            type: "string",
-            title: "Scroll to Element",
-            enum: ["#"],
-          },
-        ],
+        default: {
+          type: "page",
+          href: "",
+          target: "_self",
+        },
+        ui: {
+          "ui:widget": "link",
+        },
       },
       target: {
         title: "Open in new tab",
         type: "boolean",
         default: false,
       },
-    }
+    },
   }),
   aiProps: ["content"],
   i18nProps: ["content"],
