@@ -7,6 +7,7 @@ import { useCutBlockIds } from "./useCutBlockIds";
 import { presentBlocksAtom } from "../atoms/blocks";
 import { canAcceptChildBlock } from "../functions/block-helpers.ts";
 import { useBlocksStore, useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
+import { useToast } from "../../ui";
 
 const useCanPaste = () => {
   const [blocks] = useBlocksStore();
@@ -34,28 +35,32 @@ const useMoveCutBlocks = () => {
 };
 
 export const usePasteBlocks = (): {
-  canPaste: (newParentId: string) => boolean;
-  pasteBlocks: (newParentId: string | string[]) => void;
+  canPaste: (newParentId: string) => Promise<boolean>;
+  pasteBlocks: (newParentId: string | string[]) => Promise<void>;
 } => {
   const [cutBlockIds, setCutBlockIds] = useCutBlockIds();
   const duplicateBlocks = useDuplicateBlocks();
   const moveCutBlocks = useMoveCutBlocks();
   const canPasteBlocks = useCanPaste();
+  const { toast } = useToast();
 
   const canPaste = useCallback(
-    (newParentId: string) => {
+    async (newParentId: string) => {
       if (cutBlockIds.length > 0) {
         return canPasteBlocks(cutBlockIds, newParentId);
       }
 
-      const copiedBlocksStr = sessionStorage.getItem("_chai_copied_blocks");
-      if (copiedBlocksStr) {
-        const copiedBlocks = JSON.parse(copiedBlocksStr);
-
-        return canPasteBlocks(
-          copiedBlocks.map((block: any) => block.id),
-          newParentId,
-        );
+      const clipboardContent = await navigator.clipboard.readText();
+      if (clipboardContent) {
+        try {
+          const copiedBlocks = JSON.parse(clipboardContent);
+          return canPasteBlocks(
+            copiedBlocks.map((block: any) => block.id),
+            newParentId,
+          );
+        } catch {
+          return false;
+        }
       }
 
       return false;
@@ -66,27 +71,32 @@ export const usePasteBlocks = (): {
   return {
     canPaste,
     pasteBlocks: useCallback(
-      (newParentId: string | string[]) => {
+      async (newParentId: string | string[]) => {
         const parentId = Array.isArray(newParentId) ? newParentId[0] : newParentId;
 
         if (!isEmpty(cutBlockIds)) {
           moveCutBlocks(cutBlockIds, newParentId);
           setCutBlockIds([]);
+          // Clear clipboard when cutting blocks
+          await navigator.clipboard.writeText("");
           return;
         }
 
-        const copiedBlocksStr = sessionStorage.getItem("_chai_copied_blocks");
-        if (copiedBlocksStr) {
-          const copiedBlocks = JSON.parse(copiedBlocksStr);
-          duplicateBlocks(
-            copiedBlocks.map((block: any) => block.id),
-            parentId,
-          );
-          sessionStorage.removeItem("_chai_copied_blocks");
-          return;
+        const clipboardContent = await navigator.clipboard.readText();
+        if (clipboardContent) {
+          try {
+            const copiedBlocks = JSON.parse(clipboardContent);
+            duplicateBlocks(
+              copiedBlocks.map((block: any) => block.id),
+              parentId,
+            );
+            await navigator.clipboard.writeText("");
+          } catch {
+            toast({ title: "Error", description: "Failed to paste blocks from clipboard" });
+          }
         }
       },
-      [cutBlockIds, duplicateBlocks, moveCutBlocks, setCutBlockIds],
+      [cutBlockIds, duplicateBlocks, moveCutBlocks, setCutBlockIds, toast],
     ),
   };
 };
