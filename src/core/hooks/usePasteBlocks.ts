@@ -2,7 +2,7 @@ import { useAtomValue } from "jotai";
 import { useCallback } from "react";
 import { isEmpty, find, first } from "lodash-es";
 import { useDuplicateBlocks } from "./useDuplicateBlocks";
-import { copiedBlockIdsAtom } from "./useCopyBlockIds";
+
 import { useCutBlockIds } from "./useCutBlockIds";
 import { presentBlocksAtom } from "../atoms/blocks";
 import { canAcceptChildBlock } from "../functions/block-helpers.ts";
@@ -35,25 +35,32 @@ const useMoveCutBlocks = () => {
 
 export const usePasteBlocks = (): {
   canPaste: (newParentId: string) => boolean;
-  pasteBlocks: Function;
+  pasteBlocks: (newParentId: string | string[]) => void;
 } => {
-  // @ts-ignore
-  const copiedBlockIds: Array<string> = useAtomValue(copiedBlockIdsAtom);
   const [cutBlockIds, setCutBlockIds] = useCutBlockIds();
   const duplicateBlocks = useDuplicateBlocks();
   const moveCutBlocks = useMoveCutBlocks();
   const canPasteBlocks = useCanPaste();
+
   const canPaste = useCallback(
     (newParentId: string) => {
-      if (copiedBlockIds.length > 0) {
-        return canPasteBlocks(copiedBlockIds, newParentId);
-      } else if (cutBlockIds.length > 0) {
+      if (cutBlockIds.length > 0) {
         return canPasteBlocks(cutBlockIds, newParentId);
-      } else {
-        return false;
       }
+
+      const copiedBlocksStr = sessionStorage.getItem("_chai_copied_blocks");
+      if (copiedBlocksStr) {
+        const copiedBlocks = JSON.parse(copiedBlocksStr);
+
+        return canPasteBlocks(
+          copiedBlocks.map((block: any) => block.id),
+          newParentId,
+        );
+      }
+
+      return false;
     },
-    [canPasteBlocks, copiedBlockIds, cutBlockIds],
+    [canPasteBlocks, cutBlockIds],
   );
 
   return {
@@ -61,15 +68,25 @@ export const usePasteBlocks = (): {
     pasteBlocks: useCallback(
       (newParentId: string | string[]) => {
         const parentId = Array.isArray(newParentId) ? newParentId[0] : newParentId;
-        
-        if (!isEmpty(copiedBlockIds)) {
-          duplicateBlocks(copiedBlockIds, parentId);
-        } else {
+
+        if (!isEmpty(cutBlockIds)) {
           moveCutBlocks(cutBlockIds, newParentId);
+          setCutBlockIds([]);
+          return;
         }
-        setCutBlockIds([]);
+
+        const copiedBlocksStr = sessionStorage.getItem("_chai_copied_blocks");
+        if (copiedBlocksStr) {
+          const copiedBlocks = JSON.parse(copiedBlocksStr);
+          duplicateBlocks(
+            copiedBlocks.map((block: any) => block.id),
+            parentId,
+          );
+          sessionStorage.removeItem("_chai_copied_blocks");
+          return;
+        }
       },
-      [cutBlockIds, copiedBlockIds, duplicateBlocks, moveCutBlocks, setCutBlockIds],
+      [cutBlockIds, duplicateBlocks, moveCutBlocks, setCutBlockIds],
     ),
   };
 };

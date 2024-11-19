@@ -3,6 +3,7 @@ import React, { useCallback } from "react";
 import { PlusIcon } from "lucide-react";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "../../../../../ui";
 import {
+  useBlocksStore,
   useCopyBlockIds,
   useCutBlockIds,
   useDuplicateBlocks,
@@ -17,24 +18,34 @@ import { CHAI_BUILDER_EVENTS } from "../../../../events.ts";
 import { pubsub } from "../../../../pubsub.ts";
 
 const CopyPasteBlocks = () => {
+  const [blocks] = useBlocksStore();
   const [selectedIds] = useSelectedBlockIds();
   const { canPaste, pasteBlocks } = usePasteBlocks();
   const [, setCopiedBlockIds] = useCopyBlockIds();
   const { t } = useTranslation();
   const selectedBlock = useSelectedBlock();
 
+  const handleCopy = useCallback(() => {
+    const selectedBlocks = selectedIds.map((id) => {
+      const block = blocks.find((b) => b._id === id);
+      return {
+        id,
+        data: block,
+      };
+    });
+    setCopiedBlockIds(selectedBlocks);
+  }, [selectedIds, blocks, setCopiedBlockIds]);
+
   return (
     <>
       <ContextMenuItem
-        // @ts-ignore
         disabled={!canDuplicateBlock(selectedBlock?._type)}
-        onClick={() => setCopiedBlockIds(selectedIds)}
+        onClick={handleCopy}
         className="flex items-center gap-x-4 text-xs">
-        <CopyIcon /> Copy
+        <CopyIcon /> {t("Copy")}
       </ContextMenuItem>
       {canPaste(selectedIds[0]) && (
         <ContextMenuItem
-          // @ts-ignore
           className="flex items-center gap-x-4 text-xs"
           onClick={() => {
             pasteBlocks(selectedIds);
