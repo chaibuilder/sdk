@@ -14,6 +14,7 @@ import {
   HoverCardTrigger,
 } from "../../../../ui";
 import { useBuilderProp, useCanvasWidth, useSelectedBreakpoints } from "../../../hooks";
+import { cn } from "../../../functions/Functions";
 
 interface BreakpointItemType {
   breakpoint: string;
@@ -26,6 +27,19 @@ interface BreakpointItemType {
 interface BreakpointCardProps extends BreakpointItemType {
   currentBreakpoint: string;
   onClick: Function;
+}
+
+interface BreakpointCardProps extends BreakpointItemType {
+  currentBreakpoint: string;
+  onClick: Function;
+  iconContainerClasses?: string | undefined;
+  iconSelectedClasses?: string | undefined;
+}
+
+interface BreakPointClassProps {
+  iconListingClasses?: string | undefined;
+  iconContainerClasses?: string | undefined;
+  iconSelectedClasses?: string | undefined;
 }
 
 const TabletIcon = ({ landscape = false }) => (
@@ -95,15 +109,18 @@ const BreakpointCard = ({
   width,
   icon,
   onClick,
+  iconContainerClasses,
+  iconSelectedClasses
 }: BreakpointCardProps) => {
   const { t } = useTranslation();
   return (
     <HoverCard>
-      <HoverCardTrigger asChild>
+      <HoverCardTrigger className={cn(iconContainerClasses, iconSelectedClasses && breakpoint === currentBreakpoint ? iconSelectedClasses : "")} asChild>
         <Button
           onClick={() => onClick(width)}
           size="sm"
-          variant={breakpoint === currentBreakpoint ? "secondary" : "ghost"}>
+          variant={iconContainerClasses ? (breakpoint === currentBreakpoint ? "secondary" : "ghost") : 'default'}
+          >
           {icon}
         </Button>
       </HoverCardTrigger>
@@ -119,7 +136,11 @@ const BreakpointCard = ({
   );
 };
 
-export const Breakpoints = () => {
+export const Breakpoints = ({
+  iconListingClasses,
+  iconContainerClasses,
+  iconSelectedClasses
+}: BreakPointClassProps) => {
   const [, breakpoint, setNewWidth] = useCanvasWidth();
   const [selectedBreakpoints, setSelectedBreakpoints] = useSelectedBreakpoints();
   const { t } = useTranslation();
@@ -137,20 +158,20 @@ export const Breakpoints = () => {
 
   if (breakpoints.length < 4) {
     return (
-      <div className="flex items-center rounded-md">
+      <div className={cn("flex items-center rounded-md", iconListingClasses)}>
         {map(breakpoints, (bp) => (
-          <BreakpointCard {...bp} onClick={setNewWidth} key={bp.breakpoint} currentBreakpoint={breakpoint} />
+          <BreakpointCard iconSelectedClasses={iconSelectedClasses} iconContainerClasses={iconContainerClasses} {...bp} onClick={setNewWidth} key={bp.breakpoint} currentBreakpoint={breakpoint} />
         ))}
       </div>
     );
   }
 
   return (
-    <div className="flex items-center rounded-md">
+    <div className={cn("flex items-center rounded-md", iconListingClasses)}>
       {map(
         breakpoints.filter((bp: BreakpointItemType) => includes(selectedBreakpoints, toUpper(bp.breakpoint))),
         (bp: BreakpointItemType) => (
-          <BreakpointCard {...bp} onClick={setNewWidth} key={bp.breakpoint} currentBreakpoint={breakpoint} />
+          <BreakpointCard iconSelectedClasses={iconSelectedClasses} iconContainerClasses={iconContainerClasses} {...bp} onClick={setNewWidth} key={bp.breakpoint} currentBreakpoint={breakpoint} />
         ),
       )}
       <DropdownMenu>
