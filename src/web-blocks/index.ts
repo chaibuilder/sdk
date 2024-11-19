@@ -17,7 +17,7 @@ import { Component as IconBlock, Config as IconBlockConfig, IconBlockProps } fro
 import { Component as ImageBlock, Config as ImageBlockConfig, ImageBlockProps } from "./image";
 import { Component as VideoBlock, Config as VideoBlockConfig, VideoBlockProps } from "./video";
 import { Component as DividerBlock, Config as DividerBlockConfig, DividerBlockProps } from "./divider";
-// import { Component as CustomScript, Config as CustomScriptConfig } from "./custom-script";
+import { Component as CustomScript, Config as CustomScriptConfig, CustomScriptBlockProps } from "./custom-script";
 import { Component as DarkMode, Config as DarkModeConfig, DarkModeBlockProps } from "./dark-mode";
 // import { Component as GlobalBlock, Config as GlobalBlockConfig } from "./global-block";
 import { Component as TextBlock, Config as LayersConfig, TextBlockProps } from "./text";
@@ -56,6 +56,7 @@ const loadWebBlocks = () => {
   registerChaiBlock<ImageBlockProps>(ImageBlock, ImageBlockConfig);
   registerChaiBlock<VideoBlockProps>(VideoBlock, VideoBlockConfig);
   registerChaiBlock<CustomHTMLBlockProps>(CustomHTML, CustomHTMLConfig);
+  registerChaiBlock<CustomScriptBlockProps>(CustomScript, CustomScriptConfig);
   registerChaiBlock<TextBlockProps>(TextBlock, LayersConfig);
 
   // //forms
