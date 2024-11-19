@@ -132,6 +132,9 @@ export const JSONForm = memo(({ id, schema, uiSchema, formData, onChange }: JSON
         image: ImagePickerField,
         code: CodeEditor,
       }}
+      fields={{
+        link: LinkField,
+      }}
       templates={{
         FieldTemplate: CustomFieldTemplate,
         ButtonTemplates: {
