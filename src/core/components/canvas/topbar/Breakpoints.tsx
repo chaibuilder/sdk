@@ -119,7 +119,7 @@ const BreakpointCard = ({
         <Button
           onClick={() => onClick(width)}
           size="sm"
-          variant={iconContainerClasses ? (breakpoint === currentBreakpoint ? "secondary" : "ghost") : 'default'}
+          variant={iconContainerClasses ? 'default' : (breakpoint === currentBreakpoint ? "secondary" : "ghost")}
           >
           {icon}
         </Button>
