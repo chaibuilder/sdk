@@ -1,21 +1,19 @@
-import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import * as React from "react";
 import { ColumnsIcon } from "@radix-ui/react-icons";
-import { MultilineText, Styles } from "@chaibuilder/runtime/controls";
+import { ChaiBlockComponentProps, StylesProp, registerChaiBlockSchema } from "@chaibuilder/runtime";
+import { ChaiStyles } from "@chaibuilder/runtime";
 
-export const ListItemBlock = (
-  props: ChaiBlock & {
-    content: string;
-    blockProps: Record<string, string>;
-    styles: Record<string, string>;
-  },
-) => {
+export type ListItemBlockProps = {
+  styles: ChaiStyles;
+  content: string;
+};
+
+export const ListItemBlock = (props: ChaiBlockComponentProps<ListItemBlockProps>) => {
   const { blockProps, content, styles, children, tag } = props;
   if (!children) {
     return React.createElement(tag || "li", {
       ...styles,
       ...blockProps,
-      "data-ai-key": "content",
       dangerouslySetInnerHTML: { __html: content },
     });
   }
@@ -28,10 +26,21 @@ const Config = {
   icon: ColumnsIcon,
   category: "core",
   group: "basic",
-  props: {
-    styles: Styles({ default: "" }),
-    content: MultilineText({ title: "Content", default: "List item", ai: true, i18n: true }),
-  },
+  ...registerChaiBlockSchema({
+    properties: {
+      styles: StylesProp(""),
+      content: {
+        type: "string",
+        default: "List item",
+        title: "Content",
+        ui: {
+          "ui:widget": "textarea",
+        },
+      },
+    },
+  }),
+  i18nProps: ["content"],
+  aiProps: ["content"],
   canAcceptBlock: (type: string) => type !== "ListItem",
   canBeNested: (type: string) => type === "List",
 };

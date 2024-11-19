@@ -1,13 +1,12 @@
-import { Code } from "@chaibuilder/runtime/controls";
-import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { DiJavascript } from "react-icons/di";
 import { cn } from "../core/functions/Functions.ts";
+import { ChaiBlockComponentProps, registerChaiBlockSchema } from "@chaibuilder/runtime";
 
-const CustomScript = (
-  props: ChaiBlock & {
-    script: string;
-  },
-) => {
+export type CustomScriptBlockProps = {
+  scripts: string;
+};
+
+const CustomScript = (props: ChaiBlockComponentProps<CustomScriptBlockProps>) => {
   const { scripts, inBuilder, blockProps } = props;
   if (inBuilder)
     return (
@@ -30,13 +29,17 @@ const Config = {
   category: "core",
   icon: DiJavascript,
   group: "advanced",
-  props: {
-    scripts: Code({
-      title: "Script",
-      default: "",
-      placeholder: "<script>console.log('Hello, world!');</script>",
-    }),
-  },
+  ...registerChaiBlockSchema({
+    properties: {
+      scripts: {
+        type: "string",
+        title: "Script",
+        default: "",
+        format: "code",
+        placeholder: "<script>console.log('Hello, world!');</script>",
+      },
+    },
+  }),
 };
 
 export { CustomScript as Component, Config };

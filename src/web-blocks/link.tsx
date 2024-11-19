@@ -1,18 +1,18 @@
 import * as React from "react";
 import { isEmpty } from "lodash-es";
 import { Link1Icon } from "@radix-ui/react-icons";
-import { Link, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
-import { ChaiBlock } from "../core/types/ChaiBlock.ts";
+// import { Link, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
+import { ChaiBlockComponentProps, registerChaiBlockSchema, StylesProp, ChaiStyles } from "@chaibuilder/runtime";
+// import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
-const LinkBlock = (
-  props: ChaiBlock & {
-    styles: any;
-    link: any;
-    inBuilder: boolean;
-    blockProps: Record<string, string>;
-    children: React.ReactNode;
-  },
-) => {
+export type LinkBlockProps = {
+  styles: ChaiStyles;
+  link: string;
+  content: string;
+  target: boolean;
+};
+
+const LinkBlock = (props: ChaiBlockComponentProps<LinkBlockProps>) => {
   const { blockProps, link, children, styles, inBuilder, content } = props;
 
   let emptyStyles = {};
@@ -68,14 +68,35 @@ const Config = {
   category: "core",
   icon: Link1Icon,
   group: "basic",
-  props: {
-    styles: Styles({ default: "" }),
-    content: SingleLineText({ title: "Content", default: "", ai: true, i18n: true }),
-    link: Link({
-      title: "Link",
-      default: { type: "collection", target: "_self", href: "" },
-    }),
-  },
+  ...registerChaiBlockSchema({
+    properties: {
+      styles: StylesProp(""),
+      content: {
+        type: "string",
+        default: "Link goes here",
+        title: "Content",
+      },
+      link: {
+        type: "object",
+        title: "Link",
+        default: {
+          type: "page",
+          href: "",
+          target: "_self",
+        },
+        ui: {
+          "ui:widget": "link",
+        },
+      },
+      target: {
+        title: "Open in new tab",
+        type: "boolean",
+        default: false,
+      },
+    },
+  }),
+  aiProps: ["content"],
+  i18nProps: ["content"],
   canAcceptBlock: (type: string) => type !== "Link",
 };
 

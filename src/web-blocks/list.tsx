@@ -1,16 +1,17 @@
 import * as React from "react";
 import { RowsIcon } from "@radix-ui/react-icons";
 import { get, isEmpty } from "lodash-es";
-import { SelectOption, Styles } from "@chaibuilder/runtime/controls";
 import EmptySlot from "./empty-slot.tsx";
-import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { cn } from "../core/functions/Functions.ts";
-const ListBlock = (
-  props: ChaiBlock & {
-    blockProps: Record<string, string>;
-    styles: Record<string, string>;
-  },
-) => {
+import { ChaiBlockComponentProps, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
+import { ChaiStyles } from "@chaibuilder/runtime";
+
+export type ListBlockProps = {
+  styles: ChaiStyles;
+  listType: string;
+};
+
+const ListBlock = (props: ChaiBlockComponentProps<ListBlockProps>) => {
   const { blockProps, children, listType, styles, tag, inBuilder } = props;
   const className = cn(get(styles, "className", ""), listType);
 
@@ -31,18 +32,21 @@ const Config = {
   icon: RowsIcon,
   category: "core",
   group: "basic",
-  props: {
-    styles: Styles({ default: "" }),
-    listType: SelectOption({
-      title: "web_blocks.list_type",
-      default: "list-none",
-      options: [
-        { value: "list-none", title: "web_blocks.none" },
-        { value: "list-disc", title: "web_blocks.disc" },
-        { value: "list-decimal", title: "web_blocks.number" },
-      ],
-    }),
-  },
+  ...registerChaiBlockSchema({
+    properties: {
+      styles: StylesProp(""),
+      listType: {
+        type: "string",
+        title: "List Type",
+        default: "list-none",
+        oneOf: [
+          { enum: ["list-none"], title: "List None" },
+          { enum: ["list-disc"], title: "Disc" },
+          { enum: ["list-decimal"], title: "Decimal" },
+        ],
+      },
+    },
+  }),
   canAcceptBlock: (blockType: string) => blockType === "ListItem",
   blocks: [
     { _type: "List", _id: "a", listType: "list-none", styles: "#styles:," },

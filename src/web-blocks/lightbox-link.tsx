@@ -1,12 +1,12 @@
 import * as React from "react";
 import { isEmpty } from "lodash-es";
 import { ImageIcon } from "@radix-ui/react-icons";
-import { Checkbox, Numeric, SelectOption, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
 import EmptySlot from "./empty-slot.tsx";
 import { addForcedClasses } from "./helper.ts";
 import { ChaiBlockStyles, ChaiRenderBlockProps } from "../core/types/types.ts";
+import { StylesProp, registerChaiBlockSchema } from "@chaibuilder/runtime";
 
-type LightBoxLinkProps = {
+export type LightBoxLinkProps = {
   href: string;
   hrefType: string;
   autoplay: boolean;
@@ -70,25 +70,74 @@ const Config = {
   category: "core",
   icon: ImageIcon,
   group: "basic",
-  props: {
-    styles: Styles({ default: "" }),
-    content: SingleLineText({ title: "Content", default: "Link text or drop blocks inside", ai: true, i18n: true }),
-    href: SingleLineText({ title: "Href", default: "" }),
-    hrefType: SelectOption({
-      title: "Type",
-      default: "video",
-      options: [
-        { value: "video", title: "Video" },
-        { value: "iframe", title: "Iframe" },
-        { value: "inline", title: "Inline" },
-        { value: "ajax", title: "Ajax" },
-      ],
-    }),
-    autoplay: Checkbox({ title: "Autoplay", default: false }),
-    maxWidth: Numeric({ title: "Max Width", default: "" }),
-    backdropColor: SingleLineText({ title: "Backdrop Color", default: "" }),
-    galleryName: SingleLineText({ title: "Gallery Name", default: "" }),
-  },
+
+  ...registerChaiBlockSchema({
+    properties: {
+      styles: StylesProp(""),
+      content: {
+        type: "string",
+        title: "Content",
+        default: "Link text or drop blocks inside",
+      },
+      href: {
+        type: "string",
+        title: "Href",
+        default: "",
+      },
+      hrefType: {
+        type: "string",
+        title: "Type",
+        default: "video",
+        oneOf: [
+          {
+            type: "string",
+            title: "Video",
+            enum: ["video"],
+          },
+          {
+            type: "string",
+            title: "Iframe",
+            enum: ["iframe"],
+          },
+          {
+            type: "string",
+            title: "Inline",
+            enum: ["inline"],
+          },
+          {
+            type: "string",
+            title: "Ajax",
+            enum: ["ajax"],
+          },
+        ],
+      },
+      autoplay: {
+        type: "boolean",
+        title: "Autoplay",
+        default: false,
+        dependencies: {
+          hrefType: ["video"]
+        }
+      },
+      maxWidth: {
+        type: "number",
+        title: "Max Width",
+        default: "",
+      },
+      backdropColor: {
+        type: "string",
+        title: "Backdrop Color",
+        default: "",
+      },
+      galleryName: {
+        type: "string",
+        title: "Gallery Name",
+        default: "",
+      },
+    },
+  }),
+  i18nProps: ["content"],
+  aiProps: ["content"],
   canAcceptBlock: (type: string) => type !== "Link" && type !== "LightBoxLink",
 };
 

@@ -9,18 +9,18 @@ import { Component as ParagraphBlock, Config as ParagraphBlockConfig, ParagraphP
 import { Component as SpanBlock, Config as SpanBlockConfig, SpanProps } from "./span";
 import { Component as RichTextBlock, Config as RichTextConfig, RichTextProps } from "./rte";
 // //
-// import { Component as LinkBlock, Config as LinkBlockConfig } from "./link";
-// import { Component as LightBoxLinkBlock, Config as LightBoxLinkBlockConfig } from "./lightbox-link";
-// import { Component as ListBlock, Config as ListBlockConfig } from "./list";
-// import { Component as ListItemBlock, Config as ListItemBlockConfig } from "./listitem";
-// import { Component as IconBlock, Config as IconBlockConfig } from "./icon";
-// import { Component as ImageBlock, Config as ImageBlockConfig } from "./image";
-// import { Component as VideoBlock, Config as VideoBlockConfig } from "./video";
-// import { Component as CustomScript, Config as CustomScriptConfig } from "./custom-script";
-// import { Component as DividerBlock, Config as DividerBlockConfig } from "./divider";
-// import { Component as DarkMode, Config as DarkModeConfig } from "./dark-mode";
-// import { Component as GlobalBlock, Config as GlobalBlockConfig } from "./global-block";
-// import { Component as TextBlock, Config as LayersConfig } from "./text";
+import { Component as LinkBlock, Config as LinkBlockConfig, LinkBlockProps } from "./link";
+ import { Component as LightBoxLinkBlock, Config as LightBoxLinkBlockConfig, LightBoxLinkProps } from "./lightbox-link";
+import { Component as ListBlock, Config as ListBlockConfig, ListBlockProps } from "./list";
+import { Component as ListItemBlock, Config as ListItemBlockConfig, ListItemBlockProps } from "./listitem";
+import { Component as IconBlock, Config as IconBlockConfig, IconBlockProps } from "./icon";
+import { Component as ImageBlock, Config as ImageBlockConfig, ImageBlockProps } from "./image";
+import { Component as VideoBlock, Config as VideoBlockConfig, VideoBlockProps } from "./video";
+import { Component as DividerBlock, Config as DividerBlockConfig, DividerBlockProps } from "./divider";
+import { Component as CustomScript, Config as CustomScriptConfig, CustomScriptBlockProps } from "./custom-script";
+import { Component as DarkMode, Config as DarkModeConfig, DarkModeBlockProps } from "./dark-mode";
+import { Component as GlobalBlock, Config as GlobalBlockConfig, GlobalBlockProps } from "./global-block";
+import { Component as TextBlock, Config as LayersConfig, TextBlockProps } from "./text";
 // // import "./slot";
 // //
 // // // hidden
@@ -48,15 +48,16 @@ const loadWebBlocks = () => {
   registerChaiBlock<ParagraphProps>(ParagraphBlock, ParagraphBlockConfig);
   registerChaiBlock<SpanProps>(SpanBlock, SpanBlockConfig);
   registerChaiBlock<RichTextProps>(RichTextBlock, RichTextConfig);
-  // registerChaiBlock(LinkBlock, LinkBlockConfig);
-  // registerChaiBlock(LightBoxLinkBlock, LightBoxLinkBlockConfig);
-  // registerChaiBlock(ListBlock, ListBlockConfig);
-  // registerChaiBlock(ListItemBlock, ListItemBlockConfig);
-  // registerChaiBlock(IconBlock, IconBlockConfig);
-  // registerChaiBlock(ImageBlock, ImageBlockConfig);
-  // registerChaiBlock(VideoBlock, VideoBlockConfig);
+  registerChaiBlock<LinkBlockProps>(LinkBlock, LinkBlockConfig);
+  registerChaiBlock<LightBoxLinkProps>(LightBoxLinkBlock, LightBoxLinkBlockConfig);
+  registerChaiBlock<ListBlockProps>(ListBlock, ListBlockConfig);
+  registerChaiBlock<ListItemBlockProps>(ListItemBlock, ListItemBlockConfig);
+  registerChaiBlock<IconBlockProps>(IconBlock, IconBlockConfig);
+  registerChaiBlock<ImageBlockProps>(ImageBlock, ImageBlockConfig);
+  registerChaiBlock<VideoBlockProps>(VideoBlock, VideoBlockConfig);
   registerChaiBlock<CustomHTMLBlockProps>(CustomHTML, CustomHTMLConfig);
-  // registerChaiBlock(TextBlock, LayersConfig);
+  registerChaiBlock<CustomScriptBlockProps>(CustomScript, CustomScriptConfig);
+  registerChaiBlock<TextBlockProps>(TextBlock, LayersConfig);
 
   // //forms
   registerChaiBlock<FormProps>(FormBlock, FormBlockConfig);
@@ -72,10 +73,10 @@ const loadWebBlocks = () => {
   registerChaiBlock<BodyProps>(BodyBlock, BodyBlockConfig);
 
   // registerChaiBlock(CustomScript, CustomScriptConfig);
-  // registerChaiBlock(DividerBlock, DividerBlockConfig);
+  registerChaiBlock<DividerBlockProps>(DividerBlock, DividerBlockConfig);
   // // @ts-ignore
-  // registerChaiBlock(DarkMode, DarkModeConfig);
-  // registerChaiBlock(GlobalBlock, GlobalBlockConfig);
+  registerChaiBlock<DarkModeBlockProps>(DarkMode, DarkModeConfig);
+  registerChaiBlock<GlobalBlockProps>(GlobalBlock, GlobalBlockConfig);
 };
 
 export { loadWebBlocks };

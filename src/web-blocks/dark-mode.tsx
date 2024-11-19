@@ -1,5 +1,9 @@
 import { MoonIcon } from "@radix-ui/react-icons";
-const DarkMode = () => {
+import { ChaiBlockComponentProps, registerChaiBlockSchema } from "@chaibuilder/runtime";
+
+export type DarkModeBlockProps = Record<string, never>;
+
+const DarkMode = (_props: ChaiBlockComponentProps<DarkModeBlockProps>) => {
   return null;
 };
 
@@ -9,7 +13,9 @@ const Config = {
   category: "core",
   icon: MoonIcon,
   group: "advanced",
-  props: {},
+  ...registerChaiBlockSchema({
+    properties: {},
+  }),
   blocks: () => [
     { _id: "ultqCh", _type: "Span", tag: "span", styles: "#styles:,", _name: "Dark Mode Switcher" },
     {
