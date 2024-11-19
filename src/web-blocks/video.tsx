@@ -110,6 +110,7 @@ const Config = {
       styles: StylesProp(""),
       url: {
         type: "string",
+        title: "Video URL",
         default: "https://www.youtube.com/watch?v=9xwazD5SyVg&ab_channel=MaximilianMustermann",
       },
       controls: {
