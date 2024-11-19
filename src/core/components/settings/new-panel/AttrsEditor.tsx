@@ -79,16 +79,16 @@ export default React.memo(function Component({ preloadedAttributes = [], onAttri
   };
 
   return (
-    <div className={"max-w-full"}>
+    <div className="flex max-h-full flex-1 flex-col">
       <form
         onSubmit={(e) => {
           e.preventDefault();
           editIndex !== null ? saveEdit() : addAttribute();
         }}
         className="space-y-3">
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-y-1">
           <div className="w-full">
-            <Label htmlFor="attrKey" className="text-xs">
+            <Label htmlFor="attrKey" className="text-[11px] font-normal leading-tight text-slate-600">
               Key
             </Label>
             <Input
@@ -99,12 +99,12 @@ export default React.memo(function Component({ preloadedAttributes = [], onAttri
               ref={keyInputRef}
               value={newKey}
               onChange={(e) => setNewKey(e.target.value)}
-              placeholder="Key"
-              className="h-8 text-sm"
+              placeholder="Enter Key"
+              className="py-0 text-xs font-normal leading-tight placeholder:text-slate-400"
             />
           </div>
           <div className="w-full">
-            <Label htmlFor="attrValue" className="text-xs">
+            <Label htmlFor="attrValue" className="text-[11px] font-normal text-slate-600">
               Value
             </Label>
             <Textarea
@@ -117,32 +117,37 @@ export default React.memo(function Component({ preloadedAttributes = [], onAttri
               value={newValue}
               onChange={(e) => setNewValue(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Value"
-              className="bg-background text-sm"
+              placeholder="Enter Value"
+              className="text-xs font-normal leading-tight placeholder:text-slate-400"
             />
           </div>
         </div>
-        <Button type="submit" variant="secondary" className="h-8 w-fit text-sm">
-          {editIndex !== null ? "Save" : "Add"}
-        </Button>
+        <div className="flex justify-end">
+          <Button
+            type="submit"
+            disabled={!newKey.length || !newValue.length}
+            variant="default"
+            size="sm"
+            className="h-8 w-24 text-xs">
+            {editIndex !== null ? "Save" : "Add"}
+          </Button>
+        </div>
         {error && <p className="text-xs text-red-500">{error}</p>}
       </form>
 
-      <div className="mt-4 space-y-1 overflow-y-auto">
+      <div className="space-y-1 py-4">
         {attributes.map((attr, index) => (
-          <div key={index} className="flex items-center justify-between rounded bg-muted p-1.5 text-sm">
-            <div className="mr-2 flex flex-col">
-              <span className="truncate font-semibold">{attr.key}</span>
-              <span className="text-wrap max-w-[200px] text-muted-foreground">{attr.value.toString()}</span>
+          <div key={index} className="flex items-center justify-between rounded border p-2 text-sm">
+            <div className="flex flex-col text-xs leading-tight">
+              <span className="truncate text-[12px] font-light text-muted-foreground">{attr.key}</span>
+              <span className="text-wrap max-w-[200px] font-normal">{attr.value.toString()}</span>
             </div>
-            <div className="flex-shrink-0">
+            <div className="flex-shrink-0 text-slate-400">
               <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => startEdit(index)}>
                 <Edit2 className="h-3 w-3" />
-                <span className="sr-only">Edit attribute</span>
               </Button>
               <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => removeAttribute(index)}>
                 <X className="h-3 w-3" />
-                <span className="sr-only">Remove attribute</span>
               </Button>
             </div>
           </div>
