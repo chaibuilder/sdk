@@ -92,7 +92,7 @@ export const StylingGroup = ({ section }: any) => {
       <AccordionItem value={section.heading} className="border-none">
         <AccordionTrigger className="border-b border-border py-2 text-xs">
           <div className="flex items-center">
-            <div className="flex items-center gap-x-2 text-sm font-bold">{startCase(t(section.heading))}</div>
+            <div className="flex items-center gap-x-2 text-sm font-medium">{startCase(t(section.heading))}</div>
           </div>
         </AccordionTrigger>
         <AccordionContent className="py-2">

@@ -1,18 +1,18 @@
 import { RadiobuttonIcon } from "@radix-ui/react-icons";
-import { Checkbox, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
-import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
+import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { generateUUID } from "../../core/functions/Functions.ts";
 
-const RadioBlock = (
-  block: ChaiBlock & {
-    blockProps: Record<string, string>;
-    styles: Record<string, string>;
-    inputStyles: Record<string, string>;
-    required: boolean;
-    checked: boolean;
-  },
-) => {
-  const { blockProps, fieldName, label, styles, inputStyles, checked, required, showLabel = true } = block;
+export type RadioProps = {
+  label: string;
+  styles: ChaiStyles;
+  inputStyles: ChaiStyles;
+  required: boolean;
+  checked: boolean;
+  showLabel: boolean;
+};
+
+const RadioBlock = (props: ChaiBlockComponentProps<RadioProps>) => {
+  const { blockProps, fieldName, label, styles, inputStyles, required, checked, showLabel = true } = props;
   const fieldId = generateUUID();
 
   if (!showLabel)
@@ -28,6 +28,7 @@ const RadioBlock = (
         name={fieldName}
       />
     );
+
   return (
     <div {...styles} {...blockProps}>
       <input {...inputStyles} name={fieldName} id={fieldId} type="radio" required={required} defaultChecked={checked} />
@@ -42,13 +43,34 @@ const Config = {
   category: "core",
   icon: RadiobuttonIcon,
   group: "form",
-  props: {
-    styles: Styles({ default: "flex items-center w-max gap-x-2" }),
-    fieldName: SingleLineText({ title: "web_blocks.field_name", default: "radio" }),
-    label: SingleLineText({ title: "web_blocks.label", default: "Label" }),
-    checked: Checkbox({ title: "web_blocks.checked", default: false }),
-    required: Checkbox({ title: "web_blocks.required", default: false }),
-  },
+  ...registerChaiBlockSchema({
+    properties: {
+      styles: StylesProp("flex items-center gap-x-2"),
+      inputStyles: StylesProp(""),
+      label: {
+        type: "string",
+        title: "Label",
+        default: "Label",
+      },
+      checked: {
+        type: "boolean",
+        title: "Checked",
+        default: false,
+      },
+      required: {
+        type: "boolean",
+        title: "Required",
+        default: false,
+      },
+      showLabel: {
+        type: "boolean",
+        title: "Show Label",
+        default: true,
+      },
+    },
+  }),
+  aiProps: ["label"],
+  i18nProps: ["label"],
 };
 
 export { RadioBlock as Component, Config };

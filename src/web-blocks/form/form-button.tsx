@@ -1,16 +1,18 @@
 import { ButtonIcon } from "@radix-ui/react-icons";
-import { Icon, SelectOption, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
-import { generateUUID } from "../../core/functions/Functions.ts";
-import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
+import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
+import { generateUUID } from "../../core/functions/Functions";
 
-const FormButtonBlock = (
-  block: ChaiBlock & {
-    blockProps: Record<string, string>;
-    styles: Record<string, string>;
-    inputStyles: Record<string, string>;
-  },
-) => {
-  const { blockProps, inBuilder, label, styles, inputStyles, icon, iconPos } = block;
+export type FormButtonProps = {
+  label: string;
+  styles: ChaiStyles;
+  inputStyles: ChaiStyles;
+  icon: string;
+  iconSize: number;
+  iconPos: "order-first" | "order-last";
+};
+
+const FormButtonBlock = (props: ChaiBlockComponentProps<FormButtonProps>) => {
+  const { blockProps, inBuilder, label, styles, inputStyles, icon, iconSize, iconPos } = props;
   const fieldId = generateUUID();
 
   // alpine js attrs
@@ -27,7 +29,13 @@ const FormButtonBlock = (
       {...(blockProps || {})}
       type={inBuilder ? "button" : "submit"}>
       {label}
-      {icon && <span className={iconPos} dangerouslySetInnerHTML={{ __html: icon }} />}
+      {icon && (
+        <div
+          style={{ width: iconSize + "px" }}
+          className={iconPos + " " + (iconPos === "order-first" ? "mr-2" : "ml-2") || ""}
+          dangerouslySetInnerHTML={{ __html: icon }}
+        />
+      )}
     </button>
   );
 };
@@ -38,21 +46,40 @@ const Config = {
   category: "core",
   icon: ButtonIcon,
   group: "form",
-  props: {
-    label: SingleLineText({ title: "Label", default: "Submit", ai: true, i18n: true }),
-    styles: Styles({
-      default: "text-white bg-primary disabled:bg-gray-400 px-4 py-2 rounded-global flex items-center gap-x-2",
-    }),
-    icon: Icon({ title: "Icon", default: "" }),
-    iconPos: SelectOption({
-      title: "Icon Position",
-      default: "order-last",
-      options: [
-        { title: "Start", value: "order-first" },
-        { title: "End", value: "order-last" },
-      ],
-    }),
-  },
+  ...registerChaiBlockSchema({
+    properties: {
+      styles: StylesProp(
+        "text-white bg-primary disabled:bg-gray-400 px-4 py-2 rounded-global flex items-center gap-x-2",
+      ),
+      inputStyles: StylesProp(""),
+      label: {
+        type: "string",
+        title: "Label",
+        default: "Submit",
+        ai: true,
+        i18n: true,
+      },
+      icon: {
+        type: "string",
+        title: "Icon",
+        default: "",
+        ui: { "ui:widget": "icon" },
+      },
+      iconSize: {
+        type: "number",
+        title: "Icon size",
+        default: 24,
+      },
+      iconPos: {
+        type: "string",
+        title: "Icon Position",
+        default: "order-last",
+        enum: ["order-first", "order-last"],
+      },
+    },
+  }),
+  i18nProps: ["label"],
+  aiProps: ["label"],
 };
 
 export { FormButtonBlock as Component, Config };

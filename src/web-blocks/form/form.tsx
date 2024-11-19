@@ -1,19 +1,16 @@
-import * as React from "react";
-import { GroupIcon } from "@radix-ui/react-icons";
-import { RichText, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
-import EmptySlot from "../empty-slot.tsx";
-import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
+import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
+import EmptySlot from "../empty-slot";
+import { GroupIcon } from "lucide-react";
 
-const FormBlock = (
-  props: ChaiBlock & {
-    children: React.ReactNode;
-    styles: any;
-    tag: string;
-    inBuilder: boolean;
-    blockProps: Record<string, string>;
-  },
-) => {
-  const { blockProps, errorMessage, name, _type, successMessage, action, styles, children } = props;
+export type FormProps = {
+  errorMessage: string;
+  successMessage: string;
+  action: string;
+  styles: ChaiStyles;
+};
+
+const FormBlock = (props: ChaiBlockComponentProps<FormProps>) => {
+  const { children, blockProps, errorMessage, successMessage, action, styles } = props;
   let nestedChildren = children;
   if (!children) {
     nestedChildren = <EmptySlot />;
@@ -27,6 +24,7 @@ const FormBlock = (
     "x-html": "",
     ":class": "{'text-red-500': formStatus === 'ERROR', 'text-green-500': formStatus === 'SUCCESS'}",
   };
+
   return (
     <form
       {...alpineAttrs}
@@ -37,7 +35,6 @@ const FormBlock = (
       {...blockProps}
       {...styles}>
       <div {...formResponseAttr}></div>
-      <input name={"formname"} type={"hidden"} value={name || _type} />
       {nestedChildren}
     </form>
   );
@@ -49,21 +46,30 @@ const Config = {
   category: "core",
   icon: GroupIcon,
   group: "form",
-  props: {
-    styles: Styles({ default: "" }),
-    action: SingleLineText({
-      title: "Submit URL",
-      default: "/api/form/submit",
-    }),
-    errorMessage: RichText({
-      title: "Error Message",
-      default: "Something went wrong. Please try again",
-    }),
-    successMessage: RichText({
-      title: "Success Message",
-      default: "Thank you for your submission.",
-    }),
-  },
+  ...registerChaiBlockSchema({
+    properties: {
+      styles: StylesProp(""),
+      action: {
+        type: "string",
+        title: "Submit URL",
+        default: "/api/form/submit",
+      },
+      errorMessage: {
+        type: "string",
+        title: "Error Message",
+        default: "Something went wrong. Please try again",
+        ui: { "ui:widget": "richtext" },
+      },
+      successMessage: {
+        type: "string",
+        title: "Success Message",
+        default: "Thank you for your submission.",
+        ui: { "ui:widget": "richtext" },
+      },
+    },
+  }),
+  i18nProps: ["errorMessage", "successMessage"],
+  aiProps: ["errorMessage", "successMessage"],
   canAcceptBlock: () => true,
 };
 

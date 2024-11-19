@@ -24,16 +24,16 @@ import { Component as TextBlock, Config as LayersConfig, TextBlockProps } from "
 // // import "./slot";
 // //
 // // // hidden
-// import { Component as BodyBlock, Config as BodyBlockConfig } from "./hidden/body";
-// import { Component as LineBreakBlock, Config as LineBreakBlockConfig } from "./hidden/line-break";
-// // import "./hidden/table";
-// import { Component as FormBlock, Config as FormBlockConfig } from "./form/form";
-// import { Component as FormButtonBlock, Config as FormButtonBlockConfig } from "./form/form-button";
-// import { Component as InputBlock, Config as InputBlockConfig } from "./form/input";
-// import { Component as RadioBlock, Config as RadioBlockConfig } from "./form/radio";
-// import { Component as SelectBlock, Config as SelectBlockConfig } from "./form/select";
-// import { Component as TextAreaBlock, Config as TextAreaBlockConfig } from "./form/textarea";
-// import { Component as CheckboxBlock, Config as CheckboxBlockConfig } from "./form/checkbox";
+import { Component as BodyBlock, Config as BodyBlockConfig, BodyProps } from "./hidden/body";
+import { Component as LineBreakBlock, Config as LineBreakBlockConfig, LineBreakProps } from "./hidden/line-break";
+import "./hidden/table";
+import { Component as FormBlock, Config as FormBlockConfig, FormProps } from "./form/form";
+import { Component as FormButtonBlock, Config as FormButtonBlockConfig, FormButtonProps } from "./form/form-button";
+import { Component as InputBlock, Config as InputBlockConfig, InputProps } from "./form/input";
+import { Component as RadioBlock, Config as RadioBlockConfig, RadioProps } from "./form/radio";
+import { Component as SelectBlock, Config as SelectBlockConfig, SelectProps } from "./form/select";
+import { Component as TextAreaBlock, Config as TextAreaBlockConfig, TextAreaProps } from "./form/textarea";
+import { Component as CheckboxBlock, Config as CheckboxBlockConfig, CheckboxProps } from "./form/checkbox";
 
 /*
  * Register all web blocks.
@@ -60,17 +60,17 @@ const loadWebBlocks = () => {
   registerChaiBlock<TextBlockProps>(TextBlock, LayersConfig);
 
   // //forms
-  // registerChaiBlock(FormBlock, FormBlockConfig);
-  // registerChaiBlock(FormButtonBlock, FormButtonBlockConfig);
-  // registerChaiBlock(InputBlock, InputBlockConfig);
-  // registerChaiBlock(CheckboxBlock, CheckboxBlockConfig);
-  // registerChaiBlock(RadioBlock, RadioBlockConfig);
-  // registerChaiBlock(SelectBlock, SelectBlockConfig);
-  // registerChaiBlock(TextAreaBlock, TextAreaBlockConfig);
+  registerChaiBlock<FormProps>(FormBlock, FormBlockConfig);
+  registerChaiBlock<FormButtonProps>(FormButtonBlock, FormButtonBlockConfig);
+  registerChaiBlock<InputProps>(InputBlock, InputBlockConfig);
+  registerChaiBlock<CheckboxProps>(CheckboxBlock, CheckboxBlockConfig);
+  registerChaiBlock<RadioProps>(RadioBlock, RadioBlockConfig);
+  registerChaiBlock<SelectProps>(SelectBlock, SelectBlockConfig);
+  registerChaiBlock<TextAreaProps>(TextAreaBlock, TextAreaBlockConfig);
 
   // // hidden
-  // registerChaiBlock(LineBreakBlock, LineBreakBlockConfig);
-  // registerChaiBlock(BodyBlock, BodyBlockConfig);
+  registerChaiBlock<LineBreakProps>(LineBreakBlock, LineBreakBlockConfig);
+  registerChaiBlock<BodyProps>(BodyBlock, BodyBlockConfig);
 
   // registerChaiBlock(CustomScript, CustomScriptConfig);
   registerChaiBlock<DividerBlockProps>(DividerBlock, DividerBlockConfig);
