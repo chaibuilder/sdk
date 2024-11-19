@@ -17,8 +17,6 @@ const SelectBlock = (props: ChaiBlockComponentProps<SelectProps>) => {
     props;
   const fieldId = generateUUID();
 
-  console.log("##", options);
-
   if (!showLabel) {
     return (
       <select id={fieldId} {...styles} {...blockProps} required={required} multiple={_multiple} name={fieldName}>
