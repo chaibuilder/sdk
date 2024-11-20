@@ -33,7 +33,9 @@ const Config = {
         type: "string",
         title: "Global Block",
         default: "",
-        hidden: true,
+        ui: {
+          "ui:widget": "hidden",
+        }
       },
     },
   }),
