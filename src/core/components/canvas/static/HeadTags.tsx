@@ -8,7 +8,7 @@ import forms from "@tailwindcss/forms";
 import aspectRatio from "@tailwindcss/aspect-ratio";
 import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
 import plugin from "tailwindcss/plugin";
-import { getChaiThemeOptions, getChaiThemeVariables, getThemeFonts } from "./ChaiThemeFn.ts";
+import { getChaiThemeOptions, getChaiThemeCssVariables, getThemeFontsLinkMarkup } from "./ChaiThemeFn.ts";
 import { useTheme, useThemeOptions } from "../../../hooks/useTheme.ts";
 import { ChaiBuilderThemeValues } from "../../../types/chaiBuilderEditorProps.ts";
 import { pick } from "lodash-es";
@@ -117,10 +117,10 @@ export const HeadTags = () => {
   }, [dropTargetId, iframeDoc]);
 
   const themeVariables = useMemo(
-    () => getChaiThemeVariables(chaiTheme as Partial<ChaiBuilderThemeValues>),
+    () => getChaiThemeCssVariables(chaiTheme as Partial<ChaiBuilderThemeValues>),
     [chaiTheme],
   );
-  const fonts = useMemo(() => getThemeFonts(pick(chaiTheme, ["fontFamily"])), [chaiTheme]);
+  const fonts = useMemo(() => getThemeFontsLinkMarkup(pick(chaiTheme, ["fontFamily"])), [chaiTheme]);
   return (
     <>
       <style id="chai-theme">{themeVariables}</style>

@@ -10,7 +10,7 @@ import { Component as SpanBlock, Config as SpanBlockConfig, SpanProps } from "./
 import { Component as RichTextBlock, Config as RichTextConfig, RichTextProps } from "./rte";
 // //
 import { Component as LinkBlock, Config as LinkBlockConfig, LinkBlockProps } from "./link";
- import { Component as LightBoxLinkBlock, Config as LightBoxLinkBlockConfig, LightBoxLinkProps } from "./lightbox-link";
+import { Component as LightBoxLinkBlock, Config as LightBoxLinkBlockConfig, LightBoxLinkProps } from "./lightbox-link";
 import { Component as ListBlock, Config as ListBlockConfig, ListBlockProps } from "./list";
 import { Component as ListItemBlock, Config as ListItemBlockConfig, ListItemBlockProps } from "./listitem";
 import { Component as IconBlock, Config as IconBlockConfig, IconBlockProps } from "./icon";
@@ -34,6 +34,7 @@ import { Component as RadioBlock, Config as RadioBlockConfig, RadioProps } from 
 import { Component as SelectBlock, Config as SelectBlockConfig, SelectProps } from "./form/select";
 import { Component as TextAreaBlock, Config as TextAreaBlockConfig, TextAreaProps } from "./form/textarea";
 import { Component as CheckboxBlock, Config as CheckboxBlockConfig, CheckboxProps } from "./form/checkbox";
+import { Component as LabelBlock, Config as LabelBlockConfig, LabelProps } from "./form/label";
 
 /*
  * Register all web blocks.
@@ -67,6 +68,7 @@ const loadWebBlocks = () => {
   registerChaiBlock<RadioProps>(RadioBlock, RadioBlockConfig);
   registerChaiBlock<SelectProps>(SelectBlock, SelectBlockConfig);
   registerChaiBlock<TextAreaProps>(TextAreaBlock, TextAreaBlockConfig);
+  registerChaiBlock<LabelProps>(LabelBlock, LabelBlockConfig);
 
   // // hidden
   registerChaiBlock<LineBreakProps>(LineBreakBlock, LineBreakBlockConfig);

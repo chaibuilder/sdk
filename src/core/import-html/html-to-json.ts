@@ -270,7 +270,7 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
     if (node.type === "comment") return [];
 
     // * Generating block id and setting parent id if nested
-    let block: Partial<ChaiBlock> = { _id: generateUUID() };
+    let block: Partial<ChaiBlock<any>> = { _id: generateUUID() };
     if (parent) block._parent = parent.block._id;
 
     /**
@@ -344,13 +344,15 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
         ...block,
         href: styleAttributes.find((attr) => attr.key === "href")?.value || "",
         hrefType: styleAttributes.find((attr) => attr.key === "data-vbtype")?.value || "video",
-        autoplay: styleAttributes.find((attr) => attr.key === "data-autoplay")?.value === "true",
+        autoplay: styleAttributes.find((attr) => attr.key === "data-autoplay")?.value === "true" ? "true" : "false",
         maxWidth: styleAttributes.find((attr) => attr.key === "data-maxwidth")?.value?.replace("px", "") || "",
         backdropColor: styleAttributes.find((attr) => attr.key === "data-overlay")?.value || "",
         galleryName: styleAttributes.find((attr) => attr.key === "data-gall")?.value || "",
       };
       forEach(lightboxAttrs, (attr) => {
-        if (has(block, `styles_attrs.${attr}`)) delete block.styles_attrs[attr];
+        if (has(block, `styles_attrs.${attr}`)) {
+          delete block.styles_attrs[attr];
+        }
       });
     }
 

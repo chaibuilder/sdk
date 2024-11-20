@@ -1,7 +1,7 @@
 import { useAtom } from "jotai";
 import { lsAiContextAtom, lsBlocksAtom, lsThemeAtom } from "./__dev/atoms-dev.ts";
 import PreviewWeb from "./__dev/preview/WebPreview.tsx";
-import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML } from "./core/main";
+import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML, registerChaiBlock } from "./core/main";
 import { loadWebBlocks } from "./web-blocks";
 import { useState } from "react";
 import axios from "axios";
@@ -10,8 +10,14 @@ import { map, pick, isArray } from "lodash-es";
 import lngPtBR from "./__dev/ptBR.json";
 import RightTop from "./__dev/RightTop.tsx";
 import { greenPreset, bluePreset, orangePreset } from "./__dev/THEME_PRESETS.ts";
+import {
+  Component as CollectionListComponent,
+  Config as CollectionListConfig,
+  CollectionListProps,
+} from "./__dev/CollectionList.tsx";
 
 loadWebBlocks();
+registerChaiBlock<CollectionListProps>(CollectionListComponent, CollectionListConfig);
 
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
@@ -27,7 +33,7 @@ function ChaiBuilderDefault() {
     <ChaiBuilderEditor
       fallbackLang="fr"
       languages={["pt", "en"]}
-      themePresets={[{ orange: orangePreset }, { green: greenPreset }, { blue: bluePreset }]}
+      themePresets={[{ Kia: orangePreset }, { Nissan: greenPreset }, { Infiniti: bluePreset }]}
       translations={{ pt: lngPtBR }}
       theme={theme}
       autoSaveSupport={true}

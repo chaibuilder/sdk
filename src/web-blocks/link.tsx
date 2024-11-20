@@ -34,7 +34,6 @@ const LinkBlock = (props: ChaiBlockComponentProps<LinkBlockProps>) => {
           ...blockProps,
           ...styles,
           style: emptyStyles,
-          "data-ai-key": "content",
         },
         content,
       );
@@ -54,7 +53,6 @@ const LinkBlock = (props: ChaiBlockComponentProps<LinkBlockProps>) => {
     {
       ...blockProps,
       ...styles,
-      "data-ai-key": "content",
       href: link?.href || "#",
       target: link?.target || "_self",
     },
@@ -79,19 +77,19 @@ const Config = {
       link: {
         type: "object",
         title: "Link",
+        properties: {
+          type: { type: "string" },
+          href: { type: "string" },
+          target: { type: "string" },
+        },
         default: {
-          type: "page",
+          type: "url",
           href: "",
           target: "_self",
         },
         ui: {
-          "ui:widget": "link",
+          "ui:field": "link",
         },
-      },
-      target: {
-        title: "Open in new tab",
-        type: "boolean",
-        default: false,
       },
     },
   }),

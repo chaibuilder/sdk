@@ -5,7 +5,7 @@ import { useRightPanel } from "../../hooks/useTheme.ts";
 import "../canvas/static/BlocksExternalDataProvider.tsx";
 import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../ui";
 import { motion } from "framer-motion";
-import { EditIcon, Layers, Paintbrush, X } from "lucide-react";
+import { Layers, Paintbrush, X } from "lucide-react";
 import { Outline } from "../../main";
 import { CanvasTopBar } from "../canvas/topbar/CanvasTopBar.tsx";
 import CanvasArea from "../canvas/CanvasArea.tsx";

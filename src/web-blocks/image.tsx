@@ -11,6 +11,9 @@ export type ImageBlockProps = {
   width: number;
   height: number;
   lazyLoading: boolean;
+  mobileImage: string;
+  mobileWidth: number;
+  mobileHeight: number;
 };
 
 const ImageBlock = (props: ChaiBlockComponentProps<ImageBlockProps>) => {
@@ -42,38 +45,49 @@ const Config = {
         type: "string",
         title: "Image",
         default: "https://fakeimg.pl/400x200?text=Choose&font=bebas",
-        ui: {
-          "ui:widget": "image",
-        },
+        ui: { "ui:widget": "image" },
       },
       alt: {
         type: "string",
         title: "Alt text",
         default: "",
-        ui: {
-          "ui:placeholder": "Enter Here",
-        },
-      },
-      height: {
-        type: "number",
-        title: "Height",
-        default: "",
-        ui: {
-          "ui:placeholder": "Enter Here",
-        },
-      },
-      width: {
-        type: "number",
-        title: "Width",
-        default: "",
-        ui: {
-          "ui:placeholder": "Enter Here",
-        },
+        ui: { "ui:placeholder": "Enter  alt text" },
       },
       lazyLoading: {
         type: "boolean",
         title: "Lazy Load",
         default: true,
+      },
+      width: {
+        type: "number",
+        title: "Width",
+        default: "",
+        ui: { "ui:placeholder": "Enter width" },
+      },
+      height: {
+        type: "number",
+        title: "Height",
+        default: "",
+        ui: { "ui:placeholder": "Enter height" },
+      },
+
+      mobileImage: {
+        type: "string",
+        title: "Mobile Image",
+        default: "",
+        ui: { "ui:widget": "image" },
+      },
+      mobileWidth: {
+        type: "number",
+        title: "Mobile Width",
+        default: "",
+        ui: { "ui:placeholder": "Enter width" },
+      },
+      mobileHeight: {
+        type: "number",
+        title: "Mobile Height",
+        default: "",
+        ui: { "ui:placeholder": "Enter height" },
       },
     },
   }),
