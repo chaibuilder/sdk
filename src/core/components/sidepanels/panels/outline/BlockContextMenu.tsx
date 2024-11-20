@@ -20,7 +20,7 @@ import { pubsub } from "../../../../pubsub.ts";
 const CopyPasteBlocks = () => {
   const [blocks] = useBlocksStore();
   const [selectedIds] = useSelectedBlockIds();
-  const { canPaste, pasteBlocks } = usePasteBlocks();
+  const { pasteBlocks } = usePasteBlocks();
   const [, setCopiedBlockIds] = useCopyBlockIds();
   const { t } = useTranslation();
   const selectedBlock = useSelectedBlock();
@@ -33,7 +33,7 @@ const CopyPasteBlocks = () => {
         data: block,
       };
     });
-    setCopiedBlockIds(selectedBlocks);
+    setCopiedBlockIds(selectedBlocks.map((block) => block.id));
   }, [selectedIds, blocks, setCopiedBlockIds]);
 
   return (
@@ -44,15 +44,13 @@ const CopyPasteBlocks = () => {
         className="flex items-center gap-x-4 text-xs">
         <CopyIcon /> {t("Copy")}
       </ContextMenuItem>
-      {canPaste(selectedIds[0]) && (
-        <ContextMenuItem
-          className="flex items-center gap-x-4 text-xs"
-          onClick={() => {
-            pasteBlocks(selectedIds);
-          }}>
-          <CardStackIcon /> {t("Paste")}
-        </ContextMenuItem>
-      )}
+      <ContextMenuItem
+        className="flex items-center gap-x-4 text-xs"
+        onClick={() => {
+          pasteBlocks(selectedIds);
+        }}>
+        <CardStackIcon /> {t("Paste")}
+      </ContextMenuItem>
     </>
   );
 };
