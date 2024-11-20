@@ -35,7 +35,7 @@ import { Component as SelectBlock, Config as SelectBlockConfig, SelectProps } fr
 import { Component as TextAreaBlock, Config as TextAreaBlockConfig, TextAreaProps } from "./form/textarea";
 import { Component as CheckboxBlock, Config as CheckboxBlockConfig, CheckboxProps } from "./form/checkbox";
 import { Component as LabelBlock, Config as LabelBlockConfig, LabelProps } from "./form/label";
-
+import { Component as DropdownMenu, Config as DropdownMenuConfig, DropdownLinksProps } from "./dropdown-menu";
 /*
  * Register all web blocks.
  * This function should be called  in places where Builder is rendered or pages are rendered.
@@ -79,6 +79,7 @@ const loadWebBlocks = () => {
   // // @ts-ignore
   registerChaiBlock<DarkModeBlockProps>(DarkMode, DarkModeConfig);
   registerChaiBlock<GlobalBlockProps>(GlobalBlock, GlobalBlockConfig);
+  registerChaiBlock<DropdownLinksProps>(DropdownMenu, DropdownMenuConfig);
 };
 
 export { loadWebBlocks };
