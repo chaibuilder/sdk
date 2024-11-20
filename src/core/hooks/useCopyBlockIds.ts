@@ -12,8 +12,7 @@ export interface CopiedBlock {
 }
 
 export interface ClipboardBlock {
-  _chai_copied_blocks: any[];
-  parentId: string | null;
+  _chai_copied_blocks: any;
 }
 
 export const useCopyBlockIds = (): [Array<string>, (blockIds: Array<string>) => void] => {
@@ -27,18 +26,12 @@ export const useCopyBlockIds = (): [Array<string>, (blockIds: Array<string>) => 
         setIds(blockIds);
         resetCutBlockIds([]);
 
-        const clipboardData: ClipboardBlock[] = blockIds.map((blockId) => {
-          const block = presentBlocks.find((b) => b._id === blockId);
-          const parentId = block?._parent;
-
-          // Get duplicated blocks with children
-          const duplicatedBlocks = getDuplicatedBlocks(presentBlocks, blockId, null);
-
-          return {
-            "_chai_copied_blocks": duplicatedBlocks,
-            parentId,
-          };
-        });
+        const clipboardData: ClipboardBlock = {
+          "_chai_copied_blocks": blockIds.flatMap((blockId) => {
+            // Get duplicated blocks with children
+            return getDuplicatedBlocks(presentBlocks, blockId, null);
+          })
+        };
 
         await navigator.clipboard.writeText(JSON.stringify(clipboardData));
       } catch (error) {
