@@ -1,7 +1,8 @@
 import { getChaiThemeOptions } from "../core/components/canvas/static/ChaiThemeFn";
+import { defaultThemeOptions } from "../core/hooks/defaultThemeOptions";
 import { ChaiBuilderThemeOptions } from "../core/types/chaiBuilderEditorProps";
 
-export const getChaiBuilderTheme = (themeOptions: ChaiBuilderThemeOptions) => {
+export const getChaiBuilderTheme = (themeOptions: ChaiBuilderThemeOptions = defaultThemeOptions) => {
   return {
     container: {
       center: true,

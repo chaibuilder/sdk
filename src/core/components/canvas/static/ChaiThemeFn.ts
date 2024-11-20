@@ -98,3 +98,14 @@ export const getThemeFontsLinkMarkup = (chaiTheme: Pick<Partial<ChaiBuilderTheme
     })
     .join("\n");
 };
+
+export const getThemeFontsCSSImport = (chaiTheme: { fontFamily: Record<string, string> }) => {
+  if (isEmpty(chaiTheme.fontFamily)) return "";
+  const links = uniq(Object.entries(chaiTheme.fontFamily).map(([, value]) => value));
+  return links
+    .map((link: string) => {
+      const googleFontUrl = `https://fonts.googleapis.com/css2?family=${link.replace(/\s+/g, "+")}&display=swap`;
+      return `@import url("${googleFontUrl}");`;
+    })
+    .join("\n");
+};
