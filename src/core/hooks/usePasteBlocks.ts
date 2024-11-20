@@ -1,6 +1,6 @@
 import { useAtomValue } from "jotai";
 import { useCallback } from "react";
-import { isEmpty, find, first } from "lodash-es";
+import { isEmpty, find, first, has } from "lodash-es";
 import { useCutBlockIds } from "./useCutBlockIds";
 import { presentBlocksAtom } from "../atoms/blocks";
 import { canAcceptChildBlock } from "../functions/block-helpers.ts";
@@ -43,7 +43,6 @@ export const usePasteBlocks = (): {
   const { toast } = useToast();
   const { addPredefinedBlock } = useAddBlock();
 
-  
   /* Can Paste is true if the clipboard contains copied blocks key
    * while using keyboard shortcuts (ctrl+c, command+c)
    */
@@ -52,13 +51,12 @@ export const usePasteBlocks = (): {
       if (cutBlockIds.length > 0) {
         return canPasteBlocks(cutBlockIds, newParentId);
       }
-      
+
       try {
         const clipboardContent = await navigator.clipboard.readText();
         if (clipboardContent) {
           const clipboardData = JSON.parse(clipboardContent);
-          return Array.isArray(clipboardData) && 
-                 clipboardData.some(item => item._chai_copied_blocks);
+          return has(clipboardData, "_chai_copied_blocks");
         }
       } catch (error) {
         return false;
@@ -85,11 +83,8 @@ export const usePasteBlocks = (): {
           const clipboardContent = await navigator.clipboard.readText();
           if (clipboardContent) {
             const clipboardData = JSON.parse(clipboardContent);
-            if (Array.isArray(clipboardData) && 
-                clipboardData.some(item => item._chai_copied_blocks)) {
-              clipboardData.forEach((item) => {
-                addPredefinedBlock(item._chai_copied_blocks, parentId);
-              });
+            if (has(clipboardData, "_chai_copied_blocks")) {
+              addPredefinedBlock(clipboardData._chai_copied_blocks, parentId);
             } else {
               toast({ title: "Error", description: "Nothing to paste" });
             }
