@@ -123,12 +123,7 @@ export default React.memo(function Component({ preloadedAttributes = [], onAttri
           </div>
         </div>
         <div className="flex justify-end">
-          <Button
-            type="submit"
-            disabled={!newKey.length || !newValue.length}
-            variant="default"
-            size="sm"
-            className="h-8 w-24 text-xs">
+          <Button type="submit" disabled={!newKey.length} variant="default" size="sm" className="h-8 w-24 text-xs">
             {editIndex !== null ? "Save" : "Add"}
           </Button>
         </div>
