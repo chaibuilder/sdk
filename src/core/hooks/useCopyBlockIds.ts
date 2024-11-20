@@ -16,9 +16,9 @@ export interface ClipboardBlock {
 }
 
 export const useCopyBlockIds = (): [Array<string>, (blockIds: Array<string>) => void] => {
+  const [presentBlocks] = useBlocksStore();
   const [ids, setIds] = useAtom(copiedBlockIdsAtom);
   const resetCutBlockIds = useSetAtom(cutBlockIdsAtom);
-  const [presentBlocks] = useBlocksStore();
 
   const setCopiedBlockIds = useCallback(
     async (blockIds: Array<string>) => {
