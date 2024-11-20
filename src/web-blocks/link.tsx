@@ -76,7 +76,6 @@ const Config = {
       },
       link: {
         type: "object",
-        title: "Link",
         properties: {
           type: { type: "string" },
           href: { type: "string" },
