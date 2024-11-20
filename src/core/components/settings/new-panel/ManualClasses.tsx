@@ -153,7 +153,7 @@ export function ManualClasses() {
             renderSuggestion={renderSuggestion}
             inputProps={inputProps}
             containerProps={{
-              className: "relative h-8 w-full gap-y-1 py-1 border-border",
+              className: "relative h-8 w-full gap-y-1 py-1 border-border text-xs",
             }}
             theme={{
               suggestion: "bg-transparent",
