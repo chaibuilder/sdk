@@ -1,4 +1,3 @@
-import * as React from "react";
 import { ImageIcon } from "@radix-ui/react-icons";
 import { isEmpty } from "lodash-es";
 import EmptySlot from "./empty-slot.tsx";
@@ -12,24 +11,27 @@ export type ImageBlockProps = {
   height: number;
   lazyLoading: boolean;
   mobileImage: string;
-  mobileWidth: number;
-  mobileHeight: number;
 };
 
 const ImageBlock = (props: ChaiBlockComponentProps<ImageBlockProps>) => {
-  const { blockProps, image, styles, alt, height, width, lazyLoading } = props;
+  const { blockProps, image, mobileImage, styles, alt, height, width, lazyLoading } = props;
 
   if (isEmpty(image)) return <EmptySlot className="h-36" />;
 
-  return React.createElement("img", {
-    ...blockProps,
-    ...styles,
-    src: image,
-    alt: alt,
-    loading: lazyLoading ? "lazy" : "eager",
-    height: height,
-    width: width,
-  });
+  return (
+    <picture>
+      {mobileImage && <source srcSet={mobileImage} media="(max-width: 480px)" />}
+      <img
+        {...blockProps}
+        {...styles}
+        src={image}
+        alt={alt}
+        loading={lazyLoading ? "lazy" : "eager"}
+        width={width}
+        height={height}
+      />
+    </picture>
+  );
 };
 
 const Config = {
@@ -70,24 +72,11 @@ const Config = {
         default: "",
         ui: { "ui:placeholder": "Enter height" },
       },
-
       mobileImage: {
         type: "string",
         title: "Mobile Image",
         default: "",
         ui: { "ui:widget": "image" },
-      },
-      mobileWidth: {
-        type: "number",
-        title: "Mobile Width",
-        default: "",
-        ui: { "ui:placeholder": "Enter width" },
-      },
-      mobileHeight: {
-        type: "number",
-        title: "Mobile Height",
-        default: "",
-        ui: { "ui:placeholder": "Enter height" },
       },
     },
   }),
