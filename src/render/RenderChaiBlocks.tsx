@@ -1,10 +1,12 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { each, filter, get, includes, isEmpty, isString, keys, memoize, omit, cloneDeep, forEach } from "lodash-es";
 import { twMerge } from "tailwind-merge";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { STYLES_KEY } from "../core/constants/STRINGS.ts";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { addPrefixToClasses } from "./functions.ts";
+import { has } from "lodash";
+import AsyncPropsBlock from "./AsyncBlockProps.tsx";
 
 const generateClassNames = memoize((styles: string, classPrefix: string) => {
   const stylesArray = styles.replace(STYLES_KEY, "").split(",");
@@ -109,22 +111,34 @@ export function RenderChaiBlocks({
             if (blockModifierCallback) {
               syncedBlock = blockModifierCallback(syncedBlock);
             }
-            return React.createElement(
-              Component,
-              omit(
-                {
-                  blockProps: {},
-                  inBuilder: false,
-                  ...syncedBlock,
-                  index,
-                  ...applyBindings(applyLanguage(block, lang, blockDefinition), externalData),
-                  ...getStyles(syncedBlock),
-                  ...attrs,
-                  metadata,
-                },
-                ["_parent"],
-              ),
+            const props = omit(
+              {
+                blockProps: {},
+                inBuilder: false,
+                ...syncedBlock,
+                index,
+                ...applyBindings(applyLanguage(block, lang, blockDefinition), externalData),
+                ...getStyles(syncedBlock),
+                ...attrs,
+                metadata,
+              },
+              ["_parent"],
             );
+            if (has(blockDefinition, "dataProvider")) {
+              return (
+                <Suspense>
+                  {/* @ts-ignore */}
+                  <AsyncPropsBlock
+                    metadata={metadata}
+                    dataProvider={blockDefinition.dataProvider}
+                    block={block}
+                    component={Component}
+                    props={props}
+                  />
+                </Suspense>
+              );
+            }
+            return <Suspense>{React.createElement(Component, props)}</Suspense>;
           }
 
           return <noscript>{block._type} not found</noscript>;
