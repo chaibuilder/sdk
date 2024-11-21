@@ -91,7 +91,7 @@ export type ChaiBuilderThemeValues = {
 
 export interface ChaiBuilderEditorProps {
   themePresets?: Record<string, Partial<ChaiBuilderThemeValues>>[];
-  themeOptions?: (defaultThemeOptions: ChaiBuilderThemeOptions) => ChaiBuilderThemeOptions;
+  themeOptions?: ChaiBuilderThemeOptions | ((defaultThemeOptions: ChaiBuilderThemeOptions) => ChaiBuilderThemeOptions);
   theme?: Partial<ChaiBuilderThemeValues>;
   /**
    * onError callback function
@@ -189,7 +189,7 @@ export interface ChaiBuilderEditorProps {
   getUILibraryBlocks?: (library: UILibrary) => Promise<UiLibraryBlock[]>;
   getUILibraryBlock?: (library: UILibrary, uiLibBlock: UiLibraryBlock) => Promise<ChaiBlock[]>;
 
-  getRSCBlock?: (block: ChaiBlock) => Promise<string>;
+  getBlockAsyncProps?: (block: ChaiBlock) => Promise<string>;
 
   /**
    * Get Global blocks

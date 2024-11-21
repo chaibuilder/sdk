@@ -25,13 +25,16 @@ export type CollectionListProps = {
   itemStyles: ChaiStyles;
 };
 
-const Component = (props: ChaiBlockComponentProps<CollectionListProps>) => {
-  const { blockProps, wrapperStyles, listStyles, itemStyles } = props;
+type ServerProps = {
+  items: any[];
+};
+
+const Component = (props: ChaiBlockComponentProps<CollectionListProps & ServerProps>) => {
+  const { blockProps, wrapperStyles, listStyles, itemStyles, items } = props;
   return (
     <div {...blockProps} {...wrapperStyles}>
-      <div {...listStyles}>
-        <div {...itemStyles}></div>
-      </div>
+      <h1>Collection List</h1>
+      <div {...listStyles}>{items?.map((item) => <div {...itemStyles}>{JSON.stringify(item)}</div>)}</div>
     </div>
   );
 };

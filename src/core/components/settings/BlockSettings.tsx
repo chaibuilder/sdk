@@ -1,30 +1,13 @@
 import { IChangeEvent } from "@rjsf/core";
 import { includes, set, capitalize, cloneDeep, debounce, get, isEmpty, keys, map, forEach } from "lodash-es";
-import {
-  useLanguages,
-  useSelectedBlock,
-  useTranslation,
-  useUpdateBlocksProps,
-  useUpdateBlocksPropsRealtime,
-} from "../../hooks";
+import { useLanguages, useSelectedBlock, useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "../../hooks";
 import DataBindingSetting from "../../rjsf-widgets/data-binding.tsx";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Button } from "../../../ui";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../ui";
 import { useCallback, useMemo, useState } from "react";
 import { JSONForm } from "./JSONForm.tsx";
 import { CanvasSettings } from "./CanvasSettings.tsx";
 import { GlobalBlockSettings } from "./GlobalBlockSettings.tsx";
-import { useRSCBlocksStore } from "../../hooks/useWatchRSCBlocks.ts";
 import { getBlockFormSchemas, getRegisteredChaiBlock } from "@chaibuilder/runtime";
-
-const ResetRSCBlockButton = ({ blockId }: { blockId: string }) => {
-  const { t } = useTranslation();
-  const { reset } = useRSCBlocksStore();
-  return (
-    <Button size="sm" variant="outline" onClick={() => reset(blockId)}>
-      {t("Reload")}
-    </Button>
-  );
-};
 
 const formDataWithSelectedLang = (formData, selectedLang: string, coreBlock) => {
   const updatedFormData = cloneDeep(formData);
@@ -93,8 +76,6 @@ export default function BlockSettings() {
     return getBlockFormSchemas(type);
   }, [selectedBlock]);
 
-  const isRSCBlock = get(registeredBlock, "server", false);
-
   return (
     <div className="overflow-x-hidden px-px">
       {dataBindingSupported ? (
@@ -153,7 +134,6 @@ export default function BlockSettings() {
         />
       ) : null}
       {selectedBlock?._type === "GlobalBlock" ? <GlobalBlockSettings /> : null}
-      {isRSCBlock ? <ResetRSCBlockButton blockId={selectedBlock?._id} /> : null}
       <CanvasSettings />
     </div>
   );

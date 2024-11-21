@@ -27,7 +27,6 @@ import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
 import { canAcceptChildBlock } from "../../../functions/block-helpers.ts";
 import { useCanvasWidth, useCutBlockIds, useGlobalBlocksStore, useHiddenBlockIds, useLanguages } from "../../../hooks";
 import { isVisibleAtBreakpoint } from "../../../functions/isVisibleAtBreakpoint.ts";
-import { RSCBlock } from "./RSCBlock.tsx";
 
 const generateClassNames = memoize((styles: string) => {
   const stylesArray = styles.replace(STYLES_KEY, "").split(",");
@@ -143,10 +142,7 @@ export function BlocksRendererStatic({ blocks, allBlocks }: { blocks: ChaiBlock[
 
           const chaiBlock = getRegisteredChaiBlock(block._type) as any;
 
-          const isRSCBlock = get(chaiBlock, "server", false);
-          const Component = isRSCBlock
-            ? RSCBlock
-            : get(chaiBlock, "builderComponent", get(chaiBlock, "component", null));
+          const Component = get(chaiBlock, "builderComponent", get(chaiBlock, "component", null));
           if (isNull(Component)) return <noscript>{`<!-- ${block?._type} not registered -->`}</noscript>;
           const blockStateFrom = has(chaiBlock, "getBlockStateFrom")
             ? chaiBlock?.getBlockStateFrom(block, allBlocks)
@@ -173,9 +169,6 @@ export function BlocksRendererStatic({ blocks, allBlocks }: { blocks: ChaiBlock[
             ...(dropTargetId === block._id && !isChildOfDraggedBlock ? { "data-drop": "yes" } : {}),
             ...(includes(cutBlockIds, block._id) ? { "data-cut-block": "yes" } : {}),
           };
-          if (isRSCBlock) {
-            return <RSCBlock block={block} blockProps={blockProps} />;
-          }
 
           return (
             <Suspense>

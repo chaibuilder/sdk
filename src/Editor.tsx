@@ -79,7 +79,8 @@ function ChaiBuilderDefault() {
         }
       }}
       uiLibraries={uiLibraries}
-      getRSCBlock={async (block: ChaiBlock) => {
+      getBlockAsyncProps={async (block: ChaiBlock) => {
+        console.log("getBlockAsyncProps", block);
         return new Promise((resolve) => {
           setTimeout(() => {
             resolve(`${get(block, "content", "")}`);
@@ -89,7 +90,6 @@ function ChaiBuilderDefault() {
       topBarComponents={{
         right: [RightTop],
       }}
-    
       getGlobalBlockBlocks={async (globalBlockKey: string) => {
         const blocks =
           globalBlockKey === "header"
