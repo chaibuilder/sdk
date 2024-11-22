@@ -11,7 +11,17 @@ import { useTranslation } from "react-i18next";
 import { CHAI_BUILDER_EVENTS } from "../../../../events.ts";
 import { pubsub } from "../../../../pubsub.ts";
 
-export const CoreBlock = ({ block, disabled, parentId }: { block: any; disabled: boolean; parentId?: string }) => {
+export const CoreBlock = ({
+  block,
+  disabled,
+  parentId,
+  position,
+}: {
+  block: any;
+  disabled: boolean;
+  parentId?: string;
+  position?: number;
+}) => {
   const [, setDraggedBlock] = useAtom(draggedBlockAtom);
   const { type, icon, label } = block;
   const { addCoreBlock, addPredefinedBlock } = useAddBlock();
@@ -20,9 +30,9 @@ export const CoreBlock = ({ block, disabled, parentId }: { block: any; disabled:
   const addBlockToPage = () => {
     if (has(block, "blocks")) {
       const blocks = isFunction(block.blocks) ? block.blocks() : block.blocks;
-      addPredefinedBlock(syncBlocksWithDefaults(blocks), parentId || null);
+      addPredefinedBlock(syncBlocksWithDefaults(blocks), parentId || null, position);
     } else {
-      addCoreBlock(block, parentId || null);
+      addCoreBlock(block, parentId || null, position);
     }
     pubsub.publish(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK);
   };

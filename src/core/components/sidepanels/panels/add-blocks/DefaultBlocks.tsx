@@ -3,7 +3,15 @@ import { useBuilderProp } from "../../../../hooks";
 import { ChaiBuilderBlocks } from "./AddBlocks.tsx";
 import { filter, groupBy, map, uniq } from "lodash-es";
 
-export const DefaultChaiBlocks = ({ parentId, gridCols = "grid-cols-2" }: { parentId?: string; gridCols?: string }) => {
+export const DefaultChaiBlocks = ({
+  parentId,
+  position,
+  gridCols = "grid-cols-2",
+}: {
+  parentId?: string;
+  position?: number;
+  gridCols?: string;
+}) => {
   const allChaiBlocks = useRegisteredChaiBlocks();
   const filterChaiBlock = useBuilderProp("filterChaiBlock", () => true);
   const chaiBlocks = filter(allChaiBlocks, filterChaiBlock);
@@ -12,6 +20,12 @@ export const DefaultChaiBlocks = ({ parentId, gridCols = "grid-cols-2" }: { pare
   const uniqueTypeGroup = uniq(map(groupedBlocks.core, "group"));
 
   return (
-    <ChaiBuilderBlocks gridCols={gridCols} parentId={parentId} groups={uniqueTypeGroup} blocks={groupedBlocks.core} />
+    <ChaiBuilderBlocks
+      gridCols={gridCols}
+      parentId={parentId}
+      position={position}
+      groups={uniqueTypeGroup}
+      blocks={groupedBlocks.core}
+    />
   );
 };

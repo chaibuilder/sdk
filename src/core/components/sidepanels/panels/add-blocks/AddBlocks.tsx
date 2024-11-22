@@ -23,7 +23,7 @@ import { atomWithStorage } from "jotai/utils";
 
 const CORE_GROUPS = ["basic", "typography", "media", "layout", "form", "advanced", "other"];
 
-export const ChaiBuilderBlocks = ({ groups, blocks, parentId, gridCols = "grid-cols-4" }: any) => {
+export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols = "grid-cols-4" }: any) => {
   const { t } = useTranslation();
   const [allBlocks] = useBlocksStore();
   const parentType = find(allBlocks, (block) => block._id === parentId)?._type;
@@ -44,6 +44,7 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, gridCols = "grid-c
                       return (
                         <CoreBlock
                           parentId={parentId}
+                          position={position}
                           block={block}
                           disabled={
                             !canAcceptChildBlock(parentType, block.type) || !canBeNestedInside(parentType, block.type)
@@ -67,10 +68,12 @@ const AddBlocksPanel = ({
   className,
   showHeading = true,
   parentId = undefined,
+  position = -1,
 }: {
   parentId?: string;
   showHeading?: boolean;
   className?: string;
+  position?: number;
 }) => {
   const { t } = useTranslation();
   const [tab, setTab] = useAtom(addBlockTabAtom);
@@ -103,12 +106,12 @@ const AddBlocksPanel = ({
       {tab === "core" && (
         <ScrollArea className="-mx-1.5 h-[calc(100vh-156px)] overflow-y-auto">
           <div className="mt-2 w-full">
-            <DefaultChaiBlocks gridCols={"grid-cols-4"} parentId={parentId} />
+            <DefaultChaiBlocks gridCols={"grid-cols-4"} parentId={parentId} position={position} />
           </div>
         </ScrollArea>
       )}
-      {tab === "library" && <UILibraries parentId={parentId} />}
-      {tab === "html" && importHTMLSupport ? <ImportHTML parentId={parentId} /> : null}
+      {tab === "library" && <UILibraries parentId={parentId} position={position} />}
+      {tab === "html" && importHTMLSupport ? <ImportHTML parentId={parentId} position={position} /> : null}
     </div>
   );
 };
