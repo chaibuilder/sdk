@@ -6,14 +6,14 @@ import { getBlocksFromHTML } from "../../../../import-html/html-to-json";
 import { CHAI_BUILDER_EVENTS } from "../../../../events.ts";
 import { pubsub } from "../../../../pubsub.ts";
 
-const ImportHTML = ({ parentId }: { parentId?: string }) => {
+const ImportHTML = ({ parentId, position }: { parentId?: string; position?: number }) => {
   const { t } = useTranslation();
   const [code, setCode] = useState("");
   const { addPredefinedBlock } = useAddBlock();
 
   const importComponents = () => {
     const blocks = getBlocksFromHTML(code);
-    addPredefinedBlock([...blocks], parentId);
+    addPredefinedBlock([...blocks], parentId, position);
     setCode("");
     pubsub.publish(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK);
   };
