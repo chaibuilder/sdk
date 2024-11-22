@@ -369,7 +369,7 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
       if (hasVideoEmbed(innerHTML)) {
         set(block, "_type", "Video");
         set(block, "url", getVideoURLFromHTML(innerHTML));
-        set(block, "styles", `${STYLES_KEY},absolute top-0 left-0 w-full h-full`);
+        set(block, "styles", `${STYLES_KEY},`);
         set(block, "controls", { autoPlay: false, muted: true, loop: false, controls: false });
       }
       block.content = innerHTML;
