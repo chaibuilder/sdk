@@ -3,17 +3,17 @@ import { HeadingIcon } from "@radix-ui/react-icons";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 
 export type HeadingProps = {
-  level: string;
+  tag: string;
   styles: ChaiStyles;
   content: string;
 };
 
 const HeadingBlock = (props: ChaiBlockComponentProps<HeadingProps>) => {
-  const { blockProps, styles, content, level = "h1", children = null } = props;
+  const { blockProps, styles, content, tag = "h1", children = null } = props;
 
-  if (children) return React.createElement(level, { ...styles, ...blockProps }, children);
+  if (children) return React.createElement(tag, { ...styles, ...blockProps }, children);
 
-  return React.createElement(level, {
+  return React.createElement(tag, {
     ...styles,
     ...blockProps,
     dangerouslySetInnerHTML: { __html: content },
@@ -28,7 +28,7 @@ const Config = {
   group: "typography",
   ...registerChaiBlockSchema({
     properties: {
-      level: {
+      tag: {
         type: "string",
         default: "h2",
         title: "Level",
