@@ -61,7 +61,6 @@ export const useAddBlock = (): AddBlocks => {
 
       const blockId = generateUUID();
       const props: { [key: string]: any } = getDefaultBlockProps(coreBlock.type);
-      console.log("props", coreBlock);
 
       const newBlock: ChaiBlock = {
         _type: coreBlock.type,

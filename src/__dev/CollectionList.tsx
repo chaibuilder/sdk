@@ -108,9 +108,9 @@ const Config = {
         },
         // ui: { "ui:widget": "collectionPagination" },
       },
-      wrapperStyles: StylesProp(""),
-      listStyles: StylesProp(""),
-      itemStyles: StylesProp(""),
+      wrapperStyles: StylesProp("bg-red-100 p-2 border border-red-500"),
+      listStyles: StylesProp("text-blue-500"),
+      itemStyles: StylesProp("text-green-500"),
     },
   }),
 };

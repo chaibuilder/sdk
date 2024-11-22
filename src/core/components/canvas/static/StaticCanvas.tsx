@@ -25,6 +25,7 @@ import { StaticBlocksRenderer } from "./StaticBlocksRenderer.tsx";
 import { Provider } from "react-wrap-balancer";
 import { AddBlockAtBottom } from "./AddBlockAtBottom.tsx";
 import { ResizableCanvasWrapper } from "./ResizableCanvasWrapper.tsx";
+import { BlockStyleHighlight } from "../BlockStyleHighlight.tsx";
 
 const getElementByStyleId = (doc: any, styleId: string): HTMLElement =>
   doc.querySelector(`[data-style-id="${styleId}"]`) as HTMLElement;
@@ -40,7 +41,7 @@ const StaticCanvas = (): React.JSX.Element => {
   const [dimension, setDimension] = useState({ width: 0, height: 0 });
   const scale = useCanvasScale(dimension);
   const [selectedElements, setSelectedElements] = useState<HTMLElement[]>([]);
-  const [, setSelectedStyleElements] = useState<HTMLElement[] | null[]>([]);
+  const [selectedStyleElements, setSelectedStyleElements] = useState<HTMLElement[] | null[]>([]);
   const [, setCanvasIframe] = useAtom(canvasIframeAtom);
   const [stylingBlocks, setStylingBlocks] = useSelectedStylingBlocks();
   const loadingCanvas = useBuilderProp("loading", false);
@@ -125,6 +126,10 @@ const StaticCanvas = (): React.JSX.Element => {
           <BlockActionsStatic
             block={selectedBlock as unknown as ChaiBlock}
             selectedBlockElement={first(selectedElements)}
+          />
+          <BlockStyleHighlight
+            block={selectedBlock as unknown as ChaiBlock}
+            selectedStyleElement={first(selectedStyleElements)}
           />
           <HeadTags />
           <Provider>

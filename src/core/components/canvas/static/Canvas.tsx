@@ -14,7 +14,7 @@ function getTargetedBlock(target) {
   }
 
   // Then check for other blocks
-  if (target.getAttribute("data-block-id")) {
+  if (target.getAttribute("data-block-id") || target.getAttribute("data-block-parent")) {
     return target;
   }
 
@@ -144,9 +144,9 @@ const useHandleMouseMove = () => {
     if (editingBlockId) return;
     const chaiBlock = getTargetedBlock(e.target);
     if (chaiBlock) {
-      highlightBlock(chaiBlock.getAttribute("data-block-id"));
+      highlightBlock(chaiBlock);
     }
-  }, 16);
+  }, 20);
 };
 
 const useHandleMouseLeave = () => {

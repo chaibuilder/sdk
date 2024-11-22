@@ -106,7 +106,7 @@ export const HeadTags = () => {
   useEffect(() => {
     if (!selectedStylingBlocks) return;
     selectedStylingBlocks.textContent = `${map(stylingBlockIds, ({ id }: any) => `[data-style-id="${id}"]`).join(",")}{
-                outline: 1px solid #42a1fc !important; outline-offset: -1px;
+                outline: 1px solid orange !important; outline-offset: -1px;
             }`;
   }, [stylingBlockIds, selectedStylingBlocks]);
 
