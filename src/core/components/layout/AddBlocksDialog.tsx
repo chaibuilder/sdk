@@ -12,9 +12,9 @@ export const AddBlocksDialog = () => {
   const [position, setPosition] = useState<number>(-1);
   const [open, setOpen] = useState(false);
 
-  usePubSub(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, (data: { _id: string } | undefined) => {
+  usePubSub(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, (data: { _id: string; position?: number } | undefined) => {
     setParentId(data ? data._id : null);
-    setPosition(-1); // @TODO: Set custom position to add
+    setPosition(isNaN(data?.position) ? -1 : data?.position);
     setOpen(true);
   });
 
