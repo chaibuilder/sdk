@@ -35,65 +35,65 @@ type Props = {
 export const TypeIcon: React.FC<Props> = (props) => {
   switch (props.type) {
     case "GlobalBlock":
-      return <GlobeIcon className="h-4 w-4" />;
+      return <GlobeIcon className="h-3 w-3 stroke-[2]" />;
     case "Image":
-      return <ImageIcon />;
+      return <ImageIcon className="h-3 w-3 stroke-[2]" />;
     case "Heading":
-      return <HeadingIcon />;
+      return <HeadingIcon className="h-3 w-3 stroke-[2]" />;
     case "Text":
-      return <TextIcon />;
+      return <TextIcon className="h-3 w-3 stroke-[2]" />;
     case "Link":
-      return <Link1Icon />;
+      return <Link1Icon className="h-3 w-3 stroke-[2]" />;
     case "Video":
-      return <VideoIcon />;
+      return <VideoIcon className="h-3 w-3 stroke-[2]" />;
     case "RichText":
-      return <CursorTextIcon />;
+      return <CursorTextIcon className="h-3 w-3 stroke-[2]" />;
     case "Button":
-      return <ButtonIcon />;
+      return <ButtonIcon className="h-3 w-3 stroke-[2]" />;
     case "CustomHTML":
-      return <CodeIcon />;
+      return <CodeIcon className="h-3 w-3 stroke-[2]" />;
     case "Divider":
-      return <DividerHorizontalIcon />;
+      return <DividerHorizontalIcon className="h-3 w-3 stroke-[2]" />;
     case "Icon":
-      return <SketchLogoIcon />;
+      return <SketchLogoIcon className="h-3 w-3 stroke-[2]" />;
     case "List":
-      return <RowsIcon />;
+      return <RowsIcon className="h-3 w-3 stroke-[2]" />;
     case "Paragraph":
-      return <TextIcon />;
+      return <TextIcon className="h-3 w-3 stroke-[2]" />;
     case "Row":
-      return <RowsIcon />;
+      return <RowsIcon className="h-3 w-3 stroke-[2]" />;
     case "ListItem":
-      return <ColumnsIcon />;
+      return <ColumnsIcon className="h-3 w-3 stroke-[2]" />;
     case "LineBreak":
-      return <SpaceBetweenVerticallyIcon />;
+      return <SpaceBetweenVerticallyIcon className="h-3 w-3 stroke-[2]" />;
     case "Form":
-      return <GroupIcon />;
+      return <GroupIcon className="h-3 w-3 stroke-[2]" />;
     case "Checkbox":
-      return <CheckboxIcon />;
+      return <CheckboxIcon className="h-3 w-3 stroke-[2]" />;
     case "FormButton":
-      return <ButtonIcon />;
+      return <ButtonIcon className="h-3 w-3 stroke-[2]" />;
     case "Input":
     case "TextArea":
-      return <InputIcon />;
+      return <InputIcon className="h-3 w-3 stroke-[2]" />;
     case "Radio":
-      return <RadiobuttonIcon />;
+      return <RadiobuttonIcon className="h-3 w-3 stroke-[2]" />;
     case "Select":
-      return <DropdownMenuIcon />;
+      return <DropdownMenuIcon className="h-3 w-3 stroke-[2]" />;
     case "Table":
-      return <TableIcon />;
+      return <TableIcon className="h-3 w-3 stroke-[2]" />;
     case "TableHead":
-      return <BorderTopIcon />;
+      return <BorderTopIcon className="h-3 w-3 stroke-[2]" />;
     case "TableBody":
-      return <BorderAllIcon />;
+      return <BorderAllIcon className="h-3 w-3 stroke-[2]" />;
     case "TableRow":
-      return <ViewHorizontalIcon />;
+      return <ViewHorizontalIcon className="h-3 w-3 stroke-[2]" />;
     case "TableCell":
-      return <DragHandleHorizontalIcon />;
+      return <DragHandleHorizontalIcon className="h-3 w-3 stroke-[2]" />;
     case "DataProvider":
-      return <DatabaseIcon size={16} />;
+      return <DatabaseIcon className="h-3 w-3 stroke-[2]" />;
     case "Box":
-      return <BoxIcon />;
+      return <BoxIcon className="h-3 w-3 stroke-[2]" />;
     default:
-      return <BoxModelIcon />;
+      return <BoxModelIcon className="h-3 w-3 stroke-[2]" />;
   }
 };
