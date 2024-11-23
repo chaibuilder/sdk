@@ -113,10 +113,6 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
           {canDuplicateBlock(get(block, "_type", "")) ? (
             <CopyIcon className="hover:scale-105" onClick={() => duplicateBlock([block?._id])} />
           ) : null}
-          <GearIcon
-            className="text-white hover:scale-105"
-            onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.SHOW_BLOCK_SETTINGS, block)}
-          />
           {canDeleteBlock(get(block, "_type", "")) ? (
             <TrashIcon className="hover:scale-105" onClick={() => removeBlock([block?._id])} />
           ) : null}

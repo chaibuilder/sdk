@@ -28,6 +28,7 @@ import { canAcceptChildBlock } from "../../../functions/block-helpers.ts";
 import { useCanvasWidth, useCutBlockIds, useGlobalBlocksStore, useHiddenBlockIds, useLanguages } from "../../../hooks";
 import { isVisibleAtBreakpoint } from "../../../functions/isVisibleAtBreakpoint.ts";
 import AsyncPropsBlock from "./AsyncPropsBlock.tsx";
+import RuntimePropsBlock from "./RuntimePropsBlock.tsx";
 
 const generateClassNames = memoize((styles: string) => {
   const stylesArray = styles.replace(STYLES_KEY, "").split(",");
@@ -70,6 +71,12 @@ function applyBindings(block: ChaiBlock, chaiData: any): ChaiBlock {
   });
   return block;
 }
+
+const getRuntimeProps = memoize((blockType: string) => {
+  const chaiBlock = getRegisteredChaiBlock(blockType) as any;
+  const props = get(chaiBlock, "schema.properties", {});
+  return props;
+});
 
 function isDescendant(parentId: string, blockId: string, allBlocks: ChaiBlock[]): boolean {
   const parentBlock = find(allBlocks, { _id: parentId });
@@ -191,6 +198,17 @@ export function BlocksRendererStatic({ blocks, allBlocks }: { blocks: ChaiBlock[
                   props={props}
                 />
               </Suspense>
+            );
+          }
+          const runtimeProps = getRuntimeProps(block._type);
+          if (runtimeProps) {
+            return (
+              <RuntimePropsBlock
+                runtimeProps={runtimeProps}
+                block={block}
+                component={Component}
+                props={props}
+              />
             );
           }
 
