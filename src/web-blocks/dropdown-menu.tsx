@@ -1,15 +1,18 @@
 import {
   ChaiBlockComponentProps,
+  ChaiRuntimeProp,
   ChaiStyles,
+  closestBlockProp,
   registerChaiBlock,
   registerChaiBlockSchema,
+  runtimeProp,
   StylesProp,
 } from "@chaibuilder/runtime";
 
 export type DropdownLinksProps = {
   title: string;
   icon: string;
-  showDropdown: boolean;
+  showDropdown: ChaiRuntimeProp<boolean>;
   children: React.ReactNode;
 };
 
@@ -26,13 +29,19 @@ const DropdownButton = (
     iconWidth: string;
     iconHeight: string;
     styles: ChaiStyles;
+
+    show: ChaiRuntimeProp<boolean>;
   }>,
 ) => {
-  const { blockProps, title, icon, iconWidth, iconHeight, styles } = props;
+  const { blockProps, title, icon, iconWidth, iconHeight, styles, show } = props;
   return (
     <button {...blockProps} {...alpineAttrs.button} {...styles}>
       {title}
-      <span dangerouslySetInnerHTML={{ __html: icon }} style={{ width: iconWidth, height: iconHeight }} />
+      <span
+        className={show ? "rotate-180" : ""}
+        dangerouslySetInnerHTML={{ __html: icon }}
+        style={{ width: iconWidth, height: iconHeight }}
+      />
     </button>
   );
 };
@@ -47,6 +56,7 @@ registerChaiBlock(DropdownButton, {
   canDelete: () => false,
   ...registerChaiBlockSchema({
     properties: {
+      show: closestBlockProp("DropdownMenu", ["showDropdown"]),
       title: { type: "string", title: "Title", default: "Menu Item" },
       icon: { type: "string", title: "Icon", default: "", ui: { "ui:widget": "icon" } },
       iconWidth: { type: "string", title: "Icon Width", default: "16px" },
@@ -74,14 +84,15 @@ registerChaiBlock(DropdownMenuContent, {
   canAcceptBlock: () => true,
   ...registerChaiBlockSchema({
     properties: {
+      show: closestBlockProp("Dropdown", ["showDropdown"]),
       styles: StylesProp("absolute left-0 w-80 mt-2 bg-white rounded-lg shadow-lg z-50"),
     },
   }),
 });
 
 const Component = (props: ChaiBlockComponentProps<DropdownLinksProps>) => {
-  const { children } = props;
-  return children;
+  const { blockProps, children } = props;
+  return <div {...blockProps}>{children}</div>;
 };
 
 const Config = {
@@ -108,11 +119,11 @@ const Config = {
   category: "core",
   ...registerChaiBlockSchema({
     properties: {
-      showDropdown: {
+      showDropdown: runtimeProp({
         type: "boolean",
         title: "Show Dropdown",
         default: false,
-      },
+      }),
     },
   }),
 };
