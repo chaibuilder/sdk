@@ -75,7 +75,8 @@ function applyBindings(block: ChaiBlock, chaiData: any): ChaiBlock {
 const getRuntimeProps = memoize((blockType: string) => {
   const chaiBlock = getRegisteredChaiBlock(blockType) as any;
   const props = get(chaiBlock, "schema.properties", {});
-  return props;
+  // return key value with value has runtime: true
+  return Object.fromEntries(Object.entries(props).filter(([, value]) => get(value, "runtime", false)));
 });
 
 function isDescendant(parentId: string, blockId: string, allBlocks: ChaiBlock[]): boolean {
@@ -202,14 +203,7 @@ export function BlocksRendererStatic({ blocks, allBlocks }: { blocks: ChaiBlock[
           }
           const runtimeProps = getRuntimeProps(block._type);
           if (runtimeProps) {
-            return (
-              <RuntimePropsBlock
-                runtimeProps={runtimeProps}
-                block={block}
-                component={Component}
-                props={props}
-              />
-            );
+            return <RuntimePropsBlock runtimeProps={runtimeProps} block={block} component={Component} props={props} />;
           }
 
           return <Suspense>{React.createElement(Component, props)}</Suspense>;

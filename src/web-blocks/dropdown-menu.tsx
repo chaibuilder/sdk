@@ -6,14 +6,14 @@ import {
   registerChaiBlock,
   registerChaiBlockSchema,
   runtimeProp,
+  stylesProp,
   StylesProp,
 } from "@chaibuilder/runtime";
 
 export type DropdownLinksProps = {
-  title: string;
-  icon: string;
   showDropdown: ChaiRuntimeProp<boolean>;
   children: React.ReactNode;
+  styles: ChaiStyles;
 };
 
 const alpineAttrs = {
@@ -56,7 +56,7 @@ registerChaiBlock(DropdownButton, {
   canDelete: () => false,
   ...registerChaiBlockSchema({
     properties: {
-      show: closestBlockProp("DropdownMenu", ["showDropdown"]),
+      show: closestBlockProp("Dropdown", "showDropdown"),
       title: { type: "string", title: "Title", default: "Menu Item" },
       icon: { type: "string", title: "Icon", default: "", ui: { "ui:widget": "icon" } },
       iconWidth: { type: "string", title: "Icon Width", default: "16px" },
@@ -66,17 +66,21 @@ registerChaiBlock(DropdownButton, {
   }),
 });
 
-const DropdownMenuContent = (props: ChaiBlockComponentProps<{ children: React.ReactNode; styles: ChaiStyles }>) => {
-  const { blockProps, children, styles } = props;
+const DropdownContent = (
+  props: ChaiBlockComponentProps<{ children: React.ReactNode; styles: ChaiStyles; show: ChaiRuntimeProp<boolean> }>,
+) => {
+  const { blockProps, children, styles, show } = props;
+  if (!show) return null;
+
   return (
-    <div {...blockProps} {...alpineAttrs.wrapper} className="relative">
-      <div {...styles}>{children}</div>
+    <div {...blockProps} {...alpineAttrs.wrapper} {...styles}>
+      {children}
     </div>
   );
 };
 
-registerChaiBlock(DropdownMenuContent, {
-  type: "DropdownMenuContent",
+registerChaiBlock(DropdownContent, {
+  type: "DropdownContent",
   label: "Dropdown Content",
   hidden: true,
   canMove: () => false,
@@ -84,36 +88,48 @@ registerChaiBlock(DropdownMenuContent, {
   canAcceptBlock: () => true,
   ...registerChaiBlockSchema({
     properties: {
-      show: closestBlockProp("Dropdown", ["showDropdown"]),
-      styles: StylesProp("absolute left-0 w-80 mt-2 bg-white rounded-lg shadow-lg z-50"),
+      show: closestBlockProp("Dropdown", "showDropdown"),
+      styles: stylesProp("absolute left-0 p-2 w-80 mt-2 bg-white rounded-lg shadow-lg z-50"),
     },
   }),
 });
 
 const Component = (props: ChaiBlockComponentProps<DropdownLinksProps>) => {
-  const { blockProps, children } = props;
-  return <div {...blockProps}>{children}</div>;
+  const { blockProps, children, styles } = props;
+  return (
+    <div {...blockProps} {...styles}>
+      {children}
+    </div>
+  );
 };
 
 const Config = {
-  type: "DropdownMenu",
-  label: "Dropdown Menu",
-  group: "advanced",
+  type: "Dropdown",
+  label: "Dropdown",
+  group: "basic",
   blocks: () => [
-    { _type: "DropdownMenu", _id: "menu" },
+    { _type: "Dropdown", _id: "dropdown" },
     {
       _type: "DropdownButton",
       _id: "button",
-      _parent: "menu",
+      _parent: "dropdown",
       title: "Menu Item",
       icon: "",
       styles: "#styles:,flex items-center gap-2 px-4 py-1",
     },
     {
-      _type: "DropdownMenuContent",
+      _type: "DropdownContent",
       _id: "content",
-      _parent: "menu",
+      _parent: "dropdown",
       styles: "#styles:,absolute left-0 w-80 mt-2 bg-white rounded-lg shadow-lg z-50",
+    },
+    {
+      _type: "Link",
+      _id: "link",
+      _parent: "content",
+      content: "Link",
+      styles: "#styles:,flex items-center gap-2 px-4 py-1",
+      link: { href: "https://www.google.com", type: "url", target: "_self" },
     },
   ],
   category: "core",
@@ -124,6 +140,7 @@ const Config = {
         title: "Show Dropdown",
         default: false,
       }),
+      styles: StylesProp("relative"),
     },
   }),
 };

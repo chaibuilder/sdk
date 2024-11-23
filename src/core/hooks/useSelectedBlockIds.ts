@@ -116,7 +116,7 @@ export const selectedBlockHierarchy = atom((get) => {
  * TODO: Add test cases for this hook
  */
 export const useSelectedBlockHierarchy = () => {
-  return compact(useAtomValue(selectedBlockHierarchy));
+  return compact(useAtomValue(selectedBlockHierarchy)) as ChaiBlock[];
 };
 
 /**
