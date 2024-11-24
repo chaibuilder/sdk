@@ -69,8 +69,8 @@ registerChaiBlock(DropdownButton, {
 const DropdownContent = (
   props: ChaiBlockComponentProps<{ children: React.ReactNode; styles: ChaiStyles; show: ChaiRuntimeProp<boolean> }>,
 ) => {
-  const { blockProps, children, styles, show } = props;
-  if (!show) return null;
+  const { blockProps, children, styles, show, inBuilder } = props;
+  if (inBuilder && !show) return null;
 
   return (
     <div {...blockProps} {...alpineAttrs.wrapper} {...styles}>
