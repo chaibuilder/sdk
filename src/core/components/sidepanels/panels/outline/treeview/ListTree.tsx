@@ -85,28 +85,15 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
 
   const [addSelectParentHighlight, setAddSelectParentHighlight]: any = useAtom(currentAddSelection);
   const onMouseEnter = () => {
-    if (addSelectParentHighlight) {
-      if (addSelectParentHighlight === node?.parent?.id) return;
-      const ele = document.getElementById(`tree-node-${addSelectParentHighlight}`);
-      if (ele) {
-        ele.style.backgroundColor = "rgba(124,252,0,0)";
-      }
-    }
+    onMouseLeave();
     const ele = document.getElementById(`tree-node-${node?.parent?.id}`);
     if (ele && !node.parent.isSelected) {
       setAddSelectParentHighlight(node?.parent?.id as any);
-      ele.style.backgroundColor = "rgba(124,252,0,0.1)";
     }
   };
 
   const onMouseLeave = () => {
-    if (addSelectParentHighlight) {
-      const ele = document.getElementById(`tree-node-${addSelectParentHighlight}`);
-      if (ele) {
-        ele.style.backgroundColor = "#FFFFFF";
-      }
-      setAddSelectParentHighlight(null);
-    }
+    setAddSelectParentHighlight(null);
   };
 
   const handleNodeClickWithoutPropagating = (e: any) => {
@@ -230,13 +217,13 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
             e.preventDefault();
             setDropAttribute(id, "no");
           }}>
-          {node?.rowIndex > 0 && node.parent.isOpen && (
+          {node?.rowIndex > 0 && node.parent.isOpen && canAddChildBlock(get(node, "parent.data._type")) && (
             <div className="group relative ml-5 h-full w-full cursor-pointer">
               <div
                 onClick={() => addBlockOnPosition(node.childIndex)}
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
-                className="absolute -top-0.5 h-1 w-[90%] rounded bg-purple-500 opacity-0 duration-200 group-hover:opacity-100">
+                className="absolute -top-0.5 h-1 w-[90%] rounded bg-purple-500 opacity-0 delay-200 duration-200 group-hover:opacity-100">
                 <div className="absolute left-1/2 top-1/2 flex h-5 w-5 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full bg-purple-500 p-1 outline outline-2 outline-white hover:bg-purple-500">
                   <PlusIcon className="h-4 w-4 stroke-[3] text-white" />
                 </div>
@@ -249,6 +236,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
               "group flex w-full cursor-pointer items-center justify-between space-x-px !rounded p-1 text-foreground/80 outline-none",
               isSelected ? "bg-blue-500 text-white" : "hover:bg-slate-200 dark:hover:bg-gray-800",
               willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
+              node?.id === addSelectParentHighlight ? "bg-purple-50" : "",
               isDragging && "opacity-20",
               hiddenBlocks.includes(id) ? "opacity-50" : "",
             )}>
