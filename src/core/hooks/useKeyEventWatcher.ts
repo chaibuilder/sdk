@@ -1,5 +1,5 @@
 import { useHotkeys } from "react-hotkeys-hook";
-import { useSelectedBlockIds } from "./useSelectedBlockIds";
+import { useSelectedBlock, useSelectedBlockIds } from "./useSelectedBlockIds";
 import { useRemoveBlocks } from "./useRemoveBlocks";
 import { useDuplicateBlocks } from "./useDuplicateBlocks";
 import { useUndoManager } from "../history/useUndoManager.ts";
@@ -7,9 +7,11 @@ import { useCutBlockIds } from "./useCutBlockIds.ts";
 import { useCopyBlockIds } from "./useCopyBlockIds.ts";
 import { usePasteBlocks } from "./usePasteBlocks.ts";
 import { canDeleteBlock } from "../functions/block-helpers.ts";
+import { get } from "lodash-es";
 
 export const useKeyEventWatcher = (doc?: Document) => {
   const [ids, setIds] = useSelectedBlockIds();
+  const selectedBlock = useSelectedBlock();
   const removeBlocks = useRemoveBlocks();
   const duplicateBlocks = useDuplicateBlocks();
   const { undo, redo } = useUndoManager();
@@ -42,7 +44,8 @@ export const useKeyEventWatcher = (doc?: Document) => {
     "del, backspace",
     (event: any) => {
       event.preventDefault();
-      if (ids.length > 0 && canDeleteBlock(ids[0])) {
+
+      if (canDeleteBlock(get(selectedBlock, "_type", ""))) {
         removeBlocks(ids);
       }
     },
