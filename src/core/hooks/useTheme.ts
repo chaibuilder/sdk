@@ -2,7 +2,7 @@ import { atom, useAtom } from "jotai";
 import { BorderRadiusValue, ChaiBuilderThemeOptions, ChaiBuilderThemeValues } from "../types/chaiBuilderEditorProps";
 import { useBuilderProp } from "./useBuilderProp";
 import { useMemo } from "react";
-import { isEmpty } from "lodash";
+import { isEmpty } from "lodash-es";
 import { defaultThemeOptions } from "./defaultThemeOptions";
 
 export const getDefaultThemeValues = (

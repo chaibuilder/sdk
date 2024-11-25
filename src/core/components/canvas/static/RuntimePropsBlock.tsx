@@ -1,7 +1,7 @@
 import { ChaiBlock, ChaiBlockPropSchema } from "@chaibuilder/runtime";
-import { get } from "lodash";
+import { get } from "lodash-es";
 import React, { Suspense } from "react";
-import { find } from "lodash";
+import { find } from "lodash-es";
 import { useSelectedBlockHierarchy } from "../../../hooks/useSelectedBlockIds";
 
 export default function RuntimePropsBlock(props: {

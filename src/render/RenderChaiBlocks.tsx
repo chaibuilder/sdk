@@ -5,7 +5,7 @@ import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { STYLES_KEY } from "../core/constants/STRINGS.ts";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { addPrefixToClasses } from "./functions.ts";
-import { has } from "lodash";
+import { has } from "lodash-es";
 import AsyncPropsBlock from "./AsyncBlockProps.tsx";
 
 const generateClassNames = memoize((styles: string, classPrefix: string) => {
