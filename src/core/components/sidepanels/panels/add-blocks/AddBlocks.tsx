@@ -9,6 +9,7 @@ import {
   AccordionTrigger,
   ScrollArea,
   Tabs,
+  TabsContent,
   TabsList,
   TabsTrigger,
 } from "../../../../../ui";
@@ -79,6 +80,7 @@ const AddBlocksPanel = ({
   const [tab, setTab] = useAtom(addBlockTabAtom);
   const [, setCategory] = useAtom(showPredefinedBlockCategoryAtom);
   const importHTMLSupport = useBuilderProp("importHTMLSupport", true);
+  const addBlocksDialogTabs = useBuilderProp("addBlocksDialogTabs", []);
   return (
     <div className={mergeClasses("flex h-full w-full flex-col overflow-hidden", className)}>
       {showHeading ? (
@@ -96,22 +98,34 @@ const AddBlocksPanel = ({
           setTab(_tab);
         }}
         value={tab}
-        className={mergeClasses("h-max")}>
-        <TabsList className={"grid w-full " + (importHTMLSupport ? "grid-cols-3" : "grid-cols-2")}>
+        className={"flex h-full max-h-full flex-col overflow-hidden"}>
+        <TabsList className={"flex w-full items-center"}>
           <TabsTrigger value="library">{t("Library")}</TabsTrigger>
           <TabsTrigger value="core">{t("Blocks")}</TabsTrigger>
           {importHTMLSupport ? <TabsTrigger value="html">{t("Import")}</TabsTrigger> : null}
+          {map(addBlocksDialogTabs, (tab) => (
+            <TabsTrigger value={tab.key}>{React.createElement(tab.tab)}</TabsTrigger>
+          ))}
         </TabsList>
+        <TabsContent value="core" className="h-full max-h-full flex-1 pb-20">
+          <ScrollArea className="-mx-1.5 h-full max-h-full overflow-y-auto">
+            <div className="mt-2 w-full">
+              <DefaultChaiBlocks gridCols={"grid-cols-4"} parentId={parentId} position={position} />
+            </div>
+          </ScrollArea>
+        </TabsContent>
+        <TabsContent value="library" className="h-full max-h-full flex-1 pb-20">
+          <UILibraries parentId={parentId} position={position} />
+        </TabsContent>
+        {importHTMLSupport ? (
+          <TabsContent value="html" className="h-full max-h-full flex-1 pb-20">
+            <ImportHTML parentId={parentId} position={position} />
+          </TabsContent>
+        ) : null}
+        {map(addBlocksDialogTabs, (tab) => (
+          <TabsContent value={tab.key}>{React.createElement(tab.tabContent)}</TabsContent>
+        ))}
       </Tabs>
-      {tab === "core" && (
-        <ScrollArea className="-mx-1.5 h-[calc(100vh-156px)] overflow-y-auto">
-          <div className="mt-2 w-full">
-            <DefaultChaiBlocks gridCols={"grid-cols-4"} parentId={parentId} position={position} />
-          </div>
-        </ScrollArea>
-      )}
-      {tab === "library" && <UILibraries parentId={parentId} position={position} />}
-      {tab === "html" && importHTMLSupport ? <ImportHTML parentId={parentId} position={position} /> : null}
     </div>
   );
 };

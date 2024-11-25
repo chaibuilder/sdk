@@ -122,6 +122,15 @@ export interface ChaiBuilderEditorProps {
   mediaManagerComponent?: React.ComponentType<{ onSelect: (url: string) => void }>;
 
   /**
+   * Add blocks dialog components
+   */
+  addBlocksDialogTabs?: {
+    key: string;
+    tab: ReactComponentType;
+    tabContent: ReactComponentType;
+  }[];
+
+  /**
    * HTML direction.
    */
   htmlDir?: "ltr" | "rtl";
