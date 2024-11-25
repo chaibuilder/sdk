@@ -1,6 +1,7 @@
 import * as React from "react";
 import { ButtonIcon } from "@radix-ui/react-icons";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
+import { isEmpty, get } from "lodash-es";
 
 export type ButtonProps = {
   content: string;
@@ -11,7 +12,7 @@ export type ButtonProps = {
 };
 
 const Component = (props: ChaiBlockComponentProps<ButtonProps>) => {
-  const { blockProps, iconSize, icon, content, styles, children, iconPos } = props;
+  const { blockProps, iconSize, icon, content, styles, children, iconPos, link, inBuilder } = props;
   const _icon = icon;
 
   const child = children || (
@@ -26,7 +27,8 @@ const Component = (props: ChaiBlockComponentProps<ButtonProps>) => {
       )}
     </>
   );
-  return React.createElement(
+
+  const button = React.createElement(
     "button",
     {
       ...blockProps,
@@ -35,6 +37,20 @@ const Component = (props: ChaiBlockComponentProps<ButtonProps>) => {
     },
     child,
   );
+
+  if (!isEmpty(get(link, "href"))) {
+    if (inBuilder) {
+      return <span>{button}</span>;
+    } else {
+      return (
+        <a href={get(link, "href") || "/"} target={get(link, "target", "_self")}>
+          {button}
+        </a>
+      );
+    }
+  }
+
+  return button;
 };
 
 const Config = {
@@ -67,6 +83,22 @@ const Config = {
         title: "Icon position",
         default: "order-last",
         enum: ["order-first", "order-last"],
+      },
+      link: {
+        type: "object",
+        properties: {
+          type: { type: "string" },
+          href: { type: "string" },
+          target: { type: "string" },
+        },
+        default: {
+          type: "url",
+          href: "",
+          target: "_self",
+        },
+        ui: {
+          "ui:field": "link",
+        },
       },
     },
   }),
