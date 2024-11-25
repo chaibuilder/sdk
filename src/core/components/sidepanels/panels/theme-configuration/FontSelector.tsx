@@ -1,5 +1,5 @@
 import { Label } from "../../../../../ui/shadcn/components/ui/label.tsx";
-import { startCase } from "lodash";
+import { startCase } from "lodash-es";
 
 const FONTS = [
   { title: "Roboto", value: "Roboto" },

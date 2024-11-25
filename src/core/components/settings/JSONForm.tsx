@@ -9,7 +9,7 @@ import { CodeEditor } from "../../rjsf-widgets/Code.tsx";
 import { useLanguages } from "../../hooks/useLanguages.ts";
 import { useSelectedBlock } from "../../hooks/useSelectedBlockIds.ts";
 import { useRegisteredChaiBlocks } from "@chaibuilder/runtime";
-import { get, isEmpty } from "lodash";
+import { get, isEmpty } from "lodash-es";
 import { LANGUAGES } from "../../constants/LANGUAGES.ts";
 import { ChevronDown, ChevronRight, List, Plus } from "lucide-react";
 
