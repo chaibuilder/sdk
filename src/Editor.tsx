@@ -31,6 +31,13 @@ function ChaiBuilderDefault() {
 
   return (
     <ChaiBuilderEditor
+      addBlocksDialogTabs={[
+        {
+          key: "gen-ai",
+          tab: () => <span>Generative AI</span>,
+          tabContent: () => <span>Generative AI</span>,
+        },
+      ]}
       fallbackLang="fr"
       languages={["pt", "en"]}
       themePresets={[{ Kia: orangePreset }, { Nissan: greenPreset }, { Infiniti: bluePreset }]}
