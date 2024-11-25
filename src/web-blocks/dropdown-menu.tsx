@@ -6,9 +6,9 @@ import {
   registerChaiBlock,
   registerChaiBlockSchema,
   runtimeProp,
-  stylesProp,
   StylesProp,
 } from "@chaibuilder/runtime";
+import { DropdownMenuIcon } from "@radix-ui/react-icons";
 
 export type DropdownLinksProps = {
   showDropdown: ChaiRuntimeProp<boolean>;
@@ -24,7 +24,7 @@ const alpineAttrs = {
 
 const DropdownButton = (
   props: ChaiBlockComponentProps<{
-    title: string;
+    content: string;
     icon: string;
     iconWidth: string;
     iconHeight: string;
@@ -33,10 +33,10 @@ const DropdownButton = (
     show: ChaiRuntimeProp<boolean>;
   }>,
 ) => {
-  const { blockProps, title, icon, iconWidth, iconHeight, styles, show } = props;
+  const { blockProps, content, icon, iconWidth, iconHeight, styles, show } = props;
   return (
     <button {...blockProps} {...alpineAttrs.button} {...styles}>
-      {title}
+      {content}
       <span
         className={show ? "rotate-180" : ""}
         dangerouslySetInnerHTML={{ __html: icon }}
@@ -57,7 +57,7 @@ registerChaiBlock(DropdownButton, {
   ...registerChaiBlockSchema({
     properties: {
       show: closestBlockProp("Dropdown", "showDropdown"),
-      title: { type: "string", title: "Title", default: "Menu Item" },
+      content: { type: "string", title: "Title", default: "Menu Item" },
       icon: { type: "string", title: "Icon", default: "", ui: { "ui:widget": "icon" } },
       iconWidth: { type: "string", title: "Icon Width", default: "16px" },
       iconHeight: { type: "string", title: "Icon Height", default: "16px" },
@@ -73,7 +73,7 @@ const DropdownContent = (
   if (inBuilder && !show) return null;
 
   return (
-    <div {...blockProps} {...alpineAttrs.wrapper} {...styles}>
+    <div {...blockProps} {...alpineAttrs.menu} {...styles}>
       {children}
     </div>
   );
@@ -89,7 +89,7 @@ registerChaiBlock(DropdownContent, {
   ...registerChaiBlockSchema({
     properties: {
       show: closestBlockProp("Dropdown", "showDropdown"),
-      styles: stylesProp("absolute left-0 p-2 w-80 mt-2 bg-white rounded-lg shadow-lg z-50"),
+      styles: StylesProp("absolute left-0 p-2 w-80 mt-2 bg-white rounded-lg shadow-lg z-50"),
     },
   }),
 });
@@ -97,7 +97,7 @@ registerChaiBlock(DropdownContent, {
 const Component = (props: ChaiBlockComponentProps<DropdownLinksProps>) => {
   const { blockProps, children, styles } = props;
   return (
-    <div {...blockProps} {...styles}>
+    <div {...blockProps} {...styles} {...alpineAttrs.wrapper}>
       {children}
     </div>
   );
@@ -107,6 +107,7 @@ const Config = {
   type: "Dropdown",
   label: "Dropdown",
   group: "basic",
+  icon: DropdownMenuIcon,
   blocks: () => [
     { _type: "Dropdown", _id: "dropdown" },
     {
@@ -114,14 +115,14 @@ const Config = {
       _id: "button",
       _parent: "dropdown",
       title: "Menu Item",
-      icon: "",
+      icon: `<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"> <path d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"/> </svg>`,
       styles: "#styles:,flex items-center gap-2 px-4 py-1",
     },
     {
       _type: "DropdownContent",
       _id: "content",
       _parent: "dropdown",
-      styles: "#styles:,absolute left-0 w-80 mt-2 bg-white rounded-lg shadow-lg z-50",
+      styles: "#styles:,absolute left-0 w-80 mt-0.5 bg-white rounded-lg shadow-lg z-50",
     },
     {
       _type: "Link",
@@ -140,7 +141,7 @@ const Config = {
         title: "Show Dropdown",
         default: false,
       }),
-      styles: StylesProp("relative"),
+      styles: StylesProp("relative w-max"),
     },
   }),
 };
