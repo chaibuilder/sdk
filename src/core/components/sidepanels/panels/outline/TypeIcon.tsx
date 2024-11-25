@@ -18,6 +18,7 @@ import {
   InputIcon,
   Link1Icon,
   RadiobuttonIcon,
+  ReaderIcon,
   RowsIcon,
   SketchLogoIcon,
   SpaceBetweenVerticallyIcon,
@@ -49,6 +50,7 @@ export const TypeIcon: React.FC<Props> = (props) => {
     case "RichText":
       return <CursorTextIcon className="h-3 w-3 stroke-[2]" />;
     case "Button":
+    case "DropdownButton":
       return <ButtonIcon className="h-3 w-3 stroke-[2]" />;
     case "CustomHTML":
       return <CodeIcon className="h-3 w-3 stroke-[2]" />;
@@ -93,6 +95,10 @@ export const TypeIcon: React.FC<Props> = (props) => {
       return <DatabaseIcon className="h-3 w-3 stroke-[2]" />;
     case "Box":
       return <BoxIcon className="h-3 w-3 stroke-[2]" />;
+    case "Dropdown":
+      return <DropdownMenuIcon className="h-3 w-3 stroke-[2]" />;
+    case "DropdownContent":
+      return <ReaderIcon className="h-3 w-3 stroke-[2]" />;
     default:
       return <BoxModelIcon className="h-3 w-3 stroke-[2]" />;
   }
