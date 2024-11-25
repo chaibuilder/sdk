@@ -6,6 +6,7 @@ import { useUndoManager } from "../history/useUndoManager.ts";
 import { useCutBlockIds } from "./useCutBlockIds.ts";
 import { useCopyBlockIds } from "./useCopyBlockIds.ts";
 import { usePasteBlocks } from "./usePasteBlocks.ts";
+import { canDeleteBlock } from "../functions/block-helpers.ts";
 
 export const useKeyEventWatcher = (doc?: Document) => {
   const [ids, setIds] = useSelectedBlockIds();
@@ -41,7 +42,9 @@ export const useKeyEventWatcher = (doc?: Document) => {
     "del, backspace",
     (event: any) => {
       event.preventDefault();
-      removeBlocks(ids);
+      if (ids.length > 0 && canDeleteBlock(ids[0])) {
+        removeBlocks(ids);
+      }
     },
     options,
     [ids, removeBlocks],
