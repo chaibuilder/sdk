@@ -43,11 +43,11 @@ export const IframeInitialContent: string = `<!doctype html>
     [data-cut-block="yes"] { pointer-events: none !important; display: none !important; }
     </style>    
     <style id="hidden-blocks"></style>
-    <style id="selected-block"></style>
     <style id="selected-styling-block"></style>
     <style id="highlighted-block"></style>
     <style id="dragged-block"></style>
     <style id="drop-target-block"></style>
+    <style id="selected-block"></style>
 
   </head>
   <body class="font-body antialiased h-full">

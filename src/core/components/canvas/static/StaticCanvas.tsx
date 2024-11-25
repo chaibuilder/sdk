@@ -127,10 +127,6 @@ const StaticCanvas = (): React.JSX.Element => {
             block={selectedBlock as unknown as ChaiBlock}
             selectedBlockElement={first(selectedElements)}
           />
-          <BlockStyleHighlight
-            block={selectedBlock as unknown as ChaiBlock}
-            selectedStyleElement={first(selectedStyleElements)}
-          />
           <HeadTags />
           <Provider>
             <Canvas>
