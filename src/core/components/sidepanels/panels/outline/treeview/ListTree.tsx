@@ -378,11 +378,6 @@ const ListTree = () => {
     return [...nodes, { _type: ROOT_TEMP_KEY, _id: ROOT_TEMP_KEY, children: [] }];
   }, [treeData, cutBlocksIds]);
 
-  useEffect(() => {
-    //@ts-ignore
-    setTreeRef(treeRef.current);
-  }, [setTreeRef, treeRef]);
-
   const onRename: RenameHandler<any> = ({ id, name, node }) => {
     updateBlockProps([id], { _name: name }, node.data._name);
   };
@@ -464,6 +459,24 @@ const ListTree = () => {
       }
     }
   };
+
+  useEffect(() => {
+    const updateTreeRef = () => {
+      if (treeRef.current) {
+        //@ts-ignore
+        setTreeRef(treeRef.current);
+      }
+    };
+    //sets the ref once on mount if its available
+    updateTreeRef();
+
+    /**Sets up a MutationObserver to watch for DOM changes and try setting the ref again */
+    const observer = new MutationObserver(updateTreeRef);
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    //disconnect observer on unmount
+    return () => observer.disconnect();
+  }, [setTreeRef]);
 
   if (isEmpty(treeData))
     return (
