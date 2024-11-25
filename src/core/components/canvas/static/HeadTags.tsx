@@ -87,8 +87,8 @@ export const HeadTags = () => {
     if (!selectedBlockStyle) return;
     selectedBlockStyle.textContent = `${map(selectedBlockIds, (id) => `[data-block-id="${id}"]`).join(",")}{
                 outline: 1px solid ${
-                  selectedBlockIds.length === 1 ? "#42a1fc" : "orange"
-                } !important; outline-offset: -1px;
+                  selectedBlockIds.length === 1 ? "#42a1fc !important" : "orange !important"
+                }; outline-offset: -1px;
             }`;
   }, [selectedBlockIds, selectedBlockStyle]);
 

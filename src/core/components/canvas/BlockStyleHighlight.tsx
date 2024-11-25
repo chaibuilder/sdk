@@ -6,6 +6,8 @@ import { useAtom } from "jotai";
 import { inlineEditingActiveAtom } from "../../atoms/ui.ts";
 import { Paintbrush } from "lucide-react";
 
+// NOTE: this component is not used anymore, but keeping it for now. Might remove it later.
+// Author: surajair
 export const BlockStyleHighlight = ({
   block,
   selectedStyleElement,

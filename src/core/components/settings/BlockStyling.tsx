@@ -7,6 +7,7 @@ import { Accordion } from "../../../ui";
 import { BlockSettingsContext } from "./SettingsContext.tsx";
 import React, { useCallback } from "react";
 import { useThrottledCallback } from "@react-hookz/web";
+import { BlockStylingProps } from "./BlockStylingProps.tsx";
 
 const MAPPER: { [key: string]: number } = {
   px: 1,
@@ -92,6 +93,7 @@ export default function BlockStyling() {
         />
       ) : null}
       <div className="flex flex-col">
+        <BlockStylingProps />
         <StylingHelpers />
         <Accordion defaultValue={["Styles"]} type="multiple" className="w-full">
           {flexChild && <StylingGroup section={FLEX_CHILD_SECTION} showAccordian={flexChild || gridChild} />}

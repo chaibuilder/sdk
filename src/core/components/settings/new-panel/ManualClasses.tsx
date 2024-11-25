@@ -119,7 +119,7 @@ export function ManualClasses() {
       } w-full flex-col gap-y-1.5 overflow-y-auto pb-4`}>
       <div className="flex items-center justify-between gap-x-2">
         <div className="flex items-center gap-x-2 text-muted-foreground">
-          <span>{t("classes")}</span>
+          <span>{t("Classes")}</span>
           <Tooltip>
             <TooltipTrigger asChild>
               <CopyIcon onClick={onClickCopy} className={"cursor-pointer"} />
