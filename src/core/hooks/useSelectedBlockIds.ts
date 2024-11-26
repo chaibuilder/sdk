@@ -8,7 +8,7 @@ import { ChaiBlock } from "../types/ChaiBlock";
 /**
  * Core selected  ids atom
  */
-const selectedBlockIdsAtom = atom<Array<string>>([]);
+export const selectedBlockIdsAtom = atom<Array<string>>([]);
 selectedBlockIdsAtom.debugLabel = "selectedBlockIdsAtom";
 
 /**

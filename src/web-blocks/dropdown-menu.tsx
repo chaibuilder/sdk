@@ -134,6 +134,7 @@ const Config = {
     },
   ],
   category: "core",
+  wrapper: true,
   ...registerChaiBlockSchema({
     properties: {
       showDropdown: runtimeProp({

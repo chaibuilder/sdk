@@ -1,5 +1,5 @@
 import { IChangeEvent } from "@rjsf/core";
-import { includes, set, capitalize, cloneDeep, debounce, get, isEmpty, keys, map, forEach } from "lodash-es";
+import { includes, set, capitalize, cloneDeep, debounce, get, isEmpty, keys, map, forEach, startCase } from "lodash-es";
 import { useLanguages, useSelectedBlock, useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "../../hooks";
 import DataBindingSetting from "../../rjsf-widgets/data-binding.tsx";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../ui";
@@ -8,6 +8,8 @@ import { JSONForm } from "./JSONForm.tsx";
 import { CanvasSettings } from "./CanvasSettings.tsx";
 import { GlobalBlockSettings } from "./GlobalBlockSettings.tsx";
 import { getBlockFormSchemas, getRegisteredChaiBlock } from "@chaibuilder/runtime";
+import { ChevronDown, ChevronRight } from "lucide-react";
+import { useWrapperBlock } from "../../hooks";
 
 const formDataWithSelectedLang = (formData, selectedLang: string, coreBlock) => {
   const updatedFormData = cloneDeep(formData);
@@ -40,6 +42,11 @@ export default function BlockSettings() {
   const [prevFormData, setPrevFormData] = useState(formData);
   const dataBindingSupported = false;
 
+  const [showWrapperSetting, setShowWrapperSetting] = useState(false);
+  const wrapperBlock = useWrapperBlock();
+  const registeredWrapperBlock = getRegisteredChaiBlock(wrapperBlock?._type);
+  const wrapperFormData = formDataWithSelectedLang(wrapperBlock, selectedLang, registeredWrapperBlock);
+
   const updateProps = ({ formData: newData }: IChangeEvent, id?: string, oldState?: any) => {
     if (id && prevFormData?._id === selectedBlock._id) {
       const path = id.replace("root.", "") as string;
@@ -66,18 +73,64 @@ export default function BlockSettings() {
     }
   };
 
+  const updateWrapperRealtime = ({ formData: newData }: IChangeEvent, id?: string) => {
+    if (id) {
+      const path = id.replace("root.", "") as string;
+      updateBlockPropsRealtime(
+        [wrapperBlock._id],
+        convertDotNotationToObject(path, get(newData, path.split("."))) as any,
+      );
+      debouncedCall({ formData: newData }, id, { [path]: get(prevFormData, path) });
+    }
+  };
+
   const bindingProps = keys(get(formData, "_bindings", {}));
 
   const { schema, uiSchema } = useMemo(() => {
     const type = selectedBlock?._type;
     if (!type) {
-      return { schema: {}, uiSchema: {} };
+      return;
     }
     return getBlockFormSchemas(type);
   }, [selectedBlock]);
 
+  const { wrapperSchema, wrapperUiSchema } = useMemo(() => {
+    if (!wrapperBlock || !wrapperBlock?._type) {
+      return { wrapperSchema: {}, wrapperUiSchema: {} };
+    }
+    const type = wrapperBlock?._type;
+    const { schema: wrapperSchema = {}, uiSchema: wrapperUiSchema = {} } = getBlockFormSchemas(type);
+    return { wrapperSchema, wrapperUiSchema };
+  }, [wrapperBlock]);
+
   return (
     <div className="overflow-x-hidden px-px">
+      {!isEmpty(wrapperBlock) && (
+        <div className="mb-4 rounded border bg-zinc-100 px-1">
+          <div
+            onClick={() => setShowWrapperSetting((prev) => !prev)}
+            className="flex cursor-pointer items-center gap-x-1 py-2 text-xs font-medium leading-tight hover:bg-slate-100">
+            {showWrapperSetting ? (
+              <ChevronDown className="h-4 w-4 stroke-[3] text-slate-400" />
+            ) : (
+              <ChevronRight className="h-4 w-4 stroke-[3] text-slate-400" />
+            )}
+            {startCase(wrapperBlock._type)} settings{" "}
+            {wrapperBlock._name && (
+              <span className="text-[11px] font-light text-slate-400">({wrapperBlock._name})</span>
+            )}
+          </div>
+          {showWrapperSetting && (
+            <JSONForm
+              id={wrapperBlock?._id}
+              onChange={updateWrapperRealtime}
+              formData={wrapperFormData}
+              schema={wrapperSchema}
+              uiSchema={wrapperUiSchema}
+            />
+          )}
+        </div>
+      )}
       {dataBindingSupported ? (
         <Accordion type="multiple" defaultValue={["STATIC", "BINDING"]} className="mt-4 h-full w-full">
           <AccordionItem value="BINDING">
