@@ -42,7 +42,7 @@ const LightBoxLinkBlock = (props: ChaiRenderBlockProps<LightBoxLinkProps>) => {
   }
 
   const lightBoxAttrs = {};
-  lightBoxAttrs["data-vbtype"] = hrefType;
+  if (hrefType !== "image") lightBoxAttrs["data-vbtype"] = hrefType;
   if (autoplay) lightBoxAttrs["data-autoplay"] = "true";
   if (maxWidth) lightBoxAttrs["data-maxwidth"] = maxWidth + "px";
   if (backdropColor) lightBoxAttrs["data-overlay"] = backdropColor;
@@ -79,46 +79,24 @@ const Config = {
         title: "Content",
         default: "Link text or drop blocks inside",
       },
+      hrefType: {
+        type: "string",
+        title: "Type",
+        default: "image",
+        enum: ["image", "video", "iframe", "inline", "ajax"],
+        enumNames: ["Image", "Video", "Iframe", "Inline", "Ajax"],
+      },
       href: {
         type: "string",
         title: "Href",
         default: "",
       },
-      hrefType: {
-        type: "string",
-        title: "Type",
-        default: "video",
-        oneOf: [
-          {
-            type: "string",
-            title: "Video",
-            enum: ["video"],
-          },
-          {
-            type: "string",
-            title: "Iframe",
-            enum: ["iframe"],
-          },
-          {
-            type: "string",
-            title: "Inline",
-            enum: ["inline"],
-          },
-          {
-            type: "string",
-            title: "Ajax",
-            enum: ["ajax"],
-          },
-        ],
-      },
       autoplay: {
         type: "boolean",
-        title: "Autoplay",
+        title: "Autoplay (Video only)",
         default: false,
-        dependencies: {
-          hrefType: ["video"]
-        }
       },
+
       maxWidth: {
         type: "number",
         title: "Max Width",
@@ -134,6 +112,9 @@ const Config = {
         title: "Gallery Name",
         default: "",
       },
+    },
+    dependencies: {
+      autoplay: ["hrefType", "video"],
     },
   }),
   i18nProps: ["content"],
