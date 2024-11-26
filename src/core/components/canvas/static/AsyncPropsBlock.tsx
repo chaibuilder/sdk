@@ -7,6 +7,10 @@ export default function AsyncPropsBlock(props: {
   block: ChaiBlock;
   dataProvider: (args: any) => any;
 }) {
-  const dataProps = useMemo(() => props?.dataProvider({ block: props.block }), [props]);
+  const { dataProvider, block } = props;
+  const dataProps = useMemo(() => {
+    if (!dataProvider) return {};
+    return dataProvider({ block });
+  }, [block, dataProvider]);
   return <Suspense>{React.createElement(props.component, { ...props.props, ...dataProps })}</Suspense>;
 }
