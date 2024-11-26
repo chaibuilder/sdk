@@ -52,20 +52,23 @@ const CustomFieldTemplate = ({
   const showLangSuffix = i18nProps?.includes(id.replace("root.", ""));
 
   if (schema.type === "array") {
+    const arrayData = children?.props?.formData || [];
+    const isListOpen = openedList === id;
+
     return (
       <div className={`${classNames} relative`}>
         {schema.title && (
           <label
             htmlFor={id}
-            onClick={() => setOpenedList(openedList ? null : id)}
+            onClick={() => setOpenedList(isListOpen ? null : id)}
             className="flex cursor-pointer items-center gap-x-1 py-1 leading-tight duration-200 hover:bg-slate-100">
-            {openedList ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+            {isListOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
             <List className="h-3 w-3" />
             <span className="leading-tight">{label}</span>
           </label>
         )}
-        {openedList && (
-          <div className="p-2">
+        {(arrayData.length === 0 || isListOpen) && (
+          <div className="p-0.5">
             {description}
             {children}
             {errors}
@@ -100,11 +103,6 @@ const CustomAddButton = (props) => (
   </button>
 );
 
-/**
- *
- * @param param0
- * @returns JSONForm for Static and name fields
- */
 export const JSONForm = memo(({ id, schema, uiSchema, formData, onChange }: JSONFormType) => {
   const [form, setForm] = useState<any>(formData);
   const { selectedLang } = useLanguages();
