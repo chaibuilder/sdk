@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@ai-sdk/openai': ^0.0.37
   '@bobthered/tailwindcss-palette-generator': ^4.0.0
-  '@chaibuilder/runtime': 2.0.0-beta.10
+  '@chaibuilder/runtime': 2.0.0-beta.12
   '@commitlint/cli': 17.7.1
   '@commitlint/config-conventional': 17.7.0
   '@emotion/react': ^11.11.1
@@ -119,7 +119,7 @@ specifiers:
 
 dependencies:
   '@bobthered/tailwindcss-palette-generator': 4.0.0
-  '@chaibuilder/runtime': 2.0.0-beta.10_kgsil3qmwkuaypzeupjafsqja4
+  '@chaibuilder/runtime': 2.0.0-beta.12_kgsil3qmwkuaypzeupjafsqja4
   '@floating-ui/dom': 1.4.5
   '@floating-ui/react-dom': 2.0.1_biqbaboplfbrettd7655fr4n2y
   '@mhsdesign/jit-browser-tailwindcss': 0.4.1_ts-node@10.9.2
@@ -764,8 +764,8 @@ packages:
       statuses: 2.0.1
     dev: true
 
-  /@chaibuilder/runtime/2.0.0-beta.10_kgsil3qmwkuaypzeupjafsqja4:
-    resolution: {integrity: sha512-VtwyPcQ2qCAzLH/HNdug13977bQ39EAikuhBxVZ0Kaajy1yrK5q+0E04igntDknOOp4PtKPhm9/LqPPeEOIQDQ==}
+  /@chaibuilder/runtime/2.0.0-beta.12_kgsil3qmwkuaypzeupjafsqja4:
+    resolution: {integrity: sha512-OL7BdxJJGQM2/x9p9RFXjI09DQfW5tn7yU6fMnv2+ZJv52HBFIZX0zdr5ItE0QB07HLEXIsk98DULRtyzXTnSA==}
     dependencies:
       '@radix-ui/react-icons': 1.3.0_react@18.2.0
       '@rjsf/core': 5.22.4_la7wfdgkie6o4rkcl2hxcif47e
