@@ -174,7 +174,11 @@ export const AdvanceChoices = (props: RangeOptionsType) => {
       <div className="flex items-center justify-start">
         {unit === "class" ? (
           <>
-            <input className="w-20 rounded py-1" readOnly value={currentClass} />
+            <input
+              className="h-6 w-24 rounded border border-foreground/20 bg-background px-2 py-0.5 text-sm focus-visible:outline-0"
+              readOnly
+              value={currentClass}
+            />
             <Tooltip>
               <TooltipTrigger asChild>
                 <button type="button" className="invisible ml-3 mt-1 text-blue-600 group-hover:visible">
