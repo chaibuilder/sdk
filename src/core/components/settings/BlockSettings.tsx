@@ -104,7 +104,7 @@ export default function BlockSettings() {
   }, [wrapperBlock]);
 
   return (
-    <div className="overflow-x-hidden px-px">
+    <div className="no-scrollbar overflow-x-hidden px-px">
       {!isEmpty(wrapperBlock) && (
         <div className="mb-4 rounded border bg-zinc-100 px-1">
           <div
