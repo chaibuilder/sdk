@@ -86,8 +86,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const [addSelectParentHighlight, setAddSelectParentHighlight]: any = useAtom(currentAddSelection);
   const onMouseEnter = () => {
     onMouseLeave();
-    const ele = document.getElementById(`tree-node-${node?.parent?.id}`);
-    if (ele && !node.parent.isSelected) {
+    if (!node.parent.isSelected) {
       setAddSelectParentHighlight(node?.parent?.id as any);
     }
   };
@@ -173,7 +172,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
     if (parentId !== "__REACT_ARBORIST_INTERNAL_ROOT__") {
       pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, { _id: parentId, position });
     } else {
-      pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK);
+      pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, { position });
     }
   };
 
@@ -217,26 +216,30 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
             e.preventDefault();
             setDropAttribute(id, "no");
           }}>
-          {node?.rowIndex > 0 && node.parent.isOpen && canAddChildBlock(get(node, "parent.data._type")) && (
-            <div className="group relative ml-5 h-full w-full cursor-pointer">
-              <div
-                onClick={() => addBlockOnPosition(node.childIndex)}
-                onMouseEnter={onMouseEnter}
-                onMouseLeave={onMouseLeave}
-                className="absolute -top-0.5 h-1 w-[90%] rounded bg-purple-500 opacity-0 delay-200 duration-200 group-hover:opacity-100">
-                <div className="absolute left-1/2 top-1/2 flex h-5 w-5 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full bg-purple-500 p-1 outline outline-2 outline-white hover:bg-purple-500">
-                  <PlusIcon className="h-4 w-4 stroke-[3] text-white" />
+          {node?.rowIndex > 0 &&
+            ((node.parent.isOpen && canAddChildBlock(get(node, "parent.data._type"))) ||
+              node?.parent?.id === "__REACT_ARBORIST_INTERNAL_ROOT__") && (
+              <div className="group relative ml-5 h-full w-full cursor-pointer">
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    addBlockOnPosition(node.childIndex);
+                  }}
+                  onMouseEnter={onMouseEnter}
+                  onMouseLeave={onMouseLeave}
+                  className="absolute -top-0.5 h-1 w-[90%] rounded bg-purple-500 opacity-0 delay-200 duration-200 group-hover:opacity-100">
+                  <div className="absolute left-1/2 top-1/2 flex h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full bg-purple-500 p-1 outline outline-2 outline-white hover:bg-purple-500">
+                    <PlusIcon className="h-3 w-3 stroke-[4] text-white" />
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
           <div
-            id={`tree-node-${node.id}`}
             className={cn(
               "group flex w-full cursor-pointer items-center justify-between space-x-px !rounded p-1 text-foreground/80 outline-none",
               isSelected ? "bg-blue-500 text-white" : "hover:bg-slate-200 dark:hover:bg-gray-800",
               willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
-              node?.id === addSelectParentHighlight ? "bg-purple-50" : "",
+              node?.id === addSelectParentHighlight ? "bg-purple-100" : "",
               isDragging && "opacity-20",
               hiddenBlocks.includes(id) ? "opacity-50" : "",
             )}>
@@ -535,12 +538,12 @@ const ListTree = () => {
             <TooltipContent className="isolate z-[9999]">{t("Collapse all")}</TooltipContent>
           </Tooltip>
         </div>
-        <div className="group relative z-[9999] w-full cursor-pointer">
+        <div className="group relative z-[9999] ml-5 w-full cursor-pointer">
           <div
             onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, { position: 0 })}
-            className="h-1 rounded bg-purple-500 opacity-0 duration-200 group-hover:opacity-100">
-            <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 transform items-center gap-x-1 rounded-full bg-purple-500 px-3 py-1 text-[9px] leading-tight text-white hover:bg-purple-500">
-              <PlusIcon className="h-2 w-2 stroke-[3]" /> {t("Add block")}
+            className="h-1 w-[90%] rounded bg-purple-500 opacity-0 duration-200 group-hover:opacity-100">
+            <div className="absolute left-[45%] top-1/2 flex h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full bg-purple-500 p-1 outline outline-2 outline-white hover:bg-purple-500">
+              <PlusIcon className="h-3 w-3 stroke-[3] text-white" />
             </div>
           </div>
         </div>
