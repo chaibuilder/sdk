@@ -412,11 +412,19 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
  * @returns sanitizing html content
  */
 const getSanitizedHTML = (html: string) => {
-  // Handle escaped quotes in class names
-  html = html.replace(/class=\\?"([^"]*?)\\?"/g, (match, p1) => {
-    // Remove any escaped quotes and return normalized class attribute
-    return `class="${p1.replace(/\\"/g, '"')}"`;
+  // First handle all attributes with escaped quotes
+  html = html.replace(/(\w+)=\\?"([^"]*?)\\?"/g, (match, attr, value) => {
+    // Remove escaped quotes and backslashes from attribute values
+    return `${attr}="${value.replace(/\\\\/g, "").replace(/\\"/g, '"')}"`;
   });
+
+  // Remove all escaped newlines and remaining escape sequences
+  html = html
+    .replace(/\\n/g, "") // Remove escaped newlines
+    .replace(/\\\\/g, "") // Remove double backslashes
+    .replace(/\\([/<>])/g, "$1") // Handle escaped HTML tags
+    .replace(/\\./g, "") // Remove any remaining escape sequences
+    .replace(/[\n\r\t\f\v]/g, ""); // Remove actual whitespace characters
 
   // * Checking if having body tag then converting it to div and using that as root
   const bodyContent = html.match(/<body[^>]*>[\s\S]*?<\/body>/);
@@ -425,7 +433,7 @@ const getSanitizedHTML = (html: string) => {
       ? bodyContent[0].replace(/<body/, "<div").replace(/<\/body>/, "</div>")
       : html;
 
-  // * Replacing script and unwanted whitespaces and nextline
+  // * Replacing script and unwanted whitespaces
   return htmlContent
     .replace(/\s+/g, " ")
     .replaceAll("> <", "><")
