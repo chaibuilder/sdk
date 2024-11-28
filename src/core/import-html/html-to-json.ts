@@ -411,29 +411,35 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
  * @param html
  * @returns sanitizing html content
  */
-const getSanitizedHTML = (html: string) => {
-  // First handle all attributes with escaped quotes
-  html = html.replace(/(\w+)=\\?"([^"]*?)\\?"/g, (match, attr, value) => {
-    // Remove escaped quotes and backslashes from attribute values
-    return `${attr}="${value.replace(/\\\\/g, "").replace(/\\"/g, '"')}"`;
+export const getSanitizedHTML = (html: string) => {
+  // First, handle the JSON-like structures in attributes
+  html = html.replace(/(\w+)=\\?"(.*?)\\?"/g, (_match, attr, value) => {
+    // Remove initial escaping
+    let cleanValue = value.replace(/\\"/g, '"');
+
+    // Re-escape quotes that are part of JSON structure
+    cleanValue = cleanValue.replace(/{([^}]+)}/g, (jsonMatch) => {
+      return jsonMatch.replace(/"/g, '\\"');
+    });
+
+    // Unescape the outer quotes and return
+    return `${attr}="${cleanValue.replace(/\\"/g, '"')}"`;
   });
 
-  // Remove all escaped newlines and remaining escape sequences
+  // Rest of the function remains the same
   html = html
-    .replace(/\\n/g, "") // Remove escaped newlines
-    .replace(/\\\\/g, "") // Remove double backslashes
-    .replace(/\\([/<>])/g, "$1") // Handle escaped HTML tags
-    .replace(/\\./g, "") // Remove any remaining escape sequences
-    .replace(/[\n\r\t\f\v]/g, ""); // Remove actual whitespace characters
+    .replace(/\\n/g, "")
+    .replace(/\\\\/g, "")
+    .replace(/\\([/<>])/g, "$1")
+    .replace(/\\./g, "")
+    .replace(/[\n\r\t\f\v]/g, "");
 
-  // * Checking if having body tag then converting it to div and using that as root
   const bodyContent = html.match(/<body[^>]*>[\s\S]*?<\/body>/);
   const htmlContent =
     bodyContent && bodyContent.length > 0
       ? bodyContent[0].replace(/<body/, "<div").replace(/<\/body>/, "</div>")
       : html;
 
-  // * Replacing script and unwanted whitespaces
   return htmlContent
     .replace(/\s+/g, " ")
     .replaceAll("> <", "><")

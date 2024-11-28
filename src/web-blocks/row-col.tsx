@@ -5,7 +5,7 @@ import {
   registerChaiBlockSchema,
   StylesProp,
 } from "@chaibuilder/runtime";
-import _, { get } from "lodash";
+import { get } from "lodash-es";
 import { Columns, Rows } from "lucide-react";
 
 export type RowProps = {
