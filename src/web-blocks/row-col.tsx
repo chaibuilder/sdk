@@ -36,12 +36,13 @@ const Column = (props: ChaiBlockComponentProps<{ children: React.ReactNode; styl
 registerChaiBlock(Column, {
   type: "Column",
   label: "Column",
-  hidden: true,
-  canMove: () => false,
-  canDelete: () => true,
+  group: "basic",
+  category: "core",
   icon: Columns,
   wrapper: true,
+  canDelete: () => true,
   canAcceptBlock: () => true,
+  canBeNested: (type: string) => type === "Row",
   ...registerChaiBlockSchema({
     properties: {
       styles: StylesProp(""),
@@ -100,12 +101,12 @@ const Config = {
   ],
   category: "core",
   wrapper: true,
+  canAcceptBlock: (childType) => childType === "Column",
   ...registerChaiBlockSchema({
     properties: {
       styles: StylesProp(""),
       colCount: {
         type: "number",
-        title: "Columns Count",
         default: 2,
         minimum: 0,
         ui: { "ui:widget": "colCount" },
