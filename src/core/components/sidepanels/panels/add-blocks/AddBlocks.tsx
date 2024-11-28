@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { capitalize, filter, find, map, reject, sortBy, values } from "lodash-es";
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
@@ -17,10 +17,11 @@ import { CoreBlock } from "./CoreBlock";
 import { showPredefinedBlockCategoryAtom } from "../../../../atoms/ui";
 import { useBlocksStore, useBuilderProp } from "../../../../hooks";
 import ImportHTML from "./ImportHTML";
-import { mergeClasses, UILibraries } from "../../../../main";
+import { CHAI_BUILDER_EVENTS, mergeClasses, UILibraries } from "../../../../main";
 import { canAcceptChildBlock, canBeNestedInside } from "../../../../functions/block-helpers.ts";
 import { DefaultChaiBlocks } from "./DefaultBlocks.tsx";
 import { atomWithStorage } from "jotai/utils";
+import { pubsub } from "../../../../pubsub.ts";
 
 const CORE_GROUPS = ["basic", "typography", "media", "layout", "form", "advanced", "other"];
 
@@ -81,6 +82,9 @@ const AddBlocksPanel = ({
   const [, setCategory] = useAtom(showPredefinedBlockCategoryAtom);
   const importHTMLSupport = useBuilderProp("importHTMLSupport", true);
   const addBlocksDialogTabs = useBuilderProp("addBlocksDialogTabs", []);
+  const close = useCallback(() => {
+    pubsub.publish(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK);
+  }, []);
   return (
     <div className={mergeClasses("flex h-full w-full flex-col overflow-hidden", className)}>
       {showHeading ? (
@@ -123,7 +127,7 @@ const AddBlocksPanel = ({
           </TabsContent>
         ) : null}
         {map(addBlocksDialogTabs, (tab) => (
-          <TabsContent value={tab.key}>{React.createElement(tab.tabContent)}</TabsContent>
+          <TabsContent value={tab.key}>{React.createElement(tab.tabContent, { close })}</TabsContent>
         ))}
       </Tabs>
     </div>
