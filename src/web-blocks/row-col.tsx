@@ -7,6 +7,7 @@ import {
 } from "@chaibuilder/runtime";
 import { get } from "lodash-es";
 import { Columns, Rows } from "lucide-react";
+import { NUMBER_TO_COL_SPAN } from "../core/constants/TWCLASS_VALUES";
 
 export type RowProps = {
   styles: ChaiStyles;
@@ -17,9 +18,9 @@ const Column = (props: ChaiBlockComponentProps<{ children: React.ReactNode; styl
 
   const className = [
     get(styles, "className", ""),
-    `col-span-${isNaN(colSpan) || !colSpan ? 6 : colSpan}`,
-    tabletColSpan ? `md:col-span-${tabletColSpan}` : "",
-    desktopColSpan ? `lg:col-span-${desktopColSpan}` : "",
+    get(NUMBER_TO_COL_SPAN, ["SMALL", isNaN(colSpan) || !colSpan ? 6 : colSpan], ""),
+    tabletColSpan ? get(NUMBER_TO_COL_SPAN, ["MEDIUM", tabletColSpan || colSpan], "") : "",
+    desktopColSpan ? get(NUMBER_TO_COL_SPAN, ["LARGE", tabletColSpan || colSpan], "") : "",
   ];
   const _styles = { className: className.join(" ") };
 
@@ -71,8 +72,14 @@ registerChaiBlock(Column, {
 const Component = (props: ChaiBlockComponentProps<RowProps>) => {
   const { blockProps, children, styles, gutter } = props;
 
-  const className = [get(styles, "className", ""), " grid grid-cols-12", isNaN(gutter) ? "" : `gap-[${gutter}px]`];
-  const _styles = { className: className.join(" ") };
+  const className = [get(styles, "className", ""), " grid grid-cols-12"];
+  const _styles: any = { className: className.join() };
+
+  if (typeof styles?.style === "object") {
+    styles.style.gap = `${gutter}px`;
+  } else {
+    _styles.style = { gap: `${gutter}px` };
+  }
 
   return (
     <div {...blockProps} {...styles} {..._styles}>
@@ -93,7 +100,6 @@ const Config = {
   ],
   category: "core",
   wrapper: true,
-  canAcceptBlock: (childType) => childType === "Column",
   ...registerChaiBlockSchema({
     properties: {
       styles: StylesProp(""),
@@ -106,7 +112,7 @@ const Config = {
       },
       gutter: {
         type: "number",
-        title: "Gutter",
+        title: "Gutter (in px)",
         default: 16,
         minimum: 0,
       },
