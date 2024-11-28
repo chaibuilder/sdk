@@ -412,6 +412,12 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
  * @returns sanitizing html content
  */
 const getSanitizedHTML = (html: string) => {
+  // Handle escaped quotes in class names
+  html = html.replace(/class=\\?"([^"]*?)\\?"/g, (match, p1) => {
+    // Remove any escaped quotes and return normalized class attribute
+    return `class="${p1.replace(/\\"/g, '"')}"`;
+  });
+
   // * Checking if having body tag then converting it to div and using that as root
   const bodyContent = html.match(/<body[^>]*>[\s\S]*?<\/body>/);
   const htmlContent =
