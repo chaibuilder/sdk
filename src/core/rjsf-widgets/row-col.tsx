@@ -1,7 +1,6 @@
 import { useAddBlock, useBlocksStore, useSelectedBlock, useWrapperBlock } from "../hooks";
 import { filter } from "lodash-es";
 import { size } from "lodash";
-import { Badge } from "../../ui";
 import { Plus } from "lucide-react";
 
 const RowColField = () => {
@@ -17,11 +16,7 @@ const RowColField = () => {
 
   return (
     <div className="pt-1">
-      {columnCounts > 11 && (
-        <div className="text-[9px] leading-tight text-slate-400">Max limit reached. Only 12 columns allowed.</div>
-      )}
       <div className="flex items-center gap-x-2 pt-1">
-        <Badge className="flex h-[22px] items-center justify-center rounded p-0 px-2 text-[14px]">{columnCounts}</Badge>
         <button
           type="button"
           disabled={columnCounts > 11}

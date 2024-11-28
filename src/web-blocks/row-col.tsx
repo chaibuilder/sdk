@@ -100,12 +100,13 @@ const Config = {
   ],
   category: "core",
   wrapper: true,
+  canAcceptBlock: (childType) => childType === "Column",
   ...registerChaiBlockSchema({
     properties: {
       styles: StylesProp(""),
       colCount: {
         type: "number",
-        title: "Columns Count",
+        title: "",
         default: 2,
         minimum: 0,
         ui: { "ui:widget": "colCount" },
