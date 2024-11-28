@@ -23,6 +23,7 @@ const RowColField = () => {
       <div className="flex items-center gap-x-2 pt-1">
         <Badge className="flex h-[22px] items-center justify-center rounded p-0 px-2 text-[14px]">{columnCounts}</Badge>
         <button
+          type="button"
           disabled={columnCounts > 11}
           className={`duratiom-300 flex items-center gap-x-1 rounded px-3 py-1 text-[11px] font-medium leading-tight ${columnCounts > 11 ? "cursor-not-allowed bg-gray-300 text-gray-500" : "border border-gray-400 bg-gray-100 hover:bg-slate-200"}`}
           onClick={() => addCoreBlock({ type: "Column", styles: "#styles:," }, rowBlock?._id)}>
