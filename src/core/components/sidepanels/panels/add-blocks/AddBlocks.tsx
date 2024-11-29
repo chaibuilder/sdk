@@ -144,7 +144,9 @@ const AddBlocksPanel = ({
           </TabsContent>
         ) : null}
         {map(addBlocksDialogTabs, (tab) => (
-          <TabsContent value={tab.key}>{React.createElement(tab.tabContent, { close })}</TabsContent>
+          <TabsContent value={tab.key}>
+            {React.createElement(tab.tabContent, { close, parentId, position })}
+          </TabsContent>
         ))}
       </Tabs>
     </div>
