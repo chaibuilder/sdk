@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { capitalize, filter, find, map, reject, sortBy, values } from "lodash-es";
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
@@ -29,6 +29,7 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
   const { t } = useTranslation();
   const [allBlocks] = useBlocksStore();
   const parentType = find(allBlocks, (block) => block._id === parentId)?._type;
+  
   return React.Children.toArray(
     map(
       sortBy(groups, (group: string) => (CORE_GROUPS.indexOf(group) === -1 ? 99 : CORE_GROUPS.indexOf(group))),
@@ -90,6 +91,12 @@ const AddBlocksPanel = ({
   const close = useCallback(() => {
     pubsub.publish(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK);
   }, []);
+
+  useEffect(() => {
+    if (!canAddBox && tab !== "core") {
+      setTab("core");
+    }
+  }, [canAddBox, setTab, tab]);
 
   return (
     <div className={mergeClasses("flex h-full w-full flex-col overflow-hidden", className)}>
