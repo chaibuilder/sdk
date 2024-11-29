@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { capitalize, filter, find, map, reject, sortBy, values } from "lodash-es";
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
@@ -29,7 +29,7 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
   const { t } = useTranslation();
   const [allBlocks] = useBlocksStore();
   const parentType = find(allBlocks, (block) => block._id === parentId)?._type;
-  
+
   return React.Children.toArray(
     map(
       sortBy(groups, (group: string) => (CORE_GROUPS.indexOf(group) === -1 ? 99 : CORE_GROUPS.indexOf(group))),
@@ -92,11 +92,7 @@ const AddBlocksPanel = ({
     pubsub.publish(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK);
   }, []);
 
-  useEffect(() => {
-    if (!canAddBox && tab !== "core") {
-      setTab("core");
-    }
-  }, [canAddBox, setTab, tab]);
+  const currentTab = !canAddBox ? "core" : tab;
 
   return (
     <div className={mergeClasses("flex h-full w-full flex-col overflow-hidden", className)}>
@@ -104,7 +100,7 @@ const AddBlocksPanel = ({
         <div className="mb-2 flex flex-col justify-between rounded-md bg-background/30 p-1">
           <h1 className="flex flex-col items-baseline px-1 text-xl font-semibold xl:flex-col">{t("Add block")}</h1>
           <span className="p-0 text-xs font-light leading-3 opacity-80 xl:pl-1">
-            {tab === "html" ? t("Enter or paste TailwindCSS HTML snippet") : t("Click to add block to page")}
+            {currentTab === "html" ? t("Enter or paste TailwindCSS HTML snippet") : t("Click to add block to page")}
           </span>
         </div>
       ) : null}
@@ -114,7 +110,7 @@ const AddBlocksPanel = ({
           setCategory("");
           setTab(_tab);
         }}
-        value={tab}
+        value={currentTab}
         className={"flex h-full max-h-full flex-col overflow-hidden"}>
         <TabsList className={"flex w-full items-center"}>
           <TabsTrigger value="library" disabled={!canAddBox}>
