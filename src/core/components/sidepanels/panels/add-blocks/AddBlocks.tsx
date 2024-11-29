@@ -82,9 +82,15 @@ const AddBlocksPanel = ({
   const [, setCategory] = useAtom(showPredefinedBlockCategoryAtom);
   const importHTMLSupport = useBuilderProp("importHTMLSupport", true);
   const addBlocksDialogTabs = useBuilderProp("addBlocksDialogTabs", []);
+
+  const [allBlocks] = useBlocksStore();
+  const parentType = find(allBlocks, (block) => block._id === parentId)?._type;
+  const canAddBox = !parentType || (canAcceptChildBlock(parentType, "Box") && canBeNestedInside(parentType, "Box"));
+
   const close = useCallback(() => {
     pubsub.publish(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK);
   }, []);
+
   return (
     <div className={mergeClasses("flex h-full w-full flex-col overflow-hidden", className)}>
       {showHeading ? (
@@ -104,11 +110,19 @@ const AddBlocksPanel = ({
         value={tab}
         className={"flex h-full max-h-full flex-col overflow-hidden"}>
         <TabsList className={"flex w-full items-center"}>
-          <TabsTrigger value="library">{t("Library")}</TabsTrigger>
+          <TabsTrigger value="library" disabled={!canAddBox}>
+            {t("Library")}
+          </TabsTrigger>
           <TabsTrigger value="core">{t("Blocks")}</TabsTrigger>
-          {importHTMLSupport ? <TabsTrigger value="html">{t("Import")}</TabsTrigger> : null}
+          {importHTMLSupport ? (
+            <TabsTrigger value="html" disabled={!canAddBox}>
+              {t("Import")}
+            </TabsTrigger>
+          ) : null}
           {map(addBlocksDialogTabs, (tab) => (
-            <TabsTrigger value={tab.key}>{React.createElement(tab.tab)}</TabsTrigger>
+            <TabsTrigger value={tab.key} disabled={!canAddBox}>
+              {React.createElement(tab.tab)}
+            </TabsTrigger>
           ))}
         </TabsList>
         <TabsContent value="core" className="h-full max-h-full flex-1 pb-20">
