@@ -330,7 +330,10 @@ const Input = ({ node }) => {
   return (
     <input
       autoFocus
-      className="ml-2 !h-4 w-full rounded-sm border border-border bg-background px-1 text-[11px] leading-tight outline-none"
+      className={cn(
+        "ml-2 !h-4 w-full rounded-sm border border-border bg-background px-1 text-[11px] leading-tight outline-none",
+        node.isSelected ? "text-black dark:text-white" : "",
+      )}
       type="text"
       defaultValue={node.data?._name || node.data?._type}
       onFocus={(e) => e.currentTarget.select()}
