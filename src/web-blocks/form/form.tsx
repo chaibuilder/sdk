@@ -1,6 +1,7 @@
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
-import EmptySlot from "../empty-slot";
+
 import { GroupIcon } from "lucide-react";
+import EmptySlot from "../empty-slot";
 
 export type FormProps = {
   errorMessage: string;
@@ -21,6 +22,7 @@ const FormBlock = (props: ChaiBlockComponentProps<FormProps>) => {
     "x-data": "{}",
     "x-on:submit.prevent": "post",
   };
+
   const formResponseAttr = {
     "x-html": "",
     ":class": "{'text-red-500': formStatus === 'ERROR', 'text-green-500': formStatus === 'SUCCESS'}",
