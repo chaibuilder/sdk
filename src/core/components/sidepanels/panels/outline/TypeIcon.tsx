@@ -27,7 +27,8 @@ import {
   VideoIcon,
   ViewHorizontalIcon,
 } from "@radix-ui/react-icons";
-import { Columns, DatabaseIcon, GlobeIcon, Rows } from "lucide-react";
+
+import { Columns, DatabaseIcon, FileIcon, GlobeIcon, LayoutGridIcon, LinkIcon, ListIcon, PanelTopIcon, Rows } from "lucide-react";
 
 type Props = {
   type?: string;
@@ -66,7 +67,16 @@ export const TypeIcon: React.FC<Props> = (props) => {
       return <Rows className="h-3 w-3 stroke-[2]" />;
     case "Column":
       return <Columns className="h-3 w-3 stroke-[2]" />;
-
+    case "Tabs":
+      return <LayoutGridIcon className="h-3 w-3 stroke-[2]" />;
+    case "TabsList":
+      return <ListIcon className="h-3 w-3 stroke-[2]" />;
+    case "TabLink":
+      return <LinkIcon className="h-3 w-3 stroke-[2]" />;
+    case "TabsContent":
+      return <FileIcon className="h-3 w-3 stroke-[2]" />;
+    case "TabPanel":
+      return <PanelTopIcon className="h-3 w-3 stroke-[2]" />;
     case "ListItem":
       return <ColumnsIcon className="h-3 w-3 stroke-[2]" />;
     case "LineBreak":
