@@ -56,8 +56,8 @@ const Config = {
   blocks: () => [
     { _type: "Tabs", _id: "tabs", styles: "#styles:" },
     { _type: "TabsList", _id: "tabs-list", _parent: "tabs", styles: "#styles:" },
-    { _type: "TabLink", _id: "tab-link-1", _parent: "tabs-list", styles: "#styles:bg-white" },
-    { _type: "TabLink", _id: "tab-link-2", _parent: "tabs-list", styles: "#styles:" },
+    { _type: "TabLink", id: "tab-link-1", _parent: "tabs-list", styles: "#styles:", _name: "Tab 1" },
+    { _type: "TabLink", id: "tab-link-2", _parent: "tabs-list", styles: "#styles:", _name: "Tab 2" },
     { _type: "TabsContent", _id: "tabs-content", _parent: "tabs", styles: "#styles:" },
     { _type: "TabPanel", _id: "tab-panel", _parent: "tabs-content", styles: "#styles:" },
   ],
@@ -75,7 +75,7 @@ const TabsList = (props: ChaiBlockComponentProps<TabListProps>) => {
 
   const className = [
     get(styles, "className", ""),
-    "inline-flex items-center justify-center rounded-sm bg-muted p-1 text-muted-foreground",
+    "inline-flex items-center h-10 w-full justify-center rounded-sm bg-muted p-1 text-muted-foreground",
   ];
   const _styles = { className: className.join(" ") };
 
@@ -92,8 +92,8 @@ registerChaiBlock(TabsList, {
   group: "basic",
   category: "core",
   icon: ListIcon,
-  canDelete: () => true,
-  canAcceptBlock: () => true,
+  canDelete: () => false,
+  canAcceptBlock: (childType: string) => childType === "TabLink",
   canBeNested: (type: string) => type === "Tabs",
   ...registerChaiBlockSchema({
     properties: {
@@ -107,7 +107,7 @@ const TabLink = (props: ChaiBlockComponentProps<TabLinkProps>) => {
 
   const className = [
     get(styles, "className", ""),
-    "rounded-sm px-4 py-2 text-sm font-medium transition-colors data-[state=active]:bg-white",
+    "rounded-sm px-4 py-2 w-full text-center text-sm font-medium transition-colors data-[state=active]:bg-white",
   ];
   const _styles = { className: className.join(" ") };
 
@@ -125,7 +125,7 @@ registerChaiBlock(TabLink, {
   icon: LinkIcon,
   category: "core",
   canDelete: () => true,
-  canAcceptBlock: () => true,
+  canAcceptBlock: () => false,
   canBeNested: (type: string) => type === "TabsList",
   ...registerChaiBlockSchema({
     properties: {
@@ -153,8 +153,8 @@ registerChaiBlock(TabsContent, {
   group: "basic",
   category: "core",
   icon: FileIcon,
-  canDelete: () => true,
-  canAcceptBlock: () => true,
+  canDelete: () => false,
+  canAcceptBlock: (childType: string) => childType === "TabPanel",
   canBeNested: (type: string) => type === "Tabs",
   ...registerChaiBlockSchema({
     properties: {
@@ -188,7 +188,12 @@ registerChaiBlock(TabPanel, {
   category: "core",
   icon: PanelTopIcon,
   canDelete: () => true,
-  canAcceptBlock: () => true,
+  canAcceptBlock: (childType: string) =>
+    childType !== "Tabs" &&
+    childType !== "TabsContent" &&
+    childType !== "TabPanel" &&
+    childType !== "TabList" &&
+    childType !== "TabLink",
   canBeNested: (type: string) => type === "TabsContent",
   ...registerChaiBlockSchema({
     properties: {
