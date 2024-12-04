@@ -6,6 +6,9 @@ import {
   StylesProp,
 } from "@chaibuilder/runtime";
 import { LayoutGridIcon, ListIcon, FileIcon, PanelTopIcon, LinkIcon } from "lucide-react";
+import { get } from "lodash-es";
+import EmptySlot from "./empty-slot";
+
 // Tabs Component
 type TabsProps = {
   styles: ChaiStyles;
@@ -34,8 +37,11 @@ type TabPanelProps = {
 const Component = (props: ChaiBlockComponentProps<TabsProps>) => {
   const { blockProps, children, styles } = props;
 
+  const className = [get(styles, "className", ""), "space-y-2 p-2"];
+  const _styles = { className: className.join(" ") };
+
   return (
-    <div {...blockProps} {...styles} className="space-y-2 p-2">
+    <div {...blockProps} {...styles} {..._styles}>
       {children}
     </div>
   );
@@ -67,11 +73,14 @@ const Config = {
 const TabsList = (props: ChaiBlockComponentProps<TabListProps>) => {
   const { blockProps, children, styles } = props;
 
+  const className = [
+    get(styles, "className", ""),
+    "inline-flex items-center justify-center rounded-sm bg-muted p-1 text-muted-foreground",
+  ];
+  const _styles = { className: className.join(" ") };
+
   return (
-    <div
-      {...blockProps}
-      {...styles}
-      className="inline-flex items-center justify-center rounded-sm bg-muted p-1 text-muted-foreground">
+    <div {...blockProps} {...styles} {..._styles}>
       {children}
     </div>
   );
@@ -94,13 +103,16 @@ registerChaiBlock(TabsList, {
 });
 
 const TabLink = (props: ChaiBlockComponentProps<TabLinkProps>) => {
-  const { blockProps, children, styles} = props;
+  const { blockProps, children, styles } = props;
+
+  const className = [
+    get(styles, "className", ""),
+    "rounded-sm px-4 py-2 text-sm font-medium transition-colors data-[state=active]:bg-white",
+  ];
+  const _styles = { className: className.join(" ") };
 
   return (
-    <div
-      {...blockProps}
-      {...styles}
-      className="rounded-sm px-4 py-2 text-sm font-medium transition-colors data-[state=active]:bg-white">
+    <div {...blockProps} {...styles} {..._styles}>
       {children || "Tab Link"}
     </div>
   );
@@ -125,8 +137,11 @@ registerChaiBlock(TabLink, {
 const TabsContent = (props: ChaiBlockComponentProps<TabContentProps>) => {
   const { blockProps, children, styles } = props;
 
+  const className = [get(styles, "className", ""), "rounded-sm"];
+  const _styles = { className: className.join(" ") };
+
   return (
-    <div {...blockProps} {...styles} className="rounded-sm">
+    <div {...blockProps} {...styles} {..._styles}>
       {children || "Tab Content Area"}
     </div>
   );
@@ -149,11 +164,19 @@ registerChaiBlock(TabsContent, {
 });
 
 const TabPanel = (props: ChaiBlockComponentProps<TabPanelProps>) => {
-  const { blockProps, children, styles } = props;
+  const { blockProps, children, styles, inBuilder } = props;
+
+  const className = [get(styles, "className", ""), "border border-bg-card shadow rounded-sm"];
+  const _styles = { className: className.join(" ") };
+
+  let nestedChildren = children;
+  if (!children) {
+    nestedChildren = <EmptySlot inBuilder={inBuilder} />;
+  }
 
   return (
-    <div {...blockProps} {...styles} className="border border-bg-card shadow rounded-sm">
-      {children}
+    <div {...blockProps} {...styles} {..._styles}>
+      {nestedChildren}
     </div>
   );
 };
