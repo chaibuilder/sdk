@@ -32,6 +32,7 @@ const BlockCard = ({
   position?: number;
 }) => {
   const [isAdding, setIsAdding] = useState(false);
+  const [isWideImage, setIsWideImage] = useState(false);
   const getUILibraryBlock = useBuilderProp("getUILibraryBlock", noop);
   const { addCoreBlock, addPredefinedBlock } = useAddBlock();
   const [, setSelected] = useSelectedBlockIds();
@@ -92,6 +93,12 @@ const BlockCard = ({
     }
   };
 
+  const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const img = e.currentTarget;
+    const ratio = img.naturalWidth / img.naturalHeight;
+    setIsWideImage(ratio > 1.8);
+  };
+
   return (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -101,6 +108,7 @@ const BlockCard = ({
           onDragStart={handleDragStart}
           className={clsx(
             "relative mt-2 cursor-pointer overflow-hidden rounded-md border border-border bg-white duration-200 hover:border-blue-500 hover:shadow-xl",
+            isWideImage ? "col-span-2" : "col-span-1",
           )}>
           {isAdding && (
             <div className="absolute flex h-full w-full items-center justify-center bg-black/70">
@@ -109,7 +117,12 @@ const BlockCard = ({
             </div>
           )}
           {block.preview ? (
-            <img src={block.preview} className="min-h-[45px] w-full rounded-md" alt={name} />
+            <img
+              src={block.preview}
+              onLoad={handleImageLoad}
+              className={clsx("w-full rounded-md", isWideImage ? "object-cover" : "min-h-[45px]")}
+              alt={name}
+            />
           ) : (
             <div className="flex h-20 items-center justify-center rounded-md border border-border bg-gray-200">
               <p className="max-w-xs text-center text-sm text-gray-700">{name}</p>
