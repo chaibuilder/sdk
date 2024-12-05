@@ -27,7 +27,17 @@ import {
   VideoIcon,
   ViewHorizontalIcon,
 } from "@radix-ui/react-icons";
-import { Columns, DatabaseIcon, GlobeIcon, Rows } from "lucide-react";
+import {
+  AlignHorizontalJustifyStart,
+  AppWindowIcon,
+  Columns,
+  DatabaseIcon,
+  GlobeIcon,
+  PanelRightClose,
+  PanelRightOpen,
+  Rows,
+  UnfoldHorizontal,
+} from "lucide-react";
 
 type Props = {
   type?: string;
@@ -102,6 +112,18 @@ export const TypeIcon: React.FC<Props> = (props) => {
       return <DropdownMenuIcon className="h-3 w-3 stroke-[2]" />;
     case "DropdownContent":
       return <ReaderIcon className="h-3 w-3 stroke-[2]" />;
+
+    case "Slider":
+      return <UnfoldHorizontal className="h-3 w-3 stroke-[2]" />;
+    case "Slides":
+      return <AlignHorizontalJustifyStart className="h-3 w-3 stroke-[2]" />;
+    case "Slide":
+      return <AppWindowIcon className="h-3 w-3 stroke-[2]" />;
+    case "SlidePreviousButton":
+      return <PanelRightOpen className="h-3 w-3 stroke-[2]" />;
+    case "SlideNextButton":
+      return <PanelRightClose className="h-3 w-3 stroke-[2]" />;
+
     default:
       return <BoxModelIcon className="h-3 w-3 stroke-[2]" />;
   }

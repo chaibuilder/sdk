@@ -12,7 +12,7 @@ import { chaiRjsfFieldsAtom, chaiRjsfTemplatesAtom, chaiRjsfWidgetsAtom } from "
 import { LANGUAGES } from "../../constants/LANGUAGES.ts";
 import { useLanguages } from "../../hooks/useLanguages.ts";
 import { useSelectedBlock } from "../../hooks/useSelectedBlockIds.ts";
-import { IconPickerField, ImagePickerField, LinkField, RTEField, RowColField } from "../../rjsf-widgets";
+import { IconPickerField, ImagePickerField, LinkField, RTEField, RowColField, SliderField } from "../../rjsf-widgets";
 import { BindingWidget } from "../../rjsf-widgets/binding.tsx";
 import { CodeEditor } from "../../rjsf-widgets/Code.tsx";
 
@@ -145,6 +145,7 @@ export const JSONForm = memo(({ id, schema, uiSchema, formData, onChange }: JSON
       }}
       fields={{
         link: LinkField,
+        slider: SliderField,
         ...fields,
       }}
       templates={{

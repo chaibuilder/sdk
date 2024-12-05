@@ -37,6 +37,7 @@ import { Component as BodyBlock, Config as BodyBlockConfig, BodyProps } from "./
 import { Component as LineBreakBlock, Config as LineBreakBlockConfig, LineBreakProps } from "./hidden/line-break";
 import "./hidden/table";
 import { Column, ColumnConfig, ColumnProps, Component as Row, Config as RowConfig, RowProps } from "./row-col";
+import { Component as Slider, Config as SliderConfig, SliderProps } from "./slider";
 /*
  * Register all web blocks.
  * This function should be called  in places where Builder is rendered or pages are rendered.
@@ -83,6 +84,7 @@ const loadWebBlocks = () => {
   registerChaiBlock<DropdownLinksProps>(DropdownMenu, DropdownMenuConfig);
   registerChaiBlock<RowProps>(Row, RowConfig);
   registerChaiBlock<ColumnProps>(Column, ColumnConfig);
+  registerChaiBlock<SliderProps>(Slider, SliderConfig);
 };
 
 export { loadWebBlocks };
