@@ -50,9 +50,14 @@ const Config = {
   icon: GroupIcon,
   group: "form",
   blocks: () => [
-    { _type: "Form", _id: "form", styles: "#styles:," },
+    { _type: "Form", _id: "form", styles: "#styles:p-1 space-y-2," },
     { _type: "Input", _id: "form_input", _parent: "form", styles: "#styles:," },
-    { _type: "FormButton", _id: "form_submit_btn", _parent: "form", styles: "#styles:bg-primary text-white," },
+    {
+      _type: "FormButton",
+      _id: "form_submit_btn",
+      _parent: "form",
+      styles: "#styles:bg-black text-white rounded px-3 py-1,",
+    },
   ],
   ...registerChaiBlockSchema({
     properties: {
