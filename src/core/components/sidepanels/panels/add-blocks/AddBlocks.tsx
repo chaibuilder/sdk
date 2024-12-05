@@ -85,7 +85,7 @@ const AddBlocksPanel = ({
   const addBlocksDialogTabs = useBuilderProp("addBlocksDialogTabs", []);
 
   const [allBlocks] = useBlocksStore();
-  const parentType = find(allBlocks, (block) => block._id === parentId)?._type;
+  const parentType = find(allBlocks, { _id: parentId })?._type;
   const canAddBox = !parentType || (canAcceptChildBlock(parentType, "Box") && canBeNestedInside(parentType, "Box"));
 
   const close = useCallback(() => {
