@@ -29,6 +29,7 @@ selectedBlocksAtom.debugLabel = "selectedBlocksAtom";
  */
 export const selectedBlockAtom = atom((get) => {
   const blocks = get(selectedBlocksAtom);
+
   if (blocks.length === 0) {
     return null;
   }

@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
 import BlockSettings from "./BlockSettings";
 import BlockStyling from "./BlockStyling";
-import { useBuilderProp, useSelectedBlock, useSelectedStylingBlocks } from "../../hooks";
+import { useBuilderProp, useSelectedBlock, useSelectedStylingBlocks, useSelectedBlockIds } from "../../hooks";
 import { ErrorBoundary } from "react-error-boundary";
 import { BlockAttributesEditor } from "./new-panel/BlockAttributesEditor.tsx";
 import { ChevronDown } from "lucide-react";
@@ -35,10 +35,11 @@ function BlockAttributesToggle() {
 
 const SettingsPanel: React.FC = () => {
   const selectedBlock = useSelectedBlock();
+  const [ids] = useSelectedBlockIds();
   const { t } = useTranslation();
   const onErrorFn = useBuilderProp("onError", noop);
 
-  if (isNull(selectedBlock))
+  if (isNull(selectedBlock) || ids.length > 1)
     return (
       <div className="p-4 text-center">
         <div className="space-y-4 rounded-xl p-4 text-muted-foreground">
