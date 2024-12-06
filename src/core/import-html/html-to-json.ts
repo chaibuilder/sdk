@@ -81,7 +81,7 @@ const shouldAddText = (node: Node, block: any) => {
 /**
  *
  * @param nodes
- * @returns from list of nested nodes extractiong only text type content
+ * @returns from list of nested nodes extracting only text type content
  */
 const getTextContent = (nodes: Node[]): string => {
   return nodes
@@ -158,7 +158,27 @@ const getBlockProps = (node: Node): Record<string, any> => {
   const isRichText = attributes.find((attr) => attr.key === "data-chai-richtext" || attr.key === "chai-richtext");
   const isLightboxLink = attributes.find((attr) => attr.key === "data-chai-lightbox" || attr.key === "chai-lightbox");
 
+  const isDropdown = attributes.find((attr) => attr.key === "data-chai-dropdown" || attr.key === "chai-dropdown");
+  const isDropdownButton = attributes.find(
+    (attr) => attr.key === "data-chai-dropdown-button" || attr.key === "chai-dropdown-button",
+  );
+  const isDropdownContent = attributes.find(
+    (attr) => attr.key === "data-chai-dropdown-content" || attr.key === "chai-dropdown-content",
+  );
+
   // Check for special attributes first
+  if (isDropdown) {
+    return { _type: "Dropdown" };
+  }
+
+  if (isDropdownButton) {
+    return { _type: "DropdownButton" };
+  }
+
+  if (isDropdownContent) {
+    return { _type: "DropdownContent" };
+  }
+
   if (isRichText) {
     return { _type: "RichText" };
   }
@@ -268,6 +288,7 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
   return flatMapDeep(nodes, (node: Node) => {
     // * Ignoring code comment nodes
     if (node.type === "comment") return [];
+    console.log("node ===>", node);
 
     // * Generating block id and setting parent id if nested
     let block: Partial<ChaiBlock<any>> = { _id: generateUUID() };
@@ -298,6 +319,15 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
     );
     const isLightboxLink = styleAttributes.find(
       (attr) => attr.key === "data-chai-lightbox" || attr.key === "chai-lightbox",
+    );
+    const isDropdown = styleAttributes.find(
+      (attr) => attr.key === "data-chai-dropdown" || attr.key === "chai-dropdown",
+    );
+    const isDropdownButton = styleAttributes.find(
+      (attr) => attr.key === "data-chai-dropdown-button" || attr.key === "chai-dropdown-button",
+    );
+    const isDropdownContent = styleAttributes.find(
+      (attr) => attr.key === "data-chai-dropdown-content" || attr.key === "chai-dropdown-content",
     );
 
     // * Adding default block props, default attrs and default style
@@ -354,6 +384,47 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
           delete block.styles_attrs[attr];
         }
       });
+    }
+
+    if (isDropdown) {
+      delete block.styles_attrs;
+      block.showDropdown = false;
+    }
+
+    if (isDropdownContent) {
+      delete block.styles_attrs;
+    }
+
+    if (isDropdownButton) {
+      delete block.styles_attrs;
+
+      // Get text content from non-span children
+      const textNodes = node.children.filter((child) => child.tagName !== "span");
+      block.content = getTextContent(textNodes);
+
+      // Get the span with svg child
+      const spanWithSvg = node.children.find(
+        (child) => child.tagName === "span" && child.children.some((grandChild) => grandChild.tagName === "svg"),
+      );
+
+      if (spanWithSvg) {
+        const svg = spanWithSvg.children.find((child) => child.tagName === "svg");
+        if (svg) {
+          block.icon = stringify([svg]);
+
+          // Get icon dimensions from svg attributes
+          const height = get(find(svg.attributes, { key: "height" }), "value")
+            ? `[${get(find(svg.attributes, { key: "height" }), "value")}px]`
+            : "16px";
+          const width = get(find(svg.attributes, { key: "width" }), "value")
+            ? `[${get(find(svg.attributes, { key: "width" }), "value")}px]`
+            : "16px";
+          block.iconHeight = height;
+          block.iconWidth = width;
+        }
+      }
+
+      return [block] as ChaiBlock[];
     }
 
     if (block._type === "Input") {
