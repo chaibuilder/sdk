@@ -1,6 +1,7 @@
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
-import EmptySlot from "../empty-slot";
+
 import { GroupIcon } from "lucide-react";
+import EmptySlot from "../empty-slot";
 
 export type FormProps = {
   errorMessage: string;
@@ -10,16 +11,18 @@ export type FormProps = {
 };
 
 const FormBlock = (props: ChaiBlockComponentProps<FormProps>) => {
-  const { children, blockProps, errorMessage, successMessage, action, styles } = props;
+  const { children, blockProps, errorMessage, successMessage, action, styles, inBuilder } = props;
   let nestedChildren = children;
+
   if (!children) {
-    nestedChildren = <EmptySlot />;
+    nestedChildren = <EmptySlot inBuilder={inBuilder} />;
   }
 
   const alpineAttrs = {
     "x-data": "{}",
     "x-on:submit.prevent": "post",
   };
+
   const formResponseAttr = {
     "x-html": "",
     ":class": "{'text-red-500': formStatus === 'ERROR', 'text-green-500': formStatus === 'SUCCESS'}",
@@ -46,6 +49,16 @@ const Config = {
   category: "core",
   icon: GroupIcon,
   group: "form",
+  blocks: () => [
+    { _type: "Form", _id: "form", styles: "#styles:p-1 space-y-2," },
+    { _type: "Input", _id: "form_input", _parent: "form", styles: "#styles:," },
+    {
+      _type: "FormButton",
+      _id: "form_submit_btn",
+      _parent: "form",
+      styles: "#styles:bg-black text-white rounded px-3 py-1,",
+    },
+  ],
   ...registerChaiBlockSchema({
     properties: {
       styles: StylesProp(""),
