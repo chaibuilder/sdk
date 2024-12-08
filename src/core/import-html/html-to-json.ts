@@ -14,6 +14,7 @@ import {
   isEmpty,
   set,
   startsWith,
+  some,
 } from "lodash-es";
 import { ChaiBlock } from "../types/types.ts";
 import { STYLES_KEY } from "../constants/STRINGS.ts";
@@ -81,7 +82,7 @@ const shouldAddText = (node: Node, block: any) => {
 /**
  *
  * @param nodes
- * @returns from list of nested nodes extractiong only text type content
+ * @returns from list of nested nodes extracting only text type content
  */
 const getTextContent = (nodes: Node[]): string => {
   return nodes
@@ -158,7 +159,27 @@ const getBlockProps = (node: Node): Record<string, any> => {
   const isRichText = attributes.find((attr) => attr.key === "data-chai-richtext" || attr.key === "chai-richtext");
   const isLightboxLink = attributes.find((attr) => attr.key === "data-chai-lightbox" || attr.key === "chai-lightbox");
 
+  const isDropdown = attributes.find((attr) => attr.key === "data-chai-dropdown" || attr.key === "chai-dropdown");
+  const isDropdownButton = attributes.find(
+    (attr) => attr.key === "data-chai-dropdown-button" || attr.key === "chai-dropdown-button",
+  );
+  const isDropdownContent = attributes.find(
+    (attr) => attr.key === "data-chai-dropdown-content" || attr.key === "chai-dropdown-content",
+  );
+
   // Check for special attributes first
+  if (isDropdown) {
+    return { _type: "Dropdown" };
+  }
+
+  if (isDropdownButton) {
+    return { _type: "DropdownButton" };
+  }
+
+  if (isDropdownContent) {
+    return { _type: "DropdownContent" };
+  }
+
   if (isRichText) {
     return { _type: "RichText" };
   }
@@ -268,6 +289,7 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
   return flatMapDeep(nodes, (node: Node) => {
     // * Ignoring code comment nodes
     if (node.type === "comment") return [];
+    console.log("node ===>", node);
 
     // * Generating block id and setting parent id if nested
     let block: Partial<ChaiBlock<any>> = { _id: generateUUID() };
@@ -298,6 +320,15 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
     );
     const isLightboxLink = styleAttributes.find(
       (attr) => attr.key === "data-chai-lightbox" || attr.key === "chai-lightbox",
+    );
+    const isDropdown = styleAttributes.find(
+      (attr) => attr.key === "data-chai-dropdown" || attr.key === "chai-dropdown",
+    );
+    const isDropdownButton = styleAttributes.find(
+      (attr) => attr.key === "data-chai-dropdown-button" || attr.key === "chai-dropdown-button",
+    );
+    const isDropdownContent = styleAttributes.find(
+      (attr) => attr.key === "data-chai-dropdown-content" || attr.key === "chai-dropdown-content",
     );
 
     // * Adding default block props, default attrs and default style
@@ -356,6 +387,41 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
       });
     }
 
+    if (isDropdown) {
+      delete block.styles_attrs;
+      block.showDropdown = false;
+    }
+
+    if (isDropdownContent) {
+      delete block.styles_attrs;
+    }
+
+    if (isDropdownButton) {
+      delete block.styles_attrs;
+
+      // Get text content from non-span children more safely
+      const textNodes = filter(node.children || [], (child) => child?.tagName !== 'span');
+      block.content = getTextContent(textNodes);
+
+      // Find span containing SVG more defensively
+      const spanWithSvg = find(node.children || [], (child) => 
+        child?.tagName === 'span' && 
+        some(child.children || [], grandChild => grandChild?.tagName === 'svg')
+      );
+
+      if (spanWithSvg) {
+        const svg = find(spanWithSvg.children || [], child => child?.tagName === 'svg');
+        if (svg) {
+          block.icon = stringify([svg]);
+          const { height, width } = getSvgDimensions(svg, '16px', '16px');
+          block.iconHeight = height;
+          block.iconWidth = width;
+        }
+      }
+
+      return [block] as ChaiBlock[];
+    }
+
     if (block._type === "Input") {
       /**
        * hanlding input tag mapping type to input type
@@ -404,6 +470,17 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
     const children = traverseNodes(node.children, { block, node });
     return [block, ...children] as ChaiBlock[];
   });
+};
+
+const getSvgDimensions = (node: Node, defaultWidth: string , defaultHeight: string) => {
+  const attributes = get(node, 'attributes', []);
+  const svgHeight = find(attributes, { key: 'height' });
+  const svgWidth = find(attributes, { key: 'width' });
+  
+  return {
+    height: get(svgHeight, 'value') ? `[${get(svgHeight, 'value')}px]` : defaultHeight,
+    width: get(svgWidth, 'value') ? `[${get(svgWidth, 'value')}px]` : defaultWidth
+  };
 };
 
 /**
