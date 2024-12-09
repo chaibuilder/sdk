@@ -18,6 +18,7 @@ export const useKeyEventWatcher = (doc?: Document) => {
   const [, setCutBlockIds] = useCutBlockIds();
   const [, setCopyBlockIds] = useCopyBlockIds();
   const { canPaste, pasteBlocks } = usePasteBlocks();
+  const options = doc ? { document: doc } : {};
 
   useHotkeys("ctrl+z,command+z", () => undo(), {}, [undo]);
   useHotkeys("ctrl+y,command+y", () => redo(), {}, [redo]);
@@ -30,11 +31,10 @@ export const useKeyEventWatcher = (doc?: Document) => {
         pasteBlocks(ids);
       }
     },
-    {},
+    { ...options, preventDefault: true },
     [ids, canPaste, pasteBlocks],
   );
 
-  const options = doc ? { document: doc } : {};
   useHotkeys("esc", () => setIds([]), options, [setIds]);
   useHotkeys("ctrl+d,command+d", () => duplicateBlocks(ids), { ...options, preventDefault: true }, [
     ids,
