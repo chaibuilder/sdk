@@ -2,6 +2,7 @@ import { useAddBlock, useBlocksStore, useSelectedBlock, useSelectedBlockIds, use
 import { ChevronLeft, ChevronRight, PlusCircle } from "lucide-react";
 import { find, filter, findIndex, get } from "lodash-es";
 import { FieldProps } from "@rjsf/utils";
+import { useEffect } from "react";
 
 const SliderField = ({ formData, onChange }: FieldProps) => {
   const [allBlocks] = useBlocksStore();
@@ -18,6 +19,18 @@ const SliderField = ({ formData, onChange }: FieldProps) => {
 
   const allSlideBlocks = filter(allBlocks, { _parent: slidesBlock?._id, _type: "Slide" });
   const currentSlide = formData?.currentSlide || get(allSlideBlocks, "0._id");
+
+  useEffect(() => {
+    if (selectedBlock?._type === "Slide" && formData?.currentSlide !== selectedBlock?._id) {
+      onChange({ ...formData, currentSlide: selectedBlock?._id });
+    }
+  }, [selectedBlock]);
+
+  useEffect(() => {
+    if (allSlideBlocks?.length && !find(allSlideBlocks, { _id: formData?.currentSlide })) {
+      onChange({ ...formData, currentSlide: get(allSlideBlocks, "0._id") });
+    }
+  }, [formData, allSlideBlocks]);
 
   const handleNext = () => {
     const currentIndex = findIndex(allSlideBlocks, { _id: currentSlide });
@@ -53,7 +66,7 @@ const SliderField = ({ formData, onChange }: FieldProps) => {
   };
 
   return (
-    <div className="px-2">
+    <div className="space-y-1.5 px-2">
       <div className="flex items-center gap-x-2 pb-2 text-[12px]">
         <button onClick={handlePrevious} className="rounded bg-gray-200 p-1.5 hover:opacity-80">
           <ChevronLeft className="h-3 w-3 stroke-[3]" />
@@ -78,6 +91,19 @@ const SliderField = ({ formData, onChange }: FieldProps) => {
           Add Slide
         </button>
       </div>
+
+      <div className="flex items-center gap-x-2 leading-tight">
+        <input
+          type="checkbox"
+          checked={Boolean(formData?.showSlideButton)}
+          onChange={() => onChange({ ...formData, showSlideButton: !Boolean(formData?.showSlideButton) })}
+          className="cursor-pointer"
+        />
+        <label htmlFor="autoplay" className="mt-0.5 text-[12px]">
+          Show Slide Buttons
+        </label>
+      </div>
+
       <div>
         <div className="flex flex-col">
           <div className="flex items-center gap-x-2 leading-tight">
@@ -92,7 +118,7 @@ const SliderField = ({ formData, onChange }: FieldProps) => {
             </label>
           </div>
           {formData?.autoplay && (
-            <div className="leading-tight">
+            <div className="pt-0.5 leading-tight">
               <label htmlFor="interval" className="whitespace-nowrap text-[9px]">
                 Autoplay Interval <span className="font-light opacity-80">(in seconds)</span>
               </label>
@@ -100,10 +126,15 @@ const SliderField = ({ formData, onChange }: FieldProps) => {
                 type="number"
                 id="interval"
                 name="interval"
-                min="1"
-                placeholder="2"
-                value={formData?.autoplayInterval || 2}
-                onChange={(e) => onChange({ ...formData, autoplayInterval: e.target.value })}
+                placeholder="0"
+                value={formData?.autoplayInterval}
+                className="text-xs"
+                pattern="[0-9]*"
+                onChange={(e) => {
+                  let value = e.target.value;
+                  if (value.length) value = value.replace("-", "");
+                  onChange({ ...formData, autoplayInterval: value });
+                }}
               />
             </div>
           )}
