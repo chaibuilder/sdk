@@ -124,7 +124,7 @@ export default function BlockSettings() {
               <span className="text-[11px] font-light text-slate-400">({wrapperBlock._name})</span>
             )}
           </div>
-          {showWrapperSetting && (
+          <div className={showWrapperSetting ? "h-auto" : "invisible h-0"}>
             <JSONForm
               id={wrapperBlock?._id}
               onChange={updateWrapperRealtime}
@@ -132,7 +132,7 @@ export default function BlockSettings() {
               schema={wrapperSchema}
               uiSchema={wrapperUiSchema}
             />
-          )}
+          </div>
         </div>
       )}
       {dataBindingSupported ? (
