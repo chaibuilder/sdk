@@ -24,7 +24,9 @@ const SelectBlock = (props: ChaiBlockComponentProps<SelectProps>) => {
           {placeholder}
         </option>
         {map(options, (option) => (
-          <option key={option.value} value={option.value} dangerouslySetInnerHTML={{ __html: option.label }} />
+          <option key={option?.value} value={option?.value}>
+            {option?.label}
+          </option>
         ))}
       </select>
     );
@@ -38,7 +40,9 @@ const SelectBlock = (props: ChaiBlockComponentProps<SelectProps>) => {
           {placeholder}
         </option>
         {map(options, (option) => (
-          <option key={option.value} value={option.value} dangerouslySetInnerHTML={{ __html: option.label }} />
+          <option key={option?.value} value={option?.value}>
+            {option?.label}
+          </option>
         ))}
       </select>
     </div>
