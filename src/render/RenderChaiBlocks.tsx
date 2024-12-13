@@ -121,6 +121,7 @@ export function RenderChaiBlocks({
                 ...getStyles(syncedBlock),
                 ...attrs,
                 metadata,
+                lang,
               },
               ["_parent"],
             );
