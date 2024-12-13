@@ -72,12 +72,12 @@ export type ChaiBuilderInstance = {
   setBlocks: (blocks: ChaiBlock[]) => void;
 };
 
-export type Collection = {
+export type PageType = {
   key: string;
   name: string;
 };
 
-export type CollectionItem = {
+export type PageTypeItem = {
   id: string;
   name: string;
   slug?: string;
@@ -260,8 +260,8 @@ export interface ChaiBuilderEditorProps {
   languages?: Array<string>;
 
   /**
-   * Collections props
+   * Page Types props
    */
-  collections?: Collection[];
-  searchCollectionItems?: (collectionKey: string, query: string) => Promise<CollectionItem[] | Error>;
+  pageTypes?: PageType[];
+  searchPageTypeItems?: (pageTypeKey: string, query: string) => Promise<PageTypeItem[] | Error>;
 }
