@@ -187,12 +187,14 @@ export function BlocksRendererStatic({ blocks, allBlocks }: { blocks: ChaiBlock[
             ...attrs,
             inBuilder: true,
             blockState,
+            lang: selectedLang,
           };
 
           if (has(chaiBlock, "dataProvider")) {
             return (
               <Suspense>
                 <AsyncPropsBlock
+                  lang={selectedLang}
                   dataProvider={chaiBlock.dataProvider}
                   block={block}
                   component={Component}
