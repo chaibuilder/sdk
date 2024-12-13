@@ -67,8 +67,8 @@ export function RenderChaiBlocks({
   parent,
   classPrefix = "",
   externalData = {},
-  blockModifierCallback,
-  lang,
+  blockModifierCallback = null,
+  lang = "",
   metadata = {},
 }: {
   blocks: ChaiBlock[];
@@ -97,7 +97,7 @@ export function RenderChaiBlocks({
                 classPrefix={classPrefix}
                 parent={block._id}
                 blocks={allBlocks}
-                lang={lang}
+                lang={lang ?? ""}
                 metadata={metadata}
               />
             ) : null;
@@ -121,7 +121,7 @@ export function RenderChaiBlocks({
                 ...getStyles(syncedBlock),
                 ...attrs,
                 metadata,
-                lang,
+                lang: lang ?? "",
               },
               ["_parent"],
             );
@@ -130,6 +130,7 @@ export function RenderChaiBlocks({
                 <Suspense>
                   {/* @ts-ignore */}
                   <AsyncPropsBlock
+                    lang={lang ?? ""}
                     metadata={metadata}
                     dataProvider={blockDefinition.dataProvider}
                     block={block}
