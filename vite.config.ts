@@ -60,6 +60,7 @@ export default defineConfig({
         "@tailwindcss/forms",
         "@tailwindcss/line-clamp",
         "@tailwindcss/typography",
+        "@tailwindcss/container-queries",
         "class-variance-authority",
         "@bobthered/tailwindcssPaletteGenerator",
         "clsx",
