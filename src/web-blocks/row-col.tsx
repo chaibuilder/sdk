@@ -1,10 +1,4 @@
-import {
-  ChaiBlockComponentProps,
-  ChaiStyles,
-  registerChaiBlock,
-  registerChaiBlockSchema,
-  StylesProp,
-} from "@chaibuilder/runtime";
+import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { get } from "lodash-es";
 import { Columns, Rows } from "lucide-react";
 import { NUMBER_TO_COL_SPAN } from "../core/constants/TWCLASS_VALUES";
@@ -13,7 +7,14 @@ export type RowProps = {
   styles: ChaiStyles;
 };
 
-const Column = (props: ChaiBlockComponentProps<{ children: React.ReactNode; styles: ChaiStyles }>) => {
+export type ColumnProps = {
+  styles: ChaiStyles;
+  colSpan: number;
+  tabletColSpan: number;
+  desktopColSpan: number;
+};
+
+const Column = (props: ChaiBlockComponentProps<ColumnProps>) => {
   const { blockProps, children, styles, colSpan, tabletColSpan, desktopColSpan } = props;
 
   const className = [
@@ -33,7 +34,7 @@ const Column = (props: ChaiBlockComponentProps<{ children: React.ReactNode; styl
   );
 };
 
-registerChaiBlock(Column, {
+const ColumnConfig = {
   type: "Column",
   label: "Column",
   group: "basic",
@@ -68,7 +69,7 @@ registerChaiBlock(Column, {
       },
     },
   }),
-});
+};
 
 const Component = (props: ChaiBlockComponentProps<RowProps>) => {
   const { blockProps, children, styles, gutter } = props;
@@ -122,3 +123,4 @@ const Config = {
 };
 
 export { Component, Config };
+export { Column, ColumnConfig };

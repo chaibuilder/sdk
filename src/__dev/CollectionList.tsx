@@ -34,6 +34,7 @@ const Component = (props: ChaiBlockComponentProps<CollectionListProps & ServerPr
   return (
     <div {...blockProps} {...wrapperStyles}>
       <h1>Collection List</h1>
+      {props.lang}
       <div {...listStyles}>{items?.map((item) => <div {...itemStyles}>{JSON.stringify(item)}</div>)}</div>
     </div>
   );
@@ -44,7 +45,8 @@ const Config = {
   label: "Collection List",
   category: "core",
   group: "basic",
-  dataProvider: () => {
+  dataProvider: (_block, lang) => {
+    console.log(lang, "sdsdsd");
     return {
       items: [
         { id: 1, name: "Item 1" },
