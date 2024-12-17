@@ -142,10 +142,10 @@ function ChaiBuilderDefault() {
           }, 1000);
         });
       }}
-      collections={[{ key: "pages", name: "Pages" }]}
-      searchCollectionItems={async (collectionKey: string, query: string | string[]) => {
-        console.log("searchCollectionItems", collectionKey, query, "query");
-        if (collectionKey === "pages") {
+      pageTypes={[{ key: "page", name: "Pages" }]}
+      searchPageTypeItems={async (pageTypeKey: string, query: string | string[]) => {
+        console.log("searchPageTypeItems", pageTypeKey, query, "query");
+        if (pageTypeKey === "page") {
           const items = [
             { id: "uuid-1", name: "Page 1", slug: "/page-1" },
             { id: "uuid-2", name: "Page 2" },

@@ -3,45 +3,45 @@ import { map, split, get, isEmpty } from "lodash-es";
 import { useEffect, useState, useRef } from "react";
 import { useBuilderProp, useTranslation } from "../hooks";
 import { X } from "lucide-react";
-import { CollectionItem } from "../types/chaiBuilderEditorProps";
+import { PageTypeItem } from "../types/chaiBuilderEditorProps";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { startsWith } from "lodash-es";
 
-const CollectionField = ({
+const PageTypeField = ({
   href,
-  collections,
+  pageTypes,
   onChange,
 }: {
   href: string;
-  collections: any[];
+  pageTypes: any[];
   onChange: (href: string) => void;
 }) => {
   const { t } = useTranslation();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const searchCollectionItems = useBuilderProp("searchCollectionItems", (_: string, __: any) => []);
+  const searchPageTypeItems = useBuilderProp("searchPageTypeItems", (_: string, __: any) => []);
   const [loading, setLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
-  const [collection, setCollection] = useState("page");
+  const [pageType, setPageType] = useState("page");
   const [searchQuery, setSearchQuery] = useState("");
-  const [collectionItems, setCollectionsItems] = useState<CollectionItem[]>([]);
+  const [pageTypeItems, setPageTypeItems] = useState<PageTypeItem[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const listRef = useRef<HTMLUListElement>(null);
 
-  const currentCollectionName = collections?.find((_collection) => _collection.key === collection)?.name;
+  const currentPageTypeName = pageTypes?.find((_pageType) => _pageType.key === pageType)?.name;
 
   useEffect(() => {
     setSearchQuery("");
-    setCollectionsItems([]);
+    setPageTypeItems([]);
     setSelectedIndex(-1);
     setIsSearching(false);
 
-    if (!href || loading || !startsWith(href, "collection:")) return;
+    if (!href || loading || !startsWith(href, "pageType:")) return;
     const initHref = split(href, ":");
-    const _collection = get(initHref, 1, "page") || "page";
-    setCollection(_collection);
+    const _pageType = get(initHref, 1, "page") || "page";
+    setPageType(_pageType);
 
     (async () => {
-      const initalValue = await searchCollectionItems(_collection, [get(initHref, 2, "page")]);
+      const initalValue = await searchPageTypeItems(_pageType, [get(initHref, 2, "page")]);
       if (initalValue && Array.isArray(initalValue)) {
         setSearchQuery(get(initalValue, [0, "name"], ""));
       }
@@ -49,28 +49,28 @@ const CollectionField = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [href]);
 
-  const getCollectionItems = useDebouncedCallback(
+  const getPageTypeItems = useDebouncedCallback(
     async (query: string) => {
       if (isEmpty(query)) {
-        setCollectionsItems([]);
+        setPageTypeItems([]);
       } else {
-        const collectionItemResponse = await searchCollectionItems(collection, query);
-        setCollectionsItems(collectionItemResponse);
+        const pageTypeItemResponse = await searchPageTypeItems(pageType, query);
+        setPageTypeItems(pageTypeItemResponse);
       }
       setLoading(false);
       setSelectedIndex(-1);
     },
-    [collection],
+    [pageType],
     300,
   );
 
-  const handleSelect = (collectionItem: CollectionItem) => {
-    const href = ["collection", collection, collectionItem.id];
+  const handleSelect = (pageTypeItem: PageTypeItem) => {
+    const href = ["pageType", pageType, pageTypeItem.id];
     if (!href[1]) return;
     onChange(href.join(":"));
-    setSearchQuery(collectionItem.name);
+    setSearchQuery(pageTypeItem.name);
     setIsSearching(false);
-    setCollectionsItems([]);
+    setPageTypeItems([]);
     setSelectedIndex(-1);
   };
 
@@ -78,7 +78,7 @@ const CollectionField = ({
     switch (e.key) {
       case "ArrowDown":
         e.preventDefault();
-        setSelectedIndex((prev) => (prev < collectionItems.length - 1 ? prev + 1 : prev));
+        setSelectedIndex((prev) => (prev < pageTypeItems.length - 1 ? prev + 1 : prev));
         break;
       case "ArrowUp":
         e.preventDefault();
@@ -86,10 +86,10 @@ const CollectionField = ({
         break;
       case "Enter":
         e.preventDefault();
-        if (collectionItems.length === 0) return;
+        if (pageTypeItems.length === 0) return;
 
         if (selectedIndex >= 0) {
-          handleSelect(collectionItems[selectedIndex]);
+          handleSelect(pageTypeItems[selectedIndex]);
         }
         break;
       case "Escape":
@@ -108,7 +108,7 @@ const CollectionField = ({
 
   const clearSearch = () => {
     setSearchQuery("");
-    setCollectionsItems([]);
+    setPageTypeItems([]);
     setSelectedIndex(-1);
     setIsSearching(false);
     onChange("");
@@ -118,26 +118,26 @@ const CollectionField = ({
     setSearchQuery(query);
     setIsSearching(!isEmpty(query));
     setLoading(true);
-    getCollectionItems(query);
+    getPageTypeItems(query);
   };
 
   return (
     <div>
-      <select name="collection" value={collection} onChange={(e) => setCollection(e.target.value)}>
-        {map(collections, (col) => (
+      <select name="pageType" value={pageType} onChange={(e) => setPageType(e.target.value)}>
+        {map(pageTypes, (col) => (
           <option key={col.key} value={col.key}>
             {col.name}
           </option>
         ))}
       </select>
-      {collection && (
+      {pageType && (
         <div className="group relative mt-2 flex items-center">
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => handleSearch(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={t(`Search ${currentCollectionName}`)}
+            placeholder={t(`Search ${currentPageTypeName ?? ""}`)}
             className="w-full rounded-md border border-gray-300 p-2 pr-16"
           />
           <div className="absolute bottom-2 right-2 top-3 flex items-center gap-1.5">
@@ -150,20 +150,20 @@ const CollectionField = ({
         </div>
       )}
 
-      {(loading || !isEmpty(collectionItems) || (isSearching && isEmpty(collectionItems))) && (
+      {(loading || !isEmpty(pageTypeItems) || (isSearching && isEmpty(pageTypeItems))) && (
         <div className="absolute z-40 mt-2 max-h-40 w-full overflow-y-auto rounded-md border border-border bg-background shadow-lg">
           {loading ? (
             <div className="space-y-1 p-2">
               <div className="h-6 w-full animate-pulse rounded bg-gray-200" />
               <div className="h-6 w-full animate-pulse rounded bg-gray-200" />
             </div>
-          ) : isSearching && isEmpty(collectionItems) ? (
+          ) : isSearching && isEmpty(pageTypeItems) ? (
             <div className="flex items-center justify-center p-4 text-sm text-gray-500">
               {t("No results found for")} "{searchQuery}"
             </div>
           ) : (
             <ul ref={listRef}>
-              {map(collectionItems?.slice(0, 20), (item, index) => (
+              {map(pageTypeItems?.slice(0, 20), (item, index) => (
                 <li
                   key={item.id}
                   onClick={() => handleSelect(item)}
@@ -187,10 +187,10 @@ const CollectionField = ({
 
 const LinkField = ({ schema, formData, onChange }: FieldProps) => {
   const { t } = useTranslation();
-  const { type = "collection", href = "", target = "self" } = formData;
-  const collections = useBuilderProp("collections", []);
+  const { type = "pageType", href = "", target = "self" } = formData;
+  const pageTypes = useBuilderProp("pageTypes", []);
 
-  const linkType = type === "collection" && isEmpty(collections) ? "url" : type;
+  const linkType = type === "pageType" && isEmpty(pageTypes) ? "url" : type;
 
   return (
     <div>
@@ -199,7 +199,7 @@ const LinkField = ({ schema, formData, onChange }: FieldProps) => {
         <select name="type" value={type} onChange={(e) => onChange({ ...formData, type: e.target.value })}>
           {map(
             [
-              ...(!isEmpty(collections) ? [{ const: "collection", title: t("Goto Page") }] : []),
+              ...(!isEmpty(pageTypes) ? [{ const: "pageType", title: t("Goto Page") }] : []),
               { const: "url", title: t("Open URL") },
               { const: "email", title: t("Compose Email") },
               { const: "telephone", title: t("Call Phone") },
@@ -212,10 +212,10 @@ const LinkField = ({ schema, formData, onChange }: FieldProps) => {
             ),
           )}
         </select>
-        {linkType === "collection" && !isEmpty(collections) ? (
-          <CollectionField
+        {linkType === "pageType" && !isEmpty(pageTypes) ? (
+          <PageTypeField
             href={href}
-            collections={collections}
+            pageTypes={pageTypes}
             onChange={(href: string) => onChange({ ...formData, href })}
           />
         ) : (

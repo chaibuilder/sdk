@@ -36,7 +36,7 @@ import { Component as TextAreaBlock, Config as TextAreaBlockConfig, TextAreaProp
 import { Component as CheckboxBlock, Config as CheckboxBlockConfig, CheckboxProps } from "./form/checkbox";
 import { Component as LabelBlock, Config as LabelBlockConfig, LabelProps } from "./form/label";
 import { Component as DropdownMenu, Config as DropdownMenuConfig, DropdownLinksProps } from "./dropdown-menu";
-import { Component as Row, Config as RowConfig, RowProps } from "./row-col";
+import { Column, ColumnConfig, ColumnProps, Component as Row, Config as RowConfig, RowProps } from "./row-col";
 /*
  * Register all web blocks.
  * This function should be called  in places where Builder is rendered or pages are rendered.
@@ -82,6 +82,7 @@ const loadWebBlocks = () => {
   registerChaiBlock<GlobalBlockProps>(GlobalBlock, GlobalBlockConfig);
   registerChaiBlock<DropdownLinksProps>(DropdownMenu, DropdownMenuConfig);
   registerChaiBlock<RowProps>(Row, RowConfig);
+  registerChaiBlock<ColumnProps>(Column, ColumnConfig);
 };
 
 export { loadWebBlocks };
