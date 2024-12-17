@@ -1,8 +1,8 @@
-import { replace } from "lodash-es";
 import { createTailwindcss } from "@mhsdesign/jit-browser-tailwindcss";
 import twForms from "@tailwindcss/forms";
 import twTypography from "@tailwindcss/typography";
 import twAspectRatio from "@tailwindcss/aspect-ratio";
+import twContainer from "@tailwindcss/container-queries";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { getChaiBuilderTheme } from "../tailwind/getChaiBuilderTheme.ts";
 import { chaiBuilderPlugin } from "../tailwind";
@@ -21,7 +21,7 @@ async function getTailwindCSS(
       darkMode: "class",
       safelist,
       theme: { extend: getChaiBuilderTheme(themeOptions) },
-      plugins: [twForms, twTypography, twAspectRatio, chaiBuilderPlugin],
+      plugins: [twForms, twTypography, twAspectRatio, twContainer, chaiBuilderPlugin],
       corePlugins: { preflight: includeBaseStyles },
       ...(prefix ? { prefix: `${prefix}` } : {}),
     },
@@ -40,7 +40,10 @@ const getBlocksTailwindCSS = (
   themeOptions: ChaiBuilderThemeOptions,
   includeBaseStyles: boolean,
 ) => {
-  return getTailwindCSS(themeOptions, [replace(JSON.stringify(blocks), /#styles:,?/g, "")], [], "", includeBaseStyles);
+  const blocksString = JSON.stringify(blocks).replace(/#styles:([^"]*)/g, (_match, content) => {
+    return `#styles:${content.replace(/,/g, " ")}`.replace(/#styles:/g, "");
+  });
+  return getTailwindCSS(themeOptions, [blocksString], [], "", includeBaseStyles);
 };
 
 export const getStylesForBlocks = async (
