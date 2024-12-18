@@ -20,6 +20,16 @@ const positionPlaceholder = (target: HTMLElement, orientation: "vertical" | "hor
   if (!iframeDocument || !target) return;
   const placeholder = iframeDocument?.getElementById("placeholder") as HTMLElement;
 
+  if (target?.id === "chaibuilder-canvas-blank-screen") {
+    // * Block dropping placeholder for blank canvas
+    placeholder.style.display = "block";
+    placeholder.style.width = "100%";
+    placeholder.style.height = "5px";
+    placeholder.style.top = "0px";
+    placeholder.style.left = "0px";
+    return;
+  }
+
   const positions = possiblePositions.map(([position]) => {
     return position;
   });
@@ -34,11 +44,11 @@ const positionPlaceholder = (target: HTMLElement, orientation: "vertical" | "hor
   if (!possiblePositions[closestIndex]) return;
   const values = possiblePositions[closestIndex];
 
-  placeholder.style.width = orientation === "vertical" ? values[2] + "px" : "2px";
-  placeholder.style.height = orientation === "vertical" ? "2px" : values[2] + "px";
+  placeholder.style.width = orientation === "vertical" ? values[2] + "px" : "3px";
+  placeholder.style.height = orientation === "vertical" ? "3px" : values[2] + "px";
   placeholder.style.display = "block";
   if (orientation === "vertical") {
-    placeholder.style.top = values[0] + "px";
+    placeholder.style.top = values[0] - 1.5 + "px";
     placeholder.style.left = values[1] + "px";
   } else {
     placeholder.style.top = values[1] + "px";
@@ -85,6 +95,11 @@ const calculatePossiblePositions = (target: HTMLElement) => {
 const throttledDragOver = throttle((e: DragEvent) => {
   const target = e.target as HTMLElement;
   const orientation = getOrientation(target);
+
+  if (target?.id === "chaibuilder-canvas-blank-screen") {
+    positionPlaceholder(target, "vertical", 0);
+    return;
+  }
 
   const IframeScrollTop = iframeDocument?.defaultView?.scrollY;
 
@@ -149,6 +164,13 @@ export const useDnd = () => {
       throttledDragOver(e);
     },
     onDrop: (ev: DragEvent) => {
+      if (dropTarget?.id === "chaibuilder-canvas-blank-screen") {
+        // * Handle first drop on blank canvas
+        addCoreBlock(draggedBlock, null);
+        resetDragState();
+        return;
+      }
+
       const block = dropTarget as HTMLElement;
       const orientation = getOrientation(block);
       const mousePosition = orientation === "vertical" ? ev.clientY + iframeDocument?.defaultView?.scrollY : ev.clientX;
@@ -157,9 +179,10 @@ export const useDnd = () => {
       const id = block.getAttribute("data-block-id");
 
       const isDropTargetAllowed = dropTarget.getAttribute("data-dnd-dragged") === "yes" ? false : true;
+      const canDrop = dropTarget.getAttribute("data-dnd") === "yes" ? true : false;
 
       //if the draggedItem is the same as the dropTarget, reset the drag state.
-      if (data?._id === id || !isDropTargetAllowed) {
+      if (data?._id === id || !isDropTargetAllowed || !canDrop) {
         resetDragState();
         return;
       }
@@ -189,12 +212,14 @@ export const useDnd = () => {
       dropTarget = target;
       const dropTargetId = target.getAttribute("data-block-id");
       const isdropTargetAllowed = target.getAttribute("data-dnd-dragged") === "yes" ? false : true;
+      const canDrop = target.getAttribute("data-dnd") === "yes" ? true : false;
+
       //@ts-ignore
       setDropTarget(dropTargetId);
       event.stopPropagation();
       event.preventDefault();
       possiblePositions = [];
-      if (isdropTargetAllowed) {
+      if (isdropTargetAllowed && canDrop) {
         calculatePossiblePositions(target);
       }
       setIsDragging(true);

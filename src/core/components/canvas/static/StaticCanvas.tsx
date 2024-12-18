@@ -23,7 +23,6 @@ import { Skeleton } from "../../../../ui";
 import { ChaiBlock } from "../../../types/ChaiBlock";
 import { StaticBlocksRenderer } from "./StaticBlocksRenderer.tsx";
 import { Provider } from "react-wrap-balancer";
-import { AddBlockAtBottom } from "./AddBlockAtBottom.tsx";
 import { ResizableCanvasWrapper } from "./ResizableCanvasWrapper.tsx";
 
 const getElementByStyleId = (doc: any, styleId: string): HTMLElement =>
@@ -136,7 +135,6 @@ const StaticCanvas = (): React.JSX.Element => {
               ) : (
                 <StaticBlocksRenderer />
               )}
-              <AddBlockAtBottom />
               <br />
               <br />
               <br />
