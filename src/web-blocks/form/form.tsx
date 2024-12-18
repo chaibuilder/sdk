@@ -20,7 +20,24 @@ const FormBlock = (
   }
 
   const alpineAttrs = {
-    "x-data": "{}",
+    "x-data": `{
+        formStatus: '',
+        async post() {
+            try {
+                const formData = new FormData($el); // Collect all form data
+                const response = await fetch($el.action, {
+                    method: $el.method,
+                    body: formData
+                });
+                if (!response.ok) throw new Error();
+                this.formStatus = 'SUCCESS';
+                $el.querySelector('[x-html]').innerHTML = $el.dataset.success;
+            } catch (error) {
+                this.formStatus = 'ERROR';
+                $el.querySelector('[x-html]').innerHTML = $el.dataset.error;
+            }
+        }
+    }`,
     "x-on:submit.prevent": "post",
   };
   const formResponseAttr = {
