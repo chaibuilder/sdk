@@ -27,6 +27,18 @@ export const CoreBlock = ({ block, disabled, parentId }: { block: any; disabled:
   };
   const dnd = useFeature("dnd");
   const { t } = useTranslation();
+
+  const handleDragStart = (ev) => {
+    ev.dataTransfer.setData("text/plain", JSON.stringify(omit(block, ["component", "icon"])));
+    // @ts-ignore
+    setDraggedBlock(omit(block, ["component", "icon"]));
+    emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK });
+    setTimeout(() => {
+      setSelected([]);
+      clearHighlight();
+    }, 200);
+  };
+
   return (
     <>
       <Tooltip>
@@ -35,16 +47,7 @@ export const CoreBlock = ({ block, disabled, parentId }: { block: any; disabled:
             disabled={disabled}
             onClick={addBlockToPage}
             type="button"
-            onDragStart={(ev) => {
-              ev.dataTransfer.setData("text/plain", JSON.stringify(omit(block, ["component", "icon"])));
-              ev.dataTransfer.setDragImage(new Image(), 0, 0);
-              // @ts-ignore
-              setDraggedBlock(omit(block, ["component", "icon"]));
-              setTimeout(() => {
-                setSelected([]);
-                clearHighlight();
-              }, 200);
-            }}
+            onDragStart={handleDragStart}
             draggable={dnd ? "true" : "false"}
             className={
               "cursor-pointer space-y-2 rounded-lg border border-border p-3 text-center hover:bg-slate-300/50 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400 dark:border-gray-700 dark:text-white dark:hover:bg-slate-800/50 dark:disabled:bg-gray-900 dark:disabled:text-foreground"
