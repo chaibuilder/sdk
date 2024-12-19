@@ -24,7 +24,7 @@ const FormBlock = (
         formStatus: '',
         async post() {
             try {
-                const formData = new FormData($el); // Collect all form data
+                const formData = new FormData($el);
                 const response = await fetch($el.action, {
                     method: $el.method,
                     body: formData
