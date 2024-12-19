@@ -95,6 +95,12 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
     setAddSelectParentHighlight(null);
   };
 
+  const handleMultiSelect = (e) => {
+    node.selectMulti();
+
+    handleClick(e);
+  };
+
   const handleNodeClickWithoutPropagating = (e: any) => {
     onMouseLeave();
     /**
@@ -111,7 +117,12 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
      * The onSelect in the parent Tree Component
      * will also trigger the selection of the node.
      */
-    handleClick(e);
+    //handleClick(e);
+    if (e.shiftKey) {
+      handleMultiSelect(e);
+    } else {
+      handleClick(e);
+    }
   };
 
   useEffect(() => {
@@ -393,9 +404,9 @@ const ListTree = () => {
 
   const onSelect = (nodes: any) => {
     if (nodes.length === 0) return;
-    const nodeId = nodes[0] ? nodes[0].id : "";
+    const selectedNodeIds = nodes.map((node) => node.id);
     setStyleBlocks([]);
-    setIds([nodeId]);
+    setIds(selectedNodeIds);
   };
 
   const onContextMenu = (e: MouseEvent<HTMLDivElement>) => {
