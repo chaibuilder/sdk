@@ -29,7 +29,7 @@ const BlockActionLabel = ({ block, label }: any) => {
   const dnd = useFeature("dnd");
   return (
     <div
-      className="mr-10 flex cursor-default items-center space-x-1 px-1"
+      className="mr-10 flex cursor-grab items-center space-x-1 px-1"
       draggable={dnd ? "true" : "false"}
       onDragStart={(ev) => {
         ev.dataTransfer.setData("text/plain", JSON.stringify(pick(block, ["_id", "_type", "_name"])));

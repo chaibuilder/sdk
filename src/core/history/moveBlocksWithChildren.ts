@@ -26,22 +26,27 @@ function moveNode(
 ): boolean {
   const nodeToMove = findNodeById(rootNode, nodeIdToMove);
   const newParentNode = findNodeById(rootNode, newParentId);
-  if (nodeToMove && newParentNode) {
-    nodeToMove.drop();
-    // Insert the node at the new parent at the specified position
-    if (!newParentNode.children) {
-      newParentNode.model.children = [];
-    }
-    try {
-      newParentNode.addChildAtIndex(nodeToMove, position);
-    } catch (error) {
-      console.error("Error adding child to parent:", error);
-      return false;
-    }
-    return true;
+  if (!nodeToMove || !newParentNode) return false;
+
+  if (!newParentNode.children) {
+    newParentNode.model.children = [];
   }
 
-  return false;
+  let currentPosition = newParentNode?.children?.findIndex((child) => child.model._id === nodeIdToMove);
+
+  nodeToMove.drop();
+
+  currentPosition = Math.max(currentPosition, 0);
+  const currentParentId = nodeToMove?.model?._parent || "root";
+  const newPosition = currentParentId === newParentId && currentPosition <= position ? position - 1 : position;
+
+  try {
+    newParentNode.addChildAtIndex(nodeToMove, newPosition);
+  } catch (error) {
+    return false;
+  }
+
+  return true;
 }
 
 function moveBlocksWithChildren(

@@ -81,10 +81,10 @@ const BlockCard = ({
 
       //@ts-ignore
       setDraggedBlock(convertedBlock);
+      emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK });
       setTimeout(() => {
         setSelected([]);
         clearHighlight();
-        emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK });
       }, 200);
     }
   };
