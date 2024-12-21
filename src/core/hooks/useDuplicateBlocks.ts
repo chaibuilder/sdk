@@ -21,10 +21,12 @@ export const useDuplicateBlocks = (): Function => {
         if (!parentId) {
           // use the parent of the same block. Can be a falsy value. null undefined etc.
           parentId = block._parent;
+        } else if (parentId === "root") {
+          parentId = null;
         }
         // get sibling blocks
         const siblingBlocks = filter(presentBlocks, (_block: ChaiBlock) =>
-          isString(parentId) ? _block._parent === parentId : !block._parent,
+          isString(parentId) ? _block._parent === parentId : !_block._parent,
         );
         const blockPosition = siblingBlocks.indexOf(block);
         const newBlockPosition = blockPosition + 1;
