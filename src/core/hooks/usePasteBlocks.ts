@@ -11,7 +11,7 @@ import { useBlocksStore, useBlocksStoreUndoableActions } from "../history/useBlo
 const useCanPaste = () => {
   const [blocks] = useBlocksStore();
   return (ids: string[], newParentId: string | null) => {
-    const newParentType = find(blocks, { _id: newParentId })?._type;
+    const newParentType = find(blocks, { _id: newParentId })?._type || null;
     const blockType = first(ids.map((id) => find(blocks, { _id: id })?._type));
     return canAcceptChildBlock(newParentType, blockType);
   };
@@ -23,11 +23,16 @@ const useMoveCutBlocks = () => {
 
   return useCallback(
     (blockIds: Array<string>, newParentId: string[] | string) => {
-      const parentId = newParentId[0];
-      const newParentBlock = presentBlocks.find((block) => block._id === newParentId);
-      const newPosition = newParentBlock ? newParentBlock.children.length : 0;
+      const parentId = Array.isArray(newParentId) ? newParentId[0] : newParentId;
 
-      moveBlocks(blockIds, parentId, newPosition);
+      if (newParentId === "root") {
+        const newParentBlock = presentBlocks.filter((block) => !block._parent);
+        moveBlocks(blockIds, null, newParentBlock?.length || 0);
+      } else {
+        const newParentBlock = presentBlocks.find((block) => block._id === newParentId);
+        const newPosition = newParentBlock ? newParentBlock?.children?.length : 0;
+        moveBlocks(blockIds, parentId, newPosition);
+      }
     },
     [moveBlocks, presentBlocks],
   );
@@ -61,7 +66,7 @@ export const usePasteBlocks = (): {
     pasteBlocks: useCallback(
       (newParentId: string | string[]) => {
         const parentId = Array.isArray(newParentId) ? newParentId[0] : newParentId;
-        
+
         if (!isEmpty(copiedBlockIds)) {
           duplicateBlocks(copiedBlockIds, parentId);
         } else {
