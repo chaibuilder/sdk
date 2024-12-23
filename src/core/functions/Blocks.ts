@@ -103,7 +103,7 @@ export const getDuplicatedBlocks = (
   // @ts-ignore
   block = { ...block, oldId: block._id, _id: generateUUID() };
 
-  if (newParentId) {
+  if (newParentId !== block?._parent) {
     // @ts-ignore
     block = { ...block, _parent: newParentId };
   }

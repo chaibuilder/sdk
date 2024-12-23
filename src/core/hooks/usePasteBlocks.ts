@@ -11,7 +11,7 @@ import { useAddBlock } from "./useAddBlock";
 const useCanPaste = () => {
   const [blocks] = useBlocksStore();
   return (ids: string[], newParentId: string | null) => {
-    const newParentType = find(blocks, { _id: newParentId })?._type;
+    const newParentType = find(blocks, { _id: newParentId })?._type || null;
     const blockType = first(ids.map((id) => find(blocks, { _id: id })?._type));
     return canAcceptChildBlock(newParentType, blockType);
   };
@@ -24,10 +24,13 @@ const useMoveCutBlocks = () => {
   return useCallback(
     (blockIds: Array<string>, newParentId: string[] | string) => {
       const parentId = Array.isArray(newParentId) ? newParentId[0] : newParentId;
-      const newParentBlock = presentBlocks.find((block) => block._id === parentId);
-      const newPosition = newParentBlock ? newParentBlock.children?.length || 0 : 0;
-
-      moveBlocks(blockIds, parentId, newPosition);
+      if (newParentId === "root") {
+        const newParentBlock = presentBlocks?.filter((block) => !block._parent);
+        moveBlocks(blockIds, null, newParentBlock?.length || 0);
+      } else {
+        const newParentBlock = presentBlocks?.filter((block) => block._parent === parentId);
+        moveBlocks(blockIds, parentId, newParentBlock?.length || 0);
+      }
     },
     [moveBlocks, presentBlocks],
   );
@@ -84,7 +87,7 @@ export const usePasteBlocks = (): {
           if (clipboardContent) {
             const clipboardData = JSON.parse(clipboardContent);
             if (has(clipboardData, "_chai_copied_blocks")) {
-              addPredefinedBlock(clipboardData._chai_copied_blocks, parentId);
+              addPredefinedBlock(clipboardData._chai_copied_blocks, parentId === "root" ? null : parentId);
             } else {
               toast({ title: "Error", description: "Nothing to paste" });
             }
