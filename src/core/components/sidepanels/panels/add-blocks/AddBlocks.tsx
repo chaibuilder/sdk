@@ -67,10 +67,12 @@ const AddBlocksPanel = ({
   className,
   showHeading = true,
   parentId = undefined,
+  tabs = ["library", "core", "html"],
 }: {
   parentId?: string;
   showHeading?: boolean;
   className?: string;
+  tabs?: string[];
 }) => {
   const { t } = useTranslation();
   const [tab, setTab] = useAtom(addBlockTabAtom);
@@ -100,15 +102,15 @@ const AddBlocksPanel = ({
           {importHTMLSupport ? <TabsTrigger value="html">{t("Import")}</TabsTrigger> : null}
         </TabsList>
       </Tabs>
-      {tab === "core" && (
+      {tabs.includes("core") && tab === "core" && (
         <ScrollArea className="-mx-1.5 h-[calc(100vh-156px)] overflow-y-auto">
           <div className="mt-2 w-full">
             <DefaultChaiBlocks gridCols={"grid-cols-4"} parentId={parentId} />
           </div>
         </ScrollArea>
       )}
-      {tab === "library" && <UILibraries parentId={parentId} />}
-      {tab === "html" && importHTMLSupport ? <ImportHTML parentId={parentId} /> : null}
+      {tabs.includes("library") && tab === "library" && <UILibraries parentId={parentId} />}
+      {tabs.includes("html") && tab === "html" && importHTMLSupport ? <ImportHTML parentId={parentId} /> : null}
     </div>
   );
 };
