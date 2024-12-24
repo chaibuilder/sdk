@@ -1,5 +1,5 @@
 import { CardStackIcon, CardStackPlusIcon, CopyIcon, ScissorsIcon, TrashIcon } from "@radix-ui/react-icons";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { PlusIcon } from "lucide-react";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "../../../../../ui";
 import {
@@ -16,6 +16,35 @@ import { canAddChildBlock, canDeleteBlock, canDuplicateBlock } from "../../../..
 import { useTranslation } from "react-i18next";
 import { CHAI_BUILDER_EVENTS } from "../../../../events.ts";
 import { pubsub } from "../../../../pubsub.ts";
+
+export const PasteAtRootContextMenu = ({ parentContext, setParentContext }) => {
+  const { t } = useTranslation();
+
+  const { canPaste, pasteBlocks } = usePasteBlocks();
+
+  useEffect(() => {
+    if (!canPaste("root")) setParentContext(null);
+  }, [canPaste("root")]);
+
+  return (
+    parentContext &&
+    canPaste("root") && (
+      <div
+        style={{ position: "absolute", top: parentContext.y - 75, left: parentContext.x - 56 }}
+        onMouseLeave={() => setParentContext(null)}
+        className="w-28 rounded-md border bg-white p-1 shadow-xl">
+        <div
+          className="flex cursor-pointer items-center gap-x-4 rounded px-2 py-1 text-xs hover:bg-blue-50"
+          onClick={() => {
+            pasteBlocks("root");
+            setParentContext(null);
+          }}>
+          <CardStackIcon /> {t("Paste")}
+        </div>
+      </div>
+    )
+  );
+};
 
 const CopyPasteBlocks = () => {
   const [blocks] = useBlocksStore();

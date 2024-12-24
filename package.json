@@ -5,7 +5,7 @@
   "author": "Suraj Air",
   "license": "BSD-3-Clause",
   "homepage": "https://chaibuilder.com",
-  "version": "2.0.0-beta.34",
+  "version": "2.0.0-beta.35",
   "type": "module",
   "repository": {
     "type": "git",
@@ -98,6 +98,7 @@
     "@rjsf/utils": "5.22.4",
     "@rjsf/validator-ajv8": "5.22.4",
     "@tailwindcss/aspect-ratio": "0.4.2",
+    "@tailwindcss/container-queries": "^0.1.1",
     "@tailwindcss/forms": "^0.5.6",
     "@tailwindcss/line-clamp": "^0.4.4",
     "@tailwindcss/typography": "^0.5.10",

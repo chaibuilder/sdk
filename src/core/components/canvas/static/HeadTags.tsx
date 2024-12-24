@@ -6,6 +6,7 @@ import { useAtom } from "jotai";
 import typography from "@tailwindcss/typography";
 import forms from "@tailwindcss/forms";
 import aspectRatio from "@tailwindcss/aspect-ratio";
+import containerQueries from "@tailwindcss/container-queries";
 import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
 import plugin from "tailwindcss/plugin";
 import { getChaiThemeOptions, getChaiThemeCssVariables, getThemeFontsLinkMarkup } from "./ChaiThemeFn.ts";
@@ -67,6 +68,7 @@ export const HeadTags = () => {
         typography,
         forms,
         aspectRatio,
+        containerQueries,
         plugin(function ({ addBase, theme }: any) {
           addBase({
             "h1,h2,h3,h4,h5,h6": {

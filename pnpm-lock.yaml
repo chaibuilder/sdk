@@ -39,6 +39,7 @@ specifiers:
   '@rjsf/utils': 5.22.4
   '@rjsf/validator-ajv8': 5.22.4
   '@tailwindcss/aspect-ratio': 0.4.2
+  '@tailwindcss/container-queries': ^0.1.1
   '@tailwindcss/forms': ^0.5.6
   '@tailwindcss/line-clamp': ^0.4.4
   '@tailwindcss/typography': ^0.5.10
@@ -149,6 +150,7 @@ dependencies:
   '@rjsf/utils': 5.22.4_react@18.2.0
   '@rjsf/validator-ajv8': 5.22.4_@rjsf+utils@5.22.4
   '@tailwindcss/aspect-ratio': 0.4.2_tailwindcss@3.3.5
+  '@tailwindcss/container-queries': 0.1.1_tailwindcss@3.3.5
   '@tailwindcss/forms': 0.5.6_tailwindcss@3.3.5
   '@tailwindcss/line-clamp': 0.4.4_tailwindcss@3.3.5
   '@tailwindcss/typography': 0.5.10_tailwindcss@3.3.5
@@ -4648,6 +4650,14 @@ packages:
     resolution: {integrity: sha512-8QPrypskfBa7QIMuKHg2TA7BqES6vhBrDLOv8Unb6FcFyd3TjKbc6lcmb9UPQHxfl24sXoJ41ux/H7qQQvfaSQ==}
     peerDependencies:
       tailwindcss: '>=2.0.0 || >=3.0.0 || >=3.0.0-alpha.1'
+    dependencies:
+      tailwindcss: 3.3.5_ts-node@10.9.2
+    dev: false
+
+  /@tailwindcss/container-queries/0.1.1_tailwindcss@3.3.5:
+    resolution: {integrity: sha512-p18dswChx6WnTSaJCSGx6lTmrGzNNvm2FtXmiO6AuA1V4U5REyoqwmT6kgAsIMdjo07QdAfYXHJ4hnMtfHzWgA==}
+    peerDependencies:
+      tailwindcss: '>=3.2.0'
     dependencies:
       tailwindcss: 3.3.5_ts-node@10.9.2
     dev: false
