@@ -24,6 +24,7 @@ import { ChaiBlock } from "../../../types/ChaiBlock";
 import { StaticBlocksRenderer } from "./StaticBlocksRenderer.tsx";
 import { Provider } from "react-wrap-balancer";
 import { ResizableCanvasWrapper } from "./ResizableCanvasWrapper.tsx";
+import { isDevelopment } from "../../../import-html/general.ts";
 
 const getElementByStyleId = (doc: any, styleId: string): HTMLElement =>
   doc.querySelector(`[data-style-id="${styleId}"]`) as HTMLElement;
@@ -91,16 +92,11 @@ const StaticCanvas = (): React.JSX.Element => {
   const iframeContent: string = useMemo(() => {
     let initialHTML = IframeInitialContent;
     initialHTML = initialHTML.replace("__HTML_DIR__", htmlDir);
-    if (networkMode === "offline") {
-      initialHTML = initialHTML.replace(
-        "https://old.chaibuilder.com/offline/tailwind.cdn.js",
-        "/offline/tailwind.cdn.js",
-      );
-      initialHTML = initialHTML.replace("https://unpkg.com/aos@next/dist/aos.css", "/offline/aos.css");
-      initialHTML = initialHTML.replace("https://unpkg.com/aos@next/dist/aos.js", "/offline/aos.js");
+    if (isDevelopment()) {
+      initialHTML = initialHTML.replace("https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio", "/cdn.js");
     }
     return initialHTML;
-  }, [networkMode, htmlDir]);
+  }, [htmlDir]);
 
   return (
     <ResizableCanvasWrapper onMount={setNewWidth} onResize={setNewWidth}>

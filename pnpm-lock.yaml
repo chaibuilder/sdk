@@ -56,6 +56,7 @@ specifiers:
   '@typescript-eslint/parser': ^6.9.1
   '@vitejs/plugin-react-swc': ^3.4.1
   ai: ^3.2.32
+  animate.css: ^4.1.1
   autoprefixer: ^10.4.16
   axios: ^1.7.7
   better-docs: ^2.7.2
@@ -105,6 +106,7 @@ specifiers:
   react-quill: ^2.0.0
   react-router-dom: ^6.19.0
   react-wrap-balancer: ^1.1.0
+  tailwind-animatecss: ^1.0.0
   tailwind-merge: 2.3.0
   tailwindcss: ^3.3.5
   tailwindcss-animate: 1.0.6
@@ -158,6 +160,7 @@ dependencies:
   '@tailwindcss/forms': 0.5.6_tailwindcss@3.3.5
   '@tailwindcss/line-clamp': 0.4.4_tailwindcss@3.3.5
   '@tailwindcss/typography': 0.5.10_tailwindcss@3.3.5
+  animate.css: 4.1.1
   class-variance-authority: 0.6.1
   clsx: 1.2.1
   cmdk: 0.2.0_uhnvbqyidce6nup7tsgrqjnqhy
@@ -186,6 +189,7 @@ dependencies:
   react-json-view-lite: 1.4.0_react@18.2.0
   react-quill: 2.0.0_biqbaboplfbrettd7655fr4n2y
   react-wrap-balancer: 1.1.0_react@18.2.0
+  tailwind-animatecss: 1.0.0_cffdx2vfkvaoyuoc5dzsa5wvjq
   tailwind-merge: 2.3.0
   tree-model: 1.0.7
   undo-manager: 1.1.1
@@ -5793,6 +5797,10 @@ packages:
       repeat-string: 1.6.1
     dev: true
 
+  /animate.css/4.1.1:
+    resolution: {integrity: sha512-+mRmCTv6SbCmtYJCN4faJMNFVNN5EuCTTprDTAo7YzIGji2KADmakjVA3+8mVDkZ2Bf09vayB35lSQIex2+QaQ==}
+    dev: false
+
   /ansi-escapes/4.3.2:
     resolution: {integrity: sha512-gKXj5ALrKWQLsYG9jlTRmR/xKluxHV+Z9QEwNIgCfM1/uwPMCuzVVnh5mwTd+OuBZcwSIMbqssNWRm1lE51QaQ==}
     engines: {node: '>=8'}
@@ -10187,6 +10195,14 @@ packages:
       resolve: 1.22.8
     dev: false
 
+  /postcss-js/3.0.3:
+    resolution: {integrity: sha512-gWnoWQXKFw65Hk/mi2+WTQTHdPD5UJdDXZmX073EY/B3BWnYjO4F4t0VneTCnCGQ5E5GsCdMkzPaTXwl3r5dJw==}
+    engines: {node: '>=10.0'}
+    dependencies:
+      camelcase-css: 2.0.1
+      postcss: 8.4.38
+    dev: false
+
   /postcss-js/4.0.1_postcss@8.4.31:
     resolution: {integrity: sha512-dDLF8pEO191hJMtlHFPRa8xsizHaM82MLfNkUHdUtVEV3tgTp5oj+8qbEqYM57SLfc74KSbw//4SeJma2LRVIw==}
     engines: {node: ^12 || ^14 || >= 16}
@@ -11844,6 +11860,20 @@ packages:
   /tabbable/6.2.0:
     resolution: {integrity: sha512-Cat63mxsVJlzYvN51JmVXIgNoUokrIaT2zLclCXjRd8boZ0004U4KCs/sToJ75C6sdlByWxpYnb5Boif1VSFew==}
     dev: true
+
+  /tailwind-animatecss/1.0.0_cffdx2vfkvaoyuoc5dzsa5wvjq:
+    resolution: {integrity: sha512-CHoRvMMR6aTv2fS1A/i6DA8LJkOwzeP0l96sdzuIHu/g79BsGuqQwjOoZS9edFYlJaHZiIwGdmxblm6DdJVK4w==}
+    peerDependencies:
+      animate.css: ^4
+      postcss: ^8
+      tailwindcss: ^3
+    dependencies:
+      animate.css: 4.1.1
+      postcss: 8.4.31
+      postcss-js: 3.0.3
+      postcss-selector-parser: 6.0.13
+      tailwindcss: 3.3.5_ts-node@10.9.2
+    dev: false
 
   /tailwind-merge/2.2.0:
     resolution: {integrity: sha512-SqqhhaL0T06SW59+JVNfAqKdqLs0497esifRrZ7jOaefP3o64fdFNDMrAQWZFMxTLJPiHVjRLUywT8uFz1xNWQ==}

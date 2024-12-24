@@ -62,6 +62,8 @@ export default defineConfig({
         "@tailwindcss/typography",
         "class-variance-authority",
         "@bobthered/tailwindcssPaletteGenerator",
+        "tailwind-animatecss",
+        "animate.css",
         "clsx",
         "cmdk",
         "react-event-hook",
