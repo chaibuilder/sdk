@@ -11,7 +11,7 @@ export const Breadcrumb = () => {
   const { highlightBlock } = useBlockHighlight();
 
   return (
-    <div className="-mx-2 border-t border-border bg-background px-2 py-1 text-xs text-muted-foreground">
+    <div className="z-10 -mx-2 border-t border-border bg-background px-2 py-1 text-xs text-muted-foreground">
       <ol className="flex items-center whitespace-nowrap">
         <li className="inline-flex items-center">
           <Button onClick={() => setSelected([])} variant={"ghost"} className="h-fit p-1 text-xs font-normal">

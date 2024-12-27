@@ -251,4 +251,10 @@ export interface ChaiBuilderEditorProps {
    */
   collections?: Collection[];
   searchCollectionItems?: (collectionKey: string, query: string) => Promise<CollectionItem[] | Error>;
+
+  /**
+   * Section control props
+   */
+  showCanvasSectionControls: boolean;
+  canvasSectionControlComponent: ReactComponentType;
 }
