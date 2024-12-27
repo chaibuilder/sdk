@@ -1,6 +1,12 @@
 import { filter, map } from "lodash-es";
 import { ChevronDown, ChevronUp, Menu, Plus, Trash, X } from "lucide-react";
-import { useBlockHighlight, useBlocksStore, useBuilderProp, useRemoveBlocks } from "../../../hooks";
+import {
+  useBlockHighlight,
+  useBlocksStore,
+  useBlocksStoreUndoableActions,
+  useBuilderProp,
+  useRemoveBlocks,
+} from "../../../hooks";
 import { useEffect } from "react";
 import { useState } from "react";
 import { isNumber, trimEnd, trimStart } from "lodash";
@@ -77,17 +83,16 @@ const SectionControllerMenuContent = ({
   isLastSection: boolean;
 }) => {
   const removeBlock = useRemoveBlocks();
+  const { moveBlocks } = useBlocksStoreUndoableActions();
 
   const moveSectionUp = () => {
     if (isFirstSection) return;
-    const currentIndex = index;
-    const newIndex = index - 1;
+    moveBlocks([id], null, index - 1);
   };
 
   const moveSectionDown = () => {
     if (isLastSection) return;
-    const currentIndex = index;
-    const newIndex = index + 1;
+    moveBlocks([id], null, index + 1);
   };
 
   const removeSection = () => removeBlock([id]);
