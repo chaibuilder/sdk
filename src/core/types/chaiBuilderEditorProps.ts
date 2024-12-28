@@ -255,6 +255,13 @@ export interface ChaiBuilderEditorProps {
   /**
    * Section control props
    */
-  showCanvasSectionControls: boolean;
-  canvasSectionControlComponent: ReactComponentType;
+  showCanvasSectionControls?: boolean;
+  canvasSectionControlComponent?: React.ComponentType<{
+    isFirstSection: boolean;
+    isLastSection: boolean;
+    moveSectionUp: () => void;
+    moveSectionDown: () => void;
+    removeSection: () => void;
+    addNewSectionBelow: () => void;
+  }>;
 }

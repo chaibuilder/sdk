@@ -7,7 +7,7 @@ import {
   useBuilderProp,
   useRemoveBlocks,
 } from "../../../hooks";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { isNumber, trimEnd, trimStart } from "lodash";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../ui";
@@ -26,7 +26,7 @@ const getZoomFromScale = (scale) => {
 
 // * Section controller menu position calculation
 const useCanvasSectionControl = ({ scale, dimension, iframeRef }) => {
-  const showCanvasSectionControls = useBuilderProp("showCanvasSectionControls", true);
+  const showCanvasSectionControls = useBuilderProp("showCanvasSectionControls", false);
   const [blocks] = useBlocksStore();
   const [pos, setPos] = useState({ x: -24, y: 0 });
   const rootBlocks = filter(blocks, (block) => !block?._parent);
@@ -85,6 +85,7 @@ const SectionControllerMenuContent = ({
 }) => {
   const { moveBlocks } = useBlocksStoreUndoableActions();
   const removeBlock = useRemoveBlocks();
+  const canvasSectionControlComponent = useBuilderProp("canvasSectionControlComponent", null);
 
   const moveSectionUp = () => {
     if (isFirstSection) return;
@@ -103,6 +104,18 @@ const SectionControllerMenuContent = ({
   const addNewSectionBelow = () => {
     emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, data: { position: index + 1 } });
   };
+
+  if (canvasSectionControlComponent) {
+    // * if custom component is passed
+    return React.createElement(canvasSectionControlComponent, {
+      isFirstSection,
+      isLastSection,
+      moveSectionUp,
+      moveSectionDown,
+      removeSection,
+      addNewSectionBelow,
+    });
+  }
 
   return (
     <div className="flex flex-col space-y-1">
