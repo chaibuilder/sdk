@@ -94,7 +94,7 @@ const SectionControllerMenuContent = ({
 
   const moveSectionDown = () => {
     if (isLastSection) return;
-    moveBlocks([id], null, index + 1);
+    moveBlocks([id], null, index + 2);
   };
 
   const removeSection = () => {
