@@ -24,7 +24,8 @@ const getZoomFromScale = (scale) => {
   }
 };
 
-const useTopLevelSection = ({ scale, dimension, iframeRef }) => {
+// * Section controller menu position calculation
+const useCanvasSectionControl = ({ scale, dimension, iframeRef }) => {
   const showCanvasSectionControls = useBuilderProp("showCanvasSectionControls", true);
   const [blocks] = useBlocksStore();
   const [pos, setPos] = useState({ x: -24, y: 0 });
@@ -82,8 +83,8 @@ const SectionControllerMenuContent = ({
   isFirstSection: boolean;
   isLastSection: boolean;
 }) => {
-  const removeBlock = useRemoveBlocks();
   const { moveBlocks } = useBlocksStoreUndoableActions();
+  const removeBlock = useRemoveBlocks();
 
   const moveSectionUp = () => {
     if (isFirstSection) return;
@@ -95,9 +96,13 @@ const SectionControllerMenuContent = ({
     moveBlocks([id], null, index + 1);
   };
 
-  const removeSection = () => removeBlock([id]);
+  const removeSection = () => {
+    removeBlock([id]);
+  };
 
-  const addNewSectionBelow = () => emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK });
+  const addNewSectionBelow = () => {
+    emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, data: { position: index + 1 } });
+  };
 
   return (
     <div className="flex flex-col space-y-1">
@@ -105,23 +110,23 @@ const SectionControllerMenuContent = ({
         onClick={moveSectionUp}
         disabled={isFirstSection}
         className={`rounded-full p-1 text-white ${isFirstSection ? "cursor-not-allowed bg-gray-300" : "bg-blue-500 duration-300 hover:bg-blue-700"}`}>
-        <ChevronUp className="h-3 w-3 stroke-[2]" />
+        <ChevronUp className="h-3 w-3 stroke-[3]" />
       </button>
       <button
         onClick={moveSectionDown}
         disabled={isLastSection}
         className={`rounded-full p-1 text-white ${isLastSection ? "cursor-not-allowed bg-gray-300" : "bg-blue-500 duration-300 hover:bg-blue-700"}`}>
-        <ChevronDown className="h-3 w-3 stroke-[2]" />
+        <ChevronDown className="h-3 w-3 stroke-[3]" />
       </button>
       <button
         onClick={removeSection}
         className={`rounded-full p-1 text-white ${false ? "cursor-not-allowed bg-gray-300" : "bg-blue-500 duration-300 hover:bg-blue-700"}`}>
-        <Trash className="h-3 w-3 stroke-[2]" />
+        <Trash className="h-3 w-3 stroke-[3]" />
       </button>
       <button
         onClick={addNewSectionBelow}
         className={`rounded-full p-1 text-white ${false ? "cursor-not-allowed bg-gray-300" : "bg-blue-500 duration-300 hover:bg-blue-700"}`}>
-        <Plus className="h-3 w-3 stroke-[2]" />
+        <Plus className="h-3 w-3 stroke-[3]" />
       </button>
     </div>
   );
@@ -132,17 +137,13 @@ const SectionControllerMenuButton = (props) => {
   const { id } = props;
   return (
     <div className="flex h-full items-center justify-center">
-      <Tooltip delayDuration={400}>
-        <TooltipTrigger onMouseEnter={() => highlightBlock(props?.id)} onMouseLeave={clearHighlight}>
-          <button className={`rounded-full bg-blue-400 p-1 text-white duration-300 hover:scale-90`}>
+      <Tooltip delayDuration={100} onOpenChange={(open) => (open ? highlightBlock(id) : clearHighlight())}>
+        <TooltipTrigger>
+          <div className="rounded-full bg-black/40 p-1 text-white duration-300 hover:bg-black/60">
             <Menu className="h-2.5 w-2.5 stroke-[3]" />
-          </button>
+          </div>
         </TooltipTrigger>
-        <TooltipContent
-          side="bottom"
-          className="m-0 bg-transparent p-0"
-          onMouseLeave={() => clearHighlight()}
-          onMouseEnter={() => highlightBlock(id)}>
+        <TooltipContent side="bottom" className="m-0 bg-transparent p-0">
           <SectionControllerMenuContent {...props} />
         </TooltipContent>
       </Tooltip>
@@ -150,8 +151,17 @@ const SectionControllerMenuButton = (props) => {
   );
 };
 
+/**
+ *
+ * @param param
+ * @returns
+ * @description
+ * This function is responsible for rendering the canvas section controls,
+ * including buttons for moving sections up and down, removing sections, and adding new sections.
+ * It also handles the display of section controller menu buttons for each section.
+ */
 export const CanvasSectionControls = ({ scale, dimension, iframeRef }) => {
-  const { rootBlocks, zoom, posX, posY, showControl } = useTopLevelSection({ scale, dimension, iframeRef });
+  const { rootBlocks, zoom, posX, posY, showControl } = useCanvasSectionControl({ scale, dimension, iframeRef });
   if (!showControl) return;
 
   return (

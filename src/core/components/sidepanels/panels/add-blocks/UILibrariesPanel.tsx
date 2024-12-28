@@ -23,10 +23,12 @@ const BlockCard = ({
   block,
   library,
   parentId = undefined,
+  position,
 }: {
   library: UILibrary;
   block: UiLibraryBlock;
   parentId?: string;
+  position: number;
 }) => {
   const [isAdding, setIsAdding] = useState(false);
   const getUILibraryBlock = useBuilderProp("getUILibraryBlock", noop);
@@ -46,13 +48,13 @@ const BlockCard = ({
     async (e: any) => {
       e.stopPropagation();
       if (has(block, "component")) {
-        addCoreBlock(block, parentId);
+        addCoreBlock(block, parentId, position);
         emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK });
         return;
       }
       setIsAdding(true);
       const uiBlocks = await getUILibraryBlock(library, block);
-      if (!isEmpty(uiBlocks)) addPredefinedBlock(syncBlocksWithDefaults(uiBlocks), parentId);
+      if (!isEmpty(uiBlocks)) addPredefinedBlock(syncBlocksWithDefaults(uiBlocks), parentId, position);
       emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK });
     },
     [block],
@@ -145,7 +147,7 @@ const useLibraryBlocks = (library?: UILibrary) => {
   return { data: blocks || [], isLoading: state === "loading" };
 };
 
-const UILibrarySection = ({ parentId }: { parentId?: string }) => {
+const UILibrarySection = ({ parentId, position }: { parentId?: string; position: number }) => {
   const [selectedLibrary, setLibrary] = useAtom(selectedLibraryAtom);
   const uiLibraries = useBuilderProp("uiLibraries", []);
   const registeredBlocks = useChaiBlocks();
@@ -219,14 +221,14 @@ const UILibrarySection = ({ parentId }: { parentId?: string }) => {
               <div className="flex flex-col gap-1">
                 {React.Children.toArray(
                   firstBlocks.map((block: UiLibraryBlock) => (
-                    <BlockCard parentId={parentId} block={block} library={library} />
+                    <BlockCard parentId={parentId} position={position} block={block} library={library} />
                   )),
                 )}
               </div>
               <div className="flex flex-col gap-1">
                 {React.Children.toArray(
                   secondBlocks.map((block: UiLibraryBlock) => (
-                    <BlockCard parentId={parentId} block={block} library={library} />
+                    <BlockCard parentId={parentId} position={position} block={block} library={library} />
                   )),
                 )}
               </div>
@@ -241,8 +243,8 @@ const UILibrarySection = ({ parentId }: { parentId?: string }) => {
   );
 };
 
-const UILibrariesPanel = ({ parentId }: { parentId?: string }) => {
-  return <UILibrarySection parentId={parentId} />;
+const UILibrariesPanel = ({ parentId, position }: { parentId?: string; position: number }) => {
+  return <UILibrarySection parentId={parentId} position={position} />;
 };
 
 export default UILibrariesPanel;
