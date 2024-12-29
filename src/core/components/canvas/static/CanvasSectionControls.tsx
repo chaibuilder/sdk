@@ -149,7 +149,7 @@ const SectionControllerMenuButton = (props) => {
   const { highlightBlock, clearHighlight } = useBlockHighlight();
   const { id } = props;
   return (
-    <div className="flex h-full items-center justify-center">
+    <div className="flex h-full items-start justify-center pt-0.5">
       <Tooltip delayDuration={100} onOpenChange={(open) => (open ? highlightBlock(id) : clearHighlight())}>
         <TooltipTrigger>
           <div className="rounded-full bg-black/40 p-1 text-white duration-300 hover:bg-black/60">
