@@ -4,10 +4,6 @@ Chai Builder is an Open Source Low Code React + Tailwind CSS Visual Builder.
 It allows you to create web pages visually by dragging and dropping elements onto the canvas. 
 It is a simple React component that renders a full-fledged visual builder into any React application. 
 
-#### [View Demo](https://chaibuilder.com/demos/web)
-#### [Documentation](https://chaibuilder.com/docs/sdk/introduction)
-#### [API References](https://api-reference.chaibuilder.com)
-
 ---
 
 ### Manual installation:
@@ -47,8 +43,8 @@ const BuilderFullPage = () => {
   return  (
       <ChaiBuilderEditor
           blocks={[{_type: 'Heading', _id: 'a', content: 'This is a heading', styles: '#styles:,text-3xl font-bold'}]}
-          onSave={async ({ blocks, providers, brandingOptions } ) => {
-            console.log(blocks, providers, brandingOptions );
+          onSave={async ({ blocks, theme } ) => {
+            console.log(blocks, theme );
             return true
           }}
       />
