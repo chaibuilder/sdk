@@ -13,12 +13,13 @@ export function insertBlocksAtPosition(
   }
 
   // Determine the position to insert the new blocks
-  const insertPosition = position !== undefined ? position : parentBlocks.length;
+  const insertPosition =
+    !isNaN(position) || position > -1 ? Math.min(position, parentBlocks.length) : parentBlocks.length;
 
   // Find the correct index in the allBlocks array to insert the new blocks
   let insertIndex = allBlocks.length;
   for (let i = 0, count = 0; i < allBlocks.length; i++) {
-    if (allBlocks[i]._parent === parentId) {
+    if (parentId !== undefined ? allBlocks[i]._parent === parentId : !allBlocks[i]._parent) {
       if (count === insertPosition) {
         insertIndex = i;
         break;

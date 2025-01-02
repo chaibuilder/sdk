@@ -6,7 +6,6 @@ import { useAtom } from "jotai";
 import {
   useBuilderProp,
   useCanvasWidth,
-  useHighlightBlockId,
   useSelectedBlock,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
@@ -25,6 +24,7 @@ import { StaticBlocksRenderer } from "./StaticBlocksRenderer.tsx";
 import { Provider } from "react-wrap-balancer";
 import { ResizableCanvasWrapper } from "./ResizableCanvasWrapper.tsx";
 import { isDevelopment } from "../../../import-html/general.ts";
+import { CanvasSectionControls } from "./CanvasSectionControls.tsx";
 
 const getElementByStyleId = (doc: any, styleId: string): HTMLElement =>
   doc.querySelector(`[data-style-id="${styleId}"]`) as HTMLElement;
@@ -34,7 +34,6 @@ const StaticCanvas = (): React.JSX.Element => {
   const [width] = useCanvasWidth();
   const [, setIds] = useSelectedBlockIds();
   const selectedBlock: any = useSelectedBlock();
-  const [, highlight] = useHighlightBlockId();
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [dimension, setDimension] = useState({ width: 0, height: 0 });
@@ -46,14 +45,14 @@ const StaticCanvas = (): React.JSX.Element => {
   const loadingCanvas = useBuilderProp("loading", false);
   const htmlDir = useBuilderProp("htmlDir", "ltr");
 
-  const setNewWidth = (newWidth: number) => {
-    setDimension((prev) => ({ ...prev, width: newWidth }));
-  };
-
-  useEffect(() => {
+  const setNewWidth = () => {
     if (!wrapperRef.current) return;
     const { clientWidth, clientHeight } = wrapperRef.current as HTMLDivElement;
     setDimension({ width: clientWidth, height: clientHeight });
+  };
+
+  useEffect(() => {
+    setNewWidth();
   }, [wrapperRef, width]);
 
   const isInViewport = (element: HTMLElement, offset = 0) => {
@@ -105,9 +104,10 @@ const StaticCanvas = (): React.JSX.Element => {
           setIds([]);
           setStylingBlocks([]);
         }}
-        onMouseLeave={() => setTimeout(() => highlight(""), 300)}
-        className="relative mx-auto h-full w-full overflow-hidden"
+        className="relative mx-auto h-full w-full"
         ref={wrapperRef}>
+        <CanvasSectionControls scale={scale} dimension={dimension} iframeRef={iframeRef} />
+
         {/*// @ts-ignore*/}
         <ChaiFrame
           contentDidMount={() => setCanvasIframe(iframeRef.current as HTMLIFrameElement)}

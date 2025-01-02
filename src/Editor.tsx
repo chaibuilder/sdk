@@ -217,6 +217,8 @@ function ChaiBuilderDefault() {
         }
         return [];
       }}
+      showCanvasSectionControls={false}
+      canvasSectionControlComponent={null}
     />
   );
 }

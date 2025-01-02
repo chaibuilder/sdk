@@ -10,7 +10,18 @@ import { useFeature } from "flagged";
 import { useTranslation } from "react-i18next";
 import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../../../events.ts";
 
-export const CoreBlock = ({ block, disabled, parentId }: { block: any; disabled: boolean; parentId?: string }) => {
+export const CoreBlock = ({
+  block,
+  position,
+  disabled,
+  parentId,
+}: {
+  block: any;
+  position: number;
+
+  disabled: boolean;
+  parentId?: string;
+}) => {
   const [, setDraggedBlock] = useAtom(draggedBlockAtom);
   const { type, icon, label } = block;
   const { addCoreBlock, addPredefinedBlock } = useAddBlock();
@@ -19,9 +30,9 @@ export const CoreBlock = ({ block, disabled, parentId }: { block: any; disabled:
   const addBlockToPage = () => {
     if (has(block, "blocks")) {
       const blocks = isFunction(block.blocks) ? block.blocks() : block.blocks;
-      addPredefinedBlock(syncBlocksWithDefaults(blocks), parentId || null);
+      addPredefinedBlock(syncBlocksWithDefaults(blocks), parentId || null, position);
     } else {
-      addCoreBlock(block, parentId || null);
+      addCoreBlock(block, parentId || null, position);
     }
     emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK });
   };
