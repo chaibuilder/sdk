@@ -54,6 +54,7 @@ const RootLayout: ComponentType = () => {
   });
 
   const topComponents = useBuilderProp("sideBarComponents.top", []);
+  const sideBarBottomComponents = useBuilderProp("sideBarComponents.bottom", []);
   /**
    * Prevents the context menu from appearing in production mode.
    * @param {MouseEvent<HTMLDivElement>} e - The mouse event.
@@ -104,6 +105,11 @@ const RootLayout: ComponentType = () => {
                 ))}
               </div>
               <div className="flex flex-col space-y-1"></div>
+              <div className="flex flex-col">
+                {sideBarBottomComponents?.map((sidebarComponent, index) =>
+                  React.createElement(sidebarComponent, { key: index }),
+                )}
+              </div>
             </div>
             {/* Side Panel */}
             <motion.div
