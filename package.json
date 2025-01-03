@@ -5,7 +5,7 @@
   "author": "Suraj Air",
   "license": "BSD-3-Clause",
   "homepage": "https://chaibuilder.com",
-  "version": "2.0.0-beta.35",
+  "version": "2.0.0-beta.36",
   "type": "module",
   "repository": {
     "type": "git",
@@ -188,5 +188,8 @@
   },
   "msw": {
     "workerDirectory": "public"
+  },
+  "engines": {
+    "node": "^20.18.0"
   }
 }

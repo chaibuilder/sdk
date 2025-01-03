@@ -14,7 +14,6 @@ export * from "./shadcn/components/ui/scroll-area";
 export * from "./shadcn/components/ui/tabs";
 export * from "./shadcn/components/ui/tooltip";
 export * from "./shadcn/components/ui/popover";
-export * from "./shadcn/components/ui/menubar";
 export * from "./shadcn/components/ui/hover-card";
 export * from "./shadcn/components/ui/select";
 export * from "./shadcn/components/ui/sheet";
