@@ -9,6 +9,7 @@ import BlockStyleEditor from "../components/settings/BlockStyling.tsx";
 import UILibrariesPanel from "../components/sidepanels/panels/add-blocks/UILibrariesPanel.tsx";
 import i18n from "../locales/load";
 import AddBlocksPanel from "../components/sidepanels/panels/add-blocks/AddBlocks.tsx";
+import { ChaiDraggableBlock } from "../components/sidepanels/panels/add-blocks/ChaiDraggableBlock.tsx";
 
 export { AddBlocksDialog } from "../components/layout/AddBlocksDialog.tsx";
 export { emitChaiBuilderMsg, useChaiBuilderMsgListener, CHAI_BUILDER_EVENTS } from "../events.ts";
@@ -29,6 +30,7 @@ export {
   i18n,
   UILibrariesPanel as UILibraries,
   AddBlocksPanel,
+  ChaiDraggableBlock,
 };
 export * from "../hooks";
 export { generateUUID as generateBlockId, cn as mergeClasses } from "../functions/Functions.ts";
