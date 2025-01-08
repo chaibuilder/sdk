@@ -12,7 +12,7 @@ import {
   useSelectedStylingBlocks,
 } from "../../../hooks";
 import { IframeInitialContent } from "../IframeInitialContent";
-import { canvasIframeAtom, networkModeAtom } from "../../../atoms/ui";
+import { canvasIframeAtom } from "../../../atoms/ui";
 import { useCanvasScale } from "./useCanvasScale";
 import { Canvas, getElementByDataBlockId } from "./Canvas.tsx";
 import { ChaiFrame } from "../../../frame";
@@ -30,7 +30,6 @@ const getElementByStyleId = (doc: any, styleId: string): HTMLElement =>
   doc.querySelector(`[data-style-id="${styleId}"]`) as HTMLElement;
 
 const StaticCanvas = (): React.JSX.Element => {
-  const [networkMode] = useAtom(networkModeAtom);
   const [width] = useCanvasWidth();
   const [, setIds] = useSelectedBlockIds();
   const selectedBlock: any = useSelectedBlock();
