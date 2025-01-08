@@ -15,7 +15,6 @@ import { useResizeObserver } from "@react-hookz/web";
 import { useAtom } from "jotai";
 import { inlineEditingActiveAtom } from "../../atoms/ui.ts";
 import { draggedBlockAtom } from "./dnd/atoms.ts";
-import { useFeature } from "flagged";
 import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../events.ts";
 
 /**
@@ -26,11 +25,10 @@ const BlockActionLabel = ({ block, label }: any) => {
   const [, setSelected] = useSelectedBlockIds();
   const [, setHighlighted] = useHighlightBlockId();
   const [, setDraggedBlock] = useAtom(draggedBlockAtom);
-  const dnd = useFeature("dnd");
   return (
     <div
+      draggable
       className="mr-10 flex cursor-grab items-center space-x-1 px-1"
-      draggable={dnd ? "true" : "false"}
       onDragStart={(ev) => {
         ev.dataTransfer.setData("text/plain", JSON.stringify(pick(block, ["_id", "_type", "_name"])));
         //@ts-ignore
