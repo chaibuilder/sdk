@@ -3,10 +3,6 @@ import { capitalize, filter, find, map, reject, sortBy, values } from "lodash-es
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
   ScrollArea,
   Tabs,
   TabsList,
@@ -32,12 +28,11 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, gridCols = "grid-c
       sortBy(groups, (group: string) => (CORE_GROUPS.indexOf(group) === -1 ? 99 : CORE_GROUPS.indexOf(group))),
       (group: string) =>
         reject(filter(values(blocks), { group }), { hidden: true }).length ? (
-          <Accordion type="single" value={group} collapsible className="w-full">
-            <AccordionItem value={group} className={"border-border"}>
-              <AccordionTrigger className="rounded-md bg-background px-4 py-2 capitalize text-foreground hover:no-underline">
-                {capitalize(t(group.toLowerCase()))}
-              </AccordionTrigger>
-              <AccordionContent className="mx-auto max-w-xl p-3">
+          <div key={group} className={"border-border"}>
+            <div className="rounded-md bg-background px-4 py-2 capitalize text-foreground hover:no-underline font-semibold">
+              {capitalize(t(group.toLowerCase()))}
+            </div>
+              <div className="mx-auto max-w-xl p-3">
                 <div className={"grid gap-2 " + gridCols}>
                   {React.Children.toArray(
                     reject(filter(values(blocks), { group }), { hidden: true }).map((block) => {
@@ -53,9 +48,8 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, gridCols = "grid-c
                     }),
                   )}
                 </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+              </div>
+          </div>
         ) : null,
     ),
   );
