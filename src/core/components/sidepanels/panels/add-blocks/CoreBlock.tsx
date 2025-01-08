@@ -6,7 +6,6 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../../ui";
 import { useAddBlock, useBlockHighlight, useSelectedBlockIds } from "../../../../hooks";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { draggedBlockAtom } from "../../../canvas/dnd/atoms.ts";
-import { useFeature } from "flagged";
 import { useTranslation } from "react-i18next";
 import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../../../events.ts";
 
@@ -25,7 +24,6 @@ export const CoreBlock = ({ block, disabled, parentId }: { block: any; disabled:
     }
     emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK });
   };
-  const dnd = useFeature("dnd");
   const { t } = useTranslation();
 
   const handleDragStart = (ev) => {
@@ -44,11 +42,11 @@ export const CoreBlock = ({ block, disabled, parentId }: { block: any; disabled:
       <Tooltip>
         <TooltipTrigger asChild>
           <button
+            draggable
             disabled={disabled}
             onClick={addBlockToPage}
             type="button"
             onDragStart={handleDragStart}
-            draggable={dnd ? "true" : "false"}
             className={
               "cursor-pointer space-y-2 rounded-lg border border-border p-3 text-center hover:bg-slate-300/50 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400 dark:border-gray-700 dark:text-white dark:hover:bg-slate-800/50 dark:disabled:bg-gray-900 dark:disabled:text-foreground"
             }>

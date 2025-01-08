@@ -9,7 +9,6 @@ import { useAddBlock, useHighlightBlockId, useSelectedBlockIds } from "../../../
 import { useBlocksStoreUndoableActions } from "../../../history/useBlocksStoreUndoableActions.ts";
 import { getOrientation } from "./getOrientation.ts";
 import { draggedBlockAtom, dropTargetBlockIdAtom } from "./atoms.ts";
-import { useFeature } from "flagged";
 import { canAcceptChildBlock } from "../../../functions/block-helpers.ts";
 
 let iframeDocument: null | HTMLDocument = null;
@@ -169,7 +168,6 @@ export const useDnd = () => {
   const { moveBlocks } = useBlocksStoreUndoableActions();
   const [draggedBlock, setDraggedBlock] = useAtom(draggedBlockAtom);
   const [, setDropTarget] = useAtom(dropTargetBlockIdAtom);
-  const dnd = useFeature("dnd");
 
   const resetDragState = () => {
     removePlaceholder();
@@ -193,8 +191,6 @@ export const useDnd = () => {
     rootLayout?.addEventListener("drop", handleOutsideDrop);
     return () => rootLayout?.removeEventListener("drop", handleOutsideDrop);
   }, []);
-
-  if (!dnd) return {};
 
   iframeDocument = document as HTMLDocument;
   return {

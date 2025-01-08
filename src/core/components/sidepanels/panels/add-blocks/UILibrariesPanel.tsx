@@ -10,7 +10,6 @@ import { ScrollArea, Skeleton, Tooltip, TooltipContent, TooltipTrigger } from ".
 import { UILibrary, UiLibraryBlock } from "../../../../types/chaiBuilderEditorProps.ts";
 import { ChaiBlock } from "../../../../types/ChaiBlock.ts";
 import { UILibrariesSelect } from "./UiLibrariesSelect.tsx";
-import { useFeature } from "flagged";
 
 import { draggedBlockAtom } from "../../../canvas/dnd/atoms.ts";
 import clsx from "clsx";
@@ -34,7 +33,6 @@ const BlockCard = ({
   const [, setSelected] = useSelectedBlockIds();
   const { clearHighlight } = useBlockHighlight();
   const name = get(block, "name", get(block, "label"));
-  const dnd = useFeature("dnd");
   const [, setDraggedBlock] = useAtom(draggedBlockAtom);
 
   const isTopLevelSection = (block: ChaiBlock) => {
@@ -93,8 +91,8 @@ const BlockCard = ({
     <Tooltip>
       <TooltipTrigger asChild>
         <div
+          draggable
           onClick={isAdding ? () => {} : addBlock}
-          draggable={dnd ? "true" : "false"}
           onDragStart={handleDragStart}
           className={clsx(
             "relative mt-2 cursor-pointer overflow-hidden rounded-md border border-border bg-white duration-200 hover:border-blue-500 hover:shadow-xl",

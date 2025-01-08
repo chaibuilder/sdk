@@ -1,6 +1,5 @@
 import React from "react";
 import { omit, isEmpty, get, isObject } from "lodash-es";
-import { useFeature } from "flagged";
 import { useBlockHighlight, useSelectedBlockIds } from "../../../../hooks";
 import { emitChaiBuilderMsg, CHAI_BUILDER_EVENTS } from "../../../../events";
 import { useAtom } from "jotai";
@@ -22,7 +21,6 @@ type ChaiDraggableBlockProps = {
  * block, blocks, html
  */
 export const ChaiDraggableBlock = ({ block, html, blocks, children }: ChaiDraggableBlockProps) => {
-  const dnd = useFeature("dnd");
   const [, setDraggedBlock] = useAtom(draggedBlockAtom);
   const [, setSelected] = useSelectedBlockIds();
   const { clearHighlight } = useBlockHighlight();
@@ -64,7 +62,7 @@ export const ChaiDraggableBlock = ({ block, html, blocks, children }: ChaiDragga
   };
 
   return (
-    <div draggable={dnd ? "true" : "false"} onDragStart={handleDragStart} className={dnd ? "cursor-grab" : ""}>
+    <div draggable onDragStart={handleDragStart} className="cursor-grab">
       {children}
     </div>
   );
