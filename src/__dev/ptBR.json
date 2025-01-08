@@ -469,5 +469,16 @@
     "Fetching...": "Buscando...",
     "No images found": "Nenhuma imagem encontrada",
     "It looks like you haven't uploaded any images yet. Start by clicking the upload button above.": "Parece que você ainda não enviou nenhuma imagem. Comece clicando no botão de envio acima.",
-    "Open Code Editor": "Abrir Editor de Código"
+    "Open Code Editor": "Abrir Editor de Código",
+    "Typography": "Tipografia",
+    "Layout": "Layout",
+    "Server": "Servidor",
+    "Other": "Outro",
+    "basic": "básico",
+    "typography": "tipografia",
+    "media": "midia",
+    "layout": "layout",
+    "form": "formulario",
+    "advanced": "avançado",
+    "other": "outro"
 }
