@@ -8,8 +8,8 @@ import { getBlocksFromHTML } from "../../../../main";
 
 type ChaiDraggableBlockProps = {
   html?: string | (() => Promise<any>);
-  block?: any | (() => Promise<any>);
-  blocks?: any;
+  block?: any;
+  blocks?: any | (() => Promise<any>);
   children: React.ReactNode;
 };
 
@@ -35,13 +35,13 @@ export const ChaiDraggableBlock = ({ block, html, blocks, children }: ChaiDragga
 
       let chaiBlock: any = null;
 
-      // Handle async html or block functions
+      // Handle async html or blocks functions
       const resolvedHtml = typeof html === 'function' ? (await html()).html : html;
-      const resolvedBlock = typeof block === 'function' ? (await block()).block : block;
+      const resolvedBlocks = typeof blocks === 'function' ? (await blocks()).blocks : blocks;
 
       // Determine the source of the block data
-      if (Array.isArray(blocks) || !isEmpty(resolvedHtml)) {
-        chaiBlock = !isEmpty(resolvedHtml) ? getBlocksFromHTML(resolvedHtml) : blocks;
+      if (Array.isArray(resolvedBlocks) || !isEmpty(resolvedHtml)) {
+        chaiBlock = !isEmpty(resolvedHtml) ? getBlocksFromHTML(resolvedHtml) : resolvedBlocks;
         if (isEmpty(chaiBlock)) return;
 
         chaiBlock = {
@@ -49,8 +49,8 @@ export const ChaiDraggableBlock = ({ block, html, blocks, children }: ChaiDragga
           blocks: chaiBlock,
           parent: get(chaiBlock, "0._parent", null) || null,
         };
-      } else if (isObject(resolvedBlock)) {
-        chaiBlock = omit(resolvedBlock, ["component", "icon"]);
+      } else if (isObject(block)) {
+        chaiBlock = omit(block, ["component", "icon"]);
       }
 
       if (!chaiBlock) return;
