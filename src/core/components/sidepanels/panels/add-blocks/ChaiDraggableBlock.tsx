@@ -7,8 +7,8 @@ import { draggedBlockAtom } from "../../../canvas/dnd/atoms";
 import { getBlocksFromHTML } from "../../../../main";
 
 type ChaiDraggableBlockProps = {
-  html?: string;
-  block?: any;
+  html?: string | (() => Promise<any>);
+  block?: any | (() => Promise<any>);
   blocks?: any;
   children: React.ReactNode;
 };
@@ -27,38 +27,46 @@ export const ChaiDraggableBlock = ({ block, html, blocks, children }: ChaiDragga
 
   // * Handles the drag start event by preparing the block data to be dragged.
   const handleDragStart = async (ev) => {
-    // Check if there's no data to drag
-    if (isEmpty(html) && isEmpty(block) && isEmpty(blocks)) {
-      return;
+    try {
+      // Check if there's no data to drag
+      if (isEmpty(html) && isEmpty(block) && isEmpty(blocks)) {
+        return;
+      }
+
+      let chaiBlock: any = null;
+
+      // Handle async html or block functions
+      const resolvedHtml = typeof html === 'function' ? (await html()).html : html;
+      const resolvedBlock = typeof block === 'function' ? (await block()).block : block;
+
+      // Determine the source of the block data
+      if (Array.isArray(blocks) || !isEmpty(resolvedHtml)) {
+        chaiBlock = !isEmpty(resolvedHtml) ? getBlocksFromHTML(resolvedHtml) : blocks;
+        if (isEmpty(chaiBlock)) return;
+
+        chaiBlock = {
+          uiLibrary: true,
+          blocks: chaiBlock,
+          parent: get(chaiBlock, "0._parent", null) || null,
+        };
+      } else if (isObject(resolvedBlock)) {
+        chaiBlock = omit(resolvedBlock, ["component", "icon"]);
+      }
+
+      if (!chaiBlock) return;
+
+      ev.dataTransfer.setData("text/plain", JSON.stringify(chaiBlock));
+
+      // @ts-ignore
+      setDraggedBlock(chaiBlock);
+      emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK });
+      setTimeout(() => {
+        setSelected([]);
+        clearHighlight();
+      }, 200);
+    } catch (error) {
+      console.error('Error in drag start:', error);
     }
-
-    let chaiBlock: any = null;
-
-    // Determine the source of the block data
-    if (Array.isArray(blocks) || !isEmpty(html)) {
-      chaiBlock = !isEmpty(html) ? getBlocksFromHTML(html) : blocks;
-      if (isEmpty(chaiBlock)) return;
-
-      chaiBlock = {
-        uiLibrary: true,
-        blocks: chaiBlock,
-        parent: get(chaiBlock, "0._parent", null) || null,
-      };
-    } else if (isObject(block)) {
-      chaiBlock = omit(block, ["component", "icon"]);
-    }
-
-    if (!chaiBlock) return;
-
-    ev.dataTransfer.setData("text/plain", JSON.stringify(chaiBlock));
-
-    // @ts-ignore
-    setDraggedBlock(chaiBlock);
-    emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK });
-    setTimeout(() => {
-      setSelected([]);
-      clearHighlight();
-    }, 200);
   };
 
   return (
