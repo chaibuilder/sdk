@@ -1,5 +1,5 @@
 import React from "react";
-import { omit, isEmpty, get, isObject } from "lodash-es";
+import { omit, isEmpty, get } from "lodash-es";
 import { useBlockHighlight, useSelectedBlockIds } from "../../../../hooks";
 import { emitChaiBuilderMsg, CHAI_BUILDER_EVENTS } from "../../../../events";
 import { useAtom } from "jotai";
@@ -8,7 +8,7 @@ import { getBlocksFromHTML } from "../../../../main";
 
 type ChaiDraggableBlockProps = {
   html?: string | (() => Promise<any>);
-  block?: any;
+  block?: any | (() => Promise<any>);
   blocks?: any | (() => Promise<any>);
   children: React.ReactNode;
 };
@@ -28,29 +28,31 @@ export const ChaiDraggableBlock = ({ block, html, blocks, children }: ChaiDragga
   // * Handles the drag start event by preparing the block data to be dragged.
   const handleDragStart = async (ev) => {
     try {
-      // Check if there's no data to drag
-      if (isEmpty(html) && isEmpty(block) && isEmpty(blocks)) {
-        return;
-      }
-
       let chaiBlock: any = null;
 
-      // Handle async html or blocks functions
-      const resolvedHtml = typeof html === "function" ? await html() : html;
-      const resolvedBlocks = typeof blocks === "function" ? await blocks() : blocks;
-
-      // Determine the source of the block data
-      if (Array.isArray(resolvedBlocks) || !isEmpty(resolvedHtml)) {
-        chaiBlock = !isEmpty(resolvedHtml) ? getBlocksFromHTML(resolvedHtml) : resolvedBlocks;
-        if (isEmpty(chaiBlock)) return;
-
+      if (html) {
+        // On Passing HTML
+        const resolvedHtml = typeof html === "function" ? await html() : html;
+        const resolvedBlocks = getBlocksFromHTML(resolvedHtml);
+        if (isEmpty(resolvedBlocks)) return;
         chaiBlock = {
           uiLibrary: true,
-          blocks: chaiBlock,
+          blocks: resolvedBlocks,
           parent: get(chaiBlock, "0._parent", null) || null,
         };
-      } else if (isObject(block)) {
-        chaiBlock = omit(block, ["component", "icon"]);
+      } else if (blocks) {
+        // On Passing blocks
+        const resolvedBlocks = typeof blocks === "function" ? await blocks() : blocks;
+        if (isEmpty(resolvedBlocks)) return;
+        chaiBlock = {
+          uiLibrary: true,
+          blocks: resolvedBlocks,
+          parent: get(chaiBlock, "0._parent", null) || null,
+        };
+      } else if (block) {
+        // On Passing block
+        const resolvedBlock = typeof block === "function" ? await block() : block;
+        chaiBlock = typeof resolvedBlock === "object" ? omit(resolvedBlock, ["component", "icon"]) : resolvedBlock;
       }
 
       if (!chaiBlock) return;
