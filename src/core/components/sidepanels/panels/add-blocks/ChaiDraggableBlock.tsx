@@ -36,8 +36,8 @@ export const ChaiDraggableBlock = ({ block, html, blocks, children }: ChaiDragga
       let chaiBlock: any = null;
 
       // Handle async html or blocks functions
-      const resolvedHtml = typeof html === 'function' ? (await html()).html : html;
-      const resolvedBlocks = typeof blocks === 'function' ? (await blocks()).blocks : blocks;
+      const resolvedHtml = typeof html === "function" ? await html() : html;
+      const resolvedBlocks = typeof blocks === "function" ? await blocks() : blocks;
 
       // Determine the source of the block data
       if (Array.isArray(resolvedBlocks) || !isEmpty(resolvedHtml)) {
@@ -65,7 +65,7 @@ export const ChaiDraggableBlock = ({ block, html, blocks, children }: ChaiDragga
         clearHighlight();
       }, 200);
     } catch (error) {
-      console.error('Error in drag start:', error);
+      console.error("Error in drag start:", error);
     }
   };
 
