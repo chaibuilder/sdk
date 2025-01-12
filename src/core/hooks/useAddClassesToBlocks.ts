@@ -15,7 +15,6 @@ const getSplitClasses = (classesString: string) => {
 
 type Created = {
   blockIds: Array<string>;
-  dispatch: Function;
   newClasses: Array<string>;
 };
 
@@ -23,7 +22,6 @@ type Created = {
  * Core Styling function
  * @param blockIds
  * @param newClasses
- * @param dispatch
  */
 export const addClassesToBlocksAtom: any = atom(null, (get, _set, { blockIds, newClasses }: Created) => {
   // @ts-ignore
@@ -43,7 +41,7 @@ export const addClassesToBlocksAtom: any = atom(null, (get, _set, { blockIds, ne
   });
 });
 
-export const useAddClassesToBlocks = (): Function => {
+export const useAddClassesToBlocks = () => {
   const addClassesToBlocks = useSetAtom(addClassesToBlocksAtom);
   const { updateBlocks, updateBlocksRuntime } = useBlocksStoreUndoableActions();
   return useCallback(
@@ -55,6 +53,6 @@ export const useAddClassesToBlocks = (): Function => {
       }
       updateBlocks(blockIds, blocks[0].props);
     },
-    [addClassesToBlocks],
+    [addClassesToBlocks, updateBlocks, updateBlocksRuntime],
   );
 };

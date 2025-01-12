@@ -1,6 +1,6 @@
-import { ChaiBlock } from "./ChaiBlock";
 import React, { ReactNode } from "react";
 import { LayoutVariant } from "../constants/LAYOUT_MODE.ts";
+import { ChaiBlock } from "./ChaiBlock";
 
 type RichText = string;
 
@@ -90,6 +90,10 @@ export type ChaiBuilderThemeValues = {
 };
 
 export interface ChaiBuilderEditorProps {
+  /**
+   * Optional pageId. If not provided, a random pageId will be generated
+   */
+  pageId?: string;
   themePresets?: Record<string, Partial<ChaiBuilderThemeValues>>[];
   themeOptions?: ChaiBuilderThemeOptions | ((defaultThemeOptions: ChaiBuilderThemeOptions) => ChaiBuilderThemeOptions);
   theme?: Partial<ChaiBuilderThemeValues>;
