@@ -1,30 +1,31 @@
+import { useIntervalEffect } from "@react-hookz/web";
+import { FlagsProvider } from "flagged";
+import { useAtom } from "jotai/index";
+import { each, noop, omit } from "lodash-es";
+import React, { useEffect, useMemo } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import "react-quill/dist/quill.snow.css";
+import { FEATURE_TOGGLES } from "../../FEATURE_TOGGLES.tsx";
+import { Toaster } from "../../ui";
+import { chaiBuilderPropsAtom } from "../atoms/builder.ts";
+import { builderStore } from "../atoms/store.ts";
+import { selectedLibraryAtom } from "../atoms/ui.ts";
+import { setDebugLogs } from "../functions/logging.ts";
+import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
+import { useBuilderProp, useBuilderReset, useSavePage } from "../hooks";
+import { useBroadcastChannel, useUnmountBroadcastChannel } from "../hooks/useBroadcastChannel.ts";
+import { useExpandTree } from "../hooks/useExpandTree.ts";
+import { useWatchGlobalBlocks } from "../hooks/useGlobalBlocksStore.ts";
+import { useKeyEventWatcher } from "../hooks/useKeyEventWatcher.ts";
+import { builderSaveStateAtom } from "../hooks/useSavePage.ts";
 import "../index.css";
 import i18n from "../locales/load.ts";
-import { FlagsProvider } from "flagged";
-import React, { useEffect, useMemo } from "react";
-import { each, noop, omit } from "lodash-es";
-import { FEATURE_TOGGLES } from "../../FEATURE_TOGGLES.tsx";
-import { chaiBuilderPropsAtom } from "../atoms/builder.ts";
-import { ErrorBoundary } from "react-error-boundary";
-import { RootLayout } from "./layout/RootLayout.tsx";
-import { builderStore } from "../atoms/store.ts";
-import { Toaster } from "../../ui";
-import { useBuilderProp, useBuilderReset, useSavePage } from "../hooks";
 import { ChaiBuilderEditorProps } from "../types";
-import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
-import { SmallScreenMessage } from "./SmallScreenMessage.tsx";
-import { setDebugLogs } from "../functions/logging.ts";
-import { useAtom } from "jotai/index";
-import { builderSaveStateAtom } from "../hooks/useSavePage.ts";
-import { PreviewScreen } from "./PreviewScreen.tsx";
-import { FallbackError } from "./FallbackError.tsx";
-import { selectedLibraryAtom } from "../atoms/ui.ts";
-import { useKeyEventWatcher } from "../hooks/useKeyEventWatcher.ts";
-import { useExpandTree } from "../hooks/useExpandTree.ts";
-import { useIntervalEffect } from "@react-hookz/web";
-import { useWatchGlobalBlocks } from "../hooks/useGlobalBlocksStore.ts";
 import { ChaiBlock } from "../types/ChaiBlock.ts";
+import { FallbackError } from "./FallbackError.tsx";
+import { RootLayout } from "./layout/RootLayout.tsx";
+import { PreviewScreen } from "./PreviewScreen.tsx";
+import { SmallScreenMessage } from "./SmallScreenMessage.tsx";
 
 const useAutoSave = () => {
   const { savePage } = useSavePage();
@@ -46,6 +47,8 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   useExpandTree();
   useAutoSave();
   useWatchGlobalBlocks();
+  useUnmountBroadcastChannel();
+  const { postMessage } = useBroadcastChannel();
 
   useEffect(() => {
     builderStore.set(
@@ -56,9 +59,13 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   }, [props]);
 
   useEffect(() => {
-    // @ts-ignore
-    setAllBlocks((props.blocks || []) as ChaiBlock[]);
-    reset();
+    // Added delay to allow the pageId to be set
+    setTimeout(() => {
+      // @ts-ignore
+      setAllBlocks((props.blocks || []) as ChaiBlock[]);
+      postMessage({ type: "blocks-updated", blocks: props.blocks || [] });
+      reset();
+    }, 400);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.blocks]);
 
@@ -98,7 +105,7 @@ const ChaiBuilderEditor: React.FC<ChaiBuilderEditorProps> = (props: ChaiBuilderE
   const _flags = props._flags || {};
   const onErrorFn = props.onError || noop;
   return (
-    <div className="h-screen w-screen">
+    <div className="w-screen h-screen">
       <ErrorBoundary fallback={<FallbackError />} onError={onErrorFn}>
         <FlagsProvider features={{ ...FEATURE_TOGGLES, ..._flags }}>
           <SmallScreenMessage />
