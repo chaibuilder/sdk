@@ -63,7 +63,9 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
     setTimeout(() => {
       // @ts-ignore
       setAllBlocks((props.blocks || []) as ChaiBlock[]);
-      postMessage({ type: "blocks-updated", blocks: props.blocks || [] });
+      if (props.blocks && props.blocks.length > 0) {
+        postMessage({ type: "blocks-updated", blocks: props.blocks || [] });
+      }
       reset();
     }, 400);
     // eslint-disable-next-line react-hooks/exhaustive-deps
