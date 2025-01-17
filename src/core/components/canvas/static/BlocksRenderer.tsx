@@ -1,34 +1,31 @@
-import React, { Suspense, useCallback } from "react";
+import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
+import { useAtom } from "jotai";
 import {
+  cloneDeep,
   each,
   filter,
   find,
+  forEach,
   get,
   has,
   includes,
   isEmpty,
   isNull,
   isString,
-  memoize,
-  omit,
-  cloneDeep,
-  forEach,
   keys,
+  memoize,
 } from "lodash-es";
+import React, { Suspense, useCallback } from "react";
 import { twMerge } from "tailwind-merge";
-import { ChaiBlock } from "../../../types/ChaiBlock";
+import { inlineEditingActiveAtom } from "../../../atoms/ui.ts";
 import { STYLES_KEY } from "../../../constants/STRINGS.ts";
-import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
-import { useChaiExternalData } from "./useChaiExternalData.ts";
-import { useAtom } from "jotai";
-import { inlineEditingActiveAtom, xShowBlocksAtom } from "../../../atoms/ui.ts";
-import { useCanvasSettings } from "../../../hooks/useCanvasSettings.ts";
-import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
 import { canAcceptChildBlock } from "../../../functions/block-helpers.ts";
-import { useCanvasWidth, useCutBlockIds, useGlobalBlocksStore, useHiddenBlockIds, useLanguages } from "../../../hooks";
-import { isVisibleAtBreakpoint } from "../../../functions/isVisibleAtBreakpoint.ts";
+import { useCutBlockIds, useGlobalBlocksStore, useHiddenBlockIds, useLanguages } from "../../../hooks";
+import { ChaiBlock } from "../../../types/ChaiBlock";
+import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
 import AsyncPropsBlock from "./AsyncPropsBlock.tsx";
 import RuntimePropsBlock from "./RuntimePropsBlock.tsx";
+import { useChaiExternalData } from "./useChaiExternalData.ts";
 
 const generateClassNames = memoize((styles: string) => {
   const stylesArray = styles.replace(STYLES_KEY, "").split(",");
@@ -39,7 +36,7 @@ function getElementAttrs(block: ChaiBlock, key: string) {
   return get(block, `${key}_attrs`, {}) as Record<string, string>;
 }
 
-function getStyleAttrs(block: ChaiBlock, breakpoint: any) {
+function getStyleAttrs(block: ChaiBlock) {
   const styles: Record<string, any> = {};
   Object.keys(block).forEach((key) => {
     if (isString(block[key]) && block[key].startsWith(STYLES_KEY)) {
@@ -52,10 +49,6 @@ function getStyleAttrs(block: ChaiBlock, breakpoint: any) {
         "data-style-id": `${key}-${block._id}`,
         ...attrs,
       };
-      const alpineAttrs = has(attrs, "x-show") || has(attrs, "x-if");
-      if (alpineAttrs) {
-        styles["__isHidden"] = alpineAttrs && !isVisibleAtBreakpoint(className, breakpoint);
-      }
     }
   });
   return styles;
@@ -107,27 +100,15 @@ function applyLanguage(_block: ChaiBlock, selectedLang: string, chaiBlock) {
 
 export function BlocksRendererStatic({ blocks, allBlocks }: { blocks: ChaiBlock[]; allBlocks: ChaiBlock[] }) {
   const { selectedLang } = useLanguages();
-  const [xShowBlocks] = useAtom(xShowBlocksAtom);
   const [cutBlockIds] = useCutBlockIds();
   const [draggedBlock] = useAtom<any>(draggedBlockAtom);
   const [dropTargetId] = useAtom(dropTargetBlockIdAtom);
-  const [, breakpoint] = useCanvasWidth();
-  const [canvasSettings] = useCanvasSettings();
   const [hiddenBlocks] = useHiddenBlockIds();
   const { getGlobalBlocks } = useGlobalBlocksStore();
-  const getStyles = useCallback((block: ChaiBlock) => getStyleAttrs(block, breakpoint), [breakpoint]);
+  const getStyles = useCallback((block: ChaiBlock) => getStyleAttrs(block), []);
 
   const [chaiData] = useChaiExternalData();
   const [editingBlockId] = useAtom(inlineEditingActiveAtom);
-  const getCanvasSettings = useCallback(
-    (blockIds: string[]) => {
-      return blockIds.reduce((acc, blockId) => {
-        const settings = get(canvasSettings, blockId, {});
-        return { ...acc, ...settings };
-      }, {});
-    },
-    [canvasSettings],
-  );
 
   return (
     <>
@@ -153,18 +134,10 @@ export function BlocksRendererStatic({ blocks, allBlocks }: { blocks: ChaiBlock[
 
           const Component = get(chaiBlock, "component", null);
           if (isNull(Component)) return <noscript>{`<!-- ${block?._type} not registered -->`}</noscript>;
-          const blockStateFrom = has(chaiBlock, "getBlockStateFrom")
-            ? chaiBlock?.getBlockStateFrom(block, allBlocks)
-            : [];
-          const blockState = getCanvasSettings(blockStateFrom);
           const htmlAttrs = getStyles(block);
-          if (get(htmlAttrs, "__isHidden", false) && !includes(xShowBlocks, block._id)) {
-            return null;
-          }
           const isChildOfDraggedBlock = draggedBlock && isDescendant(draggedBlock._id, block._id, allBlocks);
 
           const blockProps = {
-            ...(includes(xShowBlocks, block._id) ? { "force-show": "" } : {}),
             "data-block-id": block._id,
             "data-block-type": block._type,
             ...(draggedBlock
@@ -183,10 +156,9 @@ export function BlocksRendererStatic({ blocks, allBlocks }: { blocks: ChaiBlock[
             blockProps,
             index,
             ...applyBindings(applyLanguage(block, selectedLang, chaiBlock), chaiData),
-            ...omit(htmlAttrs, ["__isHidden"]),
+            ...htmlAttrs,
             ...attrs,
             inBuilder: true,
-            blockState,
             lang: selectedLang,
           };
 
