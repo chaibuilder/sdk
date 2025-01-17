@@ -1,5 +1,9 @@
 import { flatten, flattenDeep, map, range, values } from "lodash-es";
 import { CLASS_VALUES } from "./CLASS_VALUES";
+import { useCallback, useMemo } from "react";
+import Fuse from "fuse.js";
+import { useThemeOptions } from "../hooks/useTheme";
+import { each, get, keys, set } from "lodash-es";
 
 type ClassListType = {
   [key: string]: {
@@ -11,7 +15,7 @@ type ClassListType = {
 export const CLASSES_LIST: ClassListType = {
   textColor: {
     classes: [],
-    regExp: "text-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "text-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
   // LAYOUT
   aspectRatio: {
@@ -400,7 +404,7 @@ export const CLASSES_LIST: ClassListType = {
 
   fromColor: {
     classes: [],
-    regExp: "from-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "from-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
   margin: {
     classes: map(CLASS_VALUES.margin, (val) => `m-${val}`),
@@ -455,7 +459,7 @@ export const CLASSES_LIST: ClassListType = {
   },
   width: {
     classes: map([...CLASS_VALUES.width, ...["full", "screen", "min", "max", "fit"]], (v) => `w-${v}`),
-    regExp: "^w-(\\d+.\\d+|\\d+|px|auto|full|screen|min|max|fit|\\[.*\\])$",
+    regExp: "w-(\\d+.\\d+|\\d+|px|auto|full|screen|min|max|fit|\\[.*\\])",
   },
 
   minHeight: {
@@ -608,7 +612,7 @@ export const CLASSES_LIST: ClassListType = {
 
   textDecorationColor: {
     classes: [],
-    regExp: "decoration-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "decoration-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
 
   textTransform: {
@@ -637,14 +641,14 @@ export const CLASSES_LIST: ClassListType = {
   },
   content: { classes: ["content-none"], regExp: "content-none" },
 
-  backgroundAttachment: {
-    classes: map(["fixed", "local", "scroll"], (v) => `bg-${v}`),
-    regExp: "bg-(fixed|local|scroll)",
-  },
-
   backgroundColor: {
     classes: [],
-    regExp: "bg-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "bg-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+|\\[.*\\])",
+  },
+
+  backgroundAttachment: {
+    classes: ["bg-fixed", "bg-local", "bg-scroll"],
+    regExp: "bg-(fixed|local|scroll)",
   },
 
   backgroundPosition: {
@@ -686,11 +690,11 @@ export const CLASSES_LIST: ClassListType = {
 
   viaColor: {
     classes: [],
-    regExp: "via-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "via-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
   toColor: {
     classes: [],
-    regExp: "to-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "to-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
 
   position: {
@@ -765,13 +769,12 @@ export const CLASSES_LIST: ClassListType = {
 
   borderColor: {
     classes: [],
-    regExp:
-      "^border-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\w+-\\d+|\\[#[0-9a-fA-F]+\\])$",
+    regExp: "^border-((black|transparent|current|white|__THEME_COLORS_REGEXP__|[a-z]+-\\d+)|\\[#[0-9a-fA-F]+\\])$",
   },
 
   border: {
     classes: ["border", ...map(CLASS_VALUES.borderWidth, (v) => `border-${v}`)],
-    regExp: "^border(-\\d+|\\[\\d+px\\])?$",
+    regExp: "^border(-\\d+|\\[\\d+.*px\\])?$",
   },
 
   order: {
@@ -789,7 +792,7 @@ export const CLASSES_LIST: ClassListType = {
   },
   divideColor: {
     classes: [],
-    regExp: "divide-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "divide-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
   divideStyle: {
     classes: map(["solid", "dashed", "dotted", "double", "none"], (v) => `divide-${v}`),
@@ -808,7 +811,7 @@ export const CLASSES_LIST: ClassListType = {
 
   outlineColor: {
     classes: [],
-    regExp: "outline-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "outline-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
   ringWidth: {
     classes: map([0, 1, 2, 4, 8, "inset"], (v) => `ring-${v}`),
@@ -821,18 +824,18 @@ export const CLASSES_LIST: ClassListType = {
   },
   ringOffsetColor: {
     classes: [],
-    regExp: "ring-offset-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "ring-offset-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
   ringColor: {
     classes: [],
-    regExp: "ring-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "ring-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
   // Effects
   // FIXME: "add shadow class
 
   boxShadowColor: {
     classes: [],
-    regExp: "shadow-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "shadow-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
   opacity: {
     classes: map([0, 5, 10, 20, 25, 30, 40, 50, 60, 70, 75, 80, 90, 95, 100], (v) => `opacity-${v}`),
@@ -942,7 +945,7 @@ export const CLASSES_LIST: ClassListType = {
   // interactivity
   accentColor: {
     classes: [],
-    regExp: "accent-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "accent-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
   appearance: { classes: ["appearance-none"], regExp: "appearance-none" },
   cursor: {
@@ -960,7 +963,7 @@ export const CLASSES_LIST: ClassListType = {
   },
   caretColor: {
     classes: [],
-    regExp: "caret-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "caret-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
   pointerEvents: {
     classes: ["pointer-events-none", "pointer-events-auto"],
@@ -972,10 +975,10 @@ export const CLASSES_LIST: ClassListType = {
   },
 
   // SVG
-  fill: { classes: [], regExp: "caret-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)" },
+  fill: { classes: [], regExp: "caret-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)" },
   stroke: {
     classes: [],
-    regExp: "caret-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp: "caret-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
   strokeWidth: {
     classes: ["stroke-0", "stroke-1", "stroke-2"],
@@ -997,8 +1000,7 @@ const colorOptions = {
   ringOffsetColor: "ring-offset",
 };
 
-const soloColors = ["current", "inherit", "transparent", "black", "white", "primary", "secondary"];
-const chaiColors = ["primary", "secondary"];
+const soloColors = ["current", "inherit", "transparent", "black", "white"];
 const shadedColors = [
   "slate",
   "gray",
@@ -1028,9 +1030,6 @@ const colorKeys = map(values(colorOptions), (val) => val);
 
 const ALL_COLORS = flattenDeep([
   ...map(soloColors, (color) => flatten(map(colorKeys, (key) => `${key}-${color}`))),
-  ...map(chaiColors, (color) =>
-    flattenDeep(map(colorKeys, (key) => flattenDeep(map(shades, (shade) => `${key}-${color}-${shade}`)))),
-  ),
   ...map(shadedColors, (color) =>
     flattenDeep(map(colorKeys, (key) => flattenDeep(map(shades, (shade) => `${key}-${color}-${shade}`)))),
   ),
@@ -1046,3 +1045,58 @@ export const ALL_TW_CLASSES = map(
     name: cls,
   }),
 );
+
+export const useFuseSearch = () => {
+  const themeOptions = useThemeOptions();
+  const themeClasses = useMemo(() => {
+    let classes = [];
+    if (themeOptions.colors) {
+      const colors = flattenDeep(map(themeOptions.colors, ({ items }) => keys(items)));
+      classes = flattenDeep(map(colors, (color) => flatten(map(colorKeys, (key) => `${key}-${color}`))));
+    }
+    if (themeOptions.fontFamily) {
+      classes = [...classes, ...map(keys(themeOptions.fontFamily), (key) => `${key}`)];
+    }
+    return map(classes, (cls) => ({ name: cls }));
+  }, [themeOptions]);
+
+  return useMemo(
+    () =>
+      new Fuse([...ALL_TW_CLASSES, ...themeClasses], {
+        isCaseSensitive: false,
+        threshold: 0.2,
+        minMatchCharLength: 2,
+        keys: ["name"],
+      }),
+    [themeClasses],
+  );
+};
+
+export const useTailwindClassList = () => {
+  const themeOptions = useThemeOptions();
+  const classesList = useMemo(() => {
+    if (themeOptions.colors) {
+      const colors = flattenDeep(map(themeOptions.colors, ({ items }) => keys(items)));
+      each(CLASSES_LIST, (value, key) => {
+        set(CLASSES_LIST, `${key}.regExp`, value.regExp.replace("__THEME_COLORS_REGEXP__", colors.join("|")));
+      });
+    }
+    return CLASSES_LIST;
+  }, [themeOptions]);
+
+  const match = useCallback(
+    (property: string, cls: string) => {
+      const pattern = get(classesList, `${property}.regExp`, "") as string;
+      return cls.match(new RegExp(pattern));
+    },
+    [classesList],
+  );
+
+  const getClasses = useCallback(
+    (property: string, defaultValue: string[] = []) => {
+      return get(classesList, `${property}.classes`, defaultValue) as Array<string>;
+    },
+    [classesList],
+  );
+  return { match, getClasses };
+};
