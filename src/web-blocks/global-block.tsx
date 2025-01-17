@@ -1,6 +1,6 @@
-import * as React from "react";
-import { GlobeIcon } from "lucide-react";
 import { ChaiBlockComponentProps, registerChaiBlockSchema } from "@chaibuilder/runtime";
+import { GlobeIcon } from "lucide-react";
+import * as React from "react";
 
 export type GlobalBlockProps = {
   globalBlock: string;
@@ -35,7 +35,7 @@ const Config = {
         default: "",
         ui: {
           "ui:widget": "hidden",
-        }
+        },
       },
     },
   }),

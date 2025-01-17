@@ -19,7 +19,7 @@ export type DropdownLinksProps = {
 const alpineAttrs = {
   wrapper: { "x-data": "{ open: false }" },
   button: { "x-on:click": "open = !open" },
-  menu: { "x-show": "open", "x-on:click.away": "open = false" },
+  menu: { "x-show": "open", "x-on:click.away": "open = false", "x-cloak": "", "x-transition": "" },
 };
 
 const DropdownButton = (
@@ -35,7 +35,7 @@ const DropdownButton = (
 ) => {
   const { blockProps, content, icon, iconWidth, iconHeight, styles, show } = props;
   return (
-    <button {...blockProps} {...alpineAttrs.button} {...styles}>
+    <button {...blockProps} {...styles} {...alpineAttrs.button}>
       {content}
       <span
         className={show ? "rotate-180" : ""}
