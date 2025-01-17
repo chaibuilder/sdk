@@ -1,15 +1,19 @@
-import { IChangeEvent } from "@rjsf/core";
-import { includes, set, capitalize, cloneDeep, debounce, get, isEmpty, keys, map, forEach, startCase } from "lodash-es";
-import { useLanguages, useSelectedBlock, useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "../../hooks";
-import DataBindingSetting from "../../rjsf-widgets/data-binding.tsx";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../ui";
-import { useCallback, useMemo, useState } from "react";
-import { JSONForm } from "./JSONForm.tsx";
-import { CanvasSettings } from "./CanvasSettings.tsx";
-import { GlobalBlockSettings } from "./GlobalBlockSettings.tsx";
 import { getBlockFormSchemas, getRegisteredChaiBlock } from "@chaibuilder/runtime";
+import { IChangeEvent } from "@rjsf/core";
+import { capitalize, cloneDeep, debounce, forEach, get, includes, isEmpty, keys, map, set, startCase } from "lodash-es";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import { useWrapperBlock } from "../../hooks";
+import { useCallback, useMemo, useState } from "react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../ui";
+import {
+  useLanguages,
+  useSelectedBlock,
+  useUpdateBlocksProps,
+  useUpdateBlocksPropsRealtime,
+  useWrapperBlock,
+} from "../../hooks";
+import DataBindingSetting from "../../rjsf-widgets/data-binding.tsx";
+import { GlobalBlockSettings } from "./GlobalBlockSettings.tsx";
+import { JSONForm } from "./JSONForm.tsx";
 
 const formDataWithSelectedLang = (formData, selectedLang: string, coreBlock) => {
   const updatedFormData = cloneDeep(formData);
@@ -187,7 +191,6 @@ export default function BlockSettings() {
         />
       ) : null}
       {selectedBlock?._type === "GlobalBlock" ? <GlobalBlockSettings /> : null}
-      <CanvasSettings />
     </div>
   );
 }

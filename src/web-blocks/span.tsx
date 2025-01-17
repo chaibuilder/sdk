@@ -1,5 +1,5 @@
-import * as React from "react";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
+import * as React from "react";
 
 export type SpanProps = {
   styles: ChaiStyles;
@@ -30,7 +30,7 @@ const Config = {
       content: {
         type: "string",
         title: "Content",
-        default: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        default: "",
         ui: { "ui:widget": "textarea", "ui:autosize": true, "ui:rows": 3 },
       },
     },

@@ -1,9 +1,10 @@
-import * as React from "react";
-import { CodeIcon } from "@radix-ui/react-icons";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
+import { CodeIcon } from "@radix-ui/react-icons";
+import * as React from "react";
 
 const CustomHTMLBlock = (props: ChaiBlockComponentProps<{ htmlCode: string; styles: ChaiStyles }>) => {
   const { blockProps, styles, htmlCode, inBuilder } = props;
+
   return inBuilder ? (
     <div className={"relative"}>
       {inBuilder ? <div {...blockProps} {...styles} className="absolute z-20 h-full w-full" /> : null}
