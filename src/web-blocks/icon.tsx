@@ -1,10 +1,9 @@
-import * as React from "react";
+import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { SketchLogoIcon } from "@radix-ui/react-icons";
 import { isEmpty } from "lodash-es";
+import * as React from "react";
 import EmptySlot from "./empty-slot.tsx";
-import { cn } from "../core/functions/Functions.ts";
 import { addForcedClasses } from "./helper.ts";
-import { ChaiBlockComponentProps, registerChaiBlockSchema, StylesProp, ChaiStyles } from "@chaibuilder/runtime";
 
 export type IconBlockProps = {
   styles: ChaiStyles;
@@ -15,7 +14,7 @@ export type IconBlockProps = {
 
 const IconBlock = (props: ChaiBlockComponentProps<IconBlockProps>) => {
   const { blockProps, icon, styles, width, inBuilder, height } = props;
-  const iStyles = addForcedClasses(styles, cn(width ? `w-[${width}px]` : "", height ? `h-[${height}px]` : ""));
+  const iStyles = addForcedClasses(styles, "");
 
   if (isEmpty(icon)) {
     return <EmptySlot inBuilder={inBuilder} className="h-8 w-14" />;
@@ -25,6 +24,10 @@ const IconBlock = (props: ChaiBlockComponentProps<IconBlockProps>) => {
   return React.createElement("span", {
     ...blockProps,
     ...iStyles,
+    style: {
+      width: width ? `${width}px` : "auto",
+      height: height ? `${height}px` : "auto",
+    },
     dangerouslySetInnerHTML: { __html: svg },
   });
 };
@@ -37,7 +40,7 @@ const Config = {
   group: "media",
   ...registerChaiBlockSchema({
     properties: {
-      styles: StylesProp("text-black"),
+      styles: StylesProp(""),
       icon: {
         type: "string",
         title: "Icon",
