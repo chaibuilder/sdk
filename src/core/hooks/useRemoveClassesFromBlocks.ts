@@ -22,9 +22,9 @@ export const removeClassFromBlocksAtom: any = atom(null, (get, _set, { blockIds,
     let { classes, baseClasses } = getSplitClasses(getProp(block, styleBlock.prop, "styles:,"));
 
     each(nonDynamicClasses, (fullCls: string) => {
-      const escapedClass = fullCls.replace(/[\[\]\/\\{}()*+?.^$|]/g, "\\$&");
-      const regEx = new RegExp(`(^| )${escapedClass}($| )`, "g");
-      classes = classes.replace(regEx, " ").replace(/  +/g, " ").trim();
+      const escapedClass = fullCls.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const regEx = new RegExp(`(^|\\s)${escapedClass}(?=\\s|$)`, "g");
+      classes = classes.replace(regEx, " ").replace(/\s+/g, " ").trim();
       const mq = first(fullCls.split(":"));
       if (includes(["2xl", "xl", "lg", "md", "sm"], mq)) {
         nonDynamicClasses.push((fullCls.split(":").pop() as string).trim());
@@ -32,8 +32,9 @@ export const removeClassFromBlocksAtom: any = atom(null, (get, _set, { blockIds,
     });
 
     each(nonDynamicClasses, (fullCls: string) => {
-      const regEx = new RegExp(`(^| )${fullCls.replace("[", "\\[").replace("]", "\\]")}($| )`, "g");
-      baseClasses = baseClasses.replace(regEx, " ").replace(/  +/g, " ").trim();
+      const escapedClass = fullCls.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const regEx = new RegExp(`(^|\\s)${escapedClass}(?=\\s|$)`, "g");
+      baseClasses = baseClasses.replace(regEx, " ").replace(/\s+/g, " ").trim();
     });
 
     return {
