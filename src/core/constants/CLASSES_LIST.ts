@@ -459,7 +459,7 @@ export const CLASSES_LIST: ClassListType = {
   },
   width: {
     classes: map([...CLASS_VALUES.width, ...["full", "screen", "min", "max", "fit"]], (v) => `w-${v}`),
-    regExp: "w-(\\d+.\\d+|\\d+|px|auto|full|screen|min|max|fit|\\[.*\\])",
+    regExp: "^w-(\\d+.\\d+|\\d+|px|auto|full|screen|min|max|fit|\\[.*\\])$",
   },
 
   minHeight: {
@@ -641,14 +641,14 @@ export const CLASSES_LIST: ClassListType = {
   },
   content: { classes: ["content-none"], regExp: "content-none" },
 
-  backgroundColor: {
-    classes: [],
-    regExp: "bg-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+|\\[.*\\])",
+  backgroundAttachment: {
+    classes: map(["fixed", "local", "scroll"], (v) => `bg-${v}`),
+    regExp: "bg-(fixed|local|scroll)",
   },
 
-  backgroundAttachment: {
-    classes: ["bg-fixed", "bg-local", "bg-scroll"],
-    regExp: "bg-(fixed|local|scroll)",
+  backgroundColor: {
+    classes: [],
+    regExp: "bg-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\S+-\\d+)",
   },
 
   backgroundPosition: {
@@ -769,12 +769,12 @@ export const CLASSES_LIST: ClassListType = {
 
   borderColor: {
     classes: [],
-    regExp: "^border-((black|transparent|current|white|__THEME_COLORS_REGEXP__|[a-z]+-\\d+)|\\[#[0-9a-fA-F]+\\])$",
+    regExp: "^border-(black|transparent|current|white|__THEME_COLORS_REGEXP__|\\w+-\\d+|\\[#[0-9a-fA-F]+\\])$",
   },
 
   border: {
     classes: ["border", ...map(CLASS_VALUES.borderWidth, (v) => `border-${v}`)],
-    regExp: "^border(-\\d+|\\[\\d+.*px\\])?$",
+    regExp: "^border(-\\d+|\\[\\d+px\\])?$",
   },
 
   order: {
