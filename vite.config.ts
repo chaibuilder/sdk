@@ -1,6 +1,6 @@
-import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import { resolve } from "path";
+import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 
 // https://vitejs.dev/config/
@@ -93,7 +93,6 @@ export default defineConfig({
         "react-wrap-balancer",
         "@react-email/components",
         "@react-email/render",
-        "react-email",
         "tailwind-merge",
         "tailwindcss-animate",
       ],
