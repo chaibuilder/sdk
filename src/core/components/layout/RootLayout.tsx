@@ -13,7 +13,6 @@ import { isDevelopment } from "../../import-html/general.ts";
 import { Outline } from "../../main";
 import { AskAI } from "../AskAi.tsx";
 import CanvasArea from "../canvas/CanvasArea.tsx";
-import "../canvas/static/BlocksExternalDataProvider.tsx";
 import { CanvasTopBar } from "../canvas/topbar/CanvasTopBar.tsx";
 import SettingsPanel from "../settings/SettingsPanel.tsx";
 import ThemeConfigPanel from "../sidepanels/panels/theme-configuration/ThemeConfigPanel.tsx";

@@ -1,9 +1,13 @@
 import { flip } from "@floating-ui/dom";
 import { shift, useFloating } from "@floating-ui/react-dom";
-import { get, isEmpty, pick } from "lodash-es";
 import { ArrowUpIcon, CopyIcon, DragHandleDots2Icon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
+import { useResizeObserver } from "@react-hookz/web";
+import { useFeature } from "flagged";
+import { useAtom } from "jotai";
+import { get, isEmpty, pick } from "lodash-es";
+import { inlineEditingActiveAtom } from "../../atoms/ui.ts";
+import { CHAI_BUILDER_EVENTS } from "../../events.ts";
 import { canAddChildBlock, canDeleteBlock, canDuplicateBlock } from "../../functions/block-helpers.ts";
-import { ChaiBlock } from "../../types/ChaiBlock";
 import {
   useDuplicateBlocks,
   useHighlightBlockId,
@@ -11,13 +15,9 @@ import {
   useSelectedBlockIds,
   useSelectedStylingBlocks,
 } from "../../hooks";
-import { useResizeObserver } from "@react-hookz/web";
-import { useAtom } from "jotai";
-import { inlineEditingActiveAtom } from "../../atoms/ui.ts";
-import { draggedBlockAtom } from "./dnd/atoms.ts";
-import { useFeature } from "flagged";
-import { CHAI_BUILDER_EVENTS } from "../../events.ts";
 import { pubsub } from "../../pubsub.ts";
+import { ChaiBlock } from "../../types/ChaiBlock";
+import { draggedBlockAtom } from "./dnd/atoms.ts";
 
 /**
  * @param block
@@ -52,7 +52,7 @@ type BlockActionProps = {
   selectedBlockElement: HTMLElement | undefined;
 };
 
-export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionProps) => {
+export const BlockFloatingSelector = ({ selectedBlockElement, block }: BlockActionProps) => {
   const removeBlock = useRemoveBlocks();
   const duplicateBlock = useDuplicateBlocks();
   const [, setSelectedIds] = useSelectedBlockIds();

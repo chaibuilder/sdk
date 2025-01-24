@@ -1,14 +1,14 @@
 import { WidgetProps } from "@rjsf/utils";
 import { isEmpty } from "lodash-es";
+import { useTranslation } from "react-i18next";
 import MediaManagerModal from "../components/sidepanels/panels/images/MediaManagerModal.tsx";
 import { useBuilderProp } from "../hooks";
-import { useTranslation } from "react-i18next";
 
 const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
   const mediaManagerComponent = useBuilderProp("mediaManagerComponent", null);
   const { t } = useTranslation();
 
-  const showImagePicker = mediaManagerComponent !== null;
+  const showImagePicker = !isEmpty(mediaManagerComponent);
 
   return (
     <div className="mt-1.5 flex items-center gap-x-3">
