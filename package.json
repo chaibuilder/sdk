@@ -67,10 +67,9 @@
     }
   },
   "dependencies": {
-    "@bobthered/tailwindcss-palette-generator": "^4.0.0",
     "@chaibuilder/runtime": "2.0.0-beta.13",
-    "@floating-ui/dom": "1.4.5",
-    "@floating-ui/react-dom": "2.0.1",
+    "@floating-ui/dom": "1.6.13",
+    "@floating-ui/react-dom": "2.1.2",
     "@mhsdesign/jit-browser-tailwindcss": "0.4.1",
     "@monaco-editor/react": "^4.6.0",
     "@radix-ui/react-accordion": "^1.1.2",
