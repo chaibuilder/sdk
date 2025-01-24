@@ -19,20 +19,9 @@
     "strict": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "types": ["vitest/globals", "vitest/importMeta"]
   },
-  "include": ["src", "lib"],
-  "references": [{ "path": "./tsconfig.node.json" }],
-  "typedocOptions": {
-    "entryPoints": [
-      "src/core/components",
-      "src/core/hooks",
-      "src/core/miscellaneous",
-      "src/render",
-      "src/tailwind",
-      "src/web-blocks"
-    ],
-    "out": "docs",
-    "clarityId": "ob67ec4zlo"
-  }
+  "include": ["src", "lib", "e2e_tests"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

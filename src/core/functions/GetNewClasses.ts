@@ -17,10 +17,7 @@ const breakpoints: string[] = ["xs", "sm", "md", "lg", "xl", "2xl"];
  * @param existingClasses
  * @param classObj
  */
-export function getBelongsToForClass(
-  existingClasses: ClassDerivedObject[],
-  classObj: ClassDerivedObject | null,
-): string {
+export function getClassBelongsTo(existingClasses: ClassDerivedObject[], classObj: ClassDerivedObject | null): string {
   if (classObj === null) {
     return "baseClasses";
   }
@@ -93,7 +90,7 @@ export function getNewClasses(existingClasses = "", baseClasses = "", newClasses
 
     // if the new class is a base class, remove it from the newClassesArr
     if (
-      getBelongsToForClass(existingClassesObjects, newClassObject) === "baseClasses" &&
+      getClassBelongsTo(existingClassesObjects, newClassObject) === "baseClasses" &&
       !includes(IGNORED_BASES_CLASSES_PROPERTIES, newClassObject.property)
     ) {
       const needToRemove = find(baseClassesObjects, pick(newClassObject, ["property"]));
@@ -154,4 +151,22 @@ export function getNewDynamicClasses(dynamicClasses = "", newClasses: string[] =
   });
 
   return map([...existingClassesObjects, ...newClassesArr], "fullCls").join(" ");
+}
+
+if (import.meta.vitest) {
+  test("getBelongsToForClass", () => {
+    const createObj = (classes: string[]) => map(classes, constructClassObject) as ClassDerivedObject[];
+
+    expect(getClassBelongsTo([], constructClassObject(""))).toBe("baseClasses");
+    expect(getClassBelongsTo([], constructClassObject("xl:flex"))).toBe("baseClasses");
+    expect(getClassBelongsTo([], constructClassObject("flex"))).toBe("classes");
+    expect(getClassBelongsTo(createObj(["block"]), constructClassObject("lg:flex"))).toBe("classes");
+    expect(getClassBelongsTo(createObj(["block"]), constructClassObject("lg:bg-red-500"))).toBe("baseClasses");
+    expect(getClassBelongsTo(createObj(["block"]), constructClassObject("lg:bg-red-500"))).toBe("baseClasses");
+  });
+
+  test("getNewClasses", () => {
+    expect(getNewClasses("", "", ["lg:flex"])).toBe("flex,lg:flex");
+    expect(getNewClasses("flex", "", ["lg:flex"])).toBe(",flex lg:flex");
+  });
 }
