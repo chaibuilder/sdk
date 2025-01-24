@@ -31,38 +31,38 @@
   },
   "exports": {
     ".": {
+      "types": "./dist/core.d.ts",
       "import": "./dist/core.js",
-      "require": "./dist/core.cjs",
-      "types": "./dist/core.d.ts"
+      "require": "./dist/core.cjs"
     },
     "./render": {
+      "types": "./dist/render.d.ts",
       "import": "./dist/render.js",
-      "require": "./dist/render.cjs",
-      "types": "./dist/render.d.ts"
+      "require": "./dist/render.cjs"
     },
     "./ui": {
+      "types": "./dist/ui.d.ts",
       "import": "./dist/ui.js",
-      "require": "./dist/ui.cjs",
-      "types": "./dist/ui.d.ts"
+      "require": "./dist/ui.cjs"
     },
     "./tailwind": {
+      "types": "./dist/tailwind.d.ts",
       "import": "./dist/tailwind.js",
-      "require": "./dist/tailwind.cjs",
-      "types": "./dist/tailwind.d.ts"
+      "require": "./dist/tailwind.cjs"
     },
     "./styles": {
       "import": "./dist/style.css",
       "require": "./dist/style.css"
     },
     "./web-blocks": {
+      "types": "./dist/web-blocks.d.ts",
       "import": "./dist/web-blocks.js",
-      "require": "./dist/web-blocks.cjs",
-      "types": "./dist/web-blocks.d.ts"
+      "require": "./dist/web-blocks.cjs"
     },
     "./runtime": {
+      "types": "./dist/runtime.d.ts",
       "import": "./dist/runtime.js",
-      "require": "./dist/runtime.cjs",
-      "types": "./dist/runtime.d.ts"
+      "require": "./dist/runtime.cjs"
     }
   },
   "dependencies": {
