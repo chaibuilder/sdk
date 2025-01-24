@@ -1,6 +1,6 @@
 import { flattenDeep, last } from "lodash-es";
-import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import { STYLES_KEY } from "../core/constants/STRINGS.ts";
+import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
 /**
  * This function adds the prefix to the classes
