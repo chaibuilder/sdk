@@ -1,13 +1,9 @@
+import { get } from "lodash-es";
 import { useEffect, useState } from "react";
-import { get, set } from "lodash-es";
-import { tailwindcssPaletteGenerator } from "@bobthered/tailwindcss-palette-generator";
 import { useFrame } from "../../core/frame";
 import { useBrandingOptions } from "../../core/hooks";
 
 const getTailwindConfig = (options: any, w: Window) => {
-  const primary = get(options, "primaryColor", "#000");
-  const secondary = get(options, "secondaryColor", "#ccc");
-
   const headingFont = get(options, "headingFont", "Inter");
   const bodyFont = get(options, "bodyFont", "Inter");
   const borderRadius = get(options, "roundedCorners", "0");
@@ -16,13 +12,6 @@ const getTailwindConfig = (options: any, w: Window) => {
   const BG_DARK_MODE = get(options, "bodyBgDarkColor", "#000");
   const TEXT_LIGHT_MODE = get(options, "bodyTextLightColor", "#000");
   const TEXT_DARK_MODE = get(options, "bodyTextDarkColor", "#fff");
-
-  const palette = tailwindcssPaletteGenerator({
-    colors: [primary, secondary],
-    names: ["primary", "secondary"],
-  });
-  set(palette, "primary.DEFAULT", primary);
-  set(palette, "secondary.DEFAULT", secondary);
 
   const colors: Record<string, string> = {
     "bg-light": BG_LIGHT_MODE,
@@ -39,7 +28,7 @@ const getTailwindConfig = (options: any, w: Window) => {
       },
       fontFamily: { heading: [headingFont], body: [bodyFont] },
       borderRadius: { DEFAULT: `${!borderRadius ? "0px" : borderRadius}px` },
-      colors: { ...palette, ...colors },
+      colors: { ...colors },
     },
   };
   return {
