@@ -144,10 +144,10 @@ importers:
         specifier: 4.17.21
         version: 4.17.21
       lucide-react:
-        specifier: ^0.244.0
-        version: 0.244.0(react@18.3.1)
+        specifier: ^0.474.0
+        version: 0.474.0(react@18.3.1)
       re-resizable:
-        specifier: ^6.9.17
+        specifier: ^6.10.3
         version: 6.10.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: ^18.2.0
@@ -5351,10 +5351,10 @@ packages:
   lru-queue@0.1.0:
     resolution: {integrity: sha512-BpdYkt9EvGl8OfWHDQPISVpcl5xZthb+XPsbELj5AQXxIC8IriDZIQYjBJPEm5rS420sjZ0TLEzRcq5KdBhYrQ==}
 
-  lucide-react@0.244.0:
-    resolution: {integrity: sha512-PeDVbx5PlIRrVvdxiuSxPfBo7sK5qrL3LbvvRoGVNiHYRAkBm/48lKqoioxcmp0bgsyJs9lMw7CdtGFvnMJbVg==}
+  lucide-react@0.474.0:
+    resolution: {integrity: sha512-CmghgHkh0OJNmxGKWc0qfPJCYHASPMVSyGY8fj3xgk4v84ItqDg64JNKFZn5hC6E0vHi6gxnbCgwhyVB09wQtA==}
     peerDependencies:
-      react: ^16.5.1 || ^17.0.0 || ^18.0.0
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   lunr@2.3.9:
     resolution: {integrity: sha512-zTU3DaZaF3Rt9rhN3uBMGQD3dD2/vFQqnvZCDv4dl5iOzq2IZQqTxu90r4E5J+nP70J3ilqVCrbho2eWaeW8Ow==}
@@ -12924,7 +12924,7 @@ snapshots:
     dependencies:
       es5-ext: 0.10.64
 
-  lucide-react@0.244.0(react@18.3.1):
+  lucide-react@0.474.0(react@18.3.1):
     dependencies:
       react: 18.3.1
 
