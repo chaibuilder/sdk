@@ -1,5 +1,5 @@
-import { get, has } from "lodash-es";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
+import { get, has } from "lodash-es";
 
 type BlockDefinition = {
   canAcceptBlock?: (target: string) => boolean;
@@ -45,3 +45,19 @@ export const canDropBlock = (_currentTree: any, { dragSource, dropTarget }: any)
   const dropTargetType = get(dropTarget, "data._type", "");
   return canAcceptChildBlock(dropTargetType, dragSourceType);
 };
+
+if (import.meta.vitest) {
+  describe("canDropBlock Function", () => {
+    it('should return false if dragSourceType is "Slot"', () => {
+      const dragSource = { data: { _type: "Slot" } };
+      const dropTarget = { data: {} };
+      expect(canDropBlock({}, { dragSource, dropTarget })).toBe(true);
+    });
+
+    it("should return true if dropTargetType is empty", () => {
+      const dragSource = { data: { _type: "Box" } };
+      const dropTarget = { data: {} };
+      expect(canDropBlock({}, { dragSource, dropTarget })).toBe(true);
+    });
+  });
+}
