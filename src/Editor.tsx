@@ -1,20 +1,19 @@
-import { useAtom } from "jotai";
-import { lsAiContextAtom, lsBlocksAtom, lsThemeAtom } from "./__dev/atoms-dev.ts";
-import PreviewWeb from "./__dev/preview/WebPreview.tsx";
-import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML, registerChaiBlock } from "./core/main";
-import { loadWebBlocks } from "./web-blocks";
-import { useState } from "react";
 import axios from "axios";
-import { get } from "lodash-es";
-import { map, pick, isArray } from "lodash-es";
-import lngPtBR from "./__dev/ptBR.json";
-import RightTop from "./__dev/RightTop.tsx";
-import { greenPreset, bluePreset, orangePreset } from "./__dev/THEME_PRESETS.ts";
+import { useAtom } from "jotai";
+import { isArray, map, pick } from "lodash-es";
+import { useState } from "react";
+import { lsAiContextAtom, lsBlocksAtom, lsThemeAtom } from "./__dev/atoms-dev.ts";
 import {
   Component as CollectionListComponent,
   Config as CollectionListConfig,
   CollectionListProps,
 } from "./__dev/CollectionList.tsx";
+import PreviewWeb from "./__dev/preview/WebPreview.tsx";
+import lngPtBR from "./__dev/ptBR.json";
+import RightTop from "./__dev/RightTop.tsx";
+import { bluePreset, greenPreset, orangePreset } from "./__dev/THEME_PRESETS.ts";
+import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML, registerChaiBlock } from "./core/main";
+import { loadWebBlocks } from "./web-blocks";
 
 loadWebBlocks();
 registerChaiBlock<CollectionListProps>(CollectionListComponent, CollectionListConfig);
@@ -86,17 +85,7 @@ function ChaiBuilderDefault() {
         }
       }}
       uiLibraries={uiLibraries}
-      getBlockAsyncProps={async (block: ChaiBlock) => {
-        console.log("getBlockAsyncProps", block);
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            resolve(`${get(block, "content", "")}`);
-          }, 2000);
-        });
-      }}
-      topBarComponents={{
-        right: [RightTop],
-      }}
+      topBarComponents={{ right: [RightTop] }}
       getGlobalBlockBlocks={async (globalBlockKey: string) => {
         const blocks =
           globalBlockKey === "header"
