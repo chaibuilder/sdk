@@ -1,8 +1,7 @@
-import { createRoot } from "react-dom/client";
 import { WidgetProps } from "@rjsf/utils";
-import IconPicker, { IconPickerItem } from "react-icons-picker";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { useTranslation } from "react-i18next";
+import IconPicker, { IconPickerItem } from "react-icons-picker";
 
 const getSvgMarkup = (icon: string) => {
   try {

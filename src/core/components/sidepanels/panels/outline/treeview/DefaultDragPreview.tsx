@@ -1,10 +1,10 @@
-import { DragPreviewProps } from "react-arborist";
 import { memo, useMemo } from "react";
+import { DragPreviewProps } from "react-arborist";
 import { useBlocksStore } from "../../../../../hooks";
 import { ChaiBlock } from "../../../../../types/types.ts";
 import { TypeIcon } from "../TypeIcon";
 
-const Overlay = memo(function Overlay({ children, isDragging }: { children: JSX.Element; isDragging: boolean }) {
+const Overlay = memo(function Overlay({ children, isDragging }: { children: React.ReactNode; isDragging: boolean }) {
   if (!isDragging) return null;
 
   return <div className="pointer-events-none fixed left-0 top-0 z-[100] h-full w-full">{children}</div>;
