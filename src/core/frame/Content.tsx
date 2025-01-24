@@ -1,14 +1,13 @@
 // @ts-nocheck
 import { Children, Component } from "react"; // eslint-disable-line no-unused-vars
-import PropTypes from "prop-types";
 
-export default class Content extends Component {
-  static propTypes = {
-    children: PropTypes.element.isRequired,
-    contentDidMount: PropTypes.func.isRequired,
-    contentDidUpdate: PropTypes.func.isRequired,
-  };
+interface ContentProps {
+  children: React.ReactElement;
+  contentDidMount(...args: unknown[]): unknown;
+  contentDidUpdate(...args: unknown[]): unknown;
+}
 
+export default class Content extends Component<ContentProps> {
   componentDidMount() {
     this.props.contentDidMount();
   }

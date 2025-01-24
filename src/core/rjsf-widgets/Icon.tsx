@@ -1,3 +1,4 @@
+import { createRoot } from "react-dom/client";
 import { WidgetProps } from "@rjsf/utils";
 import IconPicker, { IconPickerItem } from "react-icons-picker";
 import ReactDOM from "react-dom";
@@ -7,7 +8,8 @@ const getSvgMarkup = (icon: string) => {
   try {
     const container = document.getElementById("icon-picker-field") as HTMLElement;
     const iconPickerContainer = document.createElement("div");
-    ReactDOM.render(<IconPickerItem value={icon} />, iconPickerContainer);
+    const root = createRoot(iconPickerContainer);
+    root.render(<IconPickerItem value={icon} />);
     container.appendChild(iconPickerContainer);
 
     iconPickerContainer.hidden = true;
