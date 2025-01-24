@@ -92,7 +92,7 @@
     "@radix-ui/react-toast": "^1.2.5",
     "@radix-ui/react-toggle": "^1.1.1",
     "@radix-ui/react-tooltip": "^1.1.7",
-    "@react-hookz/web": "23.1.0",
+    "@react-hookz/web": "25.0.1",
     "@rjsf/core": "5.22.4",
     "@rjsf/utils": "5.22.4",
     "@rjsf/validator-ajv8": "5.22.4",
