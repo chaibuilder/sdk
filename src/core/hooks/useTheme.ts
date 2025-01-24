@@ -1,9 +1,9 @@
 import { atom, useAtom } from "jotai";
-import { BorderRadiusValue, ChaiBuilderThemeOptions, ChaiBuilderThemeValues } from "../types/chaiBuilderEditorProps";
-import { useBuilderProp } from "./useBuilderProp";
-import { useMemo } from "react";
 import { isEmpty } from "lodash-es";
+import { useMemo } from "react";
+import { BorderRadiusValue, ChaiBuilderThemeOptions, ChaiBuilderThemeValues } from "../types/chaiBuilderEditorProps";
 import { defaultThemeOptions } from "./defaultThemeOptions";
+import { useBuilderProp } from "./useBuilderProp";
 
 export const getDefaultThemeValues = (
   options: ChaiBuilderThemeOptions = defaultThemeOptions,
@@ -47,10 +47,11 @@ export const useTheme = () => {
   const theme = useBuilderProp("theme", {});
   const [chaiTheme, setChaiTheme] = useAtom(chaiThemeValuesAtom);
 
-  return [
-    { ...defaultThemeValues, ...(!isEmpty(theme) && theme), ...(!isEmpty(chaiTheme) && chaiTheme) },
-    setChaiTheme,
-  ] as const;
+  const themeValues = useMemo(
+    () => ({ ...defaultThemeValues, ...(!isEmpty(theme) && theme), ...(!isEmpty(chaiTheme) && chaiTheme) }),
+    [defaultThemeValues, theme, chaiTheme],
+  );
+  return [themeValues, setChaiTheme] as const;
 };
 
 export const useThemeOptions = () => {
@@ -59,7 +60,7 @@ export const useThemeOptions = () => {
   return defaultOptions as ChaiBuilderThemeOptions;
 };
 
-const rightPanelAtom = atom<"block" | "theme" | "ai">("block");
+const rightPanelAtom = atom<"block" | "theme" | "ai" | "settings">("block");
 export const useRightPanel = () => {
   return useAtom(rightPanelAtom);
 };

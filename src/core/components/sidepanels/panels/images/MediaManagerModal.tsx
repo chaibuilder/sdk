@@ -23,7 +23,7 @@ const MediaManagerModal = ({
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="flex h-3/4 max-w-5xl border-border">
         <div className="h-full w-full">
-          <MediaManagerComponent onSelect={handleSelect} />
+          {MediaManagerComponent ? <MediaManagerComponent onSelect={handleSelect} /> : null}
         </div>
       </DialogContent>
     </Dialog>

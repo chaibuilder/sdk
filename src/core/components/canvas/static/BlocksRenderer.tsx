@@ -177,7 +177,15 @@ export function BlocksRendererStatic({ blocks, allBlocks }: { blocks: ChaiBlock[
           }
           const runtimeProps = getRuntimeProps(block._type);
           if (runtimeProps) {
-            return <RuntimePropsBlock runtimeProps={runtimeProps} block={block} component={Component} props={props} />;
+            return (
+              <RuntimePropsBlock
+                key={block._id}
+                runtimeProps={runtimeProps}
+                block={block}
+                component={Component}
+                props={props}
+              />
+            );
           }
 
           return <Suspense>{React.createElement(Component, props)}</Suspense>;

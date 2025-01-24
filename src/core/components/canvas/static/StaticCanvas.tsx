@@ -1,8 +1,12 @@
 // @ts-nochecks
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { first, isEmpty } from "lodash-es";
 import { useAtom } from "jotai";
+import { first, isEmpty } from "lodash-es";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Provider } from "react-wrap-balancer";
+import { Skeleton } from "../../../../ui";
+import { canvasIframeAtom, networkModeAtom } from "../../../atoms/ui";
+import { ChaiFrame } from "../../../frame";
 import {
   useBuilderProp,
   useCanvasWidth,
@@ -11,25 +15,21 @@ import {
   useSelectedBlockIds,
   useSelectedStylingBlocks,
 } from "../../../hooks";
-import { IframeInitialContent } from "../IframeInitialContent";
-import { canvasIframeAtom, networkModeAtom } from "../../../atoms/ui";
-import { useCanvasScale } from "./useCanvasScale";
-import { Canvas, getElementByDataBlockId } from "./Canvas.tsx";
-import { ChaiFrame } from "../../../frame";
-import { KeyboardHandler } from "../KeyboarHandler.tsx";
-import { BlockActionsStatic } from "../BlockFloatingActions.tsx";
-import { HeadTags } from "./HeadTags.tsx";
-import { Skeleton } from "../../../../ui";
 import { ChaiBlock } from "../../../types/ChaiBlock";
-import { StaticBlocksRenderer } from "./StaticBlocksRenderer.tsx";
-import { Provider } from "react-wrap-balancer";
+import { BlockFloatingSelector } from "../BlockFloatingActions.tsx";
+import { IframeInitialContent } from "../IframeInitialContent";
+import { KeyboardHandler } from "../KeyboarHandler.tsx";
 import { AddBlockAtBottom } from "./AddBlockAtBottom.tsx";
+import { Canvas, getElementByDataBlockId } from "./Canvas.tsx";
+import { HeadTags } from "./HeadTags.tsx";
 import { ResizableCanvasWrapper } from "./ResizableCanvasWrapper.tsx";
+import { StaticBlocksRenderer } from "./StaticBlocksRenderer.tsx";
+import { useCanvasScale } from "./useCanvasScale";
 
 const getElementByStyleId = (doc: any, styleId: string): HTMLElement =>
   doc.querySelector(`[data-style-id="${styleId}"]`) as HTMLElement;
 
-const StaticCanvas = (): React.JSX.Element => {
+const StaticCanvas = () => {
   const [networkMode] = useAtom(networkModeAtom);
   const [width] = useCanvasWidth();
   const [, setIds] = useSelectedBlockIds();
@@ -93,12 +93,7 @@ const StaticCanvas = (): React.JSX.Element => {
     let initialHTML = IframeInitialContent;
     initialHTML = initialHTML.replace("__HTML_DIR__", htmlDir);
     if (networkMode === "offline") {
-      initialHTML = initialHTML.replace(
-        "https://old.chaibuilder.com/offline/tailwind.cdn.js",
-        "/offline/tailwind.cdn.js",
-      );
-      initialHTML = initialHTML.replace("https://unpkg.com/aos@next/dist/aos.css", "/offline/aos.css");
-      initialHTML = initialHTML.replace("https://unpkg.com/aos@next/dist/aos.js", "/offline/aos.js");
+      initialHTML = initialHTML.replace("https://chaibuilder.com/offline/tailwind.cdn.js", "/offline/tailwind.cdn.js");
     }
     return initialHTML;
   }, [networkMode, htmlDir]);
@@ -122,7 +117,7 @@ const StaticCanvas = (): React.JSX.Element => {
           className="relative mx-auto box-content h-full w-full max-w-full shadow-lg transition-all duration-300 ease-linear"
           initialContent={iframeContent}>
           <KeyboardHandler />
-          <BlockActionsStatic
+          <BlockFloatingSelector
             block={selectedBlock as unknown as ChaiBlock}
             selectedBlockElement={first(selectedElements)}
           />
