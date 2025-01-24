@@ -1,26 +1,21 @@
 // @ts-nocheck
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import PropTypes from "prop-types";
 import { FrameContextProvider } from "./Context";
 import Content from "./Content.js";
 
-export class Frame extends Component {
-  // React warns when you render directly into the body since browser extensions
-  // also inject into the body and can mess up React. For this reason
-  // initialContent is expected to have a div inside of the body
-  // element that we render react into.
-  static propTypes = {
-    style: PropTypes.object, // eslint-disable-line
-    head: PropTypes.node,
-    initialContent: PropTypes.string,
-    mountTarget: PropTypes.string,
-    className: PropTypes.string,
-    contentDidMount: PropTypes.func,
-    contentDidUpdate: PropTypes.func,
-    children: PropTypes.oneOfType([PropTypes.element, PropTypes.arrayOf(PropTypes.element)]),
-  };
+interface FrameProps {
+  style?: object;
+  head?: React.ReactNode // eslint-disable-line;
+  initialContent?: string;
+  mountTarget?: string;
+  className?: string;
+  contentDidMount?(...args: unknown[]): unknown;
+  contentDidUpdate?(...args: unknown[]): unknown;
+  children?: React.ReactElement | React.ReactElement[];
+}
 
+export class Frame extends Component<FrameProps> {
   static defaultProps = {
     style: {},
     head: null,
