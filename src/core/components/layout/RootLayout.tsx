@@ -1,27 +1,26 @@
-import React, { ComponentType, lazy, MouseEvent, Suspense, useMemo, useState } from "react";
-import { isDevelopment } from "../../import-html/general.ts";
-import { useBuilderProp } from "../../hooks";
-import { useRightPanel } from "../../hooks/useTheme.ts";
-import "../canvas/static/BlocksExternalDataProvider.tsx";
-import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../ui";
-import { motion } from "framer-motion";
-import { Layers, Paintbrush, X } from "lucide-react";
-import { Outline } from "../../main";
-import { CanvasTopBar } from "../canvas/topbar/CanvasTopBar.tsx";
-import CanvasArea from "../canvas/CanvasArea.tsx";
-import { AddBlocksDialog } from "./AddBlocksDialog.tsx";
-import { useTranslation } from "react-i18next";
-import SettingsPanel from "../settings/SettingsPanel.tsx";
-import { CHAI_BUILDER_EVENTS } from "../../events.ts";
-import { ChooseLayout } from "./ChooseLayout.tsx";
-import { compact, get } from "lodash-es";
-import { usePubSub } from "../../hooks/usePubSub.ts";
-import { AskAI } from "../AskAi.tsx";
 import { LightningBoltIcon } from "@radix-ui/react-icons";
+import { motion } from "framer-motion";
+import { compact, get } from "lodash-es";
+import { Layers, Paintbrush, X } from "lucide-react";
+import React, { ComponentType, lazy, MouseEvent, Suspense, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../ui";
+import { CHAI_BUILDER_EVENTS } from "../../events.ts";
+import { useBuilderProp } from "../../hooks";
+import { usePubSub } from "../../hooks/usePubSub.ts";
+import { useRightPanel } from "../../hooks/useTheme.ts";
+import { isDevelopment } from "../../import-html/general.ts";
+import { Outline } from "../../main";
+import { AskAI } from "../AskAi.tsx";
+import CanvasArea from "../canvas/CanvasArea.tsx";
+import "../canvas/static/BlocksExternalDataProvider.tsx";
+import { CanvasTopBar } from "../canvas/topbar/CanvasTopBar.tsx";
+import SettingsPanel from "../settings/SettingsPanel.tsx";
+import ThemeConfigPanel from "../sidepanels/panels/theme-configuration/ThemeConfigPanel.tsx";
+import { AddBlocksDialog } from "./AddBlocksDialog.tsx";
+import { ChooseLayout } from "./ChooseLayout.tsx";
 
 const TopBar = lazy(() => import("../topbar/Topbar.tsx"));
-
-const ThemeConfigPanel = lazy(() => import("../sidepanels/panels/theme-configuration/ThemeConfigPanel.tsx"));
 
 function useSidebarMenuItems() {
   return useMemo(() => {

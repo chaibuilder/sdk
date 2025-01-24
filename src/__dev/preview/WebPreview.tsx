@@ -1,14 +1,13 @@
-import { get, map } from "lodash-es";
 import { DesktopIcon, LaptopIcon, MobileIcon } from "@radix-ui/react-icons";
-import { useState } from "react";
 import clsx from "clsx";
-import { SettingsWatcher } from "./Settings.tsx";
-import { Frame } from "../../core/frame/Frame.tsx";
-import { useBlocksStore } from "../../core/history/useBlocksStoreUndoableActions.ts";
-import { useBrandingOptions, useLanguages } from "../../core/hooks";
-import { Button } from "../../ui";
+import { get, map } from "lodash-es";
+import { useState } from "react";
 import ReactDOM from "react-dom/server";
+import { ChaiFrame } from "../../core/frame/Frame.tsx";
+import { useBlocksStore, useBrandingOptions, useLanguages } from "../../core/hooks";
 import { RenderChaiBlocks } from "../../render";
+import { Button } from "../../ui";
+import { SettingsWatcher } from "./Settings.tsx";
 
 interface BreakpointItemType {
   content: string;
@@ -150,13 +149,14 @@ const PreviewWeb = () => {
           ))}
         </div>
       </div>
-      <Frame
+      {/* @ts-ignore */}
+      <ChaiFrame
         style={{ width: `${width}px` }}
         className="no-scrollbar mx-auto h-full overflow-y-auto border bg-white"
         initialContent={IframeInitialContent(getFonts(brandingOptions), html)}>
         <SettingsWatcher />
         <div></div>
-      </Frame>
+      </ChaiFrame>
     </div>
   );
 };
