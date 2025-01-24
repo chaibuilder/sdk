@@ -1,12 +1,24 @@
-import React, { Suspense } from "react";
-import { each, filter, get, includes, isEmpty, isString, keys, memoize, omit, cloneDeep, forEach } from "lodash-es";
-import { twMerge } from "tailwind-merge";
-import { ChaiBlock } from "../core/types/ChaiBlock.ts";
-import { STYLES_KEY } from "../core/constants/STRINGS.ts";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
-import { addPrefixToClasses } from "./functions.ts";
-import { has } from "lodash-es";
+import {
+  cloneDeep,
+  each,
+  filter,
+  forEach,
+  get,
+  has,
+  includes,
+  isEmpty,
+  isString,
+  keys,
+  memoize,
+  omit,
+} from "lodash-es";
+import React, { Suspense } from "react";
+import { twMerge } from "tailwind-merge";
+import { STYLES_KEY } from "../core/constants/STRINGS.ts";
+import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import AsyncPropsBlock from "./AsyncBlockProps.tsx";
+import { addPrefixToClasses } from "./functions.ts";
 
 const generateClassNames = memoize((styles: string, classPrefix: string) => {
   const stylesArray = styles.replace(STYLES_KEY, "").split(",");

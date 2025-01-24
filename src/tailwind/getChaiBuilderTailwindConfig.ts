@@ -1,6 +1,6 @@
-import tailwindTypography from "@tailwindcss/typography";
-import tailwindForms from "@tailwindcss/forms";
 import tailwindAspectRatio from "@tailwindcss/aspect-ratio";
+import tailwindForms from "@tailwindcss/forms";
+import tailwindTypography from "@tailwindcss/typography";
 import tailwindAnimate from "tailwindcss-animate";
 
 function shadcnTheme() {

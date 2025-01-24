@@ -1,13 +1,13 @@
 import { createTailwindcss } from "@mhsdesign/jit-browser-tailwindcss";
-import twForms from "@tailwindcss/forms";
-import twTypography from "@tailwindcss/typography";
 import twAspectRatio from "@tailwindcss/aspect-ratio";
 import twContainer from "@tailwindcss/container-queries";
-import { ChaiBlock } from "../core/types/ChaiBlock.ts";
-import { getChaiBuilderTheme } from "../tailwind/getChaiBuilderTheme.ts";
-import { chaiBuilderPlugin } from "../tailwind";
-import { ChaiBuilderThemeOptions } from "../core/types/chaiBuilderEditorProps.ts";
+import twForms from "@tailwindcss/forms";
+import twTypography from "@tailwindcss/typography";
 import { defaultThemeOptions } from "../core/hooks/defaultThemeOptions.ts";
+import { ChaiBlock } from "../core/types/ChaiBlock.ts";
+import { ChaiBuilderThemeOptions } from "../core/types/chaiBuilderEditorProps.ts";
+import { chaiBuilderPlugin } from "../tailwind";
+import { getChaiBuilderTheme } from "../tailwind/getChaiBuilderTheme.ts";
 
 async function getTailwindCSS(
   themeOptions: ChaiBuilderThemeOptions,

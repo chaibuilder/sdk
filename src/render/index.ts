@@ -1,8 +1,8 @@
-export { convertToBlocks } from "./functions.ts";
-export { RenderChaiBlocks } from "./RenderChaiBlocks";
-export { getStylesForBlocks } from "./getTailwindCSS.ts";
 export {
-  getThemeFontsLinkMarkup,
   getChaiThemeCssVariables,
   getThemeFontsCSSImport,
+  getThemeFontsLinkMarkup,
 } from "../core/components/canvas/static/ChaiThemeFn.ts";
+export { convertToBlocks } from "./functions.ts";
+export { getStylesForBlocks } from "./getTailwindCSS.ts";
+export { RenderChaiBlocks } from "./RenderChaiBlocks";
