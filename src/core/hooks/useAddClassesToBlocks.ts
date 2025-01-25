@@ -1,12 +1,13 @@
-import { useCallback } from "react";
 import { atom, useSetAtom } from "jotai";
 import { filter, first, get as getProp, map } from "lodash-es";
+import { useCallback } from "react";
+import { twMerge } from "tailwind-merge";
 import { pageBlocksAtomsAtom } from "../atoms/blocks";
-import { getNewClasses } from "../functions/GetNewClasses";
-import { selectedStylingBlocksAtom, TStyleBlock } from "./useSelectedStylingBlocks";
-import { ChaiBlock } from "../types/ChaiBlock";
 import { STYLES_KEY } from "../constants/STRINGS.ts";
+import { removeDuplicateClasses } from "../functions/removeDuplicateClasses.ts";
 import { useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
+import { ChaiBlock } from "../types/ChaiBlock";
+import { selectedStylingBlocksAtom, TStyleBlock } from "./useSelectedStylingBlocks";
 
 const getSplitClasses = (classesString: string) => {
   const splitClasses: string[] = classesString.replace(STYLES_KEY, "").split(",");
@@ -33,10 +34,10 @@ export const addClassesToBlocksAtom: any = atom(null, (get, _set, { blockIds, ne
   return map(blockAtoms, (blockAtom) => {
     const block: ChaiBlock = get(blockAtom as any);
     const classesString: string = getProp(block, styleBlock.prop, `${STYLES_KEY},`);
-    const { baseClasses, classes } = getSplitClasses(classesString);
+    const { classes } = getSplitClasses(classesString);
     return {
       ids: [block._id],
-      props: { [styleBlock.prop]: `${STYLES_KEY}${getNewClasses(classes, baseClasses, newClasses)}` },
+      props: { [styleBlock.prop]: `${STYLES_KEY},${removeDuplicateClasses(twMerge(classes, newClasses))}` },
     };
   });
 });
