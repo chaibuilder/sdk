@@ -1,0 +1,24 @@
+import { constructClassObject } from "./Class";
+
+export function orderClassesByBreakpoint(classes: string): string {
+  const classesArray = classes.split(" ").map(constructClassObject);
+  const breakpointOrder = ["xs", "sm", "md", "lg", "xl", "2xl"];
+  return classesArray
+    .sort((a, b) => {
+      return breakpointOrder.indexOf(a.mq) - breakpointOrder.indexOf(b.mq);
+    })
+    .map((cls) => cls.fullCls)
+    .join(" ");
+}
+
+if (import.meta.vitest) {
+  test("orderClassesByBreakpoint", () => {
+    expect(orderClassesByBreakpoint("bg-red-400 sm:bg-red-500")).toBe("bg-red-400 sm:bg-red-500");
+    expect(orderClassesByBreakpoint("bg-red-400 sm:bg-red-500 md:bg-red-600")).toBe(
+      "bg-red-400 sm:bg-red-500 md:bg-red-600",
+    );
+    expect(orderClassesByBreakpoint("xl:sticky block sm:absolute")).toBe("block sm:absolute xl:sticky");
+    expect(orderClassesByBreakpoint("sm:bg-red-500 bg-red-400")).toBe("bg-red-400 sm:bg-red-500");
+    expect(orderClassesByBreakpoint("sm:w-[30%] w-[30%]")).toBe("w-[30%] sm:w-[30%]");
+  });
+}
