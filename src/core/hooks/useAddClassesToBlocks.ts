@@ -4,6 +4,7 @@ import { useCallback } from "react";
 import { twMerge } from "tailwind-merge";
 import { pageBlocksAtomsAtom } from "../atoms/blocks";
 import { STYLES_KEY } from "../constants/STRINGS.ts";
+import { orderClassesByBreakpoint } from "../functions/orderClassesByBreakpoint.ts";
 import { removeDuplicateClasses } from "../functions/removeDuplicateClasses.ts";
 import { useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 import { ChaiBlock } from "../types/ChaiBlock";
@@ -37,7 +38,11 @@ export const addClassesToBlocksAtom: any = atom(null, (get, _set, { blockIds, ne
     const { classes } = getSplitClasses(classesString);
     return {
       ids: [block._id],
-      props: { [styleBlock.prop]: `${STYLES_KEY},${removeDuplicateClasses(twMerge(classes, newClasses))}` },
+      props: {
+        [styleBlock.prop]: `${STYLES_KEY},${orderClassesByBreakpoint(
+          removeDuplicateClasses(twMerge(classes, newClasses)),
+        )}`,
+      },
     };
   });
 });
