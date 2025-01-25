@@ -1,9 +1,8 @@
-import { flatten, flattenDeep, map, range, values } from "lodash-es";
-import { CLASS_VALUES } from "./CLASS_VALUES";
-import { useCallback, useMemo } from "react";
 import Fuse from "fuse.js";
+import { each, flatten, flattenDeep, get, keys, map, range, set, values } from "lodash-es";
+import { useCallback, useMemo } from "react";
 import { useThemeOptions } from "../hooks/useTheme";
-import { each, get, keys, set } from "lodash-es";
+import { CLASS_VALUES } from "./CLASS_VALUES";
 
 type ClassListType = {
   [key: string]: {
@@ -459,7 +458,7 @@ export const CLASSES_LIST: ClassListType = {
   },
   width: {
     classes: map([...CLASS_VALUES.width, ...["full", "screen", "min", "max", "fit"]], (v) => `w-${v}`),
-    regExp: "^w-(\\d+.\\d+|\\d+|px|auto|full|screen|min|max|fit|\\[.*\\])$",
+    regExp: "w-(\\d+.\\d+|\\d+|px|auto|full|screen|min|max|fit|\\[.*\\])$",
   },
 
   minHeight: {

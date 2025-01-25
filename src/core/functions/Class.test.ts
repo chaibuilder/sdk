@@ -1,6 +1,6 @@
 import { each } from "lodash-es";
-import { getModForCls, getMqForCls, getPropertyForClass, getPureClsName } from "./Class";
 import { CLASSES_LIST } from "../constants/CLASSES_LIST";
+import { getModForCls, getMqForCls, getPropertyForClass, getPureClsName } from "./Class";
 import { convertArbitraryToTailwindClass } from "./ConvertArbitraryToTailwindClass.ts";
 
 describe("Class functions", () => {
@@ -128,5 +128,6 @@ describe("Class functions", () => {
     expect(getPropertyForClass("from-red-500")).toEqual("fromColor");
     expect(getPropertyForClass("via-red-500")).toEqual("viaColor");
     expect(getPropertyForClass("leading-[2px]")).toEqual("lineHeight");
+    expect(getPropertyForClass("sm:w-[30%]")).toEqual("width");
   });
 });
