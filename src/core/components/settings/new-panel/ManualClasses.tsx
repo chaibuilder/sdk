@@ -1,18 +1,9 @@
-import * as React from "react";
-import { useState } from "react";
-import { first, get, isEmpty, map, reject } from "lodash-es";
-// @ts-ignore
-import Autosuggest from "react-autosuggest";
 import { CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
-import { useFuseSearch } from "../../../constants/CLASSES_LIST";
-import {
-  useAddClassesToBlocks,
-  useBuilderProp,
-  useRemoveClassesFromBlocks,
-  useSelectedBlock,
-  useSelectedBlockIds,
-  useSelectedStylingBlocks,
-} from "../../../hooks";
+import { first, get, isEmpty, map, reject } from "lodash-es";
+import { SparklesIcon } from "lucide-react";
+import { useState } from "react";
+import Autosuggest from "react-autosuggest";
+import { useTranslation } from "react-i18next";
 import {
   Button,
   Popover,
@@ -23,9 +14,16 @@ import {
   TooltipTrigger,
   useToast,
 } from "../../../../ui";
+import { useFuseSearch } from "../../../constants/CLASSES_LIST";
 import { STYLES_KEY } from "../../../constants/STRINGS.ts";
-import { useTranslation } from "react-i18next";
-import { SparklesIcon } from "lucide-react";
+import {
+  useAddClassesToBlocks,
+  useBuilderProp,
+  useRemoveClassesFromBlocks,
+  useSelectedBlock,
+  useSelectedBlockIds,
+  useSelectedStylingBlocks,
+} from "../../../hooks";
 import { AskAIStyles } from "../AskAiStyle.tsx";
 
 export function ManualClasses() {
@@ -113,10 +111,7 @@ export function ManualClasses() {
   };
 
   return (
-    <div
-      className={`flex ${
-        suggestions.length > 0 ? "min-h-[300px]" : "min-h-max"
-      } w-full flex-col gap-y-1.5 overflow-y-auto pb-4`}>
+    <div className={`flex w-full flex-col gap-y-1.5 overflow-y-auto pb-4`}>
       <div className="flex items-center justify-between gap-x-2">
         <div className="flex items-center gap-x-2 text-muted-foreground">
           <span>{t("Classes")}</span>
@@ -160,7 +155,8 @@ export function ManualClasses() {
               suggestionHighlighted: "!bg-gray-300 dark:!bg-gray-800 cursor-pointer",
               suggestionsContainerOpen:
                 "absolute bg-background no-scrollbar z-50 max-h-[230px] overflow-y-auto w-full  border border-border rounded-md",
-            }}></Autosuggest>
+            }}
+          />
         </div>
         <Button
           variant="outline"
@@ -172,19 +168,17 @@ export function ManualClasses() {
         </Button>
       </div>
       <div className="flex w-full flex-wrap gap-2 overflow-x-hidden">
-        {React.Children.toArray(
-          classes.map((cls: string) => (
-            <div
-              key={cls}
-              className="group relative flex max-w-[260px] cursor-default items-center gap-x-1 truncate rounded border border-border bg-gray-200 p-px px-1.5 text-[11px] text-gray-600 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
-              {cls}
-              <Cross2Icon
-                onClick={() => removeClassesFromBlocks(selectedIds, [cls])}
-                className="invisible absolute right-1 rounded-full bg-red-400 hover:text-white group-hover:visible group-hover:cursor-pointer"
-              />
-            </div>
-          )),
-        )}
+        {classes.map((cls: string) => (
+          <div
+            key={cls}
+            className="group relative flex max-w-[260px] cursor-default items-center gap-x-1 truncate rounded border border-border bg-gray-200 p-px px-1.5 text-[11px] text-gray-600 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+            {cls}
+            <Cross2Icon
+              onClick={() => removeClassesFromBlocks(selectedIds, [cls])}
+              className="invisible absolute right-1 rounded-full bg-red-400 hover:text-white group-hover:visible group-hover:cursor-pointer"
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
