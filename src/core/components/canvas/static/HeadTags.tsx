@@ -1,27 +1,23 @@
-import { get, map } from "lodash-es";
-import { useEffect, useState } from "react";
-import { useFrame } from "../../../frame";
-import {
-  useBrandingOptions,
-  useDarkMode,
-  useSelectedBlockIds,
-  useSelectedStylingBlocks,
-} from "../../../hooks";
-import { useAtom } from "jotai";
-import typography from "@tailwindcss/typography";
-import forms from "@tailwindcss/forms";
-import aspectRatio from "@tailwindcss/aspect-ratio";
 import { tailwindcssPaletteGenerator } from "@bobthered/tailwindcss-palette-generator";
-import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
+import aspectRatio from "@tailwindcss/aspect-ratio";
+import forms from "@tailwindcss/forms";
+import typography from "@tailwindcss/typography";
+import { useAtom, useAtomValue } from "jotai";
+import { get, map, set } from "lodash-es";
+import { useEffect, useState } from "react";
 import plugin from "tailwindcss/plugin";
-import { set } from "lodash-es";
+import { arbitraryFontsAtom } from "../../../atoms/blocks.ts";
+import { useFrame } from "../../../frame";
+import { useBrandingOptions, useDarkMode, useSelectedBlockIds, useSelectedStylingBlocks } from "../../../hooks";
+import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
 // @ts-ignore
 
 export const HeadTags = () => {
   const [customTheme] = useBrandingOptions();
   const [selectedBlockIds] = useSelectedBlockIds();
   const [darkMode] = useDarkMode();
-  
+  const arbitraryFonts = useAtomValue(arbitraryFontsAtom);
+
   const [stylingBlockIds] = useSelectedStylingBlocks();
   const [draggedBlock] = useAtom(draggedBlockAtom);
   const [dropTargetId] = useAtom(dropTargetBlockIdAtom);
@@ -74,6 +70,7 @@ export const HeadTags = () => {
     const borderRadius = get(customTheme, "roundedCorners", "0");
     // @ts-ignore
     if (!iframeWin || !iframeWin.tailwind) return;
+
     // @ts-ignore
     iframeWin.tailwind.config = {
       darkMode: "class",
@@ -119,7 +116,7 @@ export const HeadTags = () => {
         }),
       ],
     };
-  }, [customTheme, iframeWin, headingFont, bodyFont]);
+  }, [customTheme, iframeWin, headingFont, bodyFont, arbitraryFonts]);
 
   useEffect(() => {
     if (!selectedBlockStyle) return;
@@ -152,7 +149,7 @@ export const HeadTags = () => {
     iframeDoc.querySelector(`#drop-target-block`).innerHTML = dropTargetId
       ? `[data-block-id="${dropTargetId}"]{ outline: 1px dashed orange !important; outline-offset: -1px;}`
       : "";
-  }, [dropTargetId]);
+  }, [dropTargetId, iframeDoc]);
 
   return (
     <>
@@ -168,6 +165,15 @@ export const HeadTags = () => {
               ? `family=${bodyFont.replace(/ /g, "+")}:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900`
               : ""
           }&display=swap`}
+        />
+      )}
+      {arbitraryFonts.length > 0 && (
+        <link
+          rel="stylesheet"
+          href={`https://fonts.googleapis.com/css2?${arbitraryFonts
+            .map((font: string) => font.replace(/_/g, "+"))
+            .map((font: string) => `family=${font}:wght@200..800`)
+            .join("&")}&display=swap`}
         />
       )}
     </>

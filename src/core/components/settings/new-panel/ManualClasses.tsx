@@ -1,19 +1,12 @@
+import { first, get, isEmpty, map, reject } from "lodash-es";
 import * as React from "react";
 import { useState } from "react";
-import { first, get, isEmpty, map, reject } from "lodash-es";
 // @ts-ignore
-import Autosuggest from "react-autosuggest";
-import Fuse from "fuse.js";
 import { CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
-import { ALL_TW_CLASSES } from "../../../constants/CLASSES_LIST";
-import {
-  useAddClassesToBlocks,
-  useBuilderProp,
-  useRemoveClassesFromBlocks,
-  useSelectedBlock,
-  useSelectedBlockIds,
-  useSelectedStylingBlocks,
-} from "../../../hooks";
+import Fuse from "fuse.js";
+import { SparklesIcon } from "lucide-react";
+import Autosuggest from "react-autosuggest";
+import { useTranslation } from "react-i18next";
 import {
   Button,
   Popover,
@@ -24,9 +17,16 @@ import {
   TooltipTrigger,
   useToast,
 } from "../../../../ui";
+import { ALL_TW_CLASSES } from "../../../constants/CLASSES_LIST";
 import { STYLES_KEY } from "../../../constants/STRINGS.ts";
-import { useTranslation } from "react-i18next";
-import { SparklesIcon } from "lucide-react";
+import {
+  useAddClassesToBlocks,
+  useBuilderProp,
+  useRemoveClassesFromBlocks,
+  useSelectedBlock,
+  useSelectedBlockIds,
+  useSelectedStylingBlocks,
+} from "../../../hooks";
 import { AskAIStyles } from "../AskAiStyle.tsx";
 
 const fuse = new Fuse(ALL_TW_CLASSES, {
@@ -51,7 +51,6 @@ export function ManualClasses() {
   const addNewClasses = () => {
     const fullClsNames: string[] = newCls
       .trim()
-      .toLowerCase()
       .replace(/ +(?= )/g, "")
       .split(" ");
 
