@@ -1,6 +1,6 @@
 import { atom } from "jotai";
 import { splitAtom } from "jotai/utils";
-import { filter, has } from "lodash-es";
+import { filter, has, uniq } from "lodash-es";
 import { convertToBlocksTree } from "../functions/Blocks.ts";
 
 // derived atoms
@@ -14,6 +14,26 @@ export const treeDSBlocks = atom((get) => {
   return convertToBlocksTree([...presentBlocks]);
 });
 treeDSBlocks.debugLabel = "treeDSBlocks";
+
+export const arbitraryFontsAtom = atom((get) => {
+  const blocks = get(presentBlocksAtom);
+  const hasArbitraryFonts = (block: any) => {
+    const stringifiedBlock = JSON.stringify(block);
+    return stringifiedBlock.includes("font-['");
+  };
+  const arbitraryFonts = [];
+  for (const block of blocks) {
+    const stringifiedBlock = JSON.stringify(block);
+    // check if the block has arbitrary fonts
+    if (hasArbitraryFonts(block)) {
+      const fontNames = stringifiedBlock.match(/font-\['([^']+)'\]/g);
+      const extractedFonts = fontNames?.map((font) => font.match(/font-\['([^']+)'\]/)[1]) || [];
+      arbitraryFonts.push(...extractedFonts);
+    }
+  }
+  return uniq(arbitraryFonts);
+});
+arbitraryFontsAtom.debugLabel = "arbitraryFontsAtom";
 
 presentBlocksAtom.debugLabel = "presentBlocksAtom";
 

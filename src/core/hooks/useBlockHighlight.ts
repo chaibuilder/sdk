@@ -8,6 +8,7 @@ export const useBlockHighlight = () => {
   const [iframe] = useAtom<HTMLIFrameElement>(canvasIframeAtom);
 
   const highlightBlock = (blockId: string) => {
+    if (!iframe || !iframe.contentDocument) return;
     const innerDoc = iframe.contentDocument || iframe.contentWindow?.document;
     // Remove highlight from previous block
     if (lastHighlighted) {

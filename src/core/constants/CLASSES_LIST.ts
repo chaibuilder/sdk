@@ -475,7 +475,7 @@ export const CLASSES_LIST: ClassListType = {
   // typography
   fontFamily: {
     classes: ["font-heading", "font-body", "font-sans", "font-serif", "font-mono"],
-    regExp: "font-(heading|body|sans|serif|mono)",
+    regExp: "font-(heading|body|sans|serif|mono|\\[(['\"])[^\\2]*\\2\\])",
   },
   textAlign: {
     classes: ["text-left", "text-center", "text-right", "text-justify"],
