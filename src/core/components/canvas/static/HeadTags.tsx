@@ -10,7 +10,12 @@ import { arbitraryFontsAtom } from "../../../atoms/blocks.ts";
 import { useFrame } from "../../../frame";
 import { useBrandingOptions, useDarkMode, useSelectedBlockIds, useSelectedStylingBlocks } from "../../../hooks";
 import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
+import { googleFontsMap } from "../../../constants/GOOGLE_FONTS_MAP.ts";
 // @ts-ignore
+
+const getFontWeights = (fontName: string) => {
+  return googleFontsMap[fontName] || [300, 400, 500, 600, 700, 800, 900];
+};
 
 export const HeadTags = () => {
   const [customTheme] = useBrandingOptions();
@@ -172,7 +177,11 @@ export const HeadTags = () => {
           rel="stylesheet"
           href={`https://fonts.googleapis.com/css2?${arbitraryFonts
             .map((font: string) => font.replace(/_/g, "+"))
-            .map((font: string) => `family=${font}:wght@200..800`)
+            .map((font: string) => {
+              const fontName = font.replace(/\+/g, " ");
+              const weights = getFontWeights(fontName);
+              return `family=${font}:wght@${weights.join(";")}`;
+            })
             .join("&")}&display=swap`}
         />
       )}
