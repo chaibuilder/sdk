@@ -1,8 +1,8 @@
-import * as React from "react";
-import { GroupIcon } from "@radix-ui/react-icons";
 import { RichText, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
-import EmptySlot from "../empty-slot.tsx";
+import { GroupIcon } from "@radix-ui/react-icons";
+import * as React from "react";
 import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
+import EmptySlot from "../empty-slot.tsx";
 
 const FormBlock = (
   props: ChaiBlock & {
@@ -22,26 +22,30 @@ const FormBlock = (
   const alpineAttrs = {
     "x-data": `{
         formStatus: '',
-        async post() {
-            try {
-                const formData = new FormData($el);
-                const response = await fetch($el.action, {
-                    method: $el.method,
-                    body: formData
-                });
-                if (!response.ok) throw new Error();
-                this.formStatus = 'SUCCESS';
-                $el.querySelector('[x-html]').innerHTML = $el.dataset.success;
-            } catch (error) {
-                this.formStatus = 'ERROR';
-                $el.querySelector('[x-html]').innerHTML = $el.dataset.error;
-            }
+        formLoading: false,
+        async submit() {
+          try {
+            this.formLoading = true;
+            const formData = new FormData($el);
+            const response = await fetch($el.action, {
+                method: $el.method,
+                body: formData
+            });
+            if (!response.ok) throw new Error();
+            this.formStatus = 'SUCCESS';
+            $el.querySelector('[data-response]').innerHTML = $el.dataset.success;
+          } catch (error) {
+            this.formStatus = 'ERROR';
+            $el.querySelector('[data-response]').innerHTML = $el.dataset.error;
+          } finally {
+            this.formLoading = false;
+          }
         }
     }`,
-    "x-on:submit.prevent": "post",
+    "x-on:submit.prevent": "submit",
   };
   const formResponseAttr = {
-    "x-html": "",
+    "data-response": "",
     ":class": "{'text-red-500': formStatus === 'ERROR', 'text-green-500': formStatus === 'SUCCESS'}",
   };
   return (

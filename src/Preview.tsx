@@ -1,8 +1,10 @@
-import { getStylesForBlocks, RenderChaiBlocks } from "./render";
 import { useAtom } from "jotai";
-import { lsBlocksAtom, lsBrandingOptionsAtom } from "./__dev/atoms-dev.ts";
 import { useEffect, useState } from "react";
-import "./blocks/web";
+import { lsBlocksAtom, lsBrandingOptionsAtom } from "./__dev/atoms-dev.ts";
+import { getStylesForBlocks, RenderChaiBlocks } from "./render";
+import { loadWebBlocks } from "./web-blocks/index.ts";
+
+loadWebBlocks();
 
 function Preview() {
   const [blocks] = useAtom(lsBlocksAtom);
