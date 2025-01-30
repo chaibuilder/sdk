@@ -91,6 +91,12 @@ export type ChaiBuilderThemeValues = {
 
 export interface ChaiBuilderEditorProps {
   /**
+   * RJSF Fields and Widgets
+   */
+  rjsfFields?: Record<string, React.ComponentType<any>>;
+  rjsfWidgets?: Record<string, React.ComponentType<any>>;
+  rjsfTemplates?: Record<string, React.ComponentType<any>>;
+  /**
    * Optional pageId. If not provided, a random pageId will be generated
    */
   pageId?: string;

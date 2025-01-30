@@ -3,11 +3,8 @@ import { useAtom } from "jotai";
 import { isArray, map, pick } from "lodash-es";
 import { useState } from "react";
 import { lsAiContextAtom, lsBlocksAtom, lsThemeAtom } from "./__dev/atoms-dev.ts";
-import {
-  Component as CollectionListComponent,
-  Config as CollectionListConfig,
-  CollectionListProps,
-} from "./__dev/CollectionList.tsx";
+import { Component as CollectionListComponent, Config as CollectionListConfig } from "./__dev/CollectionList.tsx";
+import GalleryWidget from "./__dev/CustomWidget.tsx";
 import PreviewWeb from "./__dev/preview/WebPreview.tsx";
 import lngPtBR from "./__dev/ptBR.json";
 import RightTop from "./__dev/RightTop.tsx";
@@ -16,7 +13,7 @@ import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML, registerChaiBlock } fr
 import { loadWebBlocks } from "./web-blocks";
 
 loadWebBlocks();
-registerChaiBlock<CollectionListProps>(CollectionListComponent, CollectionListConfig);
+registerChaiBlock(CollectionListComponent, CollectionListConfig);
 
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
@@ -30,13 +27,7 @@ function ChaiBuilderDefault() {
 
   return (
     <ChaiBuilderEditor
-      addBlocksDialogTabs={[
-        {
-          key: "gen-ai",
-          tab: () => <span>Generative AI</span>,
-          tabContent: () => <span>Generative AI</span>,
-        },
-      ]}
+      rjsfWidgets={{ gallery: GalleryWidget }}
       fallbackLang="fr"
       languages={["pt", "en"]}
       themePresets={[{ Kia: orangePreset }, { Nissan: greenPreset }, { Infiniti: bluePreset }]}

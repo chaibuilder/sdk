@@ -1,18 +1,20 @@
-import { memo, useEffect, useState } from "react";
-import { FieldTemplateProps, RJSFSchema, UiSchema } from "@rjsf/utils";
-import RjForm from "@rjsf/core";
-import { BindingWidget } from "../../rjsf-widgets/binding.tsx";
-import { IconPickerField, ImagePickerField, LinkField, RTEField, RowColField } from "../../rjsf-widgets";
-import validator from "@rjsf/validator-ajv8";
+import { useRegisteredChaiBlocks } from "@chaibuilder/runtime";
 import { useThrottledCallback } from "@react-hookz/web";
-import { CodeEditor } from "../../rjsf-widgets/Code.tsx";
+import RjForm from "@rjsf/core";
+import { FieldTemplateProps, RJSFSchema, UiSchema } from "@rjsf/utils";
+import validator from "@rjsf/validator-ajv8";
+import { useAtom } from "jotai";
+import { get, isEmpty } from "lodash-es";
+import { ChevronDown, ChevronRight, List, Plus } from "lucide-react";
+import { memo, useEffect, useState } from "react";
+import { Badge } from "../../../ui/index.ts";
+import { chaiRjsfFieldsAtom, chaiRjsfTemplatesAtom, chaiRjsfWidgetsAtom } from "../../atoms/builder.ts";
+import { LANGUAGES } from "../../constants/LANGUAGES.ts";
 import { useLanguages } from "../../hooks/useLanguages.ts";
 import { useSelectedBlock } from "../../hooks/useSelectedBlockIds.ts";
-import { useRegisteredChaiBlocks } from "@chaibuilder/runtime";
-import { get, isEmpty } from "lodash-es";
-import { LANGUAGES } from "../../constants/LANGUAGES.ts";
-import { ChevronDown, ChevronRight, List, Plus } from "lucide-react";
-import { Badge } from "../../../ui/index.ts";
+import { IconPickerField, ImagePickerField, LinkField, RTEField, RowColField } from "../../rjsf-widgets";
+import { BindingWidget } from "../../rjsf-widgets/binding.tsx";
+import { CodeEditor } from "../../rjsf-widgets/Code.tsx";
 
 type JSONFormType = {
   id?: string;
@@ -112,6 +114,9 @@ const CustomAddButton = (props) => (
 export const JSONForm = memo(({ id, schema, uiSchema, formData, onChange }: JSONFormType) => {
   const [form, setForm] = useState<any>(formData);
   const { selectedLang } = useLanguages();
+  const [widgets] = useAtom(chaiRjsfWidgetsAtom);
+  const [fields] = useAtom(chaiRjsfFieldsAtom);
+  const [templates] = useAtom(chaiRjsfTemplatesAtom);
 
   useEffect(() => {
     setForm(formData);
@@ -136,15 +141,18 @@ export const JSONForm = memo(({ id, schema, uiSchema, formData, onChange }: JSON
         image: ImagePickerField,
         code: CodeEditor,
         colCount: RowColField,
+        ...widgets,
       }}
       fields={{
         link: LinkField,
+        ...fields,
       }}
       templates={{
         FieldTemplate: CustomFieldTemplate,
         ButtonTemplates: {
           AddButton: CustomAddButton,
         },
+        ...templates,
       }}
       idSeparator="."
       autoComplete="off"

@@ -7,7 +7,12 @@ import { ErrorBoundary } from "react-error-boundary";
 import "react-quill/dist/quill.snow.css";
 import { FEATURE_TOGGLES } from "../../FEATURE_TOGGLES.tsx";
 import { Toaster } from "../../ui";
-import { chaiBuilderPropsAtom } from "../atoms/builder.ts";
+import {
+  chaiBuilderPropsAtom,
+  chaiRjsfFieldsAtom,
+  chaiRjsfTemplatesAtom,
+  chaiRjsfWidgetsAtom,
+} from "../atoms/builder.ts";
 import { builderStore } from "../atoms/store.ts";
 import { selectedLibraryAtom } from "../atoms/ui.ts";
 import { setDebugLogs } from "../functions/logging.ts";
@@ -54,9 +59,25 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
     builderStore.set(
       // @ts-ignore
       chaiBuilderPropsAtom,
-      omit(props, ["blocks", "subPages", "brandingOptions", "dataProviders", "customRootLayout", "translations"]),
+      omit(props, [
+        "blocks",
+        "subPages",
+        "brandingOptions",
+        "dataProviders",
+        "customRootLayout",
+        "translations",
+        "rjsfFields",
+        "rjsfWidgets",
+        "rjsfTemplates",
+      ]),
     );
   }, [props]);
+
+  useEffect(() => {
+    builderStore.set(chaiRjsfFieldsAtom, props.rjsfFields || {});
+    builderStore.set(chaiRjsfWidgetsAtom, props.rjsfWidgets || {});
+    builderStore.set(chaiRjsfTemplatesAtom, props.rjsfTemplates || {});
+  }, [props.rjsfFields, props.rjsfWidgets, props.rjsfTemplates]);
 
   useEffect(() => {
     // Added delay to allow the pageId to be set
@@ -107,7 +128,7 @@ const ChaiBuilderEditor: React.FC<ChaiBuilderEditorProps> = (props: ChaiBuilderE
   const _flags = props._flags || {};
   const onErrorFn = props.onError || noop;
   return (
-    <div className="w-screen h-screen">
+    <div className="h-screen w-screen">
       <ErrorBoundary fallback={<FallbackError />} onError={onErrorFn}>
         <FlagsProvider features={{ ...FEATURE_TOGGLES, ..._flags }}>
           <SmallScreenMessage />
