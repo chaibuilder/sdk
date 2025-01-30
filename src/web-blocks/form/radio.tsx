@@ -1,5 +1,5 @@
-import { RadiobuttonIcon } from "@radix-ui/react-icons";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
+import { RadiobuttonIcon } from "@radix-ui/react-icons";
 import { generateUUID } from "../../core/functions/Functions.ts";
 
 export type RadioProps = {
@@ -9,6 +9,7 @@ export type RadioProps = {
   required: boolean;
   checked: boolean;
   showLabel: boolean;
+  fieldName: string;
 };
 
 const RadioBlock = (props: ChaiBlockComponentProps<RadioProps>) => {

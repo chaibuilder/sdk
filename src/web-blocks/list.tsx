@@ -1,14 +1,14 @@
-import * as React from "react";
+import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { RowsIcon } from "@radix-ui/react-icons";
 import { get, isEmpty } from "lodash-es";
-import EmptySlot from "./empty-slot.tsx";
+import * as React from "react";
 import { cn } from "../core/functions/Functions.ts";
-import { ChaiBlockComponentProps, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
-import { ChaiStyles } from "@chaibuilder/runtime";
+import EmptySlot from "./empty-slot.tsx";
 
 export type ListBlockProps = {
   styles: ChaiStyles;
   listType: string;
+  tag?: string;
 };
 
 const ListBlock = (props: ChaiBlockComponentProps<ListBlockProps>) => {

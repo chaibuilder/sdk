@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   ChaiBlockComponentProps,
   ChaiStyles,
@@ -14,9 +13,10 @@ import {
   ViewHorizontalIcon,
 } from "@radix-ui/react-icons";
 import { isEmpty } from "lodash-es";
-import EmptySlot from "../empty-slot.tsx";
-import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
+import { createElement } from "react";
 import { generateUUID } from "../../core/functions/Functions.ts";
+import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
+import EmptySlot from "../empty-slot.tsx";
 
 export type TableProps = {
   styles: ChaiStyles;
@@ -46,7 +46,7 @@ const TableBlock = (props: ChaiBlockComponentProps<TableProps>) => {
   if (!children) {
     return <EmptySlot />;
   }
-  return React.createElement("table", { ...blockProps, ...styles }, children);
+  return createElement("table", { ...blockProps, ...styles }, children);
 };
 
 const TableHeadBlock = (props: ChaiBlockComponentProps<TableHeadProps>) => {
@@ -54,7 +54,7 @@ const TableHeadBlock = (props: ChaiBlockComponentProps<TableHeadProps>) => {
   if (!children) {
     return <EmptySlot />;
   }
-  return React.createElement("thead", { ...blockProps, ...styles }, children);
+  return createElement("thead", { ...blockProps, ...styles }, children);
 };
 
 const TableBodyBlock = (props: ChaiBlockComponentProps<TableBodyProps>) => {
@@ -62,7 +62,7 @@ const TableBodyBlock = (props: ChaiBlockComponentProps<TableBodyProps>) => {
   if (!children) {
     return <EmptySlot />;
   }
-  return React.createElement("tbody", { ...blockProps, ...styles }, children);
+  return createElement("tbody", { ...blockProps, ...styles }, children);
 };
 
 const TableRowBlock = (props: ChaiBlockComponentProps<TableRowProps>) => {
@@ -71,7 +71,7 @@ const TableRowBlock = (props: ChaiBlockComponentProps<TableRowProps>) => {
     return <EmptySlot />;
   }
 
-  return React.createElement("tr", { ...blockProps, ...styles }, children);
+  return createElement("tr", { ...blockProps, ...styles }, children);
 };
 
 const TableCellBlock = (props: ChaiBlockComponentProps<TableCellProps>) => {
@@ -82,13 +82,13 @@ const TableCellBlock = (props: ChaiBlockComponentProps<TableCellProps>) => {
   }
 
   if (!children) {
-    return React.createElement("td", {
+    return createElement("td", {
       ...blockProps,
       ...styles,
       dangerouslySetInnerHTML: { __html: content },
     });
   }
-  return React.createElement("td", { ...blockProps, ...styles }, children);
+  return createElement("td", { ...blockProps, ...styles }, children);
 };
 
 // * REGISTERING TABLE BLOCKS

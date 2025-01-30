@@ -45,8 +45,7 @@ const Config = {
   label: "Collection List",
   category: "core",
   group: "basic",
-  dataProvider: (_block, lang) => {
-    console.log(lang, "sdsdsd");
+  dataProvider: () => {
     return {
       items: [
         { id: 1, name: "Item 1" },

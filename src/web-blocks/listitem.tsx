@@ -1,11 +1,11 @@
-import * as React from "react";
+import { ChaiBlockComponentProps, ChaiStyles, StylesProp, registerChaiBlockSchema } from "@chaibuilder/runtime";
 import { ColumnsIcon } from "@radix-ui/react-icons";
-import { ChaiBlockComponentProps, StylesProp, registerChaiBlockSchema } from "@chaibuilder/runtime";
-import { ChaiStyles } from "@chaibuilder/runtime";
+import * as React from "react";
 
 export type ListItemBlockProps = {
   styles: ChaiStyles;
   content: string;
+  tag?: string;
 };
 
 export const ListItemBlock = (props: ChaiBlockComponentProps<ListItemBlockProps>) => {

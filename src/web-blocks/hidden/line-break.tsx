@@ -1,5 +1,5 @@
-import * as React from "react";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
+import { createElement } from "react";
 
 export type LineBreakProps = {
   styles: ChaiStyles;
@@ -8,7 +8,7 @@ export type LineBreakProps = {
 const LineBreakBlock = (props: ChaiBlockComponentProps<LineBreakProps>) => {
   const { blockProps, styles } = props;
 
-  return React.createElement("br", { ...blockProps, ...styles });
+  return createElement("br", { ...blockProps, ...styles });
 };
 
 const Config = {

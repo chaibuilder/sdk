@@ -74,7 +74,6 @@ export default defineConfig({
         "i18next",
         "jotai",
         "prop-types",
-        "@monaco-editor/react",
         "re-resizable",
         "lodash",
         "lodash-es",

@@ -1,7 +1,7 @@
-import { DropdownMenuIcon } from "@radix-ui/react-icons";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
-import { generateUUID } from "../../core/functions/Functions";
+import { DropdownMenuIcon } from "@radix-ui/react-icons";
 import { map } from "lodash-es";
+import { generateUUID } from "../../core/functions/Functions";
 
 export type SelectProps = {
   showLabel: boolean;
@@ -10,6 +10,9 @@ export type SelectProps = {
   required: boolean;
   _multiple: boolean;
   options: { label: string; value: string }[];
+  label: string;
+  placeholder: string;
+  fieldName: string;
 };
 
 const SelectBlock = (props: ChaiBlockComponentProps<SelectProps>) => {

@@ -5,7 +5,7 @@
   "author": "Suraj Air",
   "license": "BSD-3-Clause",
   "homepage": "https://chaibuilder.com",
-  "version": "2.0.0-beta.51",
+  "version": "2.0.0-beta.54",
   "type": "module",
   "repository": {
     "type": "git",
@@ -68,8 +68,8 @@
   "peerDependencies": {
     "@types/react": "*",
     "@types/react-dom": "*",
-    "react": "^18.0 || ^19.0 || ^19.0.0-rc",
-    "react-dom": "^18.0 || ^19.0 || ^19.0.0-rc"
+    "react": "^18.0 || ^19.0",
+    "react-dom": "^18.0 || ^19.0"
   },
   "peerDependenciesMeta": {
     "@types/react": {
@@ -80,11 +80,10 @@
     }
   },
   "dependencies": {
-    "@chaibuilder/runtime": "2.0.0-beta.14",
+    "@chaibuilder/runtime": "2.0.0-beta.16",
     "@floating-ui/dom": "1.6.13",
     "@floating-ui/react-dom": "2.1.2",
     "@mhsdesign/jit-browser-tailwindcss": "0.4.2",
-    "@monaco-editor/react": "^4.6.0",
     "@radix-ui/react-accordion": "^1.2.2",
     "@radix-ui/react-alert-dialog": "^1.1.5",
     "@radix-ui/react-context-menu": "^2.2.5",
@@ -152,15 +151,15 @@
     "@testing-library/react": "^16.2.0",
     "@types/lodash": "^4.17.14",
     "@types/node": "^20.8.10",
-    "@types/react": "^18.3.1",
-    "@types/react-dom": "^18.3.1",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
     "@typescript-eslint/eslint-plugin": "^8.21.0",
     "@typescript-eslint/parser": "^8.21.0",
     "@vitejs/plugin-react-swc": "^3.7.2",
     "autoprefixer": "^10.4.20",
     "axios": "^1.7.9",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "cheerio": "1.0.0-rc.12",
     "dotenv": "^16.4.7",
     "eslint": "^9.18.0",

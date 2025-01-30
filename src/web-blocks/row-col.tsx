@@ -1,10 +1,17 @@
-import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
+import {
+  ChaiBlock,
+  ChaiBlockComponentProps,
+  ChaiStyles,
+  registerChaiBlockSchema,
+  StylesProp,
+} from "@chaibuilder/runtime";
 import { get } from "lodash-es";
 import { Columns, Rows } from "lucide-react";
 import { NUMBER_TO_COL_SPAN } from "../core/constants/TWCLASS_VALUES";
 
 export type RowProps = {
   styles: ChaiStyles;
+  gutter: number;
 };
 
 export type ColumnProps = {
@@ -28,7 +35,7 @@ const Column = (props: ChaiBlockComponentProps<ColumnProps>) => {
   return (
     <div {...blockProps} {...styles} {..._styles}>
       {children || (
-        <div className="min-h-12 h-full w-full border-2 border-dashed border-gray-400 bg-gray-100 dark:bg-gray-900" />
+        <div className="h-full min-h-12 w-full border-2 border-dashed border-gray-400 bg-gray-100 dark:bg-gray-900" />
       )}
     </div>
   );
@@ -78,6 +85,7 @@ const Component = (props: ChaiBlockComponentProps<RowProps>) => {
   const _styles: any = { className: className.join() };
 
   if (typeof styles?.style === "object") {
+    // @ts-ignore
     styles.style.gap = `${gutter}px`;
   } else {
     _styles.style = { gap: `${gutter}px` };
@@ -95,11 +103,12 @@ const Config = {
   label: "Row",
   group: "basic",
   icon: Rows,
-  blocks: () => [
-    { _type: "Row", _id: "row", styles: "#styles:,p-1" },
-    { _type: "Column", id: "column", _parent: "row", styles: "#styles:," },
-    { _type: "Column", id: "column", _parent: "row", styles: "#styles:," },
-  ],
+  blocks: () =>
+    [
+      { _type: "Row", _id: "row", styles: "#styles:,p-1" },
+      { _type: "Column", id: "column", _parent: "row", styles: "#styles:," },
+      { _type: "Column", id: "column", _parent: "row", styles: "#styles:," },
+    ] as ChaiBlock[],
   category: "core",
   wrapper: true,
   canAcceptBlock: (childType) => childType === "Column",
@@ -122,5 +131,4 @@ const Config = {
   }),
 };
 
-export { Component, Config };
-export { Column, ColumnConfig };
+export { Column, ColumnConfig, Component, Config };

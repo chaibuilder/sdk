@@ -1,4 +1,5 @@
 import {
+  ChaiBlock,
   ChaiBlockComponentProps,
   ChaiRuntimeProp,
   ChaiStyles,
@@ -82,6 +83,7 @@ const DropdownContent = (
 registerChaiBlock(DropdownContent, {
   type: "DropdownContent",
   label: "Dropdown Content",
+  group: "basic",
   hidden: true,
   canMove: () => false,
   canDelete: () => false,
@@ -108,31 +110,32 @@ const Config = {
   label: "Dropdown",
   group: "basic",
   icon: DropdownMenuIcon,
-  blocks: () => [
-    { _type: "Dropdown", _id: "dropdown" },
-    {
-      _type: "DropdownButton",
-      _id: "button",
-      _parent: "dropdown",
-      title: "Menu Item",
-      icon: `<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"> <path d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"/> </svg>`,
-      styles: "#styles:,flex items-center gap-2 px-4 py-1",
-    },
-    {
-      _type: "DropdownContent",
-      _id: "content",
-      _parent: "dropdown",
-      styles: "#styles:,absolute left-0 w-80 mt-0.5 bg-white rounded-lg shadow-lg z-50",
-    },
-    {
-      _type: "Link",
-      _id: "link",
-      _parent: "content",
-      content: "Link",
-      styles: "#styles:,flex items-center gap-2 px-4 py-1",
-      link: { href: "https://www.google.com", type: "url", target: "_self" },
-    },
-  ],
+  blocks: () =>
+    [
+      { _type: "Dropdown", _id: "dropdown" },
+      {
+        _type: "DropdownButton",
+        _id: "button",
+        _parent: "dropdown",
+        title: "Menu Item",
+        icon: `<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"> <path d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"/> </svg>`,
+        styles: "#styles:,flex items-center gap-2 px-4 py-1",
+      },
+      {
+        _type: "DropdownContent",
+        _id: "content",
+        _parent: "dropdown",
+        styles: "#styles:,absolute left-0 w-80 mt-0.5 bg-white rounded-lg shadow-lg z-50",
+      },
+      {
+        _type: "Link",
+        _id: "link",
+        _parent: "content",
+        content: "Link",
+        styles: "#styles:,flex items-center gap-2 px-4 py-1",
+        link: { href: "https://www.google.com", type: "url", target: "_self" },
+      },
+    ] as ChaiBlock[],
   category: "core",
   wrapper: true,
   ...registerChaiBlockSchema({

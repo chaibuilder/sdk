@@ -1,19 +1,16 @@
 import { SpaceBetweenVerticallyIcon } from "@radix-ui/react-icons";
 
-import { ChaiBlockComponentProps, registerChaiBlockSchema, StylesProp, ChaiStyles } from "@chaibuilder/runtime";
+import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 
 export type TextBlockProps = {
   styles: ChaiStyles;
   content: string;
+  forceWrapper?: boolean;
 };
 
 const RawTextBlock = (props: ChaiBlockComponentProps<TextBlockProps>) => {
   if (props.inBuilder || props.forceWrapper) {
-    return (
-      <span  {...props.blockProps}>
-        {props.content}
-      </span>
-    );
+    return <span {...props.blockProps}>{props.content}</span>;
   }
   return `${props.content}`;
 };

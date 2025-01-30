@@ -1,5 +1,5 @@
-import * as React from "react";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
+import { createElement } from "react";
 
 export type BodyProps = {
   styles: ChaiStyles;
@@ -15,7 +15,7 @@ const BodyBlock = (props: ChaiBlockComponentProps<BodyProps>) => {
     cssStyles = { backgroundImage: `url(${backgroundImage})` };
   }
 
-  return React.createElement(tag || "div", { ...blockProps, ...styles, style: cssStyles }, children);
+  return createElement(tag || "div", { ...blockProps, ...styles, style: cssStyles }, children);
 };
 
 const Config = {

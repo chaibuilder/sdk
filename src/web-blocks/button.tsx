@@ -1,7 +1,7 @@
-import * as React from "react";
-import { ButtonIcon } from "@radix-ui/react-icons";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
-import { isEmpty, get } from "lodash-es";
+import { ButtonIcon } from "@radix-ui/react-icons";
+import { get, isEmpty } from "lodash-es";
+import { createElement } from "react";
 
 export type ButtonProps = {
   content: string;
@@ -9,6 +9,10 @@ export type ButtonProps = {
   iconSize: number;
   iconPos: "order-first" | "order-last";
   styles: ChaiStyles;
+  link: {
+    href: string;
+    target: string;
+  };
 };
 
 const Component = (props: ChaiBlockComponentProps<ButtonProps>) => {
@@ -28,7 +32,7 @@ const Component = (props: ChaiBlockComponentProps<ButtonProps>) => {
     </>
   );
 
-  const button = React.createElement(
+  const button = createElement(
     "button",
     {
       ...blockProps,

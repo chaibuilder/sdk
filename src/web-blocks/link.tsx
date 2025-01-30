@@ -1,13 +1,14 @@
-import * as React from "react";
-import { isEmpty } from "lodash-es";
+import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { Link1Icon } from "@radix-ui/react-icons";
-// import { Link, SingleLineText, Styles } from "@chaibuilder/runtime/controls";
-import { ChaiBlockComponentProps, registerChaiBlockSchema, StylesProp, ChaiStyles } from "@chaibuilder/runtime";
-// import { ChaiBlock } from "../core/types/ChaiBlock.ts";
+import { isEmpty } from "lodash-es";
+import { createElement } from "react";
 
 export type LinkBlockProps = {
   styles: ChaiStyles;
-  link: string;
+  link: {
+    href: string;
+    target: string;
+  };
   content: string;
   target: boolean;
 };
@@ -28,7 +29,7 @@ const LinkBlock = (props: ChaiBlockComponentProps<LinkBlockProps>) => {
         </span>
       );
     } else {
-      return React.createElement(
+      return createElement(
         "span",
         {
           ...blockProps,
@@ -48,7 +49,7 @@ const LinkBlock = (props: ChaiBlockComponentProps<LinkBlockProps>) => {
     );
   }
 
-  return React.createElement(
+  return createElement(
     "a",
     {
       ...blockProps,
