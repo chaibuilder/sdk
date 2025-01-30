@@ -5,7 +5,7 @@
   "author": "Suraj Air",
   "license": "BSD-3-Clause",
   "homepage": "https://chaibuilder.com",
-  "version": "2.0.0-beta.55",
+  "version": "2.0.0-beta.56",
   "type": "module",
   "repository": {
     "type": "git",
@@ -66,6 +66,7 @@
     }
   },
   "peerDependencies": {
+    "@chaibuilder/runtime": "2.0.0-beta.21",
     "@types/react": "*",
     "@types/react-dom": "*",
     "react": "^18.0 || ^19.0",
@@ -80,7 +81,7 @@
     }
   },
   "dependencies": {
-    "@chaibuilder/runtime": "2.0.0-beta.20",
+    "@chaibuilder/runtime": "2.0.0-beta.21",
     "@floating-ui/dom": "1.6.13",
     "@floating-ui/react-dom": "2.1.2",
     "@mhsdesign/jit-browser-tailwindcss": "0.4.2",

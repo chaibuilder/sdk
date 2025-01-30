@@ -13,7 +13,7 @@ import {
   memoize,
   omit,
 } from "lodash-es";
-import React, { Suspense } from "react";
+import React, { createElement, Suspense } from "react";
 import { twMerge } from "tailwind-merge";
 import { STYLES_KEY } from "../core/constants/STRINGS.ts";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
@@ -73,6 +73,8 @@ function applyLanguage(_block: ChaiBlock, lang: string, blockDefinition) {
   });
   return block;
 }
+
+const SuspenseFallback = () => <span>Loading...</span>;
 
 export function RenderChaiBlocks({
   blocks,
@@ -138,8 +140,14 @@ export function RenderChaiBlocks({
               ["_parent"],
             );
             if (has(blockDefinition, "dataProvider")) {
+              const suspenseFallback = get(
+                blockDefinition,
+                "suspenseFallback",
+                SuspenseFallback,
+              ) as React.ComponentType<any>;
+
               return (
-                <Suspense>
+                <Suspense fallback={createElement(suspenseFallback)}>
                   {/* @ts-ignore */}
                   <AsyncPropsBlock
                     lang={lang ?? ""}
