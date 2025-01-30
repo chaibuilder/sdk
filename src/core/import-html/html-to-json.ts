@@ -1,6 +1,5 @@
 // @ts-ignore
 import { parse, stringify } from "himalaya";
-import { cn, generateUUID } from "../functions/Functions.ts";
 import {
   capitalize,
   filter,
@@ -13,11 +12,12 @@ import {
   includes,
   isEmpty,
   set,
-  startsWith,
   some,
+  startsWith,
 } from "lodash-es";
-import { ChaiBlock } from "../types/types.ts";
 import { STYLES_KEY } from "../constants/STRINGS.ts";
+import { cn, generateUUID } from "../functions/Functions.ts";
+import { ChaiBlock } from "../types/types.ts";
 import { getVideoURLFromHTML, hasVideoEmbed } from "./import-video.ts";
 
 type Node = {
@@ -400,20 +400,21 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
       delete block.styles_attrs;
 
       // Get text content from non-span children more safely
-      const textNodes = filter(node.children || [], (child) => child?.tagName !== 'span');
+      const textNodes = filter(node.children || [], (child) => child?.tagName !== "span");
       block.content = getTextContent(textNodes);
 
       // Find span containing SVG more defensively
-      const spanWithSvg = find(node.children || [], (child) => 
-        child?.tagName === 'span' && 
-        some(child.children || [], grandChild => grandChild?.tagName === 'svg')
+      const spanWithSvg = find(
+        node.children || [],
+        (child) =>
+          child?.tagName === "span" && some(child.children || [], (grandChild) => grandChild?.tagName === "svg"),
       );
 
       if (spanWithSvg) {
-        const svg = find(spanWithSvg.children || [], child => child?.tagName === 'svg');
+        const svg = find(spanWithSvg.children || [], (child) => child?.tagName === "svg");
         if (svg) {
           block.icon = stringify([svg]);
-          const { height, width } = getSvgDimensions(svg, '16px', '16px');
+          const { height, width } = getSvgDimensions(svg, "16px", "16px");
           block.iconHeight = height;
           block.iconWidth = width;
         }
@@ -472,14 +473,14 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
   });
 };
 
-const getSvgDimensions = (node: Node, defaultWidth: string , defaultHeight: string) => {
-  const attributes = get(node, 'attributes', []);
-  const svgHeight = find(attributes, { key: 'height' });
-  const svgWidth = find(attributes, { key: 'width' });
-  
+const getSvgDimensions = (node: Node, defaultWidth: string, defaultHeight: string) => {
+  const attributes = get(node, "attributes", []);
+  const svgHeight = find(attributes, { key: "height" });
+  const svgWidth = find(attributes, { key: "width" });
+
   return {
-    height: get(svgHeight, 'value') ? `[${get(svgHeight, 'value')}px]` : defaultHeight,
-    width: get(svgWidth, 'value') ? `[${get(svgWidth, 'value')}px]` : defaultWidth
+    height: get(svgHeight, "value") ? `[${get(svgHeight, "value")}px]` : defaultHeight,
+    width: get(svgWidth, "value") ? `[${get(svgWidth, "value")}px]` : defaultWidth,
   };
 };
 
@@ -510,6 +511,9 @@ export const getSanitizedHTML = (html: string) => {
     .replace(/\\([/<>])/g, "$1")
     .replace(/\\./g, "")
     .replace(/[\n\r\t\f\v]/g, "");
+
+  // Remove $name attributes
+  html = html.replace(/\$name="[^"]*"/g, "");
 
   const bodyContent = html.match(/<body[^>]*>[\s\S]*?<\/body>/);
   const htmlContent =

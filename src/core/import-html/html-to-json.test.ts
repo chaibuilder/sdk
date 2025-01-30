@@ -1,6 +1,12 @@
 import { getSanitizedHTML } from "./html-to-json";
 
 describe("getSanitizedHTML", () => {
+  test("should remove $name attributes", () => {
+    const input = '<div $name="test" data-chai-name="test">Content</div>';
+    const expected = '<div data-chai-name="test">Content</div>';
+    expect(getSanitizedHTML(input)).toBe(expected);
+  });
+
   test("should remove escaped quotes and backslashes from attributes", () => {
     const input = '<div class=\\"test\\" data-value=\\"123\\">Content</div>';
     const expected = '<div class="test" data-value="123">Content</div>';
