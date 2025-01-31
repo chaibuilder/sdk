@@ -104,6 +104,18 @@ const SliderField = ({ formData, onChange }: FieldProps) => {
         </label>
       </div>
 
+      <div className="flex items-center gap-x-2 leading-tight">
+        <input
+          type="checkbox"
+          checked={Boolean(formData?.showSlideNavbar)}
+          onChange={() => onChange({ ...formData, showSlideNavbar: !Boolean(formData?.showSlideNavbar) })}
+          className="cursor-pointer"
+        />
+        <label htmlFor="autoplay" className="mt-0.5 text-[12px]">
+          Show Slide Navbar
+        </label>
+      </div>
+
       <div>
         <div className="flex flex-col">
           <div className="flex items-center gap-x-2 leading-tight">
