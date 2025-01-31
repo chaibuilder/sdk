@@ -206,9 +206,9 @@ registerChaiBlock(Slide, {
 });
 
 const SliderNav = (props: any) => {
-  const { blockProps, styles, showNavbar = true, dotStyles, activeDotStyles, slider, inBuilder, children } = props;
+  const { blockProps, styles, dotStyles, activeDotStyles, slider, inBuilder, children } = props;
 
-  if (!showNavbar) return null;
+  if (!slider?.showSlideNavbar && typeof slider?.showSlideNavbar === "boolean") return null;
 
   const blocks = props?.children?.props?.allBlocks || props?.children?.props?.blocks || [];
   const thisBlock = blocks?.find((block) => block?._id === props?._id);
@@ -266,11 +266,6 @@ registerChaiBlock(SliderNav, {
       dotStyles: StylesProp("w-4 h-4 border border-gray-500 rounded-full cursor-pointer"),
       activeDotStyles: StylesProp("w-4 h-4 rounded-full bg-blue-500"),
       slider: closestBlockProp("Slider", "slider"),
-      showNavbar: {
-        type: "boolean",
-        default: true,
-        title: "Show Slider Navbar",
-      },
     },
   }),
 });
@@ -394,6 +389,7 @@ const Config = {
           autoplay: false,
           autoplayInterval: 2,
           showSlideButton: true,
+          showSlideNavbar: true,
         },
         ui: {
           "ui:field": "slider",
