@@ -27,7 +27,7 @@ const DarkMode = (_props: ChaiBlockComponentProps<DarkModeBlockProps>) => {
 const DarkModeButton = (_props: ChaiBlockComponentProps<DarkModeBlockProps>) => {
   if (_props.mode === "dark") return null;
   return (
-    <button {..._props.blockProps} {..._props.styles}>
+    <button aria-label="dark mode button" {..._props.blockProps} {..._props.styles}>
       {_props.children}
     </button>
   );
@@ -51,7 +51,7 @@ registerChaiBlock(DarkModeButton, {
 const LightModeButton = (_props: ChaiBlockComponentProps<DarkModeBlockProps>) => {
   if (_props.mode === "light") return null;
   return (
-    <button {..._props.blockProps} {..._props.styles}>
+    <button aria-label="light mode button" {..._props.blockProps} {..._props.styles}>
       {_props.children}
     </button>
   );

@@ -4,12 +4,7 @@ type LinkProps = {
   href: string;
   children: any;
 };
-const ChaiBuilderLink = ({
-  inBuilder = false,
-  style = {},
-  href,
-  children,
-}: LinkProps) => {
+const ChaiBuilderLink = ({ inBuilder = false, style = {}, href, children }: LinkProps) => {
   if (inBuilder) {
     return (
       <span data-simulate={"a"} {...style}>
@@ -19,7 +14,7 @@ const ChaiBuilderLink = ({
   }
 
   return (
-    <a href={href} {...style}>
+    <a aria-label={href} href={href} {...style}>
       {children}
     </a>
   );

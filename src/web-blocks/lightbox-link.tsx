@@ -50,7 +50,7 @@ const LightBoxLinkBlock = (props: ChaiRenderBlockProps<LightBoxLinkProps>) => {
 
   if (children) {
     return (
-      <a {...lightBoxAttrs} href={href || "#/"} {...blockProps} {...forcedStyles}>
+      <a aria-label={content} {...lightBoxAttrs} href={href || "#/"} {...blockProps} {...forcedStyles}>
         {children}
       </a>
     );
@@ -62,6 +62,7 @@ const LightBoxLinkBlock = (props: ChaiRenderBlockProps<LightBoxLinkProps>) => {
     ...lightBoxAttrs,
     href: href || "#",
     dangerouslySetInnerHTML: { __html: content },
+    "aria-label": content,
   });
 };
 const Config = {
