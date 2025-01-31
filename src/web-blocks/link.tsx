@@ -43,7 +43,7 @@ const LinkBlock = (props: ChaiBlockComponentProps<LinkBlockProps>) => {
 
   if (children) {
     return (
-      <a href={link?.href || "#/"} target={link?.target} {...blockProps} {...styles}>
+      <a aria-label={content} href={link?.href || "#/"} target={link?.target} {...blockProps} {...styles}>
         {children}
       </a>
     );
@@ -56,6 +56,7 @@ const LinkBlock = (props: ChaiBlockComponentProps<LinkBlockProps>) => {
       ...styles,
       href: link?.href || "#",
       target: link?.target || "_self",
+      "aria-label": content,
     },
     content,
   );

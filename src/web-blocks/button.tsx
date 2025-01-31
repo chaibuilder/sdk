@@ -38,6 +38,7 @@ const Component = (props: ChaiBlockComponentProps<ButtonProps>) => {
       ...blockProps,
       ...styles,
       type: "button",
+      "aria-label": content,
     },
     child,
   );
@@ -47,7 +48,7 @@ const Component = (props: ChaiBlockComponentProps<ButtonProps>) => {
       return <span>{button}</span>;
     } else {
       return (
-        <a href={get(link, "href") || "/"} target={get(link, "target", "_self")}>
+        <a aria-label={content} href={get(link, "href") || "/"} target={get(link, "target", "_self")}>
           {button}
         </a>
       );

@@ -27,7 +27,8 @@ const FormButtonBlock = (props: ChaiBlockComponentProps<FormButtonProps>) => {
       {...inputStyles}
       {...styles}
       {...(blockProps || {})}
-      type={inBuilder ? "button" : "submit"}>
+      type={inBuilder ? "button" : "submit"}
+      aria-label={label}>
       {label}
       {icon && (
         <div

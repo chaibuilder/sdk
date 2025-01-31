@@ -36,7 +36,7 @@ const DropdownButton = (
 ) => {
   const { blockProps, content, icon, iconWidth, iconHeight, styles, show } = props;
   return (
-    <button {...blockProps} {...styles} {...alpineAttrs.button}>
+    <button aria-label={content} {...blockProps} {...styles} {...alpineAttrs.button}>
       {content}
       <span
         className={show ? "rotate-180" : ""}
