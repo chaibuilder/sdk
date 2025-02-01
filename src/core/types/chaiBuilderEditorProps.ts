@@ -103,6 +103,7 @@ export interface ChaiBuilderEditorProps {
   themePresets?: Record<string, Partial<ChaiBuilderThemeValues>>[];
   themeOptions?: ChaiBuilderThemeOptions | ((defaultThemeOptions: ChaiBuilderThemeOptions) => ChaiBuilderThemeOptions);
   theme?: Partial<ChaiBuilderThemeValues>;
+  themePanelComponent?: ReactComponentType;
   /**
    * onError callback function
    * @param error

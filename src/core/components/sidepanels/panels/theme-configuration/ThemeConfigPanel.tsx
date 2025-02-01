@@ -20,6 +20,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const [isDarkMode] = useDarkMode();
   const [selectedPreset, setSelectedPreset] = React.useState<string>("");
   const themePresets = useBuilderProp("themePresets", []);
+  const themePanelComponent = useBuilderProp("themePanelComponent", null);
 
   const [themeValues, setThemeValues] = useTheme();
 
@@ -131,71 +132,81 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   );
 
   return (
-    <div className={cn("no-scrollbar h-full w-full overflow-y-auto", className)}>
-      {themePresets.length > 0 && (
-        <div className="flex gap-2 py-2">
-          <div className="w-full">
-            <Label className="text-sm text-slate-800">{t("Presets")}</Label>
-            <select
-              value={selectedPreset}
-              onChange={(e) => handlePresetChange(e.target.value)}
-              className="w-full space-y-0.5 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
-              <option value="">Select preset</option>
-              {Array.isArray(themePresets) &&
-                themePresets.map((preset: any) => (
-                  <option key={Object.keys(preset)[0]} value={Object.keys(preset)[0]}>
-                    {capitalize(Object.keys(preset)[0])}
-                  </option>
-                ))}
-            </select>
+    <div className="relative w-full">
+      <div className={cn("no-scrollbar h-full w-full overflow-y-auto", className)}>
+        {themePresets.length > 0 && (
+          <div className="flex gap-2 py-2">
+            <div className="w-full">
+              <Label className="text-sm text-slate-800">{t("Presets")}</Label>
+              <select
+                value={selectedPreset}
+                onChange={(e) => handlePresetChange(e.target.value)}
+                className="w-full space-y-0.5 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
+                <option value="">Select preset</option>
+                {Array.isArray(themePresets) &&
+                  themePresets.map((preset: any) => (
+                    <option key={Object.keys(preset)[0]} value={Object.keys(preset)[0]}>
+                      {capitalize(Object.keys(preset)[0])}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            <div className="flex w-[30%] items-end">
+              <Button
+                className="w-full text-sm"
+                disabled={selectedPreset === ""}
+                variant="default"
+                onClick={applyPreset}>
+                {t("Apply")}
+              </Button>
+            </div>
           </div>
-          <div className="flex w-[30%] items-end">
-            <Button className="w-full text-sm" disabled={selectedPreset === ""} variant="default" onClick={applyPreset}>
-              {t("Apply")}
-            </Button>
-          </div>
+        )}
+        <div className={cn("space-y-2", className)}>
+          {/* Fonts Section */}
+          {chaiThemeOptions?.fontFamily && (
+            <div className="grid gap-4">
+              {Object.entries(chaiThemeOptions.fontFamily).map(([key, value]: [string, any]) => (
+                <FontSelector
+                  key={key}
+                  label={key}
+                  value={themeValues.fontFamily[key.replace(/font-/g, "")] || value[Object.keys(value)[0]]}
+                  onChange={(newValue: string) => handleFontChange(key, newValue)}
+                />
+              ))}
+            </div>
+          )}
+
+          {/* Border Radius Section */}
+          {chaiThemeOptions?.borderRadius && (
+            <div className="space-y-0.5 py-3">
+              <Label className="text-sm text-slate-800">{t("Border Radius")}</Label>
+              <div className="flex items-center gap-4 py-2">
+                <BorderRadiusInput value={themeValues.borderRadius} onChange={handleBorderRadiusChange} />
+                <span className="w-12 text-sm">{themeValues.borderRadius}</span>
+              </div>
+            </div>
+          )}
+
+          {/* Colors Section with Mode Switch */}
+          {chaiThemeOptions?.colors && (
+            <div className="mt-4 space-y-0.5">
+              <Label className="text-sm text-slate-800">{t("Colors")}</Label>
+              <div className="w-full space-y-4 pt-2" key={isDarkMode ? "dark" : "light"}>
+                {chaiThemeOptions.colors.map((group) => renderColorGroup(group))}
+              </div>
+            </div>
+          )}
         </div>
-      )}
-      <div className={cn("space-y-2", className)}>
-        {/* Fonts Section */}
-        {chaiThemeOptions?.fontFamily && (
-          <div className="grid gap-4">
-            {Object.entries(chaiThemeOptions.fontFamily).map(([key, value]: [string, any]) => (
-              <FontSelector
-                key={key}
-                label={key}
-                value={themeValues.fontFamily[key.replace(/font-/g, "")] || value[Object.keys(value)[0]]}
-                onChange={(newValue: string) => handleFontChange(key, newValue)}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* Border Radius Section */}
-        {chaiThemeOptions?.borderRadius && (
-          <div className="space-y-0.5 py-3">
-            <Label className="text-sm text-slate-800">{t("Border Radius")}</Label>
-            <div className="flex items-center gap-4 py-2">
-              <BorderRadiusInput value={themeValues.borderRadius} onChange={handleBorderRadiusChange} />
-              <span className="w-12 text-sm">{themeValues.borderRadius}</span>
-            </div>
-          </div>
-        )}
-
-        {/* Colors Section with Mode Switch */}
-        {chaiThemeOptions?.colors && (
-          <div className="mt-4 space-y-0.5">
-            <Label className="text-sm text-slate-800">{t("Colors")}</Label>
-            <div className="w-full space-y-4 pt-2" key={isDarkMode ? "dark" : "light"}>
-              {chaiThemeOptions.colors.map((group) => renderColorGroup(group))}
-            </div>
-          </div>
-        )}
+        <br />
+        <br />
+        <br />
+        <br />
       </div>
-      <br />
-      <br />
-      <br />
-      <br />
+
+      {themePanelComponent && (
+        <div className="absolute bottom-4 w-full">{React.createElement(themePanelComponent)}</div>
+      )}
     </div>
   );
 });
