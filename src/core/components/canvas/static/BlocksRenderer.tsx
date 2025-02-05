@@ -99,7 +99,7 @@ function applyLanguage(_block: ChaiBlock, selectedLang: string, chaiBlock) {
 }
 
 export function BlocksRendererStatic({ blocks, allBlocks }: { blocks: ChaiBlock[]; allBlocks: ChaiBlock[] }) {
-  const { selectedLang } = useLanguages();
+  const { selectedLang, fallbackLang } = useLanguages();
   const [cutBlockIds] = useCutBlockIds();
   const [draggedBlock] = useAtom<any>(draggedBlockAtom);
   const [dropTargetId] = useAtom(dropTargetBlockIdAtom);
@@ -159,14 +159,14 @@ export function BlocksRendererStatic({ blocks, allBlocks }: { blocks: ChaiBlock[
             ...htmlAttrs,
             ...attrs,
             inBuilder: true,
-            lang: selectedLang,
+            lang: selectedLang || fallbackLang,
           };
 
           if (has(chaiBlock, "dataProvider")) {
             return (
               <Suspense>
                 <AsyncPropsBlock
-                  lang={selectedLang}
+                  lang={selectedLang || fallbackLang}
                   dataProvider={chaiBlock.dataProvider}
                   block={block}
                   component={Component}
