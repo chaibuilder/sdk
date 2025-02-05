@@ -83,6 +83,7 @@ export function RenderChaiBlocks({
   externalData = {},
   blockModifierCallback = null,
   lang = "",
+  fallbackLang = "",
   metadata = {},
 }: {
   blocks: ChaiBlock[];
@@ -91,6 +92,7 @@ export function RenderChaiBlocks({
   externalData?: Record<string, any>;
   blockModifierCallback?: (block: ChaiBlock) => ChaiBlock;
   lang?: string;
+  fallbackLang?: string;
   metadata?: Record<string, any>;
 }) {
   const allBlocks = blocks;
@@ -111,7 +113,7 @@ export function RenderChaiBlocks({
                 classPrefix={classPrefix}
                 parent={block._id}
                 blocks={allBlocks}
-                lang={lang ?? ""}
+                lang={lang || fallbackLang}
                 metadata={metadata}
               />
             ) : null;
@@ -125,17 +127,18 @@ export function RenderChaiBlocks({
             if (blockModifierCallback) {
               syncedBlock = blockModifierCallback(syncedBlock);
             }
+            const langToUse = lang === fallbackLang ? "" : lang;
             const props = omit(
               {
                 blockProps: {},
                 inBuilder: false,
                 ...syncedBlock,
                 index,
-                ...applyBindings(applyLanguage(block, lang, blockDefinition), externalData),
+                ...applyBindings(applyLanguage(block, langToUse, blockDefinition), externalData),
                 ...getStyles(syncedBlock),
                 ...attrs,
                 metadata,
-                lang: lang ?? "",
+                lang: lang || fallbackLang,
               },
               ["_parent"],
             );
@@ -150,7 +153,7 @@ export function RenderChaiBlocks({
                 <Suspense fallback={createElement(suspenseFallback)}>
                   {/* @ts-ignore */}
                   <AsyncPropsBlock
-                    lang={lang ?? ""}
+                    lang={lang || fallbackLang}
                     metadata={metadata}
                     dataProvider={blockDefinition.dataProvider}
                     block={block}
