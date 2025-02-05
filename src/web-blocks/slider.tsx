@@ -1,11 +1,4 @@
 import {
-  AlignHorizontalJustifyStart,
-  AppWindowIcon,
-  PanelRightClose,
-  PanelRightOpen,
-  UnfoldHorizontal,
-} from "lucide-react";
-import {
   ChaiBlockComponentProps,
   ChaiStyles,
   closestBlockProp,
@@ -14,9 +7,24 @@ import {
   runtimeProp,
   StylesProp,
 } from "@chaibuilder/runtime";
+import {
+  AlignHorizontalJustifyStart,
+  AppWindowIcon,
+  PanelRightClose,
+  PanelRightOpen,
+  UnfoldHorizontal,
+} from "lucide-react";
 
 export type SliderProps = {
+  children: React.ReactNode;
   styles: ChaiStyles;
+  slider: {
+    currentSlide: number | null;
+    autoplay: boolean;
+    autoplayInterval: number;
+    showSlideButton: boolean;
+    showSlideNavbar: boolean;
+  };
 };
 
 const alpineAttrs = (key: string, option?: any) => {
@@ -293,6 +301,7 @@ registerChaiBlock(SliderNavItem, {
 const Component = (props: ChaiBlockComponentProps<SliderProps>) => {
   const { blockProps, styles, children = null } = props;
 
+  // @ts-ignore
   const blocks = props?.children?.props?.allBlocks || props?.children?.props?.blocks || [];
   const slidesBlock = blocks?.find((block) => block?._parent === props?._id && block?._type === "Slides");
   const totalSlides = blocks?.filter((block) => block?._parent === slidesBlock?._id)?.length || 0;
