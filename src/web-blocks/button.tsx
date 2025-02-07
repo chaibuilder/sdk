@@ -81,7 +81,7 @@ const Config = {
       iconSize: {
         type: "number",
         title: "Icon size",
-        default: 24,
+        default: 16,
       },
       iconPos: {
         type: "string",
