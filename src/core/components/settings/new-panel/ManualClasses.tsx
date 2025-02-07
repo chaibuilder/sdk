@@ -111,7 +111,7 @@ export function ManualClasses() {
   };
 
   return (
-    <div className={`flex w-full flex-col gap-y-1.5 overflow-y-auto pb-4`}>
+    <div className={`flex w-full flex-col gap-y-1.5 pb-4`}>
       <div className="flex items-center justify-between gap-x-2">
         <div className="flex items-center gap-x-2 text-muted-foreground">
           <span>{t("Classes")}</span>
