@@ -30,7 +30,6 @@ const DropdownButton = (
     iconWidth: string;
     iconHeight: string;
     styles: ChaiStyles;
-
     show: ChaiRuntimeProp<boolean>;
   }>,
 ) => {
@@ -65,6 +64,8 @@ registerChaiBlock(DropdownButton, {
       styles: StylesProp("flex items-center gap-2 px-4 py-1"),
     },
   }),
+  i18nProps: ["content"],
+  aiProps: ["content"],
 });
 
 const DropdownContent = (
