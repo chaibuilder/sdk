@@ -14,7 +14,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@chaibuilder/sdk/ui";
+} from "../../ui";
 
 type NestedPathSelectorProps = {
   data: Record<string, any>;
@@ -105,7 +105,7 @@ export function NestedPathSelector({ data, onSelect, dataType = "value" }: Neste
             <CommandGroup>
               {currentPath.length > 0 && (
                 <CommandItem onSelect={handleBack} className="flex items-center text-sm">
-                  <ChevronLeft className="w-4 h-4 mr-2" />
+                  <ChevronLeft className="mr-2 h-4 w-4" />
                   Back
                 </CommandItem>
               )}
@@ -132,8 +132,8 @@ export function NestedPathSelector({ data, onSelect, dataType = "value" }: Neste
                       </Button>
                     )}
                     {(option.type === "object" || option.type === "array") && (
-                      <div className="p-1 rounded cursor-pointer hover:bg-muted">
-                        <ChevronRight className="w-4 h-4 opacity-50" />
+                      <div className="cursor-pointer rounded p-1 hover:bg-muted">
+                        <ChevronRight className="h-4 w-4 opacity-50" />
                       </div>
                     )}
                   </div>
