@@ -5,6 +5,7 @@ import { useState } from "react";
 import { lsAiContextAtom, lsBlocksAtom, lsThemeAtom } from "./__dev/atoms-dev.ts";
 import { Component as CollectionListComponent, Config as CollectionListConfig } from "./__dev/CollectionList.tsx";
 import GalleryWidget from "./__dev/CustomWidget.tsx";
+import { LanguageButton } from "./__dev/LangButton.tsx";
 import PreviewWeb from "./__dev/preview/WebPreview.tsx";
 import lngPtBR from "./__dev/ptBR.json";
 import RightTop from "./__dev/RightTop.tsx";
@@ -76,7 +77,7 @@ function ChaiBuilderDefault() {
         }
       }}
       uiLibraries={uiLibraries}
-      topBarComponents={{ right: [RightTop] }}
+      topBarComponents={{ left: [LanguageButton], right: [RightTop] }}
       getGlobalBlockBlocks={async (globalBlockKey: string) => {
         const blocks =
           globalBlockKey === "header"
