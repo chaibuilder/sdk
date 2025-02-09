@@ -118,19 +118,18 @@ const RootLayout: ComponentType = () => {
               animate={{ width: activePanelIndex !== null ? 280 : 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}>
               {activePanelIndex !== null && (
-                <div className="no-scrollbar overflow h-full overflow-x-hidden">
-                  <div className="flex flex-col p-3">
-                    <h2 className="-mt-1 flex h-10 items-center space-x-1 text-base font-bold">
-                      <span className="rtl:ml-2 rtl:inline-block">
-                        {get(sidebarMenuItems, `${activePanelIndex}.icon`, null)}
-                      </span>
-                      <span>{t(sidebarMenuItems[activePanelIndex].label)}</span>
-                    </h2>
-                    <div className="flex-1">
-                      <Suspense fallback={<div>Loading...</div>}>
-                        {React.createElement(get(sidebarMenuItems, `${activePanelIndex}.component`, null), {})}
-                      </Suspense>
-                    </div>
+                <div className="no-scrollbar flex h-full flex-col overflow-hidden px-3 py-2">
+                  <div className="absolute top-2 flex h-10 items-center space-x-1 py-2 text-base font-bold">
+                    <span className="rtl:ml-2 rtl:inline-block">
+                      {get(sidebarMenuItems, `${activePanelIndex}.icon`, null)}
+                    </span>
+                    <span>{t(sidebarMenuItems[activePanelIndex].label)}</span>
+                  </div>
+
+                  <div className="no-scrollbar max-h-full overflow-y-auto pt-10">
+                    <Suspense fallback={<div>Loading...</div>}>
+                      {React.createElement(get(sidebarMenuItems, `${activePanelIndex}.component`, null), {})}
+                    </Suspense>
                   </div>
                 </div>
               )}
