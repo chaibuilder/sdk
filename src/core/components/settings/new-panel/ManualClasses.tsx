@@ -1,5 +1,5 @@
 import { CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
-import { first, get, isEmpty, map, reject } from "lodash-es";
+import { first, get, isEmpty, map } from "lodash-es";
 import { SparklesIcon } from "lucide-react";
 import { useState } from "react";
 import Autosuggest from "react-autosuggest";
@@ -15,7 +15,6 @@ import {
   useToast,
 } from "../../../../ui";
 import { useFuseSearch } from "../../../constants/CLASSES_LIST";
-import { STYLES_KEY } from "../../../constants/STRINGS.ts";
 import {
   useAddClassesToBlocks,
   useBuilderProp,
@@ -24,6 +23,7 @@ import {
   useSelectedBlockIds,
   useSelectedStylingBlocks,
 } from "../../../hooks";
+import { getSplitChaiClasses } from "../../../hooks/getSplitClasses.ts";
 import { AskAIStyles } from "../AskAiStyle.tsx";
 
 export function ManualClasses() {
@@ -38,7 +38,10 @@ export function ManualClasses() {
   const [newCls, setNewCls] = useState("");
   const { toast } = useToast();
   const prop = first(styleBlock)?.prop as string;
-  const classes = reject((get(block, prop, "").replace(STYLES_KEY, "").split(",").pop() || "").split(" "), isEmpty);
+  // const {classes} = reject((get(block, prop, "").replace(STYLES_KEY, "").split(",").pop() || "").split(" "), isEmpty);
+  const { classes: classesString } = getSplitChaiClasses(get(block, prop, ""));
+  const classes = classesString.split(" ").filter((cls) => !isEmpty(cls));
+
   const addNewClasses = () => {
     const fullClsNames: string[] = newCls
       .trim()
@@ -76,7 +79,7 @@ export function ManualClasses() {
 
   const getSuggestionValue = (suggestion: any) => suggestion.name;
 
-  const renderSuggestion = (suggestion: any) => <div className="rounded-md p-1">{suggestion.name}</div>;
+  const renderSuggestion = (suggestion: any) => <div className="p-1 rounded-md">{suggestion.name}</div>;
 
   const inputProps = {
     autoComplete: "off",
@@ -128,7 +131,7 @@ export function ManualClasses() {
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="default" className="h-6 w-fit" size="sm">
-                <SparklesIcon className="h-4 w-4" />
+                <SparklesIcon className="w-4 h-4" />
                 <span className="ml-2">{t("Ask AI")}</span>
               </Button>
             </PopoverTrigger>
@@ -139,7 +142,7 @@ export function ManualClasses() {
         ) : null}
       </div>
       <div className={"relative flex items-center gap-x-3"}>
-        <div className="relative flex w-full items-center gap-x-3">
+        <div className="relative flex items-center w-full gap-x-3">
           <Autosuggest
             suggestions={suggestions}
             onSuggestionsFetchRequested={handleSuggestionsFetchRequested}
@@ -167,15 +170,15 @@ export function ManualClasses() {
           <PlusIcon />
         </Button>
       </div>
-      <div className="flex w-full flex-wrap gap-2 overflow-x-hidden">
+      <div className="flex flex-wrap w-full gap-2 overflow-x-hidden">
         {classes.map((cls: string) => (
           <div
             key={cls}
-            className="group relative flex max-w-[260px] cursor-default items-center gap-x-1 truncate rounded border border-border bg-gray-200 p-px px-1.5 text-[11px] text-gray-600 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+            className="group relative flex max-w-[260px] cursor-default items-center gap-x-1 truncate break-words rounded border border-border bg-gray-200 p-px px-1.5 text-[11px] text-gray-600 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
             {cls}
             <Cross2Icon
               onClick={() => removeClassesFromBlocks(selectedIds, [cls])}
-              className="invisible absolute right-1 rounded-full bg-red-400 hover:text-white group-hover:visible group-hover:cursor-pointer"
+              className="absolute invisible bg-red-400 rounded-full right-1 hover:text-white group-hover:visible group-hover:cursor-pointer"
             />
           </div>
         ))}

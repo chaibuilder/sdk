@@ -8,12 +8,8 @@ import { orderClassesByBreakpoint } from "../functions/orderClassesByBreakpoint.
 import { removeDuplicateClasses } from "../functions/removeDuplicateClasses.ts";
 import { useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 import { ChaiBlock } from "../types/ChaiBlock";
+import { getSplitChaiClasses } from "./getSplitClasses.ts";
 import { selectedStylingBlocksAtom, TStyleBlock } from "./useSelectedStylingBlocks";
-
-const getSplitClasses = (classesString: string) => {
-  const splitClasses: string[] = classesString.replace(STYLES_KEY, "").split(",");
-  return { baseClasses: splitClasses[0], classes: splitClasses[1] };
-};
 
 type Created = {
   blockIds: Array<string>;
@@ -35,7 +31,7 @@ export const addClassesToBlocksAtom: any = atom(null, (get, _set, { blockIds, ne
   return map(blockAtoms, (blockAtom) => {
     const block: ChaiBlock = get(blockAtom as any);
     const classesString: string = getProp(block, styleBlock.prop, `${STYLES_KEY},`);
-    const { classes } = getSplitClasses(classesString);
+    const { classes } = getSplitChaiClasses(classesString);
     return {
       ids: [block._id],
       props: {

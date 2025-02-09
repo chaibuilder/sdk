@@ -1,20 +1,17 @@
-import { cloneDeep, filter, find, flattenDeep } from "lodash-es";
-import { useBuilderProp } from "./useBuilderProp.ts";
+import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
+import { atom, useAtom } from "jotai";
+import { cloneDeep, compact, filter, find, flattenDeep, get, has, isEmpty, pick, startsWith } from "lodash-es";
 import { useCallback, useState } from "react";
+import { LANGUAGES } from "../constants/LANGUAGES.ts";
+import { STYLES_KEY } from "../constants/STRINGS.ts";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
 import { ChaiBlock } from "../types/ChaiBlock.ts";
-import { useStreamMultipleBlocksProps, useUpdateMultipleBlocksProps } from "./useUpdateBlocksProps.ts";
-import { atom, useAtom } from "jotai";
 import { AskAiResponse } from "../types/chaiBuilderEditorProps.ts";
+import { getSplitChaiClasses } from "./getSplitClasses.ts";
+import { useBuilderProp } from "./useBuilderProp.ts";
 import { useLanguages } from "./useLanguages.ts";
-import { compact, startsWith } from "lodash-es";
-import { STYLES_KEY } from "../constants/STRINGS.ts";
-import { pick, get, has } from "lodash-es";
-import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
-import { isEmpty } from "lodash-es";
-import { LANGUAGES } from "../constants/LANGUAGES.ts";
 import { useRightPanel } from "./useTheme.ts";
-
+import { useStreamMultipleBlocksProps, useUpdateMultipleBlocksProps } from "./useUpdateBlocksProps.ts";
 function getChildBlocks(allBlocks: ChaiBlock[], blockId: string, blocks: any[]) {
   blocks.push(find(allBlocks, { _id: blockId }) as ChaiBlock);
   const children = filter(allBlocks, { _parent: blockId });
@@ -74,7 +71,8 @@ export const useAskAi = () => {
     for (const key in block) {
       const value = block[key];
       if (typeof value === "string" && startsWith(value, STYLES_KEY)) {
-        block[key] = compact(flattenDeep(value.replace(STYLES_KEY, "").split(","))).join(" ");
+        const { baseClasses, classes } = getSplitChaiClasses(value);
+        block[key] = compact(flattenDeep([baseClasses, classes])).join(" ");
       } else {
         if (key !== "_id") delete block[key];
       }

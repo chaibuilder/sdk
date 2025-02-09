@@ -1,11 +1,12 @@
 import { atom, useAtomValue } from "jotai";
 import { filter, first, get as getProp, isNull, map, startsWith } from "lodash-es";
-import { ClassDerivedObject, constructClassObject } from "../functions/Class";
-import { selectedBlockAtom, styleStateAtom } from "./useSelectedBlockIds";
-import { darkModeAtom } from "./useDarkMode";
-import { canvasBreakpointAtom } from "./useCanvasWidth";
-import { selectedStylingBlocksAtom } from "./useSelectedStylingBlocks";
 import { STYLES_KEY } from "../constants/STRINGS.ts";
+import { ClassDerivedObject, constructClassObject } from "../functions/Class";
+import { getSplitChaiClasses } from "./getSplitClasses.ts";
+import { canvasBreakpointAtom } from "./useCanvasWidth";
+import { darkModeAtom } from "./useDarkMode";
+import { selectedBlockAtom, styleStateAtom } from "./useSelectedBlockIds";
+import { selectedStylingBlocksAtom } from "./useSelectedStylingBlocks";
 
 /**
  * Derived atom based on selected block classes
@@ -15,7 +16,8 @@ export const selectedBlockAllClassesAtom = atom((get) => {
   const selectedBlock = get(selectedBlockAtom);
   if (!styleBlock || styleBlock.blockId !== getProp(selectedBlock, "_id", null)) return [];
   const classesString: string = getProp(selectedBlock, styleBlock.prop, `${STYLES_KEY},`);
-  const classes = classesString.replace(STYLES_KEY, "").split(",").join(" ");
+  const { classes } = getSplitChaiClasses(classesString);
+  console.log("classes", classes);
   return filter(map(classes.trim().split(" "), constructClassObject), (cls) => !isNull(cls));
 });
 
