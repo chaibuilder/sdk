@@ -1,5 +1,5 @@
 import { flattenDeep, last } from "lodash-es";
-import { STYLES_KEY } from "../core/constants/STRINGS.ts";
+import { getSplitChaiClasses } from "../core/hooks/getSplitClasses.ts";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
 /**
@@ -8,8 +8,8 @@ import { ChaiBlock } from "../core/types/ChaiBlock.ts";
  * @param prefix
  */
 export const addPrefixToClasses = (classes: string, prefix: string = "") => {
-  const classesArray = classes.replace(STYLES_KEY, "").split(",");
-  const array = classesArray.map((item) => {
+  const { classes: classesString } = getSplitChaiClasses(classes);
+  const array = classesString.split(" ").map((item) => {
     const classes = item.split(" ");
     const newClasses = classes.map((item) => {
       if (item === "") return "";

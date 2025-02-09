@@ -1,7 +1,6 @@
 import { useAtom } from "jotai";
 import { useEffect, useMemo, useState } from "react";
 import { lsBlocksAtom, lsThemeAtom } from "./__dev/atoms-dev.ts";
-import { NestedPathSelector } from "./core/components/NestedPathSelector.tsx";
 import { getChaiThemeCssVariables, getStylesForBlocks, RenderChaiBlocks } from "./render";
 import { loadWebBlocks } from "./web-blocks/index.ts";
 
@@ -25,11 +24,7 @@ function Preview() {
     <>
       <style>{themeVars}</style>
       <style>{allStyles}</style>
-      <NestedPathSelector
-        data={{ name: "Chai Builder", fame: { "Chai Builder": "Chai Builder" } }}
-        onSelect={() => {}}
-      />
-      <RenderChaiBlocks blocks={blocks} />
+      <RenderChaiBlocks lang="en" blocks={blocks} />
     </>
   );
 }

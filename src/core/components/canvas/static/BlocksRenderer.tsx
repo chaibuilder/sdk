@@ -21,6 +21,7 @@ import { inlineEditingActiveAtom } from "../../../atoms/ui.ts";
 import { STYLES_KEY } from "../../../constants/STRINGS.ts";
 import { canAcceptChildBlock } from "../../../functions/block-helpers.ts";
 import { useCutBlockIds, useGlobalBlocksStore, useHiddenBlockIds, useLanguages } from "../../../hooks";
+import { getSplitChaiClasses } from "../../../hooks/getSplitClasses.ts";
 import { ChaiBlock } from "../../../types/ChaiBlock";
 import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
 import AsyncPropsBlock from "./AsyncPropsBlock.tsx";
@@ -28,8 +29,8 @@ import RuntimePropsBlock from "./RuntimePropsBlock.tsx";
 import { useChaiExternalData } from "./useChaiExternalData.ts";
 
 const generateClassNames = memoize((styles: string) => {
-  const stylesArray = styles.replace(STYLES_KEY, "").split(",");
-  return twMerge(stylesArray[0], stylesArray[1]);
+  const { baseClasses, classes } = getSplitChaiClasses(styles);
+  return twMerge(baseClasses, classes);
 });
 
 function getElementAttrs(block: ChaiBlock, key: string) {

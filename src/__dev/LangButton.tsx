@@ -6,7 +6,7 @@ import { mergeClasses } from "../core/main";
 import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui";
 
 export const LanguageButton = () => {
-  const { fallbackLang, languages, selectedLang, setSelectedLang } = useLanguages();
+  const { fallbackLang, selectedLang, setSelectedLang } = useLanguages();
   const currentLang = !isEmpty(selectedLang) ? selectedLang : fallbackLang;
 
   const languageOptions = [

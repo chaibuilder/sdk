@@ -1,12 +1,12 @@
-import { useCallback } from "react";
 import { atom, useSetAtom } from "jotai";
 import { each, filter, first, get as getProp, includes, map } from "lodash-es";
+import { useCallback } from "react";
 import { pageBlocksAtomsAtom } from "../atoms/blocks";
-import { selectedStylingBlocksAtom, TStyleBlock } from "./useSelectedStylingBlocks";
-import { ChaiBlock } from "../types/ChaiBlock";
-import { getSplitClasses } from "../import-html/general";
 import { STYLES_KEY } from "../constants/STRINGS.ts";
 import { useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
+import { getSplitChaiClasses } from "../hooks/getSplitClasses.ts";
+import { ChaiBlock } from "../types/ChaiBlock";
+import { selectedStylingBlocksAtom, TStyleBlock } from "./useSelectedStylingBlocks";
 
 export const removeClassFromBlocksAtom: any = atom(null, (get, _set, { blockIds, fullClasses }) => {
   const styleBlock = first(get(selectedStylingBlocksAtom)) as TStyleBlock;
@@ -19,7 +19,7 @@ export const removeClassFromBlocksAtom: any = atom(null, (get, _set, { blockIds,
     const block: ChaiBlock = get(blockAtom as any);
     const nonDynamicClasses: string[] = fullClasses;
     // eslint-disable-next-line prefer-const
-    let { classes, baseClasses } = getSplitClasses(getProp(block, styleBlock.prop, "styles:,"));
+    let { classes, baseClasses } = getSplitChaiClasses(getProp(block, styleBlock.prop, `${STYLES_KEY},`));
 
     each(nonDynamicClasses, (fullCls: string) => {
       const escapedClass = fullCls.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");

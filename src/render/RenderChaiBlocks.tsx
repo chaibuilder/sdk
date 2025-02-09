@@ -16,13 +16,15 @@ import {
 import React, { createElement, Suspense } from "react";
 import { twMerge } from "tailwind-merge";
 import { STYLES_KEY } from "../core/constants/STRINGS.ts";
+import { getSplitChaiClasses } from "../core/hooks/getSplitClasses.ts";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 import AsyncPropsBlock from "./AsyncBlockProps.tsx";
 import { addPrefixToClasses } from "./functions.ts";
 
 const generateClassNames = memoize((styles: string, classPrefix: string) => {
-  const stylesArray = styles.replace(STYLES_KEY, "").split(",");
-  const classes = twMerge(stylesArray[0], stylesArray[1]);
+  const { baseClasses, classes: classesString } = getSplitChaiClasses(styles);
+  const classes = twMerge(baseClasses, classesString);
+
   if (classPrefix === "") return classes.replace(STYLES_KEY, "").trim();
   // split classes by space and add prefix to each class
   return addPrefixToClasses(classes, classPrefix).replace(STYLES_KEY, "").trim();
