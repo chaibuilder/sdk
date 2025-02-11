@@ -33,6 +33,8 @@ const Config = {
       },
     },
   }),
+  aiProps: ["content"],
+  i18nProps: ["content"],
 };
 
 export { LabelBlock as Component, Config };
