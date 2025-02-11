@@ -27,6 +27,7 @@ function useSidebarMenuItems() {
       {
         icon: <Layers size={20} />,
         label: "Outline",
+        isInternal: true,
         component: () => (
           <div className="-mt-8">
             <Outline />
@@ -119,13 +120,13 @@ const RootLayout: ComponentType = () => {
               transition={{ duration: 0.3, ease: "easeInOut" }}>
               {activePanelIndex !== null && (
                 <div className="no-scrollbar flex h-full flex-col overflow-hidden px-3 py-2">
-                  <div className="absolute top-2 flex h-10 items-center space-x-1 py-2 text-base font-bold">
+                  <div
+                    className={`absolute top-2 z-50 flex h-10 items-center space-x-1 bg-green-100 bg-white py-2 text-base font-bold ${get(sidebarMenuItems, `${activePanelIndex}.isInternal`, false) ? "" : "w-64"}`}>
                     <span className="rtl:ml-2 rtl:inline-block">
                       {get(sidebarMenuItems, `${activePanelIndex}.icon`, null)}
                     </span>
                     <span>{t(sidebarMenuItems[activePanelIndex].label)}</span>
                   </div>
-
                   <div className="no-scrollbar max-h-full overflow-y-auto pt-10">
                     <Suspense fallback={<div>Loading...</div>}>
                       {React.createElement(get(sidebarMenuItems, `${activePanelIndex}.component`, null), {})}
