@@ -121,7 +121,7 @@ const RootLayout: ComponentType = () => {
               {activePanelIndex !== null && (
                 <div className="no-scrollbar flex h-full flex-col overflow-hidden px-3 py-2">
                   <div
-                    className={`absolute top-2 z-50 flex h-10 items-center space-x-1 bg-green-100 bg-white py-2 text-base font-bold ${get(sidebarMenuItems, `${activePanelIndex}.isInternal`, false) ? "" : "w-64"}`}>
+                    className={`absolute top-2 z-50 flex h-10 items-center space-x-1 bg-white py-2 text-base font-bold ${get(sidebarMenuItems, `${activePanelIndex}.isInternal`, false) ? "" : "w-64"}`}>
                     <span className="rtl:ml-2 rtl:inline-block">
                       {get(sidebarMenuItems, `${activePanelIndex}.icon`, null)}
                     </span>
