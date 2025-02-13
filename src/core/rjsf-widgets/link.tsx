@@ -1,11 +1,10 @@
-import { FieldProps } from "@rjsf/utils";
-import { map, split, get, isEmpty } from "lodash-es";
-import { useEffect, useState, useRef } from "react";
-import { useBuilderProp, useTranslation } from "../hooks";
-import { X } from "lucide-react";
-import { PageTypeItem } from "../types/chaiBuilderEditorProps";
 import { useDebouncedCallback } from "@react-hookz/web";
-import { startsWith } from "lodash-es";
+import { FieldProps } from "@rjsf/utils";
+import { get, isEmpty, map, split, startsWith } from "lodash-es";
+import { X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { useBuilderProp, useTranslation } from "../hooks";
+import { PageTypeItem } from "../types/chaiBuilderEditorProps";
 
 const PageTypeField = ({
   href,
@@ -151,7 +150,7 @@ const PageTypeField = ({
       )}
 
       {(loading || !isEmpty(pageTypeItems) || (isSearching && isEmpty(pageTypeItems))) && (
-        <div className="absolute z-40 mt-2 max-h-40 w-full overflow-y-auto rounded-md border border-border bg-background shadow-lg">
+        <div className="absolute z-40 mt-2 max-h-40 w-full max-w-[250px] overflow-y-auto rounded-md border border-border bg-background shadow-lg">
           {loading ? (
             <div className="space-y-1 p-2">
               <div className="h-6 w-full animate-pulse rounded bg-gray-200" />
