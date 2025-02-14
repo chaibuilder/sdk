@@ -4,7 +4,7 @@ import RjForm from "@rjsf/core";
 import { FieldTemplateProps, RJSFSchema, UiSchema } from "@rjsf/utils";
 import validator from "@rjsf/validator-ajv8";
 import { useAtom } from "jotai";
-import { get, isEmpty } from "lodash-es";
+import { get, isEmpty, take } from "lodash-es";
 import { ChevronDown, ChevronRight, List, Plus } from "lucide-react";
 import { memo, useEffect, useState } from "react";
 import { Badge } from "../../../ui/index.ts";
@@ -166,8 +166,9 @@ export const JSONForm = memo(({ id, schema, uiSchema, formData, onChange }: JSON
       formData={form}
       onChange={({ formData: fD }, id) => {
         if (!id) return;
+        const prop = take(id.split("."), 2).join(".").replace("root.", "");
         setForm(fD);
-        throttledChange({ formData: fD }, id);
+        throttledChange({ formData: fD }, prop);
       }}
     />
   );
