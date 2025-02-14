@@ -1,25 +1,13 @@
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 
-type Filter = {
-  field: string;
-  operator: string;
-  value: string;
-};
-
 type Sort = {
   field: string;
   order: string;
 };
 
 export type CollectionListProps = {
-  collection?: string;
-  filters?: Filter[];
-  sort?: Sort[];
-  limit?: number;
-  offset?: number;
-  pagination?: {
-    itemsPerPage: number;
-  };
+  title1: string;
+  sort: Sort[];
   wrapperStyles: ChaiStyles;
   listStyles: ChaiStyles;
   itemStyles: ChaiStyles;
@@ -30,11 +18,10 @@ type ServerProps = {
 };
 
 const Component = (props: ChaiBlockComponentProps<CollectionListProps & ServerProps>) => {
-  const { blockProps, wrapperStyles, listStyles, itemStyles, items } = props;
+  const { title1, blockProps, wrapperStyles, listStyles, itemStyles, items } = props;
   return (
     <div {...blockProps} {...wrapperStyles}>
-      <h1>Collection List</h1>
-      {props.lang}
+      <h1>{title1}</h1>
       <div {...listStyles}>{items?.map((item) => <div {...itemStyles}>{JSON.stringify(item)}</div>)}</div>
     </div>
   );
@@ -55,25 +42,10 @@ const Config = {
   },
   ...registerChaiBlockSchema({
     properties: {
-      collection: {
+      title1: {
         type: "string",
-        title: "Collection",
-        default: "",
-        // ui: { "ui:widget": "collectionList" },
-      },
-      filters: {
-        type: "array",
-        title: "Filters",
-        items: {
-          type: "object",
-          properties: {
-            field: { type: "string" },
-            operator: { type: "string" },
-            value: { type: "string" },
-          },
-        },
-        default: [],
-        // ui: { "ui:widget": "collectionFilters" },
+        title: "Title",
+        default: "Collection List 111",
       },
       sort: {
         type: "array",
@@ -86,34 +58,13 @@ const Config = {
           },
         },
         default: [],
-        // ui: { "ui:widget": "collectionSort" },
-      },
-      limit: {
-        type: "number",
-        title: "Limit",
-        default: 10,
-      },
-      offset: {
-        type: "number",
-        title: "Offset",
-        default: 0,
-      },
-      pagination: {
-        type: "object",
-        title: "Pagination",
-        properties: {
-          itemsPerPage: { type: "number" },
-        },
-        default: {
-          itemsPerPage: 1,
-        },
-        // ui: { "ui:widget": "collectionPagination" },
       },
       wrapperStyles: StylesProp("bg-red-100 p-2 border border-red-500"),
       listStyles: StylesProp("text-blue-500"),
       itemStyles: StylesProp("text-green-500"),
     },
   }),
+  i18nProps: ["sort", "title"],
 };
 
 export { Component, Config };
