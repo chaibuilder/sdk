@@ -1,6 +1,6 @@
 import { getBlockFormSchemas, getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { IChangeEvent } from "@rjsf/core";
-import { capitalize, cloneDeep, debounce, forEach, get, includes, isEmpty, keys, map, set, startCase } from "lodash-es";
+import { capitalize, cloneDeep, debounce, forEach, get, includes, isEmpty, keys, map, startCase } from "lodash-es";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../ui";
@@ -25,13 +25,6 @@ const formDataWithSelectedLang = (formData, selectedLang: string, coreBlock) => 
 
   return updatedFormData;
 };
-
-const convertDotNotationToObject = (key: string, value: any) => {
-  const result = {};
-  set(result, key, value);
-  return result;
-};
-
 /**
  *
  * @returns Block Setting
