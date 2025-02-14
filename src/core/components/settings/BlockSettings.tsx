@@ -51,40 +51,31 @@ export default function BlockSettings() {
   const registeredWrapperBlock = getRegisteredChaiBlock(wrapperBlock?._type);
   const wrapperFormData = formDataWithSelectedLang(wrapperBlock, selectedLang, registeredWrapperBlock);
 
-  const updateProps = ({ formData: newData }: IChangeEvent, id?: string, oldState?: any) => {
-    if (id && prevFormData?._id === selectedBlock._id) {
-      const path = id.replace("root.", "") as string;
-      updateBlockProps([selectedBlock._id], { [path]: get(newData, path) } as any, oldState);
+  const updateProps = ({ formData: newData }: IChangeEvent, prop?: string, oldState?: any) => {
+    if (prop && prevFormData?._id === selectedBlock._id) {
+      updateBlockProps([selectedBlock._id], { [prop]: get(newData, prop) } as any, oldState);
     }
   };
 
   const debouncedCall = useCallback(
-    debounce(({ formData }, id, oldPropState) => {
-      updateProps({ formData } as IChangeEvent, id, oldPropState);
+    debounce(({ formData }, prop, oldPropState) => {
+      updateProps({ formData } as IChangeEvent, prop, oldPropState);
       setPrevFormData(formData);
     }, 1500),
     [selectedBlock?._id, selectedLang],
   );
 
-  const updateRealtime = ({ formData: newData }: IChangeEvent, id?: string) => {
-    if (id) {
-      const path = id.replace("root.", "") as string;
-      updateBlockPropsRealtime(
-        [selectedBlock._id],
-        convertDotNotationToObject(path, get(newData, path.split("."))) as any,
-      );
-      debouncedCall({ formData: newData }, id, { [path]: get(prevFormData, path) });
+  const updateRealtime = ({ formData: newData }: IChangeEvent, prop?: string) => {
+    if (prop) {
+      updateBlockPropsRealtime([selectedBlock._id], { [prop]: get(newData, prop) } as any);
+      debouncedCall({ formData: newData }, prop, { [prop]: get(prevFormData, prop) });
     }
   };
 
-  const updateWrapperRealtime = ({ formData: newData }: IChangeEvent, id?: string) => {
-    if (id) {
-      const path = id.replace("root.", "") as string;
-      updateBlockPropsRealtime(
-        [wrapperBlock._id],
-        convertDotNotationToObject(path, get(newData, path.split("."))) as any,
-      );
-      debouncedCall({ formData: newData }, id, { [path]: get(prevFormData, path) });
+  const updateWrapperRealtime = ({ formData: newData }: IChangeEvent, prop?: string) => {
+    if (prop) {
+      updateBlockPropsRealtime([wrapperBlock._id], { [prop]: get(newData, prop) } as any);
+      debouncedCall({ formData: newData }, prop, { [prop]: get(prevFormData, prop) });
     }
   };
 
