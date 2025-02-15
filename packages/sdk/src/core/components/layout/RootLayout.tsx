@@ -73,18 +73,18 @@ const RootLayout: ComponentType = () => {
   const htmlDir = useBuilderProp("htmlDir", "ltr");
 
   return (
-    <div dir={htmlDir} className="h-screen max-h-full w-screen overflow-x-hidden bg-background text-foreground">
+    <div dir={htmlDir} className="bg-background text-foreground h-screen max-h-full w-screen overflow-x-hidden">
       <TooltipProvider>
         <div
           onContextMenu={preventContextMenu}
-          className="flex h-screen max-h-full flex-col bg-background text-foreground">
-          <div className="h-14 w-screen shrink-0 border-b border-border">
+          className="bg-background text-foreground flex h-screen max-h-full flex-col">
+          <div className="border-border h-14 w-screen shrink-0 border-b">
             <Suspense>
               <TopBar />
             </Suspense>
           </div>
           <main className="relative flex h-[calc(100vh-56px)] max-w-full flex-1 flex-row">
-            <div className="flex w-12 flex-col items-center justify-between border-r border-border py-2">
+            <div className="border-border flex w-12 flex-col items-center justify-between border-r py-2">
               <div className="flex flex-col">
                 {sidebarMenuItems.map((item, index) => (
                   <Tooltip key={"button" + index}>
@@ -114,7 +114,7 @@ const RootLayout: ComponentType = () => {
             </div>
             {/* Side Panel */}
             <motion.div
-              className="h-full max-h-full border-r border-border"
+              className="border-border h-full max-h-full border-r"
               initial={{ width: 280 }}
               animate={{ width: activePanelIndex !== null ? 280 : 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}>
@@ -142,7 +142,7 @@ const RootLayout: ComponentType = () => {
               </Suspense>
             </div>
             <motion.div
-              className="h-full max-h-full border-l border-border"
+              className="border-border h-full max-h-full border-l"
               initial={{ width: 280 }}
               animate={{ width: 280 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}>

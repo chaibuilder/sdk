@@ -17,9 +17,8 @@
   "main": "dist/core.js",
   "sideEffects": false,
   "scripts": {
-    "dev": "vite build --watch --mode development",
-    "watch": "vite build --watch",
-    "build": "vite build",
+    "dev": "tsc --watch",
+    "build": "tsc && vite build",
     "check-types": "tsc --noEmit",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",

@@ -128,7 +128,7 @@ const ChaiBuilderEditor: React.FC<ChaiBuilderEditorProps> = (props: ChaiBuilderE
   const _flags = props._flags || {};
   const onErrorFn = props.onError || noop;
   return (
-    <div className="h-screen w-screen">
+    <div className="h-screen w-screen bg-red-50">
       <ErrorBoundary fallback={<FallbackError />} onError={onErrorFn}>
         <FlagsProvider features={{ ...FEATURE_TOGGLES, ..._flags }}>
           <SmallScreenMessage />

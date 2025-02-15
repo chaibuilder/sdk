@@ -1,4 +1,5 @@
 import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML, registerChaiBlock } from "@chaibuilder/sdk";
+import "@chaibuilder/sdk/styles";
 import { loadWebBlocks } from "@chaibuilder/sdk/web-blocks";
 import axios from "axios";
 import { useAtom } from "jotai";

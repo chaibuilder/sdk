@@ -24,6 +24,8 @@ export default defineConfig({
       // make sure to externalize deps that shouldn't be bundled
       // into your library
       external: [
+        "react/jsx-runtime",
+        "react/jsx-dev-runtime",
         "@chaibuilder/runtime",
         "@floating-ui/dom",
         "@floating-ui/react-dom",
@@ -50,9 +52,7 @@ export default defineConfig({
         "@radix-ui/react-tooltip",
         "@react-hookz/web",
         "react-arborist",
-        "@react-email/render",
         "react-error-boundary",
-        "@react-email/components",
         "@rjsf/core",
         "@rjsf/utils",
         "@rjsf/validator-ajv8",
@@ -90,11 +90,16 @@ export default defineConfig({
         "react-json-view",
         "react-quill",
         "react-wrap-balancer",
-        "@react-email/components",
-        "@react-email/render",
         "tailwind-merge",
         "tailwindcss-animate",
       ],
+      output: {
+        globals: {
+          "react-dom": "ReactDom",
+          react: "React",
+          "react/jsx-runtime": "ReactJsxRuntime",
+        },
+      },
     },
   },
 });

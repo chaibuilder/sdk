@@ -21,7 +21,7 @@ async function getTailwindCSS(
       darkMode: "class",
       safelist,
       theme: { extend: getChaiBuilderTheme(themeOptions) },
-      plugins: [twForms, twTypography, twAspectRatio, twContainer, chaiBuilderPlugin],
+      plugins: [twForms, twTypography, twAspectRatio, twContainer as any, chaiBuilderPlugin as any],
       corePlugins: { preflight: includeBaseStyles },
       ...(prefix ? { prefix: `${prefix}` } : {}),
     },
