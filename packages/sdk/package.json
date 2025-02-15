@@ -11,7 +11,6 @@
     "type": "git",
     "url": "https://github.com/chaibuilder/sdk.git"
   },
-  "packageManager": "pnpm@9.15.4",
   "files": [
     "dist"
   ],
@@ -26,9 +25,6 @@
     "test": "vitest --run",
     "test:watch": "vitest --watch",
     "test:coverage": "vitest --coverage",
-    "e2e": "playwright test",
-    "e2e:report": "playwright show-report",
-    "e2e:ui": "playwright test --ui",
     "prepare": "husky"
   },
   "exports": {
@@ -149,7 +145,6 @@
     "@commitlint/config-conventional": "19.6.0",
     "@emotion/react": "^11.14.0",
     "@faker-js/faker": "^9.4.0",
-    "@playwright/test": "^1.50.0",
     "@tanstack/eslint-plugin-query": "^5.64.2",
     "@testing-library/react": "^16.2.0",
     "@types/lodash": "^4.17.14",
@@ -171,7 +166,6 @@
     "husky": "^9.1.7",
     "jest-environment-jsdom": "^29.7.0",
     "jsdoc": "^4.0.4",
-    "msw": "^2.7.0",
     "postcss": "^8.5.1",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.11",
@@ -186,9 +180,6 @@
     "vite-plugin-dts": "^4.5.0",
     "vitest": "^3.0.4",
     "zod": "^3.24.1"
-  },
-  "msw": {
-    "workerDirectory": "public"
   },
   "engines": {
     "node": "^20.18.0"
