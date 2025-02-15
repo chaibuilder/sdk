@@ -1,13 +1,13 @@
-import { useAtom } from "jotai";
-import { lsAiContextAtom, lsBlocksAtom } from "./__dev/atoms-dev.ts";
-import { ChaiBlock, ChaiBuilderEditor } from "./core/main";
-import { loadWebBlocks } from "./web-blocks";
-import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
-import { useState } from "react";
-import { UILibrary, UiLibraryBlock } from "./core/types/chaiBuilderEditorProps.ts";
-import PreviewWeb from "./__dev/preview/WebPreview.tsx";
 import axios from "axios";
-import CustomLayout from "./__dev/CustomLayout.tsx";
+import { useAtom } from "jotai";
+import { useState } from "react";
+import { getBlocksFromHTML } from "../../../packages/sdk/src/core/import-html/html-to-json.ts";
+import { ChaiBlock, ChaiBuilderEditor } from "../../../packages/sdk/src/core/main/index.ts";
+import { UILibrary, UiLibraryBlock } from "../../../packages/sdk/src/core/types/chaiBuilderEditorProps.ts";
+import { loadWebBlocks } from "../../../packages/sdk/src/web-blocks/index.ts";
+import { lsAiContextAtom, lsBlocksAtom } from "../../packages/sdk/src/__dev/atoms-dev.ts";
+import CustomLayout from "../../packages/sdk/src/__dev/CustomLayout.tsx";
+import PreviewWeb from "../../packages/sdk/src/__dev/preview/WebPreview.tsx";
 // import ptBR from "./__dev/pt-BR.json";
 // import es from "./__dev/es.json";
 

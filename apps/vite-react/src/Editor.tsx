@@ -10,8 +10,8 @@ import PreviewWeb from "./__dev/preview/WebPreview.tsx";
 import lngPtBR from "./__dev/ptBR.json";
 import RightTop from "./__dev/RightTop.tsx";
 import { bluePreset, greenPreset, orangePreset } from "./__dev/THEME_PRESETS.ts";
-import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML, registerChaiBlock } from "./core/main";
-import { loadWebBlocks } from "./web-blocks";
+import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML, registerChaiBlock } from "./core/main/index.ts";
+import { loadWebBlocks } from "./web-blocks/index.ts";
 
 loadWebBlocks();
 registerChaiBlock(CollectionListComponent, CollectionListConfig);

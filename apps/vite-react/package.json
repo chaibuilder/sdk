@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "vite-react",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,8 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "axios": "^1.7.9",
+    "jotai": "2.11.1",
+    "lodash-es": "4.17.21",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.1.5",
+    "@chaibuilder/sdk": "workspace:*",
+    "tailwindcss": "3.4.11"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",

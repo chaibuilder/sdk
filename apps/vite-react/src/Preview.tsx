@@ -1,8 +1,8 @@
+import { getChaiThemeCssVariables, getStylesForBlocks, RenderChaiBlocks } from "@chaibuilder/sdk/render";
+import { loadWebBlocks } from "@chaibuilder/sdk/web-blocks";
 import { useAtom } from "jotai";
 import { useEffect, useMemo, useState } from "react";
 import { lsBlocksAtom, lsThemeAtom } from "./__dev/atoms-dev.ts";
-import { getChaiThemeCssVariables, getStylesForBlocks, RenderChaiBlocks } from "./render";
-import { loadWebBlocks } from "./web-blocks/index.ts";
 
 loadWebBlocks();
 
