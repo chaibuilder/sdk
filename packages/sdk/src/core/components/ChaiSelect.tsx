@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
-import { mergeClasses } from "../main";
+import { mergeClasses } from "../..";
 
 interface Option {
   value: string;
@@ -32,7 +32,7 @@ const ChaiSelect: React.FC<ChaiSelectProps> = ({
   return (
     <div className={mergeClasses("relative inline-block w-full", className)}>
       <select
-        className="mt-1 flex w-full rounded-md border border-border bg-background px-3 py-1 text-sm text-foreground shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+        className="border-border bg-background text-foreground placeholder:text-muted-foreground focus-visible:ring-ring mt-1 flex w-full rounded-md border px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50"
         value={selectedValue}
         onChange={handleChange}>
         <option value="" disabled>

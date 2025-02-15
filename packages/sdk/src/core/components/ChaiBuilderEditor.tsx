@@ -5,7 +5,6 @@ import { each, noop, omit } from "lodash-es";
 import React, { useEffect, useMemo } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import "react-quill/dist/quill.snow.css";
-import { FEATURE_TOGGLES } from "../../FEATURE_TOGGLES.tsx";
 import { Toaster } from "../../ui";
 import {
   chaiBuilderPropsAtom,
@@ -15,6 +14,7 @@ import {
 } from "../atoms/builder.ts";
 import { builderStore } from "../atoms/store.ts";
 import { selectedLibraryAtom } from "../atoms/ui.ts";
+import { FEATURE_TOGGLES } from "../FEATURE_TOGGLES.tsx";
 import { setDebugLogs } from "../functions/logging.ts";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
 import { useBuilderProp, useBuilderReset, useSavePage } from "../hooks";

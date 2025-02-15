@@ -10,7 +10,7 @@ export default defineConfig({
     emptyOutDir: true,
     lib: {
       entry: {
-        core: resolve(__dirname, "src/core/main/index.ts"),
+        core: resolve(__dirname, "src/index.ts"),
         render: resolve(__dirname, "src/render/index.ts"),
         ui: resolve(__dirname, "src/ui/index.ts"),
         "web-blocks": resolve(__dirname, "src/web-blocks/index.ts"),

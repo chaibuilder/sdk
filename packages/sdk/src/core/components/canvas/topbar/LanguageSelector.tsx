@@ -1,11 +1,11 @@
-import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../../../ui";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
-import { useLanguages } from "../../../hooks";
-import { isEmpty, map, uniq, forEach, get } from "lodash-es";
+import { forEach, get, isEmpty, map, uniq } from "lodash-es";
 import { useMemo } from "react";
-import { LANGUAGES } from "../../../constants/LANGUAGES";
 import { FaLanguage, FaStar } from "react-icons/fa6";
-import { mergeClasses } from "../../../main";
+import { mergeClasses } from "../../../..";
+import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../../../ui";
+import { LANGUAGES } from "../../../constants/LANGUAGES";
+import { useLanguages } from "../../../hooks";
 
 export const LanguageSelector: React.FC = () => {
   const { fallbackLang, languages, selectedLang, setSelectedLang } = useLanguages();

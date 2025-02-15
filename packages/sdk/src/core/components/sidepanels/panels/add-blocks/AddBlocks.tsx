@@ -1,7 +1,9 @@
-import React, { useCallback } from "react";
-import { capitalize, filter, find, map, reject, sortBy, values } from "lodash-es";
 import { useAtom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
+import { capitalize, filter, find, map, reject, sortBy, values } from "lodash-es";
+import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { CHAI_BUILDER_EVENTS, mergeClasses, UILibraries } from "../../../../../index.ts";
 import {
   Accordion,
   AccordionContent,
@@ -13,15 +15,13 @@ import {
   TabsList,
   TabsTrigger,
 } from "../../../../../ui";
-import { CoreBlock } from "./CoreBlock";
 import { showPredefinedBlockCategoryAtom } from "../../../../atoms/ui";
-import { useBlocksStore, useBuilderProp } from "../../../../hooks";
-import ImportHTML from "./ImportHTML";
-import { CHAI_BUILDER_EVENTS, mergeClasses, UILibraries } from "../../../../main";
 import { canAcceptChildBlock, canBeNestedInside } from "../../../../functions/block-helpers.ts";
-import { DefaultChaiBlocks } from "./DefaultBlocks.tsx";
-import { atomWithStorage } from "jotai/utils";
+import { useBlocksStore, useBuilderProp } from "../../../../hooks";
 import { pubsub } from "../../../../pubsub.ts";
+import { CoreBlock } from "./CoreBlock";
+import { DefaultChaiBlocks } from "./DefaultBlocks.tsx";
+import ImportHTML from "./ImportHTML";
 
 const CORE_GROUPS = ["basic", "typography", "media", "layout", "form", "advanced", "other"];
 
@@ -36,7 +36,7 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
         reject(filter(values(blocks), { group }), { hidden: true }).length ? (
           <Accordion type="single" value={group} collapsible className="w-full">
             <AccordionItem value={group} className={"border-border"}>
-              <AccordionTrigger className="rounded-md bg-background px-4 py-2 capitalize text-foreground hover:no-underline">
+              <AccordionTrigger className="bg-background text-foreground rounded-md px-4 py-2 capitalize hover:no-underline">
                 {capitalize(t(group.toLowerCase()))}
               </AccordionTrigger>
               <AccordionContent className="mx-auto max-w-xl p-3">
@@ -88,7 +88,7 @@ const AddBlocksPanel = ({
   return (
     <div className={mergeClasses("flex h-full w-full flex-col overflow-hidden", className)}>
       {showHeading ? (
-        <div className="mb-2 flex flex-col justify-between rounded-md bg-background/30 p-1">
+        <div className="bg-background/30 mb-2 flex flex-col justify-between rounded-md p-1">
           <h1 className="flex flex-col items-baseline px-1 text-xl font-semibold xl:flex-col">{t("Add block")}</h1>
           <span className="p-0 text-xs font-light leading-3 opacity-80 xl:pl-1">
             {tab === "html" ? t("Enter or paste TailwindCSS HTML snippet") : t("Click to add block to page")}
