@@ -1,9 +1,7 @@
+import { mergeClasses, useLanguages } from "@chaibuilder/sdk";
+import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@chaibuilder/sdk/ui";
 import { get, isEmpty, map } from "lodash-es";
 import { ChevronDown, Languages, Star } from "lucide-react";
-import { LANGUAGES } from "../core/constants/LANGUAGES";
-import { useLanguages } from "../core/hooks";
-import { mergeClasses } from "../core/main";
-import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui";
 
 export const LanguageButton = () => {
   const { fallbackLang, selectedLang, setSelectedLang } = useLanguages();
@@ -19,7 +17,7 @@ export const LanguageButton = () => {
         <DropdownMenuTrigger asChild className="focus:outline-none">
           <Button variant="ghost" size="sm" className="gap-2">
             <Languages className="w-4 h-4" />
-            {get(LANGUAGES, currentLang, currentLang)}
+            {get({}, currentLang, currentLang)}
             <ChevronDown className="w-4 h-4" />
           </Button>
         </DropdownMenuTrigger>

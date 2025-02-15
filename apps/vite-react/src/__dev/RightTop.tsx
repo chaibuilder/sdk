@@ -1,6 +1,6 @@
+import { useRightPanel, useSavePage } from "@chaibuilder/sdk";
+import { Button } from "@chaibuilder/sdk/ui";
 import { Paintbrush, Save } from "lucide-react";
-import { Button } from "../ui";
-import { useRightPanel, useSavePage } from "../core/hooks";
 
 export default function RightTop() {
   const [panel, setRightPanel] = useRightPanel();

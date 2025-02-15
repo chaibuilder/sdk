@@ -17,15 +17,15 @@
   "main": "dist/core.js",
   "sideEffects": false,
   "scripts": {
-    "dev": "vite",
+    "dev": "vite build --watch --mode development",
+    "watch": "vite build --watch",
     "build": "vite build",
     "check-types": "tsc --noEmit",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "vitest --run",
     "test:watch": "vitest --watch",
-    "test:coverage": "vitest --coverage",
-    "prepare": "husky"
+    "test:coverage": "vitest --coverage"
   },
   "exports": {
     ".": {

@@ -1,3 +1,5 @@
+import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML, registerChaiBlock } from "@chaibuilder/sdk";
+import { loadWebBlocks } from "@chaibuilder/sdk/web-blocks";
 import axios from "axios";
 import { useAtom } from "jotai";
 import { isArray, map, pick } from "lodash-es";
@@ -6,12 +8,9 @@ import { lsAiContextAtom, lsBlocksAtom, lsThemeAtom } from "./__dev/atoms-dev.ts
 import { Component as CollectionListComponent, Config as CollectionListConfig } from "./__dev/CollectionList.tsx";
 import GalleryWidget from "./__dev/CustomWidget.tsx";
 import { LanguageButton } from "./__dev/LangButton.tsx";
-import PreviewWeb from "./__dev/preview/WebPreview.tsx";
 import lngPtBR from "./__dev/ptBR.json";
 import RightTop from "./__dev/RightTop.tsx";
 import { bluePreset, greenPreset, orangePreset } from "./__dev/THEME_PRESETS.ts";
-import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML, registerChaiBlock } from "./core/main/index.ts";
-import { loadWebBlocks } from "./web-blocks/index.ts";
 
 loadWebBlocks();
 registerChaiBlock(CollectionListComponent, CollectionListConfig);
@@ -36,7 +35,6 @@ function ChaiBuilderDefault() {
       theme={theme}
       autoSaveSupport={true}
       autoSaveInterval={15}
-      previewComponent={PreviewWeb}
       blocks={blocks}
       onSave={async ({ blocks, theme }: any) => {
         localStorage.setItem("chai-builder-blocks", JSON.stringify(blocks));
