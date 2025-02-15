@@ -21,9 +21,19 @@ export default defineConfig({
     },
     rollupOptions: {
       treeshake: true,
+      output: {
+        globals: {
+          "react-dom": "ReactDom",
+          react: "React",
+          "react/jsx-runtime": "ReactJsxRuntime",
+        },
+      },
+
       // make sure to externalize deps that shouldn't be bundled
       // into your library
       external: [
+        "react/jsx-runtime",
+        "react/jsx-dev-runtime",
         "@chaibuilder/runtime",
         "@floating-ui/dom",
         "@floating-ui/react-dom",
@@ -90,8 +100,6 @@ export default defineConfig({
         "react-json-view",
         "react-quill",
         "react-wrap-balancer",
-        "@react-email/components",
-        "@react-email/render",
         "tailwind-merge",
         "tailwindcss-animate",
       ],
