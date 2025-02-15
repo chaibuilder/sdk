@@ -6,7 +6,7 @@ import validator from "@rjsf/validator-ajv8";
 import { useAtom } from "jotai";
 import { get, isEmpty, take } from "lodash-es";
 import { ChevronDown, ChevronRight, List, Plus } from "lucide-react";
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 import { Badge } from "../../../ui/index.ts";
 import { chaiRjsfFieldsAtom, chaiRjsfTemplatesAtom, chaiRjsfWidgetsAtom } from "../../atoms/builder.ts";
 import { LANGUAGES } from "../../constants/LANGUAGES.ts";
@@ -17,7 +17,7 @@ import { BindingWidget } from "../../rjsf-widgets/binding.tsx";
 import { CodeEditor } from "../../rjsf-widgets/Code.tsx";
 
 type JSONFormType = {
-  id?: string;
+  blockId?: string;
   formData: any;
   schema: RJSFSchema;
   uiSchema: UiSchema;
@@ -111,17 +111,11 @@ const CustomAddButton = (props) => (
   </button>
 );
 
-export const JSONForm = memo(({ id, schema, uiSchema, formData, onChange }: JSONFormType) => {
-  const [form, setForm] = useState<any>(formData);
+export const JSONForm = memo(({ blockId, schema, uiSchema, formData, onChange }: JSONFormType) => {
   const { selectedLang } = useLanguages();
   const [widgets] = useAtom(chaiRjsfWidgetsAtom);
   const [fields] = useAtom(chaiRjsfFieldsAtom);
   const [templates] = useAtom(chaiRjsfTemplatesAtom);
-
-  useEffect(() => {
-    setForm(formData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, selectedLang]);
 
   const throttledChange = useThrottledCallback(
     async ({ formData }: any, id?: string) => {
@@ -163,11 +157,10 @@ export const JSONForm = memo(({ id, schema, uiSchema, formData, onChange }: JSON
       validator={validator}
       uiSchema={uiSchema}
       schema={schema}
-      formData={form}
+      formData={formData}
       onChange={({ formData: fD }, id) => {
-        if (!id) return;
+        if (!id || blockId !== fD?._id) return;
         const prop = take(id.split("."), 2).join(".").replace("root.", "");
-        setForm(fD);
         throttledChange({ formData: fD }, prop);
       }}
     />
