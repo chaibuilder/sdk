@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
-import { useFrame } from "../../../frame";
-import { useSelectedBlockIds, useSelectedStylingBlocks, useUpdateBlocksProps, useBlockHighlight } from "../../../hooks";
-import { first, isEmpty, omit, throttle } from "lodash-es";
-import { Quill } from "react-quill";
 import { useAtom } from "jotai";
+import { first, isEmpty, omit, throttle } from "lodash-es";
+import React, { useEffect } from "react";
+import { Quill } from "react-quill";
 import { inlineEditingActiveAtom, treeRefAtom } from "../../../atoms/ui.ts";
+import { useFrame } from "../../../frame";
+import { useBlockHighlight, useSelectedBlockIds, useSelectedStylingBlocks, useUpdateBlocksProps } from "../../../hooks";
 import { useDnd } from "../dnd/useDnd.ts";
 
 function getTargetedBlock(target) {

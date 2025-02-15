@@ -110,7 +110,7 @@ export default function BlockSettings() {
           </div>
           <div className={showWrapperSetting ? "h-auto" : "invisible h-0"}>
             <JSONForm
-              id={wrapperBlock?._id}
+              blockId={wrapperBlock?._id}
               onChange={updateWrapperRealtime}
               formData={wrapperFormData}
               schema={wrapperSchema}
@@ -156,7 +156,7 @@ export default function BlockSettings() {
                 </div>
               ) : null}
               <JSONForm
-                id={selectedBlock?._id}
+                blockId={selectedBlock?._id}
                 onChange={updateRealtime}
                 formData={formData}
                 schema={schema}
@@ -167,7 +167,7 @@ export default function BlockSettings() {
         </Accordion>
       ) : !isEmpty(schema) ? (
         <JSONForm
-          id={selectedBlock?._id}
+          blockId={selectedBlock?._id}
           onChange={updateRealtime}
           formData={formData}
           schema={schema}
