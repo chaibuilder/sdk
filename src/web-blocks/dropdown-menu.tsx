@@ -20,7 +20,13 @@ export type DropdownLinksProps = {
 const alpineAttrs = {
   wrapper: { "x-data": "{ open: false }" },
   button: { "x-on:click": "open = !open" },
-  menu: { "x-show": "open", "x-on:click.away": "open = false", "x-cloak": "", "x-transition": "" },
+  menu: {
+    "x-show": "open",
+    "x-on:click": "open = false",
+    "x-on:click.away": "open = false",
+    "x-cloak": "",
+    "x-transition": "",
+  },
 };
 
 const DropdownButton = (
