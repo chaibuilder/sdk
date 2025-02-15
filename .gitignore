@@ -30,3 +30,4 @@ dist-ssr
 /playwright/.cache/
 ai/
 docs/
+.turbo
