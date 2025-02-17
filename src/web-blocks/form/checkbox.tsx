@@ -54,6 +54,11 @@ const Config = {
     properties: {
       styles: StylesProp("flex items-center gap-x-2"),
       inputStyles: StylesProp(""),
+      fieldName: {
+        type: "string",
+        title: "Field Name",
+        default: "fieldName",
+      },
       label: {
         type: "string",
         title: "Label",

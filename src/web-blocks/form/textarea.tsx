@@ -47,6 +47,11 @@ const Config = {
   group: "form",
   ...registerChaiBlockSchema({
     properties: {
+      fieldName: {
+        type: "string",
+        title: "Field Name",
+        default: "fieldName",
+      },
       styles: StylesProp(""),
       inputStyles: StylesProp("w-full p-1"),
       showLabel: {
