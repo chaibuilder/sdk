@@ -1,0 +1,30 @@
+name: Release to npm
+
+on:
+  push:
+    tags:
+      - 'v-*.*.*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install -g pnpm && pnpm install --no-frozen-lockfile
+
+      - name: Build project
+        run: pnpm run build
+
+      - name: Publish to npm
+        run: npm publish
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
