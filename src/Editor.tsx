@@ -7,7 +7,6 @@ import { Component as CollectionListComponent, Config as CollectionListConfig } 
 import GalleryWidget from "./__dev/CustomWidget.tsx";
 import { LanguageButton } from "./__dev/LangButton.tsx";
 import PreviewWeb from "./__dev/preview/WebPreview.tsx";
-import lngPtBR from "./__dev/ptBR.json";
 import RightTop from "./__dev/RightTop.tsx";
 import { bluePreset, greenPreset, orangePreset } from "./__dev/THEME_PRESETS.ts";
 import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML, registerChaiBlock } from "./core/main";
@@ -15,6 +14,15 @@ import { loadWebBlocks } from "./web-blocks";
 
 loadWebBlocks();
 registerChaiBlock(CollectionListComponent, CollectionListConfig);
+
+const Logo = () => {
+  return (
+    <div className="flex items-center gap-2">
+      <img src="/chaibuilder-logo.png" alt="Chai Builder" width={32} height={32} className="rounded-md" />
+      <span className="text-2xl font-bold tracking-tight">Chai Builder</span>
+    </div>
+  );
+};
 
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
@@ -29,10 +37,9 @@ function ChaiBuilderDefault() {
   return (
     <ChaiBuilderEditor
       rjsfWidgets={{ gallery: GalleryWidget }}
-      fallbackLang="fr"
-      languages={["pt", "en"]}
-      themePresets={[{ Kia: orangePreset }, { Nissan: greenPreset }, { Infiniti: bluePreset }]}
-      translations={{ pt: lngPtBR }}
+      fallbackLang="en"
+      languages={["fr"]}
+      themePresets={[{ orange: orangePreset }, { green: greenPreset }, { blue: bluePreset }]}
       theme={theme}
       autoSaveSupport={true}
       autoSaveInterval={15}
@@ -77,7 +84,7 @@ function ChaiBuilderDefault() {
         }
       }}
       uiLibraries={uiLibraries}
-      topBarComponents={{ left: [LanguageButton], right: [RightTop] }}
+      topBarComponents={{ left: [Logo], right: [LanguageButton, RightTop] }}
       getGlobalBlockBlocks={async (globalBlockKey: string) => {
         const blocks =
           globalBlockKey === "header"

@@ -1,6 +1,6 @@
-import { Paintbrush, Save } from "lucide-react";
-import { Button } from "../ui";
+import { Eye, Paintbrush, Save } from "lucide-react";
 import { useRightPanel, useSavePage } from "../core/hooks";
+import { Button } from "../ui";
 
 export default function RightTop() {
   const [panel, setRightPanel] = useRightPanel();
@@ -15,6 +15,12 @@ export default function RightTop() {
         <Paintbrush className="h-4 w-4" />
         Theme
       </Button>
+      <a href="/preview" target="_blank" rel="noopener noreferrer">
+        <Button variant="outline" size="sm" className="gap-2">
+          <Eye className="h-4 w-4" />
+          Preview
+        </Button>
+      </a>
       <Button variant="default" size="sm" className="gap-2" onClick={() => savePage(false)}>
         <Save className="h-4 w-4" />
         Save
