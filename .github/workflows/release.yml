@@ -3,11 +3,14 @@ name: Release to npm
 on:
   push:
     tags:
-      - "v*" # Trigger on version tags
+      - "v*" # Trigger only on version tags
 
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required for creating releases
+      packages: write # Required for publishing packages
 
     steps:
       - name: Checkout repository
@@ -27,6 +30,29 @@ jobs:
       - name: Build project
         run: pnpm run build
 
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Generate Release Notes
+        id: release_notes
+        run: |
+          # Get the previous tag
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+
+          if [ -z "$PREVIOUS_TAG" ]; then
+            # If no previous tag exists, get all commits
+            CHANGELOG=$(git log --pretty=format:"* %s (%h)" --no-merges)
+          else
+            # Get commits since last tag
+            CHANGELOG=$(git log --pretty=format:"* %s (%h)" --no-merges ${PREVIOUS_TAG}..HEAD)
+          fi
+
+          # Save changelog to a file with proper escaping
+          echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Publish to npm
         run: pnpm publish --no-git-checks
         env:
@@ -35,6 +61,16 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          generate_release_notes: true
+          name: "Release v${{ steps.get_version.outputs.VERSION }}"
+          body: |
+            ## What's Changed
+            ${{ steps.release_notes.outputs.CHANGELOG }}
+
+            ## Installation
+            ```bash
+            pnpm add @chaibuilder/sdk@${{ steps.get_version.outputs.VERSION }}
+            ```
+          draft: false
+          prerelease: ${{ contains(steps.get_version.outputs.VERSION, 'beta') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
