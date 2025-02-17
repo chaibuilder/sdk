@@ -46,6 +46,7 @@ function ChaiBuilderDefault() {
       previewComponent={PreviewWeb}
       blocks={blocks}
       onSave={async ({ blocks, theme }: any) => {
+        console.log("onSave", blocks, theme);
         localStorage.setItem("chai-builder-blocks", JSON.stringify(blocks));
         localStorage.setItem("chai-builder-theme", JSON.stringify(theme));
         setTheme(theme);
