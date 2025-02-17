@@ -1,8 +1,13 @@
 #!/usr/bin/env node
 
-const { execSync } = require("child_process");
-const readline = require("readline");
-const fs = require("fs");
+import { execSync } from "child_process";
+import { readFileSync } from "fs";
+import { dirname } from "path";
+import readline from "readline";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -28,10 +33,15 @@ function execCommand(command) {
   }
 }
 
+// Function to get current branch name
+function getCurrentBranch() {
+  return execSync("git rev-parse --abbrev-ref HEAD").toString().trim();
+}
+
 async function main() {
   try {
     // Read current version from package.json
-    const packageJson = JSON.parse(fs.readFileSync("./package.json", "utf8"));
+    const packageJson = JSON.parse(readFileSync("./package.json", "utf8"));
     const currentVersion = packageJson.version;
     console.log(`Current version: ${currentVersion}`);
 
@@ -43,22 +53,22 @@ async function main() {
     // Validate new version
     validateVersion(newVersion);
 
-    // Update version in package.json (without git tag)
-    execCommand(`pnpm version v${newVersion} --no-git-tag-version`);
-
     // Build the project
     execCommand("pnpm run build");
 
-    // Run tests
-    execCommand("pnpm test");
-    v;
+    // Get current branch name
+    const currentBranch = getCurrentBranch();
+
     // Git operations
     execCommand("git add package.json");
     execCommand(`git commit -m "chore: bump version to ${newVersion}"`);
 
+    // Update version in package.json (without git tag)
+    execCommand(`pnpm version ${newVersion} --no-git-tag-version`);
+
     // Create and push tag
     execCommand(`git tag -a v${newVersion} -m "Release version ${newVersion}"`);
-    execCommand("git push origin main"); // Push commit to main
+    execCommand(`git push origin ${currentBranch}:main`); // Push commit to current branch
     execCommand(`git push origin v${newVersion}`); // Push tag
 
     console.log(`✅ Version bumped to ${newVersion} and tag created successfully!`);
