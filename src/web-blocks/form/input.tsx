@@ -57,6 +57,11 @@ const Config = {
     properties: {
       styles: StylesProp(""),
       inputStyles: StylesProp("w-full p-1"),
+      fieldName: {
+        type: "string",
+        title: "Field Name",
+        default: "fieldName",
+      },
       showLabel: {
         type: "boolean",
         title: "Show Label",
