@@ -71,6 +71,7 @@ jobs:
             pnpm add @chaibuilder/sdk@${{ steps.get_version.outputs.VERSION }}
             ```
           draft: false
-          prerelease: ${{ contains(steps.get_version.outputs.VERSION, 'beta') }}
+          prerelease: false
+          make_latest: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
