@@ -2,8 +2,8 @@ name: Release to npm
 
 on:
   push:
-    branches:
-      - "release"
+    tags:
+      - "v*" # Trigger on version tags
 
 jobs:
   release:
@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Required for tag information
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -26,6 +28,13 @@ jobs:
         run: pnpm run build
 
       - name: Publish to npm
-        run: npm publish
+        run: pnpm publish --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
