@@ -1,3 +1,4 @@
+import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { useIntervalEffect } from "@react-hookz/web";
 import { FlagsProvider } from "flagged";
 import { useAtom } from "jotai/index";
@@ -26,7 +27,6 @@ import { builderSaveStateAtom } from "../hooks/useSavePage.ts";
 import "../index.css";
 import i18n from "../locales/load.ts";
 import { ChaiBuilderEditorProps } from "../types";
-import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { FallbackError } from "./FallbackError.tsx";
 import { RootLayout } from "./layout/RootLayout.tsx";
 import { PreviewScreen } from "./PreviewScreen.tsx";
@@ -82,10 +82,11 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   useEffect(() => {
     // Added delay to allow the pageId to be set
     setTimeout(() => {
+      const withDefaults = syncBlocksWithDefaults(props.blocks || []);
       // @ts-ignore
-      setAllBlocks((props.blocks || []) as ChaiBlock[]);
-      if (props.blocks && props.blocks.length > 0) {
-        postMessage({ type: "blocks-updated", blocks: props.blocks || [] });
+      setAllBlocks(withDefaults);
+      if (withDefaults && withDefaults.length > 0) {
+        postMessage({ type: "blocks-updated", blocks: withDefaults });
       }
       reset();
     }, 400);

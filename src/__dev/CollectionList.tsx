@@ -15,6 +15,8 @@ type Sort = {
 export type CollectionListProps = {
   title1: string;
   sort: Sort[];
+  tag: string;
+  showTitle: boolean;
   wrapperStyles: ChaiStyles;
   listStyles: ChaiStyles;
   itemStyles: ChaiStyles;
@@ -25,10 +27,10 @@ type ServerProps = {
 };
 
 const Component = (props: ChaiBlockComponentProps<CollectionListProps & ServerProps>) => {
-  const { title1, blockProps, wrapperStyles, listStyles, itemStyles, items, tag } = props;
+  const { title1, blockProps, wrapperStyles, listStyles, itemStyles, items, tag, showTitle } = props;
   return (
     <div {...blockProps} {...wrapperStyles}>
-      <h1>{title1}</h1>
+      {showTitle && <h1>{title1}</h1>}
       <p>Block Prop: {tag}</p>
       <div {...listStyles}>{items?.map((item) => <div {...itemStyles}>{JSON.stringify(item)}</div>)}</div>
     </div>
