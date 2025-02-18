@@ -25,8 +25,6 @@ import { getSplitChaiClasses } from "../../../hooks/getSplitClasses.ts";
 import { ChaiBlock } from "../../../types/ChaiBlock";
 import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
 import AsyncPropsBlock from "./AsyncPropsBlock.tsx";
-import RuntimePropsBlock from "./RuntimePropsBlock.tsx";
-import { useChaiExternalData } from "./useChaiExternalData.ts";
 
 const generateClassNames = memoize((styles: string) => {
   const { baseClasses, classes } = getSplitChaiClasses(styles);
@@ -108,8 +106,26 @@ export function BlocksRendererStatic({ blocks, allBlocks }: { blocks: ChaiBlock[
   const { getGlobalBlocks } = useGlobalBlocksStore();
   const getStyles = useCallback((block: ChaiBlock) => getStyleAttrs(block), []);
 
-  const [chaiData] = useChaiExternalData();
   const [editingBlockId] = useAtom(inlineEditingActiveAtom);
+  const getRuntimePropValues = useCallback(
+    (blockId: string, runtimeProps: Record<string, any>) => {
+      if (isEmpty(runtimeProps)) return {};
+      return Object.entries(runtimeProps).reduce((acc, [key, schema]) => {
+        const hierarchy = [];
+        let block = find(allBlocks, { _id: blockId });
+        while (block) {
+          hierarchy.push(block);
+          block = find(allBlocks, { _id: block._parent });
+        }
+        const matchingBlock = find(hierarchy, { _type: schema.block });
+        if (matchingBlock) {
+          acc[key] = get(matchingBlock, get(schema, "prop"), null);
+        }
+        return acc;
+      }, {});
+    },
+    [allBlocks],
+  );
 
   return (
     <>
@@ -153,12 +169,14 @@ export function BlocksRendererStatic({ blocks, allBlocks }: { blocks: ChaiBlock[
             ...(includes(cutBlockIds, block._id) ? { "data-cut-block": "yes" } : {}),
           };
 
+          const runtimeProps = getRuntimePropValues(block._id, getRuntimeProps(block._type));
           const props = {
             blockProps,
             index,
-            ...applyBindings(applyLanguage(block, selectedLang, chaiBlock), chaiData),
+            ...applyLanguage(block, selectedLang, chaiBlock),
             ...htmlAttrs,
             ...attrs,
+            ...runtimeProps,
             inBuilder: true,
             lang: selectedLang || fallbackLang,
           };
@@ -174,18 +192,6 @@ export function BlocksRendererStatic({ blocks, allBlocks }: { blocks: ChaiBlock[
                   props={props}
                 />
               </Suspense>
-            );
-          }
-          const runtimeProps = getRuntimeProps(block._type);
-          if (runtimeProps) {
-            return (
-              <RuntimePropsBlock
-                key={block._id}
-                runtimeProps={runtimeProps}
-                block={block}
-                component={Component}
-                props={props}
-              />
             );
           }
 
