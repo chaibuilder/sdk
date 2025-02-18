@@ -31,7 +31,14 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
 
   const filteredGroups = searchTerm
     ? groups.filter((group: string) => reject(filter(values(filteredBlocks), { group }), { hidden: true }).length > 0)
-    : groups;
+    : groups.filter((group: string) => reject(filter(values(blocks), { group }), { hidden: true }).length > 0);
+
+  // If selected group becomes empty, select the first available group
+  useEffect(() => {
+    if (filteredGroups.length > 0 && !filteredGroups.includes(selectedGroup)) {
+      setSelectedGroup(filteredGroups[0]);
+    }
+  }, [filteredGroups, selectedGroup]);
 
   // Cleanup timeout on unmount
   useEffect(() => {
