@@ -1,66 +1,103 @@
-import React, { useCallback } from "react";
-import { capitalize, filter, find, map, reject, sortBy, values } from "lodash-es";
 import { useAtom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
+import { capitalize, filter, find, map, reject, sortBy, values } from "lodash-es";
+import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
+  Input,
   ScrollArea,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "../../../../../ui";
-import { CoreBlock } from "./CoreBlock";
 import { showPredefinedBlockCategoryAtom } from "../../../../atoms/ui";
-import { useBlocksStore, useBuilderProp } from "../../../../hooks";
-import ImportHTML from "./ImportHTML";
-import { CHAI_BUILDER_EVENTS, mergeClasses, UILibraries } from "../../../../main";
 import { canAcceptChildBlock, canBeNestedInside } from "../../../../functions/block-helpers.ts";
-import { DefaultChaiBlocks } from "./DefaultBlocks.tsx";
-import { atomWithStorage } from "jotai/utils";
+import { useBlocksStore, useBuilderProp } from "../../../../hooks";
+import { CHAI_BUILDER_EVENTS, mergeClasses, UILibraries } from "../../../../main";
 import { pubsub } from "../../../../pubsub.ts";
+import { CoreBlock } from "./CoreBlock";
+import { DefaultChaiBlocks } from "./DefaultBlocks.tsx";
+import ImportHTML from "./ImportHTML";
 
 const CORE_GROUPS = ["basic", "typography", "media", "layout", "form", "advanced", "other"];
 
 export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols = "grid-cols-4" }: any) => {
   const { t } = useTranslation();
   const [allBlocks] = useBlocksStore();
+  const [searchTerm, setSearchTerm] = useState("");
   const parentType = find(allBlocks, (block) => block._id === parentId)?._type;
-  return React.Children.toArray(
-    map(
-      sortBy(groups, (group: string) => (CORE_GROUPS.indexOf(group) === -1 ? 99 : CORE_GROUPS.indexOf(group))),
-      (group: string) =>
-        reject(filter(values(blocks), { group }), { hidden: true }).length ? (
-          <Accordion type="single" value={group} collapsible className="w-full">
-            <AccordionItem value={group} className={"border-border"}>
-              <AccordionTrigger className="rounded-md bg-background px-4 py-2 capitalize text-foreground hover:no-underline">
-                {capitalize(t(group.toLowerCase()))}
-              </AccordionTrigger>
-              <AccordionContent className="mx-auto max-w-xl p-3">
-                <div className={"grid gap-2 " + gridCols}>
-                  {React.Children.toArray(
-                    reject(filter(values(blocks), { group }), { hidden: true }).map((block) => {
-                      return (
-                        <CoreBlock
-                          parentId={parentId}
-                          position={position}
-                          block={block}
-                          disabled={
-                            !canAcceptChildBlock(parentType, block.type) || !canBeNestedInside(parentType, block.type)
-                          }
-                        />
-                      );
-                    }),
-                  )}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        ) : null,
-    ),
+
+  console.log(blocks);
+  const filteredBlocks = searchTerm
+    ? values(blocks).filter((block: any) =>
+        (block.label?.toLowerCase() + " " + block.type?.toLowerCase()).includes(searchTerm.toLowerCase()),
+      )
+    : blocks;
+
+  const filteredGroups = searchTerm
+    ? groups.filter((group: string) => reject(filter(values(filteredBlocks), { group }), { hidden: true }).length > 0)
+    : groups;
+
+  return (
+    <div className="flex w-full flex-col gap-2">
+      <div className="sticky top-0 z-10 border-b bg-background/80 px-2 py-2 backdrop-blur-sm">
+        <Input
+          type="search"
+          placeholder={t("Search blocks...")}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+      {filteredGroups.length === 0 && searchTerm ? (
+        <div className="flex flex-col items-center justify-center p-8 text-center text-muted-foreground">
+          <p>
+            {t("No blocks found matching")} "{searchTerm}"
+          </p>
+        </div>
+      ) : (
+        React.Children.toArray(
+          map(
+            sortBy(filteredGroups, (group: string) =>
+              CORE_GROUPS.indexOf(group) === -1 ? 99 : CORE_GROUPS.indexOf(group),
+            ),
+            (group: string) =>
+              reject(filter(values(filteredBlocks), { group }), { hidden: true }).length ? (
+                <Accordion type="single" value={group} collapsible className="w-full">
+                  <AccordionItem value={group} className={"border-border"}>
+                    <AccordionTrigger className="rounded-md bg-background px-4 py-2 capitalize text-foreground hover:no-underline">
+                      {capitalize(t(group.toLowerCase()))}
+                    </AccordionTrigger>
+                    <AccordionContent className="mx-auto max-w-xl p-3">
+                      <div className={"grid gap-2 " + gridCols}>
+                        {React.Children.toArray(
+                          reject(filter(values(filteredBlocks), { group }), { hidden: true }).map((block) => {
+                            return (
+                              <CoreBlock
+                                parentId={parentId}
+                                position={position}
+                                block={block}
+                                disabled={
+                                  !canAcceptChildBlock(parentType, block.type) ||
+                                  !canBeNestedInside(parentType, block.type)
+                                }
+                              />
+                            );
+                          }),
+                        )}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              ) : null,
+          ),
+        )
+      )}
+    </div>
   );
 };
 
