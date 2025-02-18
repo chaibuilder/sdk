@@ -17,7 +17,7 @@ const getBlockBuilderProps = memoize((type: string) => {
   const props = get(registeredBlock, "schema.properties", {});
   return compact(
     Object.keys(props).map((key) => {
-      return get(props[key], "builderProp", false) ? key : null;
+      return get(props[key], "builderProp", false) || get(props[key], "runtime", false) ? key : null;
     }),
   );
 });

@@ -2,6 +2,7 @@ import {
   builderProp,
   ChaiBlockComponentProps,
   ChaiStyles,
+  closestBlockProp,
   registerChaiBlockSchema,
   StylesProp,
 } from "@chaibuilder/runtime";
@@ -53,6 +54,7 @@ const Config = {
         title: "Show Title",
         default: true,
       }),
+      tag: closestBlockProp("Box", "tag"),
       title1: {
         type: "string",
         title: "Title",
