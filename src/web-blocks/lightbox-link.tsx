@@ -1,10 +1,10 @@
-import * as React from "react";
-import { isEmpty } from "lodash-es";
+import { StylesProp, registerChaiBlockSchema } from "@chaibuilder/runtime";
 import { ImageIcon } from "@radix-ui/react-icons";
+import { isEmpty } from "lodash-es";
+import { createElement } from "react";
+import { ChaiBlockStyles, ChaiRenderBlockProps } from "../core/types/types.ts";
 import EmptySlot from "./empty-slot.tsx";
 import { addForcedClasses } from "./helper.ts";
-import { ChaiBlockStyles, ChaiRenderBlockProps } from "../core/types/types.ts";
-import { StylesProp, registerChaiBlockSchema } from "@chaibuilder/runtime";
 
 export type LightBoxLinkProps = {
   href: string;
@@ -20,7 +20,7 @@ export type LightBoxLinkProps = {
 const LightBoxLinkBlock = (props: ChaiRenderBlockProps<LightBoxLinkProps>) => {
   const { blockProps, children, styles, inBuilder, content, href } = props;
   const { hrefType, autoplay, maxWidth, backdropColor, galleryName } = props;
-  const forcedStyles = addForcedClasses(styles, "cb-lightbox");
+  const forcedStyles = addForcedClasses(styles, "cb-lightbox vbox-item");
   if (!children && isEmpty(styles?.className) && isEmpty(content)) {
     return <EmptySlot inBuilder={inBuilder} />;
   }
@@ -33,7 +33,7 @@ const LightBoxLinkBlock = (props: ChaiRenderBlockProps<LightBoxLinkProps>) => {
         </span>
       );
     } else {
-      return React.createElement("span", {
+      return createElement("span", {
         ...blockProps,
         ...forcedStyles,
         dangerouslySetInnerHTML: { __html: content },
@@ -56,7 +56,7 @@ const LightBoxLinkBlock = (props: ChaiRenderBlockProps<LightBoxLinkProps>) => {
     );
   }
 
-  return React.createElement("a", {
+  return createElement("a", {
     ...blockProps,
     ...forcedStyles,
     ...lightBoxAttrs,

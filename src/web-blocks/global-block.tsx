@@ -11,7 +11,7 @@ const Component = (props: ChaiBlockComponentProps<GlobalBlockProps>) => {
   if (inBuilder && !globalBlock) {
     return (
       <div
-        className="flex flex-col items-center justify-center py-4 bg-gray-100 rounded-lg gap-y-1 dark:bg-gray-800"
+        className="flex flex-col items-center justify-center gap-y-1 rounded-lg bg-gray-100 py-4 dark:bg-gray-800"
         {...blockProps}>
         <h1>Global Block - {globalBlock}</h1>
         <p>Choose a block from the sidebar to add it to this page.</p>
@@ -26,7 +26,7 @@ const Config = {
   label: "Global Block",
   icon: GlobeIcon,
   category: "core",
-  group: "advanced",
+  group: "basic",
   ...registerChaiBlockSchema({
     properties: {
       globalBlock: {
