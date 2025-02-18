@@ -1,4 +1,10 @@
-import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
+import {
+  builderProp,
+  ChaiBlockComponentProps,
+  ChaiStyles,
+  registerChaiBlockSchema,
+  StylesProp,
+} from "@chaibuilder/runtime";
 
 type Sort = {
   field: string;
@@ -42,6 +48,11 @@ const Config = {
   },
   ...registerChaiBlockSchema({
     properties: {
+      showTitle: builderProp({
+        type: "boolean",
+        title: "Show Title",
+        default: true,
+      }),
       title1: {
         type: "string",
         title: "Title",
