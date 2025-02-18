@@ -21,7 +21,17 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGroup, setSelectedGroup] = useState(groups[0] || "");
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const [tab] = useAtom(addBlockTabAtom);
   const parentType = find(allBlocks, (block) => block._id === parentId)?._type;
+
+  // Focus search input on mount and tab change
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      searchInputRef.current?.focus();
+    }, 0);
+    return () => clearTimeout(timeoutId);
+  }, [tab]);
 
   const filteredBlocks = searchTerm
     ? values(blocks).filter((block: any) =>
@@ -70,6 +80,7 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
       {/* Search at top */}
       <div className="sticky top-0 z-10 bg-background/80 px-2 py-2 backdrop-blur-sm">
         <Input
+          ref={searchInputRef}
           type="search"
           placeholder={t("Search blocks...")}
           value={searchTerm}
