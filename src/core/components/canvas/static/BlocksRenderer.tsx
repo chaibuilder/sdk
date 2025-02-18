@@ -2,7 +2,6 @@ import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { useAtom } from "jotai";
 import {
   cloneDeep,
-  each,
   filter,
   find,
   forEach,
@@ -51,17 +50,6 @@ function getStyleAttrs(block: ChaiBlock) {
     }
   });
   return styles;
-}
-
-function applyBindings(block: ChaiBlock, chaiData: any): ChaiBlock {
-  const bindings = get(block, "_bindings", {});
-  if (isEmpty(bindings)) return { ...block };
-  each(bindings, (value, key) => {
-    if (isString(value) && get(chaiData, value, null)) {
-      block[key] = get(chaiData, value, null);
-    }
-  });
-  return block;
 }
 
 const getRuntimeProps = memoize((blockType: string) => {
