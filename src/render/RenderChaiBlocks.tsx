@@ -1,8 +1,8 @@
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import {
   cloneDeep,
-  each,
   filter,
+  find,
   forEach,
   get,
   has,
@@ -53,17 +53,6 @@ function getStyleAttrs(block: ChaiBlock, classPrefix: string) {
   return styles;
 }
 
-function applyBindings(block: ChaiBlock, chaiData: any): ChaiBlock {
-  const bindings = get(block, "_bindings", {});
-  if (isEmpty(bindings)) return { ...block };
-  each(bindings, (value, key) => {
-    if (isString(value) && get(chaiData, value, null)) {
-      block[key] = get(chaiData, value, null);
-    }
-  });
-  return block;
-}
-
 function applyLanguage(_block: ChaiBlock, lang: string, blockDefinition) {
   if (isEmpty(lang)) return _block;
   const block = cloneDeep(_block);
@@ -75,6 +64,30 @@ function applyLanguage(_block: ChaiBlock, lang: string, blockDefinition) {
   });
   return block;
 }
+
+const getRuntimeProps = memoize((blockType: string) => {
+  const chaiBlock = getRegisteredChaiBlock(blockType) as any;
+  const props = get(chaiBlock, "schema.properties", {});
+  // return key value with value has runtime: true
+  return Object.fromEntries(Object.entries(props).filter(([, value]) => get(value, "runtime", false)));
+});
+
+const getRuntimePropValues = (allBlocks: ChaiBlock[], blockId: string, runtimeProps: Record<string, any>) => {
+  if (isEmpty(runtimeProps)) return {};
+  return Object.entries(runtimeProps).reduce((acc, [key, schema]) => {
+    const hierarchy = [];
+    let block = find(allBlocks, { _id: blockId });
+    while (block) {
+      hierarchy.push(block);
+      block = find(allBlocks, { _id: block._parent });
+    }
+    const matchingBlock = find(hierarchy, { _type: schema.block });
+    if (matchingBlock) {
+      acc[key] = get(matchingBlock, get(schema, "prop"), null);
+    }
+    return acc;
+  }, {});
+};
 
 const SuspenseFallback = () => <span>Loading...</span>;
 
@@ -102,6 +115,7 @@ export function RenderChaiBlocks({
   const filteredBlocks = parent
     ? filter(blocks, { _parent: parent })
     : filter(blocks, (block) => isEmpty(block._parent));
+
   return (
     <>
       {React.Children.toArray(
@@ -130,15 +144,17 @@ export function RenderChaiBlocks({
               syncedBlock = blockModifierCallback(syncedBlock);
             }
             const langToUse = lang === fallbackLang ? "" : lang;
+            const runtimeProps = getRuntimePropValues(allBlocks, block._id, getRuntimeProps(block._type));
             const props = omit(
               {
                 blockProps: {},
                 inBuilder: false,
                 ...syncedBlock,
                 index,
-                ...applyBindings(applyLanguage(block, langToUse, blockDefinition), externalData),
+                ...applyLanguage(block, langToUse, blockDefinition),
                 ...getStyles(syncedBlock),
                 ...attrs,
+                ...runtimeProps,
                 metadata,
                 lang: lang || fallbackLang,
               },
