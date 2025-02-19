@@ -2,7 +2,7 @@ import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ChaiBuilderCustom from "./EditorCustom.tsx";
-import { MicrosoftClarity } from "./core/components/MicrosoftClarity";
+import { MicrosoftClarity } from "./__dev/MicrosoftClarity.tsx";
 import "./index.css";
 
 async function enableMocking() {
