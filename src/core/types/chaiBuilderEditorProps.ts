@@ -100,6 +100,7 @@ export interface ChaiBuilderEditorProps {
    * Optional pageId. If not provided, a random pageId will be generated
    */
   pageId?: string;
+  pageExternalData?: Record<string, any>;
   themePresets?: Record<string, Partial<ChaiBuilderThemeValues>>[];
   themeOptions?: ChaiBuilderThemeOptions | ((defaultThemeOptions: ChaiBuilderThemeOptions) => ChaiBuilderThemeOptions);
   theme?: Partial<ChaiBuilderThemeValues>;

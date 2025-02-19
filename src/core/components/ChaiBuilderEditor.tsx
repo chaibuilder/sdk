@@ -10,6 +10,7 @@ import { FEATURE_TOGGLES } from "../../FEATURE_TOGGLES.tsx";
 import { Toaster } from "../../ui";
 import {
   chaiBuilderPropsAtom,
+  chaiPageExternalDataAtom,
   chaiRjsfFieldsAtom,
   chaiRjsfTemplatesAtom,
   chaiRjsfWidgetsAtom,
@@ -69,9 +70,14 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
         "rjsfFields",
         "rjsfWidgets",
         "rjsfTemplates",
+        "pageExternalData",
       ]),
     );
   }, [props]);
+
+  useEffect(() => {
+    builderStore.set(chaiPageExternalDataAtom, props.pageExternalData || {});
+  }, [props.pageExternalData]);
 
   useEffect(() => {
     builderStore.set(chaiRjsfFieldsAtom, props.rjsfFields || {});

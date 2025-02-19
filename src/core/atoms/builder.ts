@@ -1,4 +1,4 @@
-import { atom } from "jotai";
+import { atom, useAtom } from "jotai";
 import { ChaiBuilderEditorProps } from "../types";
 
 export const chaiBuilderPropsAtom = atom<Omit<
@@ -18,3 +18,11 @@ chaiRjsfWidgetsAtom.debugLabel = "chaiRjsfWidgetsAtom";
 
 export const chaiRjsfTemplatesAtom = atom<Record<string, React.ComponentType<any>>>({});
 chaiRjsfTemplatesAtom.debugLabel = "chaiRjsfTemplatesAtom";
+
+export const chaiPageExternalDataAtom = atom<Record<string, any>>({});
+chaiPageExternalDataAtom.debugLabel = "chaiPageExternalDataAtom";
+
+export const usePageExternalData = () => {
+  const [pageExternalData] = useAtom(chaiPageExternalDataAtom);
+  return pageExternalData;
+};

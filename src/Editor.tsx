@@ -36,6 +36,12 @@ function ChaiBuilderDefault() {
 
   return (
     <ChaiBuilderEditor
+      pageExternalData={{
+        title: "My Page",
+        global: {
+          description: "This is a description of my page",
+        },
+      }}
       rjsfWidgets={{ gallery: GalleryWidget }}
       fallbackLang="en"
       languages={["fr"]}
