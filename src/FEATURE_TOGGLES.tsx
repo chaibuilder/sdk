@@ -1,18 +1,14 @@
 /**
- * An object containing feature toggle flags.
- * @typedef {Object.<string, boolean>} FeatureToggles
- */
-
-/**
  * A map of feature toggle flags.
  * @type {FeatureToggles}
  */
 // get value from query string
-function getDNDSupport() {
+function getFromQueryParams(key: string) {
   const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.has("dnd");
+  return urlParams.get("flags")?.includes(key);
 }
 
 export const FEATURE_TOGGLES: { [key: string]: boolean } = {
-  dnd: getDNDSupport(),
+  dnd: getFromQueryParams("dnd"),
+  binding: getFromQueryParams("binding"),
 };
