@@ -20,6 +20,27 @@ export function applyLanguage(_block: ChaiBlock, selectedLang: string, chaiBlock
   return block;
 }
 
+export const applyBinding = (block: ChaiBlock, pageExternalData: Record<string, any>) => {
+  const clonedBlock = cloneDeep(block);
+  forEach(keys(clonedBlock), (key) => {
+    if (isString(clonedBlock[key])) {
+      let value = clonedBlock[key];
+      // check for {{string.key}} and replace with pageExternalData
+      const bindingRegex = /\{\{(.*?)\}\}/g;
+      const matches = value.match(bindingRegex);
+      if (matches) {
+        matches.forEach((match) => {
+          const binding = match.slice(2, -2);
+          const bindingValue = get(pageExternalData, binding, match);
+          value = value.replace(match, bindingValue);
+        });
+      }
+      clonedBlock[key] = value;
+    }
+  });
+  return clonedBlock;
+};
+
 const generateClassNames = memoize((styles: string) => {
   const { baseClasses, classes } = getSplitChaiClasses(styles);
   return twMerge(baseClasses, classes);
