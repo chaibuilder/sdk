@@ -1,10 +1,12 @@
 import { filter, get, isEmpty, isNull, map } from "lodash-es";
 import { createElement, Suspense, useMemo } from "react";
 import { getRegisteredChaiBlock } from "../../../../runtime";
+import { usePageExternalData } from "../../../atoms/builder";
 import { useBlocksStore } from "../../../hooks";
 import { useLanguages } from "../../../hooks/useLanguages";
 import { ChaiBlock } from "../../../types/ChaiBlock";
 import {
+  applyBinding,
   applyLanguage,
   getBlockRuntimeProps,
   getBlockTagAttributes,
@@ -12,25 +14,31 @@ import {
 } from "./NewBlocksRenderHelperts";
 
 const RenderBlock = ({ block, children }: { block: ChaiBlock; children: React.ReactNode }) => {
-  const registeredChaiBlock = getRegisteredChaiBlock(block._type) as any;
+  const registeredChaiBlock = useMemo(() => getRegisteredChaiBlock(block._type) as any, [block._type]);
   const { selectedLang, fallbackLang } = useLanguages();
   const getRuntimePropValues = useBlockRuntimeProps();
+  const pageExternalData = usePageExternalData();
   const Component = get(registeredChaiBlock, "component", null);
   if (isNull(Component)) return null;
-  const blockProps = {
-    "data-block-id": block._id,
-    "data-block-type": block._type,
-  };
+
+  const withBinding = useMemo(
+    () => applyBinding(applyLanguage(block, selectedLang, registeredChaiBlock), pageExternalData),
+    [block, selectedLang, registeredChaiBlock, pageExternalData],
+  );
+  const withBlockAttributes = useMemo(() => getBlockTagAttributes(block), [block]);
+  const withRuntimeProps = useMemo(() => getRuntimePropValues(block._id, getBlockRuntimeProps(block._type)), [block]);
+
   const props = useMemo(
     () => ({
-      blockProps,
+      "data-block-id": block._id,
+      "data-block-type": block._type,
       inBuilder: true,
       lang: selectedLang || fallbackLang,
-      ...applyLanguage(block, selectedLang, registeredChaiBlock),
-      ...getBlockTagAttributes(block),
-      ...getRuntimePropValues(block._id, getBlockRuntimeProps(block._type)),
+      ...withBinding,
+      ...withBlockAttributes,
+      ...withRuntimeProps,
     }),
-    [block, selectedLang, fallbackLang, registeredChaiBlock, getRuntimePropValues],
+    [block, selectedLang, fallbackLang, withBinding, withBlockAttributes, withRuntimeProps],
   );
   return <Suspense>{createElement(Component, { ...props, children })}</Suspense>;
 };
