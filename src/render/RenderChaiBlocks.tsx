@@ -30,6 +30,27 @@ const generateClassNames = memoize((styles: string, classPrefix: string) => {
   return addPrefixToClasses(classes, classPrefix).replace(STYLES_KEY, "").trim();
 });
 
+const applyBinding = (block: ChaiBlock, pageExternalData: Record<string, any>) => {
+  const clonedBlock = cloneDeep(block);
+  forEach(keys(clonedBlock), (key) => {
+    if (isString(clonedBlock[key])) {
+      let value = clonedBlock[key];
+      // check for {{string.key}} and replace with pageExternalData
+      const bindingRegex = /\{\{(.*?)\}\}/g;
+      const matches = value.match(bindingRegex);
+      if (matches) {
+        matches.forEach((match) => {
+          const binding = match.slice(2, -2);
+          const bindingValue = get(pageExternalData, binding, match);
+          value = value.replace(match, bindingValue);
+        });
+      }
+      clonedBlock[key] = value;
+    }
+  });
+  return clonedBlock;
+};
+
 function getElementAttrs(block: ChaiBlock, key: string) {
   const attrs = get(block, `${key}_attrs`, {}) as Record<string, string>;
   const attrsKeys = keys(attrs).join(" ");
@@ -151,7 +172,7 @@ export function RenderChaiBlocks({
                 inBuilder: false,
                 ...syncedBlock,
                 index,
-                ...applyLanguage(block, langToUse, blockDefinition),
+                ...applyBinding(applyLanguage(block, langToUse, blockDefinition), externalData),
                 ...getStyles(syncedBlock),
                 ...attrs,
                 ...runtimeProps,
