@@ -2,6 +2,7 @@ import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ChaiBuilderCustom from "./EditorCustom.tsx";
+import { MicrosoftClarity } from "./core/components/MicrosoftClarity";
 import "./index.css";
 
 async function enableMocking() {
@@ -37,6 +38,7 @@ const router = createBrowserRouter([
 enableMocking().then(() => {
   ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
+      <MicrosoftClarity clarityId={import.meta.env.VITE_CLARITY_ID} />
       <RouterProvider router={router} />
     </React.StrictMode>,
   );
