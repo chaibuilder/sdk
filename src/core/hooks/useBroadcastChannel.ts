@@ -1,5 +1,6 @@
 import { useDebouncedCallback } from "@react-hookz/web";
 import { useEffect } from "react";
+import { useBlocksStoreManager } from "../history/useBlocksStoreManager";
 import { useBlocksStore, useBuilderProp } from "./hooks";
 
 const broadcastChannel = new BroadcastChannel("chaibuilder");
@@ -17,6 +18,7 @@ export const useBroadcastChannel = () => {
 export const useUnmountBroadcastChannel = () => {
   const [, setBlocks] = useBlocksStore();
   const pageId = useBuilderProp("pageId", "chaibuilder_page");
+  const { updateBlocksProps } = useBlocksStoreManager();
   useEffect(() => {
     broadcastChannel.onmessageerror = (event) => {
       console.log("error", event);
@@ -24,6 +26,9 @@ export const useUnmountBroadcastChannel = () => {
     broadcastChannel.onmessage = (event) => {
       if (event.data.type === "blocks-updated" && event.data.pageId === pageId) {
         setBlocks(event.data.blocks);
+      }
+      if (event.data.type === "blocks-props-updated" && event.data.pageId === pageId) {
+        updateBlocksProps(event.data.blocks);
       }
     };
     return () => {
