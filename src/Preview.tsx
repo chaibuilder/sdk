@@ -28,7 +28,21 @@ function Preview() {
     <>
       <style>{themeVars}</style>
       <style>{allStyles}</style>
-      <RenderChaiBlocks blocks={blocks} />
+      <RenderChaiBlocks
+        externalData={{
+          vehicle: {
+            title: "Hyundai i20 Active - 1.0 MPI - 2015",
+            description: "Hyundai i20 Active - 1.0 MPI - 2015, 100000km, Petrol, Manual, 5 doors, 5 seats",
+            price: "$2000",
+            image: "https://picsum.photos/400/200",
+            link: "https://www.google.com",
+          },
+          global: {
+            description: "This is a description of my page",
+          },
+        }}
+        blocks={blocks}
+      />
     </>
   );
 }
