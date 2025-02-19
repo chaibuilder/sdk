@@ -8,6 +8,7 @@ export const useAtomSetterCb = () => {
     useCallback((get, set, id: string) => {
       const blockAtoms = get(pageBlocksAtomsAtom);
       const blockAtom = find(blockAtoms, (atom) => (get(atom) as any)._id === id);
+      if (!blockAtom) return (_props: any) => void 0;
       return (props: any) => set(blockAtom, { ...(get(blockAtom) as any), ...props });
     }, []),
   );
