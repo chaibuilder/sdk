@@ -1,13 +1,14 @@
-import React from "react";
-import { round } from "lodash-es";
 import { ZoomInIcon } from "@radix-ui/react-icons";
-import { UndoRedo } from "./UndoRedo";
+import { round } from "lodash-es";
+import React from "react";
 import { Separator } from "../../../../ui";
-import { DarkMode } from "./DarkMode";
-import { Breakpoints } from "./Breakpoints";
-import { ClearCanvas } from "./ClearCanvas";
 import { useBuilderProp, useCanvasZoom } from "../../../hooks";
 import { AiAssistant } from "./AiAssistant";
+import { Breakpoints } from "./Breakpoints";
+import { ClearCanvas } from "./ClearCanvas";
+import { DarkMode } from "./DarkMode";
+import { DataBinding } from "./DataBinding";
+import { UndoRedo } from "./UndoRedo";
 
 const CanvasTopBar: React.FC = () => {
   const darkModeSupport = useBuilderProp("darkMode", true);
@@ -30,6 +31,7 @@ const CanvasTopBar: React.FC = () => {
         </div>
         <Separator orientation="vertical" />
         <UndoRedo />
+        <DataBinding />
       </div>
       <div className="flex h-full items-center space-x-2">
         <ClearCanvas />

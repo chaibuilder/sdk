@@ -1,7 +1,9 @@
+import { useAtom } from "jotai";
 import { filter, get, isEmpty, isNull, map } from "lodash-es";
 import { createElement, Suspense, useMemo } from "react";
 import { getRegisteredChaiBlock } from "../../../../runtime";
 import { usePageExternalData } from "../../../atoms/builder";
+import { dataBindingActiveAtom } from "../../../atoms/ui";
 import { useBlocksStore } from "../../../hooks";
 import { useLanguages } from "../../../hooks/useLanguages";
 import { ChaiBlock } from "../../../types/ChaiBlock";
@@ -18,12 +20,16 @@ const RenderBlock = ({ block, children }: { block: ChaiBlock; children: React.Re
   const { selectedLang, fallbackLang } = useLanguages();
   const getRuntimePropValues = useBlockRuntimeProps();
   const pageExternalData = usePageExternalData();
+  const [dataBindingActive] = useAtom(dataBindingActiveAtom);
   const Component = get(registeredChaiBlock, "component", null);
   if (isNull(Component)) return null;
 
   const withBinding = useMemo(
-    () => applyBinding(applyLanguage(block, selectedLang, registeredChaiBlock), pageExternalData),
-    [block, selectedLang, registeredChaiBlock, pageExternalData],
+    () =>
+      dataBindingActive
+        ? applyBinding(applyLanguage(block, selectedLang, registeredChaiBlock), pageExternalData)
+        : applyLanguage(block, selectedLang, registeredChaiBlock),
+    [block, selectedLang, registeredChaiBlock, pageExternalData, dataBindingActive],
   );
   const withBlockAttributes = useMemo(() => getBlockTagAttributes(block), [block]);
   const withRuntimeProps = useMemo(() => getRuntimePropValues(block._id, getBlockRuntimeProps(block._type)), [block]);

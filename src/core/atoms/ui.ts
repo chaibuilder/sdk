@@ -1,6 +1,6 @@
 import { atom } from "jotai";
-import { TreeApi } from "react-arborist";
 import { atomWithStorage } from "jotai/utils";
+import { TreeApi } from "react-arborist";
 
 export const readOnlyModeAtom: any = atom<boolean>(false);
 readOnlyModeAtom.debugLabel = "readOnlyModeAtom";
@@ -61,3 +61,6 @@ xShowBlocksAtom.debugLabel = "xShowBlocksAtom";
 
 export const selectedLibraryAtom = atomWithStorage<string | null>("_selectedLibrary", null);
 selectedLibraryAtom.debugLabel = "selectedLibraryAtom";
+
+export const dataBindingActiveAtom = atom(true);
+dataBindingActiveAtom.debugLabel = "dataBindingActiveAtom";
