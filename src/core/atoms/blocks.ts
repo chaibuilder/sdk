@@ -20,7 +20,12 @@ pageBlocksAtomsAtom.debugLabel = "pageBlocksAtomsAtom";
 
 export const blocksAsAtomsAtom = atom((get) => {
   const presentBlocks = get(presentBlocksAtom);
-  return presentBlocks.map((block) => ({ _id: block._id, _parent: block._parent ?? null, atom: atom(block) }));
+  return presentBlocks.map((block) => ({
+    _type: block._type,
+    _id: block._id,
+    _parent: block._parent ?? null,
+    atom: atom(block),
+  }));
 });
 blocksAsAtomsAtom.debugLabel = "blocksAsAtomsAtom";
 

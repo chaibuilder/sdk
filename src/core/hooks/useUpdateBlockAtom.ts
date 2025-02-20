@@ -2,7 +2,7 @@ import { useAtomCallback } from "jotai/utils";
 import { find } from "lodash-es";
 import { useCallback } from "react";
 import { blocksAsAtomsAtom } from "../atoms/blocks";
-
+import { ChaiBlock } from "../types/ChaiBlock.ts";
 export const useUpdateBlockAtom = () => {
   return useAtomCallback(
     useCallback((get, set, { id, props }: { id: string; props: Record<string, any> }) => {
@@ -26,7 +26,7 @@ export const useGetBlockAtomValue = () => {
         console.warn(`Block with id ${id} not found`);
         return;
       }
-      return get(blockAtom.atom);
+      return get(blockAtom.atom) as ChaiBlock;
     }, []),
   );
 };
