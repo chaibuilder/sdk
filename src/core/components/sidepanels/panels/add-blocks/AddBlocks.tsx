@@ -19,8 +19,6 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
   const { t } = useTranslation();
   const [allBlocks] = useBlocksStore();
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedGroup, setSelectedGroup] = useState(groups[0] || "");
-  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [tab] = useAtom(addBlockTabAtom);
   const parentType = find(allBlocks, (block) => block._id === parentId)?._type;
@@ -43,42 +41,10 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
     ? groups.filter((group: string) => reject(filter(values(filteredBlocks), { group }), { hidden: true }).length > 0)
     : groups.filter((group: string) => reject(filter(values(blocks), { group }), { hidden: true }).length > 0);
 
-  // If selected group becomes empty, select the first available group
-  useEffect(() => {
-    if (filteredGroups.length > 0 && !filteredGroups.includes(selectedGroup)) {
-      setSelectedGroup(filteredGroups[0]);
-    }
-  }, [filteredGroups, selectedGroup]);
-
-  // Cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (hoverTimeoutRef.current) {
-        clearTimeout(hoverTimeoutRef.current);
-      }
-    };
-  }, []);
-
-  const handleGroupHover = (group: string) => {
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
-    }
-    hoverTimeoutRef.current = setTimeout(() => {
-      setSelectedGroup(group);
-    }, 300); // 300ms delay before changing group
-  };
-
-  const handleGroupLeave = () => {
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
-      hoverTimeoutRef.current = null;
-    }
-  };
-
   return (
-    <div className="flex h-full w-full flex-col">
+    <div className="mx-auto flex h-full w-full max-w-2xl flex-col">
       {/* Search at top */}
-      <div className="sticky top-0 z-10 bg-background/80 px-2 py-2 backdrop-blur-sm">
+      <div className="sticky top-0 z-10 bg-background/80 px-4 py-2 backdrop-blur-sm">
         <Input
           ref={searchInputRef}
           type="search"
@@ -88,47 +54,23 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
         />
       </div>
 
-      <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar */}
-        <div className="h-full min-h-[350px] w-48 border-r">
-          <ScrollArea className="h-full">
-            <div className="h-full space-y-0.5 py-1">
-              {sortBy(filteredGroups, (group: string) =>
-                CORE_GROUPS.indexOf(group) === -1 ? 99 : CORE_GROUPS.indexOf(group),
-              ).map((group) => (
-                <button
-                  key={group}
-                  onClick={() => setSelectedGroup(group)}
-                  onMouseEnter={() => handleGroupHover(group)}
-                  onMouseLeave={handleGroupLeave}
-                  className={mergeClasses(
-                    "w-full px-4 py-2 text-left text-sm transition-colors",
-                    "hover:bg-accent hover:text-accent-foreground",
-                    selectedGroup === group
-                      ? "bg-accent/60 font-medium text-accent-foreground"
-                      : "text-muted-foreground",
-                  )}>
-                  {capitalize(t(group.toLowerCase()))}
-                </button>
-              ))}
-            </div>
-          </ScrollArea>
-        </div>
-
-        {/* Main Content */}
-        <div className="flex-1">
-          <ScrollArea className="h-full">
-            {filteredGroups.length === 0 && searchTerm ? (
-              <div className="flex flex-col items-center justify-center p-8 text-center text-muted-foreground">
-                <p>
-                  {t("No blocks found matching")} "{searchTerm}"
-                </p>
-              </div>
-            ) : (
-              <div className="p-4">
+      <ScrollArea className="h-full">
+        {filteredGroups.length === 0 && searchTerm ? (
+          <div className="flex flex-col items-center justify-center p-8 text-center text-muted-foreground">
+            <p>
+              {t("No blocks found matching")} "{searchTerm}"
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-6 p-4">
+            {sortBy(filteredGroups, (group: string) =>
+              CORE_GROUPS.indexOf(group) === -1 ? 99 : CORE_GROUPS.indexOf(group),
+            ).map((group) => (
+              <div key={group} className="space-y-3">
+                <h3 className="px-1 text-sm font-medium">{capitalize(t(group.toLowerCase()))}</h3>
                 <div className={"grid gap-2 " + gridCols}>
                   {React.Children.toArray(
-                    reject(filter(values(filteredBlocks), { group: selectedGroup }), { hidden: true }).map((block) => (
+                    reject(filter(values(filteredBlocks), { group }), { hidden: true }).map((block) => (
                       <CoreBlock
                         parentId={parentId}
                         position={position}
@@ -141,10 +83,10 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
                   )}
                 </div>
               </div>
-            )}
-          </ScrollArea>
-        </div>
-      </div>
+            ))}
+          </div>
+        )}
+      </ScrollArea>
     </div>
   );
 };
