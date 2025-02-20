@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import { filter, get, isEmpty, isNull, map } from "lodash-es";
+import { filter, get, has, isEmpty, isFunction, isNull, map } from "lodash-es";
 import { createElement, Suspense, useMemo } from "react";
 import { getRegisteredChaiBlock } from "../../../../runtime";
 import { usePageExternalData } from "../../../atoms/builder";
@@ -35,7 +35,7 @@ const BlockRenderer = ({ block, children }: { block: ChaiBlock; children: React.
   const blockAttributesProps = useMemo(() => getBlockTagAttributes(block), [block]);
   const runtimeProps = useMemo(() => getRuntimePropValues(block._id, getBlockRuntimeProps(block._type)), [block]);
   const dataProviderProps = useMemo(() => {
-    if (!registeredChaiBlock.dataProvider) return {};
+    if (!has(registeredChaiBlock, "dataProvider") || !isFunction(registeredChaiBlock.dataProvider)) return {};
     return registeredChaiBlock.dataProvider(block, selectedLang);
   }, [block, selectedLang, registeredChaiBlock]);
 
