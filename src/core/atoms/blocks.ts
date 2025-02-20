@@ -18,6 +18,12 @@ treeDSBlocks.debugLabel = "treeDSBlocks";
 export const pageBlocksAtomsAtom = splitAtom(presentBlocksAtom);
 pageBlocksAtomsAtom.debugLabel = "pageBlocksAtomsAtom";
 
+export const blocksAsAtomsAtom = atom((get) => {
+  const presentBlocks = get(presentBlocksAtom);
+  return presentBlocks.map((block) => ({ _id: block._id, _parent: block._parent ?? null, atom: atom(block) }));
+});
+blocksAsAtomsAtom.debugLabel = "blocksAsAtomsAtom";
+
 export const builderActivePageAtom = atom<string>("");
 builderActivePageAtom.debugLabel = "builderActivePageAtom";
 

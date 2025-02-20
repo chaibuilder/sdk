@@ -1,8 +1,7 @@
 import { omit } from "lodash-es";
-import { useCallback } from "react";
-import { useAtomSetterCb } from "../hooks/useAtomSetterCb.ts";
 import { useBroadcastChannel } from "../hooks/useBroadcastChannel.ts";
 import { removeNestedBlocks } from "../hooks/useRemoveBlocks.ts";
+import { useUpdateBlockAtom } from "../hooks/useUpdateBlockAtom.ts";
 import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { insertBlocksAtPosition } from "./InsertBlocksAtPosition.ts";
 import { moveBlocksWithChildren } from "./moveBlocksWithChildren.ts";
@@ -11,14 +10,7 @@ import { useBlocksStore } from "./useBlocksStoreUndoableActions.ts";
 export const useBlocksStoreManager = () => {
   const [, setBlocks] = useBlocksStore();
   const { postMessage } = useBroadcastChannel();
-  const atomSetterCb = useAtomSetterCb();
-  const updateAtomProps = useCallback(
-    (id: string, props: Record<string, any>) => {
-      const setter = atomSetterCb(id);
-      setter({ ...props });
-    },
-    [atomSetterCb],
-  );
+  const updateBlockAtom = useUpdateBlockAtom();
   return {
     setNewBlocks: (newBlocks: ChaiBlock[]) => {
       setBlocks(newBlocks);
@@ -51,7 +43,7 @@ export const useBlocksStoreManager = () => {
     updateBlocksProps: (blocks: Partial<ChaiBlock>[]) => {
       blocks.forEach((block) => {
         const updatedBlock = omit(block, "_id");
-        updateAtomProps(block._id, updatedBlock);
+        updateBlockAtom({ id: block._id, props: updatedBlock });
       });
       postMessage({ type: "blocks-props-updated", blocks });
     },
