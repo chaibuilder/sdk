@@ -10,5 +10,4 @@ function getFromQueryParams(key: string) {
 
 export const FEATURE_TOGGLES: { [key: string]: boolean } = {
   dnd: getFromQueryParams("dnd"),
-  binding: getFromQueryParams("binding"),
 };
