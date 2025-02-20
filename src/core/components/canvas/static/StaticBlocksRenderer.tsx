@@ -1,9 +1,9 @@
 import { isEmpty } from "lodash-es";
 import { useBlocksStore } from "../../../history/useBlocksStoreUndoableActions.ts";
-import { NewBlocksRenderer } from "./NewBlocksRenderer";
+import { PageBlocksRenderer } from "./NewBlocksRenderer";
 
 export const StaticBlocksRenderer = () => {
   const [blocks] = useBlocksStore();
-  const blocksHtml = isEmpty(blocks) ? null : <NewBlocksRenderer />;
+  const blocksHtml = isEmpty(blocks) ? null : <PageBlocksRenderer />;
   return <>{blocksHtml}</>;
 };

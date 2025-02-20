@@ -18,7 +18,8 @@ const Component = (props: ChaiBlockComponentProps<GlobalBlockProps>) => {
       </div>
     );
   }
-  return React.createElement("span", { ...blockProps }, children);
+  console.log("global block", blockProps);
+  return React.createElement("p", { ...blockProps }, children);
 };
 
 const Config = {
@@ -33,9 +34,7 @@ const Config = {
         type: "string",
         title: "Global Block",
         default: "",
-        ui: {
-          "ui:widget": "hidden",
-        },
+        ui: { "ui:widget": "hidden" },
       },
     },
   }),
