@@ -20,6 +20,7 @@ export type CollectionListProps = {
   wrapperStyles: ChaiStyles;
   listStyles: ChaiStyles;
   itemStyles: ChaiStyles;
+  binding: string;
 };
 
 type ServerProps = {
@@ -27,10 +28,11 @@ type ServerProps = {
 };
 
 const Component = (props: ChaiBlockComponentProps<CollectionListProps & ServerProps>) => {
-  const { title1, blockProps, wrapperStyles, listStyles, itemStyles, items, tag, showTitle } = props;
+  const { title1, blockProps, wrapperStyles, listStyles, itemStyles, items, tag, showTitle, binding } = props;
   return (
     <div {...blockProps} {...wrapperStyles}>
       {showTitle && <h1>{title1}</h1>}
+      <p>Binding: {binding}</p>
       <p>Block Prop: {tag}</p>
       <div {...listStyles}>{items?.map((item) => <div {...itemStyles}>{JSON.stringify(item)}</div>)}</div>
     </div>
@@ -43,7 +45,9 @@ const Config = {
   category: "core",
   group: "basic",
   dataProvider: () => {
+    console.log("dataProvider");
     return {
+      binding: "Collection List - Data Binding",
       items: [
         { id: 1, name: "Item 1" },
         { id: 2, name: "Item 2" },

@@ -18,8 +18,7 @@ const Component = (props: ChaiBlockComponentProps<GlobalBlockProps>) => {
       </div>
     );
   }
-  console.log("global block", blockProps);
-  return React.createElement("p", { ...blockProps }, children);
+  return React.createElement("span", { ...blockProps }, children);
 };
 
 const Config = {
