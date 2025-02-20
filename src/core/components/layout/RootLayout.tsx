@@ -107,7 +107,9 @@ const RootLayout: ComponentType = () => {
               <div className="flex flex-col">
                 {sideBarBottomComponents?.map((sidebarComponent, index) => {
                   return (
-                    <Suspense fallback={<div />}>{React.createElement(sidebarComponent, { key: index })}</Suspense>
+                    <Suspense key={`sidebar-component-${index}`} fallback={<div />}>
+                      {React.createElement(sidebarComponent, {})}
+                    </Suspense>
                   );
                 })}
               </div>
