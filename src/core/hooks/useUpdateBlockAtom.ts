@@ -16,3 +16,17 @@ export const useUpdateBlockAtom = () => {
     }, []),
   );
 };
+
+export const useGetBlockAtomValue = () => {
+  return useAtomCallback(
+    useCallback((get, _set, id: string) => {
+      const blockAsAtoms = get(blocksAsAtomsAtom);
+      const blockAtom = find(blockAsAtoms, (b) => b._id === id);
+      if (!blockAtom) {
+        console.warn(`Block with id ${id} not found`);
+        return;
+      }
+      return get(blockAtom.atom);
+    }, []),
+  );
+};

@@ -1,16 +1,12 @@
 import { useAtom } from "jotai";
-import { find, first, isEmpty, omit, throttle } from "lodash-es";
+import { first, isEmpty, omit, throttle } from "lodash-es";
 import React, { useCallback, useEffect } from "react";
 import { Quill } from "react-quill";
 import { inlineEditingActiveAtom, treeRefAtom } from "../../../atoms/ui.ts";
 import { useFrame } from "../../../frame";
-import {
-  useBlockHighlight,
-  useBlocksStore,
-  useSelectedBlockIds,
-  useSelectedStylingBlocks,
-  useUpdateBlocksProps,
-} from "../../../hooks";
+import { useBlockHighlight, useSelectedBlockIds, useSelectedStylingBlocks, useUpdateBlocksProps } from "../../../hooks";
+import { useGetBlockAtomValue } from "../../../hooks/useUpdateBlockAtom.ts";
+import { ChaiBlock } from "../../../types/ChaiBlock.ts";
 import { useDnd } from "../dnd/useDnd.ts";
 
 function getTargetedBlock(target) {
@@ -54,7 +50,7 @@ const useHandleCanvasDblClick = () => {
   const updateContent = useUpdateBlocksProps();
   const [editingBlockId, setEditingBlockId] = useAtom(inlineEditingActiveAtom);
   const { clearHighlight } = useBlockHighlight();
-  const [blocks] = useBlocksStore();
+  const getBlockAtomValue = useGetBlockAtomValue();
   return useCallback(
     (e) => {
       if (editingBlockId) return;
@@ -64,7 +60,7 @@ const useHandleCanvasDblClick = () => {
         return;
       }
       const blockId = chaiBlock.getAttribute("data-block-id");
-      const content = find(blocks, { _id: blockId })?.content;
+      const content = (getBlockAtomValue(blockId) as ChaiBlock)["content"];
       const newBlock = chaiBlock.cloneNode(true) as HTMLElement;
       newBlock.innerHTML = content;
 
@@ -103,7 +99,7 @@ const useHandleCanvasDblClick = () => {
       newBlock.querySelector(".ql-clipboard")?.remove();
       setEditingBlockId(chaiBlock.getAttribute("data-block-id"));
     },
-    [editingBlockId, blocks, setEditingBlockId, updateContent, clearHighlight],
+    [editingBlockId, setEditingBlockId, updateContent, clearHighlight],
   );
 };
 
