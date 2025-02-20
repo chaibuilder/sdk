@@ -1,4 +1,5 @@
 import { omit } from "lodash-es";
+import { useCallback } from "react";
 import { useAtomSetterCb } from "../hooks/useAtomSetterCb.ts";
 import { useBroadcastChannel } from "../hooks/useBroadcastChannel.ts";
 import { removeNestedBlocks } from "../hooks/useRemoveBlocks.ts";
@@ -11,6 +12,13 @@ export const useBlocksStoreManager = () => {
   const [, setBlocks] = useBlocksStore();
   const { postMessage } = useBroadcastChannel();
   const atomSetterCb = useAtomSetterCb();
+  const updateAtomProps = useCallback(
+    (id: string, props: Record<string, any>) => {
+      const setter = atomSetterCb(id);
+      setter({ ...props });
+    },
+    [atomSetterCb],
+  );
   return {
     setNewBlocks: (newBlocks: ChaiBlock[]) => {
       setBlocks(newBlocks);
@@ -42,7 +50,8 @@ export const useBlocksStoreManager = () => {
     },
     updateBlocksProps: (blocks: Partial<ChaiBlock>[]) => {
       blocks.forEach((block) => {
-        atomSetterCb(block._id)({ ...block, ...omit(block, "_id") });
+        const updatedBlock = omit(block, "_id");
+        updateAtomProps(block._id, updatedBlock);
       });
       postMessage({ type: "blocks-props-updated", blocks });
     },
