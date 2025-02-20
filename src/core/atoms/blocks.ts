@@ -15,7 +15,7 @@ export const treeDSBlocks = atom((get) => {
 });
 treeDSBlocks.debugLabel = "treeDSBlocks";
 
-export const pageBlocksAtomsAtom = splitAtom(presentBlocksAtom, (block) => block._id);
+export const pageBlocksAtomsAtom = splitAtom(presentBlocksAtom);
 pageBlocksAtomsAtom.debugLabel = "pageBlocksAtomsAtom";
 
 export const builderActivePageAtom = atom<string>("");
