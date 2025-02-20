@@ -1,4 +1,4 @@
-import { cloneDeep, find, forEach, get, includes, isEmpty, isString, keys, memoize } from "lodash-es";
+import { cloneDeep, find, forEach, get, includes, isEmpty, isString, keys, memoize, startsWith } from "lodash-es";
 import { useCallback } from "react";
 import { twMerge } from "tailwind-merge";
 import { getRegisteredChaiBlock } from "../../../../runtime";
@@ -23,7 +23,7 @@ export function applyLanguage(_block: ChaiBlock, selectedLang: string, chaiBlock
 export const applyBinding = (block: ChaiBlock, pageExternalData: Record<string, any>) => {
   const clonedBlock = cloneDeep(block);
   forEach(keys(clonedBlock), (key) => {
-    if (isString(clonedBlock[key])) {
+    if (isString(clonedBlock[key]) && !startsWith(key, "_")) {
       let value = clonedBlock[key];
       // check for {{string.key}} and replace with pageExternalData
       const bindingRegex = /\{\{(.*?)\}\}/g;

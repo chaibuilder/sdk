@@ -46,6 +46,8 @@ function ChaiBuilderDefault() {
           link: "https://www.google.com",
         },
         global: {
+          siteName: "My Site",
+          twitterHandle: "@my-twitter-handle",
           description: "This is a description of my page",
         },
       }}
