@@ -1,10 +1,16 @@
 import { useAtom } from "jotai";
-import { first, isEmpty, omit, throttle } from "lodash-es";
-import React, { useEffect } from "react";
+import { find, first, isEmpty, omit, throttle } from "lodash-es";
+import React, { useCallback, useEffect } from "react";
 import { Quill } from "react-quill";
 import { inlineEditingActiveAtom, treeRefAtom } from "../../../atoms/ui.ts";
 import { useFrame } from "../../../frame";
-import { useBlockHighlight, useSelectedBlockIds, useSelectedStylingBlocks, useUpdateBlocksProps } from "../../../hooks";
+import {
+  useBlockHighlight,
+  useBlocksStore,
+  useSelectedBlockIds,
+  useSelectedStylingBlocks,
+  useUpdateBlocksProps,
+} from "../../../hooks";
 import { useDnd } from "../dnd/useDnd.ts";
 
 function getTargetedBlock(target) {
@@ -48,51 +54,57 @@ const useHandleCanvasDblClick = () => {
   const updateContent = useUpdateBlocksProps();
   const [editingBlockId, setEditingBlockId] = useAtom(inlineEditingActiveAtom);
   const { clearHighlight } = useBlockHighlight();
-
-  return (e) => {
-    if (editingBlockId) return;
-    const chaiBlock: HTMLElement = getTargetedBlock(e.target);
-    const blockType = chaiBlock.getAttribute("data-block-type");
-    if (!blockType || !INLINE_EDITABLE_BLOCKS.includes(blockType)) {
-      return;
-    }
-    const newBlock = chaiBlock.cloneNode(true) as HTMLElement;
-
-    chaiBlock.style.display = "none";
-
-    Array.from(newBlock.attributes).forEach((attr) => {
-      if (attr.name !== "class") newBlock.removeAttribute(attr.name);
-    });
-    if (blockType === "Text") {
-      newBlock.style.display = "inline-block";
-    }
-    chaiBlock.parentNode.insertBefore(newBlock, chaiBlock.nextSibling);
-    const quill = new Quill(newBlock, { placeholder: "Type here..." });
-    function blurListener() {
-      const content = quill.getText(0, quill.getLength());
-      updateContent([chaiBlock.getAttribute("data-block-id")], { content });
-      chaiBlock.removeAttribute("style");
-      newBlock.removeEventListener("blur", blurListener, true);
-      destroyQuill(quill);
-      setEditingBlockId("");
-      clearHighlight();
-      newBlock.remove();
-    }
-    newBlock.addEventListener("blur", blurListener, true);
-    newBlock.addEventListener("click", (e) => {
-      e.stopPropagation();
-    });
-    newBlock.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === "Escape") {
-        blurListener();
+  const [blocks] = useBlocksStore();
+  return useCallback(
+    (e) => {
+      if (editingBlockId) return;
+      const chaiBlock: HTMLElement = getTargetedBlock(e.target);
+      const blockType = chaiBlock.getAttribute("data-block-type");
+      if (!blockType || !INLINE_EDITABLE_BLOCKS.includes(blockType)) {
+        return;
       }
-    });
+      const blockId = chaiBlock.getAttribute("data-block-id");
+      const content = find(blocks, { _id: blockId })?.content;
+      const newBlock = chaiBlock.cloneNode(true) as HTMLElement;
+      newBlock.innerHTML = content;
 
-    quill.focus();
-    // remove .ql-clipboard element from newBlock
-    newBlock.querySelector(".ql-clipboard")?.remove();
-    setEditingBlockId(chaiBlock.getAttribute("data-block-id"));
-  };
+      chaiBlock.style.display = "none";
+
+      Array.from(newBlock.attributes).forEach((attr) => {
+        if (attr.name !== "class") newBlock.removeAttribute(attr.name);
+      });
+      if (blockType === "Text") {
+        newBlock.style.display = "inline-block";
+      }
+      chaiBlock.parentNode.insertBefore(newBlock, chaiBlock.nextSibling);
+      const quill = new Quill(newBlock, { placeholder: "Type here..." });
+      function blurListener() {
+        const content = quill.getText(0, quill.getLength());
+        updateContent([blockId], { content });
+        chaiBlock.removeAttribute("style");
+        newBlock.removeEventListener("blur", blurListener, true);
+        destroyQuill(quill);
+        setEditingBlockId("");
+        clearHighlight();
+        newBlock.remove();
+      }
+      newBlock.addEventListener("blur", blurListener, true);
+      newBlock.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
+      newBlock.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === "Escape") {
+          blurListener();
+        }
+      });
+
+      quill.focus();
+      // remove .ql-clipboard element from newBlock
+      newBlock.querySelector(".ql-clipboard")?.remove();
+      setEditingBlockId(chaiBlock.getAttribute("data-block-id"));
+    },
+    [editingBlockId, blocks, setEditingBlockId, updateContent, clearHighlight],
+  );
 };
 
 const useHandleCanvasClick = () => {
