@@ -7,7 +7,7 @@ import { useBlocksStore } from "../../../hooks";
 import { getSplitChaiClasses } from "../../../hooks/getSplitClasses";
 import { ChaiBlock } from "../../../types/ChaiBlock";
 
-export function applyLanguage(_block: ChaiBlock, selectedLang: string, chaiBlock) {
+export function applyLanguage(_block: ChaiBlock, selectedLang: string, chaiBlock: any) {
   const i18nProps = get(chaiBlock, "i18nProps", []);
   if (isEmpty(selectedLang) || isEmpty(i18nProps)) return _block;
 
