@@ -1,5 +1,7 @@
 import { moveBlocksWithChildren } from "./moveBlocksWithChildren.ts";
 
+const mockUpdateBlockAtom = () => {};
+
 test("Move to top level", () => {
   const blocks = [
     { _id: "1", _parent: undefined },
@@ -14,7 +16,7 @@ test("Move to top level", () => {
   const newParent = undefined;
   const position = 1;
 
-  const updatedBlocks = moveBlocksWithChildren(blocks, idsToMove[0], newParent, position);
+  const updatedBlocks = moveBlocksWithChildren(blocks, idsToMove[0], newParent, position, mockUpdateBlockAtom);
   expect(updatedBlocks).toHaveLength(6);
 });
 
@@ -32,7 +34,7 @@ test("Move to another parent", () => {
   const newParent = "3";
   const position = 0;
 
-  const updatedBlocks = moveBlocksWithChildren(blocks, idsToMove[0], newParent, position);
+  const updatedBlocks = moveBlocksWithChildren(blocks, idsToMove[0], newParent, position, mockUpdateBlockAtom);
   expect(updatedBlocks).toHaveLength(6);
 });
 
@@ -50,7 +52,7 @@ test("Move block with children", () => {
   const newParent = undefined;
   const position = 0;
 
-  const updatedBlocks = moveBlocksWithChildren(blocks, idsToMove[0], newParent, position);
+  const updatedBlocks = moveBlocksWithChildren(blocks, idsToMove[0], newParent, position, mockUpdateBlockAtom);
   expect(updatedBlocks).toHaveLength(6);
   expect(updatedBlocks[0]._id).toBe("2");
   expect(updatedBlocks[0]._parent).toBe(null);
@@ -71,8 +73,8 @@ test("Move multiple blocks", () => {
   const newParent = undefined;
   const position = 0;
 
-  let updatedBlocks = moveBlocksWithChildren(blocks, idsToMove[0], newParent, position);
-  updatedBlocks = moveBlocksWithChildren(updatedBlocks, idsToMove[1], newParent, position);
+  let updatedBlocks = moveBlocksWithChildren(blocks, idsToMove[0], newParent, position, mockUpdateBlockAtom);
+  updatedBlocks = moveBlocksWithChildren(updatedBlocks, idsToMove[1], newParent, position, mockUpdateBlockAtom);
   expect(updatedBlocks).toHaveLength(7);
 });
 
@@ -89,7 +91,7 @@ test("No blocks to move", () => {
   const newParent = undefined;
   const position = 0;
 
-  const updatedBlocks = moveBlocksWithChildren(blocks, "", newParent, position);
+  const updatedBlocks = moveBlocksWithChildren(blocks, "", newParent, position, mockUpdateBlockAtom);
 
   expect(updatedBlocks).toEqual([
     { _id: "1", _parent: undefined },

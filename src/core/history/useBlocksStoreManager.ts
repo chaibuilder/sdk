@@ -35,7 +35,7 @@ export const useBlocksStoreManager = () => {
       setBlocks((prevBlocks) => {
         let blocks = prevBlocks;
         for (let i = 0; i < blockIds.length; i++) {
-          blocks = moveBlocksWithChildren(blocks, blockIds[i], newParent, position);
+          blocks = moveBlocksWithChildren(blocks, blockIds[i], newParent, position, updateBlockAtom);
         }
         postMessage({ type: "blocks-updated", blocks });
         return blocks;

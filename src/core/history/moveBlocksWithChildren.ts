@@ -1,6 +1,6 @@
-import { ChaiBlock } from "../types/ChaiBlock.ts";
-import { getBlocksTree } from "../functions/split-blocks.ts";
 import TreeModel from "tree-model";
+import { getBlocksTree } from "../functions/split-blocks.ts";
+import { ChaiBlock } from "../types/ChaiBlock.ts";
 
 // Convert the tree back to a flat array
 function flattenTree(node: TreeModel.Node<Partial<ChaiBlock>>): Partial<ChaiBlock>[] {
@@ -49,6 +49,7 @@ function moveBlocksWithChildren(
   idToMove: string,
   newParentId: string | undefined | null,
   newPosition: number,
+  updateBlockAtom: (block: Partial<ChaiBlock>) => void,
 ): Partial<ChaiBlock>[] {
   if (!idToMove) return _blocks;
   newParentId = newParentId || "root";
@@ -59,7 +60,10 @@ function moveBlocksWithChildren(
     const newBlocks = flattenTree(root);
     const movedBlock = newBlocks.find((block) => block._id === idToMove);
 
-    if (movedBlock) movedBlock._parent = newParentId === "root" ? null : newParentId;
+    if (movedBlock) {
+      movedBlock._parent = newParentId === "root" ? null : newParentId;
+      updateBlockAtom({ id: movedBlock._id, props: { _parent: movedBlock._parent } });
+    }
     newBlocks.shift();
     return newBlocks;
   }
