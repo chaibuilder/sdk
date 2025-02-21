@@ -1,5 +1,5 @@
+import { ChaiBuilderBlockWithAtom } from "../atoms/blocks.ts";
 import { insertBlocksAtPosition } from "./InsertBlocksAtPosition.ts";
-
 const BLOCK_1 = { _id: "1" };
 
 const BLOCK_2 = { _id: "2" };
@@ -14,24 +14,37 @@ const BLOCK_3 = { _id: "3" };
 
 describe("insertBlocksAtPosition", () => {
   test("insertBlocksAtPosition", () => {
-    expect(insertBlocksAtPosition([], [BLOCK_1])).toEqual([BLOCK_1]);
-    expect(insertBlocksAtPosition([BLOCK_1], [BLOCK_2, BLOCK_2_1])).toEqual([BLOCK_1, BLOCK_2, BLOCK_2_1]);
+    expect(insertBlocksAtPosition([], [BLOCK_1] as ChaiBuilderBlockWithAtom[])).toEqual([BLOCK_1]);
+    expect(
+      insertBlocksAtPosition(
+        [BLOCK_1] as ChaiBuilderBlockWithAtom[],
+        [BLOCK_2, BLOCK_2_1] as ChaiBuilderBlockWithAtom[],
+      ),
+    ).toEqual([BLOCK_1, BLOCK_2, BLOCK_2_1]);
 
-    expect(insertBlocksAtPosition([BLOCK_1, ...BLOCK_2_ALL], [BLOCK_3], "2", 1)).toEqual([
-      BLOCK_1,
-      BLOCK_2,
-      BLOCK_2_1,
-      BLOCK_3,
-      BLOCK_2_2,
-    ]);
+    expect(
+      insertBlocksAtPosition(
+        [BLOCK_1, ...BLOCK_2_ALL] as ChaiBuilderBlockWithAtom[],
+        [BLOCK_3] as ChaiBuilderBlockWithAtom[],
+        "2",
+        1,
+      ),
+    ).toEqual([BLOCK_1, BLOCK_2, BLOCK_2_1, BLOCK_3, BLOCK_2_2]);
 
-    expect(insertBlocksAtPosition([BLOCK_1, BLOCK_2], [BLOCK_3], undefined, 1)).toEqual([BLOCK_1, BLOCK_3, BLOCK_2]);
-    expect(insertBlocksAtPosition([BLOCK_1, ...BLOCK_2_ALL], [BLOCK_3], "2")).toEqual([
-      BLOCK_1,
-      BLOCK_2,
-      BLOCK_2_1,
-      BLOCK_2_2,
-      BLOCK_3,
-    ]);
+    expect(
+      insertBlocksAtPosition(
+        [BLOCK_1, BLOCK_2] as ChaiBuilderBlockWithAtom[],
+        [BLOCK_3] as ChaiBuilderBlockWithAtom[],
+        undefined,
+        1,
+      ),
+    ).toEqual([BLOCK_1, BLOCK_3, BLOCK_2]);
+    expect(
+      insertBlocksAtPosition(
+        [BLOCK_1, ...BLOCK_2_ALL] as ChaiBuilderBlockWithAtom[],
+        [BLOCK_3] as ChaiBuilderBlockWithAtom[],
+        "2",
+      ),
+    ).toEqual([BLOCK_1, BLOCK_2, BLOCK_2_1, BLOCK_2_2, BLOCK_3]);
   });
 });

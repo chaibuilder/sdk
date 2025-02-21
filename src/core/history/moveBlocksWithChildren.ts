@@ -1,5 +1,5 @@
 import TreeModel from "tree-model";
-import { ChaiBuilderBlockWithAtom } from "../atoms/blocks.ts";
+import { ChaiBuilderBlockWithAtom, convertToBlocksAtoms } from "../atoms/blocks.ts";
 import { getBlocksTree } from "../functions/split-blocks.ts";
 import { ChaiBlock } from "../types/ChaiBlock.ts";
 
@@ -66,7 +66,7 @@ function moveBlocksWithChildren(
       updateBlockAtom({ id: movedBlock._id, props: { _parent: movedBlock._parent } });
     }
     newBlocks.shift();
-    return newBlocks;
+    return convertToBlocksAtoms(newBlocks as ChaiBlock[]);
   }
   return _blocks;
 }
