@@ -2,6 +2,18 @@ import { atom } from "jotai";
 import { splitAtom } from "jotai/utils";
 import { filter, has } from "lodash-es";
 import { convertToBlocksTree } from "../functions/Blocks.ts";
+import { ChaiBlock } from "../types/ChaiBlock.ts";
+export const pageBlocksAtom = atom([]);
+pageBlocksAtom.debugLabel = "pageBlocksAtom";
+
+export const convertToBlocksAtoms = (blocks: ChaiBlock[]) => {
+  return blocks.map((block) => ({
+    _type: block._type,
+    _id: block._id,
+    _parent: block._parent ?? null,
+    _atom: atom(block),
+  }));
+};
 
 // derived atoms
 // @ts-ignore

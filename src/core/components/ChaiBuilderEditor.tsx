@@ -8,6 +8,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import "react-quill/dist/quill.snow.css";
 import { FEATURE_TOGGLES } from "../../FEATURE_TOGGLES.tsx";
 import { Toaster } from "../../ui";
+import { convertToBlocksAtoms } from "../atoms/blocks.ts";
 import {
   chaiBuilderPropsAtom,
   chaiPageExternalDataAtom,
@@ -32,7 +33,6 @@ import { FallbackError } from "./FallbackError.tsx";
 import { RootLayout } from "./layout/RootLayout.tsx";
 import { PreviewScreen } from "./PreviewScreen.tsx";
 import { SmallScreenMessage } from "./SmallScreenMessage.tsx";
-
 const useAutoSave = () => {
   const { savePage } = useSavePage();
   const autoSaveSupported = useBuilderProp("autoSaveSupport", true);
@@ -89,9 +89,10 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
     // Added delay to allow the pageId to be set
     setTimeout(() => {
       const withDefaults = syncBlocksWithDefaults(props.blocks || []);
-      // @ts-ignore
-      setAllBlocks(withDefaults);
+      setAllBlocks(convertToBlocksAtoms(withDefaults));
+
       if (withDefaults && withDefaults.length > 0) {
+        //TODO: Remove this once we have a better way to handle the blocks
         postMessage({ type: "blocks-updated", blocks: withDefaults });
       }
       reset();

@@ -1,11 +1,11 @@
-import { atom, Atom, useAtom } from "jotai";
+import { Atom, useAtom } from "jotai";
 import { filter, get, has, isEmpty, isFunction, isNull, map } from "lodash-es";
 import { createElement, Suspense, useMemo } from "react";
 import { getRegisteredChaiBlock } from "../../../../runtime";
-import { blocksAsAtomsAtom } from "../../../atoms/blocks";
+import { convertToBlocksAtoms } from "../../../atoms/blocks";
 import { usePageExternalData } from "../../../atoms/builder";
 import { dataBindingActiveAtom, inlineEditingActiveAtom } from "../../../atoms/ui";
-import { useGlobalBlocksStore, useHiddenBlockIds } from "../../../hooks";
+import { useBlocksStore, useGlobalBlocksStore, useHiddenBlockIds } from "../../../hooks";
 import { useLanguages } from "../../../hooks/useLanguages";
 import { ChaiBlock } from "../../../types/ChaiBlock";
 import {
@@ -65,10 +65,7 @@ const GlobalBlocksRenderer = ({ blockAtom }: { blockAtom: Atom<ChaiBlock> }) => 
   const { getGlobalBlocks } = useGlobalBlocksStore();
   const [block] = useAtom(blockAtom);
   const globalBlocks = getGlobalBlocks(block);
-  const globalBlocksAtoms = useMemo(
-    () => globalBlocks.map((block) => ({ _id: block._id, _parent: block._parent ?? null, atom: atom(block) })),
-    [globalBlocks],
-  );
+  const globalBlocksAtoms = useMemo(() => convertToBlocksAtoms(globalBlocks), [globalBlocks]);
   return <BlocksRenderer blocks={globalBlocksAtoms} filterFn={(block) => isEmpty(block._parent)} />;
 };
 
@@ -76,7 +73,7 @@ const BlocksRenderer = ({
   blocks,
   filterFn,
 }: {
-  blocks: { _parent: string | null; atom: Atom<ChaiBlock> }[];
+  blocks: { _id: string; _parent: string | null; _atom: Atom<ChaiBlock>; _type: string }[];
   filterFn: (block: ChaiBlock) => boolean;
 }) => {
   const filteredBlocks = useMemo(() => filter(blocks, filterFn), [blocks, filterFn]);
@@ -84,9 +81,9 @@ const BlocksRenderer = ({
 
   return map(filteredBlocks, (block) => {
     return (
-      <BlockRenderer key={block._id} blockAtom={block.atom}>
+      <BlockRenderer key={block._id} blockAtom={block._atom}>
         {block._type === "GlobalBlock" ? (
-          <GlobalBlocksRenderer blockAtom={block.atom} />
+          <GlobalBlocksRenderer blockAtom={block._atom} />
         ) : hasChildren(block._id) ? (
           <BlocksRenderer blocks={blocks} filterFn={(b) => b._parent === block._id} />
         ) : null}
@@ -96,6 +93,6 @@ const BlocksRenderer = ({
 };
 
 export const PageBlocksRenderer = () => {
-  const [blocks] = useAtom(blocksAsAtomsAtom);
+  const [blocks] = useBlocksStore();
   return <BlocksRenderer blocks={blocks} filterFn={(block) => isEmpty(block._parent)} />;
 };
