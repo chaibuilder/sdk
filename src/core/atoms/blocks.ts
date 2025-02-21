@@ -1,5 +1,4 @@
 import { atom } from "jotai";
-import { splitAtom } from "jotai/utils";
 import { filter, has } from "lodash-es";
 import { convertToBlocksTree } from "../functions/Blocks.ts";
 import { ChaiBlock } from "../types/ChaiBlock.ts";
@@ -16,31 +15,12 @@ export const convertToBlocksAtoms = (blocks: ChaiBlock[]) => {
   }));
 };
 
-// derived atoms
-// @ts-ignore
-export const presentBlocksAtom = atom([]);
-presentBlocksAtom.debugLabel = "presentBlocksAtom";
-
 //TODO: Need a better name for this atom. Also should be a custom hook
 export const treeDSBlocks = atom((get) => {
   const presentBlocks = get(pageBlocksAtom).map((block) => get(block._atom));
   return convertToBlocksTree([...presentBlocks]);
 });
 treeDSBlocks.debugLabel = "treeDSBlocks";
-
-export const pageBlocksAtomsAtom = splitAtom(presentBlocksAtom);
-pageBlocksAtomsAtom.debugLabel = "pageBlocksAtomsAtom";
-
-export const blocksAsAtomsAtom = atom((get) => {
-  const presentBlocks = get(presentBlocksAtom);
-  return presentBlocks.map((block) => ({
-    _type: block._type,
-    _id: block._id,
-    _parent: block._parent ?? null,
-    atom: atom(block),
-  }));
-});
-blocksAsAtomsAtom.debugLabel = "blocksAsAtomsAtom";
 
 export const builderActivePageAtom = atom<string>("");
 builderActivePageAtom.debugLabel = "builderActivePageAtom";

@@ -1,7 +1,7 @@
 import { atom, useSetAtom } from "jotai";
 import { each, filter, first, get as getProp, includes, map } from "lodash-es";
 import { useCallback } from "react";
-import { pageBlocksAtomsAtom } from "../atoms/blocks";
+import { pageBlocksAtom } from "../atoms/blocks";
 import { STYLES_KEY } from "../constants/STRINGS.ts";
 import { useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 import { getSplitChaiClasses } from "../hooks/getSplitClasses.ts";
@@ -10,9 +10,9 @@ import { selectedStylingBlocksAtom, TStyleBlock } from "./useSelectedStylingBloc
 
 export const removeClassFromBlocksAtom: any = atom(null, (get, _set, { blockIds, fullClasses }) => {
   const styleBlock = first(get(selectedStylingBlocksAtom)) as TStyleBlock;
-  const blockAtoms = filter(get(pageBlocksAtomsAtom), (blockAtom) =>
-    // @ts-ignore
-    blockIds.includes(get(blockAtom)._id),
+  const blockAtoms = map(
+    filter(get(pageBlocksAtom), (block) => blockIds.includes(block._id)),
+    (block) => block._atom,
   );
 
   return map(blockAtoms, (blockAtom) => {
