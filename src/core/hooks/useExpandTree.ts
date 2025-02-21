@@ -1,7 +1,7 @@
 import { atom, useAtom, useAtomValue } from "jotai";
 import { find, first, flatten, get, isEmpty, isString } from "lodash-es";
 import { useEffect } from "react";
-import { presentBlocksAtom } from "../atoms/blocks";
+import { pageBlocksAtom } from "../atoms/blocks";
 import { ChaiBlock } from "../types/ChaiBlock";
 import { useSelectedBlockIds } from "./useSelectedBlockIds";
 
@@ -27,7 +27,7 @@ export const expandedIdsAtom = atom<string[]>([]);
 
 export const useExpandTree = () => {
   const [ids] = useSelectedBlockIds();
-  const pageBlocks = useAtomValue(presentBlocksAtom);
+  const pageBlocks = useAtomValue(pageBlocksAtom);
   const [, setExpandedIds] = useAtom(expandedIdsAtom);
   useEffect(() => {
     let expandedIds: string[] = [];

@@ -3,6 +3,7 @@ import { splitAtom } from "jotai/utils";
 import { filter, has } from "lodash-es";
 import { convertToBlocksTree } from "../functions/Blocks.ts";
 import { ChaiBlock } from "../types/ChaiBlock.ts";
+
 export const pageBlocksAtom = atom([]);
 pageBlocksAtom.debugLabel = "pageBlocksAtom";
 
@@ -22,7 +23,7 @@ presentBlocksAtom.debugLabel = "presentBlocksAtom";
 
 //TODO: Need a better name for this atom. Also should be a custom hook
 export const treeDSBlocks = atom((get) => {
-  const presentBlocks = get(presentBlocksAtom);
+  const presentBlocks = get(pageBlocksAtom).map((block) => get(block._atom));
   return convertToBlocksTree([...presentBlocks]);
 });
 treeDSBlocks.debugLabel = "treeDSBlocks";

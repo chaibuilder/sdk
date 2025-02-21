@@ -1,8 +1,8 @@
-import { useCallback } from "react";
 import { atom, useAtom, useAtomValue } from "jotai";
-import { compact, filter, get as getProp, includes, map, without } from "lodash-es";
 import { atomWithStorage } from "jotai/utils";
-import { presentBlocksAtom } from "../atoms/blocks";
+import { compact, filter, get as getProp, includes, map, without } from "lodash-es";
+import { useCallback } from "react";
+import { pageBlocksAtom } from "../atoms/blocks";
 import { ChaiBlock } from "../types/ChaiBlock";
 
 /**
@@ -15,7 +15,7 @@ selectedBlockIdsAtom.debugLabel = "selectedBlockIdsAtom";
  * Derived atoms
  */
 const selectedBlocksAtom = atom<ChaiBlock[]>((get) => {
-  const blocks = get(presentBlocksAtom);
+  const blocks = get(pageBlocksAtom);
   const blockIds = get(selectedBlockIdsAtom);
   return map(
     filter(blocks, ({ _id }: { _id: string }) => includes(blockIds, _id)),
@@ -46,7 +46,7 @@ const getParentId = (block: ChaiBlock | {}) => getProp(block, "_parent", null);
 export const selectedBlocksParentsAtom = atom((get) => {
   const selectedBlocks = get(selectedBlocksAtom);
   const parentIds = map(selectedBlocks, getParentId);
-  return filter(get(presentBlocksAtom), (block: ChaiBlock) => includes(parentIds, block._id)) as ChaiBlock[];
+  return filter(get(pageBlocksAtom), (block: ChaiBlock) => includes(parentIds, block._id)) as ChaiBlock[];
 });
 selectedBlocksParentsAtom.debugLabel = "selectedBlocksParentsAtom";
 
@@ -100,7 +100,7 @@ export const useSelectedBlock = () => useAtomValue<ChaiBlock>(selectedBlockAtom)
 
 export const selectedBlockHierarchy = atom((get) => {
   const selectedBlock = get(selectedBlockAtom);
-  const allBlocks = get(presentBlocksAtom);
+  const allBlocks = get(pageBlocksAtom);
   let block = selectedBlock;
   const blocks = [selectedBlock];
   do {

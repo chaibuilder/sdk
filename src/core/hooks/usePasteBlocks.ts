@@ -1,12 +1,12 @@
 import { useAtomValue } from "jotai";
+import { find, first, has, isEmpty } from "lodash-es";
 import { useCallback } from "react";
-import { isEmpty, find, first, has } from "lodash-es";
-import { useCutBlockIds } from "./useCutBlockIds";
-import { presentBlocksAtom } from "../atoms/blocks";
+import { useToast } from "../../ui";
+import { pageBlocksAtom } from "../atoms/blocks";
 import { canAcceptChildBlock } from "../functions/block-helpers.ts";
 import { useBlocksStore, useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
-import { useToast } from "../../ui";
 import { useAddBlock } from "./useAddBlock";
+import { useCutBlockIds } from "./useCutBlockIds";
 
 const useCanPaste = () => {
   const [blocks] = useBlocksStore();
@@ -18,7 +18,7 @@ const useCanPaste = () => {
 };
 
 const useMoveCutBlocks = () => {
-  const presentBlocks = useAtomValue(presentBlocksAtom);
+  const presentBlocks = useAtomValue(pageBlocksAtom);
   const { moveBlocks } = useBlocksStoreUndoableActions();
 
   return useCallback(
