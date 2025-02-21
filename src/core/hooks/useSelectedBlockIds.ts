@@ -2,7 +2,7 @@ import { atom, useAtom, useAtomValue } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { compact, filter, first, get as getProp, includes, map, without } from "lodash-es";
 import { useCallback } from "react";
-import { pageBlocksAtom } from "../atoms/blocks";
+import { ChaiBuilderBlockWithAtom, pageBlocksAtom } from "../atoms/blocks";
 import { ChaiBlock } from "../types/ChaiBlock";
 
 /**
@@ -100,8 +100,8 @@ export const useSelectedBlock = () => useAtomValue<ChaiBlock>(selectedBlockAtom)
 
 export const selectedBlockHierarchy = atom((get) => {
   const selectedBlock = get(selectedBlockAtom);
-  const allBlocks = get(pageBlocksAtom);
-  let block = selectedBlock;
+  const allBlocks: ChaiBuilderBlockWithAtom[] = get(pageBlocksAtom);
+  let block = selectedBlock as ChaiBlock;
   const blocks = [selectedBlock];
   do {
     const parentBlock = allBlocks.find(({ _id }) => _id === block?._parent);

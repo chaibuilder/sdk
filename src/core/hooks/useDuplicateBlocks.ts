@@ -1,10 +1,10 @@
-import { useCallback } from "react";
 import { each, filter, get, isString } from "lodash-es";
-import { useSelectedBlockIds } from "./useSelectedBlockIds";
-import { useBlocksStore, useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
+import { useCallback } from "react";
+import { convertToBlocksAtoms } from "../atoms/blocks.ts";
 import { getDuplicatedBlocks } from "../functions/Blocks.ts";
+import { useBlocksStore, useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 import { ChaiBlock } from "../types/ChaiBlock.ts";
-
+import { useSelectedBlockIds } from "./useSelectedBlockIds";
 /**
  * useDuplicateBlock
  */
@@ -31,7 +31,7 @@ export const useDuplicateBlocks = (): Function => {
         const blockPosition = siblingBlocks.indexOf(block);
         const newBlockPosition = blockPosition + 1;
         const newBlocks = getDuplicatedBlocks(presentBlocks, blockId, parentId);
-        addBlocks(newBlocks, parentId, newBlockPosition);
+        addBlocks(convertToBlocksAtoms(newBlocks), parentId, newBlockPosition);
         newBlockIds.push(get(newBlocks, "0._id", ""));
       });
       setSelected(newBlockIds);

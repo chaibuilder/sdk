@@ -1,12 +1,15 @@
 import { filter, find, includes, isEmpty } from "lodash-es";
 import { useCallback } from "react";
-import { useSelectedBlockIds } from "./useSelectedBlockIds";
-import { ChaiBlock } from "../types/ChaiBlock";
+import { ChaiBuilderBlockWithAtom } from "../atoms/blocks.ts";
 import { useBlocksStore, useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
+import { useSelectedBlockIds } from "./useSelectedBlockIds";
 
-export const removeNestedBlocks = (blocks: ChaiBlock[], blockIds: Array<string>): ChaiBlock[] => {
+export const removeNestedBlocks = (
+  blocks: ChaiBuilderBlockWithAtom[],
+  blockIds: Array<string>,
+): ChaiBuilderBlockWithAtom[] => {
   const _blockIds: Array<string> = [];
-  const _blocks = filter(blocks, (block: ChaiBlock) => {
+  const _blocks = filter(blocks, (block: ChaiBuilderBlockWithAtom) => {
     if (includes(blockIds, block._id) || includes(blockIds, block._parent)) {
       _blockIds.push(block._id);
       return false;

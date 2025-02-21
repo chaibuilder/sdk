@@ -1,7 +1,7 @@
+import { PlusIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { CHAI_BUILDER_EVENTS } from "../../../events.ts";
 import { pubsub } from "../../../pubsub";
-import { PlusIcon } from "lucide-react";
 
 export const AddBlockAtBottom = () => {
   const { t } = useTranslation();

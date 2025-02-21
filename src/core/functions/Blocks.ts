@@ -1,6 +1,7 @@
 import { each, filter, find, flatten, get, isString, map, omit, set } from "lodash-es";
-import { generateUUID } from "./Functions.ts";
+import { ChaiBuilderBlockWithAtom } from "../atoms/blocks.ts";
 import { ChaiBlock } from "../types/ChaiBlock";
+import { generateUUID } from "./Functions.ts";
 
 export const nestedToFlatArray = (nestedJson: Array<ChaiBlock>, parent: string | null = null): Array<ChaiBlock> =>
   flatten(
@@ -18,19 +19,13 @@ export const nestedToFlatArray = (nestedJson: Array<ChaiBlock>, parent: string |
   );
 
 export function duplicateBlocks(
-  blocks: Partial<ChaiBlock>[],
+  blocks: ChaiBuilderBlockWithAtom[],
   id: string,
   _parent: string | null,
-): Partial<ChaiBlock>[] {
+): ChaiBuilderBlockWithAtom[] {
   const children = filter(blocks, (c) => c._parent === id);
   const newBlocks: Array<any> = [];
   for (let i = 0; i < children.length; i++) {
-    const slots = getSlots(children[i]);
-    if (Object.keys(slots).length > 0) {
-      Object.keys(slots).forEach((key) => {
-        children[i][key] = `slot:${generateUUID()}`;
-      });
-    }
     if (filter(blocks, { _parent: children[i]._id }).length > 0) {
       const newId = generateUUID();
       newBlocks.push({ ...children[i], oldId: children[i]._id, ...{ _id: newId, _parent } });
@@ -95,7 +90,7 @@ export const getSlots = (block: ChaiBlock) => {
  * @param newParentId
  */
 export const getDuplicatedBlocks = (
-  currentBlocks: Partial<ChaiBlock>[],
+  currentBlocks: ChaiBuilderBlockWithAtom[],
   id: string,
   newParentId: string | null = null,
 ): ChaiBlock[] => {

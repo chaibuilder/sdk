@@ -1,5 +1,5 @@
 import { omit } from "lodash-es";
-import { convertToBlocksAtoms } from "../atoms/blocks.ts";
+import { ChaiBuilderBlockWithAtom } from "../atoms/blocks.ts";
 import { useBroadcastChannel } from "../hooks/useBroadcastChannel.ts";
 import { removeNestedBlocks } from "../hooks/useRemoveBlocks.ts";
 import { useUpdateBlockAtom } from "../hooks/useUpdateBlockAtom.ts";
@@ -13,13 +13,13 @@ export const useBlocksStoreManager = () => {
   const { postMessage } = useBroadcastChannel();
   const updateBlockAtom = useUpdateBlockAtom();
   return {
-    setNewBlocks: (newBlocks: ChaiBlock[]) => {
+    setNewBlocks: (newBlocks: ChaiBuilderBlockWithAtom[]) => {
       setBlocks(newBlocks);
       postMessage({ type: "blocks-updated", blocks: newBlocks });
     },
-    addBlocks: (newBlocks: ChaiBlock[], parent?: string, position?: number) => {
+    addBlocks: (newBlocks: ChaiBuilderBlockWithAtom[], parent?: string, position?: number) => {
       setBlocks((prevBlocks) => {
-        const blocks = insertBlocksAtPosition(prevBlocks, convertToBlocksAtoms(newBlocks), parent, position);
+        const blocks = insertBlocksAtPosition(prevBlocks, newBlocks, parent, position);
         postMessage({ type: "blocks-updated", blocks });
         return blocks;
       });

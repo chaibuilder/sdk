@@ -1,13 +1,13 @@
-import { useCallback } from "react";
+import { getDefaultBlockProps } from "@chaibuilder/runtime";
 import { filter, find, first, has } from "lodash-es";
+import { useCallback } from "react";
+import { convertToBlocksAtoms } from "../atoms/blocks.ts";
 import { generateUUID } from "../functions/Functions.ts";
 import { canAcceptChildBlock } from "../functions/block-helpers.ts";
-import { useSelectedBlockIds } from "./useSelectedBlockIds";
+import { useBlocksStore, useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 import { ChaiBlock } from "../types/ChaiBlock";
 import { CoreBlock } from "../types/CoreBlock";
-import { getDefaultBlockProps } from "@chaibuilder/runtime";
-import { useBlocksStore, useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
-
+import { useSelectedBlockIds } from "./useSelectedBlockIds";
 type AddBlocks = {
   addCoreBlock: any;
   addPredefinedBlock: any;
@@ -45,7 +45,7 @@ export const useAddBlock = (): AddBlocks => {
         parentBlockId = parentBlock._parent;
       }
 
-      addBlocks(blocks, parentBlockId, position);
+      addBlocks(convertToBlocksAtoms(blocks), parentBlockId, position);
       setSelected([first(blocks)?._id]);
       return first(blocks);
     },
@@ -82,7 +82,7 @@ export const useAddBlock = (): AddBlocks => {
       }
       const newBlocks: ChaiBlock[] = [newBlock];
 
-      addBlocks(newBlocks, parentBlockId, position);
+      addBlocks(convertToBlocksAtoms(newBlocks), parentBlockId, position);
       setSelected([newBlock._id]);
       return newBlock;
     },

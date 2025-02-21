@@ -1,6 +1,6 @@
 import { useAtom } from "jotai";
 import { each, first, keys, map } from "lodash-es";
-import { pageBlocksAtom } from "../atoms/blocks.ts";
+import { ChaiBuilderBlockWithAtom, pageBlocksAtom } from "../atoms/blocks.ts";
 import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { useBlocksStoreManager } from "./useBlocksStoreManager.ts";
 import { useUndoManager } from "./useUndoManager.ts";
@@ -20,7 +20,7 @@ export const useBlocksStoreUndoableActions = () => {
     updateBlocksProps,
   } = useBlocksStoreManager();
 
-  const setNewBlocks = (newBlocks: ChaiBlock[]) => {
+  const setNewBlocks = (newBlocks: ChaiBuilderBlockWithAtom[]) => {
     setBlocks(newBlocks);
     add({
       undo: () => setBlocks(currentBlocks),
@@ -28,7 +28,7 @@ export const useBlocksStoreUndoableActions = () => {
     });
   };
 
-  const addBlocks = (newBlocks: ChaiBlock[], parent?: string, position?: number) => {
+  const addBlocks = (newBlocks: ChaiBuilderBlockWithAtom[], parent?: string, position?: number) => {
     addNewBlocks(newBlocks, parent, position);
     add({
       undo: () => removeExistingBlocks(map(newBlocks, "_id")),
@@ -36,7 +36,7 @@ export const useBlocksStoreUndoableActions = () => {
     });
   };
 
-  const removeBlocks = (blocks: ChaiBlock[]) => {
+  const removeBlocks = (blocks: ChaiBuilderBlockWithAtom[]) => {
     const parentId = first(blocks)?._parent;
     const siblings = currentBlocks.filter((block) => (parentId ? block._parent === parentId : !block._parent));
     const position = siblings.indexOf(first(blocks));

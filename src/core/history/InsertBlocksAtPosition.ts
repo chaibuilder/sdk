@@ -1,6 +1,8 @@
+import { ChaiBuilderBlockWithAtom } from "../atoms/blocks";
+
 export function insertBlocksAtPosition(
-  allBlocks: { _id: string; _parent?: string }[],
-  newBlocks: { _id: string; _parent?: string }[],
+  allBlocks: ChaiBuilderBlockWithAtom[],
+  newBlocks: ChaiBuilderBlockWithAtom[],
   parentId?: string,
   position?: number,
 ) {
