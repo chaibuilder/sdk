@@ -64,7 +64,7 @@ const BlockRenderer = ({ blockAtom, children }: { blockAtom: Atom<ChaiBlock>; ch
 const GlobalBlocksRenderer = ({ blockAtom }: { blockAtom: Atom<ChaiBlock> }) => {
   const { getGlobalBlocks } = useGlobalBlocksStore();
   const [block] = useAtom(blockAtom);
-  const globalBlocks = getGlobalBlocks(block);
+  const globalBlocks = useMemo(() => getGlobalBlocks(block?.globalBlock), [block?.globalBlock, getGlobalBlocks]);
   const globalBlocksAtoms = useMemo(() => convertToBlocksAtoms(globalBlocks), [globalBlocks]);
   return <BlocksRenderer blocks={globalBlocksAtoms} filterFn={(block) => isEmpty(block._parent)} />;
 };

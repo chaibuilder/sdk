@@ -1,9 +1,10 @@
 import { atom, useAtom } from "jotai/index";
-import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { forEach, get, has } from "lodash-es";
-import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
+import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { useBuilderProp } from "./useBuilderProp.ts";
+import { useGetBlockAtomValue } from "./useUpdateBlockAtom.ts";
 
 type GlobalBlocksState = Record<
   string,
@@ -21,16 +22,8 @@ const globalBlocksLoadingStateAtom = atom<GlobalBlocksState>({});
 
 export const useGlobalBlocksStore = () => {
   const [globalBlocks, setGlobalBlocks] = useAtom(globalBlocksStoreAtom);
-  const getGlobalBlocks = useCallback(
-    (block: ChaiBlock) => {
-      return get(globalBlocks, block?.globalBlock, []);
-    },
-    [globalBlocks],
-  );
-  const reset = useCallback(() => {
-    setGlobalBlocks({});
-  }, [setGlobalBlocks]);
-
+  const getGlobalBlocks = useCallback((globalBlockId: string) => get(globalBlocks, globalBlockId, []), [globalBlocks]);
+  const reset = useCallback(() => setGlobalBlocks({}), [setGlobalBlocks]);
   return { getGlobalBlocks, reset };
 };
 
@@ -38,11 +31,17 @@ export const useWatchGlobalBlocks = () => {
   const [blocksStore] = useBlocksStore();
   const [globalBlocks, setGlobalBlocks] = useAtom(globalBlocksStoreAtom);
   const [globalBlocksLoadingState, setGlobalBlocksLoadingState] = useAtom(globalBlocksLoadingStateAtom);
+  const getBlockAtomValue = useGetBlockAtomValue();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getGlobalBlockBlocks = useBuilderProp("getGlobalBlockBlocks", async (_key: string) => []);
   const globalBlocksList = useMemo(() => {
     const globalBlocks = blocksStore.filter((block) => block._type === "GlobalBlock");
-    return globalBlocks.filter((block) => block._type === "GlobalBlock").map((block) => block.globalBlock);
+    return globalBlocks
+      .filter((block) => block._type === "GlobalBlock")
+      .map((block) => {
+        const blockValue = getBlockAtomValue(block._id);
+        return blockValue.globalBlock;
+      });
   }, [blocksStore]);
 
   useEffect(() => {
