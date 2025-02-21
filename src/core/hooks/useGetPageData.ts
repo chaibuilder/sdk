@@ -6,6 +6,7 @@ import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
 import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { useBrandingOptions } from "./useBrandingOptions";
 import { useCurrentPage } from "./useCurrentPage";
+import { useGetBlockAtomValue } from "./useUpdateBlockAtom.ts";
 
 /**
  * Get the builder props for a block
@@ -26,12 +27,13 @@ export const useGetPageData = () => {
   const [projectOptions] = useBrandingOptions();
   const { currentPage } = useCurrentPage();
   const [presentBlocks] = useBlocksStore();
+  const getBlockAtomValue = useGetBlockAtomValue();
 
   return useCallback(() => {
     // omit the builder props from the blocks as they are not needed for the page data
     // and only used inside the builder
     const blocks = map(presentBlocks, (block: ChaiBlock) => {
-      return omit(block, getBlockBuilderProps(block._type));
+      return omit(getBlockAtomValue(block._id), getBlockBuilderProps(block._type));
     });
     const [pageFilteredBlocks = []] = splitPageBlocks(blocks);
     return {

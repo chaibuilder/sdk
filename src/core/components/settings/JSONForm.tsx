@@ -122,7 +122,7 @@ export const JSONForm = memo(({ blockId, schema, uiSchema, formData, onChange }:
       onChange({ formData }, id);
     },
     [onChange, selectedLang],
-    1000, // save only every 5 seconds
+    400, // save only every 5 seconds
   );
 
   return (

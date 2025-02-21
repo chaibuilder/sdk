@@ -1,6 +1,6 @@
 import { atom, useAtom, useAtomValue } from "jotai";
 import { atomWithStorage } from "jotai/utils";
-import { compact, filter, get as getProp, includes, map, without } from "lodash-es";
+import { compact, filter, first, get as getProp, includes, map, without } from "lodash-es";
 import { useCallback } from "react";
 import { pageBlocksAtom } from "../atoms/blocks";
 import { ChaiBlock } from "../types/ChaiBlock";
@@ -33,7 +33,7 @@ export const selectedBlockAtom = atom((get) => {
     return null;
   }
   if (blocks.length === 1) {
-    return blocks[0] as ChaiBlock;
+    return get(first(blocks)._atom);
   }
 });
 selectedBlockAtom.debugLabel = "selectedBlockAtom";
