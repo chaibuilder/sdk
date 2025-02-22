@@ -1,4 +1,4 @@
-import { omit } from "lodash-es";
+import { each, find, omit } from "lodash-es";
 import { useBroadcastChannel } from "../hooks/useBroadcastChannel.ts";
 import { removeNestedBlocks } from "../hooks/useRemoveBlocks.ts";
 import { useUpdateBlockAtom } from "../hooks/useUpdateBlockAtom.ts";
@@ -32,10 +32,16 @@ export const useBlocksStoreManager = () => {
     },
     moveBlocks: (blockIds: string[], newParent: string | null, position: number) => {
       setBlocks((prevBlocks) => {
-        let blocks = prevBlocks;
+        let blocks = [...prevBlocks];
         for (let i = 0; i < blockIds.length; i++) {
           blocks = moveBlocksWithChildren(blocks, blockIds[i], newParent, position);
         }
+        each(blockIds, (id: string) => {
+          const block = find(blocks, (b) => b._id === id);
+          if (block) {
+            updateBlockAtom({ id, props: { _parent: block._parent || null } });
+          }
+        });
         postMessage({ type: "blocks-updated", blocks });
         return blocks;
       });

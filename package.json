@@ -67,7 +67,7 @@
     }
   },
   "peerDependencies": {
-    "@chaibuilder/runtime": "2.0.0-beta.23",
+    "@chaibuilder/runtime": "2.0.0-beta.24",
     "@types/react": "*",
     "@types/react-dom": "*",
     "react": "^18.0 || ^19.0",
@@ -83,7 +83,7 @@
     }
   },
   "dependencies": {
-    "@chaibuilder/runtime": "2.0.0-beta.23",
+    "@chaibuilder/runtime": "2.0.0-beta.24",
     "@floating-ui/dom": "1.6.13",
     "@floating-ui/react-dom": "2.1.2",
     "@mhsdesign/jit-browser-tailwindcss": "0.4.2",

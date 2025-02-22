@@ -1,32 +1,43 @@
+import { Atom, atom, useSetAtom } from "jotai";
 import { useAtomCallback } from "jotai/utils";
-import { find } from "lodash-es";
+import { find, isString } from "lodash-es";
 import { useCallback } from "react";
-import { blocksAsAtomsAtom } from "../atoms/blocks";
+import { pageBlocksAtomsAtom } from "../atoms/blocks";
 import { ChaiBlock } from "../types/ChaiBlock.ts";
+
+const writeAtomValue = atom(
+  null, // it's a convention to pass `null` for the first argument
+  (get, set, { id, props }: { id: string; props: Record<string, any> }) => {
+    const blockAsAtoms = get(pageBlocksAtomsAtom);
+    console.log("From Atom callback", blockAsAtoms);
+    const blockAtom = find(blockAsAtoms, (b) => (get(b) as ChaiBlock)._id === id);
+    if (!blockAtom) {
+      throw new Error(`Block with id ${id} not found`);
+    }
+    return set(blockAtom, { ...(get(blockAtom) as any), ...props });
+  },
+);
+
 export const useUpdateBlockAtom = () => {
-  return useAtomCallback(
-    useCallback((get, set, { id, props }: { id: string; props: Record<string, any> }) => {
-      const blockAsAtoms = get(blocksAsAtomsAtom);
-      const blockAtom = find(blockAsAtoms, (b) => b._id === id);
-      if (!blockAtom) {
-        console.warn(`Block with id ${id} not found`);
-        return;
-      }
-      return set(blockAtom.atom, { ...(get(blockAtom.atom) as any), ...props });
-    }, []),
-  );
+  return useSetAtom(writeAtomValue);
 };
 
-export const useGetBlockAtomValue = () => {
+export const useGetBlockAtomValue = (splitAtoms?: any) => {
   return useAtomCallback(
-    useCallback((get, _set, id: string) => {
-      const blockAsAtoms = get(blocksAsAtomsAtom);
-      const blockAtom = find(blockAsAtoms, (b) => b._id === id);
-      if (!blockAtom) {
-        console.warn(`Block with id ${id} not found`);
-        return;
-      }
-      return get(blockAtom.atom) as ChaiBlock;
-    }, []),
+    useCallback(
+      (get, _set, idOrAtom: Atom<ChaiBlock> | string) => {
+        const blockAsAtoms = get(splitAtoms ?? pageBlocksAtomsAtom);
+        const blockAtom = find(
+          blockAsAtoms,
+          (b) => (get(b) as ChaiBlock)._id === (isString(idOrAtom) ? idOrAtom : get(idOrAtom as Atom<ChaiBlock>)._id),
+        );
+        if (!blockAtom) {
+          console.warn(`Block with id ${idOrAtom} not found`);
+          return;
+        }
+        return get(blockAtom) as ChaiBlock;
+      },
+      [splitAtoms],
+    ),
   );
 };
