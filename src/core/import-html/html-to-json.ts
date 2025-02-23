@@ -61,6 +61,9 @@ const ATTRIBUTE_MAP: Record<string, Record<string, string>> = {
     multiple: "multiple",
     name: "fieldName",
   },
+  form: {
+    action: "action",
+  },
 };
 
 /**
