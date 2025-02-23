@@ -9,7 +9,6 @@ const writeAtomValue = atom(
   null, // it's a convention to pass `null` for the first argument
   (get, set, { id, props }: { id: string; props: Record<string, any> }) => {
     const blockAsAtoms = get(pageBlocksAtomsAtom);
-    console.log("From Atom callback", blockAsAtoms);
     const blockAtom = find(blockAsAtoms, (b) => (get(b) as ChaiBlock)._id === id);
     if (!blockAtom) {
       throw new Error(`Block with id ${id} not found`);
