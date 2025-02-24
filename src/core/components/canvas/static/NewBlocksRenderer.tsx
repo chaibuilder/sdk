@@ -83,7 +83,8 @@ const BlocksRenderer = ({
 }) => {
   const getBlockAtom = useGetBlockAtom(splitAtoms);
   const filteredBlocks = useMemo(
-    () => filter(blocks, (block) => (!isEmpty(parent) ? block._parent === parent : !block._parent)),
+    () =>
+      filter(blocks, (block) => has(block, "_id") && (!isEmpty(parent) ? block._parent === parent : !block._parent)),
     [blocks, parent],
   );
   const hasChildren = useCallback((block) => filter(blocks, (b) => b._parent === block._id).length > 0, [blocks]);
