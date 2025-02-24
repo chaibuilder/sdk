@@ -2,6 +2,7 @@ import { useAtom } from "jotai";
 import { first, isEmpty, omit, throttle } from "lodash-es";
 import React, { useCallback, useEffect } from "react";
 import { Quill } from "react-quill";
+import { pageBlocksAtomsAtom } from "../../../atoms/blocks.ts";
 import { inlineEditingActiveAtom, treeRefAtom } from "../../../atoms/ui.ts";
 import { useFrame } from "../../../frame";
 import { useBlockHighlight, useSelectedBlockIds, useSelectedStylingBlocks, useUpdateBlocksProps } from "../../../hooks";
@@ -50,7 +51,7 @@ const useHandleCanvasDblClick = () => {
   const updateContent = useUpdateBlocksProps();
   const [editingBlockId, setEditingBlockId] = useAtom(inlineEditingActiveAtom);
   const { clearHighlight } = useBlockHighlight();
-  const getBlockAtomValue = useGetBlockAtomValue();
+  const getBlockAtomValue = useGetBlockAtomValue(pageBlocksAtomsAtom);
   return useCallback(
     (e) => {
       if (editingBlockId) return;

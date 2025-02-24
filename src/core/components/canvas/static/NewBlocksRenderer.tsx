@@ -3,6 +3,7 @@ import { splitAtom } from "jotai/utils";
 import { filter, get, has, isFunction, isNull, isString, map } from "lodash-es";
 import { createElement, Suspense, useCallback, useMemo } from "react";
 import { getRegisteredChaiBlock } from "../../../../runtime";
+import { pageBlocksAtomsAtom } from "../../../atoms/blocks";
 import { usePageExternalData } from "../../../atoms/builder";
 import { dataBindingActiveAtom, inlineEditingActiveAtom } from "../../../atoms/ui";
 import { useBlocksStore, useGlobalBlocksStore, useHiddenBlockIds } from "../../../hooks";
@@ -101,5 +102,5 @@ const BlocksRenderer = ({
 
 export const PageBlocksRenderer = () => {
   const [blocks] = useBlocksStore();
-  return <BlocksRenderer blocks={blocks} />;
+  return <BlocksRenderer splitAtoms={pageBlocksAtomsAtom} blocks={blocks} />;
 };

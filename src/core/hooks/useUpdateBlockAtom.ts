@@ -21,18 +21,17 @@ export const useUpdateBlockAtom = () => {
   return useSetAtom(writeAtomValue);
 };
 
-export const useGetBlockAtomValue = (splitAtoms?: any) => {
+export const useGetBlockAtomValue = (splitAtoms: any) => {
   return useAtomCallback(
     useCallback(
       (get, _set, idOrAtom: Atom<ChaiBlock> | string) => {
-        const blockAsAtoms = get(splitAtoms ?? pageBlocksAtomsAtom);
+        const blockAsAtoms = get(splitAtoms);
         const blockAtom = find(
           blockAsAtoms,
           (b) => (get(b) as ChaiBlock)._id === (isString(idOrAtom) ? idOrAtom : get(idOrAtom as Atom<ChaiBlock>)._id),
         );
         if (!blockAtom) {
-          console.warn(`Block with id ${idOrAtom} not found`);
-          return;
+          throw new Error(`Block with id ${idOrAtom} not found`);
         }
         return get(blockAtom) as ChaiBlock;
       },
@@ -41,18 +40,17 @@ export const useGetBlockAtomValue = (splitAtoms?: any) => {
   );
 };
 
-export const useGetBlockAtom = (splitAtoms?: any) => {
+export const useGetBlockAtom = (splitAtoms: any) => {
   return useAtomCallback(
     useCallback(
       (get, _set, idOrAtom: Atom<ChaiBlock> | string) => {
-        const blockAsAtoms = get(splitAtoms ?? pageBlocksAtomsAtom);
+        const blockAsAtoms = get(splitAtoms);
         const blockAtom = find(
           blockAsAtoms,
           (b) => (get(b) as ChaiBlock)._id === (isString(idOrAtom) ? idOrAtom : get(idOrAtom as Atom<ChaiBlock>)._id),
         );
         if (!blockAtom) {
-          console.warn(`Block with id ${idOrAtom} not found`);
-          return;
+          throw new Error(`Block with id ${idOrAtom} not found`);
         }
         return blockAtom;
       },

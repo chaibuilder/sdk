@@ -72,6 +72,7 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
                   {React.Children.toArray(
                     reject(filter(values(filteredBlocks), { group }), { hidden: true }).map((block) => (
                       <CoreBlock
+                        key={block.type}
                         parentId={parentId}
                         position={position}
                         block={block}
