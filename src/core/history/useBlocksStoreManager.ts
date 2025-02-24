@@ -1,13 +1,14 @@
-import { ChaiBlock } from "../types/ChaiBlock.ts";
-import { useBlocksStore } from "./useBlocksStoreUndoableActions.ts";
-import { find, omit } from "lodash-es";
+import { omit } from "lodash-es";
+import { useUpdateBlockAtom } from "../components/canvas/static/useUpdateBlockAtom.ts";
 import { removeNestedBlocks } from "../hooks/useRemoveBlocks.ts";
+import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { insertBlocksAtPosition } from "./InsertBlocksAtPosition.ts";
 import { moveBlocksWithChildren } from "./moveBlocksWithChildren.ts";
+import { useBlocksStore } from "./useBlocksStoreUndoableActions.ts";
 
 export const useBlocksStoreManager = () => {
   const [, setBlocks] = useBlocksStore();
-
+  const updateBlockAtom = useUpdateBlockAtom();
   return {
     setNewBlocks: (newBlocks: ChaiBlock[]) => {
       setBlocks(newBlocks);
@@ -28,15 +29,9 @@ export const useBlocksStoreManager = () => {
       });
     },
     updateBlocksProps: (blocks: Partial<ChaiBlock>[]) => {
-      setBlocks((prevBlocks: ChaiBlock[]) => {
-        const blocksIds = blocks.map((block) => block._id);
-        return prevBlocks.map((block) => {
-          if (blocksIds.includes(block._id)) {
-            const props = find(blocks, { _id: block._id });
-            return { ...block, ...omit(props, "_id") };
-          }
-          return block;
-        });
+      blocks.forEach((block) => {
+        const updatedBlock = omit(block, "_id");
+        updateBlockAtom({ id: block._id, props: updatedBlock });
       });
     },
   };
