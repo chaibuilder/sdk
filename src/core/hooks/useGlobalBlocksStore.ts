@@ -1,8 +1,8 @@
 import { atom, useAtom } from "jotai/index";
-import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { forEach, get, has } from "lodash-es";
-import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
+import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { useBuilderProp } from "./useBuilderProp.ts";
 
 type GlobalBlocksState = Record<
@@ -22,8 +22,8 @@ const globalBlocksLoadingStateAtom = atom<GlobalBlocksState>({});
 export const useGlobalBlocksStore = () => {
   const [globalBlocks, setGlobalBlocks] = useAtom(globalBlocksStoreAtom);
   const getGlobalBlocks = useCallback(
-    (block: ChaiBlock) => {
-      return get(globalBlocks, block?.globalBlock, []);
+    (globalBlockId: string) => {
+      return get(globalBlocks, globalBlockId, []);
     },
     [globalBlocks],
   );
