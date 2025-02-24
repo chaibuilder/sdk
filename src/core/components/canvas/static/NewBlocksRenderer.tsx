@@ -1,10 +1,11 @@
-import { atom, Atom, useAtom, useAtomValue } from "jotai";
+import { atom, Atom, Provider, useAtom } from "jotai";
 import { splitAtom } from "jotai/utils";
-import { filter, get, has, isFunction, isNull, isString, map } from "lodash-es";
+import { filter, get, has, isEmpty, isFunction, isNull, map } from "lodash-es";
 import { createElement, Suspense, useCallback, useMemo } from "react";
 import { getRegisteredChaiBlock } from "../../../../runtime";
 import { pageBlocksAtomsAtom } from "../../../atoms/blocks";
 import { usePageExternalData } from "../../../atoms/builder";
+import { builderStore } from "../../../atoms/store";
 import { dataBindingActiveAtom, inlineEditingActiveAtom } from "../../../atoms/ui";
 import { useBlocksStore, useGlobalBlocksStore, useHiddenBlockIds } from "../../../hooks";
 import { useLanguages } from "../../../hooks/useLanguages";
@@ -63,12 +64,12 @@ const BlockRenderer = ({ blockAtom, children }: { blockAtom: Atom<ChaiBlock>; ch
   return <Suspense>{createElement(Component, { ...props, children })}</Suspense>;
 };
 
-const GlobalBlocksRenderer = ({ blockAtom }: { blockAtom: Atom<ChaiBlock> }) => {
+const GlobalBlocksRenderer = ({ globalBlockId }: { globalBlockId: string }) => {
   const { getGlobalBlocks } = useGlobalBlocksStore();
-  const [block] = useAtom(blockAtom);
-  const globalBlocks = useMemo(() => getGlobalBlocks(block?.globalBlock ?? ""), [getGlobalBlocks, block?.globalBlock]);
-  const blocksAtoms = useMemo(() => splitAtom(atom(globalBlocks)), [globalBlocks]);
-  return <BlocksRenderer splitAtoms={blocksAtoms} blocks={globalBlocks} />;
+  const globalBlocks = useMemo(() => getGlobalBlocks(globalBlockId), [getGlobalBlocks, globalBlockId]);
+  const globalBlocksAtoms = useMemo(() => splitAtom(atom(globalBlocks)), [globalBlocks]);
+  if (isEmpty(globalBlocks)) return null;
+  return <BlocksRenderer splitAtoms={globalBlocksAtoms} blocks={globalBlocks} />;
 };
 
 const BlocksRenderer = ({
@@ -82,7 +83,7 @@ const BlocksRenderer = ({
 }) => {
   const getBlockAtom = useGetBlockAtom(splitAtoms);
   const filteredBlocks = useMemo(
-    () => filter(blocks, (block) => (isString(parent) ? block._parent === parent : !block._parent)),
+    () => filter(blocks, (block) => (!isEmpty(parent) ? block._parent === parent : !block._parent)),
     [blocks, parent],
   );
   const hasChildren = useCallback((block) => filter(blocks, (b) => b._parent === block._id).length > 0, [blocks]);
@@ -93,7 +94,9 @@ const BlocksRenderer = ({
     return (
       <BlockRenderer key={block._id} blockAtom={blockAtom}>
         {block._type === "GlobalBlock" ? (
-          <GlobalBlocksRenderer blockAtom={getBlockAtom(block._id)} />
+          <Provider store={builderStore}>
+            <GlobalBlocksRenderer globalBlockId={get(block, "globalBlock", "")} />
+          </Provider>
         ) : hasChildren(block) ? (
           <BlocksRenderer splitAtoms={splitAtoms} blocks={blocks} parent={block._id} />
         ) : null}
@@ -104,6 +107,5 @@ const BlocksRenderer = ({
 
 export const PageBlocksRenderer = () => {
   const [blocks] = useBlocksStore();
-  console.log(useAtomValue(pageBlocksAtomsAtom));
   return <BlocksRenderer splitAtoms={pageBlocksAtomsAtom} blocks={blocks} />;
 };
