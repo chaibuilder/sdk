@@ -1,4 +1,4 @@
-import { atom, Atom, useAtom } from "jotai";
+import { atom, Atom, useAtom, useAtomValue } from "jotai";
 import { splitAtom } from "jotai/utils";
 import { filter, get, has, isFunction, isNull, isString, map } from "lodash-es";
 import { createElement, Suspense, useCallback, useMemo } from "react";
@@ -80,7 +80,7 @@ const BlocksRenderer = ({
   blocks: ChaiBlock[];
   parent?: string;
 }) => {
-  const getAtomValue = useGetBlockAtom(splitAtoms);
+  const getBlockAtom = useGetBlockAtom(splitAtoms);
   const filteredBlocks = useMemo(
     () => filter(blocks, (block) => (isString(parent) ? block._parent === parent : !block._parent)),
     [blocks, parent],
@@ -88,10 +88,12 @@ const BlocksRenderer = ({
   const hasChildren = useCallback((block) => filter(blocks, (b) => b._parent === block._id).length > 0, [blocks]);
 
   return map(filteredBlocks, (block) => {
+    const blockAtom = getBlockAtom(block._id);
+    if (!blockAtom) return null;
     return (
-      <BlockRenderer key={block._id} blockAtom={getAtomValue(block._id)}>
+      <BlockRenderer key={block._id} blockAtom={blockAtom}>
         {block._type === "GlobalBlock" ? (
-          <GlobalBlocksRenderer blockAtom={getAtomValue(block._id)} />
+          <GlobalBlocksRenderer blockAtom={getBlockAtom(block._id)} />
         ) : hasChildren(block) ? (
           <BlocksRenderer splitAtoms={splitAtoms} blocks={blocks} parent={block._id} />
         ) : null}
@@ -102,5 +104,6 @@ const BlocksRenderer = ({
 
 export const PageBlocksRenderer = () => {
   const [blocks] = useBlocksStore();
+  console.log(useAtomValue(pageBlocksAtomsAtom));
   return <BlocksRenderer splitAtoms={pageBlocksAtomsAtom} blocks={blocks} />;
 };
