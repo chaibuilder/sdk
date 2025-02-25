@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, DatabaseIcon } from "lucide-react";
 import * as React from "react";
 
 import { useEffect } from "react";
@@ -15,6 +15,9 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
 } from "../../ui";
 
 type NestedPathSelectorProps = {
@@ -91,17 +94,23 @@ export function NestedPathSelector({ data, onSelect, dataType = "value" }: Neste
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          size="sm"
-          variant="outline"
-          className="h-5 px-1 py-0 text-[9px] text-muted-foreground"
-          role="combobox"
-          aria-expanded={open}>
-          + Add Field
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[300px] p-0">
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <PopoverTrigger asChild>
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-5 px-1 py-0 text-[9px] text-muted-foreground"
+              role="combobox"
+              aria-expanded={open}>
+              <DatabaseIcon className="h-3 w-3" />
+            </Button>
+          </PopoverTrigger>
+        </TooltipTrigger>
+        <TooltipContent>Add field</TooltipContent>
+      </Tooltip>
+
+      <PopoverContent className="mr-3 w-[300px] p-0">
         <Command className="fields-command">
           <CommandInput className="border-none" placeholder="Search..." />
           <CommandList>

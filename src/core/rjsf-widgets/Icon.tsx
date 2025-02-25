@@ -30,7 +30,7 @@ const getSvgMarkup = () => {
   });
 };
 
-const IconPickerField = ({ value, onChange }: WidgetProps) => {
+const IconPickerField = ({ value, onChange, id }: WidgetProps) => {
   const { t } = useTranslation();
   const [iconName, setIconName] = useState(null);
 
@@ -51,7 +51,7 @@ const IconPickerField = ({ value, onChange }: WidgetProps) => {
 
   return (
     <div className="mt-1 flex h-20 items-center gap-x-2" id="icon-picker-field">
-      <div className="relative h-12 w-12 cursor-pointer rounded-lg border duration-300 hover:bg-gray-100">
+      <div className="relative h-12 w-12 cursor-pointer overflow-hidden rounded-lg border duration-300 hover:bg-gray-100">
         {iconName ? (
           <div
             id={ICON_PICKER_CONTAINER_ID}
@@ -88,6 +88,7 @@ const IconPickerField = ({ value, onChange }: WidgetProps) => {
         />
       </div>
       <textarea
+        id={id}
         autoCapitalize={"off"}
         autoCorrect={"off"}
         spellCheck={"false"}

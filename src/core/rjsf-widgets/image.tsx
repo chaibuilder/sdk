@@ -31,6 +31,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
           </>
         )}
         <input
+          id={id}
           autoCapitalize={"off"}
           autoCorrect={"off"}
           spellCheck={"false"}
