@@ -79,7 +79,7 @@ export function ManualClasses() {
 
   const getSuggestionValue = (suggestion: any) => suggestion.name;
 
-  const renderSuggestion = (suggestion: any) => <div className="p-1 rounded-md">{suggestion.name}</div>;
+  const renderSuggestion = (suggestion: any) => <div className="rounded-md p-1">{suggestion.name}</div>;
 
   const inputProps = {
     autoComplete: "off",
@@ -114,7 +114,7 @@ export function ManualClasses() {
   };
 
   return (
-    <div className={`flex w-full flex-col gap-y-1.5 pb-4`}>
+    <div className={`flex w-full flex-col gap-y-1.5 border-b border-border pb-4`}>
       <div className="flex items-center justify-between gap-x-2">
         <div className="flex items-center gap-x-2 text-muted-foreground">
           <span>{t("Classes")}</span>
@@ -131,7 +131,7 @@ export function ManualClasses() {
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="default" className="h-6 w-fit" size="sm">
-                <SparklesIcon className="w-4 h-4" />
+                <SparklesIcon className="h-4 w-4" />
                 <span className="ml-2">{t("Ask AI")}</span>
               </Button>
             </PopoverTrigger>
@@ -142,7 +142,7 @@ export function ManualClasses() {
         ) : null}
       </div>
       <div className={"relative flex items-center gap-x-3"}>
-        <div className="relative flex items-center w-full gap-x-3">
+        <div className="relative flex w-full items-center gap-x-3">
           <Autosuggest
             suggestions={suggestions}
             onSuggestionsFetchRequested={handleSuggestionsFetchRequested}
@@ -170,7 +170,7 @@ export function ManualClasses() {
           <PlusIcon />
         </Button>
       </div>
-      <div className="flex flex-wrap w-full gap-2 overflow-x-hidden">
+      <div className="flex w-full flex-wrap gap-2 overflow-x-hidden">
         {classes.map((cls: string) => (
           <div
             key={cls}
@@ -178,7 +178,7 @@ export function ManualClasses() {
             {cls}
             <Cross2Icon
               onClick={() => removeClassesFromBlocks(selectedIds, [cls])}
-              className="absolute invisible bg-red-400 rounded-full right-1 hover:text-white group-hover:visible group-hover:cursor-pointer"
+              className="invisible absolute right-1 rounded-full bg-red-400 hover:text-white group-hover:visible group-hover:cursor-pointer"
             />
           </div>
         ))}
