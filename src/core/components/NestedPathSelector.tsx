@@ -3,6 +3,7 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import * as React from "react";
 
+import { useEffect } from "react";
 import {
   Button,
   Command,
@@ -33,9 +34,12 @@ export function NestedPathSelector({ data, onSelect, dataType = "value" }: Neste
   const [currentPath, setCurrentPath] = React.useState<string[]>([]);
   const [currentData, setCurrentData] = React.useState<Record<string, any>>(data);
 
-  React.useEffect(() => {
+  useEffect(() => {
+    if (!open) {
+      setCurrentPath([]);
+    }
     setCurrentData(data);
-  }, [data]);
+  }, [open, data]);
 
   const getValueType = (value: any): "value" | "array" | "object" => {
     if (Array.isArray(value)) return "array";

@@ -6,15 +6,21 @@ import validator from "@rjsf/validator-ajv8";
 import { useAtom } from "jotai";
 import { get, isEmpty, take } from "lodash-es";
 import { ChevronDown, ChevronRight, List, Plus } from "lucide-react";
-import { memo, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { Badge } from "../../../ui/index.ts";
-import { chaiRjsfFieldsAtom, chaiRjsfTemplatesAtom, chaiRjsfWidgetsAtom } from "../../atoms/builder.ts";
+import {
+  chaiRjsfFieldsAtom,
+  chaiRjsfTemplatesAtom,
+  chaiRjsfWidgetsAtom,
+  usePageExternalData,
+} from "../../atoms/builder.ts";
 import { LANGUAGES } from "../../constants/LANGUAGES.ts";
 import { useLanguages } from "../../hooks/useLanguages.ts";
 import { useSelectedBlock } from "../../hooks/useSelectedBlockIds.ts";
 import { IconPickerField, ImagePickerField, LinkField, RTEField, RowColField, SliderField } from "../../rjsf-widgets";
 import { BindingWidget } from "../../rjsf-widgets/binding.tsx";
 import { CodeEditor } from "../../rjsf-widgets/Code.tsx";
+import { NestedPathSelector } from "../NestedPathSelector";
 
 type JSONFormType = {
   blockId?: string;
@@ -36,15 +42,64 @@ const CustomFieldTemplate = ({
   required,
   schema,
   formData,
+  onChange,
 }: FieldTemplateProps) => {
   const { selectedLang, fallbackLang, languages } = useLanguages();
   const lang = isEmpty(languages) ? "" : isEmpty(selectedLang) ? fallbackLang : selectedLang;
   const currentLanguage = get(LANGUAGES, lang, lang);
+  const pageExternalData = usePageExternalData();
 
   const selectedBlock = useSelectedBlock();
   const registeredBlocks = useRegisteredChaiBlocks();
   const i18nProps = get(registeredBlocks, [selectedBlock?._type, "i18nProps"], []) || [];
   const [openedList, setOpenedList] = useState<null | string>(null);
+
+  const handlePathSelect = useCallback(
+    (path: string) => {
+      // Get the input element for cursor position
+      const input = document.getElementById(id) as HTMLInputElement;
+      if (!input) return;
+
+      const cursorPos = input.selectionStart || 0;
+      const currentValue = input.value || "";
+
+      // Helper function to check if character is punctuation
+      const isPunctuation = (char: string) => /[.,!?;:]/.test(char);
+
+      // Get characters before and after cursor
+      const charBefore = cursorPos > 0 ? currentValue[cursorPos - 1] : "";
+      const charAfter = cursorPos < currentValue.length ? currentValue[cursorPos] : "";
+
+      // Determine spacing
+      let prefix = "";
+      let suffix = "";
+
+      // Handle spacing before placeholder
+      if (cursorPos > 0) {
+        // Always add space after a period/full stop
+        if (charBefore === ".") {
+          prefix = " ";
+        }
+        // For other cases, add space if not punctuation and not already a space
+        else if (!isPunctuation(charBefore) && charBefore !== " ") {
+          prefix = " ";
+        }
+      }
+
+      // Handle spacing after placeholder
+      if (cursorPos < currentValue.length && !isPunctuation(charAfter) && charAfter !== " ") {
+        suffix = " ";
+      }
+
+      // Create the new value with smart spacing
+      const newValue =
+        currentValue.slice(0, cursorPos) + prefix + `{{${path}}}` + suffix + currentValue.slice(cursorPos);
+
+      // Call onChange with the new formData
+      onChange(newValue, {}, id);
+    },
+    [id, onChange, formData, selectedBlock?._id],
+  );
 
   if (hidden) {
     return null;
@@ -90,10 +145,15 @@ const CustomFieldTemplate = ({
   return (
     <div className={classNames}>
       {schema.title && (
-        <label htmlFor={id} className={schema.type === "object" ? "pb-2" : ""}>
-          {label} {showLangSuffix && <small className="text-[9px] text-zinc-400"> {currentLanguage}</small>}
-          {required && schema.type !== "object" ? " *" : null}
-        </label>
+        <div className="flex items-center justify-between">
+          <label htmlFor={id} className={schema.type === "object" ? "pb-2" : ""}>
+            {label} {showLangSuffix && <small className="text-[9px] text-zinc-400"> {currentLanguage}</small>}
+            {required && schema.type !== "object" ? " *" : null}
+          </label>
+          {schema.type === "string" && !schema.enum && !schema.oneOf && pageExternalData && (
+            <NestedPathSelector data={pageExternalData} onSelect={handlePathSelect} dataType="value" />
+          )}
+        </div>
       )}
       {description}
       {children}
@@ -122,7 +182,7 @@ export const JSONForm = memo(({ blockId, schema, uiSchema, formData, onChange }:
       onChange({ formData }, id);
     },
     [onChange, selectedLang],
-    1000, // save only every 5 seconds
+    400, // save only every 5 seconds
   );
 
   return (
@@ -159,6 +219,7 @@ export const JSONForm = memo(({ blockId, schema, uiSchema, formData, onChange }:
       schema={schema}
       formData={formData}
       onChange={({ formData: fD }, id) => {
+        console.log(fD, id);
         if (!id || blockId !== fD?._id) return;
         const prop = take(id.split("."), 2).join(".").replace("root.", "");
         throttledChange({ formData: fD }, prop);
