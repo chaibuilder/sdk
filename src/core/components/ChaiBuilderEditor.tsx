@@ -5,7 +5,6 @@ import { useAtom } from "jotai/index";
 import { each, noop, omit } from "lodash-es";
 import React, { useEffect, useMemo } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import "react-quill/dist/quill.snow.css";
 import { FEATURE_TOGGLES } from "../../FEATURE_TOGGLES.tsx";
 import { Toaster } from "../../ui";
 import {
