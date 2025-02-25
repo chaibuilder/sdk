@@ -56,60 +56,136 @@ const CustomFieldTemplate = ({
 
   const handlePathSelect = useCallback(
     (path: string) => {
-      // Get the input element for cursor position
-      const input = document.getElementById(id) as HTMLInputElement;
-      if (!input) return;
+      // Get the element by ID
+      const element = document.getElementById(id);
+      if (!element) return;
 
-      const cursorPos = input.selectionStart || 0;
-      const currentValue = input.value || "";
+      // Check if this is a ReactQuill editor by looking for the quill container
+      // The actual ID for the quill container is prefixed with 'quill.'
+      const quillContainer = document.getElementById(`quill.${id}`);
 
-      // Check if there's any text selection
-      const selectionEnd = input.selectionEnd || cursorPos;
-      const hasSelection = selectionEnd > cursorPos;
+      if (
+        (quillContainer && quillContainer.classList.contains("quill")) ||
+        (quillContainer && "__quill" in quillContainer)
+      ) {
+        // Handle ReactQuill editor
+        // @ts-ignore - Access the Quill instance that was attached in the RTEField component
+        const quill = (quillContainer as any).__quill;
 
-      // If text is selected, replace it with the shortcode
-      if (hasSelection) {
-        const newValue = currentValue.slice(0, cursorPos) + `{{${path}}}` + currentValue.slice(selectionEnd);
+        if (quill) {
+          // Insert the placeholder at the current selection
+          const placeholder = `{{${path}}}`;
+
+          // Get selection range or create one
+          const range = quill.getSelection(true);
+          if (!range) {
+            // If no selection, place at the end
+            const length = quill.getLength();
+            quill.insertText(length - 1, ` {{${path}}} `);
+            quill.setSelection(length + path.length + 6, 0); // +6 for the {{ }} and spaces
+            return;
+          }
+
+          // Helper function to check if character is punctuation
+          const isPunctuation = (char: string) => /[.,!?;:]/.test(char);
+
+          // If there's a selection, replace it with the placeholder
+          if (range.length > 0) {
+            quill.deleteText(range.index, range.length);
+            quill.insertText(range.index, placeholder);
+            quill.setSelection(range.index + placeholder.length, 0);
+          } else {
+            // No selection, just insert at cursor position with smart spacing
+            // Get the current line text to determine spacing
+            const [leaf] = quill.getLeaf(range.index);
+            const leafText = leaf?.text || "";
+
+            // Determine if we need spacing
+            let prefix = "";
+            let suffix = "";
+
+            // Get characters before and after cursor
+            const charBefore = range.index > 0 && leaf ? leafText[range.index - leaf.offset - 1] : "";
+            const charAfter = range.index - leaf.offset < leafText.length ? leafText[range.index - leaf.offset] : "";
+
+            // Handle spacing before placeholder
+            if (range.index > 0) {
+              // Always add space after a period/full stop
+              if (charBefore === ".") {
+                prefix = " ";
+              }
+              // For other cases, add space if not punctuation and not already a space
+              else if (!isPunctuation(charBefore) && charBefore !== " ") {
+                prefix = " ";
+              }
+            }
+
+            // Handle spacing after placeholder
+            if (charAfter && !isPunctuation(charAfter) && charAfter !== " ") {
+              suffix = " ";
+            }
+
+            quill.insertText(range.index, prefix + placeholder + suffix);
+            quill.setSelection(range.index + prefix.length + placeholder.length + suffix.length, 0);
+          }
+
+          // Focus the editor
+          quill.focus();
+        }
+      } else {
+        // Handle regular input field
+        const input = element as HTMLInputElement;
+        const cursorPos = input.selectionStart || 0;
+        const currentValue = input.value || "";
+
+        // Check if there's any text selection
+        const selectionEnd = input.selectionEnd || cursorPos;
+        const hasSelection = selectionEnd > cursorPos;
+
+        // If text is selected, replace it with the shortcode
+        if (hasSelection) {
+          const newValue = currentValue.slice(0, cursorPos) + `{{${path}}}` + currentValue.slice(selectionEnd);
+
+          // Call onChange with the new formData
+          onChange(newValue, {}, id);
+          return;
+        }
+
+        // Helper function to check if character is punctuation
+        const isPunctuation = (char: string) => /[.,!?;:]/.test(char);
+
+        // Get characters before and after cursor
+        const charBefore = cursorPos > 0 ? currentValue[cursorPos - 1] : "";
+        const charAfter = cursorPos < currentValue.length ? currentValue[cursorPos] : "";
+
+        // Determine spacing
+        let prefix = "";
+        let suffix = "";
+
+        // Handle spacing before placeholder
+        if (cursorPos > 0) {
+          // Always add space after a period/full stop
+          if (charBefore === ".") {
+            prefix = " ";
+          }
+          // For other cases, add space if not punctuation and not already a space
+          else if (!isPunctuation(charBefore) && charBefore !== " ") {
+            prefix = " ";
+          }
+        }
+
+        // Handle spacing after placeholder
+        if (cursorPos < currentValue.length && !isPunctuation(charAfter) && charAfter !== " ") {
+          suffix = " ";
+        }
+
+        // Create the new value with smart spacing
+        const newValue =
+          currentValue.slice(0, cursorPos) + prefix + `{{${path}}}` + suffix + currentValue.slice(cursorPos);
 
         // Call onChange with the new formData
         onChange(newValue, {}, id);
-        return;
       }
-
-      // Helper function to check if character is punctuation
-      const isPunctuation = (char: string) => /[.,!?;:]/.test(char);
-
-      // Get characters before and after cursor
-      const charBefore = cursorPos > 0 ? currentValue[cursorPos - 1] : "";
-      const charAfter = cursorPos < currentValue.length ? currentValue[cursorPos] : "";
-
-      // Determine spacing
-      let prefix = "";
-      let suffix = "";
-
-      // Handle spacing before placeholder
-      if (cursorPos > 0) {
-        // Always add space after a period/full stop
-        if (charBefore === ".") {
-          prefix = " ";
-        }
-        // For other cases, add space if not punctuation and not already a space
-        else if (!isPunctuation(charBefore) && charBefore !== " ") {
-          prefix = " ";
-        }
-      }
-
-      // Handle spacing after placeholder
-      if (cursorPos < currentValue.length && !isPunctuation(charAfter) && charAfter !== " ") {
-        suffix = " ";
-      }
-
-      // Create the new value with smart spacing
-      const newValue =
-        currentValue.slice(0, cursorPos) + prefix + `{{${path}}}` + suffix + currentValue.slice(cursorPos);
-
-      // Call onChange with the new formData
-      onChange(newValue, {}, id);
     },
     [id, onChange, formData, selectedBlock?._id],
   );

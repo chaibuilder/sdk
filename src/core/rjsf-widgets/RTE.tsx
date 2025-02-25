@@ -1,6 +1,7 @@
 // @ts-ignore
-import ReactQuill from "react-quill";
 import { WidgetProps } from "@rjsf/utils";
+import { useEffect, useRef } from "react";
+import ReactQuill from "react-quill";
 
 const RichTextEditorField = ({ id, placeholder, value, onChange, onBlur }: WidgetProps) => {
   const modules = {
@@ -27,21 +28,34 @@ const RichTextEditorField = ({ id, placeholder, value, onChange, onBlur }: Widge
     "link",
     "image",
   ];
+  const quillRef = useRef<ReactQuill>(null);
+  const quillContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (quillRef.current) {
+      const editor = quillRef.current.getEditor();
+      // @ts-ignore
+      quillContainerRef.current.__quill = editor;
+    }
+  }, []);
 
   if (typeof window === "undefined") return null;
 
   return (
-    <ReactQuill
-      id={id}
-      value={value}
-      // @ts-ignore
-      onBlur={(content: string) => onBlur(id, content)}
-      onChange={(content: string) => onChange(content)}
-      modules={modules}
-      formats={formats}
-      placeholder={placeholder}
-      className="mt-1 rounded-md"
-    />
+    <div id={`quill.${id}`} ref={quillContainerRef}>
+      <ReactQuill
+        ref={quillRef}
+        id={id}
+        value={value}
+        // @ts-ignore
+        onBlur={(content: string) => onBlur(id, content)}
+        onChange={(content: string) => onChange(content)}
+        modules={modules}
+        formats={formats}
+        placeholder={placeholder}
+        className="mt-1 rounded-md"
+      />
+    </div>
   );
 };
 
