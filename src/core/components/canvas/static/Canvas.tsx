@@ -1,7 +1,9 @@
+import { Editor, EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 import { useAtom } from "jotai";
 import { first, isEmpty, omit, throttle } from "lodash-es";
-import React, { useCallback, useEffect } from "react";
-import { Quill } from "react-quill";
+import React, { useCallback, useEffect, useState } from "react";
+import ReactDOM from "react-dom/client";
 import { pageBlocksAtomsAtom } from "../../../atoms/blocks.ts";
 import { inlineEditingActiveAtom, treeRefAtom } from "../../../atoms/ui.ts";
 import { useFrame } from "../../../frame";
@@ -26,24 +28,11 @@ function getTargetedBlock(target) {
   return closest?.getAttribute("data-block-id") === "canvas" ? null : closest;
 }
 
-function destroyQuill(quill) {
-  // If you have attached event listeners directly to the Quill instance or its elements,
-  // you should remove them here.
+function destroyTiptap(editor: Editor) {
+  if (!editor) return;
 
-  // Clear the contents of the Quill editor
-  quill.container.innerHTML = "";
-
-  // Optionally, remove the editor container from the DOM
-  quill.container.parentNode.removeChild(quill.container);
-
-  // If there's a separate toolbar, hide or remove it
-  const toolbar = document.querySelector(".ql-toolbar");
-  if (toolbar) {
-    toolbar.parentNode.removeChild(toolbar);
-  }
-
-  // Nullify the instance if you don't plan to use it anymore
-  quill = null;
+  // Destroy the editor instance
+  editor.destroy();
 }
 
 const useHandleCanvasDblClick = () => {
@@ -52,55 +41,101 @@ const useHandleCanvasDblClick = () => {
   const [editingBlockId, setEditingBlockId] = useAtom(inlineEditingActiveAtom);
   const { clearHighlight } = useBlockHighlight();
   const getBlockAtomValue = useGetBlockAtomValue(pageBlocksAtomsAtom);
+  const [editor, setEditor] = useState<Editor | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (editor) {
+        destroyTiptap(editor);
+      }
+    };
+  }, [editor]);
+
   return useCallback(
     (e) => {
       if (editingBlockId) return;
       const chaiBlock: HTMLElement = getTargetedBlock(e.target);
+      if (!chaiBlock) return;
+
       const blockType = chaiBlock.getAttribute("data-block-type");
       if (!blockType || !INLINE_EDITABLE_BLOCKS.includes(blockType)) {
         return;
       }
       const blockId = chaiBlock.getAttribute("data-block-id");
+      if (!blockId) return;
+
+      setEditingBlockId(blockId);
+
       const content = (getBlockAtomValue(blockId) as ChaiBlock)["content"];
-      const newBlock = chaiBlock.cloneNode(true) as HTMLElement;
-      newBlock.innerHTML = content;
+      const newBlock = document.createElement("div");
+      newBlock.className = chaiBlock.className;
 
       chaiBlock.style.display = "none";
 
-      Array.from(newBlock.attributes).forEach((attr) => {
-        if (attr.name !== "class") newBlock.removeAttribute(attr.name);
-      });
       if (blockType === "Text") {
         newBlock.style.display = "inline-block";
       }
-      chaiBlock.parentNode.insertBefore(newBlock, chaiBlock.nextSibling);
-      const quill = new Quill(newBlock, { placeholder: "Type here..." });
-      function blurListener() {
-        const content = quill.getText(0, quill.getLength());
-        updateContent([blockId], { content });
-        chaiBlock.removeAttribute("style");
-        newBlock.removeEventListener("blur", blurListener, true);
-        destroyQuill(quill);
-        setEditingBlockId("");
-        clearHighlight();
-        newBlock.remove();
-      }
-      newBlock.addEventListener("blur", blurListener, true);
-      newBlock.addEventListener("click", (e) => {
-        e.stopPropagation();
-      });
-      newBlock.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === "Escape") {
-          blurListener();
-        }
+      chaiBlock.parentNode?.insertBefore(newBlock, chaiBlock.nextSibling);
+
+      // Create Tiptap editor
+      const newEditor = useEditor({
+        extensions: [StarterKit],
+        content: content,
+        autofocus: true,
+        editorProps: {
+          attributes: {
+            class: "focus:outline-none",
+          },
+        },
+        onBlur: ({ editor }) => {
+          const content = editor.getHTML();
+          updateContent([blockId], { content });
+          chaiBlock.removeAttribute("style");
+          destroyTiptap(editor);
+          setEditingBlockId("");
+          clearHighlight();
+          newBlock.remove();
+          setEditor(null);
+        },
       });
 
-      quill.focus();
-      // remove .ql-clipboard element from newBlock
-      newBlock.querySelector(".ql-clipboard")?.remove();
-      setEditingBlockId(chaiBlock.getAttribute("data-block-id"));
+      setEditor(newEditor);
+
+      // Handle escape key
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          if (newEditor) {
+            const content = newEditor.getHTML();
+            updateContent([blockId], { content });
+            chaiBlock.removeAttribute("style");
+            destroyTiptap(newEditor);
+            setEditingBlockId("");
+            clearHighlight();
+            newBlock.remove();
+            setEditor(null);
+            newBlock.removeEventListener("keydown", handleKeyDown);
+          }
+        }
+      };
+
+      newBlock.addEventListener("keydown", handleKeyDown);
+
+      // Render the editor content into the new block
+      if (newEditor) {
+        const editorContent = document.createElement("div");
+        newBlock.appendChild(editorContent);
+
+        // Create a new React root and render the EditorContent
+        const root = ReactDOM.createRoot(editorContent);
+        root.render(<EditorContent editor={newEditor} />);
+
+        // Focus the editor
+        setTimeout(() => {
+          newEditor.commands.focus();
+        }, 0);
+      }
     },
-    [editingBlockId, setEditingBlockId, updateContent, clearHighlight],
+    [editingBlockId, clearHighlight, getBlockAtomValue, setEditingBlockId, updateContent, editor, setEditor],
   );
 };
 
