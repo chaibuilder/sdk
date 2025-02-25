@@ -1,15 +1,15 @@
-import { memo, useEffect, useState } from "react";
-import { RJSFSchema, UiSchema } from "@rjsf/utils";
-import { includes } from "lodash-es";
-import { getBlockJSONFromSchemas, getBlockJSONFromUISchemas } from "../../functions/Controls.ts";
-import RjForm from "@rjsf/core";
-import { BindingWidget } from "../../rjsf-widgets/binding.tsx";
-import { IconPickerField, ImagePickerField, LinkField, RTEField } from "../../rjsf-widgets";
-import validator from "@rjsf/validator-ajv8";
 import { useThrottledCallback } from "@react-hookz/web";
-import { CodeEditor } from "../../rjsf-widgets/Code.tsx";
+import RjForm from "@rjsf/core";
+import { RJSFSchema, UiSchema } from "@rjsf/utils";
+import validator from "@rjsf/validator-ajv8";
+import { includes } from "lodash-es";
+import { memo, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { getBlockJSONFromSchemas, getBlockJSONFromUISchemas } from "../../functions/Controls.ts";
 import { useLanguages } from "../../hooks/useLanguages.ts";
+import { IconPickerField, ImagePickerField, LinkField, RTEField } from "../../rjsf-widgets";
+import { BindingWidget } from "../../rjsf-widgets/binding.tsx";
+import { CodeEditor } from "../../rjsf-widgets/Code.tsx";
 
 type JSONFormType = {
   id?: string;
@@ -47,7 +47,7 @@ export const JSONForm = memo(({ id, properties, formData, onChange }: JSONFormTy
       onChange({ formData }, id);
     },
     [onChange],
-    1000, // save only every 5 seconds
+    400, // save only every 5 seconds
   );
 
   return (

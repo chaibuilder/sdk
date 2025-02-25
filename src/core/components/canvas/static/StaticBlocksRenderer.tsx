@@ -1,9 +1,6 @@
-import { filter, isEmpty } from "lodash-es";
-import { BlocksRendererStatic } from "./BlocksRenderer";
-import { BlocksExternalDataProvider } from "./BlocksExternalDataProvider.tsx";
+import { isEmpty } from "lodash-es";
 import { useBlocksStore } from "../../../history/useBlocksStoreUndoableActions.ts";
-import { ChaiBlock } from "../../../types/ChaiBlock.ts";
-
+import { PageBlocksRenderer } from "./NewPageRenderer";
 export const StaticBlocksRenderer = () => {
   const [blocks] = useBlocksStore();
 
@@ -17,9 +14,7 @@ export const StaticBlocksRenderer = () => {
       Get started by adding your first block!
     </div>
   ) : (
-    <BlocksExternalDataProvider>
-      <BlocksRendererStatic allBlocks={blocks} blocks={filter(blocks, (block: ChaiBlock) => isEmpty(block._parent))} />
-    </BlocksExternalDataProvider>
+    <PageBlocksRenderer />
   );
 
   return <>{blocksHtml}</>;
