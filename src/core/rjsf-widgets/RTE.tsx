@@ -41,6 +41,7 @@ const RichTextEditorField = ({ id, placeholder, value, onChange, onBlur }: Widge
 
   if (typeof window === "undefined") return null;
 
+  console.log(value);
   return (
     <div id={`quill.${id}`} ref={quillContainerRef}>
       <ReactQuill
