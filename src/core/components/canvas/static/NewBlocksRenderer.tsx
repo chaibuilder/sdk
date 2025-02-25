@@ -6,7 +6,7 @@ import { getRegisteredChaiBlock } from "../../../../runtime";
 import { pageBlocksAtomsAtom } from "../../../atoms/blocks";
 import { usePageExternalData } from "../../../atoms/builder";
 import { builderStore } from "../../../atoms/store";
-import { dataBindingActiveAtom, inlineEditingActiveAtom } from "../../../atoms/ui";
+import { dataBindingActiveAtom } from "../../../atoms/ui";
 import { useBlocksStore, useGlobalBlocksStore, useHiddenBlockIds } from "../../../hooks";
 import { useLanguages } from "../../../hooks/useLanguages";
 import { useGetBlockAtom } from "../../../hooks/useUpdateBlockAtom";
@@ -26,7 +26,6 @@ const BlockRenderer = ({ blockAtom, children }: { blockAtom: Atom<ChaiBlock>; ch
   const getRuntimePropValues = useBlockRuntimeProps();
   const pageExternalData = usePageExternalData();
   const [hiddenBlocks] = useHiddenBlockIds();
-  const [editingBlockId] = useAtom(inlineEditingActiveAtom);
   const [dataBindingActive] = useAtom(dataBindingActiveAtom);
   const Component = get(registeredChaiBlock, "component", null);
 
@@ -60,7 +59,7 @@ const BlockRenderer = ({ blockAtom, children }: { blockAtom: Atom<ChaiBlock>; ch
     [block, selectedLang, fallbackLang, dataBindingProps, blockAttributesProps, runtimeProps, dataProviderProps],
   );
 
-  if (isNull(Component) || hiddenBlocks.includes(block._id) || editingBlockId === block._id) return null;
+  if (isNull(Component) || hiddenBlocks.includes(block._id)) return null;
   return <Suspense>{createElement(Component, { ...props, children })}</Suspense>;
 };
 
