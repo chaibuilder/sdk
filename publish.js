@@ -102,6 +102,9 @@ async function main() {
     // Get current branch name
     const currentBranch = getCurrentBranch();
 
+    // Build the project
+    execCommand("pnpm run build");
+
     // Update SDK version in package.json (without git tag)
     execCommand(`pnpm version ${newVersion} --no-git-tag-version`);
 
@@ -131,9 +134,6 @@ async function main() {
     execCommand(
       `git commit -m "chore: bump version to ${newVersion}${updateRuntime ? ` and runtime to ${newRuntimeVersion}` : ""}"`,
     );
-
-    // Build the project
-    execCommand("pnpm run build");
 
     // Create and push tag
     execCommand(`git tag -a v${newVersion} -m "Release version ${newVersion}"`);
