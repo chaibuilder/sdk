@@ -208,11 +208,7 @@ const CustomFieldTemplate = ({
         // If text is selected, replace it with the shortcode
         if (hasSelection) {
           const basePlaceholder = `{{${path}}}`;
-          const {
-            text: placeholderWithSpacing,
-            prefixLength,
-            suffixLength,
-          } = addSmartSpacing(currentValue, cursorPos, basePlaceholder);
+          const { text: placeholderWithSpacing } = addSmartSpacing(currentValue, cursorPos, basePlaceholder);
 
           const newValue = currentValue.slice(0, cursorPos) + placeholderWithSpacing + currentValue.slice(selectionEnd);
 
