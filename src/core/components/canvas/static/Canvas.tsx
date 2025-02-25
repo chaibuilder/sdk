@@ -1,9 +1,8 @@
-import { Editor, EditorContent, useEditor } from "@tiptap/react";
+import { Editor, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useAtom } from "jotai";
 import { first, isEmpty, omit, throttle } from "lodash-es";
-import React, { useCallback, useEffect, useState } from "react";
-import ReactDOM from "react-dom/client";
+import React, { useCallback, useEffect, useRef } from "react";
 import { pageBlocksAtomsAtom } from "../../../atoms/blocks.ts";
 import { inlineEditingActiveAtom, treeRefAtom } from "../../../atoms/ui.ts";
 import { useFrame } from "../../../frame";
@@ -11,6 +10,7 @@ import { useBlockHighlight, useSelectedBlockIds, useSelectedStylingBlocks, useUp
 import { useGetBlockAtomValue } from "../../../hooks/useUpdateBlockAtom.ts";
 import { ChaiBlock } from "../../../types/ChaiBlock.ts";
 import { useDnd } from "../dnd/useDnd.ts";
+import { TiptapBubbleMenu } from "./TiptapBubbleMenu.tsx";
 
 function getTargetedBlock(target) {
   // First check if the target is the canvas itself
@@ -28,28 +28,12 @@ function getTargetedBlock(target) {
   return closest?.getAttribute("data-block-id") === "canvas" ? null : closest;
 }
 
-function destroyTiptap(editor: Editor) {
-  if (!editor) return;
-
-  // Destroy the editor instance
-  editor.destroy();
-}
-
-const useHandleCanvasDblClick = () => {
-  const INLINE_EDITABLE_BLOCKS = ["Heading", "Paragraph", "Text", "Link", "Span", "Button"];
+const useHandleCanvasDblClick = (editor: Editor, editorDiv: HTMLDivElement) => {
+  const INLINE_EDITABLE_BLOCKS = ["Heading", "Paragraph", "Text", "Link", "Span", "Button", "RichText"];
   const updateContent = useUpdateBlocksProps();
   const [editingBlockId, setEditingBlockId] = useAtom(inlineEditingActiveAtom);
   const { clearHighlight } = useBlockHighlight();
   const getBlockAtomValue = useGetBlockAtomValue(pageBlocksAtomsAtom);
-  const [editor, setEditor] = useState<Editor | null>(null);
-
-  useEffect(() => {
-    return () => {
-      if (editor) {
-        destroyTiptap(editor);
-      }
-    };
-  }, [editor]);
 
   return useCallback(
     (e) => {
@@ -64,78 +48,34 @@ const useHandleCanvasDblClick = () => {
       const blockId = chaiBlock.getAttribute("data-block-id");
       if (!blockId) return;
 
+      editor.on("update", ({ editor: editor2 }) => {
+        console.log(editor2.getHTML());
+      });
+      editor.on("blur", () => {
+        console.log("blur");
+        const content = editor.getHTML();
+        updateContent([blockId], { content });
+        editorDiv.style.display = "none";
+        chaiBlock.style.visibility = "visible";
+      });
+
       setEditingBlockId(blockId);
 
       const content = (getBlockAtomValue(blockId) as ChaiBlock)["content"];
-      const newBlock = document.createElement("div");
-      newBlock.className = chaiBlock.className;
 
-      chaiBlock.style.display = "none";
-
-      if (blockType === "Text") {
-        newBlock.style.display = "inline-block";
-      }
-      chaiBlock.parentNode?.insertBefore(newBlock, chaiBlock.nextSibling);
-
-      // Create Tiptap editor
-      const newEditor = useEditor({
-        extensions: [StarterKit],
-        content: content,
-        autofocus: true,
-        editorProps: {
-          attributes: {
-            class: "focus:outline-none",
-          },
-        },
-        onBlur: ({ editor }) => {
-          const content = editor.getHTML();
-          updateContent([blockId], { content });
-          chaiBlock.removeAttribute("style");
-          destroyTiptap(editor);
-          setEditingBlockId("");
-          clearHighlight();
-          newBlock.remove();
-          setEditor(null);
-        },
-      });
-
-      setEditor(newEditor);
-
-      // Handle escape key
-      const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === "Escape") {
-          if (newEditor) {
-            const content = newEditor.getHTML();
-            updateContent([blockId], { content });
-            chaiBlock.removeAttribute("style");
-            destroyTiptap(newEditor);
-            setEditingBlockId("");
-            clearHighlight();
-            newBlock.remove();
-            setEditor(null);
-            newBlock.removeEventListener("keydown", handleKeyDown);
-          }
-        }
-      };
-
-      newBlock.addEventListener("keydown", handleKeyDown);
-
-      // Render the editor content into the new block
-      if (newEditor) {
-        const editorContent = document.createElement("div");
-        newBlock.appendChild(editorContent);
-
-        // Create a new React root and render the EditorContent
-        const root = ReactDOM.createRoot(editorContent);
-        root.render(<EditorContent editor={newEditor} />);
-
-        // Focus the editor
-        setTimeout(() => {
-          newEditor.commands.focus();
-        }, 0);
-      }
+      editor.commands.setContent(content);
+      editorDiv.style.display = "block";
+      chaiBlock.style.visibility = "hidden";
+      // place the editorDiv exactly overlapping the chaiBlock
+      editorDiv.style.position = "absolute";
+      editorDiv.style.top = `${chaiBlock.offsetTop}px`;
+      editorDiv.style.left = `${chaiBlock.offsetLeft}px`;
+      editorDiv.style.width = `${chaiBlock.offsetWidth}px`;
+      editorDiv.style.height = `${chaiBlock.offsetHeight}px`;
+      // copy classNames from chaiBlock to editorDiv
+      editorDiv.classList.add(...chaiBlock.classList);
     },
-    [editingBlockId, clearHighlight, getBlockAtomValue, setEditingBlockId, updateContent, editor, setEditor],
+    [editingBlockId, clearHighlight, getBlockAtomValue, setEditingBlockId, updateContent, editor, editorDiv],
   );
 };
 
@@ -226,7 +166,11 @@ export const Canvas = ({ children }: { children: React.ReactNode }) => {
     }, 100);
   }, [document, ids, setSelectedStylingBlocks, styleIds]);
 
-  const handleDblClick = useHandleCanvasDblClick();
+  const editor = useEditor({
+    extensions: [StarterKit],
+  });
+  const editorRef = useRef<HTMLDivElement>(null);
+  const handleDblClick = useHandleCanvasDblClick(editor, editorRef.current);
   const handleCanvasClick = useHandleCanvasClick();
   const handleMouseMove = useHandleMouseMove();
   const handleMouseLeave = useHandleMouseLeave();
@@ -243,6 +187,9 @@ export const Canvas = ({ children }: { children: React.ReactNode }) => {
       {...omit(dnd, "isDragging")}
       className={`relative h-full max-w-full p-px ` + (dnd.isDragging ? "dragging" : "") + ""}>
       {children}
+      <div ref={editorRef} style={{ display: "none" }}>
+        <TiptapBubbleMenu editor={editor} />
+      </div>
     </div>
   );
 };
