@@ -1,6 +1,6 @@
-import { useTranslation } from "react-i18next";
 import { DesktopIcon, DotsVerticalIcon, LaptopIcon, MobileIcon } from "@radix-ui/react-icons";
 import { includes, map, toUpper } from "lodash-es";
+import { useTranslation } from "react-i18next";
 import {
   Button,
   DropdownMenu,
@@ -15,7 +15,7 @@ import {
 } from "../../../../ui";
 import { useBuilderProp, useCanvasWidth, useSelectedBreakpoints } from "../../../hooks";
 
-interface BreakpointItemType {
+export interface BreakpointItemType {
   breakpoint: string;
   content: string;
   icon: any;
@@ -23,7 +23,7 @@ interface BreakpointItemType {
   width: number;
 }
 
-interface BreakpointCardProps extends BreakpointItemType {
+export interface BreakpointCardProps extends BreakpointItemType {
   currentBreakpoint: string;
   onClick: Function;
 }
@@ -42,7 +42,7 @@ const TabletIcon = ({ landscape = false }) => (
   </svg>
 );
 
-const WEB_BREAKPOINTS: BreakpointItemType[] = [
+export const WEB_BREAKPOINTS: BreakpointItemType[] = [
   {
     title: "Mobile (XS)",
     content: "Styles set here are applied to all screen unless edited at higher breakpoint",

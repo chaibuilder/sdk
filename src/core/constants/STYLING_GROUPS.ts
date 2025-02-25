@@ -1,3 +1,4 @@
+import { BreakpointSelector } from "../components/settings/new-panel/BreakpointSelector.tsx";
 import { ManualClasses } from "../components/settings/new-panel/ManualClasses.tsx";
 
 const BASIC_UNITS: string[] = ["px", "%", "em", "rem", "ch", "vh", "vw"];
@@ -31,6 +32,7 @@ export const SETTINGS_SECTIONS = [
     heading: "Styles",
     items: [
       { component: ManualClasses },
+      { component: BreakpointSelector },
       { type: "arbitrary", label: "layout.width", units: BASIC_UNITS.concat("auto"), property: "width" },
       { type: "arbitrary", label: "layout.height", units: BASIC_UNITS.concat("auto"), property: "height" },
       {
