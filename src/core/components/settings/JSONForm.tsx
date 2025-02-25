@@ -63,6 +63,19 @@ const CustomFieldTemplate = ({
       const cursorPos = input.selectionStart || 0;
       const currentValue = input.value || "";
 
+      // Check if there's any text selection
+      const selectionEnd = input.selectionEnd || cursorPos;
+      const hasSelection = selectionEnd > cursorPos;
+
+      // If text is selected, replace it with the shortcode
+      if (hasSelection) {
+        const newValue = currentValue.slice(0, cursorPos) + `{{${path}}}` + currentValue.slice(selectionEnd);
+
+        // Call onChange with the new formData
+        onChange(newValue, {}, id);
+        return;
+      }
+
       // Helper function to check if character is punctuation
       const isPunctuation = (char: string) => /[.,!?;:]/.test(char);
 
