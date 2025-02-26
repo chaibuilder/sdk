@@ -47,12 +47,16 @@ export const removeClassFromBlocksAtom: any = atom(null, (get, _set, { blockIds,
 });
 
 export const useRemoveClassesFromBlocks = (): Function => {
-  const { updateBlocks } = useBlocksStoreUndoableActions();
+  const { updateBlocks, updateBlocksRuntime } = useBlocksStoreUndoableActions();
   const removeClassesFromBlocks = useSetAtom(removeClassFromBlocksAtom);
   return useCallback(
-    (blockIds: Array<string>, fullClasses: Array<string>) => {
+    (blockIds: Array<string>, fullClasses: Array<string>, undo: boolean = false) => {
       const blocks = removeClassesFromBlocks({ blockIds, fullClasses });
-      updateBlocks(blockIds, blocks[0].props);
+      if (!undo) {
+        updateBlocksRuntime(blockIds, blocks[0].props);
+      } else {
+        updateBlocks(blockIds, blocks[0].props);
+      }
     },
     [removeClassesFromBlocks],
   );
