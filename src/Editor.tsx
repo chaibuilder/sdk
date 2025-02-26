@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useAtom } from "jotai";
 import { isArray, map, pick } from "lodash-es";
+import { Info } from "lucide-react";
 import { useState } from "react";
 import { lsAiContextAtom, lsBlocksAtom, lsThemeAtom } from "./__dev/atoms-dev.ts";
 import { Component as CollectionListComponent, Config as CollectionListConfig } from "./__dev/CollectionList.tsx";
@@ -10,6 +11,7 @@ import PreviewWeb from "./__dev/preview/WebPreview.tsx";
 import RightTop from "./__dev/RightTop.tsx";
 import { bluePreset, greenPreset, orangePreset } from "./__dev/THEME_PRESETS.ts";
 import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML, registerChaiBlock } from "./core/main";
+import { Alert, AlertDescription } from "./ui/shadcn/components/ui/alert.tsx";
 import { loadWebBlocks } from "./web-blocks";
 
 loadWebBlocks();
@@ -30,6 +32,26 @@ const Logo = () => {
   );
 };
 
+const DemoAlert = () => {
+  return (
+    <Alert variant="default" className="px-4 py-2">
+      <AlertDescription className="flex items-center gap-2">
+        <Info className="h-4 w-4" />
+        <span className="font-bold">Demo mode</span> - Changes are saved in your browser local storage. AI actions are
+        mocked.
+      </AlertDescription>
+    </Alert>
+  );
+};
+
+const MediaManagerComponent = () => {
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex h-full items-center justify-center pt-20">Implement your media manager here</div>
+    </div>
+  );
+};
+
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
   const [theme, setTheme] = useAtom(lsThemeAtom);
@@ -42,6 +64,7 @@ function ChaiBuilderDefault() {
 
   return (
     <ChaiBuilderEditor
+      mediaManagerComponent={MediaManagerComponent}
       pageExternalData={{
         vehicle: {
           title: "Hyundai i20 Active - 1.0 MPI - 2015",
@@ -106,7 +129,7 @@ function ChaiBuilderDefault() {
         }
       }}
       uiLibraries={uiLibraries}
-      topBarComponents={{ left: [Logo], right: [LanguageButton, RightTop] }}
+      topBarComponents={{ left: [Logo], center: [DemoAlert], right: [LanguageButton, RightTop] }}
       getGlobalBlockBlocks={async (globalBlockKey: string) => {
         const blocks =
           globalBlockKey === "header"
