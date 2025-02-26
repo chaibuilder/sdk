@@ -8,7 +8,6 @@ import { useBlockHighlight } from "./useBlockHighlight.ts";
 import { useBrandingOptions } from "./useBrandingOptions";
 import { useBuilderProp } from "./useBuilderProp";
 import { useBuilderReset } from "./useBuilderReset";
-import { useCanvasWidth } from "./useCanvasWidth";
 import { useCanvasZoom } from "./useCanvasZoom";
 import { useCodeEditor } from "./useCodeEditor.ts";
 import { useCopyBlockIds } from "./useCopyBlockIds";
@@ -38,6 +37,7 @@ import { useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "./useUpdateB
 import { useWrapperBlock } from "./useWrapperBlock.ts";
 export { useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 export { useLayoutVariant } from "./useLayoutVariant.ts";
+export { useCanvasDisplayWidth, useScreenSizeWidth } from "./useScreenSizeWidth";
 
 export {
   useAddBlock,
@@ -48,7 +48,6 @@ export {
   useBrandingOptions,
   useBuilderProp,
   useBuilderReset,
-  useCanvasWidth,
   useCanvasZoom,
   useCodeEditor,
   useCopyBlockIds,
