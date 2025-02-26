@@ -13,6 +13,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "../../../../ui";
+import { getBreakpointValue } from "../../../functions/Functions";
 import { useBuilderProp, useCanvasWidth, useSelectedBreakpoints } from "../../../hooks";
 
 export interface BreakpointItemType {
@@ -24,9 +25,10 @@ export interface BreakpointItemType {
 }
 
 export interface BreakpointCardProps extends BreakpointItemType {
+  canvas?: boolean;
   currentBreakpoint: string;
   onClick: Function;
-  showTooltip?: boolean;
+  openDelay?: number;
 }
 
 const TabletIcon = ({ landscape = false }) => (
@@ -89,7 +91,8 @@ export const WEB_BREAKPOINTS: BreakpointItemType[] = [
 ];
 
 const BreakpointCard = ({
-  showTooltip = true,
+  canvas = false,
+  openDelay = 400,
   title,
   content,
   currentBreakpoint,
@@ -100,20 +103,8 @@ const BreakpointCard = ({
 }: BreakpointCardProps) => {
   const { t } = useTranslation();
 
-  if (!showTooltip) {
-    return (
-      <Button
-        onClick={() => onClick(width)}
-        size="sm"
-        className="h-7 w-7 rounded-md p-1"
-        variant={breakpoint === currentBreakpoint ? "outline" : "ghost"}>
-        {icon}
-      </Button>
-    );
-  }
-
   return (
-    <HoverCard>
+    <HoverCard openDelay={openDelay}>
       <HoverCardTrigger asChild>
         <Button
           onClick={() => onClick(width)}
@@ -123,11 +114,11 @@ const BreakpointCard = ({
           {icon}
         </Button>
       </HoverCardTrigger>
-      <HoverCardContent className="w-52 border-border">
+      <HoverCardContent className="w-fit max-w-52 border-border">
         <div className="flex justify-between space-x-4">
           <div className="space-y-1">
             <h4 className="text-sm font-semibold">{t(title)}</h4>
-            <p className="text-xs">{t(content)}</p>
+            {canvas && <p className="text-xs">{t(content)}</p>}
           </div>
         </div>
       </HoverCardContent>
@@ -135,9 +126,12 @@ const BreakpointCard = ({
   );
 };
 
-export const Breakpoints = ({ showTooltip = true }: { showTooltip?: boolean }) => {
-  const [, breakpoint, setNewWidth] = useCanvasWidth();
-  const [selectedBreakpoints, setSelectedBreakpoints] = useSelectedBreakpoints();
+export const Breakpoints = ({ openDelay = 400, canvas = false }: { openDelay?: number; canvas?: boolean }) => {
+  const [currentWidth, , setNewWidth, canvasDisplayWidth, setCanvasDisplayWidth] = useCanvasWidth();
+  const [styleBreakpoints, setStyleBreakpoints] = useSelectedBreakpoints();
+
+  const selectedBreakpoints = canvas ? styleBreakpoints : styleBreakpoints;
+  const setSelectedBreakpoints = canvas ? setStyleBreakpoints : setStyleBreakpoints;
   const { t } = useTranslation();
   const breakpoints = useBuilderProp("breakpoints", WEB_BREAKPOINTS);
 
@@ -151,11 +145,28 @@ export const Breakpoints = ({ showTooltip = true }: { showTooltip?: boolean }) =
     }
   };
 
+  const handleCanvasWidthChange = (width: number) => {
+    if (canvas) {
+      setCanvasDisplayWidth(width);
+    } else {
+      setNewWidth(width);
+      setCanvasDisplayWidth(width);
+    }
+  };
+
+  const breakpoint = getBreakpointValue(canvas ? canvasDisplayWidth : currentWidth).toLowerCase();
+
   if (breakpoints.length < 4) {
     return (
       <div className="flex items-center rounded-md">
         {map(breakpoints, (bp) => (
-          <BreakpointCard {...bp} onClick={setNewWidth} key={bp.breakpoint} currentBreakpoint={breakpoint} />
+          <BreakpointCard
+            canvas={canvas}
+            {...bp}
+            onClick={handleCanvasWidthChange}
+            key={bp.breakpoint}
+            currentBreakpoint={breakpoint}
+          />
         ))}
       </div>
     );
@@ -168,9 +179,10 @@ export const Breakpoints = ({ showTooltip = true }: { showTooltip?: boolean }) =
           breakpoints.filter((bp: BreakpointItemType) => includes(selectedBreakpoints, toUpper(bp.breakpoint))),
           (bp: BreakpointItemType) => (
             <BreakpointCard
-              showTooltip={showTooltip}
+              canvas={canvas}
+              openDelay={openDelay}
               {...bp}
-              onClick={setNewWidth}
+              onClick={handleCanvasWidthChange}
               key={bp.breakpoint}
               currentBreakpoint={breakpoint}
             />
