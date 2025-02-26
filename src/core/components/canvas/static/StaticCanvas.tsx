@@ -31,7 +31,7 @@ const getElementByStyleId = (doc: any, styleId: string): HTMLElement =>
 
 const StaticCanvas = () => {
   const [networkMode] = useAtom(networkModeAtom);
-  const [width] = useCanvasWidth();
+  const [, , , width] = useCanvasWidth();
   const [, setIds] = useSelectedBlockIds();
   const selectedBlock: any = useSelectedBlock();
   const [, highlight] = useHighlightBlockId();
