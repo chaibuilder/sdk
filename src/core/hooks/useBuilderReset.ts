@@ -1,28 +1,28 @@
-import { useBlockHighlight } from "./useBlockHighlight";
-import { useSelectedBlockIds } from "./useSelectedBlockIds";
-import { useSelectedStylingBlocks } from "./useSelectedStylingBlocks";
-import { useSetAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
+import { useCallback } from "react";
 import { aiAssistantActiveAtom, historyStatesAtom } from "../atoms/ui";
-import { useUndoManager } from "../history/useUndoManager.ts";
-import { useAtom } from "jotai/index";
-import { useGlobalBlocksStore } from "./useGlobalBlocksStore.ts";
+import { useUndoManager } from "../history/useUndoManager";
+import { useBlockHighlight } from "./useBlockHighlight";
+import { useGlobalBlocksStore } from "./useGlobalBlocksStore";
 
 export const useBuilderReset = () => {
   const setNewState = useSetAtom(historyStatesAtom);
   const { clear } = useUndoManager();
-  const [, setSelectedIds] = useSelectedBlockIds();
+  //FIXME: Check for rerendering
+  // const [, setSelectedIds] = useSelectedBlockIds();
+  // const [, setStylingHighlighted] = useSelectedStylingBlocks();
+
   const { clearHighlight } = useBlockHighlight();
-  const [, setStylingHighlighted] = useSelectedStylingBlocks();
   const [, setAiAssistantActive] = useAtom(aiAssistantActiveAtom);
   const { reset: resetGlobalBlocks } = useGlobalBlocksStore();
 
-  return () => {
-    setSelectedIds([]);
-    setStylingHighlighted([]);
+  return useCallback(() => {
+    // setSelectedIds([]);
+    // setStylingHighlighted([]);
     clearHighlight();
     clear();
     setAiAssistantActive(false);
     setNewState({ undoCount: 0, redoCount: 0 });
     resetGlobalBlocks();
-  };
+  }, [clear, clearHighlight, setAiAssistantActive, setNewState, resetGlobalBlocks]);
 };

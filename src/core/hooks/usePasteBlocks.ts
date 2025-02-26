@@ -1,20 +1,23 @@
 import { useAtomValue } from "jotai";
+import { find, first, has, isEmpty } from "lodash-es";
 import { useCallback } from "react";
-import { isEmpty, find, first, has } from "lodash-es";
-import { useCutBlockIds } from "./useCutBlockIds";
+import { useToast } from "../../ui";
 import { presentBlocksAtom } from "../atoms/blocks";
 import { canAcceptChildBlock } from "../functions/block-helpers.ts";
 import { useBlocksStore, useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
-import { useToast } from "../../ui";
 import { useAddBlock } from "./useAddBlock";
+import { useCutBlockIds } from "./useCutBlockIds";
 
 const useCanPaste = () => {
   const [blocks] = useBlocksStore();
-  return (ids: string[], newParentId: string | null) => {
-    const newParentType = find(blocks, { _id: newParentId })?._type || null;
-    const blockType = first(ids.map((id) => find(blocks, { _id: id })?._type));
-    return canAcceptChildBlock(newParentType, blockType);
-  };
+  return useCallback(
+    (ids: string[], newParentId: string | null) => {
+      const newParentType = find(blocks, { _id: newParentId })?._type || null;
+      const blockType = first(ids.map((id) => find(blocks, { _id: id })?._type));
+      return canAcceptChildBlock(newParentType, blockType);
+    },
+    [blocks],
+  );
 };
 
 const useMoveCutBlocks = () => {

@@ -1,7 +1,7 @@
-import { useCallback } from "react";
 import { atom, useAtom, useAtomValue } from "jotai";
-import { compact, filter, get as getProp, includes, map, without } from "lodash-es";
 import { atomWithStorage } from "jotai/utils";
+import { compact, filter, get as getProp, includes, map, without } from "lodash-es";
+import { useCallback } from "react";
 import { presentBlocksAtom } from "../atoms/blocks";
 import { ChaiBlock } from "../types/ChaiBlock";
 
@@ -87,10 +87,11 @@ styleBreakpointAtom.debugLabel = "styleBreakpointAtom";
 /**
  * Hook to get selected block ids
  */
-export const useSelectedBlocksDisplayChild = () => ({
-  flexChild: useAtomValue(selectedBlockFlexChildAtom),
-  gridChild: useAtomValue(selectedBlockGridChildAtom),
-});
+export const useSelectedBlocksDisplayChild = () => {
+  const flexChild = useAtomValue(selectedBlockFlexChildAtom);
+  const gridChild = useAtomValue(selectedBlockGridChildAtom);
+  return { flexChild, gridChild };
+};
 
 /**
  * useSelectedBlock hook
@@ -116,7 +117,8 @@ export const selectedBlockHierarchy = atom((get) => {
  * TODO: Add test cases for this hook
  */
 export const useSelectedBlockHierarchy = () => {
-  return compact(useAtomValue(selectedBlockHierarchy)) as ChaiBlock[];
+  const blockHierarchy = useAtomValue(selectedBlockHierarchy);
+  return compact(blockHierarchy) as ChaiBlock[];
 };
 
 /**

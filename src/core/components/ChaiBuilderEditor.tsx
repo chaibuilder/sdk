@@ -19,9 +19,8 @@ import { builderStore } from "../atoms/store.ts";
 import { selectedLibraryAtom } from "../atoms/ui.ts";
 import { setDebugLogs } from "../functions/logging.ts";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
-import { useBuilderProp, useBuilderReset, useSavePage } from "../hooks";
+import { useBuilderProp, useSavePage } from "../hooks";
 import { useBroadcastChannel, useUnmountBroadcastChannel } from "../hooks/useBroadcastChannel.ts";
-import { useExpandTree } from "../hooks/useExpandTree.ts";
 import { useWatchGlobalBlocks } from "../hooks/useGlobalBlocksStore.ts";
 import { useKeyEventWatcher } from "../hooks/useKeyEventWatcher.ts";
 import { builderSaveStateAtom } from "../hooks/useSavePage.ts";
@@ -45,12 +44,13 @@ const useAutoSave = () => {
 
 const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   const [, setAllBlocks] = useBlocksStore();
-  const reset = useBuilderReset();
+  //FIXME: Check for rerendering
+  // const reset = useBuilderReset();
   const [saveState] = useAtom(builderSaveStateAtom);
   const RootLayoutComponent = useMemo(() => props.layout || RootLayout, [props.layout]);
   useAtom(selectedLibraryAtom);
   useKeyEventWatcher();
-  useExpandTree();
+  // useExpandTree();
   useAutoSave();
   useWatchGlobalBlocks();
   useUnmountBroadcastChannel();
@@ -94,7 +94,7 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
       if (withDefaults && withDefaults.length > 0) {
         postMessage({ type: "blocks-updated", blocks: withDefaults });
       }
-      reset();
+      // reset();
     }, 400);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.blocks]);
