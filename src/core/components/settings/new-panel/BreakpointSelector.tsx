@@ -1,9 +1,9 @@
 import { useMemo } from "react";
-import { useCanvasWidth } from "../../../hooks";
+import { useScreenSizeWidth } from "../../../hooks";
 import { Breakpoints, WEB_BREAKPOINTS } from "../../canvas/topbar/Breakpoints";
 
 export function BreakpointSelector() {
-  const [, breakpoint] = useCanvasWidth();
+  const [, breakpoint] = useScreenSizeWidth();
 
   const message = useMemo(() => {
     const currentBreakpoint = WEB_BREAKPOINTS.find((bp) => bp.breakpoint === breakpoint);

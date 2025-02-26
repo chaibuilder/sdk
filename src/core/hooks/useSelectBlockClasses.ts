@@ -3,8 +3,8 @@ import { filter, first, get as getProp, isNull, map, startsWith } from "lodash-e
 import { STYLES_KEY } from "../constants/STRINGS.ts";
 import { ClassDerivedObject, constructClassObject } from "../functions/Class";
 import { getSplitChaiClasses } from "./getSplitClasses.ts";
-import { canvasBreakpointAtom } from "./useCanvasWidth";
 import { darkModeAtom } from "./useDarkMode";
+import { canvasBreakpointAtom } from "./useScreenSizeWidth";
 import { selectedBlockAtom, styleStateAtom } from "./useSelectedBlockIds";
 import { selectedStylingBlocksAtom } from "./useSelectedStylingBlocks";
 

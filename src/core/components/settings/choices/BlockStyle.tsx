@@ -5,9 +5,9 @@ import { useTranslation } from "react-i18next";
 import { ClassDerivedObject, generateFullClsName } from "../../../functions/Class";
 import {
   useAddClassesToBlocks,
-  useCanvasWidth,
   useDarkMode,
   useRemoveClassesFromBlocks,
+  useScreenSizeWidth,
   useSelectedBlockCurrentClasses,
   useSelectedBlockIds,
   useStylingState,
@@ -136,7 +136,7 @@ export const BlockStyle = (props: EditOptionProps) => {
   const { type = "icons", label, property, onEmitChange = () => {}, units, negative = false } = props;
   const [dark] = useDarkMode();
   const [stylingState] = useStylingState();
-  const [, mq] = useCanvasWidth();
+  const [, mq] = useScreenSizeWidth();
   const currentClass: ClassDerivedObject = useCurrentClassByProperty(property);
   const addClassesToBlocks = useAddClassesToBlocks();
   const removeClassesFromBlocks = useRemoveClassesFromBlocks();
@@ -167,7 +167,7 @@ export const BlockStyle = (props: EditOptionProps) => {
     onEmitChange(canChange, currentClass);
   }, [canChange, onEmitChange, currentClass]);
 
-  const [, , setNewWidth] = useCanvasWidth();
+  const [, , setNewWidth] = useScreenSizeWidth();
 
   const setCanvasWidth = useCallback(
     (mQuery: string) => {

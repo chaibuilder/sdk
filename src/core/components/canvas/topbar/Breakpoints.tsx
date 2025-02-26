@@ -14,7 +14,7 @@ import {
   HoverCardTrigger,
 } from "../../../../ui";
 import { getBreakpointValue } from "../../../functions/Functions";
-import { useBuilderProp, useCanvasWidth, useSelectedBreakpoints } from "../../../hooks";
+import { useBuilderProp, useCanvasDisplayWidth, useScreenSizeWidth, useSelectedBreakpoints } from "../../../hooks";
 
 export interface BreakpointItemType {
   breakpoint: string;
@@ -127,7 +127,8 @@ const BreakpointCard = ({
 };
 
 export const Breakpoints = ({ openDelay = 400, canvas = false }: { openDelay?: number; canvas?: boolean }) => {
-  const [currentWidth, , setNewWidth, canvasDisplayWidth, setCanvasDisplayWidth] = useCanvasWidth();
+  const [currentWidth, , setNewWidth] = useScreenSizeWidth();
+  const [canvasDisplayWidth, setCanvasDisplayWidth] = useCanvasDisplayWidth();
   const [styleBreakpoints, setStyleBreakpoints] = useSelectedBreakpoints();
 
   const selectedBreakpoints = canvas ? styleBreakpoints : styleBreakpoints;

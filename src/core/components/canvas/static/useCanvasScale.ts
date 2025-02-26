@@ -1,8 +1,8 @@
-import { useBuilderProp, useCanvasWidth, useCanvasZoom } from "../../../hooks";
 import { useCallback, useEffect, useState } from "react";
+import { useBuilderProp, useCanvasDisplayWidth, useCanvasZoom } from "../../../hooks";
 
 export const useCanvasScale = (dimension: { height: number; width: number }) => {
-  const [canvasWidth] = useCanvasWidth();
+  const [canvasWidth] = useCanvasDisplayWidth();
   const [, setZoom] = useCanvasZoom();
   const htmlDir = useBuilderProp("htmlDir", "ltr") as "ltr" | "rtl";
   const [scale, setScale] = useState({});
