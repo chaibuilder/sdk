@@ -44,24 +44,14 @@ const Config = {
   label: "Collection List",
   category: "core",
   group: "basic",
-  dataProvider: () => {
-    console.log("dataProvider");
-    return {
-      binding: "Collection List - Data Binding",
-      items: [
-        { id: 1, name: "Item 1" },
-        { id: 2, name: "Item 2" },
-      ],
-    };
-  },
   ...registerChaiBlockSchema({
     properties: {
+      tag: closestBlockProp("Box", "tag"),
       showTitle: builderProp({
         type: "boolean",
         title: "Show Title",
         default: true,
       }),
-      tag: closestBlockProp("Box", "tag"),
       title1: {
         type: "string",
         title: "Title",
