@@ -10,7 +10,6 @@ import { usePasteBlocks } from "./usePasteBlocks.ts";
 import { useRemoveBlocks } from "./useRemoveBlocks";
 import { useSelectedBlock, useSelectedBlockIds } from "./useSelectedBlockIds";
 
-// importuseSelectedBlock,  { useSelectedBlock, useSelectedBlockIds } from "./useSelectedBlockIds";
 export const useKeyEventWatcher = (doc?: Document) => {
   const [ids, setIds] = useSelectedBlockIds();
   const selectedBlock = useSelectedBlock();

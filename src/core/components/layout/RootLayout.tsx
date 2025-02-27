@@ -69,7 +69,7 @@ const RootLayout: ComponentType = () => {
   const menuItems = useSidebarMenuItems();
 
   const { t } = useTranslation();
-  const sidebarMenuItems = [...menuItems, ...topComponents];
+  const sidebarMenuItems = useMemo(() => [...menuItems, ...topComponents], [menuItems, topComponents]);
   const htmlDir = useBuilderProp("htmlDir", "ltr");
 
   return (
