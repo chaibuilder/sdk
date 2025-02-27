@@ -1,6 +1,6 @@
-import { useBuilderProp } from "./useBuilderProp";
 import { atom, useAtom } from "jotai";
-
+import { useCallback } from "react";
+import { useBuilderProp } from "./useBuilderProp";
 const languageAtom = atom("");
 languageAtom.debugLabel = "selectedLanguageAtom";
 
@@ -9,9 +9,12 @@ export const useLanguages = () => {
   const fallbackLang = useBuilderProp("fallbackLang", "en");
   const [selectedLang, _setSelectedLang] = useAtom(languageAtom);
 
-  const setSelectedLang = (lang: string) => {
-    _setSelectedLang(fallbackLang === lang ? "" : lang);
-  };
+  const setSelectedLang = useCallback(
+    (lang: string) => {
+      _setSelectedLang(fallbackLang === lang ? "" : lang);
+    },
+    [fallbackLang, _setSelectedLang],
+  );
 
   return {
     languages: languages?.filter((_lang) => _lang !== fallbackLang),

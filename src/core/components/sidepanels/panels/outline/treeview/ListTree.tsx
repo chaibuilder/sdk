@@ -1,9 +1,22 @@
-import React, { memo, MouseEvent, useEffect, useMemo, useRef, useState } from "react";
-import { atom, useAtom } from "jotai";
 import { useDebouncedCallback } from "@react-hookz/web";
+import { atom, useAtom } from "jotai";
+import { find, first, get, isEmpty } from "lodash-es";
+import { ChevronRight, Eye, EyeOff, PlusIcon } from "lucide-react";
+import React, { memo, MouseEvent, useEffect, useMemo, useRef, useState } from "react";
 import { MoveHandler, NodeRendererProps, RenameHandler, Tree } from "react-arborist";
+import { useTranslation } from "react-i18next";
+import { BiCollapseVertical, BiExpandVertical } from "react-icons/bi";
+import { BsLightningFill } from "react-icons/bs";
+import { TbEyeDown } from "react-icons/tb";
+import { VscJson } from "react-icons/vsc";
+import { Button, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../../ui";
 import { treeDSBlocks } from "../../../../../atoms/blocks.ts";
+import { canvasIframeAtom, treeRefAtom } from "../../../../../atoms/ui.ts";
+import { ROOT_TEMP_KEY } from "../../../../../constants/STRINGS.ts";
+import { CHAI_BUILDER_EVENTS } from "../../../../../events.ts";
+import { canAcceptChildBlock, canAddChildBlock } from "../../../../../functions/block-helpers.ts";
 import { cn } from "../../../../../functions/Functions.ts";
+import { useBlocksStoreUndoableActions } from "../../../../../history/useBlocksStoreUndoableActions.ts";
 import {
   useBlocksStore,
   useBuilderProp,
@@ -13,15 +26,13 @@ import {
   useSelectedStylingBlocks,
   useUpdateBlocksProps,
 } from "../../../../../hooks";
-import { Button, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../../ui";
+import { useBlockHighlight } from "../../../../../hooks/useBlockHighlight";
+import { useExpandTree } from "../../../../../hooks/useExpandTree.ts";
+import { pubsub } from "../../../../../pubsub.ts";
+import { BlockContextMenu, PasteAtRootContextMenu } from "../BlockContextMenu.tsx";
 import { TypeIcon } from "../TypeIcon.tsx";
 import { DefaultCursor } from "./DefaultCursor.tsx";
 import { DefaultDragPreview } from "./DefaultDragPreview.tsx";
-import { useBlocksStoreUndoableActions } from "../../../../../history/useBlocksStoreUndoableActions.ts";
-import { BlockContextMenu, PasteAtRootContextMenu } from "../BlockContextMenu.tsx";
-import { canAcceptChildBlock, canAddChildBlock } from "../../../../../functions/block-helpers.ts";
-import { find, first, isEmpty, get } from "lodash-es";
-import { canvasIframeAtom, treeRefAtom } from "../../../../../atoms/ui.ts";
 import {
   close,
   defaultShortcuts,
@@ -32,17 +43,6 @@ import {
   selectParent,
   selectPrev,
 } from "./DefaultShortcuts.tsx";
-import { useTranslation } from "react-i18next";
-import { VscJson } from "react-icons/vsc";
-import { BsLightningFill } from "react-icons/bs";
-import { TbEyeDown } from "react-icons/tb";
-import { ROOT_TEMP_KEY } from "../../../../../constants/STRINGS.ts";
-import { ChevronRight, EyeOff, PlusIcon, Eye } from "lucide-react";
-import { CHAI_BUILDER_EVENTS } from "../../../../../events.ts";
-import { BiCollapseVertical, BiExpandVertical } from "react-icons/bi";
-import { useBlockHighlight } from "../../../../../hooks/useBlockHighlight";
-import { pubsub } from "../../../../../pubsub.ts";
-
 const currentAddSelection = atom<any>(null);
 
 const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
@@ -366,7 +366,7 @@ const ListTree = () => {
   const [, setTreeRef] = useAtom(treeRefAtom);
   const { t } = useTranslation();
   const [parentContext, setParentContext] = useState(null);
-
+  useExpandTree();
   const clearSelection = () => {
     setIds([]);
     setStyleBlocks([]);

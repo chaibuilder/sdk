@@ -22,7 +22,6 @@ import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
 import { useBuilderProp, useSavePage } from "../hooks";
 import { useBroadcastChannel, useUnmountBroadcastChannel } from "../hooks/useBroadcastChannel.ts";
 import { useWatchGlobalBlocks } from "../hooks/useGlobalBlocksStore.ts";
-import { useKeyEventWatcher } from "../hooks/useKeyEventWatcher.ts";
 import { builderSaveStateAtom } from "../hooks/useSavePage.ts";
 import "../index.css";
 import i18n from "../locales/load.ts";
@@ -49,8 +48,7 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   const [saveState] = useAtom(builderSaveStateAtom);
   const RootLayoutComponent = useMemo(() => props.layout || RootLayout, [props.layout]);
   useAtom(selectedLibraryAtom);
-  useKeyEventWatcher();
-  // useExpandTree();
+  // useKeyEventWatcher();
   useAutoSave();
   useWatchGlobalBlocks();
   useUnmountBroadcastChannel();
