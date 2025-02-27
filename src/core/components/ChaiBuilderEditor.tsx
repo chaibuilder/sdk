@@ -48,7 +48,6 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   const [saveState] = useAtom(builderSaveStateAtom);
   const RootLayoutComponent = useMemo(() => props.layout || RootLayout, [props.layout]);
   useAtom(selectedLibraryAtom);
-  // useKeyEventWatcher();
   useAutoSave();
   useWatchGlobalBlocks();
   useUnmountBroadcastChannel();
