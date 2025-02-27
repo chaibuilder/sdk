@@ -112,6 +112,18 @@ const getRuntimePropValues = (allBlocks: ChaiBlock[], blockId: string, runtimePr
 
 const SuspenseFallback = () => <span>Loading...</span>;
 
+type RenderChaiBlocksProps = {
+  blocks: ChaiBlock[];
+  parent?: string;
+  classPrefix?: string;
+  externalData?: Record<string, any>;
+  blockModifierCallback?: (block: ChaiBlock) => ChaiBlock;
+  lang?: string;
+  fallbackLang?: string;
+  metadata?: Record<string, any>;
+  dataProviderMetadataCallback?: (block: ChaiBlock, meta: Record<string, any>) => void;
+};
+
 export function RenderChaiBlocks({
   blocks,
   parent,
@@ -121,16 +133,8 @@ export function RenderChaiBlocks({
   lang = "",
   fallbackLang = "",
   metadata = {},
-}: {
-  blocks: ChaiBlock[];
-  parent?: string;
-  classPrefix?: string;
-  externalData?: Record<string, any>;
-  blockModifierCallback?: (block: ChaiBlock) => ChaiBlock;
-  lang?: string;
-  fallbackLang?: string;
-  metadata?: Record<string, any>;
-}) {
+  dataProviderMetadataCallback = () => {},
+}: RenderChaiBlocksProps) {
   const allBlocks = blocks;
   const getStyles = (block: ChaiBlock) => getStyleAttrs(block, classPrefix);
   const filteredBlocks = parent
@@ -192,6 +196,7 @@ export function RenderChaiBlocks({
                 <Suspense fallback={createElement(suspenseFallback)}>
                   {/* @ts-ignore */}
                   <AsyncPropsBlock
+                    dataProviderMetadataCallback={dataProviderMetadataCallback}
                     lang={lang || fallbackLang}
                     metadata={metadata}
                     dataProvider={blockDefinition.dataProvider}
