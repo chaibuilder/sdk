@@ -1,25 +1,25 @@
-import { useTranslation } from "react-i18next";
-import { useCallback, useEffect, useMemo } from "react";
-import { findLast, get } from "lodash-es";
 import { CrossCircledIcon, InfoCircledIcon } from "@radix-ui/react-icons";
+import { findLast, get } from "lodash-es";
+import { useCallback, useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import { ClassDerivedObject, generateFullClsName } from "../../../functions/Class";
 import {
   useAddClassesToBlocks,
-  useCanvasWidth,
   useDarkMode,
   useRemoveClassesFromBlocks,
+  useScreenSizeWidth,
   useSelectedBlockCurrentClasses,
   useSelectedBlockIds,
   useStylingState,
 } from "../../../hooks";
-import { ClassDerivedObject, generateFullClsName } from "../../../functions/Class";
-import { DropDownChoices } from "./DropdownChoices";
-import { RangeChoices } from "./RangeChoices";
-import { IconChoices } from "./IconChoice";
 import { ColorChoice } from "./ColorChoice";
+import { DropDownChoices } from "./DropdownChoices";
+import { IconChoices } from "./IconChoice";
+import { RangeChoices } from "./RangeChoices";
 
-import { BlockStyleProvider } from "./StyleContext";
-import { AdvanceChoices } from "./AdvanceChoices";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../ui";
+import { AdvanceChoices } from "./AdvanceChoices";
+import { BlockStyleProvider } from "./StyleContext";
 
 type EditOptionProps = {
   label: string;
@@ -136,7 +136,7 @@ export const BlockStyle = (props: EditOptionProps) => {
   const { type = "icons", label, property, onEmitChange = () => {}, units, negative = false } = props;
   const [dark] = useDarkMode();
   const [stylingState] = useStylingState();
-  const [, mq] = useCanvasWidth();
+  const [, mq] = useScreenSizeWidth();
   const currentClass: ClassDerivedObject = useCurrentClassByProperty(property);
   const addClassesToBlocks = useAddClassesToBlocks();
   const removeClassesFromBlocks = useRemoveClassesFromBlocks();
@@ -158,7 +158,7 @@ export const BlockStyle = (props: EditOptionProps) => {
   );
 
   const removeClass = useCallback(() => {
-    removeClassesFromBlocks(selectedIds, [fullClsName]);
+    removeClassesFromBlocks(selectedIds, [fullClsName], true);
   }, [selectedIds, fullClsName, removeClassesFromBlocks]);
 
   const canChange = useMemo(() => canChangeClass(currentClass, mq), [currentClass, mq]);
@@ -167,7 +167,7 @@ export const BlockStyle = (props: EditOptionProps) => {
     onEmitChange(canChange, currentClass);
   }, [canChange, onEmitChange, currentClass]);
 
-  const [, , setNewWidth] = useCanvasWidth();
+  const [, , setNewWidth] = useScreenSizeWidth();
 
   const setCanvasWidth = useCallback(
     (mQuery: string) => {

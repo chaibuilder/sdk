@@ -1,7 +1,7 @@
 import { CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { first, get, isEmpty, map } from "lodash-es";
 import { SparklesIcon } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Autosuggest from "react-autosuggest";
 import { useTranslation } from "react-i18next";
 import {
@@ -27,6 +27,9 @@ import { getSplitChaiClasses } from "../../../hooks/getSplitClasses.ts";
 import { AskAIStyles } from "../AskAiStyle.tsx";
 
 export function ManualClasses() {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [editingClass, setEditingClass] = useState("");
+  const [editingClassIndex, setEditingClassIndex] = useState(-1);
   const fuse = useFuseSearch();
   const { t } = useTranslation();
   const [styleBlock] = useSelectedStylingBlocks();
@@ -38,7 +41,6 @@ export function ManualClasses() {
   const [newCls, setNewCls] = useState("");
   const { toast } = useToast();
   const prop = first(styleBlock)?.prop as string;
-  // const {classes} = reject((get(block, prop, "").replace(STYLES_KEY, "").split(",").pop() || "").split(" "), isEmpty);
   const { classes: classesString } = getSplitChaiClasses(get(block, prop, ""));
   const classes = classesString.split(" ").filter((cls) => !isEmpty(cls));
 
@@ -79,22 +81,39 @@ export function ManualClasses() {
 
   const getSuggestionValue = (suggestion: any) => suggestion.name;
 
-  const renderSuggestion = (suggestion: any) => <div className="p-1 rounded-md">{suggestion.name}</div>;
+  const renderSuggestion = (suggestion: any) => <div className="rounded-md p-1">{suggestion.name}</div>;
 
-  const inputProps = {
-    autoComplete: "off",
-    autoCorrect: "off",
-    autoCapitalize: "off",
-    spellCheck: false,
-    placeholder: t("Enter classes separated by space"),
-    value: newCls,
-    onKeyDown: (e: any) => {
-      if (e.key === "Enter" && newCls.trim() !== "") {
-        addNewClasses();
-      }
-    },
-    onChange: (_e: any, { newValue }: any) => setNewCls(newValue),
-    className: "w-full rounded-md text-xs px-2 hover:outline-0 bg-background border-border py-1",
+  const inputProps = useMemo(
+    () => ({
+      ref: inputRef,
+      autoComplete: "off",
+      autoCorrect: "off",
+      autoCapitalize: "off",
+      spellCheck: false,
+      placeholder: t("Enter classes separated by space"),
+      value: newCls,
+      onKeyDown: (e: any) => {
+        if (e.key === "Enter" && newCls.trim() !== "") {
+          addNewClasses();
+        }
+      },
+      onChange: (_e: any, { newValue }: any) => setNewCls(newValue),
+      className: "w-full rounded-md text-xs px-2 hover:outline-0 bg-background border-border py-1",
+    }),
+    [newCls, t, inputRef],
+  );
+
+  const handleEditClass = (clsToRemove: string) => {
+    debugger;
+    const fullClsNames: string[] = editingClass
+      .trim()
+      .toLowerCase()
+      .replace(/ +(?= )/g, "")
+      .split(" ");
+    removeClassesFromBlocks(selectedIds, [clsToRemove]);
+    addClassesToBlocks(selectedIds, fullClsNames, true);
+    setEditingClass("");
+    setEditingClassIndex(-1);
   };
 
   const onClickCopy = () => {
@@ -114,7 +133,7 @@ export function ManualClasses() {
   };
 
   return (
-    <div className={`flex w-full flex-col gap-y-1.5 pb-4`}>
+    <div className={`flex w-full flex-col gap-y-1.5 border-b border-border pb-4`}>
       <div className="flex items-center justify-between gap-x-2">
         <div className="flex items-center gap-x-2 text-muted-foreground">
           <span>{t("Classes")}</span>
@@ -131,7 +150,7 @@ export function ManualClasses() {
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="default" className="h-6 w-fit" size="sm">
-                <SparklesIcon className="w-4 h-4" />
+                <SparklesIcon className="h-4 w-4" />
                 <span className="ml-2">{t("Ask AI")}</span>
               </Button>
             </PopoverTrigger>
@@ -142,7 +161,7 @@ export function ManualClasses() {
         ) : null}
       </div>
       <div className={"relative flex items-center gap-x-3"}>
-        <div className="relative flex items-center w-full gap-x-3">
+        <div className="relative flex w-full items-center gap-x-3">
           <Autosuggest
             suggestions={suggestions}
             onSuggestionsFetchRequested={handleSuggestionsFetchRequested}
@@ -170,18 +189,38 @@ export function ManualClasses() {
           <PlusIcon />
         </Button>
       </div>
-      <div className="flex flex-wrap w-full gap-2 overflow-x-hidden">
-        {classes.map((cls: string) => (
-          <div
-            key={cls}
-            className="group relative flex max-w-[260px] cursor-default items-center gap-x-1 truncate break-words rounded border border-border bg-gray-200 p-px px-1.5 text-[11px] text-gray-600 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
-            {cls}
-            <Cross2Icon
-              onClick={() => removeClassesFromBlocks(selectedIds, [cls])}
-              className="absolute invisible bg-red-400 rounded-full right-1 hover:text-white group-hover:visible group-hover:cursor-pointer"
+      <div className="flex w-full flex-wrap gap-2 overflow-x-hidden">
+        {classes.map((cls: string, index: number) =>
+          editingClassIndex === index ? (
+            <input
+              ref={inputRef}
+              key={cls}
+              value={editingClass}
+              onChange={(e) => setEditingClass(e.target.value)}
+              onBlur={() => {
+                handleEditClass(cls);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleEditClass(cls);
+                }
+              }}
+              className="group relative flex max-w-[260px] cursor-default items-center gap-x-1 truncate break-words rounded border border-border bg-gray-200 p-px px-1.5 pr-2 text-[11px] text-gray-600 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
             />
-          </div>
-        ))}
+          ) : (
+            <button
+              key={cls}
+              className="group relative flex max-w-[260px] cursor-default items-center gap-x-1 truncate break-words rounded border border-border bg-gray-200 p-px px-1.5 pr-2 text-[11px] text-gray-600 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+              {cls}
+              {editingClass !== cls && (
+                <Cross2Icon
+                  onClick={() => removeClassesFromBlocks(selectedIds, [cls], true)}
+                  className="invisible absolute right-1 rounded-full bg-red-400 hover:text-white group-hover:visible group-hover:cursor-pointer"
+                />
+              )}
+            </button>
+          ),
+        )}
       </div>
     </div>
   );

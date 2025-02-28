@@ -9,7 +9,7 @@ import { canvasIframeAtom, networkModeAtom } from "../../../atoms/ui";
 import { ChaiFrame } from "../../../frame";
 import {
   useBuilderProp,
-  useCanvasWidth,
+  useCanvasDisplayWidth,
   useHighlightBlockId,
   useSelectedBlock,
   useSelectedBlockIds,
@@ -31,7 +31,7 @@ const getElementByStyleId = (doc: any, styleId: string): HTMLElement =>
 
 const StaticCanvas = () => {
   const [networkMode] = useAtom(networkModeAtom);
-  const [width] = useCanvasWidth();
+  const [width] = useCanvasDisplayWidth();
   const [, setIds] = useSelectedBlockIds();
   const selectedBlock: any = useSelectedBlock();
   const [, highlight] = useHighlightBlockId();
@@ -49,6 +49,8 @@ const StaticCanvas = () => {
   const setNewWidth = (newWidth: number) => {
     setDimension((prev) => ({ ...prev, width: newWidth }));
   };
+
+  console.log("width", width);
 
   useEffect(() => {
     if (!wrapperRef.current) return;

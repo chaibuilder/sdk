@@ -22,8 +22,6 @@ function Preview() {
     })();
   }, [blocks]);
   const themeVars = useMemo(() => getChaiThemeCssVariables(theme), [theme]);
-
-  console.log(blocks);
   return (
     <>
       <style>{themeVars}</style>
@@ -42,6 +40,10 @@ function Preview() {
           },
         }}
         blocks={blocks}
+        dataProviderMetadataCallback={(block, meta) => {
+          console.log("meta", meta);
+          console.log("block", block);
+        }}
       />
     </>
   );
