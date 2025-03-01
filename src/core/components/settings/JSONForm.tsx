@@ -7,6 +7,7 @@ import { useAtom } from "jotai";
 import { get, isEmpty, take } from "lodash-es";
 import { ChevronDown, ChevronRight, List, Plus } from "lucide-react";
 import { memo, useCallback, useState } from "react";
+import { Descendant, Editor, Node, Range, Element as SlateElement, Text, Transforms } from "slate";
 import { Badge } from "../../../ui/index.ts";
 import {
   chaiRjsfFieldsAtom,
@@ -21,6 +22,63 @@ import { IconPickerField, ImagePickerField, LinkField, RTEField, RowColField, Sl
 import { BindingWidget } from "../../rjsf-widgets/binding.tsx";
 import { CodeEditor } from "../../rjsf-widgets/Code.tsx";
 import { NestedPathSelector } from "../NestedPathSelector";
+
+// Helper function to convert a Slate node to HTML
+const serializeNodeToHTML = (node: Node): string => {
+  if (Text.isText(node)) {
+    let text = node.text;
+
+    // Escape HTML special characters
+    text = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+    // Apply text formatting
+    if (node.bold) {
+      text = `<strong>${text}</strong>`;
+    }
+    if (node.italic) {
+      text = `<em>${text}</em>`;
+    }
+    if (node.underline) {
+      text = `<u>${text}</u>`;
+    }
+    if (node.strike) {
+      text = `<s>${text}</s>`;
+    }
+
+    return text;
+  }
+
+  const children = node.children.map((n) => serializeNodeToHTML(n)).join("");
+
+  // Check if node is a CustomElement
+  if (!Editor.isEditor(node) && SlateElement.isElement(node)) {
+    // Handle different element types
+    switch (node.type) {
+      case "block-quote":
+        return `<blockquote>${children}</blockquote>`;
+      case "bulleted-list":
+        return `<ul>${children}</ul>`;
+      case "numbered-list":
+        return `<ol>${children}</ol>`;
+      case "list-item":
+        return `<li>${children}</li>`;
+      case "paragraph":
+        if (node.align) {
+          return `<p style="text-align: ${node.align}">${children}</p>`;
+        }
+        return `<p>${children}</p>`;
+      default:
+        return children;
+    }
+  }
+
+  return children;
+};
+
+// Convert Slate nodes to HTML string
+const serialize = (nodes: Descendant[]): string => {
+  return nodes.map((node) => serializeNodeToHTML(node)).join("");
+};
 
 type JSONFormType = {
   blockId?: string;
@@ -94,106 +152,43 @@ const CustomFieldTemplate = ({
       };
 
       // Get the element by ID
+      const slateContainer = document.getElementById(`slate-${id}`);
       const element = document.getElementById(id);
-      if (!element) return;
+      if (!element && !slateContainer) return;
 
-      // Check if this is a ReactQuill editor by looking for the quill container
-      // The actual ID for the quill container is prefixed with 'quill.'
-      const quillContainer = document.getElementById(`quill.${id}`);
+      // Check if this is a Slate editor by looking for the slate container
+      if (slateContainer) {
+        // Find the Slate editor instance using the reference stored during initialization
+        const slateEditor = (slateContainer as any).__RTEditor;
+        if (!slateEditor) return;
 
-      if (quillContainer && "__quill" in quillContainer) {
-        // Handle ReactQuill editor
-        // @ts-ignore - Access the Quill instance that was attached in the RTEField component
-        const quill = (quillContainer as any).__quill;
+        // Create the placeholder
+        const basePlaceholder = `{{${path}}}`;
 
-        if (quill) {
-          // Create the placeholder
-          const basePlaceholder = `{{${path}}}`;
+        // Focus the editor
+        slateEditor.focus();
 
-          // Focus the editor first to ensure we can get/set selection
-          quill.focus();
+        // Use Slate's API to insert text at the current selection
+        const { selection } = slateEditor;
 
-          // Get selection range
-          let range = quill.getSelection();
-
-          // If no range, try to force get a selection
-          if (!range) {
-            range = quill.getSelection(true);
+        if (selection) {
+          // Delete any selected text first
+          if (Range.isExpanded(selection)) {
+            Transforms.delete(slateEditor);
           }
 
-          // If we have a range now, use it
-          if (range) {
-            // If there's a selection, replace it
-            if (range.length > 0) {
-              // Store the selection index before clearing
-              const selectionIndex = range.index;
+          // Insert the placeholder text
+          Transforms.insertText(slateEditor, basePlaceholder);
 
-              // First delete the selected text
-              quill.deleteText(range.index, range.length);
+          // Move the selection after the inserted text
+          Transforms.move(slateEditor, {
+            distance: basePlaceholder.length,
+            unit: "character",
+          });
 
-              // Clear the selection to ensure a clean state
-              quill.setSelection(selectionIndex, 0);
-
-              // Then insert the placeholder at the same position with smart spacing
-              // Get the text around the cursor to determine spacing
-              const text = quill.getText();
-              const {
-                text: placeholderWithSpacing,
-                prefixLength,
-                suffixLength,
-              } = addSmartSpacing(text, selectionIndex, basePlaceholder);
-
-              // Insert the placeholder with spacing
-              quill.insertText(selectionIndex, placeholderWithSpacing);
-
-              // Set selection after the inserted text
-              quill.setSelection(selectionIndex + prefixLength + basePlaceholder.length + suffixLength, 0);
-            } else {
-              // No selection, just insert at cursor position with smart spacing
-              // Store the cursor position
-              const cursorIndex = range.index;
-
-              // Clear any potential selection by setting a zero-length selection
-              quill.setSelection(cursorIndex, 0);
-
-              // Get the text to determine spacing
-              const text = quill.getText();
-              const {
-                text: placeholderWithSpacing,
-                prefixLength,
-                suffixLength,
-              } = addSmartSpacing(text, cursorIndex, basePlaceholder);
-
-              // Insert the placeholder with spacing
-              quill.insertText(cursorIndex, placeholderWithSpacing);
-
-              // Set selection after the inserted text
-              quill.setSelection(cursorIndex + prefixLength + basePlaceholder.length + suffixLength, 0);
-            }
-          } else {
-            // If still no range, insert at the end
-            const length = quill.getLength();
-
-            // Set a zero-length selection at the end
-            quill.setSelection(length - 1, 0);
-
-            const text = quill.getText();
-
-            // Add smart spacing at the end of the document
-            const {
-              text: placeholderWithSpacing,
-              prefixLength,
-              suffixLength,
-            } = addSmartSpacing(text, length - 1, basePlaceholder);
-
-            quill.insertText(length - 1, placeholderWithSpacing);
-            quill.setSelection(length - 1 + prefixLength + basePlaceholder.length + suffixLength, 0);
-          }
-
-          // Update the form data with the new content
-          // Use setTimeout to ensure the DOM has been updated
-          setTimeout(() => onChange(quill.root.innerHTML, {}, id), 200);
-          return;
+          // Get the updated HTML content and update the form using our local serialize function
+          const serializedHTML = serialize(slateEditor.children);
+          onChange(serializedHTML, {}, id);
         }
       } else {
         // Handle regular input field
