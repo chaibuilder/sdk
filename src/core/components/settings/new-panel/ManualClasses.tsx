@@ -4,6 +4,7 @@ import { SparklesIcon } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 import Autosuggest from "react-autosuggest";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import {
   Button,
   Popover,
@@ -12,7 +13,6 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-  useToast,
 } from "../../../../ui";
 import { useFuseSearch } from "../../../constants/CLASSES_LIST";
 import {
@@ -39,7 +39,6 @@ export function ManualClasses() {
   const [selectedIds] = useSelectedBlockIds();
   const askAiCallBack = useBuilderProp("askAiCallBack", null);
   const [newCls, setNewCls] = useState("");
-  const { toast } = useToast();
   const prop = first(styleBlock)?.prop as string;
   const { classes: classesString } = getSplitChaiClasses(get(block, prop, ""));
   const classes = classesString.split(" ").filter((cls) => !isEmpty(cls));
@@ -118,18 +117,11 @@ export function ManualClasses() {
 
   const onClickCopy = () => {
     if (navigator.clipboard === undefined) {
-      toast({
-        title: t("Clipboard not supported"),
-        description: t("Please use Chrome, Firefox or Safari"),
-        variant: "destructive",
-      });
+      toast.error(t("Clipboard not supported"));
       return;
     }
     navigator.clipboard.writeText(classes.join(" "));
-    toast({
-      title: t("Copied"),
-      description: t("Classes copied to clipboard"),
-    });
+    toast.success(t("Classes copied to clipboard"));
   };
 
   return (

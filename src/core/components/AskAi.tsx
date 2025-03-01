@@ -1,6 +1,9 @@
-import { useTranslation } from "react-i18next";
-import { useAskAi } from "../hooks/useAskAi.ts";
+import { first, noop } from "lodash-es";
+import { ChevronDown, Loader, SparklesIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { FaSpinner } from "react-icons/fa";
+import { toast } from "sonner";
 import {
   Accordion,
   AccordionContent,
@@ -18,15 +21,12 @@ import {
   Button,
   Skeleton,
   Textarea,
-  useToast,
 } from "../../ui";
-import { ChevronDown, Loader, SparklesIcon } from "lucide-react";
 import { useBuilderProp, useSelectedBlockIds } from "../hooks";
-import { first, noop } from "lodash-es";
-import { FaSpinner } from "react-icons/fa";
-import { QuickPrompts } from "./QuickPrompts.tsx";
+import { useAskAi } from "../hooks/useAskAi.ts";
 import { AskAiResponse } from "../types/chaiBuilderEditorProps.ts";
 import Countdown from "./Countdown.tsx";
+import { QuickPrompts } from "./QuickPrompts.tsx";
 
 export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
   const { t } = useTranslation();
@@ -158,7 +158,6 @@ export const AISetContext = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [, setOpened] = useState(false);
-  const { toast } = useToast();
   const btnRef = useRef(null);
 
   useEffect(() => {
@@ -172,11 +171,7 @@ export const AISetContext = () => {
       setLoading(true);
       setError(null);
       await savePageContext(context);
-      toast({
-        title: t("Updated AI Context"),
-        description: t("You can now Ask AI to edit your content"),
-        variant: "default",
-      });
+      toast.success(t("Updated AI Context"));
       btnRef.current.click();
     } catch (error) {
       setError(error);

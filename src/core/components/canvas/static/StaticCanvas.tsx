@@ -50,8 +50,6 @@ const StaticCanvas = () => {
     setDimension((prev) => ({ ...prev, width: newWidth }));
   };
 
-  console.log("width", width);
-
   useEffect(() => {
     if (!wrapperRef.current) return;
     const { clientWidth, clientHeight } = wrapperRef.current as HTMLDivElement;

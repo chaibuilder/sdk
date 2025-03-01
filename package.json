@@ -5,7 +5,7 @@
   "author": "Suraj Air",
   "license": "BSD-3-Clause",
   "homepage": "https://chaibuilder.com",
-  "version": "2.0.0-beta.104",
+  "version": "2.0.0-beta.105",
   "type": "module",
   "repository": {
     "type": "git",
@@ -128,6 +128,7 @@
     "lodash": "^4.17.21",
     "lodash-es": "4.17.21",
     "lucide-react": "^0.474.0",
+    "next-themes": "^0.4.4",
     "re-resizable": "^6.10.3",
     "react-arborist": "^3.4.0",
     "react-autosuggest": "^10.1.0",
@@ -140,6 +141,7 @@
     "react-json-view-lite": "^2.3.0",
     "react-quill": "^2.0.0",
     "react-wrap-balancer": "^1.1.1",
+    "sonner": "^2.0.1",
     "tailwind-merge": "^2.6.0",
     "tree-model": "^1.0.7",
     "undo-manager": "^1.1.1"
