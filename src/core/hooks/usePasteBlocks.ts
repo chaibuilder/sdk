@@ -1,12 +1,12 @@
 import { useAtomValue } from "jotai";
+import { find, first, has, isEmpty } from "lodash-es";
 import { useCallback } from "react";
-import { isEmpty, find, first, has } from "lodash-es";
-import { useCutBlockIds } from "./useCutBlockIds";
+import { toast } from "sonner";
 import { presentBlocksAtom } from "../atoms/blocks";
 import { canAcceptChildBlock } from "../functions/block-helpers.ts";
 import { useBlocksStore, useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
-import { useToast } from "../../ui";
 import { useAddBlock } from "./useAddBlock";
+import { useCutBlockIds } from "./useCutBlockIds";
 
 const useCanPaste = () => {
   const [blocks] = useBlocksStore();
@@ -43,7 +43,6 @@ export const usePasteBlocks = (): {
   const [cutBlockIds, setCutBlockIds] = useCutBlockIds();
   const moveCutBlocks = useMoveCutBlocks();
   const canPasteBlocks = useCanPaste();
-  const { toast } = useToast();
   const { addPredefinedBlock } = useAddBlock();
 
   /* Can Paste is true if the clipboard contains copied blocks key
@@ -89,16 +88,16 @@ export const usePasteBlocks = (): {
             if (has(clipboardData, "_chai_copied_blocks")) {
               addPredefinedBlock(clipboardData._chai_copied_blocks, parentId === "root" ? null : parentId);
             } else {
-              toast({ title: "Error", description: "Nothing to paste" });
+              toast.error("Nothing to paste");
             }
           } else {
-            toast({ title: "Error", description: "Nothing to paste" });
+            toast.error("Nothing to paste");
           }
         } catch (error) {
-          toast({ title: "Error", description: "Failed to paste blocks from clipboard" });
+          toast.error("Failed to paste blocks from clipboard");
         }
       },
-      [cutBlockIds, addPredefinedBlock, moveCutBlocks, setCutBlockIds, toast],
+      [cutBlockIds, addPredefinedBlock, moveCutBlocks, setCutBlockIds],
     ),
   };
 };
