@@ -17,7 +17,6 @@ export const selectedBlockAllClassesAtom = atom((get) => {
   if (!styleBlock || styleBlock.blockId !== getProp(selectedBlock, "_id", null)) return [];
   const classesString: string = getProp(selectedBlock, styleBlock.prop, `${STYLES_KEY},`);
   const { classes } = getSplitChaiClasses(classesString);
-  console.log("classes", classes);
   return filter(map(classes.trim().split(" "), constructClassObject), (cls) => !isNull(cls));
 });
 

@@ -1,7 +1,8 @@
 import React, { useCallback, useState } from "react";
-import { useCopyToClipboard } from "../core/hooks";
-import { Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger, ScrollArea, useToast } from "../ui";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
+import { useCopyToClipboard } from "../core/hooks";
+import { Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger, ScrollArea } from "../ui";
 
 interface ExportModalProps {
   content: any;
@@ -12,15 +13,14 @@ const ExportModal: React.FC<ExportModalProps> = React.memo(({ content, handleCli
   const [emailHTMLContent, setEmailHTMLContent] = useState<string>("");
   const [, copy] = useCopyToClipboard();
   const { t } = useTranslation();
-  const { toast } = useToast();
 
   const handleCopy = useCallback(
     async (text: string) => {
       try {
         await copy(text);
-        toast({ title: t("Copied"), description: t("Email template copied!") });
+        toast.success(t("Email template copied!"));
       } catch (error) {
-        toast({ title: t("Error"), description: t("Failed to copy template") });
+        toast.error(t("Failed to copy template"));
       }
     },
     [copy],
@@ -36,7 +36,7 @@ const ExportModal: React.FC<ExportModalProps> = React.memo(({ content, handleCli
     anchor.click();
     URL.revokeObjectURL(url);
     document.body.removeChild(anchor);
-    toast({ title: t("Download complete"), description: t("Email template downloaded successfully!") });
+    toast.success(t("Email template downloaded successfully!"));
   };
 
   const triggerClick = useCallback(() => {
