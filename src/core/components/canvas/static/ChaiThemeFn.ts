@@ -1,45 +1,44 @@
-import { flatten, isEmpty, keys, uniq } from "lodash-es";
-import { ChaiBuilderThemeOptions, ChaiBuilderThemeValues } from "../../../types/chaiBuilderEditorProps.ts";
+import {flatten, isEmpty, keys, uniq} from "lodash-es";
+import {ChaiBuilderThemeOptions, ChaiBuilderThemeValues} from "../../../types/chaiBuilderEditorProps.ts";
 import getPalette from "tailwindcss-palette-generator";
 
 export const getChaiThemeOptions = (chaiThemeOptions: ChaiBuilderThemeOptions) => {
-  const theme = {
-    fontFamily: chaiThemeOptions.fontFamily
-      ? keys(chaiThemeOptions.fontFamily).reduce(
-          (acc, key) => ({
-            ...acc,
-            [key.replace("font-", "")]: `var(--${key})`,
-          }),
-          {},
-        )
-      : {},
-    borderRadius: chaiThemeOptions.borderRadius
-      ? {
-          lg: `var(--radius)`,
-          md: `calc(var(--radius) - 2px)`,
-          sm: `calc(var(--radius) - 4px)`,
-        }
-      : {},
-    colors: chaiThemeOptions.colors
-      ? flatten(chaiThemeOptions.colors.map((color) => Object.entries(color.items))).reduce(
-          (acc, [key, [value]]) => {
-            const temp = {...acc};
-            const palette = getPalette(value);
-            const result: Record<string, string> = {};
+    return {
+      fontFamily: chaiThemeOptions.fontFamily
+          ? keys(chaiThemeOptions.fontFamily).reduce(
+              (acc, key) => ({
+                  ...acc,
+                  [key.replace("font-", "")]: `var(--${key})`,
+              }),
+              {},
+          )
+          : {},
+      borderRadius: chaiThemeOptions.borderRadius
+          ? {
+              lg: `var(--radius)`,
+              md: `calc(var(--radius) - 2px)`,
+              sm: `calc(var(--radius) - 4px)`,
+          }
+          : {},
+      colors: chaiThemeOptions.colors
+          ? flatten(chaiThemeOptions.colors.map((color) => Object.entries(color.items))).reduce(
+              (acc, [key, [value]]) => {
+                  const temp = {...acc};
+                  const palette = getPalette(value);
+                  const result: Record<string, string> = {};
 
-            Object.keys(palette["primary"]).forEach((shade) => {
-              result[shade] = `hsl(var(--${key}-${shade}))`;
-            });
+                  Object.keys(palette["primary"]).forEach((shade) => {
+                      result[shade] = `hsl(var(--${key}-${shade}))`;
+                  });
 
-            temp[key] = result;
+                  temp[key] = result;
 
-            return temp;
-          },
-          {},
-        )
-      : {},
+                  return temp;
+              },
+              {},
+          )
+          : {},
   };
-  return theme;
 };
 
 function hexToHSL(hex: string) {
@@ -91,7 +90,7 @@ export const getChaiThemeCssVariables = (chaiTheme: Partial<ChaiBuilderThemeValu
           const palette = getPalette(value[0]);
           return `--${key}: ${hexToHSL(value[0])};
             ${Object.keys(palette["primary"]).map((shade) =>
-              `--${key}-${shade}: ${palette["primary"][shade]}`)}`;
+              `--${key}-${shade}: ${hexToHSL(palette["primary"][shade])};`).join("\n  ")}`;
         })
         .join("\n    ")
     }
@@ -104,7 +103,7 @@ export const getChaiThemeCssVariables = (chaiTheme: Partial<ChaiBuilderThemeValu
             const palette = getPalette(value[1]);
             return `--${key}: ${hexToHSL(value[1])};
             ${Object.keys(palette["primary"]).map((shade) =>
-                `--${key}-${shade}: ${palette["primary"][shade]}`)}`;
+                `--${key}-${shade}: ${hexToHSL(palette["primary"][shade])};`).join("\n  ")}`;
           })
         .join("\n    ")
     }

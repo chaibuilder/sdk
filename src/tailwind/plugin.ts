@@ -12,8 +12,8 @@ export default plugin(function ({ addBase, theme }) {
     },
     body: {
       fontFamily: theme("fontFamily.body"),
-      color: theme("colors.foreground"),
-      backgroundColor: theme("colors.background"),
+      color: theme("colors.foreground.DEFAULT"),
+      backgroundColor: theme("colors.background.DEFAULT"),
     },
   });
 });

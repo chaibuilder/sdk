@@ -141,6 +141,7 @@
     "react-quill": "^2.0.0",
     "react-wrap-balancer": "^1.1.1",
     "tailwind-merge": "^2.6.0",
+    "tailwindcss-palette-generator": "^0.10.0",
     "tree-model": "^1.0.7",
     "undo-manager": "^1.1.1"
   },
