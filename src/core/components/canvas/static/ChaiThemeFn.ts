@@ -1,5 +1,6 @@
 import { flatten, isEmpty, keys, uniq } from "lodash-es";
 import { ChaiBuilderThemeOptions, ChaiBuilderThemeValues } from "../../../types/chaiBuilderEditorProps.ts";
+import getPalette from "tailwindcss-palette-generator";
 
 export const getChaiThemeOptions = (chaiThemeOptions: ChaiBuilderThemeOptions) => {
   const theme = {
@@ -21,7 +22,19 @@ export const getChaiThemeOptions = (chaiThemeOptions: ChaiBuilderThemeOptions) =
       : {},
     colors: chaiThemeOptions.colors
       ? flatten(chaiThemeOptions.colors.map((color) => Object.entries(color.items))).reduce(
-          (acc, [key]) => ({ ...acc, [key]: `hsl(var(--${key}))` }),
+          (acc, [key, [value]]) => {
+            const temp = {...acc};
+            const palette = getPalette(value);
+            const result: Record<string, string> = {};
+
+            Object.keys(palette["primary"]).forEach((shade) => {
+              result[shade] = `hsl(var(--${key}-${shade}))`;
+            });
+
+            temp[key] = result;
+
+            return temp;
+          },
           {},
         )
       : {},
@@ -74,7 +87,12 @@ export const getChaiThemeCssVariables = (chaiTheme: Partial<ChaiBuilderThemeValu
     ${
       chaiTheme.colors &&
       Object.entries(chaiTheme.colors)
-        .map(([key, value]) => `--${key}: ${hexToHSL(value[0])};`)
+        .map(([key, value]) => {
+          const palette = getPalette(value[0]);
+          return `--${key}: ${hexToHSL(value[0])};
+            ${Object.keys(palette["primary"]).map((shade) =>
+              `--${key}-${shade}: ${palette["primary"][shade]}`)}`;
+        })
         .join("\n    ")
     }
   }
@@ -82,7 +100,12 @@ export const getChaiThemeCssVariables = (chaiTheme: Partial<ChaiBuilderThemeValu
     ${
       chaiTheme.colors &&
       Object.entries(chaiTheme.colors)
-        .map(([key, value]) => `--${key}: ${hexToHSL(value[1])};`)
+          .map(([key, value]) => {
+            const palette = getPalette(value[1]);
+            return `--${key}: ${hexToHSL(value[1])};
+            ${Object.keys(palette["primary"]).map((shade) =>
+                `--${key}-${shade}: ${palette["primary"][shade]}`)}`;
+          })
         .join("\n    ")
     }
   }`;
