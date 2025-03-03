@@ -142,7 +142,8 @@ const RichTextEditorField = ({ id, placeholder, value, onChange, onBlur }: Widge
     },
     editorProps: {
       attributes: {
-        class: "prose prose-sm focus:outline-none min-h-[100px] p-3",
+        class:
+          "prose prose-sm focus:outline-none min-h-[100px] p-1 dark:prose-invert prose-p:m-0 prose-blockquote:m-2 prose-blockquote:ml-4 prose-ul:m-0 prose-ol:m-0 prose-li:m-0",
       },
     },
   });
