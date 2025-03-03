@@ -29,7 +29,7 @@ function getTargetedBlock(target) {
 }
 
 const useHandleCanvasDblClick = (editor: Editor, editorDiv: HTMLDivElement) => {
-  const INLINE_EDITABLE_BLOCKS = ["Heading", "Paragraph", "Text", "Link", "Span", "Button", "RichText"];
+  const INLINE_EDITABLE_BLOCKS = []; //["Heading", "Paragraph", "Text", "Link", "Span", "Button"];
   const updateContent = useUpdateBlocksProps();
   const [editingBlockId, setEditingBlockId] = useAtom(inlineEditingActiveAtom);
   const { clearHighlight } = useBlockHighlight();
