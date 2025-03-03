@@ -9,3 +9,5 @@ export type ChaiRenderBlockProps<T> = {
 } & T;
 
 export type ChaiBlockStyles = Record<string, string>;
+
+export type {ChaiBuilderThemeValues} from "./chaiBuilderEditorProps.ts";
