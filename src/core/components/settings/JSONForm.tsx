@@ -97,102 +97,60 @@ const CustomFieldTemplate = ({
       const element = document.getElementById(id);
       if (!element) return;
 
-      // Check if this is a ReactQuill editor by looking for the quill container
-      // The actual ID for the quill container is prefixed with 'quill.'
-      const quillContainer = document.getElementById(`quill.${id}`);
+      // Check if this is a Tiptap editor by looking for the chai-rte container
+      const rteContainer = document.getElementById(`chai-rte-${id}`);
 
-      if (quillContainer && "__quill" in quillContainer) {
-        // Handle ReactQuill editor
-        // @ts-ignore - Access the Quill instance that was attached in the RTEField component
-        const quill = (quillContainer as any).__quill;
+      if (rteContainer && rteContainer.querySelector(".ProseMirror")) {
+        // Handle Tiptap editor
+        // Access the Tiptap instance that was attached in the RTEField component
+        const editor = (rteContainer as any).__chaiRTE;
 
-        if (quill) {
+        if (editor) {
           // Create the placeholder
           const basePlaceholder = `{{${path}}}`;
 
           // Focus the editor first to ensure we can get/set selection
-          quill.focus();
+          editor.commands.focus();
 
-          // Get selection range
-          let range = quill.getSelection();
+          // Check if there's a selection
+          const { from, to } = editor.state.selection;
+          const hasSelection = from !== to;
 
-          // If no range, try to force get a selection
-          if (!range) {
-            range = quill.getSelection(true);
-          }
-
-          // If we have a range now, use it
-          if (range) {
-            // If there's a selection, replace it
-            if (range.length > 0) {
-              // Store the selection index before clearing
-              const selectionIndex = range.index;
-
-              // First delete the selected text
-              quill.deleteText(range.index, range.length);
-
-              // Clear the selection to ensure a clean state
-              quill.setSelection(selectionIndex, 0);
-
-              // Then insert the placeholder at the same position with smart spacing
-              // Get the text around the cursor to determine spacing
-              const text = quill.getText();
-              const {
-                text: placeholderWithSpacing,
-                prefixLength,
-                suffixLength,
-              } = addSmartSpacing(text, selectionIndex, basePlaceholder);
-
-              // Insert the placeholder with spacing
-              quill.insertText(selectionIndex, placeholderWithSpacing);
-
-              // Set selection after the inserted text
-              quill.setSelection(selectionIndex + prefixLength + basePlaceholder.length + suffixLength, 0);
-            } else {
-              // No selection, just insert at cursor position with smart spacing
-              // Store the cursor position
-              const cursorIndex = range.index;
-
-              // Clear any potential selection by setting a zero-length selection
-              quill.setSelection(cursorIndex, 0);
-
-              // Get the text to determine spacing
-              const text = quill.getText();
-              const {
-                text: placeholderWithSpacing,
-                prefixLength,
-                suffixLength,
-              } = addSmartSpacing(text, cursorIndex, basePlaceholder);
-
-              // Insert the placeholder with spacing
-              quill.insertText(cursorIndex, placeholderWithSpacing);
-
-              // Set selection after the inserted text
-              quill.setSelection(cursorIndex + prefixLength + basePlaceholder.length + suffixLength, 0);
-            }
+          if (hasSelection) {
+            // If there's a selection, replace it with the placeholder
+            editor.chain().deleteSelection().insertContent(basePlaceholder).run();
           } else {
-            // If still no range, insert at the end
-            const length = quill.getLength();
+            // No selection, just insert at cursor position
+            // Get the text around the cursor to determine spacing
+            const { state } = editor;
+            const cursorPos = state.selection.from;
 
-            // Set a zero-length selection at the end
-            quill.setSelection(length - 1, 0);
+            // Get text before and after cursor for smart spacing
+            const textBefore = state.doc.textBetween(Math.max(0, cursorPos - 1), cursorPos);
+            const textAfter = state.doc.textBetween(cursorPos, Math.min(cursorPos + 1, state.doc.content.size));
 
-            const text = quill.getText();
+            // Determine if we need spacing before the placeholder
+            let prefix = "";
+            if (cursorPos > 0 && textBefore !== " " && !isPunctuation(textBefore)) {
+              prefix = " ";
+            }
 
-            // Add smart spacing at the end of the document
-            const {
-              text: placeholderWithSpacing,
-              prefixLength,
-              suffixLength,
-            } = addSmartSpacing(text, length - 1, basePlaceholder);
+            // Determine if we need spacing after the placeholder
+            let suffix = "";
+            if (textAfter && textAfter !== " " && !isPunctuation(textAfter)) {
+              suffix = " ";
+            }
 
-            quill.insertText(length - 1, placeholderWithSpacing);
-            quill.setSelection(length - 1 + prefixLength + basePlaceholder.length + suffixLength, 0);
+            // Insert the placeholder with smart spacing
+            editor
+              .chain()
+              .insertContent(prefix + basePlaceholder + suffix)
+              .run();
           }
 
           // Update the form data with the new content
-          // Use setTimeout to ensure the DOM has been updated
-          setTimeout(() => onChange(quill.root.innerHTML, {}, id), 200);
+          // Use setTimeout to ensure the state has been updated
+          setTimeout(() => onChange(editor.getHTML(), {}, id), 100);
           return;
         }
       } else {
