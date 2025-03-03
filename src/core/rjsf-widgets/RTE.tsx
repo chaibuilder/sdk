@@ -1,5 +1,7 @@
 import { WidgetProps } from "@rjsf/utils";
 import Link from "@tiptap/extension-link";
+import TextAlign from "@tiptap/extension-text-align";
+import Underline from "@tiptap/extension-underline";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import {
@@ -13,7 +15,7 @@ import {
   ListOrdered,
   Maximize2,
   Strikethrough,
-  Underline,
+  Underline as UnderlineIcon,
   Unlink,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -60,7 +62,7 @@ const MenuBar = ({ editor, onExpand }: { editor: any; onExpand?: () => void }) =
         onClick={() => editor.chain().focus().toggleUnderline().run()}
         className={cn("rounded p-1 hover:bg-muted", { "bg-muted": editor.isActive("underline") })}
         title="Underline">
-        <Underline className="h-4 w-4" />
+        <UnderlineIcon className="h-4 w-4" />
       </button>
       <button
         type="button"
@@ -191,6 +193,12 @@ const RTEModal = ({
           class: "text-primary underline",
         },
       }),
+      TextAlign.configure({
+        types: ["heading", "paragraph"],
+        alignments: ["left", "center", "right"],
+        defaultAlignment: "left",
+      }),
+      Underline,
     ],
     content: value || "",
     onUpdate: ({ editor }) => {
@@ -321,6 +329,12 @@ const RichTextEditorField = ({ id, placeholder, value, onChange, onBlur }: Widge
           class: "text-primary underline",
         },
       }),
+      TextAlign.configure({
+        types: ["heading", "paragraph"],
+        alignments: ["left", "center", "right"],
+        defaultAlignment: "left",
+      }),
+      Underline,
     ],
     content: value || "",
     onUpdate: ({ editor }) => {
