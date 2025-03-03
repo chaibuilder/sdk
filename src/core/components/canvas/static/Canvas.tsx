@@ -10,7 +10,6 @@ import { useBlockHighlight, useSelectedBlockIds, useSelectedStylingBlocks, useUp
 import { useGetBlockAtomValue } from "../../../hooks/useUpdateBlockAtom.ts";
 import { ChaiBlock } from "../../../types/ChaiBlock.ts";
 import { useDnd } from "../dnd/useDnd.ts";
-import { TiptapBubbleMenu } from "./TiptapBubbleMenu.tsx";
 
 function getTargetedBlock(target) {
   // First check if the target is the canvas itself
@@ -187,9 +186,6 @@ export const Canvas = ({ children }: { children: React.ReactNode }) => {
       {...omit(dnd, "isDragging")}
       className={`relative h-full max-w-full p-px ` + (dnd.isDragging ? "dragging" : "") + ""}>
       {children}
-      <div ref={editorRef} style={{ display: "none" }}>
-        <TiptapBubbleMenu editor={editor} />
-      </div>
     </div>
   );
 };
