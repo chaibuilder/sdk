@@ -110,7 +110,7 @@ export function NestedPathSelector({ data, onSelect, dataType = "value" }: Neste
         <TooltipContent>Add field</TooltipContent>
       </Tooltip>
 
-      <PopoverContent className="mr-3 w-[300px] p-0">
+      <PopoverContent className="z-[1000]! relative mr-3 w-[300px] p-0">
         <Command className="fields-command">
           <CommandInput className="border-none" placeholder="Search..." />
           <CommandList>

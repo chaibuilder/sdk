@@ -19,6 +19,8 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { Button } from "../../ui/shadcn/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../../ui/shadcn/components/ui/dialog";
+import { usePageExternalData } from "../atoms/builder";
+import { NestedPathSelector } from "../components/NestedPathSelector";
 import { cn } from "../utils/cn";
 
 const MenuBar = ({ editor, onExpand }: { editor: any; onExpand?: () => void }) => {
@@ -152,6 +154,34 @@ const RTEModal = ({
   onBlur: (id: string, value: string) => void;
 }) => {
   const rteRef = useRef(null);
+  const initialContentRef = useRef(value || "");
+  const pageExternalData = usePageExternalData();
+
+  // Add a style element to fix the z-index issue
+  useEffect(() => {
+    if (isOpen) {
+      // Create a style element
+      const styleEl = document.createElement("style");
+      styleEl.id = "rte-modal-styles";
+      styleEl.innerHTML = `
+        /* Ensure the NestedPathSelector popover appears above the dialog */
+        .rte-path-selector + [data-radix-popper-content-wrapper],
+        [data-radix-popper-content-wrapper] {
+          z-index: 9999 !important;
+        }
+      `;
+      document.head.appendChild(styleEl);
+
+      // Clean up on unmount
+      return () => {
+        const existingStyle = document.getElementById("rte-modal-styles");
+        if (existingStyle) {
+          existingStyle.remove();
+        }
+      };
+    }
+  }, [isOpen]);
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -181,27 +211,89 @@ const RTEModal = ({
 
   useEffect(() => {
     if (isOpen && editor) {
-      // Reset content when modal opens
-      editor.commands.setContent(value || "");
+      // Only set content when the modal first opens
+      if (initialContentRef.current !== value) {
+        initialContentRef.current = value || "";
+        editor.commands.setContent(value || "");
+      }
 
       // Focus the editor after a short delay to ensure it's rendered
       setTimeout(() => {
         editor.commands.focus();
       }, 100);
     }
-  }, [isOpen, value, editor]);
+  }, [isOpen, editor]);
 
+  // Ensure the editor instance is attached to the DOM element for data binding
   useEffect(() => {
-    if (rteRef.current) {
+    if (rteRef.current && editor) {
+      // This is critical for data binding to work - JSONForm.tsx looks for this property
+      // to access the editor instance and insert data binding placeholders
       rteRef.current.__chaiRTE = editor;
     }
-  }, [editor]);
+  }, [editor, isOpen]);
+
+  const handlePathSelect = (path: string) => {
+    if (!editor) return;
+
+    // Create the placeholder
+    const placeholder = `{{${path}}}`;
+
+    // Focus the editor first
+    editor.commands.focus();
+
+    // Check if there's a selection
+    const { from, to } = editor.state.selection;
+    const hasSelection = from !== to;
+
+    if (hasSelection) {
+      // If there's a selection, replace it with the placeholder
+      editor.chain().deleteSelection().insertContent(placeholder).run();
+    } else {
+      // No selection, just insert at cursor position
+      // Get the text around the cursor to determine spacing
+      const { state } = editor;
+      const cursorPos = state.selection.from;
+
+      // Get text before and after cursor for smart spacing
+      const textBefore = state.doc.textBetween(Math.max(0, cursorPos - 1), cursorPos);
+      const textAfter = state.doc.textBetween(cursorPos, Math.min(cursorPos + 1, state.doc.content.size));
+
+      // Determine if we need spacing before the placeholder
+      let prefix = "";
+      if (cursorPos > 0 && textBefore !== " " && !/[.,!?;:]/.test(textBefore)) {
+        prefix = " ";
+      }
+
+      // Determine if we need spacing after the placeholder
+      let suffix = "";
+      if (textAfter && textAfter !== " " && !/[.,!?;:]/.test(textAfter)) {
+        suffix = " ";
+      }
+
+      // Insert the placeholder with smart spacing
+      editor
+        .chain()
+        .insertContent(prefix + placeholder + suffix)
+        .run();
+    }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[800px]">
         <DialogHeader>
-          <DialogTitle>Rich Text Editor</DialogTitle>
+          <DialogTitle className="flex items-center justify-between pr-8">
+            <span>Rich Text Editor</span>
+            {pageExternalData && Object.keys(pageExternalData).length > 0 && (
+              <div className="flex items-center">
+                <span className="mr-2 text-sm text-muted-foreground">Add field:</span>
+                <div className="rte-path-selector">
+                  <NestedPathSelector data={pageExternalData} onSelect={handlePathSelect} />
+                </div>
+              </div>
+            )}
+          </DialogTitle>
         </DialogHeader>
         <div id={`chai-rte-modal-${id}`} ref={rteRef} className="rounded-md border border-input">
           <MenuBar editor={editor} />
@@ -218,6 +310,7 @@ const RTEModal = ({
 const RichTextEditorField = ({ id, placeholder, value, onChange, onBlur }: WidgetProps) => {
   const rteRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState("");
 
   const editor = useEditor({
     extensions: [
@@ -233,6 +326,12 @@ const RichTextEditorField = ({ id, placeholder, value, onChange, onBlur }: Widge
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
       onChange(html);
+
+      // Update modal content state when inline editor changes
+      // but only if modal is closed to prevent feedback loops
+      if (!isModalOpen) {
+        setModalContent(html);
+      }
     },
     onBlur: ({ editor }) => {
       const html = editor.getHTML();
@@ -247,13 +346,30 @@ const RichTextEditorField = ({ id, placeholder, value, onChange, onBlur }: Widge
   });
 
   useEffect(() => {
+    // This is critical for data binding to work - JSONForm.tsx looks for this property
+    // to access the editor instance and insert data binding placeholders
     rteRef.current.__chaiRTE = editor;
   }, [editor]);
 
+  // Update modal content when value changes from outside
+  useEffect(() => {
+    setModalContent(value || "");
+  }, [value]);
+
   const handleModalChange = (newValue: string) => {
+    // Just call onChange to update the form data
     onChange(newValue);
+
+    // Update the inline editor only when the modal is closed
+    // to prevent cursor jumping during editing
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+
+    // Update the inline editor content when modal is closed
     if (editor) {
-      editor.commands.setContent(newValue);
+      editor.commands.setContent(modalContent);
     }
   };
 
@@ -269,9 +385,9 @@ const RichTextEditorField = ({ id, placeholder, value, onChange, onBlur }: Widge
       {isModalOpen && (
         <RTEModal
           isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          onClose={handleModalClose}
           id={id}
-          value={value || ""}
+          value={modalContent}
           onChange={handleModalChange}
           onBlur={onBlur}
         />
