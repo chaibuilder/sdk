@@ -102,7 +102,7 @@ export interface ChaiBuilderEditorProps {
   pageId?: string;
   pageExternalData?: Record<string, any>;
   themePresets?: Record<string, Partial<ChaiBuilderThemeValues>>[];
-  themeOptions?: ChaiBuilderThemeOptions | ((defaultThemeOptions: ChaiBuilderThemeOptions) => ChaiBuilderThemeOptions);
+  themeOptions?: (defaultThemeOptions: ChaiBuilderThemeOptions) => ChaiBuilderThemeOptions;
   theme?: Partial<ChaiBuilderThemeValues>;
   themePanelComponent?: ReactComponentType;
   /**

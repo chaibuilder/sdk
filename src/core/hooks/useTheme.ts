@@ -56,7 +56,7 @@ export const useTheme = () => {
 
 export const useThemeOptions = () => {
   const getThemeOptions = useBuilderProp("themeOptions", (themeOptions: ChaiBuilderThemeOptions) => themeOptions);
-  const defaultOptions = useMemo(() => typeof getThemeOptions === "function" ? getThemeOptions(defaultThemeOptions) : getThemeOptions, [getThemeOptions]);
+  const defaultOptions = useMemo(() => getThemeOptions(defaultThemeOptions), [getThemeOptions]);
   return defaultOptions as ChaiBuilderThemeOptions;
 };
 
