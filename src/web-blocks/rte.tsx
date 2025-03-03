@@ -11,7 +11,7 @@ const RichTextBlock = (props: ChaiBlockComponentProps<RichTextProps>) => {
   const { blockProps, content, styles } = props;
   const forcedStyles = addForcedClasses(
     styles,
-    "prose dark:prose-invert prose-p:m-0 prose-blockquote:m-2 prose-blockquote:ml-4 prose-ul:m-0 prose-ol:m-0 prose-li:m-0",
+    "prose dark:prose-invert prose-p:m-0 prose-p:min-h-[1rem] prose-blockquote:m-2 prose-blockquote:ml-4 prose-ul:m-0 prose-ol:m-0 prose-li:m-0",
     "max-w-full",
   );
   return <div {...blockProps} {...forcedStyles} dangerouslySetInnerHTML={{ __html: content }}></div>;
