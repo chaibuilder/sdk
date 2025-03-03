@@ -98,9 +98,9 @@ const CustomFieldTemplate = ({
       if (!element) return;
 
       // Check if this is a Tiptap editor by looking for the chai-rte container
-      const rteContainer = document.getElementById(`chai-rte-${id}`);
+      const rteContainer = document.getElementById(`chai-rte-${id}`) || document.getElementById(`chai-rte-modal-${id}`);
 
-      if (rteContainer && rteContainer.querySelector(".ProseMirror")) {
+      if (rteContainer && (rteContainer.querySelector(".ProseMirror") || (rteContainer as any).__chaiRTE)) {
         // Handle Tiptap editor
         // Access the Tiptap instance that was attached in the RTEField component
         const editor = (rteContainer as any).__chaiRTE;
