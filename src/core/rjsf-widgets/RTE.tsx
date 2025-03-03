@@ -15,6 +15,7 @@ import {
   Underline,
   Unlink,
 } from "lucide-react";
+import { useEffect, useRef } from "react";
 import { cn } from "../utils/cn";
 
 const MenuBar = ({ editor }: { editor: any }) => {
@@ -121,6 +122,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
 };
 
 const RichTextEditorField = ({ id, placeholder, value, onChange, onBlur }: WidgetProps) => {
+  const rteRef = useRef(null);
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -148,11 +150,13 @@ const RichTextEditorField = ({ id, placeholder, value, onChange, onBlur }: Widge
     },
   });
 
-  if (typeof window === "undefined") return null;
+  useEffect(() => {
+    rteRef.current.__chaiRTE = editor;
+  }, []);
 
   console.log(value);
   return (
-    <div className="mt-1 rounded-md border border-input">
+    <div id={`chai-rte-${id}`} ref={rteRef} className="mt-1 rounded-md border border-input">
       <MenuBar editor={editor} />
       <EditorContent editor={editor} id={id} placeholder={placeholder} />
     </div>
