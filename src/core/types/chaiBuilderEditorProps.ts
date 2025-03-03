@@ -50,10 +50,10 @@ export type Breakpoint = {
   width: number;
 };
 
-type SavePageData = {
+export type SavePageData = {
   autoSave: boolean;
   blocks: ChaiBlock[];
-  theme?: Record<string, any>;
+  theme?: ChaiBuilderThemeValues;
 };
 
 type OutlineMenuItem = {
