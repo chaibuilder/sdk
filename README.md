@@ -6,6 +6,8 @@ It is a simple React component that renders a full-fledged visual builder into a
 
 Demo: https://chaibuilder-sdk.vercel.app/
 
+NextJS Starter: https://github.com/chaibuilder/chaibuilder-nextjs
+
 ---
 
 ### Manual installation:
