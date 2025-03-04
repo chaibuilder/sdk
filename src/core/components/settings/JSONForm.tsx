@@ -307,7 +307,6 @@ export const JSONForm = memo(({ blockId, schema, uiSchema, formData, onChange }:
       schema={schema}
       formData={formData}
       onChange={({ formData: fD }, id) => {
-        console.log(fD, id);
         if (!id || blockId !== fD?._id) return;
         const prop = take(id.split("."), 2).join(".").replace("root.", "");
         throttledChange({ formData: fD }, prop);
