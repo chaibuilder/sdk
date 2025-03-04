@@ -4,19 +4,19 @@ import { isArray, map, pick } from "lodash-es";
 import { Info } from "lucide-react";
 import { useState } from "react";
 import { lsAiContextAtom, lsBlocksAtom, lsThemeAtom } from "./__dev/atoms-dev.ts";
-import { Component as CollectionListComponent, Config as CollectionListConfig } from "./__dev/CollectionList.tsx";
+import registerCustomBlocks from "./__dev/blocks/index.tsx";
 import GalleryWidget from "./__dev/CustomWidget.tsx";
 import { LanguageButton } from "./__dev/LangButton.tsx";
 import PreviewWeb from "./__dev/preview/WebPreview.tsx";
 import RightTop from "./__dev/RightTop.tsx";
 import { bluePreset, greenPreset, orangePreset } from "./__dev/THEME_PRESETS.ts";
-import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML, registerChaiBlock } from "./core/main";
+import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML } from "./core/main";
+import { SavePageData } from "./core/types/chaiBuilderEditorProps.ts";
 import { Alert, AlertDescription } from "./ui/shadcn/components/ui/alert.tsx";
 import { loadWebBlocks } from "./web-blocks";
-import {SavePageData} from "./core/types/chaiBuilderEditorProps.ts";
 
 loadWebBlocks();
-registerChaiBlock(CollectionListComponent, CollectionListConfig);
+registerCustomBlocks();
 
 const Logo = () => {
   return (
