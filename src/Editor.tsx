@@ -13,6 +13,7 @@ import { bluePreset, greenPreset, orangePreset } from "./__dev/THEME_PRESETS.ts"
 import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML, registerChaiBlock } from "./core/main";
 import { Alert, AlertDescription } from "./ui/shadcn/components/ui/alert.tsx";
 import { loadWebBlocks } from "./web-blocks";
+import {SavePageData} from "./core/types/chaiBuilderEditorProps.ts";
 
 loadWebBlocks();
 registerChaiBlock(CollectionListComponent, CollectionListConfig);
@@ -89,7 +90,7 @@ function ChaiBuilderDefault() {
       autoSaveInterval={15}
       previewComponent={PreviewWeb}
       blocks={blocks}
-      onSave={async ({ blocks, theme }: any) => {
+      onSave={async ({ blocks, theme }: SavePageData) => {
         console.log("onSave", blocks, theme);
         localStorage.setItem("chai-builder-blocks", JSON.stringify(blocks));
         localStorage.setItem("chai-builder-theme", JSON.stringify(theme));
