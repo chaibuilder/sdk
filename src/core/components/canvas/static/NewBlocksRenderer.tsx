@@ -36,8 +36,11 @@ const BlockRenderer = ({ blockAtom, children }: { blockAtom: Atom<ChaiBlock>; ch
         : applyLanguage(block, selectedLang, registeredChaiBlock),
     [block, selectedLang, registeredChaiBlock, pageExternalData, dataBindingActive],
   );
-  const blockAttributesProps = useMemo(() => getBlockTagAttributes(block), [block]);
-  const runtimeProps = useMemo(() => getRuntimePropValues(block._id, getBlockRuntimeProps(block._type)), [block]);
+  const blockAttributesProps = useMemo(() => getBlockTagAttributes(block), [block, getBlockTagAttributes]);
+  const runtimeProps = useMemo(
+    () => getRuntimePropValues(block._id, getBlockRuntimeProps(block._type)),
+    [block._id, block._type, getRuntimePropValues, getBlockRuntimeProps],
+  );
   const dataProviderProps = useMemo(() => {
     if (!has(registeredChaiBlock, "dataProvider") || !isFunction(registeredChaiBlock.dataProvider)) return {};
     return registeredChaiBlock.dataProvider(block, selectedLang);
@@ -56,7 +59,16 @@ const BlockRenderer = ({ blockAtom, children }: { blockAtom: Atom<ChaiBlock>; ch
       ...runtimeProps,
       ...dataProviderProps,
     }),
-    [block, selectedLang, fallbackLang, dataBindingProps, blockAttributesProps, runtimeProps, dataProviderProps],
+    [
+      block._id,
+      block._type,
+      selectedLang,
+      fallbackLang,
+      dataBindingProps,
+      blockAttributesProps,
+      runtimeProps,
+      dataProviderProps,
+    ],
   );
 
   if (isNull(Component) || hiddenBlocks.includes(block._id)) return null;
