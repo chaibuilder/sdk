@@ -14,10 +14,17 @@ export function BreakpointSelector() {
     <>
       <div className="sticky top-0 z-10 flex items-center justify-start bg-muted px-2 py-1 shadow-sm">
         <p className="text-xs text-muted-foreground">Screen:&nbsp;</p>
-        <Breakpoints openDelay={500} />
+        <Breakpoints openDelay={1000} tooltip={false} />
       </div>
-      <div className="flex items-center justify-between rounded-md rounded-t-none border border-border p-1">
-        <p className="flex-1 text-[10px] text-muted-foreground">{message}</p>
+      <div className="mb-2 flex items-center justify-between rounded-md rounded-t-none border border-border p-1">
+        <p className="flex flex-1 items-center space-x-2 text-[10px] text-foreground">
+          <span className="text-xs text-foreground">
+            <span className="rounded-md bg-muted px-1 py-px text-xs font-bold uppercase text-muted-foreground">
+              {breakpoint === "xs" ? "Base" : breakpoint}
+            </span>
+            &nbsp; {message}
+          </span>
+        </p>
       </div>
     </>
   );

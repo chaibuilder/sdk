@@ -93,6 +93,7 @@ export const WEB_BREAKPOINTS: BreakpointItemType[] = [
 const BreakpointCard = ({
   canvas = false,
   openDelay = 400,
+  tooltip = true,
   title,
   content,
   currentBreakpoint,
@@ -102,6 +103,18 @@ const BreakpointCard = ({
   onClick,
 }: BreakpointCardProps) => {
   const { t } = useTranslation();
+
+  if (!tooltip) {
+    return (
+      <Button
+        onClick={() => onClick(width)}
+        size="sm"
+        className="h-7 w-7 rounded-md p-1"
+        variant={breakpoint === currentBreakpoint ? "outline" : "ghost"}>
+        {icon}
+      </Button>
+    );
+  }
 
   return (
     <HoverCard openDelay={openDelay}>
@@ -126,7 +139,15 @@ const BreakpointCard = ({
   );
 };
 
-export const Breakpoints = ({ openDelay = 400, canvas = false }: { openDelay?: number; canvas?: boolean }) => {
+export const Breakpoints = ({
+  openDelay = 400,
+  canvas = false,
+  tooltip = true,
+}: {
+  openDelay?: number;
+  canvas?: boolean;
+  tooltip?: boolean;
+}) => {
   const [currentWidth, , setNewWidth] = useScreenSizeWidth();
   const [canvasDisplayWidth, setCanvasDisplayWidth] = useCanvasDisplayWidth();
   const [styleBreakpoints, setStyleBreakpoints] = useSelectedBreakpoints();
@@ -182,6 +203,7 @@ export const Breakpoints = ({ openDelay = 400, canvas = false }: { openDelay?: n
             <BreakpointCard
               canvas={canvas}
               openDelay={openDelay}
+              tooltip={tooltip}
               {...bp}
               onClick={handleCanvasWidthChange}
               key={bp.breakpoint}
