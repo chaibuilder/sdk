@@ -27,15 +27,15 @@ export const usePartailBlocksStore = () => {
 };
 
 export const useWatchPartailBlocks = () => {
-  const [blocksStore] = useBlocksStore();
+  const [allBlocks] = useBlocksStore();
   const [partailBlocks, setPartailBlocks] = useAtom(partialBlocksStoreAtom);
   const [partailBlocksLoadingState, setPartailBlocksLoadingState] = useAtom(partialBlocksLoadingStateAtom);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getPartialBlockBlocks = useBuilderProp("getPartialBlockBlocks", async (_key: string) => []);
   const partialBlocksList = useMemo(() => {
-    const partialBlocks = blocksStore.filter((block) => block._type === "PartialBlock");
-    return partialBlocks.filter((block) => block._type === "PartialBlock").map((block) => block.partialBlockId);
-  }, [blocksStore]);
+    const partialBlocks = allBlocks.filter((block) => block._type === "PartialBlock");
+    return partialBlocks.map((block) => block.partialBlockId);
+  }, [allBlocks]);
 
   useEffect(() => {
     forEach(partialBlocksList, (partialBlock: string) => {
@@ -58,7 +58,14 @@ export const useWatchPartailBlocks = () => {
           }));
         });
     });
-  }, [getPartialBlockBlocks, partailBlocks, partailBlocksLoadingState, setPartailBlocks, setPartailBlocksLoadingState]);
+  }, [
+    getPartialBlockBlocks,
+    partailBlocks,
+    partailBlocksLoadingState,
+    setPartailBlocks,
+    setPartailBlocksLoadingState,
+    partialBlocksList,
+  ]);
 };
 
 type PartialBlockList = Record<string, { name?: string; description?: string }>;

@@ -28,6 +28,7 @@ export const CoreBlock = ({
   const [, setSelected] = useSelectedBlockIds();
   const { clearHighlight } = useBlockHighlight();
   const addBlockToPage = () => {
+    console.log("addBlockToPage", block);
     if (has(block, "blocks")) {
       const blocks = isFunction(block.blocks) ? block.blocks() : block.blocks;
       addPredefinedBlock(syncBlocksWithDefaults(blocks), parentId || null, position);
