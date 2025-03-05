@@ -24,6 +24,7 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [tab] = useAtom(addBlockTabAtom);
   const parentType = find(allBlocks, (block) => block._id === parentId)?._type;
+  const groupRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   // Focus search input on mount and tab change
   useEffect(() => {
@@ -53,6 +54,18 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
     [blocks, filteredBlocks, groups, searchTerm],
   );
 
+  const scrollToGroup = useCallback((group: string) => {
+    if (groupRefs.current[group]) {
+      groupRefs.current[group]?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, []);
+
+  const sortedGroups = useMemo(
+    () =>
+      sortBy(filteredGroups, (group: string) => (CORE_GROUPS.indexOf(group) === -1 ? 99 : CORE_GROUPS.indexOf(group))),
+    [filteredGroups],
+  );
+
   return (
     <div className="mx-auto flex h-full w-full max-w-2xl flex-col">
       {/* Search at top */}
@@ -66,40 +79,59 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
         />
       </div>
 
-      <ScrollArea className="h-full">
-        {filteredGroups.length === 0 && searchTerm ? (
-          <div className="flex flex-col items-center justify-center p-8 text-center text-muted-foreground">
-            <p>
-              {t("No blocks found matching")} "{searchTerm}"
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-6 p-4">
-            {sortBy(filteredGroups, (group: string) =>
-              CORE_GROUPS.indexOf(group) === -1 ? 99 : CORE_GROUPS.indexOf(group),
-            ).map((group) => (
-              <div key={group} className="space-y-3">
-                <h3 className="px-1 text-sm font-medium">{capitalize(t(group.toLowerCase()))}</h3>
-                <div className={"grid gap-2 " + gridCols}>
-                  {React.Children.toArray(
-                    reject(filter(values(filteredBlocks), { group }), { hidden: true }).map((block) => (
-                      <CoreBlock
-                        key={block.type}
-                        parentId={parentId}
-                        position={position}
-                        block={block}
-                        disabled={
-                          !canAcceptChildBlock(parentType, block.type) || !canBeNestedInside(parentType, block.type)
-                        }
-                      />
-                    )),
-                  )}
-                </div>
+      <div className="flex h-full">
+        {/* Sidebar for groups */}
+        {sortedGroups.length > 0 && (
+          <div className="w-1/4 min-w-[120px] border-r p-2">
+            <ScrollArea className="h-full">
+              <div className="space-y-1 pr-2">
+                {sortedGroups.map((group) => (
+                  <button
+                    key={`sidebar-${group}`}
+                    onClick={() => scrollToGroup(group)}
+                    className="w-full rounded-md px-2 py-1.5 text-left text-sm hover:bg-accent hover:text-accent-foreground">
+                    {capitalize(t(group.toLowerCase()))}
+                  </button>
+                ))}
               </div>
-            ))}
+            </ScrollArea>
           </div>
         )}
-      </ScrollArea>
+
+        {/* Main content area */}
+        <ScrollArea className="h-full w-3/4 flex-1">
+          {filteredGroups.length === 0 && searchTerm ? (
+            <div className="flex flex-col items-center justify-center p-8 text-center text-muted-foreground">
+              <p>
+                {t("No blocks found matching")} "{searchTerm}"
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-6 p-4">
+              {sortedGroups.map((group) => (
+                <div key={group} className="space-y-3" ref={(el) => (groupRefs.current[group] = el)}>
+                  <h3 className="px-1 text-sm font-medium">{capitalize(t(group.toLowerCase()))}</h3>
+                  <div className={"grid gap-2 " + gridCols}>
+                    {React.Children.toArray(
+                      reject(filter(values(filteredBlocks), { group }), { hidden: true }).map((block) => (
+                        <CoreBlock
+                          key={block.type}
+                          parentId={parentId}
+                          position={position}
+                          block={block}
+                          disabled={
+                            !canAcceptChildBlock(parentType, block.type) || !canBeNestedInside(parentType, block.type)
+                          }
+                        />
+                      )),
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </ScrollArea>
+      </div>
     </div>
   );
 };
