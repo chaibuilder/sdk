@@ -16,10 +16,10 @@ import { useCurrentPage } from "./useCurrentPage";
 import { useCutBlockIds } from "./useCutBlockIds";
 import { useDarkMode } from "./useDarkMode";
 import { useDuplicateBlocks } from "./useDuplicateBlocks";
-import { useGlobalBlocksList, useGlobalBlocksStore } from "./useGlobalBlocksStore.ts";
 import { useHiddenBlockIds } from "./useHiddenBlocks";
 import { useHighlightBlockId } from "./useHighlightBlockId";
 import { useLanguages } from "./useLanguages.ts";
+import { usePartailBlocksStore, usePartialBlocksList } from "./usePartialBlocksStore.ts";
 import { usePasteBlocks } from "./usePasteBlocks";
 import { usePreviewMode } from "./usePreviewMode";
 import { useRemoveBlocks } from "./useRemoveBlocks";
@@ -56,11 +56,11 @@ export {
   useCutBlockIds,
   useDarkMode,
   useDuplicateBlocks,
-  useGlobalBlocksList,
-  useGlobalBlocksStore,
   useHiddenBlockIds,
   useHighlightBlockId,
   useLanguages,
+  usePartailBlocksStore,
+  usePartialBlocksList,
   usePasteBlocks,
   usePreviewMode,
   useRemoveBlocks,

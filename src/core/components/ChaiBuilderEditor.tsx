@@ -21,8 +21,8 @@ import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
 import { useBuilderProp, useBuilderReset, useSavePage } from "../hooks";
 import { useBroadcastChannel, useUnmountBroadcastChannel } from "../hooks/useBroadcastChannel.ts";
 import { useExpandTree } from "../hooks/useExpandTree.ts";
-import { useWatchGlobalBlocks } from "../hooks/useGlobalBlocksStore.ts";
 import { useKeyEventWatcher } from "../hooks/useKeyEventWatcher.ts";
+import { useWatchPartailBlocks } from "../hooks/usePartialBlocksStore.ts";
 import { builderSaveStateAtom } from "../hooks/useSavePage.ts";
 import "../index.css";
 import i18n from "../locales/load.ts";
@@ -51,7 +51,7 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   useKeyEventWatcher();
   useExpandTree();
   useAutoSave();
-  useWatchGlobalBlocks();
+  useWatchPartailBlocks();
   useUnmountBroadcastChannel();
   const { postMessage } = useBroadcastChannel();
 

@@ -1,23 +1,23 @@
-import { useGlobalBlocksList, useSelectedBlock, useUpdateBlocksProps } from "../../hooks";
-import { startCase, get } from "lodash-es";
+import { get, startCase } from "lodash-es";
+import { usePartialBlocksList, useSelectedBlock, useUpdateBlocksProps } from "../../hooks";
 
 export const GlobalBlockSettings = () => {
   const selectedBlock = useSelectedBlock() as any;
-  const { data: list, refetch, isLoading } = useGlobalBlocksList();
+  const { data: list, refetch, isLoading } = usePartialBlocksList();
   const updateBlockProps = useUpdateBlocksProps();
   return (
     <div>
-      <label className="text-sm">Choose a global block</label>
+      <label className="text-sm">Choose a partial block</label>
       <select
         className="h-8 w-full rounded-md border border-border bg-gray-50 p-0 px-2 text-xs dark:bg-gray-800"
-        value={selectedBlock?.globalBlock || ""}
+        value={selectedBlock?.partialBlockId || ""}
         onChange={(e) => {
           updateBlockProps([selectedBlock._id], {
-            globalBlock: e.target.value,
-            _name: `Global: ${startCase(get(list, e.target.value, "")?.name)}`,
+            partialBlockId: e.target.value,
+            _name: `Partial: ${startCase(get(list, e.target.value, "")?.name)}`,
           });
         }}>
-        <option value="">Select a global block</option>
+        <option value="">Select a partial block</option>
         {Object.keys(list).map((key) => (
           <option key={key} value={key}>
             {list[key].name || key}
