@@ -7,6 +7,7 @@ import { Input, ScrollArea, Tabs, TabsContent, TabsList, TabsTrigger } from "../
 import { showPredefinedBlockCategoryAtom } from "../../../../atoms/ui";
 import { canAcceptChildBlock, canBeNestedInside } from "../../../../functions/block-helpers.ts";
 import { useBlocksStore, useBuilderProp } from "../../../../hooks";
+import { usePartialBlocksList } from "../../../../hooks/usePartialBlocksStore";
 import { CHAI_BUILDER_EVENTS, mergeClasses, UILibraries } from "../../../../main";
 import { pubsub } from "../../../../pubsub.ts";
 import { CoreBlock } from "./CoreBlock";
@@ -121,9 +122,20 @@ const AddBlocksPanel = ({
   const [, setCategory] = useAtom(showPredefinedBlockCategoryAtom);
   const importHTMLSupport = useBuilderProp("importHTMLSupport", true);
   const addBlocksDialogTabs = useBuilderProp("addBlocksDialogTabs", []);
+  const { data: partialBlocksList } = usePartialBlocksList();
+  const hasPartialBlocks = Object.keys(partialBlocksList || {}).length > 0;
+
+  // If current tab is "partials" but there are no partial blocks, switch to "library" tab
+  useEffect(() => {
+    if (tab === "partials" && !hasPartialBlocks) {
+      setTab("library");
+    }
+  }, [tab, hasPartialBlocks, setTab]);
+
   const close = useCallback(() => {
     pubsub.publish(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK);
   }, []);
+
   return (
     <div className={mergeClasses("flex h-full w-full flex-col overflow-hidden", className)}>
       {showHeading ? (
@@ -145,7 +157,7 @@ const AddBlocksPanel = ({
         <TabsList className={"flex w-full items-center"}>
           <TabsTrigger value="library">{t("Library")}</TabsTrigger>
           <TabsTrigger value="core">{t("Blocks")}</TabsTrigger>
-          <TabsTrigger value="partials">{t("Partials")}</TabsTrigger>
+          {hasPartialBlocks && <TabsTrigger value="partials">{t("Partials")}</TabsTrigger>}
           {importHTMLSupport ? <TabsTrigger value="html">{t("Import")}</TabsTrigger> : null}
           {map(addBlocksDialogTabs, (tab) => (
             <TabsTrigger value={tab.key}>{React.createElement(tab.tab)}</TabsTrigger>
@@ -161,13 +173,15 @@ const AddBlocksPanel = ({
         <TabsContent value="library" className="h-full max-h-full flex-1 pb-20">
           <UILibraries parentId={parentId} position={position} />
         </TabsContent>
-        <TabsContent value="partials" className="h-full max-h-full flex-1 pb-20">
-          <ScrollArea className="-mx-1.5 h-full max-h-full overflow-y-auto">
-            <div className="mt-2 w-full">
-              <PartialBlocks gridCols={"grid-cols-4"} parentId={parentId} position={position} />
-            </div>
-          </ScrollArea>
-        </TabsContent>
+        {hasPartialBlocks && (
+          <TabsContent value="partials" className="h-full max-h-full flex-1 pb-20">
+            <ScrollArea className="-mx-1.5 h-full max-h-full overflow-y-auto">
+              <div className="mt-2 w-full">
+                <PartialBlocks gridCols={"grid-cols-4"} parentId={parentId} position={position} />
+              </div>
+            </ScrollArea>
+          </TabsContent>
+        )}
         {importHTMLSupport ? (
           <TabsContent value="html" className="h-full max-h-full flex-1 pb-20">
             <ImportHTML parentId={parentId} position={position} />

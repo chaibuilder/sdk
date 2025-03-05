@@ -27,15 +27,15 @@ export const usePartailBlocksStore = () => {
 };
 
 export const useWatchPartailBlocks = () => {
-  const [allBlocks] = useBlocksStore();
+  const [blocksStore] = useBlocksStore();
   const [partailBlocks, setPartailBlocks] = useAtom(partialBlocksStoreAtom);
   const [partailBlocksLoadingState, setPartailBlocksLoadingState] = useAtom(partialBlocksLoadingStateAtom);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getPartialBlockBlocks = useBuilderProp("getPartialBlockBlocks", async (_key: string) => []);
   const partialBlocksList = useMemo(() => {
-    const partialBlocks = allBlocks.filter((block) => block._type === "PartialBlock");
-    return partialBlocks.map((block) => block.partialBlockId);
-  }, [allBlocks]);
+    // Filter blocks of type "PartialBlock" and extract their partialBlockId
+    return blocksStore.filter((block) => block._type === "PartialBlock").map((block) => block.partialBlockId);
+  }, [blocksStore]);
 
   useEffect(() => {
     forEach(partialBlocksList, (partialBlock: string) => {
@@ -68,23 +68,33 @@ export const useWatchPartailBlocks = () => {
   ]);
 };
 
-type PartialBlockList = Record<string, { name?: string; description?: string }>;
+type PartialBlockList = Record<string, { name?: string; description?: string; type?: string }>;
 const partialBlocksListAtom = atom<PartialBlockList>({});
+const partialBlocksListErrorAtom = atom<string | null>(null);
+
 export const usePartialBlocksList = () => {
   const [loading, setLoading] = useState(false);
   const [partialBlocksList, setPartialBlocksList] = useAtom(partialBlocksListAtom);
+  const [error, setError] = useAtom(partialBlocksListErrorAtom);
   const getPartialBlocks = useBuilderProp("getPartialBlocks", async () => []);
+
   const fetchPartialBlocks = useCallback(async () => {
     setLoading(true);
-    const partialBlocks = await getPartialBlocks();
-    setPartialBlocksList(partialBlocks as any);
-    setLoading(false);
-  }, [getPartialBlocks, setPartialBlocksList]);
+    setError(null);
+    try {
+      const partialBlocks = await getPartialBlocks();
+      setPartialBlocksList(partialBlocks as any);
+      setLoading(false);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to fetch partial blocks");
+      setLoading(false);
+    }
+  }, [getPartialBlocks, setPartialBlocksList, setError]);
 
   useEffect(() => {
     fetchPartialBlocks();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { data: partialBlocksList, isLoading: loading, refetch: fetchPartialBlocks };
+  return { data: partialBlocksList, isLoading: loading, refetch: fetchPartialBlocks, error };
 };
