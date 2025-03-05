@@ -107,7 +107,7 @@ const BlocksRenderer = ({
       <BlockRenderer key={block._id} blockAtom={blockAtom}>
         {block._type === "GlobalBlock" || block._type === "PartialBlock" ? (
           <Provider store={builderStore}>
-            <PartialBlocksRenderer partialBlockId={get(block, "partialBlockId", get(block, "globalBlockId", ""))} />
+            <PartialBlocksRenderer partialBlockId={get(block, "partialBlockId", get(block, "globalBlock", ""))} />
           </Provider>
         ) : hasChildren(block) ? (
           <BlocksRenderer splitAtoms={splitAtoms} blocks={blocks} parent={block._id} />

@@ -70,12 +70,11 @@ export const useWatchPartailBlocks = () => {
 
 type PartialBlockList = Record<string, { name?: string; description?: string; type?: string }>;
 const partialBlocksListAtom = atom<PartialBlockList>({});
-const partialBlocksListErrorAtom = atom<string | null>(null);
 
 export const usePartialBlocksList = () => {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [partialBlocksList, setPartialBlocksList] = useAtom(partialBlocksListAtom);
-  const [error, setError] = useAtom(partialBlocksListErrorAtom);
   const getPartialBlocks = useBuilderProp("getPartialBlocks", async () => []);
 
   const fetchPartialBlocks = useCallback(async () => {
@@ -89,7 +88,7 @@ export const usePartialBlocksList = () => {
       setError(err instanceof Error ? err.message : "Failed to fetch partial blocks");
       setLoading(false);
     }
-  }, [getPartialBlocks, setPartialBlocksList, setError]);
+  }, [getPartialBlocks, setPartialBlocksList]);
 
   useEffect(() => {
     fetchPartialBlocks();
