@@ -7,7 +7,7 @@ import { pageBlocksAtomsAtom } from "../../../atoms/blocks";
 import { usePageExternalData } from "../../../atoms/builder";
 import { builderStore } from "../../../atoms/store";
 import { dataBindingActiveAtom } from "../../../atoms/ui";
-import { useBlocksStore, useGlobalBlocksStore, useHiddenBlockIds } from "../../../hooks";
+import { useBlocksStore, useHiddenBlockIds, usePartailBlocksStore } from "../../../hooks";
 import { useLanguages } from "../../../hooks/useLanguages";
 import { useGetBlockAtom } from "../../../hooks/useUpdateBlockAtom";
 import { ChaiBlock } from "../../../types/ChaiBlock";
@@ -75,12 +75,12 @@ const BlockRenderer = ({ blockAtom, children }: { blockAtom: Atom<ChaiBlock>; ch
   return <Suspense>{createElement(Component, { ...props, children })}</Suspense>;
 };
 
-const GlobalBlocksRenderer = ({ globalBlockId }: { globalBlockId: string }) => {
-  const { getGlobalBlocks } = useGlobalBlocksStore();
-  const globalBlocks = useMemo(() => getGlobalBlocks(globalBlockId), [getGlobalBlocks, globalBlockId]);
-  const globalBlocksAtoms = useMemo(() => splitAtom(atom(globalBlocks)), [globalBlocks]);
-  if (isEmpty(globalBlocks)) return null;
-  return <BlocksRenderer splitAtoms={globalBlocksAtoms} blocks={globalBlocks} />;
+const PartialBlocksRenderer = ({ partialBlockId }: { partialBlockId: string }) => {
+  const { getPartailBlocks } = usePartailBlocksStore();
+  const partialBlocks = useMemo(() => getPartailBlocks(partialBlockId), [getPartailBlocks, partialBlockId]);
+  const partialBlocksAtoms = useMemo(() => splitAtom(atom(partialBlocks)), [partialBlocks]);
+  if (isEmpty(partialBlocks)) return null;
+  return <BlocksRenderer splitAtoms={partialBlocksAtoms} blocks={partialBlocks} />;
 };
 
 const BlocksRenderer = ({
@@ -105,9 +105,9 @@ const BlocksRenderer = ({
     if (!blockAtom) return null;
     return (
       <BlockRenderer key={block._id} blockAtom={blockAtom}>
-        {block._type === "GlobalBlock" ? (
+        {block._type === "GlobalBlock" || block._type === "PartialBlock" ? (
           <Provider store={builderStore}>
-            <GlobalBlocksRenderer globalBlockId={get(block, "globalBlock", "")} />
+            <PartialBlocksRenderer partialBlockId={get(block, "partialBlockId", get(block, "globalBlockId", ""))} />
           </Provider>
         ) : hasChildren(block) ? (
           <BlocksRenderer splitAtoms={splitAtoms} blocks={blocks} parent={block._id} />

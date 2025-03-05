@@ -131,9 +131,9 @@ function ChaiBuilderDefault() {
       }}
       uiLibraries={uiLibraries}
       topBarComponents={{ left: [Logo], center: [DemoAlert], right: [LanguageButton, RightTop] }}
-      getGlobalBlockBlocks={async (globalBlockKey: string) => {
+      getPartialBlockBlocks={async (partialBlockKey: string) => {
         const blocks =
-          globalBlockKey === "header"
+          partialBlockKey === "header"
             ? [
                 {
                   _type: "Heading",
@@ -160,15 +160,17 @@ function ChaiBuilderDefault() {
           }, 1000);
         });
       }}
-      getGlobalBlocks={async () => {
+      getPartialBlocks={async () => {
         return new Promise((resolve) => {
           setTimeout(() => {
             resolve({
               header: {
+                type: "GlobalBlock",
                 name: "Header",
                 description: "Header",
               },
               footer: {
+                type: "GlobalBlock",
                 name: "Footer",
                 description: "Footer",
               },

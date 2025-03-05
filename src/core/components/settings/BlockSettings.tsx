@@ -12,8 +12,8 @@ import {
   useWrapperBlock,
 } from "../../hooks";
 import DataBindingSetting from "../../rjsf-widgets/data-binding.tsx";
-import { GlobalBlockSettings } from "./GlobalBlockSettings.tsx";
 import { JSONForm } from "./JSONForm.tsx";
+import { GlobalBlockSettings } from "./PartialBlockSettings.tsx";
 
 const formDataWithSelectedLang = (formData, selectedLang: string, coreBlock) => {
   const updatedFormData = cloneDeep(formData);

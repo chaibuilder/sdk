@@ -212,16 +212,12 @@ export interface ChaiBuilderEditorProps {
 
   getBlockAsyncProps?: (block: ChaiBlock) => Promise<string>;
 
-  /**
-   * Get Global blocks
-   */
-
-  getGlobalBlocks?: () => Promise<Record<string, { name?: string; description?: string }>>;
+  getPartialBlocks?: () => Promise<Record<string, { type: string; name: string; description?: string }>>;
 
   /**
-   * Get all blocks of a global block
+   * Get all blocks of a partial block
    */
-  getGlobalBlockBlocks?: (globalBlockKey: string) => Promise<ChaiBlock[]>;
+  getPartialBlockBlocks?: (partialBlockKey: string) => Promise<ChaiBlock[]>;
 
   /**
    * Blocks for the page

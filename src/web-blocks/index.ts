@@ -31,6 +31,7 @@ import { Component as SelectBlock, Config as SelectBlockConfig, SelectProps } fr
 import { Component as TextAreaBlock, Config as TextAreaBlockConfig, TextAreaProps } from "./form/textarea";
 import { Component as LineBreakBlock, Config as LineBreakBlockConfig, LineBreakProps } from "./hidden/line-break";
 import "./hidden/table";
+import { PartialBlock, PartialBlockConfig, PartialBlockProps } from "./partial-block";
 import { Column, ColumnConfig, ColumnProps, Component as Row, Config as RowConfig, RowProps } from "./row-col";
 /*
  * Register all web blocks.
@@ -72,6 +73,7 @@ const loadWebBlocks = () => {
   registerChaiBlock<DividerBlockProps>(DividerBlock, DividerBlockConfig);
   // // @ts-ignore
   registerChaiBlock<GlobalBlockProps>(GlobalBlock, GlobalBlockConfig);
+  registerChaiBlock<PartialBlockProps>(PartialBlock, PartialBlockConfig);
   registerChaiBlock<RowProps>(Row, RowConfig);
   registerChaiBlock<ColumnProps>(Column, ColumnConfig);
 };
