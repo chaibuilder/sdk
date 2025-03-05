@@ -26,6 +26,7 @@ const Config = {
     properties: {
       styles: StylesProp("text-black"),
       content: {
+        title: "Content",
         type: "string",
         default: "",
       },
