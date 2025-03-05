@@ -133,13 +133,26 @@ function ChaiBuilderDefault() {
       topBarComponents={{ left: [Logo], center: [DemoAlert], right: [LanguageButton, RightTop] }}
       getPartialBlockBlocks={async (partialBlockKey: string) => {
         const blocks =
-          partialBlockKey === "header"
+          partialBlockKey === "partial"
             ? [
                 {
-                  _type: "Heading",
-                  content: "Header",
+                  _type: "Box",
                   _id: "header",
-                  level: "h1",
+                  tag: "div",
+                  styles: "#styles:,flex flex-col items-center justify-center h-96",
+                },
+                {
+                  _type: "Span",
+                  content: "Span 2",
+                  _id: "span",
+                  _parent: "header",
+                  styles: "#styles:,text-center text-3xl font-bold p-4 bg-gray-100",
+                },
+                {
+                  _type: "Heading",
+                  content: "Heading 1",
+                  _id: "heading",
+                  _parent: "header",
                   styles: "#styles:,text-center text-3xl font-bold p-4 bg-gray-100",
                 },
               ]
@@ -176,7 +189,7 @@ function ChaiBuilderDefault() {
               },
               partial: {
                 type: "PartialBlock",
-                name: "Partial",
+                name: "Partial Name here",
                 description: "Partial",
               },
             });

@@ -1,5 +1,6 @@
 import { atom, useAtom } from "jotai";
 import { map, uniq } from "lodash-es";
+import { Globe } from "lucide-react";
 import { useEffect } from "react";
 import { usePartialBlocksList } from "../../../../hooks/usePartialBlocksStore";
 import { ChaiBuilderBlocks } from "./AddBlocks";
@@ -91,9 +92,11 @@ export const PartialBlocks = ({
             type: "PartialBlock", // Set the type to PartialBlock
             label: formatReadableName(block.name || id),
             description: block.description || "",
+            icon: Globe,
             group: formattedGroup, // Use formatted type as group
             category: "partial",
             partialBlockId: id, // Store the original ID as partialBlockId
+            _name: block.name,
           };
         });
 
