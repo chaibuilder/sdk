@@ -9,10 +9,12 @@ const partialBlocksDataAtom = atom<{
   blocks: any[];
   groups: string[];
   isLoading: boolean;
+  error: string | null;
 }>({
   blocks: [],
   groups: [],
   isLoading: true,
+  error: null,
 });
 
 // Create a flag atom to track if data has been fetched
@@ -33,6 +35,8 @@ interface PartialBlockData {
  * 3. Capitalizing the first letter of each word
  */
 const formatReadableName = (name: string): string => {
+  if (!name) return "";
+
   // Replace hyphens and underscores with spaces
   let formatted = name.replace(/[-_]/g, " ");
 
@@ -55,14 +59,23 @@ export const PartialBlocks = ({
   position?: number;
   gridCols?: string;
 }) => {
-  const { data: partialBlocksList, isLoading, refetch } = usePartialBlocksList();
+  const { data: partialBlocksList, isLoading, refetch, error: apiError } = usePartialBlocksList();
   const [partialBlocksData, setPartialBlocksData] = useAtom(partialBlocksDataAtom);
   const [hasInitialized, setHasInitialized] = useAtom(hasInitializedPartialBlocksAtom);
 
   // Only fetch and process data if it hasn't been initialized yet
   useEffect(() => {
     if (!hasInitialized || Object.keys(partialBlocksData.blocks).length === 0) {
-      if (!isLoading && Object.keys(partialBlocksList).length > 0) {
+      if (apiError) {
+        // Handle error from getPartialBlocks
+        setPartialBlocksData({
+          blocks: [],
+          groups: [],
+          isLoading: false,
+          error: apiError,
+        });
+        setHasInitialized(true);
+      } else if (!isLoading && Object.keys(partialBlocksList || {}).length > 0) {
         // Convert partial blocks to a format compatible with ChaiBuilderBlocks
         const partialBlocks = Object.entries(partialBlocksList).map(([id, blockData]) => {
           // Cast blockData to PartialBlockData type
@@ -81,7 +94,6 @@ export const PartialBlocks = ({
             group: formattedGroup, // Use formatted type as group
             category: "partial",
             partialBlockId: id, // Store the original ID as partialBlockId
-            _name: block.name,
           };
         });
 
@@ -91,18 +103,37 @@ export const PartialBlocks = ({
           blocks: partialBlocks,
           groups: uniqueGroups,
           isLoading: false,
+          error: null,
         });
 
         setHasInitialized(true);
       } else if (isLoading) {
-        setPartialBlocksData((prev) => ({ ...prev, isLoading: true }));
+        setPartialBlocksData((prev) => ({ ...prev, isLoading: true, error: null }));
+      } else if (!isLoading && Object.keys(partialBlocksList || {}).length === 0) {
+        // Handle empty response from getPartialBlocks
+        setPartialBlocksData({
+          blocks: [],
+          groups: [],
+          isLoading: false,
+          error: "No partial blocks available",
+        });
+        setHasInitialized(true);
       }
     }
-  }, [isLoading, partialBlocksList, hasInitialized, setHasInitialized, setPartialBlocksData, partialBlocksData.blocks]);
+  }, [
+    isLoading,
+    partialBlocksList,
+    hasInitialized,
+    setHasInitialized,
+    setPartialBlocksData,
+    partialBlocksData.blocks,
+    apiError,
+  ]);
 
   // Handle manual refresh
   const handleRefresh = () => {
-    setPartialBlocksData((prev) => ({ ...prev, isLoading: true }));
+    setPartialBlocksData((prev) => ({ ...prev, isLoading: true, error: null }));
+    setHasInitialized(false);
     refetch();
   };
 
@@ -114,10 +145,10 @@ export const PartialBlocks = ({
     );
   }
 
-  if (partialBlocksData.blocks.length === 0) {
+  if (partialBlocksData.error || partialBlocksData.blocks.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center gap-4 p-8 text-center text-muted-foreground">
-        <p>No partial blocks available</p>
+        <p>{partialBlocksData.error || "No partial blocks available"}</p>
         <button
           onClick={handleRefresh}
           className="rounded-md bg-primary px-3 py-1 text-sm text-primary-foreground hover:bg-primary/90">
