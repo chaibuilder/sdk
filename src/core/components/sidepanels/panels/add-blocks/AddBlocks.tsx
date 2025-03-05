@@ -58,7 +58,7 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
 
     hoverTimeoutRef.current = setTimeout(() => {
       setSelectedGroup(group);
-    }, 300); // 300ms delay
+    }, 500); // 300ms delay
   }, []);
 
   const filteredBlocks = useMemo(
