@@ -24,7 +24,8 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [tab] = useAtom(addBlockTabAtom);
   const parentType = find(allBlocks, (block) => block._id === parentId)?._type;
-  const groupRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const [selectedGroup, setSelectedGroup] = useState<string | null>("all");
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Focus search input on mount and tab change
   useEffect(() => {
@@ -33,6 +34,32 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
     }, 0);
     return () => clearTimeout(timeoutId);
   }, [tab]);
+
+  // Reset to "all" when searching
+  useEffect(() => {
+    if (searchTerm) {
+      setSelectedGroup("all");
+    }
+  }, [searchTerm]);
+
+  // Clean up hover timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const handleGroupHover = useCallback((group: string) => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
+
+    hoverTimeoutRef.current = setTimeout(() => {
+      setSelectedGroup(group);
+    }, 300); // 300ms delay
+  }, []);
 
   const filteredBlocks = useMemo(
     () =>
@@ -54,17 +81,27 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
     [blocks, filteredBlocks, groups, searchTerm],
   );
 
-  const scrollToGroup = useCallback((group: string) => {
-    if (groupRefs.current[group]) {
-      groupRefs.current[group]?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  }, []);
-
   const sortedGroups = useMemo(
     () =>
       sortBy(filteredGroups, (group: string) => (CORE_GROUPS.indexOf(group) === -1 ? 99 : CORE_GROUPS.indexOf(group))),
     [filteredGroups],
   );
+
+  // Filter blocks based on selected group
+  const displayedBlocks = useMemo(() => {
+    if (selectedGroup === "all") {
+      return filteredBlocks;
+    }
+    return filter(values(filteredBlocks), { group: selectedGroup });
+  }, [filteredBlocks, selectedGroup]);
+
+  // Filter groups for display based on selected group
+  const displayedGroups = useMemo(() => {
+    if (selectedGroup === "all") {
+      return sortedGroups;
+    }
+    return [selectedGroup];
+  }, [sortedGroups, selectedGroup]);
 
   return (
     <div className="mx-auto flex h-full w-full max-w-2xl flex-col">
@@ -79,17 +116,33 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
         />
       </div>
 
-      <div className="flex h-full">
+      <div className="flex h-[calc(100%-48px)] overflow-hidden">
         {/* Sidebar for groups */}
         {sortedGroups.length > 0 && (
-          <div className="w-1/4 min-w-[120px] border-r p-2">
+          <div className="w-1/4 min-w-[120px] border-r">
             <ScrollArea className="h-full">
-              <div className="space-y-1 pr-2">
+              <div className="space-y-1 p-2">
+                <button
+                  key="sidebar-all"
+                  onClick={() => setSelectedGroup("all")}
+                  onMouseEnter={() => handleGroupHover("all")}
+                  className={`w-full rounded-md px-2 py-1.5 text-left text-sm font-medium ${
+                    selectedGroup === "all"
+                      ? "bg-accent text-accent-foreground"
+                      : "hover:bg-accent/50 hover:text-accent-foreground"
+                  }`}>
+                  {t("All")}
+                </button>
                 {sortedGroups.map((group) => (
                   <button
                     key={`sidebar-${group}`}
-                    onClick={() => scrollToGroup(group)}
-                    className="w-full rounded-md px-2 py-1.5 text-left text-sm hover:bg-accent hover:text-accent-foreground">
+                    onClick={() => setSelectedGroup(group)}
+                    onMouseEnter={() => handleGroupHover(group)}
+                    className={`w-full rounded-md px-2 py-1.5 text-left text-sm ${
+                      selectedGroup === group
+                        ? "bg-accent text-accent-foreground"
+                        : "hover:bg-accent/50 hover:text-accent-foreground"
+                    }`}>
                     {capitalize(t(group.toLowerCase()))}
                   </button>
                 ))}
@@ -99,7 +152,7 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
         )}
 
         {/* Main content area */}
-        <ScrollArea className="h-full w-3/4 flex-1">
+        <ScrollArea id="add-blocks-scroll-area" className="h-full w-3/4 flex-1">
           {filteredGroups.length === 0 && searchTerm ? (
             <div className="flex flex-col items-center justify-center p-8 text-center text-muted-foreground">
               <p>
@@ -108,12 +161,15 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
             </div>
           ) : (
             <div className="space-y-6 p-4">
-              {sortedGroups.map((group) => (
-                <div key={group} className="space-y-3" ref={(el) => (groupRefs.current[group] = el)}>
+              {displayedGroups.map((group) => (
+                <div key={group} className="space-y-3">
                   <h3 className="px-1 text-sm font-medium">{capitalize(t(group.toLowerCase()))}</h3>
                   <div className={"grid gap-2 " + gridCols}>
                     {React.Children.toArray(
-                      reject(filter(values(filteredBlocks), { group }), { hidden: true }).map((block) => (
+                      reject(
+                        selectedGroup === "all" ? filter(values(displayedBlocks), { group }) : values(displayedBlocks),
+                        { hidden: true },
+                      ).map((block) => (
                         <CoreBlock
                           key={block.type}
                           parentId={parentId}
