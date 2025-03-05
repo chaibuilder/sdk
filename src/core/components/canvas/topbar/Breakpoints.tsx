@@ -29,6 +29,7 @@ export interface BreakpointCardProps extends BreakpointItemType {
   currentBreakpoint: string;
   onClick: Function;
   openDelay?: number;
+  tooltip?: boolean;
 }
 
 const TabletIcon = ({ landscape = false }) => (
