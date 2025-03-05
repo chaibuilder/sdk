@@ -1,6 +1,6 @@
 import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
-import { capitalize, filter, find, map, reject, sortBy, values } from "lodash-es";
+import { capitalize, debounce, filter, find, map, reject, sortBy, values } from "lodash-es";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Input, ScrollArea, Tabs, TabsContent, TabsList, TabsTrigger } from "../../../../../ui";
@@ -25,7 +25,8 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
   const [tab] = useAtom(addBlockTabAtom);
   const parentType = find(allBlocks, (block) => block._id === parentId)?._type;
   const [selectedGroup, setSelectedGroup] = useState<string | null>("all");
-  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [hoveredGroup, setHoveredGroup] = useState<string | null>(null);
+  const debouncedSelectRef = useRef<any>(null);
 
   // Focus search input on mount and tab change
   useEffect(() => {
@@ -39,26 +40,46 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
   useEffect(() => {
     if (searchTerm) {
       setSelectedGroup("all");
+      setHoveredGroup(null);
     }
   }, [searchTerm]);
 
-  // Clean up hover timeout on unmount
+  // Initialize debounced function
   useEffect(() => {
+    debouncedSelectRef.current = debounce((group: string) => {
+      setSelectedGroup(group);
+    }, 500);
+
     return () => {
-      if (hoverTimeoutRef.current) {
-        clearTimeout(hoverTimeoutRef.current);
+      if (debouncedSelectRef.current) {
+        debouncedSelectRef.current.cancel();
       }
     };
   }, []);
 
+  // Handle hover - update hovered group immediately but debounce the selection
   const handleGroupHover = useCallback((group: string) => {
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
+    setHoveredGroup(group);
+    if (debouncedSelectRef.current) {
+      debouncedSelectRef.current(group);
     }
+  }, []);
 
-    hoverTimeoutRef.current = setTimeout(() => {
-      setSelectedGroup(group);
-    }, 500); // 300ms delay
+  // Handle mouse leave - clear hovered group
+  const handleGroupLeave = useCallback(() => {
+    setHoveredGroup(null);
+    if (debouncedSelectRef.current) {
+      debouncedSelectRef.current.cancel();
+    }
+  }, []);
+
+  // Immediate selection on click
+  const handleGroupClick = useCallback((group: string) => {
+    if (debouncedSelectRef.current) {
+      debouncedSelectRef.current.cancel();
+    }
+    setSelectedGroup(group);
+    setHoveredGroup(null);
   }, []);
 
   const filteredBlocks = useMemo(
@@ -124,10 +145,11 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
               <div className="space-y-1 p-2">
                 <button
                   key="sidebar-all"
-                  onClick={() => setSelectedGroup("all")}
+                  onClick={() => handleGroupClick("all")}
                   onMouseEnter={() => handleGroupHover("all")}
+                  onMouseLeave={handleGroupLeave}
                   className={`w-full rounded-md px-2 py-1.5 text-left text-sm font-medium ${
-                    selectedGroup === "all"
+                    selectedGroup === "all" || hoveredGroup === "all"
                       ? "bg-accent text-accent-foreground"
                       : "hover:bg-accent/50 hover:text-accent-foreground"
                   }`}>
@@ -136,10 +158,11 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
                 {sortedGroups.map((group) => (
                   <button
                     key={`sidebar-${group}`}
-                    onClick={() => setSelectedGroup(group)}
+                    onClick={() => handleGroupClick(group)}
                     onMouseEnter={() => handleGroupHover(group)}
+                    onMouseLeave={handleGroupLeave}
                     className={`w-full rounded-md px-2 py-1.5 text-left text-sm ${
-                      selectedGroup === group
+                      selectedGroup === group || hoveredGroup === group
                         ? "bg-accent text-accent-foreground"
                         : "hover:bg-accent/50 hover:text-accent-foreground"
                     }`}>
