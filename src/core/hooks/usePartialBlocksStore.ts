@@ -34,7 +34,9 @@ export const useWatchPartailBlocks = () => {
   const getPartialBlockBlocks = useBuilderProp("getPartialBlockBlocks", async (_key: string) => []);
   const partialBlocksList = useMemo(() => {
     // Filter blocks of type "PartialBlock" and extract their partialBlockId
-    return blocksStore.filter((block) => block._type === "PartialBlock").map((block) => block.partialBlockId);
+    return blocksStore
+      .filter((block) => block._type === "PartialBlock" || block._type === "GlobalBlock")
+      .map((block) => get(block, "partialBlockId", get(block, "globalBlock", "")));
   }, [blocksStore]);
 
   useEffect(() => {

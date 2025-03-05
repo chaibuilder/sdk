@@ -1,7 +1,6 @@
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { compact, get, map, memoize, omit } from "lodash-es";
 import { useCallback } from "react";
-import { splitPageBlocks } from "../functions/split-blocks";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
 import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { useBrandingOptions } from "./useBrandingOptions";
@@ -33,10 +32,9 @@ export const useGetPageData = () => {
     const blocks = map(presentBlocks, (block: ChaiBlock) => {
       return omit(block, getBlockBuilderProps(block._type));
     });
-    const [pageFilteredBlocks = []] = splitPageBlocks(blocks);
     return {
       currentPage,
-      blocks: pageFilteredBlocks,
+      blocks,
     };
   }, [projectOptions, currentPage, presentBlocks]);
 };
