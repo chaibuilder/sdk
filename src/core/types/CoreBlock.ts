@@ -5,4 +5,6 @@ export interface CoreBlock {
   data: any;
   props: { [key: string]: any };
   type: string;
+  _name?: string;
+  partialBlockId?: string;
 }

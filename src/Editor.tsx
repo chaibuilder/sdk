@@ -157,7 +157,7 @@ function ChaiBuilderDefault() {
         return new Promise((resolve) => {
           setTimeout(() => {
             resolve(blocks);
-          }, 1000);
+          }, 100);
         });
       }}
       getPartialBlocks={async () => {
@@ -173,6 +173,11 @@ function ChaiBuilderDefault() {
                 type: "GlobalBlock",
                 name: "Footer",
                 description: "Footer",
+              },
+              partial: {
+                type: "PartialBlock",
+                name: "Partial",
+                description: "Partial",
               },
             });
           }, 1000);

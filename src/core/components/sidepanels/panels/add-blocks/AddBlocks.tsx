@@ -1,7 +1,7 @@
 import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { capitalize, filter, find, map, reject, sortBy, values } from "lodash-es";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Input, ScrollArea, Tabs, TabsContent, TabsList, TabsTrigger } from "../../../../../ui";
 import { showPredefinedBlockCategoryAtom } from "../../../../atoms/ui";
@@ -12,6 +12,7 @@ import { pubsub } from "../../../../pubsub.ts";
 import { CoreBlock } from "./CoreBlock";
 import { DefaultChaiBlocks } from "./DefaultBlocks.tsx";
 import ImportHTML from "./ImportHTML";
+import { PartialBlocks } from "./PartialBlocks";
 
 const CORE_GROUPS = ["basic", "typography", "media", "layout", "form", "advanced", "other"];
 
@@ -31,15 +32,25 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
     return () => clearTimeout(timeoutId);
   }, [tab]);
 
-  const filteredBlocks = searchTerm
-    ? values(blocks).filter((block: any) =>
-        (block.label?.toLowerCase() + " " + block.type?.toLowerCase()).includes(searchTerm.toLowerCase()),
-      )
-    : blocks;
+  const filteredBlocks = useMemo(
+    () =>
+      searchTerm
+        ? values(blocks).filter((block: any) =>
+            (block.label?.toLowerCase() + " " + block.type?.toLowerCase()).includes(searchTerm.toLowerCase()),
+          )
+        : blocks,
+    [blocks, searchTerm],
+  );
 
-  const filteredGroups = searchTerm
-    ? groups.filter((group: string) => reject(filter(values(filteredBlocks), { group }), { hidden: true }).length > 0)
-    : groups.filter((group: string) => reject(filter(values(blocks), { group }), { hidden: true }).length > 0);
+  const filteredGroups = useMemo(
+    () =>
+      searchTerm
+        ? groups.filter(
+            (group: string) => reject(filter(values(filteredBlocks), { group }), { hidden: true }).length > 0,
+          )
+        : groups.filter((group: string) => reject(filter(values(blocks), { group }), { hidden: true }).length > 0),
+    [blocks, filteredBlocks, groups, searchTerm],
+  );
 
   return (
     <div className="mx-auto flex h-full w-full max-w-2xl flex-col">
@@ -134,6 +145,7 @@ const AddBlocksPanel = ({
         <TabsList className={"flex w-full items-center"}>
           <TabsTrigger value="library">{t("Library")}</TabsTrigger>
           <TabsTrigger value="core">{t("Blocks")}</TabsTrigger>
+          <TabsTrigger value="partials">{t("Partials")}</TabsTrigger>
           {importHTMLSupport ? <TabsTrigger value="html">{t("Import")}</TabsTrigger> : null}
           {map(addBlocksDialogTabs, (tab) => (
             <TabsTrigger value={tab.key}>{React.createElement(tab.tab)}</TabsTrigger>
@@ -148,6 +160,13 @@ const AddBlocksPanel = ({
         </TabsContent>
         <TabsContent value="library" className="h-full max-h-full flex-1 pb-20">
           <UILibraries parentId={parentId} position={position} />
+        </TabsContent>
+        <TabsContent value="partials" className="h-full max-h-full flex-1 pb-20">
+          <ScrollArea className="-mx-1.5 h-full max-h-full overflow-y-auto">
+            <div className="mt-2 w-full">
+              <PartialBlocks gridCols={"grid-cols-4"} parentId={parentId} position={position} />
+            </div>
+          </ScrollArea>
         </TabsContent>
         {importHTMLSupport ? (
           <TabsContent value="html" className="h-full max-h-full flex-1 pb-20">
