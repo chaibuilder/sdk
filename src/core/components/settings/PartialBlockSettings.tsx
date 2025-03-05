@@ -7,17 +7,17 @@ export const GlobalBlockSettings = () => {
   const updateBlockProps = useUpdateBlocksProps();
   return (
     <div>
-      <label className="text-sm">Choose a partial block</label>
+      <label className="text-sm">Choose a global block</label>
       <select
         className="h-8 w-full rounded-md border border-border bg-gray-50 p-0 px-2 text-xs dark:bg-gray-800"
-        value={selectedBlock?.partialBlockId || ""}
+        value={selectedBlock?.globalBlock || ""}
         onChange={(e) => {
           updateBlockProps([selectedBlock._id], {
-            partialBlockId: e.target.value,
-            _name: `Partial: ${startCase(get(list, e.target.value, "")?.name)}`,
+            globalBlock: e.target.value,
+            _name: `Global Block: ${startCase(get(list, e.target.value, "")?.name)}`,
           });
         }}>
-        <option value="">Select a partial block</option>
+        <option value="">Select a global block</option>
         {Object.keys(list).map((key) => (
           <option key={key} value={key}>
             {list[key].name || key}
