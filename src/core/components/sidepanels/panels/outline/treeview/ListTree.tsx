@@ -1,9 +1,22 @@
-import React, { memo, MouseEvent, useEffect, useMemo, useRef, useState } from "react";
-import { atom, useAtom } from "jotai";
 import { useDebouncedCallback } from "@react-hookz/web";
+import { atom, useAtom } from "jotai";
+import { find, first, get, isEmpty } from "lodash-es";
+import { ChevronRight, Eye, EyeOff, PlusIcon } from "lucide-react";
+import React, { memo, MouseEvent, useEffect, useMemo, useRef, useState } from "react";
 import { MoveHandler, NodeRendererProps, RenameHandler, Tree } from "react-arborist";
+import { useTranslation } from "react-i18next";
+import { BiCollapseVertical, BiExpandVertical } from "react-icons/bi";
+import { BsLightningFill, BsThreeDotsVertical } from "react-icons/bs";
+import { TbEyeDown } from "react-icons/tb";
+import { VscJson } from "react-icons/vsc";
+import { Button, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../../ui";
 import { treeDSBlocks } from "../../../../../atoms/blocks.ts";
+import { canvasIframeAtom, treeRefAtom } from "../../../../../atoms/ui.ts";
+import { ROOT_TEMP_KEY } from "../../../../../constants/STRINGS.ts";
+import { CHAI_BUILDER_EVENTS } from "../../../../../events.ts";
+import { canAcceptChildBlock, canAddChildBlock } from "../../../../../functions/block-helpers.ts";
 import { cn } from "../../../../../functions/Functions.ts";
+import { useBlocksStoreUndoableActions } from "../../../../../history/useBlocksStoreUndoableActions.ts";
 import {
   useBlocksStore,
   useBuilderProp,
@@ -13,15 +26,12 @@ import {
   useSelectedStylingBlocks,
   useUpdateBlocksProps,
 } from "../../../../../hooks";
-import { Button, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../../ui";
+import { useBlockHighlight } from "../../../../../hooks/useBlockHighlight";
+import { pubsub } from "../../../../../pubsub.ts";
 import { TypeIcon } from "../TypeIcon.tsx";
+import { BlockMoreOptions, PasteAtRootContextMenu } from "./BlockContextMenu.tsx";
 import { DefaultCursor } from "./DefaultCursor.tsx";
 import { DefaultDragPreview } from "./DefaultDragPreview.tsx";
-import { useBlocksStoreUndoableActions } from "../../../../../history/useBlocksStoreUndoableActions.ts";
-import { BlockContextMenu, PasteAtRootContextMenu } from "../BlockContextMenu.tsx";
-import { canAcceptChildBlock, canAddChildBlock } from "../../../../../functions/block-helpers.ts";
-import { find, first, isEmpty, get } from "lodash-es";
-import { canvasIframeAtom, treeRefAtom } from "../../../../../atoms/ui.ts";
 import {
   close,
   defaultShortcuts,
@@ -32,16 +42,6 @@ import {
   selectParent,
   selectPrev,
 } from "./DefaultShortcuts.tsx";
-import { useTranslation } from "react-i18next";
-import { VscJson } from "react-icons/vsc";
-import { BsLightningFill } from "react-icons/bs";
-import { TbEyeDown } from "react-icons/tb";
-import { ROOT_TEMP_KEY } from "../../../../../constants/STRINGS.ts";
-import { ChevronRight, EyeOff, PlusIcon, Eye } from "lucide-react";
-import { CHAI_BUILDER_EVENTS } from "../../../../../events.ts";
-import { BiCollapseVertical, BiExpandVertical } from "react-icons/bi";
-import { useBlockHighlight } from "../../../../../hooks/useBlockHighlight";
-import { pubsub } from "../../../../../pubsub.ts";
 
 const currentAddSelection = atom<any>(null);
 
@@ -193,136 +193,135 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   }
 
   return (
-    <BlockContextMenu id={id}>
-      <div className="w-full">
-        <div
-          onMouseEnter={() => highlightBlock(id)}
-          onMouseLeave={() => clearHighlight()}
-          onClick={handleNodeClickWithoutPropagating}
-          style={style}
-          data-node-id={id}
-          ref={hiddenBlocks.includes(id) ? null : dragHandle}
-          onDragStart={() => handleDragStart(node)}
-          onDragEnd={() => handleDragEnd(node)}
-          onDragOver={(e) => {
-            e.preventDefault();
-            setDropAttribute(id, "yes");
-          }}
-          onDragLeave={(e) => {
-            e.preventDefault();
-            setDropAttribute(id, "no");
-          }}
-          onDrop={(e) => {
-            e.preventDefault();
-            setDropAttribute(id, "no");
-          }}>
-          {node?.rowIndex > 0 &&
-            ((node.parent.isOpen && canAddChildBlock(get(node, "parent.data._type"))) ||
-              node?.parent?.id === "__REACT_ARBORIST_INTERNAL_ROOT__") && (
-              <div className="group relative ml-5 h-full w-full cursor-pointer">
-                <div
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    addBlockOnPosition(node.childIndex);
-                  }}
-                  onMouseEnter={onMouseEnter}
-                  onMouseLeave={onMouseLeave}
-                  className="absolute -top-0.5 h-1 w-[90%] rounded bg-purple-500 opacity-0 delay-200 duration-200 group-hover:opacity-100">
-                  <div className="absolute left-1/2 top-1/2 flex h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full bg-purple-500 p-1 outline outline-2 outline-white hover:bg-purple-500">
-                    <PlusIcon className="h-3 w-3 stroke-[4] text-white" />
-                  </div>
+    <div className="w-full">
+      <div
+        onMouseEnter={() => highlightBlock(id)}
+        onMouseLeave={() => clearHighlight()}
+        onClick={handleNodeClickWithoutPropagating}
+        style={style}
+        data-node-id={id}
+        ref={hiddenBlocks.includes(id) ? null : dragHandle}
+        onDragStart={() => handleDragStart(node)}
+        onDragEnd={() => handleDragEnd(node)}
+        onDragOver={(e) => {
+          e.preventDefault();
+          setDropAttribute(id, "yes");
+        }}
+        onDragLeave={(e) => {
+          e.preventDefault();
+          setDropAttribute(id, "no");
+        }}
+        onDrop={(e) => {
+          e.preventDefault();
+          setDropAttribute(id, "no");
+        }}>
+        {node?.rowIndex > 0 &&
+          ((node.parent.isOpen && canAddChildBlock(get(node, "parent.data._type"))) ||
+            node?.parent?.id === "__REACT_ARBORIST_INTERNAL_ROOT__") && (
+            <div className="group relative ml-5 h-full w-full cursor-pointer">
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  addBlockOnPosition(node.childIndex);
+                }}
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
+                className="absolute -top-0.5 h-1 w-[90%] rounded bg-purple-500 opacity-0 delay-200 duration-200 group-hover:opacity-100">
+                <div className="absolute left-1/2 top-1/2 flex h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full bg-purple-500 p-1 outline outline-2 outline-white hover:bg-purple-500">
+                  <PlusIcon className="h-3 w-3 stroke-[4] text-white" />
                 </div>
               </div>
-            )}
-          <div
-            className={cn(
-              "group flex w-full cursor-pointer items-center justify-between space-x-px !rounded p-1 text-foreground/80 outline-none",
-              isSelected ? "bg-blue-500 text-white" : "hover:bg-slate-200 dark:hover:bg-gray-800",
-              willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
-              node?.id === addSelectParentHighlight ? "bg-purple-100" : "",
-              isDragging && "opacity-20",
-              hiddenBlocks.includes(id) ? "opacity-50" : "",
-            )}>
-            <div className="flex items-center">
-              <div
-                className={`flex h-4 w-4 rotate-0 transform cursor-pointer items-center justify-center transition-transform duration-100 ${
-                  node.isOpen ? "rotate-90" : ""
-                }`}>
-                {hasChildren && (
-                  <button onClick={handleToggle} type="button">
-                    <ChevronRight
-                      className={`h-3 w-3 stroke-[3] ${isSelected ? "text-slate-200" : "text-slate-400"}`}
-                    />
-                  </button>
-                )}
-              </div>
-              <div className="leading-1 flex items-center">
-                <TypeIcon type={data?._type} />
-                {isEditing ? (
-                  <Input node={node} />
-                ) : (
-                  <div
-                    className={"ml-1.5 flex items-center gap-x-1 truncate text-[13px]"}
-                    onDoubleClick={(e) => {
-                      e.stopPropagation();
-                      node.edit();
-                      node.deselect();
-                    }}>
-                    <span>{data?._name || data?._type.split("/").pop()}</span>
-                    {interactives.includes("data") && <VscJson className="h-3 w-3 text-orange-600" />}
-                    {interactives.includes("event") && <BsLightningFill className="h-3 w-3 text-yellow-500" />}
-                    {interactives.includes("show") && <TbEyeDown className="h-3 w-3 text-orange-600" />}
-                  </div>
-                )}
-              </div>
             </div>
-            <div className="invisible flex items-center space-x-1.5 pr-2 group-hover:visible">
-              {!hiddenBlocks.includes(id) &&
-                outlineItems.map((outlineItem) => (
-                  <Tooltip>
-                    <TooltipTrigger
-                      className="cursor-pointer rounded bg-transparent hover:bg-white hover:text-blue-500"
-                      asChild>
-                      {React.createElement(outlineItem.item, { blockId: id })}
-                    </TooltipTrigger>
-                    <TooltipContent className="isolate z-10">{outlineItem.tooltip}</TooltipContent>
-                  </Tooltip>
-                ))}
-              {canAddChildBlock(data?._type) && !hiddenBlocks.includes(id) ? (
+          )}
+        <div
+          className={cn(
+            "group flex w-full cursor-pointer items-center justify-between space-x-px !rounded p-1 text-foreground/80 outline-none",
+            isSelected ? "bg-blue-500 text-white" : "hover:bg-slate-200 dark:hover:bg-gray-800",
+            willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
+            node?.id === addSelectParentHighlight ? "bg-purple-100" : "",
+            isDragging && "opacity-20",
+            hiddenBlocks.includes(id) ? "opacity-50" : "",
+          )}>
+          <div className="flex items-center">
+            <div
+              className={`flex h-4 w-4 rotate-0 transform cursor-pointer items-center justify-center transition-transform duration-100 ${
+                node.isOpen ? "rotate-90" : ""
+              }`}>
+              {hasChildren && (
+                <button onClick={handleToggle} type="button">
+                  <ChevronRight className={`h-3 w-3 stroke-[3] ${isSelected ? "text-slate-200" : "text-slate-400"}`} />
+                </button>
+              )}
+            </div>
+            <div className="leading-1 flex items-center">
+              <TypeIcon type={data?._type} />
+              {isEditing ? (
+                <Input node={node} />
+              ) : (
+                <div
+                  className={"ml-1.5 flex items-center gap-x-1 truncate text-[13px]"}
+                  onDoubleClick={(e) => {
+                    e.stopPropagation();
+                    node.edit();
+                    node.deselect();
+                  }}>
+                  <span>{data?._name || data?._type.split("/").pop()}</span>
+                  {interactives.includes("data") && <VscJson className="h-3 w-3 text-orange-600" />}
+                  {interactives.includes("event") && <BsLightningFill className="h-3 w-3 text-yellow-500" />}
+                  {interactives.includes("show") && <TbEyeDown className="h-3 w-3 text-orange-600" />}
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="invisible flex items-center space-x-1.5 pr-2 group-hover:visible">
+            {!hiddenBlocks.includes(id) &&
+              outlineItems.map((outlineItem) => (
                 <Tooltip>
                   <TooltipTrigger
-                    onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, { _id: id })}
-                    className="cursor-pointer rounded bg-transparent hover:text-black"
+                    className="cursor-pointer rounded bg-transparent hover:bg-white hover:text-blue-500"
                     asChild>
-                    <PlusIcon size={"15"} />
+                    {React.createElement(outlineItem.item, { blockId: id })}
                   </TooltipTrigger>
-                  <TooltipContent className="isolate z-[9999]" side="left">
-                    {t("Add block")}
-                  </TooltipContent>
+                  <TooltipContent className="isolate z-10">{outlineItem.tooltip}</TooltipContent>
                 </Tooltip>
-              ) : null}
+              ))}
+            {canAddChildBlock(data?._type) && !hiddenBlocks.includes(id) ? (
               <Tooltip>
                 <TooltipTrigger
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    toggleHidden(id);
-                    if (node.isOpen) {
-                      node.toggle();
-                    }
-                  }}
+                  onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, { _id: id })}
                   className="cursor-pointer rounded bg-transparent hover:text-black"
                   asChild>
-                  <EyeOff size={"15"} />
+                  <PlusIcon size={"15"} />
                 </TooltipTrigger>
                 <TooltipContent className="isolate z-[9999]" side="left">
-                  {t("Hide block")}
+                  {t("Add block")}
                 </TooltipContent>
               </Tooltip>
-            </div>
+            ) : null}
+            <Tooltip>
+              <TooltipTrigger
+                onClick={(event) => {
+                  event.stopPropagation();
+                  toggleHidden(id);
+                  if (node.isOpen) {
+                    node.toggle();
+                  }
+                }}
+                className="cursor-pointer rounded bg-transparent hover:text-black"
+                asChild>
+                <EyeOff size={"15"} />
+              </TooltipTrigger>
+              <TooltipContent className="isolate z-[9999]" side="left">
+                {t("Hide block")}
+              </TooltipContent>
+            </Tooltip>
+            <BlockMoreOptions node={node} id={id}>
+              <BsThreeDotsVertical size={"15"} />
+            </BlockMoreOptions>
           </div>
         </div>
       </div>
-    </BlockContextMenu>
+    </div>
   );
 });
 

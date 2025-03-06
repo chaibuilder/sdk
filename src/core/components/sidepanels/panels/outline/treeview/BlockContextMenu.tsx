@@ -1,7 +1,15 @@
 import { CardStackIcon, CardStackPlusIcon, CopyIcon, ScissorsIcon, TrashIcon } from "@radix-ui/react-icons";
+import { PencilIcon, PlusIcon } from "lucide-react";
 import React, { useCallback, useEffect } from "react";
-import { PlusIcon } from "lucide-react";
-import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "../../../../../ui";
+import { useTranslation } from "react-i18next";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../../../../../../ui/shadcn/components/ui/dropdown-menu";
+import { CHAI_BUILDER_EVENTS } from "../../../../../events.ts";
+import { canAddChildBlock, canDeleteBlock, canDuplicateBlock } from "../../../../../functions/block-helpers.ts";
 import {
   useBlocksStore,
   useCopyBlockIds,
@@ -11,38 +19,35 @@ import {
   useRemoveBlocks,
   useSelectedBlock,
   useSelectedBlockIds,
-} from "../../../../hooks";
-import { canAddChildBlock, canDeleteBlock, canDuplicateBlock } from "../../../../functions/block-helpers.ts";
-import { useTranslation } from "react-i18next";
-import { CHAI_BUILDER_EVENTS } from "../../../../events.ts";
-import { pubsub } from "../../../../pubsub.ts";
+} from "../../../../../hooks/index.ts";
+import { pubsub } from "../../../../../pubsub.ts";
 
 export const PasteAtRootContextMenu = ({ parentContext, setParentContext }) => {
   const { t } = useTranslation();
-
   const { canPaste, pasteBlocks } = usePasteBlocks();
 
   useEffect(() => {
     if (!canPaste("root")) setParentContext(null);
   }, [canPaste("root")]);
 
+  if (!parentContext || !canPaste("root")) return null;
+
   return (
-    parentContext &&
-    canPaste("root") && (
-      <div
-        style={{ position: "absolute", top: parentContext.y - 75, left: parentContext.x - 56 }}
-        onMouseLeave={() => setParentContext(null)}
-        className="w-28 rounded-md border bg-white p-1 shadow-xl">
-        <div
-          className="flex cursor-pointer items-center gap-x-4 rounded px-2 py-1 text-xs hover:bg-blue-50"
-          onClick={() => {
-            pasteBlocks("root");
-            setParentContext(null);
-          }}>
-          <CardStackIcon /> {t("Paste")}
-        </div>
-      </div>
-    )
+    <div style={{ position: "absolute", top: parentContext.y - 75, left: parentContext.x - 56 }}>
+      <DropdownMenu open={true} onOpenChange={() => setParentContext(null)}>
+        <DropdownMenuTrigger className="hidden" />
+        <DropdownMenuContent className="w-28 p-1 text-xs">
+          <DropdownMenuItem
+            className="flex items-center gap-x-4 text-xs"
+            onClick={() => {
+              pasteBlocks("root");
+              setParentContext(null);
+            }}>
+            <CardStackIcon /> {t("Paste")}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 };
 
@@ -67,19 +72,19 @@ const CopyPasteBlocks = () => {
 
   return (
     <>
-      <ContextMenuItem
+      <DropdownMenuItem
         disabled={!canDuplicateBlock(selectedBlock?._type)}
         onClick={handleCopy}
         className="flex items-center gap-x-4 text-xs">
         <CopyIcon /> {t("Copy")}
-      </ContextMenuItem>
-      <ContextMenuItem
+      </DropdownMenuItem>
+      <DropdownMenuItem
         className="flex items-center gap-x-4 text-xs"
         onClick={() => {
           pasteBlocks(selectedIds);
         }}>
         <CardStackIcon /> {t("Paste")}
-      </ContextMenuItem>
+      </DropdownMenuItem>
     </>
   );
 };
@@ -90,9 +95,9 @@ const CutBlocks = () => {
   const { t } = useTranslation();
 
   return (
-    <ContextMenuItem className="flex items-center gap-x-4 text-xs" onClick={() => setCutBlockIds(selectedIds)}>
+    <DropdownMenuItem className="flex items-center gap-x-4 text-xs" onClick={() => setCutBlockIds(selectedIds)}>
       <ScissorsIcon /> {t("Cut")}
-    </ContextMenuItem>
+    </DropdownMenuItem>
   );
 };
 
@@ -103,17 +108,34 @@ const RemoveBlocks = () => {
   const { t } = useTranslation();
 
   return (
-    <ContextMenuItem
+    <DropdownMenuItem
       // @ts-ignore
       disabled={!canDeleteBlock(selectedBlock?._type)}
       className="flex items-center gap-x-4 text-xs"
       onClick={() => removeBlocks(selectedIds)}>
       <TrashIcon /> {t("Remove")}
-    </ContextMenuItem>
+    </DropdownMenuItem>
   );
 };
 
-const BlockContextMenuContent = () => {
+const RenameBlock = ({ node }: { node: any }) => {
+  const { t } = useTranslation();
+  console.log(node);
+  return (
+    <DropdownMenuItem
+      onClick={(e) => {
+        e.stopPropagation();
+        console.log(node);
+        node.edit();
+        node.deselect();
+      }}
+      className="flex items-center gap-x-4 text-xs">
+      <PencilIcon className="h-4 w-4" /> {t("Rename")}
+    </DropdownMenuItem>
+  );
+};
+
+const BlockContextMenuContent = ({ node }: { node: any }) => {
   const { t } = useTranslation();
   const [selectedIds] = useSelectedBlockIds();
   const duplicateBlocks = useDuplicateBlocks();
@@ -124,33 +146,38 @@ const BlockContextMenuContent = () => {
   }, [selectedIds, duplicateBlocks]);
 
   return (
-    <ContextMenuContent className="border-border text-xs">
-      <ContextMenuItem
+    <DropdownMenuContent side="bottom" className="border-border text-xs">
+      <DropdownMenuItem
         disabled={!canAddChildBlock(selectedBlock?._type)}
         className="flex items-center gap-x-4 text-xs"
         onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, selectedBlock)}>
         <PlusIcon size={"14"} /> {t("Add block")}
-      </ContextMenuItem>
-      <ContextMenuItem
+      </DropdownMenuItem>
+      <DropdownMenuItem
         disabled={!canDuplicateBlock(selectedBlock?._type)}
         className="flex items-center gap-x-4 text-xs"
         onClick={duplicate}>
         <CardStackPlusIcon /> {t("Duplicate")}
-      </ContextMenuItem>
+      </DropdownMenuItem>
+      <RenameBlock node={node} />
       <CutBlocks />
       <CopyPasteBlocks />
       <RemoveBlocks />
-    </ContextMenuContent>
+    </DropdownMenuContent>
   );
 };
 
-export const BlockContextMenu = ({ children }: { children: React.ReactNode | null; id: any }) => {
+export const BlockMoreOptions = ({ children, id, node }: { children: React.ReactNode | null; id: any; node: any }) => {
+  const [, setSelectedIds] = useSelectedBlockIds();
   return (
     <>
-      <ContextMenu>
-        <ContextMenuTrigger asChild>{children}</ContextMenuTrigger>
-        <BlockContextMenuContent />
-      </ContextMenu>
+      <DropdownMenu
+        onOpenChange={(open) => {
+          if (open) setSelectedIds([id]);
+        }}>
+        <DropdownMenuTrigger>{children}</DropdownMenuTrigger>
+        <BlockContextMenuContent node={node} />
+      </DropdownMenu>
     </>
   );
 };
