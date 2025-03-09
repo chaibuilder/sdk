@@ -2,7 +2,7 @@ import { flip } from "@floating-ui/dom";
 import { shift, useFloating } from "@floating-ui/react-dom";
 import { get, isEmpty, pick } from "lodash-es";
 import { ArrowUpIcon, CopyIcon, DragHandleDots2Icon, GearIcon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
-import { canAddChildBlock, canDeleteBlock, canDuplicateBlock } from "../../functions/block-helpers.ts";
+import { canDeleteBlock, canDuplicateBlock } from "../../functions/block-helpers.ts";
 import { ChaiBlock } from "../../types/ChaiBlock";
 import {
   useDuplicateBlocks,
@@ -16,6 +16,7 @@ import { useAtom } from "jotai";
 import { inlineEditingActiveAtom } from "../../atoms/ui.ts";
 import { draggedBlockAtom } from "./dnd/atoms.ts";
 import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../events.ts";
+import AddBlockDropdown from "./AddBlockDropdown.tsx";
 
 /**
  * @param block
@@ -101,12 +102,9 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
         <BlockActionLabel label={label} block={block} />
 
         <div className="flex gap-2 px-1">
-          {canAddChildBlock(get(block, "_type", "")) && (
-            <PlusIcon
-              className="hover:scale-105"
-              onClick={() => emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, data: block })}
-            />
-          )}
+          <AddBlockDropdown block={block}>
+            <PlusIcon className="hover:scale-105" />
+          </AddBlockDropdown>
           {canDuplicateBlock(get(block, "_type", "")) ? (
             <CopyIcon className="hover:scale-105" onClick={() => duplicateBlock([block?._id])} />
           ) : null}

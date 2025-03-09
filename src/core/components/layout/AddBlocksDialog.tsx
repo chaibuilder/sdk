@@ -8,14 +8,18 @@ import { useState } from "react";
 export const AddBlocksDialog = () => {
   const { t } = useTranslation();
   const [parentId, setParentId] = useState<string>("");
+  const [position, setPosition] = useState<number>(-1);
   const [open, setOpen] = useState(false);
+
   useChaiBuilderMsgListener(({ name, data = undefined }) => {
     if (name === CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK) {
       setParentId(data?._id);
+      setPosition(isNaN(data?.position) ? -1 : data?.position);
       setOpen(true);
     }
     if (name === CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK) {
       setParentId("");
+      setPosition(-1);
       setOpen(false);
     }
   });
@@ -32,7 +36,7 @@ export const AddBlocksDialog = () => {
           </button>
         </AlertDialogHeader>
         <div className="no-scrollbar h-[500px] max-h-full overflow-hidden">
-          <AddBlocksPanel parentId={parentId} showHeading={false} />
+          <AddBlocksPanel parentId={parentId} position={position} showHeading={false} />
         </div>
       </AlertDialogContent>
     </AlertDialog>
