@@ -1,7 +1,9 @@
-import { Label } from "../../../../../ui/shadcn/components/ui/label.tsx";
-import { startCase } from "lodash-es";
+import {Label} from "../../../../../ui";
+import {startCase} from "lodash-es";
+import {FontSelectOption} from "../../../../types/chaiBuilderEditorProps.ts";
+import {useBuilderProp} from "../../../../hooks";
 
-const FONTS = [
+const FONTS: FontSelectOption[] = [
   { title: "Roboto", value: "Roboto" },
   { title: "Open Sans", value: "Open Sans" },
   { title: "Montserrat", value: "Montserrat" },
@@ -64,6 +66,8 @@ const FontSelector = ({
   value: string;
   onChange: (value: string) => void;
 }) => {
+  const fonts = useBuilderProp('fonts', FONTS);
+
   return (
     <div className="space-y-0.5">
       <Label className="text-sm text-slate-800">{startCase(label)}</Label>
@@ -71,7 +75,7 @@ const FontSelector = ({
         className="mt-1 w-full cursor-pointer rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
         value={value}
         onChange={(e) => onChange(e.target.value)}>
-        {FONTS.map((font) => (
+        {fonts.map((font) => (
           <option key={font.value} value={font.value}>
             {font.title}
           </option>
