@@ -275,5 +275,7 @@ export interface ChaiBuilderEditorProps {
   pageTypes?: PageType[];
   searchPageTypeItems?: (pageTypeKey: string, query: string) => Promise<PageTypeItem[] | Error>;
 
-  fonts?: FontSelectOption[]
+  fonts?: FontSelectOption[];
+
+  extraHeadTags?: ReactNode;
 }
