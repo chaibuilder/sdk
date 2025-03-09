@@ -16,6 +16,8 @@ import { useAtom } from "jotai";
 import { inlineEditingActiveAtom } from "../../atoms/ui.ts";
 import { draggedBlockAtom } from "./dnd/atoms.ts";
 import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../events.ts";
+import BlockController from "./BlockController.tsx";
+import { useFrame } from "../../frame/Context.tsx";
 
 /**
  * @param block
@@ -56,6 +58,7 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
   const [, setHighlighted] = useHighlightBlockId();
   const [, setStyleBlocks] = useSelectedStylingBlocks();
   const [editingBlockId] = useAtom(inlineEditingActiveAtom);
+  const { document } = useFrame();
   const { floatingStyles, refs, update } = useFloating({
     placement: "top-start",
     middleware: [shift(), flip()],
@@ -65,6 +68,7 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
   });
 
   useResizeObserver(selectedBlockElement as HTMLElement, () => update(), selectedBlockElement !== null);
+  useResizeObserver(document?.body, () => update(), document?.body !== null);
 
   const parentId: string | undefined | null = get(block, "_parent", null);
 
@@ -100,7 +104,7 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
         )}
         <BlockActionLabel label={label} block={block} />
 
-        <div className="flex gap-2 px-1">
+        <div className="flex items-center gap-2 pl-1 pr-1.5">
           {canAddChildBlock(get(block, "_type", "")) && (
             <PlusIcon
               className="hover:scale-105"
@@ -117,6 +121,8 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
           {canDeleteBlock(get(block, "_type", "")) ? (
             <TrashIcon className="hover:scale-105" onClick={() => removeBlock([block?._id])} />
           ) : null}
+
+          <BlockController block={block} updateFloatingBar={update} />
         </div>
       </div>
     </>
