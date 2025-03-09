@@ -272,4 +272,6 @@ export interface ChaiBuilderEditorProps {
    */
   pageTypes?: PageType[];
   searchPageTypeItems?: (pageTypeKey: string, query: string) => Promise<PageTypeItem[] | Error>;
+
+  extraHeadTags?: ReactNode;
 }
