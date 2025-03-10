@@ -17,6 +17,8 @@ import { inlineEditingActiveAtom } from "../../atoms/ui.ts";
 import { draggedBlockAtom } from "./dnd/atoms.ts";
 import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../events.ts";
 import AddBlockDropdown from "./AddBlockDropdown.tsx";
+import BlockController from "./BlockController.tsx";
+import { useFrame } from "../../frame/Context.tsx";
 
 /**
  * @param block
@@ -57,6 +59,7 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
   const [, setHighlighted] = useHighlightBlockId();
   const [, setStyleBlocks] = useSelectedStylingBlocks();
   const [editingBlockId] = useAtom(inlineEditingActiveAtom);
+  const { document } = useFrame();
   const { floatingStyles, refs, update } = useFloating({
     placement: "top-start",
     middleware: [shift(), flip()],
@@ -66,6 +69,7 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
   });
 
   useResizeObserver(selectedBlockElement as HTMLElement, () => update(), selectedBlockElement !== null);
+  useResizeObserver(document?.body, () => update(), document?.body !== null);
 
   const parentId: string | undefined | null = get(block, "_parent", null);
 
@@ -115,6 +119,8 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
           {canDeleteBlock(get(block, "_type", "")) ? (
             <TrashIcon className="hover:scale-105" onClick={() => removeBlock([block?._id])} />
           ) : null}
+
+          <BlockController block={block} updateFloatingBar={update} />
         </div>
       </div>
     </>
