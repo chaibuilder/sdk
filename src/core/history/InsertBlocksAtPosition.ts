@@ -76,7 +76,7 @@ export function insertBlocksAtPosition(
   // Find the correct index in the allBlocks array to insert the new blocks
   let insertIndex = modifiedAllBlocks.length;
   for (let i = 0, count = 0; i < modifiedAllBlocks.length; i++) {
-    if (modifiedAllBlocks[i]._parent === parentId) {
+    if (parentId !== undefined ? modifiedAllBlocks[i]._parent === parentId : !modifiedAllBlocks[i]._parent) {
       if (count === insertPosition) {
         insertIndex = i;
         break;

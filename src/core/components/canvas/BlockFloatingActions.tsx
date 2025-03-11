@@ -6,8 +6,7 @@ import { useFeature } from "flagged";
 import { useAtom } from "jotai";
 import { get, isEmpty, pick } from "lodash-es";
 import { inlineEditingActiveAtom } from "../../atoms/ui.ts";
-import { CHAI_BUILDER_EVENTS } from "../../events.ts";
-import { canAddChildBlock, canDeleteBlock, canDuplicateBlock } from "../../functions/block-helpers.ts";
+import { canDeleteBlock, canDuplicateBlock } from "../../functions/block-helpers.ts";
 import {
   useDuplicateBlocks,
   useHighlightBlockId,
@@ -15,9 +14,9 @@ import {
   useSelectedBlockIds,
   useSelectedStylingBlocks,
 } from "../../hooks";
-import { pubsub } from "../../pubsub.ts";
 import { ChaiBlock } from "../../types/ChaiBlock";
 import { draggedBlockAtom } from "./dnd/atoms.ts";
+import AddBlockDropdown from "./AddBlockDropdown.tsx";
 
 /**
  * @param block
@@ -104,12 +103,9 @@ export const BlockFloatingSelector = ({ selectedBlockElement, block }: BlockActi
         <BlockActionLabel label={label} block={block} />
 
         <div className="flex gap-2 px-1">
-          {canAddChildBlock(get(block, "_type", "")) && (
-            <PlusIcon
-              className="hover:scale-105"
-              onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, block)}
-            />
-          )}
+          <AddBlockDropdown block={block}>
+            <PlusIcon className="hover:scale-105" />
+          </AddBlockDropdown>
           {canDuplicateBlock(get(block, "_type", "")) ? (
             <CopyIcon className="hover:scale-105" onClick={() => duplicateBlock([block?._id])} />
           ) : null}
