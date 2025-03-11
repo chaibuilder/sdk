@@ -1,33 +1,33 @@
-import React, { Suspense, useCallback } from "react";
+import { getBlockComponent } from "@chaibuilder/runtime";
+import { useAtom } from "jotai";
 import {
+  cloneDeep,
   each,
   filter,
   find,
+  forEach,
   get,
   has,
   includes,
   isEmpty,
   isNull,
   isString,
+  keys,
   memoize,
   omit,
-  cloneDeep,
-  forEach,
-  keys,
 } from "lodash-es";
+import React, { Suspense, useCallback } from "react";
 import { twMerge } from "tailwind-merge";
-import { ChaiBlock } from "../../../types/ChaiBlock";
-import { STYLES_KEY } from "../../../constants/STRINGS.ts";
-import { getBlockComponent } from "@chaibuilder/runtime";
-import { useChaiExternalData } from "./useChaiExternalData.ts";
-import { useAtom } from "jotai";
 import { inlineEditingActiveAtom, xShowBlocksAtom } from "../../../atoms/ui.ts";
-import { useCanvasSettings } from "../../../hooks/useCanvasSettings.ts";
-import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
+import { STYLES_KEY } from "../../../constants/STRINGS.ts";
 import { canAcceptChildBlock } from "../../../functions/block-helpers.ts";
-import { useCanvasWidth, useCutBlockIds, useGlobalBlocksStore, useHiddenBlockIds, useLanguages } from "../../../hooks";
 import { isVisibleAtBreakpoint } from "../../../functions/isVisibleAtBreakpoint.ts";
+import { useCanvasWidth, useCutBlockIds, useGlobalBlocksStore, useHiddenBlockIds, useLanguages } from "../../../hooks";
+import { useCanvasSettings } from "../../../hooks/useCanvasSettings.ts";
+import { ChaiBlock } from "../../../types/ChaiBlock";
+import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
 import { RSCBlock } from "./RSCBlock.tsx";
+import { useChaiExternalData } from "./useChaiExternalData.ts";
 
 const generateClassNames = memoize((styles: string) => {
   const stylesArray = styles.replace(STYLES_KEY, "").split(",");
@@ -135,7 +135,7 @@ export function BlocksRendererStatic({ blocks, allBlocks }: { blocks: ChaiBlock[
             childBlocks.length > 0 ? <BlocksRendererStatic allBlocks={allBlocks} blocks={childBlocks} /> : null;
 
           if (block._type === "GlobalBlock") {
-            const blocks = getGlobalBlocks(block);
+            const blocks = getGlobalBlocks(block.globalBlock ?? "");
             attrs.children = (
               <RenderGlobalBlock blocks={filter(blocks, (block: ChaiBlock) => !block._parent)} allBlocks={blocks} />
             );
