@@ -32,16 +32,13 @@ const AddBlockDropdown = ({ block, children }: { block: ChaiBlock; children: any
     if (type === "CHILD") {
       pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, block);
     } else {
-      const options = {
-        name: CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK,
-        data: { _id: parentBlockId || "", position: ancestorBlocks?.length },
-      };
+      const options = { _id: parentBlockId || "", position: ancestorBlocks?.length };
       if (type === "BEFORE") {
-        options.data.position = Math.max(blockIndex, 0);
+        options.position = Math.max(blockIndex, 0);
       } else if (type === "AFTER") {
-        options.data.position = blockIndex + 1;
+        options.position = blockIndex + 1;
       }
-      pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, options.data);
+      pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, options);
     }
   };
 
