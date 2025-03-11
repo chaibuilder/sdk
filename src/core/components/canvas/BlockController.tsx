@@ -1,11 +1,11 @@
+import { PinBottomIcon, PinLeftIcon, PinRightIcon, PinTopIcon } from "@radix-ui/react-icons";
+import { filter, findIndex, get } from "lodash-es";
 import { useCallback } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
-import { ChaiBlock } from "../../types/ChaiBlock";
 import { useFrame } from "../../frame/Context.tsx";
-import { get, filter, findIndex } from "lodash-es";
-import { getOrientation } from "./dnd/getOrientation.ts";
 import { useBlocksStore, useBlocksStoreUndoableActions } from "../../hooks";
-import { PinBottomIcon, PinLeftIcon, PinRightIcon, PinTopIcon } from "@radix-ui/react-icons";
+import { ChaiBlock } from "../../types/ChaiBlock";
+import { getOrientation } from "./dnd/getOrientation.ts";
 
 const CONTROLS = [
   { ControlIcon: PinTopIcon, dir: "VERTICAL", key: "UP" },
@@ -124,13 +124,11 @@ const BlockController = ({ block, updateFloatingBar }: { block: ChaiBlock; updat
 
   return (
     <>
-      {/* SEPARATOR */}
-      <div className="mx-1 h-3 w-px bg-white/50" />
-
       {/* CONTROLLERS ARROW BASED ON ORIENTATION */}
       {CONTROLS.map(({ ControlIcon, dir, key }) => {
         if (orientation !== dir) return null;
         const isDisabled = isDisabledControl(isFirstBlock, isLastBlock, key as any);
+        if (isDisabled) return null;
         return (
           <ControlIcon
             key={key}

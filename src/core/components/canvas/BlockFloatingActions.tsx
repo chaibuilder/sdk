@@ -1,9 +1,13 @@
 import { flip } from "@floating-ui/dom";
 import { shift, useFloating } from "@floating-ui/react-dom";
-import { get, isEmpty, pick } from "lodash-es";
 import { ArrowUpIcon, CopyIcon, DragHandleDots2Icon, GearIcon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
-import { canAddChildBlock, canDeleteBlock, canDuplicateBlock } from "../../functions/block-helpers.ts";
-import { ChaiBlock } from "../../types/ChaiBlock";
+import { useResizeObserver } from "@react-hookz/web";
+import { useAtom } from "jotai";
+import { get, isEmpty, pick } from "lodash-es";
+import { inlineEditingActiveAtom } from "../../atoms/ui.ts";
+import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../events.ts";
+import { useFrame } from "../../frame/Context.tsx";
+import { canDeleteBlock, canDuplicateBlock } from "../../functions/block-helpers.ts";
 import {
   useDuplicateBlocks,
   useHighlightBlockId,
@@ -11,13 +15,10 @@ import {
   useSelectedBlockIds,
   useSelectedStylingBlocks,
 } from "../../hooks";
-import { useResizeObserver } from "@react-hookz/web";
-import { useAtom } from "jotai";
-import { inlineEditingActiveAtom } from "../../atoms/ui.ts";
-import { draggedBlockAtom } from "./dnd/atoms.ts";
-import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../events.ts";
+import { ChaiBlock } from "../../types/ChaiBlock";
+import AddBlockDropdown from "./AddBlockDropdown.tsx";
 import BlockController from "./BlockController.tsx";
-import { useFrame } from "../../frame/Context.tsx";
+import { draggedBlockAtom } from "./dnd/atoms.ts";
 
 /**
  * @param block
@@ -30,7 +31,7 @@ const BlockActionLabel = ({ block, label }: any) => {
   return (
     <div
       draggable
-      className="mr-10 flex cursor-grab items-center space-x-1 px-1"
+      className="mr-4 flex cursor-grab items-center space-x-1 px-1"
       onDragStart={(ev) => {
         ev.dataTransfer.setData("text/plain", JSON.stringify(pick(block, ["_id", "_type", "_name"])));
         //@ts-ignore
@@ -92,7 +93,7 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
           setHighlighted(null);
         }}
         onKeyDown={(e) => e.stopPropagation()}
-        className="isolate z-[999] flex h-6 items-center bg-blue-500 py-2 text-xs text-white">
+        className="isolate z-[999] flex h-6 items-center bg-blue-500 py-2 text-[10px] text-white">
         {parentId && (
           <ArrowUpIcon
             className="hover:scale-105"
@@ -104,13 +105,10 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
         )}
         <BlockActionLabel label={label} block={block} />
 
-        <div className="flex items-center gap-2 pl-1 pr-1.5">
-          {canAddChildBlock(get(block, "_type", "")) && (
-            <PlusIcon
-              className="hover:scale-105"
-              onClick={() => emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, data: block })}
-            />
-          )}
+        <div className="flex gap-2 px-1">
+          <AddBlockDropdown block={block}>
+            <PlusIcon className="hover:scale-105" />
+          </AddBlockDropdown>
           {canDuplicateBlock(get(block, "_type", "")) ? (
             <CopyIcon className="hover:scale-105" onClick={() => duplicateBlock([block?._id])} />
           ) : null}
@@ -121,7 +119,6 @@ export const BlockActionsStatic = ({ selectedBlockElement, block }: BlockActionP
           {canDeleteBlock(get(block, "_type", "")) ? (
             <TrashIcon className="hover:scale-105" onClick={() => removeBlock([block?._id])} />
           ) : null}
-
           <BlockController block={block} updateFloatingBar={update} />
         </div>
       </div>

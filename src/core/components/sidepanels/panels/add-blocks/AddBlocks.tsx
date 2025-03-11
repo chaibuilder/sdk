@@ -2,12 +2,7 @@ import React from "react";
 import { capitalize, filter, find, map, reject, sortBy, values } from "lodash-es";
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
-import {
-  ScrollArea,
-  Tabs,
-  TabsList,
-  TabsTrigger,
-} from "../../../../../ui";
+import { ScrollArea, Tabs, TabsList, TabsTrigger } from "../../../../../ui";
 import { CoreBlock } from "./CoreBlock";
 import { showPredefinedBlockCategoryAtom } from "../../../../atoms/ui";
 import { useBlocksStore, useBuilderProp } from "../../../../hooks";
@@ -19,7 +14,7 @@ import { atomWithStorage } from "jotai/utils";
 
 const CORE_GROUPS = ["basic", "typography", "media", "layout", "form", "advanced", "other"];
 
-export const ChaiBuilderBlocks = ({ groups, blocks, parentId, gridCols = "grid-cols-4" }: any) => {
+export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols = "grid-cols-4" }: any) => {
   const { t } = useTranslation();
   const [allBlocks] = useBlocksStore();
   const parentType = find(allBlocks, (block) => block._id === parentId)?._type;
@@ -29,26 +24,27 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, gridCols = "grid-c
       (group: string) =>
         reject(filter(values(blocks), { group }), { hidden: true }).length ? (
           <div key={group} className={"border-border"}>
-            <div className="rounded-md bg-background px-4 py-2 capitalize text-foreground hover:no-underline font-semibold">
+            <div className="rounded-md bg-background px-4 py-2 capitalize text-foreground hover:no-underline">
               {capitalize(t(group.toLowerCase()))}
             </div>
-              <div className="mx-auto max-w-xl p-3">
-                <div className={"grid gap-2 " + gridCols}>
-                  {React.Children.toArray(
-                    reject(filter(values(blocks), { group }), { hidden: true }).map((block) => {
-                      return (
-                        <CoreBlock
-                          parentId={parentId}
-                          block={block}
-                          disabled={
-                            !canAcceptChildBlock(parentType, block.type) || !canBeNestedInside(parentType, block.type)
-                          }
-                        />
-                      );
-                    }),
-                  )}
-                </div>
+            <div className="mx-auto max-w-xl p-3">
+              <div className={"grid gap-2 " + gridCols}>
+                {React.Children.toArray(
+                  reject(filter(values(blocks), { group }), { hidden: true }).map((block) => {
+                    return (
+                      <CoreBlock
+                        parentId={parentId}
+                        position={position}
+                        block={block}
+                        disabled={
+                          !canAcceptChildBlock(parentType, block.type) || !canBeNestedInside(parentType, block.type)
+                        }
+                      />
+                    );
+                  }),
+                )}
               </div>
+            </div>
           </div>
         ) : null,
     ),
@@ -61,8 +57,10 @@ const AddBlocksPanel = ({
   className,
   showHeading = true,
   parentId = undefined,
+  position = -1,
 }: {
   parentId?: string;
+  position?: number;
   showHeading?: boolean;
   className?: string;
 }) => {
@@ -97,12 +95,12 @@ const AddBlocksPanel = ({
       {tab === "core" && (
         <ScrollArea className="-mx-1.5 h-[calc(100vh-156px)] overflow-y-auto">
           <div className="mt-2 w-full">
-            <DefaultChaiBlocks gridCols={"grid-cols-4"} parentId={parentId} />
+            <DefaultChaiBlocks gridCols={"grid-cols-4"} parentId={parentId} position={position} />
           </div>
         </ScrollArea>
       )}
-      {tab === "library" && <UILibraries parentId={parentId} />}
-      {tab === "html" && importHTMLSupport ? <ImportHTML parentId={parentId} /> : null}
+      {tab === "library" && <UILibraries parentId={parentId} position={position} />}
+      {tab === "html" && importHTMLSupport ? <ImportHTML parentId={parentId} position={position} /> : null}
     </div>
   );
 };
