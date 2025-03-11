@@ -65,7 +65,7 @@ const Config = {
       action: {
         type: "string",
         title: "Submit URL",
-        default: "/api/form/submit",
+        default: "/api/form",
       },
       errorMessage: {
         type: "string",

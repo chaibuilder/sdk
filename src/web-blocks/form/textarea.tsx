@@ -8,13 +8,13 @@ export type TextAreaProps = {
   styles: ChaiStyles;
   inputStyles: ChaiStyles;
   required: boolean;
-  _rows: number;
+  rows: number;
   label: string;
   placeholder: string;
 };
 
 const TextAreaBlock = (props: ChaiBlockComponentProps<TextAreaProps>) => {
-  const { blockProps, fieldName, label, placeholder, styles, inputStyles, _rows, showLabel } = props;
+  const { blockProps, fieldName, label, placeholder, styles, inputStyles, rows, showLabel, required } = props;
   const fieldId = generateUUID();
 
   if (!showLabel) {
@@ -26,7 +26,8 @@ const TextAreaBlock = (props: ChaiBlockComponentProps<TextAreaProps>) => {
         {...inputStyles}
         {...styles}
         placeholder={placeholder}
-        rows={_rows}
+        rows={rows}
+        required={required}
       />
     );
   }
@@ -34,7 +35,14 @@ const TextAreaBlock = (props: ChaiBlockComponentProps<TextAreaProps>) => {
   return (
     <div {...styles} {...blockProps}>
       {showLabel && <label htmlFor={fieldId}>{label}</label>}
-      <textarea name={fieldName} {...inputStyles} id={fieldId} placeholder={placeholder} rows={_rows} />
+      <textarea
+        name={fieldName}
+        {...inputStyles}
+        id={fieldId}
+        placeholder={placeholder}
+        rows={rows}
+        required={required}
+      />
     </div>
   );
 };
@@ -70,10 +78,15 @@ const Config = {
         title: "Placeholder",
         default: "Placeholder",
       },
-      _rows: {
+      rows: {
         type: "number",
         title: "Rows",
         default: 3,
+      },
+      required: {
+        type: "boolean",
+        title: "Required",
+        default: false,
       },
     },
   }),
