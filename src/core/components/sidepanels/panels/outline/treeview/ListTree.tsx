@@ -1,14 +1,20 @@
 import { useDebouncedCallback } from "@react-hookz/web";
 import { atom, useAtom } from "jotai";
 import { find, first, get, isEmpty } from "lodash-es";
-import { ChevronRight, Eye, EyeOff, PlusIcon } from "lucide-react";
+import {
+  ChevronRight,
+  ChevronsDown,
+  ChevronsUp,
+  Eye,
+  EyeOff as EyeOffIcon,
+  FileJson,
+  MoreVertical,
+  PlusIcon,
+  Zap,
+} from "lucide-react";
 import React, { memo, MouseEvent, useEffect, useMemo, useRef, useState } from "react";
 import { MoveHandler, NodeRendererProps, RenameHandler, Tree } from "react-arborist";
 import { useTranslation } from "react-i18next";
-import { BiCollapseVertical, BiExpandVertical } from "react-icons/bi";
-import { BsLightningFill, BsThreeDotsVertical } from "react-icons/bs";
-import { TbEyeDown } from "react-icons/tb";
-import { VscJson } from "react-icons/vsc";
 import { Button, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../../ui";
 import { treeDSBlocks } from "../../../../../atoms/blocks.ts";
 import { canvasIframeAtom, treeRefAtom } from "../../../../../atoms/ui.ts";
@@ -266,9 +272,9 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
                     node.deselect();
                   }}>
                   <span>{data?._name || data?._type.split("/").pop()}</span>
-                  {interactives.includes("data") && <VscJson className="h-3 w-3 text-orange-600" />}
-                  {interactives.includes("event") && <BsLightningFill className="h-3 w-3 text-yellow-500" />}
-                  {interactives.includes("show") && <TbEyeDown className="h-3 w-3 text-orange-600" />}
+                  {interactives.includes("data") && <FileJson className="h-3 w-3 text-orange-600" />}
+                  {interactives.includes("event") && <Zap className="h-3 w-3 text-yellow-500" />}
+                  {interactives.includes("show") && <EyeOffIcon className="h-3 w-3 text-orange-600" />}
                 </div>
               )}
             </div>
@@ -309,14 +315,14 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
                 }}
                 className="cursor-pointer rounded bg-transparent hover:text-black"
                 asChild>
-                <EyeOff size={"15"} />
+                <EyeOffIcon size={"15"} />
               </TooltipTrigger>
               <TooltipContent className="isolate z-[9999]" side="left">
                 {t("Hide block")}
               </TooltipContent>
             </Tooltip>
             <BlockMoreOptions node={node} id={id}>
-              <BsThreeDotsVertical size={"15"} />
+              <MoreVertical size={"15"} />
             </BlockMoreOptions>
           </div>
         </div>
@@ -534,7 +540,7 @@ const ListTree = () => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button className="h-fit p-1" onClick={() => treeRef?.current?.openAll()} variant="outline" size="sm">
-                  <BiExpandVertical size={"14"} />
+                  <ChevronsDown size={14} />
                 </Button>
               </TooltipTrigger>
               <TooltipContent className="isolate z-[9999]">{t("Expand all")}</TooltipContent>
@@ -542,7 +548,7 @@ const ListTree = () => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button className="h-fit p-1" onClick={() => treeRef?.current?.closeAll()} variant="outline" size="sm">
-                  <BiCollapseVertical size={"14"} />
+                  <ChevronsUp size={14} />
                 </Button>
               </TooltipTrigger>
               <TooltipContent className="isolate z-[9999]">{t("Collapse all")}</TooltipContent>
