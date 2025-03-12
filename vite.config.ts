@@ -97,7 +97,6 @@ export default defineConfig({
         "react-hotkeys-hook",
         "react-i18next",
         "react-icons",
-        "react-icons-picker",
         "react-json-view",
         "@tiptap/react",
         "@tiptap/pm",
