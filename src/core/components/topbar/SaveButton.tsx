@@ -1,8 +1,8 @@
-import { Button } from "../../../ui";
-import { useSavePage } from "../../hooks";
-import { FaCheck } from "react-icons/fa6";
+import { Check } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Button } from "../../../ui";
 import { cn } from "../../functions/Functions.ts";
+import { useSavePage } from "../../hooks";
 
 export const SaveButton = () => {
   const { savePage, saveState } = useSavePage();
@@ -27,7 +27,7 @@ export const SaveButton = () => {
       )}
       size="sm"
       variant="outline">
-      <FaCheck className={"text-sm text-white"} />
+      <Check className={"text-sm text-white"} size={16} />
       <span className={"text-sm"}>
         {saveState === "SAVING" ? t("Saving") : saveState === "SAVED" ? t("Saved") : t("Unsaved")}
       </span>

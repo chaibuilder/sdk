@@ -1,9 +1,8 @@
-import { useTranslation } from "react-i18next";
-import { useAskAi } from "../../hooks/useAskAi.ts";
-import { useEffect, useRef, useState } from "react";
 import { Loader } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button, Skeleton, Textarea } from "../../../ui";
-import { FaSpinner } from "react-icons/fa";
+import { useAskAi } from "../../hooks/useAskAi.ts";
 import { AskAiResponse } from "../../types/chaiBuilderEditorProps.ts";
 import Countdown from "../Countdown.tsx";
 
@@ -70,7 +69,7 @@ export const AskAIStyles = ({ blockId }: { blockId: string | undefined }) => {
         {loading ? (
           <div className="flex flex-col gap-2">
             <Skeleton className="flex w-full items-center space-x-1 px-4 py-1 pl-2">
-              <FaSpinner className="h-4 w-4 animate-spin text-gray-500" />
+              <Loader className="h-4 w-4 animate-spin text-gray-500" size={16} />
               <p className="text-xs">{t("Generating... Please wait...")}</p>
             </Skeleton>
             <Button variant="destructive" onClick={() => stop()} className="hidden w-fit" size="sm">

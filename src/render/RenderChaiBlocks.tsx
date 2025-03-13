@@ -8,6 +8,7 @@ import {
   has,
   includes,
   isEmpty,
+  isObject,
   isString,
   keys,
   memoize,
@@ -30,7 +31,7 @@ const generateClassNames = memoize((styles: string, classPrefix: string) => {
   return addPrefixToClasses(classes, classPrefix).replace(STYLES_KEY, "").trim();
 });
 
-const applyBinding = (block: ChaiBlock, pageExternalData: Record<string, any>) => {
+const applyBinding = (block: ChaiBlock | Record<string, any>, pageExternalData: Record<string, any>) => {
   const clonedBlock = cloneDeep(block);
   forEach(keys(clonedBlock), (key) => {
     if (isString(clonedBlock[key])) {
@@ -46,6 +47,9 @@ const applyBinding = (block: ChaiBlock, pageExternalData: Record<string, any>) =
         });
       }
       clonedBlock[key] = value;
+    }
+    if (isObject(clonedBlock[key])) {
+      clonedBlock[key] = applyBinding(clonedBlock[key], pageExternalData);
     }
   });
   return clonedBlock;
@@ -170,14 +174,15 @@ export function RenderChaiBlocks({
             }
             const langToUse = lang === fallbackLang ? "" : lang;
             const runtimeProps = getRuntimePropValues(allBlocks, block._id, getRuntimeProps(block._type));
+            const withBinding = applyBinding(applyLanguage(block, langToUse, blockDefinition), externalData);
             const props = omit(
               {
                 blockProps: {},
                 inBuilder: false,
                 ...syncedBlock,
                 index,
-                ...applyBinding(applyLanguage(block, langToUse, blockDefinition), externalData),
-                ...getStyles(syncedBlock),
+                ...withBinding,
+                ...getStyles(withBinding),
                 ...attrs,
                 ...runtimeProps,
                 metadata,

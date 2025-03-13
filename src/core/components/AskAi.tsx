@@ -2,7 +2,6 @@ import { first, noop } from "lodash-es";
 import { ChevronDown, Loader, SparklesIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FaSpinner } from "react-icons/fa";
 import { toast } from "sonner";
 import {
   Accordion,
@@ -101,7 +100,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
             {loading ? (
               <div className="flex flex-col gap-2">
                 <Skeleton className="flex w-full items-center space-x-1 px-4 py-1 pl-2">
-                  <FaSpinner className="h-4 w-4 animate-spin text-gray-500" />
+                  <Loader className="h-4 w-4 animate-spin text-gray-500" />
                   <p className="text-xs">{t("Generating... Please wait...")}</p>
                 </Skeleton>
                 <Button variant="destructive" onClick={() => stop()} className="hidden w-fit" size="sm">

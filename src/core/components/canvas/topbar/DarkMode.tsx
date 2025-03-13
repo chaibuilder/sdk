@@ -1,7 +1,7 @@
-import { useDarkMode } from "../../../hooks";
-import { Switch } from "../../../../ui";
 import { SunIcon } from "@radix-ui/react-icons";
-import { FaMoon } from "react-icons/fa";
+import { Moon } from "lucide-react";
+import { Switch } from "../../../../ui";
+import { useDarkMode } from "../../../hooks";
 
 export function DarkMode() {
   const [darkMode, setDarkMode] = useDarkMode();
@@ -20,7 +20,7 @@ export function DarkMode() {
           className={`${darkMode ? "translate-x-5" : "translate-x-0"} pointer-events-none -mt-px inline-block h-[18px] w-[20px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
         />
       </Switch>
-      <FaMoon className="size-4 ml-3 shrink-0" />
+      <Moon className="ml-3 size-4 shrink-0" size={16} />
     </div>
   );
 }

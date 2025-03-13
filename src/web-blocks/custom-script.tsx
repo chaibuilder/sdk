@@ -1,6 +1,6 @@
-import { DiJavascript } from "react-icons/di";
-import { cn } from "../core/functions/Functions.ts";
 import { ChaiBlockComponentProps, registerChaiBlockSchema } from "@chaibuilder/runtime";
+import { FileCode } from "lucide-react";
+import { cn } from "../core/functions/Functions.ts";
 
 export type CustomScriptBlockProps = {
   scripts: string;
@@ -27,7 +27,7 @@ const Config = {
   type: "CustomScript",
   label: "web_blocks.custom_script",
   category: "core",
-  icon: DiJavascript,
+  icon: FileCode,
   group: "advanced",
   ...registerChaiBlockSchema({
     properties: {
