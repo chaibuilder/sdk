@@ -11,10 +11,22 @@ export type InputProps = {
   inputType: string;
   label: string;
   placeholder: string;
+  autocomplete: boolean;
 };
 
 const InputBlock = (props: ChaiBlockComponentProps<InputProps>) => {
-  const { blockProps, fieldName, label, placeholder, styles, inputStyles, showLabel, required, inputType } = props;
+  const {
+    blockProps,
+    fieldName,
+    label,
+    placeholder,
+    styles,
+    inputStyles,
+    showLabel,
+    required,
+    inputType,
+    autocomplete,
+  } = props;
   const fieldId = generateUUID();
 
   if (!showLabel) {
@@ -28,6 +40,7 @@ const InputBlock = (props: ChaiBlockComponentProps<InputProps>) => {
         type={inputType}
         placeholder={placeholder}
         required={required}
+        autoComplete={autocomplete ? "on" : "off"}
       />
     );
   }
@@ -42,6 +55,7 @@ const InputBlock = (props: ChaiBlockComponentProps<InputProps>) => {
         type={inputType}
         placeholder={placeholder}
         required={required}
+        autoComplete={autocomplete ? "on" : "off"}
       />
     </div>
   );
@@ -79,29 +93,21 @@ const Config = {
         title: "Placeholder",
         default: "Placeholder",
       },
+      inputType: {
+        type: "string",
+        title: "Input Type",
+        default: "text",
+        enum: ["text", "email", "password", "number", "tel", "hidden", "range", "color", "date", "time"],
+      },
       required: {
         type: "boolean",
         title: "Required",
         default: false,
       },
-      inputType: {
-        type: "string",
-        title: "Input Type",
-        default: "text",
-        enum: [
-          "text",
-          "email",
-          "password",
-          "number",
-          "tel",
-          "file",
-          "hidden",
-          "range",
-          "submit",
-          "color",
-          "date",
-          "time",
-        ],
+      autocomplete: {
+        type: "boolean",
+        title: "Autocomplete",
+        default: true,
       },
     },
   }),

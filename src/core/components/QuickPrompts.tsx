@@ -1,23 +1,21 @@
-import { ShuffleIcon, SmileIcon } from "lucide-react";
 import { ArrowDownIcon, ArrowUpIcon, CheckIcon } from "@radix-ui/react-icons";
-import { FaFilePen } from "react-icons/fa6";
-import { Popover, PopoverContent, PopoverTrigger } from "../../ui";
-import { useAskAi } from "../hooks/useAskAi.ts";
-import { FaLanguage, FaRecycle } from "react-icons/fa";
-import { useTranslation } from "react-i18next";
-import { useLanguages } from "../hooks/useLanguages.ts";
-import { LANGUAGES } from "../constants/LANGUAGES.ts";
 import { get } from "lodash-es";
+import { FileEdit, Languages, Recycle, ShuffleIcon, SmileIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { Popover, PopoverContent, PopoverTrigger } from "../../ui";
+import { LANGUAGES } from "../constants/LANGUAGES.ts";
+import { useAskAi } from "../hooks/useAskAi.ts";
+import { useLanguages } from "../hooks/useLanguages.ts";
 
 const QUICK_PROMPTS = [
   {
     name: "Improve writing",
-    icon: FaFilePen,
+    icon: FileEdit,
     prompt: "Improving writing in all text elements. Replacing placeholder content with meaningful relevant content.",
   },
   {
     name: "Replace placeholder content",
-    icon: FaRecycle,
+    icon: Recycle,
     prompt: "Discard current placeholder content and replace with meaningful relevant content.",
   },
   //TODO: Add tone options
@@ -63,7 +61,7 @@ export function QuickPrompts({ onClick }: { onClick: (prompt: string) => void })
   if (selectedLang && selectedLang !== fallbackLang) {
     quickPrompts.splice(0, 0, {
       name: `Translate to ${get(LANGUAGES, selectedLang, selectedLang)}`,
-      icon: FaLanguage,
+      icon: Languages,
       prompt: `Translate the content to ${get(LANGUAGES, selectedLang, selectedLang)}. Maintain same tone, style and length.`,
     });
   }

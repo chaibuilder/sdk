@@ -6,8 +6,7 @@ import { useFeature } from "flagged";
 import { useAtom } from "jotai";
 import { get, isEmpty, pick } from "lodash-es";
 import { inlineEditingActiveAtom } from "../../atoms/ui.ts";
-import { CHAI_BUILDER_EVENTS } from "../../events.ts";
-import { canAddChildBlock, canDeleteBlock, canDuplicateBlock } from "../../functions/block-helpers.ts";
+import { canDeleteBlock, canDuplicateBlock } from "../../functions/block-helpers.ts";
 import {
   useDuplicateBlocks,
   useHighlightBlockId,
@@ -15,9 +14,11 @@ import {
   useSelectedBlockIds,
   useSelectedStylingBlocks,
 } from "../../hooks";
-import { pubsub } from "../../pubsub.ts";
 import { ChaiBlock } from "../../types/ChaiBlock";
 import { draggedBlockAtom } from "./dnd/atoms.ts";
+import AddBlockDropdown from "./AddBlockDropdown.tsx";
+import BlockController from "../sidepanels/panels/add-blocks/BlockController.tsx";
+import { useFrame } from "../../frame/Context.tsx";
 
 /**
  * @param block
@@ -59,6 +60,7 @@ export const BlockFloatingSelector = ({ selectedBlockElement, block }: BlockActi
   const [, setHighlighted] = useHighlightBlockId();
   const [, setStyleBlocks] = useSelectedStylingBlocks();
   const [editingBlockId] = useAtom(inlineEditingActiveAtom);
+  const { document } = useFrame();
   const { floatingStyles, refs, update } = useFloating({
     placement: "top-start",
     middleware: [shift(), flip()],
@@ -68,6 +70,7 @@ export const BlockFloatingSelector = ({ selectedBlockElement, block }: BlockActi
   });
 
   useResizeObserver(selectedBlockElement as HTMLElement, () => update(), selectedBlockElement !== null);
+  useResizeObserver(document?.body, () => update(), document?.body !== null);
 
   const parentId: string | undefined | null = get(block, "_parent", null);
 
@@ -103,19 +106,18 @@ export const BlockFloatingSelector = ({ selectedBlockElement, block }: BlockActi
         )}
         <BlockActionLabel label={label} block={block} />
 
-        <div className="flex gap-2 px-1">
-          {canAddChildBlock(get(block, "_type", "")) && (
-            <PlusIcon
-              className="hover:scale-105"
-              onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, block)}
-            />
-          )}
+        <div className="flex items-center gap-2 pl-1 pr-1.5">
+          <AddBlockDropdown block={block}>
+            <PlusIcon className="hover:scale-105" />
+          </AddBlockDropdown>
           {canDuplicateBlock(get(block, "_type", "")) ? (
             <CopyIcon className="hover:scale-105" onClick={() => duplicateBlock([block?._id])} />
           ) : null}
           {canDeleteBlock(get(block, "_type", "")) ? (
             <TrashIcon className="hover:scale-105" onClick={() => removeBlock([block?._id])} />
           ) : null}
+
+          <BlockController block={block} updateFloatingBar={update} />
         </div>
       </div>
     </>

@@ -1,8 +1,11 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { Button, Input, Label, Textarea } from "../../../../ui";
+import { isEmpty } from "lodash-es";
 import { Edit2, X } from "lucide-react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Button, Input, Label, Textarea } from "../../../../ui";
+import { usePageExternalData } from "../../../atoms/builder";
+import { NestedPathSelector } from "../../NestedPathSelector";
 
 type Attribute = {
   key: string;
@@ -14,7 +17,10 @@ interface AttributeManagerProps {
   onAttributesChange?: (attributes: Attribute[]) => void;
 }
 
-export default React.memo(function Component({ preloadedAttributes = [], onAttributesChange }: AttributeManagerProps) {
+export default React.memo(function AttrsEditor({
+  preloadedAttributes = [],
+  onAttributesChange,
+}: AttributeManagerProps) {
   const [attributes, setAttributes] = useState<Attribute[]>([]);
   const [newKey, setNewKey] = useState("");
   const [newValue, setNewValue] = useState("");
@@ -22,6 +28,8 @@ export default React.memo(function Component({ preloadedAttributes = [], onAttri
   const [error, setError] = useState("");
   const keyInputRef = useRef<HTMLInputElement>(null);
   const valueTextareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const pageExternalData = usePageExternalData();
 
   useEffect(() => {
     setAttributes(preloadedAttributes);
@@ -78,6 +86,78 @@ export default React.memo(function Component({ preloadedAttributes = [], onAttri
     }
   };
 
+  const handlePathSelect = useCallback((path: string) => {
+    // Helper function to check if character is punctuation
+    const isPunctuation = (char: string) => /[.,!?;:]/.test(char);
+
+    // Helper function to add smart spacing around a placeholder
+    const addSmartSpacing = (text: string, position: number, placeholder: string) => {
+      // Determine if we need spacing
+      let prefix = "";
+      let suffix = "";
+
+      // Get characters before and after cursor
+      const charBefore = position > 0 ? text[position - 1] : "";
+      const charAfter = position < text.length ? text[position] : "";
+
+      // Handle spacing before placeholder
+      if (position > 0) {
+        // Always add space after a period/full stop
+        if (charBefore === ".") {
+          prefix = " ";
+        }
+        // For other cases, add space if not punctuation and not already a space
+        else if (!isPunctuation(charBefore) && charBefore !== " ") {
+          prefix = " ";
+        }
+      }
+
+      // Handle spacing after placeholder
+      if (position < text.length && !isPunctuation(charAfter) && charAfter !== " ") {
+        suffix = " ";
+      }
+
+      return {
+        text: prefix + placeholder + suffix,
+        prefixLength: prefix.length,
+        suffixLength: suffix.length,
+      };
+    };
+
+    // Handle regular textarea field
+    const textarea = valueTextareaRef.current;
+    if (textarea) {
+      const cursorPos = textarea.selectionStart || 0;
+      const currentValue = textarea.value || "";
+
+      // Check if there's any text selection
+      const selectionEnd = textarea.selectionEnd || cursorPos;
+      const hasSelection = selectionEnd > cursorPos;
+
+      // If text is selected, replace it with the shortcode
+      if (hasSelection) {
+        const basePlaceholder = `{{${path}}}`;
+        const { text: placeholderWithSpacing } = addSmartSpacing(currentValue, cursorPos, basePlaceholder);
+
+        const newValue = currentValue.slice(0, cursorPos) + placeholderWithSpacing + currentValue.slice(selectionEnd);
+
+        // Update the value
+        setNewValue(newValue);
+        return;
+      }
+
+      // No selection, just insert at cursor position with smart spacing
+      const basePlaceholder = `{{${path}}}`;
+      const { text: placeholderWithSpacing } = addSmartSpacing(currentValue, cursorPos, basePlaceholder);
+
+      // Create the new value with smart spacing
+      const newValue = currentValue.slice(0, cursorPos) + placeholderWithSpacing + currentValue.slice(cursorPos);
+
+      // Update the value
+      setNewValue(newValue);
+    }
+  }, []);
+
   return (
     <div className="flex max-h-full flex-1 flex-col">
       <form
@@ -104,9 +184,12 @@ export default React.memo(function Component({ preloadedAttributes = [], onAttri
             />
           </div>
           <div className="w-full">
-            <Label htmlFor="attrValue" className="text-[11px] font-normal text-slate-600">
-              Value
-            </Label>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="attrValue" className="text-[11px] font-normal text-slate-600">
+                Value
+              </Label>
+              {!isEmpty(pageExternalData) && <NestedPathSelector data={pageExternalData} onSelect={handlePathSelect} />}
+            </div>
             <Textarea
               autoCapitalize={"off"}
               autoCorrect={"off"}
@@ -135,7 +218,7 @@ export default React.memo(function Component({ preloadedAttributes = [], onAttri
           <div key={index} className="flex items-center justify-between rounded border p-2 text-sm">
             <div className="flex flex-col text-xs leading-tight">
               <span className="truncate text-[12px] font-light text-muted-foreground">{attr.key}</span>
-              <span className="text-wrap max-w-[200px] font-normal">{attr.value.toString()}</span>
+              <span className="max-w-[200px] text-wrap font-normal">{attr.value.toString()}</span>
             </div>
             <div className="flex-shrink-0 text-slate-400">
               <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => startEdit(index)}>

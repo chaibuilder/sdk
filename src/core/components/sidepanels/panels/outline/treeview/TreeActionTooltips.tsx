@@ -1,8 +1,8 @@
-import { forwardRef } from "react";
 import { EyeOpenIcon } from "@radix-ui/react-icons";
-import { Button, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../../ui";
-import { BiCollapseVertical, BiExpandVertical } from "react-icons/bi";
+import { ChevronsDown, ChevronsUp } from "lucide-react";
+import { forwardRef } from "react";
 import { useTranslation } from "react-i18next";
+import { Button, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../../ui";
 
 import { useHiddenBlockIds } from "../../../../../hooks";
 
@@ -21,7 +21,7 @@ const CollapseAllTooltip = forwardRef((_props, ref: any) => {
           }}
           variant="outline"
           size="sm">
-          <BiCollapseVertical size={"14"} />
+          <ChevronsUp size={14} />
         </Button>
       </TooltipTrigger>
       <TooltipContent className="isolate z-[9999]">{t("Collapse all")}</TooltipContent>
@@ -36,7 +36,7 @@ const ExpandAllTooltip = forwardRef((_props, ref: any) => {
     <Tooltip>
       <TooltipTrigger asChild>
         <Button className="h-fit p-1" onClick={() => ref?.current?.openAll()} variant="outline" size="sm">
-          <BiExpandVertical size={"14"} />
+          <ChevronsDown size={14} />
         </Button>
       </TooltipTrigger>
       <TooltipContent className="isolate z-[9999]">{t("Expand all")}</TooltipContent>
