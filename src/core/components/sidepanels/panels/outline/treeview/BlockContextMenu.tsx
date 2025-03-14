@@ -1,17 +1,13 @@
 import { CardStackIcon, CardStackPlusIcon, CopyIcon, ScissorsIcon, TrashIcon } from "@radix-ui/react-icons";
 import { PencilIcon, PlusIcon } from "lucide-react";
-import React, { useCallback, useEffect } from "react";
+import React, { Suspense, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../../../../../../ui/shadcn/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../../../../../ui";
 import { CHAI_BUILDER_EVENTS } from "../../../../../events.ts";
 import { canAddChildBlock, canDeleteBlock, canDuplicateBlock } from "../../../../../functions/block-helpers.ts";
 import {
   useBlocksStore,
+  useBuilderProp,
   useCopyBlockIds,
   useCutBlockIds,
   useDuplicateBlocks,
@@ -120,12 +116,10 @@ const RemoveBlocks = () => {
 
 const RenameBlock = ({ node }: { node: any }) => {
   const { t } = useTranslation();
-  console.log(node);
   return (
     <DropdownMenuItem
       onClick={(e) => {
         e.stopPropagation();
-        console.log(node);
         node.edit();
         node.deselect();
       }}
@@ -140,6 +134,7 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
   const [selectedIds] = useSelectedBlockIds();
   const duplicateBlocks = useDuplicateBlocks();
   const selectedBlock = useSelectedBlock();
+  const blockMoreOptions = useBuilderProp("blockMoreOptions", []);
 
   const duplicate = useCallback(() => {
     duplicateBlocks(selectedIds);
@@ -163,6 +158,11 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
       <CutBlocks />
       <CopyPasteBlocks />
       <RemoveBlocks />
+      {blockMoreOptions.map((dropdownItem, index) => (
+        <Suspense fallback={<span>Loading...</span>} key={`more-${index}`}>
+          {React.createElement(dropdownItem, { block: selectedBlock })}
+        </Suspense>
+      ))}
     </DropdownMenuContent>
   );
 };
