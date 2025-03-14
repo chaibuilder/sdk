@@ -13,6 +13,7 @@ import { bluePreset, greenPreset, orangePreset } from "./__dev/THEME_PRESETS.ts"
 import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML } from "./core/main";
 import { SavePageData } from "./core/types/chaiBuilderEditorProps.ts";
 import { Alert, AlertDescription } from "./ui/shadcn/components/ui/alert.tsx";
+import { DropdownMenuItem } from "./ui/shadcn/components/ui/dropdown-menu.tsx";
 import { loadWebBlocks } from "./web-blocks";
 
 loadWebBlocks();
@@ -53,6 +54,14 @@ const MediaManagerComponent = () => {
   );
 };
 
+const SaveToLibrary = ({ block }: { block: ChaiBlock }) => {
+  return (
+    <DropdownMenuItem className="cursor-pointer text-xs" onClick={() => console.log(block)}>
+      Save to library
+    </DropdownMenuItem>
+  );
+};
+
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
   const [theme, setTheme] = useAtom(lsThemeAtom);
@@ -65,6 +74,7 @@ function ChaiBuilderDefault() {
 
   return (
     <ChaiBuilderEditor
+      blockMoreOptions={[SaveToLibrary]}
       mediaManagerComponent={MediaManagerComponent}
       pageExternalData={{
         vehicle: {

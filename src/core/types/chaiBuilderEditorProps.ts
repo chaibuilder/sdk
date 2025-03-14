@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+import { DropdownMenuItem } from "../../ui/shadcn/components/ui/dropdown-menu.tsx";
 import { LayoutVariant } from "../constants/LAYOUT_MODE.ts";
 import { ChaiBlock } from "./ChaiBlock";
 
@@ -190,6 +191,7 @@ export interface ChaiBuilderEditorProps {
    * Canvas component. Not supported with custom layout
    */
   canvasTopBarComponents?: { right?: ReactComponentType[] };
+  blockMoreOptions?: Array<(props: { block: ChaiBlock }) => React.ReactElement<typeof DropdownMenuItem>>;
 
   previewLink?: string;
 
