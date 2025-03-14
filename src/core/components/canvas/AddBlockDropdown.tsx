@@ -1,15 +1,16 @@
-import { get, filter, findIndex } from "lodash-es";
-import { CHAI_BUILDER_EVENTS, ChaiBlock, useBlocksStore } from "../../main";
-import { canAddChildBlock } from "../../functions/block-helpers";
+import { filter, findIndex, get } from "lodash-es";
+import { useTranslation } from "react-i18next";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../../ui";
+import { canAddChildBlock } from "../../functions/block-helpers";
+import { CHAI_BUILDER_EVENTS, ChaiBlock, useBlocksStore } from "../../main";
 import { pubsub } from "../../pubsub";
-
 /**
  *
  * @param params
  * @returns Add block dropdown [as child, before, after]
  */
 const AddBlockDropdown = ({ block, children }: { block: ChaiBlock; children: any }) => {
+  const { t } = useTranslation();
   // * all blocks
   const [blocks] = useBlocksStore();
 
@@ -45,17 +46,17 @@ const AddBlockDropdown = ({ block, children }: { block: ChaiBlock; children: any
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>{children}</DropdownMenuTrigger>
-      <DropdownMenuContent className="border border-blue-200 shadow-2xl">
+      <DropdownMenuContent className="border border-blue-500 bg-blue-500 text-white shadow-2xl">
         {canAddChild && (
-          <DropdownMenuItem className="cursor-pointer" onClick={() => addBlock("CHILD")}>
-            Add child block
+          <DropdownMenuItem className="cursor-pointer text-xs" onClick={() => addBlock("CHILD")}>
+            {t("Add inside")}
           </DropdownMenuItem>
         )}
-        <DropdownMenuItem className="cursor-pointer" onClick={() => addBlock("BEFORE")}>
-          Add block before
+        <DropdownMenuItem className="cursor-pointer text-xs" onClick={() => addBlock("BEFORE")}>
+          {t("Add before")}
         </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer" onClick={() => addBlock("AFTER")}>
-          Add block after
+        <DropdownMenuItem className="cursor-pointer text-xs" onClick={() => addBlock("AFTER")}>
+          {t("Add after")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
