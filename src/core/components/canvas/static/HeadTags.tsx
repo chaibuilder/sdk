@@ -1,7 +1,7 @@
 import { map } from "lodash-es";
 import { useEffect, useMemo, useState } from "react";
 import { useFrame } from "../../../frame";
-import { useDarkMode, useSelectedBlockIds, useSelectedStylingBlocks } from "../../../hooks";
+import {useBuilderProp, useDarkMode, useSelectedBlockIds, useSelectedStylingBlocks} from "../../../hooks";
 import { useAtom } from "jotai";
 import typography from "@tailwindcss/typography";
 import forms from "@tailwindcss/forms";
@@ -10,13 +10,14 @@ import containerQueries from "@tailwindcss/container-queries";
 import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
 import plugin from "tailwindcss/plugin";
 import { getChaiThemeOptions, getChaiThemeCssVariables, getThemeFontsLinkMarkup } from "./ChaiThemeFn.ts";
-import { useTheme, useThemeOptions } from "../../../hooks/useTheme.ts";
+import { useTheme, useThemeOptions } from "../../../hooks";
 import { ChaiBuilderThemeValues } from "../../../types/chaiBuilderEditorProps.ts";
 import { pick } from "lodash-es";
 // @ts-ignore
 
 export const HeadTags = () => {
   const [chaiTheme] = useTheme();
+  const extraHeadTags = useBuilderProp("extraHeadTags", <></>);
 
   const chaiThemeOptions = useThemeOptions();
   // console.log(chaiTheme, chaiThemeOptions);
@@ -127,6 +128,7 @@ export const HeadTags = () => {
     <>
       <style id="chai-theme">{themeVariables}</style>
       <span id="chai-fonts" dangerouslySetInnerHTML={{ __html: fonts }} />
+      {extraHeadTags}
     </>
   );
 };
