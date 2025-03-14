@@ -145,78 +145,70 @@ export function RenderChaiBlocks({
     ? filter(blocks, { _parent: parent })
     : filter(blocks, (block) => isEmpty(block._parent));
 
-  return (
-    <>
-      {filteredBlocks.map((block: ChaiBlock, index: number) => {
-        const attrs: any = {};
-        const blocks = filter(allBlocks, { _parent: block._id });
-        attrs.children =
-          blocks.length > 0 ? (
-            <RenderChaiBlocks
-              key={block._id}
-              externalData={externalData}
-              classPrefix={classPrefix}
-              parent={block._id}
-              blocks={allBlocks}
+  return filteredBlocks.map((block: ChaiBlock, index: number) => {
+    const attrs: any = {};
+    const blocks = filter(allBlocks, { _parent: block._id });
+    attrs.children =
+      blocks.length > 0 ? (
+        <RenderChaiBlocks
+          key={block._id}
+          externalData={externalData}
+          classPrefix={classPrefix}
+          parent={block._id}
+          blocks={allBlocks}
+          lang={lang || fallbackLang}
+          metadata={metadata}
+        />
+      ) : null;
+
+    const blockDefinition = getRegisteredChaiBlock(block._type);
+    if (blockDefinition !== null) {
+      let syncedBlock: ChaiBlock = block;
+      // @ts-ignore
+      const Component: React.FC<any> = (blockDefinition as { component: React.FC<ChaiBlock> }).component;
+      syncedBlock = { ...(blockDefinition as any).defaults, ...block };
+      if (blockModifierCallback) {
+        syncedBlock = blockModifierCallback(syncedBlock);
+      }
+      const langToUse = lang === fallbackLang ? "" : lang;
+      const runtimeProps = getRuntimePropValues(allBlocks, block._id, getRuntimeProps(block._type));
+      const withBinding = applyBinding(applyLanguage(block, langToUse, blockDefinition), externalData);
+      const props = omit(
+        {
+          blockProps: {},
+          inBuilder: false,
+          ...syncedBlock,
+          index,
+          ...withBinding,
+          ...getStyles(withBinding),
+          ...attrs,
+          ...runtimeProps,
+          metadata,
+          lang: lang || fallbackLang,
+        },
+        ["_parent"],
+      );
+      if (has(blockDefinition, "dataProvider")) {
+        const suspenseFallback = get(blockDefinition, "suspenseFallback", SuspenseFallback) as React.ComponentType<any>;
+
+        return (
+          <Suspense fallback={createElement(suspenseFallback)} key={block._id}>
+            {/* @ts-ignore */}
+            <AsyncPropsBlock
+              dataProviderMetadataCallback={dataProviderMetadataCallback}
               lang={lang || fallbackLang}
               metadata={metadata}
+              dataProvider={blockDefinition.dataProvider}
+              block={block}
+              component={Component}
+              props={props}
             />
-          ) : null;
+          </Suspense>
+        );
+      }
+      return <Suspense key={block._id}>{React.createElement(Component, props)}</Suspense>;
+    }
 
-        const blockDefinition = getRegisteredChaiBlock(block._type);
-        if (blockDefinition !== null) {
-          let syncedBlock: ChaiBlock = block;
-          // @ts-ignore
-          const Component: React.FC<any> = (blockDefinition as { component: React.FC<ChaiBlock> }).component;
-          syncedBlock = { ...(blockDefinition as any).defaults, ...block };
-          if (blockModifierCallback) {
-            syncedBlock = blockModifierCallback(syncedBlock);
-          }
-          const langToUse = lang === fallbackLang ? "" : lang;
-          const runtimeProps = getRuntimePropValues(allBlocks, block._id, getRuntimeProps(block._type));
-          const withBinding = applyBinding(applyLanguage(block, langToUse, blockDefinition), externalData);
-          const props = omit(
-            {
-              blockProps: {},
-              inBuilder: false,
-              ...syncedBlock,
-              index,
-              ...withBinding,
-              ...getStyles(withBinding),
-              ...attrs,
-              ...runtimeProps,
-              metadata,
-              lang: lang || fallbackLang,
-            },
-            ["_parent"],
-          );
-          if (has(blockDefinition, "dataProvider")) {
-            const suspenseFallback = get(
-              blockDefinition,
-              "suspenseFallback",
-              SuspenseFallback,
-            ) as React.ComponentType<any>;
-
-            return (
-              <Suspense fallback={createElement(suspenseFallback)} key={block._id}>
-                {/* @ts-ignore */}
-                <AsyncPropsBlock
-                  dataProviderMetadataCallback={dataProviderMetadataCallback}
-                  lang={lang || fallbackLang}
-                  metadata={metadata}
-                  dataProvider={blockDefinition.dataProvider}
-                  block={block}
-                  component={Component}
-                  props={props}
-                />
-              </Suspense>
-            );
-          }
-          return <Suspense key={block._id}>{React.createElement(Component, props)}</Suspense>;
-        }
-
-        return <noscript key={block._id}>{block._type} not found</noscript>;
-      })}
-    </>
-  );
+    return <noscript key={block._id}>{block._type} not found</noscript>;
+  });
 }
