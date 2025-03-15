@@ -1,8 +1,11 @@
-export function getOrientation(parentElement: HTMLElement, blockElement: HTMLElement): "vertical" | "horizontal" {
+export function getOrientation(
+  parentElement: HTMLElement,
+  blockElement: HTMLElement = null,
+): "vertical" | "horizontal" {
   const computedStyle = window.getComputedStyle(parentElement);
-  const blockComputedStyle = window.getComputedStyle(blockElement);
+  const blockComputedStyle = blockElement ? window.getComputedStyle(blockElement) : null;
   const display = computedStyle.display;
-  const blockDisplay = blockComputedStyle.display;
+  const blockDisplay = blockComputedStyle ? blockComputedStyle.display : null;
 
   if (display === "flex" || display === "inline-flex") {
     const flexDirection = computedStyle.flexDirection;
