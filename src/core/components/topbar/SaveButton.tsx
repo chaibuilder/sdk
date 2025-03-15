@@ -17,7 +17,7 @@ export const SaveButton = () => {
       }}
       className={cn(
         "flex h-auto w-fit items-center gap-x-2 p-1 px-2",
-        // UNSAVED sate
+        // CHANGED sate
         "bg-gray-200 text-gray-500 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-400",
         {
           "animate-pulse bg-gray-300 text-gray-900": saveState === "SAVING",

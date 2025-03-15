@@ -16,19 +16,25 @@ const CONTROLS = [
 
 /**
  *
+ * @param parentBlockId
  * @param blockId
  * @param canvasIframe
  * @returns Getting orientation of arrow VERTICAL OR HORIZONTAL
  */
-const getParentBlockOrientation = (blockId: string | null, canvasIframe: HTMLIFrameElement) => {
+const getParentBlockOrientation = (
+  parentBlockId: string | null,
+  blockId: string | null,
+  canvasIframe: HTMLIFrameElement,
+) => {
   try {
-    if (!blockId || !canvasIframe) return "VERTICAL";
+    if (!parentBlockId || !canvasIframe) return "VERTICAL";
 
-    const selector = `[data-block-id='${blockId}']`;
+    const selector = `[data-block-id='${parentBlockId}']`;
     const parentBlock = canvasIframe?.querySelector(selector);
     if (parentBlock) {
+      const blockElement = canvasIframe?.querySelector(`[data-block-id='${blockId}']`);
       // * Reusing DND util to get orientation of block
-      return getOrientation(parentBlock as HTMLElement).toUpperCase();
+      return getOrientation(parentBlock as HTMLElement, blockElement as HTMLElement).toUpperCase();
     }
 
     return "VERTICAL";
@@ -77,7 +83,7 @@ const useBlockController = (block: ChaiBlock, updateFloatingBar: any) => {
   const isLastBlock = blockIndex + 1 === ancestorBlocks?.length;
 
   // * Block Orientations
-  const orientation = getParentBlockOrientation(parentBlockId, canvasIframe);
+  const orientation = getParentBlockOrientation(parentBlockId, blockId, canvasIframe);
 
   // * Move block wrapper functions for all sides
   const moveBlock = useCallback(

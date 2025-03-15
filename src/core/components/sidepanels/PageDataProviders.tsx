@@ -1,3 +1,10 @@
+import { useAtom } from "jotai";
+import { filter, find, isEmpty, isNull, map, noop } from "lodash-es";
+import { useEffect, useMemo, useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import { useTranslation } from "react-i18next";
+import { allExpanded, defaultStyles, JsonView } from "react-json-view-lite";
+import "react-json-view-lite/dist/index.css";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,17 +26,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../ui";
-import { useEffect, useMemo, useState } from "react";
-import { filter, find, isEmpty, isNull, map, noop } from "lodash-es";
-import { useTranslation } from "react-i18next";
-import { usePageDataProviders } from "../../hooks/usePageDataProviders.ts";
-import { useAtom } from "jotai";
-import { builderSaveStateAtom } from "../../hooks/useSavePage.ts";
-import { allExpanded, defaultStyles, JsonView } from "react-json-view-lite";
-import { ErrorBoundary } from "react-error-boundary";
-import "react-json-view-lite/dist/index.css";
-import { FallbackError } from "../FallbackError.tsx";
 import { useBuilderProp } from "../../hooks";
+import { usePageDataProviders } from "../../hooks/usePageDataProviders.ts";
+import { builderSaveStateAtom } from "../../hooks/useSavePage.ts";
+import { FallbackError } from "../FallbackError.tsx";
 
 const ViewProviderData = ({ provider, onClose }) => {
   const { t } = useTranslation();
