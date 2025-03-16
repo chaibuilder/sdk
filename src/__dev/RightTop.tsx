@@ -4,7 +4,7 @@ import { Button } from "../ui";
 
 export default function RightTop() {
   const [panel, setRightPanel] = useRightPanel();
-  const { savePage } = useSavePage();
+  const { savePage, saveState } = useSavePage();
   return (
     <div className="flex items-center gap-2 rounded-lg bg-background p-2">
       <Button
@@ -23,7 +23,7 @@ export default function RightTop() {
       </a>
       <Button variant="default" size="sm" className="gap-2" onClick={() => savePage(false)}>
         <Save className="h-4 w-4" />
-        Save
+        {saveState === "UNSAVED" ? "Draft" : "Saved"}
       </Button>
     </div>
   );

@@ -232,7 +232,7 @@ export interface ChaiBuilderEditorProps {
    * onSaveStateChange callback function
    * @param syncStatus
    */
-  onSaveStateChange?: (syncStatus: "UNSAVED" | "SAVED" | "SAVING") => void;
+  onSaveStateChange?: (syncStatus: "SAVED" | "SAVING" | "UNSAVED") => void;
 
   /**
    * Preview component
