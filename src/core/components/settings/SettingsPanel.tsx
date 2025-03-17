@@ -39,8 +39,11 @@ const SettingsPanel: React.FC = () => {
   const onErrorFn = useBuilderProp("onError", noop);
   const { hasPermission } = usePermissions();
 
-  const isSettingsDisabled = !hasPermission(PERMISSIONS.EDIT_BLOCK);
+  let isSettingsDisabled = !hasPermission(PERMISSIONS.EDIT_BLOCK);
   const isStylesDisabled = !hasPermission(PERMISSIONS.EDIT_STYLES);
+
+  const isBlockSettingsDisabled = hasPermission("!" + PERMISSIONS.EDIT_BLOCK + "_" + selectedBlock?._type);
+  isSettingsDisabled = isSettingsDisabled || isBlockSettingsDisabled;
 
   if (isNull(selectedBlock)) {
     return (

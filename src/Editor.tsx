@@ -74,7 +74,7 @@ function ChaiBuilderDefault() {
 
   return (
     <ChaiBuilderEditor
-      permissions={values(PERMISSIONS)}
+      permissions={[...values(PERMISSIONS), "!" + PERMISSIONS.EDIT_BLOCK + "_" + "Link"]}
       // permissions={[]}
       blockMoreOptions={[SaveToLibrary]}
       mediaManagerComponent={MediaManagerComponent}
