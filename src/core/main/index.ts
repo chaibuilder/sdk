@@ -37,3 +37,5 @@ export {
   UILibrariesPanel as UILibraries,
 };
 export type { ChaiBlock, ChaiBuilderEditorProps };
+
+export { PERMISSIONS } from "../constants/PERMISSIONS";

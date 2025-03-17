@@ -74,6 +74,8 @@ function ChaiBuilderDefault() {
 
   return (
     <ChaiBuilderEditor
+      // permissions={[PERMISSIONS.ADD_BLOCK]}
+      permissions={[]}
       blockMoreOptions={[SaveToLibrary]}
       mediaManagerComponent={MediaManagerComponent}
       pageExternalData={{
