@@ -185,6 +185,7 @@ export function RenderChaiBlocks({
           ...runtimeProps,
           metadata,
           lang: lang || fallbackLang,
+          key: block._id,
         },
         ["_parent"],
       );
@@ -195,6 +196,7 @@ export function RenderChaiBlocks({
           <Suspense fallback={createElement(suspenseFallback)} key={block._id}>
             {/* @ts-ignore */}
             <AsyncPropsBlock
+              key={block._id}
               dataProviderMetadataCallback={dataProviderMetadataCallback}
               lang={lang || fallbackLang}
               metadata={metadata}
