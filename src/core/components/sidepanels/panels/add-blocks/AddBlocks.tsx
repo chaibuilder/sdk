@@ -6,9 +6,9 @@ import { useTranslation } from "react-i18next";
 import { Input, ScrollArea, Tabs, TabsContent, TabsList, TabsTrigger } from "../../../../../ui";
 import { showPredefinedBlockCategoryAtom } from "../../../../atoms/ui";
 import { canAcceptChildBlock, canBeNestedInside } from "../../../../functions/block-helpers.ts";
-import { useBlocksStore, useBuilderProp } from "../../../../hooks";
+import { useBlocksStore, useBuilderProp, usePermissions } from "../../../../hooks";
 import { usePartialBlocksList } from "../../../../hooks/usePartialBlocksStore";
-import { CHAI_BUILDER_EVENTS, mergeClasses, UILibraries } from "../../../../main";
+import { CHAI_BUILDER_EVENTS, mergeClasses, PERMISSIONS, UILibraries } from "../../../../main";
 import { pubsub } from "../../../../pubsub.ts";
 import { CoreBlock } from "./CoreBlock";
 import { DefaultChaiBlocks } from "./DefaultBlocks.tsx";
@@ -240,6 +240,7 @@ const AddBlocksPanel = ({
   const addBlocksDialogTabs = useBuilderProp("addBlocksDialogTabs", []);
   const { data: partialBlocksList } = usePartialBlocksList();
   const hasPartialBlocks = Object.keys(partialBlocksList || {}).length > 0;
+  const { hasPermission } = usePermissions();
 
   // If current tab is "partials" but there are no partial blocks, switch to "library" tab
   useEffect(() => {
@@ -251,6 +252,8 @@ const AddBlocksPanel = ({
   const close = useCallback(() => {
     pubsub.publish(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK);
   }, []);
+
+  const canImportHTML = importHTMLSupport && hasPermission(PERMISSIONS.IMPORT_HTML);
 
   return (
     <div className={mergeClasses("flex h-full w-full flex-col overflow-hidden", className)}>
@@ -274,7 +277,7 @@ const AddBlocksPanel = ({
           <TabsTrigger value="library">{t("Library")}</TabsTrigger>
           <TabsTrigger value="core">{t("Blocks")}</TabsTrigger>
           {hasPartialBlocks && <TabsTrigger value="partials">{t("Partials")}</TabsTrigger>}
-          {importHTMLSupport ? <TabsTrigger value="html">{t("Import")}</TabsTrigger> : null}
+          {canImportHTML ? <TabsTrigger value="html">{t("Import")}</TabsTrigger> : null}
           {map(addBlocksDialogTabs, (tab) => (
             <TabsTrigger value={tab.key}>{React.createElement(tab.tab)}</TabsTrigger>
           ))}
@@ -298,7 +301,7 @@ const AddBlocksPanel = ({
             </div>
           </TabsContent>
         )}
-        {importHTMLSupport ? (
+        {canImportHTML ? (
           <TabsContent value="html" className="h-full max-h-full flex-1 pb-20">
             <ImportHTML parentId={parentId} position={position} />
           </TabsContent>

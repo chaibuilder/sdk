@@ -92,6 +92,10 @@ export type ChaiBuilderThemeValues = {
 
 export interface ChaiBuilderEditorProps {
   /**
+   * Permissions
+   */
+  permissions?: string[];
+  /**
    * RJSF Fields and Widgets
    */
   rjsfFields?: Record<string, React.ComponentType<any>>;

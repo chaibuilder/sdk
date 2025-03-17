@@ -18,6 +18,7 @@ import { useTranslation } from "react-i18next";
 import { Button, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../../ui";
 import { treeDSBlocks } from "../../../../../atoms/blocks.ts";
 import { canvasIframeAtom, treeRefAtom } from "../../../../../atoms/ui.ts";
+import { PERMISSIONS } from "../../../../../constants/PERMISSIONS.ts";
 import { ROOT_TEMP_KEY } from "../../../../../constants/STRINGS.ts";
 import { CHAI_BUILDER_EVENTS } from "../../../../../events.ts";
 import { canAcceptChildBlock, canAddChildBlock } from "../../../../../functions/block-helpers.ts";
@@ -28,6 +29,7 @@ import {
   useBuilderProp,
   useCutBlockIds,
   useHiddenBlockIds,
+  usePermissions,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
   useUpdateBlocksProps,
@@ -48,7 +50,6 @@ import {
   selectParent,
   selectPrev,
 } from "./DefaultShortcuts.tsx";
-
 const currentAddSelection = atom<any>(null);
 
 const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
@@ -182,17 +183,22 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
     }
   };
 
+  const { hasPermission } = usePermissions();
+
   if (id === ROOT_TEMP_KEY) {
     return (
       <div className="group relative w-full cursor-pointer">
         <br />
-        <div
-          onClick={() => addBlockOnPosition(-1)}
-          className="h-1 rounded bg-purple-500 opacity-0 duration-200 group-hover:opacity-100">
-          <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 transform items-center gap-x-1 rounded-full bg-purple-500 px-3 py-1 text-[9px] leading-tight text-white hover:bg-purple-500">
-            <PlusIcon className="h-2 w-2 stroke-[3]" /> {t("Add block")}
+        {hasPermission(PERMISSIONS.ADD_BLOCK) && (
+          <div
+            role="button"
+            onClick={() => addBlockOnPosition(-1)}
+            className="h-1 rounded bg-purple-500 opacity-0 duration-200 group-hover:opacity-100">
+            <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 transform items-center gap-x-1 rounded-full bg-purple-500 px-3 py-1 text-[9px] leading-tight text-white hover:bg-purple-500">
+              <PlusIcon className="h-2 w-2 stroke-[3]" /> {t("Add block")}
+            </div>
           </div>
-        </div>
+        )}
         <br />
       </div>
     );
@@ -496,6 +502,8 @@ const ListTree = () => {
     return () => observer.disconnect();
   }, [setTreeRef]);
 
+  const { hasPermission } = usePermissions();
+
   if (isEmpty(treeData))
     return (
       <div>
@@ -504,9 +512,15 @@ const ListTree = () => {
             {t("This page is empty")}
             <br />
             <br />
-            <Button onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK)} variant="default" size="sm">
-              + {t("Add Block")}
-            </Button>
+            {hasPermission(PERMISSIONS.ADD_BLOCK) && (
+              <Button
+                disabled={!hasPermission(PERMISSIONS.ADD_BLOCK)}
+                onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK)}
+                variant="default"
+                size="sm">
+                + {t("Add Block")}
+              </Button>
+            )}
           </p>
         </div>
       </div>
