@@ -57,7 +57,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const { t } = useTranslation();
   const [hiddenBlocks, , toggleHidden] = useHiddenBlockIds();
   const [iframe] = useAtom<HTMLIFrameElement>(canvasIframeAtom);
-
+  const { hasPermission } = usePermissions();
   let previousState: boolean | null = null;
   const hasChildren = node.children.length > 0;
   const { highlightBlock, clearHighlight } = useBlockHighlight();
@@ -183,8 +183,6 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
     }
   };
 
-  const { hasPermission } = usePermissions();
-
   if (id === ROOT_TEMP_KEY) {
     return (
       <div className="group relative w-full cursor-pointer">
@@ -227,7 +225,8 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
           e.preventDefault();
           setDropAttribute(id, "no");
         }}>
-        {node?.rowIndex > 0 &&
+        {hasPermission(PERMISSIONS.ADD_BLOCK) &&
+          node?.rowIndex > 0 &&
           ((node.parent.isOpen && canAddChildBlock(get(node, "parent.data._type"))) ||
             node?.parent?.id === "__REACT_ARBORIST_INTERNAL_ROOT__") && (
             <div className="group relative ml-5 h-full w-full cursor-pointer">
@@ -297,7 +296,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
                   <TooltipContent className="isolate z-10">{outlineItem.tooltip}</TooltipContent>
                 </Tooltip>
               ))}
-            {canAddChildBlock(data?._type) && !hiddenBlocks.includes(id) ? (
+            {canAddChildBlock(data?._type) && !hiddenBlocks.includes(id) && hasPermission(PERMISSIONS.ADD_BLOCK) ? (
               <Tooltip>
                 <TooltipTrigger
                   onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, { _id: id })}
