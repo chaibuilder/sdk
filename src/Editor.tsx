@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useAtom } from "jotai";
-import { isArray, map, pick } from "lodash-es";
+import { isArray, map, pick, values } from "lodash-es";
 import { Info } from "lucide-react";
 import { useState } from "react";
 import { lsAiContextAtom, lsBlocksAtom, lsThemeAtom } from "./__dev/atoms-dev.ts";
@@ -74,7 +74,7 @@ function ChaiBuilderDefault() {
 
   return (
     <ChaiBuilderEditor
-      permissions={[PERMISSIONS.ADD_BLOCK, PERMISSIONS.EDIT_STYLES]}
+      permissions={values(PERMISSIONS)}
       // permissions={[]}
       blockMoreOptions={[SaveToLibrary]}
       mediaManagerComponent={MediaManagerComponent}
