@@ -1,17 +1,17 @@
 import * as React from "react";
 
-import { useBuilderProp } from "../../../../hooks/index.ts";
 import { useTranslation } from "react-i18next";
-import { Label, Button } from "../../../../../ui";
+import { Button, Label } from "../../../../../ui";
 import { cn } from "../../../../functions/Functions.ts";
-import { BorderRadiusInput, FontSelector, ColorPickerInput } from "./index.ts";
-import { useTheme, useThemeOptions } from "../../../../hooks/useTheme.ts";
 import { useDarkMode } from "../../../../hooks";
+import { useBuilderProp } from "../../../../hooks/index.ts";
+import { useTheme, useThemeOptions } from "../../../../hooks/useTheme.ts";
+import { BorderRadiusInput, ColorPickerInput, FontSelector } from "./index.ts";
 
-import { get, set, capitalize } from "lodash-es";
-import { ChaiBuilderThemeValues } from "../../../../types/chaiBuilderEditorProps.ts";
 import { useDebouncedCallback } from "@react-hookz/web";
-
+import { capitalize, get, set } from "lodash-es";
+import { usePermissions } from "../../../../hooks/usePermissions.ts";
+import { ChaiBuilderThemeValues } from "../../../../types/chaiBuilderEditorProps.ts";
 interface ThemeConfigProps {
   className?: string;
 }
@@ -21,6 +21,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const [selectedPreset, setSelectedPreset] = React.useState<string>("");
   const themePresets = useBuilderProp("themePresets", []);
   const themePanelComponent = useBuilderProp("themePanelComponent", null);
+  const { hasPermission } = usePermissions();
 
   const [themeValues, setThemeValues] = useTheme();
 
@@ -130,6 +131,20 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
       })}
     </div>
   );
+
+  if (!hasPermission("edit_theme")) {
+    return (
+      <div className="relative w-full">
+        <div className={cn("no-scrollbar h-full w-full overflow-y-auto text-center", className)}>
+          <div className="mt-10 h-full items-center justify-center gap-2 text-muted-foreground">
+            <p className="text-sm">
+              You don't have permission to edit the theme. Please contact your administrator to get access.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-full">
