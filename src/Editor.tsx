@@ -10,7 +10,7 @@ import { LanguageButton } from "./__dev/LangButton.tsx";
 import PreviewWeb from "./__dev/preview/WebPreview.tsx";
 import RightTop from "./__dev/RightTop.tsx";
 import { bluePreset, greenPreset, orangePreset } from "./__dev/THEME_PRESETS.ts";
-import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML } from "./core/main";
+import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML, PERMISSIONS } from "./core/main";
 import { SavePageData } from "./core/types/chaiBuilderEditorProps.ts";
 import { Alert, AlertDescription } from "./ui/shadcn/components/ui/alert.tsx";
 import { DropdownMenuItem } from "./ui/shadcn/components/ui/dropdown-menu.tsx";
@@ -74,8 +74,8 @@ function ChaiBuilderDefault() {
 
   return (
     <ChaiBuilderEditor
-      // permissions={[PERMISSIONS.ADD_BLOCK]}
-      permissions={[]}
+      permissions={[PERMISSIONS.ADD_BLOCK, PERMISSIONS.EDIT_STYLES]}
+      // permissions={[]}
       blockMoreOptions={[SaveToLibrary]}
       mediaManagerComponent={MediaManagerComponent}
       pageExternalData={{
