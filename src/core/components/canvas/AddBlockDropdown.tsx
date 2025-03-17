@@ -2,7 +2,7 @@ import { filter, findIndex, get } from "lodash-es";
 import { useTranslation } from "react-i18next";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../../ui";
 import { canAddChildBlock } from "../../functions/block-helpers";
-import { CHAI_BUILDER_EVENTS, ChaiBlock, useBlocksStore } from "../../main";
+import { CHAI_BUILDER_EVENTS, ChaiBlock, PERMISSIONS, useBlocksStore, usePermissions } from "../../main";
 import { pubsub } from "../../pubsub";
 /**
  *
@@ -13,6 +13,7 @@ const AddBlockDropdown = ({ block, children }: { block: ChaiBlock; children: any
   const { t } = useTranslation();
   // * all blocks
   const [blocks] = useBlocksStore();
+  const { hasPermission } = usePermissions();
 
   // * Parent Block
   const blockId = get(block, "_id");
@@ -42,6 +43,8 @@ const AddBlockDropdown = ({ block, children }: { block: ChaiBlock; children: any
       pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, options);
     }
   };
+
+  if (!hasPermission(PERMISSIONS.ADD_BLOCK)) return null;
 
   return (
     <DropdownMenu>

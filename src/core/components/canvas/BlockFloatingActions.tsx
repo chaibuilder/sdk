@@ -6,19 +6,21 @@ import { useFeature } from "flagged";
 import { useAtom } from "jotai";
 import { get, isEmpty, pick } from "lodash-es";
 import { inlineEditingActiveAtom } from "../../atoms/ui.ts";
+import { useFrame } from "../../frame/Context.tsx";
 import { canDeleteBlock, canDuplicateBlock } from "../../functions/block-helpers.ts";
 import {
   useDuplicateBlocks,
   useHighlightBlockId,
+  usePermissions,
   useRemoveBlocks,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
 } from "../../hooks";
+import { PERMISSIONS } from "../../main/index.ts";
 import { ChaiBlock } from "../../types/ChaiBlock";
-import { draggedBlockAtom } from "./dnd/atoms.ts";
-import AddBlockDropdown from "./AddBlockDropdown.tsx";
 import BlockController from "../sidepanels/panels/add-blocks/BlockController.tsx";
-import { useFrame } from "../../frame/Context.tsx";
+import AddBlockDropdown from "./AddBlockDropdown.tsx";
+import { draggedBlockAtom } from "./dnd/atoms.ts";
 
 /**
  * @param block
@@ -59,6 +61,7 @@ export const BlockFloatingSelector = ({ selectedBlockElement, block }: BlockActi
   const [, setSelectedIds] = useSelectedBlockIds();
   const [, setHighlighted] = useHighlightBlockId();
   const [, setStyleBlocks] = useSelectedStylingBlocks();
+  const { hasPermission } = usePermissions();
   const [editingBlockId] = useAtom(inlineEditingActiveAtom);
   const { document } = useFrame();
   const { floatingStyles, refs, update } = useFloating({
@@ -110,14 +113,14 @@ export const BlockFloatingSelector = ({ selectedBlockElement, block }: BlockActi
           <AddBlockDropdown block={block}>
             <PlusIcon className="hover:scale-105" />
           </AddBlockDropdown>
-          {canDuplicateBlock(get(block, "_type", "")) ? (
+          {canDuplicateBlock(get(block, "_type", "")) && hasPermission(PERMISSIONS.ADD_BLOCK) ? (
             <CopyIcon className="hover:scale-105" onClick={() => duplicateBlock([block?._id])} />
           ) : null}
-          {canDeleteBlock(get(block, "_type", "")) ? (
+          {canDeleteBlock(get(block, "_type", "")) && hasPermission(PERMISSIONS.DELETE_BLOCK) ? (
             <TrashIcon className="hover:scale-105" onClick={() => removeBlock([block?._id])} />
           ) : null}
 
-          <BlockController block={block} updateFloatingBar={update} />
+          {hasPermission(PERMISSIONS.MOVE_BLOCK) && <BlockController block={block} updateFloatingBar={update} />}
         </div>
       </div>
     </>
