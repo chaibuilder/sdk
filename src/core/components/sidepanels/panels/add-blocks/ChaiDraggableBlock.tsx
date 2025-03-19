@@ -1,9 +1,9 @@
 import React from "react";
-import { omit, isEmpty, get } from "lodash-es";
+import { omit, isEmpty, get, isString } from "lodash-es";
 import { useBlockHighlight, useSelectedBlockIds } from "../../../../hooks";
 import { emitChaiBuilderMsg, CHAI_BUILDER_EVENTS } from "../../../../events";
 import { useAtom } from "jotai";
-import { draggedBlockAtom } from "../../../canvas/dnd/atoms";
+import { allowedDropTargetAtom, draggedBlockAtom } from "../../../canvas/dnd/atoms";
 import { getBlocksFromHTML } from "../../../../main";
 
 type ChaiDraggableBlockProps = {
@@ -11,6 +11,7 @@ type ChaiDraggableBlockProps = {
   block?: any | (() => Promise<any>);
   blocks?: any | (() => Promise<any>);
   children: React.ReactNode;
+  dropParentId?: null | undefined | string;
 };
 
 /**
@@ -20,8 +21,9 @@ type ChaiDraggableBlockProps = {
  * It handles the drag start event by setting the dragged block and emitting a message to close the add block panel.
  * block, blocks, html
  */
-export const ChaiDraggableBlock = ({ block, html, blocks, children }: ChaiDraggableBlockProps) => {
+export const ChaiDraggableBlock = ({ block, html, blocks, children, dropParentId = "" }: ChaiDraggableBlockProps) => {
   const [, setDraggedBlock] = useAtom(draggedBlockAtom);
+  const [, setAllowedDropTarget] = useAtom(allowedDropTargetAtom);
   const [, setSelected] = useSelectedBlockIds();
   const { clearHighlight } = useBlockHighlight();
 
@@ -29,6 +31,12 @@ export const ChaiDraggableBlock = ({ block, html, blocks, children }: ChaiDragga
   const handleDragStart = async (ev) => {
     try {
       let chaiBlock: any = null;
+
+      if (!(isString(dropParentId) && isEmpty(dropParentId)) && dropParentId !== undefined) {
+        setAllowedDropTarget(dropParentId);
+      } else {
+        setAllowedDropTarget("");
+      }
 
       if (html) {
         // On Passing HTML

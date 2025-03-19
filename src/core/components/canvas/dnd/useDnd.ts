@@ -1,5 +1,5 @@
 import { DragEvent, useEffect } from "react";
-import { has, throttle } from "lodash-es";
+import { has, throttle, isEmpty, isString } from "lodash-es";
 import { useFrame } from "../../../frame";
 
 import { useAtom } from "jotai";
@@ -8,7 +8,7 @@ import { draggingFlagAtom } from "../../../atoms/ui.ts";
 import { useAddBlock, useHighlightBlockId, useSelectedBlockIds } from "../../../hooks";
 import { useBlocksStoreUndoableActions } from "../../../history/useBlocksStoreUndoableActions.ts";
 import { getOrientation } from "./getOrientation.ts";
-import { draggedBlockAtom, dropTargetBlockIdAtom } from "./atoms.ts";
+import { allowedDropTargetAtom, draggedBlockAtom, dropTargetBlockIdAtom } from "./atoms.ts";
 import { canAcceptChildBlock } from "../../../functions/block-helpers.ts";
 
 let iframeDocument: null | HTMLDocument = null;
@@ -150,12 +150,26 @@ function removeDataDrop(): void {
   }
 }
 
-function canDropInTarget(target, draggedBlock) {
+function canDropInTarget(target, draggedBlock, allowedDropTarget) {
   if (!target || !draggedBlock) return;
 
   const dragBlockType = draggedBlock?.type;
   const dropBlockType = target?.getAttribute("data-block-type");
-  return canAcceptChildBlock(dropBlockType, dragBlockType);
+  const dropTargetId = target.getAttribute("data-block-id");
+
+  let canDropInThisParent = false;
+  if ((isString(allowedDropTarget) && isEmpty(allowedDropTarget)) || allowedDropTarget === undefined) {
+    // * allowed to drop anywhere in canvas when `allowedDropTarget = ""` or allowedDropTarget = undefined`
+    canDropInThisParent = true;
+  } else if (allowedDropTarget === null) {
+    // * when `dropTargetId === 'canvas'` and `allowedDropTarget === null`, Only allow to drop in root
+    canDropInThisParent = dropTargetId === "canvas";
+  } else if (isString(allowedDropTarget)) {
+    // * when `allowedDropTarget is passed by user as string block id`, it is allowed to drop only in that parent
+    canDropInThisParent = dropTargetId === allowedDropTarget;
+  }
+
+  return canDropInThisParent && canAcceptChildBlock(dropBlockType, dragBlockType);
 }
 
 export const useDnd = () => {
@@ -168,6 +182,7 @@ export const useDnd = () => {
   const { moveBlocks } = useBlocksStoreUndoableActions();
   const [draggedBlock, setDraggedBlock] = useAtom(draggedBlockAtom);
   const [, setDropTarget] = useAtom(dropTargetBlockIdAtom);
+  const [allowedDropTarget, setAllowedDropTarget] = useAtom(allowedDropTargetAtom);
 
   const resetDragState = () => {
     removePlaceholder();
@@ -179,6 +194,8 @@ export const useDnd = () => {
     possiblePositions = [];
     dropTarget = null;
     dropIndex = null;
+
+    setAllowedDropTarget("");
   };
 
   useEffect(() => {
@@ -198,7 +215,7 @@ export const useDnd = () => {
     onDragOver: (e: DragEvent) => {
       e.preventDefault();
       e.stopPropagation();
-      if (canDropInTarget(dropTarget, draggedBlock)) {
+      if (canDropInTarget(dropTarget, draggedBlock, allowedDropTarget)) {
         throttledDragOver(e);
       }
     },
@@ -220,7 +237,7 @@ export const useDnd = () => {
       const isDropTargetAllowed = dropTarget.getAttribute("data-dnd-dragged") === "yes" ? false : true;
 
       //if the draggedItem is the same as the dropTarget, reset the drag state.
-      if (data?._id === id || !isDropTargetAllowed || !canDropInTarget(dropTarget, draggedBlock)) {
+      if (data?._id === id || !isDropTargetAllowed || !canDropInTarget(dropTarget, draggedBlock, allowedDropTarget)) {
         resetDragState();
         return;
       }
@@ -257,7 +274,7 @@ export const useDnd = () => {
       event.stopPropagation();
       event.preventDefault();
       possiblePositions = [];
-      if (isdropTargetAllowed && canDropInTarget(target, draggedBlock)) {
+      if (isdropTargetAllowed && canDropInTarget(target, draggedBlock, allowedDropTarget)) {
         calculatePossiblePositions(target);
       }
       setIsDragging(true);
