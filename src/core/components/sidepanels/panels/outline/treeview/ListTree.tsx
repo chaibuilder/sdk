@@ -1,5 +1,5 @@
 import React, { memo, MouseEvent, useEffect, useMemo, useRef, useState } from "react";
-import { useAtom } from "jotai";
+import { atom, useAtom } from "jotai";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { MoveHandler, NodeRendererProps, RenameHandler, Tree } from "react-arborist";
 import { treeDSBlocks } from "../../../../../atoms/blocks.ts";
@@ -13,7 +13,7 @@ import {
   useSelectedStylingBlocks,
   useUpdateBlocksProps,
 } from "../../../../../hooks";
-import { EyeOpenIcon, TriangleRightIcon } from "@radix-ui/react-icons";
+import { ChevronRight, ChevronsDownUp, ChevronsUpDown, Eye, EyeOff, FileJson, PlusIcon, Zap } from "lucide-react";
 import { Button, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../../ui";
 import { TypeIcon } from "../TypeIcon.tsx";
 import { DefaultCursor } from "./DefaultCursor.tsx";
@@ -21,7 +21,7 @@ import { DefaultDragPreview } from "./DefaultDragPreview.tsx";
 import { useBlocksStoreUndoableActions } from "../../../../../history/useBlocksStoreUndoableActions.ts";
 import { BlockContextMenu, PasteAtRootContextMenu } from "../BlockContextMenu.tsx";
 import { canAcceptChildBlock, canAddChildBlock } from "../../../../../functions/block-helpers.ts";
-import { find, first, isEmpty } from "lodash-es";
+import { find, first, get, isEmpty } from "lodash-es";
 import { canvasIframeAtom, treeRefAtom } from "../../../../../atoms/ui.ts";
 import {
   close,
@@ -34,14 +34,12 @@ import {
   selectPrev,
 } from "./DefaultShortcuts.tsx";
 import { useTranslation } from "react-i18next";
-import { VscJson } from "react-icons/vsc";
-import { BsLightningFill } from "react-icons/bs";
-import { TbEyeDown } from "react-icons/tb";
+
 import { ROOT_TEMP_KEY } from "../../../../../constants/STRINGS.ts";
-import { EyeOff, PlusIcon } from "lucide-react";
 import { CHAI_BUILDER_EVENTS, emitChaiBuilderMsg } from "../../../../../events.ts";
-import { BiCollapseVertical, BiExpandVertical } from "react-icons/bi";
 import { useBlockHighlight } from "../../../../../hooks/useBlockHighlight";
+
+const currentAddSelection = atom<any>(null);
 
 const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const outlineItems = useBuilderProp("outlineMenuItems", []);
@@ -81,7 +79,18 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
     }
   };
 
+  const [addSelectParentHighlight, setAddSelectParentHighlight]: any = useAtom(currentAddSelection);
+  const onMouseEnter = () => {
+    onMouseLeave();
+    setAddSelectParentHighlight(node?.parent?.id as any);
+  };
+
+  const onMouseLeave = () => {
+    setAddSelectParentHighlight(null);
+  };
+
   const handleNodeClickWithoutPropagating = (e: any) => {
+    onMouseLeave();
     /**
      * To stop propagation of the event to the parent
      * Tree Component to avoid clearing the selection of blocks
@@ -151,117 +160,166 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
     }
   };
 
+  const addBlockOnPosition = (position: number) => {
+    onMouseLeave();
+    const parentId = get(node, "parent.id");
+    if (parentId !== "__REACT_ARBORIST_INTERNAL_ROOT__") {
+      emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, data: { _id: parentId, position } });
+    } else {
+      emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, data: { position } });
+    }
+  };
+
   if (id === ROOT_TEMP_KEY) {
     return (
-      <button
-        onClick={() => emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK })}
-        className="mb-10 mt-5 w-full rounded bg-gray-100 p-1 hover:bg-gray-200 dark:bg-gray-800">
-        + {t("Add block")}
-      </button>
+      <div className="group relative w-full cursor-pointer">
+        <br />
+        <div
+          role="button"
+          onClick={() => addBlockOnPosition(-1)}
+          className="h-1 rounded bg-purple-500 opacity-0 duration-200 group-hover:opacity-100">
+          <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 transform items-center gap-x-1 rounded-full bg-purple-500 px-3 py-1 text-[9px] leading-tight text-white hover:bg-purple-500">
+            <PlusIcon className="h-2 w-2 stroke-[3]" /> {t("Add block")}
+          </div>
+        </div>
+        <br />
+      </div>
     );
   }
 
+  const isParentHighlight = node?.id === addSelectParentHighlight;
+
   return (
     <BlockContextMenu id={id}>
-      <div
-        onMouseEnter={() => highlightBlock(id)}
-        onMouseLeave={() => clearHighlight()}
-        onClick={handleNodeClickWithoutPropagating}
-        style={style}
-        data-node-id={id}
-        ref={hiddenBlocks.includes(id) ? null : dragHandle}
-        onDragStart={() => handleDragStart(node)}
-        onDragEnd={() => handleDragEnd(node)}
-        onDragOver={(e) => {
-          e.preventDefault();
-          setDropAttribute(id, "yes");
-        }}
-        onDragLeave={(e) => {
-          e.preventDefault();
-          setDropAttribute(id, "no");
-        }}
-        onDrop={(e) => {
-          e.preventDefault();
-          setDropAttribute(id, "no");
-        }}
-        className={cn(
-          "group flex !h-full w-full items-center justify-between space-x-px !rounded py-px text-foreground/80 outline-none",
-          isSelected ? "bg-blue-500 text-white" : "hover:bg-gray-200 dark:hover:bg-gray-800",
-          willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
-          isDragging && "opacity-20",
-          hiddenBlocks.includes(id) ? "opacity-50" : "",
-        )}>
-        <div className="flex items-center">
-          <div
-            className={`flex h-4 w-4 rotate-0 transform cursor-pointer items-center justify-center text-xs transition-transform duration-100 ${
-              node.isOpen ? "rotate-90" : ""
-            }`}>
-            {hasChildren && (
-              <button onClick={handleToggle} type="button">
-                <TriangleRightIcon />
-              </button>
-            )}
-          </div>
-          <div className="flex items-center">
-            <div className="-mt-0.5 h-3 w-3">
-              <TypeIcon type={data?._type} />
-            </div>
-            {isEditing ? (
-              <Input node={node} />
-            ) : (
-              <div
-                className={"ml-2 flex items-center gap-x-1 truncate text-[11px]"}
-                onDoubleClick={(e) => {
-                  e.stopPropagation();
-                  node.edit();
-                  node.deselect();
-                }}>
-                <span>{data?._name || data?._type.split("/").pop()}</span>
-                {interactives.includes("data") && <VscJson className="h-3 w-3 text-orange-600" />}
-                {interactives.includes("event") && <BsLightningFill className="h-3 w-3 text-yellow-500" />}
-                {interactives.includes("show") && <TbEyeDown className="h-3 w-3 text-orange-600" />}
+      <div className="w-full">
+        <div
+          onMouseEnter={() => highlightBlock(id)}
+          onMouseLeave={() => clearHighlight()}
+          onClick={handleNodeClickWithoutPropagating}
+          style={style}
+          data-node-id={id}
+          ref={hiddenBlocks.includes(id) ? null : dragHandle}
+          onDragStart={() => handleDragStart(node)}
+          onDragEnd={() => handleDragEnd(node)}
+          onDragOver={(e) => {
+            e.preventDefault();
+            setDropAttribute(id, "yes");
+          }}
+          onDragLeave={(e) => {
+            e.preventDefault();
+            setDropAttribute(id, "no");
+          }}
+          onDrop={(e) => {
+            e.preventDefault();
+            setDropAttribute(id, "no");
+          }}>
+          {node?.rowIndex > 0 &&
+            ((node.parent.isOpen && canAddChildBlock(get(node, "parent.data._type"))) ||
+              node?.parent?.id === "__REACT_ARBORIST_INTERNAL_ROOT__") && (
+              <div className="group relative ml-5 h-full w-full cursor-pointer">
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    addBlockOnPosition(node.childIndex);
+                  }}
+                  onMouseEnter={onMouseEnter}
+                  onMouseLeave={onMouseLeave}
+                  className="absolute -top-0.5 h-1 w-[90%] rounded bg-purple-500 opacity-0 delay-200 duration-200 group-hover:opacity-100">
+                  <div className="absolute left-1/2 top-1/2 flex h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full bg-purple-500 p-1 outline outline-2 outline-white hover:bg-purple-500">
+                    <PlusIcon className="h-3 w-3 stroke-[4] text-white" />
+                  </div>
+                </div>
               </div>
             )}
-          </div>
-        </div>
-        <div className="invisible flex items-center space-x-1 pr-2 group-hover:visible">
-          {!hiddenBlocks.includes(id) &&
-            outlineItems.map((outlineItem) => (
+          <div
+            className={cn(
+              "group flex w-full cursor-pointer items-center justify-between space-x-px !rounded p-1 text-foreground/80 outline-none",
+              isSelected ? "bg-blue-500 text-white" : "hover:bg-slate-200 dark:hover:bg-gray-800",
+              willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
+              isParentHighlight ? `bg-purple-100 ${isSelected ? "text-black" : ""}` : "",
+              isDragging && "opacity-20",
+              hiddenBlocks.includes(id) ? "opacity-50" : "",
+            )}>
+            <div className="flex items-center">
+              <div
+                className={`flex h-4 w-4 rotate-0 transform cursor-pointer items-center justify-center transition-transform duration-100 ${
+                  node.isOpen ? "rotate-90" : ""
+                }`}>
+                {hasChildren && (
+                  <button onClick={handleToggle} type="button">
+                    <ChevronRight
+                      className={`h-3 w-3 stroke-[3] ${isSelected ? "text-slate-200" : "text-slate-400"}`}
+                    />
+                  </button>
+                )}
+              </div>
+              <div className="leading-1 flex items-center">
+                <TypeIcon type={data?._type} />
+                {isEditing ? (
+                  <Input node={node} />
+                ) : (
+                  <div
+                    className={"ml-1.5 flex items-center gap-x-1 truncate text-[13px]"}
+                    onDoubleClick={(e) => {
+                      e.stopPropagation();
+                      node.edit();
+                      node.deselect();
+                    }}>
+                    <span>{data?._name || data?._type.split("/").pop()}</span>
+                    {interactives.includes("data") && <FileJson className="h-3 w-3 text-orange-600" />}
+                    {interactives.includes("event") && <Zap className="h-3 w-3 text-yellow-500" />}
+                    {interactives.includes("show") && <EyeOff className="h-3 w-3 text-orange-600" />}
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="invisible flex items-center space-x-1.5 pr-2 group-hover:visible">
+              {!hiddenBlocks.includes(id) &&
+                outlineItems.map((outlineItem) => (
+                  <Tooltip>
+                    <TooltipTrigger
+                      className="cursor-pointer rounded bg-transparent hover:bg-white hover:text-blue-500"
+                      asChild>
+                      {React.createElement(outlineItem.item, { blockId: id })}
+                    </TooltipTrigger>
+                    <TooltipContent className="isolate z-10">{outlineItem.tooltip}</TooltipContent>
+                  </Tooltip>
+                ))}
+              {canAddChildBlock(data?._type) && !hiddenBlocks.includes(id) ? (
+                <Tooltip>
+                  <TooltipTrigger
+                    onClick={() => emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, data: { _id: id } })}
+                    className="cursor-pointer rounded bg-transparent hover:text-black"
+                    asChild>
+                    <PlusIcon size={"15"} />
+                  </TooltipTrigger>
+                  <TooltipContent className="isolate z-[9999]" side="left">
+                    {t("Add block")}
+                  </TooltipContent>
+                </Tooltip>
+              ) : null}
               <Tooltip>
                 <TooltipTrigger
-                  className="cursor-pointer rounded bg-transparent hover:bg-white hover:text-blue-500"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    toggleHidden(id);
+                    if (node.isOpen) {
+                      node.toggle();
+                    }
+                  }}
+                  className="cursor-pointer rounded bg-transparent hover:text-black"
                   asChild>
-                  {React.createElement(outlineItem.item, { blockId: id })}
+                  <EyeOff size={"15"} />
                 </TooltipTrigger>
-                <TooltipContent className="isolate z-10">{outlineItem.tooltip}</TooltipContent>
+                <TooltipContent className="isolate z-[9999]" side="left">
+                  {t("Hide block")}
+                </TooltipContent>
               </Tooltip>
-            ))}
-          {canAddChildBlock(data?._type) && !hiddenBlocks.includes(id) ? (
-            <Tooltip>
-              <TooltipTrigger
-                onClick={() => emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, data: { _id: id } })}
-                className="cursor-pointer rounded bg-transparent hover:bg-white hover:text-black"
-                asChild>
-                <PlusIcon size={"18"} />
-              </TooltipTrigger>
-              <TooltipContent className="isolate z-[9999]">{t("Add block")}</TooltipContent>
-            </Tooltip>
-          ) : null}
-          <Tooltip>
-            <TooltipTrigger
-              onClick={(event) => {
-                event.stopPropagation();
-                toggleHidden(id);
-                if (node.isOpen) {
-                  node.toggle();
-                }
-              }}
-              className="cursor-pointer rounded bg-transparent hover:bg-white hover:text-black"
-              asChild>
-              <EyeOff size={"15"} />
-            </TooltipTrigger>
-            <TooltipContent className="isolate z-[9999]">{t("Add block")}</TooltipContent>
-          </Tooltip>
+              {/* <BlockMoreOptions node={node} id={id}> */}
+              {/* <MoreVertical size={"15"} />
+            </BlockMoreOptions> */}
+            </div>
+          </div>
         </div>
       </div>
     </BlockContextMenu>
@@ -272,7 +330,10 @@ const Input = ({ node }) => {
   return (
     <input
       autoFocus
-      className="ml-2 !h-4 w-full rounded-sm border border-border bg-background px-1 text-[11px] outline-none"
+      className={cn(
+        "ml-2 !h-4 w-full rounded-sm border border-border bg-background px-1 text-[11px] leading-tight outline-none",
+        node.isSelected ? "text-black dark:text-white" : "",
+      )}
       type="text"
       defaultValue={node.data?._name || node.data?._type}
       onFocus={(e) => e.currentTarget.select()}
@@ -324,11 +385,6 @@ const ListTree = () => {
     return [...nodes, { _type: ROOT_TEMP_KEY, _id: ROOT_TEMP_KEY, children: [] }];
   }, [treeData, cutBlocksIds]);
 
-  useEffect(() => {
-    //@ts-ignore
-    setTreeRef(treeRef.current);
-  }, [setTreeRef, treeRef]);
-
   const onRename: RenameHandler<any> = ({ id, name, node }) => {
     updateBlockProps([id], { _name: name }, node.data._name);
   };
@@ -345,6 +401,8 @@ const ListTree = () => {
 
   const onContextMenu = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
+    if (parentContext) setParentContext(null);
+
     const target = e.target as HTMLDivElement;
     const nodeId =
       target.getAttribute("data-node-id") || target.closest("[data-node-id]")?.getAttribute("data-node-id");
@@ -415,7 +473,25 @@ const ListTree = () => {
     }
   };
 
-  if (isEmpty(treeData))
+  useEffect(() => {
+    const updateTreeRef = () => {
+      if (treeRef.current) {
+        //@ts-ignore
+        setTreeRef(treeRef.current);
+      }
+    };
+    //sets the ref once on mount if its available
+    updateTreeRef();
+
+    /**Sets up a MutationObserver to watch for DOM changes and try setting the ref again */
+    const observer = new MutationObserver(updateTreeRef);
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    //disconnect observer on unmount
+    return () => observer.disconnect();
+  }, [setTreeRef]);
+
+  if (isEmpty(treeData)) {
     return (
       <div>
         <div className="mt-10 flex h-full w-full items-center justify-center p-8 text-center">
@@ -433,19 +509,20 @@ const ListTree = () => {
         </div>
       </div>
     );
+  }
 
   return (
     <>
       <div className={cn("flex h-full select-none flex-col space-y-1")} onClick={() => clearSelection()}>
         <div
           id="outline-view"
-          className="no-scrollbar h-full overflow-y-auto text-xs"
+          className="no-scrollbar h-full overflow-y-auto text-sm"
           onKeyDown={(e) => {
             if (!treeRef.current.isEditing) {
               handleKeyDown(e);
             }
           }}>
-          <div className="mb-2 flex items-center justify-end gap-x-2 pb-2 text-xs text-muted-foreground">
+          <div className="mb-2 flex items-center justify-end gap-x-2 pb-2 text-sm text-muted-foreground">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
@@ -453,7 +530,7 @@ const ListTree = () => {
                   variant="outline"
                   className="h-fit p-1 disabled:cursor-not-allowed disabled:opacity-50"
                   size="sm">
-                  <EyeOpenIcon className="h-4 w-4" />
+                  <Eye className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent className="isolate z-[9999]">{t("Show hidden blocks")}</TooltipContent>
@@ -462,7 +539,7 @@ const ListTree = () => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button className="h-fit p-1" onClick={() => treeRef?.current?.openAll()} variant="outline" size="sm">
-                  <BiExpandVertical size={"14"} />
+                  <ChevronsUpDown size={14} />
                 </Button>
               </TooltipTrigger>
               <TooltipContent className="isolate z-[9999]">{t("Expand all")}</TooltipContent>
@@ -470,26 +547,36 @@ const ListTree = () => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button className="h-fit p-1" onClick={() => treeRef?.current?.closeAll()} variant="outline" size="sm">
-                  <BiCollapseVertical size={"14"} />
+                  <ChevronsDownUp size={14} />
                 </Button>
               </TooltipTrigger>
               <TooltipContent className="isolate z-[9999]">{t("Collapse all")}</TooltipContent>
             </Tooltip>
           </div>
+          <div className="pu group relative z-[9999] ml-5 w-full cursor-pointer">
+            <div
+              onClick={() => emitChaiBuilderMsg({ name: CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, data: { position: 0 } })}
+              className="h-1 w-[90%] rounded bg-purple-500 opacity-0 duration-200 group-hover:opacity-100">
+              <div className="absolute left-[45%] top-1/2 flex h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full bg-purple-500 p-1 outline outline-2 outline-white hover:bg-purple-500">
+                <PlusIcon className="h-3 w-3 stroke-[3] text-white" />
+              </div>
+            </div>
+          </div>
           <Tree
             ref={treeRef}
             height={window.innerHeight - 160}
-            className="no-scrollbar !h-full max-w-full !overflow-y-auto !overflow-x-hidden"
+            className="no-scrollbar !h-full max-w-full space-y-1 !overflow-y-auto !overflow-x-hidden"
+            rowClassName="flex items-center h-full border-b border-transparent"
             selection={ids[0] || ""}
             onRename={onRename}
             openByDefault={false}
             onMove={onMove}
-            rowHeight={25}
             data={[...filteredTreeData]}
             renderCursor={DefaultCursor}
             onSelect={onSelect}
             childrenAccessor={(d: any) => d.children}
             width={"100%"}
+            rowHeight={28}
             renderDragPreview={DefaultDragPreview}
             indent={10}
             onContextMenu={onContextMenu}
