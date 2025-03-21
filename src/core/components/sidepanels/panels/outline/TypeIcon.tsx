@@ -1,99 +1,22 @@
 import React from "react";
-import {
-  BorderAllIcon,
-  BorderTopIcon,
-  BoxIcon,
-  BoxModelIcon,
-  ButtonIcon,
-  CheckboxIcon,
-  CodeIcon,
-  ColumnsIcon,
-  CursorTextIcon,
-  DividerHorizontalIcon,
-  DragHandleHorizontalIcon,
-  DropdownMenuIcon,
-  GroupIcon,
-  HeadingIcon,
-  ImageIcon,
-  InputIcon,
-  Link1Icon,
-  RadiobuttonIcon,
-  RowsIcon,
-  SketchLogoIcon,
-  SpaceBetweenVerticallyIcon,
-  TableIcon,
-  TextIcon,
-  VideoIcon,
-  ViewHorizontalIcon,
-} from "@radix-ui/react-icons";
-import { DatabaseIcon, GlobeIcon } from "lucide-react";
+import { get } from "lodash-es";
+import { getBlockComponent } from "@chaibuilder/runtime";
+import { BoxModelIcon } from "@radix-ui/react-icons";
 
 type Props = {
   type?: string;
 };
 
+const ICON_CLASS = "h-3 w-3 stroke-[2]";
+
 export const TypeIcon: React.FC<Props> = (props) => {
-  switch (props.type) {
-    case "GlobalBlock":
-      return <GlobeIcon className="h-4 w-4" />;
-    case "Image":
-      return <ImageIcon />;
-    case "Heading":
-      return <HeadingIcon />;
-    case "Text":
-      return <TextIcon />;
-    case "Link":
-      return <Link1Icon />;
-    case "Video":
-      return <VideoIcon />;
-    case "RichText":
-      return <CursorTextIcon />;
-    case "Button":
-      return <ButtonIcon />;
-    case "CustomHTML":
-      return <CodeIcon />;
-    case "Divider":
-      return <DividerHorizontalIcon />;
-    case "Icon":
-      return <SketchLogoIcon />;
-    case "List":
-      return <RowsIcon />;
-    case "Paragraph":
-      return <TextIcon />;
-    case "Row":
-      return <RowsIcon />;
-    case "ListItem":
-      return <ColumnsIcon />;
-    case "LineBreak":
-      return <SpaceBetweenVerticallyIcon />;
-    case "Form":
-      return <GroupIcon />;
-    case "Checkbox":
-      return <CheckboxIcon />;
-    case "FormButton":
-      return <ButtonIcon />;
-    case "Input":
-    case "TextArea":
-      return <InputIcon />;
-    case "Radio":
-      return <RadiobuttonIcon />;
-    case "Select":
-      return <DropdownMenuIcon />;
-    case "Table":
-      return <TableIcon />;
-    case "TableHead":
-      return <BorderTopIcon />;
-    case "TableBody":
-      return <BorderAllIcon />;
-    case "TableRow":
-      return <ViewHorizontalIcon />;
-    case "TableCell":
-      return <DragHandleHorizontalIcon />;
-    case "DataProvider":
-      return <DatabaseIcon size={16} />;
-    case "Box":
-      return <BoxIcon />;
-    default:
-      return <BoxModelIcon />;
+  const chaiBlock = getBlockComponent(props?.type);
+  const blockIcon: any = get(chaiBlock, "icon");
+
+  if (blockIcon) {
+    return React.createElement(blockIcon, { className: ICON_CLASS });
   }
+
+  // * Fallback Icon
+  return <BoxModelIcon className={ICON_CLASS} />;
 };
