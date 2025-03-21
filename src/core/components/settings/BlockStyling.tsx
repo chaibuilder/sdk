@@ -1,13 +1,12 @@
-import { get, isEmpty, startsWith } from "lodash-es";
-import { useSelectedBlocksDisplayChild, useSelectedStylingBlocks } from "../../hooks";
-import { FLEX_CHILD_SECTION, GRID_CHILD_SECTION, SETTINGS_SECTIONS } from "../../constants/STYLING_GROUPS.ts";
-import { StylingGroup } from "./new-panel/SettingSection";
-import { StylingHelpers } from "./StylingHelpers.tsx";
-import { Accordion } from "../../../ui";
-import { BlockSettingsContext } from "./SettingsContext.tsx";
-import React, { useCallback } from "react";
 import { useThrottledCallback } from "@react-hookz/web";
+import { get, isEmpty, startsWith } from "lodash-es";
+import React, { useCallback } from "react";
+import { Accordion } from "../../../ui";
+import { FLEX_CHILD_SECTION, GRID_CHILD_SECTION, SETTINGS_SECTIONS } from "../../constants/STYLING_GROUPS.ts";
+import { useSelectedBlocksDisplayChild, useSelectedStylingBlocks } from "../../hooks";
 import { BlockStylingProps } from "./BlockStylingProps.tsx";
+import { StylingGroup } from "./new-panel/SettingSection";
+import { BlockSettingsContext } from "./SettingsContext.tsx";
 
 const MAPPER: { [key: string]: number } = {
   px: 1,
@@ -94,7 +93,6 @@ export default function BlockStyling() {
       ) : null}
       <div className="flex flex-col">
         <BlockStylingProps />
-        <StylingHelpers />
         <Accordion defaultValue={["Styles"]} type="multiple" className="w-full">
           {flexChild && <StylingGroup section={FLEX_CHILD_SECTION} showAccordian={flexChild || gridChild} />}
           {gridChild && <StylingGroup section={GRID_CHILD_SECTION} showAccordian={flexChild || gridChild} />}
