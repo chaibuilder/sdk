@@ -1,6 +1,11 @@
-export function getOrientation(target: HTMLElement): "vertical" | "horizontal" {
-  const computedStyle = window.getComputedStyle(target);
+export function getOrientation(
+  parentElement: HTMLElement,
+  blockElement: HTMLElement = null,
+): "vertical" | "horizontal" {
+  const computedStyle = window.getComputedStyle(parentElement);
+  const blockComputedStyle = blockElement ? window.getComputedStyle(blockElement) : null;
   const display = computedStyle.display;
+  const blockDisplay = blockComputedStyle ? blockComputedStyle.display : null;
 
   if (display === "flex" || display === "inline-flex") {
     const flexDirection = computedStyle.flexDirection;
@@ -8,19 +13,29 @@ export function getOrientation(target: HTMLElement): "vertical" | "horizontal" {
     return flexDirection === "column" || flexDirection === "column-reverse" ? "vertical" : "horizontal";
   } else if (display === "grid") {
     const gridAutoFlow = computedStyle.gridAutoFlow;
-    const gridTemplateRows = computedStyle.gridTemplateRows;
     const gridTemplateColumns = computedStyle.gridTemplateColumns;
 
-    // If the grid auto flow is set to column or the grid has more rows than columns, it's vertical.
-    if (gridAutoFlow.includes("column") || gridTemplateRows.split(" ").length > gridTemplateColumns.split(" ").length) {
+    // If the grid auto flow is set to column, it's vertical
+    if (gridAutoFlow.includes("column")) {
       return "vertical";
-    } else {
-      return "horizontal";
     }
-  } else if (display === "block" || display === "inline-block") {
-    // For block and inline-block, we assume vertical by default, though this might depend on other CSS properties.
-    return "vertical";
+
+    // Check if gridTemplateColumns is explicitly set to a single column
+    // In JSDOM environment, gridTemplateColumns might be empty or "none" for default grid
+    if (
+      gridTemplateColumns &&
+      gridTemplateColumns !== "none" &&
+      gridTemplateColumns !== "" &&
+      !gridTemplateColumns.includes("calc") && // Handle calc expressions
+      gridTemplateColumns.split(" ").length <= 1
+    ) {
+      return "vertical";
+    }
+
+    return "horizontal";
+  } else if (blockDisplay === "inline-block" || blockDisplay === "inline") {
+    return "horizontal";
   }
 
-  return "horizontal";
+  return "vertical";
 }

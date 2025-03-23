@@ -21,6 +21,7 @@ import { useHighlightBlockId } from "./useHighlightBlockId";
 import { useLanguages } from "./useLanguages.ts";
 import { usePartailBlocksStore, usePartialBlocksList } from "./usePartialBlocksStore.ts";
 import { usePasteBlocks } from "./usePasteBlocks";
+import { usePermissions } from "./usePermissions.ts";
 import { usePreviewMode } from "./usePreviewMode";
 import { useRemoveBlocks } from "./useRemoveBlocks";
 import { useRemoveClassesFromBlocks } from "./useRemoveClassesFromBlocks";
@@ -62,6 +63,7 @@ export {
   usePartailBlocksStore,
   usePartialBlocksList,
   usePasteBlocks,
+  usePermissions,
   usePreviewMode,
   useRemoveBlocks,
   useRemoveClassesFromBlocks,

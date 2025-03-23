@@ -1,10 +1,10 @@
+import { PinBottomIcon, PinLeftIcon, PinRightIcon, PinTopIcon } from "@radix-ui/react-icons";
+import { filter, findIndex, get } from "lodash-es";
 import { useCallback } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
-import { ChaiBlock } from "../../../../types/ChaiBlock.ts";
 import { useFrame } from "../../../../frame/Context.tsx";
-import { get, filter, findIndex } from "lodash-es";
 import { useBlocksStore, useBlocksStoreUndoableActions } from "../../../../hooks";
-import { PinBottomIcon, PinLeftIcon, PinRightIcon, PinTopIcon } from "@radix-ui/react-icons";
+import { ChaiBlock } from "../../../../types/ChaiBlock.ts";
 import { getOrientation } from "../../../canvas/dnd/getOrientation.ts";
 
 const CONTROLS = [
@@ -16,19 +16,25 @@ const CONTROLS = [
 
 /**
  *
+ * @param parentBlockId
  * @param blockId
  * @param canvasIframe
  * @returns Getting orientation of arrow VERTICAL OR HORIZONTAL
  */
-const getParentBlockOrientation = (blockId: string | null, canvasIframe: HTMLIFrameElement) => {
+const getParentBlockOrientation = (
+  parentBlockId: string | null,
+  blockId: string | null,
+  canvasIframe: HTMLIFrameElement,
+) => {
   try {
-    if (!blockId || !canvasIframe) return "VERTICAL";
+    if (!parentBlockId || !canvasIframe) return "VERTICAL";
 
-    const selector = `[data-block-id='${blockId}']`;
+    const selector = `[data-block-id='${parentBlockId}']`;
     const parentBlock = canvasIframe?.querySelector(selector);
     if (parentBlock) {
+      const blockElement = canvasIframe?.querySelector(`[data-block-id='${blockId}']`);
       // * Reusing DND util to get orientation of block
-      return getOrientation(parentBlock as HTMLElement).toUpperCase();
+      return getOrientation(parentBlock as HTMLElement, blockElement as HTMLElement).toUpperCase();
     }
 
     return "VERTICAL";
@@ -77,7 +83,7 @@ const useBlockController = (block: ChaiBlock, updateFloatingBar: any) => {
   const isLastBlock = blockIndex + 1 === ancestorBlocks?.length;
 
   // * Block Orientations
-  const orientation = getParentBlockOrientation(parentBlockId, canvasIframe);
+  const orientation = getParentBlockOrientation(parentBlockId, blockId, canvasIframe);
 
   // * Move block wrapper functions for all sides
   const moveBlock = useCallback(
@@ -124,13 +130,11 @@ const BlockController = ({ block, updateFloatingBar }: { block: ChaiBlock; updat
 
   return (
     <>
-      {/* SEPARATOR */}
-      <div className="mx-1 h-3 w-px bg-white/50" />
-
       {/* CONTROLLERS ARROW BASED ON ORIENTATION */}
       {CONTROLS.map(({ ControlIcon, dir, key }) => {
         if (orientation !== dir) return null;
         const isDisabled = isDisabledControl(isFirstBlock, isLastBlock, key as any);
+        if (isDisabled) return null;
         return (
           <ControlIcon
             key={key}

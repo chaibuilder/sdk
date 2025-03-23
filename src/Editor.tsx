@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useAtom } from "jotai";
-import { isArray, map, pick } from "lodash-es";
+import { isArray, map, pick, values } from "lodash-es";
 import { Info } from "lucide-react";
 import { useState } from "react";
 import { lsAiContextAtom, lsBlocksAtom, lsThemeAtom } from "./__dev/atoms-dev.ts";
@@ -10,9 +10,10 @@ import { LanguageButton } from "./__dev/LangButton.tsx";
 import PreviewWeb from "./__dev/preview/WebPreview.tsx";
 import RightTop from "./__dev/RightTop.tsx";
 import { bluePreset, greenPreset, orangePreset } from "./__dev/THEME_PRESETS.ts";
-import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML } from "./core/main";
+import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML, PERMISSIONS } from "./core/main";
 import { SavePageData } from "./core/types/chaiBuilderEditorProps.ts";
 import { Alert, AlertDescription } from "./ui/shadcn/components/ui/alert.tsx";
+import { DropdownMenuItem } from "./ui/shadcn/components/ui/dropdown-menu.tsx";
 import { loadWebBlocks } from "./web-blocks";
 
 loadWebBlocks();
@@ -53,6 +54,14 @@ const MediaManagerComponent = () => {
   );
 };
 
+const SaveToLibrary = ({ block }: { block: ChaiBlock }) => {
+  return (
+    <DropdownMenuItem className="cursor-pointer text-xs" onClick={() => console.log(block)}>
+      Save to library
+    </DropdownMenuItem>
+  );
+};
+
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
   const [theme, setTheme] = useAtom(lsThemeAtom);
@@ -65,6 +74,9 @@ function ChaiBuilderDefault() {
 
   return (
     <ChaiBuilderEditor
+      permissions={[...values(PERMISSIONS)]}
+      // permissions={[]}
+      blockMoreOptions={[SaveToLibrary]}
       mediaManagerComponent={MediaManagerComponent}
       pageExternalData={{
         vehicle: {

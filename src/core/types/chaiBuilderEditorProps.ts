@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+import { DropdownMenuItem } from "../../ui/shadcn/components/ui/dropdown-menu.tsx";
 import { LayoutVariant } from "../constants/LAYOUT_MODE.ts";
 import { ChaiBlock } from "./ChaiBlock";
 
@@ -92,6 +93,10 @@ export type ChaiBuilderThemeValues = {
 export type FontSelectOption = { title: string, value: string };
 
 export interface ChaiBuilderEditorProps {
+  /**
+   * Permissions
+   */
+  permissions?: string[];
   /**
    * RJSF Fields and Widgets
    */
@@ -192,6 +197,7 @@ export interface ChaiBuilderEditorProps {
    * Canvas component. Not supported with custom layout
    */
   canvasTopBarComponents?: { right?: ReactComponentType[] };
+  blockMoreOptions?: Array<(props: { block: ChaiBlock }) => React.ReactElement<typeof DropdownMenuItem>>;
 
   previewLink?: string;
 
@@ -232,7 +238,7 @@ export interface ChaiBuilderEditorProps {
    * onSaveStateChange callback function
    * @param syncStatus
    */
-  onSaveStateChange?: (syncStatus: "UNSAVED" | "SAVED" | "SAVING") => void;
+  onSaveStateChange?: (syncStatus: "SAVED" | "SAVING" | "UNSAVED") => void;
 
   /**
    * Preview component

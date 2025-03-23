@@ -40,9 +40,9 @@ const router = createBrowserRouter([
 enableMocking().then(() => {
   ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
-      <DevTools />
-      <MicrosoftClarity clarityId={import.meta.env.VITE_CLARITY_ID} />
       <RouterProvider router={router} />
+      <DevTools />
+      {import.meta.env.VITE_CLARITY_ID && <MicrosoftClarity clarityId={import.meta.env.VITE_CLARITY_ID} />}
     </React.StrictMode>,
   );
 });

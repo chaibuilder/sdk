@@ -1,9 +1,9 @@
 import { filter, find, includes, isEmpty } from "lodash-es";
 import { useCallback } from "react";
 import { useBlocksStore, useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
+import { PERMISSIONS, usePermissions } from "../main/index.ts";
 import { ChaiBlock } from "../types/ChaiBlock";
 import { useSelectedBlockIds } from "./useSelectedBlockIds";
-
 export const removeNestedBlocks = (blocks: ChaiBlock[], blockIds: Array<string>): ChaiBlock[] => {
   // Create a copy of blocks to modify
   let modifiedBlocks = [...blocks];
@@ -76,13 +76,15 @@ export const useRemoveBlocks = () => {
   const [presentBlocks] = useBlocksStore();
   const [ids, setSelectedIds] = useSelectedBlockIds();
   const { setNewBlocks } = useBlocksStoreUndoableActions();
+  const { hasPermission } = usePermissions();
 
   return useCallback(
     (blockIds: Array<string>) => {
+      if (!hasPermission(PERMISSIONS.DELETE_BLOCK)) return;
       const parentBlockId = find(presentBlocks, { _id: blockIds[0] })?._parent || null;
       setNewBlocks(removeNestedBlocks(presentBlocks, blockIds));
       setTimeout(() => setSelectedIds(parentBlockId ? [parentBlockId] : []), 200);
     },
-    [presentBlocks, setSelectedIds, ids],
+    [presentBlocks, setSelectedIds, ids, hasPermission],
   );
 };

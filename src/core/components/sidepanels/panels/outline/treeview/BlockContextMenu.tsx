@@ -1,17 +1,13 @@
 import { CardStackIcon, CardStackPlusIcon, CopyIcon, ScissorsIcon, TrashIcon } from "@radix-ui/react-icons";
 import { PencilIcon, PlusIcon } from "lucide-react";
-import React, { useCallback, useEffect } from "react";
+import React, { Suspense, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../../../../../../ui/shadcn/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../../../../../ui";
 import { CHAI_BUILDER_EVENTS } from "../../../../../events.ts";
 import { canAddChildBlock, canDeleteBlock, canDuplicateBlock } from "../../../../../functions/block-helpers.ts";
 import {
   useBlocksStore,
+  useBuilderProp,
   useCopyBlockIds,
   useCutBlockIds,
   useDuplicateBlocks,
@@ -20,8 +16,8 @@ import {
   useSelectedBlock,
   useSelectedBlockIds,
 } from "../../../../../hooks/index.ts";
+import { PERMISSIONS, usePermissions } from "../../../../../main/index.ts";
 import { pubsub } from "../../../../../pubsub.ts";
-
 export const PasteAtRootContextMenu = ({ parentContext, setParentContext }) => {
   const { t } = useTranslation();
   const { canPaste, pasteBlocks } = usePasteBlocks();
@@ -120,12 +116,10 @@ const RemoveBlocks = () => {
 
 const RenameBlock = ({ node }: { node: any }) => {
   const { t } = useTranslation();
-  console.log(node);
   return (
     <DropdownMenuItem
       onClick={(e) => {
         e.stopPropagation();
-        console.log(node);
         node.edit();
         node.deselect();
       }}
@@ -140,6 +134,8 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
   const [selectedIds] = useSelectedBlockIds();
   const duplicateBlocks = useDuplicateBlocks();
   const selectedBlock = useSelectedBlock();
+  const { hasPermission } = usePermissions();
+  const blockMoreOptions = useBuilderProp("blockMoreOptions", []);
 
   const duplicate = useCallback(() => {
     duplicateBlocks(selectedIds);
@@ -147,22 +143,31 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
 
   return (
     <DropdownMenuContent side="bottom" className="border-border text-xs">
-      <DropdownMenuItem
-        disabled={!canAddChildBlock(selectedBlock?._type)}
-        className="flex items-center gap-x-4 text-xs"
-        onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, selectedBlock)}>
-        <PlusIcon size={"14"} /> {t("Add block")}
-      </DropdownMenuItem>
-      <DropdownMenuItem
-        disabled={!canDuplicateBlock(selectedBlock?._type)}
-        className="flex items-center gap-x-4 text-xs"
-        onClick={duplicate}>
-        <CardStackPlusIcon /> {t("Duplicate")}
-      </DropdownMenuItem>
+      {hasPermission(PERMISSIONS.ADD_BLOCK) && (
+        <>
+          <DropdownMenuItem
+            disabled={!canAddChildBlock(selectedBlock?._type)}
+            className="flex items-center gap-x-4 text-xs"
+            onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, selectedBlock)}>
+            <PlusIcon size={"14"} /> {t("Add block")}
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            disabled={!canDuplicateBlock(selectedBlock?._type)}
+            className="flex items-center gap-x-4 text-xs"
+            onClick={duplicate}>
+            <CardStackPlusIcon /> {t("Duplicate")}
+          </DropdownMenuItem>
+        </>
+      )}
       <RenameBlock node={node} />
-      <CutBlocks />
-      <CopyPasteBlocks />
-      <RemoveBlocks />
+      {hasPermission(PERMISSIONS.MOVE_BLOCK) && <CutBlocks />}
+      {hasPermission(PERMISSIONS.ADD_BLOCK) && <CopyPasteBlocks />}
+      {hasPermission(PERMISSIONS.DELETE_BLOCK) && <RemoveBlocks />}
+      {blockMoreOptions.map((dropdownItem, index) => (
+        <Suspense fallback={<span>Loading...</span>} key={`more-${index}`}>
+          {React.createElement(dropdownItem, { block: selectedBlock })}
+        </Suspense>
+      ))}
     </DropdownMenuContent>
   );
 };

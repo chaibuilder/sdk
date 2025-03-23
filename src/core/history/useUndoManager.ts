@@ -1,9 +1,9 @@
-import UndoManager from "undo-manager";
-import { useEffect } from "react";
-import { noop } from "lodash-es";
 import { useAtom } from "jotai";
-import { builderSaveStateAtom } from "../hooks/useSavePage.ts";
+import { noop } from "lodash-es";
+import { useEffect } from "react";
+import UndoManager from "undo-manager";
 import { useBuilderProp } from "../hooks";
+import { builderSaveStateAtom } from "../hooks/useSavePage.ts";
 
 const undoManager = new UndoManager();
 undoManager.setLimit(50);
