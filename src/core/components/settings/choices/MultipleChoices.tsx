@@ -1,12 +1,12 @@
+import { BoxIcon } from "@radix-ui/react-icons";
 import { get, map, startCase, toLower } from "lodash-es";
 import React, { useCallback, useState } from "react";
-import { BoxIcon } from "@radix-ui/react-icons";
+import { useTranslation } from "react-i18next";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../ui";
+import { EDITOR_ICONS } from "../../../constants/ICONS";
 import { ClassDerivedObject } from "../../../functions/Class";
 import { useSelectedBlockCurrentClasses } from "../../../hooks";
-import { EDITOR_ICONS } from "../../../constants/ICONS";
 import { BlockStyle } from "./BlockStyle";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../ui";
-import { useTranslation } from "react-i18next";
 
 const basicUnits = ["px", "%", "em", "rem", "ch", "vh", "vw"];
 
@@ -32,28 +32,26 @@ export const MultipleChoices = ({
       <div className="flex flex-row text-xs">
         {label && <span className="relative w-[70px] flex-none text-xs text-foreground">{t(label)}</span>}
         <div className="mb-3 flex grow flex-row flex-wrap gap-x-px">
-          {React.Children.toArray(
-            options.map(({ label: l, key }: any) => (
-              <div className="first:rounded-l last:rounded-r">
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button
-                      type="button"
-                      onClick={() => setSelectedProp(key)}
-                      className={`relative cursor-pointer rounded-full p-1 text-[8px] ${
-                        key === selectedProp ? "bg-[#3E57F0] text-white" : "text-gray-600 dark:text-gray-300"
-                      }`}>
-                      {React.createElement("div", {
-                        className: hasAnyClassSet(key) ? "-bottom-1.5 absolute bg-[#3E57F0] h-[2px] left-0 w-full" : "",
-                      })}
-                      {React.createElement(get(EDITOR_ICONS, key, BoxIcon), { className: "text-inherit w-3 h-3" })}
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent>{startCase(toLower(l))}</TooltipContent>
-                </Tooltip>
-              </div>
-            )),
-          )}
+          {options.map(({ label: l, key }: any, index: number) => (
+            <div key={`option-${index}`} className="first:rounded-l last:rounded-r">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedProp(key)}
+                    className={`relative cursor-pointer rounded-full p-1 text-[8px] ${
+                      key === selectedProp ? "bg-[#3E57F0] text-white" : "text-gray-600 dark:text-gray-300"
+                    }`}>
+                    {React.createElement("div", {
+                      className: hasAnyClassSet(key) ? "-bottom-1.5 absolute bg-[#3E57F0] h-[2px] left-0 w-full" : "",
+                    })}
+                    {React.createElement(get(EDITOR_ICONS, key, BoxIcon), { className: "text-inherit w-3 h-3" })}
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>{startCase(toLower(l))}</TooltipContent>
+              </Tooltip>
+            </div>
+          ))}
         </div>
       </div>
       <div className="mt-0 flex items-center">

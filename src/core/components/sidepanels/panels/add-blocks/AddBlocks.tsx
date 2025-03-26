@@ -190,24 +190,20 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
                   <div key={group} className="space-y-3">
                     <h3 className="px-1 text-sm font-medium">{capitalize(t(group.toLowerCase()))}</h3>
                     <div className={"grid gap-2 " + gridCols}>
-                      {React.Children.toArray(
-                        reject(
-                          selectedGroup === "all"
-                            ? filter(values(displayedBlocks), { group })
-                            : values(displayedBlocks),
-                          { hidden: true },
-                        ).map((block) => (
-                          <CoreBlock
-                            key={block.type}
-                            parentId={parentId}
-                            position={position}
-                            block={block}
-                            disabled={
-                              !canAcceptChildBlock(parentType, block.type) || !canBeNestedInside(parentType, block.type)
-                            }
-                          />
-                        )),
-                      )}
+                      {reject(
+                        selectedGroup === "all" ? filter(values(displayedBlocks), { group }) : values(displayedBlocks),
+                        { hidden: true },
+                      ).map((block) => (
+                        <CoreBlock
+                          key={block.type}
+                          parentId={parentId}
+                          position={position}
+                          block={block}
+                          disabled={
+                            !canAcceptChildBlock(parentType, block.type) || !canBeNestedInside(parentType, block.type)
+                          }
+                        />
+                      ))}
                     </div>
                   </div>
                 ))}

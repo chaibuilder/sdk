@@ -1,11 +1,10 @@
+import { flatten, has, intersection, map, startCase } from "lodash-es";
 import React, { createContext, useCallback, useMemo } from "react";
-import { flatten, has, intersection, map } from "lodash-es";
-import { MultipleChoices } from "../choices/MultipleChoices";
-import { BlockStyle } from "../choices/BlockStyle";
-import { useSelectedBlockCurrentClasses } from "../../../hooks";
 import { useTranslation } from "react-i18next";
 import { AccordionContent, AccordionItem, AccordionTrigger } from "../../../../ui";
-import { startCase } from "lodash-es";
+import { useSelectedBlockCurrentClasses } from "../../../hooks";
+import { BlockStyle } from "../choices/BlockStyle";
+import { MultipleChoices } from "../choices/MultipleChoices";
 
 const NestedOptions = ({ heading, items }: any) => {
   const { t } = useTranslation();
@@ -97,29 +96,7 @@ export const StylingGroup = ({ section, showAccordian }: any) => {
             </div>
           </AccordionTrigger>
           <AccordionContent className="py-2">
-            {React.Children.toArray(
-              section.items.map((item: any) => {
-                if (has(item, "component")) {
-                  return React.createElement(item.component, { key: item.label });
-                }
-                if (!has(item, "styleType")) {
-                  return <BlockStyle key={item.label} {...item} />;
-                }
-                if (item.styleType === "multiple") {
-                  return <MultipleChoices key={item.label} {...item} />;
-                }
-                if (item.styleType === "accordion" && matchCondition(item?.conditions)) {
-                  return <NestedOptions key={item.label} {...item} />;
-                }
-                return null;
-              }),
-            )}
-          </AccordionContent>
-        </AccordionItem>
-      ) : (
-        <div className="py-2">
-          {React.Children.toArray(
-            section.items.map((item: any) => {
+            {section.items.map((item: any) => {
               if (has(item, "component")) {
                 return React.createElement(item.component, { key: item.label });
               }
@@ -133,8 +110,26 @@ export const StylingGroup = ({ section, showAccordian }: any) => {
                 return <NestedOptions key={item.label} {...item} />;
               }
               return null;
-            }),
-          )}
+            })}
+          </AccordionContent>
+        </AccordionItem>
+      ) : (
+        <div className="py-2">
+          {section.items.map((item: any) => {
+            if (has(item, "component")) {
+              return React.createElement(item.component, { key: item.label });
+            }
+            if (!has(item, "styleType")) {
+              return <BlockStyle key={item.label} {...item} />;
+            }
+            if (item.styleType === "multiple") {
+              return <MultipleChoices key={item.label} {...item} />;
+            }
+            if (item.styleType === "accordion" && matchCondition(item?.conditions)) {
+              return <NestedOptions key={item.label} {...item} />;
+            }
+            return null;
+          })}
         </div>
       )}
     </SectionContext.Provider>

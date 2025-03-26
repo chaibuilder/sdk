@@ -8,8 +8,7 @@ type RichText = string;
 export type UiLibraryBlock = {
   uuid: string;
   group: string;
-  name?: string;
-  path: string;
+  name: string;
   preview?: string;
   tags?: string[];
   description?: string;
@@ -18,7 +17,7 @@ export type UiLibraryBlock = {
 export interface UILibrary {
   uuid: string;
   name: string;
-  url: string;
+  url?: string;
   blocks?: UiLibraryBlock[];
   link?: string;
   description?: RichText;
@@ -215,8 +214,6 @@ export interface ChaiBuilderEditorProps {
   uiLibraries?: Omit<UILibrary, "blocks">[];
   getUILibraryBlocks?: (library: UILibrary) => Promise<UiLibraryBlock[]>;
   getUILibraryBlock?: (library: UILibrary, uiLibBlock: UiLibraryBlock) => Promise<ChaiBlock[]>;
-
-  getBlockAsyncProps?: (block: ChaiBlock) => Promise<string>;
 
   getPartialBlocks?: () => Promise<Record<string, { type: string; name: string; description?: string }>>;
 

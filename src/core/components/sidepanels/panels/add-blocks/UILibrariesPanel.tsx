@@ -1,24 +1,24 @@
-import { capitalize, filter, first, get, groupBy, has, isEmpty, map, noop, values } from "lodash-es";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useAddBlock, useBuilderProp, useSelectedBlockIds } from "../../../../hooks";
 import { syncBlocksWithDefaults, useRegisteredChaiBlocks } from "@chaibuilder/runtime";
-import { Loader } from "lucide-react";
-import { atom, useAtom } from "jotai";
-import { cn } from "../../../../functions/Functions.ts";
 import { CaretRightIcon } from "@radix-ui/react-icons";
-import { ScrollArea, Skeleton, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../ui";
-import { UILibrary, UiLibraryBlock } from "../../../../types/chaiBuilderEditorProps.ts";
-import { ChaiBlock } from "../../../../types/ChaiBlock.ts";
-import { UILibrariesSelect } from "./UiLibrariesSelect.tsx";
 import { useFeature } from "flagged";
+import { atom, useAtom } from "jotai";
+import { capitalize, filter, first, get, groupBy, has, isEmpty, map, noop, values } from "lodash-es";
+import { Loader } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { ScrollArea, Skeleton, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../ui";
+import { cn } from "../../../../functions/Functions.ts";
+import { useAddBlock, useBuilderProp, useSelectedBlockIds } from "../../../../hooks";
+import { ChaiBlock } from "../../../../types/ChaiBlock.ts";
+import { UILibrary, UiLibraryBlock } from "../../../../types/chaiBuilderEditorProps.ts";
+import { UILibrariesSelect } from "./UiLibrariesSelect.tsx";
 
-import { draggedBlockAtom } from "../../../canvas/dnd/atoms.ts";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { selectedLibraryAtom } from "../../../../atoms/ui.ts";
 import { CHAI_BUILDER_EVENTS } from "../../../../events.ts";
 import { useBlockHighlight } from "../../../../hooks";
 import { pubsub } from "../../../../pubsub.ts";
+import { draggedBlockAtom } from "../../../canvas/dnd/atoms.ts";
 
 const BlockCard = ({
   block,
@@ -196,22 +196,20 @@ const UILibrarySection = ({ parentId, position }: { parentId?: string; position?
               <span className="text-xs font-bold text-gray-500">{t("Groups")}</span>
               <hr className="mt-1 border-border" />
               <div className="no-scrollbar mt-2 h-full max-h-full flex-1 overflow-y-auto pb-20">
-                {React.Children.toArray(
-                  map(mergedGroups, (_groupedBlocks, group) => (
-                    <div
-                      onMouseEnter={() => handleMouseEnter(group)}
-                      onMouseLeave={() => clearTimeout(timeoutRef.current)}
-                      key={group}
-                      onClick={() => setGroup(group)}
-                      className={cn(
-                        "flex w-full cursor-pointer items-center justify-between rounded-md p-2 text-sm text-foreground transition-all ease-in-out hover:bg-gray-200 dark:hover:bg-gray-800",
-                        group === selectedGroup ? "bg-blue-500 text-white hover:bg-blue-600" : "",
-                      )}>
-                      <span>{capitalize(t(group.toLowerCase()))}</span>
-                      <CaretRightIcon className="ml-2 h-5 w-5" />
-                    </div>
-                  )),
-                )}
+                {map(mergedGroups, (_groupedBlocks, group) => (
+                  <div
+                    onMouseEnter={() => handleMouseEnter(group)}
+                    onMouseLeave={() => clearTimeout(timeoutRef.current)}
+                    key={group}
+                    onClick={() => setGroup(group)}
+                    className={cn(
+                      "flex w-full cursor-pointer items-center justify-between rounded-md p-2 text-sm text-foreground transition-all ease-in-out hover:bg-gray-200 dark:hover:bg-gray-800",
+                      group === selectedGroup ? "bg-blue-500 text-white hover:bg-blue-600" : "",
+                    )}>
+                    <span>{capitalize(t(group.toLowerCase()))}</span>
+                    <CaretRightIcon className="ml-2 h-5 w-5" />
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -220,18 +218,26 @@ const UILibrarySection = ({ parentId, position }: { parentId?: string; position?
             className="z-10 -mt-2 flex h-full max-h-full w-full flex-col gap-2 border-l border-border transition-all ease-linear">
             <div className="grid grid-cols-2 gap-2 px-2">
               <div className="flex flex-col gap-1">
-                {React.Children.toArray(
-                  firstBlocks.map((block: UiLibraryBlock) => (
-                    <BlockCard parentId={parentId} position={position} block={block} library={library} />
-                  )),
-                )}
+                {firstBlocks.map((block: UiLibraryBlock, index: number) => (
+                  <BlockCard
+                    key={`block-${index}`}
+                    parentId={parentId}
+                    position={position}
+                    block={block}
+                    library={library}
+                  />
+                ))}
               </div>
               <div className="flex flex-col gap-1">
-                {React.Children.toArray(
-                  secondBlocks.map((block: UiLibraryBlock) => (
-                    <BlockCard parentId={parentId} position={position} block={block} library={library} />
-                  )),
-                )}
+                {secondBlocks.map((block: UiLibraryBlock, index: number) => (
+                  <BlockCard
+                    key={`block-${index}`}
+                    parentId={parentId}
+                    position={position}
+                    block={block}
+                    library={library}
+                  />
+                ))}
               </div>
             </div>
             <br />

@@ -1,11 +1,11 @@
-import { get } from "lodash-es";
-import React, { useContext, useMemo } from "react";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
+import { get } from "lodash-es";
+import { useContext, useMemo } from "react";
+import { Input, Tooltip, TooltipContent, TooltipTrigger } from "../../../../ui";
 import { useTailwindClassList } from "../../../constants/CLASSES_LIST";
+import { useUndoManager } from "../../../hooks";
 import { useCurrentClassByProperty } from "./BlockStyle";
 import { StyleContext } from "./StyleContext";
-import { Input, Tooltip, TooltipContent, TooltipTrigger } from "../../../../ui";
-import { useUndoManager } from "../../../hooks";
 
 export const DropDownChoices = ({ label, property, onChange }: any) => {
   const { getClasses } = useTailwindClassList();
@@ -63,13 +63,11 @@ export function DropDown({ selected, onChange, rounded = false, options, disable
       value={currentClassName}>
       {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
       <option className="bg-transparent" value="" />
-      {React.Children.toArray(
-        options.map((clsName: string) => (
-          <option className="bg-transparent" value={clsName}>
-            {clsName}
-          </option>
-        )),
-      )}
+      {options.map((clsName: string, index: number) => (
+        <option key={`option-${index}`} className="bg-transparent" value={clsName}>
+          {clsName}
+        </option>
+      ))}
     </select>
   );
 }
