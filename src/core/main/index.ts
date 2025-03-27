@@ -11,6 +11,10 @@ import Outline from "../components/sidepanels/panels/outline/treeview/ListTree.t
 import ThemeConfigPanel from "../components/sidepanels/panels/theme-configuration/ThemeConfigPanel.tsx";
 import i18n from "../locales/load";
 
+if (typeof window === "undefined") {
+  throw new Error("@chaibuilder/sdk is only supported in the browser. Avoid using it in the server side.");
+}
+
 export { registerChaiBlock } from "@chaibuilder/runtime";
 export { AISetContext, AIUserPrompt } from "../components/AskAi.tsx";
 export { Breakpoints as ScreenSizes } from "../components/canvas/topbar/Breakpoints.tsx";
