@@ -9,7 +9,7 @@ import { ScrollArea, Skeleton, Tooltip, TooltipContent, TooltipTrigger } from ".
 import { cn } from "../../../../functions/Functions.ts";
 import { useAddBlock, useBuilderProp, useSelectedBlockIds } from "../../../../hooks";
 import { ChaiBlock } from "../../../../types/ChaiBlock.ts";
-import { UILibrary, UiLibraryBlock } from "../../../../types/chaiBuilderEditorProps.ts";
+import { ChaiUILibrary, ChaiUILibraryBlock } from "../../../../types/chaiBuilderEditorProps.ts";
 import { UILibrariesSelect } from "./UiLibrariesSelect.tsx";
 
 import clsx from "clsx";
@@ -27,8 +27,8 @@ const BlockCard = ({
   parentId = undefined,
   position = -1,
 }: {
-  library: UILibrary;
-  block: UiLibraryBlock;
+  library: ChaiUILibrary;
+  block: ChaiUILibraryBlock;
   parentId?: string;
   position?: number;
 }) => {
@@ -195,7 +195,7 @@ const UILibrarySection = ({ parentId, position }: { parentId?: string; position?
             className="z-10 -mt-2 flex h-full max-h-full w-full flex-col gap-2 border-l border-border transition-all ease-linear">
             <div className="grid grid-cols-2 gap-2 px-2">
               <div className="flex flex-col gap-1">
-                {firstBlocks.map((block: UiLibraryBlock, index: number) => (
+                {firstBlocks.map((block: ChaiUILibraryBlock, index: number) => (
                   <BlockCard
                     key={`block-${index}`}
                     parentId={parentId}
@@ -206,7 +206,7 @@ const UILibrarySection = ({ parentId, position }: { parentId?: string; position?
                 ))}
               </div>
               <div className="flex flex-col gap-1">
-                {secondBlocks.map((block: UiLibraryBlock, index: number) => (
+                {secondBlocks.map((block: ChaiUILibraryBlock, index: number) => (
                   <BlockCard
                     key={`block-${index}`}
                     parentId={parentId}

@@ -1,13 +1,13 @@
-import { useAtom } from "jotai";
-import { lsAiContextAtom, lsBlocksAtom } from "./__dev/atoms-dev.ts";
-import { ChaiBlock, ChaiBuilderEditor } from "./core/main";
-import { loadWebBlocks } from "./web-blocks";
-import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
-import { useState } from "react";
-import { UILibrary, UiLibraryBlock } from "./core/types/chaiBuilderEditorProps.ts";
-import PreviewWeb from "./__dev/preview/WebPreview.tsx";
 import axios from "axios";
+import { useAtom } from "jotai";
+import { useState } from "react";
+import { lsAiContextAtom, lsBlocksAtom } from "./__dev/atoms-dev.ts";
 import CustomLayout from "./__dev/CustomLayout.tsx";
+import PreviewWeb from "./__dev/preview/WebPreview.tsx";
+import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
+import { ChaiBlock, ChaiBuilderEditor } from "./core/main";
+import { ChaiUILibrary, ChaiUILibraryBlock } from "./core/types/chaiBuilderEditorProps.ts";
+import { loadWebBlocks } from "./web-blocks";
 // import ptBR from "./__dev/pt-BR.json";
 // import es from "./__dev/es.json";
 
@@ -44,14 +44,14 @@ function ChaiBuilderCustom() {
         console.log("askAiCallBack", type, prompt, blocks);
         return new Promise((resolve) => resolve({ error: new Error("Not implemented") }));
       }}
-      getUILibraryBlock={async (uiLibrary: UILibrary, uiLibBlock: UiLibraryBlock) => {
+      getUILibraryBlock={async (uiLibrary: ChaiUILibrary, uiLibBlock: ChaiUILibraryBlock) => {
         const response = await fetch(uiLibrary.url + "/blocks/" + uiLibBlock.path);
         const html = await response.text();
         console.log(html);
         const htmlWithoutChaiStudio = html.replace(/---([\s\S]*?)---/g, "");
         return getBlocksFromHTML(`${htmlWithoutChaiStudio}`) as ChaiBlock[];
       }}
-      getUILibraryBlocks={async (uiLibrary: UILibrary) => {
+      getUILibraryBlocks={async (uiLibrary: ChaiUILibrary) => {
         try {
           const response = await axios.get(uiLibrary.url + "/blocks.json");
           const blocks = await response.data;

@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { UILibrary } from "../../../../types/chaiBuilderEditorProps.ts";
+import { ChaiUILibrary } from "../../../../types/chaiBuilderEditorProps.ts";
 import ChaiSelect from "../../../ChaiSelect.tsx";
 
 export function UILibrariesSelect({
@@ -8,7 +8,7 @@ export function UILibrariesSelect({
   setLibrary,
 }: {
   library?: string;
-  uiLibraries: (UILibrary & { id: string })[];
+  uiLibraries: (ChaiUILibrary & { id: string })[];
   setLibrary: (library: string) => void;
 }) {
   const { t } = useTranslation();

@@ -3,21 +3,21 @@ import { DropdownMenuItem } from "../../ui/shadcn/components/ui/dropdown-menu.ts
 import { LayoutVariant } from "../constants/LAYOUT_MODE.ts";
 import { ChaiBlock } from "./ChaiBlock";
 
-export type UiLibraryBlock = {
+export type ChaiUILibraryBlock<T = Record<string, any>> = {
   id: string;
   group: string;
   name: string;
   preview?: string;
   tags?: string[];
   description?: string;
-} & Record<string, any>;
+} & T;
 
-export type UILibrary = {
+export type ChaiUILibrary<T = Record<string, any>> = {
   id: string;
   name: string;
-  blocks?: UiLibraryBlock[];
+  blocks?: ChaiUILibraryBlock[];
   description?: string;
-} & Record<string, any>;
+} & T;
 
 type ReactComponentType = React.ComponentType<any>;
 
@@ -207,9 +207,9 @@ export interface ChaiBuilderEditorProps {
   saveAiContextCallback?: (content: string) => Promise<true | Error>;
   aiContext?: string;
 
-  uiLibraries?: Omit<UILibrary, "blocks">[];
-  getUILibraryBlocks?: (library: UILibrary) => Promise<UiLibraryBlock[]>;
-  getUILibraryBlock?: (library: UILibrary, uiLibBlock: UiLibraryBlock) => Promise<ChaiBlock[]>;
+  uiLibraries?: Omit<ChaiUILibrary, "blocks">[];
+  getUILibraryBlocks?: (library: ChaiUILibrary) => Promise<ChaiUILibraryBlock[]>;
+  getUILibraryBlock?: (library: ChaiUILibrary, uiLibBlock: ChaiUILibraryBlock) => Promise<ChaiBlock[]>;
 
   getPartialBlocks?: () => Promise<Record<string, { type: string; name: string; description?: string }>>;
 
