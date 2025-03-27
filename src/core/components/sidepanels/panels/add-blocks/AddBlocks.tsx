@@ -8,7 +8,7 @@ import { showPredefinedBlockCategoryAtom } from "../../../../atoms/ui";
 import { canAcceptChildBlock, canBeNestedInside } from "../../../../functions/block-helpers.ts";
 import { useBlocksStore, useBuilderProp, usePermissions } from "../../../../hooks";
 import { usePartialBlocksList } from "../../../../hooks/usePartialBlocksStore";
-import { CHAI_BUILDER_EVENTS, mergeClasses, PERMISSIONS, UILibraries } from "../../../../main";
+import { CHAI_BUILDER_EVENTS, mergeClasses, PERMISSIONS, UILibrariesPanel } from "../../../../main";
 import { pubsub } from "../../../../pubsub.ts";
 import { CoreBlock } from "./CoreBlock";
 import { DefaultChaiBlocks } from "./DefaultBlocks.tsx";
@@ -286,7 +286,7 @@ const AddBlocksPanel = ({
           </div>
         </TabsContent>
         <TabsContent value="library" className="h-full max-h-full flex-1 pb-20">
-          <UILibraries parentId={parentId} position={position} />
+          <UILibrariesPanel parentId={parentId} position={position} />
         </TabsContent>
         {hasPartialBlocks && (
           <TabsContent value="partials" className="h-full max-h-full flex-1 pb-20">

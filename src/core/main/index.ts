@@ -1,5 +1,4 @@
 import ChaiBuilderCanvas from "../components/canvas/CanvasArea.tsx";
-import ThemeOptions from "../components/sidepanels/panels/theme-configuration/ThemeConfigPanel.tsx";
 import { ChaiBuilderEditorProps } from "../types";
 import { ChaiBlock } from "../types/ChaiBlock";
 
@@ -35,8 +34,7 @@ export {
   ImportHTML,
   Outline,
   ThemeConfigPanel,
-  ThemeOptions,
-  UILibrariesPanel as UILibraries,
+  UILibrariesPanel,
 };
 export type { ChaiBlock, ChaiBuilderEditorProps };
 
