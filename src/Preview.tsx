@@ -1,16 +1,18 @@
 import { useAtom } from "jotai";
 import { useEffect, useMemo, useState } from "react";
-import { lsBlocksAtom, lsThemeAtom } from "./__dev/atoms-dev.ts";
+import { lsThemeAtom } from "./__dev/atoms-dev.ts";
 import registerCustomBlocks from "./__dev/blocks/index.tsx";
+import { D_Blocks } from "./__dev/page.ts";
+import { ChaiBlock } from "./core/types/ChaiBlock.ts";
 import { getChaiThemeCssVariables, getStylesForBlocks, RenderChaiBlocks } from "./render";
 import { loadWebBlocks } from "./web-blocks/index.ts";
-
 loadWebBlocks();
 registerCustomBlocks();
 
 function Preview() {
-  const [blocks] = useAtom(lsBlocksAtom);
+  // const [blocks] = useAtom(lsBlocksAtom);
   const [theme] = useAtom(lsThemeAtom);
+  let blocks = D_Blocks as ChaiBlock[];
 
   const [allStyles, setStyles] = useState("");
 
