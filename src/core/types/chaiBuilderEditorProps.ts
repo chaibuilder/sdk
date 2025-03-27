@@ -3,25 +3,21 @@ import { DropdownMenuItem } from "../../ui/shadcn/components/ui/dropdown-menu.ts
 import { LayoutVariant } from "../constants/LAYOUT_MODE.ts";
 import { ChaiBlock } from "./ChaiBlock";
 
-type RichText = string;
-
 export type UiLibraryBlock = {
-  uuid: string;
+  id: string;
   group: string;
   name: string;
   preview?: string;
   tags?: string[];
   description?: string;
-};
+} & Record<string, any>;
 
-export interface UILibrary {
-  uuid: string;
+export type UILibrary = {
+  id: string;
   name: string;
-  url?: string;
   blocks?: UiLibraryBlock[];
-  link?: string;
-  description?: RichText;
-}
+  description?: string;
+} & Record<string, any>;
 
 type ReactComponentType = React.ComponentType<any>;
 

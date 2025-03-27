@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
 import { useUndoManager } from "../history/useUndoManager";
+import { useLibraryBlocks } from "./use-library-blocks.tsx";
 import { useAddBlock } from "./useAddBlock";
 import { useAddClassesToBlocks } from "./useAddClassesToBlocks";
 import { useAskAi } from "./useAskAi.ts";
@@ -60,6 +61,7 @@ export {
   useHiddenBlockIds,
   useHighlightBlockId,
   useLanguages,
+  useLibraryBlocks,
   usePartailBlocksStore,
   usePartialBlocksList,
   usePasteBlocks,

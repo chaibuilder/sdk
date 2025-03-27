@@ -11,11 +11,6 @@ async function enableMocking() {
   if (import.meta.env.MODE !== "development") {
     return;
   }
-
-  // const { worker } = await import("./__dev/mock/browser");
-
-  // `worker.start()` returns a Promise that resolves
-  // once the Service Worker is up and ready to intercept requests.
   return true;
 }
 

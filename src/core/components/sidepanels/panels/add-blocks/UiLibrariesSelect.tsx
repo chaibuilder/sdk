@@ -8,7 +8,7 @@ export function UILibrariesSelect({
   setLibrary,
 }: {
   library?: string;
-  uiLibraries: UILibrary[];
+  uiLibraries: (UILibrary & { id: string })[];
   setLibrary: (library: string) => void;
 }) {
   const { t } = useTranslation();
@@ -19,7 +19,7 @@ export function UILibrariesSelect({
       <ChaiSelect
         className="mt-1"
         options={uiLibraries.map((uiLibrary) => ({
-          value: uiLibrary.uuid,
+          value: uiLibrary.id,
           label: uiLibrary.name,
         }))}
         defaultValue={library}

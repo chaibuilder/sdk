@@ -1,10 +1,10 @@
 import { syncBlocksWithDefaults, useRegisteredChaiBlocks } from "@chaibuilder/runtime";
 import { CaretRightIcon } from "@radix-ui/react-icons";
 import { useFeature } from "flagged";
-import { atom, useAtom } from "jotai";
+import { useAtom } from "jotai";
 import { capitalize, filter, first, get, groupBy, has, isEmpty, map, noop, values } from "lodash-es";
 import { Loader } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { ScrollArea, Skeleton, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../ui";
 import { cn } from "../../../../functions/Functions.ts";
 import { useAddBlock, useBuilderProp, useSelectedBlockIds } from "../../../../hooks";
@@ -17,6 +17,7 @@ import { useTranslation } from "react-i18next";
 import { selectedLibraryAtom } from "../../../../atoms/ui.ts";
 import { CHAI_BUILDER_EVENTS } from "../../../../events.ts";
 import { useBlockHighlight } from "../../../../hooks";
+import { useLibraryBlocks } from "../../../../hooks/use-library-blocks.tsx";
 import { pubsub } from "../../../../pubsub.ts";
 import { draggedBlockAtom } from "../../../canvas/dnd/atoms.ts";
 
@@ -124,36 +125,12 @@ const BlockCard = ({
   );
 };
 
-const libraryBlocksAtom = atom<{ [uuid: string]: { loading: "idle" | "loading" | "complete"; blocks: any[] | null } }>(
-  {},
-);
-
-const useLibraryBlocks = (library?: UILibrary) => {
-  const [libraryBlocks, setLibraryBlocks] = useAtom(libraryBlocksAtom);
-  const getBlocks = useBuilderProp("getUILibraryBlocks", noop);
-  const blocks = get(libraryBlocks, `${library?.uuid}.blocks`, null);
-  const state = get(libraryBlocks, `${library?.uuid}.loading`, "idle");
-  const loadingRef = useRef("idle");
-  useEffect(() => {
-    (async () => {
-      if (state === "complete" || loadingRef.current === "loading") return;
-      loadingRef.current = "loading";
-      setLibraryBlocks((prev) => ({ ...prev, [library?.uuid]: { loading: "loading", blocks: [] } }));
-      const libraryBlocks: UiLibraryBlock[] = await getBlocks(library);
-      loadingRef.current = "idle";
-      setLibraryBlocks((prev) => ({ ...prev, [library?.uuid]: { loading: "complete", blocks: libraryBlocks || [] } }));
-    })();
-  }, [library, blocks, state, loadingRef, setLibraryBlocks, getBlocks]);
-
-  return { data: blocks || [], isLoading: state === "loading" };
-};
-
 const UILibrarySection = ({ parentId, position }: { parentId?: string; position?: number }) => {
   const [selectedLibrary, setLibrary] = useAtom(selectedLibraryAtom);
   const uiLibraries = useBuilderProp("uiLibraries", []);
   const registeredBlocks = useRegisteredChaiBlocks();
   const customBlocks = values(registeredBlocks).filter((block) => block.category === "custom");
-  const library = uiLibraries.find((library) => library.uuid === selectedLibrary) || first(uiLibraries);
+  const library = uiLibraries.find((library) => library.id === selectedLibrary) || first(uiLibraries);
   const { data: libraryBlocks, isLoading } = useLibraryBlocks(library);
 
   const mergedGroups = groupBy([...libraryBlocks, ...customBlocks], "group");
@@ -191,7 +168,7 @@ const UILibrarySection = ({ parentId, position }: { parentId?: string; position?
       <div className="relative mt-2 flex h-full max-h-full overflow-hidden bg-background">
         <div className={"flex h-full pt-2"}>
           <div className={"flex h-full max-h-full w-60 flex-col gap-1 px-1 pr-2"}>
-            <UILibrariesSelect library={library?.uuid} setLibrary={setLibrary} uiLibraries={uiLibraries} />
+            <UILibrariesSelect library={library?.id} setLibrary={setLibrary} uiLibraries={uiLibraries} />
             <div className="mt-2 flex h-full max-h-full w-full flex-1 flex-col">
               <span className="text-xs font-bold text-gray-500">{t("Groups")}</span>
               <hr className="mt-1 border-border" />

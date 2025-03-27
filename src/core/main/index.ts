@@ -9,6 +9,7 @@ import AddBlocksPanel from "../components/sidepanels/panels/add-blocks/AddBlocks
 import ImportHTML from "../components/sidepanels/panels/add-blocks/ImportHTML.tsx";
 import UILibrariesPanel from "../components/sidepanels/panels/add-blocks/UILibrariesPanel.tsx";
 import Outline from "../components/sidepanels/panels/outline/treeview/ListTree.tsx";
+import ThemeConfigPanel from "../components/sidepanels/panels/theme-configuration/ThemeConfigPanel.tsx";
 import i18n from "../locales/load";
 
 export { registerChaiBlock } from "@chaibuilder/runtime";
@@ -33,6 +34,7 @@ export {
   i18n,
   ImportHTML,
   Outline,
+  ThemeConfigPanel,
   ThemeOptions,
   UILibrariesPanel as UILibraries,
 };
