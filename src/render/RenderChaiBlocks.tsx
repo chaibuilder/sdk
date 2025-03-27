@@ -13,6 +13,7 @@ import {
   keys,
   memoize,
   omit,
+  uniqBy,
 } from "lodash-es";
 import React, { createElement, Suspense } from "react";
 import { twMerge } from "tailwind-merge";
@@ -145,7 +146,10 @@ export function RenderChaiBlocks({
     ? filter(blocks, { _parent: parent })
     : filter(blocks, (block) => isEmpty(block._parent));
 
-  return filteredBlocks.map((block: ChaiBlock, index: number) => {
+  // NOTE: we need to remove duplicate blocks based on _id as partials can be used multiple times and hence same _id is present multiple times
+  const renderedBlocks = uniqBy(filteredBlocks, "_id");
+
+  return renderedBlocks.map((block: ChaiBlock, index: number) => {
     const attrs: any = {};
     const blocks = filter(allBlocks, { _parent: block._id });
     attrs.children =
