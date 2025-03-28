@@ -11,7 +11,8 @@ type ClassListType = {
 export const CLASSES_LIST: ClassListType = {
   textColor: {
     classes: [],
-    regExp: "text-(black|transparent|current|white|primary(-\\d+)?|secondary(-\\d+)?|\\S+-\\d+)",
+    regExp:
+      "text-(transparent|current|black|white|inherit|slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)(-\\d+)?|text-\\[(#[0-9a-fA-F]{3,8}|rgb\\(\\s*\\d+\\s*,\\s*\\d+\\s*,\\s*\\d+\\s*\\)|rgba\\(\\s*\\d+\\s*,\\s*\\d+\\s*,\\s*\\d+\\s*,\\s*[0-9.]+\\s*\\)|hsl\\([^)]+\\)|[a-zA-Z]+(?<!left|right|center|justify)|var\\([^)]+\\))\\]",
   },
   // LAYOUT
   aspectRatio: {
@@ -514,7 +515,8 @@ export const CLASSES_LIST: ClassListType = {
       "text-8xl",
       "text-9xl",
     ],
-    regExp: "text-(\\d+|\\S+|\\[.*\\])",
+    regExp:
+      "text-(xs|sm|base|lg|xl|2xl|3xl|4xl|5xl|6xl|7xl|8xl|9xl)|text-\\[([\\d.]+)(px|rem|em|vh|vw|%|ch)|calc\\([^)]+\\)|clamp\\([^)]+\\)|var\\([^)]+\\)\\]",
   },
   fontSmoothing: {
     classes: ["antialiased", "subpixel-antialiased"],
