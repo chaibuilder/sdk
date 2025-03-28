@@ -11,7 +11,7 @@ import { usePubSub } from "../../hooks/usePubSub.ts";
 import { useRightPanel } from "../../hooks/useTheme.ts";
 import { isDevelopment } from "../../import-html/general.ts";
 import { Outline } from "../../main";
-import { AskAI } from "../AskAi.tsx";
+import { Chat } from "../ai/Chat.tsx";
 import CanvasArea from "../canvas/CanvasArea.tsx";
 import { CanvasTopBar } from "../canvas/topbar/CanvasTopBar.tsx";
 import SettingsPanel from "../settings/SettingsPanel.tsx";
@@ -179,7 +179,7 @@ const RootLayout: ComponentType = () => {
                   </h2>
                   <div className="flex max-h-full w-full">
                     <Suspense fallback={<div>Loading...</div>}>
-                      {panel === "ai" ? <AskAI /> : panel === "theme" ? <ThemeConfigPanel /> : <SettingsPanel />}
+                      {panel === "ai" ? <Chat /> : panel === "theme" ? <ThemeConfigPanel /> : <SettingsPanel />}
                     </Suspense>
                   </div>
                 </div>

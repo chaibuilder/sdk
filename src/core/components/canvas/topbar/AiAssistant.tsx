@@ -5,6 +5,7 @@ import { useBuilderProp } from "../../../hooks";
 import { useAiAssistant } from "../../../hooks/useAskAi.ts";
 import { useRightPanel } from "../../../hooks/useTheme.ts";
 import { PERMISSIONS, usePermissions } from "../../../main/index.ts";
+
 export const AiAssistant = () => {
   const setAiAssistantActive = useAiAssistant();
   const [panel] = useRightPanel();
