@@ -85,6 +85,8 @@ export type ChaiBuilderThemeValues = {
   colors: Record<string, string[]>;
 };
 
+export type FontSelectOption = { title: string, value: string };
+
 export interface ChaiBuilderEditorProps {
   /**
    * Permissions
@@ -271,4 +273,6 @@ export interface ChaiBuilderEditorProps {
    */
   pageTypes?: PageType[];
   searchPageTypeItems?: (pageTypeKey: string, query: string) => Promise<PageTypeItem[] | Error>;
+
+  fonts?: FontSelectOption[]
 }
