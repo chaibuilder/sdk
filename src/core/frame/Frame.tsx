@@ -1,12 +1,12 @@
 // @ts-nocheck
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { FrameContextProvider } from "./Context";
 import Content from "./Content.js";
+import { FrameContextProvider } from "./Context";
 
 interface FrameProps {
   style?: object;
-  head?: React.ReactNode // eslint-disable-line;
+  head?: React.ReactNode; // eslint-disable-line;
   initialContent?: string;
   mountTarget?: string;
   className?: string;

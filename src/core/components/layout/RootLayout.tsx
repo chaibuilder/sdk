@@ -177,7 +177,7 @@ const RootLayout: ComponentType = () => {
                       </div>
                     </div>
                   </h2>
-                  <div className="flex max-h-full w-full">
+                  <div className="flex h-full max-h-full w-full">
                     <Suspense fallback={<div>Loading...</div>}>
                       {panel === "ai" ? <Chat /> : panel === "theme" ? <ThemeConfigPanel /> : <SettingsPanel />}
                     </Suspense>
