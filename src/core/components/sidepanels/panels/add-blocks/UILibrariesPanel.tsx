@@ -1,10 +1,10 @@
-import { syncBlocksWithDefaults, useRegisteredChaiBlocks } from "@chaibuilder/runtime";
+import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { CaretRightIcon } from "@radix-ui/react-icons";
 import { useFeature } from "flagged";
 import { useAtom } from "jotai";
-import { capitalize, filter, first, get, groupBy, has, isEmpty, map, noop, values } from "lodash-es";
+import { capitalize, filter, first, get, groupBy, has, isEmpty, keys, map, noop } from "lodash-es";
 import { Loader } from "lucide-react";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ScrollArea, Skeleton, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../ui";
 import { cn } from "../../../../functions/Functions.ts";
 import { useAddBlock, useBuilderProp, useSelectedBlockIds } from "../../../../hooks";
@@ -128,13 +128,17 @@ const BlockCard = ({
 const UILibrarySection = ({ parentId, position }: { parentId?: string; position?: number }) => {
   const [selectedLibrary, setLibrary] = useAtom(selectedLibraryAtom);
   const uiLibraries = useBuilderProp("uiLibraries", []);
-  const registeredBlocks = useRegisteredChaiBlocks();
-  const customBlocks = values(registeredBlocks).filter((block) => block.category === "custom");
   const library = uiLibraries.find((library) => library.id === selectedLibrary) || first(uiLibraries);
   const { data: libraryBlocks, isLoading } = useLibraryBlocks(library);
 
-  const mergedGroups = groupBy([...libraryBlocks, ...customBlocks], "group");
-  const [selectedGroup, setGroup] = useState("Hero");
+  const mergedGroups = groupBy([...libraryBlocks], "group");
+  const [selectedGroup, setGroup] = useState(null);
+
+  useEffect(() => {
+    if (selectedGroup) return;
+    setGroup(first(keys(mergedGroups)));
+  }, [mergedGroups, selectedGroup]);
+
   const blocks = get(mergedGroups, selectedGroup, []);
   const timeoutRef = useRef(null);
   const { t } = useTranslation();
