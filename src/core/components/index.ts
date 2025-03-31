@@ -9,13 +9,13 @@ import Outline from "../components/sidepanels/panels/outline/treeview/ListTree.t
 import i18n from "../locales/load";
 import ThemeOptions from "./sidepanels/panels/theme-configuration/ThemeConfigPanel.tsx";
 
-export { AISetContext, AIUserPrompt } from "../components/AskAi.tsx";
 export { Breakpoints as ScreenSizes } from "../components/canvas/topbar/Breakpoints.tsx";
 export { DarkMode as DarkModeSwitcher } from "../components/canvas/topbar/DarkMode.tsx";
 export { UndoRedo } from "../components/canvas/topbar/UndoRedo.tsx";
 export { AddBlocksDialog } from "../components/layout/AddBlocksDialog.tsx";
 export { BlockAttributesEditor } from "../components/settings/new-panel/BlockAttributesEditor.tsx";
 export { DefaultChaiBlocks } from "../components/sidepanels/panels/add-blocks/DefaultBlocks.tsx";
+export { AISetContext, AIUserPrompt } from "./ask-ai-panel.tsx";
 export { ChaiBuilderEditor } from "./chaibuilder-editor.tsx";
 export { default as JSONFormFieldTemplate } from "./settings/JSONFormFieldTemplate.tsx";
 export {

@@ -21,7 +21,7 @@ import {
   Skeleton,
   Textarea,
 } from "../../ui";
-import { useBuilderProp, useSelectedBlockIds } from "../hooks";
+import { useBuilderProp, useSelectedBlockIds } from "../hooks/index.ts";
 import { useAskAi } from "../hooks/useAskAi.ts";
 import { AskAiResponse } from "../types/chaiBuilderEditorProps.ts";
 import Countdown from "./Countdown.tsx";
