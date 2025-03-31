@@ -1,6 +1,7 @@
 export * from "./shadcn/components/ui/accordion";
 export * from "./shadcn/components/ui/alert";
 export * from "./shadcn/components/ui/alert-dialog";
+export * from "./shadcn/components/ui/avatar";
 export * from "./shadcn/components/ui/badge";
 export * from "./shadcn/components/ui/button";
 export * from "./shadcn/components/ui/card";
