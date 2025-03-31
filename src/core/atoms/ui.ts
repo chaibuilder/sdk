@@ -61,3 +61,6 @@ selectedLibraryAtom.debugLabel = "selectedLibraryAtom";
 
 export const dataBindingActiveAtom = atom(true);
 dataBindingActiveAtom.debugLabel = "dataBindingActiveAtom";
+
+export const sidebarActivePanelAtom = atom<string>("outline");
+sidebarActivePanelAtom.debugLabel = "sidebarActivePanelAtom";

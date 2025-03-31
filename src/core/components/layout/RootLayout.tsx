@@ -1,30 +1,35 @@
 import { LightningBoltIcon } from "@radix-ui/react-icons";
 import { motion } from "framer-motion";
-import { compact, get } from "lodash-es";
-import { Layers, Paintbrush, X } from "lucide-react";
+import { useAtom } from "jotai";
+import { compact, find, get } from "lodash-es";
+import { Layers, Paintbrush, SparklesIcon, X } from "lucide-react";
 import React, { ComponentType, lazy, MouseEvent, Suspense, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../ui";
+import { sidebarActivePanelAtom } from "../../atoms/ui.ts";
 import { CHAI_BUILDER_EVENTS } from "../../events.ts";
 import { useBuilderProp } from "../../hooks";
 import { usePubSub } from "../../hooks/usePubSub.ts";
 import { useRightPanel } from "../../hooks/useTheme.ts";
 import { isDevelopment } from "../../import-html/general.ts";
 import { Outline } from "../../main";
-import { Chat } from "../ai/Chat.tsx";
+import AIChatPanel from "../ai/ai-chat-panel.tsx";
 import CanvasArea from "../canvas/CanvasArea.tsx";
 import { CanvasTopBar } from "../canvas/topbar/CanvasTopBar.tsx";
 import SettingsPanel from "../settings/SettingsPanel.tsx";
 import ThemeConfigPanel from "../sidepanels/panels/theme-configuration/ThemeConfigPanel.tsx";
 import { AddBlocksDialog } from "./AddBlocksDialog.tsx";
 import { ChooseLayout } from "./ChooseLayout.tsx";
-
 const TopBar = lazy(() => import("../topbar/Topbar.tsx"));
+const AI_PANEL_WIDTH = 450;
+const DEFAULT_PANEL_WIDTH = 280;
 
 function useSidebarMenuItems() {
+  const askAiCallBack = useBuilderProp("askAiCallBack", null);
   return useMemo(() => {
     const items = [
       {
+        id: "outline",
         icon: <Layers size={20} />,
         label: "Outline",
         isInternal: true,
@@ -35,21 +40,34 @@ function useSidebarMenuItems() {
         ),
       },
     ];
+    if (askAiCallBack) {
+      items.unshift({
+        id: "ai",
+        icon: <SparklesIcon size={20} />,
+        label: "AI Assistant",
+        isInternal: true,
+        component: () => (
+          <div className="-mt-8 h-full max-h-full">
+            <AIChatPanel />
+          </div>
+        ),
+      });
+    }
     return compact(items);
-  }, []);
+  }, [askAiCallBack]);
 }
 
 /**
  * RootLayout is a React component that renders the main layout of the application.
  */
 const RootLayout: ComponentType = () => {
-  const [activePanelIndex, setActivePanelIndex] = useState(0);
+  const [activePanel, setActivePanel] = useAtom(sidebarActivePanelAtom);
   const [chooseLayout, setChooseLayout] = useState(false);
 
   const [panel, setRightPanel] = useRightPanel();
 
   usePubSub(CHAI_BUILDER_EVENTS.SHOW_BLOCK_SETTINGS, () => {
-    setActivePanelIndex(1);
+    setActivePanel("outline");
   });
 
   const topComponents = useBuilderProp("sideBarComponents.top", []);
@@ -62,15 +80,18 @@ const RootLayout: ComponentType = () => {
     if (!isDevelopment()) e.preventDefault();
   };
 
-  const handleMenuItemClick = (index: number) => {
-    setActivePanelIndex(activePanelIndex === index ? null : index);
+  const handleMenuItemClick = (id: string) => {
+    setActivePanel(activePanel === id ? null : id);
   };
 
   const menuItems = useSidebarMenuItems();
 
   const { t } = useTranslation();
-  const sidebarMenuItems = [...menuItems, ...topComponents];
+  const sidebarMenuItems = useMemo(() => [...menuItems, ...topComponents], [menuItems, topComponents]);
   const htmlDir = useBuilderProp("htmlDir", "ltr");
+
+  const activePanelItem = find(sidebarMenuItems, { id: activePanel });
+  const panelWidth = activePanel === "ai" ? AI_PANEL_WIDTH : DEFAULT_PANEL_WIDTH;
 
   return (
     <div dir={htmlDir} className="h-screen max-h-full w-screen overflow-x-hidden bg-background text-foreground">
@@ -84,16 +105,16 @@ const RootLayout: ComponentType = () => {
             </Suspense>
           </div>
           <main className="relative flex h-[calc(100vh-56px)] max-w-full flex-1 flex-row">
-            <div className="flex w-12 flex-col items-center justify-between border-r border-border py-2">
+            <div className="flex h-full w-12 flex-col items-center justify-between border-r border-border py-2">
               <div className="flex flex-col">
                 {sidebarMenuItems.map((item, index) => (
                   <Tooltip key={"button" + index}>
                     <TooltipTrigger asChild>
                       <Button
                         key={index}
-                        variant={activePanelIndex === index ? "default" : "ghost"}
+                        variant={activePanel === item.id ? "default" : "ghost"}
                         className={`mb-2 rounded-lg p-2 transition-colors`}
-                        onClick={() => handleMenuItemClick(index)}>
+                        onClick={() => handleMenuItemClick(item.id)}>
                         {get(item, "icon", null)}
                       </Button>
                     </TooltipTrigger>
@@ -104,7 +125,7 @@ const RootLayout: ComponentType = () => {
                 ))}
               </div>
               <div className="flex flex-col space-y-1"></div>
-              <div className="flex flex-col">
+              <div className="flex h-full flex-col">
                 {sideBarBottomComponents?.map((sidebarComponent, index) => {
                   return (
                     <Suspense key={`sidebar-component-${index}`} fallback={<div />}>
@@ -117,21 +138,19 @@ const RootLayout: ComponentType = () => {
             {/* Side Panel */}
             <motion.div
               className="h-full max-h-full border-r border-border"
-              initial={{ width: 280 }}
-              animate={{ width: activePanelIndex !== null ? 280 : 0 }}
+              initial={{ width: panelWidth }}
+              animate={{ width: activePanel !== null ? panelWidth : 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}>
-              {activePanelIndex !== null && (
+              {activePanel !== null && (
                 <div className="no-scrollbar flex h-full flex-col overflow-hidden px-3 py-2">
                   <div
-                    className={`absolute top-2 flex h-10 items-center space-x-1 bg-white py-2 text-base font-bold ${get(sidebarMenuItems, `${activePanelIndex}.isInternal`, false) ? "" : "w-64"}`}>
-                    <span className="rtl:ml-2 rtl:inline-block">
-                      {get(sidebarMenuItems, `${activePanelIndex}.icon`, null)}
-                    </span>
-                    <span>{t(sidebarMenuItems[activePanelIndex].label)}</span>
+                    className={`absolute top-2 flex h-10 items-center space-x-1 bg-white py-2 text-base font-bold ${get(activePanelItem, "isInternal", false) ? "" : "w-64"}`}>
+                    <span className="rtl:ml-2 rtl:inline-block">{get(activePanelItem, "icon", null)}</span>
+                    <span>{t(activePanelItem?.label)}</span>
                   </div>
-                  <div className="no-scrollbar max-h-full overflow-y-auto pt-10">
+                  <div className="no-scrollbar h-full max-h-full overflow-y-auto pt-10">
                     <Suspense fallback={<div>Loading...</div>}>
-                      {React.createElement(get(sidebarMenuItems, `${activePanelIndex}.component`, null), {})}
+                      {React.createElement(get(activePanelItem, "component", null), {})}
                     </Suspense>
                   </div>
                 </div>
@@ -145,8 +164,8 @@ const RootLayout: ComponentType = () => {
             </div>
             <motion.div
               className="h-full max-h-full border-l border-border"
-              initial={{ width: 280 }}
-              animate={{ width: 280 }}
+              initial={{ width: activePanel === "ai" ? 0 : DEFAULT_PANEL_WIDTH }}
+              animate={{ width: activePanel === "ai" ? 0 : DEFAULT_PANEL_WIDTH }}
               transition={{ duration: 0.3, ease: "easeInOut" }}>
               <div className="no-scrollbar overflow h-full max-h-full overflow-hidden">
                 <div className="flex h-full max-h-full flex-col overflow-hidden p-3">
@@ -179,7 +198,7 @@ const RootLayout: ComponentType = () => {
                   </h2>
                   <div className="flex h-full max-h-full w-full">
                     <Suspense fallback={<div>Loading...</div>}>
-                      {panel === "ai" ? <Chat /> : panel === "theme" ? <ThemeConfigPanel /> : <SettingsPanel />}
+                      {panel === "theme" ? <ThemeConfigPanel /> : <SettingsPanel />}
                     </Suspense>
                   </div>
                 </div>
