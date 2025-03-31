@@ -16,7 +16,7 @@ if (typeof window === "undefined") {
 }
 
 export { registerChaiBlock } from "@chaibuilder/runtime";
-export { AISetContext, AIUserPrompt } from "../components/AskAi.tsx";
+export { AISetContext, AIUserPrompt } from "../components/ask-ai-panel.tsx";
 export { Breakpoints as ScreenSizes } from "../components/canvas/topbar/Breakpoints.tsx";
 export { DarkMode as DarkModeSwitcher } from "../components/canvas/topbar/DarkMode.tsx";
 export { UndoRedo } from "../components/canvas/topbar/UndoRedo.tsx";
