@@ -19,7 +19,11 @@ import { Component as LinkBlock, Config as LinkBlockConfig, LinkBlockProps } fro
 import { Component as ListBlock, Config as ListBlockConfig, ListBlockProps } from "./list";
 import { Component as ListItemBlock, Config as ListItemBlockConfig, ListItemBlockProps } from "./listitem";
 import { Config as LayersConfig, Component as TextBlock, TextBlockProps } from "./text";
-import { Component as VideoBlock, Config as VideoBlockConfig, VideoBlockProps } from "./video";
+import {
+  Component as YoutubeVideoBlock,
+  Config as YoutubeVideoBlockConfig,
+  YoutubeVideoBlockProps,
+} from "./youtube-video";
 
 import { Component as CheckboxBlock, Config as CheckboxBlockConfig, CheckboxProps } from "./form/checkbox";
 import { Component as FormBlock, Config as FormBlockConfig, FormProps } from "./form/form";
@@ -52,7 +56,7 @@ const loadWebBlocks = () => {
   registerChaiBlock<ListItemBlockProps>(ListItemBlock, ListItemBlockConfig);
   registerChaiBlock<IconBlockProps>(IconBlock, IconBlockConfig);
   registerChaiBlock<ImageBlockProps>(ImageBlock, ImageBlockConfig);
-  registerChaiBlock<VideoBlockProps>(VideoBlock, VideoBlockConfig);
+  registerChaiBlock<YoutubeVideoBlockProps>(YoutubeVideoBlock, YoutubeVideoBlockConfig);
   registerChaiBlock<CustomHTMLBlockProps>(CustomHTML, CustomHTMLConfig);
   registerChaiBlock<CustomScriptBlockProps>(CustomScript, CustomScriptConfig);
   registerChaiBlock<TextBlockProps>(TextBlock, LayersConfig);

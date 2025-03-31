@@ -1,10 +1,10 @@
 import * as React from "react";
-import { VideoIcon } from "@radix-ui/react-icons";
 import { get, isEmpty, omit, pick } from "lodash-es";
 import EmptySlot from "./empty-slot.tsx";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
+import { Youtube } from "lucide-react";
 
-export type VideoBlockProps = {
+export type YoutubeVideoBlockProps = {
   styles: ChaiStyles;
   url: string;
   controls: Record<string, any>;
@@ -12,8 +12,6 @@ export type VideoBlockProps = {
 };
 
 const YOUTUBE_REGEX = /^(https?:\/\/)?(www\.)?youtube\.com\/(watch\?v=|embed\/)([a-zA-Z0-9_-]{11})/;
-const VIMEO_REGEX = /^(https?:\/\/)?(www\.)?player.vimeo\.com/;
-const DAILYMOTION_REGEX = /^(https?:\/\/)?(www\.)?dailymotion\.com\/(video|embed\/video)\/([a-zA-Z0-9_-]+)/;
 
 const getEmbedURL = (url: string): string | null => {
   if (YOUTUBE_REGEX.test(url)) {
@@ -25,28 +23,10 @@ const getEmbedURL = (url: string): string | null => {
     return url;
   }
 
-  if (VIMEO_REGEX.test(url)) {
-    const match = url.match(VIMEO_REGEX);
-    if (match) {
-      const videoId = match[3];
-      return `https://player.vimeo.com/video/${videoId}`;
-    }
-    return url;
-  }
-
-  if (DAILYMOTION_REGEX.test(url)) {
-    const match = url.match(DAILYMOTION_REGEX);
-    if (match) {
-      const videoId = match[4];
-      return `https://www.dailymotion.com/embed/video/${videoId}`;
-    }
-    return url;
-  }
-
   return null;
 };
 
-const VideoBlock = React.memo((props: ChaiBlockComponentProps<VideoBlockProps>) => {
+const VideoBlock = React.memo((props: ChaiBlockComponentProps<YoutubeVideoBlockProps>) => {
   const { blockProps, inBuilder, styles, url, controls } = props;
 
   const autoplay = get(controls, "autoPlay", false);
@@ -100,17 +80,17 @@ const VideoBlock = React.memo((props: ChaiBlockComponentProps<VideoBlockProps>) 
 });
 
 const Config = {
-  type: "Video",
-  label: "Video",
+  type: "YoutubeVideo",
+  label: "Youtube Video",
   category: "core",
-  icon: VideoIcon,
+  icon: Youtube,
   group: "media",
   ...registerChaiBlockSchema({
     properties: {
       styles: StylesProp(""),
       url: {
         type: "string",
-        title: "Video URL",
+        title: "Youtube Video URL",
         default: "https://www.youtube.com/watch?v=9xwazD5SyVg&ab_channel=MaximilianMustermann",
       },
       controls: {
