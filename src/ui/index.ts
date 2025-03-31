@@ -18,6 +18,7 @@ export * from "./shadcn/components/ui/select";
 export * from "./shadcn/components/ui/separator";
 export * from "./shadcn/components/ui/sheet";
 export * from "./shadcn/components/ui/skeleton";
+export * from "./shadcn/components/ui/slider";
 export * from "./shadcn/components/ui/sooner";
 export * from "./shadcn/components/ui/switch";
 export * from "./shadcn/components/ui/tabs";
