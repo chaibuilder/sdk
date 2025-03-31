@@ -10,4 +10,5 @@ function getFromQueryParams(key: string) {
 
 export const FEATURE_TOGGLES: { [key: string]: boolean } = {
   dnd: getFromQueryParams("dnd"),
+  aiChat: getFromQueryParams("ai-chat"),
 };

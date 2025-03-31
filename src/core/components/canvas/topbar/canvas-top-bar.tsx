@@ -1,4 +1,5 @@
 import { ZoomInIcon } from "@radix-ui/react-icons";
+import { useFeature } from "flagged";
 import { round } from "lodash-es";
 import React from "react";
 import { Separator } from "../../../../ui";
@@ -12,6 +13,7 @@ import { UndoRedo } from "./UndoRedo";
 
 const CanvasTopBar: React.FC = () => {
   const darkModeSupport = useBuilderProp("darkMode", true);
+  const aiChat = useFeature("aiChat");
   const [zoom] = useCanvasZoom();
 
   return (
@@ -35,7 +37,7 @@ const CanvasTopBar: React.FC = () => {
       </div>
       <div className="flex h-full items-center space-x-2">
         <ClearCanvas />
-        <AiAssistant />
+        {!aiChat ? <AiAssistant /> : null}
       </div>
     </div>
   );

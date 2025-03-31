@@ -20,7 +20,7 @@ export { AISetContext, AIUserPrompt } from "../components/AskAi.tsx";
 export { Breakpoints as ScreenSizes } from "../components/canvas/topbar/Breakpoints.tsx";
 export { DarkMode as DarkModeSwitcher } from "../components/canvas/topbar/DarkMode.tsx";
 export { UndoRedo } from "../components/canvas/topbar/UndoRedo.tsx";
-export { ChaiBuilderEditor } from "../components/ChaiBuilderEditor.tsx";
+export { ChaiBuilderEditor } from "../components/chaibuilder-editor.tsx";
 export { AddBlocksDialog } from "../components/layout/AddBlocksDialog.tsx";
 export { BlockAttributesEditor } from "../components/settings/new-panel/BlockAttributesEditor.tsx";
 export { DefaultChaiBlocks } from "../components/sidepanels/panels/add-blocks/DefaultBlocks.tsx";
