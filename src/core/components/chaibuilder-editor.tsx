@@ -6,7 +6,7 @@ import { each, noop, omit } from "lodash-es";
 import React, { useEffect, useMemo } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { FEATURE_TOGGLES } from "../../FEATURE_TOGGLES.tsx";
-import { Toaster } from "../../ui";
+import { Toaster } from "../../ui/index.ts";
 import {
   chaiBuilderPropsAtom,
   chaiPageExternalDataAtom,
@@ -18,7 +18,7 @@ import { builderStore } from "../atoms/store.ts";
 import { selectedLibraryAtom } from "../atoms/ui.ts";
 import { setDebugLogs } from "../functions/logging.ts";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
-import { useBuilderProp, useBuilderReset, useSavePage } from "../hooks";
+import { useBuilderProp, useBuilderReset, useSavePage } from "../hooks/index.ts";
 import { useBroadcastChannel, useUnmountBroadcastChannel } from "../hooks/useBroadcastChannel.ts";
 import { useExpandTree } from "../hooks/useExpandTree.ts";
 import { useKeyEventWatcher } from "../hooks/useKeyEventWatcher.ts";
@@ -26,9 +26,9 @@ import { useWatchPartailBlocks } from "../hooks/usePartialBlocksStore.ts";
 import { builderSaveStateAtom } from "../hooks/useSavePage.ts";
 import "../index.css";
 import i18n from "../locales/load.ts";
-import { ChaiBuilderEditorProps } from "../types";
+import { ChaiBuilderEditorProps } from "../types/index.ts";
 import { FallbackError } from "./FallbackError.tsx";
-import { RootLayout } from "./layout/RootLayout.tsx";
+import { RootLayout } from "./layout/root-layout.tsx";
 import { PreviewScreen } from "./PreviewScreen.tsx";
 import { SmallScreenMessage } from "./SmallScreenMessage.tsx";
 

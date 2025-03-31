@@ -1,21 +1,22 @@
 import { LightningBoltIcon } from "@radix-ui/react-icons";
+import { useFeature } from "flagged";
 import { motion } from "framer-motion";
 import { useAtom } from "jotai";
 import { compact, find, get } from "lodash-es";
 import { Layers, Paintbrush, SparklesIcon, X } from "lucide-react";
 import React, { ComponentType, lazy, MouseEvent, Suspense, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../ui";
+import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../ui/index.ts";
 import { sidebarActivePanelAtom } from "../../atoms/ui.ts";
 import { CHAI_BUILDER_EVENTS } from "../../events.ts";
-import { useBuilderProp } from "../../hooks";
+import { useBuilderProp } from "../../hooks/index.ts";
 import { usePubSub } from "../../hooks/usePubSub.ts";
 import { useRightPanel } from "../../hooks/useTheme.ts";
 import { isDevelopment } from "../../import-html/general.ts";
-import { Outline } from "../../main";
+import { Outline } from "../../main/index.ts";
 import AIChatPanel from "../ai/ai-chat-panel.tsx";
 import CanvasArea from "../canvas/CanvasArea.tsx";
-import { CanvasTopBar } from "../canvas/topbar/CanvasTopBar.tsx";
+import { CanvasTopBar } from "../canvas/topbar/canvas-top-bar.tsx";
 import SettingsPanel from "../settings/SettingsPanel.tsx";
 import ThemeConfigPanel from "../sidepanels/panels/theme-configuration/ThemeConfigPanel.tsx";
 import { AddBlocksDialog } from "./AddBlocksDialog.tsx";
@@ -26,6 +27,7 @@ const DEFAULT_PANEL_WIDTH = 280;
 
 function useSidebarMenuItems() {
   const askAiCallBack = useBuilderProp("askAiCallBack", null);
+  const aiChat = useFeature("aiChat");
   return useMemo(() => {
     const items = [
       {
@@ -40,7 +42,7 @@ function useSidebarMenuItems() {
         ),
       },
     ];
-    if (askAiCallBack) {
+    if (askAiCallBack && aiChat) {
       items.unshift({
         id: "ai",
         icon: <SparklesIcon size={20} />,
@@ -54,7 +56,7 @@ function useSidebarMenuItems() {
       });
     }
     return compact(items);
-  }, [askAiCallBack]);
+  }, [askAiCallBack, aiChat]);
 }
 
 /**
