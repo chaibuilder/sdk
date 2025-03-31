@@ -13,7 +13,7 @@ export type YoutubeVideoBlockProps = {
 
 const YOUTUBE_REGEX = /^(https?:\/\/)?(www\.)?youtube\.com\/(watch\?v=|embed\/)([a-zA-Z0-9_-]{11})/;
 
-const getEmbedURL = (url: string): string | null => {
+const getYoutubeEmbedVideoURL = (url: string): string | null => {
   if (YOUTUBE_REGEX.test(url)) {
     const match = url.match(YOUTUBE_REGEX);
     if (match) {
@@ -30,42 +30,29 @@ const VideoBlock = React.memo((props: ChaiBlockComponentProps<YoutubeVideoBlockP
   const { blockProps, inBuilder, styles, url, controls } = props;
 
   const autoplay = get(controls, "autoPlay", false);
-  const _controls = get(controls, "controls", false);
   const muted = autoplay || get(controls, "muted", true);
   const loop = get(controls, "loop", false);
 
   if (isEmpty(url)) return <EmptySlot inBuilder={inBuilder} className="h-36" />;
 
-  let embedURL = getEmbedURL(url);
-  let videoElement = null;
-  if (embedURL) {
-    if (!isEmpty(embedURL)) {
-      const iframeControls = [];
-      iframeControls.push(`autoplay=${autoplay ? 1 : 0}`);
-      iframeControls.push(`controls=${controls ? 1 : 0}`);
-      iframeControls.push(`mute=${muted ? 1 : 0}&muted=${muted ? 1 : 0}`);
-      iframeControls.push(`loop=${loop ? 1 : 0}`);
-      embedURL = `${embedURL}?${iframeControls.join("&")}`;
-    }
-    videoElement = React.createElement("iframe", {
-      ...blockProps,
-      className: "absolute inset-0 w-full h-full",
-      src: embedURL,
-      allow: inBuilder ? "" : "autoplay *; fullscreen *",
-      allowFullScreen: true,
-      frameBorder: 0,
-    });
-  } else {
-    videoElement = React.createElement("video", {
-      ...blockProps,
-      className: "absolute inset-0 w-full h-full",
-      src: url,
-      controls: _controls,
-      muted,
-      autoPlay: inBuilder ? false : autoplay,
-      loop,
-    });
+  let youtubeEmbedURL = getYoutubeEmbedVideoURL(url);
+  if (!isEmpty(youtubeEmbedURL)) {
+    const iframeControls = [];
+    iframeControls.push(`autoplay=${autoplay ? 1 : 0}`);
+    iframeControls.push(`controls=${controls ? 1 : 0}`);
+    iframeControls.push(`mute=${muted ? 1 : 0}&muted=${muted ? 1 : 0}`);
+    iframeControls.push(`loop=${loop ? 1 : 0}`);
+    youtubeEmbedURL = `${youtubeEmbedURL}?${iframeControls.join("&")}`;
   }
+
+  const videoElement = React.createElement("iframe", {
+    ...blockProps,
+    className: "absolute inset-0 w-full h-full",
+    src: youtubeEmbedURL,
+    allow: inBuilder ? "" : "autoplay *; fullscreen *",
+    allowFullScreen: true,
+    frameBorder: 0,
+  });
 
   return (
     <div {...pick(styles, ["className"])}>
