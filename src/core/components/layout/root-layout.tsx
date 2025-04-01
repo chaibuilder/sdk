@@ -23,32 +23,35 @@ import ThemeConfigPanel from "../sidepanels/panels/theme-configuration/ThemeConf
 import { AddBlocksDialog } from "./AddBlocksDialog.tsx";
 import { ChooseLayout } from "./ChooseLayout.tsx";
 const TopBar = lazy(() => import("../topbar/Topbar.tsx"));
-const AI_PANEL_WIDTH = 450;
+
 const DEFAULT_PANEL_WIDTH = 280;
 
 function useSidebarMenuItems() {
   const askAiCallBack = useBuilderProp("askAiCallBack", null);
   const aiChat = useFeature("aiChat");
   return useMemo(() => {
-    const items = [
-      {
-        id: "outline",
-        icon: <Layers size={20} />,
-        label: "Outline",
-        isInternal: true,
-        component: () => (
-          <div className="-mt-8">
-            <Outline />
-          </div>
-        ),
-      },
-    ];
+    const items = [];
+
+    items.push({
+      id: "outline",
+      icon: <Layers size={20} />,
+      label: "Outline",
+      isInternal: true,
+      width: DEFAULT_PANEL_WIDTH,
+      component: () => (
+        <div className="-mt-8">
+          <Outline />
+        </div>
+      ),
+    });
+
     if (askAiCallBack && aiChat) {
       items.unshift({
         id: "ai",
         icon: <SparklesIcon size={20} />,
         label: "AI Assistant",
         isInternal: true,
+        width: 450,
         component: () => (
           <div className="-mt-8 h-full max-h-full">
             <AIChatPanel />
@@ -94,7 +97,7 @@ const RootLayout: ComponentType = () => {
   const htmlDir = useBuilderProp("htmlDir", "ltr");
 
   const activePanelItem = find(sidebarMenuItems, { id: activePanel });
-  const panelWidth = activePanel === "ai" ? AI_PANEL_WIDTH : DEFAULT_PANEL_WIDTH;
+  const panelWidth = get(activePanelItem, "width", DEFAULT_PANEL_WIDTH);
 
   return (
     <div dir={htmlDir} className="h-screen max-h-full w-screen overflow-x-hidden bg-background text-foreground">
