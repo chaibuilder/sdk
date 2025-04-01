@@ -22,6 +22,7 @@ export default async function AsyncPropsBlock(props: {
       {React.createElement(props.component, {
         ...omit(props.props, ["dataProvider", "dataProviderMetadataCallback"]),
         ...omit(dataProps, "$metadata"),
+        key: `${props.block._id}-async`,
       })}
     </Suspense>
   );
