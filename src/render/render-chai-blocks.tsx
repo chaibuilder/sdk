@@ -20,7 +20,7 @@ import { twMerge } from "tailwind-merge";
 import { STYLES_KEY } from "../core/constants/STRINGS.ts";
 import { getSplitChaiClasses } from "../core/hooks/getSplitClasses.ts";
 import { ChaiBlock } from "../core/types/ChaiBlock.ts";
-import AsyncPropsBlock from "./AsyncBlockProps.tsx";
+import AsyncPropsBlock from "./async-props-block.tsx";
 import { addPrefixToClasses } from "./functions.ts";
 
 const generateClassNames = memoize((styles: string, classPrefix: string) => {
@@ -155,13 +155,15 @@ export function RenderChaiBlocks({
     attrs.children =
       blocks.length > 0 ? (
         <RenderChaiBlocks
-          key={block._id}
+          key={`${block._id}-children`}
           externalData={externalData}
           classPrefix={classPrefix}
           parent={block._id}
           blocks={allBlocks}
           lang={lang || fallbackLang}
           metadata={metadata}
+          fallbackLang={fallbackLang}
+          dataProviderMetadataCallback={dataProviderMetadataCallback}
         />
       ) : null;
 
@@ -197,10 +199,10 @@ export function RenderChaiBlocks({
         const suspenseFallback = get(blockDefinition, "suspenseFallback", SuspenseFallback) as React.ComponentType<any>;
 
         return (
-          <Suspense fallback={createElement(suspenseFallback)} key={block._id}>
+          <Suspense fallback={createElement(suspenseFallback)} key={`${block._id}-suspense`}>
             {/* @ts-ignore */}
             <AsyncPropsBlock
-              key={block._id}
+              key={`${block._id}-async`}
               dataProviderMetadataCallback={dataProviderMetadataCallback}
               lang={lang || fallbackLang}
               metadata={metadata}
@@ -212,9 +214,9 @@ export function RenderChaiBlocks({
           </Suspense>
         );
       }
-      return <Suspense key={block._id}>{React.createElement(Component, props)}</Suspense>;
+      return <Suspense key={`${block._id}-suspense`}>{React.createElement(Component, props)}</Suspense>;
     }
 
-    return <noscript key={block._id}>{block._type} not found</noscript>;
+    return <noscript key={`${block._id}-noscript`}>{block._type} not found</noscript>;
   });
 }

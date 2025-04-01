@@ -1,6 +1,6 @@
-import * as React from "react";
-import { LetterCaseToggleIcon } from "@radix-ui/react-icons";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
+import { LetterCaseToggleIcon } from "@radix-ui/react-icons";
+import * as React from "react";
 
 export type LabelProps = {
   content: string;
