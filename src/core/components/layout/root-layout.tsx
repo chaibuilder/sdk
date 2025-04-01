@@ -2,9 +2,9 @@ import { LightningBoltIcon } from "@radix-ui/react-icons";
 import { useFeature } from "flagged";
 import { motion } from "framer-motion";
 import { useAtom } from "jotai";
-import { compact, find, get } from "lodash-es";
+import { compact, find, first, get } from "lodash-es";
 import { Layers, Paintbrush, SparklesIcon, X } from "lucide-react";
-import React, { ComponentType, lazy, MouseEvent, Suspense, useMemo, useState } from "react";
+import React, { ComponentType, lazy, MouseEvent, Suspense, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../ui/index.ts";
 import { sidebarActivePanelAtom } from "../../atoms/ui.ts";
@@ -96,7 +96,13 @@ const RootLayout: ComponentType = () => {
   const sidebarMenuItems = useMemo(() => [...menuItems, ...topComponents], [menuItems, topComponents]);
   const htmlDir = useBuilderProp("htmlDir", "ltr");
 
-  const activePanelItem = find(sidebarMenuItems, { id: activePanel });
+  useEffect(() => {
+    if (!find(sidebarMenuItems, { id: activePanel })) {
+      setActivePanel("outline");
+    }
+  }, [activePanel, sidebarMenuItems]);
+
+  const activePanelItem = find(sidebarMenuItems, { id: activePanel }) ?? first(sidebarMenuItems);
   const panelWidth = get(activePanelItem, "width", DEFAULT_PANEL_WIDTH);
 
   return (
@@ -152,7 +158,7 @@ const RootLayout: ComponentType = () => {
                   <div
                     className={`absolute top-2 flex h-10 items-center space-x-1 bg-white py-2 text-base font-bold ${get(activePanelItem, "isInternal", false) ? "" : "w-64"}`}>
                     <span className="rtl:ml-2 rtl:inline-block">{get(activePanelItem, "icon", null)}</span>
-                    <span>{t(activePanelItem?.label)}</span>
+                    <span>{t(get(activePanelItem, "label", ""))}</span>
                   </div>
                   <div className="no-scrollbar h-full max-h-full overflow-y-auto pt-10">
                     <Suspense fallback={<div>Loading...</div>}>
