@@ -21,7 +21,7 @@ import { IframeInitialContent } from "../IframeInitialContent";
 import { KeyboardHandler } from "../KeyboarHandler.tsx";
 import { AddBlockAtBottom } from "./AddBlockAtBottom.tsx";
 import { Canvas, getElementByDataBlockId } from "./Canvas.tsx";
-import { HeadTags } from "./HeadTags.tsx";
+import { HeadTags } from "./head-tags.tsx";
 import { ResizableCanvasWrapper } from "./ResizableCanvasWrapper.tsx";
 import { StaticBlocksRenderer } from "./StaticBlocksRenderer.tsx";
 import { useCanvasScale } from "./useCanvasScale";

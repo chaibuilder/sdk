@@ -1,4 +1,5 @@
-import { flatten, isEmpty, keys, uniq } from "lodash-es";
+import { ChaiCustomFont, ChaiGoogleFont, getAllRegisteredFonts } from "@chaibuilder/runtime";
+import { flatten, get, keys } from "lodash-es";
 import { ChaiBuilderThemeOptions, ChaiBuilderThemeValues } from "../../../types/chaiBuilderEditorProps.ts";
 
 export const getChaiThemeOptions = (chaiThemeOptions: ChaiBuilderThemeOptions) => {
@@ -62,12 +63,18 @@ function hexToHSL(hex: string) {
   return `${Math.round(h * 360)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
 }
 
+export const getFontFamily = (font: string) => {
+  const registeredFonts = getAllRegisteredFonts();
+  const chaiFont = registeredFonts.find((f) => f.name === font);
+  return get(chaiFont, "family", font);
+};
+
 export const getChaiThemeCssVariables = (chaiTheme: Partial<ChaiBuilderThemeValues>) => {
   return `:root {
     ${
       chaiTheme.fontFamily &&
       Object.entries(chaiTheme.fontFamily)
-        .map(([key, value]) => `--font-${key}: "${value}";`)
+        .map(([key, value]) => `--font-${key}: ${getFontFamily(value)};`)
         .join("\n    ")
     }
     ${chaiTheme.borderRadius && `--radius: ${chaiTheme.borderRadius};`}
@@ -88,24 +95,33 @@ export const getChaiThemeCssVariables = (chaiTheme: Partial<ChaiBuilderThemeValu
   }`;
 };
 
-export const getThemeFontsLinkMarkup = (chaiTheme: Pick<Partial<ChaiBuilderThemeValues>, "fontFamily">) => {
-  if (isEmpty(chaiTheme.fontFamily)) return "";
-  const links = uniq(Object.entries(chaiTheme.fontFamily).map(([, value]) => value));
-  return links
-    .map((link) => {
-      const googleFontUrl = `https://fonts.googleapis.com/css2?family=${link.replace(/\s+/g, "+")}&display=swap`;
-      return `<link rel="stylesheet" href="${googleFontUrl}">`;
-    })
+export const getThemeFontsLinkMarkup = (fonts: ChaiGoogleFont[]) => {
+  if (!fonts || fonts.length === 0) return "";
+
+  return fonts.map((font: ChaiGoogleFont) => `<link rel="stylesheet" href="${font.url}" />`).join("\n");
+};
+
+export const getThemeFontsCSSImport = (fonts: ChaiGoogleFont[]) => {
+  if (!fonts || fonts.length === 0) return "";
+
+  return fonts.map((font: ChaiGoogleFont) => `@import url("${font.url}");`).join("\n");
+};
+
+export const getThemeCustomFontFace = (fonts: ChaiCustomFont[]) => {
+  if (!fonts || fonts.length === 0) return "";
+
+  return fonts
+    .map(
+      (font: ChaiCustomFont) => `@font-face {
+      font-family: "${font.family}";
+      src: ${font.src.map((source) => `url("${source.url}") format("${source.format}")`).join(", ")};
+      ${font.fontWeight ? `font-weight: ${font.fontWeight};` : ""}
+      ${font.fontStyle ? `font-style: ${font.fontStyle};` : ""}
+      ${font.fontDisplay ? `font-display: ${font.fontDisplay};` : ""}
+      ${font.fontStretch ? `font-stretch: ${font.fontStretch};` : ""}
+    }`,
+    )
     .join("\n");
 };
 
-export const getThemeFontsCSSImport = (chaiTheme: { fontFamily: Record<string, string> }) => {
-  if (isEmpty(chaiTheme.fontFamily)) return "";
-  const links = uniq(Object.entries(chaiTheme.fontFamily).map(([, value]) => value));
-  return links
-    .map((link: string) => {
-      const googleFontUrl = `https://fonts.googleapis.com/css2?family=${link.replace(/\s+/g, "+")}&display=swap`;
-      return `@import url("${googleFontUrl}");`;
-    })
-    .join("\n");
-};
+

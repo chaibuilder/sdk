@@ -1,4 +1,4 @@
-import { getChaiThemeOptions } from "../core/components/canvas/static/ChaiThemeFn";
+import { getChaiThemeOptions } from "../core/components/canvas/static/chai-theme-helpers";
 import { defaultThemeOptions } from "../core/hooks/defaultThemeOptions";
 import { ChaiBuilderThemeOptions } from "../core/types/chaiBuilderEditorProps";
 
