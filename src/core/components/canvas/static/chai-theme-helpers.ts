@@ -1,5 +1,5 @@
 import { ChaiCustomFont, ChaiGoogleFont, getAllRegisteredFonts } from "@chaibuilder/runtime";
-import { flatten, get, keys } from "lodash-es";
+import { flatten, get, keys, uniqBy } from "lodash-es";
 import { ChaiBuilderThemeOptions, ChaiBuilderThemeValues } from "../../../types/chaiBuilderEditorProps.ts";
 
 export const getChaiThemeOptions = (chaiThemeOptions: ChaiBuilderThemeOptions) => {
@@ -65,8 +65,8 @@ function hexToHSL(hex: string) {
 
 export const getFontFamily = (font: string) => {
   const registeredFonts = getAllRegisteredFonts();
-  const chaiFont = registeredFonts.find((f) => f.name === font);
-  return get(chaiFont, "family", font);
+  const chaiFont = registeredFonts.find((f) => f.family === font);
+  return `"${font}", ${get(chaiFont, "fallback", "")}`;
 };
 
 export const getChaiThemeCssVariables = (chaiTheme: Partial<ChaiBuilderThemeValues>) => {
@@ -98,30 +98,36 @@ export const getChaiThemeCssVariables = (chaiTheme: Partial<ChaiBuilderThemeValu
 export const getThemeFontsLinkMarkup = (fonts: ChaiGoogleFont[]) => {
   if (!fonts || fonts.length === 0) return "";
 
-  return fonts.map((font: ChaiGoogleFont) => `<link rel="stylesheet" href="${font.url}" />`).join("\n");
+  return uniqBy(fonts, "family")
+    .map((font: ChaiGoogleFont) => `<link rel="stylesheet" href="${font.url}" />`)
+    .join("\n");
 };
 
 export const getThemeFontsCSSImport = (fonts: ChaiGoogleFont[]) => {
   if (!fonts || fonts.length === 0) return "";
 
-  return fonts.map((font: ChaiGoogleFont) => `@import url("${font.url}");`).join("\n");
+  return uniqBy(fonts, "family")
+    .map((font: ChaiGoogleFont) => `@import url("${font.url}");`)
+    .join("\n");
 };
 
 export const getThemeCustomFontFace = (fonts: ChaiCustomFont[]) => {
   if (!fonts || fonts.length === 0) return "";
 
-  return fonts
-    .map(
-      (font: ChaiCustomFont) => `@font-face {
-      font-family: "${font.family}";
-      src: ${font.src.map((source) => `url("${source.url}") format("${source.format}")`).join(", ")};
-      ${font.fontWeight ? `font-weight: ${font.fontWeight};` : ""}
-      ${font.fontStyle ? `font-style: ${font.fontStyle};` : ""}
-      ${font.fontDisplay ? `font-display: ${font.fontDisplay};` : ""}
-      ${font.fontStretch ? `font-stretch: ${font.fontStretch};` : ""}
-    }`,
+  return uniqBy(fonts, "family")
+    .map((font: ChaiCustomFont) =>
+      font.src
+        .map(
+          (source) => `@font-face {
+        font-family: "${font.family}";
+        src: url("${source.url}") format("${source.format}");
+        font-display: swap;
+        ${source.fontWeight ? `font-weight: ${source.fontWeight};` : ""}
+        ${source.fontStyle ? `font-style: ${source.fontStyle};` : ""}
+        ${source.fontStretch ? `font-stretch: ${source.fontStretch};` : ""}
+      }`,
+        )
+        .join("\n"),
     )
     .join("\n");
 };
-
-
