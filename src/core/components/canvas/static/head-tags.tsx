@@ -1,18 +1,23 @@
-import { map } from "lodash-es";
-import { useEffect, useMemo, useState } from "react";
-import { useFrame } from "../../../frame";
-import { useDarkMode, useSelectedBlockIds, useSelectedStylingBlocks } from "../../../hooks";
-import { useAtom } from "jotai";
-import typography from "@tailwindcss/typography";
-import forms from "@tailwindcss/forms";
+import { useRegisteredFonts } from "@chaibuilder/runtime";
 import aspectRatio from "@tailwindcss/aspect-ratio";
 import containerQueries from "@tailwindcss/container-queries";
-import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
+import forms from "@tailwindcss/forms";
+import typography from "@tailwindcss/typography";
+import { useAtom } from "jotai";
+import { filter, get, has, map } from "lodash-es";
+import { useEffect, useMemo, useState } from "react";
 import plugin from "tailwindcss/plugin";
-import { getChaiThemeOptions, getChaiThemeCssVariables, getThemeFontsLinkMarkup } from "./ChaiThemeFn.ts";
+import { useFrame } from "../../../frame/index.ts";
+import { useDarkMode, useSelectedBlockIds, useSelectedStylingBlocks } from "../../../hooks/index.ts";
 import { useTheme, useThemeOptions } from "../../../hooks/useTheme.ts";
 import { ChaiBuilderThemeValues } from "../../../types/chaiBuilderEditorProps.ts";
-import { pick } from "lodash-es";
+import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
+import {
+  getChaiThemeCssVariables,
+  getChaiThemeOptions,
+  getThemeCustomFontFace,
+  getThemeFontsLinkMarkup,
+} from "./chai-theme-helpers.ts";
 // @ts-ignore
 
 export const HeadTags = () => {
@@ -44,6 +49,8 @@ export const HeadTags = () => {
     if (darkMode) iframeDoc?.documentElement.classList.add("dark");
     else iframeDoc?.documentElement.classList.remove("dark");
   }, [darkMode, iframeDoc]);
+
+  const registeredFonts = useRegisteredFonts();
 
   useEffect(() => {
     // @ts-ignore
@@ -118,15 +125,29 @@ export const HeadTags = () => {
       : "";
   }, [dropTargetId, iframeDoc]);
 
-  const themeVariables = useMemo(
-    () => getChaiThemeCssVariables(chaiTheme as Partial<ChaiBuilderThemeValues>),
-    [chaiTheme],
+  const themeVariables = useMemo(() => {
+    const theme = getChaiThemeCssVariables(chaiTheme as Partial<ChaiBuilderThemeValues>);
+    return theme;
+  }, [chaiTheme]);
+
+  const pickedFonts = useMemo(() => {
+    const { heading, body } = {
+      heading: get(chaiTheme, "fontFamily.heading"),
+      body: get(chaiTheme, "fontFamily.body"),
+    };
+    return registeredFonts.filter((font) => font.name === heading || font.name === body);
+  }, [chaiTheme?.fontFamily, registeredFonts]);
+
+  const fonts = useMemo(() => getThemeFontsLinkMarkup(filter(pickedFonts, (font) => has(font, "url"))), [pickedFonts]);
+  const customFonts = useMemo(
+    () => getThemeCustomFontFace(filter(pickedFonts, (font) => !has(font, "url"))),
+    [pickedFonts],
   );
-  const fonts = useMemo(() => getThemeFontsLinkMarkup(pick(chaiTheme, ["fontFamily"])), [chaiTheme]);
   return (
     <>
       <style id="chai-theme">{themeVariables}</style>
       <span id="chai-fonts" dangerouslySetInnerHTML={{ __html: fonts }} />
+      <style id="chai-custom-fonts" dangerouslySetInnerHTML={{ __html: customFonts }} />
     </>
   );
 };

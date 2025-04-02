@@ -19,7 +19,7 @@ function Preview() {
       setStyles(styles);
     })();
   }, [blocks]);
-  const themeVars = useMemo(() => getChaiThemeCssVariables(theme), [theme]);
+  const themeVars = useMemo(() => getChaiThemeCssVariables(theme, { heading: "Ubuntu", body: "Ubuntu" }), [theme]);
   return (
     <>
       <style>{themeVars}</style>
