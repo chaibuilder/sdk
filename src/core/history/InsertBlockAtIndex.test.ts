@@ -1,5 +1,5 @@
 import { vi } from "vitest";
-import * as Functions from "../functions/Functions";
+import * as Functions from "../functions/Functions.ts";
 import { insertBlocksAtPosition } from "./InsertBlocksAtPosition.ts";
 
 const BLOCK_1 = { _id: "1" };
