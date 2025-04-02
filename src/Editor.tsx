@@ -1,4 +1,4 @@
-import { ChaiCustomFont, ChaiGoogleFont, registerChaiFont } from "@chaibuilder/runtime";
+import { ChaiFontViaSrc, ChaiFontViaUrl, registerChaiFont } from "@chaibuilder/runtime";
 import axios from "axios";
 import { useAtom } from "jotai";
 import { isArray, map, pick, values } from "lodash-es";
@@ -23,12 +23,12 @@ registerCustomBlocks();
 registerChaiFont("Ubuntu", {
   url: "https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap",
   fallback: `sans-serif`,
-} as ChaiGoogleFont);
+} as ChaiFontViaUrl);
 
 registerChaiFont("Geist", {
   fallback: `"Geist Fallback", Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol`,
   src: [{ url: "http://localhost:5173/fonts/Geist.woff", format: "woff" }],
-} as ChaiCustomFont);
+} as ChaiFontViaSrc);
 
 registerChaiFont("Mazda Type", {
   fallback: `Helvetica,Arial,sans-serif`,
@@ -46,7 +46,7 @@ registerChaiFont("Mazda Type", {
       format: "woff2",
     },
   ],
-} as ChaiCustomFont);
+} as ChaiFontViaSrc);
 
 const Logo = () => {
   return (
