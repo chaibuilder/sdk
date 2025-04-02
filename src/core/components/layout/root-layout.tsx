@@ -117,7 +117,7 @@ const RootLayout: ComponentType = () => {
             </Suspense>
           </div>
           <main className="relative flex h-[calc(100vh-56px)] max-w-full flex-1 flex-row">
-            <div className="flex h-full w-12 flex-col items-center justify-between border-r border-border py-2">
+            <div className="flex w-12 flex-col items-center justify-between border-r border-border py-2">
               <div className="flex flex-col">
                 {sidebarMenuItems.map((item, index) => (
                   <Tooltip key={"button" + index}>
@@ -137,7 +137,7 @@ const RootLayout: ComponentType = () => {
                 ))}
               </div>
               <div className="flex flex-col space-y-1"></div>
-              <div className="flex h-full flex-col">
+              <div className="flex flex-col">
                 {sideBarBottomComponents?.map((sidebarComponent, index) => {
                   return (
                     <Suspense key={`sidebar-component-${index}`} fallback={<div />}>

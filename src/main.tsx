@@ -36,7 +36,7 @@ enableMocking().then(() => {
   ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
       <RouterProvider router={router} />
-      <DevTools />
+      <DevTools position="bottom-right" />
       {import.meta.env.VITE_CLARITY_ID && <MicrosoftClarity clarityId={import.meta.env.VITE_CLARITY_ID} />}
     </React.StrictMode>,
   );
