@@ -1,4 +1,4 @@
-import { registerChaiFont } from "@chaibuilder/runtime";
+import { ChaiCustomFont, ChaiGoogleFont, registerChaiFont } from "@chaibuilder/runtime";
 import axios from "axios";
 import { useAtom } from "jotai";
 import { isArray, map, pick, values } from "lodash-es";
@@ -19,16 +19,16 @@ import { loadWebBlocks } from "./web-blocks";
 
 loadWebBlocks();
 registerCustomBlocks();
+
 registerChaiFont("Ubuntu", {
   url: "https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap",
   family: `"Ubuntu", sans-serif`,
-  name: "Ubuntu",
-});
+} as ChaiGoogleFont);
+
 registerChaiFont("Geist", {
   family: `"Geist", "Geist Fallback", Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;`,
-  name: "Geist",
   src: [{ url: "http://localhost:5173/fonts/Geist.woff", format: "woff" }],
-});
+} as ChaiCustomFont);
 
 const Logo = () => {
   return (
