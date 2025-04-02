@@ -12,7 +12,6 @@ import { useDebouncedCallback } from "@react-hookz/web";
 import { capitalize, get, set } from "lodash-es";
 import { usePermissions } from "../../../../hooks/usePermissions.ts";
 import { ChaiBuilderThemeValues } from "../../../../types/chaiBuilderEditorProps.ts";
-import ChaiSelect from "../../../ChaiSelect.tsx";
 interface ThemeConfigProps {
   className?: string;
 }
@@ -154,18 +153,21 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
           <div className="flex gap-2 py-2">
             <div className="w-full">
               <Label className="text-sm text-slate-800">{t("Presets")}</Label>
-              <ChaiSelect
-                defaultValue={selectedPreset}
-                options={themePresets.map((preset: any) => ({
-                  value: Object.keys(preset)[0],
-                  label: capitalize(Object.keys(preset)[0]),
-                }))}
-                onValueChange={(value) => handlePresetChange(value)}
-              />
+              <select
+                value={selectedPreset}
+                onChange={(e) => handlePresetChange(e.target.value)}
+                className="w-full space-y-0.5 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
+                <option value="">Select preset</option>
+                {Array.isArray(themePresets) &&
+                  themePresets.map((preset: any) => (
+                    <option key={Object.keys(preset)[0]} value={Object.keys(preset)[0]}>
+                      {capitalize(Object.keys(preset)[0])}
+                    </option>
+                  ))}
+              </select>
             </div>
             <div className="flex w-[30%] items-end">
               <Button
-                size="sm"
                 className="w-full text-sm"
                 disabled={selectedPreset === ""}
                 variant="default"
