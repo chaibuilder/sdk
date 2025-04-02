@@ -22,12 +22,30 @@ registerCustomBlocks();
 
 registerChaiFont("Ubuntu", {
   url: "https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap",
-  family: `"Ubuntu", sans-serif`,
+  fallback: `sans-serif`,
 } as ChaiGoogleFont);
 
 registerChaiFont("Geist", {
-  family: `"Geist", "Geist Fallback", Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;`,
+  fallback: `"Geist Fallback", Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol`,
   src: [{ url: "http://localhost:5173/fonts/Geist.woff", format: "woff" }],
+} as ChaiCustomFont);
+
+registerChaiFont("Mazda Type", {
+  fallback: `Helvetica,Arial,sans-serif`,
+  src: [
+    {
+      url: "https://www.mazda.ca/static/fonts/MazdaTypeTT-Bold.woff2",
+      format: "woff2",
+    },
+    {
+      url: "https://www.mazda.ca/static/fonts/MazdaTypeTT-Regular.woff2",
+      format: "woff2",
+    },
+    {
+      url: "https://www.mazda.ca/static/fonts/MazdaTypeTT-Medium.woff2",
+      format: "woff2",
+    },
+  ],
 } as ChaiCustomFont);
 
 const Logo = () => {
@@ -85,6 +103,9 @@ function ChaiBuilderDefault() {
 
   return (
     <ChaiBuilderEditor
+      sideBarComponents={{
+        bottom: [() => <div>Info</div>],
+      }}
       permissions={[...values(PERMISSIONS)]}
       // permissions={[]}
       blockMoreOptions={[SaveToLibrary]}

@@ -135,12 +135,12 @@ export const HeadTags = () => {
       heading: get(chaiTheme, "fontFamily.heading"),
       body: get(chaiTheme, "fontFamily.body"),
     };
-    return registeredFonts.filter((font) => font.name === heading || font.name === body);
+    return registeredFonts.filter((font) => font.family === heading || font.family === body);
   }, [chaiTheme?.fontFamily, registeredFonts]);
 
   const fonts = useMemo(() => getThemeFontsLinkMarkup(filter(pickedFonts, (font) => has(font, "url"))), [pickedFonts]);
   const customFonts = useMemo(
-    () => getThemeCustomFontFace(filter(pickedFonts, (font) => !has(font, "url"))),
+    () => getThemeCustomFontFace(filter(pickedFonts, (font) => has(font, "src"))),
     [pickedFonts],
   );
   return (
