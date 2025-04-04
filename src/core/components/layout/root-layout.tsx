@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useAtom } from "jotai";
 import { compact, find, first, get } from "lodash-es";
 import { Layers, Paintbrush, SparklesIcon, X } from "lucide-react";
-import React, { ComponentType, lazy, MouseEvent, Suspense, useEffect, useMemo, useRef } from "react";
+import React, { ComponentType, lazy, MouseEvent, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Button,
@@ -83,6 +83,7 @@ function useSidebarMenuItems() {
 const RootLayout: ComponentType = () => {
   const [activePanel, setActivePanel] = useAtom(sidebarActivePanelAtom);
   const lastStandardPanelRef = useRef<string | null>("outline"); // Default to "outline"
+  const [lastStandardPanelWidth, setLastStandardPanelWidth] = useState(DEFAULT_PANEL_WIDTH);
 
   const [panel, setRightPanel] = useRightPanel();
 
@@ -110,15 +111,31 @@ const RootLayout: ComponentType = () => {
   const sidebarMenuItems = useMemo(() => [...menuItems, ...topPanels], [menuItems, topPanels]);
   const htmlDir = useBuilderProp("htmlDir", "ltr");
 
-  // Keep track of the last used standard panel
+  // Update active panel item and get its width
+  const activePanelItem = find(sidebarMenuItems, { id: activePanel }) ?? first(sidebarMenuItems);
+  const panelWidth = get(activePanelItem, "width", DEFAULT_PANEL_WIDTH);
+
+  // Keep track of the last used standard panel and its width
   useEffect(() => {
     if (activePanel !== null) {
       const currentPanelItem = find(sidebarMenuItems, { id: activePanel });
       if (currentPanelItem && get(currentPanelItem, "view", "standard") === "standard") {
         lastStandardPanelRef.current = activePanel;
+        setLastStandardPanelWidth(get(currentPanelItem, "width", DEFAULT_PANEL_WIDTH));
       }
     }
   }, [activePanel, sidebarMenuItems]);
+
+  // Determine the width to use for the left panel
+  const leftPanelWidth = useMemo(() => {
+    if (activePanel === null) return 0;
+
+    const currentPanelItem = find(sidebarMenuItems, { id: activePanel });
+    const isStandardPanel = get(currentPanelItem, "view", "standard") === "standard";
+
+    // If current panel is standard, use its width, otherwise use the last standard panel's width
+    return isStandardPanel ? panelWidth : lastStandardPanelWidth;
+  }, [activePanel, panelWidth, lastStandardPanelWidth, sidebarMenuItems]);
 
   const handleNonStandardPanelClose = () => {
     // Return to the last used standard panel when closing a non-standard panel
@@ -130,9 +147,6 @@ const RootLayout: ComponentType = () => {
       setActivePanel("outline");
     }
   }, [activePanel, sidebarMenuItems]);
-
-  const activePanelItem = find(sidebarMenuItems, { id: activePanel }) ?? first(sidebarMenuItems);
-  const panelWidth = get(activePanelItem, "width", DEFAULT_PANEL_WIDTH);
 
   return (
     <div dir={htmlDir} className="h-screen max-h-full w-screen overflow-x-hidden bg-background text-foreground">
@@ -191,8 +205,8 @@ const RootLayout: ComponentType = () => {
             <motion.div
               id="left-panel"
               className="h-full max-h-full border-r border-border"
-              initial={{ width: panelWidth }}
-              animate={{ width: activePanel !== null ? panelWidth : 0 }}
+              initial={{ width: leftPanelWidth }}
+              animate={{ width: leftPanelWidth }}
               transition={{ duration: 0.3, ease: "easeInOut" }}>
               {activePanel !== null && get(activePanelItem, "view", "standard") === "standard" && (
                 <div className="no-scrollbar flex h-full flex-col overflow-hidden px-3 py-2">
@@ -262,14 +276,14 @@ const RootLayout: ComponentType = () => {
             {/* Drawer View */}
             {activePanel !== null && get(activePanelItem, "view") === "drawer" && (
               <Sheet open={true} onOpenChange={() => handleNonStandardPanelClose()}>
-                <SheetContent side="left" className="w-[350px] sm:w-[450px]">
-                  <SheetHeader>
+                <SheetContent side="left" className="p-0 sm:max-w-full" style={{ width: `${panelWidth}px` }}>
+                  <SheetHeader className="border-b border-border p-4 pb-2">
                     <SheetTitle className="flex items-center gap-2">
                       <span className="rtl:ml-2 rtl:inline-block">{get(activePanelItem, "icon", null)}</span>
                       <span>{t(get(activePanelItem, "label", ""))}</span>
                     </SheetTitle>
                   </SheetHeader>
-                  <div className="mt-4 h-full max-h-full overflow-y-auto">
+                  <div className="h-full max-h-full overflow-y-auto p-4">
                     <Suspense fallback={<div>Loading...</div>}>
                       {React.createElement(get(activePanelItem, "component", null), {})}
                     </Suspense>
@@ -281,14 +295,14 @@ const RootLayout: ComponentType = () => {
             {/* Modal View */}
             {activePanel !== null && get(activePanelItem, "view") === "modal" && (
               <Dialog open={true} onOpenChange={() => handleNonStandardPanelClose()}>
-                <DialogContent className="sm:max-w-[600px]">
-                  <DialogHeader>
+                <DialogContent className="p-0" style={{ maxWidth: `${panelWidth}px` }}>
+                  <DialogHeader className="border-b border-border p-4 pb-2">
                     <DialogTitle className="flex items-center gap-2">
                       <span className="rtl:ml-2 rtl:inline-block">{get(activePanelItem, "icon", null)}</span>
                       <span>{t(get(activePanelItem, "label", ""))}</span>
                     </DialogTitle>
                   </DialogHeader>
-                  <div className="max-h-[70vh] overflow-y-auto">
+                  <div className="max-h-[70vh] overflow-y-auto p-4">
                     <Suspense fallback={<div>Loading...</div>}>
                       {React.createElement(get(activePanelItem, "component", null), {})}
                     </Suspense>
