@@ -8,12 +8,13 @@ import { showPredefinedBlockCategoryAtom } from "../../../../atoms/ui";
 import { canAcceptChildBlock, canBeNestedInside } from "../../../../functions/block-helpers.ts";
 import { useBlocksStore, useBuilderProp, usePermissions } from "../../../../hooks";
 import { usePartialBlocksList } from "../../../../hooks/usePartialBlocksStore";
-import { CHAI_BUILDER_EVENTS, mergeClasses, PERMISSIONS, UILibrariesPanel } from "../../../../main";
+import { CHAI_BUILDER_EVENTS, mergeClasses, PERMISSIONS } from "../../../../main";
 import { pubsub } from "../../../../pubsub.ts";
 import { CoreBlock } from "./CoreBlock";
 import { DefaultChaiBlocks } from "./DefaultBlocks.tsx";
 import ImportHTML from "./ImportHTML";
 import { PartialBlocks } from "./PartialBlocks";
+import UILibrariesPanel from "./UILibrariesPanel.tsx";
 
 const CORE_GROUPS = ["basic", "typography", "media", "layout", "form", "advanced", "other"];
 
