@@ -6,7 +6,7 @@ import { ChevronRight, EyeOffIcon, FileJson, MoreVertical, Zap } from "lucide-re
 import { createElement, memo, useEffect, useMemo } from "react";
 import { NodeRendererProps } from "react-arborist";
 import { canvasIframeAtom } from "../../../../atoms/ui";
-import { PERMISSIONS, PERMISSIONS_LIST } from "../../../../constants/PERMISSIONS";
+import { PERMISSIONS } from "../../../../constants/PERMISSIONS";
 import { ROOT_TEMP_KEY } from "../../../../constants/STRINGS";
 import { CHAI_BUILDER_EVENTS } from "../../../../events";
 import { canAcceptChildBlock, canAddChildBlock } from "../../../../functions/block-helpers";
@@ -177,7 +177,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
     return (
       <div className="group relative w-full cursor-pointer">
         <br />
-        {hasPermission(PERMISSIONS_LIST.ADD_BLOCK) && (
+        {hasPermission(PERMISSIONS.ADD_BLOCK) && (
           <div
             role="button"
             onClick={() => addBlockOnPosition(-1)}
@@ -193,7 +193,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
   }
 
   const isLibBlock = useMemo(() => {
-    return has(data, "_libBlock");
+    return has(data, "_libBlockId");
   }, [data]);
 
   return (

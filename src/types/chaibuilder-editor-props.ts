@@ -182,6 +182,16 @@ export interface ChaiBuilderEditorProps {
   getUILibraryBlocks?: (library: ChaiUILibrary) => Promise<ChaiUILibraryBlock[]>;
   getUILibraryBlock?: (library: ChaiUILibrary, uiLibBlock: ChaiUILibraryBlock) => Promise<ChaiBlock[]>;
 
+  // libraries CRUD
+  upsertLibraryBlock?: (params: {
+    id?: string;
+    description: string;
+    group: string;
+    library: string;
+    name: string;
+    preview?: string;
+  }) => Promise<{ id: string } | Error>;
+
   getPartialBlocks?: () => Promise<Record<string, { type: string; name: string; description?: string }>>;
 
   /**

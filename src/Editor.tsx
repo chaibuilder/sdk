@@ -172,6 +172,10 @@ function ChaiBuilderDefault() {
         }
         return [];
       }}
+      upsertLibraryBlock={async (params) => {
+        console.log("upsertLibraryBlock", params);
+        return { id: "123" };
+      }}
     />
   );
 }

@@ -25,7 +25,13 @@ import {
   Textarea,
 } from "../../../../../ui";
 import ChaiSelect from "../../../../components/ChaiSelect";
-import { PERMISSIONS, useBlocksStore, usePermissions } from "../../../../main";
+import {
+  PERMISSIONS,
+  useBlocksStore,
+  useBuilderProp,
+  usePermissions,
+  useUpdateBlocksPropsRealtime,
+} from "../../../../main";
 
 export const saveToLibraryModalAtom = atom<{
   isOpen: boolean;
@@ -41,7 +47,7 @@ export const SaveToLibraryModal = () => {
   const { t } = useTranslation();
   const { hasPermission } = usePermissions();
   const [blocks] = useBlocksStore();
-
+  const uiLibraries = useBuilderProp("uiLibraries", []);
   // Find the selected block
   const selectedBlock = useMemo(() => {
     if (!modalState.blockId) return null;
@@ -97,11 +103,29 @@ export const SaveToLibraryModal = () => {
     }
   };
 
+  const updateBlockPropsRealtime = useUpdateBlocksPropsRealtime();
+  const upsertLibraryBlock = useBuilderProp("upsertLibraryBlock", null);
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (!upsertLibraryBlock || typeof upsertLibraryBlock !== "function") {
+      console.error("Something went wrong!!");
+      return;
+    }
     try {
       // Mock library block saving - replace with actual implementation
-      console.log("Saving to library:", values, "Block:", selectedBlock);
+      const result: { id: string } | Error = await upsertLibraryBlock({
+        ...values,
+        ...(selectedBlock?._libBlockId && { id: selectedBlock?._libBlockId }),
+      });
+      debugger;
+      if (result instanceof Error) {
+        toast.error(result.message);
+        return;
+      }
+      const { id } = result;
 
+      updateBlockPropsRealtime([selectedBlock?._id], {
+        _libBlockId: id,
+      });
       // Show success message
       toast.success(isUpdateMode ? t("Library block updated") : t("Added to library"));
 
@@ -114,16 +138,8 @@ export const SaveToLibraryModal = () => {
   };
 
   // Mock data for libraries and groups - replace with actual data source
-  const libraries = [
-    { id: "default", name: "Default Library" },
-    { id: "custom", name: "Custom Library" },
-  ];
 
-  const [groups, setGroups] = useState([
-    { id: "layout", name: "Layout" },
-    { id: "components", name: "Components" },
-    { id: "forms", name: "Forms" },
-  ]);
+  const [groups, setGroups] = useState([]);
 
   const [newGroupName, setNewGroupName] = useState("");
   const [isCreatingGroup, setIsCreatingGroup] = useState(false);
@@ -176,7 +192,7 @@ export const SaveToLibraryModal = () => {
                   <FormControl>
                     <ChaiSelect
                       height="h-8"
-                      options={libraries.map((library) => ({
+                      options={uiLibraries.map((library) => ({
                         value: library.id,
                         label: library.name,
                       }))}

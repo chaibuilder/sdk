@@ -1,4 +1,5 @@
 import { CardStackIcon, CardStackPlusIcon, CopyIcon, ScissorsIcon, TrashIcon } from "@radix-ui/react-icons";
+import { isEmpty } from "lodash-es";
 import { PencilIcon, PlusIcon } from "lucide-react";
 import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -7,6 +8,7 @@ import { CHAI_BUILDER_EVENTS } from "../../../../events.ts";
 import { canAddChildBlock, canDeleteBlock, canDuplicateBlock } from "../../../../functions/block-helpers.ts";
 import {
   useBlocksStore,
+  useBuilderProp,
   useCopyBlockIds,
   useCutBlockIds,
   useDuplicateBlocks,
@@ -135,6 +137,7 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
   const duplicateBlocks = useDuplicateBlocks();
   const selectedBlock = useSelectedBlock();
   const { hasPermission } = usePermissions();
+  const uiLibraries = useBuilderProp("uiLibraries", []);
 
   const duplicate = useCallback(() => {
     duplicateBlocks(selectedIds);
@@ -161,7 +164,7 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
       <RenameBlock node={node} />
       {hasPermission(PERMISSIONS.MOVE_BLOCK) && <CutBlocks />}
       {hasPermission(PERMISSIONS.ADD_BLOCK) && <CopyPasteBlocks />}
-      {hasPermission(PERMISSIONS.CREATE_LIBRARY_BLOCK) && <SaveToLibrary />}
+      {hasPermission(PERMISSIONS.CREATE_LIBRARY_BLOCK) && !isEmpty(uiLibraries) && <SaveToLibrary />}
       {hasPermission(PERMISSIONS.DELETE_BLOCK) && <RemoveBlocks />}
     </DropdownMenuContent>
   );
