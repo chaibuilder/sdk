@@ -1,8 +1,11 @@
 import { ChaiFontViaSrc, ChaiFontViaUrl, registerChaiFont } from "@chaibuilder/runtime";
 import { IconJarLogoIcon } from "@radix-ui/react-icons";
 import { BotIcon, BusIcon, ThermometerIcon } from "lucide-react";
-import registerCustomBlocks from "./__dev/blocks";
-import { registerChaiSidebarPanel } from "./core/main";
+import { lazy } from "react";
+import registerCustomBlocks from "./_demo/blocks";
+import { registerChaiSidebarPanel, registerChaiTopBar } from "./core/main";
+
+const TopBar = lazy(() => import("./_demo/Topbar"));
 
 registerCustomBlocks();
 
@@ -59,3 +62,5 @@ registerChaiSidebarPanel("overlay-panel", {
   view: "overlay",
   showIf: () => true,
 });
+
+registerChaiTopBar(TopBar);

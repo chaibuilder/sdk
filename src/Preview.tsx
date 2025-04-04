@@ -1,7 +1,7 @@
 import { useAtom } from "jotai";
 import { useEffect, useMemo, useState } from "react";
-import { lsBlocksAtom, lsThemeAtom } from "./__dev/atoms-dev.ts";
-import registerCustomBlocks from "./__dev/blocks/index.tsx";
+import { lsBlocksAtom, lsThemeAtom } from "./_demo/atoms-dev.ts";
+import registerCustomBlocks from "./_demo/blocks/index.tsx";
 import { getChaiThemeCssVariables, getStylesForBlocks, RenderChaiBlocks } from "./render";
 import { loadWebBlocks } from "./web-blocks/index.ts";
 loadWebBlocks();

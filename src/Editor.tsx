@@ -1,48 +1,17 @@
 import axios from "axios";
 import { useAtom } from "jotai";
 import { isArray, map, pick, values } from "lodash-es";
-import { Info } from "lucide-react";
 import { useState } from "react";
-import { lsAiContextAtom, lsBlocksAtom, lsThemeAtom } from "./__dev/atoms-dev.ts";
-import GalleryWidget from "./__dev/CustomWidget.tsx";
-import { LanguageButton } from "./__dev/LangButton.tsx";
-import RightTop from "./__dev/RightTop.tsx";
-import { bluePreset, greenPreset, orangePreset } from "./__dev/THEME_PRESETS.ts";
+import { lsAiContextAtom, lsBlocksAtom, lsThemeAtom } from "./_demo/atoms-dev.ts";
+import GalleryWidget from "./_demo/CustomWidget.tsx";
+import { bluePreset, greenPreset, orangePreset } from "./_demo/THEME_PRESETS.ts";
 import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML, PERMISSIONS } from "./core/main";
 import "./extentions";
 import { SavePageData } from "./types/chaibuilder-editor-props.ts";
-import { Alert, AlertDescription } from "./ui/shadcn/components/ui/alert.tsx";
 import { DropdownMenuItem } from "./ui/shadcn/components/ui/dropdown-menu.tsx";
 import { loadWebBlocks } from "./web-blocks";
 
 loadWebBlocks();
-
-const Logo = () => {
-  return (
-    <div className="flex items-center gap-2">
-      <a href="https://chaibuilder.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-        <img src="/chaibuilder-logo.png" alt="Chai Builder" width={32} height={32} className="rounded-md" />
-        <span className="text-2xl font-bold tracking-tight">Chai Builder</span>
-      </a>
-
-      <a href="https://github.com/chaibuilder/sdk" target="_blank" rel="noopener noreferrer">
-        <img src="https://img.shields.io/github/stars/chaibuilder/sdk" alt="Chai Builder" className="rounded-md" />
-      </a>
-    </div>
-  );
-};
-
-const DemoAlert = () => {
-  return (
-    <Alert variant="default" className="px-4 py-2">
-      <AlertDescription className="flex items-center gap-2">
-        <Info className="h-4 w-4" />
-        <span className="font-bold">Demo mode</span> - Changes are saved in your browser local storage. AI actions are
-        mocked.
-      </AlertDescription>
-    </Alert>
-  );
-};
 
 const SaveToLibrary = ({ block }: { block: ChaiBlock }) => {
   return (
@@ -64,9 +33,6 @@ function ChaiBuilderDefault() {
 
   return (
     <ChaiBuilderEditor
-      sideBarComponents={{
-        bottom: [() => <div>Info</div>],
-      }}
       permissions={[...values(PERMISSIONS)]}
       // permissions={[]}
       blockMoreOptions={[SaveToLibrary]}
@@ -133,7 +99,6 @@ function ChaiBuilderDefault() {
         }
       }}
       uiLibraries={uiLibraries}
-      topBarComponents={{ left: [Logo], center: [DemoAlert], right: [LanguageButton, RightTop] }}
       getPartialBlockBlocks={async (partialBlockKey: string) => {
         const blocks =
           partialBlockKey === "partial"
