@@ -1,8 +1,8 @@
 import { atom, useAtom } from "jotai/index";
 import { forEach, get, has } from "lodash-es";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { ChaiBlock } from "../../types/chai-block.ts";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
-import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { useBuilderProp } from "./useBuilderProp.ts";
 
 type PartialBlocksState = Record<

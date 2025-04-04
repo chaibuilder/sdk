@@ -3,12 +3,12 @@ import StarterKit from "@tiptap/starter-kit";
 import { useAtom } from "jotai";
 import { first, isEmpty, omit, throttle } from "lodash-es";
 import React, { useCallback, useEffect, useRef } from "react";
+import { ChaiBlock } from "../../../../types/chai-block.ts";
 import { pageBlocksAtomsAtom } from "../../../atoms/blocks.ts";
 import { inlineEditingActiveAtom, treeRefAtom } from "../../../atoms/ui.ts";
 import { useFrame } from "../../../frame";
 import { useBlockHighlight, useSelectedBlockIds, useSelectedStylingBlocks, useUpdateBlocksProps } from "../../../hooks";
 import { useGetBlockAtomValue } from "../../../hooks/useUpdateBlockAtom.ts";
-import { ChaiBlock } from "../../../types/ChaiBlock.ts";
 import { useDnd } from "../dnd/useDnd.ts";
 
 function getTargetedBlock(target) {

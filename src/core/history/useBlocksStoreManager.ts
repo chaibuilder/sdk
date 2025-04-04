@@ -1,8 +1,8 @@
 import { each, find, omit } from "lodash-es";
+import { ChaiBlock } from "../../types/chai-block.ts";
 import { useBroadcastChannel } from "../hooks/useBroadcastChannel.ts";
 import { removeNestedBlocks } from "../hooks/useRemoveBlocks.ts";
 import { useUpdateBlockAtom } from "../hooks/useUpdateBlockAtom.ts";
-import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { insertBlocksAtPosition } from "./InsertBlocksAtPosition.ts";
 import { moveBlocksWithChildren } from "./moveBlocksWithChildren.ts";
 import { useBlocksStore } from "./useBlocksStoreUndoableActions.ts";

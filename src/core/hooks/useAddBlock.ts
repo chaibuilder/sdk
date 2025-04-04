@@ -1,11 +1,11 @@
 import { getDefaultBlockProps } from "@chaibuilder/runtime";
 import { filter, find, first, has } from "lodash-es";
 import { useCallback } from "react";
+import { ChaiBlock } from "../../types/chai-block.ts";
+import { CoreBlock } from "../../types/core-block.ts";
 import { generateUUID } from "../functions/Functions.ts";
 import { canAcceptChildBlock } from "../functions/block-helpers.ts";
 import { useBlocksStore, useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
-import { ChaiBlock } from "../types/ChaiBlock";
-import { CoreBlock } from "../types/CoreBlock";
 import { useSelectedBlockIds } from "./useSelectedBlockIds";
 
 type AddBlocks = {

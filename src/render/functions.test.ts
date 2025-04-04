@@ -1,5 +1,5 @@
+import { ChaiBlock } from "../types/chai-block.ts";
 import { addPrefixToClasses, convertToBlocks } from "./functions.ts";
-import { ChaiBlock } from "../core/types/ChaiBlock.ts";
 
 // Test addPrefixToClasses function
 describe("addPrefixToClasses", () => {

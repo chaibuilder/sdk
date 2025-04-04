@@ -1,8 +1,8 @@
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { chunk, forEach, get, includes, isEmpty, isString, keys, omit, set, unset } from "lodash-es";
 import { useCallback } from "react";
+import { ChaiBlock } from "../../types/chai-block.ts";
 import { useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
-import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { useLanguages } from "./useLanguages.ts";
 import { useSelectedBlock } from "./useSelectedBlockIds.ts";
 

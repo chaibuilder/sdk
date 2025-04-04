@@ -10,8 +10,8 @@ import { BorderRadiusInput, ColorPickerInput, FontSelector } from "./index.ts";
 
 import { useDebouncedCallback } from "@react-hookz/web";
 import { capitalize, get, set } from "lodash-es";
+import { ChaiBuilderThemeValues } from "../../../../../types/chaibuilder-editor-props.ts";
 import { usePermissions } from "../../../../hooks/usePermissions.ts";
-import { ChaiBuilderThemeValues } from "../../../../types/chaiBuilderEditorProps.ts";
 interface ThemeConfigProps {
   className?: string;
 }

@@ -30,4 +30,4 @@ export {
   UILibrariesPanel as UILibraries,
 };
 
-export * from "../types";
+export * from "../../types/index.ts";

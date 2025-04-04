@@ -1,5 +1,5 @@
 import { atom } from "jotai";
-import { ChaiBlock } from "../../../types/ChaiBlock.ts";
+import { ChaiBlock } from "../../../../types/chai-block.ts";
 
 export const draggedBlockAtom = atom<ChaiBlock | null>(null);
 

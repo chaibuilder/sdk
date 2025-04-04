@@ -12,7 +12,7 @@ import PreviewWeb from "./__dev/preview/WebPreview.tsx";
 import RightTop from "./__dev/RightTop.tsx";
 import { bluePreset, greenPreset, orangePreset } from "./__dev/THEME_PRESETS.ts";
 import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML, PERMISSIONS } from "./core/main";
-import { SavePageData } from "./core/types/chaiBuilderEditorProps.ts";
+import { SavePageData } from "./types/chaibuilder-editor-props.ts";
 import { Alert, AlertDescription } from "./ui/shadcn/components/ui/alert.tsx";
 import { DropdownMenuItem } from "./ui/shadcn/components/ui/dropdown-menu.tsx";
 import { loadWebBlocks } from "./web-blocks";

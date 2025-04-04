@@ -5,11 +5,11 @@ import { useAtom } from "jotai";
 import { capitalize, filter, first, get, groupBy, has, isEmpty, keys, map, noop } from "lodash-es";
 import { Loader } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { ChaiBlock } from "../../../../../types/chai-block.ts";
+import { ChaiUILibrary, ChaiUILibraryBlock } from "../../../../../types/chaibuilder-editor-props.ts";
 import { ScrollArea, Skeleton, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../ui";
 import { cn } from "../../../../functions/Functions.ts";
 import { useAddBlock, useBuilderProp, useSelectedBlockIds } from "../../../../hooks";
-import { ChaiBlock } from "../../../../types/ChaiBlock.ts";
-import { ChaiUILibrary, ChaiUILibraryBlock } from "../../../../types/chaiBuilderEditorProps.ts";
 import { UILibrariesSelect } from "./UiLibrariesSelect.tsx";
 
 import clsx from "clsx";

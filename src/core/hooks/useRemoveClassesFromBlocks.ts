@@ -1,11 +1,11 @@
 import { atom, useSetAtom } from "jotai";
 import { each, filter, first, get as getProp, includes, map } from "lodash-es";
 import { useCallback } from "react";
+import { ChaiBlock } from "../../types/chai-block.ts";
 import { pageBlocksAtomsAtom } from "../atoms/blocks";
 import { STYLES_KEY } from "../constants/STRINGS.ts";
 import { useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 import { getSplitChaiClasses } from "../hooks/getSplitClasses.ts";
-import { ChaiBlock } from "../types/ChaiBlock";
 import { selectedStylingBlocksAtom, TStyleBlock } from "./useSelectedStylingBlocks";
 
 export const removeClassFromBlocksAtom: any = atom(null, (get, _set, { blockIds, fullClasses }) => {

@@ -1,8 +1,8 @@
 import { atom, useAtom, useAtomValue } from "jotai";
 import { find, first, flatten, get, isEmpty, isString } from "lodash-es";
 import { useEffect } from "react";
+import { ChaiBlock } from "../../types/chai-block";
 import { presentBlocksAtom } from "../atoms/blocks";
-import { ChaiBlock } from "../types/ChaiBlock";
 import { useSelectedBlockIds } from "./useSelectedBlockIds";
 
 /**

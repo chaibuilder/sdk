@@ -1,4 +1,4 @@
-import { ChaiBuilderThemeOptions } from "../types/chaiBuilderEditorProps";
+import { ChaiBuilderThemeOptions } from "../../types/chaibuilder-editor-props";
 
 export const defaultThemeOptions: ChaiBuilderThemeOptions = {
   fontFamily: {

@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { ChaiUILibrary } from "../../../../types/chaiBuilderEditorProps.ts";
+import { ChaiUILibrary } from "../../../../../types/chaibuilder-editor-props.ts";
 import ChaiSelect from "../../../ChaiSelect.tsx";
 
 export function UILibrariesSelect({

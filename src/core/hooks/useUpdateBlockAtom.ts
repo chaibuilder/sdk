@@ -2,9 +2,9 @@ import { Atom, atom, useSetAtom } from "jotai";
 import { useAtomCallback } from "jotai/utils";
 import { find, isString } from "lodash-es";
 import { useCallback } from "react";
+import { ChaiBlock } from "../../types/chai-block.ts";
 import { pageBlocksAtomsAtom } from "../atoms/blocks";
 import { builderStore } from "../atoms/store.ts";
-import { ChaiBlock } from "../types/ChaiBlock.ts";
 
 const writeAtomValue = atom(
   null, // it's a convention to pass `null` for the first argument

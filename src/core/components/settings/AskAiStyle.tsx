@@ -1,9 +1,9 @@
 import { Loader } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { AskAiResponse } from "../../../types/chaibuilder-editor-props.ts";
 import { Button, Skeleton, Textarea } from "../../../ui";
 import { useAskAi } from "../../hooks/useAskAi.ts";
-import { AskAiResponse } from "../../types/chaiBuilderEditorProps.ts";
 import Countdown from "../Countdown.tsx";
 
 export const AskAIStyles = ({ blockId }: { blockId: string | undefined }) => {

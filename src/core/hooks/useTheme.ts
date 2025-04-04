@@ -1,7 +1,11 @@
 import { atom, useAtom } from "jotai";
 import { isEmpty } from "lodash-es";
 import { useMemo } from "react";
-import { BorderRadiusValue, ChaiBuilderThemeOptions, ChaiBuilderThemeValues } from "../types/chaiBuilderEditorProps";
+import {
+  BorderRadiusValue,
+  ChaiBuilderThemeOptions,
+  ChaiBuilderThemeValues,
+} from "../../types/chaibuilder-editor-props";
 import { defaultThemeOptions } from "./defaultThemeOptions";
 import { useBuilderProp } from "./useBuilderProp";
 

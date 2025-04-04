@@ -1,8 +1,8 @@
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { compact, get, map, memoize, omit } from "lodash-es";
 import { useCallback } from "react";
+import { ChaiBlock } from "../../types/chai-block.ts";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
-import { ChaiBlock } from "../types/ChaiBlock.ts";
 import { useBrandingOptions } from "./useBrandingOptions";
 import { useCurrentPage } from "./useCurrentPage";
 

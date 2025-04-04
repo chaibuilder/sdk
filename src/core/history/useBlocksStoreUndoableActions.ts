@@ -1,9 +1,9 @@
 import { useAtom } from "jotai";
-import { presentBlocksAtom } from "../atoms/blocks.ts";
-import { ChaiBlock } from "../types/ChaiBlock.ts";
-import { useUndoManager } from "./useUndoManager.ts";
-import { useBlocksStoreManager } from "./useBlocksStoreManager.ts";
 import { each, first, keys, map } from "lodash-es";
+import { ChaiBlock } from "../../types/chai-block.ts";
+import { presentBlocksAtom } from "../atoms/blocks.ts";
+import { useBlocksStoreManager } from "./useBlocksStoreManager.ts";
+import { useUndoManager } from "./useUndoManager.ts";
 
 export const useBlocksStore = () => {
   return useAtom(presentBlocksAtom);

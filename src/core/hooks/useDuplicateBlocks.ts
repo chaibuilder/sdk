@@ -1,9 +1,9 @@
-import { useCallback } from "react";
 import { each, filter, get, isString } from "lodash-es";
-import { useSelectedBlockIds } from "./useSelectedBlockIds";
-import { useBlocksStore, useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
+import { useCallback } from "react";
+import { ChaiBlock } from "../../types/chai-block.ts";
 import { getDuplicatedBlocks } from "../functions/Blocks.ts";
-import { ChaiBlock } from "../types/ChaiBlock.ts";
+import { useBlocksStore, useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
+import { useSelectedBlockIds } from "./useSelectedBlockIds";
 
 /**
  * useDuplicateBlock
