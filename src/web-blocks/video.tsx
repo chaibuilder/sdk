@@ -1,6 +1,6 @@
 import { get, isEmpty, pick, omit } from "lodash-es";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
-import { Video } from "lucide-react";
+import { VideoIcon } from "@radix-ui/react-icons";
 
 export type VideoBlockProps = {
   styles: ChaiStyles;
@@ -149,7 +149,7 @@ const Config = {
   type: "Video",
   label: "Video",
   category: "core",
-  icon: Video,
+  icon: VideoIcon,
   group: "media",
   ...registerChaiBlockSchema({
     properties: {
