@@ -26,11 +26,14 @@ export const registerBlockSettingTemplate = (id: string, component: React.Compon
 
 export const useBlockSettingComponents = (
   type: "widget" | "field" | "template",
-): { id: string; component: React.ComponentType<any> }[] => {
+): Record<string, React.ComponentType<any>> => {
   return Object.values(RJSF_EXTENSIONS)
     .filter((component) => component.type === type)
-    .map((component) => ({
-      id: component.id,
-      component: component.component,
-    }));
+    .reduce(
+      (acc, component) => {
+        acc[component.id] = component.component;
+        return acc;
+      },
+      {} as Record<string, React.ComponentType<any>>,
+    );
 };

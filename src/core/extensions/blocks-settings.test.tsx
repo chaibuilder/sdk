@@ -89,10 +89,11 @@ describe("Block Settings Extensions", () => {
       const widgets = useBlockSettingComponents("widget");
 
       // Assert
-      expect(widgets).toHaveLength(2);
-      expect(widgets[0].id).toBe("widget-1");
-      expect(widgets[1].id).toBe("widget-2");
-      expect(widgets.every((item) => item.component && item.id)).toBe(true);
+      expect(Object.keys(widgets)).toHaveLength(2);
+      expect(widgets["widget-1"]).toBeDefined();
+      expect(widgets["widget-2"]).toBeDefined();
+      expect(typeof widgets["widget-1"]).toBe("function");
+      expect(typeof widgets["widget-2"]).toBe("function");
     });
 
     it("should return only fields when type is 'field'", () => {
@@ -100,9 +101,9 @@ describe("Block Settings Extensions", () => {
       const fields = useBlockSettingComponents("field");
 
       // Assert
-      expect(fields).toHaveLength(1);
-      expect(fields[0].id).toBe("field-1");
-      expect(fields.every((item) => item.component && item.id)).toBe(true);
+      expect(Object.keys(fields)).toHaveLength(1);
+      expect(fields["field-1"]).toBeDefined();
+      expect(typeof fields["field-1"]).toBe("function");
     });
 
     it("should return only templates when type is 'template'", () => {
@@ -110,12 +111,12 @@ describe("Block Settings Extensions", () => {
       const templates = useBlockSettingComponents("template");
 
       // Assert
-      expect(templates).toHaveLength(1);
-      expect(templates[0].id).toBe("template-1");
-      expect(templates.every((item) => item.component && item.id)).toBe(true);
+      expect(Object.keys(templates)).toHaveLength(1);
+      expect(templates["template-1"]).toBeDefined();
+      expect(typeof templates["template-1"]).toBe("function");
     });
 
-    it("should return an empty array when no components match the type", () => {
+    it("should return an empty object when no components match the type", () => {
       // Arrange
       Object.keys(RJSF_EXTENSIONS).forEach((key) => {
         delete RJSF_EXTENSIONS[key];
@@ -125,8 +126,8 @@ describe("Block Settings Extensions", () => {
       const widgets = useBlockSettingComponents("widget");
 
       // Assert
-      expect(widgets).toHaveLength(0);
-      expect(widgets).toEqual([]);
+      expect(Object.keys(widgets)).toHaveLength(0);
+      expect(widgets).toEqual({});
     });
   });
 });

@@ -1,16 +1,15 @@
-import {useThrottledCallback} from "@react-hookz/web";
+import { useThrottledCallback } from "@react-hookz/web";
 import RjForm from "@rjsf/core";
-import {RJSFSchema, UiSchema} from "@rjsf/utils";
+import { RJSFSchema, UiSchema } from "@rjsf/utils";
 import validator from "@rjsf/validator-ajv8";
-import {useAtom} from "jotai";
-import {take} from "lodash-es";
-import {Plus} from "lucide-react";
-import {memo} from "react";
-import {chaiRjsfFieldsAtom, chaiRjsfTemplatesAtom, chaiRjsfWidgetsAtom,} from "../../atoms/builder.ts";
-import {useLanguages} from "../../hooks";
-import {IconPickerField, ImagePickerField, LinkField, RowColField, RTEField, SliderField} from "../../rjsf-widgets";
-import {BindingWidget} from "../../rjsf-widgets/binding.tsx";
-import {CodeEditor} from "../../rjsf-widgets/Code.tsx";
+import { take } from "lodash-es";
+import { Plus } from "lucide-react";
+import { memo } from "react";
+import { useBlockSettingComponents } from "../../extensions/blocks-settings.tsx";
+import { useLanguages } from "../../hooks";
+import { IconPickerField, ImagePickerField, LinkField, RowColField, RTEField, SliderField } from "../../rjsf-widgets";
+import { BindingWidget } from "../../rjsf-widgets/binding.tsx";
+import { CodeEditor } from "../../rjsf-widgets/Code.tsx";
 import JSONFormFieldTemplate from "./JSONFormFieldTemplate.tsx";
 
 type JSONFormType = {
@@ -31,9 +30,9 @@ const CustomAddButton = (props) => (
 
 export const JSONForm = memo(({ blockId, schema, uiSchema, formData, onChange }: JSONFormType) => {
   const { selectedLang } = useLanguages();
-  const [widgets] = useAtom(chaiRjsfWidgetsAtom);
-  const [fields] = useAtom(chaiRjsfFieldsAtom);
-  const [templates] = useAtom(chaiRjsfTemplatesAtom);
+  const widgets = useBlockSettingComponents("widget");
+  const fields = useBlockSettingComponents("field");
+  const templates = useBlockSettingComponents("template");
 
   const throttledChange = useThrottledCallback(
     async ({ formData }: any, id?: string) => {
