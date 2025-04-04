@@ -1,10 +1,10 @@
-import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle } from "../../../ui";
-import { useTranslation } from "react-i18next";
-import AddBlocksPanel from "../sidepanels/panels/add-blocks/AddBlocks.tsx";
 import { Cross2Icon } from "@radix-ui/react-icons";
-import { CHAI_BUILDER_EVENTS } from "../../events.ts";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle } from "../../../ui";
+import { CHAI_BUILDER_EVENTS } from "../../events.ts";
 import { usePubSub } from "../../hooks/usePubSub.ts";
+import AddBlocksPanel from "../sidepanels/panels/add-blocks/add-blocks.tsx";
 
 export const AddBlocksDialog = () => {
   const { t } = useTranslation();

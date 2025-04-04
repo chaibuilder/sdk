@@ -3,7 +3,7 @@ import { map, uniq } from "lodash-es";
 import { Globe } from "lucide-react";
 import { useEffect } from "react";
 import { usePartialBlocksList } from "../../../../hooks/usePartialBlocksStore";
-import { ChaiBuilderBlocks } from "./AddBlocks";
+import { ChaiBuilderBlocks } from "./add-blocks";
 
 // Create an atom to store the fetched partial blocks
 const partialBlocksDataAtom = atom<{
