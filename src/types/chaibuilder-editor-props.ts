@@ -1,5 +1,4 @@
 import React, { ReactNode } from "react";
-import { LayoutVariant } from "../core/constants/LAYOUT_MODE.ts";
 import { DropdownMenuItem } from "../ui/shadcn/components/ui/dropdown-menu.tsx";
 import { ChaiBlock } from "./chai-block.ts";
 
@@ -123,10 +122,6 @@ export interface ChaiBuilderEditorProps {
    * Custom layout component
    */
   layout?: React.ComponentType;
-  /**
-   * Layout variant. Not supported with custom layout
-   */
-  layoutVariant?: LayoutVariant;
 
   /**
    * Add blocks dialog components
@@ -178,18 +173,9 @@ export interface ChaiBuilderEditorProps {
   locale?: string;
 
   /**
-   * Non editable component
-   * TODO: Move to registerNonEditableComponent()
-   */
-  nonEditableComponent?: ReactComponentType;
-
-  /**
    * Canvas component. Not supported with custom layout
    */
-  canvasTopBarComponents?: { right?: ReactComponentType[] };
   blockMoreOptions?: Array<(props: { block: ChaiBlock }) => React.ReactElement<typeof DropdownMenuItem>>;
-
-  previewLink?: string;
 
   darkMode?: boolean;
 
@@ -230,8 +216,9 @@ export interface ChaiBuilderEditorProps {
 
   /**
    * Preview component
+   * TODO: Move to registerPreviewComponent()
    */
-  previewComponent?: ReactComponentType;
+  // previewComponent?: ReactComponentType;
 
   /**
    * Sidebar components. Not supported with custom layout
@@ -253,8 +240,9 @@ export interface ChaiBuilderEditorProps {
 
   /**
    * Outline menu items
+   * TODO: Move to registerOutlineMenuItems()
    */
-  outlineMenuItems?: OutlineMenuItems;
+  // outlineMenuItems?: OutlineMenuItems;
 
   _flags?: Record<string, boolean>;
 
