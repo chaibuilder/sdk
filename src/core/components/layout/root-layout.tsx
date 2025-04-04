@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useAtom } from "jotai";
 import { compact, find, first, get } from "lodash-es";
 import { Layers, Paintbrush, SparklesIcon, X } from "lucide-react";
-import React, { ComponentType, lazy, MouseEvent, Suspense, useEffect, useMemo } from "react";
+import React, { ComponentType, lazy, MouseEvent, Suspense, useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Button,
@@ -82,6 +82,7 @@ function useSidebarMenuItems() {
  */
 const RootLayout: ComponentType = () => {
   const [activePanel, setActivePanel] = useAtom(sidebarActivePanelAtom);
+  const lastStandardPanelRef = useRef<string | null>("outline"); // Default to "outline"
 
   const [panel, setRightPanel] = useRightPanel();
 
@@ -109,6 +110,21 @@ const RootLayout: ComponentType = () => {
   const sidebarMenuItems = useMemo(() => [...menuItems, ...topPanels], [menuItems, topPanels]);
   const htmlDir = useBuilderProp("htmlDir", "ltr");
 
+  // Keep track of the last used standard panel
+  useEffect(() => {
+    if (activePanel !== null) {
+      const currentPanelItem = find(sidebarMenuItems, { id: activePanel });
+      if (currentPanelItem && get(currentPanelItem, "view", "standard") === "standard") {
+        lastStandardPanelRef.current = activePanel;
+      }
+    }
+  }, [activePanel, sidebarMenuItems]);
+
+  const handleNonStandardPanelClose = () => {
+    // Return to the last used standard panel when closing a non-standard panel
+    setActivePanel(lastStandardPanelRef.current);
+  };
+
   useEffect(() => {
     if (!find(sidebarMenuItems, { id: activePanel })) {
       setActivePanel("outline");
@@ -130,7 +146,7 @@ const RootLayout: ComponentType = () => {
             </Suspense>
           </div>
           <main className="relative flex h-[calc(100vh-56px)] max-w-full flex-1 flex-row">
-            <div className="flex w-12 flex-col items-center justify-between border-r border-border py-2">
+            <div id="sidebar" className="flex w-12 flex-col items-center justify-between border-r border-border py-2">
               <div className="flex flex-col">
                 {sidebarMenuItems.map((item, index) => (
                   <Tooltip key={"button" + index}>
@@ -245,7 +261,7 @@ const RootLayout: ComponentType = () => {
 
             {/* Drawer View */}
             {activePanel !== null && get(activePanelItem, "view") === "drawer" && (
-              <Sheet open={true} onOpenChange={() => setActivePanel(null)}>
+              <Sheet open={true} onOpenChange={() => handleNonStandardPanelClose()}>
                 <SheetContent side="left" className="w-[350px] sm:w-[450px]">
                   <SheetHeader>
                     <SheetTitle className="flex items-center gap-2">
@@ -264,7 +280,7 @@ const RootLayout: ComponentType = () => {
 
             {/* Modal View */}
             {activePanel !== null && get(activePanelItem, "view") === "modal" && (
-              <Dialog open={true} onOpenChange={() => setActivePanel(null)}>
+              <Dialog open={true} onOpenChange={() => handleNonStandardPanelClose()}>
                 <DialogContent className="sm:max-w-[600px]">
                   <DialogHeader>
                     <DialogTitle className="flex items-center gap-2">
@@ -284,30 +300,38 @@ const RootLayout: ComponentType = () => {
             {/* Overlay View */}
             {activePanel !== null && get(activePanelItem, "view") === "overlay" && (
               <motion.div
-                className="absolute inset-0 z-50 bg-background/80 backdrop-blur-sm"
+                className="absolute bottom-0 left-12 right-0 top-0 z-50"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}>
-                <motion.div
-                  className="m-6 h-full max-h-full overflow-y-auto rounded-lg border border-border bg-background p-6 shadow-lg"
-                  initial={{ x: -50, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  exit={{ x: 50, opacity: 0 }}
-                  transition={{ duration: 0.3, delay: 0.1 }}>
-                  <div className="mb-4 flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-lg font-bold">
-                      <span className="rtl:ml-2 rtl:inline-block">{get(activePanelItem, "icon", null)}</span>
-                      <span>{t(get(activePanelItem, "label", ""))}</span>
+                <div className="h-full w-full">
+                  <motion.div
+                    className="flex h-full w-full flex-col bg-background"
+                    initial={{ y: -20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: 20, opacity: 0 }}
+                    transition={{ duration: 0.3, delay: 0.1 }}>
+                    <div className="flex items-center justify-between border-b border-border p-4 py-2">
+                      <div className="flex items-center gap-2 text-lg font-bold">
+                        <span className="rtl:ml-2 rtl:inline-block">{get(activePanelItem, "icon", null)}</span>
+                        <span>{t(get(activePanelItem, "label", ""))}</span>
+                      </div>
+                      <Button
+                        onClick={() => handleNonStandardPanelClose()}
+                        variant="ghost"
+                        size="icon"
+                        className="text-gray-400">
+                        <X className="h-5 w-5" />
+                      </Button>
                     </div>
-                    <Button onClick={() => setActivePanel(null)} variant="ghost" size="icon" className="text-gray-400">
-                      <X className="h-5 w-5" />
-                    </Button>
-                  </div>
-                  <Suspense fallback={<div>Loading...</div>}>
-                    {React.createElement(get(activePanelItem, "component", null), {})}
-                  </Suspense>
-                </motion.div>
+                    <div className="flex-1 overflow-y-auto p-4">
+                      <Suspense fallback={<div>Loading...</div>}>
+                        {React.createElement(get(activePanelItem, "component", null), {})}
+                      </Suspense>
+                    </div>
+                  </motion.div>
+                </div>
               </motion.div>
             )}
           </main>
