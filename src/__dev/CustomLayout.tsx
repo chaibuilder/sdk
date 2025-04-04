@@ -1,28 +1,28 @@
 "use client";
 
-import React, { Suspense, useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronDown, Image, Layers, Settings, Type } from "lucide-react";
+import React, { Suspense, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { BlockAttributesEditor } from "../core/components/settings/new-panel/BlockAttributesEditor";
 import {
-  BlockAttributesEditor,
-  BlockPropsEditor,
-  BlockStyleEditor,
+  ChaiBlockPropsEditor,
+  ChaiBlockStyleEditor,
   ChaiBuilderCanvas,
-  Outline,
-  ScreenSizes,
-  UndoRedo,
+  ChaiOutline,
+  ChaiScreenSizes,
+  ChaiUndoRedo,
   useSelectedBlock,
 } from "../core/main";
 import { ScrollArea, TooltipProvider } from "../ui";
-import { useTranslation } from "react-i18next";
 
 const BlockEditor = () => {
   const [showAttributes, setShowAttributes] = useState(true);
   const selectedBlock = useSelectedBlock();
   return (
     <>
-      <BlockPropsEditor />
-      <BlockStyleEditor />
+      <ChaiBlockPropsEditor />
+      <ChaiBlockStyleEditor />
       {selectedBlock ? (
         <>
           <div
@@ -45,7 +45,7 @@ export default function CustomLayout() {
   const { t } = useTranslation();
 
   const menuItems = [
-    { icon: <Layers size={24} />, label: "Outline", component: Outline },
+    { icon: <Layers size={24} />, label: "Outline", component: ChaiOutline },
     { icon: <Settings size={24} />, label: "Settings", component: BlockEditor },
     { icon: <Type size={24} />, label: "Typography", component: () => <div>Typography</div> },
     { icon: <Image size={24} />, label: "Images", component: () => <div>Images</div> },
@@ -62,9 +62,9 @@ export default function CustomLayout() {
         <div className="flex h-16 items-center justify-between bg-neutral-900 px-4 text-white">
           <h1 className="ml-4 font-bold">Custom Layout Example</h1>
           <div className={`flex items-center space-x-2`}>
-            <ScreenSizes />
+            <ChaiScreenSizes />
             |
-            <UndoRedo />
+            <ChaiUndoRedo />
           </div>
           <div className="space-x-2">buttons</div>
         </div>
