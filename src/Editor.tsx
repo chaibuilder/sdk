@@ -1,52 +1,21 @@
-import { ChaiFontViaSrc, ChaiFontViaUrl, registerChaiFont } from "@chaibuilder/runtime";
 import axios from "axios";
 import { useAtom } from "jotai";
 import { isArray, map, pick, values } from "lodash-es";
 import { Info } from "lucide-react";
 import { useState } from "react";
 import { lsAiContextAtom, lsBlocksAtom, lsThemeAtom } from "./__dev/atoms-dev.ts";
-import registerCustomBlocks from "./__dev/blocks/index.tsx";
 import GalleryWidget from "./__dev/CustomWidget.tsx";
 import { LanguageButton } from "./__dev/LangButton.tsx";
-import PreviewWeb from "./__dev/preview/WebPreview.tsx";
 import RightTop from "./__dev/RightTop.tsx";
 import { bluePreset, greenPreset, orangePreset } from "./__dev/THEME_PRESETS.ts";
 import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML, PERMISSIONS } from "./core/main";
+import "./extentions";
 import { SavePageData } from "./types/chaibuilder-editor-props.ts";
 import { Alert, AlertDescription } from "./ui/shadcn/components/ui/alert.tsx";
 import { DropdownMenuItem } from "./ui/shadcn/components/ui/dropdown-menu.tsx";
 import { loadWebBlocks } from "./web-blocks";
 
 loadWebBlocks();
-registerCustomBlocks();
-
-registerChaiFont("Ubuntu", {
-  url: "https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap",
-  fallback: `sans-serif`,
-} as ChaiFontViaUrl);
-
-registerChaiFont("Geist", {
-  fallback: `"Geist Fallback", Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol`,
-  src: [{ url: "http://localhost:5173/fonts/Geist.woff", format: "woff" }],
-} as ChaiFontViaSrc);
-
-registerChaiFont("Mazda Type", {
-  fallback: `Helvetica,Arial,sans-serif`,
-  src: [
-    {
-      url: "https://www.mazda.ca/static/fonts/MazdaTypeTT-Bold.woff2",
-      format: "woff2",
-    },
-    {
-      url: "https://www.mazda.ca/static/fonts/MazdaTypeTT-Regular.woff2",
-      format: "woff2",
-    },
-    {
-      url: "https://www.mazda.ca/static/fonts/MazdaTypeTT-Medium.woff2",
-      format: "woff2",
-    },
-  ],
-} as ChaiFontViaSrc);
 
 const Logo = () => {
   return (
@@ -123,7 +92,6 @@ function ChaiBuilderDefault() {
       theme={theme}
       autoSaveSupport={true}
       autoSaveInterval={15}
-      previewComponent={PreviewWeb}
       blocks={blocks}
       onSave={async ({ blocks, theme }: SavePageData) => {
         console.log("onSave", blocks, theme);

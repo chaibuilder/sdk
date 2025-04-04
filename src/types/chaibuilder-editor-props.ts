@@ -103,6 +103,10 @@ export interface ChaiBuilderEditorProps {
   themePresets?: Record<string, Partial<ChaiBuilderThemeValues>>[];
   themeOptions?: (defaultThemeOptions: ChaiBuilderThemeOptions) => ChaiBuilderThemeOptions;
   theme?: Partial<ChaiBuilderThemeValues>;
+  /**
+   * Theme panel component
+   * TODO: Move to registerChaiThemePanelComponent()
+   */
   themePanelComponent?: ReactComponentType;
   /**
    * onError callback function
@@ -125,7 +129,7 @@ export interface ChaiBuilderEditorProps {
 
   /**
    * Add blocks dialog components
-   * TODO: Move to registerAddBlocksDialogTab()
+   * TODO: Move to registerChaiAddBlocksDialogTab()
    */
   addBlocksDialogTabs?: {
     key: string;
@@ -174,6 +178,7 @@ export interface ChaiBuilderEditorProps {
 
   /**
    * Canvas component. Not supported with custom layout
+   * TODO: Move to registerChaiOutlineBlockMoreOptions()
    */
   blockMoreOptions?: Array<(props: { block: ChaiBlock }) => React.ReactElement<typeof DropdownMenuItem>>;
 
@@ -216,13 +221,13 @@ export interface ChaiBuilderEditorProps {
 
   /**
    * Preview component
-   * TODO: Move to registerPreviewComponent()
+   * TODO: Move to registerChaiPreviewComponent()
    */
   // previewComponent?: ReactComponentType;
 
   /**
    * Sidebar components. Not supported with custom layout
-   * TODO: Move to registerSideBarPanels()
+   * TODO: Move to registerChaiSideBarPanels()
    */
   sideBarComponents?: {
     bottom?: ReactComponentType[];
@@ -231,6 +236,7 @@ export interface ChaiBuilderEditorProps {
 
   /**
    * Topbar components. Not supported with custom layout
+   * TODO: Move to registerChaiTopBarComponent()
    */
   topBarComponents?: {
     center?: ReactComponentType[];
@@ -240,7 +246,7 @@ export interface ChaiBuilderEditorProps {
 
   /**
    * Outline menu items
-   * TODO: Move to registerOutlineMenuItems()
+   * TODO: Move to registerChaiOutlineMenuItems()
    */
   // outlineMenuItems?: OutlineMenuItems;
 

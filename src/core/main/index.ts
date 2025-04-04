@@ -48,6 +48,7 @@ export type { ChaiBlock, ChaiBuilderEditorProps };
 
 // registration apis
 export { registerChaiMediaManager } from "../extensions/media-manager.tsx";
+export { registerChaiSidebarPanel } from "../extensions/sidebar-panels.tsx";
 
 // hooks
 export * from "../hooks";

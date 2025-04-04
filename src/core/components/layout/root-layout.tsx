@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../ui/index.ts";
 import { sidebarActivePanelAtom } from "../../atoms/ui.ts";
 import { CHAI_BUILDER_EVENTS } from "../../events.ts";
+import { useChaiSidebarPanels } from "../../extensions/sidebar-panels.tsx";
 import { useBuilderProp } from "../../hooks/index.ts";
 import { usePubSub } from "../../hooks/usePubSub.ts";
 import { useRightPanel } from "../../hooks/useTheme.ts";
@@ -74,8 +75,8 @@ const RootLayout: ComponentType = () => {
     setActivePanel("outline");
   });
 
-  const topComponents = useBuilderProp("sideBarComponents.top", []);
-  const sideBarBottomComponents = useBuilderProp("sideBarComponents.bottom", []);
+  const topPanels = useChaiSidebarPanels("top");
+  const bottomPanels = useChaiSidebarPanels("bottom");
   /**
    * Prevents the context menu from appearing in production mode.
    * @param {MouseEvent<HTMLDivElement>} e - The mouse event.
@@ -91,7 +92,7 @@ const RootLayout: ComponentType = () => {
   const menuItems = useSidebarMenuItems();
 
   const { t } = useTranslation();
-  const sidebarMenuItems = useMemo(() => [...menuItems, ...topComponents], [menuItems, topComponents]);
+  const sidebarMenuItems = useMemo(() => [...menuItems, ...topPanels], [menuItems, topPanels]);
   const htmlDir = useBuilderProp("htmlDir", "ltr");
 
   useEffect(() => {
@@ -136,11 +137,22 @@ const RootLayout: ComponentType = () => {
               </div>
               <div className="flex flex-col space-y-1"></div>
               <div className="flex flex-col">
-                {sideBarBottomComponents?.map((sidebarComponent, index) => {
+                {bottomPanels?.map((sidebarComponent, index) => {
                   return (
-                    <Suspense key={`sidebar-component-${index}`} fallback={<div />}>
-                      {React.createElement(sidebarComponent, {})}
-                    </Suspense>
+                    <Tooltip key={"button" + index}>
+                      <TooltipTrigger asChild>
+                        <Button
+                          key={index}
+                          variant={activePanel === sidebarComponent.id ? "default" : "ghost"}
+                          className={`mb-2 rounded-lg p-2 transition-colors`}
+                          onClick={() => handleMenuItemClick(sidebarComponent.id)}>
+                          {get(sidebarComponent, "icon", null)}
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent side={"right"}>
+                        <p>{t(sidebarComponent.label)}</p>
+                      </TooltipContent>
+                    </Tooltip>
                   );
                 })}
               </div>
