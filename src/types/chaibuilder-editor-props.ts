@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
-import { DropdownMenuItem } from "../../ui/shadcn/components/ui/dropdown-menu.tsx";
-import { LayoutVariant } from "../constants/LAYOUT_MODE.ts";
-import { ChaiBlock } from "./ChaiBlock";
+import { LayoutVariant } from "../core/constants/LAYOUT_MODE.ts";
+import { DropdownMenuItem } from "../ui/shadcn/components/ui/dropdown-menu.tsx";
+import { ChaiBlock } from "./chai-block.ts";
 
 export type ChaiUILibraryBlock<T = Record<string, any>> = {
   id: string;

@@ -4,10 +4,10 @@ import twContainer from "@tailwindcss/container-queries";
 import twForms from "@tailwindcss/forms";
 import twTypography from "@tailwindcss/typography";
 import { defaultThemeOptions } from "../core/hooks/defaultThemeOptions.ts";
-import { ChaiBlock } from "../core/types/ChaiBlock.ts";
-import { ChaiBuilderThemeOptions } from "../core/types/chaiBuilderEditorProps.ts";
 import { chaiBuilderPlugin } from "../tailwind";
 import { getChaiBuilderTheme } from "../tailwind/getChaiBuilderTheme.ts";
+import { ChaiBlock } from "../types/chai-block.ts";
+import { ChaiBuilderThemeOptions } from "../types/chaibuilder-editor-props.ts";
 
 async function getTailwindCSS(
   themeOptions: ChaiBuilderThemeOptions,

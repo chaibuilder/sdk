@@ -6,7 +6,7 @@ import CustomLayout from "./__dev/CustomLayout.tsx";
 import PreviewWeb from "./__dev/preview/WebPreview.tsx";
 import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
 import { ChaiBlock, ChaiBuilderEditor } from "./core/main";
-import { ChaiUILibrary, ChaiUILibraryBlock } from "./core/types/chaiBuilderEditorProps.ts";
+import { ChaiUILibrary, ChaiUILibraryBlock } from "./types/chaibuilder-editor-props.ts";
 import { loadWebBlocks } from "./web-blocks";
 // import ptBR from "./__dev/pt-BR.json";
 // import es from "./__dev/es.json";

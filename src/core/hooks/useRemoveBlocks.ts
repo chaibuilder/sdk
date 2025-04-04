@@ -1,8 +1,8 @@
 import { filter, find, includes, isEmpty } from "lodash-es";
 import { useCallback } from "react";
+import { ChaiBlock } from "../../types/chai-block.ts";
 import { useBlocksStore, useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 import { PERMISSIONS, usePermissions } from "../main/index.ts";
-import { ChaiBlock } from "../types/ChaiBlock";
 import { useSelectedBlockIds } from "./useSelectedBlockIds";
 export const removeNestedBlocks = (blocks: ChaiBlock[], blockIds: Array<string>): ChaiBlock[] => {
   // Create a copy of blocks to modify

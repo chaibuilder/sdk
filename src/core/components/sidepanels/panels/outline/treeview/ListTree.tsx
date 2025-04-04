@@ -1,6 +1,6 @@
 import { useDebouncedCallback } from "@react-hookz/web";
 import { atom, useAtom } from "jotai";
-import { find, first, get, isEmpty } from "lodash-es";
+import { find, first, get, has, isEmpty } from "lodash-es";
 import {
   ChevronRight,
   ChevronsDown,
@@ -202,6 +202,10 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
     );
   }
 
+  const isLibBlock = useMemo(() => {
+    return has(data, "_libBlock");
+  }, [data]);
+
   return (
     <div className="w-full">
       <div
@@ -264,7 +268,7 @@ const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
                 </button>
               )}
             </div>
-            <div className="leading-1 flex items-center">
+            <div className={cn("leading-1 flex items-center", isLibBlock && "text-orange-400")}>
               <TypeIcon type={data?._type} />
               {isEditing ? (
                 <Input node={node} />

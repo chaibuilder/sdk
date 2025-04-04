@@ -15,7 +15,7 @@ import {
 import { isEmpty } from "lodash-es";
 import { createElement } from "react";
 import { generateUUID } from "../../core/functions/Functions.ts";
-import { ChaiBlock } from "../../core/types/ChaiBlock.ts";
+import { ChaiBlock } from "../../types/chai-block.ts";
 import EmptySlot from "../empty-slot.tsx";
 
 export type TableProps = {

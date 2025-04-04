@@ -6,6 +6,7 @@ import { each, noop, omit } from "lodash-es";
 import React, { useEffect, useMemo } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { FEATURE_TOGGLES } from "../../FEATURE_TOGGLES.tsx";
+import { ChaiBuilderEditorProps } from "../../types/index.ts";
 import { Toaster } from "../../ui/index.ts";
 import {
   chaiBuilderPropsAtom,
@@ -26,7 +27,6 @@ import { useWatchPartailBlocks } from "../hooks/usePartialBlocksStore.ts";
 import { builderSaveStateAtom } from "../hooks/useSavePage.ts";
 import "../index.css";
 import i18n from "../locales/load.ts";
-import { ChaiBuilderEditorProps } from "../types/index.ts";
 import { FallbackError } from "./FallbackError.tsx";
 import { RootLayout } from "./layout/root-layout.tsx";
 import { PreviewScreen } from "./PreviewScreen.tsx";

@@ -19,7 +19,7 @@ import React, { createElement, Suspense } from "react";
 import { twMerge } from "tailwind-merge";
 import { STYLES_KEY } from "../core/constants/STRINGS.ts";
 import { getSplitChaiClasses } from "../core/hooks/getSplitClasses.ts";
-import { ChaiBlock } from "../core/types/ChaiBlock.ts";
+import { ChaiBlock } from "../types/chai-block.ts";
 import AsyncPropsBlock from "./async-props-block.tsx";
 import { addPrefixToClasses } from "./functions.ts";
 

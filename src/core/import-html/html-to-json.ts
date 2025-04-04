@@ -15,9 +15,9 @@ import {
   some,
   startsWith,
 } from "lodash-es";
+import { ChaiBlock } from "../../types/types.ts";
 import { STYLES_KEY } from "../constants/STRINGS.ts";
 import { cn, generateUUID } from "../functions/Functions.ts";
-import { ChaiBlock } from "../types/types.ts";
 import { getVideoURLFromHTML, hasVideoEmbed } from "./import-video.ts";
 
 type Node = {

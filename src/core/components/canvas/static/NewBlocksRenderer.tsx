@@ -3,6 +3,7 @@ import { splitAtom } from "jotai/utils";
 import { filter, get, has, isEmpty, isFunction, isNull, map } from "lodash-es";
 import { createElement, Suspense, useCallback, useMemo } from "react";
 import { getRegisteredChaiBlock } from "../../../../runtime";
+import { ChaiBlock } from "../../../../types/chai-block";
 import { pageBlocksAtomsAtom } from "../../../atoms/blocks";
 import { usePageExternalData } from "../../../atoms/builder";
 import { builderStore } from "../../../atoms/store";
@@ -10,7 +11,6 @@ import { dataBindingActiveAtom } from "../../../atoms/ui";
 import { useBlocksStore, useHiddenBlockIds, usePartailBlocksStore } from "../../../hooks";
 import { useLanguages } from "../../../hooks/useLanguages";
 import { useGetBlockAtom } from "../../../hooks/useUpdateBlockAtom";
-import { ChaiBlock } from "../../../types/ChaiBlock";
 import {
   applyBinding,
   applyLanguage,

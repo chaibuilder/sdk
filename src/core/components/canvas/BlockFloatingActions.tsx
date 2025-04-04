@@ -5,6 +5,7 @@ import { useResizeObserver } from "@react-hookz/web";
 import { useFeature } from "flagged";
 import { useAtom } from "jotai";
 import { get, isEmpty, pick } from "lodash-es";
+import { ChaiBlock } from "../../../types/chai-block.ts";
 import { inlineEditingActiveAtom } from "../../atoms/ui.ts";
 import { useFrame } from "../../frame/Context.tsx";
 import { canDeleteBlock, canDuplicateBlock } from "../../functions/block-helpers.ts";
@@ -17,7 +18,6 @@ import {
   useSelectedStylingBlocks,
 } from "../../hooks";
 import { PERMISSIONS } from "../../main/index.ts";
-import { ChaiBlock } from "../../types/ChaiBlock";
 import BlockController from "../sidepanels/panels/add-blocks/BlockController.tsx";
 import AddBlockDropdown from "./AddBlockDropdown.tsx";
 import { draggedBlockAtom } from "./dnd/atoms.ts";

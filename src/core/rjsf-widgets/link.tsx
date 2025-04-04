@@ -3,8 +3,8 @@ import { FieldProps } from "@rjsf/utils";
 import { get, isEmpty, map, split, startsWith } from "lodash-es";
 import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { PageTypeItem } from "../../types/chaibuilder-editor-props";
 import { useBuilderProp, useTranslation } from "../hooks";
-import { PageTypeItem } from "../types/chaiBuilderEditorProps";
 
 const PageTypeField = ({
   href,

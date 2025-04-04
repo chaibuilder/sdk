@@ -1,5 +1,5 @@
 import { atom, useAtomValue } from "jotai";
-import { ChaiBuilderEditorProps } from "../types";
+import { ChaiBuilderEditorProps } from "../../types";
 
 export const chaiBuilderPropsAtom = atom<Omit<
   ChaiBuilderEditorProps,

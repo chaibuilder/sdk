@@ -4,6 +4,7 @@ import { useAtom } from "jotai";
 import { first, isEmpty } from "lodash-es";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Provider } from "react-wrap-balancer";
+import { ChaiBlock } from "../../../../types/chai-block.ts";
 import { Skeleton } from "../../../../ui";
 import { canvasIframeAtom, networkModeAtom } from "../../../atoms/ui";
 import { ChaiFrame } from "../../../frame";
@@ -15,7 +16,6 @@ import {
   useSelectedBlockIds,
   useSelectedStylingBlocks,
 } from "../../../hooks";
-import { ChaiBlock } from "../../../types/ChaiBlock";
 import { BlockFloatingSelector } from "../BlockFloatingActions.tsx";
 import { IframeInitialContent } from "../IframeInitialContent";
 import { KeyboardHandler } from "../KeyboarHandler.tsx";

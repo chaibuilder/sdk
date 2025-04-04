@@ -2,10 +2,10 @@ import { cloneDeep, find, forEach, get, includes, isEmpty, isString, keys, memoi
 import { useCallback } from "react";
 import { twMerge } from "tailwind-merge";
 import { getRegisteredChaiBlock } from "../../../../runtime";
+import { ChaiBlock } from "../../../../types/chai-block";
 import { STYLES_KEY } from "../../../constants/STRINGS";
 import { useBlocksStore } from "../../../hooks";
 import { getSplitChaiClasses } from "../../../hooks/getSplitClasses";
-import { ChaiBlock } from "../../../types/ChaiBlock";
 
 export function applyLanguage(_block: ChaiBlock, selectedLang: string, chaiBlock) {
   const i18nProps = get(chaiBlock, "i18nProps", []);

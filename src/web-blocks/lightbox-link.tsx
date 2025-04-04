@@ -2,7 +2,7 @@ import { StylesProp, registerChaiBlockSchema } from "@chaibuilder/runtime";
 import { ImageIcon } from "@radix-ui/react-icons";
 import { isEmpty } from "lodash-es";
 import { createElement } from "react";
-import { ChaiBlockStyles, ChaiRenderBlockProps } from "../core/types/types.ts";
+import { ChaiBlockStyles, ChaiRenderBlockProps } from "../types/types.ts";
 import EmptySlot from "./empty-slot.tsx";
 import { addForcedClasses } from "./helper.ts";
 

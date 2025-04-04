@@ -3,6 +3,7 @@ import { ChevronDown, Loader, SparklesIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { AskAiResponse } from "../../types/chaibuilder-editor-props.ts";
 import {
   Accordion,
   AccordionContent,
@@ -23,7 +24,6 @@ import {
 } from "../../ui";
 import { useBuilderProp, useSelectedBlockIds } from "../hooks/index.ts";
 import { useAskAi } from "../hooks/useAskAi.ts";
-import { AskAiResponse } from "../types/chaiBuilderEditorProps.ts";
 import Countdown from "./Countdown.tsx";
 import { QuickPrompts } from "./QuickPrompts.tsx";
 

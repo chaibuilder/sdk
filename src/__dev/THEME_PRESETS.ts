@@ -1,4 +1,4 @@
-import { ChaiBuilderThemeValues } from "../core/types/chaiBuilderEditorProps";
+import { ChaiBuilderThemeValues } from "../types/chaibuilder-editor-props";
 
 export const orangePreset: Partial<ChaiBuilderThemeValues> = {
   fontFamily: {

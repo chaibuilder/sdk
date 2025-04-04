@@ -7,10 +7,10 @@ import { useAtom } from "jotai";
 import { filter, get, has, map } from "lodash-es";
 import { useEffect, useMemo, useState } from "react";
 import plugin from "tailwindcss/plugin";
+import { ChaiBuilderThemeValues } from "../../../../types/chaibuilder-editor-props.ts";
 import { useFrame } from "../../../frame/index.ts";
 import { useDarkMode, useSelectedBlockIds, useSelectedStylingBlocks } from "../../../hooks/index.ts";
 import { useTheme, useThemeOptions } from "../../../hooks/useTheme.ts";
-import { ChaiBuilderThemeValues } from "../../../types/chaiBuilderEditorProps.ts";
 import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
 import {
   getChaiThemeCssVariables,
