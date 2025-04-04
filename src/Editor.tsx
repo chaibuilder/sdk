@@ -8,18 +8,9 @@ import { bluePreset, greenPreset, orangePreset } from "./_demo/THEME_PRESETS.ts"
 import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML, PERMISSIONS } from "./core/main";
 import "./extentions";
 import { SavePageData } from "./types/chaibuilder-editor-props.ts";
-import { DropdownMenuItem } from "./ui/shadcn/components/ui/dropdown-menu.tsx";
 import { loadWebBlocks } from "./web-blocks";
 
 loadWebBlocks();
-
-const SaveToLibrary = ({ block }: { block: ChaiBlock }) => {
-  return (
-    <DropdownMenuItem className="cursor-pointer text-xs" onClick={() => console.log(block)}>
-      Save to library
-    </DropdownMenuItem>
-  );
-};
 
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
@@ -35,7 +26,6 @@ function ChaiBuilderDefault() {
     <ChaiBuilderEditor
       permissions={[...values(PERMISSIONS)]}
       // permissions={[]}
-      blockMoreOptions={[SaveToLibrary]}
       pageExternalData={{
         vehicle: {
           title: "Hyundai i20 Active - 1.0 MPI - 2015",
@@ -56,7 +46,7 @@ function ChaiBuilderDefault() {
       languages={["fr"]}
       themePresets={[{ orange: orangePreset }, { green: greenPreset }, { blue: bluePreset }]}
       theme={theme}
-      autoSaveSupport={true}
+      autoSaveSupport={false}
       autoSaveInterval={15}
       blocks={blocks}
       onSave={async ({ blocks, theme }: SavePageData) => {

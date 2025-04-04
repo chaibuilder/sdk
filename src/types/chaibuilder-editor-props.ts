@@ -1,5 +1,4 @@
 import React, { ReactNode } from "react";
-import { DropdownMenuItem } from "../ui/shadcn/components/ui/dropdown-menu.tsx";
 import { ChaiBlock } from "./chai-block.ts";
 
 export type ChaiUILibraryBlock<T = Record<string, any>> = {
@@ -165,12 +164,6 @@ export interface ChaiBuilderEditorProps {
    * Locale
    */
   locale?: string;
-
-  /**
-   * Canvas component. Not supported with custom layout
-   * TODO: Move to registerChaiOutlineBlockMoreOptions()
-   */
-  blockMoreOptions?: Array<(props: { block: ChaiBlock }) => React.ReactElement<typeof DropdownMenuItem>>;
 
   darkMode?: boolean;
 

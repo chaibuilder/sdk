@@ -1,9 +1,9 @@
-import { Button } from "../../../ui";
-import { ChevronRight } from "lucide-react";
-import { useSelectedBlockHierarchy, useSelectedBlockIds } from "../../hooks/useSelectedBlockIds.ts";
 import { reverse } from "lodash-es";
-import { TypeIcon } from "../sidepanels/panels/outline/TypeIcon.tsx";
+import { ChevronRight } from "lucide-react";
+import { Button } from "../../../ui";
 import { useBlockHighlight } from "../../hooks/useBlockHighlight";
+import { useSelectedBlockHierarchy, useSelectedBlockIds } from "../../hooks/useSelectedBlockIds.ts";
+import { TypeIcon } from "../sidepanels/panels/outline/block-type-icon.tsx";
 
 export const Breadcrumb = () => {
   const hierarchy = useSelectedBlockHierarchy();

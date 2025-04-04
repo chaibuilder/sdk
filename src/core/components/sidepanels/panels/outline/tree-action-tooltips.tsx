@@ -2,9 +2,9 @@ import { EyeOpenIcon } from "@radix-ui/react-icons";
 import { ChevronsDown, ChevronsUp } from "lucide-react";
 import { forwardRef } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../../ui";
+import { Button, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../ui";
 
-import { useHiddenBlockIds } from "../../../../../hooks";
+import { useHiddenBlockIds } from "../../../../hooks";
 
 const CollapseAllTooltip = forwardRef((_props, ref: any) => {
   const { t } = useTranslation();
