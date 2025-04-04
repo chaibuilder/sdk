@@ -1,21 +1,19 @@
 import { WidgetProps } from "@rjsf/utils";
-import { isEmpty } from "lodash-es";
+import { first, isEmpty } from "lodash-es";
 import { useTranslation } from "react-i18next";
-import MediaManagerModal from "../components/sidepanels/panels/images/MediaManagerModal.tsx";
-import { useBuilderProp } from "../hooks";
+import MediaManagerModal from "../components/sidepanels/panels/images/media-manager-modal.tsx";
 
 const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
-  const mediaManagerComponent = useBuilderProp("mediaManagerComponent", null);
   const { t } = useTranslation();
 
-  const showImagePicker = !isEmpty(mediaManagerComponent);
+  const showImagePicker = true;
 
   return (
     <div className="mt-1.5 flex items-center gap-x-3">
       {value ? (
         <img src={value} className="h-20 w-20 overflow-hidden rounded-md border border-border object-cover" alt="" />
       ) : (
-        <MediaManagerModal onSelect={onChange}>
+        <MediaManagerModal onSelect={(urls: string[]) => onChange(first(urls))} mode="image">
           <div className="h-20 w-20 cursor-pointer rounded-md border border-border bg-[radial-gradient(#AAA,transparent_1px)] duration-300 [background-size:10px_10px]"></div>
         </MediaManagerModal>
       )}

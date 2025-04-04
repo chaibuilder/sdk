@@ -1,5 +1,5 @@
-import { ChaiBlock } from "../../types/chai-block.ts";
-import { ChaiBuilderEditorProps } from "../../types/index.ts";
+import type { ChaiBlock } from "../../types/chai-block.ts";
+import type { ChaiBuilderEditorProps } from "../../types/index.ts";
 import ChaiBuilderCanvas from "../components/canvas/CanvasArea.tsx";
 
 import BlockPropsEditor from "../components/settings/BlockSettings.tsx";
@@ -15,7 +15,7 @@ if (typeof window === "undefined") {
   throw new Error("@chaibuilder/sdk is only supported in the browser. Avoid using it in the server side.");
 }
 
-export { registerChaiBlock } from "@chaibuilder/runtime";
+// components
 export { AISetContext, AIUserPrompt } from "../components/ask-ai-panel.tsx";
 export { Breakpoints as ScreenSizes } from "../components/canvas/topbar/Breakpoints.tsx";
 export { DarkMode as DarkModeSwitcher } from "../components/canvas/topbar/DarkMode.tsx";
@@ -24,22 +24,35 @@ export { ChaiBuilderEditor } from "../components/chaibuilder-editor.tsx";
 export { AddBlocksDialog } from "../components/layout/AddBlocksDialog.tsx";
 export { BlockAttributesEditor } from "../components/settings/new-panel/BlockAttributesEditor.tsx";
 export { DefaultChaiBlocks } from "../components/sidepanels/panels/add-blocks/DefaultBlocks.tsx";
-export { CHAI_BUILDER_EVENTS } from "../events.ts";
-export { generateUUID as generateBlockId, cn as mergeClasses } from "../functions/Functions.ts";
-export { getClassValueAndUnit } from "../functions/Helpers.ts";
-export * from "../hooks";
-export { getBlocksFromHTML } from "../import-html/html-to-json.ts";
 export {
   AddBlocksPanel,
   BlockPropsEditor,
   BlockStyleEditor,
   ChaiBuilderCanvas,
-  i18n,
   ImportHTML,
   Outline,
   ThemeConfigPanel,
   UILibrariesPanel,
 };
+
+// i18n
+export { i18n };
+
+// helper functions
+export { generateUUID as generateBlockId, cn as mergeClasses } from "../functions/Functions.ts";
+export { getClassValueAndUnit } from "../functions/Helpers.ts";
+export { getBlocksFromHTML } from "../import-html/html-to-json.ts";
+
+// types
 export type { ChaiBlock, ChaiBuilderEditorProps };
 
+// registration apis
+export { registerChaiBlock } from "@chaibuilder/runtime";
+export { registerChaiMediaManager } from "../extensions/media-manager.tsx";
+
+// hooks
+export * from "../hooks";
+
+// constants
 export { PERMISSIONS } from "../constants/PERMISSIONS";
+export { CHAI_BUILDER_EVENTS } from "../events.ts";

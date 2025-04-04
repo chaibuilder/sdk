@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "../../../../../ui";
-import { useBuilderProp } from "../../../../hooks";
+import { useMediaManagerComponent } from "../../../../extensions/media-manager";
 
 const MediaManagerModal = ({
   children,
   onSelect,
+  mode = "image",
 }: {
   children: React.JSX.Element;
-  onSelect: (url: string) => void;
+  onSelect: (urls: string[]) => void;
+  mode?: "image" | "video" | "audio";
 }) => {
   const [open, setOpen] = useState(false);
-  const MediaManagerComponent = useBuilderProp("mediaManagerComponent", null);
+  const MediaManagerComponent = useMediaManagerComponent();
 
   const handleSelect = (...arg: any) => {
     //@ts-ignore
@@ -21,9 +23,11 @@ const MediaManagerModal = ({
   return (
     <Dialog open={open} onOpenChange={(_open: boolean) => setOpen(_open)}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="flex h-3/4 max-w-5xl border-border">
+      <DialogContent className="flex max-h-[90vh] max-w-7xl border-border md:w-fit">
         <div className="h-full w-full">
-          {MediaManagerComponent ? <MediaManagerComponent onSelect={handleSelect} /> : null}
+          {MediaManagerComponent ? (
+            <MediaManagerComponent close={() => setOpen(false)} onSelect={handleSelect} mode={mode} />
+          ) : null}
         </div>
       </DialogContent>
     </Dialog>
