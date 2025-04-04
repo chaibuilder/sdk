@@ -5,11 +5,12 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { Input, ScrollArea, Tabs, TabsContent, TabsList, TabsTrigger } from "../../../../../ui/index.ts";
 import { showPredefinedBlockCategoryAtom } from "../../../../atoms/ui.ts";
+import { CHAI_BUILDER_EVENTS } from "../../../../events.ts";
 import { useChaiAddBlockTabs } from "../../../../extensions/add-block-tabs.tsx";
 import { canAcceptChildBlock, canBeNestedInside } from "../../../../functions/block-helpers.ts";
 import { useBlocksStore, useBuilderProp, usePermissions } from "../../../../hooks/index.ts";
 import { usePartialBlocksList } from "../../../../hooks/usePartialBlocksStore.ts";
-import { CHAI_BUILDER_EVENTS, mergeClasses, PERMISSIONS } from "../../../../main/index.ts";
+import { mergeClasses, PERMISSIONS } from "../../../../main/index.ts";
 import { pubsub } from "../../../../pubsub.ts";
 import { CoreBlock } from "./CoreBlock.tsx";
 import { DefaultChaiBlocks } from "./DefaultBlocks.tsx";

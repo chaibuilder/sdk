@@ -1,7 +1,8 @@
 import { PlusIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { CHAI_BUILDER_EVENTS } from "../../../events";
 import { usePermissions } from "../../../hooks";
-import { CHAI_BUILDER_EVENTS, PERMISSIONS } from "../../../main";
+import { PERMISSIONS } from "../../../main";
 import { pubsub } from "../../../pubsub";
 
 export const AddBlockAtBottom = () => {

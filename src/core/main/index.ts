@@ -57,4 +57,3 @@ export * from "../hooks";
 
 // constants
 export { PERMISSIONS } from "../constants/PERMISSIONS";
-export { CHAI_BUILDER_EVENTS } from "../events.ts";

@@ -1,8 +1,9 @@
 import { filter, findIndex, get } from "lodash-es";
 import { useTranslation } from "react-i18next";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../../ui";
+import { CHAI_BUILDER_EVENTS } from "../../events";
 import { canAddChildBlock } from "../../functions/block-helpers";
-import { CHAI_BUILDER_EVENTS, ChaiBlock, PERMISSIONS, useBlocksStore, usePermissions } from "../../main";
+import { ChaiBlock, PERMISSIONS, useBlocksStore, usePermissions } from "../../main";
 import { pubsub } from "../../pubsub";
 /**
  *
