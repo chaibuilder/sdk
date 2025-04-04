@@ -253,6 +253,15 @@ const AddBlocksPanel = ({
 
   const addBlockAdditionalTabs = useChaiAddBlockTabs();
   const canImportHTML = importHTMLSupport && hasPermission(PERMISSIONS.IMPORT_HTML);
+  const uiLibraries = useBuilderProp("uiLibraries", []);
+  const hasUiLibraries = uiLibraries.length > 0;
+
+  // If current tab is "library" but there are no UI libraries, switch to "core" tab
+  useEffect(() => {
+    if (tab === "library" && !hasUiLibraries) {
+      setTab("core");
+    }
+  }, [tab, hasUiLibraries, setTab]);
 
   return (
     <div className={mergeClasses("flex h-full w-full flex-col overflow-hidden", className)}>
@@ -273,7 +282,7 @@ const AddBlocksPanel = ({
         value={tab}
         className={"flex h-full max-h-full flex-col overflow-hidden"}>
         <TabsList className={"flex w-full items-center"}>
-          <TabsTrigger value="library">{t("Library")}</TabsTrigger>
+          {hasUiLibraries && <TabsTrigger value="library">{t("Library")}</TabsTrigger>}
           <TabsTrigger value="core">{t("Blocks")}</TabsTrigger>
           {hasPartialBlocks && <TabsTrigger value="partials">{t("Partials")}</TabsTrigger>}
           {canImportHTML ? <TabsTrigger value="html">{t("Import")}</TabsTrigger> : null}
@@ -290,9 +299,11 @@ const AddBlocksPanel = ({
             </div>
           </div>
         </TabsContent>
-        <TabsContent value="library" className="h-full max-h-full flex-1 pb-20">
-          <UILibrariesPanel parentId={parentId} position={position} />
-        </TabsContent>
+        {hasUiLibraries && (
+          <TabsContent value="library" className="h-full max-h-full flex-1 pb-20">
+            <UILibrariesPanel parentId={parentId} position={position} />
+          </TabsContent>
+        )}
         {hasPartialBlocks && (
           <TabsContent value="partials" className="h-full max-h-full flex-1 pb-20">
             <div className="-mx-1.5 h-full max-h-full overflow-hidden">
