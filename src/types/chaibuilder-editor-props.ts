@@ -128,16 +128,6 @@ export interface ChaiBuilderEditorProps {
   layout?: React.ComponentType;
 
   /**
-   * Add blocks dialog components
-   * TODO: Move to registerChaiAddBlocksDialogTab()
-   */
-  addBlocksDialogTabs?: {
-    key: string;
-    tab: ReactComponentType;
-    tabContent: ReactComponentType;
-  }[];
-
-  /**
    * HTML direction.
    */
   htmlDir?: "ltr" | "rtl";

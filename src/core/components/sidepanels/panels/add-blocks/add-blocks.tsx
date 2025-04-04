@@ -3,17 +3,18 @@ import { atomWithStorage } from "jotai/utils";
 import { capitalize, debounce, filter, find, map, reject, sortBy, values } from "lodash-es";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Input, ScrollArea, Tabs, TabsContent, TabsList, TabsTrigger } from "../../../../../ui";
-import { showPredefinedBlockCategoryAtom } from "../../../../atoms/ui";
+import { Input, ScrollArea, Tabs, TabsContent, TabsList, TabsTrigger } from "../../../../../ui/index.ts";
+import { showPredefinedBlockCategoryAtom } from "../../../../atoms/ui.ts";
+import { useChaiAddBlockTabs } from "../../../../extensions/add-block-tabs.tsx";
 import { canAcceptChildBlock, canBeNestedInside } from "../../../../functions/block-helpers.ts";
-import { useBlocksStore, useBuilderProp, usePermissions } from "../../../../hooks";
-import { usePartialBlocksList } from "../../../../hooks/usePartialBlocksStore";
-import { CHAI_BUILDER_EVENTS, mergeClasses, PERMISSIONS } from "../../../../main";
+import { useBlocksStore, useBuilderProp, usePermissions } from "../../../../hooks/index.ts";
+import { usePartialBlocksList } from "../../../../hooks/usePartialBlocksStore.ts";
+import { CHAI_BUILDER_EVENTS, mergeClasses, PERMISSIONS } from "../../../../main/index.ts";
 import { pubsub } from "../../../../pubsub.ts";
-import { CoreBlock } from "./CoreBlock";
+import { CoreBlock } from "./CoreBlock.tsx";
 import { DefaultChaiBlocks } from "./DefaultBlocks.tsx";
-import ImportHTML from "./ImportHTML";
-import { PartialBlocks } from "./PartialBlocks";
+import ImportHTML from "./ImportHTML.tsx";
+import { PartialBlocks } from "./PartialBlocks.tsx";
 import UILibrariesPanel from "./UILibrariesPanel.tsx";
 
 const CORE_GROUPS = ["basic", "typography", "media", "layout", "form", "advanced", "other"];
@@ -234,7 +235,6 @@ const AddBlocksPanel = ({
   const [tab, setTab] = useAtom(addBlockTabAtom);
   const [, setCategory] = useAtom(showPredefinedBlockCategoryAtom);
   const importHTMLSupport = useBuilderProp("importHTMLSupport", true);
-  const addBlocksDialogTabs = useBuilderProp("addBlocksDialogTabs", []);
   const { data: partialBlocksList } = usePartialBlocksList();
   const hasPartialBlocks = Object.keys(partialBlocksList || {}).length > 0;
   const { hasPermission } = usePermissions();
@@ -250,6 +250,7 @@ const AddBlocksPanel = ({
     pubsub.publish(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK);
   }, []);
 
+  const addBlockAdditionalTabs = useChaiAddBlockTabs();
   const canImportHTML = importHTMLSupport && hasPermission(PERMISSIONS.IMPORT_HTML);
 
   return (
@@ -275,8 +276,10 @@ const AddBlocksPanel = ({
           <TabsTrigger value="core">{t("Blocks")}</TabsTrigger>
           {hasPartialBlocks && <TabsTrigger value="partials">{t("Partials")}</TabsTrigger>}
           {canImportHTML ? <TabsTrigger value="html">{t("Import")}</TabsTrigger> : null}
-          {map(addBlocksDialogTabs, (tab) => (
-            <TabsTrigger value={tab.key}>{React.createElement(tab.tab)}</TabsTrigger>
+          {map(addBlockAdditionalTabs, (tab) => (
+            <TabsTrigger key={`tab-add-block-${tab.id}`} value={tab.id}>
+              {React.createElement(tab.tab)}
+            </TabsTrigger>
           ))}
         </TabsList>
         <TabsContent value="core" className="h-full max-h-full flex-1 pb-20">
@@ -303,8 +306,8 @@ const AddBlocksPanel = ({
             <ImportHTML parentId={parentId} position={position} />
           </TabsContent>
         ) : null}
-        {map(addBlocksDialogTabs, (tab) => (
-          <TabsContent value={tab.key}>
+        {map(addBlockAdditionalTabs, (tab) => (
+          <TabsContent key={`panel-add-block-${tab.id}`} value={tab.id}>
             {React.createElement(tab.tabContent, { close, parentId, position })}
           </TabsContent>
         ))}

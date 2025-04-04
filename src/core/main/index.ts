@@ -4,7 +4,7 @@ import type { ChaiBuilderEditorProps } from "../../types/index.ts";
 import ChaiBuilderCanvas from "../components/canvas/CanvasArea.tsx";
 import BlockPropsEditor from "../components/settings/BlockSettings.tsx";
 import BlockStyleEditor from "../components/settings/BlockStyling.tsx";
-import AddBlocksPanel from "../components/sidepanels/panels/add-blocks/AddBlocks.tsx";
+import AddBlocksPanel from "../components/sidepanels/panels/add-blocks/add-blocks.tsx";
 import ImportHTML from "../components/sidepanels/panels/add-blocks/ImportHTML.tsx";
 import UILibrariesPanel from "../components/sidepanels/panels/add-blocks/UILibrariesPanel.tsx";
 import Outline from "../components/sidepanels/panels/outline/treeview/ListTree.tsx";

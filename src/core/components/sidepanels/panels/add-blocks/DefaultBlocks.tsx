@@ -1,7 +1,7 @@
 import { useRegisteredChaiBlocks } from "@chaibuilder/runtime";
 import { filter, groupBy, map, uniq } from "lodash-es";
 import { useBuilderProp } from "../../../../hooks";
-import { ChaiBuilderBlocks } from "./AddBlocks.tsx";
+import { ChaiBuilderBlocks } from "./add-blocks.tsx";
 
 export const DefaultChaiBlocks = ({
   parentId,
