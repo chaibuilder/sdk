@@ -1,7 +1,6 @@
 import { LightningBoltIcon } from "@radix-ui/react-icons";
 import { useFeature } from "flagged";
 import { motion } from "framer-motion";
-import { useAtom } from "jotai";
 import { compact, find, first, get } from "lodash-es";
 import { Layers, Paintbrush, SparklesIcon, X } from "lucide-react";
 import React, { ComponentType, MouseEvent, Suspense, useEffect, useMemo, useRef, useState } from "react";
@@ -21,11 +20,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../../../ui/index.ts";
-import { sidebarActivePanelAtom } from "../../atoms/ui.ts";
 import { CHAI_BUILDER_EVENTS } from "../../events.ts";
 import { useChaiSidebarPanels } from "../../extensions/sidebar-panels.tsx";
 import { useTopBarComponent } from "../../extensions/top-bar.tsx";
-import { useBuilderProp } from "../../hooks/index.ts";
+import { useBuilderProp, useSidebarActivePanel } from "../../hooks/index.ts";
 import { usePubSub } from "../../hooks/usePubSub.ts";
 import { useRightPanel } from "../../hooks/useTheme.ts";
 import { isDevelopment } from "../../import-html/general.ts";
@@ -82,7 +80,7 @@ function useSidebarMenuItems() {
  */
 const RootLayout: ComponentType = () => {
   const TopBar = useTopBarComponent();
-  const [activePanel, setActivePanel] = useAtom(sidebarActivePanelAtom);
+  const [activePanel, setActivePanel] = useSidebarActivePanel();
   const lastStandardPanelRef = useRef<string | null>("outline"); // Default to "outline"
   const [lastStandardPanelWidth, setLastStandardPanelWidth] = useState(DEFAULT_PANEL_WIDTH);
 
