@@ -1,15 +1,15 @@
 import axios from "axios";
 import { useAtom } from "jotai";
 import { useState } from "react";
-import { lsAiContextAtom, lsBlocksAtom } from "./__dev/atoms-dev.ts";
-import CustomLayout from "./__dev/CustomLayout.tsx";
-import PreviewWeb from "./__dev/preview/WebPreview.tsx";
+import { lsAiContextAtom, lsBlocksAtom } from "./_demo/atoms-dev.ts";
+import CustomLayout from "./_demo/CustomLayout.tsx";
+import PreviewWeb from "./_demo/preview/WebPreview.tsx";
 import { getBlocksFromHTML } from "./core/import-html/html-to-json.ts";
 import { ChaiBlock, ChaiBuilderEditor } from "./core/main";
 import { ChaiUILibrary, ChaiUILibraryBlock } from "./types/chaibuilder-editor-props.ts";
 import { loadWebBlocks } from "./web-blocks";
-// import ptBR from "./__dev/pt-BR.json";
-// import es from "./__dev/es.json";
+// import ptBR from "./_demo/pt-BR.json";
+// import es from "./_demo/es.json";
 
 loadWebBlocks();
 

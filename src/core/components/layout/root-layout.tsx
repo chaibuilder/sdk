@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useAtom } from "jotai";
 import { compact, find, first, get } from "lodash-es";
 import { Layers, Paintbrush, SparklesIcon, X } from "lucide-react";
-import React, { ComponentType, lazy, MouseEvent, Suspense, useEffect, useMemo, useRef, useState } from "react";
+import React, { ComponentType, MouseEvent, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Button,
@@ -24,6 +24,7 @@ import {
 import { sidebarActivePanelAtom } from "../../atoms/ui.ts";
 import { CHAI_BUILDER_EVENTS } from "../../events.ts";
 import { useChaiSidebarPanels } from "../../extensions/sidebar-panels.tsx";
+import { useTopBarComponent } from "../../extensions/top-bar.tsx";
 import { useBuilderProp } from "../../hooks/index.ts";
 import { usePubSub } from "../../hooks/usePubSub.ts";
 import { useRightPanel } from "../../hooks/useTheme.ts";
@@ -36,7 +37,6 @@ import { Outline } from "../index.ts";
 import SettingsPanel from "../settings/SettingsPanel.tsx";
 import ThemeConfigPanel from "../sidepanels/panels/theme-configuration/ThemeConfigPanel.tsx";
 import { AddBlocksDialog } from "./AddBlocksDialog.tsx";
-const TopBar = lazy(() => import("../topbar/Topbar.tsx"));
 
 const DEFAULT_PANEL_WIDTH = 280;
 
@@ -81,6 +81,7 @@ function useSidebarMenuItems() {
  * RootLayout is a React component that renders the main layout of the application.
  */
 const RootLayout: ComponentType = () => {
+  const TopBar = useTopBarComponent();
   const [activePanel, setActivePanel] = useAtom(sidebarActivePanelAtom);
   const lastStandardPanelRef = useRef<string | null>("outline"); // Default to "outline"
   const [lastStandardPanelWidth, setLastStandardPanelWidth] = useState(DEFAULT_PANEL_WIDTH);

@@ -226,25 +226,6 @@ export interface ChaiBuilderEditorProps {
   previewComponent?: ReactComponentType;
 
   /**
-   * Sidebar components. Not supported with custom layout
-   * TODO: Move to registerChaiSideBarPanels()
-   */
-  sideBarComponents?: {
-    bottom?: ReactComponentType[];
-    top?: { icon: ReactNode; label: string; component: ReactComponentType }[];
-  };
-
-  /**
-   * Topbar components. Not supported with custom layout
-   * TODO: Move to registerChaiTopBarComponent()
-   */
-  topBarComponents?: {
-    center?: ReactComponentType[];
-    left?: ReactComponentType[];
-    right?: ReactComponentType[];
-  };
-
-  /**
    * Outline menu items
    * TODO: Move to registerChaiOutlineMenuItems()
    */
