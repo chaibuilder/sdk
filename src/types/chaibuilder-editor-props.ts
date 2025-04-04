@@ -129,12 +129,8 @@ export interface ChaiBuilderEditorProps {
   layoutVariant?: LayoutVariant;
 
   /**
-   * Custom media Manager component
-   */
-  mediaManagerComponent?: React.ComponentType<{ onSelect: (url: string) => void }>;
-
-  /**
    * Add blocks dialog components
+   * TODO: Move to registerAddBlocksDialogTab()
    */
   addBlocksDialogTabs?: {
     key: string;
@@ -183,6 +179,7 @@ export interface ChaiBuilderEditorProps {
 
   /**
    * Non editable component
+   * TODO: Move to registerNonEditableComponent()
    */
   nonEditableComponent?: ReactComponentType;
 
@@ -238,6 +235,7 @@ export interface ChaiBuilderEditorProps {
 
   /**
    * Sidebar components. Not supported with custom layout
+   * TODO: Move to registerSideBarPanels()
    */
   sideBarComponents?: {
     bottom?: ReactComponentType[];
