@@ -71,11 +71,7 @@ const SupportedVideoSource = (props: ChaiBlockComponentProps<VideoBlockProps>) =
   const embedURL = getEmbedURL(url, controls);
 
   return (
-    <div
-      {...blockProps}
-      {...omit(styles, "className")}
-      className="relative w-full overflow-hidden"
-      style={{ paddingBottom: "56.25%" }}>
+    <div {...omit(styles, "className")} className="relative w-full overflow-hidden" style={{ paddingBottom: "56.25%" }}>
       {!embedURL && inBuilder ? (
         <div className="absolute flex h-full w-full items-center justify-center bg-gray-300 text-center">
           {isEmpty(url)
@@ -96,7 +92,7 @@ const SupportedVideoSource = (props: ChaiBlockComponentProps<VideoBlockProps>) =
  * @returns Custom mp4 video provider
  */
 const CustomVideoSource = (props: ChaiBlockComponentProps<VideoBlockProps>) => {
-  const { url, blockProps, styles, controls, sources, poster } = props;
+  const { url, styles, controls, sources, poster, blockProps } = props;
   let _poster = poster;
 
   const srcsets = [...(get(sources, "srcsets", []) || [])];
@@ -116,6 +112,7 @@ const CustomVideoSource = (props: ChaiBlockComponentProps<VideoBlockProps>) => {
       <div className="relative w-full overflow-hidden" style={{ paddingBottom: "56.25%" }}>
         <video
           {...styles}
+          {...blockProps}
           key={JSON.stringify(sortedSources)}
           controls={get(controls, "controls", false)}
           autoPlay={get(controls, "autoplay", false)}
