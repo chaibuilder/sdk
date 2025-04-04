@@ -84,23 +84,44 @@ export type ChaiBuilderThemeValues = {
 
 export interface ChaiBuilderEditorProps {
   /**
+   * User
+   */
+  user?: {
+    id: string;
+    name: string;
+    email: string;
+    avatar?: string;
+    role: string;
+  };
+
+  /**
    * Permissions
    */
   permissions?: string[];
-  /**
-   * RJSF Fields and Widgets
-   * TODO: Move to registerChaiSettingComponents()
-   */
-  rjsfFields?: Record<string, React.ComponentType<any>>;
-  rjsfWidgets?: Record<string, React.ComponentType<any>>;
-  rjsfTemplates?: Record<string, React.ComponentType<any>>;
+
   /**
    * Optional pageId. If not provided, a random pageId will be generated
    */
   pageId?: string;
+
+  /**
+   * Page external data
+   */
   pageExternalData?: Record<string, any>;
+
+  /**
+   * Theme presets
+   */
   themePresets?: Record<string, Partial<ChaiBuilderThemeValues>>[];
+
+  /**
+   * Theme options
+   */
   themeOptions?: (defaultThemeOptions: ChaiBuilderThemeOptions) => ChaiBuilderThemeOptions;
+
+  /**
+   * Theme
+   */
   theme?: Partial<ChaiBuilderThemeValues>;
   /**
    * Theme panel component

@@ -8,13 +8,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { FEATURE_TOGGLES } from "../../FEATURE_TOGGLES.tsx";
 import { ChaiBuilderEditorProps } from "../../types/index.ts";
 import { Toaster } from "../../ui/index.ts";
-import {
-  chaiBuilderPropsAtom,
-  chaiPageExternalDataAtom,
-  chaiRjsfFieldsAtom,
-  chaiRjsfTemplatesAtom,
-  chaiRjsfWidgetsAtom,
-} from "../atoms/builder.ts";
+import { chaiBuilderPropsAtom, chaiPageExternalDataAtom } from "../atoms/builder.ts";
 import { builderStore } from "../atoms/store.ts";
 import { selectedLibraryAtom } from "../atoms/ui.ts";
 import { setDebugLogs } from "../functions/logging.ts";
@@ -59,30 +53,13 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
     builderStore.set(
       // @ts-ignore
       chaiBuilderPropsAtom,
-      omit(props, [
-        "blocks",
-        "subPages",
-        "brandingOptions",
-        "dataProviders",
-        "customRootLayout",
-        "translations",
-        "rjsfFields",
-        "rjsfWidgets",
-        "rjsfTemplates",
-        "pageExternalData",
-      ]),
+      omit(props, ["blocks", "translations", "pageExternalData"]),
     );
   }, [props]);
 
   useEffect(() => {
     builderStore.set(chaiPageExternalDataAtom, props.pageExternalData || {});
   }, [props.pageExternalData]);
-
-  useEffect(() => {
-    builderStore.set(chaiRjsfFieldsAtom, props.rjsfFields || {});
-    builderStore.set(chaiRjsfWidgetsAtom, props.rjsfWidgets || {});
-    builderStore.set(chaiRjsfTemplatesAtom, props.rjsfTemplates || {});
-  }, [props.rjsfFields, props.rjsfWidgets, props.rjsfTemplates]);
 
   useEffect(() => {
     // Added delay to allow the pageId to be set
