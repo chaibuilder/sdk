@@ -1,7 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { atom, useAtom } from "jotai";
 import { find } from "lodash-es";
-import { useMemo, useState } from "react";
+import { XCircle } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -24,7 +25,7 @@ import {
   Textarea,
 } from "../../../../../ui";
 import ChaiSelect from "../../../../components/ChaiSelect";
-import { useBlocksStore, usePermissions } from "../../../../main";
+import { PERMISSIONS, useBlocksStore, usePermissions } from "../../../../main";
 
 export const saveToLibraryModalAtom = atom<{
   isOpen: boolean;
@@ -69,6 +70,32 @@ export const SaveToLibraryModal = () => {
     },
     mode: "onChange",
   });
+
+  // Image preview state
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Handle file selection
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      form.setValue("screenshot", file);
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Handle removing selected image
+  const handleRemoveImage = () => {
+    setImagePreview(null);
+    form.setValue("screenshot", undefined);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -133,19 +160,19 @@ export const SaveToLibraryModal = () => {
 
   return (
     <Dialog open={modalState.isOpen} onOpenChange={(open) => !open && setModalState({ isOpen: false, blockId: null })}>
-      <DialogContent className="sm:max-w-[500px]">
-        <DialogHeader>
+      <DialogContent className="p-4 sm:max-w-[450px]">
+        <DialogHeader className="pb-2">
           <DialogTitle>{isUpdateMode ? t("Update Library Block") : t("Save to Library")}</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
-          <div className="space-y-4">
+          <div className="space-y-3">
             <FormField
               control={form.control}
               name="library"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("Library")}</FormLabel>
+                <FormItem className="space-y-1">
+                  <FormLabel className="text-xs">{t("Library")}</FormLabel>
                   <FormControl>
                     <ChaiSelect
                       height="h-8"
@@ -158,7 +185,7 @@ export const SaveToLibraryModal = () => {
                       placeholder={t("Select a library")}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-xs" />
                 </FormItem>
               )}
             />
@@ -167,12 +194,12 @@ export const SaveToLibraryModal = () => {
               control={form.control}
               name="name"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("Name")}</FormLabel>
+                <FormItem className="space-y-1">
+                  <FormLabel className="text-xs">{t("Name")}</FormLabel>
                   <FormControl>
-                    <Input placeholder={t("Enter name")} {...field} />
+                    <Input className="h-8" placeholder={t("Enter name")} {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-xs" />
                 </FormItem>
               )}
             />
@@ -181,25 +208,36 @@ export const SaveToLibraryModal = () => {
               control={form.control}
               name="group"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("Group")}</FormLabel>
+                <FormItem className="space-y-1">
+                  <FormLabel className="text-xs">{t("Group")}</FormLabel>
                   {isCreatingGroup ? (
-                    <div className="flex space-x-2">
+                    <div className="flex space-x-1">
                       <Input
+                        className="h-8"
                         placeholder={t("Enter new group name")}
                         value={newGroupName}
                         onChange={(e) => setNewGroupName(e.target.value)}
                       />
-                      <Button type="button" onClick={handleCreateGroup} disabled={!newGroupName} size="sm">
+                      <Button
+                        type="button"
+                        onClick={handleCreateGroup}
+                        disabled={!newGroupName}
+                        size="sm"
+                        className="h-8">
                         {t("Add")}
                       </Button>
-                      <Button type="button" onClick={handleCancelGroupCreation} variant="outline" size="sm">
+                      <Button
+                        type="button"
+                        onClick={handleCancelGroupCreation}
+                        variant="outline"
+                        size="sm"
+                        className="h-8">
                         {t("Cancel")}
                       </Button>
                     </div>
                   ) : (
-                    <div className="space-y-2">
-                      <div className="flex space-x-2">
+                    <div>
+                      <div className="flex space-x-1">
                         <FormControl className="flex-1">
                           <ChaiSelect
                             height="h-8"
@@ -212,38 +250,59 @@ export const SaveToLibraryModal = () => {
                             placeholder={t("Select a group")}
                           />
                         </FormControl>
-                        <Button
-                          type="button"
-                          variant="outline"
-                          className="whitespace-nowrap text-xs"
-                          onClick={handleCreateNewGroup}>
-                          {t("Create new")}
-                        </Button>
+                        {hasPermission(PERMISSIONS.CREATE_LIBRARY_GROUP) && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            className="h-8 whitespace-nowrap text-xs"
+                            onClick={handleCreateNewGroup}
+                            size="sm">
+                            {t("Create new")}
+                          </Button>
+                        )}
                       </div>
                     </div>
                   )}
-                  <FormMessage />
+                  <FormMessage className="text-xs" />
                 </FormItem>
               )}
             />
 
-            <FormItem>
-              <FormLabel>{t("Screenshot")}</FormLabel>
-              <div className="mt-1 flex items-center">
-                <Label
-                  htmlFor="screenshot"
-                  className="flex h-24 w-full cursor-pointer flex-col items-center justify-center rounded-md border border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100">
-                  <div className="flex flex-col items-center justify-center pb-6 pt-5">
-                    <p className="mb-2 text-sm text-gray-500">{t("Drop your image here, or click to browse")}</p>
+            <FormItem className="space-y-1">
+              <FormLabel className="text-xs">{t("Screenshot")}</FormLabel>
+              <div className="mt-0">
+                {imagePreview ? (
+                  <div className="relative h-20 w-full">
+                    <img
+                      src={imagePreview}
+                      alt="Screenshot preview"
+                      className="h-full w-full rounded-md border border-gray-200 object-contain"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleRemoveImage}
+                      className="absolute -right-2 -top-2 rounded-full bg-background text-foreground hover:text-destructive"
+                      aria-label="Remove image">
+                      <XCircle size={20} />
+                    </button>
                   </div>
-                  <Input
-                    id="screenshot"
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={(e) => form.setValue("screenshot", e.target.files?.[0])}
-                  />
-                </Label>
+                ) : (
+                  <Label
+                    htmlFor="screenshot"
+                    className="flex h-20 w-full cursor-pointer flex-col items-center justify-center rounded-md border border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100">
+                    <div className="flex flex-col items-center justify-center py-2">
+                      <p className="text-xs text-gray-500">{t("Drop your image here, or click to browse")}</p>
+                    </div>
+                    <Input
+                      id="screenshot"
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleFileChange}
+                    />
+                  </Label>
+                )}
               </div>
             </FormItem>
 
@@ -251,24 +310,29 @@ export const SaveToLibraryModal = () => {
               control={form.control}
               name="description"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("Description")}</FormLabel>
+                <FormItem className="space-y-1">
+                  <FormLabel className="text-xs">{t("Description")}</FormLabel>
                   <FormControl>
-                    <Textarea placeholder={t("Enter description for AI")} className="resize-none" {...field} />
+                    <Textarea placeholder={t("Enter description for AI")} className="h-20 resize-none" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-xs" />
                 </FormItem>
               )}
             />
 
-            <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setModalState({ isOpen: false, blockId: null })}>
+            <DialogFooter className="pt-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setModalState({ isOpen: false, blockId: null })}
+                size="sm">
                 {t("Cancel")}
               </Button>
               <Button
                 type="submit"
                 onClick={form.handleSubmit(onSubmit)}
-                disabled={!form.formState.isValid || form.formState.isSubmitting}>
+                disabled={!form.formState.isValid || form.formState.isSubmitting}
+                size="sm">
                 {isUpdateMode ? t("Update") : t("Save")}
               </Button>
             </DialogFooter>
