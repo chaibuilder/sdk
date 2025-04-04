@@ -223,7 +223,7 @@ export interface ChaiBuilderEditorProps {
    * Preview component
    * TODO: Move to registerChaiPreviewComponent()
    */
-  // previewComponent?: ReactComponentType;
+  previewComponent?: ReactComponentType;
 
   /**
    * Sidebar components. Not supported with custom layout
@@ -248,7 +248,7 @@ export interface ChaiBuilderEditorProps {
    * Outline menu items
    * TODO: Move to registerChaiOutlineMenuItems()
    */
-  // outlineMenuItems?: OutlineMenuItems;
+  outlineMenuItems?: OutlineMenuItems;
 
   _flags?: Record<string, boolean>;
 
