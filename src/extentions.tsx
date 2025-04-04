@@ -29,15 +29,25 @@ registerChaiSidebarPanel("drawer-panel", {
   label: "Drawer Panel",
   position: "top",
   view: "drawer",
+  width: 650,
   showIf: () => true,
 });
 
 registerChaiSidebarPanel("modal-panel", {
-  component: () => "Modal Panel",
+  component: () => (
+    <div className="flex h-[600px] w-full flex-col">
+      <div className="flex-1 overflow-y-auto p-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold">Modal Panel</h2>
+        </div>
+      </div>
+    </div>
+  ),
   icon: <BotIcon className="h-5 w-5" />,
   label: "Modal Panel",
   position: "top",
   view: "modal",
+  width: 650,
   showIf: () => true,
 });
 
