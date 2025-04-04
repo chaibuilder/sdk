@@ -13,7 +13,5 @@ export const registerChaiTopBar = (component: React.ComponentType) => {
 };
 
 export const useTopBarComponent = () => {
-  return useMemo(() => {
-    return TOP_BAR.component;
-  }, []);
+  return useMemo(() => TOP_BAR.component, []);
 };

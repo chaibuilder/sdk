@@ -162,7 +162,7 @@ const RootLayout: ComponentType = () => {
             <div id="sidebar" className="flex w-12 flex-col items-center justify-between border-r border-border py-2">
               <div className="flex flex-col">
                 {sidebarMenuItems.map((item, index) => (
-                  <Tooltip key={"button" + index}>
+                  <Tooltip key={"button-" + index}>
                     <TooltipTrigger asChild>
                       <Button
                         key={index}
@@ -182,7 +182,7 @@ const RootLayout: ComponentType = () => {
               <div className="flex flex-col">
                 {bottomPanels?.map((sidebarComponent, index) => {
                   return (
-                    <Tooltip key={"button" + index}>
+                    <Tooltip key={"button-" + index}>
                       <TooltipTrigger asChild>
                         <Button
                           key={index}

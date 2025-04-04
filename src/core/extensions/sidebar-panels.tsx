@@ -13,7 +13,8 @@ interface ChaiSidebarPanel<T> {
   isInternal?: boolean;
 }
 
-const CHAI_BUILDER_PANELS: Record<string, ChaiSidebarPanel<any>> = {};
+// Export for testing purposes
+export const CHAI_BUILDER_PANELS: Record<string, ChaiSidebarPanel<any>> = {};
 
 export const registerChaiSidebarPanel = <T extends Record<string, any>>(
   panelId: string,

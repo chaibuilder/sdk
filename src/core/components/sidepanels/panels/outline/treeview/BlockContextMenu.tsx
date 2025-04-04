@@ -168,6 +168,7 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
           {React.createElement(dropdownItem, { block: selectedBlock })}
         </Suspense>
       ))}
+      {hasPermission(PERMISSIONS.DELETE_BLOCK) && <RemoveBlocks />}
     </DropdownMenuContent>
   );
 };
