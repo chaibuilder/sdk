@@ -11,7 +11,6 @@ import { LanguageButton } from "./__dev/LangButton.tsx";
 import PreviewWeb from "./__dev/preview/WebPreview.tsx";
 import RightTop from "./__dev/RightTop.tsx";
 import { bluePreset, greenPreset, orangePreset } from "./__dev/THEME_PRESETS.ts";
-import { registerChaiMediaManager } from "./core/extensions/media-manager.tsx";
 import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML, PERMISSIONS } from "./core/main";
 import { SavePageData } from "./types/chaibuilder-editor-props.ts";
 import { Alert, AlertDescription } from "./ui/shadcn/components/ui/alert.tsx";
@@ -20,15 +19,6 @@ import { loadWebBlocks } from "./web-blocks";
 
 loadWebBlocks();
 registerCustomBlocks();
-
-const MediaManagerComponent = () => {
-  return (
-    <div className="flex h-[90vh] w-[800px] flex-col gap-2">
-      <div className="flex h-full items-center justify-center pt-20">Implement your media manager here</div>
-    </div>
-  );
-};
-registerChaiMediaManager(MediaManagerComponent);
 
 registerChaiFont("Ubuntu", {
   url: "https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap",
