@@ -38,7 +38,6 @@ import { useUILibraryBlocks } from "./useUiLibraries";
 import { useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "./useUpdateBlocksProps";
 import { useWrapperBlock } from "./useWrapperBlock.ts";
 export { useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
-export { useLayoutVariant } from "./useLayoutVariant.ts";
 export { useCanvasDisplayWidth, useScreenSizeWidth } from "./useScreenSizeWidth";
 
 export {

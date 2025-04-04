@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useAtom } from "jotai";
 import { compact, find, first, get } from "lodash-es";
 import { Layers, Paintbrush, SparklesIcon, X } from "lucide-react";
-import React, { ComponentType, lazy, MouseEvent, Suspense, useEffect, useMemo, useState } from "react";
+import React, { ComponentType, lazy, MouseEvent, Suspense, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../ui/index.ts";
 import { sidebarActivePanelAtom } from "../../atoms/ui.ts";
@@ -21,7 +21,6 @@ import { Outline } from "../index.ts";
 import SettingsPanel from "../settings/SettingsPanel.tsx";
 import ThemeConfigPanel from "../sidepanels/panels/theme-configuration/ThemeConfigPanel.tsx";
 import { AddBlocksDialog } from "./AddBlocksDialog.tsx";
-import { ChooseLayout } from "./ChooseLayout.tsx";
 const TopBar = lazy(() => import("../topbar/Topbar.tsx"));
 
 const DEFAULT_PANEL_WIDTH = 280;
@@ -68,7 +67,6 @@ function useSidebarMenuItems() {
  */
 const RootLayout: ComponentType = () => {
   const [activePanel, setActivePanel] = useAtom(sidebarActivePanelAtom);
-  const [chooseLayout, setChooseLayout] = useState(false);
 
   const [panel, setRightPanel] = useRightPanel();
 
@@ -219,7 +217,6 @@ const RootLayout: ComponentType = () => {
           </main>
         </div>
         <AddBlocksDialog />
-        <ChooseLayout open={chooseLayout} close={() => setChooseLayout(false)} />
       </TooltipProvider>
     </div>
   );
