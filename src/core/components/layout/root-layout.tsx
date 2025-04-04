@@ -6,7 +6,21 @@ import { compact, find, first, get } from "lodash-es";
 import { Layers, Paintbrush, SparklesIcon, X } from "lucide-react";
 import React, { ComponentType, lazy, MouseEvent, Suspense, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../ui/index.ts";
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../../../ui/index.ts";
 import { sidebarActivePanelAtom } from "../../atoms/ui.ts";
 import { CHAI_BUILDER_EVENTS } from "../../events.ts";
 import { useChaiSidebarPanels } from "../../extensions/sidebar-panels.tsx";
@@ -159,11 +173,12 @@ const RootLayout: ComponentType = () => {
             </div>
             {/* Side Panel */}
             <motion.div
+              id="left-panel"
               className="h-full max-h-full border-r border-border"
               initial={{ width: panelWidth }}
               animate={{ width: activePanel !== null ? panelWidth : 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}>
-              {activePanel !== null && (
+              {activePanel !== null && get(activePanelItem, "view", "standard") === "standard" && (
                 <div className="no-scrollbar flex h-full flex-col overflow-hidden px-3 py-2">
                   <div
                     className={`absolute top-2 flex h-10 items-center space-x-1 bg-white py-2 text-base font-bold ${get(activePanelItem, "isInternal", false) ? "" : "w-64"}`}>
@@ -178,13 +193,14 @@ const RootLayout: ComponentType = () => {
                 </div>
               )}
             </motion.div>
-            <div className="flex h-full max-h-full flex-1 flex-col bg-slate-800/20">
+            <div id="canvas-container" className="flex h-full max-h-full flex-1 flex-col bg-slate-800/20">
               <CanvasTopBar />
               <Suspense>
                 <CanvasArea />
               </Suspense>
             </div>
             <motion.div
+              id="right-panel"
               className="h-full max-h-full border-l border-border"
               initial={{ width: activePanel === "ai" ? 0 : DEFAULT_PANEL_WIDTH }}
               animate={{ width: activePanel === "ai" ? 0 : DEFAULT_PANEL_WIDTH }}
@@ -226,6 +242,74 @@ const RootLayout: ComponentType = () => {
                 </div>
               </div>
             </motion.div>
+
+            {/* Drawer View */}
+            {activePanel !== null && get(activePanelItem, "view") === "drawer" && (
+              <Sheet open={true} onOpenChange={() => setActivePanel(null)}>
+                <SheetContent side="left" className="w-[350px] sm:w-[450px]">
+                  <SheetHeader>
+                    <SheetTitle className="flex items-center gap-2">
+                      <span className="rtl:ml-2 rtl:inline-block">{get(activePanelItem, "icon", null)}</span>
+                      <span>{t(get(activePanelItem, "label", ""))}</span>
+                    </SheetTitle>
+                  </SheetHeader>
+                  <div className="mt-4 h-full max-h-full overflow-y-auto">
+                    <Suspense fallback={<div>Loading...</div>}>
+                      {React.createElement(get(activePanelItem, "component", null), {})}
+                    </Suspense>
+                  </div>
+                </SheetContent>
+              </Sheet>
+            )}
+
+            {/* Modal View */}
+            {activePanel !== null && get(activePanelItem, "view") === "modal" && (
+              <Dialog open={true} onOpenChange={() => setActivePanel(null)}>
+                <DialogContent className="sm:max-w-[600px]">
+                  <DialogHeader>
+                    <DialogTitle className="flex items-center gap-2">
+                      <span className="rtl:ml-2 rtl:inline-block">{get(activePanelItem, "icon", null)}</span>
+                      <span>{t(get(activePanelItem, "label", ""))}</span>
+                    </DialogTitle>
+                  </DialogHeader>
+                  <div className="max-h-[70vh] overflow-y-auto">
+                    <Suspense fallback={<div>Loading...</div>}>
+                      {React.createElement(get(activePanelItem, "component", null), {})}
+                    </Suspense>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            )}
+
+            {/* Overlay View */}
+            {activePanel !== null && get(activePanelItem, "view") === "overlay" && (
+              <motion.div
+                className="absolute inset-0 z-50 bg-background/80 backdrop-blur-sm"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}>
+                <motion.div
+                  className="m-6 h-full max-h-full overflow-y-auto rounded-lg border border-border bg-background p-6 shadow-lg"
+                  initial={{ x: -50, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: 50, opacity: 0 }}
+                  transition={{ duration: 0.3, delay: 0.1 }}>
+                  <div className="mb-4 flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-lg font-bold">
+                      <span className="rtl:ml-2 rtl:inline-block">{get(activePanelItem, "icon", null)}</span>
+                      <span>{t(get(activePanelItem, "label", ""))}</span>
+                    </div>
+                    <Button onClick={() => setActivePanel(null)} variant="ghost" size="icon" className="text-gray-400">
+                      <X className="h-5 w-5" />
+                    </Button>
+                  </div>
+                  <Suspense fallback={<div>Loading...</div>}>
+                    {React.createElement(get(activePanelItem, "component", null), {})}
+                  </Suspense>
+                </motion.div>
+              </motion.div>
+            )}
           </main>
         </div>
         <AddBlocksDialog />
