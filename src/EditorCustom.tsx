@@ -24,7 +24,7 @@ function ChaiBuilderCustom() {
       locale={"pt-BR"}
       // translations={{ "pt-BR": ptBR, es: es }}
       layout={CustomLayout}
-      showDebugLogs={true}
+      debugLogs={true}
       autoSaveSupport={false}
       previewComponent={PreviewWeb}
       blocks={blocks}

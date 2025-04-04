@@ -3,20 +3,14 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@radix-ui/react-tooltip
 import { atom, useAtom } from "jotai";
 import { get, has } from "lodash-es";
 import { ChevronRight, EyeOffIcon, FileJson, MoreVertical, Zap } from "lucide-react";
-import { createElement, memo, useEffect, useMemo } from "react";
+import { memo, useEffect, useMemo } from "react";
 import { NodeRendererProps } from "react-arborist";
 import { canvasIframeAtom } from "../../../../atoms/ui";
 import { PERMISSIONS } from "../../../../constants/PERMISSIONS";
 import { ROOT_TEMP_KEY } from "../../../../constants/STRINGS";
 import { CHAI_BUILDER_EVENTS } from "../../../../events";
 import { canAcceptChildBlock, canAddChildBlock } from "../../../../functions/block-helpers";
-import {
-  useBlockHighlight,
-  useBuilderProp,
-  useHiddenBlockIds,
-  usePermissions,
-  useTranslation,
-} from "../../../../hooks";
+import { useBlockHighlight, useHiddenBlockIds, usePermissions, useTranslation } from "../../../../hooks";
 import { pubsub } from "../../../../pubsub";
 import { cn } from "../../../../utils/cn";
 import { BlockMoreOptions } from "./block-more-options";
@@ -43,7 +37,6 @@ const Input = ({ node }) => {
 
 const currentAddSelection = atom<any>(null);
 export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
-  const outlineItems = useBuilderProp("outlineMenuItems", []);
   const { t } = useTranslation();
   const [hiddenBlocks, , toggleHidden] = useHiddenBlockIds();
   const [iframe] = useAtom<HTMLIFrameElement>(canvasIframeAtom);
@@ -279,17 +272,6 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
             </div>
           </div>
           <div className="invisible flex items-center space-x-1.5 pr-2 group-hover:visible">
-            {!hiddenBlocks.includes(id) &&
-              outlineItems.map((outlineItem) => (
-                <Tooltip>
-                  <TooltipTrigger
-                    className="cursor-pointer rounded bg-transparent hover:bg-white hover:text-blue-500"
-                    asChild>
-                    {createElement(outlineItem.item, { blockId: id })}
-                  </TooltipTrigger>
-                  <TooltipContent className="isolate z-10">{outlineItem.tooltip}</TooltipContent>
-                </Tooltip>
-              ))}
             {canAddChildBlock(data?._type) && !hiddenBlocks.includes(id) && hasPermission(PERMISSIONS.ADD_BLOCK) ? (
               <Tooltip>
                 <TooltipTrigger

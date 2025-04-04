@@ -103,8 +103,8 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   }, [props.locale]);
 
   useEffect(() => {
-    setDebugLogs(props.showDebugLogs);
-  }, [props.showDebugLogs]);
+    setDebugLogs(props.debugLogs);
+  }, [props.debugLogs]);
 
   useEffect(() => {
     if (!props.translations) return;

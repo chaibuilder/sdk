@@ -54,7 +54,6 @@ type OutlineMenuItem = {
   item: React.ComponentType<{ blockId: string }>;
   tooltip: string | ReactNode;
 };
-type OutlineMenuItems = OutlineMenuItem[];
 type TimeInSeconds = number;
 export type AskAiResponse = {
   blocks?: Array<{ _id: string } & Partial<ChaiBlock>>;
@@ -90,6 +89,7 @@ export interface ChaiBuilderEditorProps {
   permissions?: string[];
   /**
    * RJSF Fields and Widgets
+   * TODO: Move to registerChaiSettingComponents()
    */
   rjsfFields?: Record<string, React.ComponentType<any>>;
   rjsfWidgets?: Record<string, React.ComponentType<any>>;
@@ -116,13 +116,10 @@ export interface ChaiBuilderEditorProps {
    * Translations object
    */
   translations?: Record<string, Record<string, any>>;
-  /**
-   * onLoad callback function
-   * @param editorInstance
-   */
-  onLoad?: (editorInstance: ChaiBuilderInstance) => void;
+
   /**
    * Custom layout component
+   * TODO: Move to registerChaiLayoutComponent()
    */
   layout?: React.ComponentType;
 
@@ -130,14 +127,11 @@ export interface ChaiBuilderEditorProps {
    * HTML direction.
    */
   htmlDir?: "ltr" | "rtl";
-  /**
-   * Filter function for blocks to be shown in the builder
-   */
-  filterChaiBlock?: (block: any) => boolean;
+
   /**
    * Show debug logs
    */
-  showDebugLogs?: boolean;
+  debugLogs?: boolean;
   /**
    * Auto save support
    */
@@ -150,10 +144,6 @@ export interface ChaiBuilderEditorProps {
    * Breakpoints
    */
   breakpoints?: Breakpoint[];
-  /**
-   * Editable
-   */
-  editable?: boolean;
 
   /**
    * Loading state
@@ -165,10 +155,24 @@ export interface ChaiBuilderEditorProps {
    */
   locale?: string;
 
+  /**
+   * Dark mode
+   */
   darkMode?: boolean;
 
+  /**
+   * Import HTML support
+   */
   importHTMLSupport?: boolean;
 
+  /**
+   * AI context
+   */
+  aiContext?: string;
+
+  /**
+   * Ask AI callback
+   */
   askAiCallBack?: (
     type: "styles" | "content",
     prompt: string,
@@ -176,13 +180,25 @@ export interface ChaiBuilderEditorProps {
     lang: string,
   ) => Promise<AskAiResponse>;
   saveAiContextCallback?: (content: string) => Promise<true | Error>;
-  aiContext?: string;
 
+  /**
+   * UI libraries
+   */
   uiLibraries?: Omit<ChaiUILibrary, "blocks">[];
+
+  /**
+   * Get library blocks
+   */
   getUILibraryBlocks?: (library: ChaiUILibrary) => Promise<ChaiUILibraryBlock[]>;
+
+  /**
+   * Get library block
+   */
   getUILibraryBlock?: (library: ChaiUILibrary, uiLibBlock: ChaiUILibraryBlock) => Promise<ChaiBlock[]>;
 
-  // libraries CRUD
+  /**
+   * Upsert library block
+   */
   upsertLibraryBlock?: (params: {
     id?: string;
     description: string;
@@ -204,6 +220,10 @@ export interface ChaiBuilderEditorProps {
    */
   blocks?: ChaiBlock[];
 
+  /**
+   * onSave callback function
+   * @param saveData
+   */
   onSave?: ({ blocks, theme, autoSave }: SavePageData) => Promise<boolean | Error>;
 
   /**
@@ -219,22 +239,22 @@ export interface ChaiBuilderEditorProps {
   previewComponent?: ReactComponentType;
 
   /**
-   * Outline menu items
-   * TODO: Move to registerChaiOutlineMenuItems()
-   */
-  outlineMenuItems?: OutlineMenuItems;
-
-  _flags?: Record<string, boolean>;
-
-  /**
    * Content locale
    */
   fallbackLang?: string;
+
+  /**
+   * Languages
+   */
   languages?: Array<string>;
 
   /**
    * Page Types props
    */
   pageTypes?: PageType[];
+
+  /**
+   * Search page type items
+   */
   searchPageTypeItems?: (pageTypeKey: string, query: string) => Promise<PageTypeItem[] | Error>;
 }
