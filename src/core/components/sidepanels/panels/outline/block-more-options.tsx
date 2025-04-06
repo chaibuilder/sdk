@@ -1,5 +1,4 @@
 import { CardStackIcon, CardStackPlusIcon, CopyIcon, ScissorsIcon, TrashIcon } from "@radix-ui/react-icons";
-import { isEmpty } from "lodash-es";
 import { PencilIcon, PlusIcon } from "lucide-react";
 import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -19,7 +18,6 @@ import {
 } from "../../../../hooks/index.ts";
 import { PERMISSIONS, usePermissions } from "../../../../main/index.ts";
 import { pubsub } from "../../../../pubsub.ts";
-import { SaveToLibrary } from "./save-to-library.tsx";
 export const PasteAtRootContextMenu = ({ parentContext, setParentContext }) => {
   const { t } = useTranslation();
   const { canPaste, pasteBlocks } = usePasteBlocks();
@@ -164,7 +162,8 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
       <RenameBlock node={node} />
       {hasPermission(PERMISSIONS.MOVE_BLOCK) && <CutBlocks />}
       {hasPermission(PERMISSIONS.ADD_BLOCK) && <CopyPasteBlocks />}
-      {hasPermission(PERMISSIONS.CREATE_LIBRARY_BLOCK) && !isEmpty(uiLibraries) && <SaveToLibrary />}
+      {/* TODO: Add library block saving */}
+      {/* {hasPermission(PERMISSIONS.CREATE_LIBRARY_BLOCK) && !isEmpty(uiLibraries) && <SaveToLibrary />} */}
       {hasPermission(PERMISSIONS.DELETE_BLOCK) && <RemoveBlocks />}
     </DropdownMenuContent>
   );

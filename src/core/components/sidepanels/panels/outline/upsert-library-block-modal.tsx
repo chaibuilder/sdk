@@ -116,7 +116,7 @@ export const SaveToLibraryModal = () => {
         ...values,
         ...(selectedBlock?._libBlockId && { id: selectedBlock?._libBlockId }),
       });
-      debugger;
+
       if (result instanceof Error) {
         toast.error(result.message);
         return;
