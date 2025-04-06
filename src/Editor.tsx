@@ -3,7 +3,6 @@ import { useAtom } from "jotai";
 import { isArray, map, pick } from "lodash-es";
 import { useState } from "react";
 import { lsAiContextAtom, lsBlocksAtom, lsThemeAtom } from "./_demo/atoms-dev.ts";
-import GalleryWidget from "./_demo/CustomWidget.tsx";
 import { bluePreset, greenPreset, orangePreset } from "./_demo/THEME_PRESETS.ts";
 import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML } from "./core/main";
 import "./extentions";
@@ -41,7 +40,6 @@ function ChaiBuilderDefault() {
           description: "This is a description of my page",
         },
       }}
-      rjsfWidgets={{ gallery: GalleryWidget }}
       fallbackLang="en"
       languages={["fr"]}
       themePresets={[{ orange: orangePreset }, { green: greenPreset }, { blue: bluePreset }]}

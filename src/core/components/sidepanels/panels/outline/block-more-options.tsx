@@ -7,7 +7,6 @@ import { CHAI_BUILDER_EVENTS } from "../../../../events.ts";
 import { canAddChildBlock, canDeleteBlock, canDuplicateBlock } from "../../../../functions/block-helpers.ts";
 import {
   useBlocksStore,
-  useBuilderProp,
   useCopyBlockIds,
   useCutBlockIds,
   useDuplicateBlocks,
@@ -135,7 +134,6 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
   const duplicateBlocks = useDuplicateBlocks();
   const selectedBlock = useSelectedBlock();
   const { hasPermission } = usePermissions();
-  const uiLibraries = useBuilderProp("uiLibraries", []);
 
   const duplicate = useCallback(() => {
     duplicateBlocks(selectedIds);

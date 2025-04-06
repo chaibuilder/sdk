@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import { ChaiBlock } from "./chai-block.ts";
 
 export type ChaiUILibraryBlock<T = Record<string, any>> = {
@@ -50,10 +50,6 @@ export type SavePageData = {
   theme?: ChaiBuilderThemeValues;
 };
 
-type OutlineMenuItem = {
-  item: React.ComponentType<{ blockId: string }>;
-  tooltip: string | ReactNode;
-};
 type TimeInSeconds = number;
 export type AskAiResponse = {
   blocks?: Array<{ _id: string } & Partial<ChaiBlock>>;

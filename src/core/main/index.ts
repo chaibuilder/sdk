@@ -48,6 +48,11 @@ export type { ChaiBlock, ChaiBuilderEditorProps };
 
 // registration apis
 export { registerChaiAddBlockTab } from "../extensions/add-block-tabs.tsx";
+export {
+  registerBlockSettingField,
+  registerBlockSettingTemplate,
+  registerBlockSettingWidget,
+} from "../extensions/blocks-settings.tsx";
 export { registerChaiMediaManager } from "../extensions/media-manager.tsx";
 export { registerChaiSidebarPanel } from "../extensions/sidebar-panels.tsx";
 export { registerChaiTopBar } from "../extensions/top-bar.tsx";
