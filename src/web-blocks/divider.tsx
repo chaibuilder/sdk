@@ -13,7 +13,8 @@ const DividerBlock = (props: ChaiBlockComponentProps<DividerBlockProps>) => {
 
 const Config = {
   type: "Divider",
-  label: "web_blocks.divider",
+  description: "A horizontal line component",
+  label: "Divider",
   category: "core",
   icon: DividerHorizontalIcon,
   group: "basic",

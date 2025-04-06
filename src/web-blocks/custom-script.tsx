@@ -25,7 +25,8 @@ const CustomScript = (props: ChaiBlockComponentProps<CustomScriptBlockProps>) =>
 
 const Config = {
   type: "CustomScript",
-  label: "web_blocks.custom_script",
+  description: "similar to a script element in HTML",
+  label: "Custom Script",
   category: "core",
   icon: FileCode,
   group: "advanced",

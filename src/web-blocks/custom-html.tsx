@@ -24,7 +24,8 @@ const CustomHTMLBlock = (props: ChaiBlockComponentProps<{ htmlCode: string; styl
 
 const Config = {
   type: "CustomHTML",
-  label: "web_blocks.custom_html",
+  description: "similar to a div or section elements in HTML",
+  label: "Custom HTML",
   category: "core",
   icon: CodeIcon,
   group: "advanced",

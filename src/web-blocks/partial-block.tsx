@@ -23,6 +23,7 @@ const Component = (props: ChaiBlockComponentProps<PartialBlockProps>) => {
 
 const Config = {
   type: "PartialBlock",
+  description: "A partial block component",
   label: "Partial Block",
   icon: GlobeIcon,
   category: "core",

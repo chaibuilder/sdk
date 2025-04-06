@@ -22,6 +22,7 @@ export const ListItemBlock = (props: ChaiBlockComponentProps<ListItemBlockProps>
 
 const Config = {
   type: "ListItem",
+  description: "A list item component",
   label: "List Item",
   icon: ColumnsIcon,
   category: "core",

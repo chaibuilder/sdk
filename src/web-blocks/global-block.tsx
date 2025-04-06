@@ -23,6 +23,7 @@ const Component = (props: ChaiBlockComponentProps<GlobalBlockProps>) => {
 
 const Config = {
   type: "GlobalBlock",
+  description: "A global block component",
   label: "Global Block",
   icon: GlobeIcon,
   category: "core",

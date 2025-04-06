@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useAtom } from "jotai";
-import { isArray, map, pick, values } from "lodash-es";
+import { isArray, map, pick } from "lodash-es";
 import { useState } from "react";
 import { lsAiContextAtom, lsBlocksAtom, lsThemeAtom } from "./_demo/atoms-dev.ts";
 import GalleryWidget from "./_demo/CustomWidget.tsx";
 import { bluePreset, greenPreset, orangePreset } from "./_demo/THEME_PRESETS.ts";
-import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML, PERMISSIONS } from "./core/main";
+import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML } from "./core/main";
 import "./extentions";
 import { SavePageData } from "./types/chaibuilder-editor-props.ts";
 import { loadWebBlocks } from "./web-blocks";
@@ -24,7 +24,7 @@ function ChaiBuilderDefault() {
 
   return (
     <ChaiBuilderEditor
-      permissions={[...values(PERMISSIONS)]}
+      permissions={null}
       // permissions={[]}
       pageExternalData={{
         vehicle: {

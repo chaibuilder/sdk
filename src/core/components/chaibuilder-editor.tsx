@@ -108,12 +108,11 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
  * ChaiBuilder is the main entry point for the Chai Builder Studio.
  */
 const ChaiBuilderEditor: React.FC<ChaiBuilderEditorProps> = (props: ChaiBuilderEditorProps) => {
-  const _flags = props._flags || {};
   const onErrorFn = props.onError || noop;
   return (
     <div className="h-screen w-screen">
       <ErrorBoundary fallback={<FallbackError />} onError={onErrorFn}>
-        <FlagsProvider features={{ ...FEATURE_TOGGLES, ..._flags }}>
+        <FlagsProvider features={{ ...FEATURE_TOGGLES }}>
           <SmallScreenMessage />
           <ChaiBuilderComponent {...props} />
           <PreviewScreen />

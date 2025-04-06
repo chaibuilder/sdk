@@ -21,6 +21,7 @@ const SpanBlock = (props: ChaiBlockComponentProps<SpanProps>) => {
 
 const Config = {
   type: "Span",
+  description: "A span component",
   label: "Span",
   category: "core",
   group: "typography",

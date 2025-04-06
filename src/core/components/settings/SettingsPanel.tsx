@@ -42,9 +42,6 @@ const SettingsPanel: React.FC = () => {
   let isSettingsDisabled = !hasPermission(PERMISSIONS.EDIT_BLOCK);
   const isStylesDisabled = !hasPermission(PERMISSIONS.EDIT_STYLES);
 
-  const isBlockSettingsDisabled = hasPermission("!" + PERMISSIONS.EDIT_BLOCK + "_" + selectedBlock?._type);
-  isSettingsDisabled = isSettingsDisabled || isBlockSettingsDisabled;
-
   if (isNull(selectedBlock)) {
     return (
       <div className="p-4 text-center">
