@@ -58,7 +58,15 @@ export { registerChaiSidebarPanel } from "../extensions/sidebar-panels.tsx";
 export { registerChaiTopBar } from "../extensions/top-bar.tsx";
 
 // hooks
+export { useBlockSettingComponents } from "../extensions/blocks-settings.tsx";
+export { useMediaManagerComponent } from "../extensions/media-manager.tsx";
+export { useChaiSidebarPanels } from "../extensions/sidebar-panels.tsx";
+export type { ChaiSidebarPanel } from "../extensions/sidebar-panels.tsx";
+export { useTopBarComponent } from "../extensions/top-bar.tsx";
 export * from "../hooks";
 
 // constants
 export { PERMISSIONS } from "../constants/PERMISSIONS";
+export { ADD_BLOCK_TABS } from "../extensions/add-block-tabs.tsx";
+export { RJSF_EXTENSIONS } from "../extensions/blocks-settings.tsx";
+export { CHAI_BUILDER_PANELS } from "../extensions/sidebar-panels.tsx";

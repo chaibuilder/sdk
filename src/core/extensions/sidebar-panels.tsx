@@ -1,7 +1,7 @@
 import { filter, has, set, values } from "lodash-es";
 import { ComponentType, useMemo } from "react";
 
-interface ChaiSidebarPanel<T> {
+export interface ChaiSidebarPanel<T> {
   id: string;
   position: "top" | "bottom";
   view?: "standard" | "modal" | "overlay" | "drawer";
