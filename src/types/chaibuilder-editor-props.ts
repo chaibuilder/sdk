@@ -87,7 +87,7 @@ export interface ChaiBuilderEditorProps {
     name: string;
     email: string;
     avatar?: string;
-    role: string;
+    role?: string;
   };
 
   /**
@@ -214,17 +214,9 @@ export interface ChaiBuilderEditorProps {
   getUILibraryBlock?: (library: ChaiUILibrary, uiLibBlock: ChaiUILibraryBlock) => Promise<ChaiBlock[]>;
 
   /**
-   * Upsert library block
+   * Get partial blocks
+   * @returns {Record<string, { type: string; name: string; description?: string }>}
    */
-  upsertLibraryBlock?: (params: {
-    id?: string;
-    description: string;
-    group: string;
-    library: string;
-    name: string;
-    preview?: string;
-  }) => Promise<{ id: string } | Error>;
-
   getPartialBlocks?: () => Promise<Record<string, { type: string; name: string; description?: string }>>;
 
   /**

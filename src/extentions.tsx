@@ -4,6 +4,7 @@ import AddBlockAi from "./_demo/add-block-ai";
 import registerCustomBlocks from "./_demo/blocks";
 import "./_demo/panels/panel";
 import { registerChaiAddBlockTab } from "./core/extensions/add-block-tabs";
+import { registerSaveToLibrary } from "./core/extensions/save-to-library";
 import { registerChaiTopBar } from "./core/main";
 
 const TopBar = lazy(() => import("./_demo/Topbar"));
@@ -18,6 +19,11 @@ registerChaiFont("Geist", {
   fallback: `"Geist Fallback", Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol`,
   src: [{ url: "http://localhost:5173/fonts/Geist.woff", format: "woff" }],
 } as ChaiFontViaSrc);
+
+registerSaveToLibrary((props) => {
+  console.log(props);
+  return <div>Save to Lib</div>;
+});
 
 // registerChaiSidebarPanel("drawer-panel", {
 //   component: () => "Drawer Panel",

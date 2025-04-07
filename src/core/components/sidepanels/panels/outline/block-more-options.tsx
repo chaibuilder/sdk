@@ -17,6 +17,7 @@ import {
 } from "../../../../hooks/index.ts";
 import { PERMISSIONS, usePermissions } from "../../../../main/index.ts";
 import { pubsub } from "../../../../pubsub.ts";
+import { SaveToLibrary } from "./save-to-library.tsx";
 export const PasteAtRootContextMenu = ({ parentContext, setParentContext }) => {
   const { t } = useTranslation();
   const { canPaste, pasteBlocks } = usePasteBlocks();
@@ -161,7 +162,7 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
       {hasPermission(PERMISSIONS.MOVE_BLOCK) && <CutBlocks />}
       {hasPermission(PERMISSIONS.ADD_BLOCK) && <CopyPasteBlocks />}
       {/* TODO: Add library block saving */}
-      {/* {hasPermission(PERMISSIONS.CREATE_LIBRARY_BLOCK) && !isEmpty(uiLibraries) && <SaveToLibrary />} */}
+      {hasPermission(PERMISSIONS.CREATE_LIBRARY_BLOCK) && <SaveToLibrary />}
       {hasPermission(PERMISSIONS.DELETE_BLOCK) && <RemoveBlocks />}
     </DropdownMenuContent>
   );

@@ -9,7 +9,6 @@ export * from "./shadcn/components/ui/command";
 export * from "./shadcn/components/ui/context-menu";
 export * from "./shadcn/components/ui/dialog";
 export * from "./shadcn/components/ui/dropdown-menu";
-export * from "./shadcn/components/ui/form";
 export * from "./shadcn/components/ui/hover-card";
 export * from "./shadcn/components/ui/input";
 export * from "./shadcn/components/ui/label";
