@@ -2,7 +2,7 @@ import { ComponentType, useMemo } from "react";
 import { ChaiBlock } from "../../types/chai-block";
 
 export type SaveToLibraryProps = {
-  libBlockId?: string;
+  blockId: string;
   blocks?: ChaiBlock[];
   close: () => void;
 };

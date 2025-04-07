@@ -1,5 +1,5 @@
 import { atom, useAtom } from "jotai";
-import { filter, find, isEmpty } from "lodash-es";
+import { filter, find } from "lodash-es";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../../../../../ui";
@@ -30,7 +30,6 @@ export const SaveToLibraryModal = () => {
   const { t } = useTranslation();
   const [blocks] = useBlocksStore();
   const close = () => setModalState({ isOpen: false, blockId: null });
-  const isUpdateMode = !isEmpty(modalState.blockId);
   const SaveToLibraryComponent = useSaveToLibraryComponent();
 
   const nestedBlocks = useMemo(() => {
@@ -44,10 +43,10 @@ export const SaveToLibraryModal = () => {
     <Dialog open={modalState.isOpen} onOpenChange={(open) => !open && close()}>
       <DialogContent className="p-4 sm:max-w-[450px]">
         <DialogHeader className="pb-2">
-          <DialogTitle>{isUpdateMode ? t("Update Library Block") : t("Save to Library")}</DialogTitle>
+          <DialogTitle>{t("Save to Library")}</DialogTitle>
         </DialogHeader>
         {SaveToLibraryComponent && (
-          <SaveToLibraryComponent libBlockId={modalState.blockId} blocks={nestedBlocks} close={close} />
+          <SaveToLibraryComponent blockId={modalState.blockId} blocks={nestedBlocks} close={close} />
         )}
       </DialogContent>
     </Dialog>
