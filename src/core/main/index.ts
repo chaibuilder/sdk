@@ -54,6 +54,7 @@ export {
   registerBlockSettingWidget,
 } from "../extensions/blocks-settings.tsx";
 export { registerChaiMediaManager } from "../extensions/media-manager.tsx";
+export { registerChaiSaveToLibrary } from "../extensions/save-to-library.tsx";
 export { registerChaiSidebarPanel } from "../extensions/sidebar-panels.tsx";
 export { registerChaiTopBar } from "../extensions/top-bar.tsx";
 

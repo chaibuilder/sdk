@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
-  registerSaveToLibrary,
+  registerChaiSaveToLibrary,
   resetSaveToLibrary,
   SaveToLibraryProps,
   useSaveToLibraryComponent,
@@ -15,7 +15,7 @@ describe("save-to-library", () => {
   describe("registerSaveToLibrary", () => {
     it("should register a component", () => {
       const MockComponent = vi.fn((_props: SaveToLibraryProps) => null);
-      registerSaveToLibrary(MockComponent);
+      registerChaiSaveToLibrary(MockComponent);
       const { result } = renderHook(() => useSaveToLibraryComponent());
       expect(result.current).toBe(MockComponent);
     });
@@ -29,7 +29,7 @@ describe("save-to-library", () => {
 
     it("should return registered component", () => {
       const MockComponent = vi.fn((_props: SaveToLibraryProps) => null);
-      registerSaveToLibrary(MockComponent);
+      registerChaiSaveToLibrary(MockComponent);
       const { result } = renderHook(() => useSaveToLibraryComponent());
       expect(result.current).toBe(MockComponent);
     });

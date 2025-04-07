@@ -9,7 +9,7 @@ export type SaveToLibraryProps = {
 
 let SAVE_TO_LIB_COMPONENT: ComponentType<SaveToLibraryProps> | null = null;
 
-export const registerSaveToLibrary = (component: ComponentType<SaveToLibraryProps>) => {
+export const registerChaiSaveToLibrary = (component: ComponentType<SaveToLibraryProps>) => {
   SAVE_TO_LIB_COMPONENT = component;
 };
 
