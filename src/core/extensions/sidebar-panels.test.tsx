@@ -18,15 +18,16 @@ describe("registerChaiSidebarPanel", () => {
   });
 
   it("should register a panel successfully", () => {
-    // Mock component
-    const MockComponent = () => <div>Test Panel</div>;
+    // Mock components
+    const MockButton = () => <div>Test Button</div>;
+    const MockPanel = () => <div>Test Panel</div>;
 
     // Mock panel options
     const panelOptions = {
       position: "top" as const,
-      icon: <span>Icon</span>,
+      button: MockButton,
       label: "Test Panel",
-      component: MockComponent as ComponentType,
+      panel: MockPanel as ComponentType,
     };
 
     // Register panel
@@ -43,21 +44,23 @@ describe("registerChaiSidebarPanel", () => {
 
   it("should warn when registering a panel with an existing ID and override it", () => {
     // First register a panel
-    const FirstComponent = () => <div>Original Panel</div>;
+    const FirstButton = () => <div>Original Button</div>;
+    const FirstPanel = () => <div>Original Panel</div>;
     registerChaiSidebarPanel("duplicate-panel", {
       position: "top",
-      icon: <span>Icon1</span>,
+      button: FirstButton,
       label: "Original Panel",
-      component: FirstComponent as ComponentType,
+      panel: FirstPanel as ComponentType,
     });
 
     // Then register another panel with the same ID but different position
-    const SecondComponent = () => <div>Override Panel</div>;
+    const SecondButton = () => <div>Override Button</div>;
+    const SecondPanel = () => <div>Override Panel</div>;
     registerChaiSidebarPanel("duplicate-panel", {
       position: "bottom",
-      icon: <span>Icon2</span>,
+      button: SecondButton,
       label: "Override Panel",
-      component: SecondComponent as ComponentType,
+      panel: SecondPanel as ComponentType,
     });
 
     // Check if warning was logged
@@ -72,19 +75,19 @@ describe("registerChaiSidebarPanel", () => {
   });
 
   it("should respect optional panel properties", () => {
-    // Mock component
-    const MockComponent = () => <div>Optional Props Panel</div>;
+    // Mock components
+    const MockButton = () => <div>Optional Props Button</div>;
+    const MockPanel = () => <div>Optional Props Panel</div>;
 
     // Register panel with optional properties
     registerChaiSidebarPanel("optional-props-panel", {
       position: "bottom",
-      icon: <span>Icon</span>,
+      button: MockButton,
       label: "Optional Props Panel",
-      component: MockComponent as ComponentType,
+      panel: MockPanel as ComponentType,
       view: "modal",
       width: 400,
       isInternal: true,
-      showIf: () => true,
     });
 
     // Direct access to the registered panel
@@ -100,8 +103,5 @@ describe("registerChaiSidebarPanel", () => {
       width: 400,
       isInternal: true,
     });
-
-    // Test the showIf function
-    expect(panel.showIf && panel.showIf({})).toBe(true);
   });
 });

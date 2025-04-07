@@ -1,25 +1,26 @@
 import { filter, has, set, values } from "lodash-es";
 import { ComponentType, useMemo } from "react";
 
-export interface ChaiSidebarPanel<T> {
+export interface ChaiSidebarPanel {
   id: string;
   position: "top" | "bottom";
   view?: "standard" | "modal" | "overlay" | "drawer";
-  icon: React.ReactNode;
+  button: React.ComponentType<{
+    isActive: boolean;
+    show: () => void;
+    panelId: string;
+    position: "top" | "bottom";
+  }>;
   label: string;
-  component: ComponentType;
-  showIf?: (params: T) => boolean;
+  panel?: ComponentType;
   width?: number;
   isInternal?: boolean;
 }
 
 // Export for testing purposes
-export const CHAI_BUILDER_PANELS: Record<string, ChaiSidebarPanel<any>> = {};
+export const CHAI_BUILDER_PANELS: Record<string, ChaiSidebarPanel> = {};
 
-export const registerChaiSidebarPanel = <T extends Record<string, any>>(
-  panelId: string,
-  panelOptions: Omit<ChaiSidebarPanel<T>, "id">,
-) => {
+export const registerChaiSidebarPanel = (panelId: string, panelOptions: Omit<ChaiSidebarPanel, "id">) => {
   if (has(CHAI_BUILDER_PANELS, panelId)) {
     console.warn(`Panel ${panelId} already registered. Overriding...`);
   }
@@ -27,5 +28,11 @@ export const registerChaiSidebarPanel = <T extends Record<string, any>>(
 };
 
 export const useChaiSidebarPanels = (position: "top" | "bottom") => {
-  return useMemo(() => filter(values(CHAI_BUILDER_PANELS), (panel) => panel.position === position), [position]);
+  return useMemo(
+    () =>
+      filter(values(CHAI_BUILDER_PANELS), (panel) => {
+        return panel.position === position;
+      }),
+    [position],
+  );
 };
