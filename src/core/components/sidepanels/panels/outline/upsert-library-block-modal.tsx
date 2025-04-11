@@ -36,7 +36,7 @@ export const SaveToLibraryModal = () => {
     if (!modalState.blockId) return [];
     const topBlock = find(blocks, { _id: modalState.blockId });
     delete topBlock?._parent;
-    return getBlocks(blocks, topBlock?._id);
+    return [topBlock, ...getBlocks(blocks, topBlock?._id)];
   }, [modalState.blockId, blocks]);
 
   return (
