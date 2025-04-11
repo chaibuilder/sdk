@@ -1,5 +1,5 @@
 import { atom, useAtom } from "jotai";
-import { filter, find } from "lodash-es";
+import { filter, find, isEmpty } from "lodash-es";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../../../../../ui";
@@ -45,7 +45,7 @@ export const SaveToLibraryModal = () => {
         <DialogHeader className="pb-2">
           <DialogTitle>{t("Save to Library")}</DialogTitle>
         </DialogHeader>
-        {SaveToLibraryComponent && (
+        {SaveToLibraryComponent && !isEmpty(modalState.blockId) && (
           <SaveToLibraryComponent blockId={modalState.blockId} blocks={nestedBlocks} close={close} />
         )}
       </DialogContent>
