@@ -5,11 +5,12 @@ import { useState } from "react";
 import { lsAiContextAtom, lsBlocksAtom, lsThemeAtom } from "./_demo/atoms-dev.ts";
 import { bluePreset, greenPreset, orangePreset } from "./_demo/THEME_PRESETS.ts";
 import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML } from "./core/main";
-import "./extentions";
+import { extendChaiBuilder } from "./extentions";
 import { SavePageData } from "./types/chaibuilder-editor-props.ts";
 import { loadWebBlocks } from "./web-blocks";
 
 loadWebBlocks();
+extendChaiBuilder();
 
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);

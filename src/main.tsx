@@ -3,7 +3,6 @@ import "jotai-devtools/styles.css";
 import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import ChaiBuilderCustom from "./EditorCustom.tsx";
 import { MicrosoftClarity } from "./_demo/MicrosoftClarity.tsx";
 import "./index.css";
 
@@ -21,10 +20,6 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <ChaiBuilderDefault />,
-  },
-  {
-    path: "/custom",
-    element: <ChaiBuilderCustom />,
   },
   {
     path: "/preview",
