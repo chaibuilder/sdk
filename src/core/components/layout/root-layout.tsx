@@ -286,7 +286,7 @@ const RootLayout: ComponentType = () => {
                               onClick={() => setRightPanel("block")}
                               variant="ghost"
                               size="icon"
-                              className="text-xs text-gray-400">
+                              className="text-xs">
                               <X className="h-4 w-4 rtl:ml-2" />
                             </Button>
                           </div>
@@ -358,11 +358,7 @@ const RootLayout: ComponentType = () => {
                         <span className="rtl:ml-2 rtl:inline-block">{get(activePanelItem, "icon", null)}</span>
                         <span>{t(get(activePanelItem, "label", ""))}</span>
                       </div>
-                      <Button
-                        onClick={() => handleNonStandardPanelClose()}
-                        variant="ghost"
-                        size="icon"
-                        className="text-gray-400">
+                      <Button onClick={() => handleNonStandardPanelClose()} variant="ghost" size="icon" className="">
                         <X className="h-5 w-5" />
                       </Button>
                     </div>

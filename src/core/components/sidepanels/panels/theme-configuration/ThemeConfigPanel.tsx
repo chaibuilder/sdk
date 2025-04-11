@@ -110,7 +110,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
               value={themeColor as string}
               onChange={(newValue: string) => handleColorChange(key, newValue)}
             />
-            <Label className="text-xs font-normal leading-tight text-slate-600">
+            <Label className="text-xs font-normal leading-tight">
               {key
                 .split(/(?=[A-Z])/)
                 .join(" ")
@@ -152,7 +152,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
         {themePresets.length > 0 && (
           <div className="flex gap-2 py-2">
             <div className="w-full">
-              <Label className="text-sm text-slate-800">{t("Presets")}</Label>
+              <Label className="text-sm">{t("Presets")}</Label>
               <select
                 value={selectedPreset}
                 onChange={(e) => handlePresetChange(e.target.value)}
@@ -195,7 +195,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
           {/* Border Radius Section */}
           {chaiThemeOptions?.borderRadius && (
             <div className="space-y-0.5 py-3">
-              <Label className="text-sm text-slate-800">{t("Border Radius")}</Label>
+              <Label className="text-sm">{t("Border Radius")}</Label>
               <div className="flex items-center gap-4 py-2">
                 <BorderRadiusInput value={themeValues.borderRadius} onChange={handleBorderRadiusChange} />
                 <span className="w-12 text-sm">{themeValues.borderRadius}</span>
@@ -206,7 +206,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
           {/* Colors Section with Mode Switch */}
           {chaiThemeOptions?.colors && (
             <div className="mt-4 space-y-0.5">
-              <Label className="text-sm text-slate-800">{t("Colors")}</Label>
+              <Label className="text-sm">{t("Colors")}</Label>
               <div className="w-full space-y-4 pt-2" key={isDarkMode ? "dark" : "light"}>
                 {chaiThemeOptions.colors.map((group) => renderColorGroup(group))}
               </div>
