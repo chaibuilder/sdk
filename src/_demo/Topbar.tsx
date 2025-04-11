@@ -20,7 +20,7 @@ const Logo = () => {
 
 const DemoAlert = () => {
   return (
-    <Alert variant="default" className="px-4 py-2">
+    <Alert variant="default" className="border-b border-border px-4 py-2">
       <AlertDescription className="flex items-center gap-2">
         <Info className="h-4 w-4" />
         <span className="font-bold">Demo mode</span> - Changes are saved in your browser local storage. AI actions are

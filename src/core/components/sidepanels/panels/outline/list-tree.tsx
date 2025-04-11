@@ -193,7 +193,7 @@ const ListTree = () => {
     return (
       <div>
         <div className="mt-10 flex h-full w-full items-center justify-center p-8 text-center">
-          <p className="mb-1.5 text-sm text-gray-400">
+          <p className="mb-1.5 text-sm">
             {t("This page is empty")}
             <br />
             <br />

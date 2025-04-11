@@ -234,7 +234,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
         <div
           className={cn(
             "group flex w-full cursor-pointer items-center justify-between space-x-px !rounded p-1 text-foreground/80 outline-none",
-            isSelected ? "bg-primary text-white" : "hover:bg-primary/10 dark:hover:bg-gray-800",
+            isSelected ? "bg-primary text-foreground" : "hover:bg-primary/10 dark:hover:bg-gray-800",
             willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
             node?.id === addSelectParentHighlight ? "bg-primary/10" : "",
             isDragging && "opacity-20",

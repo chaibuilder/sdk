@@ -101,7 +101,7 @@ const BlockCard = ({
           draggable={dnd ? "true" : "false"}
           onDragStart={handleDragStart}
           className={clsx(
-            "relative mt-2 cursor-pointer overflow-hidden rounded-md border border-border bg-white duration-200 hover:border-blue-500 hover:shadow-xl",
+            "relative mt-2 cursor-pointer overflow-hidden rounded-md border border-border duration-200 hover:border-blue-500 hover:shadow-xl",
           )}>
           {isAdding && (
             <div className="absolute flex h-full w-full items-center justify-center bg-black/70">

@@ -242,7 +242,7 @@ const RootLayout: ComponentType = () => {
               {activePanel !== null && get(activePanelItem, "view", "standard") === "standard" && (
                 <div className="no-scrollbar flex h-full flex-col overflow-hidden px-3 py-2">
                   <div
-                    className={`absolute top-2 flex h-10 items-center space-x-1 bg-white py-2 text-base font-bold ${get(activePanelItem, "isInternal", false) ? "" : "w-64"}`}>
+                    className={`absolute top-2 flex h-10 items-center space-x-1 py-2 text-base font-bold ${get(activePanelItem, "isInternal", false) ? "" : "w-64"}`}>
                     <span>{t(get(activePanelItem, "label", ""))}</span>
                   </div>
                   <div className="no-scrollbar h-full max-h-full overflow-y-auto pt-10">
