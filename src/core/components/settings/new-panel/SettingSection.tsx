@@ -42,7 +42,7 @@ const NestedOptions = ({ heading, items }: any) => {
           {isAnyPropertySet ? (
             <span
               className={`ml-1 mr-2 inline-block h-[8px] w-[8px] rounded-full ${
-                isAnyPropertySet ? "bg-blue-500" : "bg-gray-300"
+                isAnyPropertySet ? "bg-primary" : "bg-gray-300"
               }`}
             />
           ) : null}

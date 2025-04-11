@@ -272,7 +272,7 @@ registerChaiBlock(SliderNav, {
     properties: {
       styles: StylesProp("w-full absolute left-0 bottom-0 flex items-center justify-center gap-x-2 p-2"),
       dotStyles: StylesProp("w-4 h-4 border border-gray-500 rounded-full cursor-pointer"),
-      activeDotStyles: StylesProp("w-4 h-4 rounded-full bg-blue-500"),
+      activeDotStyles: StylesProp("w-4 h-4 rounded-full bg-primary"),
       slider: closestBlockProp("Slider", "slider"),
     },
   }),

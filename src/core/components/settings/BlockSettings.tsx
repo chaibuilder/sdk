@@ -126,7 +126,7 @@ export default function BlockSettings() {
               <div className="flex items-center gap-x-2">
                 <div
                   className={`h-[8px] w-[8px] rounded-full ${
-                    !isEmpty(get(selectedBlock, "_bindings", {})) ? "bg-blue-500" : "bg-gray-300"
+                    !isEmpty(get(selectedBlock, "_bindings", {})) ? "bg-primary" : "bg-gray-300"
                   }`}
                 />
                 Data Binding
@@ -144,7 +144,7 @@ export default function BlockSettings() {
           <AccordionItem value="STATIC">
             <AccordionTrigger className="py-2">
               <div className="flex items-center gap-x-2">
-                <div className={`h-[8px] w-[8px] rounded-full bg-blue-500`} />
+                <div className={`h-[8px] w-[8px] rounded-full bg-primary`} />
                 Static Content
               </div>
             </AccordionTrigger>

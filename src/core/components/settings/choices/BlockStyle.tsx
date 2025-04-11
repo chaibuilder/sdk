@@ -223,7 +223,7 @@ export const BlockStyle = (props: EditOptionProps) => {
                   <TooltipTrigger asChild>
                     <button
                       type="button"
-                      className="invisible ml-3 mt-1 rounded-full bg-blue-500 text-white group-hover:visible">
+                      className="invisible ml-3 mt-1 rounded-full bg-primary text-white group-hover:visible">
                       <InfoCircledIcon />
                     </button>
                   </TooltipTrigger>

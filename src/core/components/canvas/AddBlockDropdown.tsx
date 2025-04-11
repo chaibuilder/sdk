@@ -50,7 +50,7 @@ const AddBlockDropdown = ({ block, children }: { block: ChaiBlock; children: any
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>{children}</DropdownMenuTrigger>
-      <DropdownMenuContent className="border border-blue-500 bg-blue-500 text-white shadow-2xl">
+      <DropdownMenuContent className="border border-blue-500 bg-primary text-white shadow-2xl">
         {canAddChild && (
           <DropdownMenuItem className="cursor-pointer text-xs" onClick={() => addBlock("CHILD")}>
             {t("Add inside")}

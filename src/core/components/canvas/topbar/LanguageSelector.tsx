@@ -49,7 +49,7 @@ export const LanguageSelector: React.FC = () => {
           <DropdownMenuItem
             className={mergeClasses(
               "flex cursor-pointer items-center text-sm",
-              option.key === currentLang && "!bg-blue-500 text-white hover:!text-white",
+              option.key === currentLang && "!bg-primary text-white hover:!text-white",
             )}
             onClick={() => setSelectedLang(option.key)}>
             <div>{option.value}</div>

@@ -1,11 +1,11 @@
+import { BoxIcon } from "@radix-ui/react-icons";
 import { get, map, startCase, toLower } from "lodash-es";
 import React, { useContext, useMemo } from "react";
-import { BoxIcon } from "@radix-ui/react-icons";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../ui";
+import { useTailwindClassList } from "../../../constants/CLASSES_LIST";
 import { EDITOR_ICONS } from "../../../constants/ICONS";
 import { useCurrentClassByProperty } from "./BlockStyle";
-import { useTailwindClassList } from "../../../constants/CLASSES_LIST";
 import { StyleContext } from "./StyleContext";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../ui";
 
 export const IconChoices = ({ property, onChange }: any) => {
   const { getClasses } = useTailwindClassList();
@@ -24,7 +24,7 @@ export const IconChoices = ({ property, onChange }: any) => {
               disabled={!canChange}
               onClick={() => onChange(cls, property)}
               className={`cursor-pointer rounded border border-border p-1 disabled:cursor-not-allowed ${
-                pureClsName === cls ? "bg-blue-500 text-white" : "disabled:bg-gray-600 disabled:text-gray-400"
+                pureClsName === cls ? "bg-primary text-white" : "disabled:bg-gray-600 disabled:text-gray-400"
               }`}>
               {React.createElement(get(EDITOR_ICONS, cls, BoxIcon))}
             </button>

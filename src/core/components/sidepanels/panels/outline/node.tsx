@@ -174,8 +174,8 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
           <div
             role="button"
             onClick={() => addBlockOnPosition(-1)}
-            className="h-1 rounded bg-purple-500 opacity-0 duration-200 group-hover:opacity-100">
-            <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 transform items-center gap-x-1 rounded-full bg-purple-500 px-3 py-1 text-[9px] leading-tight text-white hover:bg-purple-500">
+            className="h-1 rounded bg-primary opacity-0 duration-200 group-hover:opacity-100">
+            <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 transform items-center gap-x-1 rounded-full bg-primary px-3 py-1 text-[9px] leading-tight text-white hover:bg-primary">
               <PlusIcon className="h-2 w-2 stroke-[3]" /> {t("Add block")}
             </div>
           </div>
@@ -224,8 +224,8 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
                 }}
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
-                className="absolute -top-0.5 h-1 w-[90%] rounded bg-purple-500 opacity-0 delay-200 duration-200 group-hover:opacity-100">
-                <div className="absolute left-1/2 top-1/2 flex h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full bg-purple-500 p-1 outline outline-2 outline-white hover:bg-purple-500">
+                className="absolute -top-0.5 h-1 w-[90%] rounded bg-primary opacity-0 delay-200 duration-200 group-hover:opacity-100">
+                <div className="absolute left-1/2 top-1/2 flex h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full bg-primary p-1 outline outline-2 outline-white hover:bg-primary">
                   <PlusIcon className="h-3 w-3 stroke-[4] text-white" />
                 </div>
               </div>
@@ -234,11 +234,12 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
         <div
           className={cn(
             "group flex w-full cursor-pointer items-center justify-between space-x-px !rounded p-1 text-foreground/80 outline-none",
-            isSelected ? "bg-blue-500 text-white" : "hover:bg-slate-200 dark:hover:bg-gray-800",
+            isSelected ? "bg-primary text-white" : "hover:bg-primary/10 dark:hover:bg-gray-800",
             willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
-            node?.id === addSelectParentHighlight ? "bg-purple-100" : "",
+            node?.id === addSelectParentHighlight ? "bg-primary/10" : "",
             isDragging && "opacity-20",
             hiddenBlocks.includes(id) ? "opacity-50" : "",
+            isLibBlock && isSelected && "bg-primary/20",
           )}>
           <div className="flex items-center">
             <div
@@ -251,7 +252,12 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
                 </button>
               )}
             </div>
-            <div className={cn("leading-1 flex items-center", isLibBlock && "text-orange-400")}>
+            <div
+              className={cn(
+                "leading-1 flex items-center",
+                isLibBlock && "text-purple-600",
+                isLibBlock && isSelected && "text-purple-800",
+              )}>
               <TypeIcon type={data?._type} />
               {isEditing ? (
                 <Input node={node} />

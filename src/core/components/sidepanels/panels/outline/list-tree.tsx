@@ -256,8 +256,8 @@ const ListTree = () => {
           <div className="group relative z-[9999] ml-5 w-full cursor-pointer">
             <div
               onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, { position: 0 })}
-              className="h-1 w-[90%] rounded bg-purple-500 opacity-0 duration-200 group-hover:opacity-100">
-              <div className="absolute left-[45%] top-1/2 flex h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full bg-purple-500 p-1 outline outline-2 outline-white hover:bg-purple-500">
+              className="h-1 w-[90%] rounded bg-primary opacity-0 duration-200 group-hover:opacity-100">
+              <div className="absolute left-[45%] top-1/2 flex h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full bg-primary p-1 outline outline-2 outline-white hover:bg-primary">
                 <PlusIcon className="h-3 w-3 stroke-[3] text-white" />
               </div>
             </div>
