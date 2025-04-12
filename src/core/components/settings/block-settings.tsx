@@ -68,8 +68,6 @@ export default function BlockSettings() {
     }
   };
 
-  const bindingProps = keys(get(formData, "_bindings", {}));
-
   const { schema, uiSchema } = useMemo(() => {
     const type = selectedBlock?._type;
     if (!type) {

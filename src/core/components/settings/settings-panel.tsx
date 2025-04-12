@@ -11,6 +11,7 @@ import { FallbackError } from "../FallbackError.tsx";
 import BlockSettings from "./block-settings.tsx";
 import BlockStyling from "./BlockStyling.tsx";
 import { BlockAttributesEditor } from "./new-panel/BlockAttributesEditor.tsx";
+
 function BlockAttributesToggle() {
   const { t } = useTranslation();
   const [showAttributes, setShowAttributes] = useState(true);
