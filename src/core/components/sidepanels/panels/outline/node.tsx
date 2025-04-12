@@ -1,10 +1,10 @@
 import { PlusIcon } from "@radix-ui/react-icons";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@radix-ui/react-tooltip";
 import { atom, useAtom } from "jotai";
 import { get, has } from "lodash-es";
 import { ChevronRight, EyeOffIcon, MoreVertical } from "lucide-react";
 import { memo, useEffect, useMemo } from "react";
 import { NodeRendererProps } from "react-arborist";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../../ui";
 import { canvasIframeAtom } from "../../../../atoms/ui";
 import { PERMISSIONS } from "../../../../constants/PERMISSIONS";
 import { ROOT_TEMP_KEY } from "../../../../constants/STRINGS";
@@ -262,7 +262,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
                   asChild>
                   <PlusIcon className="h-3 w-3" />
                 </TooltipTrigger>
-                <TooltipContent className="isolate z-[9999]" side="left">
+                <TooltipContent className="isolate z-[9999]" side="bottom">
                   {t("Add block")}
                 </TooltipContent>
               </Tooltip>
@@ -280,7 +280,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
                 asChild>
                 <EyeOffIcon size={"15"} />
               </TooltipTrigger>
-              <TooltipContent className="isolate z-[9999]" side="left">
+              <TooltipContent className="isolate z-[9999]" side="bottom">
                 {t("Hide block")}
               </TooltipContent>
             </Tooltip>
