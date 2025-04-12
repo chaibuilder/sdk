@@ -1,10 +1,10 @@
 import ChaiBuilderCanvas from "../components/canvas/CanvasArea.tsx";
 
-import BlockPropsEditor from "../components/settings/BlockSettings.tsx";
 import BlockStyleEditor from "../components/settings/BlockStyling.tsx";
 import ImportHTML from "../components/sidepanels/panels/add-blocks/ImportHTML.tsx";
 import UILibrariesPanel from "../components/sidepanels/panels/add-blocks/UILibrariesPanel.tsx";
 import i18n from "../locales/load";
+import BlockPropsEditor from "./settings/block-settings.tsx";
 import AddBlocksPanel from "./sidepanels/panels/add-blocks/add-blocks.tsx";
 import Outline from "./sidepanels/panels/outline/list-tree.tsx";
 import ThemeOptions from "./sidepanels/panels/theme-configuration/ThemeConfigPanel.tsx";

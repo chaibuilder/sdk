@@ -5,11 +5,11 @@ import React, { useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../ui/index.ts";
-import { useBuilderProp, useSelectedBlock, useSelectedStylingBlocks } from "../../hooks";
+import { useBuilderProp, useSelectedBlock, useSelectedStylingBlocks } from "../../hooks/index.ts";
 import { PERMISSIONS, usePermissions } from "../../main/index.ts";
 import { FallbackError } from "../FallbackError.tsx";
-import BlockSettings from "./BlockSettings";
-import BlockStyling from "./BlockStyling";
+import BlockSettings from "./block-settings.tsx";
+import BlockStyling from "./BlockStyling.tsx";
 import { BlockAttributesEditor } from "./new-panel/BlockAttributesEditor.tsx";
 function BlockAttributesToggle() {
   const { t } = useTranslation();

@@ -9,9 +9,8 @@ import {
   useUpdateBlocksProps,
   useUpdateBlocksPropsRealtime,
   useWrapperBlock,
-} from "../../hooks";
+} from "../../hooks/index.ts";
 import { JSONForm } from "./JSONForm.tsx";
-import { GlobalBlockSettings } from "./PartialBlockSettings.tsx";
 
 const formDataWithSelectedLang = (formData, selectedLang: string, coreBlock) => {
   const updatedFormData = cloneDeep(formData);
@@ -129,7 +128,6 @@ export default function BlockSettings() {
           uiSchema={uiSchema}
         />
       ) : null}
-      {selectedBlock?._type === "GlobalBlock" ? <GlobalBlockSettings /> : null}
     </div>
   );
 }

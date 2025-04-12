@@ -43,7 +43,7 @@ import CanvasArea from "../canvas/CanvasArea.tsx";
 import { CanvasTopBar } from "../canvas/topbar/canvas-top-bar.tsx";
 import { Outline } from "../index.ts";
 import { NoopComponent } from "../noop-component.tsx";
-import SettingsPanel from "../settings/SettingsPanel.tsx";
+import SettingsPanel from "../settings/settings-panel.tsx";
 import ThemeConfigPanel from "../sidepanels/panels/theme-configuration/ThemeConfigPanel.tsx";
 import { AddBlocksDialog } from "./AddBlocksDialog.tsx";
 
