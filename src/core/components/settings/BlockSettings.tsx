@@ -77,9 +77,13 @@ export default function BlockSettings() {
   const { schema, uiSchema } = useMemo(() => {
     const type = selectedBlock?._type;
     if (!type) {
-      return;
+      return { schema: {}, uiSchema: {} };
     }
-    return getBlockFormSchemas(type);
+    try {
+      return getBlockFormSchemas(type);
+    } catch (error) {
+      return { schema: {}, uiSchema: {} };
+    }
   }, [selectedBlock]);
 
   const { wrapperSchema, wrapperUiSchema } = useMemo(() => {
