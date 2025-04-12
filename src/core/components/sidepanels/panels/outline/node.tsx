@@ -2,7 +2,7 @@ import { PlusIcon } from "@radix-ui/react-icons";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@radix-ui/react-tooltip";
 import { atom, useAtom } from "jotai";
 import { get, has } from "lodash-es";
-import { ChevronRight, EyeOffIcon, FileJson, MoreVertical, Zap } from "lucide-react";
+import { ChevronRight, EyeOffIcon, MoreVertical } from "lucide-react";
 import { memo, useEffect, useMemo } from "react";
 import { NodeRendererProps } from "react-arborist";
 import { canvasIframeAtom } from "../../../../atoms/ui";
@@ -114,27 +114,6 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
 
     return () => clearTimeout(timedToggle);
   }, [willReceiveDrop, node, isDragging]);
-
-  const interactives = useMemo(() => {
-    const keys = Object.keys(data);
-    const alpineAttrs = [];
-    for (let i = 0; i < keys.length; i++) {
-      if (keys[i].endsWith("_attrs")) {
-        const attrs = data[keys[i]];
-        const attrsKeys = Object.keys(attrs).join("|");
-        if (attrsKeys.match(/x-data/)) {
-          alpineAttrs.push("data");
-        }
-        if (attrsKeys.match(/x-on/)) {
-          alpineAttrs.push("event");
-        }
-        if (attrsKeys.match(/x-show|x-if/)) {
-          alpineAttrs.push("show");
-        }
-      }
-    }
-    return alpineAttrs;
-  }, [data]);
 
   const setDropAttribute = (id: string, value: string) => {
     const innerDoc = iframe.contentDocument || iframe.contentWindow.document;
@@ -255,8 +234,8 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
             <div
               className={cn(
                 "leading-1 flex items-center",
-                isLibBlock && "text-purple-600",
-                isLibBlock && isSelected && "text-purple-800",
+                isLibBlock && "text-primary/60",
+                isLibBlock && isSelected && "text-primary/80",
               )}>
               <TypeIcon type={data?._type} />
               {isEditing ? (
@@ -270,9 +249,6 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
                     node.deselect();
                   }}>
                   <span>{data?._name || data?._type.split("/").pop()}</span>
-                  {interactives.includes("data") && <FileJson className="h-3 w-3 text-orange-600" />}
-                  {interactives.includes("event") && <Zap className="h-3 w-3 text-yellow-500" />}
-                  {interactives.includes("show") && <EyeOffIcon className="h-3 w-3 text-orange-600" />}
                 </div>
               )}
             </div>
