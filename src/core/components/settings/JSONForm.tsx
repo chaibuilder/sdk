@@ -7,7 +7,15 @@ import { Plus } from "lucide-react";
 import { memo } from "react";
 import { useBlockSettingComponents } from "../../extensions/blocks-settings.tsx";
 import { useLanguages } from "../../hooks";
-import { IconPickerField, ImagePickerField, LinkField, RowColField, RTEField, SliderField } from "../../rjsf-widgets";
+import {
+  IconPickerField,
+  ImagePickerField,
+  LinkField,
+  RowColField,
+  RTEField,
+  SliderField,
+  SourcesField,
+} from "../../rjsf-widgets";
 import { BindingWidget } from "../../rjsf-widgets/binding.tsx";
 import { CodeEditor } from "../../rjsf-widgets/Code.tsx";
 import JSONFormFieldTemplate from "./JSONFormFieldTemplate.tsx";
@@ -57,6 +65,7 @@ export const JSONForm = memo(({ blockId, schema, uiSchema, formData, onChange }:
       fields={{
         link: LinkField,
         slider: SliderField,
+        sources: SourcesField,
         ...fields,
       }}
       templates={{
