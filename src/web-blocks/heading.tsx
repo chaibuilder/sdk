@@ -1,6 +1,6 @@
-import * as React from "react";
-import { HeadingIcon } from "@radix-ui/react-icons";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
+import { HeadingIcon } from "@radix-ui/react-icons";
+import * as React from "react";
 
 export type HeadingProps = {
   tag: string;
@@ -22,7 +22,8 @@ const HeadingBlock = (props: ChaiBlockComponentProps<HeadingProps>) => {
 
 const Config = {
   type: "Heading",
-  label: "web_blocks.heading",
+  description: "A heading component similar to h1, h2, h3, h4, h5, h6 elements in HTML",
+  label: "Heading",
   category: "core",
   icon: HeadingIcon,
   group: "typography",

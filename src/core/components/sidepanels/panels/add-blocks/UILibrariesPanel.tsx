@@ -101,7 +101,7 @@ const BlockCard = ({
           draggable={dnd ? "true" : "false"}
           onDragStart={handleDragStart}
           className={clsx(
-            "relative mt-2 cursor-pointer overflow-hidden rounded-md border border-border bg-white duration-200 hover:border-blue-500 hover:shadow-xl",
+            "relative mt-2 cursor-pointer overflow-hidden rounded-md border border-border duration-200 hover:border-blue-500 hover:shadow-xl",
           )}>
           {isAdding && (
             <div className="absolute flex h-full w-full items-center justify-center bg-black/70">
@@ -182,10 +182,11 @@ const UILibrarySection = ({ parentId, position }: { parentId?: string; position?
                     onMouseEnter={() => handleMouseEnter(group)}
                     onMouseLeave={() => clearTimeout(timeoutRef.current)}
                     key={group}
+                    role="button"
                     onClick={() => setGroup(group)}
                     className={cn(
                       "flex w-full cursor-pointer items-center justify-between rounded-md p-2 text-sm text-foreground transition-all ease-in-out hover:bg-gray-200 dark:hover:bg-gray-800",
-                      group === selectedGroup ? "bg-blue-500 text-white hover:bg-blue-600" : "",
+                      group === selectedGroup ? "bg-primary text-primary-foreground hover:bg-primary/80" : "",
                     )}>
                     <span>{capitalize(t(group.toLowerCase()))}</span>
                     <CaretRightIcon className="ml-2 h-5 w-5" />

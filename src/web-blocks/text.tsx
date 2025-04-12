@@ -17,6 +17,7 @@ const RawTextBlock = (props: ChaiBlockComponentProps<TextBlockProps>) => {
 
 const Config = {
   type: "Text",
+  description: "A text component with no styling",
   label: "Text",
   hidden: true,
   category: "core",

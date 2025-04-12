@@ -1,25 +1,16 @@
 import axios from "axios";
 import { useAtom } from "jotai";
-import { isArray, map, pick, values } from "lodash-es";
+import { isArray, map, pick } from "lodash-es";
 import { useState } from "react";
 import { lsAiContextAtom, lsBlocksAtom, lsThemeAtom } from "./_demo/atoms-dev.ts";
-import GalleryWidget from "./_demo/CustomWidget.tsx";
 import { bluePreset, greenPreset, orangePreset } from "./_demo/THEME_PRESETS.ts";
-import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML, PERMISSIONS } from "./core/main";
-import "./extentions";
+import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML } from "./core/main";
+import { extendChaiBuilder } from "./extentions";
 import { SavePageData } from "./types/chaibuilder-editor-props.ts";
-import { DropdownMenuItem } from "./ui/shadcn/components/ui/dropdown-menu.tsx";
 import { loadWebBlocks } from "./web-blocks";
 
 loadWebBlocks();
-
-const SaveToLibrary = ({ block }: { block: ChaiBlock }) => {
-  return (
-    <DropdownMenuItem className="cursor-pointer text-xs" onClick={() => console.log(block)}>
-      Save to library
-    </DropdownMenuItem>
-  );
-};
+extendChaiBuilder();
 
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
@@ -33,9 +24,8 @@ function ChaiBuilderDefault() {
 
   return (
     <ChaiBuilderEditor
-      permissions={[...values(PERMISSIONS)]}
+      permissions={null}
       // permissions={[]}
-      blockMoreOptions={[SaveToLibrary]}
       pageExternalData={{
         vehicle: {
           title: "Hyundai i20 Active - 1.0 MPI - 2015",
@@ -51,12 +41,11 @@ function ChaiBuilderDefault() {
           description: "This is a description of my page",
         },
       }}
-      rjsfWidgets={{ gallery: GalleryWidget }}
       fallbackLang="en"
       languages={["fr"]}
       themePresets={[{ orange: orangePreset }, { green: greenPreset }, { blue: bluePreset }]}
       theme={theme}
-      autoSaveSupport={true}
+      autoSaveSupport={false}
       autoSaveInterval={15}
       blocks={blocks}
       onSave={async ({ blocks, theme }: SavePageData) => {

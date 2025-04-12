@@ -1,7 +1,7 @@
+import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { ImageIcon } from "@radix-ui/react-icons";
 import { isEmpty } from "lodash-es";
 import EmptySlot from "./empty-slot.tsx";
-import { ChaiBlockComponentProps, registerChaiBlockSchema, StylesProp, ChaiStyles } from "@chaibuilder/runtime";
 
 export type ImageBlockProps = {
   styles: ChaiStyles;
@@ -36,6 +36,7 @@ const ImageBlock = (props: ChaiBlockComponentProps<ImageBlockProps>) => {
 
 const Config = {
   type: "Image",
+  description: "A image component",
   label: "Image",
   category: "core",
   icon: ImageIcon,

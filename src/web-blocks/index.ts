@@ -14,13 +14,13 @@ import { Component as DividerBlock, Config as DividerBlockConfig, DividerBlockPr
 import { Component as GlobalBlock, Config as GlobalBlockConfig, GlobalBlockProps } from "./global-block";
 import { Component as IconBlock, Config as IconBlockConfig, IconBlockProps } from "./icon";
 import { Component as ImageBlock, Config as ImageBlockConfig, ImageBlockProps } from "./image";
-import { Component as LightBoxLinkBlock, Config as LightBoxLinkBlockConfig, LightBoxLinkProps } from "./lightbox-link";
 import { Component as LinkBlock, Config as LinkBlockConfig, LinkBlockProps } from "./link";
 import { Component as ListBlock, Config as ListBlockConfig, ListBlockProps } from "./list";
 import { Component as ListItemBlock, Config as ListItemBlockConfig, ListItemBlockProps } from "./listitem";
 import { Config as LayersConfig, Component as TextBlock, TextBlockProps } from "./text";
 import { Component as VideoBlock, Config as VideoBlockConfig, VideoBlockProps } from "./video";
 
+import { Component as CopyButton, Config as CopyButtonConfig, CopyButtonProps } from "./copy-button";
 import { Component as CheckboxBlock, Config as CheckboxBlockConfig, CheckboxProps } from "./form/checkbox";
 import { Component as FormBlock, Config as FormBlockConfig, FormProps } from "./form/form";
 import { Component as FormButtonBlock, Config as FormButtonBlockConfig, FormButtonProps } from "./form/form-button";
@@ -47,7 +47,6 @@ const loadWebBlocks = () => {
   registerChaiBlock<SpanProps>(SpanBlock, SpanBlockConfig);
   registerChaiBlock<RichTextProps>(RichTextBlock, RichTextConfig);
   registerChaiBlock<LinkBlockProps>(LinkBlock, LinkBlockConfig);
-  registerChaiBlock<LightBoxLinkProps>(LightBoxLinkBlock, LightBoxLinkBlockConfig);
   registerChaiBlock<ListBlockProps>(ListBlock, ListBlockConfig);
   registerChaiBlock<ListItemBlockProps>(ListItemBlock, ListItemBlockConfig);
   registerChaiBlock<IconBlockProps>(IconBlock, IconBlockConfig);
@@ -76,6 +75,7 @@ const loadWebBlocks = () => {
   registerChaiBlock<PartialBlockProps>(PartialBlock, PartialBlockConfig);
   registerChaiBlock<RowProps>(Row, RowConfig);
   registerChaiBlock<ColumnProps>(Column, ColumnConfig);
+  registerChaiBlock<CopyButtonProps>(CopyButton, CopyButtonConfig);
 };
 
 export { loadWebBlocks };

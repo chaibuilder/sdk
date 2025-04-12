@@ -35,6 +35,7 @@ const DarkModeButton = (_props: ChaiBlockComponentProps<DarkModeBlockProps>) => 
 
 registerChaiBlock(DarkModeButton, {
   type: "DarkModeButton",
+  description: "A dark mode button component",
   label: "Dark Mode Button",
   category: "core",
   icon: MoonIcon,
@@ -59,6 +60,7 @@ const LightModeButton = (_props: ChaiBlockComponentProps<DarkModeBlockProps>) =>
 
 registerChaiBlock(LightModeButton, {
   type: "LightModeButton",
+  description: "A light mode button component",
   label: "Light Mode Button",
   category: "core",
   icon: SunIcon,
@@ -78,7 +80,8 @@ registerChaiBlock(LightModeButton, {
 
 const Config = {
   type: "DarkModeSwitcher",
-  label: "web_blocks.dark_mode",
+  description: "A dark mode switcher component",
+  label: "Dark Mode Switcher",
   category: "core",
   icon: MoonIcon,
   group: "advanced",

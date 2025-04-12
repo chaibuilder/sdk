@@ -30,7 +30,7 @@ const SourcesField = ({ formData, onChange }: FieldProps) => {
   return (
     <div>
       <div className="flex items-center justify-between pb-2">
-        <label>Responsive</label>
+        <label>Responsive Video (optional)</label>
         <button
           type="button"
           onClick={addNewSource}
@@ -39,43 +39,49 @@ const SourcesField = ({ formData, onChange }: FieldProps) => {
         </button>
       </div>
       <div className="space-y-2">
-        {map(srcsets, (source, index) => {
-          return (
-            <div className="group relative space-y-1.5 rounded border border-gray-200 px-2 pb-1.5">
-              <button
-                type="button"
-                onClick={() => removeSource(index)}
-                className="absolute -right-px -top-0 -translate-y-1/2 rounded-full bg-red-100 p-1 opacity-0 hover:bg-red-200 group-hover:opacity-100">
-                <X size={10} className="text-red-500" />
-              </button>
-              <div className="flex items-center gap-x-2 rounded border">
-                <label className="flex !h-6 h-full w-1/4 items-center justify-center bg-gray-200 px-2 !text-[10px] !font-medium">
-                  Width
-                </label>
-                <input
-                  name="width"
-                  placeholder="Enter width (in px)"
-                  type="number"
-                  value={get(source, "width")}
-                  onChange={(e) => onChangeSources(e, index)}
-                  className="!placeholder:text-gray-100 !mt-0 !rounded-none !border-0 !p-0 !text-xs"
-                />
+        {srcsets.length === 0 ? (
+          <div className="rounded border border-dashed border-gray-200 p-2 text-xs italic text-gray-500">
+            Add additional sources to create responsive videos
+          </div>
+        ) : (
+          map(srcsets, (source, index) => {
+            return (
+              <div key={index} className="group relative space-y-1.5 rounded border border-gray-200 px-2 pb-1.5">
+                <button
+                  type="button"
+                  onClick={() => removeSource(index)}
+                  className="absolute -right-px -top-0 -translate-y-1/2 rounded-full bg-red-100 p-1 opacity-0 hover:bg-red-200 group-hover:opacity-100">
+                  <X size={10} className="text-red-500" />
+                </button>
+                <div className="flex items-center gap-x-2 rounded border">
+                  <label className="flex !h-6 h-full w-1/4 items-center justify-center bg-gray-200 px-2 !text-[10px] !font-medium">
+                    Width
+                  </label>
+                  <input
+                    name="width"
+                    placeholder="Enter width (in px)"
+                    type="number"
+                    value={get(source, "width")}
+                    onChange={(e) => onChangeSources(e, index)}
+                    className="!placeholder:text-gray-100 !mt-0 !rounded-none !border-0 !p-0 !text-xs"
+                  />
+                </div>
+                <div className="flex items-center gap-x-2 rounded border">
+                  <label className="flex !h-6 h-full w-1/4 items-center justify-center bg-gray-200 px-2 !text-[10px] !font-medium">
+                    URL
+                  </label>
+                  <input
+                    name="url"
+                    placeholder="Enter url"
+                    className="!mt-0 !rounded-none !border-0 !p-0 !text-xs !shadow-none"
+                    value={get(source, "url", "")}
+                    onChange={(e) => onChangeSources(e, index)}
+                  />
+                </div>
               </div>
-              <div className="flex items-center gap-x-2 rounded border">
-                <label className="flex !h-6 h-full w-1/4 items-center justify-center bg-gray-200 px-2 !text-[10px] !font-medium">
-                  URL
-                </label>
-                <input
-                  name="url"
-                  placeholder="Enter url"
-                  className="!mt-0 !rounded-none !border-0 !p-0 !text-xs !shadow-none"
-                  value={get(source, "url", "")}
-                  onChange={(e) => onChangeSources(e, index)}
-                />
-              </div>
-            </div>
-          );
-        })}
+            );
+          })
+        )}
       </div>
     </div>
   );

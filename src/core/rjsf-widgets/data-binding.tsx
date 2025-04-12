@@ -1,3 +1,4 @@
+import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import {
   filter,
   find,
@@ -19,6 +20,9 @@ import {
 } from "lodash-es";
 import { Check, EditIcon, TrashIcon } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import { allExpanded, defaultStyles, JsonView } from "react-json-view-lite";
+import "react-json-view-lite/dist/index.css";
 import {
   Button,
   Command,
@@ -41,13 +45,9 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "../../ui";
-import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
-import { ErrorBoundary } from "react-error-boundary";
-import { useBuilderProp, useSelectedBlock } from "../hooks";
 import { useChaiExternalData } from "../components/canvas/static/useChaiExternalData.ts";
-import { allExpanded, defaultStyles, JsonView } from "react-json-view-lite";
-import "react-json-view-lite/dist/index.css";
 import { FallbackError } from "../components/FallbackError.tsx";
+import { useBuilderProp, useSelectedBlock } from "../hooks";
 
 // * Object to Path and Data Type
 function getPathAndTypes(obj) {
@@ -165,13 +165,13 @@ const DataProvidersSuggester = ({
               className={` ${
                 !isEmpty(value)
                   ? "min-w-[350px] items-center justify-between"
-                  : "w-44 justify-center bg-blue-500 text-gray-100 hover:bg-blue-400 hover:text-white"
+                  : "w-44 justify-center bg-primary text-gray-100 hover:bg-blue-400 hover:text-white"
               }`}>
               {value ? (
                 <>
                   <span className={`pr-8 text-sm`}>
                     {isProp && (
-                      <span className="mr-2 rounded-full bg-purple-100 px-2 py-0.5 text-[10px] text-purple-500">
+                      <span className="mr-2 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] text-purple-500">
                         {startCase(dataType)}
                       </span>
                     )}
@@ -207,7 +207,7 @@ const DataProvidersSuggester = ({
                       </div>
                       {isProp ? (
                         <div>
-                          <span className="rounded-full bg-purple-100 px-2 py-0.5 text-[10px] text-purple-500">
+                          <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] text-purple-500">
                             {startCase(get(suggestedPathDataType, status, ""))}
                           </span>
                         </div>

@@ -1,13 +1,12 @@
 import { CardStackIcon, CardStackPlusIcon, CopyIcon, ScissorsIcon, TrashIcon } from "@radix-ui/react-icons";
 import { PencilIcon, PlusIcon } from "lucide-react";
-import React, { Suspense, useCallback, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../../../../../ui";
-import { CHAI_BUILDER_EVENTS } from "../../../../../events.ts";
-import { canAddChildBlock, canDeleteBlock, canDuplicateBlock } from "../../../../../functions/block-helpers.ts";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../../../../ui/index.ts";
+import { CHAI_BUILDER_EVENTS } from "../../../../events.ts";
+import { canAddChildBlock, canDeleteBlock, canDuplicateBlock } from "../../../../functions/block-helpers.ts";
 import {
   useBlocksStore,
-  useBuilderProp,
   useCopyBlockIds,
   useCutBlockIds,
   useDuplicateBlocks,
@@ -15,9 +14,10 @@ import {
   useRemoveBlocks,
   useSelectedBlock,
   useSelectedBlockIds,
-} from "../../../../../hooks/index.ts";
-import { PERMISSIONS, usePermissions } from "../../../../../main/index.ts";
-import { pubsub } from "../../../../../pubsub.ts";
+} from "../../../../hooks/index.ts";
+import { PERMISSIONS, usePermissions } from "../../../../main/index.ts";
+import { pubsub } from "../../../../pubsub.ts";
+import { SaveToLibrary } from "./save-to-library.tsx";
 export const PasteAtRootContextMenu = ({ parentContext, setParentContext }) => {
   const { t } = useTranslation();
   const { canPaste, pasteBlocks } = usePasteBlocks();
@@ -135,7 +135,6 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
   const duplicateBlocks = useDuplicateBlocks();
   const selectedBlock = useSelectedBlock();
   const { hasPermission } = usePermissions();
-  const blockMoreOptions = useBuilderProp("blockMoreOptions", []);
 
   const duplicate = useCallback(() => {
     duplicateBlocks(selectedIds);
@@ -162,12 +161,9 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
       <RenameBlock node={node} />
       {hasPermission(PERMISSIONS.MOVE_BLOCK) && <CutBlocks />}
       {hasPermission(PERMISSIONS.ADD_BLOCK) && <CopyPasteBlocks />}
+      {/* TODO: Add library block saving */}
+      {hasPermission(PERMISSIONS.CREATE_LIBRARY_BLOCK) && <SaveToLibrary />}
       {hasPermission(PERMISSIONS.DELETE_BLOCK) && <RemoveBlocks />}
-      {blockMoreOptions.map((dropdownItem, index) => (
-        <Suspense fallback={<span>Loading...</span>} key={`more-${index}`}>
-          {React.createElement(dropdownItem, { block: selectedBlock })}
-        </Suspense>
-      ))}
     </DropdownMenuContent>
   );
 };

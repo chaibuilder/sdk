@@ -9,7 +9,7 @@ export const SmallScreenMessage = () => {
             className="mx-auto w-14 rounded-full"
           />
           <br />
-          <h2 className="text-4xl font-bold text-white">Screen too small</h2>
+          <h2 className="text-4xl font-bold">Screen too small</h2>
           <p className="mt-6 text-sm font-medium leading-6 text-white text-opacity-70">
             Please view this page on greater than 1280px screen width.
           </p>

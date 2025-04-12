@@ -249,7 +249,7 @@ const getBlockProps = (node: Node): Record<string, any> => {
     case "button":
       return { _type: "Button" };
     case "code":
-      return { _type: "Code" };
+      return { _type: "Box", _name: "Code" };
     case "h1":
     case "h2":
     case "h3":

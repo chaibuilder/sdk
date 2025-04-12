@@ -1,4 +1,4 @@
-import { useAtom } from "jotai/index";
+import { useAtom } from "jotai";
 import { aiAssistantActiveAtom } from "../atoms/ui";
 import { useUndoManager } from "../history/useUndoManager.ts";
 import { useBlockHighlight } from "./useBlockHighlight";

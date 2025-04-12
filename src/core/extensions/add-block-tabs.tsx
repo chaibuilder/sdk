@@ -7,7 +7,8 @@ export type AddBlockTab = {
   tabContent: React.ComponentType;
 };
 
-const ADD_BLOCK_TABS: Record<string, AddBlockTab> = {};
+// Export for testing purposes
+export const ADD_BLOCK_TABS: Record<string, AddBlockTab> = {};
 
 export const registerChaiAddBlockTab = (id: string, tab: Omit<AddBlockTab, "id">) => {
   if (has(ADD_BLOCK_TABS, id)) {

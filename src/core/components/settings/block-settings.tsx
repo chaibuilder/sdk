@@ -1,19 +1,16 @@
 import { getBlockFormSchemas, getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { IChangeEvent } from "@rjsf/core";
-import { capitalize, cloneDeep, debounce, forEach, get, includes, isEmpty, keys, map, startCase } from "lodash-es";
+import { cloneDeep, debounce, forEach, get, includes, isEmpty, keys, startCase } from "lodash-es";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../ui";
 import {
   useLanguages,
   useSelectedBlock,
   useUpdateBlocksProps,
   useUpdateBlocksPropsRealtime,
   useWrapperBlock,
-} from "../../hooks";
-import DataBindingSetting from "../../rjsf-widgets/data-binding.tsx";
+} from "../../hooks/index.ts";
 import { JSONForm } from "./JSONForm.tsx";
-import { GlobalBlockSettings } from "./PartialBlockSettings.tsx";
 
 const formDataWithSelectedLang = (formData, selectedLang: string, coreBlock) => {
   const updatedFormData = cloneDeep(formData);
@@ -37,7 +34,6 @@ export default function BlockSettings() {
   const registeredBlock = getRegisteredChaiBlock(selectedBlock?._type);
   const formData = formDataWithSelectedLang(selectedBlock, selectedLang, registeredBlock);
   const [prevFormData, setPrevFormData] = useState(formData);
-  const dataBindingSupported = false;
 
   const [showWrapperSetting, setShowWrapperSetting] = useState(false);
   const wrapperBlock = useWrapperBlock();
@@ -72,14 +68,16 @@ export default function BlockSettings() {
     }
   };
 
-  const bindingProps = keys(get(formData, "_bindings", {}));
-
   const { schema, uiSchema } = useMemo(() => {
     const type = selectedBlock?._type;
     if (!type) {
-      return;
+      return { schema: {}, uiSchema: {} };
     }
-    return getBlockFormSchemas(type);
+    try {
+      return getBlockFormSchemas(type);
+    } catch (error) {
+      return { schema: {}, uiSchema: {} };
+    }
   }, [selectedBlock]);
 
   const { wrapperSchema, wrapperUiSchema } = useMemo(() => {
@@ -119,53 +117,7 @@ export default function BlockSettings() {
           </div>
         </div>
       )}
-      {dataBindingSupported ? (
-        <Accordion type="multiple" defaultValue={["STATIC", "BINDING"]} className="mt-4 h-full w-full">
-          <AccordionItem value="BINDING">
-            <AccordionTrigger className="py-2">
-              <div className="flex items-center gap-x-2">
-                <div
-                  className={`h-[8px] w-[8px] rounded-full ${
-                    !isEmpty(get(selectedBlock, "_bindings", {})) ? "bg-blue-500" : "bg-gray-300"
-                  }`}
-                />
-                Data Binding
-              </div>
-            </AccordionTrigger>
-            <AccordionContent className="pt-4">
-              <DataBindingSetting
-                bindingData={get(selectedBlock, "_bindings", {})}
-                onChange={(_bindings) => {
-                  updateProps({ formData: { _bindings } } as IChangeEvent, "root._bindings");
-                }}
-              />
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="STATIC">
-            <AccordionTrigger className="py-2">
-              <div className="flex items-center gap-x-2">
-                <div className={`h-[8px] w-[8px] rounded-full bg-blue-500`} />
-                Static Content
-              </div>
-            </AccordionTrigger>
-            <AccordionContent className="pt-4">
-              {!isEmpty(bindingProps) ? (
-                <div className="mb-1 mt-0 rounded-sm border border-orange-500 bg-orange-100 p-1 text-xs text-orange-500">
-                  Data binding is set for <b>{map(bindingProps, capitalize).join(", ")}</b>{" "}
-                  {bindingProps.length === 1 ? "property" : "properties"}. Remove data binding to edit static content.
-                </div>
-              ) : null}
-              <JSONForm
-                blockId={selectedBlock?._id}
-                onChange={updateRealtime}
-                formData={formData}
-                schema={schema}
-                uiSchema={uiSchema}
-              />
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      ) : !isEmpty(schema) ? (
+      {!isEmpty(schema) ? (
         <JSONForm
           blockId={selectedBlock?._id}
           onChange={updateRealtime}
@@ -174,7 +126,6 @@ export default function BlockSettings() {
           uiSchema={uiSchema}
         />
       ) : null}
-      {selectedBlock?._type === "GlobalBlock" ? <GlobalBlockSettings /> : null}
     </div>
   );
 }

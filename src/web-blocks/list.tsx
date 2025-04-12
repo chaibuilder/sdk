@@ -28,7 +28,8 @@ const ListBlock = (props: ChaiBlockComponentProps<ListBlockProps>) => {
 
 const Config = {
   type: "List",
-  label: "web_blocks.list",
+  description: "A list component",
+  label: "List",
   icon: RowsIcon,
   category: "core",
   group: "basic",

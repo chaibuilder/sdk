@@ -64,6 +64,7 @@ const LinkBlock = (props: ChaiBlockComponentProps<LinkBlockProps>) => {
 
 const Config = {
   type: "Link",
+  description: "A link component",
   label: "Link",
   category: "core",
   icon: Link1Icon,

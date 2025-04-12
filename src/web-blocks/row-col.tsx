@@ -43,6 +43,7 @@ const Column = (props: ChaiBlockComponentProps<ColumnProps>) => {
 
 const ColumnConfig = {
   type: "Column",
+  description: "A column component",
   label: "Column",
   group: "basic",
   category: "core",
@@ -100,6 +101,7 @@ const Component = (props: ChaiBlockComponentProps<RowProps>) => {
 
 const Config = {
   type: "Row",
+  description: "A row component",
   label: "Row",
   group: "basic",
   icon: Rows,

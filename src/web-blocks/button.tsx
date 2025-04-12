@@ -60,6 +60,7 @@ const Component = (props: ChaiBlockComponentProps<ButtonProps>) => {
 
 const Config = {
   type: "Button",
+  description: "similar to a button element in HTML",
   label: "Button",
   category: "core",
   icon: ButtonIcon,

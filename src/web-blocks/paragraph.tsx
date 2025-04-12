@@ -1,7 +1,7 @@
-import * as React from "react";
-import { TextIcon } from "@radix-ui/react-icons";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
+import { TextIcon } from "@radix-ui/react-icons";
 import { isNull } from "lodash-es";
+import * as React from "react";
 
 export type ParagraphProps = {
   styles: ChaiStyles;
@@ -22,6 +22,7 @@ const ParagraphBlock = (props: ChaiBlockComponentProps<ParagraphProps>) => {
 
 const Config = {
   type: "Paragraph",
+  description: "A paragraph component",
   label: "Paragraph",
   category: "core",
   icon: TextIcon,

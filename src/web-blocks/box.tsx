@@ -25,6 +25,7 @@ const Component = (props: ChaiBlockComponentProps<BoxProps>) => {
 
 const Config = {
   type: "Box",
+  description: "Similar to a div or section elements in HTML",
   label: "Box",
   category: "core",
   group: "basic",

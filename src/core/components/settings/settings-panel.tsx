@@ -5,12 +5,13 @@ import React, { useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../ui/index.ts";
-import { useBuilderProp, useSelectedBlock, useSelectedStylingBlocks } from "../../hooks";
+import { useBuilderProp, useSelectedBlock, useSelectedStylingBlocks } from "../../hooks/index.ts";
 import { PERMISSIONS, usePermissions } from "../../main/index.ts";
 import { FallbackError } from "../FallbackError.tsx";
-import BlockSettings from "./BlockSettings";
-import BlockStyling from "./BlockStyling";
+import BlockSettings from "./block-settings.tsx";
+import BlockStyling from "./BlockStyling.tsx";
 import { BlockAttributesEditor } from "./new-panel/BlockAttributesEditor.tsx";
+
 function BlockAttributesToggle() {
   const { t } = useTranslation();
   const [showAttributes, setShowAttributes] = useState(true);
@@ -41,9 +42,6 @@ const SettingsPanel: React.FC = () => {
 
   let isSettingsDisabled = !hasPermission(PERMISSIONS.EDIT_BLOCK);
   const isStylesDisabled = !hasPermission(PERMISSIONS.EDIT_STYLES);
-
-  const isBlockSettingsDisabled = hasPermission("!" + PERMISSIONS.EDIT_BLOCK + "_" + selectedBlock?._type);
-  isSettingsDisabled = isSettingsDisabled || isBlockSettingsDisabled;
 
   if (isNull(selectedBlock)) {
     return (

@@ -19,6 +19,7 @@ const RichTextBlock = (props: ChaiBlockComponentProps<RichTextProps>) => {
 
 const Config = {
   type: "RichText",
+  description: "A rich text block",
   label: "Rich Text",
   category: "core",
   icon: CursorTextIcon,

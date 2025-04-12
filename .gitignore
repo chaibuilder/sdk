@@ -31,3 +31,4 @@ live
 /playwright/.cache/
 docs/
 scratch/
+tasks/

@@ -1,5 +1,5 @@
-import * as React from "react";
 import { ChaiBlockComponentProps, ChaiStyles, StylesProp, registerChaiBlockSchema } from "@chaibuilder/runtime";
+import * as React from "react";
 
 export type EmptyBoxProps = {
   styles: ChaiStyles;
@@ -17,6 +17,7 @@ const EmptyBox = (props: ChaiBlockComponentProps<EmptyBoxProps>) => {
 
 const Config = {
   type: "EmptyBox",
+  description: "A box component with no children",
   label: "Empty Box",
   category: "core",
   group: "basic",

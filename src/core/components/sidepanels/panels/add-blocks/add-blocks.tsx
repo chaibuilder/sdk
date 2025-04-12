@@ -5,11 +5,12 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { Input, ScrollArea, Tabs, TabsContent, TabsList, TabsTrigger } from "../../../../../ui/index.ts";
 import { showPredefinedBlockCategoryAtom } from "../../../../atoms/ui.ts";
+import { CHAI_BUILDER_EVENTS } from "../../../../events.ts";
 import { useChaiAddBlockTabs } from "../../../../extensions/add-block-tabs.tsx";
 import { canAcceptChildBlock, canBeNestedInside } from "../../../../functions/block-helpers.ts";
 import { useBlocksStore, useBuilderProp, usePermissions } from "../../../../hooks/index.ts";
 import { usePartialBlocksList } from "../../../../hooks/usePartialBlocksStore.ts";
-import { CHAI_BUILDER_EVENTS, mergeClasses, PERMISSIONS } from "../../../../main/index.ts";
+import { mergeClasses, PERMISSIONS } from "../../../../main/index.ts";
 import { pubsub } from "../../../../pubsub.ts";
 import { CoreBlock } from "./CoreBlock.tsx";
 import { DefaultChaiBlocks } from "./DefaultBlocks.tsx";
@@ -143,7 +144,7 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
       <div className="sticky top-10 flex h-[calc(100%-48px)] overflow-hidden">
         {/* Sidebar for groups */}
         {sortedGroups.length > 0 && (
-          <div className="w-1/4 min-w-[120px] border-r">
+          <div className="w-1/4 min-w-[120px] border-r border-border">
             <ScrollArea className="h-full">
               <div className="space-y-1 p-2">
                 <button
@@ -153,8 +154,8 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
                   onMouseLeave={handleGroupLeave}
                   className={`w-full rounded-md px-2 py-1.5 text-left text-sm font-medium ${
                     selectedGroup === "all" || hoveredGroup === "all"
-                      ? "bg-accent text-accent-foreground"
-                      : "hover:bg-accent/50 hover:text-accent-foreground"
+                      ? "bg-primary text-primary-foreground"
+                      : "hover:bg-primary/50 hover:text-primary-foreground"
                   }`}>
                   {t("All")}
                 </button>
@@ -166,8 +167,8 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
                     onMouseLeave={handleGroupLeave}
                     className={`w-full rounded-md px-2 py-1.5 text-left text-sm ${
                       selectedGroup === group || hoveredGroup === group
-                        ? "bg-accent text-accent-foreground"
-                        : "hover:bg-accent/50 hover:text-accent-foreground"
+                        ? "bg-primary text-primary-foreground"
+                        : "hover:bg-primary/50 hover:text-primary-foreground"
                     }`}>
                     {capitalize(t(group.toLowerCase()))}
                   </button>
@@ -252,6 +253,15 @@ const AddBlocksPanel = ({
 
   const addBlockAdditionalTabs = useChaiAddBlockTabs();
   const canImportHTML = importHTMLSupport && hasPermission(PERMISSIONS.IMPORT_HTML);
+  const uiLibraries = useBuilderProp("uiLibraries", []);
+  const hasUiLibraries = uiLibraries.length > 0;
+
+  // If current tab is "library" but there are no UI libraries, switch to "core" tab
+  useEffect(() => {
+    if (tab === "library" && !hasUiLibraries) {
+      setTab("core");
+    }
+  }, [tab, hasUiLibraries, setTab]);
 
   return (
     <div className={mergeClasses("flex h-full w-full flex-col overflow-hidden", className)}>
@@ -272,7 +282,7 @@ const AddBlocksPanel = ({
         value={tab}
         className={"flex h-full max-h-full flex-col overflow-hidden"}>
         <TabsList className={"flex w-full items-center"}>
-          <TabsTrigger value="library">{t("Library")}</TabsTrigger>
+          {hasUiLibraries && <TabsTrigger value="library">{t("Library")}</TabsTrigger>}
           <TabsTrigger value="core">{t("Blocks")}</TabsTrigger>
           {hasPartialBlocks && <TabsTrigger value="partials">{t("Partials")}</TabsTrigger>}
           {canImportHTML ? <TabsTrigger value="html">{t("Import")}</TabsTrigger> : null}
@@ -289,9 +299,11 @@ const AddBlocksPanel = ({
             </div>
           </div>
         </TabsContent>
-        <TabsContent value="library" className="h-full max-h-full flex-1 pb-20">
-          <UILibrariesPanel parentId={parentId} position={position} />
-        </TabsContent>
+        {hasUiLibraries && (
+          <TabsContent value="library" className="h-full max-h-full flex-1 pb-20">
+            <UILibrariesPanel parentId={parentId} position={position} />
+          </TabsContent>
+        )}
         {hasPartialBlocks && (
           <TabsContent value="partials" className="h-full max-h-full flex-1 pb-20">
             <div className="-mx-1.5 h-full max-h-full overflow-hidden">

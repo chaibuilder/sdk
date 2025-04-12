@@ -1,6 +1,6 @@
-import { get, isEmpty, pick, omit } from "lodash-es";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { VideoIcon } from "@radix-ui/react-icons";
+import { get, isEmpty, omit, pick } from "lodash-es";
 
 export type VideoBlockProps = {
   styles: ChaiStyles;
@@ -10,6 +10,39 @@ export type VideoBlockProps = {
   url: string;
   videoSource: "Custom" | "Youtube" | "Vimeo";
   sources: { srcsets: Array<{ url: string; width: number }> };
+};
+
+const ControlsProp: any = {
+  type: "object",
+  title: "Controls",
+  default: {
+    autoplay: true,
+    controls: false,
+    loop: true,
+    muted: true,
+  },
+  properties: {
+    autoplay: {
+      type: "boolean",
+      title: "Autoplay",
+      default: false,
+    },
+    controls: {
+      type: "boolean",
+      title: "Show Controls",
+      default: true,
+    },
+    loop: {
+      type: "boolean",
+      title: "Loop Video",
+      default: false,
+    },
+    muted: {
+      type: "boolean",
+      title: "Muted",
+      default: false,
+    },
+  },
 };
 
 const YOUTUBE_REGEX = /^(https?:\/\/)?(www\.)?youtube\.com\/(watch\?v=|embed\/)([a-zA-Z0-9_-]{11})/;
@@ -102,7 +135,7 @@ const CustomVideoSource = (props: ChaiBlockComponentProps<VideoBlockProps>) => {
     .filter((source) => !isEmpty(source.url) && !isEmpty(source.width));
 
   if (sortedSources.length === 0 && !_poster) {
-    _poster = "https://placehold.co/600x400/EEE/000?text=Choose%20Video";
+    _poster = "https://placehold.co/300x200/EEE/ccc?text=Choose%20Video";
   }
 
   const shouldMute = get(controls, "autoplay", false) || get(controls, "muted", true);
@@ -160,38 +193,6 @@ const Config = {
         enum: ["Custom", "Youtube", "Vimeo"],
         title: "Video source",
       },
-      controls: {
-        type: "object",
-        title: "Controls",
-        default: {
-          autoplay: true,
-          controls: false,
-          loop: true,
-          muted: true,
-        },
-        properties: {
-          autoplay: {
-            type: "boolean",
-            title: "Autoplay",
-            default: false,
-          },
-          controls: {
-            type: "boolean",
-            title: "Show Controls",
-            default: true,
-          },
-          loop: {
-            type: "boolean",
-            title: "Loop Video",
-            default: false,
-          },
-          muted: {
-            type: "boolean",
-            title: "Muted",
-            default: false,
-          },
-        },
-      },
     },
     allOf: [
       {
@@ -202,20 +203,22 @@ const Config = {
         },
         then: {
           properties: {
-            poster: {
-              type: "string",
-              title: "Poster URL",
-              default: "",
-            },
             url: {
               type: "string",
               title: "Video URL",
               default: "",
             },
+            poster: {
+              type: "string",
+              title: "Poster URL",
+              default: "",
+            },
+
             sources: {
               type: "object",
               default: { srcsets: [] },
             },
+            controls: { ...ControlsProp },
           },
         },
       },

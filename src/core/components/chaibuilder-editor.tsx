@@ -8,13 +8,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { FEATURE_TOGGLES } from "../../FEATURE_TOGGLES.tsx";
 import { ChaiBuilderEditorProps } from "../../types/index.ts";
 import { Toaster } from "../../ui/index.ts";
-import {
-  chaiBuilderPropsAtom,
-  chaiPageExternalDataAtom,
-  chaiRjsfFieldsAtom,
-  chaiRjsfTemplatesAtom,
-  chaiRjsfWidgetsAtom,
-} from "../atoms/builder.ts";
+import { chaiBuilderPropsAtom, chaiPageExternalDataAtom } from "../atoms/builder.ts";
 import { builderStore } from "../atoms/store.ts";
 import { selectedLibraryAtom } from "../atoms/ui.ts";
 import { setDebugLogs } from "../functions/logging.ts";
@@ -59,30 +53,13 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
     builderStore.set(
       // @ts-ignore
       chaiBuilderPropsAtom,
-      omit(props, [
-        "blocks",
-        "subPages",
-        "brandingOptions",
-        "dataProviders",
-        "customRootLayout",
-        "translations",
-        "rjsfFields",
-        "rjsfWidgets",
-        "rjsfTemplates",
-        "pageExternalData",
-      ]),
+      omit(props, ["blocks", "translations", "pageExternalData"]),
     );
   }, [props]);
 
   useEffect(() => {
     builderStore.set(chaiPageExternalDataAtom, props.pageExternalData || {});
   }, [props.pageExternalData]);
-
-  useEffect(() => {
-    builderStore.set(chaiRjsfFieldsAtom, props.rjsfFields || {});
-    builderStore.set(chaiRjsfWidgetsAtom, props.rjsfWidgets || {});
-    builderStore.set(chaiRjsfTemplatesAtom, props.rjsfTemplates || {});
-  }, [props.rjsfFields, props.rjsfWidgets, props.rjsfTemplates]);
 
   useEffect(() => {
     // Added delay to allow the pageId to be set
@@ -103,8 +80,8 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   }, [props.locale]);
 
   useEffect(() => {
-    setDebugLogs(props.showDebugLogs);
-  }, [props.showDebugLogs]);
+    setDebugLogs(props.debugLogs);
+  }, [props.debugLogs]);
 
   useEffect(() => {
     if (!props.translations) return;
@@ -131,12 +108,11 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
  * ChaiBuilder is the main entry point for the Chai Builder Studio.
  */
 const ChaiBuilderEditor: React.FC<ChaiBuilderEditorProps> = (props: ChaiBuilderEditorProps) => {
-  const _flags = props._flags || {};
   const onErrorFn = props.onError || noop;
   return (
     <div className="h-screen w-screen">
       <ErrorBoundary fallback={<FallbackError />} onError={onErrorFn}>
-        <FlagsProvider features={{ ...FEATURE_TOGGLES, ..._flags }}>
+        <FlagsProvider features={{ ...FEATURE_TOGGLES }}>
           <SmallScreenMessage />
           <ChaiBuilderComponent {...props} />
           <PreviewScreen />
