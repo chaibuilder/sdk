@@ -21,11 +21,11 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
         {showImagePicker && (
           <>
             <MediaManagerModal onSelect={onChange}>
-              <small className="h-6 cursor-pointer rounded-md bg-primary px-2 py-1 text-center text-xs text-white hover:bg-gray-500 dark:bg-gray-700">
+              <small className="h-6 cursor-pointer rounded-md bg-secondary px-2 py-1 text-center text-xs text-secondary-foreground hover:bg-secondary/80">
                 {value || !isEmpty(value) ? t("Replace image") : t("Choose image")}
               </small>
             </MediaManagerModal>
-            <small className="-pl-4 pt-2 text-center text-xs text-gray-600">OR</small>
+            <small className="-pl-4 pt-2 text-center text-xs text-secondary-foreground">OR</small>
           </>
         )}
         <input

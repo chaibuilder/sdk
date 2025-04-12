@@ -101,13 +101,13 @@ export const StylingGroup = ({ section, showAccordian }: any) => {
                 return React.createElement(item.component, { key: item.label });
               }
               if (!has(item, "styleType")) {
-                return <BlockStyle key={item.label} {...item} />;
+                return <BlockStyle key={item.label + "block-style"} {...item} />;
               }
               if (item.styleType === "multiple") {
-                return <MultipleChoices key={item.label} {...item} />;
+                return <MultipleChoices key={item.label + "multiple-choices"} {...item} />;
               }
               if (item.styleType === "accordion" && matchCondition(item?.conditions)) {
-                return <NestedOptions key={item.label} {...item} />;
+                return <NestedOptions key={item.label + "nested-options"} {...item} />;
               }
               return null;
             })}
@@ -115,18 +115,18 @@ export const StylingGroup = ({ section, showAccordian }: any) => {
         </AccordionItem>
       ) : (
         <div className="py-2">
-          {section.items.map((item: any) => {
+          {section.items.map((item: any, index: number) => {
             if (has(item, "component")) {
               return React.createElement(item.component, { key: item.label });
             }
             if (!has(item, "styleType")) {
-              return <BlockStyle key={item.label} {...item} />;
+              return <BlockStyle key={item.label + "block-style" + index} {...item} />;
             }
             if (item.styleType === "multiple") {
-              return <MultipleChoices key={item.label} {...item} />;
+              return <MultipleChoices key={item.label + "multiple-choices" + index} {...item} />;
             }
             if (item.styleType === "accordion" && matchCondition(item?.conditions)) {
-              return <NestedOptions key={item.label} {...item} />;
+              return <NestedOptions key={item.label + "nested-options" + index} {...item} />;
             }
             return null;
           })}
