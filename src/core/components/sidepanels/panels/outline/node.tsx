@@ -1,6 +1,6 @@
 import { PlusIcon } from "@radix-ui/react-icons";
 import { atom, useAtom } from "jotai";
-import { get, has } from "lodash-es";
+import { get, has, isEmpty } from "lodash-es";
 import { ChevronRight, EyeOffIcon, MoreVertical } from "lucide-react";
 import { memo, useEffect, useMemo } from "react";
 import { NodeRendererProps } from "react-arborist";
@@ -165,7 +165,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
   }
 
   const isLibBlock = useMemo(() => {
-    return has(data, "_libBlockId");
+    return has(data, "_libBlockId") && !isEmpty(data._libBlockId);
   }, [data]);
 
   return (
