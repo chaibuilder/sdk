@@ -41,12 +41,18 @@ jobs:
           PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
 
           if [ -z "$PREVIOUS_TAG" ]; then
-            # If no previous tag exists, get all commits
-            CHANGELOG=$(git log --pretty=format:"* %s (%h)" --no-merges)
+            # If no previous tag exists, get all PRs
+            SINCE_DATE="1970-01-01"
           else
-            # Get commits since last tag
-            CHANGELOG=$(git log --pretty=format:"* %s (%h)" --no-merges ${PREVIOUS_TAG}..HEAD)
+            # Get date of previous tag
+            SINCE_DATE=$(git log -1 --format=%aI $PREVIOUS_TAG)
           fi
+
+          # Use GitHub API to get PRs merged since the last tag
+          REPO_NAME="${GITHUB_REPOSITORY}"
+          CHANGELOG=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${REPO_NAME}/pulls?state=closed&sort=updated&direction=desc&per_page=100" | \
+            jq -r ".[] | select(.merged_at != null) | select(.merged_at > \"${SINCE_DATE}\") | \"* \(.title) ([#\(.number)](\(.html_url)))\"")
 
           # Save changelog to a file with proper escaping
           echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
