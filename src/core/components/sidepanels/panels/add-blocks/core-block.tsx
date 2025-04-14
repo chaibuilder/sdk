@@ -5,9 +5,9 @@ import { useAtom } from "jotai";
 import { capitalize, has, isFunction, omit } from "lodash-es";
 import { createElement } from "react";
 import { useTranslation } from "react-i18next";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../../ui";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../../ui/index.ts";
 import { CHAI_BUILDER_EVENTS } from "../../../../events.ts";
-import { useAddBlock, useBlockHighlight, useSelectedBlockIds } from "../../../../hooks";
+import { useAddBlock, useBlockHighlight, useSelectedBlockIds } from "../../../../hooks/index.ts";
 import { pubsub } from "../../../../pubsub.ts";
 import { draggedBlockAtom } from "../../../canvas/dnd/atoms.ts";
 

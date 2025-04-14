@@ -12,11 +12,11 @@ import { useBlocksStore, useBuilderProp, usePermissions } from "../../../../hook
 import { usePartialBlocksList } from "../../../../hooks/usePartialBlocksStore.ts";
 import { mergeClasses, PERMISSIONS } from "../../../../main/index.ts";
 import { pubsub } from "../../../../pubsub.ts";
-import { CoreBlock } from "./CoreBlock.tsx";
-import { DefaultChaiBlocks } from "./DefaultBlocks.tsx";
-import ImportHTML from "./ImportHTML.tsx";
-import { PartialBlocks } from "./PartialBlocks.tsx";
-import UILibrariesPanel from "./UILibrariesPanel.tsx";
+import { CoreBlock } from "./core-block.tsx";
+import { DefaultChaiBlocks } from "./default-blocks.tsx";
+import ImportHTML from "./import-html.tsx";
+import UILibrariesPanel from "./libraries-panel.tsx";
+import { PartialBlocks } from "./partial-blocks.tsx";
 
 const CORE_GROUPS = ["basic", "typography", "media", "layout", "form", "advanced", "other"];
 
