@@ -12,7 +12,6 @@ export const PERMISSIONS = {
   CREATE_LIBRARY_BLOCK: "create_library_block",
   CREATE_LIBRARY_GROUP: "create_library_group",
   EDIT_LIBRARY_BLOCK: "edit_library_block",
-  EDIT_LIBRARY_GROUP: "edit_library_group",
   DELETE_LIBRARY_BLOCK: "delete_library_block",
 };
 

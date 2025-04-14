@@ -165,8 +165,12 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
   }
 
   const isLibBlock = useMemo(() => {
-    return has(data, "_libBlockId") && !isEmpty(data._libBlockId);
-  }, [data]);
+    return (
+      has(data, "_libBlockId") &&
+      !isEmpty(data._libBlockId) &&
+      (hasPermission(PERMISSIONS.CREATE_LIBRARY_BLOCK) || hasPermission(PERMISSIONS.EDIT_LIBRARY_BLOCK))
+    );
+  }, [data, hasPermission]);
 
   return (
     <div className="w-full">
