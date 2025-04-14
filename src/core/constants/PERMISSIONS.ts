@@ -14,7 +14,6 @@ export const PERMISSIONS = {
   EDIT_LIBRARY_BLOCK: "edit_library_block",
   EDIT_LIBRARY_GROUP: "edit_library_group",
   DELETE_LIBRARY_BLOCK: "delete_library_block",
-  DELETE_LIBRARY_GROUP: "delete_library_group",
 };
 
 export const PERMISSIONS_LIST = Object.values(PERMISSIONS);

@@ -171,7 +171,7 @@ const UILibrarySection = ({ parentId, position }: { parentId?: string; position?
     <>
       <div className="relative mt-2 flex h-full max-h-full overflow-hidden bg-background">
         <div className={"flex h-full pt-2"}>
-          <div className={"flex h-full max-h-full w-60 flex-col gap-1 px-1 pr-2"}>
+          <div className={"flex h-full max-h-full w-72 flex-col gap-1 px-1 pr-2"}>
             <UILibrariesSelect library={library?.id} setLibrary={setLibrary} uiLibraries={uiLibraries} />
             <div className="mt-2 flex h-full max-h-full w-full flex-1 flex-col">
               <span className="text-xs font-bold text-gray-500">{t("Groups")}</span>

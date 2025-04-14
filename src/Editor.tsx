@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useAtom } from "jotai";
 import { isArray, map, pick } from "lodash-es";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { lsAiContextAtom, lsBlocksAtom, lsThemeAtom } from "./_demo/atoms-dev.ts";
 import { bluePreset, greenPreset, orangePreset } from "./_demo/THEME_PRESETS.ts";
 import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML } from "./core/main";
@@ -17,10 +17,16 @@ function ChaiBuilderDefault() {
   const [theme, setTheme] = useAtom(lsThemeAtom);
 
   const [aiContext, setAiContext] = useAtom(lsAiContextAtom);
-  const [uiLibraries] = useState([
-    { id: "meraki-ui", name: "Meraki UI", url: "https://chai-ui-blocks.vercel.app" },
-    { id: "chaiblocks", name: "UI Blocks", url: "https://chaibuilder.com/chaiblocks" },
-  ]);
+  const [uiLibraries, setUiLibraries] = useState([]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setUiLibraries([
+        { id: "meraki-ui", name: "Meraki UI", url: "https://chai-ui-blocks.vercel.app" },
+        { id: "chaiblocks", name: "UI Blocks", url: "https://chaibuilder.com/chaiblocks" },
+      ]);
+    }, 500);
+  }, []);
 
   return (
     <ChaiBuilderEditor
