@@ -14,10 +14,10 @@ import { UILibrariesSelect } from "./UiLibrariesSelect.tsx";
 
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
-import { selectedLibraryAtom } from "../../../../atoms/ui.ts";
 import { CHAI_BUILDER_EVENTS } from "../../../../events.ts";
 import { useBlockHighlight } from "../../../../hooks";
 import { useLibraryBlocks } from "../../../../hooks/use-library-blocks.tsx";
+import { useSelectedLibrary } from "../../../../hooks/use-selected-library.ts";
 import { pubsub } from "../../../../pubsub.ts";
 import { draggedBlockAtom } from "../../../canvas/dnd/atoms.ts";
 
@@ -126,7 +126,7 @@ const BlockCard = ({
 };
 
 const UILibrarySection = ({ parentId, position }: { parentId?: string; position?: number }) => {
-  const [selectedLibrary, setLibrary] = useAtom(selectedLibraryAtom);
+  const [selectedLibrary, setLibrary] = useSelectedLibrary();
   const uiLibraries = useBuilderProp("uiLibraries", []);
   const library = uiLibraries.find((library) => library.id === selectedLibrary) || first(uiLibraries);
   const { data: libraryBlocks, isLoading } = useLibraryBlocks(library);
