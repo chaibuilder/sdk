@@ -1,9 +1,18 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Card, CardContent, CardDescription, CardFooter, CardHeader, Label, Textarea } from "../../../../../ui";
-import { useAddBlock } from "../../../../hooks";
-import { getBlocksFromHTML } from "../../../../import-html/html-to-json";
+import {
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  Label,
+  Textarea,
+} from "../../../../../ui/index.ts";
 import { CHAI_BUILDER_EVENTS } from "../../../../events.ts";
+import { useAddBlock } from "../../../../hooks/index.ts";
+import { getBlocksFromHTML } from "../../../../import-html/html-to-json.ts";
 import { pubsub } from "../../../../pubsub.ts";
 
 const ImportHTML = ({ parentId, position }: { parentId?: string; position?: number }) => {

@@ -5,8 +5,8 @@ import ChaiBuilderCanvas from "../components/canvas/CanvasArea.tsx";
 import BlockPropsEditor from "../components/settings/block-settings.tsx";
 import BlockStyleEditor from "../components/settings/BlockStyling.tsx";
 import AddBlocksPanel from "../components/sidepanels/panels/add-blocks/add-blocks.tsx";
-import ImportHTML from "../components/sidepanels/panels/add-blocks/ImportHTML.tsx";
-import UILibrariesPanel from "../components/sidepanels/panels/add-blocks/UILibrariesPanel.tsx";
+import ImportHTML from "../components/sidepanels/panels/add-blocks/import-html.tsx";
+import UILibrariesPanel from "../components/sidepanels/panels/add-blocks/libraries-panel.tsx";
 import Outline from "../components/sidepanels/panels/outline/list-tree.tsx";
 import ThemeConfigPanel from "../components/sidepanels/panels/theme-configuration/ThemeConfigPanel.tsx";
 
@@ -24,7 +24,7 @@ export { UndoRedo as ChaiUndoRedo } from "../components/canvas/topbar/UndoRedo.t
 export { ChaiBuilderEditor } from "../components/chaibuilder-editor.tsx";
 export { AddBlocksDialog as ChaiAddBlocksDialog } from "../components/layout/AddBlocksDialog.tsx";
 export { BlockAttributesEditor as ChaiBlockAttributesEditor } from "../components/settings/new-panel/BlockAttributesEditor.tsx";
-export { DefaultChaiBlocks as ChaiDefaultBlocks } from "../components/sidepanels/panels/add-blocks/DefaultBlocks.tsx";
+export { DefaultChaiBlocks as ChaiDefaultBlocks } from "../components/sidepanels/panels/add-blocks/default-blocks.tsx";
 export {
   AddBlocksPanel as ChaiAddBlocksPanel,
   BlockPropsEditor as ChaiBlockPropsEditor,
