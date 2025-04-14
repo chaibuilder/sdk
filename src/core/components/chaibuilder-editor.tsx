@@ -21,6 +21,7 @@ import { useWatchPartailBlocks } from "../hooks/usePartialBlocksStore.ts";
 import { builderSaveStateAtom } from "../hooks/useSavePage.ts";
 import "../index.css";
 import i18n from "../locales/load.ts";
+import { PrimaryColorCSSVariable } from "./css-theme-var.tsx";
 import { FallbackError } from "./FallbackError.tsx";
 import { RootLayout } from "./layout/root-layout.tsx";
 import { PreviewScreen } from "./PreviewScreen.tsx";
@@ -102,7 +103,12 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
     };
   }, [saveState]);
 
-  return <RootLayoutComponent />;
+  return (
+    <>
+      <PrimaryColorCSSVariable />
+      <RootLayoutComponent />
+    </>
+  );
 };
 /**
  * ChaiBuilder is the main entry point for the Chai Builder Studio.

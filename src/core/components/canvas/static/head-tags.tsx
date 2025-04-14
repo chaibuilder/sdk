@@ -7,17 +7,12 @@ import { useAtom } from "jotai";
 import { filter, get, has, map } from "lodash-es";
 import { useEffect, useMemo, useState } from "react";
 import plugin from "tailwindcss/plugin";
-import { ChaiBuilderThemeValues } from "../../../../types/chaibuilder-editor-props.ts";
 import { useFrame } from "../../../frame/index.ts";
 import { useDarkMode, useSelectedBlockIds, useSelectedStylingBlocks } from "../../../hooks/index.ts";
 import { useTheme, useThemeOptions } from "../../../hooks/useTheme.ts";
+import { CssThemeVariables } from "../../css-theme-var.tsx";
 import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
-import {
-  getChaiThemeCssVariables,
-  getChaiThemeOptions,
-  getThemeCustomFontFace,
-  getThemeFontsLinkMarkup,
-} from "./chai-theme-helpers.ts";
+import { getChaiThemeOptions, getThemeCustomFontFace, getThemeFontsLinkMarkup } from "./chai-theme-helpers.ts";
 // @ts-ignore
 
 export const HeadTags = () => {
@@ -125,11 +120,6 @@ export const HeadTags = () => {
       : "";
   }, [dropTargetId, iframeDoc]);
 
-  const themeVariables = useMemo(() => {
-    const theme = getChaiThemeCssVariables(chaiTheme as Partial<ChaiBuilderThemeValues>);
-    return theme;
-  }, [chaiTheme]);
-
   const pickedFonts = useMemo(() => {
     const { heading, body } = {
       heading: get(chaiTheme, "fontFamily.heading"),
@@ -145,7 +135,7 @@ export const HeadTags = () => {
   );
   return (
     <>
-      <style id="chai-theme">{themeVariables}</style>
+      <CssThemeVariables />
       <span id="chai-fonts" dangerouslySetInnerHTML={{ __html: fonts }} />
       <style id="chai-custom-fonts" dangerouslySetInnerHTML={{ __html: customFonts }} />
     </>
