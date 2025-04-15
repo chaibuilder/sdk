@@ -230,7 +230,7 @@ const UILibrarySection = ({ parentId, position }: { parentId?: string; position?
   return (
     <>
       <div className="flex h-full max-h-full flex-col">
-        <div className="flex items-center gap-2 border-b border-border p-2">
+        <div className="flex items-center gap-2 border-border py-2">
           <div className="relative w-full">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
