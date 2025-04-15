@@ -27,8 +27,19 @@ type ServerProps = {
   items: any[];
 };
 
-const Component = (props: ChaiBlockComponentProps<CollectionListProps & ServerProps>) => {
-  const { title1, blockProps, wrapperStyles, listStyles, itemStyles, items, tag, showTitle, binding } = props;
+type ForwardProps = {
+  draft: boolean;
+  slug: string;
+  vehicle: {
+    title: string;
+  };
+};
+
+const Component = (props: ChaiBlockComponentProps<CollectionListProps & ServerProps & ForwardProps>) => {
+  const { title1, blockProps, wrapperStyles, listStyles, itemStyles, items, tag, showTitle, binding, vehicle, slug } =
+    props;
+  console.log(" vehicle", vehicle);
+  console.log("slug", slug);
   return (
     <div {...blockProps} {...wrapperStyles}>
       {showTitle && <h1>{title1}</h1>}

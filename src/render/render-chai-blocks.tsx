@@ -21,15 +21,11 @@ import { STYLES_KEY } from "../core/constants/STRINGS.ts";
 import { getSplitChaiClasses } from "../core/hooks/getSplitClasses.ts";
 import { ChaiBlock } from "../types/chai-block.ts";
 import AsyncPropsBlock from "./async-props-block.tsx";
-import { addPrefixToClasses } from "./functions.ts";
 
-const generateClassNames = memoize((styles: string, classPrefix: string) => {
+const generateClassNames = memoize((styles: string) => {
   const { baseClasses, classes: classesString } = getSplitChaiClasses(styles);
   const classes = twMerge(baseClasses, classesString);
-
-  if (classPrefix === "") return classes.replace(STYLES_KEY, "").trim();
-  // split classes by space and add prefix to each class
-  return addPrefixToClasses(classes, classPrefix).replace(STYLES_KEY, "").trim();
+  return classes.replace(STYLES_KEY, "").trim();
 });
 
 const applyBinding = (block: ChaiBlock | Record<string, any>, pageExternalData: Record<string, any>) => {
@@ -65,11 +61,11 @@ function getElementAttrs(block: ChaiBlock, key: string) {
   return attrs;
 }
 
-function getStyleAttrs(block: ChaiBlock, classPrefix: string) {
+function getStyleAttrs(block: ChaiBlock) {
   const styles: { [key: string]: { className: string } } = {};
   Object.keys(block).forEach((key) => {
     if (isString(block[key]) && block[key].startsWith(STYLES_KEY)) {
-      const classes = generateClassNames(block[key], classPrefix);
+      const classes = generateClassNames(block[key]);
       styles[key] = {
         className: classes,
         ...getElementAttrs(block, key),
@@ -120,28 +116,39 @@ const SuspenseFallback = () => <span>Loading...</span>;
 type RenderChaiBlocksProps = {
   blocks: ChaiBlock[];
   parent?: string;
-  classPrefix?: string;
   externalData?: Record<string, any>;
-  blockModifierCallback?: (block: ChaiBlock) => ChaiBlock;
   lang?: string;
   fallbackLang?: string;
-  metadata?: Record<string, any>;
+  forwardProps?: Record<string, any>;
+  draft?: boolean;
   dataProviderMetadataCallback?: (block: ChaiBlock, meta: Record<string, any>) => void;
+
+  //deprecated
+  metadata?: Record<string, any>;
 };
 
-export function RenderChaiBlocks({
+export function RenderChaiBlocks(props: RenderChaiBlocksProps) {
+  if (has(props, "metadata")) {
+    console.warn(" metadata is deprecated and will be removed in upcoming version, use forwardProps instead");
+  }
+  const lang = props.lang ?? "en";
+  const fallbackLang = props.fallbackLang ?? lang;
+  return <RenderChaiBlocksRecursive {...props} lang={lang} fallbackLang={fallbackLang} />;
+}
+
+export function RenderChaiBlocksRecursive({
   blocks,
   parent,
-  classPrefix = "",
   externalData = {},
-  blockModifierCallback = null,
-  lang = "",
-  fallbackLang = "",
+  lang = "en",
+  fallbackLang = "en",
   metadata = {},
+  forwardProps = {},
   dataProviderMetadataCallback = () => {},
+  draft = false,
 }: RenderChaiBlocksProps) {
   const allBlocks = blocks;
-  const getStyles = (block: ChaiBlock) => getStyleAttrs(block, classPrefix);
+  const getStyles = (block: ChaiBlock) => getStyleAttrs(block);
   const filteredBlocks = parent
     ? filter(blocks, { _parent: parent })
     : filter(blocks, (block) => isEmpty(block._parent));
@@ -154,16 +161,18 @@ export function RenderChaiBlocks({
     const blocks = filter(allBlocks, { _parent: block._id });
     attrs.children =
       blocks.length > 0 ? (
-        <RenderChaiBlocks
+        <RenderChaiBlocksRecursive
           key={`${block._id}-children`}
           externalData={externalData}
-          classPrefix={classPrefix}
           parent={block._id}
           blocks={allBlocks}
-          lang={lang || fallbackLang}
-          metadata={metadata}
+          lang={lang}
           fallbackLang={fallbackLang}
+          forwardProps={forwardProps}
           dataProviderMetadataCallback={dataProviderMetadataCallback}
+          draft={draft}
+          //deprecated
+          metadata={metadata}
         />
       ) : null;
 
@@ -173,25 +182,24 @@ export function RenderChaiBlocks({
       // @ts-ignore
       const Component: React.FC<any> = (blockDefinition as { component: React.FC<ChaiBlock> }).component;
       syncedBlock = { ...(blockDefinition as any).defaults, ...block };
-      if (blockModifierCallback) {
-        syncedBlock = blockModifierCallback(syncedBlock);
-      }
-      const langToUse = lang === fallbackLang ? "" : lang;
+
+      const langSuffix = lang === fallbackLang ? "" : lang; // if lang is fallbackLang, don't add lang suffix
       const runtimeProps = getRuntimePropValues(allBlocks, block._id, getRuntimeProps(block._type));
-      const withBinding = applyBinding(applyLanguage(block, langToUse, blockDefinition), externalData);
+      const withBinding = applyBinding(applyLanguage(block, langSuffix, blockDefinition), externalData);
       const props = omit(
         {
-          blockProps: {},
-          inBuilder: false,
+          ...forwardProps,
           ...syncedBlock,
-          index,
           ...withBinding,
           ...getStyles(withBinding),
           ...attrs,
           ...runtimeProps,
-          metadata,
-          lang: lang || fallbackLang,
+          index,
+          lang: lang,
           key: block._id,
+          draft,
+          blockProps: {},
+          inBuilder: false,
         },
         ["_parent"],
       );
@@ -202,14 +210,17 @@ export function RenderChaiBlocks({
           <Suspense fallback={createElement(suspenseFallback)} key={`${block._id}-suspense`}>
             {/* @ts-ignore */}
             <AsyncPropsBlock
+              inBuilder={false}
               key={`${block._id}-async`}
               dataProviderMetadataCallback={dataProviderMetadataCallback}
-              lang={lang || fallbackLang}
+              lang={lang}
               metadata={metadata}
               dataProvider={blockDefinition.dataProvider}
               block={block}
               component={Component}
               props={props}
+              forwardProps={forwardProps}
+              draft={draft}
             />
           </Suspense>
         );
