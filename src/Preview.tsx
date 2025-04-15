@@ -26,6 +26,7 @@ function Preview() {
       <style>{allStyles}</style>
       <RenderChaiBlocks
         lang="fr"
+        fallbackLang="en"
         externalData={{
           vehicle: {
             title: "Hyundai i20 Active - 1.0 MPI - 2015",
@@ -40,17 +41,13 @@ function Preview() {
             description: "This is a description of my page",
           },
         }}
-        metadata={{
-          vehicle: {
-            title: "Hyundai i20 Active - 1.0 MPI - 2015",
-          },
-        }}
-        forwardProps={{
+        pageProps={{
           slug: "hyundai-i20-active-10-mpi-2015",
           vehicle: {
             title: "Hyundai i20 Active - 1.0 MPI - 2015",
           },
         }}
+        draft={true}
         blocks={blocks}
         dataProviderMetadataCallback={(block, meta) => {
           console.log("meta", meta);
