@@ -1,4 +1,4 @@
-import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
+import { ChaiPageProps, getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import {
   cloneDeep,
   filter,
@@ -120,6 +120,7 @@ type RenderChaiBlocksProps = {
   lang?: string;
   fallbackLang?: string;
   forwardProps?: Record<string, any>;
+  pageProps?: ChaiPageProps;
   draft?: boolean;
   dataProviderMetadataCallback?: (block: ChaiBlock, meta: Record<string, any>) => void;
 
@@ -131,6 +132,10 @@ export function RenderChaiBlocks(props: RenderChaiBlocksProps) {
   if (has(props, "metadata")) {
     console.warn(" metadata is deprecated and will be removed in upcoming version, use forwardProps instead");
   }
+  if (isEmpty(props.lang) && !isEmpty(props.fallbackLang)) {
+    throw new Error("lang prop is required when fallbackLang is provided");
+  }
+
   const lang = props.lang ?? "en";
   const fallbackLang = props.fallbackLang ?? lang;
   return <RenderChaiBlocksRecursive {...props} lang={lang} fallbackLang={fallbackLang} />;
@@ -142,8 +147,7 @@ export function RenderChaiBlocksRecursive({
   externalData = {},
   lang = "en",
   fallbackLang = "en",
-  metadata = {},
-  forwardProps = {},
+  pageProps = {},
   dataProviderMetadataCallback = () => {},
   draft = false,
 }: RenderChaiBlocksProps) {
@@ -168,11 +172,9 @@ export function RenderChaiBlocksRecursive({
           blocks={allBlocks}
           lang={lang}
           fallbackLang={fallbackLang}
-          forwardProps={forwardProps}
+          pageProps={pageProps}
           dataProviderMetadataCallback={dataProviderMetadataCallback}
           draft={draft}
-          //deprecated
-          metadata={metadata}
         />
       ) : null;
 
@@ -188,7 +190,6 @@ export function RenderChaiBlocksRecursive({
       const withBinding = applyBinding(applyLanguage(block, langSuffix, blockDefinition), externalData);
       const props = omit(
         {
-          ...forwardProps,
           ...syncedBlock,
           ...withBinding,
           ...getStyles(withBinding),
@@ -198,6 +199,7 @@ export function RenderChaiBlocksRecursive({
           lang: lang,
           key: block._id,
           draft,
+          pageProps,
           blockProps: {},
           inBuilder: false,
         },
@@ -214,12 +216,11 @@ export function RenderChaiBlocksRecursive({
               key={`${block._id}-async`}
               dataProviderMetadataCallback={dataProviderMetadataCallback}
               lang={lang}
-              metadata={metadata}
+              pageProps={pageProps}
               dataProvider={blockDefinition.dataProvider}
               block={block}
               component={Component}
               props={props}
-              forwardProps={forwardProps}
               draft={draft}
             />
           </Suspense>
