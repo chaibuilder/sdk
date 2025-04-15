@@ -25,6 +25,7 @@ function Preview() {
       <style>{themeVars}</style>
       <style>{allStyles}</style>
       <RenderChaiBlocks
+        lang="fr"
         externalData={{
           vehicle: {
             title: "Hyundai i20 Active - 1.0 MPI - 2015",

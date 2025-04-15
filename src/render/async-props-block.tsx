@@ -5,7 +5,8 @@ import React, { Suspense } from "react";
 type DataProvider =
   | ((block: ChaiBlock, lang: string, metadata: any) => Record<string, any> | Promise<Record<string, any>>)
   | ((props: {
-      block: ChaiBlock;
+      draft: boolean;
+      inBuilder: boolean;
       lang: string;
       [key: string]: any;
     }) => Record<string, any> | Promise<Record<string, any>>);
@@ -23,7 +24,7 @@ export default async function AsyncPropsBlock(props: {
   draft?: boolean;
 }) {
   const dataProps = props.forwardProps
-    ? await (props.dataProvider as (props: { draft?: boolean; lang: string; [key: string]: any }) => any)({
+    ? await (props.dataProvider as (props: { draft: boolean; lang: string; [key: string]: any }) => any)({
         ...props.forwardProps,
         ...props.block,
         lang: props.lang,
