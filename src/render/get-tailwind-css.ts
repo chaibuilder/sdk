@@ -4,8 +4,8 @@ import twContainer from "@tailwindcss/container-queries";
 import twForms from "@tailwindcss/forms";
 import twTypography from "@tailwindcss/typography";
 import { defaultThemeOptions } from "../core/hooks/defaultThemeOptions.ts";
-import { chaiBuilderPlugin } from "../tailwind";
 import { getChaiBuilderTheme } from "../tailwind/getChaiBuilderTheme.ts";
+import { chaiBuilderPlugin } from "../tailwind/index.ts";
 import { ChaiBlock } from "../types/chai-block.ts";
 import { ChaiBuilderThemeOptions } from "../types/chaibuilder-editor-props.ts";
 
@@ -35,6 +35,13 @@ async function getTailwindCSS(
   );
 }
 
+/**
+ * Get the tailwind css for the blocks
+ * @param blocks - The blocks to get the tailwind css for
+ * @param themeOptions - The theme options to use
+ * @param includeBaseStyles - Whether to include the base styles
+ * @returns The tailwind css for the blocks
+ */
 const getBlocksTailwindCSS = (
   blocks: ChaiBlock[],
   themeOptions: ChaiBuilderThemeOptions,
@@ -46,6 +53,13 @@ const getBlocksTailwindCSS = (
   return getTailwindCSS(themeOptions, [blocksString], [], "", includeBaseStyles);
 };
 
+/**
+ * Get the tailwind css for the blocks
+ * @param blocks - The blocks to get the tailwind css for
+ * @param themeOptions - The theme options to use
+ * @param includeBaseStyles - Whether to include the base styles
+ * @returns The tailwind css for the blocks
+ */
 export const getStylesForBlocks = async (
   blocks: ChaiBlock[],
   themeOptions: ChaiBuilderThemeOptions = defaultThemeOptions,
