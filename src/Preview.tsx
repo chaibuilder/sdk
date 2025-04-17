@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { lsBlocksAtom, lsThemeAtom } from "./_demo/atoms-dev.ts";
 import registerCustomBlocks from "./_demo/blocks/index.tsx";
 import { getChaiThemeCssVariables, getStylesForBlocks, RenderChaiBlocks } from "./render";
+import { ChaiBuilderThemeValues } from "./types/types.ts";
 import { loadWebBlocks } from "./web-blocks/index.ts";
 loadWebBlocks();
 registerCustomBlocks();
@@ -19,7 +20,7 @@ function Preview() {
       setStyles(styles);
     })();
   }, [blocks]);
-  const themeVars = useMemo(() => getChaiThemeCssVariables(theme), [theme]);
+  const themeVars = useMemo(() => getChaiThemeCssVariables(theme as ChaiBuilderThemeValues), [theme]);
   return (
     <>
       <style>{themeVars}</style>
