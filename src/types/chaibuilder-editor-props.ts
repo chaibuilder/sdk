@@ -21,6 +21,7 @@ type ReactComponentType = React.ComponentType<any>;
 
 type CSSVariableName = string;
 type HSLColor = string;
+type HexColor = string;
 export type CssVariableNameWithDefault = Record<CSSVariableName, any>;
 type VariableKey = string;
 export type BorderRadiusValue = false | string;
@@ -73,9 +74,33 @@ export type PageTypeItem = {
 };
 
 export type ChaiBuilderThemeValues = {
-  fontFamily: Record<string, string>;
+  fontFamily: {
+    heading: string;
+    body: string;
+  };
   borderRadius: string;
-  colors: Record<string, string[]>;
+  colors: {
+    background: [HexColor, HexColor];
+    foreground: [HexColor, HexColor];
+    primary: [HexColor, HexColor];
+    "primary-foreground": [HexColor, HexColor];
+    secondary: [HexColor, HexColor];
+    "secondary-foreground": [HexColor, HexColor];
+    muted: [HexColor, HexColor];
+    "muted-foreground": [HSLColor, HSLColor];
+    accent: [HSLColor, HSLColor];
+    "accent-foreground": [HSLColor, HSLColor];
+    destructive: [HSLColor, HSLColor];
+    "destructive-foreground": [HSLColor, HSLColor];
+    border: [HSLColor, HSLColor];
+    input: [HSLColor, HSLColor];
+    ring: [HexColor, HexColor];
+    card: [HexColor, HexColor];
+    "card-foreground": [HexColor, HexColor];
+    popover: [HexColor, HexColor];
+    "popover-foreground": [HexColor, HexColor];
+    [key: string]: [HexColor, HexColor];
+  };
 };
 
 export interface ChaiBuilderEditorProps {
@@ -119,6 +144,12 @@ export interface ChaiBuilderEditorProps {
    * Theme
    */
   theme?: Partial<ChaiBuilderThemeValues>;
+
+  /**
+   * Builder theme
+   */
+  builderTheme?: ChaiBuilderThemeValues;
+
   /**
    * Theme panel component
    * TODO: Move to registerChaiThemePanelComponent()

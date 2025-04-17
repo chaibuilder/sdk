@@ -10,6 +10,8 @@ import plugin from "tailwindcss/plugin";
 import { useFrame } from "../../../frame/index.ts";
 import { useDarkMode, useSelectedBlockIds, useSelectedStylingBlocks } from "../../../hooks/index.ts";
 import { useTheme, useThemeOptions } from "../../../hooks/useTheme.ts";
+
+import { ChaiBuilderThemeValues } from "../../../../types/types.ts";
 import { CssThemeVariables } from "../../css-theme-var.tsx";
 import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
 import { getChaiThemeOptions, getThemeCustomFontFace, getThemeFontsLinkMarkup } from "./chai-theme-helpers.ts";
@@ -135,7 +137,7 @@ export const HeadTags = () => {
   );
   return (
     <>
-      <CssThemeVariables />
+      <CssThemeVariables theme={chaiTheme as ChaiBuilderThemeValues} />
       <span id="chai-fonts" dangerouslySetInnerHTML={{ __html: fonts }} />
       <style id="chai-custom-fonts" dangerouslySetInnerHTML={{ __html: customFonts }} />
     </>
