@@ -6,13 +6,13 @@ import {
   ChaiBuilderThemeOptions,
   ChaiBuilderThemeValues,
 } from "../../types/chaibuilder-editor-props";
-import { defaultThemeOptions } from "./defaultThemeOptions";
+import { defaultThemeOptions, defaultThemeValues } from "./defaultThemeOptions";
 import { useBuilderProp } from "./useBuilderProp";
 
 export const getDefaultThemeValues = (
   options: ChaiBuilderThemeOptions = defaultThemeOptions,
-): Partial<ChaiBuilderThemeValues> => {
-  const themeValues: Partial<ChaiBuilderThemeValues> = {};
+): ChaiBuilderThemeValues => {
+  const themeValues: ChaiBuilderThemeValues = defaultThemeValues;
 
   if (options.fontFamily) {
     themeValues.fontFamily = Object.entries(options.fontFamily).reduce(
@@ -20,7 +20,7 @@ export const getDefaultThemeValues = (
         ...acc,
         [key.replace("font-", "")]: value,
       }),
-      {},
+      themeValues.fontFamily,
     );
   }
 
@@ -28,15 +28,12 @@ export const getDefaultThemeValues = (
   themeValues.borderRadius = options.borderRadius as BorderRadiusValue;
 
   if (options.colors) {
-    themeValues.colors = options.colors.reduce(
-      (acc, colorGroup) => {
-        Object.entries(colorGroup.items).forEach(([key, values]) => {
-          acc[key] = values;
-        });
-        return acc;
-      },
-      {} as Record<string, string[]>,
-    );
+    themeValues.colors = options.colors.reduce((acc, colorGroup) => {
+      Object.entries(colorGroup.items).forEach(([key, values]) => {
+        acc[key] = values;
+      });
+      return acc;
+    }, themeValues.colors);
   }
 
   return themeValues;
