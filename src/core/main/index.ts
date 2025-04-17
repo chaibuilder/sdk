@@ -1,7 +1,7 @@
 import type { ChaiBlock } from "../../types/chai-block.ts";
 import type { ChaiBuilderEditorProps } from "../../types/index.ts";
 
-import ChaiBuilderCanvas from "../components/canvas/CanvasArea.tsx";
+import ChaiBuilderCanvas from "../components/canvas/canvas-area.tsx";
 import BlockPropsEditor from "../components/settings/block-settings.tsx";
 import BlockStyleEditor from "../components/settings/BlockStyling.tsx";
 import AddBlocksPanel from "../components/sidepanels/panels/add-blocks/add-blocks.tsx";

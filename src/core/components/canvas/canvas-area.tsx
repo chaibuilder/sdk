@@ -1,14 +1,14 @@
-import React, { Suspense } from "react";
-import { Skeleton } from "../../../ui";
-import StaticCanvas from "./static/StaticCanvas";
-import { ErrorBoundary } from "react-error-boundary";
-import { Resizable } from "re-resizable";
-import { useBuilderProp, useCodeEditor } from "../../hooks";
-import { FallbackError } from "../FallbackError.tsx";
 import { noop } from "lodash-es";
+import { Resizable } from "re-resizable";
+import React, { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import { Skeleton } from "../../../ui/index.ts";
+import { useBuilderProp, useCodeEditor } from "../../hooks/index.ts";
+import { FallbackError } from "../FallbackError.tsx";
 import { Breadcrumb } from "./Breadcrumb.tsx";
+import StaticCanvas from "./static/static-canvas.tsx";
 
-const CodeEditor = React.lazy(() => import("./static/CodeEditor"));
+const CodeEditor = React.lazy(() => import("./static/CodeEditor.tsx"));
 
 const CanvasArea: React.FC = () => {
   const [codeEditor] = useCodeEditor();
