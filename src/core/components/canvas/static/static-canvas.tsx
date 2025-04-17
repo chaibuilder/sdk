@@ -5,9 +5,9 @@ import { first, isEmpty } from "lodash-es";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Provider } from "react-wrap-balancer";
 import { ChaiBlock } from "../../../../types/chai-block.ts";
-import { Skeleton } from "../../../../ui";
-import { canvasIframeAtom, networkModeAtom } from "../../../atoms/ui";
-import { ChaiFrame } from "../../../frame";
+import { Skeleton } from "../../../../ui/index.ts";
+import { canvasIframeAtom, networkModeAtom } from "../../../atoms/ui.ts";
+import { ChaiFrame } from "../../../frame/index.ts";
 import {
   useBuilderProp,
   useCanvasDisplayWidth,
@@ -15,16 +15,16 @@ import {
   useSelectedBlock,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
-} from "../../../hooks";
-import { BlockFloatingSelector } from "../BlockFloatingActions.tsx";
-import { IframeInitialContent } from "../IframeInitialContent";
+} from "../../../hooks/index.ts";
+import { BlockFloatingSelector } from "../block-floating-actions.tsx";
+import { IframeInitialContent } from "../IframeInitialContent.ts";
 import { KeyboardHandler } from "../KeyboarHandler.tsx";
 import { AddBlockAtBottom } from "./AddBlockAtBottom.tsx";
 import { Canvas, getElementByDataBlockId } from "./Canvas.tsx";
 import { HeadTags } from "./head-tags.tsx";
 import { ResizableCanvasWrapper } from "./ResizableCanvasWrapper.tsx";
 import { StaticBlocksRenderer } from "./StaticBlocksRenderer.tsx";
-import { useCanvasScale } from "./useCanvasScale";
+import { useCanvasScale } from "./useCanvasScale.ts";
 
 const getElementByStyleId = (doc: any, styleId: string): HTMLElement =>
   doc.querySelector(`[data-style-id="${styleId}"]`) as HTMLElement;

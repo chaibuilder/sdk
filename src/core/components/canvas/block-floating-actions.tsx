@@ -16,7 +16,7 @@ import {
   useRemoveBlocks,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
-} from "../../hooks";
+} from "../../hooks/index.ts";
 import { PERMISSIONS } from "../../main/index.ts";
 import BlockController from "../sidepanels/panels/add-blocks/BlockController.tsx";
 import AddBlockDropdown from "./AddBlockDropdown.tsx";
@@ -97,7 +97,7 @@ export const BlockFloatingSelector = ({ selectedBlockElement, block }: BlockActi
           setHighlighted(null);
         }}
         onKeyDown={(e) => e.stopPropagation()}
-        className="isolate z-[999] flex h-6 items-center bg-primary py-2 text-xs text-white">
+        className="isolate z-[999] flex h-6 items-center bg-blue-500 py-2 text-xs text-white">
         {parentId && (
           <ArrowUpIcon
             className="hover:scale-105"

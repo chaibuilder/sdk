@@ -1,4 +1,4 @@
-import ChaiBuilderCanvas from "../components/canvas/CanvasArea.tsx";
+import ChaiBuilderCanvas from "./canvas/canvas-area.tsx";
 
 import BlockStyleEditor from "../components/settings/BlockStyling.tsx";
 import i18n from "../locales/load";

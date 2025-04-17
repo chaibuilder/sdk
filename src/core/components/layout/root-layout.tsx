@@ -39,7 +39,7 @@ import { useRightPanel } from "../../hooks/useTheme.ts";
 import { isDevelopment } from "../../import-html/general.ts";
 import { default as AIChatPanel } from "../ai/ai-chat-panel.tsx";
 import { AskAI } from "../ask-ai-panel.tsx";
-import CanvasArea from "../canvas/CanvasArea.tsx";
+import CanvasArea from "../canvas/canvas-area.tsx";
 import { CanvasTopBar } from "../canvas/topbar/canvas-top-bar.tsx";
 import { Outline } from "../index.ts";
 import { NoopComponent } from "../noop-component.tsx";
