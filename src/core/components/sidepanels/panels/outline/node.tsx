@@ -231,7 +231,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
               }`}>
               {hasChildren && (
                 <button onClick={handleToggle} type="button">
-                  <ChevronRight className={`h-3 w-3 stroke-[3] ${isSelected ? "text-primary" : "text-slate-400"}`} />
+                  <ChevronRight className={`h-3 w-3 stroke-[3] ${isSelected ? "text-white" : "text-slate-400"}`} />
                 </button>
               )}
             </div>
