@@ -1,6 +1,7 @@
 import { CardStackIcon, CardStackPlusIcon, CopyIcon, ScissorsIcon, TrashIcon } from "@radix-ui/react-icons";
+import { has, isEmpty } from "lodash-es";
 import { PencilIcon, PlusIcon } from "lucide-react";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../../../../ui/index.ts";
 import { CHAI_BUILDER_EVENTS } from "../../../../events.ts";
@@ -18,6 +19,7 @@ import {
 import { PERMISSIONS, usePermissions } from "../../../../main/index.ts";
 import { pubsub } from "../../../../pubsub.ts";
 import { SaveToLibrary } from "./save-to-library.tsx";
+import { UnlinkLibraryBlock } from "./unlink-library-block.tsx";
 export const PasteAtRootContextMenu = ({ parentContext, setParentContext }) => {
   const { t } = useTranslation();
   const { canPaste, pasteBlocks } = usePasteBlocks();
@@ -140,6 +142,10 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
     duplicateBlocks(selectedIds);
   }, [selectedIds, duplicateBlocks]);
 
+  const isLibLinkedBlock = useMemo(() => {
+    return has(selectedBlock, "_libBlockId") && !isEmpty(selectedBlock._libBlockId);
+  }, [selectedBlock?._libBlockId]);
+
   return (
     <DropdownMenuContent side="bottom" className="border-border text-xs">
       {hasPermission(PERMISSIONS.ADD_BLOCK) && (
@@ -161,7 +167,7 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
       <RenameBlock node={node} />
       {hasPermission(PERMISSIONS.MOVE_BLOCK) && <CutBlocks />}
       {hasPermission(PERMISSIONS.ADD_BLOCK) && <CopyPasteBlocks />}
-      {/* TODO: Add library block saving */}
+      {isLibLinkedBlock && <UnlinkLibraryBlock />}
       {hasPermission(PERMISSIONS.CREATE_LIBRARY_BLOCK) && <SaveToLibrary />}
       {hasPermission(PERMISSIONS.DELETE_BLOCK) && <RemoveBlocks />}
     </DropdownMenuContent>
