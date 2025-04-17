@@ -7,12 +7,14 @@ import React, { useEffect, useMemo } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { FEATURE_TOGGLES } from "../../FEATURE_TOGGLES.tsx";
 import { ChaiBuilderEditorProps } from "../../types/index.ts";
+import { ChaiBuilderThemeValues } from "../../types/types";
 import { Toaster } from "../../ui/index.ts";
 import { chaiBuilderPropsAtom, chaiPageExternalDataAtom } from "../atoms/builder.ts";
 import { builderStore } from "../atoms/store.ts";
 import { selectedLibraryAtom } from "../atoms/ui.ts";
 import { setDebugLogs } from "../functions/logging.ts";
 import { useBlocksStore } from "../history/useBlocksStoreUndoableActions.ts";
+import { defaultThemeValues } from "../hooks/defaultThemeOptions.ts";
 import { useBuilderProp, useBuilderReset, useSavePage } from "../hooks/index.ts";
 import { useBroadcastChannel, useUnmountBroadcastChannel } from "../hooks/useBroadcastChannel.ts";
 import { useExpandTree } from "../hooks/useExpandTree.ts";
@@ -21,12 +23,11 @@ import { useWatchPartailBlocks } from "../hooks/usePartialBlocksStore.ts";
 import { builderSaveStateAtom } from "../hooks/useSavePage.ts";
 import "../index.css";
 import i18n from "../locales/load.ts";
-import { PrimaryColorCSSVariable } from "./css-theme-var.tsx";
+import { CssThemeVariables } from "./css-theme-var.tsx";
 import { FallbackError } from "./FallbackError.tsx";
 import { RootLayout } from "./layout/root-layout.tsx";
 import { PreviewScreen } from "./PreviewScreen.tsx";
 import { SmallScreenMessage } from "./SmallScreenMessage.tsx";
-
 const useAutoSave = () => {
   const { savePage } = useSavePage();
   const autoSaveSupported = useBuilderProp("autoSaveSupport", true);
@@ -39,6 +40,7 @@ const useAutoSave = () => {
 
 const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   const [, setAllBlocks] = useBlocksStore();
+  const builderTheme = useBuilderProp("builderTheme", defaultThemeValues);
   const reset = useBuilderReset();
   const [saveState] = useAtom(builderSaveStateAtom);
   const RootLayoutComponent = useMemo(() => props.layout || RootLayout, [props.layout]);
@@ -105,7 +107,7 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
 
   return (
     <>
-      <PrimaryColorCSSVariable />
+      <CssThemeVariables theme={builderTheme as ChaiBuilderThemeValues} />
       <RootLayoutComponent />
     </>
   );

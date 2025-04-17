@@ -1,6 +1,6 @@
 import { ChaiBuilderThemeValues } from "../types/chaibuilder-editor-props";
 
-export const orangePreset: Partial<ChaiBuilderThemeValues> = {
+export const orangePreset: ChaiBuilderThemeValues = {
   fontFamily: {
     heading: "Poppins",
     body: "Poppins",
@@ -29,7 +29,7 @@ export const orangePreset: Partial<ChaiBuilderThemeValues> = {
   },
 };
 
-export const greenPreset: Partial<ChaiBuilderThemeValues> = {
+export const greenPreset: ChaiBuilderThemeValues = {
   fontFamily: {
     heading: "Playfair Display",
     body: "Playfair Display",
@@ -58,7 +58,7 @@ export const greenPreset: Partial<ChaiBuilderThemeValues> = {
   },
 };
 
-export const bluePreset: Partial<ChaiBuilderThemeValues> = {
+export const bluePreset: ChaiBuilderThemeValues = {
   fontFamily: {
     heading: "Poppins",
     body: "Roboto",

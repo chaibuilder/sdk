@@ -69,7 +69,7 @@ export const getFontFamily = (font: string) => {
   return `"${font}", ${get(chaiFont, "fallback", "")}`;
 };
 
-export const getChaiThemeCssVariables = (chaiTheme: Partial<ChaiBuilderThemeValues>) => {
+export const getChaiThemeCssVariables = (chaiTheme: ChaiBuilderThemeValues) => {
   return `:root {
     ${
       chaiTheme.fontFamily &&
