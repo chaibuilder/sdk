@@ -20,7 +20,11 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "types": ["vitest/globals", "vitest/importMeta"]
+    "types": ["vitest/globals", "vitest/importMeta"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src", "lib", "e2e_tests"],
   "references": [{ "path": "./tsconfig.node.json" }]
