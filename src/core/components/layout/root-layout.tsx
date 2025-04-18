@@ -1,3 +1,23 @@
+import { default as AIChatPanel } from "@/core/components/ai/ai-chat-panel";
+import { AskAI } from "@/core/components/ask-ai-panel";
+import CanvasArea from "@/core/components/canvas/canvas-area";
+import { CanvasTopBar } from "@/core/components/canvas/topbar/canvas-top-bar";
+import { Outline } from "@/core/components/index";
+import { AddBlocksDialog } from "@/core/components/layout/AddBlocksDialog";
+import { NoopComponent } from "@/core/components/noop-component";
+import SettingsPanel from "@/core/components/settings/settings-panel";
+import ThemeConfigPanel from "@/core/components/sidepanels/panels/theme-configuration/ThemeConfigPanel";
+import { CHAI_BUILDER_EVENTS } from "@/core/events";
+import { useChaiSidebarPanels } from "@/core/extensions/sidebar-panels";
+import { useTopBarComponent } from "@/core/extensions/top-bar";
+import { useBuilderProp, useSidebarActivePanel } from "@/core/hooks";
+import { usePubSub } from "@/core/hooks/usePubSub";
+import { useRightPanel } from "@/core/hooks/useTheme";
+import { isDevelopment } from "@/core/import-html/general";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/ui/shadcn/components/ui/sheet";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { LightningBoltIcon } from "@radix-ui/react-icons";
 import { useFeature } from "flagged";
 import { motion } from "framer-motion";
@@ -15,37 +35,6 @@ import React, {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "../../../ui/index.ts";
-import { CHAI_BUILDER_EVENTS } from "../../events.ts";
-import { useChaiSidebarPanels } from "../../extensions/sidebar-panels.tsx";
-import { useTopBarComponent } from "../../extensions/top-bar.tsx";
-import { useBuilderProp, useSidebarActivePanel } from "../../hooks/index.ts";
-import { usePubSub } from "../../hooks/usePubSub.ts";
-import { useRightPanel } from "../../hooks/useTheme.ts";
-import { isDevelopment } from "../../import-html/general.ts";
-import { default as AIChatPanel } from "../ai/ai-chat-panel.tsx";
-import { AskAI } from "../ask-ai-panel.tsx";
-import CanvasArea from "../canvas/canvas-area.tsx";
-import { CanvasTopBar } from "../canvas/topbar/canvas-top-bar.tsx";
-import { Outline } from "../index.ts";
-import { NoopComponent } from "../noop-component.tsx";
-import SettingsPanel from "../settings/settings-panel.tsx";
-import ThemeConfigPanel from "../sidepanels/panels/theme-configuration/ThemeConfigPanel.tsx";
-import { AddBlocksDialog } from "./AddBlocksDialog.tsx";
 
 const DEFAULT_PANEL_WIDTH = 280;
 

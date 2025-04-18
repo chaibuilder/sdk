@@ -2,10 +2,13 @@
 
 import type React from "react";
 
+import { cn } from "@/lib/utils";
+import { Avatar } from "@/ui/shadcn/components/ui/avatar";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
+import { Textarea } from "@/ui/shadcn/components/ui/textarea";
 import { Image, Loader2, Send, Sparkles, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { Avatar, Button, ScrollArea, Textarea } from "../../../ui";
-import { cn } from "../../utils/cn";
 
 interface Message {
   id: string;

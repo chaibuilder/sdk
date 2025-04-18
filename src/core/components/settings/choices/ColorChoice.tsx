@@ -1,9 +1,9 @@
+import { useCurrentClassByProperty } from "@/core/components/settings/choices/BlockStyle";
+import { DropDown } from "@/core/components/settings/choices/DropdownChoices";
+import { StyleContext } from "@/core/components/settings/choices/StyleContext";
+import { useTailwindClassList } from "@/core/constants/CLASSES_LIST";
 import { get } from "lodash-es";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useCurrentClassByProperty } from "./BlockStyle";
-import { DropDown } from "./DropdownChoices";
-import { useTailwindClassList } from "../../../constants/CLASSES_LIST";
-import { StyleContext } from "./StyleContext";
 
 export const COLOR_PROP = {
   backgroundColor: "bg",

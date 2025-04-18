@@ -1,5 +1,5 @@
+import { mergeClasses } from "@/core/main";
 import React, { ChangeEvent, useState } from "react";
-import { mergeClasses } from "../main";
 
 interface Option {
   value: string;

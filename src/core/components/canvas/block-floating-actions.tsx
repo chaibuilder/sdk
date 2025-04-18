@@ -1,14 +1,9 @@
-import { flip } from "@floating-ui/dom";
-import { shift, useFloating } from "@floating-ui/react-dom";
-import { ArrowUpIcon, CopyIcon, DragHandleDots2Icon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
-import { useResizeObserver } from "@react-hookz/web";
-import { useFeature } from "flagged";
-import { useAtom } from "jotai";
-import { get, isEmpty, pick } from "lodash-es";
-import { ChaiBlock } from "../../../types/chai-block.ts";
-import { inlineEditingActiveAtom } from "../../atoms/ui.ts";
-import { useFrame } from "../../frame/Context.tsx";
-import { canDeleteBlock, canDuplicateBlock } from "../../functions/block-helpers.ts";
+import { inlineEditingActiveAtom } from "@/core/atoms/ui";
+import AddBlockDropdown from "@/core/components/canvas/AddBlockDropdown";
+import { draggedBlockAtom } from "@/core/components/canvas/dnd/atoms";
+import BlockController from "@/core/components/sidepanels/panels/add-blocks/BlockController";
+import { useFrame } from "@/core/frame/Context";
+import { canDeleteBlock, canDuplicateBlock } from "@/core/functions/block-helpers";
 import {
   useDuplicateBlocks,
   useHighlightBlockId,
@@ -16,11 +11,16 @@ import {
   useRemoveBlocks,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
-} from "../../hooks/index.ts";
-import { PERMISSIONS } from "../../main/index.ts";
-import BlockController from "../sidepanels/panels/add-blocks/BlockController.tsx";
-import AddBlockDropdown from "./AddBlockDropdown.tsx";
-import { draggedBlockAtom } from "./dnd/atoms.ts";
+} from "@/core/hooks";
+import { PERMISSIONS } from "@/core/main";
+import { ChaiBlock } from "@/types/chai-block";
+import { flip } from "@floating-ui/dom";
+import { shift, useFloating } from "@floating-ui/react-dom";
+import { ArrowUpIcon, CopyIcon, DragHandleDots2Icon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
+import { useResizeObserver } from "@react-hookz/web";
+import { useFeature } from "flagged";
+import { useAtom } from "jotai";
+import { get, isEmpty, pick } from "lodash-es";
 
 /**
  * @param block

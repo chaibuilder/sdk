@@ -1,12 +1,12 @@
+import { BlockStylingProps } from "@/core/components/settings/BlockStylingProps.tsx";
+import { StylingGroup } from "@/core/components/settings/new-panel/SettingSection.tsx";
+import { BlockSettingsContext } from "@/core/components/settings/SettingsContext.tsx";
+import { FLEX_CHILD_SECTION, GRID_CHILD_SECTION, SETTINGS_SECTIONS } from "@/core/constants/STYLING_GROUPS.ts";
+import { useSelectedBlocksDisplayChild, useSelectedStylingBlocks } from "@/core/hooks";
+import { Accordion } from "@/ui/shadcn/components/ui/accordion";
 import { useThrottledCallback } from "@react-hookz/web";
 import { get, isEmpty, startsWith } from "lodash-es";
 import React, { useCallback } from "react";
-import { Accordion } from "../../../ui";
-import { FLEX_CHILD_SECTION, GRID_CHILD_SECTION, SETTINGS_SECTIONS } from "../../constants/STYLING_GROUPS.ts";
-import { useSelectedBlocksDisplayChild, useSelectedStylingBlocks } from "../../hooks";
-import { BlockStylingProps } from "./BlockStylingProps.tsx";
-import { StylingGroup } from "./new-panel/SettingSection";
-import { BlockSettingsContext } from "./SettingsContext.tsx";
 
 const MAPPER: { [key: string]: number } = {
   px: 1,

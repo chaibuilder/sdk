@@ -1,6 +1,6 @@
+import { getChaiThemeCssVariables } from "@/render";
+import { ChaiBuilderThemeValues } from "@/types/types";
 import { useMemo } from "react";
-import { getChaiThemeCssVariables } from "../../render";
-import { ChaiBuilderThemeValues } from "../../types/types";
 
 export const CssThemeVariables = ({ theme }: { theme: ChaiBuilderThemeValues }) => {
   const themeVariables = useMemo(() => {

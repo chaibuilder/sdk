@@ -1,8 +1,8 @@
+import { cn } from "@/core/functions/Functions.ts";
+import { useSavePage } from "@/core/hooks";
+import { Button } from "@/ui/shadcn/components/ui/button";
 import { Check } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Button } from "../../../ui";
-import { cn } from "../../functions/Functions.ts";
-import { useSavePage } from "../../hooks";
 
 export const SaveButton = () => {
   const { savePage, saveState } = useSavePage();

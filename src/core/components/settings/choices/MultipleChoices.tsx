@@ -1,12 +1,12 @@
+import { BlockStyle } from "@/core/components/settings/choices/BlockStyle";
+import { EDITOR_ICONS } from "@/core/constants/ICONS";
+import { ClassDerivedObject } from "@/core/functions/Class";
+import { useSelectedBlockCurrentClasses } from "@/core/hooks";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { BoxIcon } from "@radix-ui/react-icons";
 import { get, map, startCase, toLower } from "lodash-es";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../ui";
-import { EDITOR_ICONS } from "../../../constants/ICONS";
-import { ClassDerivedObject } from "../../../functions/Class";
-import { useSelectedBlockCurrentClasses } from "../../../hooks";
-import { BlockStyle } from "./BlockStyle";
 
 const basicUnits = ["px", "%", "em", "rem", "ch", "vh", "vw"];
 

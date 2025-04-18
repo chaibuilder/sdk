@@ -1,9 +1,9 @@
+import { ChaiBuilderBlocks } from "@/core/components/sidepanels/panels/add-blocks/add-blocks";
+import { usePartialBlocksList } from "@/core/hooks/usePartialBlocksStore";
 import { atom, useAtom } from "jotai";
 import { map, uniq } from "lodash-es";
 import { Globe } from "lucide-react";
 import { useEffect } from "react";
-import { usePartialBlocksList } from "../../../../hooks/usePartialBlocksStore";
-import { ChaiBuilderBlocks } from "./add-blocks";
 
 // Create an atom to store the fetched partial blocks
 const partialBlocksDataAtom = atom<{

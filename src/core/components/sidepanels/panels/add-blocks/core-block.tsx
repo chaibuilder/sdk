@@ -1,3 +1,8 @@
+import { draggedBlockAtom } from "@/core/components/canvas/dnd/atoms";
+import { CHAI_BUILDER_EVENTS } from "@/core/events";
+import { useAddBlock, useBlockHighlight, useSelectedBlockIds } from "@/core/hooks";
+import { pubsub } from "@/core/pubsub";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { BoxIcon } from "@radix-ui/react-icons";
 import { useFeature } from "flagged";
@@ -5,11 +10,6 @@ import { useAtom } from "jotai";
 import { capitalize, has, isFunction, omit } from "lodash-es";
 import { createElement } from "react";
 import { useTranslation } from "react-i18next";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../../ui/index.ts";
-import { CHAI_BUILDER_EVENTS } from "../../../../events.ts";
-import { useAddBlock, useBlockHighlight, useSelectedBlockIds } from "../../../../hooks/index.ts";
-import { pubsub } from "../../../../pubsub.ts";
-import { draggedBlockAtom } from "../../../canvas/dnd/atoms.ts";
 
 export const CoreBlock = ({
   block,

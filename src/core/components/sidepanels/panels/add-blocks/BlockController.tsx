@@ -1,11 +1,11 @@
+import { getOrientation } from "@/core/components/canvas/dnd/getOrientation";
+import { useFrame } from "@/core/frame/Context";
+import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/hooks";
+import { ChaiBlock } from "@/types/chai-block";
 import { PinBottomIcon, PinLeftIcon, PinRightIcon, PinTopIcon } from "@radix-ui/react-icons";
 import { filter, findIndex, get } from "lodash-es";
 import { useCallback } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
-import { ChaiBlock } from "../../../../../types/chai-block.ts";
-import { useFrame } from "../../../../frame/Context.tsx";
-import { useBlocksStore, useBlocksStoreUndoableActions } from "../../../../hooks";
-import { getOrientation } from "../../../canvas/dnd/getOrientation.ts";
 
 const CONTROLS = [
   { ControlIcon: PinTopIcon, dir: "VERTICAL", key: "UP" },
