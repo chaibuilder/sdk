@@ -1,11 +1,12 @@
-import { useCallback, useContext, useEffect, useState } from "react";
-import { first, get, isEmpty, isNaN, parseInt } from "lodash-es";
-import { useThrottledCallback } from "@react-hookz/web";
+import { BlockSettingsContext } from "@/core/components/settings/SettingsContext";
+import { getUserInputValues } from "@/core/functions/GetUserInputValues";
+import { getClassValueAndUnit } from "@/core/functions/Helpers";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { InfoCircledIcon, RowSpacingIcon, TriangleDownIcon } from "@radix-ui/react-icons";
-import { getUserInputValues } from "../../../functions/GetUserInputValues";
-import { Button, Tooltip, TooltipContent, TooltipPortal, TooltipTrigger } from "../../../../ui";
-import { getClassValueAndUnit } from "../../../functions/Helpers";
-import { BlockSettingsContext } from "../SettingsContext";
+import { useThrottledCallback } from "@react-hookz/web";
+import { first, get, isEmpty, isNaN, parseInt } from "lodash-es";
+import { useCallback, useContext, useEffect, useState } from "react";
 
 type RangeOptionsType = {
   classPrefix: string;
@@ -255,19 +256,17 @@ export const AdvanceChoices = (props: RangeOptionsType) => {
                     {units.length > 1 ? <TriangleDownIcon /> : null}
                   </button>
                 </TooltipTrigger>
-                <TooltipPortal>
-                  <TooltipContent className="bg-background">
-                    <UnitSelection
-                      units={units}
-                      current={unit}
-                      onSelect={(val: string) => {
-                        setShowUnits(false);
-                        setUnit(val);
-                        setStyleForUnit(val);
-                      }}
-                    />
-                  </TooltipContent>
-                </TooltipPortal>
+                <TooltipContent className="bg-background">
+                  <UnitSelection
+                    units={units}
+                    current={unit}
+                    onSelect={(val: string) => {
+                      setShowUnits(false);
+                      setUnit(val);
+                      setStyleForUnit(val);
+                    }}
+                  />
+                </TooltipContent>
               </Tooltip>
             </div>
             {["none", "auto"].indexOf(unit) !== -1 || lift ? null : (
