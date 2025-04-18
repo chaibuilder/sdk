@@ -1,7 +1,9 @@
+import { Alert, AlertDescription } from "@/ui/shadcn/components/ui/alert";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { Input } from "@/ui/shadcn/components/ui/input";
 import { AlertCircle } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Alert, AlertDescription, Button, Input } from "../../ui";
 
 export type MediaManagerProps = {
   close: () => void;

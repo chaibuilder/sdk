@@ -1,9 +1,9 @@
+import { AskAiResponse } from "@/types/chaibuilder-editor-props";
 import { first, noop } from "lodash-es";
 import { ChevronDown, Loader, SparklesIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { AskAiResponse } from "../../types/chaibuilder-editor-props.ts";
 import {
   Accordion,
   AccordionContent,
