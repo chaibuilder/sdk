@@ -1,8 +1,10 @@
-import { CrossCircledIcon, InfoCircledIcon } from "@radix-ui/react-icons";
-import { findLast, get } from "lodash-es";
-import { useCallback, useEffect, useMemo } from "react";
-import { useTranslation } from "react-i18next";
-import { ClassDerivedObject, generateFullClsName } from "../../../functions/Class";
+import { AdvanceChoices } from "@/core/components/settings/choices/AdvanceChoices";
+import { ColorChoice } from "@/core/components/settings/choices/ColorChoice";
+import { DropDownChoices } from "@/core/components/settings/choices/DropdownChoices";
+import { IconChoices } from "@/core/components/settings/choices/IconChoice";
+import { RangeChoices } from "@/core/components/settings/choices/RangeChoices";
+import { BlockStyleProvider } from "@/core/components/settings/choices/StyleContext";
+import { ClassDerivedObject, generateFullClsName } from "@/core/functions/Class";
 import {
   useAddClassesToBlocks,
   useDarkMode,
@@ -11,15 +13,12 @@ import {
   useSelectedBlockCurrentClasses,
   useSelectedBlockIds,
   useStylingState,
-} from "../../../hooks";
-import { ColorChoice } from "./ColorChoice";
-import { DropDownChoices } from "./DropdownChoices";
-import { IconChoices } from "./IconChoice";
-import { RangeChoices } from "./RangeChoices";
-
-import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../ui";
-import { AdvanceChoices } from "./AdvanceChoices";
-import { BlockStyleProvider } from "./StyleContext";
+} from "@/core/hooks";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
+import { CrossCircledIcon, InfoCircledIcon } from "@radix-ui/react-icons";
+import { findLast, get } from "lodash-es";
+import { useCallback, useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 type EditOptionProps = {
   label: string;

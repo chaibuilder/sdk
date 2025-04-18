@@ -1,16 +1,16 @@
+import { FallbackError } from "@/core/components/FallbackError";
+import BlockSettings from "@/core/components/settings/block-settings";
+import BlockStyling from "@/core/components/settings/BlockStyling";
+import { BlockAttributesEditor } from "@/core/components/settings/new-panel/BlockAttributesEditor";
+import { useBuilderProp, useSelectedBlock, useSelectedStylingBlocks } from "@/core/hooks";
+import { PERMISSIONS, usePermissions } from "@/core/main";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/shadcn/components/ui/tabs";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
 import { isEmpty, isNull, noop } from "lodash-es";
 import { ChevronDown } from "lucide-react";
 import React, { useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../ui/index.ts";
-import { useBuilderProp, useSelectedBlock, useSelectedStylingBlocks } from "../../hooks/index.ts";
-import { PERMISSIONS, usePermissions } from "../../main/index.ts";
-import { FallbackError } from "../FallbackError.tsx";
-import BlockSettings from "./block-settings.tsx";
-import BlockStyling from "./BlockStyling.tsx";
-import { BlockAttributesEditor } from "./new-panel/BlockAttributesEditor.tsx";
 
 function BlockAttributesToggle() {
   const { t } = useTranslation();

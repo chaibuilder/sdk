@@ -1,11 +1,12 @@
+import { useCurrentClassByProperty } from "@/core/components/settings/choices/BlockStyle";
+import { StyleContext } from "@/core/components/settings/choices/StyleContext";
+import { useTailwindClassList } from "@/core/constants/CLASSES_LIST";
+import { useUndoManager } from "@/core/hooks";
+import { Input } from "@/ui/shadcn/components/ui/input";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { get } from "lodash-es";
 import { useContext, useMemo } from "react";
-import { Input, Tooltip, TooltipContent, TooltipTrigger } from "../../../../ui";
-import { useTailwindClassList } from "../../../constants/CLASSES_LIST";
-import { useUndoManager } from "../../../hooks";
-import { useCurrentClassByProperty } from "./BlockStyle";
-import { StyleContext } from "./StyleContext";
 
 export const DropDownChoices = ({ label, property, onChange }: any) => {
   const { getClasses } = useTailwindClassList();

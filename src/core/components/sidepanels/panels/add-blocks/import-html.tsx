@@ -1,19 +1,13 @@
+import { CHAI_BUILDER_EVENTS } from "@/core/events";
+import { useAddBlock } from "@/core/hooks";
+import { getBlocksFromHTML } from "@/core/import-html/html-to-json";
+import { pubsub } from "@/core/pubsub";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/ui/shadcn/components/ui/card";
+import { Label } from "@/ui/shadcn/components/ui/label";
+import { Textarea } from "@/ui/shadcn/components/ui/textarea";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Button,
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  Label,
-  Textarea,
-} from "../../../../../ui/index.ts";
-import { CHAI_BUILDER_EVENTS } from "../../../../events.ts";
-import { useAddBlock } from "../../../../hooks/index.ts";
-import { getBlocksFromHTML } from "../../../../import-html/html-to-json.ts";
-import { pubsub } from "../../../../pubsub.ts";
 
 const ImportHTML = ({ parentId, position }: { parentId?: string; position?: number }) => {
   const { t } = useTranslation();

@@ -1,9 +1,6 @@
-import { isEmpty } from "lodash-es";
-import { useSelectedBlock, useSelectedStylingBlocks, useTranslation } from "../../hooks";
-import { map } from "lodash-es";
-import { startCase } from "lodash-es";
-import { Badge } from "../../../ui";
-import { find } from "lodash-es";
+import { useSelectedBlock, useSelectedStylingBlocks, useTranslation } from "@/core/hooks";
+import { Badge } from "@/ui/shadcn/components/ui/badge";
+import { find, isEmpty, map, startCase } from "lodash-es";
 
 export const BlockStylingProps = () => {
   const selectedBlock = useSelectedBlock();

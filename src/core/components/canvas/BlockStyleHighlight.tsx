@@ -1,10 +1,10 @@
+import { inlineEditingActiveAtom } from "@/core/atoms/ui";
+import { ChaiBlock } from "@/types/chai-block";
 import { flip } from "@floating-ui/dom";
 import { shift, useFloating } from "@floating-ui/react-dom";
 import { useResizeObserver } from "@react-hookz/web";
 import { useAtom } from "jotai";
 import { Paintbrush } from "lucide-react";
-import { ChaiBlock } from "../../../types/chai-block.ts";
-import { inlineEditingActiveAtom } from "../../atoms/ui.ts";
 
 // NOTE: this component is not used anymore, but keeping it for now. Might remove it later.
 // Author: surajair

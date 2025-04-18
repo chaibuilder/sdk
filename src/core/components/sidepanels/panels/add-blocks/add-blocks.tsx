@@ -1,22 +1,24 @@
+import { showPredefinedBlockCategoryAtom } from "@/core/atoms/ui";
+import { CoreBlock } from "@/core/components/sidepanels/panels/add-blocks/core-block";
+import { DefaultChaiBlocks } from "@/core/components/sidepanels/panels/add-blocks/default-blocks";
+import ImportHTML from "@/core/components/sidepanels/panels/add-blocks/import-html";
+import UILibrariesPanel from "@/core/components/sidepanels/panels/add-blocks/libraries-panel";
+import { PartialBlocks } from "@/core/components/sidepanels/panels/add-blocks/partial-blocks";
+import { CHAI_BUILDER_EVENTS } from "@/core/events";
+import { useChaiAddBlockTabs } from "@/core/extensions/add-block-tabs";
+import { canAcceptChildBlock, canBeNestedInside } from "@/core/functions/block-helpers";
+import { useBlocksStore, useBuilderProp, usePermissions } from "@/core/hooks";
+import { usePartialBlocksList } from "@/core/hooks/usePartialBlocksStore";
+import { mergeClasses, PERMISSIONS } from "@/core/main";
+import { pubsub } from "@/core/pubsub";
+import { Input } from "@/ui/shadcn/components/ui/input";
+import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/shadcn/components/ui/tabs";
 import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { capitalize, debounce, filter, find, map, reject, sortBy, values } from "lodash-es";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Input, ScrollArea, Tabs, TabsContent, TabsList, TabsTrigger } from "../../../../../ui/index.ts";
-import { showPredefinedBlockCategoryAtom } from "../../../../atoms/ui.ts";
-import { CHAI_BUILDER_EVENTS } from "../../../../events.ts";
-import { useChaiAddBlockTabs } from "../../../../extensions/add-block-tabs.tsx";
-import { canAcceptChildBlock, canBeNestedInside } from "../../../../functions/block-helpers.ts";
-import { useBlocksStore, useBuilderProp, usePermissions } from "../../../../hooks/index.ts";
-import { usePartialBlocksList } from "../../../../hooks/usePartialBlocksStore.ts";
-import { mergeClasses, PERMISSIONS } from "../../../../main/index.ts";
-import { pubsub } from "../../../../pubsub.ts";
-import { CoreBlock } from "./core-block.tsx";
-import { DefaultChaiBlocks } from "./default-blocks.tsx";
-import ImportHTML from "./import-html.tsx";
-import UILibrariesPanel from "./libraries-panel.tsx";
-import { PartialBlocks } from "./partial-blocks.tsx";
 
 const CORE_GROUPS = ["basic", "typography", "media", "layout", "form", "advanced", "other"];
 

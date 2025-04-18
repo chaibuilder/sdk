@@ -1,34 +1,28 @@
+import { draggedBlockAtom } from "@/core/components/canvas/dnd/atoms.ts";
+import { UILibrariesSelect } from "@/core/components/sidepanels/panels/add-blocks/libraries-select";
+import { CHAI_BUILDER_EVENTS } from "@/core/events";
+import { cn } from "@/core/functions/Functions";
+import { useAddBlock, useBlockHighlight, useBuilderProp, useSelectedBlockIds } from "@/core/hooks";
+import { useLibraryBlocks } from "@/core/hooks/use-library-blocks";
+import { useSelectedLibrary } from "@/core/hooks/use-selected-library";
+import { pubsub } from "@/core/pubsub";
+import { ChaiBlock } from "@/types/chai-block";
+import { ChaiUILibrary, ChaiUILibraryBlock } from "@/types/chaibuilder-editor-props";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { Input } from "@/ui/shadcn/components/ui/input";
+import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
+import { Skeleton } from "@/ui/shadcn/components/ui/skeleton.tsx";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip.tsx";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { CaretRightIcon } from "@radix-ui/react-icons";
+import clsx from "clsx";
 import { useFeature } from "flagged";
 import Fuse from "fuse.js";
 import { useAtom } from "jotai";
 import { capitalize, filter, first, get, groupBy, has, isEmpty, keys, map, noop } from "lodash-es";
 import { Loader, RefreshCw, Search, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ChaiBlock } from "../../../../../types/chai-block.ts";
-import { ChaiUILibrary, ChaiUILibraryBlock } from "../../../../../types/chaibuilder-editor-props.ts";
-import {
-  Button,
-  Input,
-  ScrollArea,
-  Skeleton,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "../../../../../ui/index.ts";
-import { cn } from "../../../../functions/Functions.ts";
-import { useAddBlock, useBuilderProp, useSelectedBlockIds } from "../../../../hooks/index.ts";
-import { UILibrariesSelect } from "./libraries-select.tsx";
-
-import clsx from "clsx";
 import { useTranslation } from "react-i18next";
-import { CHAI_BUILDER_EVENTS } from "../../../../events.ts";
-import { useBlockHighlight } from "../../../../hooks/index.ts";
-import { useLibraryBlocks } from "../../../../hooks/use-library-blocks.tsx";
-import { useSelectedLibrary } from "../../../../hooks/use-selected-library.ts";
-import { pubsub } from "../../../../pubsub.ts";
-import { draggedBlockAtom } from "../../../canvas/dnd/atoms.ts";
 
 const BlockCard = ({
   block,

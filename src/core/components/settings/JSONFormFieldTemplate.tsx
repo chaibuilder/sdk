@@ -1,13 +1,13 @@
+import { usePageExternalData } from "@/core/atoms/builder.ts";
+import { NestedPathSelector } from "@/core/components/NestedPathSelector.tsx";
+import { LANGUAGES } from "@/core/constants/LANGUAGES.ts";
+import { useLanguages, useSelectedBlock } from "@/core/hooks";
+import { Badge } from "@/ui/shadcn/components/ui/badge";
 import { useRegisteredChaiBlocks } from "@chaibuilder/runtime";
 import { FieldTemplateProps } from "@rjsf/utils";
 import { get, isEmpty } from "lodash-es";
 import { ChevronDown, ChevronRight, List } from "lucide-react";
 import { useCallback, useState } from "react";
-import { Badge } from "../../../ui";
-import { usePageExternalData } from "../../atoms/builder.ts";
-import { LANGUAGES } from "../../constants/LANGUAGES.ts";
-import { useLanguages, useSelectedBlock } from "../../hooks";
-import { NestedPathSelector } from "../NestedPathSelector.tsx";
 
 const JSONFormFieldTemplate = ({
   id,
