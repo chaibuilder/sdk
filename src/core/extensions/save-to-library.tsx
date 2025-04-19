@@ -3,7 +3,7 @@ import { ComponentType, useMemo } from "react";
 
 export type SaveToLibraryProps = {
   blockId: string;
-  blocks?: ChaiBlock[];
+  blocks: ChaiBlock[];
   close: () => void;
 };
 
