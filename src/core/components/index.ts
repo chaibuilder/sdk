@@ -9,7 +9,7 @@ import ThemeOptions from "@/core/components/sidepanels/panels/theme-configuratio
 import i18n from "@/core/locales/load";
 
 export { AISetContext, AIUserPrompt } from "@/core/components/ask-ai-panel";
-export { Breakpoints as ScreenSizes } from "@/core/components/canvas/topbar/breakpoints";
+export { Breakpoints as ScreenSizes } from "@/core/components/canvas/topbar/canvas-breakpoints";
 export { DarkMode as DarkModeSwitcher } from "@/core/components/canvas/topbar/dark-mode";
 export { UndoRedo } from "@/core/components/canvas/topbar/undo-redo";
 export { ChaiBuilderEditor } from "@/core/components/chaibuilder-editor";

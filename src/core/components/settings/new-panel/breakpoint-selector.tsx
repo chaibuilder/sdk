@@ -1,4 +1,4 @@
-import { Breakpoints, WEB_BREAKPOINTS } from "@/core/components/canvas/topbar/breakpoints";
+import { Breakpoints, WEB_BREAKPOINTS } from "@/core/components/canvas/topbar/canvas-breakpoints";
 import { useScreenSizeWidth } from "@/core/hooks";
 import { useMemo } from "react";
 

@@ -1,5 +1,5 @@
 import { AiAssistant } from "@/core/components/canvas/topbar/ai-assistant";
-import { Breakpoints } from "@/core/components/canvas/topbar/breakpoints";
+import { Breakpoints } from "@/core/components/canvas/topbar/canvas-breakpoints";
 import { ClearCanvas } from "@/core/components/canvas/topbar/clear-canvas";
 import { DarkMode } from "@/core/components/canvas/topbar/dark-mode";
 import { DataBinding } from "@/core/components/canvas/topbar/data-binding";
