@@ -1,12 +1,12 @@
+import { generateUUID } from "@/core/functions/Functions";
+import { canAcceptChildBlock } from "@/core/functions/block-helpers";
+import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/history/useBlocksStoreUndoableActions";
+import { useSelectedBlockIds } from "@/core/hooks/useSelectedBlockIds";
+import { ChaiBlock } from "@/types/chai-block";
+import { CoreBlock } from "@/types/core-block";
 import { getDefaultBlockProps } from "@chaibuilder/runtime";
 import { filter, find, first, has } from "lodash-es";
 import { useCallback } from "react";
-import { ChaiBlock } from "../../types/chai-block.ts";
-import { CoreBlock } from "../../types/core-block.ts";
-import { generateUUID } from "../functions/Functions.ts";
-import { canAcceptChildBlock } from "../functions/block-helpers.ts";
-import { useBlocksStore, useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
-import { useSelectedBlockIds } from "./useSelectedBlockIds";
 
 type AddBlocks = {
   addCoreBlock: any;

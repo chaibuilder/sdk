@@ -1,4 +1,4 @@
-import { cn } from "../core/functions/Functions.ts";
+import { cn } from "@/core/functions/Functions";
 
 type EmptySlotProps = {
   className?: any;

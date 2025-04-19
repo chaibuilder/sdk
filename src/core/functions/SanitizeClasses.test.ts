@@ -1,4 +1,4 @@
-import { sanitizeClasses } from "./SanitizeClasses";
+import { sanitizeClasses } from "@/core/functions/SanitizeClasses";
 
 describe("Sanitize classes string", () => {
   test("sanitizeClasses", () => {

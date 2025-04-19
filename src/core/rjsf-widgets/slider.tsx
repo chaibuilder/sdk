@@ -1,7 +1,7 @@
-import { useAddBlock, useBlocksStore, useSelectedBlock, useSelectedBlockIds, useWrapperBlock } from "../hooks";
-import { ChevronLeft, ChevronRight, PlusCircle } from "lucide-react";
-import { find, filter, findIndex, get } from "lodash-es";
+import { useAddBlock, useBlocksStore, useSelectedBlock, useSelectedBlockIds, useWrapperBlock } from "@/core/hooks";
 import { FieldProps } from "@rjsf/utils";
+import { filter, find, findIndex, get } from "lodash-es";
+import { ChevronLeft, ChevronRight, PlusCircle } from "lucide-react";
 import { useEffect } from "react";
 
 const SliderField = ({ formData, onChange }: FieldProps) => {

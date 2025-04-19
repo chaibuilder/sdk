@@ -1,9 +1,9 @@
+import { CHAI_BUILDER_EVENTS } from "@/core/events";
+import { usePermissions } from "@/core/hooks";
+import { PERMISSIONS } from "@/core/main";
+import { pubsub } from "@/core/pubsub";
 import { PlusIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { CHAI_BUILDER_EVENTS } from "../../../events";
-import { usePermissions } from "../../../hooks";
-import { PERMISSIONS } from "../../../main";
-import { pubsub } from "../../../pubsub";
 
 export const AddBlockAtBottom = () => {
   const { t } = useTranslation();

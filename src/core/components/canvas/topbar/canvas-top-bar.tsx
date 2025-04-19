@@ -1,15 +1,15 @@
+import { AiAssistant } from "@/core/components/canvas/topbar/AiAssistant";
+import { Breakpoints } from "@/core/components/canvas/topbar/Breakpoints";
+import { ClearCanvas } from "@/core/components/canvas/topbar/ClearCanvas";
+import { DarkMode } from "@/core/components/canvas/topbar/DarkMode";
+import { DataBinding } from "@/core/components/canvas/topbar/DataBinding";
+import { UndoRedo } from "@/core/components/canvas/topbar/UndoRedo";
+import { useBuilderProp, useCanvasZoom } from "@/core/hooks";
+import { Separator } from "@/ui/shadcn/components/ui/separator";
 import { ZoomInIcon } from "@radix-ui/react-icons";
 import { useFeature } from "flagged";
 import { round } from "lodash-es";
 import React from "react";
-import { Separator } from "../../../../ui";
-import { useBuilderProp, useCanvasZoom } from "../../../hooks";
-import { AiAssistant } from "./AiAssistant";
-import { Breakpoints } from "./Breakpoints";
-import { ClearCanvas } from "./ClearCanvas";
-import { DarkMode } from "./DarkMode";
-import { DataBinding } from "./DataBinding";
-import { UndoRedo } from "./UndoRedo";
 
 const CanvasTopBar: React.FC = () => {
   const darkModeSupport = useBuilderProp("darkMode", true);

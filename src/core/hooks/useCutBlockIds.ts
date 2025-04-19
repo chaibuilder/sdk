@@ -1,6 +1,6 @@
+import { copiedBlockIdsAtom } from "@/core/hooks/useCopyBlockIds";
 import { atom, useAtom, useSetAtom } from "jotai";
 import { useCallback } from "react";
-import { copiedBlockIdsAtom } from "./useCopyBlockIds";
 
 export const cutBlockIdsAtom: any = atom<Array<string>>([]);
 

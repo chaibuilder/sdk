@@ -1,4 +1,4 @@
-import { isVisibleAtBreakpoint } from "./isVisibleAtBreakpoint.ts"; // Adjust the import path as needed
+import { isVisibleAtBreakpoint } from "@/core/functions/isVisibleAtBreakpoint";
 
 describe("isVisibleAtBreakpoint", () => {
   test("hidden by default", () => {

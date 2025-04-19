@@ -1,4 +1,26 @@
-import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
+import { useChaiExternalData } from "@/core/components/canvas/static/useChaiExternalData";
+import { FallbackError } from "@/core/components/FallbackError";
+import { useBuilderProp, useSelectedBlock } from "@/core/hooks";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/ui/shadcn/components/ui/command";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/ui/shadcn/components/ui/dialog";
+import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/ui/popover";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import {
   filter,
   find,
@@ -23,31 +45,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { allExpanded, defaultStyles, JsonView } from "react-json-view-lite";
 import "react-json-view-lite/dist/index.css";
-import {
-  Button,
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "../../ui";
-import { useChaiExternalData } from "../components/canvas/static/useChaiExternalData.ts";
-import { FallbackError } from "../components/FallbackError.tsx";
-import { useBuilderProp, useSelectedBlock } from "../hooks";
 
 // * Object to Path and Data Type
 function getPathAndTypes(obj) {

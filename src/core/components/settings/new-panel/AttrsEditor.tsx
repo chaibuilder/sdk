@@ -1,11 +1,14 @@
 "use client";
 
+import { usePageExternalData } from "@/core/atoms/builder";
+import { NestedPathSelector } from "@/core/components/NestedPathSelector";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { Input } from "@/ui/shadcn/components/ui/input";
+import { Label } from "@/ui/shadcn/components/ui/label";
+import { Textarea } from "@/ui/shadcn/components/ui/textarea";
 import { isEmpty } from "lodash-es";
 import { Edit2, X } from "lucide-react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Button, Input, Label, Textarea } from "../../../../ui";
-import { usePageExternalData } from "../../../atoms/builder";
-import { NestedPathSelector } from "../../NestedPathSelector";
 
 type Attribute = {
   key: string;

@@ -1,12 +1,12 @@
+import { presentBlocksAtom } from "@/core/atoms/blocks";
+import { canAcceptChildBlock } from "@/core/functions/block-helpers";
+import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/history/useBlocksStoreUndoableActions";
+import { useAddBlock } from "@/core/hooks/useAddBlock";
+import { useCutBlockIds } from "@/core/hooks/useCutBlockIds";
 import { useAtomValue } from "jotai";
 import { find, first, has, isEmpty } from "lodash-es";
 import { useCallback } from "react";
 import { toast } from "sonner";
-import { presentBlocksAtom } from "../atoms/blocks";
-import { canAcceptChildBlock } from "../functions/block-helpers.ts";
-import { useBlocksStore, useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
-import { useAddBlock } from "./useAddBlock";
-import { useCutBlockIds } from "./useCutBlockIds";
 
 const useCanPaste = () => {
   const [blocks] = useBlocksStore();

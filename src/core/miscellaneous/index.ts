@@ -1,9 +1,9 @@
-import i18n from "../locales/load.ts";
+import i18n from "@/core/locales/load";
 
-export { generateUUID as generateBlockId, cn as mergeClasses } from "../functions/Functions.ts";
-export { getBlocksFromHTML } from "../import-html/html-to-json.ts";
-export { CHAI_BUILDER_EVENTS } from "../events.ts";
-export { pubsub } from "../pubsub.ts";
-export { usePubSub } from "../hooks/usePubSub.ts";
+export { CHAI_BUILDER_EVENTS } from "@/core/events";
+export { generateUUID as generateBlockId, cn as mergeClasses } from "@/core/functions/Functions";
+export { usePubSub } from "@/core/hooks/usePubSub";
+export { getBlocksFromHTML } from "@/core/import-html/html-to-json";
+export { pubsub } from "@/core/pubsub";
 
 export { i18n };

@@ -1,10 +1,11 @@
+import { useBuilderProp } from "@/core/hooks";
+import { useAiAssistant } from "@/core/hooks/useAskAi";
+import { useRightPanel } from "@/core/hooks/useTheme";
+import { PERMISSIONS, usePermissions } from "@/core/main";
+import { Label } from "@/ui/shadcn/components/ui/label";
+import { Switch } from "@/ui/shadcn/components/ui/switch";
 import { SparklesIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Label, Switch } from "../../../../ui";
-import { useBuilderProp } from "../../../hooks";
-import { useAiAssistant } from "../../../hooks/useAskAi.ts";
-import { useRightPanel } from "../../../hooks/useTheme.ts";
-import { PERMISSIONS, usePermissions } from "../../../main/index.ts";
 
 export const AiAssistant = () => {
   const setAiAssistantActive = useAiAssistant();

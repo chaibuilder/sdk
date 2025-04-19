@@ -1,5 +1,6 @@
-export { getChaiBuilderTailwindConfig } from "./getChaiBuilderTailwindConfig.ts";
-export { getChaiBuilderTheme } from "./getChaiBuilderTheme.ts";
-import chaiBuilderPlugin from "./plugin.ts";
+import chaiBuilderPlugin from "@/tailwind/plugin";
+
+export { getChaiBuilderTailwindConfig } from "@/tailwind/getChaiBuilderTailwindConfig";
+export { getChaiBuilderTheme } from "@/tailwind/getChaiBuilderTheme";
 
 export { chaiBuilderPlugin };

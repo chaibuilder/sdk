@@ -1,5 +1,5 @@
+import { selectedLibraryAtom } from "@/core/atoms/ui";
 import { useAtom } from "jotai";
-import { selectedLibraryAtom } from "../atoms/ui";
 
 /**
  * Hook to get and set the selected UI library

@@ -1,7 +1,7 @@
+import { generateUUID } from "@/core/functions/Functions";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { DropdownMenuIcon } from "@radix-ui/react-icons";
 import { map } from "lodash-es";
-import { generateUUID } from "../../core/functions/Functions";
 
 export type SelectProps = {
   showLabel: boolean;

@@ -1,10 +1,10 @@
+import { MicrosoftClarity } from "@/_demo/MicrosoftClarity";
+import "@/index.css";
 import { DevTools } from "jotai-devtools";
 import "jotai-devtools/styles.css";
 import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { MicrosoftClarity } from "./_demo/MicrosoftClarity.tsx";
-import "./index.css";
 
 async function enableMocking() {
   if (import.meta.env.MODE !== "development") {
@@ -13,8 +13,8 @@ async function enableMocking() {
   return true;
 }
 
-const ChaiBuilderDefault = lazy(() => import("./Editor.tsx"));
-const Preview = lazy(() => import("./Preview.tsx"));
+const ChaiBuilderDefault = lazy(() => import("@/Editor.tsx"));
+const Preview = lazy(() => import("@/Preview.tsx"));
 
 const router = createBrowserRouter([
   {

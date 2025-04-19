@@ -1,5 +1,5 @@
-import { useKeyEventWatcher } from "../../hooks/useKeyEventWatcher.ts";
-import { useFrame } from "../../frame";
+import { useFrame } from "@/core/frame";
+import { useKeyEventWatcher } from "@/core/hooks/useKeyEventWatcher.ts";
 
 export const KeyboardHandler = () => {
   const { document: iframeDoc } = useFrame();

@@ -1,4 +1,4 @@
-import { useBuilderProp } from "./useBuilderProp";
+import { useBuilderProp } from "@/core/hooks/useBuilderProp";
 import { atom, useAtom } from "jotai";
 
 const languageAtom = atom("");

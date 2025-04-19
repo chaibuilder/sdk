@@ -1,9 +1,9 @@
+import { presentBlocksAtom } from "@/core/atoms/blocks";
+import { useSelectedBlockIds } from "@/core/hooks/useSelectedBlockIds";
+import { ChaiBlock } from "@/types/chai-block";
 import { atom, useAtom, useAtomValue } from "jotai";
 import { find, first, flatten, get, isEmpty, isString } from "lodash-es";
 import { useEffect } from "react";
-import { ChaiBlock } from "../../types/chai-block";
-import { presentBlocksAtom } from "../atoms/blocks";
-import { useSelectedBlockIds } from "./useSelectedBlockIds";
 
 /**
  * Traverse the components array to find all the parent nodes

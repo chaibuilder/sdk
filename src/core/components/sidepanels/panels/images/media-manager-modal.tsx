@@ -1,6 +1,6 @@
+import { useMediaManagerComponent } from "@/core/extensions/media-manager";
+import { Dialog, DialogContent, DialogTrigger } from "@/ui/shadcn/components/ui/dialog";
 import React, { useState } from "react";
-import { Dialog, DialogContent, DialogTrigger } from "../../../../../ui";
-import { useMediaManagerComponent } from "../../../../extensions/media-manager";
 
 const MediaManagerModal = ({
   children,

@@ -1,4 +1,4 @@
+import { styleBreakpointAtom } from "@/core/hooks/useSelectedBlockIds";
 import { useAtom } from "jotai";
-import { styleBreakpointAtom } from "./useSelectedBlockIds";
 
 export const useStylingBreakpoint = () => useAtom(styleBreakpointAtom);

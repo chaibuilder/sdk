@@ -1,6 +1,6 @@
+import { cn } from "@/core/functions/Functions";
 import { ChaiBlockComponentProps, registerChaiBlockSchema } from "@chaibuilder/runtime";
 import { FileCode } from "lucide-react";
-import { cn } from "../core/functions/Functions.ts";
 
 export type CustomScriptBlockProps = {
   scripts: string;

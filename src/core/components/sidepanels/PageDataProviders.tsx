@@ -1,10 +1,7 @@
-import { useAtom } from "jotai";
-import { filter, find, isEmpty, isNull, map, noop } from "lodash-es";
-import { useEffect, useMemo, useState } from "react";
-import { ErrorBoundary } from "react-error-boundary";
-import { useTranslation } from "react-i18next";
-import { allExpanded, defaultStyles, JsonView } from "react-json-view-lite";
-import "react-json-view-lite/dist/index.css";
+import { FallbackError } from "@/core/components/FallbackError.tsx";
+import { useBuilderProp } from "@/core/hooks";
+import { usePageDataProviders } from "@/core/hooks/usePageDataProviders.ts";
+import { builderSaveStateAtom } from "@/core/hooks/useSavePage.ts";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,21 +12,16 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../../../ui";
-import { useBuilderProp } from "../../hooks";
-import { usePageDataProviders } from "../../hooks/usePageDataProviders.ts";
-import { builderSaveStateAtom } from "../../hooks/useSavePage.ts";
-import { FallbackError } from "../FallbackError.tsx";
+} from "@/ui/shadcn/components/ui/alert-dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/components/ui/select";
+import { useAtom } from "jotai";
+import { filter, find, isEmpty, isNull, map, noop } from "lodash-es";
+import { useEffect, useMemo, useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import { useTranslation } from "react-i18next";
+import { allExpanded, defaultStyles, JsonView } from "react-json-view-lite";
+import "react-json-view-lite/dist/index.css";
 
 const ViewProviderData = ({ provider, onClose }) => {
   const { t } = useTranslation();

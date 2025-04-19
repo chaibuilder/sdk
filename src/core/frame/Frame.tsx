@@ -1,8 +1,8 @@
 // @ts-nocheck
+import Content from "@/core/frame/Content";
+import { FrameContextProvider } from "@/core/frame/Context";
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import Content from "./Content.js";
-import { FrameContextProvider } from "./Context";
 
 interface FrameProps {
   style?: object;

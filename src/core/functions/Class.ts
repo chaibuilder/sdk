@@ -1,6 +1,6 @@
+import { CLASSES_LIST } from "@/core/constants/CLASSES_LIST";
+import { MODIFIERS } from "@/core/constants/MODIFIERS";
 import { get, isEmpty, map, startsWith } from "lodash-es";
-import { MODIFIERS } from "../constants/MODIFIERS";
-import { CLASSES_LIST } from "../constants/CLASSES_LIST";
 
 export type ClassDerivedObject = {
   cls: string;

@@ -1,14 +1,9 @@
+import Countdown from "@/core/components/Countdown";
+import { QuickPrompts } from "@/core/components/QuickPrompts";
+import { useAskAi, useBuilderProp, useSelectedBlockIds } from "@/core/hooks";
 import { AskAiResponse } from "@/types/chaibuilder-editor-props";
-import { first, noop } from "lodash-es";
-import { ChevronDown, Loader, SparklesIcon } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/ui/shadcn/components/ui/accordion";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -18,14 +13,15 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-  Button,
-  Skeleton,
-  Textarea,
-} from "../../ui";
-import { useBuilderProp, useSelectedBlockIds } from "../hooks/index.ts";
-import { useAskAi } from "../hooks/useAskAi.ts";
-import Countdown from "./Countdown.tsx";
-import { QuickPrompts } from "./QuickPrompts.tsx";
+} from "@/ui/shadcn/components/ui/alert-dialog";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
+import { Textarea } from "@/ui/shadcn/components/ui/textarea";
+import { first, noop } from "lodash-es";
+import { ChevronDown, Loader, SparklesIcon } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 
 export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
   const { t } = useTranslation();

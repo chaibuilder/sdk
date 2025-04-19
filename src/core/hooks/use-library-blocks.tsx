@@ -1,8 +1,8 @@
+import { useBuilderProp } from "@/core/hooks/useBuilderProp";
+import { ChaiUILibrary, ChaiUILibraryBlock } from "@/types/chaibuilder-editor-props";
 import { atom, useAtom } from "jotai";
 import { get, noop } from "lodash-es";
 import { useCallback, useEffect, useRef } from "react";
-import { ChaiUILibrary, ChaiUILibraryBlock } from "../../types/chaibuilder-editor-props";
-import { useBuilderProp } from "../main";
 
 const libraryBlocksAtom = atom<{ [uuid: string]: { loading: "idle" | "loading" | "complete"; blocks: any[] | null } }>(
   {},

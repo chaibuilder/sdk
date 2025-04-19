@@ -1,32 +1,8 @@
-import { useDebouncedCallback } from "@react-hookz/web";
-import { useAtom } from "jotai";
-import { find, first, isEmpty } from "lodash-es";
-import { ChevronsDown, ChevronsUp, Eye, PlusIcon } from "lucide-react";
-import { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
-import { MoveHandler, RenameHandler, Tree } from "react-arborist";
-import { useTranslation } from "react-i18next";
-import { Button, Tooltip, TooltipContent, TooltipTrigger } from "../../../../../ui/index.ts";
-import { treeDSBlocks } from "../../../../atoms/blocks.ts";
-import { treeRefAtom } from "../../../../atoms/ui.ts";
-import { PERMISSIONS } from "../../../../constants/PERMISSIONS.ts";
-import { ROOT_TEMP_KEY } from "../../../../constants/STRINGS.ts";
-import { CHAI_BUILDER_EVENTS } from "../../../../events.ts";
-import { canAcceptChildBlock } from "../../../../functions/block-helpers.ts";
-import { cn } from "../../../../functions/Functions.ts";
-import { useBlocksStoreUndoableActions } from "../../../../history/useBlocksStoreUndoableActions.ts";
-import {
-  useBlocksStore,
-  useCutBlockIds,
-  useHiddenBlockIds,
-  usePermissions,
-  useSelectedBlockIds,
-  useSelectedStylingBlocks,
-  useUpdateBlocksProps,
-} from "../../../../hooks/index.ts";
-import { pubsub } from "../../../../pubsub.ts";
-import { PasteAtRootContextMenu } from "./block-more-options.tsx";
-import { DefaultCursor } from "./default-cursor.tsx";
-import { DefaultDragPreview } from "./default-drag-preview.tsx";
+import { treeDSBlocks } from "@/core/atoms/blocks";
+import { treeRefAtom } from "@/core/atoms/ui";
+import { PasteAtRootContextMenu } from "@/core/components/sidepanels/panels/outline/block-more-options";
+import { DefaultCursor } from "@/core/components/sidepanels/panels/outline/default-cursor";
+import { DefaultDragPreview } from "@/core/components/sidepanels/panels/outline/default-drag-preview";
 import {
   close,
   defaultShortcuts,
@@ -36,9 +12,34 @@ import {
   selectNext,
   selectParent,
   selectPrev,
-} from "./default-shortcuts.tsx";
-import { Node } from "./node.tsx";
-import { SaveToLibraryModal } from "./upsert-library-block-modal.tsx";
+} from "@/core/components/sidepanels/panels/outline/default-shortcuts";
+import { Node } from "@/core/components/sidepanels/panels/outline/node";
+import { SaveToLibraryModal } from "@/core/components/sidepanels/panels/outline/upsert-library-block-modal";
+import { PERMISSIONS } from "@/core/constants/PERMISSIONS";
+import { ROOT_TEMP_KEY } from "@/core/constants/STRINGS";
+import { CHAI_BUILDER_EVENTS } from "@/core/events";
+import { canAcceptChildBlock } from "@/core/functions/block-helpers";
+import { cn } from "@/core/functions/Functions";
+import { useBlocksStoreUndoableActions } from "@/core/history/useBlocksStoreUndoableActions";
+import {
+  useBlocksStore,
+  useCutBlockIds,
+  useHiddenBlockIds,
+  usePermissions,
+  useSelectedBlockIds,
+  useSelectedStylingBlocks,
+  useUpdateBlocksProps,
+} from "@/core/hooks";
+import { pubsub } from "@/core/pubsub";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
+import { useDebouncedCallback } from "@react-hookz/web";
+import { useAtom } from "jotai";
+import { find, first, isEmpty } from "lodash-es";
+import { ChevronsDown, ChevronsUp, Eye, PlusIcon } from "lucide-react";
+import { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
+import { MoveHandler, RenameHandler, Tree } from "react-arborist";
+import { useTranslation } from "react-i18next";
 
 const useCanMove = () => {
   const [blocks] = useBlocksStore();

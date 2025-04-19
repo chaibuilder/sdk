@@ -1,8 +1,8 @@
+import { getDuplicatedBlocks } from "@/core/functions/Blocks";
+import { useBlocksStore } from "@/core/hooks";
+import { cutBlockIdsAtom } from "@/core/hooks/useCutBlockIds";
 import { atom, useAtom, useSetAtom } from "jotai";
 import { useCallback } from "react";
-import { cutBlockIdsAtom } from "./useCutBlockIds";
-import { getDuplicatedBlocks } from "../functions/Blocks";
-import { useBlocksStore } from "./hooks";
 
 export const copiedBlockIdsAtom: any = atom<Array<string>>([]);
 
@@ -27,10 +27,10 @@ export const useCopyBlockIds = (): [Array<string>, (blockIds: Array<string>) => 
         resetCutBlockIds([]);
 
         const clipboardData: ClipboardBlock = {
-          "_chai_copied_blocks": blockIds.flatMap((blockId) => {
+          _chai_copied_blocks: blockIds.flatMap((blockId) => {
             // Get duplicated blocks with children
             return getDuplicatedBlocks(presentBlocks, blockId, null);
-          })
+          }),
         };
 
         await navigator.clipboard.writeText(JSON.stringify(clipboardData));

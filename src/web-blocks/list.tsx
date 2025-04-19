@@ -1,9 +1,9 @@
+import { cn } from "@/core/functions/Functions";
+import EmptySlot from "@/web-blocks/empty-slot";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { RowsIcon } from "@radix-ui/react-icons";
 import { get, isEmpty } from "lodash-es";
 import * as React from "react";
-import { cn } from "../core/functions/Functions.ts";
-import EmptySlot from "./empty-slot.tsx";
 
 export type ListBlockProps = {
   styles: ChaiStyles;

@@ -1,6 +1,6 @@
+import { useRightPanel, useSavePage } from "@/core/hooks";
+import { Button } from "@/ui/shadcn/components/ui/button";
 import { Eye, Paintbrush, Save } from "lucide-react";
-import { useRightPanel, useSavePage } from "../core/hooks";
-import { Button } from "../ui";
 
 export default function RightTop() {
   const [panel, setRightPanel] = useRightPanel();

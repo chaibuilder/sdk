@@ -1,7 +1,7 @@
+import { BRANDING_OPTIONS_DEFAULTS } from "@/core/constants/MODIFIERS";
+import { ChaiBlock } from "@/types/chai-block";
 import { atom, useAtom } from "jotai";
 import { isObject } from "lodash-es";
-import { ChaiBlock } from "../../types/chai-block.ts";
-import { BRANDING_OPTIONS_DEFAULTS } from "../constants/MODIFIERS";
 
 type BrandingOptions = {
   bodyBgDarkColor: string;

@@ -1,10 +1,10 @@
+import { useBuilderProp } from "@/core/hooks/useBuilderProp";
+import { useGetPageData } from "@/core/hooks/useGetPageData";
+import { usePermissions } from "@/core/hooks/usePermissions";
+import { useTheme } from "@/core/hooks/useTheme";
 import { useThrottledCallback } from "@react-hookz/web";
 import { atom, useAtom } from "jotai";
 import { noop } from "lodash-es";
-import { useBuilderProp } from "./useBuilderProp";
-import { useGetPageData } from "./useGetPageData";
-import { usePermissions } from "./usePermissions.ts";
-import { useTheme } from "./useTheme.ts";
 export const builderSaveStateAtom = atom<"SAVED" | "SAVING" | "UNSAVED">("SAVED"); // SAVING
 builderSaveStateAtom.debugLabel = "builderSaveStateAtom";
 

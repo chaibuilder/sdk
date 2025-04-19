@@ -1,12 +1,6 @@
-import { useThrottledCallback } from "@react-hookz/web";
-import RjForm from "@rjsf/core";
-import { RJSFSchema, UiSchema } from "@rjsf/utils";
-import validator from "@rjsf/validator-ajv8";
-import { take } from "lodash-es";
-import { Plus } from "lucide-react";
-import { memo } from "react";
-import { useBlockSettingComponents } from "../../extensions/blocks-settings.tsx";
-import { useLanguages } from "../../hooks";
+import JSONFormFieldTemplate from "@/core/components/settings/JSONFormFieldTemplate";
+import { useBlockSettingComponents } from "@/core/extensions/blocks-settings";
+import { useLanguages } from "@/core/hooks";
 import {
   IconPickerField,
   ImagePickerField,
@@ -15,10 +9,16 @@ import {
   RTEField,
   SliderField,
   SourcesField,
-} from "../../rjsf-widgets";
-import { BindingWidget } from "../../rjsf-widgets/binding.tsx";
-import { CodeEditor } from "../../rjsf-widgets/Code.tsx";
-import JSONFormFieldTemplate from "./JSONFormFieldTemplate.tsx";
+} from "@/core/rjsf-widgets";
+import { BindingWidget } from "@/core/rjsf-widgets/binding";
+import { CodeEditor } from "@/core/rjsf-widgets/Code";
+import { useThrottledCallback } from "@react-hookz/web";
+import RjForm from "@rjsf/core";
+import { RJSFSchema, UiSchema } from "@rjsf/utils";
+import validator from "@rjsf/validator-ajv8";
+import { take } from "lodash-es";
+import { Plus } from "lucide-react";
+import { memo } from "react";
 
 type JSONFormType = {
   blockId?: string;

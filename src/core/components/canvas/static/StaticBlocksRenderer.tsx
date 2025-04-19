@@ -1,6 +1,6 @@
+import { PageBlocksRenderer } from "@/core/components/canvas/static/NewBlocksRenderer";
+import { useBlocksStore } from "@/core/history/useBlocksStoreUndoableActions";
 import { isEmpty } from "lodash-es";
-import { useBlocksStore } from "../../../history/useBlocksStoreUndoableActions.ts";
-import { PageBlocksRenderer } from "./NewBlocksRenderer";
 
 export const StaticBlocksRenderer = () => {
   const [blocks] = useBlocksStore();

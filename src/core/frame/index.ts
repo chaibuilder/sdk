@@ -1,4 +1,3 @@
 // @ts-nocheck
-export { ChaiFrame } from "./Frame";
-
-export { FrameContext, FrameContextConsumer, useFrame } from "./Context";
+export { FrameContext, FrameContextConsumer, useFrame } from "@/core/frame/Context";
+export { ChaiFrame } from "@/core/frame/Frame";

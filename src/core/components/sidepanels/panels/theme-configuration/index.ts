@@ -1,5 +1,5 @@
-import BorderRadiusInput from "./BorderRadiusInput.tsx";
-import ColorPickerInput from "./ColorPickerInput.tsx";
-import FontSelector from "./font-selector.tsx";
+import BorderRadiusInput from "@/core/components/sidepanels/panels/theme-configuration/BorderRadiusInput";
+import ColorPickerInput from "@/core/components/sidepanels/panels/theme-configuration/ColorPickerInput";
+import FontSelector from "@/core/components/sidepanels/panels/theme-configuration/font-selector";
 
 export { BorderRadiusInput, ColorPickerInput, FontSelector };

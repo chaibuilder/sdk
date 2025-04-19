@@ -1,13 +1,16 @@
 // @ts-nochecks
 
-import { useAtom } from "jotai";
-import { first, isEmpty } from "lodash-es";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { Provider } from "react-wrap-balancer";
-import { ChaiBlock } from "../../../../types/chai-block.ts";
-import { Skeleton } from "../../../../ui/index.ts";
-import { canvasIframeAtom, networkModeAtom } from "../../../atoms/ui.ts";
-import { ChaiFrame } from "../../../frame/index.ts";
+import { canvasIframeAtom, networkModeAtom } from "@/core/atoms/ui";
+import { BlockFloatingSelector } from "@/core/components/canvas/block-floating-actions";
+import { IframeInitialContent } from "@/core/components/canvas/IframeInitialContent";
+import { KeyboardHandler } from "@/core/components/canvas/KeyboarHandler";
+import { AddBlockAtBottom } from "@/core/components/canvas/static/AddBlockAtBottom";
+import { Canvas, getElementByDataBlockId } from "@/core/components/canvas/static/Canvas";
+import { HeadTags } from "@/core/components/canvas/static/head-tags";
+import { ResizableCanvasWrapper } from "@/core/components/canvas/static/ResizableCanvasWrapper";
+import { StaticBlocksRenderer } from "@/core/components/canvas/static/StaticBlocksRenderer";
+import { useCanvasScale } from "@/core/components/canvas/static/useCanvasScale";
+import { ChaiFrame } from "@/core/frame";
 import {
   useBuilderProp,
   useCanvasDisplayWidth,
@@ -15,16 +18,13 @@ import {
   useSelectedBlock,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
-} from "../../../hooks/index.ts";
-import { BlockFloatingSelector } from "../block-floating-actions.tsx";
-import { IframeInitialContent } from "../IframeInitialContent.ts";
-import { KeyboardHandler } from "../KeyboarHandler.tsx";
-import { AddBlockAtBottom } from "./AddBlockAtBottom.tsx";
-import { Canvas, getElementByDataBlockId } from "./Canvas.tsx";
-import { HeadTags } from "./head-tags.tsx";
-import { ResizableCanvasWrapper } from "./ResizableCanvasWrapper.tsx";
-import { StaticBlocksRenderer } from "./StaticBlocksRenderer.tsx";
-import { useCanvasScale } from "./useCanvasScale.ts";
+} from "@/core/hooks";
+import { ChaiBlock } from "@/types/chai-block";
+import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
+import { useAtom } from "jotai";
+import { first, isEmpty } from "lodash-es";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Provider } from "react-wrap-balancer";
 
 const getElementByStyleId = (doc: any, styleId: string): HTMLElement =>
   doc.querySelector(`[data-style-id="${styleId}"]`) as HTMLElement;

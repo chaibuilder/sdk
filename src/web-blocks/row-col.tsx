@@ -1,3 +1,4 @@
+import { NUMBER_TO_COL_SPAN } from "@/core/constants/TWCLASS_VALUES";
 import {
   ChaiBlock,
   ChaiBlockComponentProps,
@@ -7,7 +8,6 @@ import {
 } from "@chaibuilder/runtime";
 import { get } from "lodash-es";
 import { Columns, Rows } from "lucide-react";
-import { NUMBER_TO_COL_SPAN } from "../core/constants/TWCLASS_VALUES";
 
 export type RowProps = {
   styles: ChaiStyles;

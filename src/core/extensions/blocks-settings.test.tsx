@@ -1,11 +1,11 @@
-import { beforeEach, describe, expect, it } from "vitest";
 import {
   RJSF_EXTENSIONS,
   registerBlockSettingField,
   registerBlockSettingTemplate,
   registerBlockSettingWidget,
   useBlockSettingComponents,
-} from "./blocks-settings";
+} from "@/core/extensions/blocks-settings";
+import { beforeEach, describe, expect, it } from "vitest";
 
 describe("Block Settings Extensions", () => {
   const MockComponent = () => <div>Mock Component</div>;

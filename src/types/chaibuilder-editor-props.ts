@@ -1,5 +1,5 @@
+import { ChaiBlock } from "@/types/chai-block";
 import React from "react";
-import { ChaiBlock } from "./chai-block.ts";
 
 export type ChaiUILibraryBlock<T = Record<string, any>> = {
   id: string;

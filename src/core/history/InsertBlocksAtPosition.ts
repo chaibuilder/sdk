@@ -1,4 +1,4 @@
-import { generateUUID } from "../functions/Functions";
+import { generateUUID } from "@/core/functions/Functions";
 
 export function insertBlocksAtPosition(
   allBlocks: { _id: string; _parent?: string; [key: string]: any }[],

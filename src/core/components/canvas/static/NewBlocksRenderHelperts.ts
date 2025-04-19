@@ -1,11 +1,11 @@
+import { STYLES_KEY } from "@/core/constants/STRINGS";
+import { useBlocksStore } from "@/core/hooks";
+import { getSplitChaiClasses } from "@/core/hooks/getSplitClasses";
+import { ChaiBlock } from "@/types/chai-block";
+import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { cloneDeep, find, forEach, get, includes, isEmpty, isString, keys, memoize, startsWith } from "lodash-es";
 import { useCallback } from "react";
 import { twMerge } from "tailwind-merge";
-import { getRegisteredChaiBlock } from "../../../../runtime";
-import { ChaiBlock } from "../../../../types/chai-block";
-import { STYLES_KEY } from "../../../constants/STRINGS";
-import { useBlocksStore } from "../../../hooks";
-import { getSplitChaiClasses } from "../../../hooks/getSplitClasses";
 
 export function applyLanguage(_block: ChaiBlock, selectedLang: string, chaiBlock) {
   const i18nProps = get(chaiBlock, "i18nProps", []);

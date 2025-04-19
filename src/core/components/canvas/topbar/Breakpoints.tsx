@@ -1,20 +1,18 @@
-import { DesktopIcon, DotsVerticalIcon, LaptopIcon, MobileIcon } from "@radix-ui/react-icons";
-import { includes, map, toUpper } from "lodash-es";
-import { useTranslation } from "react-i18next";
+import { getBreakpointValue } from "@/core/functions/Functions";
+import { useBuilderProp, useCanvasDisplayWidth, useScreenSizeWidth, useSelectedBreakpoints } from "@/core/hooks";
+import { Button } from "@/ui/shadcn/components/ui/button";
 import {
-  Button,
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "../../../../ui";
-import { getBreakpointValue } from "../../../functions/Functions";
-import { useBuilderProp, useCanvasDisplayWidth, useScreenSizeWidth, useSelectedBreakpoints } from "../../../hooks";
+} from "@/ui/shadcn/components/ui/dropdown-menu";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/ui/shadcn/components/ui/hover-card";
+import { DesktopIcon, DotsVerticalIcon, LaptopIcon, MobileIcon } from "@radix-ui/react-icons";
+import { includes, map, toUpper } from "lodash-es";
+import { useTranslation } from "react-i18next";
 
 export interface BreakpointItemType {
   breakpoint: string;

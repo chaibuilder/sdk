@@ -1,10 +1,11 @@
+import { lsBlocksAtom, lsThemeAtom } from "@/_demo/atoms-dev";
+import registerCustomBlocks from "@/_demo/blocks";
+import { getChaiThemeCssVariables, getStylesForBlocks, RenderChaiBlocks } from "@/render";
+import { ChaiBuilderThemeValues } from "@/types/types";
+import { loadWebBlocks } from "@/web-blocks";
 import { useAtom } from "jotai";
 import { useEffect, useMemo, useState } from "react";
-import { lsBlocksAtom, lsThemeAtom } from "./_demo/atoms-dev.ts";
-import registerCustomBlocks from "./_demo/blocks/index.tsx";
-import { getChaiThemeCssVariables, getStylesForBlocks, RenderChaiBlocks } from "./render";
-import { ChaiBuilderThemeValues } from "./types/types.ts";
-import { loadWebBlocks } from "./web-blocks/index.ts";
+
 loadWebBlocks();
 registerCustomBlocks();
 

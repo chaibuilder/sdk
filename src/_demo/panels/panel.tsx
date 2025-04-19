@@ -1,7 +1,7 @@
+import { registerChaiSidebarPanel, useBlocksStore } from "@/core/main";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/ui/popover";
 import { ThermometerIcon } from "lucide-react";
-import { registerChaiSidebarPanel, useBlocksStore } from "../../core/main";
-import { Popover, PopoverContent, PopoverTrigger } from "../../ui";
-import { Button } from "../../ui/shadcn/components/ui/button";
 
 const Panel1Button = ({ isActive, show }: { isActive: boolean; show: () => void }) => {
   return (

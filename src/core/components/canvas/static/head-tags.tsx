@@ -1,3 +1,14 @@
+import { draggedBlockAtom, dropTargetBlockIdAtom } from "@/core/components/canvas/dnd/atoms";
+import {
+  getChaiThemeOptions,
+  getThemeCustomFontFace,
+  getThemeFontsLinkMarkup,
+} from "@/core/components/canvas/static/chai-theme-helpers";
+import { CssThemeVariables } from "@/core/components/css-theme-var";
+import { useFrame } from "@/core/frame";
+import { useDarkMode, useSelectedBlockIds, useSelectedStylingBlocks } from "@/core/hooks";
+import { useTheme, useThemeOptions } from "@/core/hooks/useTheme";
+import { ChaiBuilderThemeValues } from "@/types/types";
 import { useRegisteredFonts } from "@chaibuilder/runtime";
 import aspectRatio from "@tailwindcss/aspect-ratio";
 import containerQueries from "@tailwindcss/container-queries";
@@ -7,15 +18,6 @@ import { useAtom } from "jotai";
 import { filter, get, has, map } from "lodash-es";
 import { useEffect, useMemo, useState } from "react";
 import plugin from "tailwindcss/plugin";
-import { useFrame } from "../../../frame/index.ts";
-import { useDarkMode, useSelectedBlockIds, useSelectedStylingBlocks } from "../../../hooks/index.ts";
-import { useTheme, useThemeOptions } from "../../../hooks/useTheme.ts";
-
-import { ChaiBuilderThemeValues } from "../../../../types/types.ts";
-import { CssThemeVariables } from "../../css-theme-var.tsx";
-import { draggedBlockAtom, dropTargetBlockIdAtom } from "../dnd/atoms.ts";
-import { getChaiThemeOptions, getThemeCustomFontFace, getThemeFontsLinkMarkup } from "./chai-theme-helpers.ts";
-// @ts-ignore
 
 export const HeadTags = () => {
   const [chaiTheme] = useTheme();

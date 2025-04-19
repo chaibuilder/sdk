@@ -1,15 +1,13 @@
-import { DragEvent } from "react";
-import { has, throttle } from "lodash-es";
-import { useFrame } from "../../../frame";
-
-import { useAtom } from "jotai";
-import { draggingFlagAtom } from "../../../atoms/ui.ts";
-
-import { useAddBlock, useHighlightBlockId, useSelectedBlockIds } from "../../../hooks";
-import { useBlocksStoreUndoableActions } from "../../../history/useBlocksStoreUndoableActions.ts";
-import { getOrientation } from "./getOrientation.ts";
-import { draggedBlockAtom, dropTargetBlockIdAtom } from "./atoms.ts";
+import { draggingFlagAtom } from "@/core/atoms/ui.ts";
+import { draggedBlockAtom, dropTargetBlockIdAtom } from "@/core/components/canvas/dnd/atoms";
+import { getOrientation } from "@/core/components/canvas/dnd/getOrientation";
+import { useFrame } from "@/core/frame";
+import { useBlocksStoreUndoableActions } from "@/core/history/useBlocksStoreUndoableActions.ts";
+import { useAddBlock, useHighlightBlockId, useSelectedBlockIds } from "@/core/hooks";
 import { useFeature } from "flagged";
+import { useAtom } from "jotai";
+import { has, throttle } from "lodash-es";
+import { DragEvent } from "react";
 
 let iframeDocument: null | HTMLDocument = null;
 let possiblePositions: [number, number, number][] = [];

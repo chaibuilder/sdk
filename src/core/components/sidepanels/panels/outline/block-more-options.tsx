@@ -1,11 +1,7 @@
-import { CardStackIcon, CardStackPlusIcon, CopyIcon, ScissorsIcon, TrashIcon } from "@radix-ui/react-icons";
-import { has, isEmpty } from "lodash-es";
-import { PencilIcon, PlusIcon } from "lucide-react";
-import React, { useCallback, useEffect, useMemo } from "react";
-import { useTranslation } from "react-i18next";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../../../../ui/index.ts";
-import { CHAI_BUILDER_EVENTS } from "../../../../events.ts";
-import { canAddChildBlock, canDeleteBlock, canDuplicateBlock } from "../../../../functions/block-helpers.ts";
+import { SaveToLibrary } from "@/core/components/sidepanels/panels/outline/save-to-library";
+import { UnlinkLibraryBlock } from "@/core/components/sidepanels/panels/outline/unlink-library-block";
+import { CHAI_BUILDER_EVENTS } from "@/core/events";
+import { canAddChildBlock, canDeleteBlock, canDuplicateBlock } from "@/core/functions/block-helpers";
 import {
   useBlocksStore,
   useCopyBlockIds,
@@ -15,11 +11,20 @@ import {
   useRemoveBlocks,
   useSelectedBlock,
   useSelectedBlockIds,
-} from "../../../../hooks/index.ts";
-import { PERMISSIONS, usePermissions } from "../../../../main/index.ts";
-import { pubsub } from "../../../../pubsub.ts";
-import { SaveToLibrary } from "./save-to-library.tsx";
-import { UnlinkLibraryBlock } from "./unlink-library-block.tsx";
+} from "@/core/hooks";
+import { PERMISSIONS, usePermissions } from "@/core/main";
+import { pubsub } from "@/core/pubsub";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/ui/shadcn/components/ui/dropdown-menu";
+import { CardStackIcon, CardStackPlusIcon, CopyIcon, ScissorsIcon, TrashIcon } from "@radix-ui/react-icons";
+import { has, isEmpty } from "lodash-es";
+import { PencilIcon, PlusIcon } from "lucide-react";
+import React, { useCallback, useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 export const PasteAtRootContextMenu = ({ parentContext, setParentContext }) => {
   const { t } = useTranslation();
   const { canPaste, pasteBlocks } = usePasteBlocks();

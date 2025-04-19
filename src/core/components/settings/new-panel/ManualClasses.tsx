@@ -1,20 +1,5 @@
-import { CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
-import { first, get, isEmpty, map } from "lodash-es";
-import { SparklesIcon } from "lucide-react";
-import { useMemo, useRef, useState } from "react";
-import Autosuggest from "react-autosuggest";
-import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
-import {
-  Button,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "../../../../ui";
-import { useFuseSearch } from "../../../constants/CLASSES_LIST";
+import { AskAIStyles } from "@/core/components/settings/AskAiStyle.tsx";
+import { useFuseSearch } from "@/core/constants/CLASSES_LIST";
 import {
   useAddClassesToBlocks,
   useBuilderProp,
@@ -22,9 +7,18 @@ import {
   useSelectedBlock,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
-} from "../../../hooks";
-import { getSplitChaiClasses } from "../../../hooks/getSplitClasses.ts";
-import { AskAIStyles } from "../AskAiStyle.tsx";
+} from "@/core/hooks";
+import { getSplitChaiClasses } from "@/core/hooks/getSplitClasses.ts";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/ui/popover";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
+import { CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
+import { first, get, isEmpty, map } from "lodash-es";
+import { SparklesIcon } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
+import Autosuggest from "react-autosuggest";
+import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 
 export function ManualClasses() {
   const inputRef = useRef<HTMLInputElement>(null);

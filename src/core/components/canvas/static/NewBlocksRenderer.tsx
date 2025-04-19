@@ -1,23 +1,23 @@
-import { atom, Atom, Provider, useAtom } from "jotai";
-import { splitAtom } from "jotai/utils";
-import { filter, get, has, isEmpty, isFunction, isNull, map } from "lodash-es";
-import { createElement, Suspense, useCallback, useMemo } from "react";
-import { getRegisteredChaiBlock } from "../../../../runtime";
-import { ChaiBlock } from "../../../../types/chai-block";
-import { pageBlocksAtomsAtom } from "../../../atoms/blocks";
-import { usePageExternalData } from "../../../atoms/builder";
-import { builderStore } from "../../../atoms/store";
-import { dataBindingActiveAtom } from "../../../atoms/ui";
-import { useBlocksStore, useHiddenBlockIds, usePartailBlocksStore } from "../../../hooks";
-import { useLanguages } from "../../../hooks/useLanguages";
-import { useGetBlockAtom } from "../../../hooks/useUpdateBlockAtom";
+import { pageBlocksAtomsAtom } from "@/core/atoms/blocks";
+import { usePageExternalData } from "@/core/atoms/builder";
+import { builderStore } from "@/core/atoms/store";
+import { dataBindingActiveAtom } from "@/core/atoms/ui";
 import {
   applyBinding,
   applyLanguage,
   getBlockRuntimeProps,
   getBlockTagAttributes,
   useBlockRuntimeProps,
-} from "./NewBlocksRenderHelperts";
+} from "@/core/components/canvas/static/NewBlocksRenderHelperts";
+import { useBlocksStore, useHiddenBlockIds, usePartailBlocksStore } from "@/core/hooks";
+import { useLanguages } from "@/core/hooks/useLanguages";
+import { useGetBlockAtom } from "@/core/hooks/useUpdateBlockAtom";
+import { ChaiBlock } from "@/types/chai-block";
+import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
+import { atom, Atom, Provider, useAtom } from "jotai";
+import { splitAtom } from "jotai/utils";
+import { filter, get, has, isEmpty, isFunction, isNull, map } from "lodash-es";
+import { createElement, Suspense, useCallback, useMemo } from "react";
 
 const BlockRenderer = ({ blockAtom, children }: { blockAtom: Atom<ChaiBlock>; children: React.ReactNode }) => {
   const [block] = useAtom(blockAtom);

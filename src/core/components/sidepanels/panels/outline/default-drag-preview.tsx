@@ -1,8 +1,8 @@
+import { TypeIcon } from "@/core/components/sidepanels/panels/outline/block-type-icon";
+import { useBlocksStore } from "@/core/hooks";
+import { ChaiBlock } from "@/types/types";
 import { memo, useMemo } from "react";
 import { DragPreviewProps } from "react-arborist";
-import { ChaiBlock } from "../../../../../types/types.ts";
-import { useBlocksStore } from "../../../../hooks/index.ts";
-import { TypeIcon } from "./block-type-icon.tsx";
 
 const Overlay = memo(function Overlay({ children, isDragging }: { children: React.ReactNode; isDragging: boolean }) {
   if (!isDragging) return null;

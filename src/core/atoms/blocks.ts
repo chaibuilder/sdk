@@ -1,7 +1,7 @@
+import { convertToBlocksTree } from "@/core/functions/Blocks.ts";
 import { atom } from "jotai";
 import { splitAtom } from "jotai/utils";
 import { filter, has } from "lodash-es";
-import { convertToBlocksTree } from "../functions/Blocks.ts";
 
 // derived atoms
 // @ts-ignore

@@ -1,6 +1,6 @@
-import { ButtonIcon } from "@radix-ui/react-icons";
+import { generateUUID } from "@/core/functions/Functions";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
-import { generateUUID } from "../../core/functions/Functions";
+import { ButtonIcon } from "@radix-ui/react-icons";
 
 export type FormButtonProps = {
   label: string;

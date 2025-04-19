@@ -1,8 +1,6 @@
-//module-level variable to track the last highlighted block
-
+import { canvasIframeAtom } from "@/core/atoms/ui";
 import { useAtom } from "jotai";
 import { useCallback, useMemo } from "react";
-import { canvasIframeAtom } from "../atoms/ui";
 
 //module-level variable to track the last highlighted block
 let lastHighlighted: HTMLElement | null = null;

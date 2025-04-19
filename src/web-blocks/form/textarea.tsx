@@ -1,6 +1,6 @@
+import { generateUUID } from "@/core/functions/Functions";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { InputIcon } from "@radix-ui/react-icons";
-import { generateUUID } from "../../core/functions/Functions";
 
 export type TextAreaProps = {
   fieldName: string;

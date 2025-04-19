@@ -1,5 +1,5 @@
+import { ClassDerivedObject, constructClassObject } from "@/core/functions/Class";
 import { each, filter, find, includes, isNull, map, pick, sortBy } from "lodash-es";
-import { ClassDerivedObject, constructClassObject } from "./Class";
 
 const MEDIA_QUERIES: any = {
   xs: 420,

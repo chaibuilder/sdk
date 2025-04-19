@@ -1,6 +1,6 @@
+import { getSplitChaiClasses } from "@/core/hooks/getSplitClasses";
+import { ChaiBlock } from "@/types/chai-block";
 import { flattenDeep, last } from "lodash-es";
-import { getSplitChaiClasses } from "../core/hooks/getSplitClasses.ts";
-import { ChaiBlock } from "../types/chai-block.ts";
 
 /**
  * This function adds the prefix to the classes

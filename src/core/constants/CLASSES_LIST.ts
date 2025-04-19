@@ -1,8 +1,8 @@
+import { CLASS_VALUES } from "@/core/constants/CLASS_VALUES";
+import { useThemeOptions } from "@/core/hooks/useTheme";
 import Fuse from "fuse.js";
 import { each, flatten, flattenDeep, get, keys, map, range, set, values } from "lodash-es";
 import { useCallback, useMemo } from "react";
-import { useThemeOptions } from "../hooks/useTheme";
-import { CLASS_VALUES } from "./CLASS_VALUES";
 
 type ClassListType = {
   [key: string]: {

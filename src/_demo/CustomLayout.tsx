@@ -1,10 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ChevronDown, Image, Layers, Settings, Type } from "lucide-react";
-import React, { Suspense, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { BlockAttributesEditor } from "../core/components/settings/new-panel/BlockAttributesEditor";
+import { BlockAttributesEditor } from "@/core/components/settings/new-panel/BlockAttributesEditor";
 import {
   ChaiBlockPropsEditor,
   ChaiBlockStyleEditor,
@@ -13,8 +9,13 @@ import {
   ChaiScreenSizes,
   ChaiUndoRedo,
   useSelectedBlock,
-} from "../core/main";
-import { ScrollArea, TooltipProvider } from "../ui";
+} from "@/core/main";
+import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
+import { TooltipProvider } from "@/ui/shadcn/components/ui/tooltip";
+import { motion } from "framer-motion";
+import { ChevronDown, Image, Layers, Settings, Type } from "lucide-react";
+import React, { Suspense, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const BlockEditor = () => {
   const [showAttributes, setShowAttributes] = useState(true);
