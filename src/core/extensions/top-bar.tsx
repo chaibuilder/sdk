@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
 const DefaultTopBar = () => {
-  return <div>TopBar</div>;
+  return <div></div>;
 };
 
 const TOP_BAR: { component: React.ComponentType } = {
