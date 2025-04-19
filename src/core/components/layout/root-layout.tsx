@@ -157,6 +157,10 @@ const RootLayout: ComponentType = () => {
     setActivePanel(lastStandardPanelRef.current);
   };
 
+  const closeNonStandardPanel = useCallback(() => {
+    setActivePanel("outline");
+  }, [setActivePanel]);
+
   useEffect(() => {
     if (!find(sidebarMenuItems, { id: activePanel })) {
       setActivePanel("outline");
@@ -303,7 +307,9 @@ const RootLayout: ComponentType = () => {
                   </SheetHeader>
                   <div className="h-full max-h-full overflow-y-auto p-4">
                     <Suspense fallback={<div>Loading...</div>}>
-                      {React.createElement(get(activePanelItem, "panel", NoopComponent), {})}
+                      {React.createElement(get(activePanelItem, "panel", NoopComponent), {
+                        close: closeNonStandardPanel,
+                      })}
                     </Suspense>
                   </div>
                 </SheetContent>
@@ -321,7 +327,9 @@ const RootLayout: ComponentType = () => {
                   </DialogHeader>
                   <div className="max-h-[70vh] overflow-y-auto p-4">
                     <Suspense fallback={<div>Loading...</div>}>
-                      {React.createElement(get(activePanelItem, "panel", NoopComponent), {})}
+                      {React.createElement(get(activePanelItem, "panel", NoopComponent), {
+                        close: closeNonStandardPanel,
+                      })}
                     </Suspense>
                   </div>
                 </DialogContent>
@@ -353,7 +361,9 @@ const RootLayout: ComponentType = () => {
                     </div>
                     <div className="flex-1 overflow-y-auto p-4">
                       <Suspense fallback={<div>Loading...</div>}>
-                        {React.createElement(get(activePanelItem, "panel", NoopComponent), {})}
+                        {React.createElement(get(activePanelItem, "panel", NoopComponent), {
+                          close: closeNonStandardPanel,
+                        })}
                       </Suspense>
                     </div>
                   </motion.div>
