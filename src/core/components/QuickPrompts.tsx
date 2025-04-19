@@ -1,6 +1,6 @@
-import { LANGUAGES } from "@/core/constants/LANGUAGES.ts";
-import { useAskAi } from "@/core/hooks/useAskAi.ts";
-import { useLanguages } from "@/core/hooks/useLanguages.ts";
+import { LANGUAGES } from "@/core/constants/LANGUAGES";
+import { useAskAi } from "@/core/hooks/use-ask-ai";
+import { useLanguages } from "@/core/hooks/use-languages";
 import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/ui/popover";
 import { ArrowDownIcon, ArrowUpIcon, CheckIcon } from "@radix-ui/react-icons";
 import { get } from "lodash-es";

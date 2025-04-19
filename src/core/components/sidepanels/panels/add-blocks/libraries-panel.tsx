@@ -1,7 +1,7 @@
-import { draggedBlockAtom } from "@/core/components/canvas/dnd/atoms.ts";
+import { draggedBlockAtom } from "@/core/components/canvas/dnd/atoms";
 import { UILibrariesSelect } from "@/core/components/sidepanels/panels/add-blocks/libraries-select";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { cn } from "@/core/functions/Functions";
+import { cn } from "@/core/functions/common-functions";
 import { useAddBlock, useBlockHighlight, useBuilderProp, useSelectedBlockIds } from "@/core/hooks";
 import { useLibraryBlocks } from "@/core/hooks/use-library-blocks";
 import { useSelectedLibrary } from "@/core/hooks/use-selected-library";
@@ -11,8 +11,8 @@ import { ChaiUILibrary, ChaiUILibraryBlock } from "@/types/chaibuilder-editor-pr
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Input } from "@/ui/shadcn/components/ui/input";
 import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
-import { Skeleton } from "@/ui/shadcn/components/ui/skeleton.tsx";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip.tsx";
+import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { CaretRightIcon } from "@radix-ui/react-icons";
 import clsx from "clsx";

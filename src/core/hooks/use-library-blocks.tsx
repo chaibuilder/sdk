@@ -1,4 +1,4 @@
-import { useBuilderProp } from "@/core/hooks/useBuilderProp";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { ChaiUILibrary, ChaiUILibraryBlock } from "@/types/chaibuilder-editor-props";
 import { atom, useAtom } from "jotai";
 import { get, noop } from "lodash-es";

@@ -8,7 +8,7 @@ import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useChaiAddBlockTabs } from "@/core/extensions/add-block-tabs";
 import { canAcceptChildBlock, canBeNestedInside } from "@/core/functions/block-helpers";
 import { useBlocksStore, useBuilderProp, usePermissions } from "@/core/hooks";
-import { usePartialBlocksList } from "@/core/hooks/usePartialBlocksStore";
+import { usePartialBlocksList } from "@/core/hooks/use-partial-blocks-store";
 import { mergeClasses, PERMISSIONS } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
 import { Input } from "@/ui/shadcn/components/ui/input";

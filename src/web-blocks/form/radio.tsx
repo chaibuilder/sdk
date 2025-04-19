@@ -1,4 +1,4 @@
-import { generateUUID } from "@/core/functions/Functions";
+import { generateUUID } from "@/core/functions/common-functions";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { RadiobuttonIcon } from "@radix-ui/react-icons";
 

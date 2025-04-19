@@ -1,7 +1,7 @@
 import { FallbackError } from "@/core/components/fallback-error";
 import BlockSettings from "@/core/components/settings/block-settings";
-import BlockStyling from "@/core/components/settings/BlockStyling";
-import { BlockAttributesEditor } from "@/core/components/settings/new-panel/BlockAttributesEditor";
+import BlockStyling from "@/core/components/settings/block-styling";
+import { BlockAttributesEditor } from "@/core/components/settings/new-panel/block-attributes-editor";
 import { useBuilderProp, useSelectedBlock, useSelectedStylingBlocks } from "@/core/hooks";
 import { PERMISSIONS, usePermissions } from "@/core/main";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/shadcn/components/ui/tabs";

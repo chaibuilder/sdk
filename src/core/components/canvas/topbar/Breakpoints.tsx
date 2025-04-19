@@ -1,4 +1,4 @@
-import { getBreakpointValue } from "@/core/functions/Functions";
+import { getBreakpointValue } from "@/core/functions/common-functions";
 import { useBuilderProp, useCanvasDisplayWidth, useScreenSizeWidth, useSelectedBreakpoints } from "@/core/hooks";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import {

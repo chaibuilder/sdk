@@ -1,8 +1,8 @@
 import { inlineEditingActiveAtom } from "@/core/atoms/ui";
-import AddBlockDropdown from "@/core/components/canvas/AddBlockDropdown";
+import AddBlockDropdown from "@/core/components/canvas/add-block-placements";
 import { draggedBlockAtom } from "@/core/components/canvas/dnd/atoms";
-import BlockController from "@/core/components/sidepanels/panels/add-blocks/BlockController";
-import { useFrame } from "@/core/frame/Context";
+import BlockController from "@/core/components/sidepanels/panels/add-blocks/block-controller";
+import { useFrame } from "@/core/frame/frame-context";
 import { canDeleteBlock, canDuplicateBlock } from "@/core/functions/block-helpers";
 import {
   useDuplicateBlocks,

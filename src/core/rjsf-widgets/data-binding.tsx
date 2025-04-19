@@ -21,6 +21,7 @@ import {
 } from "@/ui/shadcn/components/ui/dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/ui/popover";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
+import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import {
   filter,
   find,

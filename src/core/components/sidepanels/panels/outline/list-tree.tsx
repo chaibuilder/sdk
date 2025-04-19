@@ -19,8 +19,8 @@ import { PERMISSIONS } from "@/core/constants/PERMISSIONS";
 import { ROOT_TEMP_KEY } from "@/core/constants/STRINGS";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { canAcceptChildBlock } from "@/core/functions/block-helpers";
-import { cn } from "@/core/functions/Functions";
-import { useBlocksStoreUndoableActions } from "@/core/history/useBlocksStoreUndoableActions";
+import { cn } from "@/core/functions/common-functions";
+import { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 import {
   useBlocksStore,
   useCutBlockIds,

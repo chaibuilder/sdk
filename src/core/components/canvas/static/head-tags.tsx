@@ -7,7 +7,7 @@ import {
 import { CssThemeVariables } from "@/core/components/css-theme-var";
 import { useFrame } from "@/core/frame";
 import { useDarkMode, useSelectedBlockIds, useSelectedStylingBlocks } from "@/core/hooks";
-import { useTheme, useThemeOptions } from "@/core/hooks/useTheme";
+import { useTheme, useThemeOptions } from "@/core/hooks/use-theme";
 import { ChaiBuilderThemeValues } from "@/types/types";
 import { useRegisteredFonts } from "@chaibuilder/runtime";
 import aspectRatio from "@tailwindcss/aspect-ratio";

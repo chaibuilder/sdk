@@ -1,4 +1,4 @@
-import { JSONForm } from "@/core/components/settings/JSONForm";
+import { JSONForm } from "@/core/components/settings/json-form";
 import {
   useLanguages,
   useSelectedBlock,

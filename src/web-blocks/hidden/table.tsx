@@ -1,4 +1,4 @@
-import { generateUUID } from "@/core/functions/Functions";
+import { generateUUID } from "@/core/functions/common-functions";
 import { ChaiBlock } from "@/types/chai-block";
 import EmptySlot from "@/web-blocks/empty-slot";
 import {

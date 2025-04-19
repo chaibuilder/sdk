@@ -10,8 +10,8 @@ import {
   useBlockRuntimeProps,
 } from "@/core/components/canvas/static/NewBlocksRenderHelperts";
 import { useBlocksStore, useHiddenBlockIds, usePartailBlocksStore } from "@/core/hooks";
-import { useLanguages } from "@/core/hooks/useLanguages";
-import { useGetBlockAtom } from "@/core/hooks/useUpdateBlockAtom";
+import { useLanguages } from "@/core/hooks/use-languages";
+import { useGetBlockAtom } from "@/core/hooks/use-update-block-atom";
 import { ChaiBlock } from "@/types/chai-block";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { atom, Atom, Provider, useAtom } from "jotai";

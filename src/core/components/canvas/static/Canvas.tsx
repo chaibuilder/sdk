@@ -3,7 +3,7 @@ import { inlineEditingActiveAtom, treeRefAtom } from "@/core/atoms/ui";
 import { useDnd } from "@/core/components/canvas/dnd/useDnd";
 import { useFrame } from "@/core/frame";
 import { useBlockHighlight, useSelectedBlockIds, useSelectedStylingBlocks, useUpdateBlocksProps } from "@/core/hooks";
-import { useGetBlockAtomValue } from "@/core/hooks/useUpdateBlockAtom";
+import { useGetBlockAtomValue } from "@/core/hooks/use-update-block-atom";
 import { ChaiBlock } from "@/types/chai-block";
 import { Editor, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";

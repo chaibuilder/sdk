@@ -1,5 +1,5 @@
 import { ChaiBuilderBlocks } from "@/core/components/sidepanels/panels/add-blocks/add-blocks";
-import { usePartialBlocksList } from "@/core/hooks/usePartialBlocksStore";
+import { usePartialBlocksList } from "@/core/hooks/use-partial-blocks-store";
 import { atom, useAtom } from "jotai";
 import { map, uniq } from "lodash-es";
 import { Globe } from "lucide-react";

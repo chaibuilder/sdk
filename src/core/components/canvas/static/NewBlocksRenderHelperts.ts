@@ -1,6 +1,6 @@
 import { STYLES_KEY } from "@/core/constants/STRINGS";
 import { useBlocksStore } from "@/core/hooks";
-import { getSplitChaiClasses } from "@/core/hooks/getSplitClasses";
+import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
 import { ChaiBlock } from "@/types/chai-block";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { cloneDeep, find, forEach, get, includes, isEmpty, isString, keys, memoize, startsWith } from "lodash-es";

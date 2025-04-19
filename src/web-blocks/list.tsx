@@ -1,4 +1,4 @@
-import { cn } from "@/core/functions/Functions";
+import { cn } from "@/core/functions/common-functions";
 import EmptySlot from "@/web-blocks/empty-slot";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { RowsIcon } from "@radix-ui/react-icons";

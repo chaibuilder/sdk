@@ -1,4 +1,4 @@
-import { convertToBlocksTree } from "@/core/functions/Blocks.ts";
+import { convertToBlocksTree } from "@/core/functions/blocks-fn";
 import { atom } from "jotai";
 import { splitAtom } from "jotai/utils";
 import { filter, has } from "lodash-es";

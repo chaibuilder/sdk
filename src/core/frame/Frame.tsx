@@ -1,6 +1,6 @@
 // @ts-nocheck
-import Content from "@/core/frame/Content";
-import { FrameContextProvider } from "@/core/frame/Context";
+import Content from "@/core/frame/frame-content";
+import { FrameContextProvider } from "@/core/frame/frame-context";
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 

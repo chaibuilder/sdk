@@ -1,8 +1,8 @@
-import { draggingFlagAtom } from "@/core/atoms/ui.ts";
+import { draggingFlagAtom } from "@/core/atoms/ui";
 import { draggedBlockAtom, dropTargetBlockIdAtom } from "@/core/components/canvas/dnd/atoms";
 import { getOrientation } from "@/core/components/canvas/dnd/getOrientation";
 import { useFrame } from "@/core/frame";
-import { useBlocksStoreUndoableActions } from "@/core/history/useBlocksStoreUndoableActions.ts";
+import { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 import { useAddBlock, useHighlightBlockId, useSelectedBlockIds } from "@/core/hooks";
 import { useFeature } from "flagged";
 import { useAtom } from "jotai";

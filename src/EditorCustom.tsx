@@ -1,6 +1,6 @@
-import { lsAiContextAtom, lsBlocksAtom } from "@/_demo/atoms-dev.ts";
-import CustomLayout from "@/_demo/CustomLayout";
-import PreviewWeb from "@/_demo/preview/WebPreview";
+import { lsAiContextAtom, lsBlocksAtom } from "@/_demo/atoms-dev";
+import CustomLayout from "@/_demo/custom-layout";
+import PreviewWeb from "@/_demo/preview/web-preview";
 import { getBlocksFromHTML } from "@/core/import-html/html-to-json";
 import { ChaiBlock, ChaiBuilderEditor } from "@/core/main";
 import { ChaiUILibrary, ChaiUILibraryBlock } from "@/types/chaibuilder-editor-props";
