@@ -1,4 +1,4 @@
-import { cn } from "@/core/functions/Functions";
+import { cn } from "@/core/functions/common-functions";
 
 export const addForcedClasses = (styles, ...classes: string[]) => {
   // get all the classes from the blockStateClasses if the value is true

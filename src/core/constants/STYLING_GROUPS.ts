@@ -1,5 +1,5 @@
-import { BreakpointSelector } from "@/core/components/settings/new-panel/BreakpointSelector.tsx";
-import { ManualClasses } from "@/core/components/settings/new-panel/ManualClasses.tsx";
+import { BreakpointSelector } from "@/core/components/settings/new-panel/breakpoint-selector";
+import { ManualClasses } from "@/core/components/settings/new-panel/manual-classes";
 
 const BASIC_UNITS: string[] = ["px", "%", "em", "rem", "ch", "vh", "vw"];
 

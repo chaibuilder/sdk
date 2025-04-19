@@ -1,4 +1,4 @@
-import { getSplitChaiClasses } from "@/core/hooks/getSplitClasses";
+import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
 import { ChaiBlock } from "@/types/chai-block";
 import { flattenDeep, last } from "lodash-es";
 

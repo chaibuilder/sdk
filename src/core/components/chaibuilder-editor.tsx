@@ -1,26 +1,26 @@
-import { chaiBuilderPropsAtom, chaiPageExternalDataAtom } from "@/core/atoms/builder.ts";
-import { builderStore } from "@/core/atoms/store.ts";
-import { selectedLibraryAtom } from "@/core/atoms/ui.ts";
-import { CssThemeVariables } from "@/core/components/css-theme-var.tsx";
+import { chaiBuilderPropsAtom, chaiPageExternalDataAtom } from "@/core/atoms/builder";
+import { builderStore } from "@/core/atoms/store";
+import { selectedLibraryAtom } from "@/core/atoms/ui";
+import { CssThemeVariables } from "@/core/components/css-theme-var";
 import { FallbackError } from "@/core/components/fallback-error";
-import { RootLayout } from "@/core/components/layout/root-layout.tsx";
-import { PreviewScreen } from "@/core/components/PreviewScreen.tsx";
-import { SmallScreenMessage } from "@/core/components/SmallScreenMessage.tsx";
-import { setDebugLogs } from "@/core/functions/logging.ts";
-import { useBlocksStore } from "@/core/history/useBlocksStoreUndoableActions.ts";
-import { defaultThemeValues } from "@/core/hooks/defaultThemeOptions.ts";
-import { useBuilderProp, useBuilderReset, useSavePage } from "@/core/hooks/index.ts";
-import { useBroadcastChannel, useUnmountBroadcastChannel } from "@/core/hooks/useBroadcastChannel.ts";
-import { useExpandTree } from "@/core/hooks/useExpandTree.ts";
-import { useKeyEventWatcher } from "@/core/hooks/useKeyEventWatcher.ts";
-import { useWatchPartailBlocks } from "@/core/hooks/usePartialBlocksStore.ts";
-import { builderSaveStateAtom } from "@/core/hooks/useSavePage.ts";
+import { RootLayout } from "@/core/components/layout/root-layout";
+import { PreviewScreen } from "@/core/components/PreviewScreen";
+import { setDebugLogs } from "@/core/functions/logging";
+import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { defaultThemeValues } from "@/core/hooks/default-theme-options";
+import { useBuilderProp, useBuilderReset, useSavePage } from "@/core/hooks/index";
+import { useBroadcastChannel, useUnmountBroadcastChannel } from "@/core/hooks/use-broadcast-channel";
+import { useExpandTree } from "@/core/hooks/use-expand-tree";
+import { useKeyEventWatcher } from "@/core/hooks/use-key-event-watcher";
+import { useWatchPartailBlocks } from "@/core/hooks/use-partial-blocks-store";
+import { builderSaveStateAtom } from "@/core/hooks/use-save-page";
 import "@/core/index.css";
-import i18n from "@/core/locales/load.ts";
+import i18n from "@/core/locales/load";
+import { ScreenTooSmall } from "@/core/screen-too-small";
 import { FEATURE_TOGGLES } from "@/FEATURE_TOGGLES";
-import { ChaiBuilderEditorProps } from "@/types/index.ts";
+import { ChaiBuilderEditorProps } from "@/types/index";
 import { ChaiBuilderThemeValues } from "@/types/types";
-import { Toaster } from "@/ui/shadcn/components/ui/sooner.tsx";
+import { Toaster } from "@/ui/shadcn/components/ui/sooner";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { useIntervalEffect } from "@react-hookz/web";
 import { FlagsProvider } from "flagged";
@@ -122,7 +122,7 @@ const ChaiBuilderEditor: React.FC<ChaiBuilderEditorProps> = (props: ChaiBuilderE
     <div className="h-screen w-screen">
       <ErrorBoundary fallback={<FallbackError />} onError={onErrorFn}>
         <FlagsProvider features={{ ...FEATURE_TOGGLES }}>
-          <SmallScreenMessage />
+          <ScreenTooSmall />
           <ChaiBuilderComponent {...props} />
           <PreviewScreen />
           <Toaster />

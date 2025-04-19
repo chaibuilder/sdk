@@ -1,6 +1,6 @@
-import { defaultThemeOptions } from "@/core/hooks/defaultThemeOptions";
+import { defaultThemeOptions } from "@/core/hooks/default-theme-options";
 import { chaiBuilderPlugin } from "@/tailwind";
-import { getChaiBuilderTheme } from "@/tailwind/getChaiBuilderTheme";
+import { getChaiBuilderTheme } from "@/tailwind/get-chai-builder-theme";
 import { ChaiBlock } from "@/types/chai-block";
 import { ChaiBuilderThemeOptions } from "@/types/chaibuilder-editor-props";
 import { createTailwindcss } from "@mhsdesign/jit-browser-tailwindcss";

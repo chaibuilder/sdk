@@ -1,4 +1,4 @@
-import { MicrosoftClarity } from "@/_demo/MicrosoftClarity";
+import { MicrosoftClarity } from "@/_demo/microsoft-clarity";
 import "@/index.css";
 import { DevTools } from "jotai-devtools";
 import "jotai-devtools/styles.css";
@@ -13,8 +13,8 @@ async function enableMocking() {
   return true;
 }
 
-const ChaiBuilderDefault = lazy(() => import("@/Editor.tsx"));
-const Preview = lazy(() => import("@/Preview.tsx"));
+const ChaiBuilderDefault = lazy(() => import("@/Editor"));
+const Preview = lazy(() => import("@/Preview"));
 
 const router = createBrowserRouter([
   {

@@ -1,9 +1,9 @@
-import { AiAssistant } from "@/core/components/canvas/topbar/AiAssistant";
-import { Breakpoints } from "@/core/components/canvas/topbar/Breakpoints";
-import { ClearCanvas } from "@/core/components/canvas/topbar/ClearCanvas";
-import { DarkMode } from "@/core/components/canvas/topbar/DarkMode";
-import { DataBinding } from "@/core/components/canvas/topbar/DataBinding";
-import { UndoRedo } from "@/core/components/canvas/topbar/UndoRedo";
+import { AiAssistant } from "@/core/components/canvas/topbar/ai-assistant";
+import { Breakpoints } from "@/core/components/canvas/topbar/breakpoints";
+import { ClearCanvas } from "@/core/components/canvas/topbar/clear-canvas";
+import { DarkMode } from "@/core/components/canvas/topbar/dark-mode";
+import { DataBinding } from "@/core/components/canvas/topbar/data-binding";
+import { UndoRedo } from "@/core/components/canvas/topbar/undo-redo";
 import { useBuilderProp, useCanvasZoom } from "@/core/hooks";
 import { Separator } from "@/ui/shadcn/components/ui/separator";
 import { ZoomInIcon } from "@radix-ui/react-icons";

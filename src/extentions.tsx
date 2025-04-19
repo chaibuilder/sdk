@@ -7,7 +7,7 @@ import { registerChaiTopBar } from "@/core/main";
 import { ChaiFontViaSrc, ChaiFontViaUrl, registerChaiFont } from "@chaibuilder/runtime";
 import { lazy } from "react";
 
-const TopBar = lazy(() => import("@/_demo/Topbar"));
+const TopBar = lazy(() => import("@/_demo/top-bar"));
 
 export const extendChaiBuilder = () => {
   registerCustomBlocks();

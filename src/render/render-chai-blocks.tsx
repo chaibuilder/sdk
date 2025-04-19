@@ -1,5 +1,5 @@
 import { STYLES_KEY } from "@/core/constants/STRINGS";
-import { getSplitChaiClasses } from "@/core/hooks/getSplitClasses";
+import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
 import AsyncPropsBlock from "@/render/async-props-block";
 import { ChaiBlock } from "@/types/chai-block";
 import { ChaiPageProps, getRegisteredChaiBlock } from "@chaibuilder/runtime";

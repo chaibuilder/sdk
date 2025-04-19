@@ -3,7 +3,7 @@
 import { canvasIframeAtom, networkModeAtom } from "@/core/atoms/ui";
 import { BlockFloatingSelector } from "@/core/components/canvas/block-floating-actions";
 import { IframeInitialContent } from "@/core/components/canvas/IframeInitialContent";
-import { KeyboardHandler } from "@/core/components/canvas/KeyboarHandler";
+import { KeyboardHandler } from "@/core/components/canvas/keyboar-handler";
 import { AddBlockAtBottom } from "@/core/components/canvas/static/AddBlockAtBottom";
 import { Canvas, getElementByDataBlockId } from "@/core/components/canvas/static/Canvas";
 import { HeadTags } from "@/core/components/canvas/static/head-tags";

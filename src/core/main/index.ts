@@ -1,6 +1,6 @@
 import ChaiBuilderCanvas from "@/core/components/canvas/canvas-area";
 import BlockPropsEditor from "@/core/components/settings/block-settings";
-import BlockStyleEditor from "@/core/components/settings/BlockStyling";
+import BlockStyleEditor from "@/core/components/settings/block-styling";
 import AddBlocksPanel from "@/core/components/sidepanels/panels/add-blocks/add-blocks";
 import ImportHTML from "@/core/components/sidepanels/panels/add-blocks/import-html";
 import UILibrariesPanel from "@/core/components/sidepanels/panels/add-blocks/libraries-panel";
@@ -16,12 +16,12 @@ if (typeof window === "undefined") {
 
 // components
 export { AISetContext as ChaiAskAiPanel, AIUserPrompt as ChaiAskAiUserPrompt } from "@/core/components/ask-ai-panel";
-export { Breakpoints as ChaiScreenSizes } from "@/core/components/canvas/topbar/Breakpoints";
-export { DarkMode as ChaiDarkModeSwitcher } from "@/core/components/canvas/topbar/DarkMode";
-export { UndoRedo as ChaiUndoRedo } from "@/core/components/canvas/topbar/UndoRedo";
+export { Breakpoints as ChaiScreenSizes } from "@/core/components/canvas/topbar/breakpoints";
+export { DarkMode as ChaiDarkModeSwitcher } from "@/core/components/canvas/topbar/dark-mode";
+export { UndoRedo as ChaiUndoRedo } from "@/core/components/canvas/topbar/undo-redo";
 export { ChaiBuilderEditor } from "@/core/components/chaibuilder-editor";
-export { AddBlocksDialog as ChaiAddBlocksDialog } from "@/core/components/layout/AddBlocksDialog";
-export { BlockAttributesEditor as ChaiBlockAttributesEditor } from "@/core/components/settings/new-panel/BlockAttributesEditor";
+export { AddBlocksDialog as ChaiAddBlocksDialog } from "@/core/components/layout/add-blocks-dialog";
+export { BlockAttributesEditor as ChaiBlockAttributesEditor } from "@/core/components/settings/new-panel/block-attributes-editor";
 export { DefaultChaiBlocks as ChaiDefaultBlocks } from "@/core/components/sidepanels/panels/add-blocks/default-blocks";
 export {
   AddBlocksPanel as ChaiAddBlocksPanel,
@@ -38,7 +38,7 @@ export {
 export { i18n };
 
 // helper functions
-export { generateUUID as generateBlockId, cn as mergeClasses } from "@/core/functions/Functions";
+export { generateUUID as generateBlockId, cn as mergeClasses } from "@/core/functions/common-functions";
 export { getBlocksFromHTML as convertHTMLToChaiBlocks, getBlocksFromHTML } from "@/core/import-html/html-to-json";
 
 // types
