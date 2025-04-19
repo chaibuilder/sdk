@@ -1,4 +1,4 @@
-import Countdown from "@/core/components/Countdown.tsx";
+import Countdown from "@/core/components/count-down";
 import { useAskAi } from "@/core/hooks/useAskAi.ts";
 import { AskAiResponse } from "@/types/chaibuilder-editor-props.ts";
 import { Button } from "@/ui/shadcn/components/ui/button";

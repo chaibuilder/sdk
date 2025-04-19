@@ -1,5 +1,5 @@
 import { usePageExternalData } from "@/core/atoms/builder";
-import { NestedPathSelector } from "@/core/components/NestedPathSelector";
+import { NestedPathSelector } from "@/core/components/nested-path-selector";
 import { cn } from "@/core/utils/cn";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";

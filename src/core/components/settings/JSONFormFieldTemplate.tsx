@@ -1,5 +1,5 @@
 import { usePageExternalData } from "@/core/atoms/builder.ts";
-import { NestedPathSelector } from "@/core/components/NestedPathSelector.tsx";
+import { NestedPathSelector } from "@/core/components/nested-path-selector";
 import { LANGUAGES } from "@/core/constants/LANGUAGES.ts";
 import { useLanguages, useSelectedBlock } from "@/core/hooks";
 import { Badge } from "@/ui/shadcn/components/ui/badge";
