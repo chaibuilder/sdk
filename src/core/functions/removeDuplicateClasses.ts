@@ -1,4 +1,4 @@
-import { ClassDerivedObject, constructClassObject } from "./Class";
+import { ClassDerivedObject, constructClassObject } from "@/core/functions/Class";
 
 export function removeDuplicateClasses(classes: string): string {
   classes = classes.replace(/\s+/g, " ");

@@ -1,7 +1,6 @@
-import { SunIcon } from "@radix-ui/react-icons";
-import { Moon } from "lucide-react";
-import { Switch } from "../../../../ui";
-import { useDarkMode } from "../../../hooks";
+import { useDarkMode } from "@/core/hooks";
+import { Switch } from "@/ui/shadcn/components/ui/switch";
+import { Moon, SunIcon } from "lucide-react";
 
 export function DarkMode() {
   const [darkMode, setDarkMode] = useDarkMode();

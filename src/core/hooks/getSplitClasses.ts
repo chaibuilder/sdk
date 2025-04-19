@@ -1,4 +1,4 @@
-import { STYLES_KEY } from "../constants/STRINGS";
+import { STYLES_KEY } from "@/core/constants/STRINGS";
 
 export const getSplitChaiClasses = (classesString: string): { baseClasses: string; classes: string } => {
   classesString = classesString.replace(STYLES_KEY, "");

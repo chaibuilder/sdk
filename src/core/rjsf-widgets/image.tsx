@@ -1,7 +1,7 @@
+import MediaManagerModal from "@/core/components/sidepanels/panels/images/media-manager-modal";
 import { WidgetProps } from "@rjsf/utils";
 import { first, isEmpty } from "lodash-es";
 import { useTranslation } from "react-i18next";
-import MediaManagerModal from "../components/sidepanels/panels/images/media-manager-modal.tsx";
 
 const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
   const { t } = useTranslation();

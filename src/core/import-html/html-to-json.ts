@@ -1,4 +1,8 @@
 // @ts-ignore
+import { STYLES_KEY } from "@/core/constants/STRINGS";
+import { cn, generateUUID } from "@/core/functions/Functions";
+import { getVideoURLFromHTML, hasVideoEmbed } from "@/core/import-html/import-video";
+import { ChaiBlock } from "@/types/chai-block";
 import { parse, stringify } from "himalaya";
 import {
   capitalize,
@@ -15,10 +19,6 @@ import {
   some,
   startsWith,
 } from "lodash-es";
-import { ChaiBlock } from "../../types/types.ts";
-import { STYLES_KEY } from "../constants/STRINGS.ts";
-import { cn, generateUUID } from "../functions/Functions.ts";
-import { getVideoURLFromHTML, hasVideoEmbed } from "./import-video.ts";
 
 type Node = {
   type: "element" | "text" | "comment";

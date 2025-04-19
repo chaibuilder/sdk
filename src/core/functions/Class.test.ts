@@ -1,7 +1,7 @@
+import { CLASSES_LIST } from "@/core/constants/CLASSES_LIST";
+import { getModForCls, getMqForCls, getPropertyForClass, getPureClsName } from "@/core/functions/Class";
+import { convertArbitraryToTailwindClass } from "@/core/functions/ConvertArbitraryToTailwindClass";
 import { each } from "lodash-es";
-import { CLASSES_LIST } from "../constants/CLASSES_LIST";
-import { getModForCls, getMqForCls, getPropertyForClass, getPureClsName } from "./Class.ts";
-import { convertArbitraryToTailwindClass } from "./ConvertArbitraryToTailwindClass.ts";
 
 describe("Class functions", () => {
   test.skip("convertArbitraryToTw", () => {

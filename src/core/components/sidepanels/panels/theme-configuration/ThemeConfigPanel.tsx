@@ -1,17 +1,20 @@
-import * as React from "react";
-
-import { useTranslation } from "react-i18next";
-import { Button, Label } from "../../../../../ui";
-import { cn } from "../../../../functions/Functions.ts";
-import { useDarkMode } from "../../../../hooks";
-import { useBuilderProp } from "../../../../hooks/index.ts";
-import { useTheme, useThemeOptions } from "../../../../hooks/useTheme.ts";
-import { BorderRadiusInput, ColorPickerInput, FontSelector } from "./index.ts";
-
+import {
+  BorderRadiusInput,
+  ColorPickerInput,
+  FontSelector,
+} from "@/core/components/sidepanels/panels/theme-configuration";
+import { cn } from "@/core/functions/Functions.ts";
+import { useDarkMode } from "@/core/hooks";
+import { useBuilderProp } from "@/core/hooks/index.ts";
+import { usePermissions } from "@/core/hooks/usePermissions.ts";
+import { useTheme, useThemeOptions } from "@/core/hooks/useTheme.ts";
+import { ChaiBuilderThemeValues } from "@/types/chaibuilder-editor-props.ts";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { Label } from "@/ui/shadcn/components/ui/label";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { capitalize, get, set } from "lodash-es";
-import { ChaiBuilderThemeValues } from "../../../../../types/chaibuilder-editor-props.ts";
-import { usePermissions } from "../../../../hooks/usePermissions.ts";
+import * as React from "react";
+import { useTranslation } from "react-i18next";
 interface ThemeConfigProps {
   className?: string;
 }

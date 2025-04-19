@@ -1,7 +1,7 @@
+import EmptySlot from "@/web-blocks/empty-slot";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { ImageIcon } from "@radix-ui/react-icons";
 import { isEmpty } from "lodash-es";
-import EmptySlot from "./empty-slot.tsx";
 
 export type ImageBlockProps = {
   styles: ChaiStyles;

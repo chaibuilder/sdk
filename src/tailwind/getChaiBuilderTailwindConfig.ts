@@ -72,4 +72,5 @@ const getChaiBuilderTailwindConfig = (content: string[]) => {
     plugins: [tailwindAnimate, tailwindTypography, tailwindForms, tailwindAspectRatio],
   };
 };
+
 export { getChaiBuilderTailwindConfig };

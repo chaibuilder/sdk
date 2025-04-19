@@ -1,5 +1,5 @@
+import { pubsub } from "@/core/pubsub";
 import { useEffect } from "react";
-import { pubsub } from "../pubsub";
 
 export function usePubSub<T>(eventName: string, callback: (data?: T) => void) {
   useEffect(() => {

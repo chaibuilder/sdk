@@ -1,8 +1,8 @@
+import { getBreakpointValue } from "@/core/functions/Functions";
+import { useStylingBreakpoint } from "@/core/hooks/useStylingBreakpoint";
 import { atom, useAtom, useAtomValue } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { useEffect } from "react";
-import { getBreakpointValue } from "../functions/Functions.ts";
-import { useStylingBreakpoint } from "./useStylingBreakpoint.ts";
 
 export const canvasWidthAtom = atomWithStorage("canvasWidth", 800);
 export const canvasDisplayWidthAtom = atomWithStorage("canvasDisplayWidth", 800);

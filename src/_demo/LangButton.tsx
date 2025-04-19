@@ -1,9 +1,15 @@
+import { LANGUAGES } from "@/core/constants/LANGUAGES";
+import { useLanguages } from "@/core/hooks";
+import { mergeClasses } from "@/core/main";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/ui/shadcn/components/ui/dropdown-menu";
 import { get, isEmpty, map } from "lodash-es";
 import { ChevronDown, Languages, Star } from "lucide-react";
-import { LANGUAGES } from "../core/constants/LANGUAGES";
-import { useLanguages } from "../core/hooks";
-import { mergeClasses } from "../core/main";
-import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui";
 
 export const LanguageButton = () => {
   const { fallbackLang, selectedLang, setSelectedLang } = useLanguages();

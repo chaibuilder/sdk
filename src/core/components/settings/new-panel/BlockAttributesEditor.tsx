@@ -1,12 +1,8 @@
+import AttrsEditor from "@/core/components/settings/new-panel/AttrsEditor";
+import { useSelectedBlock, useSelectedStylingBlocks, useUpdateBlocksProps } from "@/core/hooks";
+import { forEach, get, isEmpty, map, set } from "lodash-es";
 import * as React from "react";
 import { useState } from "react";
-import { forEach, get, isEmpty, map, set } from "lodash-es";
-import {
-  useSelectedBlock,
-  useSelectedStylingBlocks,
-  useUpdateBlocksProps,
-} from "../../../hooks";
-import AttrsEditor from "./AttrsEditor.tsx";
 
 export const BlockAttributesEditor = React.memo(() => {
   const block = useSelectedBlock();

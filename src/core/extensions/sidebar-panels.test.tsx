@@ -1,6 +1,6 @@
+import { CHAI_BUILDER_PANELS, registerChaiSidebarPanel } from "@/core/extensions/sidebar-panels";
 import { ComponentType } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { CHAI_BUILDER_PANELS, registerChaiSidebarPanel } from "./sidebar-panels";
 
 describe("registerChaiSidebarPanel", () => {
   beforeEach(() => {

@@ -1,3 +1,6 @@
+import { generateUUID } from "@/core/functions/Functions";
+import { ChaiBlock } from "@/types/chai-block";
+import EmptySlot from "@/web-blocks/empty-slot";
 import {
   ChaiBlockComponentProps,
   ChaiStyles,
@@ -14,9 +17,6 @@ import {
 } from "@radix-ui/react-icons";
 import { isEmpty } from "lodash-es";
 import { createElement } from "react";
-import { generateUUID } from "../../core/functions/Functions.ts";
-import { ChaiBlock } from "../../types/chai-block.ts";
-import EmptySlot from "../empty-slot.tsx";
 
 export type TableProps = {
   styles: ChaiStyles;

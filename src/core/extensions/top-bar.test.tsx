@@ -1,5 +1,5 @@
+import { registerChaiTopBar, useTopBarComponent } from "@/core/extensions/top-bar";
 import { renderHook } from "@testing-library/react";
-import { registerChaiTopBar, useTopBarComponent } from "./top-bar";
 
 describe("top-bar", () => {
   describe("registerChaiTopBar", () => {
@@ -30,7 +30,7 @@ describe("top-bar", () => {
 
       // Create a new hook instance to get the updated component
       const { result: updatedResult } = renderHook(() => useTopBarComponent());
-      
+
       // Verify second component is now registered
       expect(updatedResult.current).toBe(SecondTopBar);
     });

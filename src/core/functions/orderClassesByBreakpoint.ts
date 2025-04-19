@@ -1,4 +1,4 @@
-import { constructClassObject } from "./Class";
+import { constructClassObject } from "@/core/functions/Class";
 
 export function orderClassesByBreakpoint(classes: string): string {
   //sanitize the classes

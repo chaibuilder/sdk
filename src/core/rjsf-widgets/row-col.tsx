@@ -1,4 +1,4 @@
-import { useAddBlock, useSelectedBlock, useWrapperBlock } from "../hooks";
+import { useAddBlock, useSelectedBlock, useWrapperBlock } from "@/core/hooks";
 import { Plus } from "lucide-react";
 
 const RowColField = () => {

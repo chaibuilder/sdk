@@ -17,6 +17,7 @@ import { useWatchPartailBlocks } from "@/core/hooks/usePartialBlocksStore.ts";
 import { builderSaveStateAtom } from "@/core/hooks/useSavePage.ts";
 import i18n from "@/core/locales/load.ts";
 import { FEATURE_TOGGLES } from "@/FEATURE_TOGGLES";
+import "@/index.css";
 import { ChaiBuilderEditorProps } from "@/types/index.ts";
 import { ChaiBuilderThemeValues } from "@/types/types";
 import { Toaster } from "@/ui/shadcn/components/ui/sooner.tsx";
@@ -27,7 +28,6 @@ import { useAtom } from "jotai/index";
 import { each, noop, omit } from "lodash-es";
 import React, { useEffect, useMemo } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import "../index.css";
 
 const useAutoSave = () => {
   const { savePage } = useSavePage();

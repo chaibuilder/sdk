@@ -1,10 +1,10 @@
+import { useBlocksStoreUndoableActions } from "@/core/history/useBlocksStoreUndoableActions";
+import { useLanguages } from "@/core/hooks/useLanguages";
+import { useSelectedBlock } from "@/core/hooks/useSelectedBlockIds";
+import { ChaiBlock } from "@/types/chai-block";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { chunk, forEach, get, includes, isEmpty, isString, keys, omit, set, unset } from "lodash-es";
 import { useCallback } from "react";
-import { ChaiBlock } from "../../types/chai-block.ts";
-import { useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
-import { useLanguages } from "./useLanguages.ts";
-import { useSelectedBlock } from "./useSelectedBlockIds.ts";
 
 const updatePropsForLanguage = (props: Record<string, any>, selectedLang: string, selectedBlock: ChaiBlock) => {
   const chaiBlock = getRegisteredChaiBlock(get(selectedBlock, "_type"));

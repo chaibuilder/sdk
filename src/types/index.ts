@@ -1,5 +1,5 @@
+import type { ChaiBuilderEditorProps } from "@/types/chaibuilder-editor-props";
 import { ChaiPageProps } from "@chaibuilder/runtime";
-import type { ChaiBuilderEditorProps } from "./chaibuilder-editor-props.ts";
 
 export type { ChaiBuilderEditorProps };
 

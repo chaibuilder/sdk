@@ -1,3 +1,8 @@
+import { usePageExternalData } from "@/core/atoms/builder";
+import { NestedPathSelector } from "@/core/components/NestedPathSelector";
+import { cn } from "@/core/utils/cn";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
 import { WidgetProps } from "@rjsf/utils";
 import Link from "@tiptap/extension-link";
 import TextAlign from "@tiptap/extension-text-align";
@@ -19,11 +24,6 @@ import {
   Unlink,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { Button } from "../../ui/shadcn/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../../ui/shadcn/components/ui/dialog";
-import { usePageExternalData } from "../atoms/builder";
-import { NestedPathSelector } from "../components/NestedPathSelector";
-import { cn } from "../utils/cn";
 
 const MenuBar = ({ editor, onExpand }: { editor: any; onExpand?: () => void }) => {
   if (!editor) {

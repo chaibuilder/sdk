@@ -1,6 +1,6 @@
+import { Label } from "@/ui/shadcn/components/ui/label";
 import { useRegisteredFonts } from "@chaibuilder/runtime";
 import { startCase } from "lodash-es";
-import { Label } from "../../../../../ui";
 
 const FontSelector = ({
   label,

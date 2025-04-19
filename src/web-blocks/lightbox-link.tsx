@@ -1,10 +1,10 @@
+import { ChaiBlockStyles, ChaiRenderBlockProps } from "@/types/types";
+import EmptySlot from "@/web-blocks/empty-slot";
+import { addForcedClasses } from "@/web-blocks/helper";
 import { StylesProp, registerChaiBlockSchema } from "@chaibuilder/runtime";
 import { ImageIcon } from "@radix-ui/react-icons";
 import { isEmpty } from "lodash-es";
 import { createElement } from "react";
-import { ChaiBlockStyles, ChaiRenderBlockProps } from "../types/types.ts";
-import EmptySlot from "./empty-slot.tsx";
-import { addForcedClasses } from "./helper.ts";
 
 export type LightBoxLinkProps = {
   href: string;

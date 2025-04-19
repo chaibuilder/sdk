@@ -1,11 +1,12 @@
+import { usePageExternalData } from "@/core/atoms/builder";
+import { dataBindingActiveAtom } from "@/core/atoms/ui";
+import { cn } from "@/core/functions/Functions";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { useAtom } from "jotai";
 import { isEmpty } from "lodash-es";
 import { DatabaseZapIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Button, Tooltip, TooltipContent, TooltipTrigger } from "../../../../ui";
-import { usePageExternalData } from "../../../atoms/builder";
-import { dataBindingActiveAtom } from "../../../atoms/ui";
-import { cn } from "../../../functions/Functions";
 
 export const DataBinding = () => {
   const pageExternalData = usePageExternalData();

@@ -1,6 +1,6 @@
+import { ADD_BLOCK_TABS, registerChaiAddBlockTab, useChaiAddBlockTabs } from "@/core/extensions/add-block-tabs";
 import { renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { ADD_BLOCK_TABS, registerChaiAddBlockTab, useChaiAddBlockTabs } from "./add-block-tabs";
 
 describe("add-block-tabs", () => {
   beforeEach(() => {

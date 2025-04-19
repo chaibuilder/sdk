@@ -1,7 +1,7 @@
+import { LanguageButton } from "@/_demo/LangButton";
+import RightTop from "@/_demo/RightTop";
+import { Alert, AlertDescription } from "@/ui/shadcn/components/ui/alert";
 import { Info } from "lucide-react";
-import { Alert, AlertDescription } from "../ui";
-import { LanguageButton } from "./LangButton";
-import RightTop from "./RightTop";
 
 const Logo = () => {
   return (

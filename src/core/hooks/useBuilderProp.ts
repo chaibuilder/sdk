@@ -1,7 +1,7 @@
+import { chaiBuilderPropsAtom } from "@/core/atoms/builder";
+import { ChaiBuilderEditorProps } from "@/types/chaibuilder-editor-props";
 import { useAtomValue } from "jotai";
 import { get } from "lodash-es";
-import { ChaiBuilderEditorProps } from "../../types/chaibuilder-editor-props.ts";
-import { chaiBuilderPropsAtom } from "../atoms/builder.ts";
 
 type ExcludedBuilderProps = "blocks" | "subPages" | "brandingOptions" | "dataProviders";
 

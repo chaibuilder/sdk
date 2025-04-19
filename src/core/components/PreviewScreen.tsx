@@ -1,9 +1,10 @@
-import React, { Suspense } from "react";
-import { useBuilderProp, usePreviewMode } from "../hooks";
-import { Button, Skeleton } from "../../ui";
-import { cn } from "../functions/Functions.ts";
-import { useTranslation } from "react-i18next";
+import { cn } from "@/core/functions/Functions";
+import { useBuilderProp, usePreviewMode } from "@/core/hooks";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
 import { EyeClosedIcon } from "@radix-ui/react-icons";
+import React, { Suspense } from "react";
+import { useTranslation } from "react-i18next";
 
 export const PreviewScreen = () => {
   const [isPreviewOn, setPreviewMode] = usePreviewMode();

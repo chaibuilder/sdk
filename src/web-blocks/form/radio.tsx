@@ -1,6 +1,6 @@
+import { generateUUID } from "@/core/functions/Functions";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { RadiobuttonIcon } from "@radix-ui/react-icons";
-import { generateUUID } from "../../core/functions/Functions.ts";
 
 export type RadioProps = {
   label: string;

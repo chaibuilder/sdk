@@ -1,4 +1,7 @@
-import { convertArbitraryToTailwindClass, convertRemToPxIfNeeded } from "./ConvertArbitraryToTailwindClass.ts";
+import {
+  convertArbitraryToTailwindClass,
+  convertRemToPxIfNeeded,
+} from "@/core/functions/ConvertArbitraryToTailwindClass";
 import {
   gap,
   nonArbitraryClasses,
@@ -6,7 +9,7 @@ import {
   padding,
   position,
   zIndex,
-} from "./ConvertArbitraryToTailwindClass.data.ts";
+} from "@/core/functions/ConvertArbitraryToTailwindClass.data";
 
 describe("ConvertArbitraryToTw", () => {
   const MAPPER: { [key: string]: string } = {

@@ -1,13 +1,11 @@
-import { useHotkeys } from "react-hotkeys-hook";
-import { useSelectedBlock, useSelectedBlockIds } from "./useSelectedBlockIds";
-import { useRemoveBlocks } from "./useRemoveBlocks";
-import { useDuplicateBlocks } from "./useDuplicateBlocks";
-import { useUndoManager } from "../history/useUndoManager.ts";
-import { useCutBlockIds } from "./useCutBlockIds.ts";
-import { useCopyBlockIds } from "./useCopyBlockIds.ts";
-import { usePasteBlocks } from "./usePasteBlocks.ts";
-import { canDeleteBlock } from "../functions/block-helpers.ts";
+import { canDeleteBlock } from "@/core/functions/block-helpers";
+import { useCopyBlockIds, useCutBlockIds, useUndoManager } from "@/core/hooks";
+import { useDuplicateBlocks } from "@/core/hooks/useDuplicateBlocks";
+import { usePasteBlocks } from "@/core/hooks/usePasteBlocks";
+import { useRemoveBlocks } from "@/core/hooks/useRemoveBlocks";
+import { useSelectedBlock, useSelectedBlockIds } from "@/core/hooks/useSelectedBlockIds";
 import { get } from "lodash-es";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const useKeyEventWatcher = (doc?: Document) => {
   const [ids, setIds] = useSelectedBlockIds();

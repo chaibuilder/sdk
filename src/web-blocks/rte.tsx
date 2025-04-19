@@ -1,6 +1,6 @@
+import { addForcedClasses } from "@/web-blocks/helper";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { CursorTextIcon } from "@radix-ui/react-icons";
-import { addForcedClasses } from "./helper";
 
 export type RichTextProps = {
   styles: ChaiStyles;

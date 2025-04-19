@@ -1,24 +1,17 @@
-"use client";
-
-import { ChevronLeft, ChevronRight, DatabaseIcon } from "lucide-react";
-import * as React from "react";
-
-import { useEffect } from "react";
+import { Button } from "@/ui/shadcn/components/ui/button";
 import {
-  Button,
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
   CommandList,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "../../ui";
+} from "@/ui/shadcn/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/ui/popover";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
+import { ChevronLeft, ChevronRight, DatabaseIcon } from "lucide-react";
+import * as React from "react";
+import { useEffect } from "react";
 
 type NestedPathSelectorProps = {
   data: Record<string, any>;

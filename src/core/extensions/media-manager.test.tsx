@@ -1,6 +1,6 @@
+import { registerChaiMediaManager, useMediaManagerComponent } from "@/core/extensions/media-manager";
 import { renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, test } from "vitest";
-import { registerChaiMediaManager, useMediaManagerComponent } from "./media-manager";
 
 describe("Media Manager Extension", () => {
   // Mock components for testing

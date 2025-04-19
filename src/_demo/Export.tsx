@@ -1,8 +1,10 @@
+import { useCopyToClipboard } from "@/core/hooks";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from "@/ui/shadcn/components/ui/dialog";
+import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { useCopyToClipboard } from "../core/hooks";
-import { Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger, ScrollArea } from "../ui";
 
 interface ExportModalProps {
   content: any;

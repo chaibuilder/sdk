@@ -1,16 +1,16 @@
-import { getBlockFormSchemas, getRegisteredChaiBlock } from "@chaibuilder/runtime";
-import { IChangeEvent } from "@rjsf/core";
-import { cloneDeep, debounce, forEach, get, includes, isEmpty, keys, startCase } from "lodash-es";
-import { ChevronDown, ChevronRight } from "lucide-react";
-import { useCallback, useMemo, useState } from "react";
+import { JSONForm } from "@/core/components/settings/JSONForm";
 import {
   useLanguages,
   useSelectedBlock,
   useUpdateBlocksProps,
   useUpdateBlocksPropsRealtime,
   useWrapperBlock,
-} from "../../hooks/index.ts";
-import { JSONForm } from "./JSONForm.tsx";
+} from "@/core/hooks";
+import { getBlockFormSchemas, getRegisteredChaiBlock } from "@chaibuilder/runtime";
+import { IChangeEvent } from "@rjsf/core";
+import { cloneDeep, debounce, forEach, get, includes, isEmpty, keys, startCase } from "lodash-es";
+import { ChevronDown, ChevronRight } from "lucide-react";
+import { useCallback, useMemo, useState } from "react";
 
 const formDataWithSelectedLang = (formData, selectedLang: string, coreBlock) => {
   const updatedFormData = cloneDeep(formData);

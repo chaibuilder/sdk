@@ -1,5 +1,5 @@
+import { useBuilderProp, useCanvasDisplayWidth, useCanvasZoom } from "@/core/hooks";
 import { useCallback, useEffect, useState } from "react";
-import { useBuilderProp, useCanvasDisplayWidth, useCanvasZoom } from "../../../hooks";
 
 export const useCanvasScale = (dimension: { height: number; width: number }) => {
   const [canvasWidth] = useCanvasDisplayWidth();

@@ -1,10 +1,10 @@
+import { BlockStyle } from "@/core/components/settings/choices/BlockStyle";
+import { MultipleChoices } from "@/core/components/settings/choices/MultipleChoices";
+import { useSelectedBlockCurrentClasses } from "@/core/hooks";
+import { AccordionContent, AccordionItem, AccordionTrigger } from "@/ui/shadcn/components/ui/accordion";
 import { flatten, has, intersection, map, startCase } from "lodash-es";
 import React, { createContext, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { AccordionContent, AccordionItem, AccordionTrigger } from "../../../../ui";
-import { useSelectedBlockCurrentClasses } from "../../../hooks";
-import { BlockStyle } from "../choices/BlockStyle";
-import { MultipleChoices } from "../choices/MultipleChoices";
 
 const NestedOptions = ({ heading, items }: any) => {
   const { t } = useTranslation();

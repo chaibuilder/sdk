@@ -1,10 +1,10 @@
+import { useSaveToLibraryComponent } from "@/core/extensions/save-to-library";
+import { ChaiBlock, useBlocksStore } from "@/core/main";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
 import { atom, useAtom } from "jotai";
 import { filter, find, isEmpty } from "lodash-es";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../../../../../ui";
-import { useSaveToLibraryComponent } from "../../../../extensions/save-to-library";
-import { ChaiBlock, useBlocksStore } from "../../../../main";
 export const saveToLibraryModalAtom = atom<{
   isOpen: boolean;
   blockId: string | null;

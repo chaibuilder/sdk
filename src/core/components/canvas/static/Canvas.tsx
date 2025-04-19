@@ -1,15 +1,15 @@
+import { pageBlocksAtomsAtom } from "@/core/atoms/blocks";
+import { inlineEditingActiveAtom, treeRefAtom } from "@/core/atoms/ui";
+import { useDnd } from "@/core/components/canvas/dnd/useDnd";
+import { useFrame } from "@/core/frame";
+import { useBlockHighlight, useSelectedBlockIds, useSelectedStylingBlocks, useUpdateBlocksProps } from "@/core/hooks";
+import { useGetBlockAtomValue } from "@/core/hooks/useUpdateBlockAtom";
+import { ChaiBlock } from "@/types/chai-block";
 import { Editor, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useAtom } from "jotai";
 import { first, isEmpty, omit, throttle } from "lodash-es";
 import React, { useCallback, useEffect, useRef } from "react";
-import { ChaiBlock } from "../../../../types/chai-block.ts";
-import { pageBlocksAtomsAtom } from "../../../atoms/blocks.ts";
-import { inlineEditingActiveAtom, treeRefAtom } from "../../../atoms/ui.ts";
-import { useFrame } from "../../../frame";
-import { useBlockHighlight, useSelectedBlockIds, useSelectedStylingBlocks, useUpdateBlocksProps } from "../../../hooks";
-import { useGetBlockAtomValue } from "../../../hooks/useUpdateBlockAtom.ts";
-import { useDnd } from "../dnd/useDnd.ts";
 
 function getTargetedBlock(target) {
   // First check if the target is the canvas itself

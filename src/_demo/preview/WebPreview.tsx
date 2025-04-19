@@ -1,13 +1,13 @@
+import { SettingsWatcher } from "@/_demo/preview/Settings";
+import { ChaiFrame } from "@/core/frame/Frame.tsx";
+import { useBlocksStore, useBrandingOptions, useLanguages } from "@/core/hooks";
+import { RenderChaiBlocks } from "@/render";
+import { Button } from "@/ui/shadcn/components/ui/button";
 import { DesktopIcon, LaptopIcon, MobileIcon } from "@radix-ui/react-icons";
 import clsx from "clsx";
 import { get, map } from "lodash-es";
 import { useState } from "react";
 import ReactDOM from "react-dom/server";
-import { ChaiFrame } from "../../core/frame/Frame.tsx";
-import { useBlocksStore, useBrandingOptions, useLanguages } from "../../core/hooks";
-import { RenderChaiBlocks } from "../../render";
-import { Button } from "../../ui";
-import { SettingsWatcher } from "./Settings.tsx";
 
 interface BreakpointItemType {
   content: string;

@@ -1,5 +1,5 @@
+import { ClassDerivedObject, constructClassObject } from "@/core/functions/Class";
 import { filter, find, isEmpty, map } from "lodash-es";
-import { ClassDerivedObject, constructClassObject } from "./Class";
 
 const breakpoints: string[] = ["xs", "sm", "md", "lg", "xl", "2xl"];
 export const sanitizeClasses = (classes: string): string => {

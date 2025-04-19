@@ -1,6 +1,6 @@
+import { PER_VALUE_TO_TW_CLASS, PX_VALUE_TO_TW_CLASS } from "@/core/constants/TWCLASS_VALUES";
+import { ClassDerivedObject, constructClassObject } from "@/core/functions/Class";
 import { first, get, includes, keys, map, parseInt } from "lodash-es";
-import { PER_VALUE_TO_TW_CLASS, PX_VALUE_TO_TW_CLASS } from "../constants/TWCLASS_VALUES";
-import { ClassDerivedObject, constructClassObject } from "./Class";
 
 const REM_BASE = 16;
 const PX_TO_TW_DIVIDER = 4;

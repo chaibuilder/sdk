@@ -1,6 +1,6 @@
+import { generateUUID } from "@/core/functions/Functions";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { CheckboxIcon } from "@radix-ui/react-icons";
-import { generateUUID } from "../../core/functions/Functions.ts";
 
 export type CheckboxProps = {
   label: string;

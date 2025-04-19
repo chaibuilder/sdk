@@ -1,10 +1,9 @@
-import { useAtomValue } from "jotai";
+import { presentBlocksAtom } from "@/core/atoms/blocks";
+import { selectedBlockIdsAtom } from "@/core/hooks/useSelectedBlockIds";
+import { ChaiBlock } from "@/types/chai-block";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
-import { ChaiBlock } from "@chaibuilder/runtime";
-import { atom } from "jotai";
-import { presentBlocksAtom } from "../atoms/blocks";
+import { atom, useAtomValue } from "jotai";
 import { find } from "lodash-es";
-import { selectedBlockIdsAtom } from "./useSelectedBlockIds";
 
 // * This atom computes the wrapper block for the currently selected block.
 // * It iterates through the block's ancestors to find the first block that is marked as a wrapper.

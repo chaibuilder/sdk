@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useSelectedBlockIds, useSelectedStylingBlocks } from "@/core/hooks";
 import { useDebouncedCallback, useResizeObserver } from "@react-hookz/web";
-import { useSelectedBlockIds, useSelectedStylingBlocks } from "../../../hooks";
+import { useEffect, useRef } from "react";
 
 export const ResizableCanvasWrapper = ({ children, onMount, onResize }: any) => {
   const [, setSelected] = useSelectedBlockIds();

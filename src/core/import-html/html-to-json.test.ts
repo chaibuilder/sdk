@@ -1,4 +1,4 @@
-import { getSanitizedHTML } from "./html-to-json";
+import { getSanitizedHTML } from "@/core/import-html/html-to-json";
 
 describe("getSanitizedHTML", () => {
   test("should remove $name attributes", () => {

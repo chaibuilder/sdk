@@ -1,20 +1,20 @@
+import { canvasIframeAtom } from "@/core/atoms/ui";
+import { BlockMoreOptions } from "@/core/components/sidepanels/panels/outline/block-more-options";
+import { TypeIcon } from "@/core/components/sidepanels/panels/outline/block-type-icon";
+import { PERMISSIONS } from "@/core/constants/PERMISSIONS";
+import { ROOT_TEMP_KEY } from "@/core/constants/STRINGS";
+import { CHAI_BUILDER_EVENTS } from "@/core/events";
+import { canAcceptChildBlock, canAddChildBlock } from "@/core/functions/block-helpers";
+import { useBlockHighlight, useHiddenBlockIds, usePermissions, useTranslation } from "@/core/hooks";
+import { pubsub } from "@/core/pubsub";
+import { cn } from "@/core/utils/cn";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { atom, useAtom } from "jotai";
 import { get, has, isEmpty } from "lodash-es";
 import { ChevronRight, EyeOffIcon, MoreVertical } from "lucide-react";
 import { memo, useEffect, useMemo } from "react";
 import { NodeRendererProps } from "react-arborist";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../../ui";
-import { canvasIframeAtom } from "../../../../atoms/ui";
-import { PERMISSIONS } from "../../../../constants/PERMISSIONS";
-import { ROOT_TEMP_KEY } from "../../../../constants/STRINGS";
-import { CHAI_BUILDER_EVENTS } from "../../../../events";
-import { canAcceptChildBlock, canAddChildBlock } from "../../../../functions/block-helpers";
-import { useBlockHighlight, useHiddenBlockIds, usePermissions, useTranslation } from "../../../../hooks";
-import { pubsub } from "../../../../pubsub";
-import { cn } from "../../../../utils/cn";
-import { BlockMoreOptions } from "./block-more-options";
-import { TypeIcon } from "./block-type-icon";
 
 const Input = ({ node }) => {
   return (

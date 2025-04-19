@@ -1,11 +1,11 @@
+import { LANGUAGES } from "@/core/constants/LANGUAGES.ts";
+import { useAskAi } from "@/core/hooks/useAskAi.ts";
+import { useLanguages } from "@/core/hooks/useLanguages.ts";
+import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/ui/popover";
 import { ArrowDownIcon, ArrowUpIcon, CheckIcon } from "@radix-ui/react-icons";
 import { get } from "lodash-es";
 import { FileEdit, Languages, Recycle, ShuffleIcon, SmileIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Popover, PopoverContent, PopoverTrigger } from "../../ui";
-import { LANGUAGES } from "../constants/LANGUAGES.ts";
-import { useAskAi } from "../hooks/useAskAi.ts";
-import { useLanguages } from "../hooks/useLanguages.ts";
 
 const QUICK_PROMPTS = [
   {

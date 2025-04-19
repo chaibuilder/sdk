@@ -1,6 +1,5 @@
-import { useTranslation } from "react-i18next";
-import { useCallback } from "react";
-import { EraserIcon } from "@radix-ui/react-icons";
+import { useBlocksStoreUndoableActions } from "@/core/history/useBlocksStoreUndoableActions.ts";
+import { useSelectedBlockIds, useSelectedStylingBlocks } from "@/core/hooks";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,10 +10,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-  Button,
-} from "../../../../ui";
-import { useSelectedBlockIds, useSelectedStylingBlocks } from "../../../hooks";
-import { useBlocksStoreUndoableActions } from "../../../history/useBlocksStoreUndoableActions.ts";
+} from "@/ui/shadcn/components/ui/alert-dialog";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { EraserIcon } from "@radix-ui/react-icons";
+import { useCallback } from "react";
+import { useTranslation } from "react-i18next";
 
 export const ClearCanvas = () => {
   const { t } = useTranslation();

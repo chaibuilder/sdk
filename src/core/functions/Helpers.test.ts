@@ -1,4 +1,9 @@
-import { getClassValueAndUnit, getMinWidthTwClassValue, getTwClassValue, getValueAndUnitForTWClass } from "./Helpers";
+import {
+  getClassValueAndUnit,
+  getMinWidthTwClassValue,
+  getTwClassValue,
+  getValueAndUnitForTWClass,
+} from "@/core/functions/Helpers";
 
 describe("getClassValueAndUnit", () => {
   test("should return", () => {

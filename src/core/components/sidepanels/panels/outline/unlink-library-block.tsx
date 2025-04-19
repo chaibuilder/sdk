@@ -1,7 +1,8 @@
+import { useSelectedBlock, useUpdateBlocksProps } from "@/core/hooks";
+import { DropdownMenuItem } from "@/ui/shadcn/components/ui/dropdown-menu";
 import { UnlinkIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { DropdownMenuItem } from "../../../../../ui";
-import { useSelectedBlock, useUpdateBlocksProps } from "../../../../hooks";
+
 export const UnlinkLibraryBlock = () => {
   const { t } = useTranslation();
   const selectedBlock = useSelectedBlock();

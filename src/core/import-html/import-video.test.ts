@@ -1,4 +1,4 @@
-import { getVideoURLFromHTML, hasVideoEmbed } from "./import-video.ts";
+import { getVideoURLFromHTML, hasVideoEmbed } from "@/core/import-html/import-video";
 
 describe("hasVideoEmbed", () => {
   it("returns true for valid YouTube URLs within iframe tag", () => {

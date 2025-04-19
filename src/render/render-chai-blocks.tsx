@@ -1,3 +1,7 @@
+import { STYLES_KEY } from "@/core/constants/STRINGS";
+import { getSplitChaiClasses } from "@/core/hooks/getSplitClasses";
+import AsyncPropsBlock from "@/render/async-props-block";
+import { ChaiBlock } from "@/types/chai-block";
 import { ChaiPageProps, getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import {
   cloneDeep,
@@ -17,10 +21,6 @@ import {
 } from "lodash-es";
 import React, { createElement, Suspense } from "react";
 import { twMerge } from "tailwind-merge";
-import { STYLES_KEY } from "../core/constants/STRINGS.ts";
-import { getSplitChaiClasses } from "../core/hooks/getSplitClasses.ts";
-import { ChaiBlock } from "../types/chai-block.ts";
-import AsyncPropsBlock from "./async-props-block.tsx";
 
 const generateClassNames = memoize((styles: string) => {
   const { baseClasses, classes: classesString } = getSplitChaiClasses(styles);

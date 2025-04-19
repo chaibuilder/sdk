@@ -1,12 +1,12 @@
+import { STYLES_KEY } from "@/core/constants/STRINGS";
+import { ClassDerivedObject, constructClassObject } from "@/core/functions/Class";
+import { getSplitChaiClasses } from "@/core/hooks/getSplitClasses";
+import { darkModeAtom } from "@/core/hooks/useDarkMode";
+import { canvasBreakpointAtom } from "@/core/hooks/useScreenSizeWidth";
+import { selectedBlockAtom, styleStateAtom } from "@/core/hooks/useSelectedBlockIds";
+import { selectedStylingBlocksAtom } from "@/core/hooks/useSelectedStylingBlocks";
 import { atom, useAtomValue } from "jotai";
 import { filter, first, get as getProp, isNull, map, startsWith } from "lodash-es";
-import { STYLES_KEY } from "../constants/STRINGS.ts";
-import { ClassDerivedObject, constructClassObject } from "../functions/Class.ts";
-import { getSplitChaiClasses } from "./getSplitClasses.ts";
-import { darkModeAtom } from "./useDarkMode";
-import { canvasBreakpointAtom } from "./useScreenSizeWidth";
-import { selectedBlockAtom, styleStateAtom } from "./useSelectedBlockIds";
-import { selectedStylingBlocksAtom } from "./useSelectedStylingBlocks";
 
 /**
  * Derived atom based on selected block classes

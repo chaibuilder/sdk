@@ -1,10 +1,10 @@
+import { saveToLibraryModalAtom } from "@/core/components/sidepanels/panels/outline/upsert-library-block-modal";
+import { useSaveToLibraryComponent } from "@/core/extensions/save-to-library";
+import { useSelectedBlock } from "@/core/hooks";
+import { DropdownMenuItem } from "@/ui/shadcn/components/ui/dropdown-menu";
 import { useAtom } from "jotai";
 import { SaveIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { DropdownMenuItem } from "../../../../../ui";
-import { useSaveToLibraryComponent } from "../../../../extensions/save-to-library";
-import { useSelectedBlock } from "../../../../hooks";
-import { saveToLibraryModalAtom } from "./upsert-library-block-modal";
 
 export const SaveToLibrary = () => {
   const selectedBlock = useSelectedBlock();

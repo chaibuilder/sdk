@@ -1,11 +1,11 @@
+import { insertBlocksAtPosition } from "@/core/history/InsertBlocksAtPosition";
+import { moveBlocksWithChildren } from "@/core/history/moveBlocksWithChildren";
+import { useBlocksStore } from "@/core/history/useBlocksStoreUndoableActions";
+import { useBroadcastChannel } from "@/core/hooks/useBroadcastChannel";
+import { removeNestedBlocks } from "@/core/hooks/useRemoveBlocks";
+import { useUpdateBlockAtom } from "@/core/hooks/useUpdateBlockAtom";
+import { ChaiBlock } from "@/types/chai-block";
 import { each, find, omit } from "lodash-es";
-import { ChaiBlock } from "../../types/chai-block.ts";
-import { useBroadcastChannel } from "../hooks/useBroadcastChannel.ts";
-import { removeNestedBlocks } from "../hooks/useRemoveBlocks.ts";
-import { useUpdateBlockAtom } from "../hooks/useUpdateBlockAtom.ts";
-import { insertBlocksAtPosition } from "./InsertBlocksAtPosition.ts";
-import { moveBlocksWithChildren } from "./moveBlocksWithChildren.ts";
-import { useBlocksStore } from "./useBlocksStoreUndoableActions.ts";
 
 export const useBlocksStoreManager = () => {
   const [, setBlocks] = useBlocksStore();

@@ -1,30 +1,28 @@
-import type { ChaiBlock } from "../../types/chai-block.ts";
-import type { ChaiBuilderEditorProps } from "../../types/index.ts";
-
-import ChaiBuilderCanvas from "../components/canvas/canvas-area.tsx";
-import BlockPropsEditor from "../components/settings/block-settings.tsx";
-import BlockStyleEditor from "../components/settings/BlockStyling.tsx";
-import AddBlocksPanel from "../components/sidepanels/panels/add-blocks/add-blocks.tsx";
-import ImportHTML from "../components/sidepanels/panels/add-blocks/import-html.tsx";
-import UILibrariesPanel from "../components/sidepanels/panels/add-blocks/libraries-panel.tsx";
-import Outline from "../components/sidepanels/panels/outline/list-tree.tsx";
-import ThemeConfigPanel from "../components/sidepanels/panels/theme-configuration/ThemeConfigPanel.tsx";
-
-import i18n from "../locales/load";
+import ChaiBuilderCanvas from "@/core/components/canvas/canvas-area";
+import BlockPropsEditor from "@/core/components/settings/block-settings";
+import BlockStyleEditor from "@/core/components/settings/BlockStyling";
+import AddBlocksPanel from "@/core/components/sidepanels/panels/add-blocks/add-blocks";
+import ImportHTML from "@/core/components/sidepanels/panels/add-blocks/import-html";
+import UILibrariesPanel from "@/core/components/sidepanels/panels/add-blocks/libraries-panel";
+import Outline from "@/core/components/sidepanels/panels/outline/list-tree";
+import ThemeConfigPanel from "@/core/components/sidepanels/panels/theme-configuration/ThemeConfigPanel";
+import i18n from "@/core/locales/load";
+import type { ChaiBlock } from "@/types/chai-block";
+import type { ChaiBuilderEditorProps } from "@/types/index";
 
 if (typeof window === "undefined") {
   throw new Error("@chaibuilder/sdk is only supported in the browser. Avoid using it in the server side.");
 }
 
 // components
-export { AISetContext as ChaiAskAiPanel, AIUserPrompt as ChaiAskAiUserPrompt } from "../components/ask-ai-panel.tsx";
-export { Breakpoints as ChaiScreenSizes } from "../components/canvas/topbar/Breakpoints.tsx";
-export { DarkMode as ChaiDarkModeSwitcher } from "../components/canvas/topbar/DarkMode.tsx";
-export { UndoRedo as ChaiUndoRedo } from "../components/canvas/topbar/UndoRedo.tsx";
-export { ChaiBuilderEditor } from "../components/chaibuilder-editor.tsx";
-export { AddBlocksDialog as ChaiAddBlocksDialog } from "../components/layout/AddBlocksDialog.tsx";
-export { BlockAttributesEditor as ChaiBlockAttributesEditor } from "../components/settings/new-panel/BlockAttributesEditor.tsx";
-export { DefaultChaiBlocks as ChaiDefaultBlocks } from "../components/sidepanels/panels/add-blocks/default-blocks.tsx";
+export { AISetContext as ChaiAskAiPanel, AIUserPrompt as ChaiAskAiUserPrompt } from "@/core/components/ask-ai-panel";
+export { Breakpoints as ChaiScreenSizes } from "@/core/components/canvas/topbar/Breakpoints";
+export { DarkMode as ChaiDarkModeSwitcher } from "@/core/components/canvas/topbar/DarkMode";
+export { UndoRedo as ChaiUndoRedo } from "@/core/components/canvas/topbar/UndoRedo";
+export { ChaiBuilderEditor } from "@/core/components/chaibuilder-editor";
+export { AddBlocksDialog as ChaiAddBlocksDialog } from "@/core/components/layout/AddBlocksDialog";
+export { BlockAttributesEditor as ChaiBlockAttributesEditor } from "@/core/components/settings/new-panel/BlockAttributesEditor";
+export { DefaultChaiBlocks as ChaiDefaultBlocks } from "@/core/components/sidepanels/panels/add-blocks/default-blocks";
 export {
   AddBlocksPanel as ChaiAddBlocksPanel,
   BlockPropsEditor as ChaiBlockPropsEditor,
@@ -40,29 +38,29 @@ export {
 export { i18n };
 
 // helper functions
-export { generateUUID as generateBlockId, cn as mergeClasses } from "../functions/Functions.ts";
-export { getBlocksFromHTML as convertHTMLToChaiBlocks, getBlocksFromHTML } from "../import-html/html-to-json.ts";
+export { generateUUID as generateBlockId, cn as mergeClasses } from "@/core/functions/Functions";
+export { getBlocksFromHTML as convertHTMLToChaiBlocks, getBlocksFromHTML } from "@/core/import-html/html-to-json";
 
 // types
 export type { ChaiBlock, ChaiBuilderEditorProps };
 
 // registration apis
-export { registerChaiAddBlockTab } from "../extensions/add-block-tabs.tsx";
+export { registerChaiAddBlockTab } from "@/core/extensions/add-block-tabs";
 export {
   registerBlockSettingField,
   registerBlockSettingTemplate,
   registerBlockSettingWidget,
-} from "../extensions/blocks-settings.tsx";
-export { registerChaiMediaManager } from "../extensions/media-manager.tsx";
-export { registerChaiSaveToLibrary } from "../extensions/save-to-library.tsx";
-export { registerChaiSidebarPanel } from "../extensions/sidebar-panels.tsx";
-export { registerChaiTopBar } from "../extensions/top-bar.tsx";
+} from "@/core/extensions/blocks-settings";
+export { registerChaiMediaManager } from "@/core/extensions/media-manager";
+export { registerChaiSaveToLibrary } from "@/core/extensions/save-to-library";
+export { registerChaiSidebarPanel } from "@/core/extensions/sidebar-panels";
+export { registerChaiTopBar } from "@/core/extensions/top-bar";
 
 // hooks
 
-export { useMediaManagerComponent } from "../extensions/media-manager.tsx";
-export type { ChaiSidebarPanel } from "../extensions/sidebar-panels.tsx";
-export * from "../hooks";
+export { useMediaManagerComponent } from "@/core/extensions/media-manager";
+export type { ChaiSidebarPanel } from "@/core/extensions/sidebar-panels";
+export * from "@/core/hooks";
 
 // constants
-export { PERMISSIONS } from "../constants/PERMISSIONS";
+export { PERMISSIONS } from "@/core/constants/PERMISSIONS";

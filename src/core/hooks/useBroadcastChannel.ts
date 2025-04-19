@@ -1,7 +1,7 @@
+import { useBlocksStoreManager } from "@/core/history/useBlocksStoreManager";
+import { useBlocksStore, useBuilderProp } from "@/core/hooks";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { useEffect } from "react";
-import { useBlocksStoreManager } from "../history/useBlocksStoreManager";
-import { useBlocksStore, useBuilderProp } from "./hooks";
 
 const broadcastChannel = new BroadcastChannel("chaibuilder");
 export const useBroadcastChannel = () => {

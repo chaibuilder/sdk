@@ -1,7 +1,6 @@
+import EmptySlot from "@/web-blocks/empty-slot";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
-
 import { GroupIcon } from "lucide-react";
-import EmptySlot from "../empty-slot";
 
 export type FormProps = {
   errorMessage: string;

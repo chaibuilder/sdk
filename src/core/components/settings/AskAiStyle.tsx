@@ -1,3 +1,4 @@
+import Countdown from "@/core/components/Countdown.tsx";
 import { useAskAi } from "@/core/hooks/useAskAi.ts";
 import { AskAiResponse } from "@/types/chaibuilder-editor-props.ts";
 import { Button } from "@/ui/shadcn/components/ui/button";
@@ -6,7 +7,6 @@ import { Textarea } from "@/ui/shadcn/components/ui/textarea";
 import { Loader } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Countdown from "../Countdown.tsx";
 
 export const AskAIStyles = ({ blockId }: { blockId: string | undefined }) => {
   const { t } = useTranslation();
