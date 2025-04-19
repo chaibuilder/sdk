@@ -125,7 +125,7 @@ const ChaiBuilderEditor: React.FC<ChaiBuilderEditorProps> = (props: ChaiBuilderE
           <ScreenTooSmall />
           <ChaiBuilderComponent {...props} />
           <PreviewScreen />
-          <Toaster />
+          <Toaster richColors />
         </FlagsProvider>
       </ErrorBoundary>
     </div>

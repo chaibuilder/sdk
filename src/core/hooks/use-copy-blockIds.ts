@@ -1,8 +1,7 @@
-import { getDuplicatedBlocks } from "@/core/functions/blocks-fn";
-import { useBlocksStore } from "@/core/hooks";
 import { cutBlockIdsAtom } from "@/core/hooks/use-cut-blockIds";
 import { atom, useAtom, useSetAtom } from "jotai";
 import { useCallback } from "react";
+import { toast } from "sonner";
 
 export const copiedBlockIdsAtom: any = atom<Array<string>>([]);
 
@@ -16,29 +15,16 @@ export interface ClipboardBlock {
 }
 
 export const useCopyBlockIds = (): [Array<string>, (blockIds: Array<string>) => void] => {
-  const [presentBlocks] = useBlocksStore();
   const [ids, setIds] = useAtom(copiedBlockIdsAtom);
   const resetCutBlockIds = useSetAtom(cutBlockIdsAtom);
 
   const setCopiedBlockIds = useCallback(
     async (blockIds: Array<string>) => {
-      try {
-        setIds(blockIds);
-        resetCutBlockIds([]);
-
-        const clipboardData: ClipboardBlock = {
-          _chai_copied_blocks: blockIds.flatMap((blockId) => {
-            // Get duplicated blocks with children
-            return getDuplicatedBlocks(presentBlocks, blockId, null);
-          }),
-        };
-
-        await navigator.clipboard.writeText(JSON.stringify(clipboardData));
-      } catch (error) {
-        console.error("Failed to copy blocks to clipboard:", error);
-      }
+      setIds(blockIds);
+      resetCutBlockIds([]);
+      toast.success("Blocks copied");
     },
-    [setIds, resetCutBlockIds, presentBlocks],
+    [setIds, resetCutBlockIds],
   );
 
   return [ids as string[], setCopiedBlockIds];

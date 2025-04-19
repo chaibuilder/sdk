@@ -1,6 +1,5 @@
 import { treeDSBlocks } from "@/core/atoms/blocks";
 import { treeRefAtom } from "@/core/atoms/ui";
-import { PasteAtRootContextMenu } from "@/core/components/sidepanels/panels/outline/block-more-options";
 import { DefaultCursor } from "@/core/components/sidepanels/panels/outline/default-cursor";
 import { DefaultDragPreview } from "@/core/components/sidepanels/panels/outline/default-drag-preview";
 import {
@@ -287,7 +286,6 @@ const ListTree = () => {
           </Tree>
         </div>
       </div>
-      <PasteAtRootContextMenu parentContext={parentContext} setParentContext={setParentContext} />
       <SaveToLibraryModal />
     </>
   );
