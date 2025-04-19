@@ -1,4 +1,4 @@
-import Countdown from "@/core/components/Countdown";
+import Countdown from "@/core/components/count-down";
 import { QuickPrompts } from "@/core/components/QuickPrompts";
 import { useAskAi, useBuilderProp, useSelectedBlockIds } from "@/core/hooks";
 import { AskAiResponse } from "@/types/chaibuilder-editor-props";

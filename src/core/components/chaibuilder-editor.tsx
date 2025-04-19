@@ -2,7 +2,7 @@ import { chaiBuilderPropsAtom, chaiPageExternalDataAtom } from "@/core/atoms/bui
 import { builderStore } from "@/core/atoms/store.ts";
 import { selectedLibraryAtom } from "@/core/atoms/ui.ts";
 import { CssThemeVariables } from "@/core/components/css-theme-var.tsx";
-import { FallbackError } from "@/core/components/FallbackError.tsx";
+import { FallbackError } from "@/core/components/fallback-error";
 import { RootLayout } from "@/core/components/layout/root-layout.tsx";
 import { PreviewScreen } from "@/core/components/PreviewScreen.tsx";
 import { SmallScreenMessage } from "@/core/components/SmallScreenMessage.tsx";

@@ -1,7 +1,7 @@
 "use client";
 
 import { usePageExternalData } from "@/core/atoms/builder";
-import { NestedPathSelector } from "@/core/components/NestedPathSelector";
+import { NestedPathSelector } from "@/core/components/nested-path-selector";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Input } from "@/ui/shadcn/components/ui/input";
 import { Label } from "@/ui/shadcn/components/ui/label";

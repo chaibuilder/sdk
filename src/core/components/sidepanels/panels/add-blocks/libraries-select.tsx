@@ -1,4 +1,4 @@
-import ChaiSelect from "@/core/components/ChaiSelect.tsx";
+import ChaiSelect from "@/core/components/chai-select";
 import { ChaiUILibrary } from "@/types/chaibuilder-editor-props.ts";
 import { useTranslation } from "react-i18next";
 

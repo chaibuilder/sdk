@@ -1,4 +1,4 @@
-import { FallbackError } from "@/core/components/FallbackError.tsx";
+import { FallbackError } from "@/core/components/fallback-error";
 import { useBuilderProp } from "@/core/hooks";
 import { usePageDataProviders } from "@/core/hooks/usePageDataProviders.ts";
 import { builderSaveStateAtom } from "@/core/hooks/useSavePage.ts";
