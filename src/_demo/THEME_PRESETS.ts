@@ -1,6 +1,6 @@
-import { ChaiBuilderThemeValues } from "@/types/chaibuilder-editor-props";
+import { ChaiThemeValues } from "@/types/chaibuilder-editor-props";
 
-export const orangePreset: ChaiBuilderThemeValues = {
+export const orangePreset: ChaiThemeValues = {
   fontFamily: {
     heading: "Poppins",
     body: "Poppins",
@@ -29,7 +29,7 @@ export const orangePreset: ChaiBuilderThemeValues = {
   },
 };
 
-export const greenPreset: ChaiBuilderThemeValues = {
+export const greenPreset: ChaiThemeValues = {
   fontFamily: {
     heading: "Playfair Display",
     body: "Playfair Display",
@@ -58,7 +58,7 @@ export const greenPreset: ChaiBuilderThemeValues = {
   },
 };
 
-export const bluePreset: ChaiBuilderThemeValues = {
+export const bluePreset: ChaiThemeValues = {
   fontFamily: {
     heading: "Poppins",
     body: "Roboto",

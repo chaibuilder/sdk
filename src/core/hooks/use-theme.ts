@@ -1,14 +1,12 @@
 import { defaultThemeOptions, defaultThemeValues } from "@/core/hooks/default-theme-options";
 import { useBuilderProp } from "@/core/hooks/use-builder-prop";
-import { BorderRadiusValue, ChaiBuilderThemeOptions, ChaiBuilderThemeValues } from "@/types/chaibuilder-editor-props";
+import { BorderRadiusValue, ChaiBuilderThemeOptions, ChaiThemeValues } from "@/types/chaibuilder-editor-props";
 import { atom, useAtom } from "jotai";
 import { isEmpty } from "lodash-es";
 import { useMemo } from "react";
 
-export const getDefaultThemeValues = (
-  options: ChaiBuilderThemeOptions = defaultThemeOptions,
-): ChaiBuilderThemeValues => {
-  const themeValues: ChaiBuilderThemeValues = defaultThemeValues;
+export const getDefaultThemeValues = (options: ChaiBuilderThemeOptions = defaultThemeOptions): ChaiThemeValues => {
+  const themeValues: ChaiThemeValues = defaultThemeValues;
 
   if (options.fontFamily) {
     themeValues.fontFamily = Object.entries(options.fontFamily).reduce(
@@ -36,7 +34,7 @@ export const getDefaultThemeValues = (
 };
 
 // Create a new atom for changeable theme values, initialized with default values
-const chaiThemeValuesAtom = atom<ChaiBuilderThemeValues | Partial<ChaiBuilderThemeValues>>({});
+const chaiThemeValuesAtom = atom<ChaiThemeValues | Partial<ChaiThemeValues>>({});
 
 export const useTheme = () => {
   const options = useThemeOptions();

@@ -1,4 +1,4 @@
-import { ChaiBuilderThemeOptions, ChaiBuilderThemeValues } from "@/types/chaibuilder-editor-props";
+import { ChaiBuilderThemeOptions, ChaiThemeValues } from "@/types/chaibuilder-editor-props";
 
 export const defaultThemeOptions: ChaiBuilderThemeOptions = {
   fontFamily: {
@@ -74,7 +74,7 @@ export const defaultThemeOptions: ChaiBuilderThemeOptions = {
   ],
 };
 
-export const defaultThemeValues: ChaiBuilderThemeValues = {
+export const defaultThemeValues: ChaiThemeValues = {
   fontFamily: {
     heading: "Inter",
     body: "Inter",

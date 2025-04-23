@@ -64,3 +64,4 @@ export * from "@/core/hooks";
 
 // constants
 export { PERMISSIONS } from "@/core/constants/PERMISSIONS";
+export type { ChaiThemeValues } from "@/types/chaibuilder-editor-props";

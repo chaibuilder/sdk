@@ -48,7 +48,7 @@ export type Breakpoint = {
 export type SavePageData = {
   autoSave: boolean;
   blocks: ChaiBlock[];
-  theme?: ChaiBuilderThemeValues;
+  theme?: ChaiThemeValues;
 };
 
 type TimeInSeconds = number;
@@ -73,7 +73,7 @@ export type PageTypeItem = {
   slug?: string;
 };
 
-export type ChaiBuilderThemeValues = {
+export type ChaiThemeValues = {
   fontFamily: {
     heading: string;
     body: string;
@@ -133,7 +133,7 @@ export interface ChaiBuilderEditorProps {
   /**
    * Theme presets
    */
-  themePresets?: Record<string, Partial<ChaiBuilderThemeValues>>[];
+  themePresets?: Record<string, Partial<ChaiThemeValues>>[];
 
   /**
    * Theme options
@@ -143,12 +143,12 @@ export interface ChaiBuilderEditorProps {
   /**
    * Theme
    */
-  theme?: Partial<ChaiBuilderThemeValues>;
+  theme?: Partial<ChaiThemeValues>;
 
   /**
    * Builder theme
    */
-  builderTheme?: ChaiBuilderThemeValues;
+  builderTheme?: ChaiThemeValues;
 
   /**
    * Theme panel component

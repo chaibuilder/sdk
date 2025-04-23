@@ -10,4 +10,4 @@ export type ChaiRenderBlockProps<T> = {
 
 export type ChaiBlockStyles = Record<string, string>;
 
-export type { ChaiBuilderThemeValues, SavePageData } from "@/types/chaibuilder-editor-props";
+export type { ChaiThemeValues as ChaiBuilderThemeValues, SavePageData } from "@/types/chaibuilder-editor-props";

@@ -8,7 +8,7 @@ import { useDarkMode } from "@/core/hooks";
 import { useBuilderProp } from "@/core/hooks/index";
 import { usePermissions } from "@/core/hooks/use-permissions";
 import { useTheme, useThemeOptions } from "@/core/hooks/use-theme";
-import { ChaiBuilderThemeValues } from "@/types/chaibuilder-editor-props";
+import { ChaiThemeValues } from "@/types/chaibuilder-editor-props";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Label } from "@/ui/shadcn/components/ui/label";
 import { useDebouncedCallback } from "@react-hookz/web";
@@ -39,7 +39,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const applyPreset = () => {
     const preset = (themePresets as any[]).find((p) => Object.keys(p)[0] === selectedPreset);
     if (preset) {
-      const newThemeValues = Object.values(preset)[0] as ChaiBuilderThemeValues;
+      const newThemeValues = Object.values(preset)[0] as ChaiThemeValues;
       if (
         newThemeValues &&
         typeof newThemeValues === "object" &&

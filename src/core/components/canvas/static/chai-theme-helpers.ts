@@ -1,4 +1,4 @@
-import { ChaiBuilderThemeOptions, ChaiBuilderThemeValues } from "@/types/chaibuilder-editor-props";
+import { ChaiBuilderThemeOptions, ChaiThemeValues } from "@/types/chaibuilder-editor-props";
 import { ChaiFontViaSrc, ChaiFontViaUrl, getAllRegisteredFonts } from "@chaibuilder/runtime";
 import { flatten, get, keys, uniqBy } from "lodash-es";
 
@@ -69,7 +69,7 @@ export const getFontFamily = (font: string) => {
   return `"${font}", ${get(chaiFont, "fallback", "")}`;
 };
 
-export const getChaiThemeCssVariables = (chaiTheme: ChaiBuilderThemeValues) => {
+export const getChaiThemeCssVariables = (chaiTheme: ChaiThemeValues) => {
   return `:root {
     ${
       chaiTheme.fontFamily &&
