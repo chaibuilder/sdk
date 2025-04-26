@@ -15,7 +15,7 @@ import { useEffect } from "react";
 
 type NestedPathSelectorProps = {
   data: Record<string, any>;
-  onSelect: (path: string) => void;
+  onSelect: (path: string, type: "value" | "array" | "object") => void;
   dataType?: "value" | "array" | "object";
 };
 
@@ -55,7 +55,7 @@ export function NestedPathSelector({ data, onSelect, dataType = "value" }: Neste
         setCurrentPath((prev) => [...prev, option.key]);
         setCurrentData(option.value);
       } else if (isValueSelectable(option.type)) {
-        onSelect([...currentPath, option.key].join("."));
+        onSelect([...currentPath, option.key].join("."), dataType);
         setOpen(false);
       }
     },
@@ -131,13 +131,13 @@ export function NestedPathSelector({ data, onSelect, dataType = "value" }: Neste
                         className="h-6 px-2 hover:bg-primary hover:text-primary-foreground"
                         onClick={(e) => {
                           e.stopPropagation();
-                          onSelect([...currentPath, option.key].join("."));
+                          onSelect([...currentPath, option.key].join("."), dataType);
                           setOpen(false);
                         }}>
                         Select
                       </Button>
                     )}
-                    {(option.type === "object" || option.type === "array") && (
+                    {option.type === "object" && (
                       <div className="cursor-pointer rounded p-1 hover:bg-muted">
                         <ChevronRight className="h-4 w-4 opacity-50" />
                       </div>

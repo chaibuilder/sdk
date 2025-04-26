@@ -40,6 +40,11 @@ function ChaiBuilderDefault() {
           price: "$2000",
           image: "https://picsum.photos/400/200",
           link: "https://www.google.com",
+          features: ["Feature 1", "Feature 2", "Feature 3"],
+          reviews: [
+            { name: "John Doe", rating: 4.5, comment: "This is a comment" },
+            { name: "Jane Doe", rating: 4, comment: "This is an another comment" },
+          ],
         },
         global: {
           siteName: "My Site",
