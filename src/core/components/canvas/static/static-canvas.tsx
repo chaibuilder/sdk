@@ -62,7 +62,9 @@ const StaticCanvas = () => {
   };
 
   useEffect(() => {
-    if (selectedBlock && selectedBlock.type !== "Multiple" && iframeRef.current) {
+    if (!selectedBlock?._id) return;
+
+    if (selectedBlock.type !== "Multiple" && iframeRef.current) {
       const blockElement = getElementByDataBlockId(iframeRef.current.contentDocument, selectedBlock._id);
       if (blockElement) {
         if (!isInViewport(blockElement)) {
@@ -71,7 +73,7 @@ const StaticCanvas = () => {
         setSelectedElements([blockElement]);
       }
     }
-  }, [selectedBlock]);
+  }, [selectedBlock?._id, selectedBlock?.type]);
 
   useEffect(() => {
     if (!isEmpty(stylingBlocks) && iframeRef.current) {
