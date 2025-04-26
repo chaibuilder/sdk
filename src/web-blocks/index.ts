@@ -50,6 +50,7 @@ import { Component as RichTextBlock, Config as RichTextConfig, RichTextProps } f
 import { Component as SpanBlock, Config as SpanBlockConfig, SpanProps } from "@/web-blocks/span";
 import { Config as LayersConfig, Component as TextBlock, TextBlockProps } from "@/web-blocks/text";
 import { Component as VideoBlock, Config as VideoBlockConfig, VideoBlockProps } from "@/web-blocks/video";
+import { Repeater, RepeaterConfig, RepeaterProps } from "./repeater";
 
 /*
  * Register all web blocks.
@@ -94,6 +95,7 @@ const loadWebBlocks = () => {
   registerChaiBlock<RowProps>(Row, RowConfig);
   registerChaiBlock<ColumnProps>(Column, ColumnConfig);
   registerChaiBlock<CopyButtonProps>(CopyButton, CopyButtonConfig);
+  registerChaiBlock<RepeaterProps>(Repeater, RepeaterConfig);
 };
 
 export { loadWebBlocks };

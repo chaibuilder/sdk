@@ -43,7 +43,7 @@ const Config = {
   i18nProps: ["content"],
   aiProps: ["content"],
   canAcceptBlock: (type: string) => type !== "ListItem",
-  canBeNested: (type: string) => type === "List",
+  canBeNested: (type: string) => type === "List" || type === "Repeater",
 };
 
 export { ListItemBlock as Component, Config };

@@ -34,7 +34,13 @@ const JSONFormFieldTemplate = ({
   const [openedList, setOpenedList] = useState<null | string>(null);
 
   const handlePathSelect = useCallback(
-    (path: string) => {
+    (path: string, type: "value" | "array" | "object") => {
+      // if type is array or object, replace the current value with the new value
+      if (type === "array" || type === "object") {
+        onChange(`{{${path}}}`, {}, id);
+        return;
+      }
+
       // Helper function to check if character is punctuation
       const isPunctuation = (char: string) => /[.,!?;:]/.test(char);
 
@@ -217,8 +223,12 @@ const JSONFormFieldTemplate = ({
             {label} {showLangSuffix && <small className="text-[9px] text-zinc-400"> {currentLanguage}</small>}
             {required && schema.type !== "object" ? " *" : null}
           </label>
-          {schema.type === "string" && !schema.enum && !schema.oneOf && pageExternalData && (
-            <NestedPathSelector data={pageExternalData} onSelect={handlePathSelect} dataType="value" />
+          {!schema.enum && !schema.oneOf && pageExternalData && (
+            <NestedPathSelector
+              data={pageExternalData}
+              onSelect={handlePathSelect}
+              dataType={schema.binding === "array" ? "array" : "value"}
+            />
           )}
         </div>
       )}
