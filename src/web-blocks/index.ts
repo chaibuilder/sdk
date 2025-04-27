@@ -50,8 +50,14 @@ import { Component as RichTextBlock, Config as RichTextConfig, RichTextProps } f
 import { Component as SpanBlock, Config as SpanBlockConfig, SpanProps } from "@/web-blocks/span";
 import { Config as LayersConfig, Component as TextBlock, TextBlockProps } from "@/web-blocks/text";
 import { Component as VideoBlock, Config as VideoBlockConfig, VideoBlockProps } from "@/web-blocks/video";
-import { Repeater, RepeaterConfig, RepeaterProps } from "./repeater";
-
+import {
+  Repeater,
+  RepeaterConfig,
+  RepeaterItem,
+  RepeaterItemConfig,
+  RepeaterItemProps,
+  RepeaterProps,
+} from "./repeater";
 /*
  * Register all web blocks.
  * This function should be called  in places where Builder is rendered or pages are rendered.
@@ -96,6 +102,7 @@ const loadWebBlocks = () => {
   registerChaiBlock<ColumnProps>(Column, ColumnConfig);
   registerChaiBlock<CopyButtonProps>(CopyButton, CopyButtonConfig);
   registerChaiBlock<RepeaterProps>(Repeater, RepeaterConfig);
+  registerChaiBlock<RepeaterItemProps>(RepeaterItem, RepeaterItemConfig);
 };
 
 export { loadWebBlocks };

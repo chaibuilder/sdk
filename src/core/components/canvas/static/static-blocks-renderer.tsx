@@ -1,4 +1,4 @@
-import { PageBlocksRenderer } from "@/core/components/canvas/static/NewBlocksRenderer";
+import { PageBlocksRenderer } from "@/core/components/canvas/static/new-blocks-renderer";
 import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
 import { isEmpty } from "lodash-es";
 

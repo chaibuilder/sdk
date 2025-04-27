@@ -3,7 +3,19 @@ import { useBlocksStore } from "@/core/hooks";
 import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
 import { ChaiBlock } from "@/types/chai-block";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
-import { cloneDeep, find, forEach, get, includes, isEmpty, isString, keys, memoize, startsWith } from "lodash-es";
+import {
+  cloneDeep,
+  find,
+  forEach,
+  get,
+  includes,
+  isArray,
+  isEmpty,
+  isString,
+  keys,
+  memoize,
+  startsWith,
+} from "lodash-es";
 import { useCallback } from "react";
 import { twMerge } from "tailwind-merge";
 
@@ -32,7 +44,7 @@ export const applyBinding = (block: ChaiBlock, pageExternalData: Record<string, 
         matches.forEach((match) => {
           const binding = match.slice(2, -2);
           const bindingValue = get(pageExternalData, binding, match);
-          value = value.replace(match, bindingValue);
+          value = isArray(bindingValue) ? bindingValue : value.replace(match, bindingValue);
         });
       }
       clonedBlock[key] = value;
