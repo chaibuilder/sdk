@@ -17,7 +17,7 @@ import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { atom, Atom, Provider, useAtom } from "jotai";
 import { splitAtom } from "jotai/utils";
 import { filter, get, has, isArray, isEmpty, isFunction, isNull, map } from "lodash-es";
-import { createElement, Suspense, useCallback, useMemo } from "react";
+import { createContext, createElement, Suspense, useCallback, useMemo } from "react";
 
 const BlockRenderer = ({
   blockAtom,
@@ -27,12 +27,14 @@ const BlockRenderer = ({
   children: ({
     _id,
     _type,
-    data,
+    repeaterItems,
+    repeaterItemsBinding,
     partialBlockId,
   }: {
     _id: string;
     _type: string;
     repeaterItems?: any;
+    repeaterItemsBinding?: string;
     partialBlockId?: string;
   }) => React.ReactNode;
 }) => {
@@ -95,7 +97,12 @@ const BlockRenderer = ({
         children: children({
           _id: block._id,
           _type: block._type,
-          ...(isArray(dataBindingProps.data) ? { repeaterItems: dataBindingProps.data } : {}),
+          ...(isArray(dataBindingProps.data)
+            ? {
+                repeaterItems: dataBindingProps.data,
+                repeaterItemsBinding: dataBindingProps.repeaterItemsBinding,
+              }
+            : {}),
           ...(block.partialBlockId ? { partialBlockId: block.partialBlockId } : ""),
           ...(block.globalBlock ? { partialBlockId: block.globalBlock } : ""),
         }),
@@ -111,6 +118,14 @@ const PartialBlocksRenderer = ({ partialBlockId }: { partialBlockId: string }) =
   if (isEmpty(partialBlocks)) return null;
   return <BlocksRenderer splitAtoms={partialBlocksAtoms} blocks={partialBlocks} />;
 };
+
+export const RepeaterContext = createContext<{
+  index: number;
+  key: string;
+}>({
+  index: -1,
+  key: "",
+});
 
 const BlocksRenderer = ({
   blocks,
@@ -137,10 +152,14 @@ const BlocksRenderer = ({
     if (!blockAtom) return null;
     return (
       <BlockRenderer key={block._id} blockAtom={blockAtom}>
-        {({ _id, _type, partialBlockId, repeaterItems }) => {
+        {({ _id, _type, partialBlockId, repeaterItems, repeaterItemsBinding }) => {
           return _type === "Repeater" ? (
             isArray(repeaterItems) &&
-              repeaterItems.map(() => <BlocksRenderer splitAtoms={splitAtoms} blocks={blocks} parent={block._id} />)
+              repeaterItems.map((_, index) => (
+                <RepeaterContext.Provider value={{ index, key: repeaterItemsBinding }}>
+                  <BlocksRenderer splitAtoms={splitAtoms} blocks={blocks} parent={block._id} />
+                </RepeaterContext.Provider>
+              ))
           ) : _type === "GlobalBlock" || _type === "PartialBlock" ? (
             <Provider store={builderStore}>
               <PartialBlocksRenderer partialBlockId={partialBlockId} />

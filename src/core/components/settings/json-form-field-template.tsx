@@ -2,12 +2,13 @@ import { usePageExternalData } from "@/core/atoms/builder";
 import { NestedPathSelector } from "@/core/components/nested-path-selector";
 import { LANGUAGES } from "@/core/constants/LANGUAGES";
 import { useLanguages, useSelectedBlock } from "@/core/hooks";
+import { useSelectedBlockHierarchy } from "@/core/hooks/use-selected-blockIds";
 import { Badge } from "@/ui/shadcn/components/ui/badge";
 import { useRegisteredChaiBlocks } from "@chaibuilder/runtime";
 import { FieldTemplateProps } from "@rjsf/utils";
-import { get, isEmpty } from "lodash-es";
+import { first, get, isEmpty } from "lodash-es";
 import { ChevronDown, ChevronRight, List } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 const JSONFormFieldTemplate = ({
   id,
@@ -32,9 +33,25 @@ const JSONFormFieldTemplate = ({
   const registeredBlocks = useRegisteredChaiBlocks();
   const i18nProps = get(registeredBlocks, [selectedBlock?._type, "i18nProps"], []) || [];
   const [openedList, setOpenedList] = useState<null | string>(null);
+  const hierarchy = useSelectedBlockHierarchy();
+
+  const repeaterKey = useMemo(() => {
+    const repeaterKey = get(
+      hierarchy.find((block) => block._type === "Repeater"),
+      "repeaterItems",
+      "",
+    );
+    const key = repeaterKey.replace(/\{\{(.*)\}\}/g, "$1");
+    return `#${key}`;
+  }, [hierarchy]);
+
+  const repeaterData = useMemo(() => {
+    return first(get(pageExternalData, repeaterKey.replace("#", ""), []));
+  }, [repeaterKey, pageExternalData]);
 
   const handlePathSelect = useCallback(
     (path: string, type: "value" | "array" | "object") => {
+      path = path.replace(`${repeaterKey}.`, "$index.");
       // if type is array or object, replace the current value with the new value
       if (type === "array" || type === "object") {
         onChange(`{{${path}}}`, {}, id);
@@ -171,7 +188,7 @@ const JSONFormFieldTemplate = ({
         onChange(newValue, {}, id);
       }
     },
-    [id, onChange, formData, selectedBlock?._id],
+    [id, onChange, formData, selectedBlock?._id, repeaterKey],
   );
 
   if (hidden) {
@@ -225,7 +242,10 @@ const JSONFormFieldTemplate = ({
           </label>
           {!schema.enum && !schema.oneOf && pageExternalData && (
             <NestedPathSelector
-              data={pageExternalData}
+              data={{
+                ...(repeaterData && { [repeaterKey]: repeaterData }),
+                ...pageExternalData,
+              }}
               onSelect={handlePathSelect}
               dataType={schema.binding === "array" ? "array" : "value"}
             />
