@@ -36,6 +36,7 @@ const JSONFormFieldTemplate = ({
   const hierarchy = useSelectedBlockHierarchy();
 
   const repeaterKey = useMemo(() => {
+    if (hierarchy.length === 1) return "";
     const repeaterKey = get(
       hierarchy.find((block) => block._type === "Repeater"),
       "repeaterItems",
