@@ -42,8 +42,18 @@ function ChaiBuilderDefault() {
           link: "https://www.google.com",
           features: ["Feature 1", "Feature 2", "Feature 3"],
           reviews: [
-            { name: "John Doe", rating: 4.5, comment: "This is a comment" },
-            { name: "Jane Doe", rating: 4, comment: "This is an another comment" },
+            {
+              name: "Lorem Ipsum is a good astrologer",
+              image: "https://picsum.photos/400/200",
+              rating: 4.5,
+              comment: "This is a comment",
+            },
+            {
+              name: "Pippo is a good driver",
+              image: "https://picsum.photos/500/300",
+              rating: 4,
+              comment: "This is an another comment",
+            },
           ],
         },
         global: {
