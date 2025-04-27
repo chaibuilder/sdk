@@ -9,6 +9,8 @@ import {
 } from "@/ui/shadcn/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/ui/popover";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
+import { LoopIcon } from "@radix-ui/react-icons";
+import { startsWith } from "lodash-es";
 import { ChevronLeft, ChevronRight, DatabaseIcon } from "lucide-react";
 import * as React from "react";
 import { useEffect } from "react";
@@ -17,6 +19,7 @@ type NestedPathSelectorProps = {
   data: Record<string, any>;
   onSelect: (path: string, type: "value" | "array" | "object") => void;
   dataType?: "value" | "array" | "object";
+  repeaterData?: Record<string, any>;
 };
 
 type Option = {
@@ -25,7 +28,7 @@ type Option = {
   type: "value" | "array" | "object";
 };
 
-export function NestedPathSelector({ data, onSelect, dataType = "value" }: NestedPathSelectorProps) {
+export function NestedPathSelector({ data, onSelect, dataType = "value", repeaterData = {} }: NestedPathSelectorProps) {
   const [open, setOpen] = React.useState(false);
   const [currentPath, setCurrentPath] = React.useState<string[]>([]);
   const [currentData, setCurrentData] = React.useState<Record<string, any>>(data);
@@ -122,7 +125,10 @@ export function NestedPathSelector({ data, onSelect, dataType = "value" }: Neste
                   disabled={false}
                   onSelect={() => handleSelect(option)}
                   className="flex items-center justify-between">
-                  <span>{option.key}</span>
+                  <span className="flex items-center gap-x-2">
+                    {startsWith(option.key, "#") ? <LoopIcon /> : null}
+                    {startsWith(option.key, "#") ? "Repeater Data" : option.key}
+                  </span>
                   <div className="flex items-center gap-2">
                     {dataType === "object" && option.type === "object" && (
                       <Button

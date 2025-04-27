@@ -29,8 +29,8 @@ export const RepeaterConfig = {
   ],
   ...registerChaiBlockSchema({
     properties: {
-      data: {
-        title: "Data",
+      repeaterItems: {
+        title: "Items",
         type: "string",
         binding: "array",
         default: "",

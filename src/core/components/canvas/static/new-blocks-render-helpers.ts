@@ -37,6 +37,9 @@ export const applyBinding = (block: ChaiBlock, pageExternalData: Record<string, 
   forEach(keys(clonedBlock), (key) => {
     if (isString(clonedBlock[key]) && !startsWith(key, "_")) {
       let value = clonedBlock[key];
+      if (key === "repeaterItems") {
+        clonedBlock["repeaterItemsBinding"] = value;
+      }
       // check for {{string.key}} and replace with pageExternalData
       const bindingRegex = /\{\{(.*?)\}\}/g;
       const matches = value.match(bindingRegex);
