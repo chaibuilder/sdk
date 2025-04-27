@@ -17,7 +17,15 @@ import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { atom, Atom, Provider, useAtom } from "jotai";
 import { splitAtom } from "jotai/utils";
 import { filter, get, has, isArray, isEmpty, isFunction, isNull, map } from "lodash-es";
-import { createContext, createElement, Suspense, useCallback, useMemo } from "react";
+import { createContext, createElement, Suspense, useCallback, useContext, useMemo } from "react";
+
+export const RepeaterContext = createContext<{
+  index: number;
+  key: string;
+}>({
+  index: -1,
+  key: "",
+});
 
 const BlockRenderer = ({
   blockAtom,
@@ -46,13 +54,14 @@ const BlockRenderer = ({
   const [hiddenBlocks] = useHiddenBlockIds();
   const [dataBindingActive] = useAtom(dataBindingActiveAtom);
   const Component = get(registeredChaiBlock, "component", null);
+  const { index, key } = useContext(RepeaterContext);
 
   const dataBindingProps = useMemo(
     () =>
       dataBindingActive
-        ? applyBinding(applyLanguage(block, selectedLang, registeredChaiBlock), pageExternalData)
+        ? applyBinding(applyLanguage(block, selectedLang, registeredChaiBlock), pageExternalData, { index, key })
         : applyLanguage(block, selectedLang, registeredChaiBlock),
-    [block, selectedLang, registeredChaiBlock, pageExternalData, dataBindingActive],
+    [block, selectedLang, registeredChaiBlock, pageExternalData, dataBindingActive, index, key],
   );
   const blockAttributesProps = useMemo(() => getBlockTagAttributes(block), [block, getBlockTagAttributes]);
   const runtimeProps = useMemo(
@@ -118,14 +127,6 @@ const PartialBlocksRenderer = ({ partialBlockId }: { partialBlockId: string }) =
   if (isEmpty(partialBlocks)) return null;
   return <BlocksRenderer splitAtoms={partialBlocksAtoms} blocks={partialBlocks} />;
 };
-
-export const RepeaterContext = createContext<{
-  index: number;
-  key: string;
-}>({
-  index: -1,
-  key: "",
-});
 
 const BlocksRenderer = ({
   blocks,
