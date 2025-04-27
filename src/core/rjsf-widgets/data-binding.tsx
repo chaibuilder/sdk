@@ -1,4 +1,4 @@
-import { useChaiExternalData } from "@/core/components/canvas/static/useChaiExternalData";
+import { useChaiExternalData } from "@/core/components/canvas/static/use-chai-external-data";
 import { FallbackError } from "@/core/components/fallback-error";
 import { useBuilderProp, useSelectedBlock } from "@/core/hooks";
 import { Button } from "@/ui/shadcn/components/ui/button";

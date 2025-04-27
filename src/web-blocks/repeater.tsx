@@ -1,4 +1,10 @@
-import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, stylesProp } from "@chaibuilder/runtime";
+import {
+  ChaiBlockComponentProps,
+  ChaiStyles,
+  closestBlockProp,
+  registerChaiBlockSchema,
+  stylesProp,
+} from "@chaibuilder/runtime";
 import { LoopIcon } from "@radix-ui/react-icons";
 import * as React from "react";
 
@@ -17,8 +23,18 @@ export const RepeaterConfig = {
   label: "Repeater",
   icon: LoopIcon,
   group: "basic",
+  blocks: () => [
+    { _id: "A", _type: "Repeater", tag: "ul" },
+    { _id: "B", _type: "RepeaterItem", parentTag: "ul", _parent: "A" },
+  ],
   ...registerChaiBlockSchema({
     properties: {
+      data: {
+        title: "Data",
+        type: "string",
+        binding: "array",
+        default: "",
+      },
       tag: {
         title: "Tag",
         type: "string",
@@ -26,12 +42,6 @@ export const RepeaterConfig = {
         enum: ["div", "ul", "ol"],
       },
       styles: stylesProp(""),
-      data: {
-        title: "Data",
-        type: "string",
-        binding: "array",
-        default: "",
-      },
       limit: {
         title: "Limit",
         type: "number",
@@ -75,5 +85,39 @@ export const RepeaterConfig = {
       },
     },
   }),
-  canAcceptBlock: (type: string) => type !== "Repeater",
+};
+
+export const RepeaterItem = ({
+  children,
+  blockProps,
+  styles,
+  parentTag,
+}: ChaiBlockComponentProps<{ parentTag: string; styles: ChaiStyles }>) => {
+  let tag = "li";
+  switch (parentTag) {
+    case "ul":
+      tag = "li";
+      break;
+    case "ol":
+      tag = "li";
+      break;
+    default:
+      tag = "div";
+  }
+  return React.createElement(tag, { ...blockProps, ...styles }, children);
+};
+
+export const RepeaterItemConfig = {
+  type: "RepeaterItem",
+  label: "Repeater Item",
+  icon: LoopIcon,
+  hidden: true,
+  group: "basic",
+  ...registerChaiBlockSchema({
+    properties: {
+      styles: stylesProp(""),
+      parentTag: closestBlockProp("Repeater", "tag"),
+    },
+  }),
+  canAcceptBlock: (type: string) => type !== "RepeaterItem",
 };

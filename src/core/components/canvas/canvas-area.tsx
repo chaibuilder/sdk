@@ -8,7 +8,7 @@ import { Resizable } from "re-resizable";
 import React, { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
-const CodeEditor = React.lazy(() => import("@/core/components/canvas/static/CodeEditor"));
+const CodeEditor = React.lazy(() => import("@/core/components/canvas/static/code-editor"));
 
 const CanvasArea: React.FC = () => {
   const [codeEditor] = useCodeEditor();

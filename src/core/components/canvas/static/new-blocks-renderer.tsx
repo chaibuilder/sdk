@@ -8,7 +8,7 @@ import {
   getBlockRuntimeProps,
   getBlockTagAttributes,
   useBlockRuntimeProps,
-} from "@/core/components/canvas/static/NewBlocksRenderHelperts";
+} from "@/core/components/canvas/static/new-blocks-render-helpers";
 import { useBlocksStore, useHiddenBlockIds, usePartailBlocksStore } from "@/core/hooks";
 import { useLanguages } from "@/core/hooks/use-languages";
 import { useGetBlockAtom } from "@/core/hooks/use-update-block-atom";
@@ -16,10 +16,26 @@ import { ChaiBlock } from "@/types/chai-block";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { atom, Atom, Provider, useAtom } from "jotai";
 import { splitAtom } from "jotai/utils";
-import { filter, get, has, isEmpty, isFunction, isNull, map } from "lodash-es";
+import { filter, get, has, isArray, isEmpty, isFunction, isNull, map } from "lodash-es";
 import { createElement, Suspense, useCallback, useMemo } from "react";
 
-const BlockRenderer = ({ blockAtom, children }: { blockAtom: Atom<ChaiBlock>; children: React.ReactNode }) => {
+const BlockRenderer = ({
+  blockAtom,
+  children,
+}: {
+  blockAtom: Atom<ChaiBlock>;
+  children: ({
+    _id,
+    _type,
+    data,
+    partialBlockId,
+  }: {
+    _id: string;
+    _type: string;
+    repeaterItems?: any;
+    partialBlockId?: string;
+  }) => React.ReactNode;
+}) => {
   const [block] = useAtom(blockAtom);
   const registeredChaiBlock = useMemo(() => getRegisteredChaiBlock(block._type) as any, [block._type]);
   const { selectedLang, fallbackLang } = useLanguages();
@@ -72,7 +88,20 @@ const BlockRenderer = ({ blockAtom, children }: { blockAtom: Atom<ChaiBlock>; ch
   );
 
   if (isNull(Component) || hiddenBlocks.includes(block._id)) return null;
-  return <Suspense>{createElement(Component, { ...props, children })}</Suspense>;
+  return (
+    <Suspense>
+      {createElement(Component, {
+        ...props,
+        children: children({
+          _id: block._id,
+          _type: block._type,
+          ...(isArray(dataBindingProps.data) ? { repeaterItems: dataBindingProps.data } : {}),
+          ...(block.partialBlockId ? { partialBlockId: block.partialBlockId } : ""),
+          ...(block.globalBlock ? { partialBlockId: block.globalBlock } : ""),
+        }),
+      })}
+    </Suspense>
+  );
 };
 
 const PartialBlocksRenderer = ({ partialBlockId }: { partialBlockId: string }) => {
@@ -98,20 +127,28 @@ const BlocksRenderer = ({
       filter(blocks, (block) => has(block, "_id") && (!isEmpty(parent) ? block._parent === parent : !block._parent)),
     [blocks, parent],
   );
-  const hasChildren = useCallback((block) => filter(blocks, (b) => b._parent === block._id).length > 0, [blocks]);
+  const hasChildren = useCallback(
+    (blockId: string) => filter(blocks, (b) => b._parent === blockId).length > 0,
+    [blocks],
+  );
 
   return map(filteredBlocks, (block) => {
     const blockAtom = getBlockAtom(block._id);
     if (!blockAtom) return null;
     return (
       <BlockRenderer key={block._id} blockAtom={blockAtom}>
-        {block._type === "GlobalBlock" || block._type === "PartialBlock" ? (
-          <Provider store={builderStore}>
-            <PartialBlocksRenderer partialBlockId={get(block, "partialBlockId", get(block, "globalBlock", ""))} />
-          </Provider>
-        ) : hasChildren(block) ? (
-          <BlocksRenderer splitAtoms={splitAtoms} blocks={blocks} parent={block._id} />
-        ) : null}
+        {({ _id, _type, partialBlockId, repeaterItems }) => {
+          return _type === "Repeater" ? (
+            isArray(repeaterItems) &&
+              repeaterItems.map(() => <BlocksRenderer splitAtoms={splitAtoms} blocks={blocks} parent={block._id} />)
+          ) : _type === "GlobalBlock" || _type === "PartialBlock" ? (
+            <Provider store={builderStore}>
+              <PartialBlocksRenderer partialBlockId={partialBlockId} />
+            </Provider>
+          ) : hasChildren(_id) ? (
+            <BlocksRenderer splitAtoms={splitAtoms} blocks={blocks} parent={block._id} />
+          ) : null;
+        }}
       </BlockRenderer>
     );
   });

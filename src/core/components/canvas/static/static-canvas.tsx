@@ -4,12 +4,12 @@ import { canvasIframeAtom, networkModeAtom } from "@/core/atoms/ui";
 import { BlockFloatingSelector } from "@/core/components/canvas/block-floating-actions";
 import { IframeInitialContent } from "@/core/components/canvas/IframeInitialContent";
 import { KeyboardHandler } from "@/core/components/canvas/keyboar-handler";
-import { AddBlockAtBottom } from "@/core/components/canvas/static/AddBlockAtBottom";
-import { Canvas, getElementByDataBlockId } from "@/core/components/canvas/static/Canvas";
+import { AddBlockAtBottom } from "@/core/components/canvas/static/add-block-at-bottom";
+import { Canvas, getElementByDataBlockId } from "@/core/components/canvas/static/chai-canvas";
 import { HeadTags } from "@/core/components/canvas/static/head-tags";
-import { ResizableCanvasWrapper } from "@/core/components/canvas/static/ResizableCanvasWrapper";
-import { StaticBlocksRenderer } from "@/core/components/canvas/static/StaticBlocksRenderer";
-import { useCanvasScale } from "@/core/components/canvas/static/useCanvasScale";
+import { ResizableCanvasWrapper } from "@/core/components/canvas/static/resizable-canvas-wrapper";
+import { StaticBlocksRenderer } from "@/core/components/canvas/static/static-blocks-renderer";
+import { useCanvasScale } from "@/core/components/canvas/static/use-canvas-scale";
 import { ChaiFrame } from "@/core/frame";
 import {
   useBuilderProp,
