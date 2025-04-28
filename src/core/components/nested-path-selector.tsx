@@ -96,10 +96,10 @@ export function NestedPathSelector({ data, onSelect, dataType = "value" }: Neste
             <Button
               size="sm"
               variant="outline"
-              className="h-5 px-1 py-0 text-[9px] text-muted-foreground"
+              className="h-5 rounded-sm px-1 py-0 text-[9px] text-muted-foreground"
               role="combobox"
               aria-expanded={open}>
-              <DatabaseIcon className="h-3 w-3" />
+              <DatabaseIcon className="h-2.5 w-2.5" />
             </Button>
           </PopoverTrigger>
         </TooltipTrigger>
