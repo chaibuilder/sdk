@@ -28,7 +28,7 @@ type Option = {
   type: "value" | "array" | "object";
 };
 
-export function NestedPathSelector({ data, onSelect, dataType = "value", repeaterData = {} }: NestedPathSelectorProps) {
+export function NestedPathSelector({ data, onSelect, dataType = "value" }: NestedPathSelectorProps) {
   const [open, setOpen] = React.useState(false);
   const [currentPath, setCurrentPath] = React.useState<string[]>([]);
   const [currentData, setCurrentData] = React.useState<Record<string, any>>(data);

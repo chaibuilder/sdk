@@ -5,6 +5,7 @@ import { ChaiBuilderThemeValues } from "@/types/types";
 import { loadWebBlocks } from "@/web-blocks";
 import { useAtom } from "jotai";
 import { useEffect, useMemo, useState } from "react";
+import { EXTERNAL_DATA } from "./_demo/EXTERNAL_DATA";
 
 loadWebBlocks();
 registerCustomBlocks();
@@ -29,25 +30,9 @@ function Preview() {
       <RenderChaiBlocks
         lang="fr"
         fallbackLang="en"
-        externalData={{
-          vehicle: {
-            title: "Hyundai i20 Active - 1.0 MPI - 2015",
-            description: "Hyundai i20 Active - 1.0 MPI - 2015, 100000km, Petrol, Manual, 5 doors, 5 seats",
-            price: "$2000",
-            image: "https://picsum.photos/400/200",
-            link: "https://www.google.com",
-          },
-          global: {
-            siteName: "My Site",
-            twitterHandle: "@my-twitter-handle",
-            description: "This is a description of my page",
-          },
-        }}
+        externalData={EXTERNAL_DATA}
         pageProps={{
-          slug: "hyundai-i20-active-10-mpi-2015",
-          vehicle: {
-            title: "Hyundai i20 Active - 1.0 MPI - 2015",
-          },
+          slug: "chai-builder",
         }}
         draft={true}
         blocks={blocks}

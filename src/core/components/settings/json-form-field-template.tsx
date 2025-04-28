@@ -52,7 +52,7 @@ const JSONFormFieldTemplate = ({
 
   const handlePathSelect = useCallback(
     (path: string, type: "value" | "array" | "object") => {
-      path = path.replace(`${repeaterKey}.`, "$index.");
+      path = !isEmpty(repeaterKey) ? path.replace(`${repeaterKey}.`, "$index.") : path;
       // if type is array or object, replace the current value with the new value
       if (type === "array" || type === "object") {
         onChange(`{{${path}}}`, {}, id);
