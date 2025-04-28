@@ -4,7 +4,7 @@ import { RenderBlock } from "./block-renderer";
 import { RenderChaiBlocksProps } from "./render-chai-blocks";
 
 export const RenderBlocks = (props: RenderChaiBlocksProps) => {
-  const { blocks, parent, lang, fallbackLang } = props;
+  const { blocks, parent } = props;
   const filteredBlocks = filter(
     blocks,
     (block) => has(block, "_id") && (!isEmpty(parent) ? block._parent === parent : !block._parent),
