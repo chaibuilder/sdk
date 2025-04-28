@@ -51,12 +51,17 @@ export const RepeaterConfig = {
   }),
 };
 
+export type RepeaterItemProps = {
+  parentTag: string;
+  styles: ChaiStyles;
+};
+
 export const RepeaterItem = ({
   children,
   blockProps,
   styles,
   parentTag,
-}: ChaiBlockComponentProps<{ parentTag: string; styles: ChaiStyles }>) => {
+}: ChaiBlockComponentProps<RepeaterItemProps>) => {
   let tag = "li";
   switch (parentTag) {
     case "ul":
