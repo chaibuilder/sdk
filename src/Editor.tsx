@@ -8,6 +8,7 @@ import axios from "axios";
 import { useAtom } from "jotai";
 import { isArray, map, pick } from "lodash-es";
 import { useEffect, useState } from "react";
+import { EXTERNAL_DATA } from "./_demo/EXTERNAL_DATA";
 
 loadWebBlocks();
 extendChaiBuilder();
@@ -32,36 +33,7 @@ function ChaiBuilderDefault() {
     <ChaiBuilderEditor
       permissions={null}
       // permissions={[]}
-      pageExternalData={{
-        vehicle: {
-          title: "Hyundai i20 Active - 1.0 MPI - 2015",
-          description:
-            "Hyundai i20 Active - 1.0 MPI - 2015, 100000km, Petrol, Manual, 5 doors, 5 seats. This is a description of my vehicle. It is a car.",
-          price: "$2000",
-          image: "https://picsum.photos/400/200",
-          link: "https://www.google.com",
-          features: ["Feature 1", "Feature 2", "Feature 3"],
-          reviews: [
-            {
-              name: "Lorem Ipsum is a good astrologer",
-              image: "https://picsum.photos/400/200",
-              rating: 4.5,
-              comment: "This is a comment",
-            },
-            {
-              name: "Pippo is a good driver",
-              image: "https://picsum.photos/500/300",
-              rating: 4,
-              comment: "This is an another comment",
-            },
-          ],
-        },
-        global: {
-          siteName: "My Site",
-          twitterHandle: "@my-twitter-handle",
-          description: "This is a description of my page",
-        },
-      }}
+      pageExternalData={EXTERNAL_DATA}
       fallbackLang="en"
       languages={["fr"]}
       themePresets={[{ orange: orangePreset }, { green: greenPreset }, { blue: bluePreset }]}

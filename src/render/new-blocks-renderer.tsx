@@ -13,7 +13,7 @@ import { useBlocksStore, useHiddenBlockIds, usePartailBlocksStore } from "@/core
 import { useLanguages } from "@/core/hooks/use-languages";
 import { useGetBlockAtom } from "@/core/hooks/use-update-block-atom";
 import { ChaiBlock } from "@/types/chai-block";
-import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
+import { ChaiPageProps, getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { atom, Atom, Provider, useAtom } from "jotai";
 import { splitAtom } from "jotai/utils";
 import { filter, get, has, isArray, isEmpty, isFunction, isNull, map } from "lodash-es";
@@ -106,9 +106,9 @@ const BlockRenderer = ({
         children: children({
           _id: block._id,
           _type: block._type,
-          ...(isArray(dataBindingProps.repeaterItems)
+          ...(isArray(dataBindingProps.data)
             ? {
-                repeaterItems: dataBindingProps.repeaterItems,
+                repeaterItems: dataBindingProps.data,
                 repeaterItemsBinding: dataBindingProps.repeaterItemsBinding,
               }
             : {}),
@@ -174,7 +174,18 @@ const BlocksRenderer = ({
   });
 };
 
-export const PageBlocksRenderer = () => {
+type RenderChaiBlocksProps = {
+  blocks: ChaiBlock[];
+  parent?: string;
+  externalData?: Record<string, any>;
+  lang?: string;
+  fallbackLang?: string;
+  pageProps?: ChaiPageProps;
+  draft?: boolean;
+  dataProviderMetadataCallback?: (block: ChaiBlock, meta: Record<string, any>) => void;
+};
+
+export const RenderChaiBlocks = (props: RenderChaiBlocksProps) => {
   const [blocks] = useBlocksStore();
   return <BlocksRenderer splitAtoms={pageBlocksAtomsAtom} blocks={blocks} />;
 };

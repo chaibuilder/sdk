@@ -119,13 +119,9 @@ type RenderChaiBlocksProps = {
   externalData?: Record<string, any>;
   lang?: string;
   fallbackLang?: string;
-  forwardProps?: Record<string, any>;
   pageProps?: ChaiPageProps;
   draft?: boolean;
   dataProviderMetadataCallback?: (block: ChaiBlock, meta: Record<string, any>) => void;
-
-  //deprecated
-  metadata?: Record<string, any>;
 };
 
 export function RenderChaiBlocks(props: RenderChaiBlocksProps) {
