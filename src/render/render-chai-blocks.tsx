@@ -21,6 +21,7 @@ import {
 } from "lodash-es";
 import React, { createElement, Suspense } from "react";
 import { twMerge } from "tailwind-merge";
+import { RenderBlocks } from "./blocks-renderer";
 
 const generateClassNames = memoize((styles: string) => {
   const { baseClasses, classes: classesString } = getSplitChaiClasses(styles);
@@ -94,7 +95,7 @@ const getRuntimeProps = memoize((blockType: string) => {
   return Object.fromEntries(Object.entries(props).filter(([, value]) => get(value, "runtime", false)));
 });
 
-const getRuntimePropValues = (allBlocks: ChaiBlock[], blockId: string, runtimeProps: Record<string, any>) => {
+export const getRuntimePropValues = (allBlocks: ChaiBlock[], blockId: string, runtimeProps: Record<string, any>) => {
   if (isEmpty(runtimeProps)) return {};
   return Object.entries(runtimeProps).reduce((acc, [key, schema]) => {
     const hierarchy = [];
@@ -113,7 +114,7 @@ const getRuntimePropValues = (allBlocks: ChaiBlock[], blockId: string, runtimePr
 
 const SuspenseFallback = () => <span>Loading...</span>;
 
-type RenderChaiBlocksProps = {
+export type RenderChaiBlocksProps = {
   blocks: ChaiBlock[];
   parent?: string;
   externalData?: Record<string, any>;
@@ -126,7 +127,7 @@ type RenderChaiBlocksProps = {
 
 export function RenderChaiBlocks(props: RenderChaiBlocksProps) {
   if (has(props, "metadata")) {
-    console.warn(" metadata is deprecated and will be removed in upcoming version, use forwardProps instead");
+    console.warn(" metadata is deprecated and will be removed in upcoming version, use pageProps instead");
   }
   if (isEmpty(props.lang) && !isEmpty(props.fallbackLang)) {
     throw new Error("lang prop is required when fallbackLang is provided");
@@ -134,7 +135,7 @@ export function RenderChaiBlocks(props: RenderChaiBlocksProps) {
 
   const lang = props.lang ?? "en";
   const fallbackLang = props.fallbackLang ?? lang;
-  return <RenderChaiBlocksRecursive {...props} lang={lang} fallbackLang={fallbackLang} />;
+  return <RenderBlocks {...props} lang={lang} fallbackLang={fallbackLang} />;
 }
 
 export function RenderChaiBlocksRecursive({
