@@ -5,15 +5,18 @@ import {
   getBlockRuntimeProps,
   getBlockTagAttributes,
 } from "@/core/components/canvas/static/new-blocks-render-helpers";
-import { RepeaterContext } from "@/core/components/canvas/static/new-blocks-renderer";
 import { getRegisteredChaiBlock } from "@/runtime";
 import { ChaiBlock } from "@/types/chai-block";
 import { get, has, isArray, isFunction, isNull } from "lodash-es";
-import { createElement, Suspense, useContext } from "react";
+import { createElement, Suspense } from "react";
+import DataProviderPropsBlock from "./async-props-block";
 import { getRuntimePropValues, RenderChaiBlocksProps } from "./render-chai-blocks";
+
+const SuspenseFallback = () => <div></div>;
 
 export const RenderBlock = (
   props: RenderChaiBlocksProps & {
+    repeaterData?: { index: number; dataKey: string };
     block: ChaiBlock;
     children: ({
       _id,
@@ -29,22 +32,21 @@ export const RenderBlock = (
     }) => React.ReactNode;
   },
 ) => {
-  const { block, lang, fallbackLang, children, externalData, blocks, draft, pageProps } = props;
+  const { block, lang, fallbackLang, children, externalData, blocks, draft, pageProps, dataProviderMetadataCallback } =
+    props;
   const registeredChaiBlock = getRegisteredChaiBlock(block._type);
   const Component = get(registeredChaiBlock, "component", null);
-  const { index, key } = useContext(RepeaterContext);
+  const index = get(props.repeaterData, "index", -1);
+  const dataKey = get(props.repeaterData, "dataKey", "");
 
   const bindingLangSuffix = lang === fallbackLang ? "" : lang;
   const dataBindingProps = applyBinding(applyLanguage(block, bindingLangSuffix, registeredChaiBlock), externalData, {
     index,
-    key,
+    key: dataKey,
   });
   const blockAttributesProps = getBlockTagAttributes(block);
   const runtimeProps = getRuntimePropValues(blocks, block._id, getBlockRuntimeProps(block._type));
-  const dataProviderProps =
-    has(registeredChaiBlock, "dataProvider") && isFunction(registeredChaiBlock.dataProvider)
-      ? registeredChaiBlock.dataProvider({ block, lang, draft, inBuilder: false, pageProps })
-      : {};
+  const hasDataProvider = has(registeredChaiBlock, "dataProvider") && isFunction(registeredChaiBlock.dataProvider);
 
   const blockProps = {
     blockProps: {},
@@ -53,10 +55,43 @@ export const RenderBlock = (
     ...dataBindingProps,
     ...blockAttributesProps,
     ...runtimeProps,
-    ...dataProviderProps,
   };
 
   if (isNull(Component)) return null;
+
+  if (hasDataProvider) {
+    const suspenseFallback = get(registeredChaiBlock, "suspenseFallback", SuspenseFallback) as React.ComponentType<any>;
+    return (
+      <Suspense fallback={createElement(suspenseFallback)}>
+        {/* @ts-ignore */}
+        <DataProviderPropsBlock
+          lang={lang}
+          pageProps={pageProps}
+          block={block}
+          dataProvider={registeredChaiBlock.dataProvider}
+          dataProviderMetadataCallback={dataProviderMetadataCallback}
+          draft={draft}>
+          {(dataProviderProps) => {
+            return createElement(Component, {
+              ...blockProps,
+              ...dataProviderProps,
+              children: children({
+                _id: block._id,
+                _type: block._type,
+                ...(isArray(dataBindingProps.repeaterItems)
+                  ? {
+                      repeaterItems: applyLimit(dataBindingProps.repeaterItems, block),
+                      repeaterItemsBinding: dataBindingProps.repeaterItemsBinding,
+                    }
+                  : {}),
+              }),
+            });
+          }}
+        </DataProviderPropsBlock>
+      </Suspense>
+    );
+  }
+
   return (
     <Suspense>
       {createElement(Component, {
