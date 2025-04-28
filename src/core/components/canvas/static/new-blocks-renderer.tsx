@@ -5,9 +5,9 @@ import { dataBindingActiveAtom } from "@/core/atoms/ui";
 import {
   applyBinding,
   applyLanguage,
+  applyLimit,
   getBlockRuntimeProps,
   getBlockTagAttributes,
-  useBlockRuntimeProps,
 } from "@/core/components/canvas/static/new-blocks-render-helpers";
 import { useBlocksStore, useHiddenBlockIds, usePartailBlocksStore } from "@/core/hooks";
 import { useLanguages } from "@/core/hooks/use-languages";
@@ -18,6 +18,7 @@ import { atom, Atom, Provider, useAtom } from "jotai";
 import { splitAtom } from "jotai/utils";
 import { filter, get, has, isArray, isEmpty, isFunction, isNull, map } from "lodash-es";
 import { createContext, createElement, Suspense, useCallback, useContext, useMemo } from "react";
+import { useBlockRuntimeProps } from "./use-block-runtime-props";
 
 export const RepeaterContext = createContext<{
   index: number;
@@ -108,7 +109,7 @@ const BlockRenderer = ({
           _type: block._type,
           ...(isArray(dataBindingProps.repeaterItems)
             ? {
-                repeaterItems: dataBindingProps.repeaterItems,
+                repeaterItems: applyLimit(dataBindingProps.repeaterItems, block),
                 repeaterItemsBinding: dataBindingProps.repeaterItemsBinding,
               }
             : {}),

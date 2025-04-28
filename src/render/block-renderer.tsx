@@ -1,6 +1,7 @@
 import {
   applyBinding,
   applyLanguage,
+  applyLimit,
   getBlockRuntimeProps,
   getBlockTagAttributes,
 } from "@/core/components/canvas/static/new-blocks-render-helpers";
@@ -65,7 +66,7 @@ export const RenderBlock = (
           _type: block._type,
           ...(isArray(dataBindingProps.repeaterItems)
             ? {
-                repeaterItems: dataBindingProps.repeaterItems,
+                repeaterItems: applyLimit(dataBindingProps.repeaterItems, block),
                 repeaterItemsBinding: dataBindingProps.repeaterItemsBinding,
               }
             : {}),
