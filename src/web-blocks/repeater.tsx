@@ -47,42 +47,6 @@ export const RepeaterConfig = {
         type: "number",
         default: "",
       },
-      offset: {
-        title: "Offset",
-        type: "number",
-        default: "",
-      },
-      sortBy: {
-        title: "Sort By",
-        type: "string",
-        default: "",
-      },
-      sortOrder: {
-        title: "Sort Order",
-        type: "string",
-        default: "asc",
-        enum: ["asc", "desc"],
-      },
-      filters: {
-        title: "Filters",
-        type: "array",
-        default: [],
-        items: {
-          type: "object",
-          properties: {
-            field: {
-              title: "Field",
-              type: "string",
-              default: "",
-            },
-            value: {
-              title: "Value",
-              type: "string",
-              default: "",
-            },
-          },
-        },
-      },
     },
   }),
 };
@@ -120,4 +84,7 @@ export const RepeaterItemConfig = {
     },
   }),
   canAcceptBlock: (type: string) => type !== "RepeaterItem",
+  canDelete: () => false,
+  canMove: () => false,
+  canDuplicate: () => false,
 };

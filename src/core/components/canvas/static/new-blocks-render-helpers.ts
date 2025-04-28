@@ -1,22 +1,8 @@
 import { STYLES_KEY } from "@/core/constants/STRINGS";
-import { useBlocksStore } from "@/core/hooks";
 import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
 import { ChaiBlock } from "@/types/chai-block";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
-import {
-  cloneDeep,
-  find,
-  forEach,
-  get,
-  includes,
-  isArray,
-  isEmpty,
-  isString,
-  keys,
-  memoize,
-  startsWith,
-} from "lodash-es";
-import { useCallback } from "react";
+import { cloneDeep, forEach, get, includes, isArray, isEmpty, isString, keys, memoize, startsWith } from "lodash-es";
 import { twMerge } from "tailwind-merge";
 
 export function applyLanguage(_block: ChaiBlock, selectedLang: string, chaiBlock) {
@@ -97,25 +83,19 @@ export const getBlockRuntimeProps = memoize((blockType: string) => {
   return Object.fromEntries(Object.entries(props).filter(([, value]) => get(value, "runtime", false)));
 });
 
-export const useBlockRuntimeProps = () => {
-  const [allBlocks] = useBlocksStore();
-  return useCallback(
-    (blockId: string, runtimeProps: Record<string, any>) => {
-      if (isEmpty(runtimeProps)) return {};
-      return Object.entries(runtimeProps).reduce((acc, [key, schema]) => {
-        const hierarchy = [];
-        let block = find(allBlocks, { _id: blockId });
-        while (block) {
-          hierarchy.push(block);
-          block = find(allBlocks, { _id: block._parent });
-        }
-        const matchingBlock = find(hierarchy, { _type: schema.block });
-        if (matchingBlock) {
-          acc[key] = get(matchingBlock, get(schema, "prop"), null);
-        }
-        return acc;
-      }, {});
-    },
-    [allBlocks],
-  );
+export const applyLimit = (data: unknown, block: ChaiBlock): typeof data => {
+  // Only operate on arrays
+  if (!isArray(data)) return data;
+  let result = data as any[];
+
+  // Only apply limit
+  let limit = undefined;
+  if (typeof block.limit === "number" && block.limit > 0) {
+    limit = block.limit;
+  }
+  if (limit !== undefined) {
+    result = result.slice(0, limit);
+  }
+
+  return result as typeof data;
 };
