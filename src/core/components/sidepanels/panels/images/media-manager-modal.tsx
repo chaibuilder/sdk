@@ -1,4 +1,5 @@
 import { useMediaManagerComponent } from "@/core/extensions/media-manager";
+import { ChaiAsset } from "@/types";
 import { Dialog, DialogContent, DialogTrigger } from "@/ui/shadcn/components/ui/dialog";
 import React, { useState } from "react";
 
@@ -8,7 +9,7 @@ const MediaManagerModal = ({
   mode = "image",
 }: {
   children: React.JSX.Element;
-  onSelect: (urls: string[]) => void;
+  onSelect: (assets: ChaiAsset[] | ChaiAsset) => void;
   mode?: "image" | "video" | "audio";
 }) => {
   const [open, setOpen] = useState(false);

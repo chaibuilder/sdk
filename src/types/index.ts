@@ -9,4 +9,12 @@ export type ChaiPage = {
   name?: string;
 };
 
+export type ChaiAsset = {
+  url: string;
+  thumbnailUrl?: string;
+  description?: string;
+  width?: number;
+  height?: number;
+};
+
 export type { ChaiPageProps };

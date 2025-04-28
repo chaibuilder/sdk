@@ -1,3 +1,4 @@
+import { ChaiAsset } from "@/types";
 import { Alert, AlertDescription } from "@/ui/shadcn/components/ui/alert";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Input } from "@/ui/shadcn/components/ui/input";
@@ -7,7 +8,7 @@ import { useTranslation } from "react-i18next";
 
 export type MediaManagerProps = {
   close: () => void;
-  onSelect: (urls: string[]) => void;
+  onSelect: (assets: ChaiAsset | ChaiAsset[]) => void;
   mode?: "image" | "video" | "audio";
 };
 
@@ -27,31 +28,8 @@ const DefaultMediaManager = ({ close, onSelect, mode = "image" }: MediaManagerPr
     try {
       setIsValidating(true);
       setError(null);
-
-      // Try to fetch the resource to check if it exists
-      const response = await fetch(assetUrl, { method: "HEAD" });
-
-      if (!response.ok) {
-        setIsValid(false);
-        setError("Invalid asset URL");
-        return;
-      }
-
-      // Check if content type matches the selected mode
-      const contentType = response.headers.get("content-type") || "";
-
-      // Only validate content types based on the selected mode
-      if (
-        (mode === "image" && contentType.startsWith("image/")) ||
-        (mode === "video" && contentType.startsWith("video/")) ||
-        (mode === "audio" && contentType.startsWith("audio/"))
-      ) {
-        setIsValid(true);
-        setError(null);
-      } else {
-        setIsValid(false);
-        setError(`URL does not point to a valid ${mode} file`);
-      }
+      setIsValid(true);
+      setError(null);
     } catch (err) {
       setIsValid(false);
       setError("Error validating URL");
@@ -85,7 +63,9 @@ const DefaultMediaManager = ({ close, onSelect, mode = "image" }: MediaManagerPr
           <Button variant="outline" onClick={close}>
             {t("Cancel")}
           </Button>
-          <Button onClick={() => onSelect([url])} disabled={!isValid || isValidating}>
+          <Button
+            onClick={() => onSelect({ url, width: 600, height: 400, description: "This is image description" })}
+            disabled={!isValid || isValidating}>
             {t("Insert")}
           </Button>
         </div>
