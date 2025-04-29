@@ -69,7 +69,7 @@ export const useCopyBlocks = (): [
           }),
         };
         if (!navigator.clipboard) {
-          toast.error("Clipboard not available");
+          toast.error("Clipboard not available.");
           return;
         }
         toast.promise(navigator.clipboard.writeText(JSON.stringify(clipboardData)), {

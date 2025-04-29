@@ -70,6 +70,22 @@ export const usePasteBlocks = (): {
       async (newParentId: string | string[]) => {
         const parentId = Array.isArray(newParentId) ? newParentId[0] : newParentId;
 
+        // Check for paste permissions before proceeding
+        if (!navigator?.permissions) {
+          toast.error("Cannot check clipboard permissions.");
+          return;
+        }
+        try {
+          const permissionStatus = await navigator.permissions.query({ name: "clipboard-read" as PermissionName });
+          if (permissionStatus.state === "denied") {
+            toast.error("Clipboard paste permission denied. Please allow clipboard access.");
+            return;
+          }
+        } catch (err) {
+          toast.error("Failed to check clipboard permissions. Please allow clipboard access.");
+          return;
+        }
+
         if (!isEmpty(cutBlockIds)) {
           moveCutBlocks(cutBlockIds, newParentId);
           setCutBlockIds([]);
