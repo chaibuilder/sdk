@@ -48,6 +48,9 @@ export const useCopyBlocks = (): [
           _chai_copied_blocks: blockIds.flatMap((blockId) => {
             // Get duplicated blocks with children
             const duplicatedBlocks = getDuplicatedBlocks(presentBlocks, blockId, null);
+            if (!clonePartialBlocks) {
+              return duplicatedBlocks;
+            }
             let result: Array<ChaiBlock> = [];
             //check for partial blocks. If found, replace the block with the actual partial blocks
             for (const block of duplicatedBlocks) {
