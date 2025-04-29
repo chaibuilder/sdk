@@ -14,7 +14,6 @@ import {
 import { useCopyBlocks } from "@/core/hooks/use-copy-blockIds";
 import { PERMISSIONS, usePermissions } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
-import { Button } from "@/ui/shadcn/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -45,25 +44,25 @@ const CopyPasteBlocks = () => {
       };
     });
     if (hasPartialBlocks(selectedBlocks.map((block) => block.id))) {
-      toast("Partial blocks detected, clone partial blocks?", {
-        cancel: (
-          <Button size="sm" variant="outline" onClick={() => copyBlocks(selectedBlocks.map((block) => block.id))}>
-            Only copy
-          </Button>
-        ),
-        action: (
-          <Button
-            size="sm"
-            variant="default"
-            onClick={() => {
-              copyBlocks(
-                selectedBlocks.map((block) => block.id),
-                true,
-              );
-            }}>
-            Clone & copy
-          </Button>
-        ),
+      toast.warning("Partial blocks detected", {
+        description: t("Clone partial blocks?"),
+        cancel: {
+          label: t("Copy blocks"),
+          onClick: () => {
+            copyBlocks(selectedBlocks.map((block) => block.id));
+            toast.dismiss();
+          },
+        },
+        action: {
+          label: t("Clone & copy"),
+          onClick: () => {
+            copyBlocks(
+              selectedBlocks.map((block) => block.id),
+              true,
+            );
+            toast.dismiss();
+          },
+        },
         position: "top-center",
       });
       // setCopiedBlocks(selectedBlocks.map((block) => block.id));
