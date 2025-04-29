@@ -39,6 +39,7 @@ import { ChevronsDown, ChevronsUp, Eye, PlusIcon } from "lucide-react";
 import { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
 import { MoveHandler, RenameHandler, Tree } from "react-arborist";
 import { useTranslation } from "react-i18next";
+import { PasteAtRootContextMenu } from "./paste-into-root";
 
 const useCanMove = () => {
   const [blocks] = useBlocksStore();
@@ -215,7 +216,7 @@ const ListTree = () => {
     <>
       <div className={cn("flex h-full select-none flex-col space-y-1")} onClick={() => clearSelection()}>
         <div
-          id="outline-view"
+          id="outline-view "
           className="no-scrollbar h-full overflow-y-auto text-sm"
           onKeyDown={(e) => {
             if (!treeRef.current.isEditing) {
@@ -287,6 +288,7 @@ const ListTree = () => {
         </div>
       </div>
       <SaveToLibraryModal />
+      <PasteAtRootContextMenu parentContext={parentContext} setParentContext={setParentContext} />
     </>
   );
 };
