@@ -19,7 +19,7 @@ type PartialBlocksState = Record<
 const partialBlocksStoreAtom = atom<Record<string, ChaiBlock[]>>({});
 const partialBlocksLoadingStateAtom = atom<PartialBlocksState>({});
 
-export const usePartailBlocksStore = () => {
+export const usePartialBlocksStore = () => {
   const [partailBlocks, setPartailBlocks] = useAtom(partialBlocksStoreAtom);
   const getPartailBlocks = useCallback((partailBlock: string) => get(partailBlocks, partailBlock, []), [partailBlocks]);
   const reset = useCallback(() => setPartailBlocks({}), [setPartailBlocks]);

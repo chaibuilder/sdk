@@ -1,9 +1,13 @@
+import { getDuplicatedBlocks } from "@/core/functions/blocks-fn";
+import { useBlocksStore, usePartailBlocksStore } from "@/core/hooks";
 import { cutBlockIdsAtom } from "@/core/hooks/use-cut-blockIds";
+import { ChaiBlock } from "@/types/chai-block";
 import { atom, useAtom, useSetAtom } from "jotai";
+import { set } from "lodash-es";
 import { useCallback } from "react";
 import { toast } from "sonner";
 
-export const copiedBlockIdsAtom: any = atom<Array<string>>([]);
+export const copiedBlockIdsAtom = atom<Array<string>>([]);
 
 export interface CopiedBlock {
   id: string;
@@ -14,18 +18,68 @@ export interface ClipboardBlock {
   _chai_copied_blocks: any;
 }
 
-export const useCopyBlockIds = (): [Array<string>, (blockIds: Array<string>) => void] => {
+export const useCopyBlocks = (): [
+  Array<string>,
+  (blockIds: Array<string>, clonePartialBlocks?: boolean) => void,
+  (blockIds: Array<string>) => boolean,
+] => {
+  const [presentBlocks] = useBlocksStore();
   const [ids, setIds] = useAtom(copiedBlockIdsAtom);
   const resetCutBlockIds = useSetAtom(cutBlockIdsAtom);
+  const { getPartailBlocks } = usePartailBlocksStore();
 
-  const setCopiedBlockIds = useCallback(
-    async (blockIds: Array<string>) => {
-      setIds(blockIds);
-      resetCutBlockIds([]);
-      toast.success("Blocks copied");
+  const hasPartialBlocks = useCallback(
+    (blockIds: Array<string>) => {
+      return blockIds.some((id) => {
+        const duplicatedBlocks = getDuplicatedBlocks(presentBlocks, id, null);
+        return duplicatedBlocks.some((block) => block._type === "PartialBlock" || block._type === "GlobalBlock");
+      });
+    },
+    [presentBlocks],
+  );
+
+  const copyBlocks = useCallback(
+    async (blockIds: Array<string>, clonePartialBlocks: boolean = false) => {
+      try {
+        setIds(blockIds);
+        resetCutBlockIds([]);
+
+        const clipboardData: ClipboardBlock = {
+          _chai_copied_blocks: blockIds.flatMap((blockId) => {
+            // Get duplicated blocks with children
+            const duplicatedBlocks = getDuplicatedBlocks(presentBlocks, blockId, null);
+            let result: Array<ChaiBlock> = [];
+            //check for partial blocks. If found, replace the block with the actual partial blocks
+            for (const block of duplicatedBlocks) {
+              if (block._type === "PartialBlock" || block._type === "GlobalBlock") {
+                // Get the expanded content of the partial block
+                const partialBlocks = getPartailBlocks(block.partialBlockId);
+                set(partialBlocks, "0._parent", block._parent);
+                // Add each block from the partial block to our result
+                result = [...result, ...partialBlocks];
+              } else {
+                // Keep non-partial blocks as is
+                result.push(block);
+              }
+            }
+            return result;
+          }),
+        };
+        if (!navigator.clipboard) {
+          toast.error("Clipboard not available");
+          return;
+        }
+        toast.promise(navigator.clipboard.writeText(JSON.stringify(clipboardData)), {
+          success: "Blocks copied successfully",
+          error: "Failed to copy blocks to clipboard",
+        });
+      } catch (error) {
+        toast.error("Failed to copy blocks to clipboard");
+        console.error("Failed to copy blocks to clipboard:", error);
+      }
     },
     [setIds, resetCutBlockIds],
   );
 
-  return [ids as string[], setCopiedBlockIds];
+  return [ids as string[], copyBlocks, hasPartialBlocks];
 };

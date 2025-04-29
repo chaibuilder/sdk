@@ -9,7 +9,7 @@ import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { useBuilderReset } from "@/core/hooks/use-builder-reset";
 import { useCanvasZoom } from "@/core/hooks/use-canvas-zoom";
 import { useCodeEditor } from "@/core/hooks/use-code-editor";
-import { useCopyBlockIds } from "@/core/hooks/use-copy-blockIds";
+import { useCopyBlocks } from "@/core/hooks/use-copy-blockIds";
 import { useCopyToClipboard } from "@/core/hooks/use-copy-to-clipboard";
 import { useCurrentPage } from "@/core/hooks/use-current-page";
 import { useCutBlockIds } from "@/core/hooks/use-cut-blockIds";
@@ -19,7 +19,7 @@ import { useHiddenBlockIds } from "@/core/hooks/use-hidden-blocks";
 import { useHighlightBlockId } from "@/core/hooks/use-highlight-blockId";
 import { useLanguages } from "@/core/hooks/use-languages";
 import { useLibraryBlocks } from "@/core/hooks/use-library-blocks";
-import { usePartailBlocksStore, usePartialBlocksList } from "@/core/hooks/use-partial-blocks-store";
+import { usePartialBlocksList, usePartialBlocksStore } from "@/core/hooks/use-partial-blocks-store";
 import { usePasteBlocks } from "@/core/hooks/use-paste-blocks";
 import { usePermissions } from "@/core/hooks/use-permissions";
 import { usePreviewMode } from "@/core/hooks/use-preview-mode";
@@ -57,7 +57,7 @@ export {
   useBuilderReset,
   useCanvasZoom,
   useCodeEditor,
-  useCopyBlockIds,
+  useCopyBlocks as useCopyBlockIds,
   useCopyToClipboard,
   useCurrentPage,
   useCutBlockIds,
@@ -67,7 +67,7 @@ export {
   useHighlightBlockId,
   useLanguages,
   useLibraryBlocks,
-  usePartailBlocksStore,
+  usePartialBlocksStore as usePartailBlocksStore,
   usePartialBlocksList,
   usePasteBlocks,
   usePermissions,

@@ -1,12 +1,12 @@
 import { presentBlocksAtom } from "@/core/atoms/blocks";
 import { canAcceptChildBlock } from "@/core/functions/block-helpers";
 import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
-import { useCopyBlockIds } from "@/core/hooks/use-copy-blockIds";
 import { useCutBlockIds } from "@/core/hooks/use-cut-blockIds";
-import { useDuplicateBlocks } from "@/core/hooks/use-duplicate-blocks";
 import { useAtomValue } from "jotai";
-import { find, first, isEmpty } from "lodash-es";
+import { find, first, has, isEmpty } from "lodash-es";
 import { useCallback } from "react";
+import { toast } from "sonner";
+import { useAddBlock } from "./use-add-block";
 
 const useCanPaste = () => {
   const [blocks] = useBlocksStore();
@@ -41,14 +41,23 @@ export const usePasteBlocks = (): {
   pasteBlocks: (newParentId: string | string[]) => Promise<void>;
 } => {
   const [cutBlockIds, setCutBlockIds] = useCutBlockIds();
-  const [copiedBlockIds] = useCopyBlockIds();
   const moveCutBlocks = useMoveCutBlocks();
-  const duplicateBlocks = useDuplicateBlocks();
+  const { addPredefinedBlock } = useAddBlock();
+
   const canPasteBlocks = useCanPaste();
   const canPaste = useCallback(
     async (newParentId: string) => {
       if (cutBlockIds.length > 0) {
         return canPasteBlocks(cutBlockIds, newParentId);
+      }
+      try {
+        const clipboardContent = await navigator.clipboard.readText();
+        if (clipboardContent) {
+          const clipboardData = JSON.parse(clipboardContent);
+          return has(clipboardData, "_chai_copied_blocks");
+        }
+      } catch (error) {
+        return false;
       }
       return false;
     },
@@ -64,13 +73,31 @@ export const usePasteBlocks = (): {
         if (!isEmpty(cutBlockIds)) {
           moveCutBlocks(cutBlockIds, newParentId);
           setCutBlockIds([]);
+          await navigator.clipboard.writeText("");
           return;
         }
 
-        if (!isEmpty(copiedBlockIds)) {
-          duplicateBlocks(copiedBlockIds, parentId);
-          return;
-        }
+        toast.promise(
+          async () => {
+            const clipboardContent = await navigator.clipboard.readText();
+            if (clipboardContent) {
+              const clipboardData = JSON.parse(clipboardContent);
+              if (has(clipboardData, "_chai_copied_blocks")) {
+                addPredefinedBlock(clipboardData._chai_copied_blocks, parentId === "root" ? null : parentId);
+              } else {
+                throw new Error("Nothing to paste");
+              }
+            } else {
+              throw new Error("Nothing to paste");
+            }
+          },
+          {
+            success: () => "Blocks pasted successfully",
+            error: () => {
+              return "Nothing to paste";
+            },
+          },
+        );
       },
       [cutBlockIds, moveCutBlocks, setCutBlockIds],
     ),

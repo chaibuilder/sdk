@@ -4,7 +4,6 @@ import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { canAddChildBlock, canDeleteBlock, canDuplicateBlock } from "@/core/functions/block-helpers";
 import {
   useBlocksStore,
-  useCopyBlockIds,
   useCutBlockIds,
   useDuplicateBlocks,
   usePasteBlocks,
@@ -12,6 +11,7 @@ import {
   useSelectedBlock,
   useSelectedBlockIds,
 } from "@/core/hooks";
+import { useCopyBlocks } from "@/core/hooks/use-copy-blockIds";
 import { PERMISSIONS, usePermissions } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
 import {
@@ -25,12 +25,13 @@ import { has, isEmpty } from "lodash-es";
 import { PencilIcon, PlusIcon } from "lucide-react";
 import React, { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 
 const CopyPasteBlocks = () => {
   const [blocks] = useBlocksStore();
   const [selectedIds] = useSelectedBlockIds();
   const { pasteBlocks } = usePasteBlocks();
-  const [, setCopiedBlockIds] = useCopyBlockIds();
+  const [, copyBlocks, hasPartialBlocks] = useCopyBlocks();
   const { t } = useTranslation();
   const selectedBlock = useSelectedBlock();
 
@@ -42,8 +43,29 @@ const CopyPasteBlocks = () => {
         data: block,
       };
     });
-    setCopiedBlockIds(selectedBlocks.map((block) => block.id));
-  }, [selectedIds, blocks, setCopiedBlockIds]);
+    if (hasPartialBlocks(selectedBlocks.map((block) => block.id))) {
+      toast("Partial blocks detected, clone partial blocks?", {
+        cancel: {
+          label: "Only copy",
+          onClick: () => copyBlocks(selectedBlocks.map((block) => block.id)),
+        },
+        action: {
+          label: "Yes, clone & copy",
+          onClick: (r) => {
+            console.log(r);
+            copyBlocks(
+              selectedBlocks.map((block) => block.id),
+              true,
+            );
+          },
+        },
+        position: "top-center",
+      });
+      // setCopiedBlocks(selectedBlocks.map((block) => block.id));
+    } else {
+      copyBlocks(selectedBlocks.map((block) => block.id));
+    }
+  }, [selectedIds, blocks, copyBlocks, hasPartialBlocks]);
 
   return (
     <>
