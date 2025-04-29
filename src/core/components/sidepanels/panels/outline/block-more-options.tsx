@@ -27,6 +27,8 @@ import React, { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
+const CANNOT_COPY_BLOCKS = !navigator.clipboard;
+
 const CopyPasteBlocks = () => {
   const [blocks] = useBlocksStore();
   const [selectedIds] = useSelectedBlockIds();
@@ -44,17 +46,16 @@ const CopyPasteBlocks = () => {
       };
     });
     if (hasPartialBlocks(selectedBlocks.map((block) => block.id))) {
-      toast.warning("Partial blocks detected", {
-        description: t("Clone partial blocks?"),
+      toast.warning("Partial blocks detected. Clone partial blocks?", {
         cancel: {
-          label: t("Copy blocks"),
+          label: t("No"),
           onClick: () => {
             copyBlocks(selectedBlocks.map((block) => block.id));
             toast.dismiss();
           },
         },
         action: {
-          label: t("Clone & copy"),
+          label: t("Yes"),
           onClick: () => {
             copyBlocks(
               selectedBlocks.map((block) => block.id),
@@ -73,12 +74,14 @@ const CopyPasteBlocks = () => {
 
   return (
     <>
-      <DropdownMenuItem
-        disabled={!canDuplicateBlock(selectedBlock?._type)}
-        onClick={handleCopy}
-        className="flex items-center gap-x-4 text-xs">
-        <CopyIcon /> {t("Copy")}
-      </DropdownMenuItem>
+      {!CANNOT_COPY_BLOCKS && (
+        <DropdownMenuItem
+          disabled={!canDuplicateBlock(selectedBlock?._type)}
+          onClick={handleCopy}
+          className="flex items-center gap-x-4 text-xs">
+          <CopyIcon /> {t("Copy")}
+        </DropdownMenuItem>
+      )}
       <DropdownMenuItem
         className="flex items-center gap-x-4 text-xs"
         onClick={() => {
