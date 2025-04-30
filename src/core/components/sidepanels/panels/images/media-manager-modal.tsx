@@ -4,10 +4,12 @@ import { Dialog, DialogContent, DialogTrigger } from "@/ui/shadcn/components/ui/
 import React, { useState } from "react";
 
 const MediaManagerModal = ({
+  assetId,
   children,
   onSelect,
   mode = "image",
 }: {
+  assetId?: string;
   children: React.JSX.Element;
   onSelect: (assets: ChaiAsset[] | ChaiAsset) => void;
   mode?: "image" | "video" | "audio";
@@ -27,7 +29,7 @@ const MediaManagerModal = ({
       <DialogContent className="flex max-h-[90vh] max-w-7xl border-border md:w-fit">
         <div className="h-full w-full">
           {MediaManagerComponent ? (
-            <MediaManagerComponent close={() => setOpen(false)} onSelect={handleSelect} mode={mode} />
+            <MediaManagerComponent close={() => setOpen(false)} onSelect={handleSelect} mode={mode} assetId={assetId} />
           ) : null}
         </div>
       </DialogContent>
