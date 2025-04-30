@@ -7,7 +7,7 @@ import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export type MediaManagerProps = {
-  id?: string;
+  assetId?: string;
   close: () => void;
   onSelect: (assets: ChaiAsset | ChaiAsset[]) => void;
   mode?: "image" | "video" | "audio";

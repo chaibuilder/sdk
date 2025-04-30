@@ -11,6 +11,7 @@ export type ImageBlockProps = {
   height: number;
   lazyLoading: boolean;
   mobileImage: string;
+  assetId?: string;
 };
 
 const ImageBlock = (props: ChaiBlockComponentProps<ImageBlockProps>) => {
@@ -78,6 +79,12 @@ const Config = {
         title: "Mobile Image",
         default: "",
         ui: { "ui:widget": "image" },
+      },
+      assetId: {
+        type: "string",
+        title: "Asset ID",
+        default: "",
+        ui: { "ui:widget": "hidden" },
       },
     },
   }),
