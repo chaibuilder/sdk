@@ -11,6 +11,7 @@ export type ChaiPage = {
 
 export type ChaiAsset = {
   url: string;
+  id?: string;
   thumbnailUrl?: string;
   description?: string;
   width?: number;

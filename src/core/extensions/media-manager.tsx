@@ -7,6 +7,7 @@ import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export type MediaManagerProps = {
+  id?: string;
   close: () => void;
   onSelect: (assets: ChaiAsset | ChaiAsset[]) => void;
   mode?: "image" | "video" | "audio";
@@ -56,7 +57,7 @@ const DefaultMediaManager = ({ close, onSelect, mode = "image" }: MediaManagerPr
           placeholder={t(`Enter ${mode} URL`)}
           value={url}
           onChange={(e) => setUrl(e.target.value)}
-          onBlur={() => validateAsset(url)}
+          onKeyUp={() => validateAsset(url)}
         />
 
         <div className="flex justify-end gap-2">
@@ -64,7 +65,9 @@ const DefaultMediaManager = ({ close, onSelect, mode = "image" }: MediaManagerPr
             {t("Cancel")}
           </Button>
           <Button
-            onClick={() => onSelect({ url, width: 600, height: 400, description: "This is image description" })}
+            onClick={() =>
+              onSelect({ id: "dam-id", url, width: 600, height: 400, description: "This is image description" })
+            }
             disabled={!isValid || isValidating}>
             {t("Insert")}
           </Button>
