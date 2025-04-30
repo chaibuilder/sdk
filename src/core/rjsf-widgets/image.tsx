@@ -33,7 +33,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
   };
 
   const clearImage = useCallback(() => {
-    onChange("");
+    onChange("https://placehold.co/400");
     if (selectedBlock?._id) {
       updateBlockProps([selectedBlock._id], { assetId: "" });
     }
