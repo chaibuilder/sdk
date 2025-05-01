@@ -24,6 +24,9 @@ export default defineConfig({
       // make sure to externalize deps that shouldn't be bundled
       // into your library
       external: [
+        "react/jsx-runtime",
+        "react/jsx-dev-runtime",
+        "tailwind-merge",
         "@chaibuilder/runtime",
         "@floating-ui/dom",
         "@floating-ui/react-dom",
