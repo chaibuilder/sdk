@@ -1,13 +1,13 @@
 import { atom, useSetAtom } from "jotai";
 import { filter, first, get as getProp, map } from "lodash-es";
 import { useCallback } from "react";
+import { twMerge } from "tailwind-merge";
 import { pageBlocksAtomsAtom } from "../atoms/blocks";
 import { STYLES_KEY } from "../constants/STRINGS.ts";
+import { ClassDerivedObject, constructClassObject } from "../functions/Class.ts";
 import { useBlocksStoreUndoableActions } from "../history/useBlocksStoreUndoableActions.ts";
 import { ChaiBlock } from "../types/ChaiBlock";
 import { selectedStylingBlocksAtom, TStyleBlock } from "./useSelectedStylingBlocks";
-import { twMerge } from "tailwind-merge";
-import { ClassDerivedObject, constructClassObject } from "../functions/Class.ts";
 
 type Created = {
   blockIds: Array<string>;
@@ -20,7 +20,7 @@ export const getSplitChaiClasses = (classesString: string): { baseClasses: strin
   if (!classesString) return { baseClasses: "", classes: "" };
 
   // Split by comma, but not within square brackets
-  const parts = classesString.split(/,(?![^[]*\])/);
+  const parts = classesString.split(/,(?![^\\[]*\])/);
 
   // If there's only one part, return it as classes
   if (parts.length === 1) {

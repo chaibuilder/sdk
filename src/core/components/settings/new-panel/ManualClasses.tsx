@@ -1,9 +1,10 @@
-import { first, get, isEmpty, map, reject } from "lodash-es";
+import { first, get, map } from "lodash-es";
 import * as React from "react";
 import { useState } from "react";
 // @ts-ignore
 import { CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import Fuse from "fuse.js";
+import { compact } from "lodash-es";
 import { SparklesIcon } from "lucide-react";
 import Autosuggest from "react-autosuggest";
 import { useTranslation } from "react-i18next";
@@ -18,7 +19,6 @@ import {
   useToast,
 } from "../../../../ui";
 import { ALL_TW_CLASSES } from "../../../constants/CLASSES_LIST";
-import { STYLES_KEY } from "../../../constants/STRINGS.ts";
 import {
   useAddClassesToBlocks,
   useBuilderProp,
@@ -27,6 +27,7 @@ import {
   useSelectedBlockIds,
   useSelectedStylingBlocks,
 } from "../../../hooks";
+import { getSplitChaiClasses } from "../../../hooks/useAddClassesToBlocks.ts";
 import { AskAIStyles } from "../AskAiStyle.tsx";
 
 const fuse = new Fuse(ALL_TW_CLASSES, {
@@ -47,7 +48,7 @@ export function ManualClasses() {
   const [newCls, setNewCls] = useState("");
   const { toast } = useToast();
   const prop = first(styleBlock)?.prop as string;
-  const classes = reject((get(block, prop, "").replace(STYLES_KEY, "").split(",").pop() || "").split(" "), isEmpty);
+  const { classes } = getSplitChaiClasses(get(block, prop, ""));
   const addNewClasses = () => {
     const fullClsNames: string[] = newCls
       .trim()
@@ -111,7 +112,7 @@ export function ManualClasses() {
       });
       return;
     }
-    navigator.clipboard.writeText(classes.join(" "));
+    navigator.clipboard.writeText(classes);
     toast({
       title: t("Copied"),
       description: t("Classes copied to clipboard"),
@@ -179,7 +180,7 @@ export function ManualClasses() {
       </div>
       <div className="flex w-full flex-wrap gap-2 overflow-x-hidden">
         {React.Children.toArray(
-          classes.map((cls: string) => (
+          compact(classes.split(" ")).map((cls: string) => (
             <div
               key={cls}
               className="group relative flex max-w-[260px] cursor-default items-center gap-x-1 truncate rounded border border-border bg-gray-200 p-px px-1.5 text-[11px] text-gray-600 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
