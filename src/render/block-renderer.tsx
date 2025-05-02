@@ -44,7 +44,7 @@ export const RenderBlock = (
     index,
     key: dataKey,
   });
-  const blockAttributesProps = getBlockTagAttributes(block);
+  const blockAttributesProps = getBlockTagAttributes(block, false);
   const runtimeProps = getRuntimePropValues(blocks, block._id, getBlockRuntimeProps(block._type));
   const hasDataProvider = has(registeredChaiBlock, "dataProvider") && isFunction(registeredChaiBlock.dataProvider);
 
