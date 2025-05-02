@@ -64,13 +64,7 @@ export function getBlockTagAttributes(block: ChaiBlock) {
     if (isString(block[key]) && block[key].startsWith(STYLES_KEY)) {
       const className = generateClassNames(block[key]);
       const attrs = getElementAttrs(block, key);
-      styles[key] = {
-        className,
-        "data-style-prop": key,
-        "data-block-parent": block._id,
-        "data-style-id": `${key}-${block._id}`,
-        ...attrs,
-      };
+      styles[key] = { ...(!isEmpty(className) && { className }), ...attrs };
     }
   });
   return styles;
