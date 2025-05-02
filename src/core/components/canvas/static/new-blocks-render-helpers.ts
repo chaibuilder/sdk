@@ -58,13 +58,23 @@ function getElementAttrs(block: ChaiBlock, key: string) {
   return get(block, `${key}_attrs`, {}) as Record<string, string>;
 }
 
-export function getBlockTagAttributes(block: ChaiBlock) {
+export function getBlockTagAttributes(block: ChaiBlock, isInBuilder: boolean = true) {
   const styles: Record<string, any> = {};
   Object.keys(block).forEach((key) => {
     if (isString(block[key]) && block[key].startsWith(STYLES_KEY)) {
       const className = generateClassNames(block[key]);
       const attrs = getElementAttrs(block, key);
-      styles[key] = { ...(!isEmpty(className) && { className }), ...attrs };
+      styles[key] = {
+        ...(!isEmpty(className) && { className }),
+        ...attrs,
+        ...(isInBuilder
+          ? {
+              "data-style-prop": key,
+              "data-block-parent": block._id,
+              "data-style-id": `${key}-${block._id}`,
+            }
+          : {}),
+      };
     }
   });
   return styles;
