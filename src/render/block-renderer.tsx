@@ -69,7 +69,7 @@ export const RenderBlock = (
           pageProps={pageProps}
           block={block}
           dataProvider={registeredChaiBlock.dataProvider}
-          dataProviderMetadataCallback={dataProviderMetadataCallback}
+          {...(dataProviderMetadataCallback ? { dataProviderMetadataCallback } : {})}
           draft={draft}>
           {(dataProviderProps) => {
             return createElement(Component, {

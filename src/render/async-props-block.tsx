@@ -1,5 +1,5 @@
 import { ChaiBlock, ChaiPageProps } from "@chaibuilder/runtime";
-import { has, omit } from "lodash-es";
+import { has, isFunction, omit } from "lodash-es";
 import React from "react";
 
 type DataProvider = (props: {
@@ -15,7 +15,7 @@ export default async function DataProviderPropsBlock(props: {
   pageProps: ChaiPageProps;
   block: ChaiBlock;
   dataProvider: DataProvider;
-  dataProviderMetadataCallback: (block: ChaiBlock, meta: Record<string, any>) => void;
+  dataProviderMetadataCallback?: (block: ChaiBlock, meta: Record<string, any>) => void;
   draft: boolean;
   children: (dataProviderProps: Record<string, any>) => React.ReactNode;
 }) {
@@ -27,7 +27,7 @@ export default async function DataProviderPropsBlock(props: {
     inBuilder: false,
   });
 
-  if (has(dataProps, "$metadata")) {
+  if (has(dataProps, "$metadata") && isFunction(props.dataProviderMetadataCallback)) {
     props.dataProviderMetadataCallback(props.block, dataProps.$metadata);
   }
 
