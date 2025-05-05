@@ -71,8 +71,14 @@ const BlockRenderer = ({
   );
   const dataProviderProps = useMemo(() => {
     if (!has(registeredChaiBlock, "dataProvider") || !isFunction(registeredChaiBlock.dataProvider)) return {};
-    return registeredChaiBlock.dataProvider(block, selectedLang);
-  }, [block, selectedLang, registeredChaiBlock]);
+    return registeredChaiBlock.dataProvider({
+      block,
+      draft: true,
+      inBuilder: true,
+      lang: selectedLang || fallbackLang,
+      pageProps: {},
+    });
+  }, [block, selectedLang, fallbackLang, registeredChaiBlock, pageExternalData]);
 
   const props = useMemo(
     () => ({
