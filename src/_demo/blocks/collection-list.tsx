@@ -58,6 +58,10 @@ const Config = {
   type: "CollectionList",
   label: "Collection List",
   category: "core",
+  dataProvider: (a: any) => {
+    console.log("a", a);
+    return [];
+  },
   group: "basic",
   ...registerChaiBlockSchema({
     properties: {
