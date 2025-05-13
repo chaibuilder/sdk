@@ -19,7 +19,7 @@ export function applyLanguage(_block: ChaiBlock, selectedLang: string, chaiBlock
 }
 
 export const applyBinding = (
-  block: ChaiBlock,
+  block: object,
   pageExternalData: Record<string, any>,
   { index, key: repeaterKey }: { index: number; key: string },
 ) => {
@@ -102,4 +102,28 @@ export const applyLimit = (data: unknown, block: ChaiBlock): typeof data => {
   }
 
   return result as typeof data;
+};
+
+export const applyChaiDataBinding = (block: Record<string, string>, pageExternalData: Record<string, any>) => {
+  const clonedBlock = cloneDeep(block);
+  forEach(keys(clonedBlock), (key: string) => {
+    if (isString(clonedBlock[key]) && !startsWith(key, "_")) {
+      let value = clonedBlock[key];
+      if (key === "repeaterItems") {
+        clonedBlock["repeaterItemsBinding"] = value;
+      }
+      // check for {{string.key}} and replace with pageExternalData
+      const bindingRegex = /\{\{(.*?)\}\}/g;
+      const matches = value.match(bindingRegex);
+      if (matches) {
+        matches.forEach((match: string) => {
+          let binding = match.slice(2, -2);
+          const bindingValue = get(pageExternalData, binding, match);
+          value = isArray(bindingValue) ? bindingValue : value.replace(match, bindingValue);
+        });
+      }
+      clonedBlock[key] = value;
+    }
+  });
+  return clonedBlock;
 };
