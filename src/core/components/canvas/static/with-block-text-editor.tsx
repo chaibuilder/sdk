@@ -164,9 +164,22 @@ const MemoizedEditor = memo(
 
     const memoizedProps = useMemo(() => {
       return {
+        id: "active-inline-editing-element",
         contentEditable: true,
-        className: `${editingElement?.className?.replace("sr-only", "") || ""} outline outline-[2px] outline-green-500 shadow-none`,
+        className: `${editingElement?.className?.replace("sr-only", "") || ""} outline outline-[2px] outline-green-500 shadow-none empty:before:content-[attr(data-placeholder)] empty:before:text-gray-400 empty:before:absolute empty:before:pointer-events-none empty:before:select-none empty:before:inset-0 empty:before:z-0 relative min-h-[1em]`,
         style: (cloneDeep(editingElement?.style) || {}) as any,
+        onInput: (e) => {
+          const element = e.target as HTMLElement;
+          if (!element) return;
+          if (element.innerText.trim() === "") {
+            element.setAttribute("data-placeholder", "Enter text here");
+            if (element.children.length > 0) {
+              element.children[0].remove();
+            }
+          } else {
+            e.target.removeAttribute("data-placeholder");
+          }
+        },
       };
     }, [editingElement?.className, editingElement?.style]);
 
