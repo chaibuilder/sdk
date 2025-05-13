@@ -115,6 +115,8 @@ export default defineConfig({
         "@tiptap/extension-bubble-menu",
         "@tiptap/extension-underline",
         "@tiptap/extension-text-align",
+        "@tiptap/extension-bullet-list",
+        "@tiptap/extension-ordered-list",
         "react-wrap-balancer",
         "tailwind-merge",
         "tailwindcss-animate",
