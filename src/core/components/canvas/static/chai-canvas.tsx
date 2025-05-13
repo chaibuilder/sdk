@@ -93,8 +93,7 @@ const useHandleCanvasClick = () => {
     e.stopPropagation();
 
     // Check for double click
-    const isDoubleClick = currentTime - lastClickTimeRef.current < 350; // 350ms threshold for double click
-    lastClickTimeRef.current = currentTime;
+    const isDoubleClick = currentTime - lastClickTimeRef.current < 400; // 400ms threshold for double click
     if (isDoubleClick) return;
 
     const chaiBlock: HTMLElement = getTargetedBlock(e.target);
@@ -126,6 +125,7 @@ const useHandleCanvasClick = () => {
     }
 
     clearHighlight();
+    lastClickTimeRef.current = new Date().getTime();
   };
 };
 
