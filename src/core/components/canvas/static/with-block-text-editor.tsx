@@ -9,8 +9,24 @@ import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
 import { useBlockHighlight } from "@/core/hooks/use-block-highlight";
 import { BubbleMenu, EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { FontBoldIcon, FontItalicIcon, StrikethroughIcon } from "@radix-ui/react-icons";
+import TextAlign from "@tiptap/extension-text-align";
+import Link from "@tiptap/extension-link";
+import BulletList from "@tiptap/extension-bullet-list";
+import OrderedList from "@tiptap/extension-ordered-list";
+import {
+  FontBoldIcon,
+  FontItalicIcon,
+  StrikethroughIcon,
+  TextAlignCenterIcon,
+  TextAlignLeftIcon,
+  TextAlignRightIcon,
+  UnderlineIcon,
+  Link2Icon,
+  LinkBreak2Icon,
+  ListBulletIcon,
+} from "@radix-ui/react-icons";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import Underline from "@tiptap/extension-underline";
 
 /**
  * @description This is the editor that is used to edit the block content
@@ -30,10 +46,28 @@ const RichTextEditor = memo(
     const [, setIds] = useSelectedBlockIds();
     const { document } = useFrame();
 
+    const getClassName = useCallback((isActive: boolean) => {
+      return `${isActive ? "bg-white/20" : "hover:bg-white/10"} rounded-md p-1.5 transition-colors duration-200`;
+    }, []);
+
     const editor = useEditor({
       editable: true,
       content: blockContent,
-      extensions: [StarterKit],
+      extensions: [
+        StarterKit,
+        BulletList,
+        OrderedList,
+        Underline,
+        TextAlign.configure({
+          types: ["heading", "paragraph"],
+        }),
+        Link.configure({
+          openOnClick: false,
+          HTMLAttributes: {
+            class: "text-blue-500 hover:text-blue-600 underline",
+          },
+        }),
+      ],
       onUpdate: ({ editor }) => onChange(editor?.getHTML() || ""),
       onBlur: ({ editor, event }) => {
         // Only close if clicked outside both editor and bubble menu
@@ -64,27 +98,105 @@ const RichTextEditor = memo(
     return (
       <>
         {editor && (
-          <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
-            <div className="flex items-center overflow-hidden rounded-md bg-blue-500 text-white shadow-2xl">
+          <BubbleMenu
+            editor={editor}
+            tippyOptions={{
+              duration: 100,
+              placement: "top",
+            }}
+            className="flex items-center overflow-hidden rounded-lg border border-blue-500/20 bg-blue-600 text-white shadow-lg">
+            <div className="flex items-center p-1">
               <button
                 onClick={() => editor.chain().focus().toggleBold().run()}
-                className={`${editor.isActive("bold") ? "opacity-100" : "opacity-70 hover:opacity-90"} rounded-md p-1`}>
-                <FontBoldIcon className="h-5 w-5" strokeWidth={4} />
+                className={getClassName(editor.isActive("bold"))}
+                title="Bold">
+                <FontBoldIcon className="h-4 w-4" strokeWidth={3} />
               </button>
               <button
                 onClick={() => editor.chain().focus().toggleItalic().run()}
-                className={`${editor.isActive("italic") ? "opacity-100" : "opacity-70 hover:opacity-90"} rounded-md p-1`}>
-                <FontItalicIcon className="h-5 w-5" />
+                className={getClassName(editor.isActive("italic"))}
+                title="Italic">
+                <FontItalicIcon className="h-4 w-4" />
               </button>
               <button
                 onClick={() => editor.chain().focus().toggleStrike().run()}
-                className={`${editor.isActive("strike") ? "opacity-100" : "opacity-70 hover:opacity-90"} rounded-md p-1`}>
-                <StrikethroughIcon className="h-5 w-5" />
+                className={getClassName(editor.isActive("strike"))}
+                title="Strikethrough">
+                <StrikethroughIcon className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => editor.chain().focus().toggleUnderline().run()}
+                className={getClassName(editor.isActive("underline"))}
+                title="Underline">
+                <UnderlineIcon className="h-4 w-4" />
+              </button>
+              <div className="mx-1 h-4 w-[1px] bg-white/20"></div>
+              <button
+                onClick={() => {
+                  if (editor.isActive("link")) {
+                    editor.chain().focus().unsetLink().run();
+                  } else {
+                    const url = window.prompt("Enter URL");
+                    if (url) {
+                      editor.chain().focus().setLink({ href: url }).run();
+                    }
+                  }
+                }}
+                className={getClassName(editor.isActive("link"))}
+                title={editor.isActive("link") ? "Remove link" : "Add link"}>
+                {editor.isActive("link") ? <LinkBreak2Icon className="h-4 w-4" /> : <Link2Icon className="h-4 w-4" />}
+              </button>
+              <div className="mx-1 h-4 w-[1px] bg-white/20"></div>
+              <button
+                onClick={() => editor.chain().focus().toggleBulletList().run()}
+                className={getClassName(editor.isActive("bulletList"))}
+                title="Bullet list">
+                <ListBulletIcon className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => editor.chain().focus().toggleOrderedList().run()}
+                className={getClassName(editor.isActive("orderedList"))}
+                title="Numbered list">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-4 w-4">
+                  <path d="M10 12h11m-11 6h11M10 6h11M4 10h2M4 6h1v4m1 8H4c0-1 2-2 2-3s-1-1.5-2-1" />
+                </svg>
+              </button>
+              <div className="mx-1 h-4 w-[1px] bg-white/20"></div>
+              <button
+                onClick={() => editor.chain().focus().setTextAlign("left").run()}
+                className={getClassName(editor.isActive({ textAlign: "left" }))}
+                title="Align left">
+                <TextAlignLeftIcon className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => editor.chain().focus().setTextAlign("center").run()}
+                className={getClassName(editor.isActive({ textAlign: "center" }))}
+                title="Align center">
+                <TextAlignCenterIcon className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => editor.chain().focus().setTextAlign("right").run()}
+                className={getClassName(editor.isActive({ textAlign: "right" }))}
+                title="Align right">
+                <TextAlignRightIcon className="h-4 w-4" />
               </button>
             </div>
           </BubbleMenu>
         )}
-        <EditorContent editor={editor} className="shadow-none outline outline-[2px] outline-green-500" />
+        <EditorContent
+          editor={editor}
+          className="prose prose-sm max-w-none shadow-none outline outline-[2px] outline-green-500"
+        />
       </>
     );
   },
