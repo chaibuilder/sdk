@@ -5,14 +5,14 @@ import { RenderBlocks } from "./blocks-renderer";
 
 const applyBinding = (block: ChaiBlock | Record<string, any>, pageExternalData: Record<string, any>) => {
   const clonedBlock = cloneDeep(block);
-  forEach(keys(clonedBlock), (key) => {
+  forEach(keys(clonedBlock), (key: string) => {
     if (isString(clonedBlock[key])) {
       let value = clonedBlock[key];
       // check for {{string.key}} and replace with pageExternalData
       const bindingRegex = /\{\{(.*?)\}\}/g;
       const matches = value.match(bindingRegex);
       if (matches) {
-        matches.forEach((match) => {
+        matches.forEach((match: string) => {
           const binding = match.slice(2, -2);
           const bindingValue = get(pageExternalData, binding, match);
           value = value.replace(match, bindingValue);
