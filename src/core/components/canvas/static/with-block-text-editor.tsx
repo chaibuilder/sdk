@@ -1,32 +1,32 @@
-import { useFrame } from "@/core/frame/frame-context";
-import { ChaiBlock } from "@/types/chai-block";
-import { cloneDeep } from "lodash-es";
-import { createElement, useEffect, useState, useRef, memo, useMemo, useCallback } from "react";
-import { getElementByDataBlockId } from "./chai-canvas";
-import { useAtom } from "jotai";
 import { inlineEditingActiveAtom } from "@/core/atoms/ui";
-import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
+import { useFrame } from "@/core/frame/frame-context";
 import { useBlockHighlight } from "@/core/hooks/use-block-highlight";
-import { BubbleMenu, EditorContent, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import TextAlign from "@tiptap/extension-text-align";
-import Link from "@tiptap/extension-link";
-import BulletList from "@tiptap/extension-bullet-list";
-import OrderedList from "@tiptap/extension-ordered-list";
+import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
+import { ChaiBlock } from "@/types/chai-block";
 import {
   FontBoldIcon,
   FontItalicIcon,
+  Link2Icon,
+  LinkBreak2Icon,
+  ListBulletIcon,
   StrikethroughIcon,
   TextAlignCenterIcon,
   TextAlignLeftIcon,
   TextAlignRightIcon,
   UnderlineIcon,
-  Link2Icon,
-  LinkBreak2Icon,
-  ListBulletIcon,
 } from "@radix-ui/react-icons";
-import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import BulletList from "@tiptap/extension-bullet-list";
+import Link from "@tiptap/extension-link";
+import OrderedList from "@tiptap/extension-ordered-list";
+import TextAlign from "@tiptap/extension-text-align";
 import Underline from "@tiptap/extension-underline";
+import { BubbleMenu, EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import { useAtom } from "jotai";
+import { cloneDeep } from "lodash-es";
+import { createElement, memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { getElementByDataBlockId } from "./chai-canvas";
 
 /**
  * @description This is the editor that is used to edit the block content
@@ -195,7 +195,7 @@ const RichTextEditor = memo(
         )}
         <EditorContent
           editor={editor}
-          className="prose prose-sm max-w-none shadow-none outline outline-[2px] outline-green-500"
+          className="prose max-w-full shadow-none outline outline-[2px] outline-green-500 dark:prose-invert prose-p:m-0 prose-p:min-h-[1rem] prose-blockquote:m-2 prose-blockquote:ml-4 prose-ol:m-0 prose-ul:m-0 prose-li:m-0"
         />
       </>
     );
