@@ -1,12 +1,7 @@
-import { pageBlocksAtomsAtom } from "@/core/atoms/blocks";
 import { inlineEditingActiveAtom, treeRefAtom } from "@/core/atoms/ui";
 import { useDnd } from "@/core/components/canvas/dnd/useDnd";
 import { useFrame } from "@/core/frame";
-import { useBlockHighlight, useSelectedBlockIds, useSelectedStylingBlocks, useUpdateBlocksProps } from "@/core/hooks";
-import { useGetBlockAtomValue } from "@/core/hooks/use-update-block-atom";
-import { ChaiBlock } from "@/types/chai-block";
-import { Editor, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import { useBlockHighlight, useSelectedBlockIds, useSelectedStylingBlocks } from "@/core/hooks";
 import { useAtom } from "jotai";
 import { first, isEmpty, omit, throttle } from "lodash-es";
 import React, { useCallback, useEffect, useRef } from "react";
@@ -27,54 +22,59 @@ function getTargetedBlock(target) {
   return closest?.getAttribute("data-block-id") === "canvas" ? null : closest;
 }
 
-const useHandleCanvasDblClick = (editor: Editor, editorDiv: HTMLDivElement) => {
-  const INLINE_EDITABLE_BLOCKS = []; //["Heading", "Paragraph", "Text", "Link", "Span", "Button"];
-  const updateContent = useUpdateBlocksProps();
+const INLINE_EDITABLE_BLOCKS = ["Heading", "Paragraph", "Text", "Link", "Span"];
+
+const isRichTextParent = (chaiBlock: HTMLElement | null): boolean => {
+  return (
+    chaiBlock?.getAttribute("data-block-type") === "RichText" ||
+    chaiBlock?.parentElement?.getAttribute("data-block-type") === "RichText"
+  );
+};
+
+/**
+ *
+ * @returns boolean indicating if the block type can be edited inline
+ */
+export const isInlineEditable = (chaiBlock: HTMLElement | null, _blockType?: string): boolean => {
+  // If the block type is set, and the block is not null, return
+  if (_blockType && chaiBlock) return;
+
+  // If the block is a rich text parent, return false (CHANGE LATER)
+  if (isRichTextParent(chaiBlock)) {
+    return true;
+  }
+
+  // If the block type is not set, return false
+  const blockType = _blockType || chaiBlock?.getAttribute("data-block-type");
+  if (!blockType) return false;
+
+  // If the block has children, return false
+  if (chaiBlock && chaiBlock.children.length > 0) {
+    return false;
+  }
+
+  // Button is not inline editable for now, we will add it later for nested content
+  if (blockType === "Button") return false;
+
+  return INLINE_EDITABLE_BLOCKS.includes(blockType);
+};
+
+const useHandleCanvasDblClick = () => {
   const [editingBlockId, setEditingBlockId] = useAtom(inlineEditingActiveAtom);
-  const { clearHighlight } = useBlockHighlight();
-  const getBlockAtomValue = useGetBlockAtomValue(pageBlocksAtomsAtom);
 
   return useCallback(
     (e) => {
       if (editingBlockId) return;
       const chaiBlock: HTMLElement = getTargetedBlock(e.target);
-      if (!chaiBlock) return;
 
-      const blockType = chaiBlock.getAttribute("data-block-type");
-      if (!blockType || !INLINE_EDITABLE_BLOCKS.includes(blockType)) {
-        return;
-      }
+      if (!isInlineEditable(chaiBlock)) return;
+
       const blockId = chaiBlock.getAttribute("data-block-id");
       if (!blockId) return;
 
-      editor.on("update", ({ editor: editor2 }) => {
-        console.log(editor2.getHTML());
-      });
-      editor.on("blur", () => {
-        console.log("blur");
-        const content = editor.getHTML();
-        updateContent([blockId], { content });
-        editorDiv.style.display = "none";
-        chaiBlock.style.visibility = "visible";
-      });
-
       setEditingBlockId(blockId);
-
-      const content = (getBlockAtomValue(blockId) as ChaiBlock)["content"];
-
-      editor.commands.setContent(content);
-      editorDiv.style.display = "block";
-      chaiBlock.style.visibility = "hidden";
-      // place the editorDiv exactly overlapping the chaiBlock
-      editorDiv.style.position = "absolute";
-      editorDiv.style.top = `${chaiBlock.offsetTop}px`;
-      editorDiv.style.left = `${chaiBlock.offsetLeft}px`;
-      editorDiv.style.width = `${chaiBlock.offsetWidth}px`;
-      editorDiv.style.height = `${chaiBlock.offsetHeight}px`;
-      // copy classNames from chaiBlock to editorDiv
-      editorDiv.classList.add(...chaiBlock.classList);
     },
-    [editingBlockId, clearHighlight, getBlockAtomValue, setEditingBlockId, updateContent, editor, editorDiv],
+    [editingBlockId, setEditingBlockId],
   );
 };
 
@@ -84,9 +84,19 @@ const useHandleCanvasClick = () => {
   const [editingBlockId] = useAtom(inlineEditingActiveAtom);
   const [treeRef] = useAtom(treeRefAtom);
   const { clearHighlight } = useBlockHighlight();
+  const lastClickTimeRef = useRef(0);
+
   return (e: any) => {
+    const currentTime = new Date().getTime();
+
     if (editingBlockId) return;
     e.stopPropagation();
+
+    // Check for double click
+    const isDoubleClick = currentTime - lastClickTimeRef.current < 350; // 350ms threshold for double click
+    lastClickTimeRef.current = currentTime;
+    if (isDoubleClick) return;
+
     const chaiBlock: HTMLElement = getTargetedBlock(e.target);
     if (chaiBlock?.getAttribute("data-block-id") && chaiBlock?.getAttribute("data-block-id") === "container") {
       setIds([]);
@@ -165,11 +175,8 @@ export const Canvas = ({ children }: { children: React.ReactNode }) => {
     }, 100);
   }, [document, ids, setSelectedStylingBlocks, styleIds]);
 
-  const editor = useEditor({
-    extensions: [StarterKit],
-  });
   const editorRef = useRef<HTMLDivElement>(null);
-  const handleDblClick = useHandleCanvasDblClick(editor, editorRef.current);
+  const handleDblClick = useHandleCanvasDblClick();
   const handleCanvasClick = useHandleCanvasClick();
   const handleMouseMove = useHandleMouseMove();
   const handleMouseLeave = useHandleMouseLeave();
@@ -186,6 +193,7 @@ export const Canvas = ({ children }: { children: React.ReactNode }) => {
       {...omit(dnd, "isDragging")}
       className={`relative h-full max-w-full p-px ` + (dnd.isDragging ? "dragging" : "") + ""}>
       {children}
+      <div ref={editorRef} style={{ display: "none" }} className="tiptap-editor" />
     </div>
   );
 };

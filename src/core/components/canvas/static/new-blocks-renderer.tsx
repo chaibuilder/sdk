@@ -1,7 +1,7 @@
 import { pageBlocksAtomsAtom } from "@/core/atoms/blocks";
 import { usePageExternalData } from "@/core/atoms/builder";
 import { builderStore } from "@/core/atoms/store";
-import { dataBindingActiveAtom } from "@/core/atoms/ui";
+import { dataBindingActiveAtom, inlineEditingActiveAtom } from "@/core/atoms/ui";
 import {
   applyBinding,
   applyLanguage,
@@ -19,6 +19,7 @@ import { splitAtom } from "jotai/utils";
 import { filter, get, has, isArray, isEmpty, isFunction, isNull, map } from "lodash-es";
 import { createContext, createElement, Suspense, useCallback, useContext, useMemo } from "react";
 import { useBlockRuntimeProps } from "./use-block-runtime-props";
+import WithBlockTextEditor from "./with-block-text-editor";
 
 export const RepeaterContext = createContext<{
   index: number;
@@ -30,6 +31,7 @@ export const RepeaterContext = createContext<{
 
 const BlockRenderer = ({
   blockAtom,
+  editingBlockId,
   children,
 }: {
   blockAtom: Atom<ChaiBlock>;
@@ -46,6 +48,7 @@ const BlockRenderer = ({
     repeaterItemsBinding?: string;
     partialBlockId?: string;
   }) => React.ReactNode;
+  editingBlockId?: string;
 }) => {
   const [block] = useAtom(blockAtom);
   const registeredChaiBlock = useMemo(() => getRegisteredChaiBlock(block._type) as any, [block._type]);
@@ -106,6 +109,32 @@ const BlockRenderer = ({
   );
 
   if (isNull(Component) || hiddenBlocks.includes(block._id)) return null;
+
+  // * if the block is being edited, render the editing block
+  if (editingBlockId === block._id) {
+    return (
+      <WithBlockTextEditor block={block}>
+        <Suspense>
+          {createElement(Component, {
+            ...props,
+            children: children({
+              _id: block._id,
+              _type: block._type,
+              ...(isArray(dataBindingProps.repeaterItems)
+                ? {
+                    repeaterItems: applyLimit(dataBindingProps.repeaterItems, block),
+                    repeaterItemsBinding: dataBindingProps.repeaterItemsBinding,
+                  }
+                : {}),
+              ...(block.partialBlockId ? { partialBlockId: block.partialBlockId } : ""),
+              ...(block.globalBlock ? { partialBlockId: block.globalBlock } : ""),
+            }),
+          })}
+        </Suspense>
+      </WithBlockTextEditor>
+    );
+  }
+
   return (
     <Suspense>
       {createElement(Component, {
@@ -139,10 +168,12 @@ const BlocksRenderer = ({
   blocks,
   parent = null,
   splitAtoms = undefined,
+  editingBlockId = null,
 }: {
   splitAtoms?: any;
   blocks: ChaiBlock[];
   parent?: string;
+  editingBlockId?: string;
 }) => {
   const getBlockAtom = useGetBlockAtom(splitAtoms);
   const filteredBlocks = useMemo(
@@ -159,13 +190,18 @@ const BlocksRenderer = ({
     const blockAtom = getBlockAtom(block._id);
     if (!blockAtom) return null;
     return (
-      <BlockRenderer key={block._id} blockAtom={blockAtom}>
+      <BlockRenderer key={block._id} blockAtom={blockAtom} editingBlockId={editingBlockId}>
         {({ _id, _type, partialBlockId, repeaterItems, repeaterItemsBinding }) => {
           return _type === "Repeater" ? (
             isArray(repeaterItems) &&
               repeaterItems.map((_, index) => (
                 <RepeaterContext.Provider value={{ index, key: repeaterItemsBinding }}>
-                  <BlocksRenderer splitAtoms={splitAtoms} blocks={blocks} parent={block._id} />
+                  <BlocksRenderer
+                    splitAtoms={splitAtoms}
+                    blocks={blocks}
+                    parent={block._id}
+                    editingBlockId={editingBlockId}
+                  />
                 </RepeaterContext.Provider>
               ))
           ) : _type === "GlobalBlock" || _type === "PartialBlock" ? (
@@ -173,7 +209,12 @@ const BlocksRenderer = ({
               <PartialBlocksRenderer partialBlockId={partialBlockId} />
             </Provider>
           ) : hasChildren(_id) ? (
-            <BlocksRenderer splitAtoms={splitAtoms} blocks={blocks} parent={block._id} />
+            <BlocksRenderer
+              splitAtoms={splitAtoms}
+              blocks={blocks}
+              parent={block._id}
+              editingBlockId={editingBlockId}
+            />
           ) : null;
         }}
       </BlockRenderer>
@@ -183,5 +224,6 @@ const BlocksRenderer = ({
 
 export const PageBlocksRenderer = () => {
   const [blocks] = useBlocksStore();
-  return <BlocksRenderer splitAtoms={pageBlocksAtomsAtom} blocks={blocks} />;
+  const [editingBlockId] = useAtom(inlineEditingActiveAtom);
+  return <BlocksRenderer splitAtoms={pageBlocksAtomsAtom} blocks={blocks} editingBlockId={editingBlockId} />;
 };
