@@ -17,7 +17,9 @@ import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { atom, Atom, Provider, useAtom } from "jotai";
 import { splitAtom } from "jotai/utils";
 import { filter, get, has, isArray, isEmpty, isFunction, isNull, map } from "lodash-es";
-import { createContext, createElement, Suspense, useCallback, useContext, useMemo } from "react";
+import React, { createContext, createElement, Suspense, useCallback, useContext, useMemo } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import { ErrorFallback } from "./error-fallback";
 import { useBlockRuntimeProps } from "./use-block-runtime-props";
 
 export const RepeaterContext = createContext<{
@@ -27,6 +29,28 @@ export const RepeaterContext = createContext<{
   index: -1,
   key: "",
 });
+
+const CORE_BLOCKS = [
+  "Box",
+  "Repeater",
+  "GlobalBlock",
+  "PartialBlock",
+  "Heading",
+  "Text",
+  "RichText",
+  "Span",
+  "Image",
+  "Button",
+  "Paragraph",
+  "Link",
+  "Video",
+  "Audio",
+  "Icon",
+  "List",
+  "ListItem",
+  "CustomScript",
+  "CustomHTML",
+];
 
 const BlockRenderer = ({
   blockAtom,
@@ -104,9 +128,11 @@ const BlockRenderer = ({
       dataProviderProps,
     ],
   );
+  const needErrorBoundary = useMemo(() => !CORE_BLOCKS.includes(block._type), [block._type]);
 
+  console.log("block", block._type, needErrorBoundary);
   if (isNull(Component) || hiddenBlocks.includes(block._id)) return null;
-  return (
+  const blockNode = (
     <Suspense>
       {createElement(Component, {
         ...props,
@@ -125,6 +151,8 @@ const BlockRenderer = ({
       })}
     </Suspense>
   );
+
+  return needErrorBoundary ? <ErrorBoundary fallbackRender={ErrorFallback}>{blockNode}</ErrorBoundary> : blockNode;
 };
 
 const PartialBlocksRenderer = ({ partialBlockId }: { partialBlockId: string }) => {
