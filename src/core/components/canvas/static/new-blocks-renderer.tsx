@@ -130,7 +130,6 @@ const BlockRenderer = ({
   );
   const needErrorBoundary = useMemo(() => !CORE_BLOCKS.includes(block._type), [block._type]);
 
-  console.log("block", block._type, needErrorBoundary);
   if (isNull(Component) || hiddenBlocks.includes(block._id)) return null;
   const blockNode = (
     <Suspense>
