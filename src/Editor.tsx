@@ -9,6 +9,7 @@ import { useAtom } from "jotai";
 import { isArray, map, pick } from "lodash-es";
 import { useEffect, useState } from "react";
 import { EXTERNAL_DATA } from "./_demo/EXTERNAL_DATA";
+import { PARTIALS } from "./_demo/PARTIALS";
 
 loadWebBlocks();
 extendChaiBuilder();
@@ -82,41 +83,7 @@ function ChaiBuilderDefault() {
       }}
       uiLibraries={uiLibraries}
       getPartialBlockBlocks={async (partialBlockKey: string) => {
-        const blocks =
-          partialBlockKey === "partial"
-            ? [
-                {
-                  _type: "Box",
-                  _id: "header",
-                  tag: "div",
-                  styles: "#styles:,flex flex-col items-center justify-center h-96",
-                },
-                {
-                  _type: "Span",
-                  content: "Span 2",
-                  _id: "span",
-                  _parent: "header",
-                  styles: "#styles:,text-center text-3xl font-bold p-4 bg-gray-100",
-                },
-                {
-                  _type: "Heading",
-                  content: "Heading 1",
-                  _id: "heading",
-                  _parent: "header",
-                  styles: "#styles:,text-center text-3xl font-bold p-4 bg-gray-100",
-                },
-              ]
-            : [
-                {
-                  styles:
-                    "#styles:,flex w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-md dark:bg-gray-800",
-                  tag: "div",
-                  backgroundImage: "",
-                  _type: "Box",
-                  _id: "rnqzul",
-                  _name: "Box",
-                },
-              ];
+        const blocks = PARTIALS[partialBlockKey] ?? PARTIALS["header"];
         return new Promise((resolve) => {
           setTimeout(() => {
             resolve(blocks);

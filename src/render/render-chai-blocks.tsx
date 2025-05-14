@@ -57,10 +57,13 @@ export type RenderChaiBlocksProps = {
 
 export function RenderChaiBlocks(props: RenderChaiBlocksProps) {
   if (has(props, "metadata")) {
-    console.warn(" metadata is deprecated and will be removed in upcoming version, use pageProps instead");
+    console.warn(" metadata is  deprecated and will be removed in upcoming version, use pageProps instead");
   }
   if (isEmpty(props.lang) && !isEmpty(props.fallbackLang)) {
     throw new Error("lang prop is required when fallbackLang is provided");
+  }
+  if (isEmpty(props.blocks)) {
+    return null;
   }
 
   const lang = props.lang ?? "en";
