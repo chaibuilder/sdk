@@ -1,6 +1,6 @@
 import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
 import { ChaiBlock } from "@/types/chai-block";
-import { cloneDeep, flattenDeep, get, last } from "lodash-es";
+import { cloneDeep, flattenDeep, get, isEmpty, last } from "lodash-es";
 
 export function getMergedPartialBlocks(blocks: ChaiBlock[], partials: Record<string, ChaiBlock[]>) {
   const partialBlocksList = blocks.filter(({ _type }) => _type === "GlobalBlock" || _type === "PartialBlock");
@@ -9,9 +9,14 @@ export function getMergedPartialBlocks(blocks: ChaiBlock[], partials: Record<str
     const partialBlock = partialBlocksList[i];
     const partialBlockId = get(partialBlock, "partialBlockId", get(partialBlock, "globalBlock", ""));
     if (partialBlockId === "") continue;
-    const partialBlocks = cloneDeep(get(partials, partialBlockId, []));
+    let partialBlocks = cloneDeep(get(partials, partialBlockId, []));
     if (partialBlock._parent && partialBlocks?.length > 0) {
-      partialBlocks[0]._parent = partialBlock._parent;
+      partialBlocks = partialBlocks.map((block) => {
+        if (isEmpty(block._parent)) {
+          block._parent = partialBlock._parent;
+        }
+        return block;
+      });
     }
     const index = blocks.indexOf(partialBlock);
     blocks.splice(index, 1, ...partialBlocks);
