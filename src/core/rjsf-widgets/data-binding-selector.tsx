@@ -5,7 +5,7 @@ import { useCallback, useMemo } from "react";
 import { NestedPathSelector } from "../components/nested-path-selector";
 import { useSelectedBlockHierarchy } from "../hooks/use-selected-blockIds";
 
-export const Unstable_DataBindingSelector = ({
+export const DataBindingSelector = ({
   schema,
   onChange,
   id,
@@ -36,7 +36,7 @@ export const Unstable_DataBindingSelector = ({
 
   const handlePathSelect = useCallback(
     (path: string, type: "value" | "array" | "object") => {
-      path = !isEmpty(repeaterKey) ? path.replace(`${repeaterKey}.`, "$index.") : path;
+      path = !isEmpty(repeaterKey) ? path.replace(`${repeaterKey}`, "$index") : path;
       // if type is array or object, replace the current value with the new value
       if (type === "array" || type === "object") {
         onChange(`{{${path}}}`, {}, id);
