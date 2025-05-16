@@ -1,5 +1,4 @@
 import {
-  applyBinding,
   applyLanguage,
   applyLimit,
   getBlockRuntimeProps,
@@ -9,6 +8,7 @@ import { getRegisteredChaiBlock } from "@/runtime";
 import { ChaiBlock } from "@/types/chai-block";
 import { get, has, isArray, isFunction, isNull } from "lodash-es";
 import { createElement, Suspense } from "react";
+import { applyBindingToBlockProps } from "./apply-binding";
 import DataProviderPropsBlock from "./async-props-block";
 import { getRuntimePropValues, RenderChaiBlocksProps } from "./render-chai-blocks";
 
@@ -40,10 +40,15 @@ export const RenderBlock = (
   const dataKey = get(props.repeaterData, "dataKey", "");
 
   const bindingLangSuffix = lang === fallbackLang ? "" : lang;
-  const dataBindingProps = applyBinding(applyLanguage(block, bindingLangSuffix, registeredChaiBlock), externalData, {
-    index,
-    key: dataKey,
-  });
+  console.log("bindingLangSuffix", externalData, index, dataKey);
+  const dataBindingProps = applyBindingToBlockProps(
+    applyLanguage(block, bindingLangSuffix, registeredChaiBlock),
+    externalData,
+    {
+      index,
+      key: dataKey,
+    },
+  );
   const blockAttributesProps = getBlockTagAttributes(block, false);
   const runtimeProps = getRuntimePropValues(blocks, block._id, getBlockRuntimeProps(block._type));
   const hasDataProvider = has(registeredChaiBlock, "dataProvider") && isFunction(registeredChaiBlock.dataProvider);
