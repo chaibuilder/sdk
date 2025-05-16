@@ -200,7 +200,7 @@ const LinkField = ({ schema, formData, onChange, name }: FieldProps) => {
           schema={schema}
           onChange={(value) => {
             console.log("value", formData, value);
-            onChange({ ...formData, href: value, type: "url" });
+            onChange({ ...formData, href: value, ...(linkType === "pageType" ? { type: "url" } : {}) });
           }}
           id={`root.${name}.href`}
           formData={formData}
