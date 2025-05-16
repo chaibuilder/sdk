@@ -184,7 +184,7 @@ const PageTypeField = ({
   );
 };
 
-const LinkField = ({ schema, formData, onChange, id }: FieldProps) => {
+const LinkField = ({ schema, formData, onChange }: FieldProps) => {
   const { t } = useTranslation();
   const { type = "pageType", href = "", target = "self" } = formData;
   const pageTypes = useBuilderProp("pageTypes", []);
