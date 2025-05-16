@@ -40,7 +40,6 @@ export const RenderBlock = (
   const dataKey = get(props.repeaterData, "dataKey", "");
 
   const bindingLangSuffix = lang === fallbackLang ? "" : lang;
-  console.log("bindingLangSuffix", externalData, index, dataKey);
   const dataBindingProps = applyBindingToBlockProps(
     applyLanguage(block, bindingLangSuffix, registeredChaiBlock),
     externalData,
