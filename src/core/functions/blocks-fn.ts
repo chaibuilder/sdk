@@ -1,6 +1,6 @@
 import { generateUUID } from "@/core/functions/common-functions";
 import { ChaiBlock } from "@/types/chai-block";
-import { each, filter, find, flatten, get, isString, map, omit, set } from "lodash-es";
+import { filter, find, flatten } from "lodash-es";
 
 export const nestedToFlatArray = (nestedJson: Array<ChaiBlock>, parent: string | null = null): Array<ChaiBlock> =>
   flatten(
@@ -25,12 +25,6 @@ export function duplicateBlocks(
   const children = filter(blocks, (c) => c._parent === id);
   const newBlocks: Array<any> = [];
   for (let i = 0; i < children.length; i++) {
-    const slots = getSlots(children[i]);
-    if (Object.keys(slots).length > 0) {
-      Object.keys(slots).forEach((key) => {
-        children[i][key] = `slot:${generateUUID()}`;
-      });
-    }
     if (filter(blocks, { _parent: children[i]._id }).length > 0) {
       const newId = generateUUID();
       newBlocks.push({ ...children[i], oldId: children[i]._id, ...{ _id: newId, _parent } });
@@ -72,22 +66,6 @@ export function convertToBlocksTree(blocks: Partial<ChaiBlock>[]) {
   return result;
 }
 
-// eslint-disable-next-line no-underscore-dangle
-export const hasChildren = (node: any): boolean => node.blockNodes && node.blockNodes.length > 0;
-
-export const getSlots = (block: ChaiBlock) => {
-  // loop over all keys and find the ones that start with slot
-  const slots: any = {};
-  Object.keys(block).forEach((key) => {
-    // @ts-ignore
-    if (isString(block[key]) && block[key].startsWith("slot")) {
-      // @ts-ignore
-      slots[key] = block[key].replace("slot:", "");
-    }
-  });
-  return slots;
-};
-
 /**
  * Return the cloned array of blocks
  * @param currentBlocks
@@ -115,40 +93,5 @@ export const getDuplicatedBlocks = (
     blocks.push(flatten(duplicateBlocks(currentBlocks, id, block._id)));
   }
 
-  const newBlocks = flatten(blocks);
-  return map(newBlocks, (m: ChaiBlock) => {
-    const newBlock = m;
-    const slots = getSlots(newBlock);
-    if (Object.keys(slots).length > 0) {
-      Object.keys(slots).forEach((key) => {
-        const slotBlock = find(newBlocks, { oldId: slots[key].replace("slot:", "") }) as ChaiBlock;
-        newBlock[key] = `slot:${slotBlock._id}`;
-      });
-    }
-    return omit(newBlock, ["global", "oldId"]);
-  }) as ChaiBlock[]; // remove all global blocks if any
+  return flatten(blocks);
 };
-
-/**
- * Important Function. Merges the global blocks into page blocks
- * @param globalBlocks
- * @param pageBlocks
- * @returns {*[]}
- */
-export function mergeGlobalBlockIntoPageBlocks(globalBlocks: Array<any>, pageBlocks: Array<ChaiBlock>) {
-  let newBlocks: Array<ChaiBlock> = [];
-  each(pageBlocks, (pageBlock: ChaiBlock) => {
-    if (pageBlock.type === "ProjectBlock") {
-      const projectBlocks = get(find(globalBlocks, { block_id: pageBlock.blockId }), "blocks", []);
-      if (projectBlocks.length) {
-        set(projectBlocks, "0._parent", pageBlock.parent);
-        newBlocks = flatten([...newBlocks, ...mergeGlobalBlockIntoPageBlocks(globalBlocks, projectBlocks)]);
-      } else {
-        newBlocks = [...newBlocks, ...projectBlocks];
-      }
-    } else {
-      newBlocks.push(pageBlock);
-    }
-  });
-  return newBlocks;
-}

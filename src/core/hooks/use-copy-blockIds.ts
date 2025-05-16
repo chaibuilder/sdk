@@ -3,7 +3,7 @@ import { useBlocksStore, usePartailBlocksStore } from "@/core/hooks";
 import { cutBlockIdsAtom } from "@/core/hooks/use-cut-blockIds";
 import { ChaiBlock } from "@/types/chai-block";
 import { atom, useAtom, useSetAtom } from "jotai";
-import { set } from "lodash-es";
+import { isEmpty, set } from "lodash-es";
 import { useCallback } from "react";
 import { toast } from "sonner";
 
@@ -56,8 +56,15 @@ export const useCopyBlocks = (): [
             for (const block of duplicatedBlocks) {
               if (block._type === "PartialBlock" || block._type === "GlobalBlock") {
                 // Get the expanded content of the partial block
-                const partialBlocks = getPartailBlocks(block.partialBlockId);
-                set(partialBlocks, "0._parent", block._parent);
+                let partialBlocks = getPartailBlocks(block.partialBlockId);
+                if (block._parent && partialBlocks?.length > 0) {
+                  partialBlocks = partialBlocks.map((b) => {
+                    if (isEmpty(b._parent)) {
+                      set(b, "_parent", block._parent);
+                    }
+                    return b;
+                  });
+                }
                 // Add each block from the partial block to our result
                 result = [...result, ...partialBlocks];
               } else {
