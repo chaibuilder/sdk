@@ -13,7 +13,6 @@ import { LoopIcon } from "@radix-ui/react-icons";
 import { startsWith } from "lodash-es";
 import { ChevronLeft, ChevronRight, DatabaseIcon } from "lucide-react";
 import * as React from "react";
-import { useEffect } from "react";
 
 type NestedPathSelectorProps = {
   data: Record<string, any>;
@@ -28,17 +27,9 @@ type Option = {
   type: "value" | "array" | "object";
 };
 
-export function NestedPathSelector({ data, onSelect, dataType = "value" }: NestedPathSelectorProps) {
-  const [open, setOpen] = React.useState(false);
+const PathDropdown = ({ data, onSelect, dataType }: NestedPathSelectorProps) => {
   const [currentPath, setCurrentPath] = React.useState<string[]>([]);
   const [currentData, setCurrentData] = React.useState<Record<string, any>>(data);
-
-  useEffect(() => {
-    if (!open) {
-      setCurrentPath([]);
-    }
-    setCurrentData(data);
-  }, [open, data]);
 
   const getValueType = (value: any): "value" | "array" | "object" => {
     if (Array.isArray(value)) return "array";
@@ -59,7 +50,6 @@ export function NestedPathSelector({ data, onSelect, dataType = "value" }: Neste
         setCurrentData(option.value);
       } else if (isValueSelectable(option.type)) {
         onSelect([...currentPath, option.key].join("."), dataType);
-        setOpen(false);
       }
     },
     [currentPath, onSelect, dataType],
@@ -74,6 +64,7 @@ export function NestedPathSelector({ data, onSelect, dataType = "value" }: Neste
   }, [currentPath, data]);
 
   const options: Option[] = React.useMemo(() => {
+    if (!currentData) return [];
     return Object.entries(currentData)
       .map(([key, value]) => ({
         key,
@@ -87,6 +78,59 @@ export function NestedPathSelector({ data, onSelect, dataType = "value" }: Neste
         return true;
       });
   }, [currentData, dataType]);
+
+  return (
+    <Command className="fields-command">
+      <CommandInput className="border-none" placeholder="Search..." />
+      <CommandList>
+        <CommandEmpty>No option found.</CommandEmpty>
+        <CommandGroup>
+          {currentPath.length > 0 && (
+            <CommandItem onSelect={handleBack} className="flex items-center text-sm">
+              <ChevronLeft className="mr-2 h-4 w-4" />
+              Back
+            </CommandItem>
+          )}
+          {options.map((option) => (
+            <CommandItem
+              value={option.key}
+              key={option.key}
+              disabled={false}
+              onSelect={() => handleSelect(option)}
+              className="flex items-center justify-between">
+              <span className="flex items-center gap-x-2">
+                {startsWith(option.key, "#") ? <LoopIcon /> : null}
+                {startsWith(option.key, "#") ? "Repeater Data" : option.key}
+              </span>
+              <div className="flex items-center gap-2">
+                {dataType === "object" && option.type === "object" && (
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="h-6 px-2 hover:bg-primary hover:text-primary-foreground"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onSelect([...currentPath, option.key].join("."), dataType);
+                    }}>
+                    Select
+                  </Button>
+                )}
+                {option.type === "object" && (
+                  <div className="cursor-pointer rounded p-1 hover:bg-muted">
+                    <ChevronRight className="h-4 w-4 opacity-50" />
+                  </div>
+                )}
+              </div>
+            </CommandItem>
+          ))}
+        </CommandGroup>
+      </CommandList>
+    </Command>
+  );
+};
+
+export function NestedPathSelector({ data, onSelect, dataType = "value" }: NestedPathSelectorProps) {
+  const [open, setOpen] = React.useState(false);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -107,53 +151,14 @@ export function NestedPathSelector({ data, onSelect, dataType = "value" }: Neste
       </Tooltip>
 
       <PopoverContent className="z-[1000]! relative mr-3 w-[300px] p-0">
-        <Command className="fields-command">
-          <CommandInput className="border-none" placeholder="Search..." />
-          <CommandList>
-            <CommandEmpty>No option found.</CommandEmpty>
-            <CommandGroup>
-              {currentPath.length > 0 && (
-                <CommandItem onSelect={handleBack} className="flex items-center text-sm">
-                  <ChevronLeft className="mr-2 h-4 w-4" />
-                  Back
-                </CommandItem>
-              )}
-              {options.map((option) => (
-                <CommandItem
-                  value={option.key}
-                  key={option.key}
-                  disabled={false}
-                  onSelect={() => handleSelect(option)}
-                  className="flex items-center justify-between">
-                  <span className="flex items-center gap-x-2">
-                    {startsWith(option.key, "#") ? <LoopIcon /> : null}
-                    {startsWith(option.key, "#") ? "Repeater Data" : option.key}
-                  </span>
-                  <div className="flex items-center gap-2">
-                    {dataType === "object" && option.type === "object" && (
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        className="h-6 px-2 hover:bg-primary hover:text-primary-foreground"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onSelect([...currentPath, option.key].join("."), dataType);
-                          setOpen(false);
-                        }}>
-                        Select
-                      </Button>
-                    )}
-                    {option.type === "object" && (
-                      <div className="cursor-pointer rounded p-1 hover:bg-muted">
-                        <ChevronRight className="h-4 w-4 opacity-50" />
-                      </div>
-                    )}
-                  </div>
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
+        <PathDropdown
+          data={data}
+          onSelect={(path, type) => {
+            onSelect(path, type);
+            setOpen(false);
+          }}
+          dataType={dataType}
+        />
       </PopoverContent>
     </Popover>
   );

@@ -194,7 +194,7 @@ const BlocksRenderer = ({
           return _type === "Repeater" ? (
             isArray(repeaterItems) &&
               repeaterItems.map((_, index) => (
-                <RepeaterContext.Provider value={{ index, key: repeaterItemsBinding }}>
+                <RepeaterContext.Provider key={`${_id}-${index}`} value={{ index, key: repeaterItemsBinding }}>
                   <BlocksRenderer splitAtoms={splitAtoms} blocks={blocks} parent={block._id} />
                 </RepeaterContext.Provider>
               ))
