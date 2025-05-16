@@ -14,9 +14,9 @@ export { DarkMode as DarkModeSwitcher } from "@/core/components/canvas/topbar/da
 export { UndoRedo } from "@/core/components/canvas/topbar/undo-redo";
 export { ChaiBuilderEditor } from "@/core/components/chaibuilder-editor";
 export { AddBlocksDialog } from "@/core/components/layout/add-blocks-dialog";
-export { default as JSONFormFieldTemplate } from "@/core/components/settings/json-form-field-template";
 export { BlockAttributesEditor } from "@/core/components/settings/new-panel/block-attributes-editor";
 export { DefaultChaiBlocks } from "@/core/components/sidepanels/panels/add-blocks/default-blocks";
+export { default as JSONFormFieldTemplate } from "@/core/rjsf-widgets/json-form-field-template";
 export {
   AddBlocksPanel,
   BlockPropsEditor,
