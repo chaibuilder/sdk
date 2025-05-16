@@ -184,7 +184,7 @@ const PageTypeField = ({
   );
 };
 
-const LinkField = ({ schema, formData, onChange }: FieldProps) => {
+const LinkField = ({ schema, formData, onChange, id }: FieldProps) => {
   const { t } = useTranslation();
   const { type = "pageType", href = "", target = "self" } = formData;
   const pageTypes = useBuilderProp("pageTypes", []);
@@ -193,7 +193,10 @@ const LinkField = ({ schema, formData, onChange }: FieldProps) => {
 
   return (
     <div>
-      <span className="text-xs font-medium">{schema?.title ?? "Link"}</span>
+      <span className="flex items-center justify-between gap-x-2 text-xs font-medium">
+        {schema?.title ?? "Link"}
+        {/* <DataBindingSelector schema={schema} onChange={onChange} id={id} formData={formData} /> */}
+      </span>
       <div className="flex flex-col gap-y-1.5">
         <select name="type" value={type} onChange={(e) => onChange({ ...formData, type: e.target.value })}>
           {map(
