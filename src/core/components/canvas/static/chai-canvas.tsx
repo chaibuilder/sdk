@@ -121,7 +121,6 @@ export const Canvas = ({ children }: { children: React.ReactNode }) => {
   const handleMouseMove = useHandleMouseMove();
   const handleMouseLeave = useHandleMouseLeave();
 
-  console.log("children #1");
   return (
     <div
       data-block-id={"canvas"}
