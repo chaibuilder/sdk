@@ -108,7 +108,6 @@ const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
 const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   const RootLayoutComponent = useMemo(() => props.layout || RootLayout, [props.layout]);
   const builderTheme = useBuilderProp("builderTheme", defaultThemeValues);
-  console.log("props", "Render");
   return (
     <>
       <CssThemeVariables theme={builderTheme as ChaiBuilderThemeValues} />
