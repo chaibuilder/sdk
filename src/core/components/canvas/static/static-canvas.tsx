@@ -11,13 +11,7 @@ import { ResizableCanvasWrapper } from "@/core/components/canvas/static/resizabl
 import { StaticBlocksRenderer } from "@/core/components/canvas/static/static-blocks-renderer";
 import { useCanvasScale } from "@/core/components/canvas/static/use-canvas-scale";
 import { ChaiFrame } from "@/core/frame";
-import {
-  useBuilderProp,
-  useCanvasDisplayWidth,
-  useHighlightBlockId,
-  useSelectedBlockIds,
-  useSelectedStylingBlocks,
-} from "@/core/hooks";
+import { useBuilderProp, useCanvasDisplayWidth, useHighlightBlockId } from "@/core/hooks";
 import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
 import { useAtom } from "jotai";
 import { isEmpty } from "lodash-es";
@@ -26,14 +20,12 @@ import { Provider } from "react-wrap-balancer";
 
 const StaticCanvas = () => {
   const [width] = useCanvasDisplayWidth();
-  const [, setIds] = useSelectedBlockIds();
   const [, highlight] = useHighlightBlockId();
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [dimension, setDimension] = useState({ width: 0, height: 0 });
   const scale = useCanvasScale(dimension);
   const [, setCanvasIframe] = useAtom(canvasIframeAtom);
-  const [, setStylingBlocks] = useSelectedStylingBlocks();
   const loadingCanvas = useBuilderProp("loading", false);
   const htmlDir = useBuilderProp("htmlDir", "ltr");
 
@@ -59,10 +51,6 @@ const StaticCanvas = () => {
   return (
     <ResizableCanvasWrapper onMount={setNewWidth} onResize={setNewWidth}>
       <div
-        onClick={() => {
-          setIds([]);
-          setStylingBlocks([]);
-        }}
         onMouseLeave={() => setTimeout(() => highlight(""), 300)}
         className="relative mx-auto h-full w-full overflow-hidden"
         ref={wrapperRef}>
