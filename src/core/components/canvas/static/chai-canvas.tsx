@@ -86,47 +86,50 @@ const useHandleCanvasClick = () => {
   const { clearHighlight } = useBlockHighlight();
   const lastClickTimeRef = useRef(0);
 
-  return (e: any) => {
-    const currentTime = new Date().getTime();
+  return useCallback(
+    (e: any) => {
+      const currentTime = new Date().getTime();
 
-    if (editingBlockId) return;
-    e.stopPropagation();
+      if (editingBlockId) return;
+      e.stopPropagation();
 
-    // Check for double click
-    const isDoubleClick = currentTime - lastClickTimeRef.current < 400; // 400ms threshold for double click
-    if (isDoubleClick) return;
+      // Check for double click
+      const isDoubleClick = currentTime - lastClickTimeRef.current < 400; // 400ms threshold for double click
+      if (isDoubleClick) return;
 
-    const chaiBlock: HTMLElement = getTargetedBlock(e.target);
-    if (chaiBlock?.getAttribute("data-block-id") && chaiBlock?.getAttribute("data-block-id") === "container") {
-      setIds([]);
-      setStyleBlockIds([]);
+      const chaiBlock: HTMLElement = getTargetedBlock(e.target);
+      if (chaiBlock?.getAttribute("data-block-id") && chaiBlock?.getAttribute("data-block-id") === "container") {
+        setIds([]);
+        setStyleBlockIds([]);
+        clearHighlight();
+        return;
+      }
+
+      if (chaiBlock?.getAttribute("data-block-parent")) {
+        // check if target element has data-styles-prop attribute
+        const styleProp = chaiBlock.getAttribute("data-style-prop") as string;
+        const styleId = chaiBlock.getAttribute("data-style-id") as string;
+        const blockId = chaiBlock.getAttribute("data-block-parent") as string;
+        if (!ids.includes(blockId)) {
+          treeRef?.closeAll();
+        }
+
+        setStyleBlockIds([{ id: styleId, prop: styleProp, blockId }]);
+        setIds([blockId]);
+      } else if (chaiBlock?.getAttribute("data-block-id")) {
+        const blockId = chaiBlock.getAttribute("data-block-id");
+        if (!ids.includes(blockId)) {
+          treeRef?.closeAll();
+        }
+        setStyleBlockIds([]);
+        setIds(blockId === "canvas" ? [] : [blockId]);
+      }
+
       clearHighlight();
-      return;
-    }
-
-    if (chaiBlock?.getAttribute("data-block-parent")) {
-      // check if target element has data-styles-prop attribute
-      const styleProp = chaiBlock.getAttribute("data-style-prop") as string;
-      const styleId = chaiBlock.getAttribute("data-style-id") as string;
-      const blockId = chaiBlock.getAttribute("data-block-parent") as string;
-      if (!ids.includes(blockId)) {
-        treeRef?.closeAll();
-      }
-
-      setStyleBlockIds([{ id: styleId, prop: styleProp, blockId }]);
-      setIds([blockId]);
-    } else if (chaiBlock?.getAttribute("data-block-id")) {
-      const blockId = chaiBlock.getAttribute("data-block-id");
-      if (!ids.includes(blockId)) {
-        treeRef?.closeAll();
-      }
-      setStyleBlockIds([]);
-      setIds(blockId === "canvas" ? [] : [blockId]);
-    }
-
-    clearHighlight();
-    lastClickTimeRef.current = new Date().getTime();
-  };
+      lastClickTimeRef.current = new Date().getTime();
+    },
+    [ids, editingBlockId, treeRef, setIds, setStyleBlockIds],
+  );
 };
 
 const useHandleMouseMove = () => {
@@ -180,7 +183,6 @@ export const StylingBlockSelectWatcher = () => {
 };
 
 export const Canvas = ({ children }: { children: React.ReactNode }) => {
-  const editorRef = useRef<HTMLDivElement>(null);
   const handleDblClick = useHandleCanvasDblClick();
   const handleCanvasClick = useHandleCanvasClick();
   const handleMouseMove = useHandleMouseMove();
@@ -196,7 +198,6 @@ export const Canvas = ({ children }: { children: React.ReactNode }) => {
       onMouseLeave={handleMouseLeave}
       className={`relative h-full max-w-full p-px`}>
       {children}
-      <div ref={editorRef} style={{ display: "none" }} className="tiptap-editor" />
     </div>
   );
 };
