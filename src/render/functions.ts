@@ -1,6 +1,29 @@
 import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
 import { ChaiBlock } from "@/types/chai-block";
-import { flattenDeep, last } from "lodash-es";
+import { cloneDeep, flattenDeep, get, isEmpty, last } from "lodash-es";
+
+export function getMergedPartialBlocks(blocks: ChaiBlock[], partials: Record<string, ChaiBlock[]>) {
+  const partialBlocksList = blocks.filter(({ _type }) => _type === "GlobalBlock" || _type === "PartialBlock");
+
+  for (let i = 0; i < partialBlocksList.length; i++) {
+    const partialBlock = partialBlocksList[i];
+    const partialBlockId = get(partialBlock, "partialBlockId", get(partialBlock, "globalBlock", ""));
+    if (partialBlockId === "") continue;
+    let partialBlocks = cloneDeep(get(partials, partialBlockId, []));
+    if (partialBlock._parent && partialBlocks?.length > 0) {
+      partialBlocks = partialBlocks.map((block) => {
+        if (isEmpty(block._parent)) {
+          block._parent = partialBlock._parent;
+        }
+        return block;
+      });
+    }
+    const index = blocks.indexOf(partialBlock);
+    blocks.splice(index, 1, ...partialBlocks);
+  }
+
+  return blocks;
+}
 
 /**
  * This function adds the prefix to the classes

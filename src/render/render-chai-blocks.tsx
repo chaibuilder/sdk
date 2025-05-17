@@ -5,14 +5,14 @@ import { RenderBlocks } from "./blocks-renderer";
 
 const applyBinding = (block: ChaiBlock | Record<string, any>, pageExternalData: Record<string, any>) => {
   const clonedBlock = cloneDeep(block);
-  forEach(keys(clonedBlock), (key) => {
+  forEach(keys(clonedBlock), (key: string) => {
     if (isString(clonedBlock[key])) {
       let value = clonedBlock[key];
       // check for {{string.key}} and replace with pageExternalData
       const bindingRegex = /\{\{(.*?)\}\}/g;
       const matches = value.match(bindingRegex);
       if (matches) {
-        matches.forEach((match) => {
+        matches.forEach((match: string) => {
           const binding = match.slice(2, -2);
           const bindingValue = get(pageExternalData, binding, match);
           value = value.replace(match, bindingValue);
@@ -57,10 +57,13 @@ export type RenderChaiBlocksProps = {
 
 export function RenderChaiBlocks(props: RenderChaiBlocksProps) {
   if (has(props, "metadata")) {
-    console.warn(" metadata is deprecated and will be removed in upcoming version, use pageProps instead");
+    console.warn(" metadata is  deprecated and will be removed in upcoming version, use pageProps instead");
   }
   if (isEmpty(props.lang) && !isEmpty(props.fallbackLang)) {
     throw new Error("lang prop is required when fallbackLang is provided");
+  }
+  if (isEmpty(props.blocks)) {
+    return null;
   }
 
   const lang = props.lang ?? "en";

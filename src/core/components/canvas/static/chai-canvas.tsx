@@ -1,9 +1,9 @@
 import { inlineEditingActiveAtom, treeRefAtom } from "@/core/atoms/ui";
-import { useDnd } from "@/core/components/canvas/dnd/useDnd";
 import { useFrame } from "@/core/frame";
 import { useBlockHighlight, useSelectedBlockIds, useSelectedStylingBlocks } from "@/core/hooks";
+import { useThrottledCallback } from "@react-hookz/web";
 import { useAtom } from "jotai";
-import { first, isEmpty, omit, throttle } from "lodash-es";
+import { first, isEmpty } from "lodash-es";
 import React, { useCallback, useEffect, useRef } from "react";
 
 function getTargetedBlock(target) {
@@ -133,31 +133,29 @@ const useHandleMouseMove = () => {
   const [editingBlockId] = useAtom(inlineEditingActiveAtom);
   const { highlightBlock } = useBlockHighlight();
 
-  return throttle((e: any) => {
-    if (editingBlockId) return;
-    const chaiBlock = getTargetedBlock(e.target);
-    if (chaiBlock) {
-      highlightBlock(chaiBlock);
-    }
-  }, 20);
+  return useThrottledCallback(
+    (e: any) => {
+      if (editingBlockId) return;
+      const chaiBlock = getTargetedBlock(e.target);
+      if (chaiBlock) {
+        highlightBlock(chaiBlock);
+      }
+    },
+    [editingBlockId, highlightBlock],
+    20,
+  );
 };
 
 const useHandleMouseLeave = () => {
   const { clearHighlight } = useBlockHighlight();
-  return clearHighlight;
+  return useCallback(() => clearHighlight(), [clearHighlight]);
 };
 
-export const Canvas = ({ children }: { children: React.ReactNode }) => {
-  const { document } = useFrame();
-  const [ids] = useSelectedBlockIds();
+export const StylingBlockSelectWatcher = () => {
   const [styleIds, setSelectedStylingBlocks] = useSelectedStylingBlocks();
+  const { document } = useFrame();
   const { clearHighlight } = useBlockHighlight();
-
-  // Add cleanup effect
-  useEffect(() => {
-    return clearHighlight;
-  }, [clearHighlight]);
-
+  const [ids] = useSelectedBlockIds();
   useEffect(() => {
     setTimeout(() => {
       if (!isEmpty(styleIds)) {
@@ -174,13 +172,19 @@ export const Canvas = ({ children }: { children: React.ReactNode }) => {
       }
     }, 100);
   }, [document, ids, setSelectedStylingBlocks, styleIds]);
+  // Add cleanup effect
+  useEffect(() => {
+    return () => clearHighlight();
+  }, [clearHighlight]);
+  return null;
+};
 
+export const Canvas = ({ children }: { children: React.ReactNode }) => {
   const editorRef = useRef<HTMLDivElement>(null);
   const handleDblClick = useHandleCanvasDblClick();
   const handleCanvasClick = useHandleCanvasClick();
   const handleMouseMove = useHandleMouseMove();
   const handleMouseLeave = useHandleMouseLeave();
-  const dnd = useDnd();
 
   return (
     <div
@@ -190,8 +194,7 @@ export const Canvas = ({ children }: { children: React.ReactNode }) => {
       onDoubleClick={handleDblClick}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      {...omit(dnd, "isDragging")}
-      className={`relative h-full max-w-full p-px ` + (dnd.isDragging ? "dragging" : "") + ""}>
+      className={`relative h-full max-w-full p-px`}>
       {children}
       <div ref={editorRef} style={{ display: "none" }} className="tiptap-editor" />
     </div>

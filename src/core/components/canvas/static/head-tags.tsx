@@ -21,9 +21,7 @@ import plugin from "tailwindcss/plugin";
 
 export const HeadTags = () => {
   const [chaiTheme] = useTheme();
-
   const chaiThemeOptions = useThemeOptions();
-  // console.log(chaiTheme, chaiThemeOptions);
   const [selectedBlockIds] = useSelectedBlockIds();
   const [darkMode] = useDarkMode();
 

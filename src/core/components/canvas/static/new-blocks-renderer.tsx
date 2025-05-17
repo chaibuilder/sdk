@@ -3,7 +3,6 @@ import { usePageExternalData } from "@/core/atoms/builder";
 import { builderStore } from "@/core/atoms/store";
 import { dataBindingActiveAtom, inlineEditingActiveAtom } from "@/core/atoms/ui";
 import {
-  applyBinding,
   applyLanguage,
   applyLimit,
   getBlockRuntimeProps,
@@ -12,12 +11,15 @@ import {
 import { useBlocksStore, useHiddenBlockIds, usePartailBlocksStore } from "@/core/hooks";
 import { useLanguages } from "@/core/hooks/use-languages";
 import { useGetBlockAtom } from "@/core/hooks/use-update-block-atom";
+import { applyBindingToBlockProps } from "@/render/apply-binding";
 import { ChaiBlock } from "@/types/chai-block";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { atom, Atom, Provider, useAtom } from "jotai";
 import { splitAtom } from "jotai/utils";
 import { filter, get, has, isArray, isEmpty, isFunction, isNull, map } from "lodash-es";
-import { createContext, createElement, Suspense, useCallback, useContext, useMemo } from "react";
+import React, { createContext, createElement, Suspense, useCallback, useContext, useMemo } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import { ErrorFallback } from "./error-fallback";
 import { useBlockRuntimeProps } from "./use-block-runtime-props";
 import WithBlockTextEditor from "./with-block-text-editor";
 
@@ -28,6 +30,28 @@ export const RepeaterContext = createContext<{
   index: -1,
   key: "",
 });
+
+const CORE_BLOCKS = [
+  "Box",
+  "Repeater",
+  "GlobalBlock",
+  "PartialBlock",
+  "Heading",
+  "Text",
+  "RichText",
+  "Span",
+  "Image",
+  "Button",
+  "Paragraph",
+  "Link",
+  "Video",
+  "Audio",
+  "Icon",
+  "List",
+  "ListItem",
+  "CustomScript",
+  "CustomHTML",
+];
 
 const BlockRenderer = ({
   blockAtom,
@@ -63,7 +87,10 @@ const BlockRenderer = ({
   const dataBindingProps = useMemo(
     () =>
       dataBindingActive
-        ? applyBinding(applyLanguage(block, selectedLang, registeredChaiBlock), pageExternalData, { index, key })
+        ? applyBindingToBlockProps(applyLanguage(block, selectedLang, registeredChaiBlock), pageExternalData, {
+            index,
+            key,
+          })
         : applyLanguage(block, selectedLang, registeredChaiBlock),
     [block, selectedLang, registeredChaiBlock, pageExternalData, dataBindingActive, index, key],
   );
@@ -107,35 +134,11 @@ const BlockRenderer = ({
       dataProviderProps,
     ],
   );
+  const needErrorBoundary = useMemo(() => !CORE_BLOCKS.includes(block._type), [block._type]);
 
   if (isNull(Component) || hiddenBlocks.includes(block._id)) return null;
 
-  // * if the block is being edited, render the editing block
-  if (editingBlockId === block._id) {
-    return (
-      <WithBlockTextEditor block={block}>
-        <Suspense>
-          {createElement(Component, {
-            ...props,
-            children: children({
-              _id: block._id,
-              _type: block._type,
-              ...(isArray(dataBindingProps.repeaterItems)
-                ? {
-                    repeaterItems: applyLimit(dataBindingProps.repeaterItems, block),
-                    repeaterItemsBinding: dataBindingProps.repeaterItemsBinding,
-                  }
-                : {}),
-              ...(block.partialBlockId ? { partialBlockId: block.partialBlockId } : ""),
-              ...(block.globalBlock ? { partialBlockId: block.globalBlock } : ""),
-            }),
-          })}
-        </Suspense>
-      </WithBlockTextEditor>
-    );
-  }
-
-  return (
+  const blockNode = (
     <Suspense>
       {createElement(Component, {
         ...props,
@@ -153,6 +156,15 @@ const BlockRenderer = ({
         }),
       })}
     </Suspense>
+  );
+
+  const blockNodeWithTextEditor =
+    editingBlockId === block._id ? <WithBlockTextEditor block={block}>{blockNode}</WithBlockTextEditor> : blockNode;
+
+  return needErrorBoundary ? (
+    <ErrorBoundary fallbackRender={ErrorFallback}>{blockNodeWithTextEditor}</ErrorBoundary>
+  ) : (
+    blockNodeWithTextEditor
   );
 };
 

@@ -1,4 +1,3 @@
-import JSONFormFieldTemplate from "@/core/components/settings/json-form-field-template";
 import { useBlockSettingComponents } from "@/core/extensions/blocks-settings";
 import { useLanguages } from "@/core/hooks";
 import {
@@ -10,8 +9,8 @@ import {
   SliderField,
   SourcesField,
 } from "@/core/rjsf-widgets";
-import { BindingWidget } from "@/core/rjsf-widgets/binding";
 import { CodeEditor } from "@/core/rjsf-widgets/code-widget";
+import JSONFormFieldTemplate from "@/core/rjsf-widgets/json-form-field-template";
 import { useThrottledCallback } from "@react-hookz/web";
 import RjForm from "@rjsf/core";
 import { RJSFSchema, UiSchema } from "@rjsf/utils";
@@ -54,7 +53,6 @@ export const JSONForm = memo(({ blockId, schema, uiSchema, formData, onChange }:
     <RjForm
       key={selectedLang}
       widgets={{
-        binding: BindingWidget,
         richtext: RTEField,
         icon: IconPickerField,
         image: ImagePickerField,

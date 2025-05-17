@@ -1,12 +1,12 @@
-import { filter, has, isArray, isEmpty, map } from "lodash-es";
+import { filter, has, isArray, isEmpty, map, uniqBy } from "lodash-es";
 import { RenderBlock } from "./block-renderer";
 import { RenderChaiBlocksProps } from "./render-chai-blocks";
 
 export const RenderBlocks = (props: RenderChaiBlocksProps & { repeaterData?: { index: number; dataKey: string } }) => {
   const { blocks, parent, repeaterData } = props;
-  const filteredBlocks = filter(
-    blocks,
-    (block) => has(block, "_id") && (!isEmpty(parent) ? block._parent === parent : !block._parent),
+  let filteredBlocks = uniqBy(
+    filter(blocks, (block) => has(block, "_id") && (!isEmpty(parent) ? block._parent === parent : !block._parent)),
+    "_id",
   );
   const hasChildren = (blockId: string) => filter(blocks, (b) => b._parent === blockId).length > 0;
 
@@ -18,7 +18,12 @@ export const RenderBlocks = (props: RenderChaiBlocksProps & { repeaterData?: { i
           return _type === "Repeater" ? (
             isArray(repeaterItems) &&
               repeaterItems.map((_, index) => (
-                <RenderBlocks {...props} parent={block._id} repeaterData={{ index, dataKey: repeaterItemsBinding }} />
+                <RenderBlocks
+                  {...props}
+                  parent={block._id}
+                  key={`${block._id}-${index}`}
+                  repeaterData={{ index, dataKey: repeaterItemsBinding }}
+                />
               ))
           ) : hasChildren(_id) ? (
             <RenderBlocks {...props} parent={block._id} repeaterData={repeaterData} />

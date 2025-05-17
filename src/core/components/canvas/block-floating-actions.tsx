@@ -9,18 +9,21 @@ import {
   useHighlightBlockId,
   usePermissions,
   useRemoveBlocks,
+  useSelectedBlock,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
 } from "@/core/hooks";
 import { PERMISSIONS } from "@/core/main";
-import { ChaiBlock } from "@/types/chai-block";
+import { ChaiBlock } from "@/types/common";
 import { flip } from "@floating-ui/dom";
 import { shift, useFloating } from "@floating-ui/react-dom";
 import { ArrowUpIcon, CopyIcon, DragHandleDots2Icon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
 import { useResizeObserver } from "@react-hookz/web";
 import { useFeature } from "flagged";
 import { useAtom } from "jotai";
-import { get, isEmpty, pick } from "lodash-es";
+import { first, get, isEmpty, pick } from "lodash-es";
+import { useEffect, useState } from "react";
+import { getElementByDataBlockId } from "./static/chai-canvas";
 
 /**
  * @param block
@@ -51,11 +54,55 @@ const BlockActionLabel = ({ block, label }: any) => {
 };
 
 type BlockActionProps = {
-  block: ChaiBlock;
-  selectedBlockElement: HTMLElement | undefined;
+  block: ChaiBlock | null;
+  selectedBlockElement: HTMLElement | null;
+};
+const getElementByStyleId = (doc: any, styleId: string): HTMLElement =>
+  doc.querySelector(`[data-style-id="${styleId}"]`) as HTMLElement;
+
+export const BlockSelectionHighlighter = () => {
+  const selectedBlock = useSelectedBlock();
+  const { document } = useFrame();
+  const [stylingBlocks] = useSelectedStylingBlocks();
+  const [selectedElements, setSelectedElements] = useState<HTMLElement[]>([]);
+  const [, setSelectedStyleElements] = useState<HTMLElement[] | null[]>([]);
+
+  const isInViewport = (element: HTMLElement, offset = 0) => {
+    const { top } = element.getBoundingClientRect();
+    return top + offset >= 0 && top - offset <= window.innerHeight;
+  };
+
+  useEffect(() => {
+    if (!selectedBlock?._id) return;
+
+    if (selectedBlock.type !== "Multiple" && document) {
+      const blockElement = getElementByDataBlockId(document, selectedBlock._id);
+      if (blockElement) {
+        if (!isInViewport(blockElement)) {
+          document.defaultView?.scrollTo({ top: blockElement.offsetTop, behavior: "smooth" });
+        }
+        setSelectedElements([blockElement]);
+      }
+    }
+  }, [selectedBlock?._id, selectedBlock?.type, document]);
+
+  useEffect(() => {
+    if (!isEmpty(stylingBlocks) && document) {
+      const selectedStyleElement = getElementByStyleId(document, (first(stylingBlocks) as { id: string }).id);
+      if (selectedStyleElement) {
+        setSelectedStyleElements([selectedStyleElement]);
+      } else {
+        setSelectedStyleElements([null]);
+      }
+    } else {
+      setSelectedStyleElements([null]);
+    }
+  }, [stylingBlocks, document]);
+
+  return <BlockFloatingSelector block={selectedBlock} selectedBlockElement={selectedElements[0]} />;
 };
 
-export const BlockFloatingSelector = ({ selectedBlockElement, block }: BlockActionProps) => {
+const BlockFloatingSelector = ({ block, selectedBlockElement }: BlockActionProps) => {
   const removeBlock = useRemoveBlocks();
   const duplicateBlock = useDuplicateBlocks();
   const [, setSelectedIds] = useSelectedBlockIds();
@@ -67,9 +114,7 @@ export const BlockFloatingSelector = ({ selectedBlockElement, block }: BlockActi
   const { floatingStyles, refs, update } = useFloating({
     placement: "top-start",
     middleware: [shift(), flip()],
-    elements: {
-      reference: selectedBlockElement,
-    },
+    elements: { reference: selectedBlockElement },
   });
 
   useResizeObserver(selectedBlockElement as HTMLElement, () => update(), selectedBlockElement !== null);

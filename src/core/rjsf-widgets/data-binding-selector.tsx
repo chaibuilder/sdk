@@ -1,40 +1,24 @@
 import { usePageExternalData } from "@/core/atoms/builder";
-import { NestedPathSelector } from "@/core/components/nested-path-selector";
-import { LANGUAGES } from "@/core/constants/LANGUAGES";
-import { useLanguages, useSelectedBlock } from "@/core/hooks";
-import { useSelectedBlockHierarchy } from "@/core/hooks/use-selected-blockIds";
-import { Badge } from "@/ui/shadcn/components/ui/badge";
-import { useRegisteredChaiBlocks } from "@chaibuilder/runtime";
-import { FieldTemplateProps } from "@rjsf/utils";
+import { useSelectedBlock } from "@/core/hooks";
 import { first, get, isEmpty } from "lodash-es";
-import { ChevronDown, ChevronRight, List } from "lucide-react";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
+import { NestedPathSelector } from "../components/nested-path-selector";
+import { useSelectedBlockHierarchy } from "../hooks/use-selected-blockIds";
 
-const JSONFormFieldTemplate = ({
-  id,
-  classNames,
-  label,
-  children,
-  errors,
-  help,
-  description,
-  hidden,
-  required,
+export const DataBindingSelector = ({
   schema,
-  formData,
   onChange,
-}: FieldTemplateProps) => {
-  const { selectedLang, fallbackLang, languages } = useLanguages();
-  const lang = isEmpty(languages) ? "" : isEmpty(selectedLang) ? fallbackLang : selectedLang;
-  const currentLanguage = get(LANGUAGES, lang, lang);
+  id,
+  formData,
+}: {
+  schema: any;
+  onChange: (value: any, formData: any, id: string) => void;
+  id: string;
+  formData: any;
+}) => {
   const pageExternalData = usePageExternalData();
-
-  const selectedBlock = useSelectedBlock();
-  const registeredBlocks = useRegisteredChaiBlocks();
-  const i18nProps = get(registeredBlocks, [selectedBlock?._type, "i18nProps"], []) || [];
-  const [openedList, setOpenedList] = useState<null | string>(null);
   const hierarchy = useSelectedBlockHierarchy();
-
+  const selectedBlock = useSelectedBlock();
   const repeaterKey = useMemo(() => {
     if (hierarchy.length === 1) return "";
     const repeaterKey = get(
@@ -52,7 +36,7 @@ const JSONFormFieldTemplate = ({
 
   const handlePathSelect = useCallback(
     (path: string, type: "value" | "array" | "object") => {
-      path = !isEmpty(repeaterKey) ? path.replace(`${repeaterKey}.`, "$index.") : path;
+      path = !isEmpty(repeaterKey) ? path.replace(`${repeaterKey}`, "$index") : path;
       // if type is array or object, replace the current value with the new value
       if (type === "array" || type === "object") {
         onChange(`{{${path}}}`, {}, id);
@@ -191,74 +175,14 @@ const JSONFormFieldTemplate = ({
     },
     [id, onChange, formData, selectedBlock?._id, repeaterKey],
   );
-
-  if (hidden) {
-    return null;
-  }
-
-  const isCheckboxOrRadio = schema.type === "boolean";
-  if (isCheckboxOrRadio) return <div className={classNames}>{children}</div>;
-
-  const showLangSuffix = i18nProps?.includes(id.replace("root.", ""));
-
-  if (schema.type === "array") {
-    const isListOpen = openedList === id;
-
-    return (
-      <div className={`${classNames} relative`}>
-        {schema.title && (
-          <label
-            htmlFor={id}
-            onClick={() => setOpenedList(isListOpen ? null : id)}
-            className="flex cursor-pointer items-center gap-x-1 py-1 leading-tight duration-200 hover:bg-slate-100">
-            {isListOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
-            <List className="h-3 w-3" />
-            <span className="leading-tight">{label}</span>&nbsp;
-            <Badge className="m-0 bg-gray-200 px-2 leading-tight text-gray-500 hover:bg-gray-200 hover:text-gray-500">
-              <span className="text-[9px] font-medium text-slate-600">{formData?.length}</span>
-            </Badge>
-          </label>
-        )}
-        {formData?.length === 0 ? (
-          <div className="h-0 overflow-hidden">{children}</div>
-        ) : (
-          <div className={`${!isListOpen ? "h-0 overflow-hidden" : "pt-0.5"}`}>
-            {description}
-            {children}
-            {errors}
-            {help}
-          </div>
-        )}
-      </div>
-    );
-  }
-
   return (
-    <div className={classNames}>
-      {schema.title && (
-        <div className="flex items-center justify-between">
-          <label htmlFor={id} className={schema.type === "object" ? "pb-2" : ""}>
-            {label} {showLangSuffix && <small className="text-[9px] text-zinc-400"> {currentLanguage}</small>}
-            {required && schema.type !== "object" ? " *" : null}
-          </label>
-          {!schema.enum && !schema.oneOf && pageExternalData && (
-            <NestedPathSelector
-              data={{
-                ...(repeaterData && { [repeaterKey]: repeaterData }),
-                ...pageExternalData,
-              }}
-              onSelect={handlePathSelect}
-              dataType={schema.binding === "array" ? "array" : "value"}
-            />
-          )}
-        </div>
-      )}
-      {description}
-      {children}
-      {errors}
-      {help}
-    </div>
+    <NestedPathSelector
+      data={{
+        ...(repeaterData && { [repeaterKey]: repeaterData }),
+        ...pageExternalData,
+      }}
+      onSelect={handlePathSelect}
+      dataType={schema.binding === "array" ? "array" : "value"}
+    />
   );
 };
-
-export default JSONFormFieldTemplate;

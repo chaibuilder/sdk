@@ -5,6 +5,7 @@ import { FieldProps } from "@rjsf/utils";
 import { get, isEmpty, map, split, startsWith } from "lodash-es";
 import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { DataBindingSelector } from "./data-binding-selector";
 
 const PageTypeField = ({
   href,
@@ -184,7 +185,7 @@ const PageTypeField = ({
   );
 };
 
-const LinkField = ({ schema, formData, onChange }: FieldProps) => {
+const LinkField = ({ schema, formData, onChange, name }: FieldProps) => {
   const { t } = useTranslation();
   const { type = "pageType", href = "", target = "self" } = formData;
   const pageTypes = useBuilderProp("pageTypes", []);
@@ -193,7 +194,18 @@ const LinkField = ({ schema, formData, onChange }: FieldProps) => {
 
   return (
     <div>
-      <span className="text-xs font-medium">{schema?.title ?? "Link"}</span>
+      <span className="flex items-center justify-between gap-x-2 text-xs font-medium">
+        {schema?.title ?? "Link"}
+        <DataBindingSelector
+          schema={schema}
+          onChange={(value) => {
+            console.log("value", formData, value);
+            onChange({ ...formData, href: value, ...(linkType === "pageType" ? { type: "url" } : {}) });
+          }}
+          id={`root.${name}.href`}
+          formData={formData}
+        />
+      </span>
       <div className="flex flex-col gap-y-1.5">
         <select name="type" value={type} onChange={(e) => onChange({ ...formData, type: e.target.value })}>
           {map(
@@ -217,21 +229,23 @@ const LinkField = ({ schema, formData, onChange }: FieldProps) => {
             pageTypes={pageTypes}
             onChange={(href: string) => onChange({ ...formData, href })}
           />
-        ) : (
-          <input
-            autoCapitalize={"off"}
-            autoCorrect={"off"}
-            spellCheck={"false"}
-            name="href"
-            type="text"
-            value={href}
-            onChange={(e) => onChange({ ...formData, href: e.target.value })}
-            placeholder={t(type === "url" ? "Enter URL" : type === "scroll" ? "#ElementID" : "Enter details")}
-          />
-        )}
+        ) : null}
+        <input
+          id={`root.${name}.href`}
+          autoCapitalize={"off"}
+          autoCorrect={"off"}
+          spellCheck={"false"}
+          name="href"
+          type="text"
+          className={linkType === "pageType" ? "!hidden" : ""}
+          value={href}
+          onChange={(e) => onChange({ ...formData, href: e.target.value })}
+          placeholder={t(type === "url" ? "Enter URL" : type === "scroll" ? "#ElementID" : "Enter details")}
+        />
         {linkType === "url" && (
           <div className="flex items-center gap-x-2 text-muted-foreground">
             <input
+              id={`root.${name}.target`}
               autoCapitalize={"off"}
               autoCorrect={"off"}
               spellCheck={"false"}

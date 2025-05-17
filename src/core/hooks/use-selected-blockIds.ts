@@ -1,9 +1,10 @@
-import { presentBlocksAtom } from "@/core/atoms/blocks";
+import { pageBlocksAtomsAtom, presentBlocksAtom } from "@/core/atoms/blocks";
 import { ChaiBlock } from "@/types/chai-block";
 import { atom, useAtom, useAtomValue } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { compact, filter, get as getProp, includes, map, without } from "lodash-es";
 import { useCallback } from "react";
+import { useGetBlockAtomValue } from "./use-update-block-atom";
 
 /**
  * Core selected  ids atom
@@ -96,7 +97,11 @@ export const useSelectedBlocksDisplayChild = () => ({
  * useSelectedBlock hook
  */
 //@ts-ignore
-export const useSelectedBlock = () => useAtomValue<ChaiBlock>(selectedBlockAtom);
+export const useSelectedBlock = () => {
+  const [blockIds] = useSelectedBlockIds();
+  const getBlockAtomValue = useGetBlockAtomValue(pageBlocksAtomsAtom);
+  return blockIds.length > 0 ? getBlockAtomValue(blockIds[0]) : null;
+};
 
 export const selectedBlockHierarchy = atom((get) => {
   const selectedBlock = get(selectedBlockAtom);
@@ -124,7 +129,6 @@ export const useSelectedBlockHierarchy = () => {
  */
 export const useSelectedBlockIds = () => {
   const [blockIds, setBlockIds] = useAtom(selectedBlockIdsAtom);
-
   const toggleSelectedBlockId = useCallback(
     (blockId: string) => {
       setBlockIds((prevIds) => {

@@ -3,6 +3,7 @@ export {
   getThemeFontsCSSImport,
   getThemeFontsLinkMarkup,
 } from "@/core/components/canvas/static/chai-theme-helpers";
-export { convertToBlocks } from "@/render/functions";
+export { applyChaiDataBinding } from "@/core/components/canvas/static/new-blocks-render-helpers";
+export { convertToBlocks, getMergedPartialBlocks } from "@/render/functions";
 export { getStylesForBlocks } from "@/render/get-tailwind-css";
 export { RenderChaiBlocks } from "@/render/render-chai-blocks";
