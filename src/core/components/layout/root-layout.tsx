@@ -112,13 +112,13 @@ const RootLayout: ComponentType = () => {
    * Prevents the context menu from appearing in production mode.
    * @param {MouseEvent<HTMLDivElement>} e - The mouse event.
    */
-  const preventContextMenu = (e: MouseEvent<HTMLDivElement>) => {
+  const preventContextMenu = useCallback((e: MouseEvent<HTMLDivElement>) => {
     if (!isDevelopment()) e.preventDefault();
-  };
+  }, []);
 
-  const handleMenuItemClick = (id: string) => {
+  const handleMenuItemClick = useCallback((id: string) => {
     setActivePanel(activePanel === id ? null : id);
-  };
+  }, []);
 
   const menuItems = useSidebarMenuItems();
 
@@ -152,10 +152,10 @@ const RootLayout: ComponentType = () => {
     return isStandardPanel ? panelWidth : lastStandardPanelWidth;
   }, [activePanel, panelWidth, lastStandardPanelWidth, sidebarMenuItems]);
 
-  const handleNonStandardPanelClose = () => {
+  const handleNonStandardPanelClose = useCallback(() => {
     // Return to the last used standard panel when closing a non-standard panel
     setActivePanel(lastStandardPanelRef.current);
-  };
+  }, [setActivePanel]);
 
   const closeNonStandardPanel = useCallback(() => {
     setActivePanel("outline");

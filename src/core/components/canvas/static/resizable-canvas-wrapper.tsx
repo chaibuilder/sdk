@@ -1,6 +1,6 @@
 import { useSelectedBlockIds, useSelectedStylingBlocks } from "@/core/hooks";
 import { useDebouncedCallback, useResizeObserver } from "@react-hookz/web";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 export const ResizableCanvasWrapper = ({ children, onMount, onResize }: any) => {
   const [, setSelected] = useSelectedBlockIds();
@@ -21,10 +21,10 @@ export const ResizableCanvasWrapper = ({ children, onMount, onResize }: any) => 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const deselectSelected = () => {
+  const deselectSelected = useCallback(() => {
     setSelected([]);
     setSelectedStyles([]);
-  };
+  }, [setSelected, setSelectedStyles]);
 
   return (
     <div id={"main-content"} onClick={deselectSelected} className="h-full w-full p-8 pb-0" ref={mainContentRef}>

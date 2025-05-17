@@ -12,7 +12,7 @@ const writeAtomValue = atom(
     const blockAsAtoms = get(pageBlocksAtomsAtom);
     const blockAtom = find(blockAsAtoms, (b) => (get(b) as ChaiBlock)._id === id);
     if (!blockAtom) {
-      throw new Error(`Block with id ${id} not found`);
+      return null;
     }
     return set(blockAtom, { ...(get(blockAtom) as any), ...props });
   },
@@ -28,14 +28,14 @@ export const useGetBlockAtomValue = (splitAtoms: Atom<Atom<ChaiBlock>[]>) => {
       (get, _set, idOrAtom: Atom<ChaiBlock> | string) => {
         const blockAsAtoms = get(splitAtoms);
         if (!blockAsAtoms || !blockAsAtoms.length) {
-          throw new Error("No blocks available");
+          return null;
         }
         const blockAtom = find(
           blockAsAtoms,
           (b) => (get(b) as ChaiBlock)._id === (isString(idOrAtom) ? idOrAtom : get(idOrAtom as Atom<ChaiBlock>)._id),
         );
         if (!blockAtom) {
-          throw new Error(`Block with id ${idOrAtom} not found`);
+          return null;
         }
         return get(blockAtom) as ChaiBlock;
       },

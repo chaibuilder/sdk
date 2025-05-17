@@ -13,6 +13,7 @@ const CodeEditor = React.lazy(() => import("@/core/components/canvas/static/code
 const CanvasArea: React.FC = () => {
   const [codeEditor] = useCodeEditor();
   const onErrorFn = useBuilderProp("onError", noop);
+  console.log("Rendering on selection");
   return (
     <div className="flex h-full max-h-full w-full flex-1 flex-col">
       <div className="relative flex h-full max-h-full flex-col overflow-hidden bg-gray-100/40 px-2">

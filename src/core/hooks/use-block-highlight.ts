@@ -32,12 +32,12 @@ export const useBlockHighlight = () => {
     [innerDoc],
   );
 
-  const clearHighlight = () => {
+  const clearHighlight = useCallback(() => {
     if (lastHighlighted) {
       lastHighlighted.removeAttribute("data-highlighted");
       lastHighlighted = null;
     }
-  };
+  }, []);
 
   return { highlightBlock, clearHighlight, lastHighlighted };
 };
