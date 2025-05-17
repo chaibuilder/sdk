@@ -7,26 +7,13 @@ import { useAtom } from "jotai";
 import { inlineEditingActiveAtom } from "@/core/atoms/ui";
 import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
 import { useBlockHighlight } from "@/core/hooks/use-block-highlight";
-import { BubbleMenu, EditorContent, useEditor } from "@tiptap/react";
+import { BubbleMenu as TiptapBubbleMenu, EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import TextAlign from "@tiptap/extension-text-align";
 import Link from "@tiptap/extension-link";
-import BulletList from "@tiptap/extension-bullet-list";
-import OrderedList from "@tiptap/extension-ordered-list";
-import {
-  FontBoldIcon,
-  FontItalicIcon,
-  StrikethroughIcon,
-  TextAlignCenterIcon,
-  TextAlignLeftIcon,
-  TextAlignRightIcon,
-  UnderlineIcon,
-  Link2Icon,
-  LinkBreak2Icon,
-  ListBulletIcon,
-} from "@radix-ui/react-icons";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import Underline from "@tiptap/extension-underline";
+import { BubbleMenu } from "./bubble-menu";
 
 /**
  * @description This is the editor that is used to edit the block content
@@ -36,168 +23,88 @@ import Underline from "@tiptap/extension-underline";
 const RichTextEditor = memo(
   ({
     blockContent,
+    editingElement,
     onClose,
     onChange,
   }: {
     blockContent: string;
+    editingElement: HTMLElement;
     onClose: (content: string) => void;
     onChange: (content: string) => void;
   }) => {
     const [, setIds] = useSelectedBlockIds();
     const { document } = useFrame();
 
-    const getClassName = useCallback((isActive: boolean) => {
-      return `${isActive ? "bg-white/20" : "hover:bg-white/10"} rounded-md p-1.5 transition-colors duration-200`;
-    }, []);
+    const editor = useEditor(
+      {
+        editable: true,
+        content: blockContent,
+        extensions: [
+          StarterKit,
+          Underline,
+          TextAlign.configure({
+            types: ["heading", "paragraph"],
+          }),
+          Link.configure({
+            openOnClick: false,
+            HTMLAttributes: {
+              class: "text-blue-500 hover:text-blue-600 underline",
+            },
+          }),
+        ],
+        onUpdate: ({ editor }) => onChange(editor?.getHTML() || ""),
+        onBlur: ({ editor, event }) => {
+          // Only close if clicked outside both editor and bubble menu
+          const target = event.relatedTarget as HTMLElement;
+          const editorElement = document.querySelector(".ProseMirror");
+          const bubbleMenu = document.querySelector(".tippy-box");
 
-    const editor = useEditor({
-      editable: true,
-      content: blockContent,
-      extensions: [
-        StarterKit,
-        BulletList,
-        OrderedList,
-        Underline,
-        TextAlign.configure({
-          types: ["heading", "paragraph"],
-        }),
-        Link.configure({
-          openOnClick: false,
-          HTMLAttributes: {
-            class: "text-blue-500 hover:text-blue-600 underline",
-          },
-        }),
-      ],
-      onUpdate: ({ editor }) => onChange(editor?.getHTML() || ""),
-      onBlur: ({ editor, event }) => {
-        // Only close if clicked outside both editor and bubble menu
-        const target = event.relatedTarget as HTMLElement;
-        const editorElement = document.querySelector(".ProseMirror");
-        const bubbleMenu = document.querySelector(".tippy-box");
+          const isEditorClicked = editorElement?.contains(target);
+          const isBubbleMenuClicked = bubbleMenu?.contains(target);
 
-        const isEditorClicked = editorElement?.contains(target);
-        const isBubbleMenuClicked = bubbleMenu?.contains(target);
+          // Check if click was outside both editor and bubble menu
+          if (!isEditorClicked && !isBubbleMenuClicked) {
+            const content = editor?.getHTML() || "";
+            editor?.destroy();
+            onClose(content);
 
-        // Check if click was outside both editor and bubble menu
-        if (!isEditorClicked && !isBubbleMenuClicked) {
-          const content = editor?.getHTML() || "";
-          editor?.destroy();
-          onClose(content);
-
-          setIds([]);
-        }
+            setIds([]);
+          }
+        },
       },
-    });
+      [],
+    );
 
     useEffect(() => {
-      return () => {
-        editor?.destroy();
-      };
-    }, []);
+      editor?.commands?.focus();
+      editor?.emit("focus", {
+        editor,
+        event: new FocusEvent("focus"),
+        transaction: [] as any,
+      });
+    }, [editor]);
+
+    const editorClassName = useMemo(() => {
+      const basicClassName = "max-w-none shadow-none outline outline-[2px] outline-green-500 [&_*]:shadow-none";
+      if (!editingElement) return basicClassName;
+
+      const editingElementClassName = editingElement?.className?.replace("sr-only", "") || "";
+      return `${basicClassName} ${editingElementClassName}`;
+    }, [editingElement]);
 
     return (
-      <>
+      <div>
         {editor && (
-          <BubbleMenu
+          <TiptapBubbleMenu
             editor={editor}
             tippyOptions={{
               duration: 100,
-              placement: "top",
-            }}
-            className="flex items-center overflow-hidden rounded-lg border border-blue-500/20 bg-blue-600 text-white shadow-lg">
-            <div className="flex items-center p-1">
-              <button
-                onClick={() => editor.chain().focus().toggleBold().run()}
-                className={getClassName(editor.isActive("bold"))}
-                title="Bold">
-                <FontBoldIcon className="h-4 w-4" strokeWidth={3} />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().toggleItalic().run()}
-                className={getClassName(editor.isActive("italic"))}
-                title="Italic">
-                <FontItalicIcon className="h-4 w-4" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().toggleStrike().run()}
-                className={getClassName(editor.isActive("strike"))}
-                title="Strikethrough">
-                <StrikethroughIcon className="h-4 w-4" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().toggleUnderline().run()}
-                className={getClassName(editor.isActive("underline"))}
-                title="Underline">
-                <UnderlineIcon className="h-4 w-4" />
-              </button>
-              <div className="mx-1 h-4 w-[1px] bg-white/20"></div>
-              <button
-                onClick={() => {
-                  if (editor.isActive("link")) {
-                    editor.chain().focus().unsetLink().run();
-                  } else {
-                    const url = window.prompt("Enter URL");
-                    if (url) {
-                      editor.chain().focus().setLink({ href: url }).run();
-                    }
-                  }
-                }}
-                className={getClassName(editor.isActive("link"))}
-                title={editor.isActive("link") ? "Remove link" : "Add link"}>
-                {editor.isActive("link") ? <LinkBreak2Icon className="h-4 w-4" /> : <Link2Icon className="h-4 w-4" />}
-              </button>
-              <div className="mx-1 h-4 w-[1px] bg-white/20"></div>
-              <button
-                onClick={() => editor.chain().focus().toggleBulletList().run()}
-                className={getClassName(editor.isActive("bulletList"))}
-                title="Bullet list">
-                <ListBulletIcon className="h-4 w-4" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().toggleOrderedList().run()}
-                className={getClassName(editor.isActive("orderedList"))}
-                title="Numbered list">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-4 w-4">
-                  <path d="M10 12h11m-11 6h11M10 6h11M4 10h2M4 6h1v4m1 8H4c0-1 2-2 2-3s-1-1.5-2-1" />
-                </svg>
-              </button>
-              <div className="mx-1 h-4 w-[1px] bg-white/20"></div>
-              <button
-                onClick={() => editor.chain().focus().setTextAlign("left").run()}
-                className={getClassName(editor.isActive({ textAlign: "left" }))}
-                title="Align left">
-                <TextAlignLeftIcon className="h-4 w-4" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().setTextAlign("center").run()}
-                className={getClassName(editor.isActive({ textAlign: "center" }))}
-                title="Align center">
-                <TextAlignCenterIcon className="h-4 w-4" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().setTextAlign("right").run()}
-                className={getClassName(editor.isActive({ textAlign: "right" }))}
-                title="Align right">
-                <TextAlignRightIcon className="h-4 w-4" />
-              </button>
-            </div>
-          </BubbleMenu>
+            }}>
+            <BubbleMenu editor={editor} />
+          </TiptapBubbleMenu>
         )}
-        <EditorContent
-          editor={editor}
-          className="prose prose-sm max-w-none shadow-none outline outline-[2px] outline-green-500"
-        />
-      </>
+        <EditorContent editor={editor} className={editorClassName} />
+      </div>
     );
   },
 );
@@ -334,9 +241,9 @@ const WithBlockTextEditor = memo(
         setEditingElement(null);
 
         // @TODO: (FIX ME) This is a hack to prevent the editor from being open when the block is not a RichText
-        if (blockType !== "RichText") {
-          setEditingBlockId(null);
-        }
+        // if (blockType !== "RichText") {
+        setEditingBlockId(null);
+        // }
       },
       [blockId, updateContent, setEditingBlockId],
     );
@@ -352,18 +259,23 @@ const WithBlockTextEditor = memo(
       if (!blockId) return;
       const element = getElementByDataBlockId(document, blockId as string);
       element?.classList?.add("sr-only");
-      if (blockType !== "RichText") setEditingElement(element);
+      setEditingElement(element);
     }, [blockId, blockType, document]);
 
     const memoizedEditor = useMemo(() => {
-      if (blockType === "RichText") {
-        clearHighlight();
-        return <RichTextEditor blockContent={blockContent} onChange={handleChange} onClose={handleClose} />;
-      }
-
       if (!editingElement) return null;
-
       clearHighlight();
+
+      if (blockType === "RichText") {
+        return (
+          <RichTextEditor
+            blockContent={blockContent}
+            editingElement={editingElement}
+            onChange={handleChange}
+            onClose={handleClose}
+          />
+        );
+      }
 
       return (
         <MemoizedEditor
