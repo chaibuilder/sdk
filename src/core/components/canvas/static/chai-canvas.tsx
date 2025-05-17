@@ -1,9 +1,10 @@
 import { inlineEditingActiveAtom, treeRefAtom } from "@/core/atoms/ui";
 import { useFrame } from "@/core/frame";
 import { useBlockHighlight, useSelectedBlockIds, useSelectedStylingBlocks } from "@/core/hooks";
+import { useThrottledCallback } from "@react-hookz/web";
 import { useAtom } from "jotai";
-import { first, isEmpty, throttle } from "lodash-es";
-import React, { useEffect } from "react";
+import { first, isEmpty } from "lodash-es";
+import React, { useCallback, useEffect } from "react";
 
 function getTargetedBlock(target) {
   // First check if the target is the canvas itself
@@ -27,57 +28,64 @@ const useHandleCanvasClick = () => {
   const [editingBlockId] = useAtom(inlineEditingActiveAtom);
   const [treeRef] = useAtom(treeRefAtom);
   const { clearHighlight } = useBlockHighlight();
-  return (e: any) => {
-    if (editingBlockId) return;
-    e.stopPropagation();
-    const chaiBlock: HTMLElement = getTargetedBlock(e.target);
-    if (chaiBlock?.getAttribute("data-block-id") && chaiBlock?.getAttribute("data-block-id") === "container") {
-      setIds([]);
-      setStyleBlockIds([]);
+  return useCallback(
+    (e: any) => {
+      if (editingBlockId) return;
+      e.stopPropagation();
+      const chaiBlock: HTMLElement = getTargetedBlock(e.target);
+      if (chaiBlock?.getAttribute("data-block-id") && chaiBlock?.getAttribute("data-block-id") === "container") {
+        setIds([]);
+        setStyleBlockIds([]);
+        clearHighlight();
+        return;
+      }
+
+      if (chaiBlock?.getAttribute("data-block-parent")) {
+        // check if target element has data-styles-prop attribute
+        const styleProp = chaiBlock.getAttribute("data-style-prop") as string;
+        const styleId = chaiBlock.getAttribute("data-style-id") as string;
+        const blockId = chaiBlock.getAttribute("data-block-parent") as string;
+        if (!ids.includes(blockId)) {
+          treeRef?.closeAll();
+        }
+
+        setStyleBlockIds([{ id: styleId, prop: styleProp, blockId }]);
+        setIds([blockId]);
+      } else if (chaiBlock?.getAttribute("data-block-id")) {
+        const blockId = chaiBlock.getAttribute("data-block-id");
+        if (!ids.includes(blockId)) {
+          treeRef?.closeAll();
+        }
+        setStyleBlockIds([]);
+        setIds(blockId === "canvas" ? [] : [blockId]);
+      }
+
       clearHighlight();
-      return;
-    }
-
-    if (chaiBlock?.getAttribute("data-block-parent")) {
-      // check if target element has data-styles-prop attribute
-      const styleProp = chaiBlock.getAttribute("data-style-prop") as string;
-      const styleId = chaiBlock.getAttribute("data-style-id") as string;
-      const blockId = chaiBlock.getAttribute("data-block-parent") as string;
-      if (!ids.includes(blockId)) {
-        treeRef?.closeAll();
-      }
-
-      setStyleBlockIds([{ id: styleId, prop: styleProp, blockId }]);
-      setIds([blockId]);
-    } else if (chaiBlock?.getAttribute("data-block-id")) {
-      const blockId = chaiBlock.getAttribute("data-block-id");
-      if (!ids.includes(blockId)) {
-        treeRef?.closeAll();
-      }
-      setStyleBlockIds([]);
-      setIds(blockId === "canvas" ? [] : [blockId]);
-    }
-
-    clearHighlight();
-  };
+    },
+    [ids, treeRef, setIds, setStyleBlockIds],
+  );
 };
 
 const useHandleMouseMove = () => {
   const [editingBlockId] = useAtom(inlineEditingActiveAtom);
   const { highlightBlock } = useBlockHighlight();
 
-  return throttle((e: any) => {
-    if (editingBlockId) return;
-    const chaiBlock = getTargetedBlock(e.target);
-    if (chaiBlock) {
-      highlightBlock(chaiBlock);
-    }
-  }, 20);
+  return useThrottledCallback(
+    (e: any) => {
+      if (editingBlockId) return;
+      const chaiBlock = getTargetedBlock(e.target);
+      if (chaiBlock) {
+        highlightBlock(chaiBlock);
+      }
+    },
+    [editingBlockId, highlightBlock],
+    20,
+  );
 };
 
 const useHandleMouseLeave = () => {
   const { clearHighlight } = useBlockHighlight();
-  return clearHighlight;
+  return useCallback(() => clearHighlight(), [clearHighlight]);
 };
 
 export const StylingBlockSelectWatcher = () => {
@@ -103,7 +111,7 @@ export const StylingBlockSelectWatcher = () => {
   }, [document, ids, setSelectedStylingBlocks, styleIds]);
   // Add cleanup effect
   useEffect(() => {
-    return clearHighlight;
+    return () => clearHighlight();
   }, [clearHighlight]);
   return null;
 };
@@ -113,6 +121,7 @@ export const Canvas = ({ children }: { children: React.ReactNode }) => {
   const handleMouseMove = useHandleMouseMove();
   const handleMouseLeave = useHandleMouseLeave();
 
+  console.log("children #1");
   return (
     <div
       data-block-id={"canvas"}
