@@ -1,15 +1,9 @@
-import { pageBlocksAtomsAtom } from "@/core/atoms/blocks";
 import { inlineEditingActiveAtom, treeRefAtom } from "@/core/atoms/ui";
-import { useDnd } from "@/core/components/canvas/dnd/useDnd";
 import { useFrame } from "@/core/frame";
-import { useBlockHighlight, useSelectedBlockIds, useSelectedStylingBlocks, useUpdateBlocksProps } from "@/core/hooks";
-import { useGetBlockAtomValue } from "@/core/hooks/use-update-block-atom";
-import { ChaiBlock } from "@/types/chai-block";
-import { Editor, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import { useBlockHighlight, useSelectedBlockIds, useSelectedStylingBlocks } from "@/core/hooks";
 import { useAtom } from "jotai";
-import { first, isEmpty, omit, throttle } from "lodash-es";
-import React, { useCallback, useEffect, useRef } from "react";
+import { first, isEmpty, throttle } from "lodash-es";
+import React, { useEffect } from "react";
 
 function getTargetedBlock(target) {
   // First check if the target is the canvas itself
@@ -26,57 +20,6 @@ function getTargetedBlock(target) {
   const closest = target.closest("[data-block-id]");
   return closest?.getAttribute("data-block-id") === "canvas" ? null : closest;
 }
-
-const useHandleCanvasDblClick = (editor: Editor, editorDiv: HTMLDivElement) => {
-  const INLINE_EDITABLE_BLOCKS = []; //["Heading", "Paragraph", "Text", "Link", "Span", "Button"];
-  const updateContent = useUpdateBlocksProps();
-  const [editingBlockId, setEditingBlockId] = useAtom(inlineEditingActiveAtom);
-  const { clearHighlight } = useBlockHighlight();
-  const getBlockAtomValue = useGetBlockAtomValue(pageBlocksAtomsAtom);
-
-  return useCallback(
-    (e) => {
-      if (editingBlockId) return;
-      const chaiBlock: HTMLElement = getTargetedBlock(e.target);
-      if (!chaiBlock) return;
-
-      const blockType = chaiBlock.getAttribute("data-block-type");
-      if (!blockType || !INLINE_EDITABLE_BLOCKS.includes(blockType)) {
-        return;
-      }
-      const blockId = chaiBlock.getAttribute("data-block-id");
-      if (!blockId) return;
-
-      editor.on("update", ({ editor: editor2 }) => {
-        console.log(editor2.getHTML());
-      });
-      editor.on("blur", () => {
-        console.log("blur");
-        const content = editor.getHTML();
-        updateContent([blockId], { content });
-        editorDiv.style.display = "none";
-        chaiBlock.style.visibility = "visible";
-      });
-
-      setEditingBlockId(blockId);
-
-      const content = (getBlockAtomValue(blockId) as ChaiBlock)["content"];
-
-      editor.commands.setContent(content);
-      editorDiv.style.display = "block";
-      chaiBlock.style.visibility = "hidden";
-      // place the editorDiv exactly overlapping the chaiBlock
-      editorDiv.style.position = "absolute";
-      editorDiv.style.top = `${chaiBlock.offsetTop}px`;
-      editorDiv.style.left = `${chaiBlock.offsetLeft}px`;
-      editorDiv.style.width = `${chaiBlock.offsetWidth}px`;
-      editorDiv.style.height = `${chaiBlock.offsetHeight}px`;
-      // copy classNames from chaiBlock to editorDiv
-      editorDiv.classList.add(...chaiBlock.classList);
-    },
-    [editingBlockId, clearHighlight, getBlockAtomValue, setEditingBlockId, updateContent, editor, editorDiv],
-  );
-};
 
 const useHandleCanvasClick = () => {
   const [, setStyleBlockIds] = useSelectedStylingBlocks();
@@ -137,17 +80,11 @@ const useHandleMouseLeave = () => {
   return clearHighlight;
 };
 
-export const Canvas = ({ children }: { children: React.ReactNode }) => {
-  const { document } = useFrame();
-  const [ids] = useSelectedBlockIds();
+export const StylingBlockSelectWatcher = () => {
   const [styleIds, setSelectedStylingBlocks] = useSelectedStylingBlocks();
+  const { document } = useFrame();
   const { clearHighlight } = useBlockHighlight();
-
-  // Add cleanup effect
-  useEffect(() => {
-    return clearHighlight;
-  }, [clearHighlight]);
-
+  const [ids] = useSelectedBlockIds();
   useEffect(() => {
     setTimeout(() => {
       if (!isEmpty(styleIds)) {
@@ -164,27 +101,26 @@ export const Canvas = ({ children }: { children: React.ReactNode }) => {
       }
     }, 100);
   }, [document, ids, setSelectedStylingBlocks, styleIds]);
+  // Add cleanup effect
+  useEffect(() => {
+    return clearHighlight;
+  }, [clearHighlight]);
+  return null;
+};
 
-  const editor = useEditor({
-    extensions: [StarterKit],
-  });
-  const editorRef = useRef<HTMLDivElement>(null);
-  const handleDblClick = useHandleCanvasDblClick(editor, editorRef.current);
+export const Canvas = ({ children }: { children: React.ReactNode }) => {
   const handleCanvasClick = useHandleCanvasClick();
   const handleMouseMove = useHandleMouseMove();
   const handleMouseLeave = useHandleMouseLeave();
-  const dnd = useDnd();
 
   return (
     <div
       data-block-id={"canvas"}
       id="canvas"
       onClick={handleCanvasClick}
-      onDoubleClick={handleDblClick}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      {...omit(dnd, "isDragging")}
-      className={`relative h-full max-w-full p-px ` + (dnd.isDragging ? "dragging" : "") + ""}>
+      className={`relative h-full max-w-full p-px`}>
       {children}
     </div>
   );

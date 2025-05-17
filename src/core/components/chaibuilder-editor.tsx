@@ -39,12 +39,10 @@ const useAutoSave = () => {
   }, autoSaveInterval * 1000);
 };
 
-const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
+const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
   const [, setAllBlocks] = useBlocksStore();
-  const builderTheme = useBuilderProp("builderTheme", defaultThemeValues);
   const reset = useBuilderReset();
   const [saveState] = useAtom(builderSaveStateAtom);
-  const RootLayoutComponent = useMemo(() => props.layout || RootLayout, [props.layout]);
   useAtom(selectedLibraryAtom);
   useKeyEventWatcher();
   useExpandTree();
@@ -52,7 +50,6 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   useWatchPartailBlocks();
   useUnmountBroadcastChannel();
   const { postMessage } = useBroadcastChannel();
-
   useEffect(() => {
     builderStore.set(
       // @ts-ignore
@@ -105,7 +102,13 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
       window.onbeforeunload = null;
     };
   }, [saveState]);
+  return null;
+};
 
+const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
+  const RootLayoutComponent = useMemo(() => props.layout || RootLayout, [props.layout]);
+  const builderTheme = useBuilderProp("builderTheme", defaultThemeValues);
+  console.log("props", "Render");
   return (
     <>
       <CssThemeVariables theme={builderTheme as ChaiBuilderThemeValues} />
@@ -124,6 +127,7 @@ const ChaiBuilderEditor: React.FC<ChaiBuilderEditorProps> = (props: ChaiBuilderE
         <FlagsProvider features={{ ...FEATURE_TOGGLES }}>
           <ScreenTooSmall />
           <ChaiBuilderComponent {...props} />
+          <ChaiWatchers {...props} />
           <PreviewScreen />
           <Toaster richColors />
         </FlagsProvider>
