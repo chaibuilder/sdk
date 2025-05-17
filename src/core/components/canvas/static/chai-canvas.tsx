@@ -41,7 +41,7 @@ export const isInlineEditable = (chaiBlock: HTMLElement | null, _blockType?: str
 
   // If the block is a rich text parent, return false (CHANGE LATER)
   if (isRichTextParent(chaiBlock)) {
-    return true;
+    return false;
   }
 
   // If the block type is not set, return false
