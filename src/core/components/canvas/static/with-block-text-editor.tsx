@@ -16,7 +16,7 @@ import Underline from "@tiptap/extension-underline";
 import Placeholder from "@tiptap/extension-placeholder";
 import { BubbleMenu } from "./bubble-menu";
 import { useLanguages } from "@/core/hooks/use-languages";
-import { get } from "lodash-es";
+import { get, has } from "lodash-es";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { useDebouncedCallback } from "@react-hookz/web";
 
@@ -254,7 +254,8 @@ const WithBlockTextEditor = memo(
       const blockType = block._type;
       let blockContent = block[editingKey];
       const registeredBlock = getRegisteredChaiBlock(block._type);
-      if (selectedLang && registeredBlock?.i18nProps?.includes(editingKey)) {
+      const isI18n = selectedLang && registeredBlock?.i18nProps?.includes(editingKey);
+      if (isI18n && has(block, `${editingKey}-${selectedLang}`)) {
         blockContent = get(block, `${editingKey}-${selectedLang}`);
       }
 
