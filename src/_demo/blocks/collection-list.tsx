@@ -21,6 +21,8 @@ export type CollectionListProps = {
   listStyles: ChaiStyles;
   itemStyles: ChaiStyles;
   binding: string;
+  keyName: string;
+  depsName: string;
 };
 
 type ServerProps = {
@@ -28,27 +30,11 @@ type ServerProps = {
 };
 
 const Component = (props: ChaiBlockComponentProps<CollectionListProps & ServerProps>) => {
-  const {
-    title1,
-    blockProps,
-    wrapperStyles,
-    listStyles,
-    itemStyles,
-    items,
-    tag,
-    showTitle,
-    binding,
-    draft,
-    inBuilder,
-    lang,
-    pageProps,
-  } = props;
-  console.log("draft", pageProps, draft, inBuilder, lang);
+  const { keyName, depsName, title1, blockProps, wrapperStyles, listStyles, itemStyles, items, showTitle } = props;
+  console.log("draft", keyName, depsName);
   return (
     <div {...blockProps} {...wrapperStyles}>
       {showTitle && <h1>{title1}</h1>}
-      <p>Binding: {binding}</p>
-      <p>Block Prop: {tag}</p>
       <div {...listStyles}>{items?.map((item) => <div {...itemStyles}>{JSON.stringify(item)}</div>)}</div>
     </div>
   );
@@ -58,10 +44,7 @@ const Config = {
   type: "CollectionList",
   label: "Collection List",
   category: "core",
-  dataProvider: (a: any) => {
-    console.log("a", a);
-    return [];
-  },
+  asyncProps: [],
   group: "basic",
   ...registerChaiBlockSchema({
     properties: {
@@ -75,18 +58,6 @@ const Config = {
         type: "string",
         title: "Title",
         default: "Collection List 111",
-      },
-      sort: {
-        type: "array",
-        title: "Sort",
-        items: {
-          type: "object",
-          properties: {
-            field: { type: "string" },
-            order: { type: "string" },
-          },
-        },
-        default: [],
       },
       wrapperStyles: StylesProp("bg-red-100 p-2 border border-red-500"),
       listStyles: StylesProp("text-blue-500"),

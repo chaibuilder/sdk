@@ -55,11 +55,13 @@ const CORE_BLOCKS = [
 ];
 
 const BlockRenderer = ({
+  asyncProps,
   blockAtom,
   editingBlockId,
   children,
 }: {
   blockAtom: Atom<ChaiBlock>;
+  asyncProps: Record<string, any>;
   children: ({
     _id,
     _type,
@@ -100,16 +102,6 @@ const BlockRenderer = ({
     () => getRuntimePropValues(block._id, getBlockRuntimeProps(block._type)),
     [block._id, block._type, getRuntimePropValues, getBlockRuntimeProps],
   );
-  // const dataProviderProps = useMemo(() => {
-  //   if (!has(registeredChaiBlock, "dataProvider") || !isFunction(registeredChaiBlock.dataProvider)) return {};
-  //   return registeredChaiBlock.dataProvider({
-  //     block,
-  //     draft: true,
-  //     inBuilder: true,
-  //     lang: selectedLang || fallbackLang,
-  //     pageProps: {},
-  //   });
-  // }, [block, selectedLang, fallbackLang, registeredChaiBlock, pageExternalData]);
 
   const props = useMemo(
     () => ({
@@ -119,8 +111,18 @@ const BlockRenderer = ({
       ...dataBindingProps,
       ...blockAttributesProps,
       ...runtimeProps,
+      ...asyncProps,
     }),
-    [block._id, block._type, selectedLang, fallbackLang, dataBindingProps, blockAttributesProps, runtimeProps],
+    [
+      block._id,
+      block._type,
+      selectedLang,
+      fallbackLang,
+      dataBindingProps,
+      blockAttributesProps,
+      runtimeProps,
+      asyncProps,
+    ],
   );
   const needErrorBoundary = useMemo(() => !CORE_BLOCKS.includes(block._type), [block._type]);
 
@@ -143,14 +145,6 @@ const BlockRenderer = ({
         }),
       })}
     </Suspense>
-  );
-  const hasAsyncProps = has(registeredChaiBlock, "asyncProps");
-  blockNode = hasAsyncProps ? (
-    <AsyncPropsWrapper block={block} deps={registeredChaiBlock.asyncProps}>
-      {blockNode}
-    </AsyncPropsWrapper>
-  ) : (
-    blockNode
   );
 
   const blockNodeWithTextEditor =
@@ -197,34 +191,28 @@ const BlocksRenderer = ({
     const blockAtom = getBlockAtom(block._id);
     if (!blockAtom) return null;
     return (
-      <BlockRenderer key={block._id} blockAtom={blockAtom} editingBlockId={editingBlockId}>
-        {({ _id, _type, partialBlockId, repeaterItems, repeaterItemsBinding }) => {
-          return _type === "Repeater" ? (
-            isArray(repeaterItems) &&
-              repeaterItems.map((_, index) => (
-                <RepeaterContext.Provider key={`${_id}-${index}`} value={{ index, key: repeaterItemsBinding }}>
-                  <BlocksRenderer
-                    splitAtoms={splitAtoms}
-                    blocks={blocks}
-                    parent={block._id}
-                    editingBlockId={editingBlockId}
-                  />
-                </RepeaterContext.Provider>
-              ))
-          ) : _type === "GlobalBlock" || _type === "PartialBlock" ? (
-            <Provider store={builderStore}>
-              <PartialBlocksRenderer partialBlockId={partialBlockId} />
-            </Provider>
-          ) : hasChildren(_id) ? (
-            <BlocksRenderer
-              splitAtoms={splitAtoms}
-              blocks={blocks}
-              parent={block._id}
-              editingBlockId={editingBlockId}
-            />
-          ) : null;
-        }}
-      </BlockRenderer>
+      <AsyncPropsWrapper key={block._id} block={block}>
+        {(asyncProps) => (
+          <BlockRenderer blockAtom={blockAtom} asyncProps={asyncProps} editingBlockId={editingBlockId}>
+            {({ _id, _type, partialBlockId, repeaterItems, repeaterItemsBinding }) => {
+              return _type === "Repeater" ? (
+                isArray(repeaterItems) &&
+                  repeaterItems.map((_, index) => (
+                    <RepeaterContext.Provider key={`${_id}-${index}`} value={{ index, key: repeaterItemsBinding }}>
+                      <BlocksRenderer splitAtoms={splitAtoms} blocks={blocks} parent={block._id} />
+                    </RepeaterContext.Provider>
+                  ))
+              ) : _type === "GlobalBlock" || _type === "PartialBlock" ? (
+                <Provider store={builderStore}>
+                  <PartialBlocksRenderer partialBlockId={partialBlockId} />
+                </Provider>
+              ) : hasChildren(_id) ? (
+                <BlocksRenderer splitAtoms={splitAtoms} blocks={blocks} parent={block._id} />
+              ) : null;
+            }}
+          </BlockRenderer>
+        )}
+      </AsyncPropsWrapper>
     );
   });
 };

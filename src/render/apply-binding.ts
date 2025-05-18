@@ -1,3 +1,4 @@
+import { COLLECTION_PREFIX } from "@/core/constants/STRINGS";
 import { ChaiBlock } from "@/types/chai-block";
 import { cloneDeep, forEach, get, isArray, isString, keys, startsWith } from "lodash-es";
 
@@ -58,7 +59,9 @@ export const applyBindingToBlockProps = (
   const result = applyBindingToValue(clonedBlock, pageExternalData, { index, key: repeaterKey });
   // Handle special case for repeaterItemsBinding
   if (clonedBlock.repeaterItems) {
-    result.repeaterItemsBinding = clonedBlock.repeaterItems;
+    result.repeaterItemsBinding = startsWith(clonedBlock.repeaterItems, `{{${COLLECTION_PREFIX}`)
+      ? clonedBlock.repeaterItems.replace(`}}`, `.${clonedBlock._id}}}`)
+      : clonedBlock.repeaterItems;
   }
 
   return result;

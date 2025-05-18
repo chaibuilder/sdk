@@ -1,5 +1,6 @@
 import { ChaiBuilderEditorProps } from "@/types";
 import { atom, useAtomValue } from "jotai";
+import { useAsyncRepeaterData } from "../collections/use-async-repeater-data";
 
 export const chaiBuilderPropsAtom = atom<Omit<
   ChaiBuilderEditorProps,
@@ -23,5 +24,7 @@ export const chaiPageExternalDataAtom = atom<Record<string, any>>({});
 chaiPageExternalDataAtom.debugLabel = "chaiPageExternalDataAtom";
 
 export const usePageExternalData = () => {
-  return useAtomValue(chaiPageExternalDataAtom);
+  const [pageData] = useAsyncRepeaterData();
+  const pageExternalData = useAtomValue(chaiPageExternalDataAtom);
+  return { ...pageExternalData, ...pageData };
 };

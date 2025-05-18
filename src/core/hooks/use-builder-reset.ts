@@ -1,4 +1,5 @@
 import { aiAssistantActiveAtom } from "@/core/atoms/ui";
+import { useAsyncRepeaterData } from "@/core/collections/use-async-repeater-data";
 import { useUndoManager } from "@/core/history/use-undo-manager";
 import { useBlockHighlight } from "@/core/hooks/use-block-highlight";
 import { usePartialBlocksStore } from "@/core/hooks/use-partial-blocks-store";
@@ -15,8 +16,10 @@ export const useBuilderReset = () => {
   const [, setAiAssistantActive] = useAtom(aiAssistantActiveAtom);
   const { reset: resetPartialBlocks } = usePartialBlocksStore();
   const { setSaveState } = useSavePage();
+  const [, setRepeaterAsyncData] = useAsyncRepeaterData();
 
   return () => {
+    setRepeaterAsyncData({});
     setSelectedIds([]);
     setStylingHighlighted([]);
     clearHighlight();
