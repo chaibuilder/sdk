@@ -112,10 +112,7 @@ const BlockRenderer = ({
 
   const props = useMemo(
     () => ({
-      blockProps: {
-        "data-block-id": block._id,
-        "data-block-type": block._type,
-      },
+      blockProps: { "data-block-id": block._id, "data-block-type": block._type },
       inBuilder: true,
       lang: selectedLang || fallbackLang,
       ...dataBindingProps,

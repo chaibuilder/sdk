@@ -12,7 +12,9 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/
 import { LoopIcon } from "@radix-ui/react-icons";
 import { startsWith } from "lodash-es";
 import { ChevronLeft, ChevronRight, DatabaseIcon } from "lucide-react";
-import * as React from "react";
+import React from "react";
+import { COLLECTION_PREFIX, REPEATER_PREFIX } from "../constants/STRINGS";
+import { useBuilderProp } from "../hooks";
 
 type NestedPathSelectorProps = {
   data: Record<string, any>;
@@ -66,11 +68,7 @@ const PathDropdown = ({ data, onSelect, dataType }: NestedPathSelectorProps) => 
   const options: Option[] = React.useMemo(() => {
     if (!currentData) return [];
     return Object.entries(currentData)
-      .map(([key, value]) => ({
-        key,
-        value,
-        type: getValueType(value),
-      }))
+      .map(([key, value]) => ({ key, value, type: getValueType(value) }))
       .filter((option) => {
         if (dataType === "value") return option.type === "value" || option.type === "object";
         if (dataType === "array") return option.type === "array" || option.type === "object";
@@ -99,8 +97,8 @@ const PathDropdown = ({ data, onSelect, dataType }: NestedPathSelectorProps) => 
               onSelect={() => handleSelect(option)}
               className="flex items-center justify-between">
               <span className="flex items-center gap-x-2">
-                {startsWith(option.key, "#") ? <LoopIcon /> : null}
-                {startsWith(option.key, "#") ? "Repeater Data" : option.key}
+                {startsWith(option.key, REPEATER_PREFIX) ? <LoopIcon /> : null}
+                {startsWith(option.key, REPEATER_PREFIX) ? "Repeater Data" : option.key}
               </span>
               <div className="flex items-center gap-2">
                 {dataType === "object" && option.type === "object" && (
@@ -131,7 +129,16 @@ const PathDropdown = ({ data, onSelect, dataType }: NestedPathSelectorProps) => 
 
 export function NestedPathSelector({ data, onSelect, dataType = "value" }: NestedPathSelectorProps) {
   const [open, setOpen] = React.useState(false);
+  const collections = useBuilderProp("collections", []);
 
+  const pageData = React.useMemo(() => {
+    if (dataType === "array") {
+      const collectionsKeys = collections.map((c) => c.id);
+      return { ...collectionsKeys.reduce((acc, key) => ({ ...acc, [COLLECTION_PREFIX + key]: [] }), {}), ...data };
+    }
+    return data;
+  }, [data, collections, dataType]);
+  console.log(pageData);
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <Tooltip>
@@ -152,7 +159,7 @@ export function NestedPathSelector({ data, onSelect, dataType = "value" }: Neste
 
       <PopoverContent className="z-[1000]! relative mr-3 w-[300px] p-0">
         <PathDropdown
-          data={data}
+          data={pageData}
           onSelect={(path, type) => {
             onSelect(path, type);
             setOpen(false);

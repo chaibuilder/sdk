@@ -1,5 +1,6 @@
 import { ChaiBlock } from "@/types/chai-block";
 import React from "react";
+import { ChaiCollectoin } from "./collections";
 
 export type ChaiUILibraryBlock<T = Record<string, any>> = {
   id: string;
@@ -297,4 +298,9 @@ export interface ChaiBuilderEditorProps {
    * Search page type items
    */
   searchPageTypeItems?: (pageTypeKey: string, query: string) => Promise<PageTypeItem[] | Error>;
+
+  /**
+   * Collections
+   */
+  collections?: ChaiCollectoin[];
 }
