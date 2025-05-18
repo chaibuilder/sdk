@@ -14,6 +14,10 @@ import Link from "@tiptap/extension-link";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import Underline from "@tiptap/extension-underline";
 import { BubbleMenu } from "./bubble-menu";
+import { useLanguages } from "@/core/hooks/use-languages";
+import { get } from "lodash-es";
+import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
+import { useDebouncedCallback } from "@react-hookz/web";
 
 /**
  * @description This is the editor that is used to edit the block content
@@ -26,13 +30,14 @@ const RichTextEditor = memo(
     editingElement,
     onClose,
     onChange,
+    onEscape,
   }: {
     blockContent: string;
     editingElement: HTMLElement;
     onClose: (content: string) => void;
     onChange: (content: string) => void;
+    onEscape: (e: KeyboardEvent) => void;
   }) => {
-    const [, setIds] = useSelectedBlockIds();
     const { document } = useFrame();
 
     const editor = useEditor(
@@ -66,7 +71,6 @@ const RichTextEditor = memo(
           if (!isEditorClicked && !isBubbleMenuClicked) {
             const content = editor?.getHTML() || "";
             onClose(content);
-            setIds([]);
           }
         },
       },
@@ -90,8 +94,17 @@ const RichTextEditor = memo(
       return `${basicClassName} ${editingElementClassName}`;
     }, [editingElement]);
 
+    const onKeyDown = useCallback(
+      (e) => {
+        if (e.key === "Escape") {
+          onEscape(e);
+        }
+      },
+      [onEscape],
+    );
+
     return (
-      <div>
+      <div onKeyDown={onKeyDown} onClick={(e) => e.stopPropagation()}>
         {editor && (
           <TiptapBubbleMenu
             editor={editor}
@@ -118,13 +131,16 @@ const MemoizedEditor = memo(
     blockContent,
     onClose,
     editorRef,
+    onChange,
+    onEscape,
   }: {
     editingElement: HTMLElement;
     blockContent: string;
     onClose: () => void;
     editorRef: React.RefObject<HTMLElement>;
+    onChange: (content: string) => void;
+    onEscape: (e: KeyboardEvent) => void;
   }) => {
-    const [, setIds] = useSelectedBlockIds();
     const { document, window } = useFrame();
 
     useEffect(() => {
@@ -159,25 +175,15 @@ const MemoizedEditor = memo(
     const onKeyDown = useCallback(
       (e) => {
         if (e.key === "Enter" || e.key === "Escape") {
-          e.preventDefault();
-
-          const blockId = editingElement?.getAttribute("data-block-id");
-          onClose();
-
-          // * Refocus the block after the editor is closed
-          setIds([]);
-          setTimeout(() => {
-            setIds([blockId]);
-          }, 100);
+          onEscape(e);
         }
       },
-      [editingElement, onClose, setIds],
+      [onEscape],
     );
 
     const onBlur = useCallback(() => {
       onClose();
-      setIds([]);
-    }, [onClose, setIds]);
+    }, [onClose]);
 
     const memoizedProps = useMemo(() => {
       return {
@@ -196,6 +202,12 @@ const MemoizedEditor = memo(
           } else {
             e.target.removeAttribute("data-placeholder");
           }
+
+          onChange(e.target.innerText);
+        },
+        onClick: (e) => {
+          e.stopPropagation();
+          e.preventDefault();
         },
       };
     }, [editingElement?.className, editingElement?.style]);
@@ -203,8 +215,8 @@ const MemoizedEditor = memo(
     return (
       <>
         {createElement(elementTag, {
-          onBlur: onBlur,
           ref: editorRef,
+          onBlur: onBlur,
           onKeyDown: onKeyDown,
           ...memoizedProps,
         })}
@@ -219,36 +231,68 @@ const MemoizedEditor = memo(
  */
 const WithBlockTextEditor = memo(
   ({ block, children }: { block: ChaiBlock; children: React.ReactNode }) => {
+    const editingKey = "content";
     const { document } = useFrame();
     const [editingBlockId, setEditingBlockId] = useAtom(inlineEditingActiveAtom);
     const [editingElement, setEditingElement] = useState<HTMLElement | null>(null);
     const editorRef = useRef<HTMLElement | null>(null);
     const { clearHighlight } = useBlockHighlight();
-
-    // Memoize these values to prevent unnecessary recalculations
-    const blockId = editingBlockId;
-    const blockType = block._type;
-    const blockContent = block.content;
     const updateContent = useUpdateBlocksProps();
+    const { selectedLang } = useLanguages();
+    const [, setIds] = useSelectedBlockIds();
+    const currentBlockId = useRef(null);
+    const blockId = editingBlockId;
 
-    // Memoize the onClose callback
+    // * Memoize the block content and type
+    const { blockContent, blockType } = useMemo(() => {
+      const blockType = block._type;
+      let blockContent = block[editingKey];
+      const registeredBlock = getRegisteredChaiBlock(block._type);
+      if (selectedLang && registeredBlock?.i18nProps?.includes(editingKey)) {
+        blockContent = get(block, `${editingKey}-${selectedLang}`);
+      }
+
+      return { blockContent, blockType };
+    }, [block, selectedLang]);
+
+    // * Handle close
     const handleClose = useCallback(
       (updatedContent?: string) => {
         const content = updatedContent || editorRef.current?.innerText;
-        updateContent([blockId], { content });
+        updateContent([blockId], { [editingKey]: content });
         setEditingElement(null);
         setEditingBlockId(null);
+        setIds([]);
       },
-      [blockId, updateContent, setEditingBlockId],
+      [blockId, updateContent, setEditingBlockId, setIds, selectedLang],
     );
 
-    const handleChange = useCallback(
+    // * Handle change on 1000ms debounce
+    const handleChange = useDebouncedCallback(
       (content: string) => {
-        updateContent([blockId], { content });
+        updateContent([blockId], { [editingKey]: content });
       },
-      [blockId, updateContent],
+      [blockId, block, updateContent, selectedLang],
+      1000,
     );
 
+    // * Handle escape key
+    const handleEscape = useCallback(
+      (e) => {
+        e.preventDefault();
+        if (blockId) currentBlockId.current = blockId;
+
+        handleClose();
+        setTimeout(() => {
+          const _blockId = currentBlockId.current;
+          currentBlockId.current = null;
+          setIds([_blockId]);
+        }, 100);
+      },
+      [setIds, blockId, selectedLang],
+    );
+
+    // * Set the editing element
     useEffect(() => {
       if (!blockId) return;
       const element = getElementByDataBlockId(document, blockId as string);
@@ -267,6 +311,7 @@ const WithBlockTextEditor = memo(
             editingElement={editingElement}
             onChange={handleChange}
             onClose={handleClose}
+            onEscape={handleEscape}
           />
         );
       }
@@ -277,9 +322,11 @@ const WithBlockTextEditor = memo(
           blockContent={blockContent}
           editingElement={editingElement}
           onClose={handleClose}
+          onChange={handleChange}
+          onEscape={handleEscape}
         />
       );
-    }, [editingElement, blockId, blockType, blockContent, handleClose]);
+    }, [editingElement, blockId, blockType, blockContent, handleClose, selectedLang]);
 
     return (
       <>
@@ -289,7 +336,7 @@ const WithBlockTextEditor = memo(
     );
   },
   (prevProps, nextProps) => {
-    // Custom comparison function for memo
+    // * Custom comparison function for memo
     return prevProps.block._id === nextProps.block._id && prevProps.block.content === nextProps.block.content;
   },
 );
