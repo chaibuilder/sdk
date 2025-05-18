@@ -97,8 +97,16 @@ const PathDropdown = ({ data, onSelect, dataType }: NestedPathSelectorProps) => 
               onSelect={() => handleSelect(option)}
               className="flex items-center justify-between">
               <span className="flex items-center gap-x-2">
-                {startsWith(option.key, REPEATER_PREFIX) ? <LoopIcon /> : null}
-                {startsWith(option.key, REPEATER_PREFIX) ? "Repeater Data" : option.key}
+                {startsWith(option.key, REPEATER_PREFIX) ? (
+                  <LoopIcon />
+                ) : startsWith(option.key, COLLECTION_PREFIX) ? (
+                  <DatabaseIcon />
+                ) : null}
+                {startsWith(option.key, REPEATER_PREFIX)
+                  ? "Repeater Data"
+                  : startsWith(option.key, COLLECTION_PREFIX)
+                    ? option.key.replace(COLLECTION_PREFIX, "")
+                    : option.key}
               </span>
               <div className="flex items-center gap-2">
                 {dataType === "object" && option.type === "object" && (
@@ -138,7 +146,7 @@ export function NestedPathSelector({ data, onSelect, dataType = "value" }: Neste
     }
     return data;
   }, [data, collections, dataType]);
-  console.log(pageData);
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <Tooltip>
@@ -150,7 +158,15 @@ export function NestedPathSelector({ data, onSelect, dataType = "value" }: Neste
               className="h-5 rounded-sm px-1 py-0 text-[9px] text-muted-foreground"
               role="combobox"
               aria-expanded={open}>
-              <DatabaseIcon className="h-2.5 w-2.5" />
+              <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M9.5 5H9C7.89543 5 7 5.89543 7 7V9C7 10 6.4 12 4 12C5 12 7 12.6 7 15V17.0002C7 18.1048 7.89543 19 9 19H9.5M14.5 5H15C16.1046 5 17 5.89543 17 7V9C17 10 17.6 12 20 12C19 12 17 12.6 17 15V17.0002C17 18.1048 16.1046 19 15 19H14.5"
+                  stroke="#000000"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+              </svg>
             </Button>
           </PopoverTrigger>
         </TooltipTrigger>
