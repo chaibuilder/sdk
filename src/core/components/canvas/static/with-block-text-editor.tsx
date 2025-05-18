@@ -13,6 +13,7 @@ import TextAlign from "@tiptap/extension-text-align";
 import Link from "@tiptap/extension-link";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import Underline from "@tiptap/extension-underline";
+import Placeholder from "@tiptap/extension-placeholder";
 import { BubbleMenu } from "./bubble-menu";
 import { useLanguages } from "@/core/hooks/use-languages";
 import { get } from "lodash-es";
@@ -55,6 +56,11 @@ const RichTextEditor = memo(
             HTMLAttributes: {
               class: "text-blue-500 hover:text-blue-600 underline",
             },
+          }),
+          Placeholder.configure({
+            placeholder: "Enter text here",
+            emptyEditorClass:
+              "cursor-text before:content-[attr(data-placeholder)] before:absolute before:opacity-50 before:pointer-events-none",
           }),
         ],
         onUpdate: ({ editor }) => onChange(editor?.getHTML() || ""),
