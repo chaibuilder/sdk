@@ -43,10 +43,7 @@ export const RenderBlock = (
   const dataBindingProps = applyBindingToBlockProps(
     applyLanguage(block, bindingLangSuffix, registeredChaiBlock),
     externalData,
-    {
-      index,
-      key: dataKey,
-    },
+    { index, key: dataKey },
   );
   const blockAttributesProps = getBlockTagAttributes(block, false);
   const runtimeProps = getRuntimePropValues(blocks, block._id, getBlockRuntimeProps(block._type));

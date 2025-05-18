@@ -1,6 +1,6 @@
 import { ChaiBlock } from "@/types/chai-block";
 import { ChaiPageProps } from "@chaibuilder/runtime";
-import { cloneDeep, find, forEach, get, has, isEmpty, isObject, isString, keys } from "lodash-es";
+import { cloneDeep, find, forEach, get, isEmpty, isObject, isString, keys } from "lodash-es";
 import { RenderBlocks } from "./blocks-renderer";
 
 const applyBinding = (block: ChaiBlock | Record<string, any>, pageExternalData: Record<string, any>) => {
@@ -56,9 +56,6 @@ export type RenderChaiBlocksProps = {
 };
 
 export function RenderChaiBlocks(props: RenderChaiBlocksProps) {
-  if (has(props, "metadata")) {
-    console.warn(" metadata is  deprecated and will be removed in upcoming version, use pageProps instead");
-  }
   if (isEmpty(props.lang) && !isEmpty(props.fallbackLang)) {
     throw new Error("lang prop is required when fallbackLang is provided");
   }

@@ -303,4 +303,9 @@ export interface ChaiBuilderEditorProps {
    * Collections
    */
   collections?: ChaiCollectoin[];
+
+  /**
+   * Get Block Async Props
+   */
+  getBlockAsyncProps?: (block: ChaiBlock) => Promise<{ [key: string]: any }>;
 }
