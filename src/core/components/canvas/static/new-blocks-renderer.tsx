@@ -16,9 +16,10 @@ import { ChaiBlock } from "@/types/chai-block";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { atom, Atom, Provider, useAtom } from "jotai";
 import { splitAtom } from "jotai/utils";
-import { filter, get, has, isArray, isEmpty, isFunction, isNull, map } from "lodash-es";
+import { filter, get, has, isArray, isEmpty, isNull, map } from "lodash-es";
 import React, { createContext, createElement, Suspense, useCallback, useContext, useMemo } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { AsyncPropsWrapper } from "./async-props-wrapper";
 import { ErrorFallback } from "./error-fallback";
 import { useBlockRuntimeProps } from "./use-block-runtime-props";
 import WithBlockTextEditor from "./with-block-text-editor";
@@ -99,16 +100,16 @@ const BlockRenderer = ({
     () => getRuntimePropValues(block._id, getBlockRuntimeProps(block._type)),
     [block._id, block._type, getRuntimePropValues, getBlockRuntimeProps],
   );
-  const dataProviderProps = useMemo(() => {
-    if (!has(registeredChaiBlock, "dataProvider") || !isFunction(registeredChaiBlock.dataProvider)) return {};
-    return registeredChaiBlock.dataProvider({
-      block,
-      draft: true,
-      inBuilder: true,
-      lang: selectedLang || fallbackLang,
-      pageProps: {},
-    });
-  }, [block, selectedLang, fallbackLang, registeredChaiBlock, pageExternalData]);
+  // const dataProviderProps = useMemo(() => {
+  //   if (!has(registeredChaiBlock, "dataProvider") || !isFunction(registeredChaiBlock.dataProvider)) return {};
+  //   return registeredChaiBlock.dataProvider({
+  //     block,
+  //     draft: true,
+  //     inBuilder: true,
+  //     lang: selectedLang || fallbackLang,
+  //     pageProps: {},
+  //   });
+  // }, [block, selectedLang, fallbackLang, registeredChaiBlock, pageExternalData]);
 
   const props = useMemo(
     () => ({
@@ -118,24 +119,13 @@ const BlockRenderer = ({
       ...dataBindingProps,
       ...blockAttributesProps,
       ...runtimeProps,
-      ...dataProviderProps,
     }),
-    [
-      block._id,
-      block._type,
-      selectedLang,
-      fallbackLang,
-      dataBindingProps,
-      blockAttributesProps,
-      runtimeProps,
-      dataProviderProps,
-    ],
+    [block._id, block._type, selectedLang, fallbackLang, dataBindingProps, blockAttributesProps, runtimeProps],
   );
   const needErrorBoundary = useMemo(() => !CORE_BLOCKS.includes(block._type), [block._type]);
 
   if (isNull(Component) || hiddenBlocks.includes(block._id)) return null;
-
-  const blockNode = (
+  let blockNode = (
     <Suspense>
       {createElement(Component, {
         ...props,
@@ -153,6 +143,14 @@ const BlockRenderer = ({
         }),
       })}
     </Suspense>
+  );
+  const hasAsyncProps = has(registeredChaiBlock, "asyncProps");
+  blockNode = hasAsyncProps ? (
+    <AsyncPropsWrapper block={block} deps={registeredChaiBlock.asyncProps}>
+      {blockNode}
+    </AsyncPropsWrapper>
+  ) : (
+    blockNode
   );
 
   const blockNodeWithTextEditor =

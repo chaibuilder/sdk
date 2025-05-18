@@ -28,6 +28,7 @@ export const RepeaterConfig = {
   label: "Repeater",
   icon: LoopIcon,
   group: "basic",
+  asyncProps: ["filter", "sort", "limit", "repeaterItems"],
   blocks: () => [
     { _id: "A", _type: "Repeater", tag: "ul" },
     { _id: "B", _name: "Repeater Item", _type: "RepeaterItem", parentTag: "ul", _parent: "A" },
