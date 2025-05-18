@@ -65,9 +65,7 @@ const RichTextEditor = memo(
           // Check if click was outside both editor and bubble menu
           if (!isEditorClicked && !isBubbleMenuClicked) {
             const content = editor?.getHTML() || "";
-            editor?.destroy();
             onClose(content);
-
             setIds([]);
           }
         },
@@ -239,11 +237,7 @@ const WithBlockTextEditor = memo(
         const content = updatedContent || editorRef.current?.innerText;
         updateContent([blockId], { content });
         setEditingElement(null);
-
-        // @TODO: (FIX ME) This is a hack to prevent the editor from being open when the block is not a RichText
-        // if (blockType !== "RichText") {
         setEditingBlockId(null);
-        // }
       },
       [blockId, updateContent, setEditingBlockId],
     );
