@@ -64,6 +64,8 @@ const useHandleCanvasDblClick = () => {
 
   return useCallback(
     (e) => {
+      e?.preventDefault();
+      e?.stopPropagation();
       if (editingBlockId) return;
       const chaiBlock: HTMLElement = getTargetedBlock(e.target);
 
