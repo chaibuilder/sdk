@@ -7,6 +7,7 @@ import { WidgetProps } from "@rjsf/utils";
 import Link from "@tiptap/extension-link";
 import TextAlign from "@tiptap/extension-text-align";
 import Underline from "@tiptap/extension-underline";
+import Placeholder from "@tiptap/extension-placeholder";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import {
@@ -199,6 +200,11 @@ const RTEModal = ({
         defaultAlignment: "left",
       }),
       Underline,
+      Placeholder.configure({
+        placeholder: "Enter text here",
+        emptyEditorClass:
+          "cursor-text before:content-[attr(data-placeholder)] before:absolute before:opacity-50 before:pointer-events-none",
+      }),
     ],
     content: value || "",
     onUpdate: ({ editor }) => {
@@ -335,6 +341,11 @@ const RichTextEditorField = ({ id, placeholder, value, onChange, onBlur }: Widge
         defaultAlignment: "left",
       }),
       Underline,
+      Placeholder.configure({
+        placeholder: placeholder || "Enter text here",
+        emptyEditorClass:
+          "cursor-text before:content-[attr(data-placeholder)] before:absolute before:opacity-50 before:pointer-events-none",
+      }),
     ],
     content: value || "",
     onUpdate: ({ editor }) => {

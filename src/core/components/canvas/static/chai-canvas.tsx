@@ -4,7 +4,7 @@ import { useBlockHighlight, useSelectedBlockIds, useSelectedStylingBlocks } from
 import { useThrottledCallback } from "@react-hookz/web";
 import { useAtom } from "jotai";
 import { first, isEmpty } from "lodash-es";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 
 function getTargetedBlock(target) {
   // First check if the target is the canvas itself
@@ -22,16 +22,83 @@ function getTargetedBlock(target) {
   return closest?.getAttribute("data-block-id") === "canvas" ? null : closest;
 }
 
+const INLINE_EDITABLE_BLOCKS = ["Heading", "Paragraph", "Text", "Link", "Span"];
+
+const isRichTextParent = (chaiBlock: HTMLElement | null): boolean => {
+  return (
+    chaiBlock?.getAttribute("data-block-type") === "RichText" ||
+    chaiBlock?.parentElement?.getAttribute("data-block-type") === "RichText"
+  );
+};
+
+/**
+ *
+ * @returns boolean indicating if the block type can be edited inline
+ */
+export const isInlineEditable = (chaiBlock: HTMLElement | null, _blockType?: string): boolean => {
+  // If the block type is set, and the block is not null, return
+  if (_blockType && chaiBlock) return;
+
+  // If the block is a rich text parent, return false (CHANGE LATER)
+  if (isRichTextParent(chaiBlock)) {
+    return true;
+  }
+
+  // If the block type is not set, return false
+  const blockType = _blockType || chaiBlock?.getAttribute("data-block-type");
+  if (!blockType) return false;
+
+  // If the block has children, return false
+  if (chaiBlock && chaiBlock.children.length > 0) {
+    return false;
+  }
+
+  // Button is not inline editable for now, we will add it later for nested content
+  if (blockType === "Button") return false;
+
+  return INLINE_EDITABLE_BLOCKS.includes(blockType);
+};
+
+const useHandleCanvasDblClick = () => {
+  const [editingBlockId, setEditingBlockId] = useAtom(inlineEditingActiveAtom);
+
+  return useCallback(
+    (e) => {
+      e?.preventDefault();
+      e?.stopPropagation();
+      if (editingBlockId) return;
+      const chaiBlock: HTMLElement = getTargetedBlock(e.target);
+
+      if (!isInlineEditable(chaiBlock)) return;
+
+      const blockId = chaiBlock.getAttribute("data-block-id");
+      if (!blockId) return;
+
+      setEditingBlockId(blockId);
+    },
+    [editingBlockId, setEditingBlockId],
+  );
+};
+
 const useHandleCanvasClick = () => {
   const [, setStyleBlockIds] = useSelectedStylingBlocks();
   const [ids, setIds] = useSelectedBlockIds();
   const [editingBlockId] = useAtom(inlineEditingActiveAtom);
   const [treeRef] = useAtom(treeRefAtom);
   const { clearHighlight } = useBlockHighlight();
+  const lastClickTimeRef = useRef(0);
+
   return useCallback(
     (e: any) => {
+      const currentTime = new Date().getTime();
+
       if (editingBlockId) return;
       e.stopPropagation();
+
+      // Check for double click
+      const isDoubleClick = currentTime - lastClickTimeRef.current < 400; // 400ms threshold for double click
+      if (isDoubleClick) return;
+
       const chaiBlock: HTMLElement = getTargetedBlock(e.target);
       if (chaiBlock?.getAttribute("data-block-id") && chaiBlock?.getAttribute("data-block-id") === "container") {
         setIds([]);
@@ -61,8 +128,9 @@ const useHandleCanvasClick = () => {
       }
 
       clearHighlight();
+      lastClickTimeRef.current = new Date().getTime();
     },
-    [ids, treeRef, setIds, setStyleBlockIds],
+    [ids, editingBlockId, treeRef, setIds, setStyleBlockIds],
   );
 };
 
@@ -117,6 +185,7 @@ export const StylingBlockSelectWatcher = () => {
 };
 
 export const Canvas = ({ children }: { children: React.ReactNode }) => {
+  const handleDblClick = useHandleCanvasDblClick();
   const handleCanvasClick = useHandleCanvasClick();
   const handleMouseMove = useHandleMouseMove();
   const handleMouseLeave = useHandleMouseLeave();
@@ -126,6 +195,7 @@ export const Canvas = ({ children }: { children: React.ReactNode }) => {
       data-block-id={"canvas"}
       id="canvas"
       onClick={handleCanvasClick}
+      onDoubleClick={handleDblClick}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       className={`relative h-full max-w-full p-px`}>
