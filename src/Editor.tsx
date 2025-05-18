@@ -131,6 +131,27 @@ function ChaiBuilderDefault() {
         }
         return [];
       }}
+      collections={[
+        {
+          id: "uuid-1",
+          name: "Collection 1",
+          description: "Collection 1",
+          filters: [
+            {
+              id: "filter-1",
+              name: "Filter 1",
+              description: "Filter 1",
+            },
+          ],
+          sorts: [
+            {
+              id: "sort-1",
+              name: "Sort 1",
+              description: "Sort 1",
+            },
+          ],
+        },
+      ]}
     />
   );
 }

@@ -3,6 +3,7 @@ import { useSelectedBlock } from "@/core/hooks";
 import { first, get, isEmpty } from "lodash-es";
 import { useCallback, useMemo } from "react";
 import { NestedPathSelector } from "../components/nested-path-selector";
+import { REPEATER_PREFIX } from "../constants/STRINGS";
 import { useSelectedBlockHierarchy } from "../hooks/use-selected-blockIds";
 
 export const DataBindingSelector = ({
@@ -27,11 +28,11 @@ export const DataBindingSelector = ({
       "",
     );
     const key = repeaterKey.replace(/\{\{(.*)\}\}/g, "$1");
-    return `#${key}`;
+    return `${REPEATER_PREFIX}${key}`;
   }, [hierarchy]);
 
   const repeaterData = useMemo(() => {
-    return first(get(pageExternalData, repeaterKey.replace("#", ""), []));
+    return first(get(pageExternalData, repeaterKey.replace(REPEATER_PREFIX, ""), []));
   }, [repeaterKey, pageExternalData]);
 
   const handlePathSelect = useCallback(
