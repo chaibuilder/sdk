@@ -6,6 +6,7 @@ import {
   stylesProp,
 } from "@chaibuilder/runtime";
 import { LoopIcon } from "@radix-ui/react-icons";
+import { isEmpty } from "lodash-es";
 import * as React from "react";
 
 export type RepeaterProps = {
@@ -14,8 +15,12 @@ export type RepeaterProps = {
   styles: ChaiStyles;
 };
 
-export const Repeater = ({ children, tag, blockProps, styles }: ChaiBlockComponentProps<RepeaterProps>) => {
-  return React.createElement(tag, { ...blockProps, ...styles }, children);
+export const Repeater = ({ children, tag, blockProps, styles, inBuilder }: ChaiBlockComponentProps<RepeaterProps>) => {
+  let items = children;
+  if (isEmpty(items) && inBuilder) {
+    items = <div className="flex items-center justify-center bg-orange-50 p-5">No items found</div>;
+  }
+  return React.createElement(tag, { ...blockProps, ...styles }, items);
 };
 
 export const RepeaterConfig = {
@@ -25,7 +30,16 @@ export const RepeaterConfig = {
   group: "basic",
   blocks: () => [
     { _id: "A", _type: "Repeater", tag: "ul" },
-    { _id: "B", _type: "RepeaterItem", parentTag: "ul", _parent: "A" },
+    { _id: "B", _name: "Repeater Item", _type: "RepeaterItem", parentTag: "ul", _parent: "A" },
+    // { _id: "C", _name: "Empty State", _type: "RepeaterEmptyState", _parent: "A" },
+    // {
+    //   _id: "D",
+    //   _name: "Empty State Heading",
+    //   _type: "Heading",
+    //   _parent: "C",
+    //   styles: "#styles:,text-2xl text-center",
+    //   content: "No items",
+    // },
   ],
   ...registerChaiBlockSchema({
     properties: {
@@ -102,6 +116,32 @@ export const RepeaterItemConfig = {
     },
   }),
   canAcceptBlock: (type: string) => type !== "RepeaterItem",
+  canDelete: () => false,
+  canMove: () => false,
+  canDuplicate: () => false,
+};
+
+export type RepeaterEmptyStateProps = {
+  styles: ChaiStyles;
+};
+
+export const RepeaterEmptyState = ({
+  children,
+  blockProps,
+  styles,
+}: ChaiBlockComponentProps<RepeaterEmptyStateProps>) => {
+  return React.createElement("div", { ...blockProps, ...styles }, children);
+};
+
+export const RepeaterEmptyStateConfig = {
+  type: "RepeaterEmptyState",
+  label: "Empty State",
+  hidden: true,
+  group: "basic",
+  ...registerChaiBlockSchema({
+    properties: { styles: stylesProp("p-5 flex items-center justify-center") },
+  }),
+  canAcceptBlock: () => true,
   canDelete: () => false,
   canMove: () => false,
   canDuplicate: () => false,

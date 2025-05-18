@@ -53,6 +53,9 @@ import { Component as VideoBlock, Config as VideoBlockConfig, VideoBlockProps } 
 import {
   Repeater,
   RepeaterConfig,
+  RepeaterEmptyState,
+  RepeaterEmptyStateConfig,
+  RepeaterEmptyStateProps,
   RepeaterItem,
   RepeaterItemConfig,
   RepeaterItemProps,
@@ -103,6 +106,7 @@ const loadWebBlocks = () => {
   registerChaiBlock<CopyButtonProps>(CopyButton, CopyButtonConfig);
   registerChaiBlock<RepeaterProps>(Repeater, RepeaterConfig);
   registerChaiBlock<RepeaterItemProps>(RepeaterItem, RepeaterItemConfig);
+  registerChaiBlock<RepeaterEmptyStateProps>(RepeaterEmptyState, RepeaterEmptyStateConfig);
 };
 
 export { loadWebBlocks };
