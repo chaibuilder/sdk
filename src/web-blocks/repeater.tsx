@@ -29,11 +29,13 @@ export const RepeaterConfig = {
   ],
   ...registerChaiBlockSchema({
     properties: {
+      styles: stylesProp(""),
       repeaterItems: {
         title: "Items",
         type: "string",
         binding: "array",
         default: "",
+        ui: { "ui:readonly": true },
       },
       tag: {
         title: "Tag",
@@ -41,11 +43,22 @@ export const RepeaterConfig = {
         default: "ul",
         enum: ["div", "ul", "ol"],
       },
-      styles: stylesProp(""),
       limit: {
         title: "Limit",
         type: "number",
+        default: 3,
+      },
+      filter: {
+        title: "Filter by",
+        type: "string",
         default: "",
+        ui: { "ui:widget": "select" },
+      },
+      sort: {
+        title: "Sort by",
+        type: "string",
+        default: "",
+        ui: { "ui:widget": "select" },
       },
     },
   }),
