@@ -133,9 +133,28 @@ function ChaiBuilderDefault() {
       }}
       collections={[
         {
-          id: "uuid-1",
-          name: "Collection 1",
-          description: "Collection 1",
+          id: "promotions",
+          name: "Promotions",
+          description: "Promotions",
+          filters: [
+            {
+              id: "filter-1",
+              name: "Filter 1",
+              description: "Filter 1",
+            },
+          ],
+          sorts: [
+            {
+              id: "sort-1",
+              name: "Sort 1",
+              description: "Sort 1",
+            },
+          ],
+        },
+        {
+          id: "vehicles",
+          name: "Vehicles",
+          description: "Vehicles",
           filters: [
             {
               id: "filter-1",
