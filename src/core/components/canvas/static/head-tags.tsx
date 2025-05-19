@@ -18,7 +18,6 @@ import { useEffect, useMemo } from "react";
 import plugin from "tailwindcss/plugin";
 
 export const HeadTags = () => {
-  console.log("HeadTags");
   const [chaiTheme] = useTheme();
   const chaiThemeOptions = useThemeOptions();
   const [darkMode] = useDarkMode();
@@ -75,28 +74,18 @@ export const HeadTags = () => {
       <Fonts />
       <SelectedBlocks />
       <SelectedStylingBlocks />
-      <BlockSelectionHighlighter />
     </>
   );
 };
 
-const BlockSelectionHighlighter = () => {
-  const [selectedBlockIds] = useSelectedBlockIds();
-  const styles = useMemo(() => {
-    return `${map(selectedBlockIds, (id) => `[data-block-id="${id}"]`).join(",")}{
-                outline: 1px solid #42a1fc !important; outline-offset: -1px;
-            }`;
-  }, [selectedBlockIds]);
-  return <style id="highlighted-block" dangerouslySetInnerHTML={{ __html: styles }} />;
-};
-
 const SelectedStylingBlocks = () => {
   const [selectedStylingBlocks] = useSelectedStylingBlocks();
+  const [selectedBlockIds] = useSelectedBlockIds();
   const styles = useMemo(() => {
     return `${map(selectedStylingBlocks, ({ id }: any) => `[data-style-id="${id}"]`).join(",")}{
-                outline: 1px solid #29e503 !important; outline-offset: -1px;
+                outline: 1px solid ${selectedBlockIds.length > 0 ? "#42a1fc" : "#de8f09"} !important; outline-offset: -1px;
             }`;
-  }, [selectedStylingBlocks]);
+  }, [selectedStylingBlocks, selectedBlockIds]);
   return <style id="selected-styling-blocks" dangerouslySetInnerHTML={{ __html: styles }} />;
 };
 
