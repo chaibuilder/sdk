@@ -137,8 +137,8 @@ function ChaiBuilderDefault() {
           setTimeout(
             () =>
               resolve([
-                { name: "value", deps: "value 2" },
-                { name: "value 2", deps: "value 2" },
+                { name: "Promotion 1", date: "2025-05-19", image: "https://picsum.photos/500/300" },
+                { name: "Promotion 2", date: "2025-05-20", image: "https://picsum.photos/500/310" },
               ]),
             1000,
           ),
