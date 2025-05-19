@@ -103,6 +103,12 @@ export const getThemeFontsLinkMarkup = (fonts: ChaiFontViaUrl[]) => {
     .join("\n");
 };
 
+export const getThemeFontsUrls = (fonts: ChaiFontViaUrl[]) => {
+  if (!fonts || fonts.length === 0) return [];
+
+  return uniqBy(fonts, "family").map((font: ChaiFontViaUrl) => font.url);
+};
+
 export const getThemeFontsCSSImport = (fonts: ChaiFontViaUrl[]) => {
   if (!fonts || fonts.length === 0) return "";
 
