@@ -2,7 +2,7 @@ import { draggedBlockAtom, dropTargetBlockIdAtom } from "@/core/components/canva
 import {
   getChaiThemeOptions,
   getThemeCustomFontFace,
-  getThemeFontsLinkMarkup,
+  getThemeFontsUrls,
 } from "@/core/components/canvas/static/chai-theme-helpers";
 import { CssThemeVariables } from "@/core/components/css-theme-var";
 import { useFrame } from "@/core/frame";
@@ -20,6 +20,7 @@ import { useEffect, useMemo, useState } from "react";
 import plugin from "tailwindcss/plugin";
 
 export const HeadTags = () => {
+  console.log("HeadTags");
   const [chaiTheme] = useTheme();
   const chaiThemeOptions = useThemeOptions();
   const [selectedBlockIds] = useSelectedBlockIds();
@@ -121,7 +122,17 @@ export const HeadTags = () => {
       ? `[data-block-id="${dropTargetId}"]{ outline: 1px dashed orange !important; outline-offset: -1px;}`
       : "";
   }, [dropTargetId, iframeDoc]);
+  return (
+    <>
+      <CssThemeVariables theme={chaiTheme as ChaiBuilderThemeValues} />
+      <Fonts />
+    </>
+  );
+};
 
+export const Fonts = () => {
+  const [chaiTheme] = useTheme();
+  const registeredFonts = useRegisteredFonts();
   const pickedFonts = useMemo(() => {
     const { heading, body } = {
       heading: get(chaiTheme, "fontFamily.heading"),
@@ -130,15 +141,16 @@ export const HeadTags = () => {
     return registeredFonts.filter((font) => font.family === heading || font.family === body);
   }, [chaiTheme?.fontFamily, registeredFonts]);
 
-  const fonts = useMemo(() => getThemeFontsLinkMarkup(filter(pickedFonts, (font) => has(font, "url"))), [pickedFonts]);
+  const fonts = useMemo(() => getThemeFontsUrls(filter(pickedFonts, (font) => has(font, "url"))), [pickedFonts]);
   const customFonts = useMemo(
     () => getThemeCustomFontFace(filter(pickedFonts, (font) => has(font, "src"))),
     [pickedFonts],
   );
   return (
     <>
-      <CssThemeVariables theme={chaiTheme as ChaiBuilderThemeValues} />
-      <span id="chai-fonts" dangerouslySetInnerHTML={{ __html: fonts }} />
+      {fonts.map((font, index) => (
+        <link key={`google-font-${index}`} rel="stylesheet" href={font} />
+      ))}
       <style id="chai-custom-fonts" dangerouslySetInnerHTML={{ __html: customFonts }} />
     </>
   );
