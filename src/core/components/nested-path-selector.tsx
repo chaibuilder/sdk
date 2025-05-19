@@ -71,7 +71,7 @@ const PathDropdown = ({ data, onSelect, dataType }: NestedPathSelectorProps) => 
     return Object.entries(currentData)
       .map(([key, value]) => ({ key, value, type: getValueType(value) }))
       .filter((option) => {
-        // if (option.key.includes("/")) return false;
+        if (!startsWith(option.key, REPEATER_PREFIX) && option.key.includes("/")) return false;
         if (dataType === "value") return option.type === "value" || option.type === "object";
         if (dataType === "array") return option.type === "array" || option.type === "object";
         if (dataType === "object") return option.type === "object";
