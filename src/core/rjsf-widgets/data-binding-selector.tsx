@@ -1,9 +1,9 @@
 import { usePageExternalData } from "@/core/atoms/builder";
 import { useSelectedBlock } from "@/core/hooks";
-import { first, get, isEmpty } from "lodash-es";
+import { first, get, isEmpty, startsWith } from "lodash-es";
 import { useCallback, useMemo } from "react";
 import { NestedPathSelector } from "../components/nested-path-selector";
-import { REPEATER_PREFIX } from "../constants/STRINGS";
+import { COLLECTION_PREFIX, REPEATER_PREFIX } from "../constants/STRINGS";
 import { useSelectedBlockHierarchy } from "../hooks/use-selected-blockIds";
 
 export const DataBindingSelector = ({
@@ -22,13 +22,10 @@ export const DataBindingSelector = ({
   const selectedBlock = useSelectedBlock();
   const repeaterKey = useMemo(() => {
     if (hierarchy.length === 1) return "";
-    const repeaterKey = get(
-      hierarchy.find((block) => block._type === "Repeater"),
-      "repeaterItems",
-      "",
-    );
+    const repeaterBlock = hierarchy.find((block) => block._type === "Repeater");
+    const repeaterKey = get(repeaterBlock, "repeaterItems", "");
     const key = repeaterKey.replace(/\{\{(.*)\}\}/g, "$1");
-    return `${REPEATER_PREFIX}${key}`;
+    return `${REPEATER_PREFIX}${startsWith(key, COLLECTION_PREFIX) ? `${key}/${repeaterBlock._id}` : key}`;
   }, [hierarchy]);
 
   const repeaterData = useMemo(() => {

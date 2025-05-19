@@ -79,11 +79,8 @@ export const RenderBlock = (
               children: children({
                 _id: block._id,
                 _type: block._type,
-                ...(isArray(dataBindingProps.repeaterItems)
-                  ? {
-                      repeaterItems: applyLimit(dataBindingProps.repeaterItems, block),
-                      repeaterItemsBinding: dataBindingProps.repeaterItemsBinding,
-                    }
+                ...(isArray(dataBindingProps.$repeaterItems)
+                  ? { $repeaterItems: applyLimit(dataBindingProps.$repeaterItems, block) }
                   : {}),
               }),
             });
@@ -100,11 +97,8 @@ export const RenderBlock = (
         children: children({
           _id: block._id,
           _type: block._type,
-          ...(isArray(dataBindingProps.repeaterItems)
-            ? {
-                repeaterItems: applyLimit(dataBindingProps.repeaterItems, block),
-                repeaterItemsBinding: dataBindingProps.repeaterItemsBinding,
-              }
+          ...(isArray(dataBindingProps.$repeaterItems)
+            ? { $repeaterItems: applyLimit(dataBindingProps.$repeaterItems, block) }
             : {}),
         }),
       })}
