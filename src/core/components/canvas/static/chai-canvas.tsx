@@ -1,10 +1,10 @@
-import { inlineEditingActiveAtom, treeRefAtom } from "@/core/atoms/ui";
-import { useFrame } from "@/core/frame";
-import { useBlockHighlight, useSelectedBlockIds, useSelectedStylingBlocks } from "@/core/hooks";
+import { inlineEditingActiveAtom } from "@/core/atoms/ui";
+import { CHAI_BUILDER_EVENTS } from "@/core/events";
+import { useBlockHighlight } from "@/core/hooks";
+import { pubsub } from "@/core/pubsub";
 import { useThrottledCallback } from "@react-hookz/web";
 import { useAtom } from "jotai";
-import { first, isEmpty } from "lodash-es";
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useRef } from "react";
 
 function getTargetedBlock(target) {
   // First check if the target is the canvas itself
@@ -81,10 +81,8 @@ const useHandleCanvasDblClick = () => {
 };
 
 const useHandleCanvasClick = () => {
-  const [, setStyleBlockIds] = useSelectedStylingBlocks();
-  const [ids, setIds] = useSelectedBlockIds();
   const [editingBlockId] = useAtom(inlineEditingActiveAtom);
-  const [treeRef] = useAtom(treeRefAtom);
+
   const { clearHighlight } = useBlockHighlight();
   const lastClickTimeRef = useRef(0);
 
@@ -101,36 +99,23 @@ const useHandleCanvasClick = () => {
 
       const chaiBlock: HTMLElement = getTargetedBlock(e.target);
       if (chaiBlock?.getAttribute("data-block-id") && chaiBlock?.getAttribute("data-block-id") === "container") {
-        setIds([]);
-        setStyleBlockIds([]);
-        clearHighlight();
+        pubsub.publish(CHAI_BUILDER_EVENTS.CLEAR_CANVAS_SELECTION);
         return;
       }
-
       if (chaiBlock?.getAttribute("data-block-parent")) {
         // check if target element has data-styles-prop attribute
         const styleProp = chaiBlock.getAttribute("data-style-prop") as string;
         const styleId = chaiBlock.getAttribute("data-style-id") as string;
         const blockId = chaiBlock.getAttribute("data-block-parent") as string;
-        if (!ids.includes(blockId)) {
-          treeRef?.closeAll();
-        }
-
-        setStyleBlockIds([{ id: styleId, prop: styleProp, blockId }]);
-        setIds([blockId]);
+        pubsub.publish(CHAI_BUILDER_EVENTS.CANVAS_BLOCK_STYLE_SELECTED, { blockId, styleId, styleProp });
       } else if (chaiBlock?.getAttribute("data-block-id")) {
         const blockId = chaiBlock.getAttribute("data-block-id");
-        if (!ids.includes(blockId)) {
-          treeRef?.closeAll();
-        }
-        setStyleBlockIds([]);
-        setIds(blockId === "canvas" ? [] : [blockId]);
+        pubsub.publish(CHAI_BUILDER_EVENTS.CANVAS_BLOCK_SELECTED, { blockId: blockId === "canvas" ? [] : [blockId] });
       }
-
       clearHighlight();
       lastClickTimeRef.current = new Date().getTime();
     },
-    [ids, editingBlockId, treeRef, setIds, setStyleBlockIds],
+    [editingBlockId],
   );
 };
 
@@ -156,40 +141,11 @@ const useHandleMouseLeave = () => {
   return useCallback(() => clearHighlight(), [clearHighlight]);
 };
 
-export const StylingBlockSelectWatcher = () => {
-  const [styleIds, setSelectedStylingBlocks] = useSelectedStylingBlocks();
-  const { document } = useFrame();
-  const { clearHighlight } = useBlockHighlight();
-  const [ids] = useSelectedBlockIds();
-  useEffect(() => {
-    setTimeout(() => {
-      if (!isEmpty(styleIds)) {
-        return;
-      }
-      const element = getElementByDataBlockId(document, first(ids) as string);
-      if (element) {
-        const styleProp = element.getAttribute("data-style-prop") as string;
-        if (styleProp) {
-          const styleId = element.getAttribute("data-style-id") as string;
-          const blockId = element.getAttribute("data-block-parent") as string;
-          setSelectedStylingBlocks([{ id: styleId, prop: styleProp, blockId }]);
-        }
-      }
-    }, 100);
-  }, [document, ids, setSelectedStylingBlocks, styleIds]);
-  // Add cleanup effect
-  useEffect(() => {
-    return () => clearHighlight();
-  }, [clearHighlight]);
-  return null;
-};
-
 export const Canvas = ({ children }: { children: React.ReactNode }) => {
   const handleDblClick = useHandleCanvasDblClick();
   const handleCanvasClick = useHandleCanvasClick();
   const handleMouseMove = useHandleMouseMove();
   const handleMouseLeave = useHandleMouseLeave();
-
   return (
     <div
       data-block-id={"canvas"}

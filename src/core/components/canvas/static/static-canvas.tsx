@@ -5,7 +5,7 @@ import { BlockSelectionHighlighter } from "@/core/components/canvas/block-floati
 import { IframeInitialContent } from "@/core/components/canvas/IframeInitialContent";
 import { KeyboardHandler } from "@/core/components/canvas/keyboar-handler";
 import { AddBlockAtBottom } from "@/core/components/canvas/static/add-block-at-bottom";
-import { Canvas, StylingBlockSelectWatcher } from "@/core/components/canvas/static/chai-canvas";
+import { Canvas } from "@/core/components/canvas/static/chai-canvas";
 import { HeadTags } from "@/core/components/canvas/static/head-tags";
 import { ResizableCanvasWrapper } from "@/core/components/canvas/static/resizable-canvas-wrapper";
 import { StaticBlocksRenderer } from "@/core/components/canvas/static/static-blocks-renderer";
@@ -17,6 +17,7 @@ import { useAtom } from "jotai";
 import { isEmpty } from "lodash-es";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Provider } from "react-wrap-balancer";
+import { CanvasEventsWatcher } from "./canvas-events-watcher";
 
 const StaticCanvas = () => {
   const [width] = useCanvasDisplayWidth();
@@ -79,7 +80,7 @@ const StaticCanvas = () => {
               <br />
               <br />
             </Canvas>
-            <StylingBlockSelectWatcher />
+            <CanvasEventsWatcher />
           </Provider>
           <div
             id="placeholder"

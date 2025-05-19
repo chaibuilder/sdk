@@ -132,6 +132,7 @@ function ChaiBuilderDefault() {
         return [];
       }}
       getBlockAsyncProps={async (_block: ChaiBlock) => {
+        console.log("getBlockAsyncProps", _block);
         return { keyName: "value", depsName: "value 2" };
       }}
       collections={[
