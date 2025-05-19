@@ -1,6 +1,7 @@
+import { useBlockRepeaterDataAtom } from "@/core/async-props/use-async-props";
 import { ChaiBuilderEditorProps } from "@/types";
 import { atom, useAtomValue } from "jotai";
-import { useAsyncRepeaterData } from "../collections/use-async-repeater-data";
+import { useMemo } from "react";
 
 export const chaiBuilderPropsAtom = atom<Omit<
   ChaiBuilderEditorProps,
@@ -24,7 +25,15 @@ export const chaiPageExternalDataAtom = atom<Record<string, any>>({});
 chaiPageExternalDataAtom.debugLabel = "chaiPageExternalDataAtom";
 
 export const usePageExternalData = () => {
-  const [pageData] = useAsyncRepeaterData();
+  const [blockRepeaterData] = useBlockRepeaterDataAtom();
+  const repeaterItems = useMemo(() => {
+    const result = {};
+    Object.entries(blockRepeaterData).forEach(([key, value]) => {
+      if (value.status === "loaded")
+        result[value.repeaterItems.replace("}}", `/${key}`).replace("{{", "")] = value.props;
+    });
+    return result;
+  }, [blockRepeaterData]);
   const pageExternalData = useAtomValue(chaiPageExternalDataAtom);
-  return { ...pageExternalData, ...pageData };
+  return { ...pageExternalData, ...repeaterItems };
 };

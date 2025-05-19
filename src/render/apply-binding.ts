@@ -9,14 +9,10 @@ const applyBindingToValue = (
 ) => {
   if (isString(value)) {
     let result = value;
-    if (value === "repeaterItems") {
-      return { value, repeaterItemsBinding: value };
-    }
-
     const bindingRegex = /\{\{(.*?)\}\}/g;
     const matches = value.match(bindingRegex);
     if (matches) {
-      matches.forEach((match) => {
+      matches.forEach((match: string) => {
         let binding = match.slice(2, -2).trim();
         let repeaterKeyTrimed = repeaterKey.slice(2, -2).trim();
         if (index !== -1 && startsWith(binding, "$index.")) {
@@ -38,7 +34,7 @@ const applyBindingToValue = (
   if (value && typeof value === "object") {
     const result: Record<string, any> = {};
     forEach(keys(value), (key) => {
-      if (!startsWith(key, "_")) {
+      if (!startsWith(key, "_") && key !== "$repeaterItemsKey") {
         result[key] = applyBindingToValue(value[key], pageExternalData, { index, key: repeaterKey });
       } else {
         result[key] = value[key];
@@ -55,16 +51,15 @@ export const applyBindingToBlockProps = (
   pageExternalData: Record<string, any>,
   { index, key: repeaterKey }: { index: number; key: string },
 ) => {
-  const clonedBlock = cloneDeep(blockChai);
-  const result = applyBindingToValue(clonedBlock, pageExternalData, { index, key: repeaterKey });
-  // Handle special case for repeaterItemsBinding
+  let clonedBlock = cloneDeep(blockChai);
   if (clonedBlock.repeaterItems) {
-    result.repeaterItemsBinding = startsWith(clonedBlock.repeaterItems, `{{${COLLECTION_PREFIX}`)
-      ? clonedBlock.repeaterItems.replace(`}}`, `.${clonedBlock._id}}}`)
-      : clonedBlock.repeaterItems;
+    clonedBlock.$repeaterItemsKey = clonedBlock.repeaterItems;
+    if (startsWith(clonedBlock.repeaterItems, `{{${COLLECTION_PREFIX}`)) {
+      clonedBlock.$repeaterItemsKey =
+        clonedBlock.repeaterItems = `${clonedBlock.repeaterItems.replace("}}", `/${clonedBlock._id}}}`)}`;
+    }
   }
-
-  return result;
+  return applyBindingToValue(clonedBlock, pageExternalData, { index, key: repeaterKey });
 };
 
 if (import.meta.vitest) {
@@ -100,12 +95,6 @@ if (import.meta.vitest) {
       const pageExternalData = { user: { name: "John", role: "Admin" } };
       const result = applyBindingToValue(value, pageExternalData, { index: -1, key: "" });
       expect(result).toEqual(["Hello John", "Welcome Admin"]);
-    });
-
-    it("should handle repeaterItems special case", () => {
-      const value = "repeaterItems";
-      const result = applyBindingToValue(value, {}, { index: -1, key: "" });
-      expect(result).toEqual({ value: "repeaterItems", repeaterItemsBinding: "repeaterItems" });
     });
 
     it("should handle $index binding in repeater context", () => {
@@ -173,8 +162,8 @@ if (import.meta.vitest) {
         _id: "test-block",
         _type: "repeater",
         type: "repeater",
+        $repeaterItemsKey: "{{items}}",
         repeaterItems: ["x", "y", "z"],
-        repeaterItemsBinding: "{{items}}",
         items: ["a", "b", "c"],
       });
     });

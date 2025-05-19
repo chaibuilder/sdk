@@ -19,7 +19,7 @@ import { splitAtom } from "jotai/utils";
 import { filter, get, has, isArray, isEmpty, isNull, map } from "lodash-es";
 import React, { createContext, createElement, Suspense, useCallback, useContext, useMemo } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { AsyncPropsWrapper } from "./async-props-wrapper";
+import { MayBeAsyncPropsWrapper } from "./async-props-wrapper";
 import { ErrorFallback } from "./error-fallback";
 import { useBlockRuntimeProps } from "./use-block-runtime-props";
 import WithBlockTextEditor from "./with-block-text-editor";
@@ -64,14 +64,14 @@ const BlockRenderer = ({
   children: ({
     _id,
     _type,
+    $repeaterItemsKey,
     repeaterItems,
-    repeaterItemsBinding,
     partialBlockId,
   }: {
     _id: string;
     _type: string;
+    $repeaterItemsKey?: string;
     repeaterItems?: any;
-    repeaterItemsBinding?: string;
     partialBlockId?: string;
   }) => React.ReactNode;
 }) => {
@@ -124,7 +124,6 @@ const BlockRenderer = ({
     ],
   );
   const needErrorBoundary = useMemo(() => !CORE_BLOCKS.includes(block._type), [block._type]);
-
   if (isNull(Component) || hiddenBlocks.includes(block._id)) return null;
   let blockNode = (
     <Suspense>
@@ -136,7 +135,7 @@ const BlockRenderer = ({
           ...(isArray(dataBindingProps.repeaterItems)
             ? {
                 repeaterItems: applyLimit(dataBindingProps.repeaterItems, block),
-                repeaterItemsBinding: dataBindingProps.repeaterItemsBinding,
+                $repeaterItemsKey: dataBindingProps.$repeaterItemsKey,
               }
             : {}),
           ...(block.partialBlockId ? { partialBlockId: block.partialBlockId } : ""),
@@ -188,14 +187,14 @@ const BlocksRenderer = ({
     const blockAtom = getBlockAtom(block._id);
     if (!blockAtom) return null;
     return (
-      <AsyncPropsWrapper key={block._id} block={block}>
+      <MayBeAsyncPropsWrapper key={block._id} block={block}>
         {(asyncProps) => (
           <BlockRenderer blockAtom={blockAtom} asyncProps={asyncProps}>
-            {({ _id, _type, partialBlockId, repeaterItems, repeaterItemsBinding }) => {
+            {({ _id, _type, partialBlockId, repeaterItems, $repeaterItemsKey }) => {
               return _type === "Repeater" ? (
                 isArray(repeaterItems) &&
                   repeaterItems.map((_, index) => (
-                    <RepeaterContext.Provider key={`${_id}-${index}`} value={{ index, key: repeaterItemsBinding }}>
+                    <RepeaterContext.Provider key={`${_id}-${index}`} value={{ index, key: $repeaterItemsKey }}>
                       <BlocksRenderer splitAtoms={splitAtoms} blocks={blocks} parent={block._id} />
                     </RepeaterContext.Provider>
                   ))
@@ -209,7 +208,7 @@ const BlocksRenderer = ({
             }}
           </BlockRenderer>
         )}
-      </AsyncPropsWrapper>
+      </MayBeAsyncPropsWrapper>
     );
   });
 };

@@ -132,8 +132,17 @@ function ChaiBuilderDefault() {
         return [];
       }}
       getBlockAsyncProps={async (_block: ChaiBlock) => {
-        console.log("getBlockAsyncProps", _block);
-        return { keyName: "value", depsName: "value 2" };
+        // console.log("getBlockAsyncProps", _block);
+        return new Promise((resolve) =>
+          setTimeout(
+            () =>
+              resolve([
+                { name: "value", deps: "value 2" },
+                { name: "value 2", deps: "value 2" },
+              ]),
+            1000,
+          ),
+        );
       }}
       collections={[
         {
@@ -143,15 +152,15 @@ function ChaiBuilderDefault() {
           filters: [
             {
               id: "filter-1",
-              name: "Filter 1",
-              description: "Filter 1",
+              name: "Promotions Filter 1",
+              description: "Promotions Filter 1",
             },
           ],
           sorts: [
             {
               id: "sort-1",
-              name: "Sort 1",
-              description: "Sort 1",
+              name: "Promotions Sort 1",
+              description: "Promotions Sort 1",
             },
           ],
         },
@@ -162,15 +171,15 @@ function ChaiBuilderDefault() {
           filters: [
             {
               id: "filter-1",
-              name: "Filter 1",
-              description: "Filter 1",
+              name: "Vehicles Filter 1",
+              description: "Vehicles Filter 1",
             },
           ],
           sorts: [
             {
               id: "sort-1",
-              name: "Sort 1",
-              description: "Sort 1",
+              name: "Vehicles Sort 1",
+              description: "Vehicles Sort 1",
             },
           ],
         },
