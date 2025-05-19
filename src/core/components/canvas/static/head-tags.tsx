@@ -84,7 +84,7 @@ const BlockSelectionHighlighter = () => {
   const [selectedBlockIds] = useSelectedBlockIds();
   const styles = useMemo(() => {
     return `${map(selectedBlockIds, (id) => `[data-block-id="${id}"]`).join(",")}{
-                outline: 1px solid orange !important; outline-offset: -1px;
+                outline: 1px solid #42a1fc !important; outline-offset: -1px;
             }`;
   }, [selectedBlockIds]);
   return <style id="highlighted-block" dangerouslySetInnerHTML={{ __html: styles }} />;
@@ -94,7 +94,7 @@ const SelectedStylingBlocks = () => {
   const [selectedStylingBlocks] = useSelectedStylingBlocks();
   const styles = useMemo(() => {
     return `${map(selectedStylingBlocks, ({ id }: any) => `[data-style-id="${id}"]`).join(",")}{
-                outline: 1px solid orange !important; outline-offset: -1px;
+                outline: 1px solid #29e503 !important; outline-offset: -1px;
             }`;
   }, [selectedStylingBlocks]);
   return <style id="selected-styling-blocks" dangerouslySetInnerHTML={{ __html: styles }} />;
