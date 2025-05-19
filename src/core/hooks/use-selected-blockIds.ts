@@ -1,10 +1,9 @@
-import { pageBlocksAtomsAtom, presentBlocksAtom } from "@/core/atoms/blocks";
+import { presentBlocksAtom } from "@/core/atoms/blocks";
 import { ChaiBlock } from "@/types/chai-block";
 import { atom, useAtom, useAtomValue } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { compact, filter, get as getProp, includes, map, without } from "lodash-es";
 import { useCallback } from "react";
-import { useGetBlockAtomValue } from "./use-update-block-atom";
 
 /**
  * Core selected  ids atom
@@ -38,6 +37,11 @@ export const selectedBlockAtom = atom((get) => {
   }
 });
 selectedBlockAtom.debugLabel = "selectedBlockAtom";
+
+/**
+ * useSelectedBlock hook
+ */
+export const useSelectedBlock = () => useAtomValue(selectedBlockAtom);
 
 // FIXME: This is a hacky way to check if the selected blocks are flex children
 // const areFlexChild = (classes: string) => classes.match(/flex( |$)/g) !== null;
@@ -92,16 +96,6 @@ export const useSelectedBlocksDisplayChild = () => ({
   flexChild: useAtomValue(selectedBlockFlexChildAtom),
   gridChild: useAtomValue(selectedBlockGridChildAtom),
 });
-
-/**
- * useSelectedBlock hook
- */
-//@ts-ignore
-export const useSelectedBlock = () => {
-  const [blockIds] = useSelectedBlockIds();
-  const getBlockAtomValue = useGetBlockAtomValue(pageBlocksAtomsAtom);
-  return blockIds.length > 0 ? getBlockAtomValue(blockIds[0]) : null;
-};
 
 export const selectedBlockHierarchy = atom((get) => {
   const selectedBlock = get(selectedBlockAtom);
