@@ -117,6 +117,7 @@ export default defineConfig({
         "@tiptap/extension-text-align",
         "@tiptap/extension-bullet-list",
         "@tiptap/extension-ordered-list",
+        "@tiptap/extension-placeholder",
         "react-wrap-balancer",
         "tailwind-merge",
         "tailwindcss-animate",
