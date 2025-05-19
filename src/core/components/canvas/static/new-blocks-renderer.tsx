@@ -57,7 +57,6 @@ const CORE_BLOCKS = [
 const BlockRenderer = ({
   asyncProps,
   blockAtom,
-  editingBlockId,
   children,
 }: {
   blockAtom: Atom<ChaiBlock>;
@@ -75,8 +74,8 @@ const BlockRenderer = ({
     repeaterItemsBinding?: string;
     partialBlockId?: string;
   }) => React.ReactNode;
-  editingBlockId?: string;
 }) => {
+  const [editingBlockId] = useAtom(inlineEditingActiveAtom);
   const [block] = useAtom(blockAtom);
   const registeredChaiBlock = useMemo(() => getRegisteredChaiBlock(block._type) as any, [block._type]);
   const { selectedLang, fallbackLang } = useLanguages();
@@ -169,12 +168,10 @@ const BlocksRenderer = ({
   blocks,
   parent = null,
   splitAtoms = undefined,
-  editingBlockId = null,
 }: {
   splitAtoms?: any;
   blocks: ChaiBlock[];
   parent?: string;
-  editingBlockId?: string;
 }) => {
   const getBlockAtom = useGetBlockAtom(splitAtoms);
   const filteredBlocks = useMemo(
@@ -193,7 +190,7 @@ const BlocksRenderer = ({
     return (
       <AsyncPropsWrapper key={block._id} block={block}>
         {(asyncProps) => (
-          <BlockRenderer blockAtom={blockAtom} asyncProps={asyncProps} editingBlockId={editingBlockId}>
+          <BlockRenderer blockAtom={blockAtom} asyncProps={asyncProps}>
             {({ _id, _type, partialBlockId, repeaterItems, repeaterItemsBinding }) => {
               return _type === "Repeater" ? (
                 isArray(repeaterItems) &&
@@ -219,6 +216,5 @@ const BlocksRenderer = ({
 
 export const PageBlocksRenderer = () => {
   const [blocks] = useBlocksStore();
-  const [editingBlockId] = useAtom(inlineEditingActiveAtom);
-  return <BlocksRenderer splitAtoms={pageBlocksAtomsAtom} blocks={blocks} editingBlockId={editingBlockId} />;
+  return <BlocksRenderer splitAtoms={pageBlocksAtomsAtom} blocks={blocks} />;
 };
