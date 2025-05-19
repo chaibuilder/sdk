@@ -42,7 +42,12 @@ export const IframeInitialContent: string = `<!doctype html>
     [force-show] { display: block !important; }
     [data-cut-block="yes"] { pointer-events: none !important; display: none !important; }
     </style>    
-    <style id="hidden-blocks"></style>
+    <style id="highlighted-block">
+      [data-highlighted]{
+        outline: 1px solid #42a1fc !important; outline-offset: -1px;
+      }
+    </style>
+
   </head>
   <body class="font-body antialiased h-full">
     <div class="frame-root h-full"></div>

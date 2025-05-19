@@ -132,7 +132,7 @@ const useHandleMouseMove = () => {
       }
     },
     [editingBlockId, highlightBlock],
-    20,
+    100,
   );
 };
 
