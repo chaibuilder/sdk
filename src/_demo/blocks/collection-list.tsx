@@ -23,6 +23,7 @@ export type CollectionListProps = {
   binding: string;
   keyName: string;
   depsName: string;
+  newName?: string;
 };
 
 type ServerProps = {
@@ -30,11 +31,11 @@ type ServerProps = {
 };
 
 const Component = (props: ChaiBlockComponentProps<CollectionListProps & ServerProps>) => {
-  const { keyName, depsName, title1, blockProps, wrapperStyles, listStyles, itemStyles, items, showTitle } = props;
-  console.log("draft", keyName, depsName);
+  const { title1, blockProps, newName, wrapperStyles, listStyles, itemStyles, items, showTitle } = props;
   return (
     <div {...blockProps} {...wrapperStyles}>
       {showTitle && <h1>{title1}</h1>}
+      <p>new name:{newName}</p>
       <div {...listStyles}>{items?.map((item) => <div {...itemStyles}>{JSON.stringify(item)}</div>)}</div>
     </div>
   );
@@ -44,7 +45,10 @@ const Config = {
   type: "CollectionList",
   label: "Collection List",
   category: "core",
-  asyncProps: [],
+  dataProvider: () => {
+    return { newName: "New Name " + Math.random() };
+  },
+  dataProviderDependencies: [],
   group: "basic",
   ...registerChaiBlockSchema({
     properties: {

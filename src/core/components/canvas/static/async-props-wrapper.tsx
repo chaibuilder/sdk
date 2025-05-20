@@ -10,10 +10,12 @@ type AsyncPropsWrapperProps = {
 
 export const MayBeAsyncPropsWrapper = ({ children, block }: AsyncPropsWrapperProps) => {
   const registeredChaiBlock = useMemo(() => getRegisteredChaiBlock(block._type) as any, [block._type]);
-  const hasAsyncProps = has(registeredChaiBlock, "asyncProps");
+  const hasAsyncProps = has(registeredChaiBlock, "dataProviderDependencies");
+  const dataProviderFn = get(registeredChaiBlock, "dataProvider");
   const asyncPropsByBlockId = useAsyncProps(
     hasAsyncProps ? block : undefined,
-    get(registeredChaiBlock, "asyncProps", []),
+    get(registeredChaiBlock, "dataProviderDependencies"),
+    dataProviderFn ?? undefined,
   );
   return children(asyncPropsByBlockId);
 };

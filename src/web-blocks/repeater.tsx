@@ -15,12 +15,30 @@ export type RepeaterProps = {
   styles: ChaiStyles;
 };
 
-export const Repeater = ({ children, tag, blockProps, styles, inBuilder }: ChaiBlockComponentProps<RepeaterProps>) => {
+export const Repeater = ({
+  children,
+  tag,
+  blockProps,
+  styles,
+  inBuilder,
+  $loading,
+}: ChaiBlockComponentProps<RepeaterProps>) => {
   let items = children;
   if (isEmpty(items) && inBuilder) {
     items = <div className="col-span-3 flex items-center justify-center bg-orange-50 p-5">No items found</div>;
   }
-  return React.createElement(tag, { ...blockProps, ...styles }, items);
+  return React.createElement(
+    tag,
+    { ...blockProps, ...styles },
+    $loading
+      ? Array.from({ length: 2 }).map((_, i) => (
+          <div key={i} className="animate-pulse rounded-md bg-primary/10 p-5">
+            <div className="h-6 w-1/2 rounded-md bg-primary/10"></div>
+            <div className="mt-2 h-4 w-1/2 rounded-md bg-primary/10"></div>
+          </div>
+        ))
+      : items,
+  );
 };
 
 export const RepeaterConfig = {
@@ -28,7 +46,7 @@ export const RepeaterConfig = {
   label: "Repeater",
   icon: LoopIcon,
   group: "basic",
-  asyncProps: ["filter", "sort", "limit", "repeaterItems"],
+  dataProviderDependencies: ["filter", "sort", "limit", "repeaterItems"],
   blocks: () => [
     { _id: "A", _type: "Repeater", tag: "ul" },
     { _id: "B", _name: "Repeater Item", _type: "RepeaterItem", parentTag: "ul", _parent: "A" },

@@ -131,8 +131,8 @@ function ChaiBuilderDefault() {
         }
         return [];
       }}
-      getBlockAsyncProps={async (_block: ChaiBlock) => {
-        console.log("getBlockAsyncProps", _block);
+      getBlockAsyncProps={async (args: { block: ChaiBlock }) => {
+        console.log("getBlockAsyncProps", args);
         return new Promise((resolve) =>
           setTimeout(
             () =>
@@ -140,7 +140,7 @@ function ChaiBuilderDefault() {
                 { name: "Promotion 1", date: "2025-05-19", image: "https://picsum.photos/500/300" },
                 { name: "Promotion 2", date: "2025-05-20", image: "https://picsum.photos/500/310" },
               ]),
-            1000,
+            4000,
           ),
         );
       }}
