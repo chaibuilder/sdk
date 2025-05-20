@@ -132,7 +132,7 @@ function ChaiBuilderDefault() {
         return [];
       }}
       getBlockAsyncProps={async (_block: ChaiBlock) => {
-        // console.log("getBlockAsyncProps", _block);
+        console.log("getBlockAsyncProps", _block);
         return new Promise((resolve) =>
           setTimeout(
             () =>
