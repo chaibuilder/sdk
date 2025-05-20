@@ -32,7 +32,13 @@ function Preview() {
       <RenderChaiBlocks
         lang="fr"
         fallbackLang="en"
-        externalData={EXTERNAL_DATA}
+        externalData={{
+          ...EXTERNAL_DATA,
+          "#promotions/ppqlwb": [
+            { name: "Promotion 1", date: "2025-05-19", image: "https://picsum.photos/500/300" },
+            { name: "Promotion 2", date: "2025-05-20", image: "https://picsum.photos/500/310" },
+          ],
+        }}
         pageProps={{ slug: "chai-builder" }}
         draft={true}
         blocks={getMergedPartialBlocks(blocks, PARTIALS)}
