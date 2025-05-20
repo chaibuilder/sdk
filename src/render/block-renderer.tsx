@@ -22,12 +22,12 @@ export const RenderBlock = (
       _id,
       _type,
       repeaterItems,
-      repeaterItemsBinding,
+      $repeaterItemsKey,
     }: {
       _id: string;
       _type: string;
       repeaterItems?: any;
-      repeaterItemsBinding?: string;
+      $repeaterItemsKey?: string;
       partialBlockId?: string;
     }) => React.ReactNode;
   },
@@ -79,8 +79,11 @@ export const RenderBlock = (
               children: children({
                 _id: block._id,
                 _type: block._type,
-                ...(isArray(dataBindingProps.$repeaterItems)
-                  ? { $repeaterItems: applyLimit(dataBindingProps.$repeaterItems, block) }
+                ...(isArray(dataBindingProps.repeaterItems)
+                  ? {
+                      repeaterItems: applyLimit(dataBindingProps.repeaterItems, block),
+                      $repeaterItemsKey: dataBindingProps.$repeaterItemsKey,
+                    }
                   : {}),
               }),
             });
@@ -97,8 +100,11 @@ export const RenderBlock = (
         children: children({
           _id: block._id,
           _type: block._type,
-          ...(isArray(dataBindingProps.$repeaterItems)
-            ? { $repeaterItems: applyLimit(dataBindingProps.$repeaterItems, block) }
+          ...(isArray(dataBindingProps.repeaterItems)
+            ? {
+                repeaterItems: applyLimit(dataBindingProps.repeaterItems, block),
+                $repeaterItemsKey: dataBindingProps.$repeaterItemsKey,
+              }
             : {}),
         }),
       })}

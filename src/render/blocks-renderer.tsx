@@ -14,16 +14,18 @@ export const RenderBlocks = (props: RenderChaiBlocksProps & { repeaterData?: { i
     if (!block) return null;
     return (
       <RenderBlock {...props} key={block._id} block={block}>
-        {({ _id, _type, repeaterItems, repeaterItemsBinding }) => {
+        {({ _id, _type, repeaterItems, $repeaterItemsKey }) => {
           return _type === "Repeater" ? (
             isArray(repeaterItems) &&
               repeaterItems.map((_, index) => (
-                <RenderBlocks
-                  {...props}
-                  parent={block._id}
-                  key={`${block._id}-${index}`}
-                  repeaterData={{ index, dataKey: repeaterItemsBinding }}
-                />
+                <>
+                  <RenderBlocks
+                    {...props}
+                    parent={block._id}
+                    key={`${block._id}-${index}`}
+                    repeaterData={{ index, dataKey: $repeaterItemsKey }}
+                  />
+                </>
               ))
           ) : hasChildren(_id) ? (
             <RenderBlocks {...props} parent={block._id} repeaterData={repeaterData} />

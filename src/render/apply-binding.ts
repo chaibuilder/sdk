@@ -9,6 +9,7 @@ const applyBindingToValue = (
 ) => {
   if (isString(value)) {
     let result = value;
+
     const bindingRegex = /\{\{(.*?)\}\}/g;
     const matches = value.match(bindingRegex);
     if (matches) {
