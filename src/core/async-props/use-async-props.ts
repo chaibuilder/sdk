@@ -34,7 +34,7 @@ export const useAsyncProps = (block?: ChaiBlock, dependencies: string[] = []) =>
   const isCollectionRepeater = block?._type === "Repeater" && startsWith(block.repeaterItems, `{{${COLLECTION_PREFIX}`);
 
   useEffect(() => {
-    if (!block || status !== "idle") return;
+    if (!block) return;
     setAsyncProps((prev) => ({ ...prev, status: "loading", props: {} }));
     getAsyncBlockProps(block)
       .then((props = {}) => {
@@ -58,7 +58,7 @@ export const useAsyncProps = (block?: ChaiBlock, dependencies: string[] = []) =>
           setAsyncProps((prev) => ({ ...prev, status: "error", error, props: {} }));
         }
       });
-  }, [block?._id, status, depsString, isCollectionRepeater]);
+  }, [block?._id, depsString, isCollectionRepeater]);
 
   return {
     $loading: status === "loading",

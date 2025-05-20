@@ -33,7 +33,6 @@ const PathDropdown = ({ data, onSelect, dataType }: NestedPathSelectorProps) => 
   const [currentPath, setCurrentPath] = React.useState<string[]>([]);
   const [currentData, setCurrentData] = React.useState<Record<string, any>>(data);
 
-  console.log("currentData", data);
   const getValueType = (value: any): "value" | "array" | "object" => {
     if (Array.isArray(value)) return "array";
     if (typeof value === "object" && value !== null) return "object";
@@ -79,7 +78,6 @@ const PathDropdown = ({ data, onSelect, dataType }: NestedPathSelectorProps) => 
       });
   }, [currentData, dataType]);
 
-  console.log("options", options);
   return (
     <Command className="fields-command">
       <CommandInput className="border-none" placeholder="Search..." />
