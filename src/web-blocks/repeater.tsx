@@ -18,7 +18,7 @@ export type RepeaterProps = {
 export const Repeater = ({ children, tag, blockProps, styles, inBuilder }: ChaiBlockComponentProps<RepeaterProps>) => {
   let items = children;
   if (isEmpty(items) && inBuilder) {
-    items = <div className="flex items-center justify-center bg-orange-50 p-5">No items found</div>;
+    items = <div className="col-span-3 flex items-center justify-center bg-orange-50 p-5">No items found</div>;
   }
   return React.createElement(tag, { ...blockProps, ...styles }, items);
 };
@@ -44,7 +44,7 @@ export const RepeaterConfig = {
   ],
   ...registerChaiBlockSchema({
     properties: {
-      styles: stylesProp(""),
+      styles: stylesProp("grid gap-4 md:grid-cols-2 xl:grid-cols-3"),
       repeaterItems: {
         title: "Items",
         type: "string",
