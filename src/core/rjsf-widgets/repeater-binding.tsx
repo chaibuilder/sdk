@@ -17,7 +17,7 @@ export const RepeaterBindingWidget = ({ value, onChange }: WidgetProps) => {
   const isCollection = value?.startsWith(prefixWithBracket);
   let displayValue = value;
   if (isCollection) {
-    displayValue = value.replace(prefixWithBracket, "").replace("}}", "");
+    displayValue = value?.replace(prefixWithBracket, "")?.replace("}}", "");
   }
 
   return (
