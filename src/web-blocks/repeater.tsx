@@ -119,6 +119,13 @@ export const RepeaterItem = ({
     default:
       tag = "div";
   }
+  if (!children) {
+    return (
+      <div {...blockProps} className="flex min-h-[80px] items-center justify-center bg-gray-100 text-sm text-gray-500">
+        Add block
+      </div>
+    );
+  }
   return React.createElement(tag, { ...blockProps, ...styles }, children);
 };
 
