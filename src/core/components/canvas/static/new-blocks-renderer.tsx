@@ -191,14 +191,33 @@ const BlocksRenderer = ({
         {(asyncProps) => (
           <BlockRenderer blockAtom={blockAtom} asyncProps={asyncProps}>
             {({ _id, _type, partialBlockId, repeaterItems, $repeaterItemsKey }) => {
-              return _type === "Repeater" ? (
-                isArray(repeaterItems) &&
+              if (_type === "Repeater") {
+                const repeaterItemBlock = blocks?.find((b) => b._type === "RepeaterItem" && b._parent === _id);
+                const repeaterItemChildren = filter(blocks, (b) => b._parent === repeaterItemBlock?._id);
+
+                if (isEmpty(repeaterItemChildren) && isArray(repeaterItems)) {
+                  // * When no children are added to the repeater item, we show a placeholder
+                  return repeaterItems.map((_, index) => (
+                    <div key={index} className="rounded-md bg-primary/10 p-5">
+                      <div className="h-6 w-1/2 rounded-md bg-primary/10" />
+                      <div className="mt-2 h-4 text-sm text-muted-foreground opacity-60">
+                        Add children to repeater item
+                      </div>
+                    </div>
+                  ));
+                }
+
+                return (
+                  isArray(repeaterItems) &&
                   repeaterItems.map((_, index) => (
                     <RepeaterContext.Provider key={`${_id}-${index}`} value={{ index, key: $repeaterItemsKey }}>
                       <BlocksRenderer splitAtoms={splitAtoms} blocks={blocks} parent={block._id} />
                     </RepeaterContext.Provider>
                   ))
-              ) : _type === "GlobalBlock" || _type === "PartialBlock" ? (
+                );
+              }
+
+              return _type === "GlobalBlock" || _type === "PartialBlock" ? (
                 <Provider store={builderStore}>
                   <PartialBlocksRenderer partialBlockId={partialBlockId} />
                 </Provider>

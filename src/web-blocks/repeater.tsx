@@ -25,7 +25,11 @@ export const Repeater = ({
 }: ChaiBlockComponentProps<RepeaterProps>) => {
   let items = children;
   if (isEmpty(items) && inBuilder) {
-    items = <div className="col-span-3 flex items-center justify-center bg-orange-50 p-5">No items found</div>;
+    items = (
+      <div className="col-span-3 flex items-center justify-center bg-orange-50 p-5 text-sm text-muted-foreground">
+        Choose a collection to display items
+      </div>
+    );
   }
   return React.createElement(
     tag,
