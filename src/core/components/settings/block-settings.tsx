@@ -1,4 +1,5 @@
 import { JSONForm } from "@/core/components/settings/json-form";
+import { COLLECTION_PREFIX } from "@/core/constants/STRINGS";
 import {
   useLanguages,
   useSelectedBlock,
@@ -8,7 +9,7 @@ import {
 } from "@/core/hooks";
 import { getBlockFormSchemas, getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { IChangeEvent } from "@rjsf/core";
-import { cloneDeep, debounce, forEach, get, includes, isEmpty, keys, startCase } from "lodash-es";
+import { cloneDeep, debounce, forEach, get, includes, isEmpty, keys, set, startCase, startsWith } from "lodash-es";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 
@@ -74,7 +75,19 @@ export default function BlockSettings() {
       return { schema: {}, uiSchema: {} };
     }
     try {
-      return getBlockFormSchemas(type);
+      const { schema, uiSchema } = getBlockFormSchemas(type);
+      //NOTE: This is special case for collection based repeater block
+      if (type === "Repeater") {
+        const repeaterItems = get(selectedBlock, "repeaterItems", "");
+        if (!startsWith(repeaterItems, `{{${COLLECTION_PREFIX}`)) {
+          set(uiSchema, "filter", { "ui:widget": "hidden" });
+          set(uiSchema, "sort", { "ui:widget": "hidden" });
+        } else {
+          set(uiSchema, "filter", { "ui:widget": "collectionSelect" });
+          set(uiSchema, "sort", { "ui:widget": "collectionSelect" });
+        }
+      }
+      return { schema, uiSchema };
     } catch (error) {
       return { schema: {}, uiSchema: {} };
     }
