@@ -4,7 +4,7 @@ import { useFrame } from "@/core/frame";
 import { useBlockHighlight, useSelectedBlockIds, useSelectedStylingBlocks } from "@/core/hooks";
 import { usePubSub } from "@/core/hooks/use-pub-sub";
 import { useAtom } from "jotai";
-import { first, isEmpty } from "lodash-es";
+import { first, includes, isEmpty } from "lodash-es";
 import { useEffect } from "react";
 import { getElementByDataBlockId } from "./chai-canvas";
 
@@ -37,20 +37,19 @@ export const CanvasEventsWatcher = () => {
     return () => clearHighlight();
   }, [clearHighlight]);
 
-  usePubSub(CHAI_BUILDER_EVENTS.CANVAS_BLOCK_SELECTED, (data) => {
-    if (!data) return;
-    const { blockId } = data as { blockId: string };
-    if (!ids.includes(blockId)) {
+  usePubSub(CHAI_BUILDER_EVENTS.CANVAS_BLOCK_SELECTED, (blocks: string[]) => {
+    if (!blocks) return;
+    if (!isEmpty(blocks) && !includes(ids, first(blocks))) {
       treeRef?.closeAll();
     }
-    setIds([blockId]);
+    setIds(blocks);
   });
 
   usePubSub(CHAI_BUILDER_EVENTS.CANVAS_BLOCK_STYLE_SELECTED, (data) => {
     if (!data) return;
     const { blockId, styleId, styleProp } = data as { blockId: string; styleId: string; styleProp: string };
     if (!blockId) return;
-    if (!ids.includes(blockId)) {
+    if (!includes(ids, blockId)) {
       treeRef?.closeAll();
     }
     setSelectedStylingBlocks([{ id: styleId, prop: styleProp, blockId }]);

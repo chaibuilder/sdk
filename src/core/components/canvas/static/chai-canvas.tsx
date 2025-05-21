@@ -89,7 +89,6 @@ const useHandleCanvasClick = () => {
   return useCallback(
     (e: any) => {
       const currentTime = new Date().getTime();
-
       if (editingBlockId) return;
       e.stopPropagation();
 
@@ -110,7 +109,7 @@ const useHandleCanvasClick = () => {
         pubsub.publish(CHAI_BUILDER_EVENTS.CANVAS_BLOCK_STYLE_SELECTED, { blockId, styleId, styleProp });
       } else if (chaiBlock?.getAttribute("data-block-id")) {
         const blockId = chaiBlock.getAttribute("data-block-id");
-        pubsub.publish(CHAI_BUILDER_EVENTS.CANVAS_BLOCK_SELECTED, { blockId: blockId === "canvas" ? [] : [blockId] });
+        pubsub.publish(CHAI_BUILDER_EVENTS.CANVAS_BLOCK_SELECTED, blockId === "canvas" ? [] : [blockId]);
       }
       clearHighlight();
       lastClickTimeRef.current = new Date().getTime();
