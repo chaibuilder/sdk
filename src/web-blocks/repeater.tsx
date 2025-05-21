@@ -64,11 +64,14 @@ export const RepeaterConfig = {
     properties: {
       styles: stylesProp("grid gap-4 md:grid-cols-2 xl:grid-cols-3"),
       repeaterItems: {
-        title: "Items",
+        title: "Collection",
         type: "string",
         binding: "array",
         default: "",
-        ui: { "ui:readonly": true },
+        ui: {
+          "ui:widget": "repeaterBinding",
+          "ui:readonly": true,
+        },
       },
       tag: {
         title: "Tag",
