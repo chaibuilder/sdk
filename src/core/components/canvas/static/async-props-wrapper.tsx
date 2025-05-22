@@ -1,6 +1,6 @@
 import { useAsyncProps } from "@/core/async-props/use-async-props";
 import { ChaiBlock, getRegisteredChaiBlock } from "@chaibuilder/runtime";
-import { get, has } from "lodash-es";
+import { get } from "lodash-es";
 import { useMemo } from "react";
 
 type AsyncPropsWrapperProps = {
@@ -10,12 +10,9 @@ type AsyncPropsWrapperProps = {
 
 export const MayBeAsyncPropsWrapper = ({ children, block }: AsyncPropsWrapperProps) => {
   const registeredChaiBlock = useMemo(() => getRegisteredChaiBlock(block._type) as any, [block._type]);
-  const hasAsyncProps = has(registeredChaiBlock, "dataProviderDependencies");
+  const dependencies = get(registeredChaiBlock, "dataProviderDependencies");
   const dataProviderFn = get(registeredChaiBlock, "dataProvider");
-  const asyncPropsByBlockId = useAsyncProps(
-    hasAsyncProps || dataProviderFn ? block : undefined,
-    get(registeredChaiBlock, "dataProviderDependencies"),
-    dataProviderFn ?? undefined,
-  );
+  const dataProviderMode = get(registeredChaiBlock, "dataProviderMode", "mock");
+  const asyncPropsByBlockId = useAsyncProps(block, dataProviderMode, dependencies, dataProviderFn);
   return children(asyncPropsByBlockId);
 };
