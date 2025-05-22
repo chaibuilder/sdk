@@ -12,6 +12,7 @@ import {
 import { CodeEditor } from "@/core/rjsf-widgets/code-widget";
 import { CollectionFilterSortField } from "@/core/rjsf-widgets/collection-select";
 import JSONFormFieldTemplate from "@/core/rjsf-widgets/json-form-field-template";
+import { RepeaterBindingWidget } from "@/core/rjsf-widgets/repeater-binding";
 import { useThrottledCallback } from "@react-hookz/web";
 import RjForm from "@rjsf/core";
 import { RJSFSchema, UiSchema } from "@rjsf/utils";
@@ -60,6 +61,7 @@ export const JSONForm = memo(({ blockId, schema, uiSchema, formData, onChange }:
         code: CodeEditor,
         colCount: RowColField,
         collectionSelect: CollectionFilterSortField,
+        repeaterBinding: RepeaterBindingWidget,
         ...widgets,
       }}
       fields={{

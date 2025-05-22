@@ -25,7 +25,11 @@ export const Repeater = ({
 }: ChaiBlockComponentProps<RepeaterProps>) => {
   let items = children;
   if (isEmpty(items) && inBuilder) {
-    items = <div className="col-span-3 flex items-center justify-center bg-orange-50 p-5">No items found</div>;
+    items = (
+      <div className="col-span-3 flex items-center justify-center bg-orange-50 p-5 text-sm text-muted-foreground">
+        Choose a collection to display items
+      </div>
+    );
   }
   return React.createElement(
     tag,
@@ -64,11 +68,14 @@ export const RepeaterConfig = {
     properties: {
       styles: stylesProp("grid gap-4 md:grid-cols-2 xl:grid-cols-3"),
       repeaterItems: {
-        title: "Items",
+        title: "Collection",
         type: "string",
         binding: "array",
         default: "",
-        ui: { "ui:readonly": true },
+        ui: {
+          "ui:widget": "repeaterBinding",
+          "ui:readonly": true,
+        },
       },
       tag: {
         title: "Tag",
@@ -107,6 +114,7 @@ export const RepeaterItem = ({
   blockProps,
   styles,
   parentTag,
+  inBuilder,
 }: ChaiBlockComponentProps<RepeaterItemProps>) => {
   let tag = "li";
   switch (parentTag) {
@@ -119,11 +127,13 @@ export const RepeaterItem = ({
     default:
       tag = "div";
   }
-  if (!children) {
-    return (
-      <div {...blockProps} className="flex min-h-[80px] items-center justify-center bg-gray-100 text-sm text-gray-500">
-        Add block
-      </div>
+  if (!children && inBuilder) {
+    return React.createElement(
+      tag,
+      { ...blockProps, ...styles },
+      <div className="col-span-3 flex items-center justify-center bg-orange-50 p-5 text-sm text-muted-foreground">
+        Add children to repeater item
+      </div>,
     );
   }
   return React.createElement(tag, { ...blockProps, ...styles }, children);
