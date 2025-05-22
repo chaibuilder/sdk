@@ -114,6 +114,7 @@ export const RepeaterItem = ({
   blockProps,
   styles,
   parentTag,
+  inBuilder,
 }: ChaiBlockComponentProps<RepeaterItemProps>) => {
   let tag = "li";
   switch (parentTag) {
@@ -125,6 +126,15 @@ export const RepeaterItem = ({
       break;
     default:
       tag = "div";
+  }
+  if (!children && inBuilder) {
+    return React.createElement(
+      tag,
+      { ...blockProps, ...styles },
+      <div className="col-span-3 flex items-center justify-center bg-orange-50 p-5 text-sm text-muted-foreground">
+        Add children to repeater item
+      </div>,
+    );
   }
   return React.createElement(tag, { ...blockProps, ...styles }, children);
 };
