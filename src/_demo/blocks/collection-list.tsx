@@ -48,7 +48,7 @@ const Config = {
   dataProvider: () => {
     return { newName: "New Name " + Math.random() };
   },
-  dataProviderDependencies: [],
+  // dataProviderDependencies: [],
   group: "basic",
   ...registerChaiBlockSchema({
     properties: {

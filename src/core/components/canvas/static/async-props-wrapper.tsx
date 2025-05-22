@@ -13,7 +13,7 @@ export const MayBeAsyncPropsWrapper = ({ children, block }: AsyncPropsWrapperPro
   const hasAsyncProps = has(registeredChaiBlock, "dataProviderDependencies");
   const dataProviderFn = get(registeredChaiBlock, "dataProvider");
   const asyncPropsByBlockId = useAsyncProps(
-    hasAsyncProps ? block : undefined,
+    hasAsyncProps || dataProviderFn ? block : undefined,
     get(registeredChaiBlock, "dataProviderDependencies"),
     dataProviderFn ?? undefined,
   );
