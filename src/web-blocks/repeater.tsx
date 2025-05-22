@@ -1,5 +1,6 @@
 import {
   ChaiBlockComponentProps,
+  ChaiBlockDefinition,
   ChaiStyles,
   closestBlockProp,
   registerChaiBlockSchema,
@@ -45,11 +46,12 @@ export const Repeater = ({
   );
 };
 
-export const RepeaterConfig = {
+export const RepeaterConfig: Omit<ChaiBlockDefinition, "component"> = {
   type: "Repeater",
   label: "Repeater",
   icon: LoopIcon,
   group: "basic",
+  dataProviderMode: "live",
   dataProviderDependencies: ["filter", "sort", "limit", "repeaterItems"],
   blocks: () => [
     { _id: "A", _type: "Repeater", tag: "ul" },
@@ -139,7 +141,7 @@ export const RepeaterItem = ({
   return React.createElement(tag, { ...blockProps, ...styles }, children);
 };
 
-export const RepeaterItemConfig = {
+export const RepeaterItemConfig: Omit<ChaiBlockDefinition, "component"> = {
   type: "RepeaterItem",
   label: "Repeater Item",
   icon: LoopIcon,
@@ -169,7 +171,7 @@ export const RepeaterEmptyState = ({
   return React.createElement("div", { ...blockProps, ...styles }, children);
 };
 
-export const RepeaterEmptyStateConfig = {
+export const RepeaterEmptyStateConfig: Omit<ChaiBlockDefinition, "component"> = {
   type: "RepeaterEmptyState",
   label: "Empty State",
   hidden: true,
