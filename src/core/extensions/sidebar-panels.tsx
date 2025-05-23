@@ -15,6 +15,7 @@ export interface ChaiSidebarPanel {
   panel?: ComponentType;
   width?: number;
   isInternal?: boolean;
+  icon?: React.ReactNode;
 }
 
 // Export for testing purposes

@@ -54,7 +54,7 @@ const AiButton = ({ isActive, show }: { isActive: boolean; show: () => void; pan
   );
 };
 
-function useSidebarMenuItems() {
+function useSidebarDefaultPanels() {
   const askAiCallBack = useBuilderProp("askAiCallBack", null);
   const aiChat = useFeature("aiChat");
   return useMemo(() => {
@@ -106,8 +106,10 @@ const RootLayout: ComponentType = () => {
     setActivePanel("outline");
   });
 
+  const defaultPanels = useSidebarDefaultPanels();
   const topPanels = useChaiSidebarPanels("top");
   const bottomPanels = useChaiSidebarPanels("bottom");
+
   /**
    * Prevents the context menu from appearing in production mode.
    * @param {MouseEvent<HTMLDivElement>} e - The mouse event.
@@ -116,41 +118,45 @@ const RootLayout: ComponentType = () => {
     if (!isDevelopment()) e.preventDefault();
   }, []);
 
-  const handleMenuItemClick = useCallback((id: string) => {
-    setActivePanel(activePanel === id ? null : id);
-  }, []);
-
-  const menuItems = useSidebarMenuItems();
+  const handleMenuItemClick = useCallback(
+    (id: string) => {
+      setActivePanel(activePanel === id ? null : id);
+    },
+    [activePanel],
+  );
 
   const { t } = useTranslation();
-  const sidebarMenuItems = useMemo(() => [...menuItems, ...topPanels], [menuItems, topPanels]);
+  const allPanels = useMemo(
+    () => [...defaultPanels, ...topPanels, ...bottomPanels],
+    [defaultPanels, topPanels, bottomPanels],
+  );
   const htmlDir = useBuilderProp("htmlDir", "ltr");
 
   // Update active panel item and get its width
-  const activePanelItem = find(sidebarMenuItems, { id: activePanel }) ?? first(sidebarMenuItems);
+  const activePanelItem = find(allPanels, { id: activePanel }) ?? first(allPanels);
   const panelWidth = get(activePanelItem, "width", DEFAULT_PANEL_WIDTH);
 
   // Keep track of the last used standard panel and its width
   useEffect(() => {
     if (activePanel !== null) {
-      const currentPanelItem = find(sidebarMenuItems, { id: activePanel });
+      const currentPanelItem = find(allPanels, { id: activePanel });
       if (currentPanelItem && get(currentPanelItem, "view", "standard") === "standard") {
         lastStandardPanelRef.current = activePanel;
         setLastStandardPanelWidth(get(currentPanelItem, "width", DEFAULT_PANEL_WIDTH));
       }
     }
-  }, [activePanel, sidebarMenuItems]);
+  }, [activePanel, allPanels]);
 
   // Determine the width to use for the left panel
   const leftPanelWidth = useMemo(() => {
     if (activePanel === null) return 0;
 
-    const currentPanelItem = find(sidebarMenuItems, { id: activePanel });
+    const currentPanelItem = find(allPanels, { id: activePanel });
     const isStandardPanel = get(currentPanelItem, "view", "standard") === "standard";
 
     // If current panel is standard, use its width, otherwise use the last standard panel's width
     return isStandardPanel ? panelWidth : lastStandardPanelWidth;
-  }, [activePanel, panelWidth, lastStandardPanelWidth, sidebarMenuItems]);
+  }, [activePanel, panelWidth, lastStandardPanelWidth, allPanels]);
 
   const handleNonStandardPanelClose = useCallback(() => {
     // Return to the last used standard panel when closing a non-standard panel
@@ -162,10 +168,10 @@ const RootLayout: ComponentType = () => {
   }, [setActivePanel]);
 
   useEffect(() => {
-    if (!find(sidebarMenuItems, { id: activePanel })) {
+    if (!find(allPanels, { id: activePanel })) {
       setActivePanel("outline");
     }
-  }, [activePanel, sidebarMenuItems]);
+  }, [activePanel, allPanels]);
 
   const showPanel = useCallback(
     (id: string) => {
@@ -180,7 +186,7 @@ const RootLayout: ComponentType = () => {
         <div
           onContextMenu={preventContextMenu}
           className="flex h-screen max-h-full flex-col bg-background text-foreground">
-          <div className="h-14 w-screen shrink-0 border-b border-border">
+          <div className="flex h-[50px] w-screen items-center border-b border-border">
             <Suspense>
               <TopBar />
             </Suspense>
@@ -188,7 +194,7 @@ const RootLayout: ComponentType = () => {
           <main className="relative flex h-[calc(100vh-56px)] max-w-full flex-1 flex-row">
             <div id="sidebar" className="flex w-12 flex-col items-center justify-between border-r border-border py-2">
               <div className="flex flex-col gap-y-1">
-                {sidebarMenuItems.map((item, index) => (
+                {[defaultPanels, topPanels].flat().map((item, index) => (
                   <Tooltip key={"button-top-" + index}>
                     <TooltipTrigger asChild>
                       {createElement(get(item, "button", NoopComponent), {
@@ -206,19 +212,19 @@ const RootLayout: ComponentType = () => {
               </div>
               <div className="flex flex-col space-y-1"></div>
               <div className="flex flex-col">
-                {bottomPanels?.map((sidebarComponent, index) => {
+                {bottomPanels?.map((item, index) => {
                   return (
                     <Tooltip key={"button-bottom-" + index}>
                       <TooltipTrigger asChild>
-                        {createElement(get(sidebarComponent, "button", NoopComponent), {
+                        {createElement(get(item, "button", NoopComponent), {
                           position: "bottom",
-                          panelId: sidebarComponent.id,
-                          isActive: activePanel === sidebarComponent.id,
-                          show: () => showPanel(sidebarComponent.id),
+                          panelId: item.id,
+                          isActive: activePanel === item.id,
+                          show: () => showPanel(item.id),
                         })}
                       </TooltipTrigger>
                       <TooltipContent side={"right"}>
-                        <p>{t(sidebarComponent.label)}</p>
+                        <p>{t(item.label)}</p>
                       </TooltipContent>
                     </Tooltip>
                   );
@@ -295,84 +301,84 @@ const RootLayout: ComponentType = () => {
                 </div>
               </div>
             </motion.div>
-            {/* Drawer View */}
-            {activePanel !== null && get(activePanelItem, "view") === "drawer" && (
-              <Sheet open={true} onOpenChange={() => handleNonStandardPanelClose()}>
-                <SheetContent side="left" className="p-0 sm:max-w-full" style={{ width: `${panelWidth}px` }}>
-                  <SheetHeader className="border-b border-border p-4 pb-2">
-                    <SheetTitle className="flex items-center gap-2">
-                      <span className="rtl:ml-2 rtl:inline-block">{get(activePanelItem, "icon", null)}</span>
-                      <span>{t(get(activePanelItem, "label", ""))}</span>
-                    </SheetTitle>
-                  </SheetHeader>
-                  <div className="h-full max-h-full overflow-y-auto p-4">
-                    <Suspense fallback={<div>Loading...</div>}>
-                      {React.createElement(get(activePanelItem, "panel", NoopComponent), {
-                        close: closeNonStandardPanel,
-                      })}
-                    </Suspense>
-                  </div>
-                </SheetContent>
-              </Sheet>
-            )}{" "}
-            {/* Modal View */}
-            {activePanel !== null && get(activePanelItem, "view") === "modal" && (
-              <Dialog open={true} onOpenChange={() => handleNonStandardPanelClose()}>
-                <DialogContent className="p-0" style={{ maxWidth: `${panelWidth}px` }}>
-                  <DialogHeader className="border-b border-border p-4 pb-2">
-                    <DialogTitle className="flex items-center gap-2">
-                      <span className="rtl:ml-2 rtl:inline-block">{get(activePanelItem, "icon", null)}</span>
-                      <span>{t(get(activePanelItem, "label", ""))}</span>
-                    </DialogTitle>
-                  </DialogHeader>
-                  <div className="max-h-[70vh] overflow-y-auto p-4">
-                    <Suspense fallback={<div>Loading...</div>}>
-                      {React.createElement(get(activePanelItem, "panel", NoopComponent), {
-                        close: closeNonStandardPanel,
-                      })}
-                    </Suspense>
-                  </div>
-                </DialogContent>
-              </Dialog>
-            )}
-            {/* Overlay View */}
-            {activePanel !== null && get(activePanelItem, "view") === "overlay" && (
-              <motion.div
-                className="absolute -top-[53px] bottom-0 left-12 right-0 z-50"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}>
-                <div className="h-full w-full">
-                  <motion.div
-                    className="flex h-full w-full flex-col bg-background"
-                    initial={{ y: -20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: 20, opacity: 0 }}
-                    transition={{ duration: 0.3, delay: 0.1 }}>
-                    <div className="flex items-center justify-between border-b border-border p-4 py-2">
-                      <div className="-ml-2 flex items-center gap-2 text-lg font-bold">
-                        <span className="rtl:ml-2 rtl:inline-block">{get(activePanelItem, "icon", null)}</span>
-                        <span>{t(get(activePanelItem, "label", ""))}</span>
-                      </div>
-                      <Button onClick={() => handleNonStandardPanelClose()} variant="ghost" size="icon" className="">
-                        <X className="h-5 w-5" />
-                      </Button>
-                    </div>
-                    <div className="flex-1 overflow-y-auto p-4">
-                      <Suspense fallback={<div>Loading...</div>}>
-                        {React.createElement(get(activePanelItem, "panel", NoopComponent), {
-                          close: closeNonStandardPanel,
-                        })}
-                      </Suspense>
-                    </div>
-                  </motion.div>
-                </div>
-              </motion.div>
-            )}
           </main>
         </div>
         <AddBlocksDialog />
+        {/* Drawer View */}
+        {activePanel !== null && get(activePanelItem, "view") === "drawer" && (
+          <Sheet open={true} onOpenChange={() => handleNonStandardPanelClose()}>
+            <SheetContent side="left" className="p-0 sm:max-w-full" style={{ width: `${panelWidth}px` }}>
+              <SheetHeader className="border-b border-border p-4 pb-2">
+                <SheetTitle className="flex items-center gap-2">
+                  <span className="rtl:ml-2 rtl:inline-block">{get(activePanelItem, "icon", null)}</span>
+                  <span>{t(get(activePanelItem, "label", ""))}</span>
+                </SheetTitle>
+              </SheetHeader>
+              <div className="h-full max-h-full overflow-y-auto p-4">
+                <Suspense fallback={<div>Loading...</div>}>
+                  {React.createElement(get(activePanelItem, "panel", NoopComponent), {
+                    close: closeNonStandardPanel,
+                  })}
+                </Suspense>
+              </div>
+            </SheetContent>
+          </Sheet>
+        )}{" "}
+        {/* Modal View */}
+        {activePanel !== null && get(activePanelItem, "view") === "modal" && (
+          <Dialog open={true} onOpenChange={() => handleNonStandardPanelClose()}>
+            <DialogContent className="p-0" style={{ maxWidth: `${panelWidth}px` }}>
+              <DialogHeader className="border-b border-border p-4 pb-2">
+                <DialogTitle className="flex items-center gap-2">
+                  <span className="rtl:ml-2 rtl:inline-block">{get(activePanelItem, "icon", null)}</span>
+                  <span>{t(get(activePanelItem, "label", ""))}</span>
+                </DialogTitle>
+              </DialogHeader>
+              <div className="max-h-[70vh] overflow-y-auto p-4">
+                <Suspense fallback={<div>Loading...</div>}>
+                  {React.createElement(get(activePanelItem, "panel", NoopComponent), {
+                    close: closeNonStandardPanel,
+                  })}
+                </Suspense>
+              </div>
+            </DialogContent>
+          </Dialog>
+        )}
+        {/* Overlay View */}
+        {activePanel !== null && get(activePanelItem, "view") === "overlay" && (
+          <motion.div
+            className="absolute bottom-0 left-12 right-0 top-0 z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}>
+            <div className="h-full w-full">
+              <motion.div
+                className="flex h-full w-full flex-col bg-background"
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: 20, opacity: 0 }}
+                transition={{ duration: 0.3, delay: 0.1 }}>
+                <div className="flex h-[50px] items-center justify-between border-b border-border p-4">
+                  <div className="-ml-2 flex items-center gap-2 text-lg font-bold">
+                    <span className="rtl:ml-2 rtl:inline-block">{get(activePanelItem, "icon", null)}</span>
+                    <span>{t(get(activePanelItem, "label", ""))}</span>
+                  </div>
+                  <Button onClick={() => handleNonStandardPanelClose()} variant="ghost" size="icon" className="">
+                    <X className="h-5 w-5" />
+                  </Button>
+                </div>
+                <div className="flex-1 overflow-y-auto p-4">
+                  <Suspense fallback={<div>Loading...</div>}>
+                    {React.createElement(get(activePanelItem, "panel", NoopComponent), {
+                      close: closeNonStandardPanel,
+                    })}
+                  </Suspense>
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
       </TooltipProvider>
     </div>
   );

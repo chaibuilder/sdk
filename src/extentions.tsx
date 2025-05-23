@@ -1,6 +1,6 @@
 import AddBlockAi from "@/_demo/add-block-ai";
 import registerCustomBlocks from "@/_demo/blocks";
-import "@/_demo/panels/panel";
+// import "@/_demo/panels/panel";
 import { registerChaiAddBlockTab } from "@/core/extensions/add-block-tabs";
 import { registerChaiSaveToLibrary } from "@/core/extensions/save-to-library";
 import { registerChaiTopBar } from "@/core/main";

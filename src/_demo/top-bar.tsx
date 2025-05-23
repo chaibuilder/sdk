@@ -32,7 +32,7 @@ const DemoAlert = () => {
 
 export default function Topbar() {
   return (
-    <div className="flex items-center justify-between px-2">
+    <div className="flex w-full items-center justify-between px-2">
       <Logo />
       <span>
         <DemoAlert />
