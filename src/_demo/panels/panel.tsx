@@ -3,45 +3,41 @@ import { Button } from "@/ui/shadcn/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/ui/popover";
 import { ThermometerIcon } from "lucide-react";
 
-// const Panel1Button = ({ isActive, show }: { isActive: boolean; show: () => void }) => {
-//   return (
-//     <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
-//       <ThermometerIcon />
-//     </Button>
-//   );
-// };
+const Panel1Button = ({ isActive, show }: { isActive: boolean; show: () => void }) => {
+  return (
+    <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
+      <ThermometerIcon />
+    </Button>
+  );
+};
 
-// registerChaiSidebarPanel("panel-1", {
-//   panel: () => <div>Panel 1</div>,
-//   button: Panel1Button,
-//   label: "Panel 1",
-//   position: "top",
-// });
+registerChaiSidebarPanel("panel-1", {
+  panel: () => <div>Panel 1</div>,
+  button: Panel1Button,
+  label: "Panel 1",
+  position: "top",
+});
 
-// const WhenEmptyCanvasButton = ({ isActive, show }: { isActive: boolean; show: () => void }) => {
-//   const [blocks] = useBlocksStore();
-//   if (blocks.length > 0) {
-//     return null;
-//   }
-//   return (
-//     <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
-//       <ThermometerIcon />
-//     </Button>
-//   );
-// };
+const WhenEmptyCanvasButton = ({ isActive, show }: { isActive: boolean; show: () => void }) => {
+  return (
+    <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
+      <ThermometerIcon />
+    </Button>
+  );
+};
 
-// registerChaiSidebarPanel("when-empty-canvas", {
-//   panel: ({ close }: { close: () => void }) => (
-//     <div>
-//       WhenEmptyCanvas
-//       <Button onClick={close}>Close</Button>
-//     </div>
-//   ),
-//   button: WhenEmptyCanvasButton,
-//   label: "WhenEmptyCanvas",
-//   position: "top",
-//   view: "modal",
-// });
+registerChaiSidebarPanel("when-empty-canvas", {
+  panel: ({ close }: { close: () => void }) => (
+    <div>
+      WhenEmptyCanvas
+      <Button onClick={close}>Close</Button>
+    </div>
+  ),
+  button: WhenEmptyCanvasButton,
+  label: "Cookies Panel",
+  position: "top",
+  view: "overlay",
+});
 
 const PopoverButton = () => {
   return (

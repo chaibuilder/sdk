@@ -338,7 +338,7 @@ const RootLayout: ComponentType = () => {
             {/* Overlay View */}
             {activePanel !== null && get(activePanelItem, "view") === "overlay" && (
               <motion.div
-                className="absolute bottom-0 left-12 right-0 top-0 z-50"
+                className="absolute -top-[53px] bottom-0 left-12 right-0 z-50"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -351,7 +351,7 @@ const RootLayout: ComponentType = () => {
                     exit={{ y: 20, opacity: 0 }}
                     transition={{ duration: 0.3, delay: 0.1 }}>
                     <div className="flex items-center justify-between border-b border-border p-4 py-2">
-                      <div className="flex items-center gap-2 text-lg font-bold">
+                      <div className="-ml-2 flex items-center gap-2 text-lg font-bold">
                         <span className="rtl:ml-2 rtl:inline-block">{get(activePanelItem, "icon", null)}</span>
                         <span>{t(get(activePanelItem, "label", ""))}</span>
                       </div>
