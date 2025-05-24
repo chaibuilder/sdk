@@ -1,13 +1,11 @@
 import { lsAiContextAtom, lsBlocksAtom, lsThemeAtom } from "@/_demo/atoms-dev";
 import { bluePreset, greenPreset, orangePreset } from "@/_demo/THEME_PRESETS";
-import { ChaiBlock, ChaiBuilderEditor, getBlocksFromHTML } from "@/core/main";
+import { ChaiBlock, ChaiBuilderEditor } from "@/core/main";
 import { extendChaiBuilder } from "@/extentions";
 import { SavePageData } from "@/types/chaibuilder-editor-props";
 import { loadWebBlocks } from "@/web-blocks";
-import axios from "axios";
 import { useAtom } from "jotai";
 import { isArray, map, pick } from "lodash-es";
-import { useEffect, useState } from "react";
 import { EXTERNAL_DATA } from "./_demo/EXTERNAL_DATA";
 import { PARTIALS } from "./_demo/PARTIALS";
 
@@ -19,16 +17,6 @@ function ChaiBuilderDefault() {
   const [theme, setTheme] = useAtom(lsThemeAtom);
 
   const [aiContext, setAiContext] = useAtom(lsAiContextAtom);
-  const [uiLibraries, setUiLibraries] = useState([]);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setUiLibraries([
-        { id: "meraki-ui", name: "Meraki UI", url: "https://chai-ui-blocks.vercel.app" },
-        { id: "chaiblocks", name: "UI Blocks", url: "https://chaibuilder.com/chaiblocks" },
-      ]);
-    }, 500);
-  }, []);
 
   return (
     <ChaiBuilderEditor
@@ -64,24 +52,6 @@ function ChaiBuilderDefault() {
           usage: { completionTokens: 151, promptTokens: 227, totalTokens: 378 },
         };
       }}
-      getUILibraryBlock={async (uiLibrary, uiLibBlock) => {
-        const response = await axios.get(
-          uiLibrary.url + (!uiLibBlock.path ? "/" + uiLibBlock.uuid + ".html" : "/blocks/" + uiLibBlock.path),
-        );
-        const html = await response.data;
-        const htmlWithoutChaiStudio = html.replace(/---([\s\S]*?)---/g, "");
-        return getBlocksFromHTML(`${htmlWithoutChaiStudio}`) as ChaiBlock[];
-      }}
-      getUILibraryBlocks={async (uiLibrary) => {
-        try {
-          const response = await axios.get(uiLibrary.url + "/blocks.json");
-          const blocks = await response.data;
-          return blocks.map((b) => ({ ...b, preview: uiLibrary.url.replace("chaiblocks", "") + b.preview }));
-        } catch (error) {
-          return [];
-        }
-      }}
-      uiLibraries={uiLibraries}
       getPartialBlockBlocks={async (partialBlockKey: string) => {
         const blocks = PARTIALS[partialBlockKey] ?? PARTIALS["header"];
         return new Promise((resolve) => {

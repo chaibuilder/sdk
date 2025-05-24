@@ -6,6 +6,7 @@ import UILibrariesPanel from "@/core/components/sidepanels/panels/add-blocks/lib
 import { PartialBlocks } from "@/core/components/sidepanels/panels/add-blocks/partial-blocks";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useChaiAddBlockTabs } from "@/core/extensions/add-block-tabs";
+import { useChaiLibraries } from "@/core/extensions/libraries";
 import { canAcceptChildBlock, canBeNestedInside } from "@/core/functions/block-helpers";
 import { useBlocksStore, useBuilderProp, usePermissions } from "@/core/hooks";
 import { usePartialBlocksList } from "@/core/hooks/use-partial-blocks-store";
@@ -255,7 +256,7 @@ const AddBlocksPanel = ({
 
   const addBlockAdditionalTabs = useChaiAddBlockTabs();
   const canImportHTML = importHTMLSupport && hasPermission(PERMISSIONS.IMPORT_HTML);
-  const uiLibraries = useBuilderProp("uiLibraries", []);
+  const uiLibraries = useChaiLibraries();
   const hasUiLibraries = uiLibraries.length > 0;
 
   // If current tab is "library" but there are no UI libraries, switch to "core" tab

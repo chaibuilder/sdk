@@ -1,13 +1,15 @@
 import { draggedBlockAtom } from "@/core/components/canvas/dnd/atoms";
 import { UILibrariesSelect } from "@/core/components/sidepanels/panels/add-blocks/libraries-select";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
+import { useChaiLibraries } from "@/core/extensions/libraries";
 import { cn } from "@/core/functions/common-functions";
-import { useAddBlock, useBlockHighlight, useBuilderProp, useSelectedBlockIds } from "@/core/hooks";
+import { useAddBlock, useBlockHighlight, useSelectedBlockIds } from "@/core/hooks";
 import { useLibraryBlocks } from "@/core/hooks/use-library-blocks";
 import { useSelectedLibrary } from "@/core/hooks/use-selected-library";
+import { getBlocksFromHTML } from "@/core/import-html/html-to-json";
 import { pubsub } from "@/core/pubsub";
 import { ChaiBlock } from "@/types/chai-block";
-import { ChaiUILibrary, ChaiUILibraryBlock } from "@/types/chaibuilder-editor-props";
+import { ChaiLibrary, ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Input } from "@/ui/shadcn/components/ui/input";
 import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
@@ -19,9 +21,9 @@ import clsx from "clsx";
 import { useFeature } from "flagged";
 import Fuse from "fuse.js";
 import { useAtom } from "jotai";
-import { capitalize, filter, first, get, groupBy, has, isEmpty, keys, map, noop } from "lodash-es";
+import { capitalize, filter, first, get, groupBy, has, isEmpty, keys, map } from "lodash-es";
 import { Loader, RefreshCw, Search, X } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const BlockCard = ({
@@ -30,13 +32,13 @@ const BlockCard = ({
   parentId = undefined,
   position = -1,
 }: {
-  library: ChaiUILibrary;
-  block: ChaiUILibraryBlock;
+  library: ChaiLibrary;
+  block: ChaiLibraryBlock;
   parentId?: string;
   position?: number;
 }) => {
   const [isAdding, setIsAdding] = useState(false);
-  const getUILibraryBlock = useBuilderProp("getUILibraryBlock", noop);
+  const getUILibraryBlock = useMemo(() => library?.getBlock || (() => []), [library]);
   const { addCoreBlock, addPredefinedBlock } = useAddBlock();
   const [, setSelected] = useSelectedBlockIds();
   const { clearHighlight } = useBlockHighlight();
@@ -59,7 +61,10 @@ const BlockCard = ({
         return;
       }
       setIsAdding(true);
-      const uiBlocks = await getUILibraryBlock(library, block);
+      let uiBlocks: string | ChaiBlock[] = await getUILibraryBlock(library, block);
+      if (typeof uiBlocks === "string") {
+        uiBlocks = getBlocksFromHTML(uiBlocks);
+      }
       if (!isEmpty(uiBlocks)) addPredefinedBlock(syncBlocksWithDefaults(uiBlocks), parentId, position);
       pubsub.publish(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK);
     },
@@ -135,14 +140,14 @@ const BlockCard = ({
 
 const UILibrarySection = ({ parentId, position }: { parentId?: string; position?: number }) => {
   const [selectedLibrary, setLibrary] = useSelectedLibrary();
-  const uiLibraries = useBuilderProp("uiLibraries", []);
+  const uiLibraries = useChaiLibraries();
   const library = uiLibraries.find((library) => library.id === selectedLibrary) || first(uiLibraries);
   const { data: libraryBlocks, isLoading, resetLibrary } = useLibraryBlocks(library);
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState<ChaiUILibraryBlock[]>([]);
+  const [searchResults, setSearchResults] = useState<ChaiLibraryBlock[]>([]);
 
   // Configure fuse search
-  const fuse = useRef<Fuse<ChaiUILibraryBlock> | null>(null);
+  const fuse = useRef<Fuse<ChaiLibraryBlock> | null>(null);
 
   useEffect(() => {
     if (libraryBlocks && libraryBlocks.length > 0) {
@@ -296,7 +301,7 @@ const UILibrarySection = ({ parentId, position }: { parentId?: string; position?
                 ) : (
                   <div className="grid w-full grid-cols-2 gap-2 px-2">
                     <div className="flex flex-col gap-1">
-                      {firstBlocks.map((block: ChaiUILibraryBlock, index: number) => (
+                      {firstBlocks.map((block: ChaiLibraryBlock, index: number) => (
                         <BlockCard
                           key={`block-${index}`}
                           parentId={parentId}
@@ -307,7 +312,7 @@ const UILibrarySection = ({ parentId, position }: { parentId?: string; position?
                       ))}
                     </div>
                     <div className="flex flex-col gap-1">
-                      {secondBlocks.map((block: ChaiUILibraryBlock, index: number) => (
+                      {secondBlocks.map((block: ChaiLibraryBlock, index: number) => (
                         <BlockCard
                           key={`block-second-${index}`}
                           parentId={parentId}

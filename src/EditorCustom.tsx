@@ -3,7 +3,7 @@ import CustomLayout from "@/_demo/custom-layout";
 import PreviewWeb from "@/_demo/preview/web-preview";
 import { getBlocksFromHTML } from "@/core/import-html/html-to-json";
 import { ChaiBlock, ChaiBuilderEditor } from "@/core/main";
-import { ChaiUILibrary, ChaiUILibraryBlock } from "@/types/chaibuilder-editor-props";
+import { ChaiLibrary, ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 import { loadWebBlocks } from "@/web-blocks";
 import axios from "axios";
 import { useAtom } from "jotai";
@@ -41,14 +41,14 @@ function ChaiBuilderCustom() {
         console.log("askAiCallBack", type, prompt, blocks);
         return new Promise((resolve) => resolve({ error: new Error("Not implemented") }));
       }}
-      getUILibraryBlock={async (uiLibrary: ChaiUILibrary, uiLibBlock: ChaiUILibraryBlock) => {
+      getUILibraryBlock={async (uiLibrary: ChaiLibrary, uiLibBlock: ChaiLibraryBlock) => {
         const response = await fetch(uiLibrary.url + "/blocks/" + uiLibBlock.path);
         const html = await response.text();
         console.log(html);
         const htmlWithoutChaiStudio = html.replace(/---([\s\S]*?)---/g, "");
         return getBlocksFromHTML(`${htmlWithoutChaiStudio}`) as ChaiBlock[];
       }}
-      getUILibraryBlocks={async (uiLibrary: ChaiUILibrary) => {
+      getUILibraryBlocks={async (uiLibrary: ChaiLibrary) => {
         try {
           const response = await axios.get(uiLibrary.url + "/blocks.json");
           const blocks = await response.data;
