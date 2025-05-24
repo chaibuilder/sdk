@@ -37,7 +37,6 @@ import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-bloc
 import { useStylingBreakpoint } from "@/core/hooks/use-styling-breakpoint";
 import { useStylingState } from "@/core/hooks/use-styling-state";
 import { useRightPanel, useTheme, useThemeOptions } from "@/core/hooks/use-theme";
-import { useUILibraryBlocks } from "@/core/hooks/use-ui-libraries";
 import { useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "@/core/hooks/use-update-blocks-props";
 import { useWrapperBlock } from "@/core/hooks/use-wrapper-block";
 import { useTranslation } from "react-i18next";
@@ -88,7 +87,6 @@ export {
   useTheme,
   useThemeOptions,
   useTranslation,
-  useUILibraryBlocks,
   useUndoManager,
   useUpdateBlocksProps,
   useUpdateBlocksPropsRealtime,
