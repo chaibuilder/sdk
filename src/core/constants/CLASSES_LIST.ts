@@ -625,14 +625,8 @@ export const CLASSES_LIST: ClassListType = {
   },
 
   whitespace: {
-    classes: [
-      "whitespace-normal",
-      "whitespace-no-wrap",
-      "whitespace-pre",
-      "whitespace-pre-line",
-      "whitespace-pre-wrap",
-    ],
-    regExp: "whitespace-(normal|no-wrap|pre|pre-line|pre-wrap)",
+    classes: ["whitespace-normal", "whitespace-nowrap", "whitespace-pre", "whitespace-pre-line", "whitespace-pre-wrap"],
+    regExp: "whitespace-(normal|nowrap|pre|pre-line|pre-wrap)",
   },
   wordBreak: {
     classes: ["break-normal", "break-words", "break-all"],
