@@ -51,10 +51,12 @@ export {
   registerBlockSettingTemplate,
   registerBlockSettingWidget,
 } from "@/core/extensions/blocks-settings";
+export { registerChaiLibrary } from "@/core/extensions/libraries";
 export { registerChaiMediaManager } from "@/core/extensions/media-manager";
 export { registerChaiSaveToLibrary } from "@/core/extensions/save-to-library";
 export { registerChaiSidebarPanel } from "@/core/extensions/sidebar-panels";
 export { registerChaiTopBar } from "@/core/extensions/top-bar";
+export type { ChaiLibrary, ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 
 // hooks
 

@@ -4,9 +4,11 @@ import registerCustomBlocks from "@/_demo/blocks";
 import { registerChaiAddBlockTab } from "@/core/extensions/add-block-tabs";
 import { registerChaiSaveToLibrary } from "@/core/extensions/save-to-library";
 import { registerChaiTopBar } from "@/core/main";
+import { ChaiLibrary, ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 import { ChaiFontViaSrc, ChaiFontViaUrl, registerChaiFont } from "@chaibuilder/runtime";
+import axios from "axios";
 import { lazy } from "react";
-
+import { registerChaiLibrary } from "./core/extensions/libraries";
 const TopBar = lazy(() => import("@/_demo/top-bar"));
 
 export const extendChaiBuilder = () => {
@@ -31,5 +33,28 @@ export const extendChaiBuilder = () => {
   registerChaiAddBlockTab("add-block-ai", {
     tab: () => "With AI",
     tabContent: AddBlockAi,
+  });
+
+  registerChaiLibrary("meraki-ui", {
+    name: "Meraki UI",
+    description: "Meraki UI",
+    getBlocksList: async (_library: ChaiLibrary) => {
+      try {
+        const response = await axios.get("https://chai-ui-blocks.vercel.app/blocks.json");
+        const blocks = await response.data;
+        return blocks.map((b: any) => ({ ...b, preview: "https://chai-ui-blocks.vercel.app" + b.preview }));
+      } catch (error) {
+        return [];
+      }
+    },
+    getBlock: async (_library: ChaiLibrary, libBlock: ChaiLibraryBlock<{ path?: string; uuid: string }>) => {
+      const response = await axios.get(
+        "https://chai-ui-blocks.vercel.app" +
+          (!libBlock.path ? "/" + libBlock.uuid + ".html" : "/blocks/" + libBlock.path),
+      );
+      const html = await response.data;
+      const htmlWithoutChaiStudio = html.replace(/---([\s\S]*?)---/g, "");
+      return htmlWithoutChaiStudio;
+    },
   });
 };

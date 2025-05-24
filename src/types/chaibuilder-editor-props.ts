@@ -2,7 +2,7 @@ import { ChaiBlock } from "@/types/chai-block";
 import React from "react";
 import { ChaiCollectoin } from "./collections";
 
-export type ChaiUILibraryBlock<T = Record<string, any>> = {
+export type ChaiLibraryBlock<T = Record<string, any>> = {
   id: string;
   group: string;
   name: string;
@@ -11,10 +11,10 @@ export type ChaiUILibraryBlock<T = Record<string, any>> = {
   description?: string;
 } & T;
 
-export type ChaiUILibrary<T = Record<string, any>> = {
+export type ChaiLibrary<T = Record<string, any>> = {
   id: string;
   name: string;
-  blocks?: ChaiUILibraryBlock[];
+  blocks?: ChaiLibraryBlock[];
   description?: string;
 } & T;
 
@@ -233,17 +233,17 @@ export interface ChaiBuilderEditorProps {
   /**
    * UI libraries
    */
-  uiLibraries?: Omit<ChaiUILibrary, "blocks">[];
+  uiLibraries?: Omit<ChaiLibrary, "blocks">[];
 
   /**
    * Get library blocks
    */
-  getUILibraryBlocks?: (library: ChaiUILibrary) => Promise<ChaiUILibraryBlock[]>;
+  getUILibraryBlocks?: (library: ChaiLibrary) => Promise<ChaiLibraryBlock[]>;
 
   /**
    * Get library block
    */
-  getUILibraryBlock?: (library: ChaiUILibrary, uiLibBlock: ChaiUILibraryBlock) => Promise<ChaiBlock[]>;
+  getUILibraryBlock?: (library: ChaiLibrary, uiLibBlock: ChaiLibraryBlock) => Promise<ChaiBlock[]>;
 
   /**
    * Get partial blocks

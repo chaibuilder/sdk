@@ -1,15 +1,14 @@
-import { useBuilderProp } from "@/core/hooks/use-builder-prop";
-import { ChaiUILibrary, ChaiUILibraryBlock } from "@/types/chaibuilder-editor-props";
+import { ChaiLibrary, ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 import { atom, useAtom } from "jotai";
-import { get, noop } from "lodash-es";
-import { useCallback, useEffect, useRef } from "react";
+import { get } from "lodash-es";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 
 const libraryBlocksAtom = atom<{ [uuid: string]: { loading: "idle" | "loading" | "complete"; blocks: any[] | null } }>(
   {},
 );
-export const useLibraryBlocks = (library?: Partial<ChaiUILibrary> & { id: string }) => {
+export const useLibraryBlocks = (library?: Partial<ChaiLibrary> & { id: string }) => {
   const [libraryBlocks, setLibraryBlocks] = useAtom(libraryBlocksAtom);
-  const getBlocks = useBuilderProp("getUILibraryBlocks", noop);
+  const getBlocks = useMemo(() => library?.getBlocksList || (() => []), [library]);
   const blocks = get(libraryBlocks, `${library?.id}.blocks`, null);
   const state = get(libraryBlocks, `${library?.id}.loading`, "idle");
   const loadingRef = useRef("idle");
@@ -20,7 +19,7 @@ export const useLibraryBlocks = (library?: Partial<ChaiUILibrary> & { id: string
       loadingRef.current = "loading";
       setLibraryBlocks((prev) => ({ ...prev, [library?.id]: { loading: "loading", blocks: [] } }));
       try {
-        const libraryBlocks: ChaiUILibraryBlock[] = await getBlocks(library);
+        const libraryBlocks: ChaiLibraryBlock[] = await getBlocks(library);
         loadingRef.current = "idle";
         setLibraryBlocks((prev) => ({ ...prev, [library?.id]: { loading: "complete", blocks: libraryBlocks || [] } }));
       } catch (error) {
