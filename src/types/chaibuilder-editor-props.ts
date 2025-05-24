@@ -231,21 +231,6 @@ export interface ChaiBuilderEditorProps {
   saveAiContextCallback?: (content: string) => Promise<true | Error>;
 
   /**
-   * UI libraries
-   */
-  uiLibraries?: Omit<ChaiLibrary, "blocks">[];
-
-  /**
-   * Get library blocks
-   */
-  getUILibraryBlocks?: (library: ChaiLibrary) => Promise<ChaiLibraryBlock[]>;
-
-  /**
-   * Get library block
-   */
-  getUILibraryBlock?: (library: ChaiLibrary, uiLibBlock: ChaiLibraryBlock) => Promise<ChaiBlock[]>;
-
-  /**
    * Get partial blocks
    * @returns {Record<string, { type: string; name: string; description?: string }>}
    */
