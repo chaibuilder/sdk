@@ -1,21 +1,14 @@
 import { lsAiContextAtom, lsBlocksAtom } from "@/_demo/atoms-dev";
 import CustomLayout from "@/_demo/custom-layout";
 import PreviewWeb from "@/_demo/preview/web-preview";
-import { getBlocksFromHTML } from "@/core/import-html/html-to-json";
 import { ChaiBlock, ChaiBuilderEditor } from "@/core/main";
-import { ChaiLibrary, ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 import { loadWebBlocks } from "@/web-blocks";
-import axios from "axios";
 import { useAtom } from "jotai";
-import { useState } from "react";
 loadWebBlocks();
 
 function ChaiBuilderCustom() {
   const [blocks] = useAtom(lsBlocksAtom);
   const [aiContext, setAiContext] = useAtom(lsAiContextAtom);
-  const [uiLibraries] = useState([
-    { uuid: "community-blocks", name: "Community blocks", url: "https://community-blocks.vercel.app" },
-  ]);
   return (
     <ChaiBuilderEditor
       locale={"pt-BR"}
@@ -41,23 +34,6 @@ function ChaiBuilderCustom() {
         console.log("askAiCallBack", type, prompt, blocks);
         return new Promise((resolve) => resolve({ error: new Error("Not implemented") }));
       }}
-      getUILibraryBlock={async (uiLibrary: ChaiLibrary, uiLibBlock: ChaiLibraryBlock) => {
-        const response = await fetch(uiLibrary.url + "/blocks/" + uiLibBlock.path);
-        const html = await response.text();
-        console.log(html);
-        const htmlWithoutChaiStudio = html.replace(/---([\s\S]*?)---/g, "");
-        return getBlocksFromHTML(`${htmlWithoutChaiStudio}`) as ChaiBlock[];
-      }}
-      getUILibraryBlocks={async (uiLibrary: ChaiLibrary) => {
-        try {
-          const response = await axios.get(uiLibrary.url + "/blocks.json");
-          const blocks = await response.data;
-          return blocks.map((b) => ({ ...b, preview: uiLibrary.url + b.preview }));
-        } catch (error) {
-          return [];
-        }
-      }}
-      uiLibraries={uiLibraries}
     />
   );
 }
