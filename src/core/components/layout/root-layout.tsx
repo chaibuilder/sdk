@@ -307,10 +307,13 @@ const RootLayout: ComponentType = () => {
         {/* Drawer View */}
         {activePanel !== null && get(activePanelItem, "view") === "drawer" && (
           <Sheet open={true} onOpenChange={() => handleNonStandardPanelClose()}>
-            <SheetContent side="left" className="p-0 sm:max-w-full" style={{ width: `${panelWidth}px` }}>
-              <SheetHeader className="border-b border-border p-4 pb-2">
+            <SheetContent
+              side="left"
+              className="flex flex-col gap-0 p-0 sm:max-w-full"
+              style={{ width: `${panelWidth}px` }}>
+              <SheetHeader className="border-b border-border px-2 py-2.5">
                 <SheetTitle className="flex items-center gap-2">
-                  <span className="rtl:ml-2 rtl:inline-block">{get(activePanelItem, "icon", null)}</span>
+                  <span className="inline-block">{get(activePanelItem, "icon", null)}</span>
                   <span>{t(get(activePanelItem, "label", ""))}</span>
                 </SheetTitle>
               </SheetHeader>
@@ -327,10 +330,10 @@ const RootLayout: ComponentType = () => {
         {/* Modal View */}
         {activePanel !== null && get(activePanelItem, "view") === "modal" && (
           <Dialog open={true} onOpenChange={() => handleNonStandardPanelClose()}>
-            <DialogContent className="p-0" style={{ maxWidth: `${panelWidth}px` }}>
-              <DialogHeader className="border-b border-border p-4 pb-2">
+            <DialogContent className="gap-0 p-0" style={{ maxWidth: `${panelWidth}px` }}>
+              <DialogHeader className="border-b border-border px-2 py-3.5">
                 <DialogTitle className="flex items-center gap-2">
-                  <span className="rtl:ml-2 rtl:inline-block">{get(activePanelItem, "icon", null)}</span>
+                  <span className="inline-block">{get(activePanelItem, "icon", null)}</span>
                   <span>{t(get(activePanelItem, "label", ""))}</span>
                 </DialogTitle>
               </DialogHeader>
