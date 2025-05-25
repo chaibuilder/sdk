@@ -292,7 +292,6 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
   return flatMapDeep(nodes, (node: Node) => {
     // * Ignoring code comment nodes
     if (node.type === "comment") return [];
-    console.log("node ===>", node);
 
     // * Generating block id and setting parent id if nested
     let block: Partial<ChaiBlock<any>> = { _id: generateUUID() };

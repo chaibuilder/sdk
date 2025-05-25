@@ -61,7 +61,7 @@ const BlockCard = ({
         return;
       }
       setIsAdding(true);
-      let uiBlocks: string | ChaiBlock[] = await getUILibraryBlock(library, block);
+      let uiBlocks: string | ChaiBlock[] = await getUILibraryBlock({ library, block });
       if (typeof uiBlocks === "string") {
         uiBlocks = getBlocksFromHTML(uiBlocks);
       }
@@ -72,7 +72,7 @@ const BlockCard = ({
   );
 
   const handleDragStart = async (ev) => {
-    const uiBlocks = await getUILibraryBlock(library, block);
+    const uiBlocks = await getUILibraryBlock({ library, block });
     let parent = parentId;
     if (isTopLevelSection(first(uiBlocks))) {
       parent = null;
