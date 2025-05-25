@@ -174,7 +174,6 @@
     "@typescript-eslint/parser": "^8.21.0",
     "@vitejs/plugin-react-swc": "^3.7.2",
     "autoprefixer": "^10.4.20",
-    "axios": "^1.7.9",
     "cheerio": "1.0.0-rc.12",
     "dotenv": "^16.4.7",
     "eslint": "^9.18.0",
