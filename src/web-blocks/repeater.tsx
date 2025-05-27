@@ -102,7 +102,6 @@ export const RepeaterConfig: Omit<ChaiBlockDefinition, "component"> = {
 
 export type RepeaterItemProps = {
   parentTag: string;
-  parentTotalItems: string;
   styles: ChaiStyles;
 };
 
@@ -112,7 +111,6 @@ export const RepeaterItem = ({
   styles,
   parentTag,
   inBuilder,
-  parentTotalItems,
 }: ChaiBlockComponentProps<RepeaterItemProps>) => {
   let tag = "li";
   switch (parentTag) {
@@ -125,13 +123,12 @@ export const RepeaterItem = ({
     default:
       tag = "div";
   }
-  console.log("parentTotalItems", parentTotalItems);
   if (!children && inBuilder) {
     return React.createElement(
       tag,
       { ...blockProps, ...styles },
       <div className="col-span-3 flex items-center justify-center bg-orange-50 p-5 text-sm text-muted-foreground">
-        Add children to repeater item {parentTotalItems}
+        Add children to repeater item
       </div>,
     );
   }
@@ -148,7 +145,6 @@ export const RepeaterItemConfig: Omit<ChaiBlockDefinition, "component"> = {
     properties: {
       styles: stylesProp(""),
       parentTag: closestBlockProp("Repeater", "tag"),
-      parentTotalItems: closestBlockProp("Repeater", "totalItems"),
     },
   }),
   canAcceptBlock: (type: string) => type !== "RepeaterItem",
