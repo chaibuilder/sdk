@@ -6,7 +6,7 @@ import {
   registerChaiBlockSchema,
   StylesProp,
 } from "@chaibuilder/runtime";
-import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import { ButtonIcon, ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { get } from "lodash-es";
 
 export type PaginationBlockProps = {
@@ -133,7 +133,7 @@ export const PaginationBlock = (props: ChaiBlockComponentProps<PaginationBlockPr
 
 export const PaginationBlockConfig = {
   type: "Pagination",
-  description: "A pagination component for collections",
+  icon: ButtonIcon,
   label: "Pagination",
   category: "core",
   group: "basic",
