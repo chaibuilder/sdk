@@ -35,12 +35,14 @@ const getCurrentPage = (inBuilder: boolean, strategy: "query" | "segment", propC
 
 // Get page URL based on strategy
 const getPageUrl = (strategy: "query" | "segment", page: number) => {
+  const { pathname, origin } = window.location;
+  const baseUrl = `${origin}${pathname}`;
+
   if (strategy === "query") {
-    const { pathname, origin } = window.location;
-    const url = `${origin}${pathname}?page=${page}`;
-    return url;
+    return `${baseUrl}?page=${page}`;
+  } else {
+    return `${baseUrl.replace(/\/\d+$/, "")}/${page}`;
   }
-  return `/${page}`;
 };
 
 export const PaginationBlock = (props: ChaiBlockComponentProps<PaginationBlockProps>) => {
@@ -171,5 +173,5 @@ export const PaginationBlockConfig = {
     },
   }),
   canAcceptBlock: () => false,
-  canBeNested: (type: string) => type === "Repeater",
+  // canBeNested: (type: string) => type === "Repeater",
 };
