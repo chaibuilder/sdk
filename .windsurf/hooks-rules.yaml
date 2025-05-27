@@ -1,0 +1,72 @@
+# ChaiBuilder SDK Hook Rules
+# Specific rules for custom hooks development within the ChaiBuilder SDK
+
+version: 1.0.0
+
+# Hook naming and structure
+naming_and_structure:
+  - All custom hooks must start with 'use' prefix
+  - Each hook should be in its own file
+  - Hook files should be named after the hook they export
+  - Hooks should be placed in appropriate directories based on their functionality
+  - Complex hooks should be broken down into smaller, more focused hooks
+  - Use named exports for hooks
+
+# Hook implementation
+implementation:
+  - Follow React hooks rules (only call hooks at the top level)
+  - Hooks should have a single responsibility
+  - Return consistent data structures
+  - Use TypeScript for type safety
+  - Document the hook's purpose, parameters, and return values
+  - Handle errors gracefully
+  - Implement proper cleanup in useEffect
+  - Avoid side effects outside of useEffect
+  - Memoize expensive calculations with useMemo
+  - Memoize callback functions with useCallback
+
+# State management
+state_management:
+  - Use useState for simple state
+  - Use useReducer for complex state logic
+  - Use Jotai atoms for global state
+  - Keep state minimal and focused
+  - Avoid redundant state that can be derived from existing state
+  - Document the structure and purpose of state
+
+# Performance considerations
+performance:
+  - Optimize dependencies arrays in useEffect, useMemo, and useCallback
+  - Avoid unnecessary re-renders
+  - Use memoization for expensive calculations
+  - Implement proper cleanup for subscriptions and event listeners
+  - Avoid creating new objects or functions on each render
+  - Consider using useRef for values that don't trigger re-renders
+
+# Testing
+testing:
+  - Write unit tests for all hooks
+  - Test hook behavior with different inputs
+  - Test side effects
+  - Test error handling
+  - Mock external dependencies
+  - Test edge cases
+  - Use React Hooks Testing Library
+
+# Documentation
+documentation:
+  - Document hook purpose and usage
+  - Document parameters and return values
+  - Document side effects
+  - Provide examples of hook usage
+  - Document any performance considerations
+  - Keep documentation up-to-date with code changes
+
+# Common hook patterns
+common_patterns:
+  - Data fetching hooks should handle loading, error, and success states
+  - Form hooks should handle validation, submission, and error states
+  - Animation hooks should handle timing and cleanup
+  - Event listener hooks should handle cleanup
+  - Subscription hooks should handle cleanup
+  - Context hooks should provide clear access to context values

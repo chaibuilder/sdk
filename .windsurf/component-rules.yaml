@@ -1,0 +1,90 @@
+# ChaiBuilder SDK Component Rules
+# Specific rules for component development within the ChaiBuilder SDK
+
+version: 1.0.0
+
+# Component structure rules
+structure:
+  - Each component should be in its own file
+  - Complex components should be broken down into smaller sub-components
+  - Components should follow a consistent directory structure:
+      - index.tsx: Main component export
+      - component-name.tsx: Component implementation
+      - component-name.test.tsx: Component tests
+      - types.ts: Component-specific types
+      - utils.ts: Component-specific utilities
+  - Use named exports for components
+
+# Props management
+props:
+  - Use TypeScript interfaces to define component props
+  - Provide default values for optional props
+  - Document all props with JSDoc comments
+  - Use destructuring to access props
+  - Group related props into objects when appropriate
+  - Validate props when necessary
+  - Use React.memo for components that receive many props
+
+# State management
+state:
+  - Keep component state minimal and focused
+  - Use useState for simple state
+  - Use useReducer for complex state logic
+  - Extract complex state logic into custom hooks
+  - Avoid redundant state that can be derived from existing state
+  - Use context for deeply nested component trees
+
+# Styling
+styling:
+  - Use Tailwind CSS for styling components
+  - Follow utility-first approach
+  - Extract common patterns into reusable classes
+  - Use CSS variables for theming
+  - Ensure responsive design for all components
+  - Use consistent spacing and sizing
+  - Follow the project's design system
+
+# Event handling
+events:
+  - Use consistent naming for event handlers (handle* prefix)
+  - Memoize event handlers with useCallback
+  - Avoid inline arrow functions in render
+  - Properly type event parameters
+  - Implement proper cleanup in useEffect for event listeners
+
+# Accessibility
+accessibility:
+  - All interactive elements must be keyboard accessible
+  - Use semantic HTML elements
+  - Provide appropriate ARIA attributes
+  - Support screen readers with aria-label and aria-describedby
+  - Ensure sufficient color contrast
+  - Test with accessibility tools
+
+# Performance
+performance:
+  - Use React.memo for pure components
+  - Use useMemo for expensive calculations
+  - Use useCallback for event handlers passed to child components
+  - Avoid unnecessary re-renders
+  - Implement virtualization for long lists
+  - Lazy load components when appropriate
+
+# Testing
+testing:
+  - Write tests for all components
+  - Test component rendering
+  - Test user interactions
+  - Test edge cases and error states
+  - Use React Testing Library
+  - Mock external dependencies
+  - Test accessibility
+
+# Documentation
+documentation:
+  - Document component purpose and usage
+  - Provide examples of component usage
+  - Document props and their types
+  - Document component state and side effects
+  - Document any performance considerations
+  - Keep documentation up-to-date with code changes

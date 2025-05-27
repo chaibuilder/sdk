@@ -106,14 +106,15 @@ function ChaiBuilderDefault() {
         return new Promise((resolve) =>
           setTimeout(
             () =>
-              resolve(
-                Array.from({ length: 10 }, (_, i) => ({
+              resolve({
+                items: Array.from({ length: 10 }, (_, i) => ({
                   name: `Promotion ${i + 1}`,
                   date: new Date(Date.now() + i * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
                   image: `https://picsum.photos/500/300`,
                 })),
-              ),
-            4000,
+                totalItems: 30,
+              }),
+            2000,
           ),
         );
       }}
