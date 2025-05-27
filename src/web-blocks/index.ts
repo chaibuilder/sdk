@@ -60,6 +60,7 @@ import {
   RepeaterItemProps,
   RepeaterProps,
 } from "./repeater";
+import { PaginationBlockProps, PaginationBlock, PaginationBlockConfig } from "./pagination";
 /*
  * Register all web blocks.
  * This function should be called  in places where Builder is rendered or pages are rendered.
@@ -105,6 +106,7 @@ const loadWebBlocks = () => {
   registerChaiBlock<RepeaterProps>(Repeater, RepeaterConfig);
   registerChaiBlock<RepeaterItemProps>(RepeaterItem, RepeaterItemConfig);
   registerChaiBlock<RepeaterEmptyStateProps>(RepeaterEmptyState, RepeaterEmptyStateConfig);
+  registerChaiBlock<PaginationBlockProps>(PaginationBlock, PaginationBlockConfig);
 };
 
 export { loadWebBlocks };
