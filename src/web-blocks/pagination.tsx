@@ -173,5 +173,5 @@ export const PaginationBlockConfig = {
     },
   }),
   canAcceptBlock: () => false,
-  // canBeNested: (type: string) => type === "Repeater",
+  canBeNested: (type: string) => type === "Repeater",
 };
