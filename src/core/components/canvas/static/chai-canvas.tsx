@@ -70,9 +70,9 @@ const useHandleCanvasDblClick = () => {
       if (!isInlineEditable(chaiBlock)) return;
 
       const blockId = chaiBlock.getAttribute("data-block-id");
-      if (!blockId) return;
+      if (!blockId || !chaiBlock) return;
 
-      // * Handle repeater items index
+      // * Checking for repeater items index
       const repeater = chaiBlock.closest('[data-block-type="Repeater"]');
       if (repeater) {
         repeater?.childNodes?.forEach((repeaterItem, key) => {
@@ -80,6 +80,8 @@ const useHandleCanvasDblClick = () => {
             setEditingItemIndex(key);
           }
         });
+      } else {
+        setEditingItemIndex(-1);
       }
 
       setEditingBlockId(blockId);
