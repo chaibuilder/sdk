@@ -1,4 +1,3 @@
-import { inlineEditingActiveAtom } from "@/core/atoms/ui";
 import AddBlockDropdown from "@/core/components/canvas/add-block-placements";
 import { draggedBlockAtom } from "@/core/components/canvas/dnd/atoms";
 import BlockController from "@/core/components/sidepanels/panels/add-blocks/block-controller";
@@ -7,6 +6,7 @@ import { canDeleteBlock, canDuplicateBlock } from "@/core/functions/block-helper
 import {
   useDuplicateBlocks,
   useHighlightBlockId,
+  useInlineEditing,
   usePermissions,
   useRemoveBlocks,
   useSelectedBlock,
@@ -109,7 +109,7 @@ const BlockFloatingSelector = ({ block, selectedBlockElement }: BlockActionProps
   const [, setHighlighted] = useHighlightBlockId();
   const [, setStyleBlocks] = useSelectedStylingBlocks();
   const { hasPermission } = usePermissions();
-  const [editingBlockId] = useAtom(inlineEditingActiveAtom);
+  const { editingBlockId } = useInlineEditing();
   const { document } = useFrame();
   const { floatingStyles, refs, update } = useFloating({
     placement: "top-start",

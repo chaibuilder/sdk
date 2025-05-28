@@ -1,14 +1,14 @@
 import { pageBlocksAtomsAtom } from "@/core/atoms/blocks";
 import { usePageExternalData } from "@/core/atoms/builder";
 import { builderStore } from "@/core/atoms/store";
-import { dataBindingActiveAtom, inlineEditingActiveAtom } from "@/core/atoms/ui";
+import { dataBindingActiveAtom } from "@/core/atoms/ui";
 import {
   applyLanguage,
   applyLimit,
   getBlockRuntimeProps,
   getBlockTagAttributes,
 } from "@/core/components/canvas/static/new-blocks-render-helpers";
-import { useBlocksStore, useHiddenBlockIds, usePartailBlocksStore } from "@/core/hooks";
+import { useBlocksStore, useHiddenBlockIds, useInlineEditing, usePartailBlocksStore } from "@/core/hooks";
 import { useLanguages } from "@/core/hooks/use-languages";
 import { useGetBlockAtom } from "@/core/hooks/use-update-block-atom";
 import { applyBindingToBlockProps } from "@/render/apply-binding";
@@ -75,7 +75,7 @@ const BlockRenderer = ({
     partialBlockId?: string;
   }) => React.ReactNode;
 }) => {
-  const [editingBlockId] = useAtom(inlineEditingActiveAtom);
+  const { editingBlockId, editingItemIndex } = useInlineEditing();
   const [block] = useAtom(blockAtom);
   const registeredChaiBlock = useMemo(() => getRegisteredChaiBlock(block._type) as any, [block._type]);
   const { selectedLang, fallbackLang } = useLanguages();
@@ -104,7 +104,7 @@ const BlockRenderer = ({
 
   const props = useMemo(
     () => ({
-      blockProps: { "data-block-id": block._id, "data-block-type": block._type },
+      blockProps: { "data-block-id": block._id, "data-block-type": block._type, "data-block-index": index },
       inBuilder: true,
       lang: selectedLang || fallbackLang,
       ...dataBindingProps,
@@ -146,7 +146,11 @@ const BlockRenderer = ({
   );
 
   const blockNodeWithTextEditor =
-    editingBlockId === block._id ? <WithBlockTextEditor block={block}>{blockNode}</WithBlockTextEditor> : blockNode;
+    editingBlockId === block._id && (editingItemIndex === index || index < 0) ? (
+      <WithBlockTextEditor block={block}>{blockNode}</WithBlockTextEditor>
+    ) : (
+      blockNode
+    );
 
   return needErrorBoundary ? (
     <ErrorBoundary fallbackRender={ErrorFallback}>{blockNodeWithTextEditor}</ErrorBoundary>

@@ -1,9 +1,8 @@
-import { inlineEditingActiveAtom } from "@/core/atoms/ui";
+import { useInlineEditing } from "@/core/hooks/hooks";
 import { ChaiBlock } from "@/types/chai-block";
 import { flip } from "@floating-ui/dom";
 import { shift, useFloating } from "@floating-ui/react-dom";
 import { useResizeObserver } from "@react-hookz/web";
-import { useAtom } from "jotai";
 import { Paintbrush } from "lucide-react";
 
 // NOTE: this component is not used anymore, but keeping it for now. Might remove it later.
@@ -15,7 +14,7 @@ export const BlockStyleHighlight = ({
   block: ChaiBlock;
   selectedStyleElement: HTMLElement | null;
 }) => {
-  const [editingBlockId] = useAtom(inlineEditingActiveAtom);
+  const { editingBlockId } = useInlineEditing();
   const { floatingStyles, refs, update } = useFloating({
     placement: "top-start",
     middleware: [shift(), flip()],
