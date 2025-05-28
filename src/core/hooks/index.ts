@@ -40,6 +40,7 @@ import { useRightPanel, useTheme, useThemeOptions } from "@/core/hooks/use-theme
 import { useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "@/core/hooks/use-update-blocks-props";
 import { useWrapperBlock } from "@/core/hooks/use-wrapper-block";
 import { useTranslation } from "react-i18next";
+import { useInlineEditing } from "./use-inline-editing";
 export { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 export { useCanvasDisplayWidth, useScreenSizeWidth } from "@/core/hooks/use-screen-size-width";
 export { useSelectedLibrary } from "@/core/hooks/use-selected-library";
@@ -91,4 +92,5 @@ export {
   useUpdateBlocksProps,
   useUpdateBlocksPropsRealtime,
   useWrapperBlock,
+  useInlineEditing,
 };
