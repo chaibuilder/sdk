@@ -1,4 +1,4 @@
-import { filter, has, isArray, isEmpty, map, uniqBy } from "lodash-es";
+import { filter, get, has, isArray, isEmpty, map, uniqBy } from "lodash-es";
 import { RenderBlock } from "./block-renderer";
 import { RenderChaiBlocksProps } from "./render-chai-blocks";
 
@@ -18,17 +18,20 @@ export const RenderBlocks = (props: RenderChaiBlocksProps & { repeaterData?: { i
           return _type === "Repeater" ? (
             isArray(repeaterItems) &&
               repeaterItems.map((_, index) => (
-                <>
-                  <RenderBlocks
-                    {...props}
-                    parent={block._id}
-                    key={`${block._id}-${index}`}
-                    repeaterData={{ index, dataKey: $repeaterItemsKey }}
-                  />
-                </>
+                <RenderBlocks
+                  {...props}
+                  parent={block._id}
+                  key={`${get(block, "_parent", "root")}-${block._id}-${index}`}
+                  repeaterData={{ index, dataKey: $repeaterItemsKey }}
+                />
               ))
           ) : hasChildren(_id) ? (
-            <RenderBlocks {...props} parent={block._id} repeaterData={repeaterData} />
+            <RenderBlocks
+              {...props}
+              parent={block._id}
+              key={`${get(block, "_parent", "root")}-${block._id}`}
+              repeaterData={repeaterData}
+            />
           ) : null;
         }}
       </RenderBlock>
