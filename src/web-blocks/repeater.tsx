@@ -16,14 +16,8 @@ export type RepeaterProps = {
   styles: ChaiStyles;
 };
 
-export const Repeater = ({
-  children,
-  tag,
-  blockProps,
-  styles,
-  inBuilder,
-  $loading,
-}: ChaiBlockComponentProps<RepeaterProps>) => {
+export const Repeater = (props: ChaiBlockComponentProps<RepeaterProps>) => {
+  const { children, tag, styles, blockProps, inBuilder, $loading } = props;
   let items = children;
   if (isEmpty(items) && inBuilder) {
     items = (
@@ -35,7 +29,7 @@ export const Repeater = ({
   return React.createElement(
     tag,
     { ...blockProps, ...styles },
-    $loading
+    $loading && inBuilder
       ? Array.from({ length: 2 }).map((_, i) => (
           <div key={i} className="animate-pulse rounded-md bg-primary/10 p-5">
             <div className="h-6 w-1/2 rounded-md bg-primary/10"></div>

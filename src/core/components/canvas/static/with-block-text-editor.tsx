@@ -2,9 +2,6 @@ import { useFrame } from "@/core/frame/frame-context";
 import { ChaiBlock } from "@/types/chai-block";
 import { cloneDeep } from "lodash-es";
 import { createElement, useEffect, useState, useRef, memo, useMemo, useCallback } from "react";
-import { getElementByDataBlockId } from "./chai-canvas";
-import { useAtom } from "jotai";
-import { inlineEditingActiveAtom } from "@/core/atoms/ui";
 import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
 import { useBlockHighlight } from "@/core/hooks/use-block-highlight";
 import { BubbleMenu as TiptapBubbleMenu, EditorContent, useEditor } from "@tiptap/react";
@@ -19,6 +16,7 @@ import { useLanguages } from "@/core/hooks/use-languages";
 import { get, has } from "lodash-es";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { useDebouncedCallback } from "@react-hookz/web";
+import { useInlineEditing } from "@/core/hooks/use-inline-editing";
 
 /**
  * @description This is the editor that is used to edit the block content
@@ -239,7 +237,7 @@ const WithBlockTextEditor = memo(
   ({ block, children }: { block: ChaiBlock; children: React.ReactNode }) => {
     const editingKey = "content";
     const { document } = useFrame();
-    const [editingBlockId, setEditingBlockId] = useAtom(inlineEditingActiveAtom);
+    const { editingBlockId, editingItemIndex, setEditingBlockId, setEditingItemIndex } = useInlineEditing();
     const [editingElement, setEditingElement] = useState<HTMLElement | null>(null);
     const editorRef = useRef<HTMLElement | null>(null);
     const { clearHighlight } = useBlockHighlight();
@@ -269,6 +267,7 @@ const WithBlockTextEditor = memo(
         updateContent([blockId], { [editingKey]: content });
         setEditingElement(null);
         setEditingBlockId(null);
+        setEditingItemIndex(-1);
         setIds([]);
       },
       [blockId, updateContent, setEditingBlockId, setIds, selectedLang],
@@ -302,10 +301,17 @@ const WithBlockTextEditor = memo(
     // * Set the editing element
     useEffect(() => {
       if (!blockId) return;
-      const element = getElementByDataBlockId(document, blockId as string);
+
+      // * Get the editing element
+      const query1 = `[data-block-id="${blockId}"]`;
+      const query2 = editingItemIndex >= 0 ? `[data-block-index="${editingItemIndex}"]` : "";
+      const element = document.querySelector(`${query1}${query2}`) as HTMLElement;
+      if (!element) return;
+
+      // * Add the sr-only class to the element
       element?.classList?.add("sr-only");
       setEditingElement(element);
-    }, [blockId, blockType, document]);
+    }, [blockId, blockType, document, editingItemIndex]);
 
     const memoizedEditor = useMemo(() => {
       if (!editingElement) return null;
