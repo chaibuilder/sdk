@@ -29,7 +29,7 @@ export const Repeater = (props: ChaiBlockComponentProps<RepeaterProps>) => {
   return React.createElement(
     tag,
     { ...blockProps, ...styles },
-    $loading
+    $loading && inBuilder
       ? Array.from({ length: 2 }).map((_, i) => (
           <div key={i} className="animate-pulse rounded-md bg-primary/10 p-5">
             <div className="h-6 w-1/2 rounded-md bg-primary/10"></div>
