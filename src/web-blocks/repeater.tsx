@@ -26,6 +26,17 @@ export const Repeater = (props: ChaiBlockComponentProps<RepeaterProps>) => {
       </div>
     );
   }
+
+  if (tag === "none") {
+    return $loading && inBuilder
+      ? Array.from({ length: 2 }).map((_, i) => (
+          <div key={i} className="animate-pulse rounded-md bg-primary/10 p-5">
+            <div className="h-6 w-1/2 rounded-md bg-primary/10"></div>
+            <div className="mt-2 h-4 w-1/2 rounded-md bg-primary/10"></div>
+          </div>
+        ))
+      : items;
+  }
   return React.createElement(
     tag,
     { ...blockProps, ...styles },
@@ -77,7 +88,7 @@ export const RepeaterConfig: Omit<ChaiBlockDefinition, "component"> = {
         title: "Tag",
         type: "string",
         default: "ul",
-        enum: ["div", "ul", "ol"],
+        enum: ["none", "div", "ul", "ol"],
       },
       limit: {
         title: "Limit",
