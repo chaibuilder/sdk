@@ -18,13 +18,10 @@ export type PaginationBlockProps = {
   visibleButtonCounts: number;
   totalItems: number;
   limit: number;
-  currentPage: number;
 };
 
-// Get current page from URL if not in builder
-const getCurrentPage = (inBuilder: boolean, strategy: "query" | "segment", propCurrentPage: number) => {
-  if (inBuilder) return propCurrentPage;
-
+// Get current page from URL
+const getCurrentPage = (strategy: "query" | "segment") => {
   if (strategy === "query") {
     const params = new URLSearchParams(window.location.search);
     return Number(params.get("page")) || 1;
@@ -53,9 +50,7 @@ export const PaginationBlock = (props: ChaiBlockComponentProps<PaginationBlockPr
     inactiveItemStyle,
     arrowButtonStyles,
     strategy,
-    inBuilder,
     visibleButtonCounts = 3,
-    currentPage: propCurrentPage = 1,
   } = props;
 
   const totalItems = 100;
@@ -63,7 +58,7 @@ export const PaginationBlock = (props: ChaiBlockComponentProps<PaginationBlockPr
 
   const totalPages = Math.ceil(totalItems / limit);
 
-  const currentPageNum = getCurrentPage(inBuilder, strategy, propCurrentPage);
+  const currentPageNum = getCurrentPage(strategy);
 
   const renderPaginationButtons = () => {
     const buttons = [];
@@ -86,7 +81,7 @@ export const PaginationBlock = (props: ChaiBlockComponentProps<PaginationBlockPr
         {...arrowButtonStyles}
         className={cn(
           get(arrowButtonStyles, "className", ""),
-          currentPageNum <= 1 && !inBuilder && "pointer-events-none cursor-not-allowed opacity-70",
+          currentPageNum <= 1 && "pointer-events-none cursor-not-allowed opacity-70",
         )}>
         <ChevronLeftIcon />
       </a>,
@@ -94,7 +89,7 @@ export const PaginationBlock = (props: ChaiBlockComponentProps<PaginationBlockPr
 
     // Page buttons
     for (let i = startPage; i <= endPage; i++) {
-      const isActive = i === currentPageNum || (inBuilder && i === 1);
+      const isActive = i === currentPageNum;
       buttons.push(
         <a
           key={i}
@@ -117,7 +112,7 @@ export const PaginationBlock = (props: ChaiBlockComponentProps<PaginationBlockPr
         {...arrowButtonStyles}
         className={cn(
           get(arrowButtonStyles, "className", ""),
-          currentPageNum >= totalPages && !inBuilder && "pointer-events-none cursor-not-allowed opacity-70",
+          currentPageNum >= totalPages && "pointer-events-none cursor-not-allowed opacity-70",
         )}>
         <ChevronRightIcon />
       </a>,
@@ -169,7 +164,6 @@ export const PaginationBlockConfig = {
       },
       totalItems: closestBlockProp("Repeater", "totalItems"),
       limit: closestBlockProp("Repeater", "limit"),
-      currentPage: closestBlockProp("Repeater", "currentPage"),
     },
   }),
   canAcceptBlock: () => false,
