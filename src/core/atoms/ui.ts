@@ -32,9 +32,6 @@ activePanelAtom.debugLabel = "activePanelAtom";
 export const showPredefinedBlockCategoryAtom = atom("");
 showPredefinedBlockCategoryAtom.debugLabel = "showPredefinedBlockCategoryAtom";
 
-export const inlineEditingActiveAtom = atom("");
-inlineEditingActiveAtom.debugLabel = "inlineEditingActiveAtom";
-
 export const draggingFlagAtom = atom(false);
 draggingFlagAtom.debugLabel = "draggingFlagAtom";
 

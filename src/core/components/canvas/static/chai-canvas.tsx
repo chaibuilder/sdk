@@ -1,9 +1,7 @@
-import { inlineEditingActiveAtom } from "@/core/atoms/ui";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { useBlockHighlight } from "@/core/hooks";
+import { useBlockHighlight, useInlineEditing } from "@/core/hooks";
 import { pubsub } from "@/core/pubsub";
 import { useThrottledCallback } from "@react-hookz/web";
-import { useAtom } from "jotai";
 import React, { useCallback, useRef } from "react";
 
 function getTargetedBlock(target) {
@@ -60,7 +58,7 @@ export const isInlineEditable = (chaiBlock: HTMLElement | null, _blockType?: str
 };
 
 const useHandleCanvasDblClick = () => {
-  const [editingBlockId, setEditingBlockId] = useAtom(inlineEditingActiveAtom);
+  const { editingBlockId, setEditingBlockId, setEditingItemIndex } = useInlineEditing();
 
   return useCallback(
     (e) => {
@@ -72,17 +70,28 @@ const useHandleCanvasDblClick = () => {
       if (!isInlineEditable(chaiBlock)) return;
 
       const blockId = chaiBlock.getAttribute("data-block-id");
-      if (!blockId) return;
+      if (!blockId || !chaiBlock) return;
+
+      // * Checking for repeater items index
+      const repeater = chaiBlock.closest('[data-block-type="Repeater"]');
+      if (repeater) {
+        repeater?.childNodes?.forEach((repeaterItem, key) => {
+          if (repeaterItem.contains(chaiBlock)) {
+            setEditingItemIndex(key);
+          }
+        });
+      } else {
+        setEditingItemIndex(-1);
+      }
 
       setEditingBlockId(blockId);
     },
-    [editingBlockId, setEditingBlockId],
+    [editingBlockId, setEditingBlockId, setEditingItemIndex],
   );
 };
 
 const useHandleCanvasClick = () => {
-  const [editingBlockId] = useAtom(inlineEditingActiveAtom);
-
+  const { editingBlockId } = useInlineEditing();
   const { clearHighlight } = useBlockHighlight();
   const lastClickTimeRef = useRef(0);
 
@@ -119,7 +128,7 @@ const useHandleCanvasClick = () => {
 };
 
 const useHandleMouseMove = () => {
-  const [editingBlockId] = useAtom(inlineEditingActiveAtom);
+  const { editingBlockId } = useInlineEditing();
   const { highlightBlock } = useBlockHighlight();
 
   return useThrottledCallback(

@@ -1,16 +1,17 @@
 import { ChaiBlock } from "@chaibuilder/runtime";
 import { isObject } from "@rjsf/utils";
 import { atom, useAtom, useSetAtom } from "jotai";
-import { get, isArray, isFunction, pick, startsWith, values } from "lodash-es";
+import { get, isFunction, pick, startsWith, values } from "lodash-es";
 import { useEffect, useState } from "react";
 import { COLLECTION_PREFIX } from "../constants/STRINGS";
-import { useBuilderProp } from "../hooks";
+import { useBuilderProp, useUpdateBlocksPropsRealtime } from "../hooks";
 
 type BlockAsyncProps = {
   status: "idle" | "loading" | "loaded" | "error";
   props: Record<string, any>;
   error?: any;
   repeaterItems?: string;
+  totalItems?: number;
 };
 
 type BlockRepeaterDataAtom = Record<string, BlockAsyncProps>;
@@ -31,7 +32,7 @@ export const useAsyncProps = (
     props: {},
     error: undefined,
   });
-
+  const updateRuntimeProps = useUpdateBlocksPropsRealtime();
   const getAsyncBlockProps = useBuilderProp("getBlockAsyncProps", async (_args: { block: ChaiBlock }) => ({}));
   const setBlockRepeaterDataAtom = useSetAtom(blockRepeaterDataAtom);
   const depsString = JSON.stringify([block?._id, ...values(pick(block, dependencies ?? []))]);
@@ -61,9 +62,14 @@ export const useAsyncProps = (
           // set the props to a global state
           setBlockRepeaterDataAtom((prev) => ({
             ...prev,
-            [block._id]: { status: "loaded", props: isArray(props) ? props : [], repeaterItems: block.repeaterItems },
+            [block._id]: {
+              status: "loaded",
+              props: get(props, "items", []),
+              repeaterItems: block.repeaterItems,
+            },
           }));
-          setAsyncProps((prev) => ({ ...prev, status: "loaded" }));
+          setAsyncProps((prev) => ({ ...prev, status: "loaded", props: { totalItems: get(props, "totalItems") } }));
+          updateRuntimeProps([block._id], { totalItems: get(props, "totalItems") });
         } else {
           setAsyncProps((prev) => ({ ...prev, status: "loaded", props: isObject(props) ? props : {} }));
         }
@@ -74,7 +80,7 @@ export const useAsyncProps = (
             ...prev,
             [block._id]: { status: "error", error, props: [] },
           }));
-          setAsyncProps((prev) => ({ ...prev, status: "error", error }));
+          setAsyncProps((prev) => ({ ...prev, status: "error", error, props: {} }));
         } else {
           setAsyncProps((prev) => ({ ...prev, status: "error", error, props: {} }));
         }
