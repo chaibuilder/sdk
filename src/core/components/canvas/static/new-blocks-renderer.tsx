@@ -8,7 +8,14 @@ import {
   getBlockRuntimeProps,
   getBlockTagAttributes,
 } from "@/core/components/canvas/static/new-blocks-render-helpers";
-import { useBlocksStore, useHiddenBlockIds, useInlineEditing, usePartailBlocksStore } from "@/core/hooks";
+import {
+  useBlocksStore,
+  useBuilderProp,
+  useHiddenBlockIds,
+  useInlineEditing,
+  usePartailBlocksStore,
+  useSavePage,
+} from "@/core/hooks";
 import { useLanguages } from "@/core/hooks/use-languages";
 import { useGetBlockAtom } from "@/core/hooks/use-update-block-atom";
 import { applyBindingToBlockProps } from "@/render/apply-binding";
@@ -16,9 +23,10 @@ import { ChaiBlock } from "@/types/chai-block";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { atom, Atom, Provider, useAtom } from "jotai";
 import { splitAtom } from "jotai/utils";
-import { filter, get, has, isArray, isEmpty, isNull, map } from "lodash-es";
+import { filter, get, has, isArray, isEmpty, isNull, map, noop } from "lodash-es";
 import React, { createContext, createElement, Suspense, useCallback, useContext, useMemo } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { toast } from "sonner";
 import { MayBeAsyncPropsWrapper } from "./async-props-wrapper";
 import { ErrorFallback } from "./error-fallback";
 import { useBlockRuntimeProps } from "./use-block-runtime-props";
@@ -159,12 +167,45 @@ const BlockRenderer = ({
   );
 };
 
+const PartialWrapper = ({ children, partialBlockId }: { children: React.ReactNode; partialBlockId: string }) => {
+  const gotoPage = useBuilderProp("gotoPage", noop);
+  const { saveState } = useSavePage();
+  const { selectedLang, fallbackLang } = useLanguages();
+  const onDoubleClick = useCallback(
+    (e: any) => {
+      e.stopPropagation();
+      if (saveState !== "SAVED") {
+        toast.error("You have unsaved changes. Please save the page first.");
+        return;
+      }
+      gotoPage({ pageId: partialBlockId, lang: selectedLang || fallbackLang });
+    },
+    [saveState, gotoPage, partialBlockId, selectedLang, fallbackLang],
+  );
+  return (
+    <>
+      {children}
+      <div className="partial-overlay group absolute inset-0 z-50">
+        <div
+          onDoubleClick={onDoubleClick}
+          className="flex h-full w-full items-center justify-center bg-black/10 opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100 group-hover:backdrop-opacity-85">
+          <p className="rounded-md bg-white px-2 py-1 text-xs">Partial block. Double click to edit.</p>
+        </div>
+      </div>
+    </>
+  );
+};
+
 const PartialBlocksRenderer = ({ partialBlockId }: { partialBlockId: string }) => {
   const { getPartailBlocks } = usePartailBlocksStore();
   const partialBlocks = useMemo(() => getPartailBlocks(partialBlockId), [getPartailBlocks, partialBlockId]);
   const partialBlocksAtoms = useMemo(() => splitAtom(atom(partialBlocks)), [partialBlocks]);
   if (isEmpty(partialBlocks)) return null;
-  return <BlocksRenderer splitAtoms={partialBlocksAtoms} blocks={partialBlocks} />;
+  return (
+    <PartialWrapper partialBlockId={partialBlockId}>
+      <BlocksRenderer splitAtoms={partialBlocksAtoms} blocks={partialBlocks} />
+    </PartialWrapper>
+  );
 };
 
 const BlocksRenderer = ({

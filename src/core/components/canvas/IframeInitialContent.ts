@@ -37,6 +37,8 @@ export const IframeInitialContent: string = `<!doctype html>
     [data-drop="yes"] { outline: 2px dashed orange !important; outline-offset: -2px }
     [data-dnd="yes"] { pointer-events: auto !important}
     [data-dnd="no"],[data-block-type="GlobalBlock"],[data-block-type="PartialBlock"] > * { pointer-events: none !important; }
+    [data-block-type="GlobalBlock"],[data-block-type="PartialBlock"] { position: relative !important; }
+    .partial-overlay { pointer-events: auto !important; }
     [data-dnd-dragged="yes"] { opacity: 0.6; pointer-events: none; }
     [data-dnd-dragged="no"] { opacity: 1; pointer-events: auto !important; }
     [force-show] { display: block !important; }
