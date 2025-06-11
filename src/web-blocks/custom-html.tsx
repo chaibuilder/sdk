@@ -39,6 +39,7 @@ const Config = {
       },
     },
   }),
+  i18nProps: ["htmlCode"],
 };
 
 export { CustomHTMLBlock as Component, Config };
