@@ -41,6 +41,7 @@ export const useCopyBlocks = (): [
   const copyBlocks = useCallback(
     async (blockIds: Array<string>, clonePartialBlocks: boolean = false) => {
       try {
+        if (isEmpty(blockIds)) return;
         setIds(blockIds);
         resetCutBlockIds([]);
 
@@ -88,7 +89,7 @@ export const useCopyBlocks = (): [
         console.error("Failed to copy blocks to clipboard:", error);
       }
     },
-    [setIds, resetCutBlockIds],
+    [setIds, resetCutBlockIds, presentBlocks],
   );
 
   return [ids as string[], copyBlocks, hasPartialBlocks];
