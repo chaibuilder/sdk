@@ -10,7 +10,7 @@ import ThemeConfigPanel from "@/core/components/sidepanels/panels/theme-configur
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useChaiSidebarPanels } from "@/core/extensions/sidebar-panels";
 import { useTopBarComponent } from "@/core/extensions/top-bar";
-import { useBuilderProp, useSidebarActivePanel } from "@/core/hooks";
+import { useBuilderProp, useSelectedBlock, useSidebarActivePanel } from "@/core/hooks";
 import { usePubSub } from "@/core/hooks/use-pub-sub";
 import { useRightPanel } from "@/core/hooks/use-theme";
 import { isDevelopment } from "@/core/import-html/general";
@@ -99,6 +99,8 @@ const RootLayout: ComponentType = () => {
   const [activePanel, setActivePanel] = useSidebarActivePanel();
   const lastStandardPanelRef = useRef<string | null>("outline"); // Default to "outline"
   const [lastStandardPanelWidth, setLastStandardPanelWidth] = useState(DEFAULT_PANEL_WIDTH);
+  const selectedBlock = useSelectedBlock();
+  const isPartialBlock = selectedBlock?._type === "PartialBlock";
 
   const [panel, setRightPanel] = useRightPanel();
 
@@ -261,8 +263,8 @@ const RootLayout: ComponentType = () => {
             <motion.div
               id="right-panel"
               className="h-full max-h-full border-l border-border"
-              initial={{ width: activePanel === "ai" ? 0 : DEFAULT_PANEL_WIDTH }}
-              animate={{ width: activePanel === "ai" ? 0 : DEFAULT_PANEL_WIDTH }}
+              initial={{ width: activePanel === "ai" || isPartialBlock ? 0 : DEFAULT_PANEL_WIDTH }}
+              animate={{ width: activePanel === "ai" || isPartialBlock ? 0 : DEFAULT_PANEL_WIDTH }}
               transition={{ duration: 0.3, ease: "easeInOut" }}>
               <div className="no-scrollbar overflow h-full max-h-full overflow-hidden">
                 <div className="flex h-full max-h-full flex-col overflow-hidden p-3">

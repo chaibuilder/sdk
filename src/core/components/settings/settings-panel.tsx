@@ -42,7 +42,6 @@ const SettingsPanel: React.FC = () => {
 
   let isSettingsDisabled = !hasPermission(PERMISSIONS.EDIT_BLOCK);
   const isStylesDisabled = !hasPermission(PERMISSIONS.EDIT_STYLES);
-  const isPartialBlock = selectedBlock?._type === "PartialBlock";
   if (isNull(selectedBlock)) {
     return (
       <div className="p-4 text-center">
@@ -91,18 +90,6 @@ const SettingsPanel: React.FC = () => {
           <br />
         </div>
       </ErrorBoundary>
-    );
-  }
-  
-  // Show no settings available for the selected Partial block.
-  if (isPartialBlock) {
-    return (
-      <div className="p-4 text-center">
-        <div className="space-y-4 rounded-xl p-4 text-muted-foreground">
-          <MixerHorizontalIcon className="mx-auto text-3xl" />
-          <h1>{t("No settings available for the selected block.")}</h1>
-        </div>
-      </div>
     );
   }
 
