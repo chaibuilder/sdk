@@ -4,7 +4,7 @@ import { useDuplicateBlocks } from "@/core/hooks/use-duplicate-blocks";
 import { usePasteBlocks } from "@/core/hooks/use-paste-blocks";
 import { useRemoveBlocks } from "@/core/hooks/use-remove-blocks";
 import { useSelectedBlock, useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
-import { get } from "lodash-es";
+import { get, isEmpty } from "lodash-es";
 import { useHotkeys } from "react-hotkeys-hook";
 
 export const useKeyEventWatcher = (doc?: Document) => {
@@ -21,7 +21,12 @@ export const useKeyEventWatcher = (doc?: Document) => {
   useHotkeys("ctrl+z,command+z", () => undo(), {}, [undo]);
   useHotkeys("ctrl+y,command+y", () => redo(), {}, [redo]);
   useHotkeys("ctrl+x,command+x", () => setCutBlockIds(ids), {}, [ids, setCutBlockIds]);
-  useHotkeys("ctrl+c,command+c", () => setCopyBlockIds(ids), {}, [ids, setCopyBlockIds]);
+  useHotkeys(
+    "ctrl+c,command+c",
+    () => setCopyBlockIds(ids),
+    { ...options,  enabled: !isEmpty(ids), preventDefault: true },
+    [ids, setCopyBlockIds],
+  );
   useHotkeys(
     "ctrl+v,command+v",
     () => {
@@ -29,12 +34,12 @@ export const useKeyEventWatcher = (doc?: Document) => {
         pasteBlocks(ids);
       }
     },
-    { ...options, preventDefault: true },
+    { ...options, enabled: !isEmpty(ids), preventDefault: true },
     [ids, canPaste, pasteBlocks],
   );
 
   useHotkeys("esc", () => setIds([]), options, [setIds]);
-  useHotkeys("ctrl+d,command+d", () => duplicateBlocks(ids), { ...options, preventDefault: true }, [
+  useHotkeys("ctrl+d,command+d", () => duplicateBlocks(ids), { ...options, enabled: !isEmpty(ids), preventDefault: true }, [
     ids,
     duplicateBlocks,
   ]);

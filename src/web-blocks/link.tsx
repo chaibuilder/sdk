@@ -93,6 +93,11 @@ const Config = {
           "ui:field": "link",
         },
       },
+      prefetchLink: {
+        type: "boolean",
+        default: false,
+        title: "Prefetch Link",
+      },
     },
   }),
   aiProps: ["content"],

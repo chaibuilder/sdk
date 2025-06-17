@@ -35,7 +35,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/
 import { useDebouncedCallback } from "@react-hookz/web";
 import { useAtom } from "jotai";
 import { find, first, isEmpty } from "lodash-es";
-import { ChevronsDown, ChevronsUp, Eye, PlusIcon } from "lucide-react";
+import { ChevronsDownUp, ChevronsUpDown, Eye, PlusIcon } from "lucide-react";
 import { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
 import { MoveHandler, RenameHandler, Tree } from "react-arborist";
 import { useTranslation } from "react-i18next";
@@ -240,7 +240,7 @@ const ListTree = () => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button className="h-fit p-1" onClick={() => treeRef?.current?.openAll()} variant="outline" size="sm">
-                  <ChevronsDown size={14} />
+                  <ChevronsUpDown size={14} />
                 </Button>
               </TooltipTrigger>
               <TooltipContent className="isolate z-[9999]">{t("Expand all")}</TooltipContent>
@@ -248,7 +248,7 @@ const ListTree = () => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button className="h-fit p-1" onClick={() => treeRef?.current?.closeAll()} variant="outline" size="sm">
-                  <ChevronsUp size={14} />
+                  <ChevronsDownUp size={14} />
                 </Button>
               </TooltipTrigger>
               <TooltipContent className="isolate z-[9999]">{t("Collapse all")}</TooltipContent>

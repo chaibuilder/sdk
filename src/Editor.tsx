@@ -20,6 +20,9 @@ function ChaiBuilderDefault() {
 
   return (
     <ChaiBuilderEditor
+      gotoPage={(args) => {
+        console.log("gotoPage", args);
+      }}
       permissions={null}
       // permissions={[]}
       pageExternalData={EXTERNAL_DATA}

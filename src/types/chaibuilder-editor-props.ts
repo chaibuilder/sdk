@@ -106,6 +106,11 @@ export type ChaiThemeValues = {
 
 export interface ChaiBuilderEditorProps {
   /**
+   * Goto page callback
+   */
+  gotoPage?: ({ pageId, lang }: { pageId: string; lang: string }) => void;
+
+  /**
    * User
    */
   user?: {
