@@ -148,6 +148,13 @@ export const DataBindingSelector = ({
         const selectionEnd = input.selectionEnd || cursorPos;
         const hasSelection = selectionEnd > cursorPos;
 
+        if (selectedBlock?._type === "Image") {
+          const basePlaceholder = `{{${path}}}`;
+          const { text: placeholderWithSpacing } = addSmartSpacing(currentValue, cursorPos, basePlaceholder);
+          onChange(placeholderWithSpacing, {}, id);
+          return;
+        }
+
         // If text is selected, replace it with the shortcode
         if (hasSelection) {
           const basePlaceholder = `{{${path}}}`;
