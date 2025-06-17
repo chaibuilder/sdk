@@ -52,10 +52,11 @@ export const PaginationBlock = (props: ChaiBlockComponentProps<PaginationBlockPr
     strategy,
     visibleButtonCounts = 3,
     limit,
+    totalItems,
   } = props;
 
-  // @TODO: Get total items from repeater
-  const totalItems = 100;
+  // * Display none on Invalid value or less than zero
+  if (!totalItems || typeof totalItems !== "number" || totalItems < 1) return null;
 
   const totalPages = Math.ceil(totalItems / limit);
 

@@ -107,7 +107,7 @@ function ChaiBuilderDefault() {
           setTimeout(
             () =>
               resolve({
-                items: Array.from({ length: 10 }, (_, i) => ({
+                items: Array.from({ length: 30 }, (_, i) => ({
                   name: `Promotion ${i + 1}`,
                   date: new Date(Date.now() + i * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
                   image: `https://picsum.photos/500/300`,
