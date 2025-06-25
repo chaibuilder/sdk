@@ -14,17 +14,28 @@ export type InputProps = {
 };
 
 // Extract autocomplete value and determine input type from combined inputType value
-const getInputTypeAndAutocomplete = (inputTypeValue: string): { type: string; autocomplete: string } => {
+export const getInputTypeAndAutocomplete = (inputTypeValue: string): { type: string; autocomplete: string } => {
   // Default values
   const defaults = { type: "text", autocomplete: "on" };
 
   // If no input type, return defaults
   if (!inputTypeValue) return defaults;
 
-  // Handle basic HTML input types that don't need special autocomplete values
-  const basicTypes = ["text", "password", "number", "tel", "hidden", "range", "color", "date", "time", "url"];
+  // Handle basic HTML input types with their corresponding autocomplete values
+  const basicTypes = ["text", "password", "number", "hidden", "range", "color", "date", "time"];
   if (basicTypes.includes(inputTypeValue)) {
     return { type: inputTypeValue, autocomplete: "on" };
+  }
+  
+  // Special cases for email, tel, and url which should have matching autocomplete values
+  if (inputTypeValue === "email") {
+    return { type: "email", autocomplete: "email" };
+  }
+  if (inputTypeValue === "tel") {
+    return { type: "tel", autocomplete: "tel" };
+  }
+  if (inputTypeValue === "url") {
+    return { type: "url", autocomplete: "url" };
   }
 
   // Map combined values to input type and autocomplete
