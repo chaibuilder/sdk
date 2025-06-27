@@ -36,7 +36,13 @@ const Component = (props: ChaiBlockComponentProps<CollectionListProps & ServerPr
     <div {...blockProps} {...wrapperStyles}>
       {showTitle && <h1>{title1}</h1>}
       <p>new name:{newName}</p>
-      <div {...listStyles}>{items?.map((item) => <div {...itemStyles}>{JSON.stringify(item)}</div>)}</div>
+      <div {...listStyles}>
+        {items?.map((item) => (
+          <div key={item._id} {...itemStyles}>
+            {JSON.stringify(item)}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
