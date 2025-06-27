@@ -40,7 +40,7 @@ export const RenderBlock = (
   const dataKey = get(props.repeaterData, "dataKey", "");
 
   const bindingLangSuffix = lang === fallbackLang ? "" : lang;
-  const dataBindingProps = applyBindingToBlockProps(
+  const blockWithBinding: ChaiBlock = applyBindingToBlockProps(
     applyLanguage(block, bindingLangSuffix, registeredChaiBlock),
     externalData,
     { index, key: dataKey },
@@ -49,13 +49,17 @@ export const RenderBlock = (
   const runtimeProps = getRuntimePropValues(blocks, block._id, getBlockRuntimeProps(block._type));
   const hasDataProvider = has(registeredChaiBlock, "dataProvider") && isFunction(registeredChaiBlock.dataProvider);
 
+  const newBlock: ChaiBlock = {
+    ...blockWithBinding,
+    ...blockAttributesProps,
+    ...runtimeProps,
+  };
+
   const blockProps = {
     blockProps: {},
     inBuilder: false,
     lang: lang || fallbackLang,
-    ...dataBindingProps,
-    ...blockAttributesProps,
-    ...runtimeProps,
+    ...newBlock,
   };
 
   if (isNull(Component)) return null;
@@ -68,7 +72,7 @@ export const RenderBlock = (
         <DataProviderPropsBlock
           lang={lang}
           pageProps={pageProps}
-          block={block}
+          block={newBlock}
           dataProvider={registeredChaiBlock.dataProvider}
           {...(dataProviderMetadataCallback ? { dataProviderMetadataCallback } : {})}
           draft={draft}>
@@ -79,10 +83,10 @@ export const RenderBlock = (
               children: children({
                 _id: block._id,
                 _type: block._type,
-                ...(isArray(dataBindingProps.repeaterItems)
+                ...(isArray(blockWithBinding.repeaterItems)
                   ? {
-                      repeaterItems: applyLimit(dataBindingProps.repeaterItems, block),
-                      $repeaterItemsKey: dataBindingProps.$repeaterItemsKey,
+                      repeaterItems: applyLimit(blockWithBinding.repeaterItems, block),
+                      $repeaterItemsKey: blockWithBinding.$repeaterItemsKey,
                     }
                   : {}),
               }),
@@ -100,10 +104,10 @@ export const RenderBlock = (
         children: children({
           _id: block._id,
           _type: block._type,
-          ...(isArray(dataBindingProps.repeaterItems)
+          ...(isArray(blockWithBinding.repeaterItems)
             ? {
-                repeaterItems: applyLimit(dataBindingProps.repeaterItems, block),
-                $repeaterItemsKey: dataBindingProps.$repeaterItemsKey,
+                repeaterItems: applyLimit(blockWithBinding.repeaterItems, block),
+                $repeaterItemsKey: blockWithBinding.$repeaterItemsKey,
               }
             : {}),
         }),
