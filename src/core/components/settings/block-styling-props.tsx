@@ -1,5 +1,6 @@
 import { useSelectedBlock, useSelectedStylingBlocks, useTranslation } from "@/core/hooks";
 import { useResetBlockStyles } from "@/core/hooks/use-reset-block-styles";
+import { Button } from "@/ui";
 import { Badge } from "@/ui/shadcn/components/ui/badge";
 import {
   DropdownMenu,
@@ -7,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/ui/shadcn/components/ui/dropdown-menu";
+import { ResetIcon } from "@radix-ui/react-icons";
 import { find, isEmpty, map, startCase } from "lodash-es";
 import { MoreVertical } from "lucide-react";
 
@@ -19,53 +21,64 @@ export const BlockStylingProps = () => {
   const stylesProps = Object.keys(selectedBlock).filter(
     (prop) => typeof selectedBlock[prop] === "string" && selectedBlock[prop].startsWith("#styles:"),
   );
-  if (isEmpty(stylesProps) || stylesProps.length <= 1) return null;
-
-  const { reset } = useResetBlockStyles();
+  const { reset, resetAll } = useResetBlockStyles();
+  const hasStyles = !isEmpty(stylesProps) && stylesProps.length > 1;
+  const resetButton = (
+    <Button className="h-6 w-full" variant="outline" size="sm" onClick={() => resetAll()}>
+      <ResetIcon />
+      {t("Reset styles")}
+    </Button>
+  );
 
   const isSelected = (prop: string) => {
     return find(stylingBlocks, (block) => block.prop === prop);
   };
+
   return (
-    <div className="flex flex-wrap gap-1">
-      <label htmlFor="block-styling-props" className="py-1 text-xs">
-        {t("Style element")}:
-      </label>
-      <div className="flex flex-wrap gap-2">
-        {map(stylesProps, (prop) => {
-          return (
-            <Badge
-              key={prop}
-              className="flex cursor-pointer items-center gap-1 pr-1"
-              variant={isSelected(prop) ? "default" : "secondary"}
-              onClick={() => {
-                setStylingBlocks([{ id: `${prop}-${selectedBlock._id}`, blockId: selectedBlock._id, prop }]);
-              }}>
-              {startCase(prop)}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button
-                    type="button"
-                    className="ml-1 rounded-sm p-0.5 hover:bg-blue-300 hover:text-blue-600"
-                    onClick={(e) => e.stopPropagation()}>
-                    <MoreVertical className="h-3 w-3" />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent side="bottom" className="border-border text-xs">
-                  <DropdownMenuItem
-                    className="text-xs"
-                    onClick={() => {
-                      reset(prop);
-                    }}>
-                    {t("Reset style")}
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </Badge>
-          );
-        })}
-      </div>
-      <div className="my-2 h-[1px] w-full bg-border" />
-    </div>
+    <>
+      {resetButton}
+      {hasStyles && (
+        <div className="flex flex-wrap gap-1">
+          <label htmlFor="block-styling-props" className="py-1 text-xs">
+            {t("Style element")}:
+          </label>
+          <div className="flex flex-wrap gap-2">
+            {map(stylesProps, (prop) => {
+              return (
+                <Badge
+                  key={prop}
+                  className="flex cursor-pointer items-center gap-1 pr-1"
+                  variant={isSelected(prop) ? "default" : "secondary"}
+                  onClick={() => {
+                    setStylingBlocks([{ id: `${prop}-${selectedBlock._id}`, blockId: selectedBlock._id, prop }]);
+                  }}>
+                  {startCase(prop)}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button
+                        type="button"
+                        className="ml-1 rounded-sm p-0.5 hover:bg-blue-300 hover:text-blue-600"
+                        onClick={(e) => e.stopPropagation()}>
+                        <MoreVertical className="h-3 w-3" />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent side="bottom" className="border-border text-xs">
+                      <DropdownMenuItem
+                        className="text-xs"
+                        onClick={() => {
+                          reset(prop);
+                        }}>
+                        {t("Reset style")}
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </Badge>
+              );
+            })}
+          </div>
+          <div className="my-2 h-[1px] w-full bg-border" />
+        </div>
+      )}
+    </>
   );
 };
