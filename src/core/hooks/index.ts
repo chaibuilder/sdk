@@ -25,6 +25,7 @@ import { usePermissions } from "@/core/hooks/use-permissions";
 import { usePreviewMode } from "@/core/hooks/use-preview-mode";
 import { useRemoveBlocks } from "@/core/hooks/use-remove-blocks";
 import { useRemoveClassesFromBlocks } from "@/core/hooks/use-remove-classes-from-blocks";
+import { useResetBlockStyles } from "@/core/hooks/use-reset-block-styles";
 import { useSavePage } from "@/core/hooks/use-save-page";
 import { useSelectedBlockAllClasses, useSelectedBlockCurrentClasses } from "@/core/hooks/use-select-block-classes";
 import {
@@ -65,6 +66,7 @@ export {
   useDuplicateBlocks,
   useHiddenBlockIds,
   useHighlightBlockId,
+  useInlineEditing,
   useLanguages,
   useLibraryBlocks,
   usePartialBlocksStore as usePartailBlocksStore,
@@ -74,6 +76,7 @@ export {
   usePreviewMode,
   useRemoveBlocks,
   useRemoveClassesFromBlocks,
+  useResetBlockStyles,
   useRightPanel,
   useSavePage,
   useSelectedBlock,
@@ -92,5 +95,4 @@ export {
   useUpdateBlocksProps,
   useUpdateBlocksPropsRealtime,
   useWrapperBlock,
-  useInlineEditing,
 };
