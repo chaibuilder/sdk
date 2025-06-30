@@ -53,25 +53,27 @@ export const BlockStylingProps = () => {
                     setStylingBlocks([{ id: `${prop}-${selectedBlock._id}`, blockId: selectedBlock._id, prop }]);
                   }}>
                   {startCase(prop)}
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <button
-                        type="button"
-                        className="ml-1 rounded-sm p-0.5 hover:bg-blue-300 hover:text-blue-600"
-                        onClick={(e) => e.stopPropagation()}>
-                        <MoreVertical className="h-3 w-3" />
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent side="bottom" className="border-border text-xs">
-                      <DropdownMenuItem
-                        className="text-xs"
-                        onClick={() => {
-                          reset(prop);
-                        }}>
-                        {t("Reset style")}
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  {
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button
+                          type="button"
+                          className="ml-1 rounded-sm p-0.5 hover:bg-blue-300 hover:text-blue-600"
+                          onClick={(e) => e.stopPropagation()}>
+                          <MoreVertical className="h-3 w-3" />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent side="bottom" className="border-border text-xs">
+                        <DropdownMenuItem
+                          className="text-xs"
+                          onClick={() => {
+                            reset(prop);
+                          }}>
+                          {t("Reset style")}
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  }
                 </Badge>
               );
             })}
