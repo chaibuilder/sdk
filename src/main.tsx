@@ -5,6 +5,7 @@ import "jotai-devtools/styles.css";
 import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { registerDemoFeatureFlags } from "./_demo/demo-flags";
 
 async function enableMocking() {
   if (import.meta.env.MODE !== "development") {
@@ -26,6 +27,9 @@ const router = createBrowserRouter([
     element: <Preview />,
   },
 ]);
+
+// Register demo feature flags
+registerDemoFeatureFlags();
 
 enableMocking().then(() => {
   ReactDOM.createRoot(document.getElementById("root")!).render(
