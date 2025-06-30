@@ -5,6 +5,7 @@ import { CssThemeVariables } from "@/core/components/css-theme-var";
 import { FallbackError } from "@/core/components/fallback-error";
 import { RootLayout } from "@/core/components/layout/root-layout";
 import { PreviewScreen } from "@/core/components/PreviewScreen";
+import { ChaiFeatureFlagsWidget } from "@/core/flags/flags-widget";
 import { setDebugLogs } from "@/core/functions/logging";
 import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
 import { defaultThemeValues } from "@/core/hooks/default-theme-options";
@@ -17,13 +18,11 @@ import { builderSaveStateAtom } from "@/core/hooks/use-save-page";
 import "@/core/index.css";
 import i18n from "@/core/locales/load";
 import { ScreenTooSmall } from "@/core/screen-too-small";
-import { FEATURE_TOGGLES } from "@/FEATURE_TOGGLES";
 import { ChaiBuilderEditorProps } from "@/types/index";
 import { ChaiBuilderThemeValues } from "@/types/types";
 import { Toaster } from "@/ui/shadcn/components/ui/sooner";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { useIntervalEffect } from "@react-hookz/web";
-import { FlagsProvider } from "flagged";
 import { useAtom } from "jotai/index";
 import { each, noop, omit } from "lodash-es";
 import React, { useEffect, useMemo } from "react";
@@ -123,13 +122,14 @@ const ChaiBuilderEditor: React.FC<ChaiBuilderEditorProps> = (props: ChaiBuilderE
   return (
     <div className="h-screen w-screen">
       <ErrorBoundary fallback={<FallbackError />} onError={onErrorFn}>
-        <FlagsProvider features={{ ...FEATURE_TOGGLES }}>
-          <ScreenTooSmall />
-          <ChaiBuilderComponent {...props} />
-          <ChaiWatchers {...props} />
-          <PreviewScreen />
-          <Toaster richColors />
-        </FlagsProvider>
+        <ScreenTooSmall />
+        <ChaiBuilderComponent {...props} />
+        <ChaiWatchers {...props} />
+        <PreviewScreen />
+        <Toaster richColors />
+        <div className="fixed bottom-4 left-4 z-50">
+          <ChaiFeatureFlagsWidget />
+        </div>
       </ErrorBoundary>
     </div>
   );
