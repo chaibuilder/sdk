@@ -56,10 +56,17 @@ export { registerChaiMediaManager } from "@/core/extensions/media-manager";
 export { registerChaiSaveToLibrary } from "@/core/extensions/save-to-library";
 export { registerChaiSidebarPanel } from "@/core/extensions/sidebar-panels";
 export { registerChaiTopBar } from "@/core/extensions/top-bar";
+export {
+  IfChaiFeatureFlag,
+  registerChaiFeatureFlag,
+  registerChaiFeatureFlags,
+  useChaiFeatureFlag,
+  useChaiFeatureFlags,
+  useToggleChaiFeatureFlag,
+} from "@/core/flags/register-chai-flag";
 export type { ChaiLibrary, ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 
 // hooks
-
 export { useMediaManagerComponent } from "@/core/extensions/media-manager";
 export type { ChaiSidebarPanel } from "@/core/extensions/sidebar-panels";
 export * from "@/core/hooks";

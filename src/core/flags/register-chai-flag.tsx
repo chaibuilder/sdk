@@ -9,19 +9,19 @@ type ChaiFlagOptions = {
   description?: string;
 };
 
-export const registerChaiFlag = (key: string, flagOptions: Omit<ChaiFlagOptions, "key">) => {
+export const registerChaiFeatureFlag = (key: string, flagOptions: Omit<ChaiFlagOptions, "key">) => {
   if (CHAI_FEATURE_FLAGS[key]) {
     throw new Error(`Flag ${key} already exists`);
   }
   CHAI_FEATURE_FLAGS[key] = { key, value: false, ...flagOptions };
 };
 
-export const registerChaiFlags = (flags: Record<string, Omit<ChaiFlagOptions, "key">>) => {
+export const registerChaiFeatureFlags = (flags: Record<string, Omit<ChaiFlagOptions, "key">>) => {
   Object.entries(flags).forEach(([key, flagOptions]) => {
     if (CHAI_FEATURE_FLAGS[key]) {
       throw new Error(`Flag ${key} already exists`);
     }
-    registerChaiFlag(key, flagOptions);
+    registerChaiFeatureFlag(key, flagOptions);
   });
 };
 
