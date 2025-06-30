@@ -5,30 +5,17 @@ import { ButtonIcon } from "@radix-ui/react-icons";
 export type FormButtonProps = {
   label: string;
   styles: ChaiStyles;
-  inputStyles: ChaiStyles;
   icon: string;
   iconSize: number;
   iconPos: "order-first" | "order-last";
 };
 
 const FormButtonBlock = (props: ChaiBlockComponentProps<FormButtonProps>) => {
-  const { blockProps, inBuilder, label, styles, inputStyles, icon, iconSize, iconPos } = props;
+  const { blockProps, inBuilder, label, styles, icon, iconSize, iconPos } = props;
   const fieldId = generateUUID();
 
-  // alpine js attrs
-  const attrs = {
-    "x-bind:disabled": "formLoading",
-  };
-
   return (
-    <button
-      id={fieldId}
-      {...attrs}
-      {...inputStyles}
-      {...styles}
-      {...(blockProps || {})}
-      type={inBuilder ? "button" : "submit"}
-      aria-label={label}>
+    <button id={fieldId} {...styles} {...(blockProps || {})} type={inBuilder ? "button" : "submit"} aria-label={label}>
       {label}
       {icon && (
         <div
@@ -52,7 +39,6 @@ const Config = {
       styles: StylesProp(
         "text-white bg-primary disabled:bg-gray-400 px-4 py-2 rounded-global flex items-center gap-x-2",
       ),
-      inputStyles: StylesProp(""),
       label: {
         type: "string",
         title: "Label",
