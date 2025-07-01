@@ -127,9 +127,7 @@ const ChaiBuilderEditor: React.FC<ChaiBuilderEditorProps> = (props: ChaiBuilderE
         <ChaiWatchers {...props} />
         <PreviewScreen />
         <Toaster richColors />
-        <div className="fixed bottom-4 left-4 z-50">
-          <ChaiFeatureFlagsWidget />
-        </div>
+        <ChaiFeatureFlagsWidget />
       </ErrorBoundary>
     </div>
   );
