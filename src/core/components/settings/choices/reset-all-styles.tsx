@@ -15,7 +15,7 @@ export const ResetStylesButton = () => {
           type="button"
           className="ml-1 rounded-sm p-0.5 hover:bg-blue-300 hover:text-blue-600"
           onClick={(e) => e.stopPropagation()}>
-          <MoreVertical className="h-4 w-4" />
+          <MoreVertical className="h-3 w-3" />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent side="bottom" className="border-border text-xs">
@@ -24,7 +24,7 @@ export const ResetStylesButton = () => {
           onClick={() => {
             resetAll();
           }}>
-          <ResetIcon className="h-4 w-4" />
+          <ResetIcon className="h-3 w-3" />
           {t("Reset styles")}
         </DropdownMenuItem>
       </DropdownMenuContent>

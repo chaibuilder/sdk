@@ -106,11 +106,11 @@ const SettingsPanel: React.FC = () => {
             <TabsTrigger value="settings" className="text-xs">
               Settings
             </TabsTrigger>
-            <TabsTrigger value="styles" className="text-xs">
+            <TabsTrigger value="styles" className="flex items-center justify-between text-xs">
               Styles
+              <ResetStylesButton />
             </TabsTrigger>
           </TabsList>
-          <ResetStylesButton />
         </div>
         <TabsContent value="settings" className="no-scrollbar h-full max-h-min overflow-y-auto">
           <BlockSettings />
