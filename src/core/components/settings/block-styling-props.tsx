@@ -1,6 +1,5 @@
 import { useSelectedBlock, useSelectedStylingBlocks, useTranslation } from "@/core/hooks";
 import { useResetBlockStyles } from "@/core/hooks/use-reset-block-styles";
-import { Button } from "@/ui";
 import { Badge } from "@/ui/shadcn/components/ui/badge";
 import {
   DropdownMenu,
@@ -8,7 +7,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/ui/shadcn/components/ui/dropdown-menu";
-import { ResetIcon } from "@radix-ui/react-icons";
 import { find, isEmpty, map, startCase } from "lodash-es";
 import { MoreVertical } from "lucide-react";
 
@@ -21,14 +19,8 @@ export const BlockStylingProps = () => {
   const stylesProps = Object.keys(selectedBlock).filter(
     (prop) => typeof selectedBlock[prop] === "string" && selectedBlock[prop].startsWith("#styles:"),
   );
-  const { reset, resetAll } = useResetBlockStyles();
+  const { reset } = useResetBlockStyles();
   const hasStyles = !isEmpty(stylesProps) && stylesProps.length > 1;
-  const resetButton = (
-    <Button className="h-6 w-full" variant="outline" size="sm" onClick={() => resetAll()}>
-      <ResetIcon />
-      {t("Reset styles")}
-    </Button>
-  );
 
   const isSelected = (prop: string) => {
     return find(stylingBlocks, (block) => block.prop === prop);
@@ -36,7 +28,6 @@ export const BlockStylingProps = () => {
 
   return (
     <>
-      {resetButton}
       {hasStyles && (
         <div className="flex flex-wrap gap-1">
           <label htmlFor="block-styling-props" className="py-1 text-xs">
