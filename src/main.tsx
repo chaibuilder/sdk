@@ -23,7 +23,7 @@ const router = createBrowserRouter([
     element: <ChaiBuilderDefault />,
   },
   {
-    path: "/preview",
+    path: "/preview/*",
     element: <Preview />,
   },
 ]);
