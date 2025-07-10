@@ -23,10 +23,17 @@ export const RepeaterBindingWidget = ({ value, onChange }: WidgetProps) => {
   return (
     <div className="mt-1 flex flex-col gap-1">
       <div className="flex items-center justify-between gap-2 rounded-md border border-blue-200 bg-blue-50 px-2 py-1 text-xs text-blue-600">
-        <span className="flex items-center gap-2 truncate">
+        <span className="flex max-w-[200px] items-center gap-2">
           {" "}
-          {isCollection ? <Database className="h-4 w-4" /> : null}
-          {displayValue}
+          {isCollection ? <Database className="h-3 min-h-3 w-3 min-w-3" /> : null}
+          <Tooltip delayDuration={500}>
+            <TooltipTrigger asChild>
+              <span className="cursor-default truncate">{displayValue}</span>
+            </TooltipTrigger>
+            <TooltipContent side="left" hidden={displayValue.length < 50}>
+              {displayValue}
+            </TooltipContent>
+          </Tooltip>
         </span>
         <Tooltip>
           <TooltipTrigger asChild>
