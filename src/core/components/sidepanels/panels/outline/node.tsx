@@ -9,10 +9,9 @@ import { useBlockHighlight, useHiddenBlockIds, usePermissions, useTranslation } 
 import { pubsub } from "@/core/pubsub";
 import { cn } from "@/core/utils/cn";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
-import { PlusIcon } from "@radix-ui/react-icons";
 import { atom, useAtom } from "jotai";
 import { get, has, isEmpty } from "lodash-es";
-import { ChevronRight, EyeOffIcon, MoreVertical } from "lucide-react";
+import { ChevronRight, EyeOffIcon, MoreVertical, PlusIcon } from "lucide-react";
 import { memo, useEffect, useMemo } from "react";
 import { NodeRendererProps } from "react-arborist";
 
@@ -224,7 +223,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
             hiddenBlocks.includes(id) ? "opacity-50" : "",
             isLibBlock && isSelected && "bg-primary/20 text-primary",
           )}>
-          <div className="flex items-center">
+          <div className="relative flex items-center">
             <div
               className={`flex h-4 w-4 rotate-0 transform cursor-pointer items-center justify-center transition-transform duration-100 ${
                 node.isOpen ? "rotate-90" : ""
@@ -257,14 +256,18 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
               )}
             </div>
           </div>
-          <div className="invisible flex items-center space-x-1.5 pr-2 group-hover:visible">
+          <div
+            className={cn(
+              "invisible absolute right-1 flex items-center space-x-1.5 rounded border bg-white p-0.5 text-black shadow group-hover:visible",
+              isEditing ? "hidden" : "",
+            )}>
             {canAddChildBlock(data?._type) && !hiddenBlocks.includes(id) && hasPermission(PERMISSIONS.ADD_BLOCK) ? (
               <Tooltip>
                 <TooltipTrigger
                   onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, { _id: id })}
                   className="cursor-pointer rounded bg-transparent"
                   asChild>
-                  <PlusIcon className="h-3 w-3" />
+                  <PlusIcon className="h-4 w-4 rounded p-0.5 hover:bg-primary hover:text-white" />
                 </TooltipTrigger>
                 <TooltipContent className="isolate z-[9999]" side="bottom">
                   {t("Add block")}
@@ -282,14 +285,14 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
                 }}
                 className="cursor-pointer rounded bg-transparent"
                 asChild>
-                <EyeOffIcon size={"15"} />
+                <EyeOffIcon className="h-4 w-4 rounded p-0.5 hover:bg-primary hover:text-white" />
               </TooltipTrigger>
               <TooltipContent className="isolate z-[9999]" side="bottom">
                 {t("Hide block")}
               </TooltipContent>
             </Tooltip>
             <BlockMoreOptions node={node} id={id}>
-              <MoreVertical size={"15"} />
+              <MoreVertical className="h-4 w-4 rounded p-0.5 hover:bg-primary hover:text-white" />
             </BlockMoreOptions>
           </div>
         </div>
