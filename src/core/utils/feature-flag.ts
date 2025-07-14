@@ -1,4 +1,4 @@
-import { registerChaiFeatureFlag } from "../main";
+import { registerChaiFeatureFlag } from "@/core/flags/register-chai-flag";
 
 
 export const registerFeatureFlags = () => {
