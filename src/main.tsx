@@ -6,6 +6,7 @@ import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { registerDemoFeatureFlags } from "./_demo/demo-flags";
+import { registerFeatureFlags } from "./core/utils/feature-flag";
 
 async function enableMocking() {
   if (import.meta.env.MODE !== "development") {
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
 
 // Register demo feature flags
 registerDemoFeatureFlags();
+registerFeatureFlags();
 
 enableMocking().then(() => {
   ReactDOM.createRoot(document.getElementById("root")!).render(

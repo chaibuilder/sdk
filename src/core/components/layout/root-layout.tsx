@@ -64,7 +64,7 @@ const AskAiButton = ({ isActive, show }: { isActive: boolean; show: () => void; 
 function useSidebarDefaultPanels() {
   const askAiCallBack = useBuilderProp("askAiCallBack", null);
   const aiChat = useFeature("aiChat");
-  const aiChatLeft = useChaiFeatureFlag("ai-chat-left");
+  const aiChatLeft = useChaiFeatureFlag("enable-ai-chat-left");
   return useMemo(() => {
     const items = [];
 

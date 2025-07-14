@@ -13,7 +13,7 @@ export const AiAssistant = () => {
   const askAiCallBack = useBuilderProp("askAiCallBack", null);
   const { t } = useTranslation();
   const { hasPermission } = usePermissions();
-  const aiChatLeft = useChaiFeatureFlag("ai-chat-left");
+  const aiChatLeft = useChaiFeatureFlag("enable-ai-chat-left");
 
   if (aiChatLeft || !askAiCallBack || !hasPermission(PERMISSIONS.EDIT_BLOCK)) return null;
   return (

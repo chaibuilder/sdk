@@ -8,8 +8,5 @@ export const registerDemoFeatureFlags = () => {
     "enable-reset-styles": {
       description: "Enable reset styles",
     },
-    "ai-chat-left": {
-      description: "Show AI chat on the left side",
-    },
   });
 };
