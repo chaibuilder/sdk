@@ -254,7 +254,7 @@ const ListTree = () => {
               <TooltipContent className="isolate z-[9999]">{t("Collapse all")}</TooltipContent>
             </Tooltip>
           </div>
-          <div className="group relative z-[9999] ml-5 w-full cursor-pointer">
+          <div className="group relative z-30 ml-5 w-full cursor-pointer">
             <div
               onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, { position: 0 })}
               className="h-1 w-[90%] rounded bg-primary opacity-0 duration-200 group-hover:opacity-100">
