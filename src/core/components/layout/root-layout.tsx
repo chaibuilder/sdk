@@ -14,6 +14,7 @@ import { useBuilderProp, useSidebarActivePanel } from "@/core/hooks";
 import { usePubSub } from "@/core/hooks/use-pub-sub";
 import { useRightPanel } from "@/core/hooks/use-theme";
 import { isDevelopment } from "@/core/import-html/general";
+import { useChaiFeatureFlag } from "@/core/main";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/ui/shadcn/components/ui/sheet";
@@ -22,7 +23,7 @@ import { LightningBoltIcon } from "@radix-ui/react-icons";
 import { useFeature } from "flagged";
 import { motion } from "framer-motion";
 import { compact, find, first, get } from "lodash-es";
-import { Layers, Paintbrush, X } from "lucide-react";
+import { Layers, Paintbrush, SparklesIcon, X } from "lucide-react";
 import React, {
   ComponentType,
   createElement,
@@ -53,10 +54,17 @@ const AiButton = ({ isActive, show }: { isActive: boolean; show: () => void; pan
     </Button>
   );
 };
-
+const AskAiButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
+  return (
+    <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
+      <SparklesIcon className="rtl:ml-2" />
+    </Button>
+  );
+};
 function useSidebarDefaultPanels() {
   const askAiCallBack = useBuilderProp("askAiCallBack", null);
   const aiChat = useFeature("aiChat");
+  const aiChatLeft = useChaiFeatureFlag("enable-ai-chat-left");
   return useMemo(() => {
     const items = [];
 
@@ -73,6 +81,20 @@ function useSidebarDefaultPanels() {
       ),
     });
 
+    if (aiChatLeft) {
+      items.unshift({
+        id: "ask-ai",
+        button: AskAiButton,
+        label: "Ask AI",
+        isInternal: true,
+        width: DEFAULT_PANEL_WIDTH,
+        panel: () => (
+          <div className="">
+            <AskAI />
+          </div>
+        ),
+      });
+    }
     if (askAiCallBack && aiChat) {
       items.unshift({
         id: "ai",
@@ -88,7 +110,7 @@ function useSidebarDefaultPanels() {
       });
     }
     return compact(items);
-  }, [askAiCallBack, aiChat]);
+  }, [askAiCallBack, aiChat, aiChatLeft]);
 }
 
 /**
