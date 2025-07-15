@@ -26,6 +26,7 @@ const CheckboxBlock = (props: ChaiBlockComponentProps<CheckboxProps>) => {
         type="checkbox"
         required={required}
         name={fieldName}
+        defaultChecked={checked}
       />
     );
 

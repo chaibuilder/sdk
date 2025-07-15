@@ -13,17 +13,36 @@ export type SelectProps = {
   label: string;
   placeholder: string;
   fieldName: string;
+  defaultValue: string;
 };
 
 const SelectBlock = (props: ChaiBlockComponentProps<SelectProps>) => {
-  const { blockProps, fieldName, label, placeholder, styles, inputStyles, required, showLabel, _multiple, options } =
-    props;
+  const {
+    blockProps,
+    fieldName,
+    label,
+    placeholder,
+    styles,
+    inputStyles,
+    required,
+    showLabel,
+    _multiple,
+    options,
+    defaultValue,
+  } = props;
   const fieldId = generateUUID();
 
   if (!showLabel) {
     return (
-      <select id={fieldId} {...styles} {...blockProps} required={required} multiple={_multiple} name={fieldName}>
-        <option value="" disabled selected hidden>
+      <select
+        id={fieldId}
+        {...styles}
+        {...blockProps}
+        required={required}
+        multiple={_multiple}
+        name={fieldName}
+        defaultValue={defaultValue || ""}>
+        <option value="" disabled hidden>
           {placeholder}
         </option>
         {map(options, (option) => (
@@ -38,8 +57,14 @@ const SelectBlock = (props: ChaiBlockComponentProps<SelectProps>) => {
   return (
     <div {...styles} {...blockProps}>
       {showLabel && <label htmlFor={fieldId}>{label}</label>}
-      <select {...inputStyles} id={fieldId} required={required} multiple={_multiple} name={fieldName}>
-        <option value="" disabled selected hidden>
+      <select
+        {...inputStyles}
+        id={fieldId}
+        required={required}
+        multiple={_multiple}
+        name={fieldName}
+        defaultValue={defaultValue || ""}>
+        <option value="" disabled hidden>
           {placeholder}
         </option>
         {map(options, (option) => (
@@ -86,6 +111,11 @@ const Config = {
         type: "boolean",
         title: "Required",
         default: false,
+      },
+      defaultValue: {
+        type: "string",
+        title: "Default Value",
+        default: "",
       },
       _multiple: {
         type: "boolean",
