@@ -11,10 +11,11 @@ export type TextAreaProps = {
   rows: number;
   label: string;
   placeholder: string;
+  defaultValue: string;
 };
 
 const TextAreaBlock = (props: ChaiBlockComponentProps<TextAreaProps>) => {
-  const { blockProps, fieldName, label, placeholder, styles, inputStyles, rows, showLabel, required } = props;
+  const { blockProps, fieldName, label, placeholder, styles, inputStyles, rows, showLabel, required, defaultValue } = props;
   const fieldId = generateUUID();
 
   if (!showLabel) {
@@ -28,6 +29,7 @@ const TextAreaBlock = (props: ChaiBlockComponentProps<TextAreaProps>) => {
         placeholder={placeholder}
         rows={rows}
         required={required}
+        defaultValue={defaultValue}
       />
     );
   }
@@ -42,6 +44,7 @@ const TextAreaBlock = (props: ChaiBlockComponentProps<TextAreaProps>) => {
         placeholder={placeholder}
         rows={rows}
         required={required}
+        defaultValue={defaultValue}
       />
     </div>
   );
@@ -87,6 +90,12 @@ const Config = {
         type: "boolean",
         title: "Required",
         default: false,
+      },
+      defaultValue: {
+        type: "string",
+        title: "Default Value",
+        default: "",
+        ui: { "ui:widget": "textarea", "ui:autosize": true, "ui:rows": 3 },
       },
     },
   }),
