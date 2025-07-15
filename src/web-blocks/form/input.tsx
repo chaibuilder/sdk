@@ -11,6 +11,7 @@ export type InputProps = {
   inputType: string;
   label: string;
   placeholder: string;
+  defaultValue: string;
 };
 
 // Extract autocomplete value and determine input type from combined inputType value
@@ -116,7 +117,7 @@ export const getInputTypeAndAutocomplete = (inputTypeValue: string): { type: str
 };
 
 const InputBlock = (props: ChaiBlockComponentProps<InputProps>) => {
-  const { blockProps, fieldName, label, placeholder, styles, inputStyles, showLabel, required, inputType } = props;
+  const { blockProps, fieldName, label, placeholder, styles, inputStyles, showLabel, required, inputType, defaultValue } = props;
   const fieldId = generateUUID();
 
   // Determine the actual input type and autocomplete value
@@ -134,6 +135,7 @@ const InputBlock = (props: ChaiBlockComponentProps<InputProps>) => {
         placeholder={placeholder}
         required={required}
         autoComplete={autocomplete}
+        defaultValue={defaultValue}
       />
     );
   }
@@ -143,6 +145,7 @@ const InputBlock = (props: ChaiBlockComponentProps<InputProps>) => {
       {showLabel && <label htmlFor={fieldId}>{label}</label>}
       <input
         name={fieldName}
+        defaultValue={defaultValue}
         {...inputStyles}
         id={fieldId}
         type={smartInputType}
@@ -266,6 +269,11 @@ const Config = {
         type: "boolean",
         title: "Required",
         default: false,
+      },
+      defaultValue: {
+        type: "string",
+        title: "Default Value",
+        default: "",
       },
     },
   }),
