@@ -32,6 +32,11 @@ const SelectBlock = (props: ChaiBlockComponentProps<SelectProps>) => {
   } = props;
   const fieldId = generateUUID();
 
+  // Process defaultValue for multi-select
+  const processedDefaultValues = _multiple && defaultValue ? 
+    defaultValue.split(',').map(val => val.trim()) : 
+    defaultValue || "";
+
   if (!showLabel) {
     return (
       <select
@@ -41,7 +46,7 @@ const SelectBlock = (props: ChaiBlockComponentProps<SelectProps>) => {
         required={required}
         multiple={_multiple}
         name={fieldName}
-        defaultValue={defaultValue || ""}>
+        defaultValue={processedDefaultValues}>
         <option value="" disabled hidden>
           {placeholder}
         </option>
@@ -63,7 +68,7 @@ const SelectBlock = (props: ChaiBlockComponentProps<SelectProps>) => {
         required={required}
         multiple={_multiple}
         name={fieldName}
-        defaultValue={defaultValue || ""}>
+        defaultValue={processedDefaultValues}>
         <option value="" disabled hidden>
           {placeholder}
         </option>
