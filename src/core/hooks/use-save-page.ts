@@ -39,5 +39,24 @@ export const useSavePage = () => {
     3000, // save only every 5 seconds
   );
 
-  return { savePage, saveState, setSaveState };
+  const savePageAsync = async () => {
+    if (!hasPermission("save_page")) {
+      return;
+    }
+    setSaveState("SAVING");
+    onSaveStateChange("SAVING");
+    const pageData = getPageData();
+    await onSave({
+      autoSave: true,
+      blocks: pageData.blocks,
+      theme,
+    });
+    setTimeout(() => {
+      setSaveState("SAVED");
+      onSaveStateChange("SAVED");
+    }, 100);
+    return true;
+  };
+
+  return { savePage, savePageAsync, saveState, setSaveState };
 };
