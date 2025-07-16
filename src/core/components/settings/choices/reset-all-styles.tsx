@@ -13,7 +13,7 @@ export const ResetStylesButton = () => {
       <DropdownMenuTrigger asChild>
         <button
           type="button"
-          className="ml-1 rounded-sm p-0.5 hover:bg-blue-300 hover:text-blue-600"
+          className=" p-0.5 rounded-sm hover:bg-gray-300"
           onClick={(e) => e.stopPropagation()}>
           <MoreVertical className="h-3 w-3" />
         </button>
