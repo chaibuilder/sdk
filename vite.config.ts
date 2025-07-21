@@ -71,7 +71,6 @@ export default defineConfig({
         "react-arborist",
         "jotai/utils",
         "sonner",
-        "next-themes",
         "@rjsf/core",
         "@ai-sdk/react",
         "react-hook-form",

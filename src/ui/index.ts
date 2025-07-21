@@ -19,7 +19,6 @@ export * from "@/ui/shadcn/components/ui/separator";
 export * from "@/ui/shadcn/components/ui/sheet";
 export * from "@/ui/shadcn/components/ui/skeleton";
 export * from "@/ui/shadcn/components/ui/slider";
-export * from "@/ui/shadcn/components/ui/sooner";
 export * from "@/ui/shadcn/components/ui/switch";
 export * from "@/ui/shadcn/components/ui/tabs";
 export * from "@/ui/shadcn/components/ui/textarea";
