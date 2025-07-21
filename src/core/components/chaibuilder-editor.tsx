@@ -20,7 +20,7 @@ import i18n from "@/core/locales/load";
 import { ScreenTooSmall } from "@/core/screen-too-small";
 import { ChaiBuilderEditorProps } from "@/types/index";
 import { ChaiBuilderThemeValues } from "@/types/types";
-import { Toaster } from "@/ui/shadcn/components/ui/sooner";
+import { Toaster } from "sonner";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { useIntervalEffect } from "@react-hookz/web";
 import { useAtom } from "jotai/index";
