@@ -1,5 +1,12 @@
-import { getChaiBuilderTailwindConfig } from "./src/tailwind/get-chai-builder-tailwind-config";
+/**
+ * In Tailwind CSS v4, configuration is moved directly to CSS files
+ * This file is kept for backward compatibility but is no longer the primary config source.
+ * 
+ * See src/index.css for the full configuration using the new @config approach
+ */
 
-// In Tailwind v4, the config structure has changed but we're still using our custom function
-// that handles the appropriate configuration for v4
-export default getChaiBuilderTailwindConfig(["./index.html", "./src/**/*.{js,ts,jsx,tsx}"]);
+export default {
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  darkMode: "class"
+  // The actual configuration is now in src/index.css
+};

@@ -1,13 +1,28 @@
-// In Tailwind v4, plugins need to be imported differently
+/**
+ * In Tailwind CSS v4, configuration has moved to CSS files using @config syntax
+ * This file is maintained for backward compatibility with existing projects
+ * that might be importing or extending this configuration.
+ * 
+ * See src/index.css for the current configuration implementation.
+ */
+
+// Import plugins for backward compatibility
 import aspectRatio from "@tailwindcss/aspect-ratio";
 import forms from "@tailwindcss/forms";
 import typography from "@tailwindcss/typography";
 import animate from "tailwindcss-animate";
 
+/**
+ * Returns shadcn theme object - maintained for backward compatibility
+ */
 function shadcnTheme() {
+  console.warn(
+    "[Deprecated] shadcnTheme() is deprecated in Tailwind v4. "
+    + "Theme configuration is now defined in CSS using @config. "
+    + "See src/index.css for the current implementation."
+  );
+  
   return {
-    // In Tailwind v4, the color configuration works similarly, but we may need to
-    // use more CSS variables for better integration with the new version
     colors: {
       border: "hsl(var(--border))",
       input: "hsl(var(--input))",
@@ -43,13 +58,11 @@ function shadcnTheme() {
         foreground: "hsl(var(--card-foreground))",
       },
     },
-    // Tailwind v4 uses rem by default for border-radius
     borderRadius: {
       lg: `var(--radius)`,
       md: `calc(var(--radius) - 0.125rem)`,
       sm: "calc(var(--radius) - 0.25rem)",
     },
-    // Keyframes work similarly in v4
     keyframes: {
       "accordion-down": {
         from: { height: "0" },
@@ -60,7 +73,6 @@ function shadcnTheme() {
         to: { height: "0" },
       },
     },
-    // Animation configuration remains similar
     animation: {
       "accordion-down": "accordion-down 0.2s ease-out",
       "accordion-up": "accordion-up 0.2s ease-out",
@@ -68,17 +80,24 @@ function shadcnTheme() {
   };
 }
 
+/**
+ * Returns a Tailwind configuration object - maintained for backward compatibility
+ */
 const getChaiBuilderTailwindConfig = (content: string[]) => {
+  console.warn(
+    "[Deprecated] getChaiBuilderTailwindConfig() is deprecated in Tailwind v4. "
+    + "Configuration is now defined in CSS using @config. "
+    + "See src/index.css for the current implementation."
+  );
+  
   return {
-    // Tailwind v4 uses light/dark modes by default rather than class
     darkMode: ["class"],
     content: [...content, "node_modules/@chaibuilder/sdk/dist/*.{js,cjs}"],
     theme: {
       extend: shadcnTheme(),
     },
-    // In Tailwind v4, plugins are imported directly
-    plugins: [animate, typography, forms, aspectRatio],
+    plugins: [typography, forms, aspectRatio, animate],
   };
 };
 
-export { getChaiBuilderTailwindConfig };
+export { getChaiBuilderTailwindConfig, shadcnTheme };
