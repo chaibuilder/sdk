@@ -172,6 +172,14 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
     );
   }, [data, hasPermission]);
 
+  const getBlockDisplayName = (data: any): string => {
+    if (data?._name) return data._name;
+    if (data?._type === "Box" && data?.tag && data?.tag !== "div") {
+      return startCase(data.tag);
+    }
+    return data?._type?.split("/").pop() || "";
+  };
+
   return (
     <div className="w-full">
       <div
@@ -252,12 +260,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
                     node.edit();
                     node.deselect();
                   }}>
-                  <span>
-                    {data?._name ||
-                      (data?._type === "Box" && data?.tag && data?.tag !== "div"
-                        ? startCase(data.tag)
-                        : data?._type.split("/").pop())}
-                  </span>
+                  <span>{getBlockDisplayName(data)}</span>
                 </div>
               )}
             </div>
