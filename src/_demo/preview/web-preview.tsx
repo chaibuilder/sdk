@@ -142,7 +142,7 @@ const PreviewWeb = () => {
   const html = ReactDOM.renderToString(<RenderChaiBlocks lang={selectedLang} blocks={localBlocks} />);
   return (
     <div className="flex h-screen w-screen flex-col overflow-hidden bg-gray-100">
-      <div className="flex h-16 items-center justify-center border-b border-gray-200 shadow-sm">
+      <div className="flex h-16 items-center justify-center border-b border-gray-200 shadow-xs">
         <div className="flex items-center justify-center gap-0.5 rounded-md">
           {map(WEB_BREAKPOINTS, (bp: BreakpointItemType) => (
             <BreakpointCard {...bp} setIframeWidth={setIframeWidth} key={bp.title} currentWidth={width} />

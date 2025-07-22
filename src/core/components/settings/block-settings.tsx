@@ -105,7 +105,7 @@ export default function BlockSettings() {
   return (
     <div className="no-scrollbar overflow-x-hidden px-px">
       {!isEmpty(wrapperBlock) && (
-        <div className="mb-4 rounded border bg-zinc-100 px-1">
+        <div className="mb-4 rounded-sm border bg-zinc-100 px-1">
           <div
             onClick={() => setShowWrapperSetting((prev) => !prev)}
             className="flex cursor-pointer items-center gap-x-1 py-2 text-xs font-medium leading-tight hover:bg-slate-100">

@@ -99,7 +99,7 @@ export default function AIChatPanel() {
   };
 
   return (
-    <div className="flex h-full w-full flex-col rounded-lg bg-background shadow-sm">
+    <div className="flex h-full w-full flex-col rounded-lg bg-background shadow-xs">
       {/* Messages */}
       <ScrollArea className="flex-1 p-3">
         {messages.length === 0 ? (

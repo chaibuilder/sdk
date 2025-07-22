@@ -63,7 +63,7 @@ const DragStyleButton = ({
         setDragData(data);
       }}
       color={undefined}
-      className="relative z-50 ml-1 hidden h-6 cursor-row-resize rounded bg-background/70 px-2 group-hover:inline">
+      className="relative z-50 ml-1 hidden h-6 cursor-row-resize rounded-sm bg-background/70 px-2 group-hover:inline">
       <RowSpacingIcon />
     </button>
   );
@@ -176,7 +176,7 @@ export const AdvanceChoices = (props: RangeOptionsType) => {
         {unit === "class" ? (
           <>
             <input
-              className="h-6 w-24 rounded border border-foreground/20 bg-background px-2 py-0.5 text-sm focus-visible:outline-0"
+              className="h-6 w-24 rounded-sm border border-foreground/20 bg-background px-2 py-0.5 text-sm focus-visible:outline-0"
               readOnly
               value={currentClass}
             />
@@ -251,7 +251,7 @@ export const AdvanceChoices = (props: RangeOptionsType) => {
                   <button
                     type="button"
                     onClick={() => setShowUnits(!showUnits)}
-                    className="flex h-6 cursor-pointer items-center gap-x-1 rounded rounded-l-none bg-background p-px px-1 text-[11px] uppercase">
+                    className="flex h-6 cursor-pointer items-center gap-x-1 rounded-sm rounded-l-none bg-background p-px px-1 text-[11px] uppercase">
                     <span className={`inline-block ${units.length === 1 ? "px-2 font-semibold" : ""}`}>{unit}</span>
                     {units.length > 1 ? <TriangleDownIcon /> : null}
                   </button>

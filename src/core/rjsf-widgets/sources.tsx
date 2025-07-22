@@ -40,20 +40,20 @@ const SourcesField = ({ formData, onChange }: FieldProps) => {
       </div>
       <div className="space-y-2">
         {srcsets.length === 0 ? (
-          <div className="rounded border border-dashed border-gray-200 p-2 text-xs italic text-gray-500">
+          <div className="rounded-sm border border-dashed border-gray-200 p-2 text-xs italic text-gray-500">
             Add additional sources to create responsive videos
           </div>
         ) : (
           map(srcsets, (source, index) => {
             return (
-              <div key={index} className="group relative space-y-1.5 rounded border border-gray-200 px-2 pb-1.5">
+              <div key={index} className="group relative space-y-1.5 rounded-sm border border-gray-200 px-2 pb-1.5">
                 <button
                   type="button"
                   onClick={() => removeSource(index)}
                   className="absolute -right-px -top-0 -translate-y-1/2 rounded-full bg-red-100 p-1 opacity-0 hover:bg-red-200 group-hover:opacity-100">
                   <X size={10} className="text-red-500" />
                 </button>
-                <div className="flex items-center gap-x-2 rounded border">
+                <div className="flex items-center gap-x-2 rounded-sm border">
                   <label className="flex !h-6 h-full w-1/4 items-center justify-center bg-gray-200 px-2 !text-[10px] !font-medium">
                     Width
                   </label>
@@ -66,7 +66,7 @@ const SourcesField = ({ formData, onChange }: FieldProps) => {
                     className="!placeholder:text-gray-100 !mt-0 !rounded-none !border-0 !p-0 !text-xs"
                   />
                 </div>
-                <div className="flex items-center gap-x-2 rounded border">
+                <div className="flex items-center gap-x-2 rounded-sm border">
                   <label className="flex !h-6 h-full w-1/4 items-center justify-center bg-gray-200 px-2 !text-[10px] !font-medium">
                     URL
                   </label>

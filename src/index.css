@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* Note: In Tailwind CSS v4, we use @import instead of @tailwind directives */
 
 @layer base {
   :root {

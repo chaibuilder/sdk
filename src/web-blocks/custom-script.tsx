@@ -12,7 +12,7 @@ const CustomScript = (props: ChaiBlockComponentProps<CustomScriptBlockProps>) =>
     return (
       <div {...blockProps}>
         <div className={cn("pointer-events-none flex flex-col items-center justify-center p-2", "")}>
-          <div className="h-full w-full rounded bg-gray-200 p-1 dark:bg-gray-800">
+          <div className="h-full w-full rounded-sm bg-gray-200 p-1 dark:bg-gray-800">
             <p className="text-left text-xs text-gray-400">
               Scripts will be only executed in preview and live mode. Place your script at the bottom of the
             </p>

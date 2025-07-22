@@ -201,7 +201,7 @@ export function ManualClasses() {
                   e.target.select();
                 }, 0);
               }}
-              className="group relative flex max-w-[260px] cursor-default items-center gap-x-1 truncate break-words rounded border border-border bg-gray-200 p-px px-1.5 pr-2 text-[11px] text-gray-600 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
+              className="group relative flex max-w-[260px] cursor-default items-center gap-x-1 truncate break-words rounded-sm border border-border bg-gray-200 p-px px-1.5 pr-2 text-[11px] text-gray-600 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
             />
           ) : (
             <button
@@ -215,7 +215,7 @@ export function ManualClasses() {
                   }
                 }, 10);
               }}
-              className="group relative flex max-w-[260px] cursor-default items-center gap-x-1 truncate break-words rounded border border-border bg-gray-200 p-px px-1.5 pr-2 text-[11px] text-gray-600 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+              className="group relative flex max-w-[260px] cursor-default items-center gap-x-1 truncate break-words rounded-sm border border-border bg-gray-200 p-px px-1.5 pr-2 text-[11px] text-gray-600 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
               {cls}
               {editingClass !== cls && (
                 <Cross2Icon

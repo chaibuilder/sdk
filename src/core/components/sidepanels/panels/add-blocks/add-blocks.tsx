@@ -133,7 +133,7 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
   return (
     <div className="mx-auto flex h-full w-full max-w-3xl flex-col">
       {/* Search at top */}
-      <div className="sticky top-0 z-10 bg-background/80 px-4 py-2 backdrop-blur-sm">
+      <div className="sticky top-0 z-10 bg-background/80 px-4 py-2 backdrop-blur-xs">
         <Input
           ref={searchInputRef}
           type="search"

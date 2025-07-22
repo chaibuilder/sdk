@@ -154,8 +154,8 @@ const PageTypeField = ({
         <div className="absolute z-40 mt-2 max-h-40 w-full max-w-[250px] overflow-y-auto rounded-md border border-border bg-background shadow-lg">
           {loading ? (
             <div className="space-y-1 p-2">
-              <div className="h-6 w-full animate-pulse rounded bg-gray-200" />
-              <div className="h-6 w-full animate-pulse rounded bg-gray-200" />
+              <div className="h-6 w-full animate-pulse rounded-sm bg-gray-200" />
+              <div className="h-6 w-full animate-pulse rounded-sm bg-gray-200" />
             </div>
           ) : isSearching && isEmpty(pageTypeItems) ? (
             <div className="flex items-center justify-center p-4 text-sm text-gray-500">

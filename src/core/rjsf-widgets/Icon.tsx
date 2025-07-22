@@ -45,7 +45,7 @@ const IconPickerField = ({ value, onChange, id }: WidgetProps) => {
           onChange={(e) => handleSvgChange(e.target.value)}
           placeholder={t("Enter SVG code here")}
           rows={2}
-          className="no-scrollbar w-full rounded-md border border-border bg-background px-3 py-1.5 text-xs shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+          className="no-scrollbar w-full rounded-md border border-border bg-background px-3 py-1.5 text-xs shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
         />
       </div>
       <p className="text-xs text-muted-foreground">{t("Paste SVG code to use as an icon")}</p>

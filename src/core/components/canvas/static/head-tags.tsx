@@ -10,7 +10,7 @@ import { useTheme, useThemeOptions } from "@/core/hooks/use-theme";
 import { ChaiBuilderThemeValues } from "@/types/types";
 import { useRegisteredFonts } from "@chaibuilder/runtime";
 import aspectRatio from "@tailwindcss/aspect-ratio";
-import containerQueries from "@tailwindcss/container-queries";
+// Container queries are now integrated into Tailwind CSS v4 core
 import forms from "@tailwindcss/forms";
 import typography from "@tailwindcss/typography";
 import { filter, get, has, map } from "lodash-es";
@@ -51,7 +51,7 @@ export const HeadTags = () => {
         typography,
         forms,
         aspectRatio,
-        containerQueries,
+        // containerQueries is now integrated into Tailwind CSS v4 core
         plugin(function ({ addBase, theme }: any) {
           addBase({
             "h1,h2,h3,h4,h5,h6": {

@@ -19,7 +19,7 @@ export const DropDownChoices = ({ label, property, onChange }: any) => {
     <div className={label ? "w-full rounded" : "grow"}>
       {isArbitraryClassUsed ? (
         <div className="flex items-center">
-          <Input className="w-[70%] rounded py-1" readOnly value={pureClsName} />
+          <Input className="w-[70%] rounded-sm py-1" readOnly value={pureClsName} />
           <Tooltip delayDuration={100}>
             <TooltipTrigger asChild>
               <button type="button" className="invisible ml-3 mt-1 text-blue-600 group-hover:visible">

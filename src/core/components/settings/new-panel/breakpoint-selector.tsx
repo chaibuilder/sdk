@@ -12,7 +12,7 @@ export function BreakpointSelector() {
 
   return (
     <>
-      <div className="sticky top-0 z-10 flex items-center justify-start bg-muted px-2 py-1 shadow-sm">
+      <div className="sticky top-0 z-10 flex items-center justify-start bg-muted px-2 py-1 shadow-xs">
         <p className="text-xs text-muted-foreground">Screen:&nbsp;</p>
         <Breakpoints openDelay={1000} tooltip={false} />
       </div>

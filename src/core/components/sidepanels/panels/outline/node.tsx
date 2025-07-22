@@ -162,7 +162,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
           <div
             role="button"
             onClick={() => addBlockOnPosition(-1)}
-            className="h-1 rounded bg-primary opacity-0 duration-200 group-hover:opacity-100">
+            className="h-1 rounded-sm bg-primary opacity-0 duration-200 group-hover:opacity-100">
             <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 transform items-center gap-x-1 rounded-full bg-primary px-3 py-1 text-[9px] leading-tight text-white hover:bg-primary">
               <PlusIcon className="h-2 w-2 stroke-[3]" /> {t("Add block")}
             </div>
@@ -217,7 +217,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
                 }}
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
-                className="absolute -top-0.5 h-1 w-[90%] rounded bg-primary opacity-0 delay-200 duration-200 group-hover:opacity-100">
+                className="absolute -top-0.5 h-1 w-[90%] rounded-sm bg-primary opacity-0 delay-200 duration-200 group-hover:opacity-100">
                 <div className="absolute left-1/2 top-1/2 flex h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full bg-primary p-1 outline outline-2 outline-white hover:bg-primary">
                   <PlusIcon className="h-3 w-3 stroke-[4] text-white" />
                 </div>
@@ -272,7 +272,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
               <Tooltip>
                 <TooltipTrigger
                   onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, { _id: id })}
-                  className="cursor-pointer rounded bg-transparent"
+                  className="cursor-pointer rounded-sm bg-transparent"
                   asChild>
                   <PlusIcon className="h-3 w-3" />
                 </TooltipTrigger>
@@ -290,7 +290,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
                     node.toggle();
                   }
                 }}
-                className="cursor-pointer rounded bg-transparent"
+                className="cursor-pointer rounded-sm bg-transparent"
                 asChild>
                 <EyeOffIcon size={"15"} />
               </TooltipTrigger>

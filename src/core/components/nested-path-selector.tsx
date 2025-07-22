@@ -123,7 +123,7 @@ const PathDropdown = ({ data, onSelect, dataType }: NestedPathSelectorProps) => 
                   </Button>
                 )}
                 {option.type === "object" && (
-                  <div className="cursor-pointer rounded p-1 hover:bg-muted">
+                  <div className="cursor-pointer rounded-sm p-1 hover:bg-muted">
                     <ChevronRight className="h-4 w-4 opacity-50" />
                   </div>
                 )}
@@ -156,7 +156,7 @@ export function NestedPathSelector({ data, onSelect, dataType = "value" }: Neste
             <Button
               size="sm"
               variant="outline"
-              className="h-5 rounded-sm px-1 py-0 text-[9px] text-muted-foreground"
+              className="h-5 rounded-xs px-1 py-0 text-[9px] text-muted-foreground"
               role="combobox"
               aria-expanded={open}>
               <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">

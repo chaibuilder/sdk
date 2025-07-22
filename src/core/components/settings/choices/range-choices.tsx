@@ -17,7 +17,7 @@ export const RangeChoices = ({ property, onChange }: any) => {
   const isArbitraryClassUsed = /\[.*\]/g.test(pureClsName);
 
   return (
-    <div className="flex flex-row divide-x divide-solid divide-border rounded border border-border text-xs">
+    <div className="flex flex-row divide-x divide-solid divide-border rounded-sm border border-border text-xs">
       {isArbitraryClassUsed ? (
         <div className="px-2 py-[5px]">{pureClsName}</div>
       ) : (

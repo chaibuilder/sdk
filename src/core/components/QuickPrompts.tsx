@@ -74,7 +74,7 @@ export function QuickPrompts({ onClick }: { onClick: (prompt: string) => void })
             <Popover>
               <PopoverTrigger asChild>
                 <li
-                  className="flex cursor-pointer items-center space-x-2 rounded p-1 pl-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
+                  className="flex cursor-pointer items-center space-x-2 rounded-sm p-1 pl-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
                   key={name}>
                   <Icon className="h-4 w-4" />
                   <span>{name}</span>
@@ -89,7 +89,7 @@ export function QuickPrompts({ onClick }: { onClick: (prompt: string) => void })
           ) : (
             <li
               onClick={() => onClick(prompt)}
-              className="flex cursor-pointer items-center space-x-2 rounded p-1 text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="flex cursor-pointer items-center space-x-2 rounded-sm p-1 text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
               key={name}>
               <Icon className="h-4 w-4" />
               <span>{t(name)}</span>

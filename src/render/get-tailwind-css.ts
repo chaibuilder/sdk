@@ -5,7 +5,7 @@ import { ChaiBlock } from "@/types/chai-block";
 import { ChaiBuilderThemeOptions } from "@/types/chaibuilder-editor-props";
 import { createTailwindcss } from "@mhsdesign/jit-browser-tailwindcss";
 import twAspectRatio from "@tailwindcss/aspect-ratio";
-import twContainer from "@tailwindcss/container-queries";
+// Container queries are now integrated into Tailwind CSS v4 core
 import twForms from "@tailwindcss/forms";
 import twTypography from "@tailwindcss/typography";
 
@@ -21,7 +21,7 @@ async function getTailwindCSS(
       darkMode: "class",
       safelist,
       theme: { extend: getChaiBuilderTheme(themeOptions) },
-      plugins: [twForms, twTypography, twAspectRatio, twContainer, chaiBuilderPlugin],
+      plugins: [twForms, twTypography, twAspectRatio, chaiBuilderPlugin], // Container queries are now integrated into Tailwind CSS v4 core
       corePlugins: { preflight: includeBaseStyles },
       ...(prefix ? { prefix: `${prefix}` } : {}),
     },

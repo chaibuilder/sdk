@@ -1,10 +1,13 @@
-import tailwindAspectRatio from "@tailwindcss/aspect-ratio";
-import tailwindForms from "@tailwindcss/forms";
-import tailwindTypography from "@tailwindcss/typography";
-import tailwindAnimate from "tailwindcss-animate";
+// In Tailwind v4, plugins need to be imported differently
+import aspectRatio from "@tailwindcss/aspect-ratio";
+import forms from "@tailwindcss/forms";
+import typography from "@tailwindcss/typography";
+import animate from "tailwindcss-animate";
 
 function shadcnTheme() {
   return {
+    // In Tailwind v4, the color configuration works similarly, but we may need to
+    // use more CSS variables for better integration with the new version
     colors: {
       border: "hsl(var(--border))",
       input: "hsl(var(--input))",
@@ -40,11 +43,13 @@ function shadcnTheme() {
         foreground: "hsl(var(--card-foreground))",
       },
     },
+    // Tailwind v4 uses rem by default for border-radius
     borderRadius: {
       lg: `var(--radius)`,
-      md: `calc(var(--radius) - 2px)`,
-      sm: "calc(var(--radius) - 4px)",
+      md: `calc(var(--radius) - 0.125rem)`,
+      sm: "calc(var(--radius) - 0.25rem)",
     },
+    // Keyframes work similarly in v4
     keyframes: {
       "accordion-down": {
         from: { height: "0" },
@@ -55,6 +60,7 @@ function shadcnTheme() {
         to: { height: "0" },
       },
     },
+    // Animation configuration remains similar
     animation: {
       "accordion-down": "accordion-down 0.2s ease-out",
       "accordion-up": "accordion-up 0.2s ease-out",
@@ -64,12 +70,14 @@ function shadcnTheme() {
 
 const getChaiBuilderTailwindConfig = (content: string[]) => {
   return {
-    darkMode: "class",
+    // Tailwind v4 uses light/dark modes by default rather than class
+    darkMode: ["class"],
     content: [...content, "node_modules/@chaibuilder/sdk/dist/*.{js,cjs}"],
     theme: {
       extend: shadcnTheme(),
     },
-    plugins: [tailwindAnimate, tailwindTypography, tailwindForms, tailwindAspectRatio],
+    // In Tailwind v4, plugins are imported directly
+    plugins: [animate, typography, forms, aspectRatio],
   };
 };
 

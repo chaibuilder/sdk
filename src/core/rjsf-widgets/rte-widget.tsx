@@ -131,7 +131,7 @@ const MenuBar = ({ editor, onExpand }: { editor: any; onExpand?: () => void }) =
           <button
             type="button"
             onClick={onExpand}
-            className="rounded p-1 hover:bg-muted"
+            className="rounded-sm p-1 hover:bg-muted"
             title="Open in full screen mode">
             <Maximize2 className="h-4 w-4" />
           </button>

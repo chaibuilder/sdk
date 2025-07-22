@@ -49,7 +49,7 @@ export const BlockStylingProps = () => {
                       <DropdownMenuTrigger asChild>
                         <button
                           type="button"
-                          className="ml-1 rounded-sm p-0.5 hover:bg-blue-300 hover:text-blue-600"
+                          className="ml-1 rounded-xs p-0.5 hover:bg-blue-300 hover:text-blue-600"
                           onClick={(e) => e.stopPropagation()}>
                           <MoreVertical className="h-3 w-3" />
                         </button>

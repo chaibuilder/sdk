@@ -68,7 +68,7 @@ const SliderField = ({ formData, onChange }: FieldProps) => {
   return (
     <div className="space-y-1.5 px-2">
       <div className="flex items-center gap-x-2 pb-2 text-[12px]">
-        <button onClick={handlePrevious} className="rounded bg-gray-200 p-1.5 hover:opacity-80">
+        <button onClick={handlePrevious} className="rounded-sm bg-gray-200 p-1.5 hover:opacity-80">
           <ChevronLeft className="h-3 w-3 stroke-[3]" />
         </button>
         <div className="whitespace-nowrap text-center text-[10px] text-slate-500">
@@ -81,12 +81,12 @@ const SliderField = ({ formData, onChange }: FieldProps) => {
             "-"
           )}
         </div>
-        <button onClick={handleNext} className="rounded bg-gray-200 p-1.5 hover:opacity-80">
+        <button onClick={handleNext} className="rounded-sm bg-gray-200 p-1.5 hover:opacity-80">
           <ChevronRight className="h-3 w-3 stroke-[3]" />
         </button>
         <button
           onClick={addNextSlide}
-          className="flex w-full items-center justify-center gap-x-1 rounded bg-gray-200 p-1.5 text-xs font-medium leading-tight hover:opacity-80">
+          className="flex w-full items-center justify-center gap-x-1 rounded-sm bg-gray-200 p-1.5 text-xs font-medium leading-tight hover:opacity-80">
           <PlusCircle className="h-3 w-3 stroke-[2]" />
           Add Slide
         </button>

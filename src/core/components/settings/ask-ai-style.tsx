@@ -82,7 +82,7 @@ export const AskAIStyles = ({ blockId }: { blockId: string | undefined }) => {
       </div>
       {usage ? (
         <div className="max-w-full">
-          <p className="mb-1 flex justify-between break-words rounded border border-blue-500 bg-blue-100 p-1 text-xs text-blue-500">
+          <p className="mb-1 flex justify-between break-words rounded-sm border border-blue-500 bg-blue-100 p-1 text-xs text-blue-500">
             <span>
               {t("Total tokens used")}: {usage.totalTokens}
             </span>
@@ -92,7 +92,7 @@ export const AskAIStyles = ({ blockId }: { blockId: string | undefined }) => {
       ) : null}
       <div className="max-w-full">
         {error && (
-          <p className="break-words rounded border border-red-500 bg-red-100 p-1 text-xs text-red-500">
+          <p className="break-words rounded-sm border border-red-500 bg-red-100 p-1 text-xs text-red-500">
             {error.message}
           </p>
         )}
