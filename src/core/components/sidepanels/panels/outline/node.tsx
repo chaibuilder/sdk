@@ -36,6 +36,15 @@ const Input = ({ node }) => {
 };
 
 const currentAddSelection = atom<any>(null);
+
+export const getBlockDisplayName = (data: any): string => {
+  if (data?._name) return data._name;
+  if (data?._type === "Box" && data?.tag && data?.tag !== "div") {
+    return startCase(data.tag);
+  }
+  return data?._type?.split("/").pop() || "";
+};
+
 export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const { t } = useTranslation();
   const [hiddenBlocks, , toggleHidden] = useHiddenBlockIds();
@@ -172,13 +181,6 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
     );
   }, [data, hasPermission]);
 
-  const getBlockDisplayName = (data: any): string => {
-    if (data?._name) return data._name;
-    if (data?._type === "Box" && data?.tag && data?.tag !== "div") {
-      return startCase(data.tag);
-    }
-    return data?._type?.split("/").pop() || "";
-  };
 
   return (
     <div className="w-full">
