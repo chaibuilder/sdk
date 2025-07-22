@@ -11,7 +11,7 @@ import { cn } from "@/core/utils/cn";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { atom, useAtom } from "jotai";
-import { get, has, isEmpty } from "lodash-es";
+import { get, has, isEmpty, startCase } from "lodash-es";
 import { ChevronRight, EyeOffIcon, MoreVertical } from "lucide-react";
 import { memo, useEffect, useMemo } from "react";
 import { NodeRendererProps } from "react-arborist";
@@ -252,7 +252,12 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
                     node.edit();
                     node.deselect();
                   }}>
-                  <span>{data?._name || data?._type.split("/").pop()}</span>
+                  <span>
+                    {data?._name ||
+                      (data?._type === "Box" && data?.tag && data?.tag !== "div"
+                        ? startCase(data.tag)
+                        : data?._type.split("/").pop())}
+                  </span>
                 </div>
               )}
             </div>
