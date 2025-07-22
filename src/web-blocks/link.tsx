@@ -24,17 +24,18 @@ const LinkBlock = (props: ChaiBlockComponentProps<LinkBlockProps>) => {
   if (inBuilder) {
     if (children) {
       return (
-        <a {...blockProps} style={emptyStyles} {...styles}>
+        <span role="link" {...blockProps} style={emptyStyles} {...styles}>
           {children}
-        </a>
+        </span>
       );
     } else {
       return createElement(
-        "a",
+        "span",
         {
           ...blockProps,
           ...styles,
           style: emptyStyles,
+          role: "link",
         },
         content,
       );
