@@ -35,7 +35,7 @@ export const LanguageButton = () => {
               key={option.value}
               className={mergeClasses(
                 "flex cursor-pointer items-center justify-between text-xs font-medium text-gray-800",
-                option.key === currentLang && "!bg-gray-200 text-gray-700",
+                option.key === currentLang && "important:bg-gray-200 text-gray-700",
               )}
               onClick={() => setSelectedLang(option.key)}>
               <div className="text-slate-600">{option.value}</div>

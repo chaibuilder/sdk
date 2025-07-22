@@ -266,7 +266,7 @@ const ListTree = () => {
           <Tree
             ref={treeRef}
             height={window.innerHeight - 160}
-            className="no-scrollbar !h-full max-w-full space-y-1 !overflow-y-auto !overflow-x-hidden"
+            className="no-scrollbar important:h-full max-w-full space-y-1 important:overflow-y-auto important:overflow-x-hidden"
             rowClassName="flex items-center h-full border-b border-transparent"
             selection={ids[0] || ""}
             onRename={onRename}

@@ -40,7 +40,7 @@ const SourcesField = ({ formData, onChange }: FieldProps) => {
       </div>
       <div className="space-y-2">
         {srcsets.length === 0 ? (
-          <div className="rounded-sm border border-dashed border-gray-200 p-2 text-xs italic text-gray-500">
+          <div className="rounded-sm border border-dashed border-gray-200 p-2 text-xs text-gray-500 italic">
             Add additional sources to create responsive videos
           </div>
         ) : (
@@ -50,11 +50,11 @@ const SourcesField = ({ formData, onChange }: FieldProps) => {
                 <button
                   type="button"
                   onClick={() => removeSource(index)}
-                  className="absolute -right-px -top-0 -translate-y-1/2 rounded-full bg-red-100 p-1 opacity-0 hover:bg-red-200 group-hover:opacity-100">
+                  className="absolute -top-0 -right-px -translate-y-1/2 rounded-full bg-red-100 p-1 opacity-0 group-hover:opacity-100 hover:bg-red-200">
                   <X size={10} className="text-red-500" />
                 </button>
                 <div className="flex items-center gap-x-2 rounded-sm border">
-                  <label className="flex !h-6 h-full w-1/4 items-center justify-center bg-gray-200 px-2 !text-[10px] !font-medium">
+                  <label className="flex important:h-6 h-full w-1/4 items-center justify-center bg-gray-200 px-2 important:text-[10px] important:font-medium">
                     Width
                   </label>
                   <input
@@ -63,17 +63,17 @@ const SourcesField = ({ formData, onChange }: FieldProps) => {
                     type="number"
                     value={get(source, "width")}
                     onChange={(e) => onChangeSources(e, index)}
-                    className="!placeholder:text-gray-100 !mt-0 !rounded-none !border-0 !p-0 !text-xs"
+                    className="important:placeholder:text-gray-100 important:mt-0 important:rounded-none important:border-0 important:p-0 important:text-xs"
                   />
                 </div>
                 <div className="flex items-center gap-x-2 rounded-sm border">
-                  <label className="flex !h-6 h-full w-1/4 items-center justify-center bg-gray-200 px-2 !text-[10px] !font-medium">
+                  <label className="flex important:h-6 h-full w-1/4 items-center justify-center bg-gray-200 px-2 important:text-[10px] important:font-medium">
                     URL
                   </label>
                   <input
                     name="url"
                     placeholder="Enter url"
-                    className="!mt-0 !rounded-none !border-0 !p-0 !text-xs !shadow-none"
+                    className="important:mt-0 important:rounded-none important:border-0 important:p-0 important:text-xs important:shadow-none"
                     value={get(source, "url", "")}
                     onChange={(e) => onChangeSources(e, index)}
                   />

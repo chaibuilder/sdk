@@ -1,3 +1,6 @@
+/* Add reference directive for Tailwind v4 @apply support */
+@reference tailwindcss;
+
 :root {
   --background: 0 0% 100%;
   --foreground: 222.2 84% 4.9%;
@@ -54,16 +57,16 @@
 }
 
 .sheet-hide-close-btn > button {
-  display: none !important;
+  display: none  !important;
 }
 
 .no-scrollbar {
-  -ms-overflow-style: none !important; /* Internet Explorer 10+ */
-  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none  !important; /* Internet Explorer 10+ */
+  scrollbar-width: none  !important; /* Firefox */
 }
 
 .no-scrollbar::-webkit-scrollbar {
-  display: none !important; /* Safari and Chrome */
+  display: none  !important; /* Safari and Chrome */
 }
 
 [role="treeitem"] {
@@ -71,7 +74,7 @@
 }
 
 .rjsf input[type="color"] {
-  @apply -mt-1 w-14 border-none p-0 !important;
+  @apply -mt-1 w-14 border-none p-0  !important;
 }
 
 .rjsf {
@@ -142,7 +145,7 @@ input:where(:not([type])):focus,
 [multiple]:focus,
 textarea:focus,
 select:focus {
-  @apply border-border outline-none ring-1 ring-transparent !important;
+  @apply border-border outline-none ring-1 ring-transparent  !important;
 }
 
 .rjsf [type="checkbox"] {

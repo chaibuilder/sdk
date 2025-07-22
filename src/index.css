@@ -4,10 +4,13 @@
 @import "@tailwindcss/aspect-ratio";
 @import "tailwindcss-animate";
 
+/* Add reference directive for CSS modules support in Tailwind v4 */
+@reference tailwindcss;
+
 /* Tailwind v4 configuration directly in CSS */
 @config tailwindcss {
   darkMode: class;
-  content: "./index.html, ./src/**/*.{js,ts,jsx,tsx}, node_modules/@chaibuilder/sdk/dist/*.{js,cjs}";
+  content: ./index.html ./src/**/*.{js,ts,jsx,tsx} node_modules/@chaibuilder/sdk/dist/*.{js,cjs};
   
   theme {
     extend {
@@ -65,11 +68,11 @@
       
       /* Keyframes */
       keyframes {
-        "accordion-down" {
+        accordion-down {
           from { height: 0; }
           to { height: var(--radix-accordion-content-height); }
         }
-        "accordion-up" {
+        accordion-up {
           from { height: var(--radix-accordion-content-height); }
           to { height: 0; }
         }
@@ -77,8 +80,8 @@
       
       /* Animation */
       animation {
-        "accordion-down": "accordion-down 0.2s ease-out";
-        "accordion-up": "accordion-up 0.2s ease-out";
+        accordion-down: "accordion-down 0.2s ease-out";
+        accordion-up: "accordion-up 0.2s ease-out";
       }
     }
   }

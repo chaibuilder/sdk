@@ -170,7 +170,7 @@ const RTEModal = ({
         /* Ensure the NestedPathSelector popover appears above the dialog */
         .rte-path-selector + [data-radix-popper-content-wrapper],
         [data-radix-popper-content-wrapper] {
-          z-index: 9999 !important;
+          z-index: 9999  !important;
         }
       `;
       document.head.appendChild(styleEl);

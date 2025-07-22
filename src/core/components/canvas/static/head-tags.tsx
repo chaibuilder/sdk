@@ -83,7 +83,7 @@ const SelectedStylingBlocks = () => {
   const [selectedBlockIds] = useSelectedBlockIds();
   const styles = useMemo(() => {
     return `${map(selectedStylingBlocks, ({ id }: any) => `[data-style-id="${id}"]`).join(",")}{
-                outline: 1px solid ${selectedBlockIds.length > 0 ? "#42a1fc" : "#de8f09"} !important; outline-offset: -1px;
+                outline: 1px solid ${selectedBlockIds.length > 0 ? "#42a1fc" : "#de8f09"}  !important; outline-offset: -1px;
             }`;
   }, [selectedStylingBlocks, selectedBlockIds]);
   return <style id="selected-styling-blocks" dangerouslySetInnerHTML={{ __html: styles }} />;
@@ -93,7 +93,7 @@ const SelectedBlocks = () => {
   const [selectedBlockIds] = useSelectedBlockIds();
   const styles = useMemo(() => {
     return `${map(selectedBlockIds, (id) => `[data-block-id="${id}"]`).join(",")}{
-                outline: 1px solid #42a1fc !important; outline-offset: -1px;
+                outline: 1px solid #42a1fc  !important; outline-offset: -1px;
             }`;
   }, [selectedBlockIds]);
   return <style id="selected-blocks" dangerouslySetInnerHTML={{ __html: styles }} />;
