@@ -11,7 +11,7 @@ import { cn } from "@/core/utils/cn";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { atom, useAtom } from "jotai";
-import { get, has, isEmpty } from "lodash-es";
+import { get, has, isEmpty, startCase } from "lodash-es";
 import { ChevronRight, EyeOffIcon, MoreVertical } from "lucide-react";
 import { memo, useEffect, useMemo } from "react";
 import { NodeRendererProps } from "react-arborist";
@@ -36,6 +36,15 @@ const Input = ({ node }) => {
 };
 
 const currentAddSelection = atom<any>(null);
+
+export const getBlockDisplayName = (data: any): string => {
+  if (data?._name) return data._name;
+  if (data?._type === "Box" && data?.tag && data?.tag !== "div") {
+    return startCase(data.tag);
+  }
+  return data?._type?.split("/").pop() || "";
+};
+
 export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const { t } = useTranslation();
   const [hiddenBlocks, , toggleHidden] = useHiddenBlockIds();
@@ -172,6 +181,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
     );
   }, [data, hasPermission]);
 
+
   return (
     <div className="w-full">
       <div
@@ -252,7 +262,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
                     node.edit();
                     node.deselect();
                   }}>
-                  <span>{data?._name || data?._type.split("/").pop()}</span>
+                  <span>{getBlockDisplayName(data)}</span>
                 </div>
               )}
             </div>
