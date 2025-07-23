@@ -204,26 +204,27 @@ export function ManualClasses() {
               className="group relative flex max-w-[260px] cursor-default items-center gap-x-1 truncate break-words rounded border border-border bg-gray-200 p-px px-1.5 pr-2 text-[11px] text-gray-600 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
             />
           ) : (
-            <button
-              key={cls}
-              onDoubleClick={() => {
-                setNewCls(cls);
-                removeClassesFromBlocks(selectedIds, [cls]);
-                setTimeout(() => {
-                  if (inputRef.current) {
-                    inputRef.current.focus();
-                  }
-                }, 10);
-              }}
-              className="group relative flex max-w-[260px] cursor-default items-center gap-x-1 truncate break-words rounded border border-border bg-gray-200 p-px px-1.5 pr-2 text-[11px] text-gray-600 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
-              {cls}
+            <div key={cls} className="group relative flex max-w-[260px] items-center">
               {editingClass !== cls && (
                 <Cross2Icon
                   onClick={() => removeClassesFromBlocks(selectedIds, [cls], true)}
-                  className="invisible absolute right-1 rounded-full bg-red-400 hover:text-white group-hover:visible group-hover:cursor-pointer"
+                  className="mr-1 h-3 w-3 rounded-full bg-red-400 text-white hover:bg-red-500 hover:text-white"
                 />
               )}
-            </button>
+              <button
+                onDoubleClick={() => {
+                  setNewCls(cls);
+                  removeClassesFromBlocks(selectedIds, [cls]);
+                  setTimeout(() => {
+                    if (inputRef.current) {
+                      inputRef.current.focus();
+                    }
+                  }, 10);
+                }}
+                className="flex cursor-default items-center gap-x-1 truncate break-words rounded border border-border bg-gray-200 p-px px-1.5 pr-2 text-[11px] text-gray-600 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+                {cls}
+              </button>
+            </div>
           ),
         )}
       </div>

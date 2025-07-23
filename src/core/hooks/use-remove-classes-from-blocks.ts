@@ -46,6 +46,36 @@ export const removeClassFromBlocksAtom: any = atom(null, (get, _set, { blockIds,
   });
 });
 
+export const removeAllClassesForBlock = (block: ChaiBlock): { ids: string[]; props: Record<string, string> } => {
+  const styleProps = Object.keys(block).filter(
+    (prop) => typeof block[prop] === "string" && (block[prop] as string).startsWith(STYLES_KEY),
+  );
+
+  const updatedProps: Record<string, string> = {};
+  
+  styleProps.forEach((prop) => {
+    updatedProps[prop] = `${STYLES_KEY},`;
+  });
+
+  return {
+    ids: [block._id],
+    props: updatedProps,
+  };
+};
+
+export const useRemoveAllClassesForBlock = () => {
+  const { updateBlocks, updateBlocksRuntime } = useBlocksStoreUndoableActions();
+  
+  return useCallback((block: ChaiBlock, undo = false) => {
+    const { ids, props } = removeAllClassesForBlock(block);
+    if (undo) {
+      updateBlocks(ids, props);
+    } else {
+      updateBlocksRuntime(ids, props);
+    }
+  }, [updateBlocks, updateBlocksRuntime]);
+};
+
 export const useRemoveClassesFromBlocks = (): Function => {
   const { updateBlocks, updateBlocksRuntime } = useBlocksStoreUndoableActions();
   const removeClassesFromBlocks = useSetAtom(removeClassFromBlocksAtom);
