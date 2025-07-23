@@ -24,7 +24,7 @@ import { usePasteBlocks } from "@/core/hooks/use-paste-blocks";
 import { usePermissions } from "@/core/hooks/use-permissions";
 import { usePreviewMode } from "@/core/hooks/use-preview-mode";
 import { useRemoveBlocks } from "@/core/hooks/use-remove-blocks";
-import { useRemoveClassesFromBlocks } from "@/core/hooks/use-remove-classes-from-blocks";
+import { useRemoveAllClassesForBlock, useRemoveClassesFromBlocks } from "@/core/hooks/use-remove-classes-from-blocks";
 import { useResetBlockStyles } from "@/core/hooks/use-reset-block-styles";
 import { useSavePage } from "@/core/hooks/use-save-page";
 import { useSelectedBlockAllClasses, useSelectedBlockCurrentClasses } from "@/core/hooks/use-select-block-classes";
@@ -76,6 +76,7 @@ export {
   usePreviewMode,
   useRemoveBlocks,
   useRemoveClassesFromBlocks,
+  useRemoveAllClassesForBlock,
   useResetBlockStyles,
   useRightPanel,
   useSavePage,

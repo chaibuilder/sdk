@@ -1,4 +1,10 @@
-import { useSelectedBlock, useSelectedStylingBlocks, useTranslation } from "@/core/hooks";
+import {
+  useSelectedBlock,
+  useSelectedStylingBlocks,
+  useTranslation,
+  useRemoveClassesFromBlocks,
+  useSelectedBlockIds,
+} from "@/core/hooks";
 import { useResetBlockStyles } from "@/core/hooks/use-reset-block-styles";
 import { Badge } from "@/ui/shadcn/components/ui/badge";
 import {
@@ -7,12 +13,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/ui/shadcn/components/ui/dropdown-menu";
-import { find, isEmpty, map, startCase } from "lodash-es";
+import { find, get, isEmpty, map, startCase } from "lodash-es";
 import { MoreVertical } from "lucide-react";
+import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
 
 export const BlockStylingProps = () => {
   const selectedBlock = useSelectedBlock();
   const [stylingBlocks, setStylingBlocks] = useSelectedStylingBlocks();
+  const removeClassesFromBlocks = useRemoveClassesFromBlocks();
+  const [selectedIds] = useSelectedBlockIds();
   const { t } = useTranslation();
   if (!selectedBlock) return null;
   // find all styles props of selected block by checking for value of each prop as string and starts with #styles:
@@ -21,6 +30,9 @@ export const BlockStylingProps = () => {
   );
   const { reset } = useResetBlockStyles();
   const hasStyles = !isEmpty(stylesProps) && stylesProps.length > 1;
+  const prop = get(selectedBlock, stylingBlocks[0].prop, "");
+  const { classes : classesString } = getSplitChaiClasses(prop);
+  const classes = classesString.split(" ").filter((cls) => !isEmpty(cls));
 
   const isSelected = (prop: string) => {
     return find(stylingBlocks, (block) => block.prop === prop);
@@ -61,6 +73,13 @@ export const BlockStylingProps = () => {
                             reset(prop);
                           }}>
                           {t("Reset style")}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="text-xs"
+                          onClick={() => {
+                            removeClassesFromBlocks(selectedIds, classes, true);
+                          }}>
+                          {t("Clear styles")}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
