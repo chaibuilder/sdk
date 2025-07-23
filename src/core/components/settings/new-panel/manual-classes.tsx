@@ -222,8 +222,8 @@ export function ManualClasses() {
                   className="absolute left-0.5 mr-0.5 hidden group-hover:block h-4 w-4 bg-gray-500 font-bold group-hover:bg-gray-300 group-hover:text-red-500 "
                 />
                 <svg
-                  className="absolute left-0.5 mr-0.5 group-hover:hidden h-4 w-4 "
-                  fill="#9ca19d"
+                  className="absolute left-0.5 mr-0.5 group-hover:hidden h-3.5 w-3.5 "
+                  fill="rgba(55, 65, 81, 0.4)"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                   xmlSpace="preserve">
