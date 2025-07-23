@@ -205,12 +205,6 @@ export function ManualClasses() {
             />
           ) : (
             <div key={cls} className="group relative flex max-w-[260px] items-center">
-              {editingClass !== cls && (
-                <Cross2Icon
-                  onClick={() => removeClassesFromBlocks(selectedIds, [cls], true)}
-                  className="mr-1 h-3 w-3 rounded-full bg-red-400 text-white hover:bg-red-500 hover:text-white"
-                />
-              )}
               <button
                 onDoubleClick={() => {
                   setNewCls(cls);
@@ -223,6 +217,10 @@ export function ManualClasses() {
                 }}
                 className="flex cursor-default items-center gap-x-1 truncate break-words rounded border border-border bg-gray-200 p-px px-1.5 pr-2 text-[11px] text-gray-600 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
                 {cls}
+                <Cross2Icon
+                  onClick={() => removeClassesFromBlocks(selectedIds, [cls], true)}
+                  className="absolute left-1 mr-0.5 hidden h-3 w-3 rounded-full bg-red-400 text-white hover:bg-red-500 hover:text-white group-hover:block"
+                />
               </button>
             </div>
           ),
