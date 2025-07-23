@@ -215,7 +215,7 @@ export function ManualClasses() {
                     }
                   }, 10);
                 }}
-                className="flex cursor-default items-center gap-x-1 truncate break-words rounded border border-border bg-gray-200 p-px px-1.5 pr-2 text-[11px] text-gray-600 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+                className="flex cursor-default items-center gap-x-1 truncate break-words rounded border border-border bg-gray-200 p-px  px-1 text-[11px] text-gray-600 hover:border-gray-300 hover:pl-4 group-hover:pl-4 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
                 {cls}
                 <Cross2Icon
                   onClick={() => removeClassesFromBlocks(selectedIds, [cls], true)}
