@@ -2,10 +2,11 @@ import { usePageExternalData } from "@/core/atoms/builder";
 import { LANGUAGES } from "@/core/constants/LANGUAGES";
 import { useLanguages, useSelectedBlock } from "@/core/hooks";
 import { Badge } from "@/ui/shadcn/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { useRegisteredChaiBlocks } from "@chaibuilder/runtime";
 import { FieldTemplateProps } from "@rjsf/utils";
 import { get, isEmpty } from "lodash-es";
-import { ChevronDown, ChevronRight, List } from "lucide-react";
+import { ChevronDown, ChevronRight, Info, List } from "lucide-react";
 import { useMemo, useState } from "react";
 import { DataBindingSelector } from "./data-binding-selector";
 
@@ -84,10 +85,24 @@ const JSONFormFieldTemplate = ({
     <div className={classNames}>
       {schema.title && (
         <div className="flex items-center justify-between">
-          <label htmlFor={id} className={schema.type === "object" ? "pb-2" : ""}>
-            {label} {showLangSuffix && <small className="text-[9px] text-zinc-400"> {currentLanguage}</small>}
-            {required && schema.type !== "object" ? " *" : null}
-          </label>
+          <div className="flex items-center gap-2">
+            <label htmlFor={id} className={schema.type === "object" ? "pb-2" : ""}>
+              {label} {showLangSuffix && <small className="text-[9px] text-zinc-400"> {currentLanguage}</small>}
+              {required && schema.type !== "object" ? " *" : null}
+            </label>
+            {schema.description && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info className="h-3 w-3 text-muted-foreground/70" />
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                   {schema.description}
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+          </div>
           {!schema.enum && !schema.oneOf && pageExternalData && (
             <>
               <DataBindingSelector
