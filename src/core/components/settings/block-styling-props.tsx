@@ -30,9 +30,9 @@ export const BlockStylingProps = () => {
   );
   const { reset } = useResetBlockStyles();
   const hasStyles = !isEmpty(stylesProps) && stylesProps.length > 1;
-  const prop = get(selectedBlock, stylingBlocks[0].prop, "");
-  const { classes : classesString } = getSplitChaiClasses(prop);
-  const classes = classesString.split(" ").filter((cls) => !isEmpty(cls));
+  const prop = get(selectedBlock, stylingBlocks[0]?.prop, "");
+  const { classes: classesString = "" } = getSplitChaiClasses(prop) || {};
+  const classes = classesString ? classesString.split(" ").filter((cls) => !isEmpty(cls)) : [];
 
   const isSelected = (prop: string) => {
     return find(stylingBlocks, (block) => block.prop === prop);
