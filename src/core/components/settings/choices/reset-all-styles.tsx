@@ -29,9 +29,9 @@ export const ResetStylesButton = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button type="button" className="rounded-sm p-0.5 hover:bg-gray-300" onClick={(e) => e.stopPropagation()}>
+        <div className="inline-flex rounded-sm p-0.5 hover:bg-gray-300" onClick={(e) => e.stopPropagation()}>
           <MoreVertical className="h-3 w-3" />
-        </button>
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent side="bottom" className="border-border text-xs">
         <DropdownMenuItem
