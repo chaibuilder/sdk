@@ -1,4 +1,3 @@
-import { generateUUID } from "@/core/functions/common-functions";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { InputIcon } from "@radix-ui/react-icons";
 
@@ -15,13 +14,12 @@ export type TextAreaProps = {
 };
 
 const TextAreaBlock = (props: ChaiBlockComponentProps<TextAreaProps>) => {
-  const { blockProps, fieldName, label, placeholder, styles, inputStyles, rows, showLabel, required, defaultValue } = props;
-  const fieldId = generateUUID();
+  const { blockProps, fieldName, label, placeholder, styles, inputStyles, rows, showLabel, required, defaultValue } =
+    props;
 
   if (!showLabel) {
     return (
       <textarea
-        id={fieldId}
         name={fieldName}
         {...blockProps}
         {...inputStyles}
@@ -36,11 +34,10 @@ const TextAreaBlock = (props: ChaiBlockComponentProps<TextAreaProps>) => {
 
   return (
     <div {...styles} {...blockProps}>
-      {showLabel && <label htmlFor={fieldId}>{label}</label>}
+      {showLabel && <label htmlFor={fieldName}>{label}</label>}
       <textarea
         name={fieldName}
         {...inputStyles}
-        id={fieldId}
         placeholder={placeholder}
         rows={rows}
         required={required}
