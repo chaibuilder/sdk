@@ -1,4 +1,3 @@
-import { generateUUID } from "@/core/functions/common-functions";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { DropdownMenuIcon } from "@radix-ui/react-icons";
 import { map } from "lodash-es";
@@ -30,17 +29,14 @@ const SelectBlock = (props: ChaiBlockComponentProps<SelectProps>) => {
     options,
     defaultValue,
   } = props;
-  const fieldId = generateUUID();
 
   // Process defaultValue for multi-select
-  const processedDefaultValues = _multiple && defaultValue ? 
-    defaultValue.split(',').map(val => val.trim()) : 
-    defaultValue || "";
+  const processedDefaultValues =
+    _multiple && defaultValue ? defaultValue.split(",").map((val) => val.trim()) : defaultValue || "";
 
   if (!showLabel) {
     return (
       <select
-        id={fieldId}
         {...styles}
         {...blockProps}
         required={required}
@@ -61,10 +57,9 @@ const SelectBlock = (props: ChaiBlockComponentProps<SelectProps>) => {
 
   return (
     <div {...styles} {...blockProps}>
-      {showLabel && <label htmlFor={fieldId}>{label}</label>}
+      {showLabel && <label htmlFor={fieldName}>{label}</label>}
       <select
         {...inputStyles}
-        id={fieldId}
         required={required}
         multiple={_multiple}
         name={fieldName}

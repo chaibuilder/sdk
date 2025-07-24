@@ -1,4 +1,3 @@
-import { generateUUID } from "@/core/functions/common-functions";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { InputIcon } from "@radix-ui/react-icons";
 
@@ -27,7 +26,7 @@ export const getInputTypeAndAutocomplete = (inputTypeValue: string): { type: str
   if (basicTypes.includes(inputTypeValue)) {
     return { type: inputTypeValue, autocomplete: "on" };
   }
-  
+
   // Special cases for email, tel, and url which should have matching autocomplete values
   if (inputTypeValue === "email") {
     return { type: "email", autocomplete: "email" };
@@ -117,8 +116,18 @@ export const getInputTypeAndAutocomplete = (inputTypeValue: string): { type: str
 };
 
 const InputBlock = (props: ChaiBlockComponentProps<InputProps>) => {
-  const { blockProps, fieldName, label, placeholder, styles, inputStyles, showLabel, required, inputType, defaultValue } = props;
-  const fieldId = generateUUID();
+  const {
+    blockProps,
+    fieldName,
+    label,
+    placeholder,
+    styles,
+    inputStyles,
+    showLabel,
+    required,
+    inputType,
+    defaultValue,
+  } = props;
 
   // Determine the actual input type and autocomplete value
   const { type: smartInputType, autocomplete } = getInputTypeAndAutocomplete(inputType);
@@ -126,7 +135,6 @@ const InputBlock = (props: ChaiBlockComponentProps<InputProps>) => {
   if (!showLabel) {
     return (
       <input
-        id={fieldId}
         name={fieldName}
         {...blockProps}
         {...inputStyles}
@@ -142,12 +150,11 @@ const InputBlock = (props: ChaiBlockComponentProps<InputProps>) => {
 
   return (
     <div {...styles} {...blockProps}>
-      {showLabel && <label htmlFor={fieldId}>{label}</label>}
+      {showLabel && <label htmlFor={fieldName}>{label}</label>}
       <input
         name={fieldName}
         defaultValue={defaultValue}
         {...inputStyles}
-        id={fieldId}
         type={smartInputType}
         placeholder={placeholder}
         required={required}

@@ -1,4 +1,3 @@
-import { generateUUID } from "@/core/functions/common-functions";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { ButtonIcon } from "@radix-ui/react-icons";
 
@@ -12,10 +11,9 @@ export type FormButtonProps = {
 
 const FormButtonBlock = (props: ChaiBlockComponentProps<FormButtonProps>) => {
   const { blockProps, inBuilder, label, styles, icon, iconSize, iconPos } = props;
-  const fieldId = generateUUID();
 
   return (
-    <button id={fieldId} {...styles} {...(blockProps || {})} type={inBuilder ? "button" : "submit"} aria-label={label}>
+    <button {...styles} {...(blockProps || {})} type={inBuilder ? "button" : "submit"} aria-label={label}>
       {label}
       {icon && (
         <div
