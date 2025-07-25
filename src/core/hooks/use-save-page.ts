@@ -44,6 +44,13 @@ export const useSavePage = () => {
     });
   };
 
+  const needTranslations = () => {
+    const pageData = getPageData();
+    return !selectedLang || selectedLang === fallbackLang
+      ? false
+      : checkMissingTranslations(pageData.blocks || [], selectedLang);
+  };
+
   const savePage = useThrottledCallback(
     async (autoSave: boolean = false) => {
       if (!hasPermission("save_page")) {
@@ -52,16 +59,12 @@ export const useSavePage = () => {
       setSaveState("SAVING");
       onSaveStateChange("SAVING");
       const pageData = getPageData();
-      const needTranslations =
-        !selectedLang || selectedLang === fallbackLang
-          ? false
-          : checkMissingTranslations(pageData.blocks || [], selectedLang);
 
       await onSave({
         autoSave,
         blocks: pageData.blocks,
         theme,
-        needTranslations,
+        needTranslations: needTranslations(),
       });
       setTimeout(() => {
         setSaveState("SAVED");
@@ -81,16 +84,11 @@ export const useSavePage = () => {
     onSaveStateChange("SAVING");
     const pageData = getPageData();
 
-    const needTranslations =
-      !selectedLang || selectedLang === fallbackLang
-        ? false
-        : checkMissingTranslations(pageData.blocks || [], selectedLang);
-
     await onSave({
       autoSave: true,
       blocks: pageData.blocks,
       theme,
-      needTranslations,
+      needTranslations: needTranslations(),
     });
     setTimeout(() => {
       setSaveState("SAVED");
@@ -99,5 +97,5 @@ export const useSavePage = () => {
     return true;
   };
 
-  return { savePage, savePageAsync, saveState, setSaveState };
+  return { savePage, savePageAsync, saveState, setSaveState, needTranslations };
 };
