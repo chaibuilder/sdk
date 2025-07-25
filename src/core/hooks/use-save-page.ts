@@ -3,8 +3,10 @@ import { useGetPageData } from "@/core/hooks/use-get-page-data";
 import { usePermissions } from "@/core/hooks/use-permissions";
 import { useTheme } from "@/core/hooks/use-theme";
 import { useThrottledCallback } from "@react-hookz/web";
+import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { atom, useAtom } from "jotai";
-import { noop } from "lodash-es";
+import { has, isEmpty, noop } from "lodash-es";
+import { useLanguages } from "./use-languages";
 export const builderSaveStateAtom = atom<"SAVED" | "SAVING" | "UNSAVED">("SAVED"); // SAVING
 builderSaveStateAtom.debugLabel = "builderSaveStateAtom";
 
@@ -15,6 +17,25 @@ export const useSavePage = () => {
   const getPageData = useGetPageData();
   const [theme] = useTheme();
   const { hasPermission } = usePermissions();
+  const { selectedLang, fallbackLang } = useLanguages();
+
+  const checkMissingTranslations = (blocks: any[], lang: string): boolean => {
+    if (!lang) return false;
+
+    return blocks.some((block) => {
+      if (block?._type === "PartialBlock") {
+        return false;
+      }
+
+      const blockDef = getRegisteredChaiBlock(block._type);
+      const i18nProps = has(blockDef, "i18nProps") ? blockDef.i18nProps : [];
+
+      return i18nProps.some((prop: string) => {
+        const translatedProp = `${prop}-${lang}`;
+        return !block[translatedProp] || isEmpty(block[translatedProp]);
+      });
+    });
+  };
 
   const savePage = useThrottledCallback(
     async (autoSave: boolean = false) => {
@@ -24,10 +45,16 @@ export const useSavePage = () => {
       setSaveState("SAVING");
       onSaveStateChange("SAVING");
       const pageData = getPageData();
+      const missingTranslations =
+        !selectedLang || selectedLang === fallbackLang
+          ? false
+          : checkMissingTranslations(pageData.blocks || [], selectedLang);
+
       await onSave({
         autoSave,
         blocks: pageData.blocks,
         theme,
+        missingTranslations,
       });
       setTimeout(() => {
         setSaveState("SAVED");
@@ -46,10 +73,17 @@ export const useSavePage = () => {
     setSaveState("SAVING");
     onSaveStateChange("SAVING");
     const pageData = getPageData();
+
+    const missingTranslations =
+      !selectedLang || selectedLang === fallbackLang
+        ? false
+        : checkMissingTranslations(pageData.blocks || [], selectedLang);
+
     await onSave({
       autoSave: true,
       blocks: pageData.blocks,
       theme,
+      missingTranslations,
     });
     setTimeout(() => {
       setSaveState("SAVED");
