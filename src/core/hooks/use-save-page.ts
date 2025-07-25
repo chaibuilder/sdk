@@ -6,7 +6,7 @@ import { useThrottledCallback } from "@react-hookz/web";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { atom, useAtom } from "jotai";
 import { has, isEmpty, noop } from "lodash-es";
-import { useLanguages } from "./use-languages";
+import { useLanguages } from "@/core/hooks/use-languages";
 export const builderSaveStateAtom = atom<"SAVED" | "SAVING" | "UNSAVED">("SAVED"); // SAVING
 builderSaveStateAtom.debugLabel = "builderSaveStateAtom";
 
@@ -45,7 +45,7 @@ export const useSavePage = () => {
       setSaveState("SAVING");
       onSaveStateChange("SAVING");
       const pageData = getPageData();
-      const missingTranslations =
+      const needTranslations =
         !selectedLang || selectedLang === fallbackLang
           ? false
           : checkMissingTranslations(pageData.blocks || [], selectedLang);
@@ -54,7 +54,7 @@ export const useSavePage = () => {
         autoSave,
         blocks: pageData.blocks,
         theme,
-        missingTranslations,
+        needTranslations,
       });
       setTimeout(() => {
         setSaveState("SAVED");
@@ -74,7 +74,7 @@ export const useSavePage = () => {
     onSaveStateChange("SAVING");
     const pageData = getPageData();
 
-    const missingTranslations =
+    const needTranslations =
       !selectedLang || selectedLang === fallbackLang
         ? false
         : checkMissingTranslations(pageData.blocks || [], selectedLang);
@@ -83,7 +83,7 @@ export const useSavePage = () => {
       autoSave: true,
       blocks: pageData.blocks,
       theme,
-      missingTranslations,
+      needTranslations,
     });
     setTimeout(() => {
       setSaveState("SAVED");
