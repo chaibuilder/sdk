@@ -50,6 +50,7 @@ export type SavePageData = {
   autoSave: boolean;
   blocks: ChaiBlock[];
   theme?: ChaiThemeValues;
+  missingTranslations?: boolean;
 };
 
 type TimeInSeconds = number;
