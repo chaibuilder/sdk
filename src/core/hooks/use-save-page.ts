@@ -10,6 +10,31 @@ import { useLanguages } from "@/core/hooks/use-languages";
 export const builderSaveStateAtom = atom<"SAVED" | "SAVING" | "UNSAVED">("SAVED"); // SAVING
 builderSaveStateAtom.debugLabel = "builderSaveStateAtom";
 
+export const checkMissingTranslations = (blocks: any[], lang: string): boolean => {
+  if (!lang) return false;
+
+  return blocks.some((block) => {
+    if (!block?._type || block._type === "PartialBlock") {
+      return false;
+    }
+
+    try {
+      const blockDef = getRegisteredChaiBlock(block._type);
+      if (!blockDef) return false;
+
+      const i18nProps = has(blockDef, "i18nProps") ? blockDef.i18nProps : [];
+
+      return i18nProps.some((prop: string) => {
+        const translatedProp = `${prop}-${lang}`;
+        return !block[translatedProp] || isEmpty(block[translatedProp]);
+      });
+    } catch (error) {
+      console.warn(`Failed to get block definition for type: ${block._type}`, error);
+      return false;
+    }
+  });
+};
+
 export const useSavePage = () => {
   const [saveState, setSaveState] = useAtom(builderSaveStateAtom);
   const onSave = useBuilderProp("onSave", async (_args) => {});
@@ -19,30 +44,7 @@ export const useSavePage = () => {
   const { hasPermission } = usePermissions();
   const { selectedLang, fallbackLang } = useLanguages();
 
-  const checkMissingTranslations = (blocks: any[], lang: string): boolean => {
-    if (!lang) return false;
 
-    return blocks.some((block) => {
-      if (!block?._type || block._type === "PartialBlock") {
-        return false;
-      }
-
-      try {
-        const blockDef = getRegisteredChaiBlock(block._type);
-        if (!blockDef) return false;
-
-        const i18nProps = has(blockDef, "i18nProps") ? blockDef.i18nProps : [];
-
-        return i18nProps.some((prop: string) => {
-          const translatedProp = `${prop}-${lang}`;
-          return !block[translatedProp] || isEmpty(block[translatedProp]);
-        });
-      } catch (error) {
-        console.warn(`Failed to get block definition for type: ${block._type}`, error);
-        return false;
-      }
-    });
-  };
 
   const needTranslations = () => {
     const pageData = getPageData();
