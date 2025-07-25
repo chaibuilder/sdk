@@ -23,17 +23,24 @@ export const useSavePage = () => {
     if (!lang) return false;
 
     return blocks.some((block) => {
-      if (block?._type === "PartialBlock") {
+      if (!block?._type || block._type === "PartialBlock") {
         return false;
       }
 
-      const blockDef = getRegisteredChaiBlock(block._type);
-      const i18nProps = has(blockDef, "i18nProps") ? blockDef.i18nProps : [];
+      try {
+        const blockDef = getRegisteredChaiBlock(block._type);
+        if (!blockDef) return false;
 
-      return i18nProps.some((prop: string) => {
-        const translatedProp = `${prop}-${lang}`;
-        return !block[translatedProp] || isEmpty(block[translatedProp]);
-      });
+        const i18nProps = has(blockDef, "i18nProps") ? blockDef.i18nProps : [];
+
+        return i18nProps.some((prop: string) => {
+          const translatedProp = `${prop}-${lang}`;
+          return !block[translatedProp] || isEmpty(block[translatedProp]);
+        });
+      } catch (error) {
+        console.warn(`Failed to get block definition for type: ${block._type}`, error);
+        return false;
+      }
     });
   };
 
