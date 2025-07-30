@@ -65,14 +65,13 @@ const Config = {
   category: "core",
   icon: ButtonIcon,
   group: "basic",
-  blocks: () => [{ _id: "button", _type: "Button", content: "Button" }],
   ...registerChaiBlockSchema({
     properties: {
       styles: StylesProp("text-primary-foreground bg-primary px-4 py-2 rounded-lg flex items-center"),
       content: {
         type: "string",
         title: "Button label",
-        default: "",
+        default: "Button",
       },
       icon: {
         type: "string",
