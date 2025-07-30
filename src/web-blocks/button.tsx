@@ -21,11 +21,11 @@ const Component = (props: ChaiBlockComponentProps<ButtonProps>) => {
 
   const child = children || (
     <>
-      <span data-ai-key="content">{content}</span>
+      {content && <span data-ai-key="content">{content}</span>}
       {_icon && (
         <div
           style={{ width: iconSize + "px" }}
-          className={iconPos + " " + (iconPos === "order-first" ? "mr-2" : "ml-2") || ""}
+          className={iconPos + " " + (content ? (iconPos === "order-first" ? "mr-2" : "ml-2") : "") || ""}
           dangerouslySetInnerHTML={{ __html: _icon }}
         />
       )}
@@ -65,13 +65,14 @@ const Config = {
   category: "core",
   icon: ButtonIcon,
   group: "basic",
+  blocks: () => [{ _id: "button", _type: "Button", content: "Button" }],
   ...registerChaiBlockSchema({
     properties: {
       styles: StylesProp("text-primary-foreground bg-primary px-4 py-2 rounded-lg flex items-center"),
       content: {
         type: "string",
         title: "Button label",
-        default: "Button",
+        default: "",
       },
       icon: {
         type: "string",
