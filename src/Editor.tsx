@@ -1,5 +1,5 @@
 import { lsAiContextAtom, lsBlocksAtom, lsThemeAtom } from "@/_demo/atoms-dev";
-import { bluePreset, greenPreset, orangePreset } from "@/_demo/THEME_PRESETS";
+import { bluePreset, greenPreset, orangePreset, defaultShadcnPreset } from "@/_demo/THEME_PRESETS";
 import { ChaiBlock, ChaiBuilderEditor } from "@/core/main";
 import { extendChaiBuilder } from "@/extentions";
 import { SavePageData } from "@/types/chaibuilder-editor-props";
@@ -28,7 +28,7 @@ function ChaiBuilderDefault() {
       pageExternalData={EXTERNAL_DATA}
       fallbackLang="en"
       languages={["fr"]}
-      themePresets={[{ orange: orangePreset }, { green: greenPreset }, { blue: bluePreset }]}
+      themePresets={[{ orange: orangePreset }, { green: greenPreset }, { blue: bluePreset }, { defaultShadcn: defaultShadcnPreset }]}
       theme={theme}
       autoSaveSupport={false}
       autoSaveInterval={15}
