@@ -28,7 +28,7 @@ function ChaiBuilderDefault() {
       pageExternalData={EXTERNAL_DATA}
       fallbackLang="en"
       languages={["fr"]}
-      themePresets={[{ orange: orangePreset }, { green: greenPreset }, { blue: bluePreset }, { shadcn: defaultShadcnPreset }]}
+      themePresets={[{ shadcn_default: defaultShadcnPreset }]}
       theme={theme}
       autoSaveSupport={false}
       autoSaveInterval={15}
