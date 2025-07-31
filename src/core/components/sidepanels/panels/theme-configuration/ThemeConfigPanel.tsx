@@ -164,7 +164,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
                 {Array.isArray(themePresets) &&
                   themePresets.map((preset: any) => (
                     <option key={Object.keys(preset)[0]} value={Object.keys(preset)[0]}>
-                      {capitalize(Object.keys(preset)[0].includes("_") ? Object.keys(preset)[0].replace("_", " ") : Object.keys(preset)[0])}
+                      {capitalize(Object.keys(preset)[0].replaceAll("_", " "))}
                     </option>
                   ))}
               </select>
