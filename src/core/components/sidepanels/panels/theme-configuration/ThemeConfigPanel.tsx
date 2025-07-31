@@ -167,7 +167,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
           size="sm"
           onClick={() => setIsImportModalOpen(true)}
         >
-         <ImportIcon className="h-3 w-3" /> {t("Import CSS")}
+         <ImportIcon className="h-3 w-3" /> {t("Import theme")}
         </Button>
       </div>
       <div className={cn("no-scrollbar h-full w-full overflow-y-auto", className)}>
