@@ -3,6 +3,7 @@ import {
   ColorPickerInput,
   FontSelector,
 } from "@/core/components/sidepanels/panels/theme-configuration";
+import { CssImportModal } from "@/core/components/sidepanels/panels/theme-configuration/CssImportModal";
 import { cn } from "@/core/functions/common-functions";
 import { useDarkMode } from "@/core/hooks";
 import { useBuilderProp } from "@/core/hooks/index";
@@ -13,6 +14,7 @@ import { Button } from "@/ui/shadcn/components/ui/button";
 import { Label } from "@/ui/shadcn/components/ui/label";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { capitalize, get, set } from "lodash-es";
+import { ImportIcon } from "lucide-react";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 interface ThemeConfigProps {
@@ -22,6 +24,7 @@ interface ThemeConfigProps {
 const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "" }) => {
   const [isDarkMode] = useDarkMode();
   const [selectedPreset, setSelectedPreset] = React.useState<string>("");
+  const [isImportModalOpen, setIsImportModalOpen] = React.useState(false);
   const themePresets = useBuilderProp("themePresets", []);
   const themePanelComponent = useBuilderProp("themePanelComponent", null);
   const { hasPermission } = usePermissions();
@@ -54,6 +57,12 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
     } else {
       console.error("Preset not found:", selectedPreset);
     }
+  };
+
+  const handleCssImport = (importedTheme: ChaiThemeValues) => {
+    // Apply the imported theme values directly to the current theme
+    setThemeValues(importedTheme);
+    setSelectedPreset("");
   };
 
   const handleFontChange = useDebouncedCallback(
@@ -151,6 +160,16 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
 
   return (
     <div className="relative w-full">
+      {/* CSS Import Button */}
+      <div className="flex justify-end">
+        <Button 
+          variant="outline" 
+          size="sm"
+          onClick={() => setIsImportModalOpen(true)}
+        >
+         <ImportIcon className="h-3 w-3" /> {t("Import CSS")}
+        </Button>
+      </div>
       <div className={cn("no-scrollbar h-full w-full overflow-y-auto", className)}>
         {themePresets.length > 0 && (
           <div className="flex gap-2 py-2">
@@ -225,6 +244,13 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
       {themePanelComponent && (
         <div className="absolute bottom-4 w-full">{React.createElement(themePanelComponent)}</div>
       )}
+      
+      {/* CSS Import Modal */}
+      <CssImportModal
+        open={isImportModalOpen}
+        onOpenChange={setIsImportModalOpen}
+        onImport={handleCssImport}
+      />
     </div>
   );
 });
