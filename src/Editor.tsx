@@ -1,5 +1,5 @@
 import { lsAiContextAtom, lsBlocksAtom, lsThemeAtom } from "@/_demo/atoms-dev";
-import { bluePreset, greenPreset, orangePreset, defaultShadcnPreset } from "@/_demo/THEME_PRESETS";
+import { defaultShadcnPreset } from "@/_demo/THEME_PRESETS";
 import { ChaiBlock, ChaiBuilderEditor } from "@/core/main";
 import { extendChaiBuilder } from "@/extentions";
 import { SavePageData } from "@/types/chaibuilder-editor-props";
