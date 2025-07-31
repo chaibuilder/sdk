@@ -123,8 +123,11 @@ const processAndFormatColor = (value: string): string => {
       return rgbToHex(cleanValue);
     }
     
-    // If it's already a hex color or valid CSS color, return as-is
-    return cleanValue.startsWith('#') ? cleanValue : `#${cleanValue}`;
+    // Only prepend # if it looks like a hex value without #
+    if (/^[0-9A-F]{6}$/i.test(cleanValue)) {
+      return `#${cleanValue}`;
+    }
+    return '#000000'; // Return fallback for invalid values
   } catch (error) {
     console.error("Error processing color value:", value, error);
     return value.startsWith('#') ? value : '#000000'; // Return fallback color
@@ -135,7 +138,7 @@ const processAndFormatColor = (value: string): string => {
  * Convert HSL to Hex
  */
 const hslToHex = (hsl: string): string => {
-  const match = hsl.match(/hsl\((\d+),?\s*(\d+)%?,?\s*(\d+)%?\)/);
+  const match = hsl.match(/hsla?\((\d+)(?:deg)?,?\s*(\d+)%?,?\s*(\d+)%?(?:,?\s*[\d.]+)?\)/);
   if (!match) return '#000000';
   
   const h = parseInt(match[1]) / 360;
@@ -174,7 +177,7 @@ const hslToHex = (hsl: string): string => {
  * Convert RGB to Hex
  */
 const rgbToHex = (rgb: string): string => {
-  const match = rgb.match(/rgb\((\d+),?\s*(\d+),?\s*(\d+)\)/);
+  const match = rgb.match(/rgba?\((\d+)(?:\.\d+)?,?\s*(\d+)(?:\.\d+)?,?\s*(\d+)(?:\.\d+)?(?:,?\s*[\d.]+)?\)/);
   if (!match) return '#000000';
   
   const r = parseInt(match[1]);
