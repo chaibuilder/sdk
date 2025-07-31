@@ -160,42 +160,39 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
 
   return (
     <div className="relative w-full">
-      {/* CSS Import Button */}
-      <div className="flex justify-end">
-        <Button 
-          variant="outline" 
-          size="sm"
-          onClick={() => setIsImportModalOpen(true)}
-        >
-         <ImportIcon className="h-3 w-3" /> {t("Import theme")}
-        </Button>
-      </div>
       <div className={cn("no-scrollbar h-full w-full overflow-y-auto", className)}>
         {themePresets.length > 0 && (
-          <div className="flex gap-2 py-2">
-            <div className="w-full">
+          <div className="flex flex-col gap-2 py-2">
+            <div className="flex w-full items-center justify-between">
               <Label className="text-sm">{t("Presets")}</Label>
-              <select
-                value={selectedPreset}
-                onChange={(e) => handlePresetChange(e.target.value)}
-                className="w-full space-y-0.5 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
-                <option value="">Select preset</option>
-                {Array.isArray(themePresets) &&
-                  themePresets.map((preset: any) => (
-                    <option key={Object.keys(preset)[0]} value={Object.keys(preset)[0]}>
-                      {capitalize(Object.keys(preset)[0].replaceAll("_", " "))}
-                    </option>
-                  ))}
-              </select>
-            </div>
-            <div className="flex w-[30%] items-end">
-              <Button
-                className="w-full text-sm"
-                disabled={selectedPreset === ""}
-                variant="default"
-                onClick={applyPreset}>
-                {t("Apply")}
+              <Button variant="link" size="sm" onClick={() => setIsImportModalOpen(true)}>
+                <ImportIcon className="h-3 w-3" /> {t("Import theme")}
               </Button>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-[70%]">
+                <select
+                  value={selectedPreset}
+                  onChange={(e) => handlePresetChange(e.target.value)}
+                  className="w-full space-y-0.5 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
+                  <option value="">Select preset</option>
+                  {Array.isArray(themePresets) &&
+                    themePresets.map((preset: any) => (
+                      <option key={Object.keys(preset)[0]} value={Object.keys(preset)[0]}>
+                        {capitalize(Object.keys(preset)[0].replaceAll("_", " "))}
+                      </option>
+                    ))}
+                </select>
+              </div>
+              <div className="flex w-[30%] items-end">
+                <Button
+                  className="w-full text-sm"
+                  disabled={selectedPreset === ""}
+                  variant="default"
+                  onClick={applyPreset}>
+                  {t("Apply")}
+                </Button>
+              </div>
             </div>
           </div>
         )}
@@ -244,13 +241,9 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
       {themePanelComponent && (
         <div className="absolute bottom-4 w-full">{React.createElement(themePanelComponent)}</div>
       )}
-      
+
       {/* CSS Import Modal */}
-      <CssImportModal
-        open={isImportModalOpen}
-        onOpenChange={setIsImportModalOpen}
-        onImport={handleCssImport}
-      />
+      <CssImportModal open={isImportModalOpen} onOpenChange={setIsImportModalOpen} onImport={handleCssImport} />
     </div>
   );
 });
