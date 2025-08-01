@@ -898,8 +898,8 @@ export const CLASSES_LIST: ClassListType = {
     regExp: "delay-(\\d+|\\[.*\\])",
   },
   animation: {
-    classes: ["animation-none", "animation-spin", "animation-ping"],
-    regExp: "animation-(none|spin|ping)",
+    classes: ["animate-none", "animate-spin", "animate-ping"],
+    regExp: "animate-(none|spin|ping)",
   },
 
   scaleX: {
