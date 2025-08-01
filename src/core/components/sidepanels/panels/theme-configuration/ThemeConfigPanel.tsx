@@ -14,7 +14,7 @@ import { Button } from "@/ui/shadcn/components/ui/button";
 import { Label } from "@/ui/shadcn/components/ui/label";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { capitalize, get, set } from "lodash-es";
-import { ImportIcon, Undo, X } from "lucide-react";
+import { ImportIcon, Undo } from "lucide-react";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
