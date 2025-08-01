@@ -24,18 +24,31 @@ const PREV_THEME_KEY = "chai-builder-previous-theme";
 // Helper functions for localStorage operations
 const getPreviousTheme = (): ChaiThemeValues | null => {
   if (typeof window === "undefined") return null;
-  const theme = localStorage.getItem(PREV_THEME_KEY);
-  return theme ? JSON.parse(theme) : null;
+  try {
+    const theme = localStorage.getItem(PREV_THEME_KEY);
+    return theme ? JSON.parse(theme) : null;
+  } catch (error) {
+    console.warn("Failed to parse previous theme from localStorage:", error);
+    return null;
+  }
 };
 
 const setPreviousTheme = (theme: ChaiThemeValues) => {
   if (typeof window === "undefined") return;
-  localStorage.setItem(PREV_THEME_KEY, JSON.stringify(theme));
+  try {
+    localStorage.setItem(PREV_THEME_KEY, JSON.stringify(theme));
+  } catch (error) {
+    console.warn("Failed to save previous theme to localStorage:", error);
+  }
 };
 
 const clearPreviousTheme = () => {
   if (typeof window === "undefined") return;
-  localStorage.removeItem(PREV_THEME_KEY);
+  try {
+    localStorage.removeItem(PREV_THEME_KEY);
+  } catch (error) {
+    console.warn("Failed to clear previous theme from localStorage:", error);
+  }
 };
 interface ThemeConfigProps {
   className?: string;
@@ -54,6 +67,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const chaiThemeOptions = useThemeOptions();
   const { t } = useTranslation();
 
+  
   // Wrapper for setting theme that saves previous theme
   const setThemeWithHistory = React.useCallback(
     (newTheme: ChaiThemeValues) => {
