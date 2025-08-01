@@ -42,7 +42,20 @@ const clearPreviousTheme = () => {
   } catch (error) {
     console.warn("Failed to clear previous theme from localStorage:", error);
   }
-};
+}
+
+const MultiActionButtonToast = ({ closeToast }) => (
+  <div className="flex items-center gap-2 rounded-xl bg-green-100 border-solid border-2 border-green-400 px-4 py-2">
+    <span className="font-medium  mr-9">Theme updated</span>
+    <Button variant="default" size="sm"  className="bg-white  text-black hover:bg-gray-400 rounded-lg " onClick={() => { clearPreviousTheme(); closeToast(); }}>
+      Undo
+    </Button>
+    <Button variant="ghost" size="sm" className="rounded-lg" onClick={() => { closeToast(); }}>
+      Dismiss
+    </Button>
+  </div>
+);
+
 interface ThemeConfigProps {
   className?: string;
 }
@@ -58,52 +71,12 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const [themeValues, setThemeValues] = useTheme();
   const chaiThemeOptions = useThemeOptions();
   const { t } = useTranslation();
-
-  // Wrapper for setting theme that saves previous theme and shows undo toast
   const setThemeWithHistory = React.useCallback(
     (newTheme: ChaiThemeValues) => {
       const previousTheme = { ...themeValues };
       setPreviousTheme(previousTheme);
       setThemeValues(newTheme);
-      toast(
-        <div className="flex min-w-[66px] items-center gap-14">
-          <p className="font-medium">Theme updated</p>
-          <div className="flex gap-2">
-            <Button
-              variant="default"
-              size="sm"
-              className="h-8 px-2 text-xs"
-              onClick={() => {
-                clearPreviousTheme();
-                toast.dismiss();
-              }}>
-              Undo
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="h-8 px-2 text-xs"
-              onClick={() => {
-                setSelectedPreset("");
-                clearPreviousTheme();
-                toast.dismiss();
-              }}>
-              Dismiss
-            </Button>
-          </div>
-        </div>,
-        {
-          duration: 15000,
-          position: "bottom-right",
-          style: {
-            width: "auto",
-            borderRadius: "10px",
-          },
-          onDismiss: () => {
-            clearPreviousTheme();
-          },
-        },
-      );
+      toast.custom((t) => <MultiActionButtonToast closeToast={() => toast.dismiss(t)} />);
     },
     [themeValues, setThemeValues],
   );
