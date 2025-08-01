@@ -116,6 +116,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
     <div className="grid grid-cols-1">
       {Object.entries(group.items).map(([key]: [string, [string, string]]) => {
         const themeColor = get(themeValues, `colors.${key}.${isDarkMode ? 1 : 0}`);
+        if (!themeColor) return null;
         return (
           <div key={key} className="mt-1 flex items-center gap-x-2">
             <ColorPickerInput
