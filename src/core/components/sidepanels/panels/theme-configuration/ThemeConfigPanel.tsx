@@ -14,9 +14,29 @@ import { Button } from "@/ui/shadcn/components/ui/button";
 import { Label } from "@/ui/shadcn/components/ui/label";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { capitalize, get, set } from "lodash-es";
-import { ImportIcon } from "lucide-react";
+import { ImportIcon, Undo2 } from "lucide-react";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
+
+// Local storage key for storing previous theme
+const PREV_THEME_KEY = "chai-builder-previous-theme";
+
+// Helper functions for localStorage operations
+const getPreviousTheme = (): ChaiThemeValues | null => {
+  if (typeof window === "undefined") return null;
+  const theme = localStorage.getItem(PREV_THEME_KEY);
+  return theme ? JSON.parse(theme) : null;
+};
+
+const setPreviousTheme = (theme: ChaiThemeValues) => {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(PREV_THEME_KEY, JSON.stringify(theme));
+};
+
+const clearPreviousTheme = () => {
+  if (typeof window === "undefined") return;
+  localStorage.removeItem(PREV_THEME_KEY);
+};
 interface ThemeConfigProps {
   className?: string;
 }
@@ -30,10 +50,29 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const { hasPermission } = usePermissions();
 
   const [themeValues, setThemeValues] = useTheme();
-
+  const [hasPreviousTheme, setHasPreviousTheme] = React.useState(false);
   const chaiThemeOptions = useThemeOptions();
-
   const { t } = useTranslation();
+
+  // Wrapper for setting theme that saves previous theme
+  const setThemeWithHistory = React.useCallback(
+    (newTheme: ChaiThemeValues) => {
+      setPreviousTheme(themeValues);
+      setHasPreviousTheme(true);
+      setThemeValues(newTheme);
+    },
+    [themeValues],
+  );
+
+  // Handle undo action
+  const handleUndo = React.useCallback(() => {
+    const previousTheme = getPreviousTheme();
+    if (previousTheme) {
+      setThemeValues(previousTheme);
+      clearPreviousTheme();
+      setHasPreviousTheme(false);
+    }
+  }, [setThemeValues]);
 
   const handlePresetChange = (presetName: string) => {
     setSelectedPreset(presetName);
@@ -50,7 +89,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
         "borderRadius" in newThemeValues &&
         "colors" in newThemeValues
       ) {
-        setThemeValues(newThemeValues);
+        setThemeWithHistory(newThemeValues);
       } else {
         console.error("Invalid preset structure:", newThemeValues);
       }
@@ -61,7 +100,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
 
   const handleCssImport = (importedTheme: ChaiThemeValues) => {
     // Apply the imported theme values directly to the current theme
-    setThemeValues(importedTheme);
+    setThemeWithHistory(importedTheme);
     setSelectedPreset("");
   };
 
@@ -166,9 +205,17 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
           <div className="flex flex-col gap-2 py-2">
             <div className="flex w-full items-center justify-between">
               <Label className="text-sm">{t("Presets")}</Label>
-              <Button variant="link" size="sm" onClick={() => setIsImportModalOpen(true)}>
-                <ImportIcon className="h-3 w-3" /> {t("Import theme")}
-              </Button>
+              <div className="flex gap-2">
+                <Button variant="link" size="sm" onClick={() => setIsImportModalOpen(true)} className="gap-1">
+                  <ImportIcon className="h-4 w-4" />
+                  {t("Import theme")}
+                </Button>
+                {hasPreviousTheme && (
+                  <Button variant="outline" size="sm" onClick={handleUndo} className="gap-1">
+                    <Undo2 className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-[70%]">
