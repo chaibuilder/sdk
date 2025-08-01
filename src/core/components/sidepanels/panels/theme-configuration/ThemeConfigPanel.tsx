@@ -14,7 +14,7 @@ import { Button } from "@/ui/shadcn/components/ui/button";
 import { Label } from "@/ui/shadcn/components/ui/label";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { capitalize, get, set } from "lodash-es";
-import { ImportIcon } from "lucide-react";
+import { ImportIcon, Undo, X } from "lucide-react";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -42,19 +42,7 @@ const clearPreviousTheme = () => {
   } catch (error) {
     console.warn("Failed to clear previous theme from localStorage:", error);
   }
-}
-
-const MultiActionButtonToast = ({ closeToast }) => (
-  <div className="flex items-center gap-2 rounded-xl bg-green-100 border-solid border-2 border-green-400 px-4 py-2">
-    <span className="font-medium  mr-9">Theme updated</span>
-    <Button variant="default" size="sm"  className="bg-white  text-black hover:bg-gray-400 rounded-lg " onClick={() => { clearPreviousTheme(); closeToast(); }}>
-      Undo
-    </Button>
-    <Button variant="ghost" size="sm" className="rounded-lg" onClick={() => { closeToast(); }}>
-      Dismiss
-    </Button>
-  </div>
-);
+};
 
 interface ThemeConfigProps {
   className?: string;
@@ -76,7 +64,22 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
       const previousTheme = { ...themeValues };
       setPreviousTheme(previousTheme);
       setThemeValues(newTheme);
-      toast.custom((t) => <MultiActionButtonToast closeToast={() => toast.dismiss(t)} />);
+      toast.success("Theme updated", {
+        action: {
+          label: (
+            <span className="flex items-center gap-2">
+              <Undo className="h-4 w-4" /> Undo
+            </span>
+          ),
+          onClick: () => {
+            setThemeValues(previousTheme);
+            clearPreviousTheme();
+            toast.dismiss();
+          },
+        },
+        closeButton: true,
+        duration: 15000,
+      });
     },
     [themeValues, setThemeValues],
   );
