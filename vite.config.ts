@@ -98,6 +98,7 @@ export default defineConfig({
         "re-resizable",
         "lodash",
         "lodash-es",
+        "culori",
         "lucide-react",
         "react",
         "react-autosuggest",
