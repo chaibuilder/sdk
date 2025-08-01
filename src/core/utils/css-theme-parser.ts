@@ -148,6 +148,14 @@ const processAndFormatColor = (value: string): string => {
       return toHex(cleanValue) || "#000000";
     }
 
+    // Handle space separated HSL values (e.g., "200 23.0769% 97.4510%")
+    const hslSpaceMatch = cleanValue.match(/^(\d+\.?\d*)\s+(\d+\.?\d*)%\s+(\d+\.?\d*)%$/);
+    if (hslSpaceMatch) {
+      const [_, h, s, l] = hslSpaceMatch;
+      const colorStr = `hsl(${h} ${s}% ${l}%)`;
+      return toHex(colorStr) || "#000000";
+    }
+
     // Handle space/comma separated values (common in CSS)
     if (/^[\d.]+[\s,]+[\d.]+[\s,]+[\d.]+(?:[\s,/]+[\d.]+)?$/.test(cleanValue)) {
       // If it looks like RGB or HSL values without function wrapper
