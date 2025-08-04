@@ -23,7 +23,7 @@ import { LightningBoltIcon } from "@radix-ui/react-icons";
 import { useFeature } from "flagged";
 import { motion } from "framer-motion";
 import { compact, find, first, get } from "lodash-es";
-import { Layers, Paintbrush, SparklesIcon, X } from "lucide-react";
+import { Layers, Palette, SparklesIcon, X } from "lucide-react";
 import React, {
   ComponentType,
   createElement,
@@ -300,7 +300,7 @@ const RootLayout: ComponentType = () => {
                         ) : panel === "theme" ? (
                           <div className="flex w-full items-center justify-between gap-2">
                             <span className="flex items-center gap-2">
-                              <Paintbrush className="h-4 w-4 rtl:ml-2" />
+                            <Palette className="w-4 h-4 text-gray-600" />
                               {t("Theme Settings")}
                             </span>
                             <Button
