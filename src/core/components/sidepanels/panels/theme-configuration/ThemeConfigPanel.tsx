@@ -203,9 +203,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
       </div>
     );
   }
-
-  console.log(selectedPreset);
-
+  
   return (
     <div className="relative w-full">
       <div className={cn("no-scrollbar h-full w-full overflow-y-auto", className)}>
