@@ -10,6 +10,7 @@ import { usePermissions } from "@/core/hooks/use-permissions";
 import { useTheme, useThemeOptions } from "@/core/hooks/use-theme";
 import { ChaiThemeValues } from "@/types/chaibuilder-editor-props";
 import { Button } from "@/ui/shadcn/components/ui/button";
+import { Switch } from "@/ui/shadcn/components/ui/switch";
 import { Label } from "@/ui/shadcn/components/ui/label";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { capitalize, get, set } from "lodash-es";
@@ -21,8 +22,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/shadcn/components
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/components/ui/select";
 import { Separator } from "@/ui/shadcn/components/ui/separator";
 
-import { CssImportModal } from "./CssImportModal";
+import { lazy, Suspense } from "react";
 import { Badge } from "@/ui/shadcn/components/ui/badge";
+
+const LazyCssImportModal = lazy(() =>
+  import("./CssImportModal").then((module) => ({ default: module.CssImportModal })),
+);
 
 // Local storage key for storing previous theme
 const PREV_THEME_KEY = "chai-builder-previous-theme";
@@ -52,6 +57,7 @@ interface ThemeConfigProps {
 const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "" }) => {
   const [isDarkMode, setIsDarkMode] = useDarkMode();
   const [selectedPreset, setSelectedPreset] = React.useState<string>("");
+  const [isImportModalOpen, setIsImportModalOpen] = React.useState(false);
   const themePresets = useBuilderProp("themePresets", []);
   const themePanelComponent = useBuilderProp("themePanelComponent", null);
   const { hasPermission } = usePermissions();
@@ -203,7 +209,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
       </div>
     );
   }
-  
+
   return (
     <div className="relative w-full">
       <div className={cn("no-scrollbar h-full w-full overflow-y-auto", className)}>
@@ -214,7 +220,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
                 <TabsTrigger value="presets" className="text-xs">
                   Presets
                 </TabsTrigger>
-                <TabsTrigger value="import" className="text-xs">
+                <TabsTrigger value="import"  onClick={() => setIsImportModalOpen(true)} className="text-xs">
                   Import
                 </TabsTrigger>
               </TabsList>
@@ -248,11 +254,6 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
                     </Button>
                   </div>
                 </div>
-              </TabsContent>
-
-              {/* Import Tab */}
-              <TabsContent value="import" className="mt-2 space-y-2">
-                <CssImportModal onImport={handleCssImport} />
               </TabsContent>
             </Tabs>
           </div>
@@ -309,28 +310,31 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
                   <Palette className="h-3 w-3 text-gray-600" />
                   <span className="text-xs font-medium text-gray-700">Colors</span>
                 </div>
-                <div className="flex items-center gap-2 rounded-md bg-gray-100">
-                  <Button
-                    variant={!isDarkMode ? "default" : "ghost"}
-                    size="sm"
-                    className="h-[18px]  text-xs"
-                    onClick={() => setIsDarkMode(false)}>
-                    <Sun className="mr-0.5 h-3 w-3" />
-                    Light
-                  </Button>
-                  <Button
-                    variant={isDarkMode ? "default" : "ghost"}
-                    size="sm"
-                    className="h-[18px] text-xs"
-                    onClick={() => setIsDarkMode(true)}>
-                    <Moon className="mr-0.5 h-3 w-3" />
-                    Dark
-                  </Button>
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2">
+                    <Sun className="h-4 w-4" />
+                    <Switch
+                      checked={isDarkMode}
+                      onCheckedChange={(checked: boolean) => setIsDarkMode(checked)}
+                      aria-label="Toggle dark mode"
+                      className="mx-1"
+                    />
+                    <Moon className="h-4 w-4" />
+                  </div>
                 </div>
               </div>
               <div className="space-y-2">{chaiThemeOptions.colors.map((group) => renderColorGroup(group))}</div>
             </div>
           )}
+          <Suspense fallback={<div>Loading...</div>}>
+            {isImportModalOpen && (
+              <LazyCssImportModal
+                open={isImportModalOpen}
+                onOpenChange={setIsImportModalOpen}
+                onImport={handleCssImport}
+              />
+            )}
+          </Suspense>
         </div>
         <br />
         <br />
