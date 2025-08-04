@@ -16,7 +16,7 @@ const BorderRadiusInput = ({ value, onChange, disabled }: BorderRadiusInputProps
       step={1}
       max={30}
       disabled={disabled}
-      defaultValue={[Number(value.replace("px", ""))]} 
+      value={[Number(value.replace("px", ""))]} 
       onValueChange={(value) => throttledChange(value[0].toString())}
       className="flex-1 cursor-pointer"
     />
