@@ -13,7 +13,7 @@ import { Button } from "@/ui/shadcn/components/ui/button";
 import { Label } from "@/ui/shadcn/components/ui/label";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { capitalize, get, set } from "lodash-es";
-import { CornerUpRight, Type, Undo } from "lucide-react";
+import { CornerUpRight, Type, Undo, Palette, Sun, Moon } from "lucide-react";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -50,7 +50,7 @@ interface ThemeConfigProps {
 }
 
 const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "" }) => {
-  const [isDarkMode] = useDarkMode();
+  const [isDarkMode, setIsDarkMode] = useDarkMode();
   const [selectedPreset, setSelectedPreset] = React.useState<string>("");
   const themePresets = useBuilderProp("themePresets", []);
   const themePanelComponent = useBuilderProp("themePanelComponent", null);
@@ -285,7 +285,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
 
           {/* Border Radius Section */}
           {chaiThemeOptions?.borderRadius && (
-            <div className="space-y-0.5 ">
+            <div className="space-y-0.5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <CornerUpRight className="h-3 w-3 text-gray-600" />
@@ -305,11 +305,32 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
 
           {/* Colors Section with Mode Switch */}
           {chaiThemeOptions?.colors && (
-            <div className="mt-4 space-y-0.5">
-              <Label className="text-sm">{t("Colors")}</Label>
-              <div className="w-full space-y-4 pt-2" key={isDarkMode ? "dark" : "light"}>
-                {chaiThemeOptions.colors.map((group) => renderColorGroup(group))}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Palette className="h-3 w-3 text-gray-600" />
+                  <span className="text-xs font-medium text-gray-700">Colors</span>
+                </div>
+                <div className="flex items-center gap-2 rounded-md bg-gray-100">
+                  <Button
+                    variant={!isDarkMode ? "default" : "ghost"}
+                    size="sm"
+                    className="h-[18px]  text-xs"
+                    onClick={() => setIsDarkMode(false)}>
+                    <Sun className="mr-0.5 h-3 w-3" />
+                    Light
+                  </Button>
+                  <Button
+                    variant={isDarkMode ? "default" : "ghost"}
+                    size="sm"
+                    className="h-[18px] text-xs"
+                    onClick={() => setIsDarkMode(true)}>
+                    <Moon className="mr-0.5 h-3 w-3" />
+                    Dark
+                  </Button>
+                </div>
               </div>
+              <div className="space-y-2">{chaiThemeOptions.colors.map((group) => renderColorGroup(group))}</div>
             </div>
           )}
         </div>
