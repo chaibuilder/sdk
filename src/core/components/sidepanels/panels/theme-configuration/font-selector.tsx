@@ -1,3 +1,4 @@
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/components/ui/select";
 import { Label } from "@/ui/shadcn/components/ui/label";
 import { useRegisteredFonts } from "@chaibuilder/runtime";
 import { startCase } from "lodash-es";
@@ -12,19 +13,24 @@ const FontSelector = ({
   onChange: (value: string) => void;
 }) => {
   const availableFonts = useRegisteredFonts();
+  if (!availableFonts.some((font) => font.family === value)) {
+    onChange(availableFonts[0].family);
+  }
   return (
     <div className="space-y-0.5">
-      <Label className="text-sm">{startCase(label)}</Label>
-      <select
-        className="mt-1 w-full cursor-pointer rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-border focus:ring-offset-2"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}>
-        {availableFonts.map((font) => (
-          <option key={font.family} value={font.family}>
-            {font.family}
-          </option>
-        ))}
-      </select>
+      <Label className="mb-1 block text-xs text-gray-600">{startCase(label)}</Label>
+      <Select value={value} onValueChange={onChange}>
+        <SelectTrigger className="h-8 w-full text-xs text-black">
+          <SelectValue placeholder="Select font" />
+        </SelectTrigger>
+        <SelectContent>
+          {availableFonts.map((font) => (
+            <SelectItem key={font.family} value={font.family}>
+              {font.family}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
     </div>
   );
 };
