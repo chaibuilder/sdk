@@ -15,7 +15,7 @@ import {
 } from "@/core/hooks";
 import { PERMISSIONS } from "@/core/main";
 import { ChaiBlock } from "@/types/common";
-import { flip } from "@floating-ui/dom";
+import { flip, limitShift, size } from "@floating-ui/dom";
 import { shift, useFloating } from "@floating-ui/react-dom";
 import { ArrowUpIcon, CopyIcon, DragHandleDots2Icon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
 import { useResizeObserver } from "@react-hookz/web";
@@ -111,9 +111,33 @@ const BlockFloatingSelector = ({ block, selectedBlockElement }: BlockActionProps
   const { hasPermission } = usePermissions();
   const { editingBlockId } = useInlineEditing();
   const { document } = useFrame();
+
+  // * Floating element position and size
   const { floatingStyles, refs, update } = useFloating({
     placement: "top-start",
-    middleware: [shift(), flip()],
+    middleware: [
+      shift({
+        boundary: document?.body,
+        limiter: limitShift({
+          offset: 8,
+          mainAxis: true,
+          crossAxis: true,
+        }),
+      }),
+      flip({
+        boundary: document?.body,
+        fallbackPlacements: ["bottom-start", "top-end", "bottom-end", "inside"] as any,
+      }),
+      size({
+        boundary: document?.body,
+        apply({ availableWidth, availableHeight, elements }) {
+          Object.assign(elements.floating.style, {
+            maxWidth: `${Math.max(200, availableWidth)}px`,
+            maxHeight: `${Math.max(100, availableHeight)}px`,
+          });
+        },
+      }),
+    ],
     elements: { reference: selectedBlockElement },
   });
 
@@ -123,6 +147,16 @@ const BlockFloatingSelector = ({ block, selectedBlockElement }: BlockActionProps
   const parentId: string | undefined | null = get(block, "_parent", null);
 
   const label: string = isEmpty(get(block, "_name", "")) ? get(block, "_type", "") : get(block, "_name", "");
+
+  // * Updating position of floating element when selected block element changes
+  useEffect(() => {
+    if (selectedBlockElement) {
+      const timer = setTimeout(() => update(), 500);
+      return () => clearTimeout(timer);
+    } else {
+      update();
+    }
+  }, [selectedBlockElement]);
 
   if (!selectedBlockElement || !block || editingBlockId) return null;
 
