@@ -4,7 +4,6 @@ import {
   FontSelector,
 } from "@/core/components/sidepanels/panels/theme-configuration";
 import { cn } from "@/core/functions/common-functions";
-import { lazy, Suspense } from "react";
 import { useDarkMode } from "@/core/hooks";
 import { useBuilderProp } from "@/core/hooks/index";
 import { usePermissions } from "@/core/hooks/use-permissions";
@@ -14,14 +13,16 @@ import { Button } from "@/ui/shadcn/components/ui/button";
 import { Label } from "@/ui/shadcn/components/ui/label";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { capitalize, get, set } from "lodash-es";
-import { ImportIcon, Undo } from "lucide-react";
+import { CornerUpRight, Type, Undo } from "lucide-react";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/shadcn/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/components/ui/select";
+import { Separator } from "@/ui/shadcn/components/ui/separator";
 
-const LazyCssImportModal = lazy(() =>
-  import("./CssImportModal").then((module) => ({ default: module.CssImportModal })),
-);
+import { CssImportModal } from "./CssImportModal";
+import { Badge } from "@/ui/shadcn/components/ui/badge";
 
 // Local storage key for storing previous theme
 const PREV_THEME_KEY = "chai-builder-previous-theme";
@@ -51,7 +52,6 @@ interface ThemeConfigProps {
 const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "" }) => {
   const [isDarkMode] = useDarkMode();
   const [selectedPreset, setSelectedPreset] = React.useState<string>("");
-  const [isImportModalOpen, setIsImportModalOpen] = React.useState(false);
   const themePresets = useBuilderProp("themePresets", []);
   const themePanelComponent = useBuilderProp("themePanelComponent", null);
   const { hasPermission } = usePermissions();
@@ -83,9 +83,6 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
     },
     [themeValues, setThemeValues],
   );
-  const handlePresetChange = (presetName: string) => {
-    setSelectedPreset(presetName);
-  };
 
   const applyPreset = () => {
     const preset = (themePresets as any[]).find((p) => Object.keys(p)[0] === selectedPreset);
@@ -207,51 +204,72 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
     );
   }
 
+  console.log(selectedPreset);
+
   return (
     <div className="relative w-full">
       <div className={cn("no-scrollbar h-full w-full overflow-y-auto", className)}>
         {themePresets.length > 0 && (
-          <div className="flex flex-col gap-1 py-2">
-            <div className="flex w-full items-center justify-between">
-              <Label className="text-sm">{t("Presets")}</Label>
-              <div className="flex gap-2">
-                <Button className="px-1" variant="link" size="sm" onClick={() => setIsImportModalOpen(true)}>
-                  <ImportIcon className="h-4 w-4" />
-                  {t("Import theme")}
-                </Button>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-[70%]">
-                <select
-                  value={selectedPreset}
-                  onChange={(e) => handlePresetChange(e.target.value)}
-                  className="w-full space-y-0.5 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
-                  <option value="">Select preset</option>
-                  {Array.isArray(themePresets) &&
-                    themePresets.map((preset: any) => (
-                      <option key={Object.keys(preset)[0]} value={Object.keys(preset)[0]}>
-                        {capitalize(Object.keys(preset)[0].replaceAll("_", " "))}
-                      </option>
-                    ))}
-                </select>
-              </div>
-              <div className="flex w-[30%] items-end">
-                <Button
-                  className="w-full text-sm"
-                  disabled={selectedPreset === ""}
-                  variant="default"
-                  onClick={applyPreset}>
-                  {t("Apply")}
-                </Button>
-              </div>
-            </div>
+          <div className="mx-0 my-2 flex flex-col gap-1 py-2">
+            <Tabs defaultValue="presets" className="w-full">
+              <TabsList className="grid h-8 w-full grid-cols-2">
+                <TabsTrigger value="presets" className="text-xs">
+                  Presets
+                </TabsTrigger>
+                <TabsTrigger value="import" className="text-xs">
+                  Import
+                </TabsTrigger>
+              </TabsList>
+
+              {/* Presets Tab */}
+              <TabsContent value="presets" className="mt-2">
+                <div className="flex items-center gap-2 px-0">
+                  <div className="w-[70%]">
+                    <Select value={selectedPreset} onValueChange={setSelectedPreset}>
+                      <SelectTrigger className="h-9 w-full text-sm">
+                        <SelectValue placeholder="Select preset" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Array.isArray(themePresets) &&
+                          themePresets.map((preset: any) => {
+                            const key = Object.keys(preset)[0];
+                            const label = key.replaceAll("_", " ");
+                            return (
+                              <SelectItem key={key} value={key}>
+                                {capitalize(label)}
+                              </SelectItem>
+                            );
+                          })}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="w-[25%]">
+                    <Button className="w-full text-sm" disabled={!selectedPreset} onClick={applyPreset}>
+                      {t("Apply")}
+                    </Button>
+                  </div>
+                </div>
+              </TabsContent>
+
+              {/* Import Tab */}
+              <TabsContent value="import" className="mt-2 space-y-2">
+                <CssImportModal onImport={handleCssImport} />
+              </TabsContent>
+            </Tabs>
           </div>
         )}
-        <div className={cn("space-y-2", className)}>
+
+        <Separator />
+
+        <div className={cn("my-2 space-y-3", className)}>
           {/* Fonts Section */}
+          <div className="flex items-center gap-2">
+            <Type className="h-3 w-3 text-gray-600" />
+            <span className="text-xs font-medium text-gray-700">Typography</span>
+          </div>
           {chaiThemeOptions?.fontFamily && (
-            <div className="grid gap-4">
+            <div className="space-y-2">
               {Object.entries(chaiThemeOptions.fontFamily).map(([key, value]: [string, any]) => (
                 <FontSelector
                   key={key}
@@ -263,16 +281,27 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
             </div>
           )}
 
+          <Separator />
+
           {/* Border Radius Section */}
           {chaiThemeOptions?.borderRadius && (
-            <div className="space-y-0.5 py-3">
-              <Label className="text-sm">{t("Border Radius")}</Label>
+            <div className="space-y-0.5 ">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <CornerUpRight className="h-3 w-3 text-gray-600" />
+                  <span className="text-xs font-medium text-gray-700">Border Radius</span>
+                </div>
+                <Badge variant="secondary" className="text-xs">
+                  {themeValues.borderRadius}
+                </Badge>
+              </div>
               <div className="flex items-center gap-4 py-2">
                 <BorderRadiusInput value={themeValues.borderRadius} onChange={handleBorderRadiusChange} />
-                <span className="w-12 text-sm">{themeValues.borderRadius}</span>
               </div>
             </div>
           )}
+
+          <Separator />
 
           {/* Colors Section with Mode Switch */}
           {chaiThemeOptions?.colors && (
@@ -293,12 +322,6 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
       {themePanelComponent && (
         <div className="absolute bottom-4 w-full">{React.createElement(themePanelComponent)}</div>
       )}
-
-      <Suspense fallback={<div>Loading...</div>}>
-        {isImportModalOpen && (
-          <LazyCssImportModal open={isImportModalOpen} onOpenChange={setIsImportModalOpen} onImport={handleCssImport} />
-        )}
-      </Suspense>
     </div>
   );
 });
