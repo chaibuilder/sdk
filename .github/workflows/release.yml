@@ -52,7 +52,7 @@ jobs:
           REPO_NAME="${GITHUB_REPOSITORY}"
           CHANGELOG=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             "https://api.github.com/repos/${REPO_NAME}/pulls?state=closed&sort=updated&direction=desc&per_page=100" | \
-            jq -r ".[] | select(.merged_at != null) | select(.merged_at > \"${SINCE_DATE}\") | \"* \(.title) ([#\(.number)](\(.html_url)))\"")
+            jq -r ".[] | select(.merged_at != null) | select(.merged_at > \"${SINCE_DATE}\") | \"* \(.title) ([#\(.number)](\(.html_url))) by @\(.user.login)\"")
 
           # Save changelog to a file with proper escaping
           echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
