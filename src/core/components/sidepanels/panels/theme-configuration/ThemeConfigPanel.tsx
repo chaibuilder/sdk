@@ -10,22 +10,22 @@ import { usePermissions } from "@/core/hooks/use-permissions";
 import { useTheme, useThemeOptions } from "@/core/hooks/use-theme";
 import { ChaiThemeValues } from "@/types/chaibuilder-editor-props";
 import { Button } from "@/ui/shadcn/components/ui/button";
-import { Switch } from "@/ui/shadcn/components/ui/switch";
 import { Label } from "@/ui/shadcn/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/components/ui/select";
+import { Separator } from "@/ui/shadcn/components/ui/separator";
+import { Switch } from "@/ui/shadcn/components/ui/switch";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { capitalize, get, set } from "lodash-es";
-import { CornerUpRight, Type, Undo, Palette, Sun, Moon, ImportIcon } from "lucide-react";
+import { CornerUpRight, ImportIcon, Moon, Palette, Sun, Type, Undo } from "lucide-react";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/components/ui/select";
-import { Separator } from "@/ui/shadcn/components/ui/separator";
 
-import { lazy, Suspense } from "react";
 import { Badge } from "@/ui/shadcn/components/ui/badge";
+import { lazy, Suspense } from "react";
 
 const LazyCssImportModal = lazy(() =>
-  import("./CssImportModal").then((module) => ({ default: module.CssImportModal })),
+  import("./css-import-modal").then((module) => ({ default: module.CssImportModal })),
 );
 
 // Local storage key for storing previous theme
@@ -101,6 +101,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
         "colors" in newThemeValues
       ) {
         setThemeWithHistory(newThemeValues);
+        setSelectedPreset("");
       } else {
         console.error("Invalid preset structure:", newThemeValues);
       }
@@ -129,7 +130,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
     200,
   );
 
-  const handleBorderRadiusChange = useDebouncedCallback(
+  const handleBorderRadiusChange = React.useCallback(
     (value: string) => {
       setThemeValues(() => ({
         ...themeValues,
@@ -137,7 +138,6 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
       }));
     },
     [themeValues],
-    200,
   );
 
   const handleColorChange = useDebouncedCallback(
