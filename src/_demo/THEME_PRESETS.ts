@@ -5,7 +5,7 @@ export const defaultShadcnPreset: ChaiThemeValues = {
     heading: "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'",
     body: "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'",
   },
-  borderRadius: "0.625rem",
+  borderRadius: "6px",
   colors: {
     background: ["#ffffff", "#0a0a0a"],
     foreground: ["#0a0a0a", "#fafafa"],
