@@ -2,6 +2,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@/ui/shadcn/components/ui/label";
 import { useRegisteredFonts } from "@chaibuilder/runtime";
 import { startCase } from "lodash-es";
+import { useEffect } from "react";
 
 const FontSelector = ({
   label,
@@ -13,9 +14,13 @@ const FontSelector = ({
   onChange: (value: string) => void;
 }) => {
   const availableFonts = useRegisteredFonts();
-  if (!availableFonts.some((font) => font.family === value)) {
-    onChange(availableFonts[0].family);
-  }
+
+  useEffect(() => {
+    if (!availableFonts.some((font) => font.family === value)) {
+      onChange(availableFonts[0].family);
+    }
+  }, [value, onChange]);
+
   return (
     <div className="space-y-0.5">
       <Label className="mb-1 block text-xs text-gray-600">{startCase(label)}</Label>
