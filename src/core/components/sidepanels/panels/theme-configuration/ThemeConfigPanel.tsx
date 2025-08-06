@@ -14,11 +14,10 @@ import { Switch } from "@/ui/shadcn/components/ui/switch";
 import { Label } from "@/ui/shadcn/components/ui/label";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { capitalize, get, set } from "lodash-es";
-import { CornerUpRight, Type, Undo, Palette, Sun, Moon } from "lucide-react";
+import { CornerUpRight, Type, Undo, Palette, Sun, Moon, ImportIcon } from "lucide-react";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/shadcn/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/components/ui/select";
 import { Separator } from "@/ui/shadcn/components/ui/separator";
 
@@ -215,47 +214,42 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
       <div className={cn("no-scrollbar h-full w-full overflow-y-auto", className)}>
         {themePresets.length > 0 && (
           <div className="mx-0 my-2 flex flex-col gap-1 py-2">
-            <Tabs defaultValue="presets" className="w-full">
-              <TabsList className="grid h-8 w-full grid-cols-2">
-                <TabsTrigger value="presets" className="text-xs">
-                  Presets
-                </TabsTrigger>
-                <TabsTrigger value="import"  onClick={() => setIsImportModalOpen(true)} className="text-xs">
-                  Import
-                </TabsTrigger>
-              </TabsList>
-
-              {/* Presets Tab */}
-              <TabsContent value="presets" className="mt-2">
-                <div className="flex items-center gap-2 px-0">
-                  <div className="w-[70%]">
-                    <Select value={selectedPreset} onValueChange={setSelectedPreset}>
-                      <SelectTrigger className="h-9 w-full text-sm">
-                        <SelectValue placeholder="Select preset" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {Array.isArray(themePresets) &&
-                          themePresets.map((preset: any) => {
-                            const key = Object.keys(preset)[0];
-                            const label = key.replaceAll("_", " ");
-                            return (
-                              <SelectItem key={key} value={key}>
-                                {capitalize(label)}
-                              </SelectItem>
-                            );
-                          })}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="w-[25%]">
-                    <Button className="w-full text-sm" disabled={!selectedPreset} onClick={applyPreset}>
-                      {t("Apply")}
-                    </Button>
-                  </div>
-                </div>
-              </TabsContent>
-            </Tabs>
+            <div className="flex w-full items-center justify-between">
+              <Label className="text-sm">{t("Presets")}</Label>
+              <div className="flex gap-2">
+                <Button className="px-1" variant="link" size="sm" onClick={() => setIsImportModalOpen(true)}>
+                  <ImportIcon className="h-4 w-4" />
+                  {t("Import theme")}
+                </Button>
+              </div>
+            </div>
+            {/* Presets Tab */}
+            <div className="flex items-center gap-2 px-0">
+              <div className="w-[70%]">
+                <Select value={selectedPreset} onValueChange={setSelectedPreset}>
+                  <SelectTrigger className="h-9 w-full text-sm">
+                    <SelectValue placeholder="Select preset" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Array.isArray(themePresets) &&
+                      themePresets.map((preset: any) => {
+                        const key = Object.keys(preset)[0];
+                        const label = key.replaceAll("_", " ");
+                        return (
+                          <SelectItem key={key} value={key}>
+                            {capitalize(label)}
+                          </SelectItem>
+                        );
+                      })}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="w-[25%]">
+                <Button className="w-full text-sm" disabled={!selectedPreset} onClick={applyPreset}>
+                  {t("Apply")}
+                </Button>
+              </div>
+            </div>
           </div>
         )}
 

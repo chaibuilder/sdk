@@ -1,5 +1,5 @@
-import { debounce } from "lodash-es";
 import { Slider } from "@/ui/shadcn/components/ui/slider";
+import { useThrottledCallback } from "@react-hookz/web";
 
 type BorderRadiusInputProps = {
   value: string;
@@ -8,13 +8,13 @@ type BorderRadiusInputProps = {
 };
 
 const BorderRadiusInput = ({ value, onChange, disabled }: BorderRadiusInputProps) => {
-  const throttledChange = debounce((value: string) => onChange(value), 200);
+  const throttledChange = useThrottledCallback((value: string) => onChange(value), [value], 200, true);
 
   return (
     <Slider
       min={0}
       step={1}
-      max={30}
+      max={50}
       disabled={disabled}
       value={[Number(value.replace("px", ""))]} 
       onValueChange={(value) => throttledChange(value[0].toString())}
