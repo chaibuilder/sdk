@@ -215,27 +215,29 @@ export function ManualClasses() {
                     }
                   }, 10);
                 }}
-                className="flex cursor-default items-center gap-x-1 truncate break-words border border-border bg-gray-200 p-px pl-5 pr-2 text-[11px] text-gray-600 hover:border-gray-300 hover:pl-5 group-hover:pl-5 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
-                {cls}
-                <Cross2Icon
-                  onClick={() => removeClassesFromBlocks(selectedIds, [cls], true)}
-                  className="absolute left-0.5 mr-0.5 hidden group-hover:block h-4 w-4 bg-gray-500 font-bold group-hover:bg-gray-300 group-hover:text-red-500 "
-                />
-                <svg
-                  className="absolute left-0.5 mr-0.5 group-hover:hidden h-3.5 w-3.5 "
-                  fill="rgba(55, 65, 81, 0.4)"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlSpace="preserve">
-                  <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                  <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
-                  <g id="SVGRepo_iconCarrier">
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M12 6.036c-2.667 0-4.333 1.325-5 3.976 1-1.325 2.167-1.822 3.5-1.491.761.189 1.305.738 1.906 1.345C13.387 10.855 14.522 12 17 12c2.667 0 4.333-1.325 5-3.976-1 1.325-2.166 1.822-3.5 1.491-.761-.189-1.305-.738-1.907-1.345-.98-.99-2.114-2.134-4.593-2.134zM7 12c-2.667 0-4.333 1.325-5 3.976 1-1.326 2.167-1.822 3.5-1.491.761.189 1.305.738 1.907 1.345.98.989 2.115 2.134 4.594 2.134 2.667 0 4.333-1.325 5-3.976-1 1.325-2.167 1.822-3.5 1.491-.761-.189-1.305-.738-1.906-1.345C10.613 13.145 9.478 12 7 12z"></path>
-                  </g>
-                </svg>
+                className="flex h-max cursor-default items-center gap-x-1 truncate break-words rounded bg-gray-200 py-px pl-0.5 pr-1 text-[11px] text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+                <div className="z-10 flex h-full w-max items-center justify-center">
+                  <Cross2Icon
+                    onClick={() => removeClassesFromBlocks(selectedIds, [cls], true)}
+                    className="hidden h-max w-3.5 cursor-pointer rounded bg-gray-100 p-0.5 text-red-500 hover:bg-gray-50 group-hover:block"
+                  />
+                  <svg
+                    className="h-3.5 w-3.5 group-hover:hidden"
+                    fill="rgba(55, 65, 81, 0.4)"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlSpace="preserve">
+                    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                    <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M12 6.036c-2.667 0-4.333 1.325-5 3.976 1-1.325 2.167-1.822 3.5-1.491.761.189 1.305.738 1.906 1.345C13.387 10.855 14.522 12 17 12c2.667 0 4.333-1.325 5-3.976-1 1.325-2.166 1.822-3.5 1.491-.761-.189-1.305-.738-1.907-1.345-.98-.99-2.114-2.134-4.593-2.134zM7 12c-2.667 0-4.333 1.325-5 3.976 1-1.326 2.167-1.822 3.5-1.491.761.189 1.305.738 1.907 1.345.98.989 2.115 2.134 4.594 2.134 2.667 0 4.333-1.325 5-3.976-1 1.325-2.167 1.822-3.5 1.491-.761-.189-1.305-.738-1.906-1.345C10.613 13.145 9.478 12 7 12z"></path>
+                    </g>
+                  </svg>
+                </div>
+                <div>{cls}</div>
               </button>
             </div>
           ),
