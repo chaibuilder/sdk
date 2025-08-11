@@ -2,7 +2,7 @@ import MediaManagerModal from "@/core/components/sidepanels/panels/images/media-
 import { ChaiAsset } from "@/types";
 import { WidgetProps } from "@rjsf/utils";
 import { first, get, isArray, isEmpty } from "lodash-es";
-import { X } from "lucide-react";
+import { Edit2Icon, X } from "lucide-react";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelectedBlock, useUpdateBlocksProps } from "../hooks";
@@ -47,15 +47,34 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
   return (
     <div className="mt-1.5 flex items-center gap-x-3">
       {value ? (
-        <div className="relative">
-          <img src={value} className="h-20 w-20 overflow-hidden rounded-md border border-border object-cover" alt="" />
+        <div className="group relative">
+          <img
+            src={value}
+            className={
+              `h-20 w-20 overflow-hidden rounded-md border border-border object-cover transition duration-200 ` +
+              (assetId && assetId !== "" ? "group-hover:blur-sm" : "")
+            }
+            alt=""
+          />
           {showRemoveIcons && (
             <button
               type="button"
               onClick={clearImage}
-              className="absolute -right-2 -top-2 rounded-full bg-destructive p-1 text-destructive-foreground hover:bg-destructive/90">
+              className="absolute -right-2 -top-2 z-20 rounded-full bg-destructive p-1 text-destructive-foreground hover:bg-destructive/90">
               <X className="h-3 w-3" />
             </button>
+          )}
+          {/* Edit icon overlay on hover if assetId is present and not empty */}
+          {assetId && assetId !== "" && (
+            <MediaManagerModal onSelect={handleSelect} assetId={assetId}>
+              <button
+                type="button"
+                className="absolute inset-0 z-10 flex items-center justify-center bg-black/10 opacity-0 transition duration-200 group-hover:bg-black/30 group-hover:opacity-100"
+                style={{ pointerEvents: "auto" }}
+                tabIndex={0}>
+                <Edit2Icon className="text-white" />
+              </button>
+            </MediaManagerModal>
           )}
         </div>
       ) : (
@@ -67,7 +86,13 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
         {showImagePicker && (
           <>
             <MediaManagerModal onSelect={handleSelect} assetId={assetId}>
-              <small className="h-6 cursor-pointer rounded-md bg-secondary px-2 py-1 text-center text-xs text-secondary-foreground hover:bg-secondary/80">
+              <small
+                onClick={() => {
+                  if (selectedBlock?._id) {
+                    updateBlockProps([selectedBlock._id], { assetId: "" });
+                  }
+                }}
+                className="h-6 cursor-pointer rounded-md bg-secondary px-2 py-1 text-center text-xs text-secondary-foreground hover:bg-secondary/80">
                 {value || !isEmpty(value) ? t("Replace image") : t("Choose image")}
               </small>
             </MediaManagerModal>
