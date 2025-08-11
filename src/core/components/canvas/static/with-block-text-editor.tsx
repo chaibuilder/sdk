@@ -268,7 +268,7 @@ const WithBlockTextEditor = memo(
         setEditingElement(null);
         setEditingBlockId(null);
         setEditingItemIndex(-1);
-        setIds([]);
+        setIds(blockId ? [blockId] : []);
       },
       [blockId, updateContent, setEditingBlockId, setIds, selectedLang],
     );
