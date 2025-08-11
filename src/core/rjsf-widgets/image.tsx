@@ -34,9 +34,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
   };
 
   const clearImage = useCallback(() => {
-    onChange(
-      "https://fldwljgzcktqnysdkxnn.supabase.co/storage/v1/object/public/dam-assets/02817647-2581-4c50-a005-f72de13d3da7/banner-placeholder.png?cid=20250730t1809109830000?v=2025-07-30T18:09:11.041925+00:00",
-    );
+    onChange(PLACEHOLDER_IMAGE_URL);
     if (selectedBlock?._id) {
       updateBlockProps([selectedBlock._id], { assetId: "" });
     }
