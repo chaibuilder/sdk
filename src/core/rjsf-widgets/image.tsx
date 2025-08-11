@@ -12,6 +12,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
   const selectedBlock = useSelectedBlock();
   const updateBlockProps = useUpdateBlocksProps();
   const showImagePicker = true;
+  const showRemoveIcons = value.startsWith("https://fldwljgzcktqnysdkxnn") ? false : true;
 
   const handleSelect = (assets: ChaiAsset[] | ChaiAsset) => {
     const asset = isArray(assets) ? first(assets) : assets;
@@ -33,7 +34,9 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
   };
 
   const clearImage = useCallback(() => {
-    onChange("https://placehold.co/400");
+    onChange(
+      "https://fldwljgzcktqnysdkxnn.supabase.co/storage/v1/object/public/dam-assets/02817647-2581-4c50-a005-f72de13d3da7/banner-placeholder.png?cid=20250730t1809109830000?v=2025-07-30T18:09:11.041925+00:00",
+    );
     if (selectedBlock?._id) {
       updateBlockProps([selectedBlock._id], { assetId: "" });
     }
@@ -46,12 +49,14 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
       {value ? (
         <div className="relative">
           <img src={value} className="h-20 w-20 overflow-hidden rounded-md border border-border object-cover" alt="" />
-          <button
-            type="button"
-            onClick={clearImage}
-            className="absolute -right-2 -top-2 rounded-full bg-destructive p-1 text-destructive-foreground hover:bg-destructive/90">
-            <X className="h-3 w-3" />
-          </button>
+          {showRemoveIcons && (
+            <button
+              type="button"
+              onClick={clearImage}
+              className="absolute -right-2 -top-2 rounded-full bg-destructive p-1 text-destructive-foreground hover:bg-destructive/90">
+              <X className="h-3 w-3" />
+            </button>
+          )}
         </div>
       ) : (
         <MediaManagerModal onSelect={handleSelect} mode="image" assetId={assetId}>
