@@ -2,16 +2,20 @@ import MediaManagerModal from "@/core/components/sidepanels/panels/images/media-
 import { ChaiAsset } from "@/types";
 import { WidgetProps } from "@rjsf/utils";
 import { first, get, isArray, isEmpty } from "lodash-es";
-import { X } from "lucide-react";
+import { Edit2Icon, X } from "lucide-react";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelectedBlock, useUpdateBlocksProps } from "../hooks";
+
+const PLACEHOLDER_IMAGE_URL =
+  "https://fldwljgzcktqnysdkxnn.supabase.co/storage/v1/object/public/dam-assets/02817647-2581-4c50-a005-f72de13d3da7/banner-placeholder.png?cid=20250730t1809109830000?v=2025-07-30T18:09:11.041925+00:00";
 
 const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
   const { t } = useTranslation();
   const selectedBlock = useSelectedBlock();
   const updateBlockProps = useUpdateBlocksProps();
   const showImagePicker = true;
+  const showRemoveIcons = value?.startsWith?.("https://fldwljgzcktqnysdkxnn") ? false : true;
 
   const handleSelect = (assets: ChaiAsset[] | ChaiAsset) => {
     const asset = isArray(assets) ? first(assets) : assets;
@@ -33,7 +37,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
   };
 
   const clearImage = useCallback(() => {
-    onChange("https://placehold.co/400");
+    onChange(PLACEHOLDER_IMAGE_URL);
     if (selectedBlock?._id) {
       updateBlockProps([selectedBlock._id], { assetId: "" });
     }
@@ -44,14 +48,32 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
   return (
     <div className="mt-1.5 flex items-center gap-x-3">
       {value ? (
-        <div className="relative">
-          <img src={value} className="h-20 w-20 overflow-hidden rounded-md border border-border object-cover" alt="" />
-          <button
-            type="button"
-            onClick={clearImage}
-            className="absolute -right-2 -top-2 rounded-full bg-destructive p-1 text-destructive-foreground hover:bg-destructive/90">
-            <X className="h-3 w-3" />
-          </button>
+        <div className="group relative">
+          <img
+            src={value}
+            className={
+              `h-20 w-20 overflow-hidden rounded-md border border-border object-cover transition duration-200 ` +
+              (assetId && assetId !== "" ? "cursor-pointer group-hover:blur-sm" : "")
+            }
+            alt=""
+          />
+          {showRemoveIcons && (
+            <button
+              type="button"
+              onClick={clearImage}
+              className="absolute -right-2 -top-2 z-20 rounded-full bg-destructive p-1 text-destructive-foreground hover:bg-destructive/90">
+              <X className="h-3 w-3" />
+            </button>
+          )}
+          {assetId && assetId !== "" && (
+            <MediaManagerModal onSelect={handleSelect} assetId={assetId}>
+              <button
+                type="button"
+                className="absolute inset-0 z-10 flex cursor-pointer items-center justify-center bg-black/10 opacity-0 transition duration-200 group-hover:bg-black/30 group-hover:opacity-100">
+                <Edit2Icon className="h-4 w-4 text-white" />
+              </button>
+            </MediaManagerModal>
+          )}
         </div>
       ) : (
         <MediaManagerModal onSelect={handleSelect} mode="image" assetId={assetId}>
@@ -61,7 +83,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
       <div className="flex w-3/5 flex-col">
         {showImagePicker && (
           <>
-            <MediaManagerModal onSelect={handleSelect} assetId={assetId}>
+            <MediaManagerModal onSelect={handleSelect} assetId="">
               <small className="h-6 cursor-pointer rounded-md bg-secondary px-2 py-1 text-center text-xs text-secondary-foreground hover:bg-secondary/80">
                 {value || !isEmpty(value) ? t("Replace image") : t("Choose image")}
               </small>
