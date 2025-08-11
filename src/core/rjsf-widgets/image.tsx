@@ -67,8 +67,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
             <MediaManagerModal onSelect={handleSelect} assetId={assetId}>
               <button
                 type="button"
-                className="absolute inset-0 z-10 flex items-center justify-center bg-black/10 opacity-0 transition duration-200 group-hover:bg-black/30 group-hover:opacity-100"
-                style={{ pointerEvents: "auto" }}
+                className="absolute inset-0 z-10 flex items-center justify-center bg-black/10 opacity-0 transition duration-200 group-hover:bg-black/30 group-hover:opacity-100 pointer-events-auto"
                 tabIndex={0}>
                 <Edit2Icon className="text-white" />
               </button>
