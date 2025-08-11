@@ -17,7 +17,6 @@ const JSONFormFieldTemplate = ({
   children,
   errors,
   help,
-  description,
   hidden,
   required,
   schema,
@@ -55,23 +54,39 @@ const JSONFormFieldTemplate = ({
     return (
       <div className={`${classNames} relative`}>
         {schema.title && (
-          <label
-            htmlFor={id}
-            onClick={() => setOpenedList(isListOpen ? null : id)}
-            className="flex cursor-pointer items-center gap-x-1 py-1 leading-tight duration-200 hover:bg-slate-100">
-            {isListOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
-            <List className="h-3 w-3" />
-            <span className="leading-tight">{label}</span>&nbsp;
-            <Badge className="m-0 bg-gray-200 px-2 leading-tight text-gray-500 hover:bg-gray-200 hover:text-gray-500">
-              <span className="text-[9px] font-medium text-slate-600">{formData?.length}</span>
-            </Badge>
-          </label>
+          <div className="flex items-center justify-between gap-1">
+            <label
+              htmlFor={id}
+              onClick={() => setOpenedList(isListOpen ? null : id)}
+              className="flex cursor-pointer items-center gap-x-1 py-1 leading-tight duration-200 hover:bg-slate-100">
+              {isListOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+              <List className="h-3 w-3" />
+              <span className="leading-tight">{label}</span>&nbsp;
+              <Badge className="m-0 bg-gray-200 px-2 leading-tight text-gray-500 hover:bg-gray-200 hover:text-gray-500">
+                <span className="text-[9px] font-medium text-slate-600">{formData?.length}</span>
+              </Badge>
+              {schema.description && (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      {/* Prevent toggling list when clicking the info icon */}
+                      <Info
+                        className="h-3 w-3 text-muted-foreground/70"
+                        onClick={(e) => e.stopPropagation()}
+                        onMouseDown={(e) => e.stopPropagation()}
+                      />
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs">{schema.description}</TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
+            </label>
+          </div>
         )}
         {formData?.length === 0 ? (
           <div className="h-0 overflow-hidden">{children}</div>
         ) : (
           <div className={`${!isListOpen ? "h-0 overflow-hidden" : "pt-0.5"}`}>
-            {description}
             {children}
             {errors}
             {help}
@@ -117,7 +132,6 @@ const JSONFormFieldTemplate = ({
           )}
         </div>
       )}
-      {description}
       {children}
       {errors}
       {help}
