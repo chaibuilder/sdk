@@ -15,7 +15,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
   const selectedBlock = useSelectedBlock();
   const updateBlockProps = useUpdateBlocksProps();
   const showImagePicker = true;
-  const showRemoveIcons = value?.startsWith?.("https://fldwljgzcktqnysdkxnn") ? false : true;
+  const showRemoveIcons = value === PLACEHOLDER_IMAGE_URL ? false : true;
 
   const handleSelect = (assets: ChaiAsset[] | ChaiAsset) => {
     const asset = isArray(assets) ? first(assets) : assets;
