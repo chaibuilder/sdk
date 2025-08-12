@@ -18,7 +18,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
   const showImagePicker = true;
 
   const propKey = id.split(".").pop() || "";
-  const propIdKey = selectedLang ? `_${propKey}Id-${selectedLang}` : `${propKey}Id`;
+  const propIdKey = selectedLang ? `_${propKey}Id-${selectedLang}` : `_${propKey}Id`;
 
   const hasImageBlockAssetId =
     isEmpty(selectedLang) && selectedBlock?._type === "Image" && has(selectedBlock, "assetId");
