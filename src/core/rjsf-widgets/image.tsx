@@ -1,21 +1,30 @@
 import MediaManagerModal from "@/core/components/sidepanels/panels/images/media-manager-modal";
 import { ChaiAsset } from "@/types";
 import { WidgetProps } from "@rjsf/utils";
-import { first, get, isArray, isEmpty } from "lodash-es";
+import { first, get, set, has, isArray, isEmpty } from "lodash-es";
 import { Edit2Icon, X } from "lucide-react";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelectedBlock, useUpdateBlocksProps } from "../hooks";
+import { useLanguages, useSelectedBlock, useUpdateBlocksProps } from "../hooks";
 
 const PLACEHOLDER_IMAGE_URL =
-  "https://fldwljgzcktqnysdkxnn.supabase.co/storage/v1/object/public/dam-assets/02817647-2581-4c50-a005-f72de13d3da7/banner-placeholder.png?cid=20250730t1809109830000?v=2025-07-30T18:09:11.041925+00:00";
+  "https://fldwljgzcktqnysdkxnn.supabase.co/storage/v1/object/public/dam-assets/02817647-2581-4c50-a005-f72de13d3da7/banner-placeholder.png";
 
 const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
   const { t } = useTranslation();
+  const { selectedLang } = useLanguages();
   const selectedBlock = useSelectedBlock();
   const updateBlockProps = useUpdateBlocksProps();
   const showImagePicker = true;
-  const showRemoveIcons = value === PLACEHOLDER_IMAGE_URL ? false : true;
+
+  const propKey = id.split(".").pop() || "";
+  const propIdKey = selectedLang ? `_${propKey}Id-${selectedLang}` : `${propKey}Id`;
+
+  const hasImageBlockAssetId =
+    isEmpty(selectedLang) && selectedBlock?._type === "Image" && !has(selectedBlock, "assetId");
+
+  const assetId = get(selectedBlock, propIdKey, hasImageBlockAssetId ? selectedBlock?.assetId : "");
+  const showRemoveIcons = !!assetId;
 
   const handleSelect = (assets: ChaiAsset[] | ChaiAsset) => {
     const asset = isArray(assets) ? first(assets) : assets;
@@ -28,8 +37,10 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
           ...(width && { width: width }),
           ...(height && { height: height }),
           ...(asset.description && { alt: asset.description }),
-          ...(asset.id && { assetId: asset.id }),
         };
+        // handling asset id based on prop
+        set(props, propIdKey, asset.id);
+        // Only update if props are not empty
         if (isEmpty(props)) return;
         updateBlockProps([selectedBlock._id], props);
       }
@@ -42,8 +53,6 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
       updateBlockProps([selectedBlock._id], { assetId: "" });
     }
   }, [onChange, selectedBlock?._id, updateBlockProps]);
-
-  const assetId = get(selectedBlock, "assetId", "");
 
   return (
     <div className="mt-1.5 flex items-center gap-x-3">

@@ -80,16 +80,10 @@ const Config = {
         default: "",
         ui: { "ui:widget": "image" },
       },
-      assetId: {
-        type: "string",
-        title: "Asset ID",
-        default: "",
-        ui: { "ui:widget": "hidden" },
-      },
     },
   }),
   aiProps: ["alt"],
-  i18nProps: ["alt"],
+  i18nProps: ["alt", "image", "imageId", "mobileImage", "mobileImageId"],
 };
 
 export { ImageBlock as Component, Config };
