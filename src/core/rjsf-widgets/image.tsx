@@ -21,7 +21,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
   const propIdKey = selectedLang ? `_${propKey}Id-${selectedLang}` : `${propKey}Id`;
 
   const hasImageBlockAssetId =
-    isEmpty(selectedLang) && selectedBlock?._type === "Image" && !has(selectedBlock, "assetId");
+    isEmpty(selectedLang) && selectedBlock?._type === "Image" && has(selectedBlock, "assetId");
 
   const assetId = get(selectedBlock, propIdKey, hasImageBlockAssetId ? selectedBlock?.assetId : "");
   const showRemoveIcons = !!assetId;
