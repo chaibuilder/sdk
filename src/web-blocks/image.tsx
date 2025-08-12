@@ -83,7 +83,7 @@ const Config = {
     },
   }),
   aiProps: ["alt"],
-  i18nProps: ["alt", "image", "imageId", "mobileImage", "mobileImageId"],
+  i18nProps: ["alt", "image", "_imageId", "mobileImage", "_mobileImageId"],
 };
 
 export { ImageBlock as Component, Config };
