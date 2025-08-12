@@ -72,7 +72,6 @@ export default defineConfig({
         "jotai/utils",
         "sonner",
         "@rjsf/core",
-        "@ai-sdk/react",
         "react-hook-form",
         "@hookform/resolvers",
         "@rjsf/utils",
