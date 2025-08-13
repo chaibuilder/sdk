@@ -1,6 +1,6 @@
 import { useMediaManagerComponent } from "@/core/extensions/media-manager";
 import { ChaiAsset } from "@/types";
-import { Dialog, DialogContent, DialogTrigger } from "@/ui/shadcn/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
 import React, { useState } from "react";
 
 const MediaManagerModal = ({
@@ -27,6 +27,7 @@ const MediaManagerModal = ({
     <Dialog open={open} onOpenChange={(_open: boolean) => setOpen(_open)}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="flex max-h-[90vh] max-w-7xl border-border md:w-fit">
+        <DialogTitle className="sr-only">Media Manager</DialogTitle>
         <div className="h-full w-full">
           {MediaManagerComponent ? (
             <MediaManagerComponent close={() => setOpen(false)} onSelect={handleSelect} mode={mode} assetId={assetId} />

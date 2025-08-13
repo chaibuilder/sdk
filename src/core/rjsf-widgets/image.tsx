@@ -7,8 +7,8 @@ import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguages, useSelectedBlock, useUpdateBlocksProps } from "../hooks";
 
-const PLACEHOLDER_IMAGE_URL =
-  "https://fldwljgzcktqnysdkxnn.supabase.co/storage/v1/object/public/dam-assets/02817647-2581-4c50-a005-f72de13d3da7/banner-placeholder.png";
+const PLACEHOLDER_IMAGE =
+  "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZmlsbD0iI2Q1ZDdkYSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIFBsYWNlaG9sZGVyPC90ZXh0Pjwvc3ZnPg==";
 
 const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
   const { t } = useTranslation();
@@ -48,7 +48,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
   };
 
   const clearImage = useCallback(() => {
-    onChange(PLACEHOLDER_IMAGE_URL);
+    onChange(PLACEHOLDER_IMAGE);
     if (selectedBlock?._id) {
       updateBlockProps([selectedBlock._id], { assetId: "" });
     }

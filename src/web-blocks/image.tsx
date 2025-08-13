@@ -3,6 +3,9 @@ import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesPro
 import { ImageIcon } from "@radix-ui/react-icons";
 import { isEmpty } from "lodash-es";
 
+const PLACEHOLDER_IMAGE =
+  "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZmlsbD0iI2Q1ZDdkYSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIFBsYWNlaG9sZGVyPC90ZXh0Pjwvc3ZnPg==";
+
 export type ImageBlockProps = {
   styles: ChaiStyles;
   image: string;
@@ -48,7 +51,7 @@ const Config = {
       image: {
         type: "string",
         title: "Image",
-        default: "https://fakeimg.pl/400x200?text=Choose&font=bebas",
+        default: PLACEHOLDER_IMAGE,
         ui: { "ui:widget": "image" },
       },
       alt: {
