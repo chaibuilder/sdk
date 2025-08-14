@@ -13,7 +13,8 @@ export function applyLanguage(_block: ChaiBlock, selectedLang: string, chaiBlock
   forEach(keys(block), (key) => {
     if (includes(i18nProps, key) && !isEmpty(selectedLang)) {
       const value = get(block, `${key}-${selectedLang}`, "");
-      block[key] = isString(value) ? value.trim() || get(block, key, "") : get(block, key, "");
+      const fallbackValue = get(block, key, "");
+      block[key] = isString(value) ? value.trim() || fallbackValue : fallbackValue;
     }
   });
   return block;
