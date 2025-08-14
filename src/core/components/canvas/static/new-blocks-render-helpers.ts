@@ -12,7 +12,8 @@ export function applyLanguage(_block: ChaiBlock, selectedLang: string, chaiBlock
   const block = cloneDeep(_block);
   forEach(keys(block), (key) => {
     if (includes(i18nProps, key) && !isEmpty(selectedLang)) {
-      block[key] = get(block, `${key}-${selectedLang}`, "").trim() || get(block, key, "");
+      const value = get(block, `${key}-${selectedLang}`, "");
+      block[key] = isString(value) ? value.trim() || get(block, key, "") : get(block, key, "");
     }
   });
   return block;
