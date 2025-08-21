@@ -27,6 +27,7 @@ import { useAtom } from "jotai/index";
 import { each, noop, omit } from "lodash-es";
 import React, { useEffect, useMemo } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { isBuilderReadyAtom } from "@/core/hooks/use-is-builder-ready";
 
 const useAutoSave = () => {
   const { savePage } = useSavePage();
@@ -49,6 +50,8 @@ const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
   useWatchPartailBlocks();
   useUnmountBroadcastChannel();
   const { postMessage } = useBroadcastChannel();
+  const [, setIsBuilderReady] = useAtom(isBuilderReadyAtom);
+
   useEffect(() => {
     builderStore.set(
       // @ts-ignore
@@ -62,6 +65,7 @@ const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
   }, [props.pageExternalData]);
 
   useEffect(() => {
+    setIsBuilderReady(false);
     // Added delay to allow the pageId to be set
     setTimeout(() => {
       const withDefaults = syncBlocksWithDefaults(props.blocks || []);
@@ -71,6 +75,7 @@ const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
         postMessage({ type: "blocks-updated", blocks: withDefaults });
       }
       reset();
+      setIsBuilderReady(true);
     }, 400);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.blocks]);

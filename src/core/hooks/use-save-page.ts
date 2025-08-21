@@ -7,6 +7,7 @@ import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { atom, useAtom } from "jotai";
 import { has, isEmpty, noop } from "lodash-es";
 import { useLanguages } from "@/core/hooks/use-languages";
+import { useIsBuilderReady } from "@/core/hooks/use-is-builder-ready";
 export const builderSaveStateAtom = atom<"SAVED" | "SAVING" | "UNSAVED">("SAVED"); // SAVING
 builderSaveStateAtom.debugLabel = "builderSaveStateAtom";
 
@@ -43,8 +44,7 @@ export const useSavePage = () => {
   const [theme] = useTheme();
   const { hasPermission } = usePermissions();
   const { selectedLang, fallbackLang } = useLanguages();
-
-
+  const isBuilderReady = useIsBuilderReady();
 
   const needTranslations = () => {
     const pageData = getPageData();
@@ -55,7 +55,7 @@ export const useSavePage = () => {
 
   const savePage = useThrottledCallback(
     async (autoSave: boolean = false) => {
-      if (!hasPermission("save_page")) {
+      if (!hasPermission("save_page") || !isBuilderReady) {
         return;
       }
       setSaveState("SAVING");
@@ -74,12 +74,12 @@ export const useSavePage = () => {
       }, 100);
       return true;
     },
-    [getPageData, setSaveState, theme, onSave, onSaveStateChange],
+    [getPageData, setSaveState, theme, onSave, onSaveStateChange, isBuilderReady],
     3000, // save only every 5 seconds
   );
 
   const savePageAsync = async () => {
-    if (!hasPermission("save_page")) {
+    if (!hasPermission("save_page") || !isBuilderReady) {
       return;
     }
     setSaveState("SAVING");
