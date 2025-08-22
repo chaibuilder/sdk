@@ -2,8 +2,8 @@ import { ChaiThemeValues } from "@/types/chaibuilder-editor-props";
 
 export const defaultShadcnPreset: ChaiThemeValues = {
   fontFamily: {
-    heading: "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'",
-    body: "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'",
+    heading: "Inter",
+    body: "Inter",
   },
   borderRadius: "6px",
   colors: {
