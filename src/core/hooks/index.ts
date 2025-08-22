@@ -42,7 +42,7 @@ import { useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "@/core/hooks
 import { useWrapperBlock } from "@/core/hooks/use-wrapper-block";
 import { useTranslation } from "react-i18next";
 import { useInlineEditing } from "./use-inline-editing";
-import { useIsBuilderReady } from "@/core/hooks/use-is-builder-ready";
+import { useIsPageLoaded } from "@/core/hooks/use-is-page-loaded";
 export { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 export { useCanvasDisplayWidth, useScreenSizeWidth } from "@/core/hooks/use-screen-size-width";
 export { useSelectedLibrary } from "@/core/hooks/use-selected-library";
@@ -97,5 +97,5 @@ export {
   useUpdateBlocksProps,
   useUpdateBlocksPropsRealtime,
   useWrapperBlock,
-  useIsBuilderReady,
+  useIsPageLoaded,
 };
