@@ -23,6 +23,7 @@ import { toast } from "sonner";
 
 import { Badge } from "@/ui/shadcn/components/ui/badge";
 import { lazy, Suspense } from "react";
+import { defaultShadcnPreset } from "@/_demo/THEME_PRESETS";
 
 const LazyCssImportModal = lazy(() =>
   import("./css-import-modal").then((module) => ({ default: module.CssImportModal })),
@@ -60,6 +61,10 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const themePresets = useBuilderProp("themePresets", []);
   const themePanelComponent = useBuilderProp("themePanelComponent", null);
   const { hasPermission } = usePermissions();
+  const defaultTheme = [{ shadcn_default: defaultShadcnPreset }];
+  if (themePresets && themePresets.length === 0) {
+    themePresets.push(...defaultTheme);
+  }
 
   const [themeValues, setThemeValues] = useTheme();
   const chaiThemeOptions = useThemeOptions();
