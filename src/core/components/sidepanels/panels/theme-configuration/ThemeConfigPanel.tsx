@@ -32,6 +32,9 @@ const LazyCssImportModal = lazy(() =>
 // Local storage key for storing previous theme
 const PREV_THEME_KEY = "chai-builder-previous-theme";
 
+// Default theme preset
+const DEFAULT_THEME_PRESET = [{ shadcn_default: defaultShadcnPreset }];
+
 const setPreviousTheme = (theme: ChaiThemeValues) => {
   if (typeof window === "undefined") return;
   try {
@@ -61,9 +64,9 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const themePresets = useBuilderProp("themePresets", []);
   const themePanelComponent = useBuilderProp("themePanelComponent", null);
   const { hasPermission } = usePermissions();
-  const defaultTheme = [{ shadcn_default: defaultShadcnPreset }];
+
   if (themePresets && themePresets.length === 0) {
-    themePresets.push(...defaultTheme);
+    themePresets.push(...DEFAULT_THEME_PRESET);
   }
 
   const [themeValues, setThemeValues] = useTheme();
