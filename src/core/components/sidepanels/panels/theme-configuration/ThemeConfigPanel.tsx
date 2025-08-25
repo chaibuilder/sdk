@@ -23,6 +23,7 @@ import { toast } from "sonner";
 
 import { Badge } from "@/ui/shadcn/components/ui/badge";
 import { lazy, Suspense } from "react";
+import { defaultShadcnPreset } from "@/core/constants/THEME_PRESETS";
 
 const LazyCssImportModal = lazy(() =>
   import("./css-import-modal").then((module) => ({ default: module.CssImportModal })),
@@ -30,6 +31,9 @@ const LazyCssImportModal = lazy(() =>
 
 // Local storage key for storing previous theme
 const PREV_THEME_KEY = "chai-builder-previous-theme";
+
+// Default theme preset
+const DEFAULT_THEME_PRESET = [{ shadcn_default: defaultShadcnPreset }];
 
 const setPreviousTheme = (theme: ChaiThemeValues) => {
   if (typeof window === "undefined") return;
@@ -60,6 +64,10 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const themePresets = useBuilderProp("themePresets", []);
   const themePanelComponent = useBuilderProp("themePanelComponent", null);
   const { hasPermission } = usePermissions();
+  
+  if (themePresets && !themePresets.some((preset: any) => Object.keys(preset)[0] === 'shadcn_default')) {
+    themePresets.push(...DEFAULT_THEME_PRESET);
+  }
 
   const [themeValues, setThemeValues] = useTheme();
   const chaiThemeOptions = useThemeOptions();
