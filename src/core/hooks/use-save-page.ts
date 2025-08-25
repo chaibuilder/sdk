@@ -44,7 +44,7 @@ export const useSavePage = () => {
   const [theme] = useTheme();
   const { hasPermission } = usePermissions();
   const { selectedLang, fallbackLang } = useLanguages();
-  const isPageLoaded = useIsPageLoaded();
+  const [isPageLoaded] = useIsPageLoaded();
 
   const needTranslations = () => {
     const pageData = getPageData();
