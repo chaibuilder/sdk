@@ -293,7 +293,7 @@ const AddBlocksPanel = ({
             </TabsTrigger>
           ))}
         </TabsList>
-        {tab !== "html" && (
+        {tab !== "html" && tab !== "add-block-ai" && (
           <div className="my-2 px-1">
             <SearchInput value={searchTerm} onChange={setSearchTerm} placeholder={t("Search blocks...")} />
           </div>
