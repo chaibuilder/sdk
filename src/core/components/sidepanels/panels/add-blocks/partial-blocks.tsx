@@ -55,10 +55,12 @@ export const PartialBlocks = ({
   parentId,
   position,
   gridCols = "grid-cols-2",
+  searchTerm = "",
 }: {
   parentId?: string;
   position?: number;
   gridCols?: string;
+  searchTerm?: string;
 }) => {
   const { data: partialBlocksList, isLoading, refetch, error: apiError } = usePartialBlocksList();
   const [partialBlocksData, setPartialBlocksData] = useAtom(partialBlocksDataAtom);
@@ -168,6 +170,7 @@ export const PartialBlocks = ({
       position={position}
       groups={partialBlocksData.groups}
       blocks={partialBlocksData.blocks}
+      searchTerm={searchTerm}
     />
   );
 };

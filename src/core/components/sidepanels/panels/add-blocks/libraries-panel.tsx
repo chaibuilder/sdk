@@ -11,7 +11,6 @@ import { pubsub } from "@/core/pubsub";
 import { ChaiBlock } from "@/types/chai-block";
 import { ChaiLibrary, ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 import { Button } from "@/ui/shadcn/components/ui/button";
-import { Input } from "@/ui/shadcn/components/ui/input";
 import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
 import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
@@ -22,7 +21,7 @@ import { useFeature } from "flagged";
 import Fuse from "fuse.js";
 import { useAtom } from "jotai";
 import { capitalize, filter, first, get, groupBy, has, isEmpty, keys, map } from "lodash-es";
-import { Loader, RefreshCw, Search, X } from "lucide-react";
+import { Loader, RefreshCw } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -138,12 +137,19 @@ const BlockCard = ({
   );
 };
 
-const UILibrarySection = ({ parentId, position }: { parentId?: string; position?: number }) => {
+const UILibrarySection = ({
+  parentId,
+  position,
+  searchTerm = "",
+}: {
+  parentId?: string;
+  position?: number;
+  searchTerm?: string;
+}) => {
   const [selectedLibrary, setLibrary] = useSelectedLibrary();
   const uiLibraries = useChaiLibraries();
   const library = uiLibraries.find((library) => library.id === selectedLibrary) || first(uiLibraries);
   const { data: libraryBlocks, isLoading, resetLibrary } = useLibraryBlocks(library);
-  const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<ChaiLibraryBlock[]>([]);
 
   // Configure fuse search
@@ -161,17 +167,17 @@ const UILibrarySection = ({ parentId, position }: { parentId?: string; position?
 
   // Handle search
   useEffect(() => {
-    if (!searchQuery.trim() || !fuse.current) {
+    if (!searchTerm.trim() || !fuse.current) {
       setSearchResults([]);
       return;
     }
 
-    const results = fuse.current.search(searchQuery).map((result) => result.item);
+    const results = fuse.current.search(searchTerm).map((result) => result.item);
     setSearchResults(results);
-  }, [searchQuery]);
+  }, [searchTerm]);
 
   // Filtering logic based on search
-  const filteredBlocks = searchQuery.trim() && !isEmpty(searchResults) ? searchResults : libraryBlocks;
+  const filteredBlocks = searchTerm.trim() && !isEmpty(searchResults) ? searchResults : libraryBlocks;
 
   const mergedGroups = groupBy(filteredBlocks, "group");
   const [selectedGroup, setGroup] = useState(null);
@@ -210,10 +216,6 @@ const UILibrarySection = ({ parentId, position }: { parentId?: string; position?
     if (library?.id) resetLibrary(library.id);
   };
 
-  const handleClearSearch = () => {
-    setSearchQuery("");
-  };
-
   if (isLoading)
     return (
       <div className="mt-4 grid h-full w-full grid-cols-12 gap-2">
@@ -229,25 +231,6 @@ const UILibrarySection = ({ parentId, position }: { parentId?: string; position?
   return (
     <>
       <div className="flex h-full max-h-full flex-col">
-        <div className="flex items-center gap-2 border-border py-2">
-          <div className="relative w-full">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder={t("Search blocks...")}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-8 pr-8"
-            />
-            {searchQuery && (
-              <button
-                onClick={handleClearSearch}
-                className="absolute right-2 top-2.5 text-muted-foreground hover:text-foreground">
-                <X className="h-4 w-4" />
-              </button>
-            )}
-          </div>
-        </div>
-
         <div className="relative flex h-full max-h-full flex-1 overflow-hidden bg-background">
           <div className={"flex h-full flex-1 pt-2"}>
             <div className={"flex h-full max-h-full w-60 min-w-60 max-w-60 flex-col gap-1 px-1 pr-2"}>
@@ -258,7 +241,7 @@ const UILibrarySection = ({ parentId, position }: { parentId?: string; position?
                 <div className="no-scrollbar mt-2 h-full max-h-full flex-1 overflow-y-auto pb-20">
                   {isEmpty(mergedGroups) ? (
                     <div className="mt-4 flex flex-col items-center justify-center gap-3 p-4 text-center">
-                      {searchQuery ? (
+                      {searchTerm ? (
                         <p className="text-sm">{t("No matching blocks found")}</p>
                       ) : (
                         <>
@@ -336,8 +319,16 @@ const UILibrarySection = ({ parentId, position }: { parentId?: string; position?
   );
 };
 
-const UILibrariesPanel = ({ parentId, position }: { parentId?: string; position?: number }) => {
-  return <UILibrarySection parentId={parentId} position={position} />;
+const UILibrariesPanel = ({
+  parentId,
+  position,
+  searchTerm = "",
+}: {
+  parentId?: string;
+  position?: number;
+  searchTerm?: string;
+}) => {
+  return <UILibrarySection parentId={parentId} position={position} searchTerm={searchTerm} />;
 };
 
 export default UILibrariesPanel;

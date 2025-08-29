@@ -4,6 +4,7 @@ import { DefaultChaiBlocks } from "@/core/components/sidepanels/panels/add-block
 import ImportHTML from "@/core/components/sidepanels/panels/add-blocks/import-html";
 import UILibrariesPanel from "@/core/components/sidepanels/panels/add-blocks/libraries-panel";
 import { PartialBlocks } from "@/core/components/sidepanels/panels/add-blocks/partial-blocks";
+import { SearchInput } from "@/core/components/sidepanels/panels/add-blocks/search-input";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useChaiAddBlockTabs } from "@/core/extensions/add-block-tabs";
 import { useChaiLibraries } from "@/core/extensions/libraries";
@@ -12,10 +13,10 @@ import { useBlocksStore, useBuilderProp, usePermissions } from "@/core/hooks";
 import { usePartialBlocksList } from "@/core/hooks/use-partial-blocks-store";
 import { mergeClasses, PERMISSIONS } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
-import { Input } from "@/ui/shadcn/components/ui/input";
 import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/shadcn/components/ui/tabs";
 import { useAtom } from "jotai";
+import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { capitalize, debounce, filter, find, map, reject, sortBy, values } from "lodash-es";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -23,10 +24,18 @@ import { useTranslation } from "react-i18next";
 
 const CORE_GROUPS = ["basic", "typography", "media", "layout", "form", "advanced", "other"];
 
-export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols = "grid-cols-4" }: any) => {
+export const addBlockSearchAtom = atom<string>("");
+
+export const ChaiBuilderBlocks = ({
+  groups,
+  blocks,
+  parentId,
+  position,
+  gridCols = "grid-cols-4",
+  searchTerm = "",
+}: any) => {
   const { t } = useTranslation();
   const [allBlocks] = useBlocksStore();
-  const [searchTerm, setSearchTerm] = useState("");
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [tab] = useAtom(addBlockTabAtom);
   const parentType = find(allBlocks, (block) => block._id === parentId)?._type;
@@ -132,19 +141,7 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
 
   return (
     <div className="mx-auto flex h-full w-full max-w-3xl flex-col">
-      {/* Search at top */}
-      <div className="sticky top-0 z-10 bg-background/80 px-4 py-2 backdrop-blur-sm">
-        <Input
-          ref={searchInputRef}
-          type="search"
-          placeholder={t("Search blocks...")}
-          value={searchTerm}
-          className="-ml-2"
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
-
-      <div className="sticky top-10 flex h-[calc(100%-48px)] overflow-hidden">
+      <div className="sticky top-10 flex h-full overflow-hidden">
         {/* Sidebar for groups */}
         {sortedGroups.length > 0 && (
           <div className="w-1/4 min-w-[120px] border-r border-border">
@@ -237,6 +234,7 @@ const AddBlocksPanel = ({
 }) => {
   const { t } = useTranslation();
   const [tab, setTab] = useAtom(addBlockTabAtom);
+  const [searchTerm, setSearchTerm] = useAtom(addBlockSearchAtom);
   const [, setCategory] = useAtom(showPredefinedBlockCategoryAtom);
   const importHTMLSupport = useBuilderProp("importHTMLSupport", true);
   const { data: partialBlocksList } = usePartialBlocksList();
@@ -295,23 +293,38 @@ const AddBlocksPanel = ({
             </TabsTrigger>
           ))}
         </TabsList>
+        {tab !== "html" && (
+          <div className="my-2 px-1">
+            <SearchInput value={searchTerm} onChange={setSearchTerm} placeholder={t("Search blocks...")} />
+          </div>
+        )}
         <TabsContent value="core" className="h-full max-h-full flex-1 pb-20">
           <div className="-mx-1.5 h-full max-h-full overflow-hidden">
             <div className="mt-2 h-full w-full">
-              <DefaultChaiBlocks gridCols={"grid-cols-4"} parentId={parentId} position={position} />
+              <DefaultChaiBlocks
+                gridCols={"grid-cols-4"}
+                parentId={parentId}
+                position={position}
+                searchTerm={searchTerm}
+              />
             </div>
           </div>
         </TabsContent>
         {hasUiLibraries && (
           <TabsContent value="library" className="h-full max-h-full flex-1 pb-20">
-            <UILibrariesPanel parentId={parentId} position={position} />
+            <UILibrariesPanel parentId={parentId} position={position} searchTerm={searchTerm} />
           </TabsContent>
         )}
         {hasPartialBlocks && (
           <TabsContent value="partials" className="h-full max-h-full flex-1 pb-20">
             <div className="-mx-1.5 h-full max-h-full overflow-hidden">
               <div className="mt-2 h-full w-full">
-                <PartialBlocks gridCols={"grid-cols-4"} parentId={parentId} position={position} />
+                <PartialBlocks
+                  gridCols={"grid-cols-4"}
+                  parentId={parentId}
+                  position={position}
+                  searchTerm={searchTerm}
+                />
               </div>
             </div>
           </TabsContent>
