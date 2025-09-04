@@ -52,6 +52,8 @@ export const getInputTypeAndAutocomplete = (inputTypeValue: string): { type: str
     "family-name": { type: "text", autocomplete: "family-name" },
     "honorific-suffix": { type: "text", autocomplete: "honorific-suffix" },
     nickname: { type: "text", autocomplete: "nickname" },
+    firstName: { type: "text", autocomplete: "given-name" },
+    lastName: { type: "text", autocomplete: "family-name" },
 
     // Contact related
     email: { type: "email", autocomplete: "email" },
@@ -199,6 +201,8 @@ const Config = {
 
           // Name related
           { const: "name", title: "Name" },
+          { const: "firstName", title: "First Name" },
+          { const: "lastName", title: "Last Name" },
 
           // Contact related
           { const: "tel-country-code", title: "Telephone Country Code" },
