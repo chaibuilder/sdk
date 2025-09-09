@@ -46,7 +46,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
     <div className="">
       <div
         onClick={() => setOpen(!open)}
-        className="flex cursor-pointer items-center justify-between border-t border-border py-2 text-sm font-medium hover:underline">
+        className="flex cursor-pointer items-center justify-between text-sm font-medium hover:underline">
         <span>{t("Ask AI")}</span>
         <span>
           <ChevronDown className={"h-4 w-4 text-gray-500 " + (open ? "rotate-180" : "")} />
@@ -278,7 +278,7 @@ export const AskAI = () => {
   const [ids] = useSelectedBlockIds();
   return (
     <div className="no-scrollbar mt-2 flex-1 overflow-y-auto">
-      <AISetContext />
+      {/* <AISetContext /> */}
       <AIUserPrompt blockId={first(ids)} />
     </div>
   );

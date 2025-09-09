@@ -24,6 +24,7 @@ export const CHAI_BUILDER_PANELS: Record<string, ChaiSidebarPanel> = {};
 export const registerChaiSidebarPanel = (panelId: string, panelOptions: Omit<ChaiSidebarPanel, "id">) => {
   if (has(CHAI_BUILDER_PANELS, panelId)) {
     console.warn(`Panel ${panelId} already registered. Overriding...`);
+    return;
   }
   set(CHAI_BUILDER_PANELS, panelId, { id: panelId, ...panelOptions });
 };
