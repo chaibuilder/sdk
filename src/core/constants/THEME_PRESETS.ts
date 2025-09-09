@@ -97,9 +97,8 @@ export const solarized: ChaiThemeValues = {
 
 export const caffeine: ChaiThemeValues = {
   fontFamily: {
-    heading:
-      "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'",
-    body: "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif",
+    heading: "Inter",
+    body: "Inter",
   },
   borderRadius: "6px",
   colors: {
@@ -127,9 +126,8 @@ export const caffeine: ChaiThemeValues = {
 
 export const claude: ChaiThemeValues = {
   fontFamily: {
-    heading:
-      "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'",
-    body: "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif",
+    heading: "Outfit, sans-serif",
+    body: "Outfit, sans-serif",
   },
   borderRadius: "6px",
   colors: {
@@ -157,8 +155,8 @@ export const claude: ChaiThemeValues = {
 
 export const supabase: ChaiThemeValues = {
   fontFamily: {
-    heading: "Montserrat, sans-serif",
-    body: "Merriweather, serif",
+    heading: "Inter",
+    body: "Inter",
   },
   borderRadius: "6px",
   colors: {
