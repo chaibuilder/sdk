@@ -2,8 +2,8 @@ import { ChaiThemeValues } from "@/types/chaibuilder-editor-props";
 
 export const defaultShadcnPreset: ChaiThemeValues = {
   fontFamily: {
-    heading: "Inter",
-    body: "Inter",
+    heading: "Poppins",
+    body: "Poppins",
   },
   borderRadius: "6px",
   colors: {
@@ -31,8 +31,8 @@ export const defaultShadcnPreset: ChaiThemeValues = {
 
 export const twitter: ChaiThemeValues = {
   fontFamily: {
-    heading: "Open Sans, sans-serif",
-    body: "Open Sans, sans-serif",
+    heading: "Poppins",
+    body: "Poppins",
   },
   borderRadius: "4px",
   colors: {
@@ -68,8 +68,8 @@ export const twitter: ChaiThemeValues = {
 
 export const solarized: ChaiThemeValues = {
   fontFamily: {
-    heading: "Outfit, sans-serif",
-    body: "Outfit, sans-serif",
+    heading: "Geist",
+    body: "Geist",
   },
   borderRadius: "4px",
   colors: {
@@ -126,8 +126,8 @@ export const caffeine: ChaiThemeValues = {
 
 export const claude: ChaiThemeValues = {
   fontFamily: {
-    heading: "Outfit, sans-serif",
-    body: "Outfit, sans-serif",
+    heading: "Poppins",
+    body: "Poppins",
   },
   borderRadius: "6px",
   colors: {
