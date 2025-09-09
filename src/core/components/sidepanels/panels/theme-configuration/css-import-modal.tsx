@@ -106,7 +106,7 @@ export const CssImportModal: React.FC<CssImportModalProps> = ({ open, onOpenChan
             </p>
 
             <div className="flex items-center">
-              <p className="font-bold">Get themes Resources :</p>
+              <p className="font-bold">Get theme resources:</p>
               <Button variant="link" size="sm" onClick={() => window.open("https://tweakcn.com/", "_blank")}>
                 TweakCN
               </Button>
