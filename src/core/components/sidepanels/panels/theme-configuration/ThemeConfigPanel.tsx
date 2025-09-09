@@ -71,8 +71,14 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const themePanelComponent = useBuilderProp("themePanelComponent", null);
   const { hasPermission } = usePermissions();
 
-  if (themePresets && themePresets.length === 0) {
-    themePresets.push(...DEFAULT_THEME_PRESET);
+  if (themePresets) {
+    const existingKeys = themePresets.map((preset: any) => Object.keys(preset)[0]);
+    DEFAULT_THEME_PRESET.forEach((preset) => {
+      const key = Object.keys(preset)[0];
+      if (!existingKeys.includes(key)) {
+        themePresets.push(preset);
+      }
+    });
   }
 
   const [themeValues, setThemeValues] = useTheme();
