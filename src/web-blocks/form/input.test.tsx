@@ -45,6 +45,8 @@ describe('getInputTypeAndAutocomplete', () => {
     expect(getInputTypeAndAutocomplete('family-name')).toEqual({ type: 'text', autocomplete: 'family-name' });
     expect(getInputTypeAndAutocomplete('honorific-suffix')).toEqual({ type: 'text', autocomplete: 'honorific-suffix' });
     expect(getInputTypeAndAutocomplete('nickname')).toEqual({ type: 'text', autocomplete: 'nickname' });
+    expect(getInputTypeAndAutocomplete('firstName')).toEqual({ type: 'text', autocomplete: 'given-name' });
+    expect(getInputTypeAndAutocomplete('lastName')).toEqual({ type: 'text', autocomplete: 'family-name' });
   });
 
   // Test contact-related fields
