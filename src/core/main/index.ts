@@ -19,7 +19,7 @@ if (typeof window === "undefined") {
 registerFeatureFlags();
 
 // components
-export { AISetContext as ChaiAskAiPanel, AIUserPrompt as ChaiAskAiUserPrompt } from "@/core/components/ask-ai-panel";
+export { AIUserPrompt as ChaiAskAiUserPrompt } from "@/core/components/ask-ai-panel";
 export { Breakpoints as ChaiScreenSizes } from "@/core/components/canvas/topbar/canvas-breakpoints";
 export { DarkMode as ChaiDarkModeSwitcher } from "@/core/components/canvas/topbar/dark-mode";
 export { UndoRedo as ChaiUndoRedo } from "@/core/components/canvas/topbar/undo-redo";
