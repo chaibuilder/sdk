@@ -6,7 +6,7 @@ import { Button } from "@/ui/shadcn/components/ui/button";
 import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
 import { Textarea } from "@/ui/shadcn/components/ui/textarea";
 import { first } from "lodash-es";
-import { ChevronDown, Loader, SparklesIcon } from "lucide-react";
+import { Loader, SparklesIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -14,7 +14,6 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
   const { t } = useTranslation();
   const { askAi, loading, error } = useAskAi();
   const [prompt, setPrompt] = useState("");
-  const [open, setOpen] = useState(true);
   const [usage, setUsage] = useState<AskAiResponse["usage"] | undefined>();
   const promptRef = useRef(null);
   const timerRef = useRef(null);
@@ -31,15 +30,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
 
   return (
     <div className="">
-      <div
-        onClick={() => setOpen(!open)}
-        className="flex cursor-pointer items-center justify-between text-sm font-medium hover:underline">
-        <span>{t("Ask AI")}</span>
-        <span>
-          <ChevronDown className={"h-4 w-4 text-gray-500 " + (open ? "rotate-180" : "")} />
-        </span>
-      </div>
-      {open && blockId ? (
+      {blockId ? (
         <div className="mt-2">
           <Textarea
             ref={promptRef}
@@ -119,14 +110,14 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
             }}
           />
         </div>
-      ) : open ? (
+      ) : (
         <div className="p-4 text-center">
           <div className="space-y-4 rounded-xl p-4 text-muted-foreground">
             <SparklesIcon className="mx-auto text-3xl text-muted-foreground" />
             <h1>{t("Please select a block to Ask AI")}</h1>
           </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 };
