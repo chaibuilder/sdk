@@ -69,8 +69,8 @@ describe("registerChaiSidebarPanel", () => {
     // Direct verification of the internal state
     expect(CHAI_BUILDER_PANELS["duplicate-panel"]).toMatchObject({
       id: "duplicate-panel",
-      position: "top",
-      label: "Original Panel",
+      position: "bottom",
+      label: "Override Panel",
     });
   });
 
