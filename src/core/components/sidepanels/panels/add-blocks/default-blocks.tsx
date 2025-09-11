@@ -6,10 +6,12 @@ export const DefaultChaiBlocks = ({
   parentId,
   position,
   gridCols = "grid-cols-2",
+  searchTerm = "",
 }: {
   parentId?: string;
   position?: number;
   gridCols?: string;
+  searchTerm?: string;
 }) => {
   const chaiBlocks = useRegisteredChaiBlocks();
 
@@ -23,6 +25,7 @@ export const DefaultChaiBlocks = ({
       position={position}
       groups={uniqueTypeGroup}
       blocks={groupedBlocks.core}
+      searchTerm={searchTerm}
     />
   );
 };
