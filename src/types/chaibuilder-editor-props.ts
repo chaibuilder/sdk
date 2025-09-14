@@ -201,6 +201,13 @@ export interface ChaiBuilderEditorProps {
   breakpoints?: Breakpoint[];
 
   /**
+   * Minimum viewport width enforcement for the editor UI.
+   * Set to a number (e.g., 1280) to show the small‑screen overlay below that width.
+   * Set to false to disable the overlay entirely. Default: false.
+   */
+  minViewportWidth?: number | false;
+
+  /**
    * Loading state
    */
   loading?: boolean;

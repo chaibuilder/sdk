@@ -4,7 +4,7 @@ import { useLanguages, useSelectedBlock } from "@/core/hooks";
 import { Badge } from "@/ui/shadcn/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { useRegisteredChaiBlocks } from "@chaibuilder/runtime";
-import { FieldTemplateProps } from "@rjsf/utils";
+import { FieldTemplateProps } from "@rjsf/utils/lib/index.js";
 import { get, isEmpty } from "lodash-es";
 import { ChevronDown, ChevronRight, Info, List } from "lucide-react";
 import { useMemo, useState } from "react";

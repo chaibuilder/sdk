@@ -1,4 +1,4 @@
-import { WidgetProps } from "@rjsf/utils";
+import { WidgetProps } from "@rjsf/utils/lib/index.js";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 

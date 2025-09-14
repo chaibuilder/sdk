@@ -1,4 +1,4 @@
-import { WidgetProps } from "@rjsf/utils";
+import { WidgetProps } from "@rjsf/utils/lib/index.js";
 import { Database, File, X } from "lucide-react";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";

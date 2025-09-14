@@ -1,4 +1,4 @@
-import { WidgetProps } from "@rjsf/utils";
+import { WidgetProps } from "@rjsf/utils/lib/index.js";
 import { debounce } from "lodash-es";
 
 const ColorField = ({ value, onChange, id, onBlur }: WidgetProps) => {

@@ -1,4 +1,4 @@
-import { FieldProps } from "@rjsf/utils";
+import { FieldProps } from "@rjsf/utils/lib/index.js";
 import { get, map, reject } from "lodash-es";
 import { Plus, X } from "lucide-react";
 

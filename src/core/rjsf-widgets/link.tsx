@@ -1,7 +1,7 @@
 import { useBuilderProp, useTranslation } from "@/core/hooks";
 import { PageTypeItem } from "@/types/chaibuilder-editor-props";
 import { useDebouncedCallback } from "@react-hookz/web";
-import { FieldProps } from "@rjsf/utils";
+import { FieldProps } from "@rjsf/utils/lib/index.js";
 import { get, isEmpty, map, split, startsWith } from "lodash-es";
 import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";

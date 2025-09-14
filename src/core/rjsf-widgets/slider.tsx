@@ -1,5 +1,5 @@
 import { useAddBlock, useBlocksStore, useSelectedBlock, useSelectedBlockIds, useWrapperBlock } from "@/core/hooks";
-import { FieldProps } from "@rjsf/utils";
+import { FieldProps } from "@rjsf/utils/lib/index.js";
 import { filter, find, findIndex, get } from "lodash-es";
 import { ChevronLeft, ChevronRight, PlusCircle } from "lucide-react";
 import { useEffect } from "react";

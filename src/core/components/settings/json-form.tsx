@@ -14,9 +14,9 @@ import { CollectionFilterSortField } from "@/core/rjsf-widgets/collection-select
 import JSONFormFieldTemplate from "@/core/rjsf-widgets/json-form-field-template";
 import { RepeaterBindingWidget } from "@/core/rjsf-widgets/repeater-binding";
 import { useThrottledCallback } from "@react-hookz/web";
-import RjForm from "@rjsf/core";
-import { RJSFSchema, UiSchema } from "@rjsf/utils";
-import validator from "@rjsf/validator-ajv8";
+import RjForm from "@rjsf/core/lib/index.js";
+import { RJSFSchema, UiSchema } from "@rjsf/utils/lib/index.js";
+import validator from "@rjsf/validator-ajv8/lib/index.js";
 import { take, get, set } from "lodash-es";
 import { Plus } from "lucide-react";
 import { memo } from "react";

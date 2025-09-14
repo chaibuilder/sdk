@@ -3,7 +3,7 @@ import { NestedPathSelector } from "@/core/components/nested-path-selector";
 import { cn } from "@/core/utils/cn";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
-import { WidgetProps } from "@rjsf/utils";
+import { WidgetProps } from "@rjsf/utils/lib/index.js";
 import Link from "@tiptap/extension-link";
 import TextAlign from "@tiptap/extension-text-align";
 import Underline from "@tiptap/extension-underline";

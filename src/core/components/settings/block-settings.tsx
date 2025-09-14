@@ -8,7 +8,7 @@ import {
   useWrapperBlock,
 } from "@/core/hooks";
 import { getBlockFormSchemas, getRegisteredChaiBlock } from "@chaibuilder/runtime";
-import { IChangeEvent } from "@rjsf/core";
+import { IChangeEvent } from "@rjsf/core/lib/index.js";
 import { cloneDeep, debounce, forEach, get, includes, isEmpty, keys, set, startCase, startsWith } from "lodash-es";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";

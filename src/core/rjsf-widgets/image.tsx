@@ -1,6 +1,6 @@
 import MediaManagerModal from "@/core/components/sidepanels/panels/images/media-manager-modal";
 import { ChaiAsset } from "@/types";
-import { WidgetProps } from "@rjsf/utils";
+import { WidgetProps } from "@rjsf/utils/lib/index.js";
 import { first, get, set, has, isArray, isEmpty } from "lodash-es";
 import { Edit2Icon, X } from "lucide-react";
 import { useCallback } from "react";

@@ -1,4 +1,4 @@
-import { WidgetProps } from "@rjsf/utils";
+import { WidgetProps } from "@rjsf/utils/lib/index.js";
 import { find, get } from "lodash-es";
 import { COLLECTION_PREFIX } from "../constants/STRINGS";
 import { useBuilderProp, useSelectedBlock } from "../hooks";
