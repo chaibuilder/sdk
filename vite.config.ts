@@ -94,7 +94,6 @@ export default defineConfig({
         "i18next",
         "jotai",
         "prop-types",
-        "re-resizable",
         "lodash",
         "lodash-es",
         "culori",
