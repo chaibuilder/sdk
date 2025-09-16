@@ -1,5 +1,6 @@
 import { useCodeEditor, useSelectedBlockIds, useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "@/core/hooks";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
+import { Textarea } from "@/ui/shadcn/components/ui/textarea";
 import { useThrottledCallback } from "@react-hookz/web";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -66,8 +67,8 @@ export default function CodeEditor() {
           </DialogTitle>
         </DialogHeader>
         <div className="min-h-0 flex-1 overflow-hidden">
-          <textarea
-            className="h-full w-full resize-none border-none p-2 font-mono text-xs text-black/90 outline-none"
+          <Textarea
+            className="h-full w-full resize-none font-mono text-xs"
             value={code || codeEditor.initialCode}
             onChange={(e) => {
               const value = e.target.value;
@@ -76,6 +77,7 @@ export default function CodeEditor() {
               saveCodeContentRealTime(value);
             }}
             rows={10}
+            placeholder="Enter your code here..."
           />
         </div>
       </DialogContent>
