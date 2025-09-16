@@ -4,7 +4,6 @@ import { FallbackError } from "@/core/components/fallback-error";
 import { useBuilderProp, useCodeEditor } from "@/core/hooks";
 import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
 import { noop } from "lodash-es";
-import { Resizable } from "re-resizable";
 import React, { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -23,9 +22,7 @@ const CanvasArea: React.FC = () => {
         </Suspense>
         {codeEditor ? (
           <Suspense fallback={<Skeleton className="h-full" />}>
-            <Resizable enable={{ top: true, bottom: false }} className="max-h-[400px] min-h-[200px]">
-              <CodeEditor />
-            </Resizable>
+            <CodeEditor />
           </Suspense>
         ) : null}
         <Breadcrumb />
