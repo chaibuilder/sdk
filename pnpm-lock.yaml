@@ -185,9 +185,6 @@ importers:
       lucide-react:
         specifier: 0.539.0
         version: 0.539.0(react@19.1.0)
-      re-resizable:
-        specifier: 6.11.2
-        version: 6.11.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react-arborist:
         specifier: ^3.4.3
         version: 3.4.3(@types/node@20.17.11)(@types/react@18.3.18)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -4876,12 +4873,6 @@ packages:
   quick-lru@5.1.1:
     resolution: {integrity: sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==}
     engines: {node: '>=10'}
-
-  re-resizable@6.11.2:
-    resolution: {integrity: sha512-2xI2P3OHs5qw7K0Ud1aLILK6MQxW50TcO+DetD9eIV58j84TqYeHoZcL9H4GXFXXIh7afhH8mv5iUCXII7OW7A==}
-    peerDependencies:
-      react: ^16.13.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
-      react-dom: ^16.13.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   react-arborist@3.4.3:
     resolution: {integrity: sha512-yFnq1nIQhT2uJY4TZVz2tgAiBb9lxSyvF4vC3S8POCK8xLzjGIxVv3/4dmYquQJ7AHxaZZArRGHiHKsEewKdTQ==}
@@ -11122,11 +11113,6 @@ snapshots:
   queue-microtask@1.2.3: {}
 
   quick-lru@5.1.1: {}
-
-  re-resizable@6.11.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
-    dependencies:
-      react: 19.1.0
-      react-dom: 19.1.0(react@19.1.0)
 
   react-arborist@3.4.3(@types/node@20.17.11)(@types/react@18.3.18)(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:
