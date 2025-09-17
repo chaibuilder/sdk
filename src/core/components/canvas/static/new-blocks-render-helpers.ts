@@ -12,9 +12,25 @@ export function applyLanguage(_block: ChaiBlock, selectedLang: string, chaiBlock
   const block = cloneDeep(_block);
   forEach(keys(block), (key) => {
     if (includes(i18nProps, key) && !isEmpty(selectedLang)) {
-      const value = get(block, `${key}-${selectedLang}`, "");
-      const fallbackValue = get(block, key, "");
-      block[key] = isString(value) ? value.trim() || fallbackValue : fallbackValue;
+      const value = get(block, `${key}-${selectedLang}`);
+      const fallbackValue = get(block, key);
+
+      // If no language-specific value exists, use fallback
+      if (value === undefined) {
+        block[key] = fallbackValue;
+      }
+      // Handle string properties (original logic) - but only if fallback is also string
+      else if (isString(value) && isString(fallbackValue)) {
+        block[key] = value.trim() || fallbackValue;
+      }
+      // Handle object properties when both are objects
+      else if (value && typeof value === "object" && !isArray(value) && typeof fallbackValue === "object") {
+        block[key] = value;
+      }
+      // Types don't match, fall back to original
+      else {
+        block[key] = fallbackValue;
+      }
     }
   });
   return block;
