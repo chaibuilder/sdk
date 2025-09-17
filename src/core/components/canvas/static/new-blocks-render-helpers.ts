@@ -24,7 +24,15 @@ export function applyLanguage(_block: ChaiBlock, selectedLang: string, chaiBlock
         block[key] = value.trim() || fallbackValue;
       }
       // Handle object properties when both are objects
-      else if (value && typeof value === "object" && !isArray(value) && typeof fallbackValue === "object") {
+      else if (
+        value &&
+        typeof value === "object" &&
+        !isArray(value) &&
+        value !== null &&
+        typeof fallbackValue === "object" &&
+        !isArray(fallbackValue) &&
+        fallbackValue !== null
+      ) {
         block[key] = value;
       }
       // Types don't match, fall back to original
