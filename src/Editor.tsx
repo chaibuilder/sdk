@@ -1,16 +1,28 @@
 import { lsAiContextAtom, lsBlocksAtom, lsThemeAtom } from "@/_demo/atoms-dev";
 import { defaultShadcnPreset } from "@/_demo/THEME_PRESETS";
-import { ChaiBlock, ChaiBuilderEditor } from "@/core/main";
+import { ChaiBlock, ChaiBuilderEditor, registerChaiSidebarPanel } from "@/core/main";
 import { extendChaiBuilder } from "@/extentions";
 import { SavePageData } from "@/types/chaibuilder-editor-props";
 import { loadWebBlocks } from "@/web-blocks";
 import { useAtom } from "jotai";
 import { isArray, map, pick } from "lodash-es";
+import { BotIcon } from "lucide-react";
 import { EXTERNAL_DATA } from "./_demo/EXTERNAL_DATA";
 import { PARTIALS } from "./_demo/PARTIALS";
+import { Button } from "./ui";
 
 loadWebBlocks();
 extendChaiBuilder();
+
+registerChaiSidebarPanel("popover", {
+  button: () => (
+    <Button variant="ghost" size="icon">
+      <BotIcon />
+    </Button>
+  ),
+  label: "Popover 2",
+  position: "bottom",
+});
 
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);

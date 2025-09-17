@@ -22,7 +22,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/s
 import { LightningBoltIcon } from "@radix-ui/react-icons";
 import { useFeature } from "flagged";
 import { motion } from "framer-motion";
-import { compact, find, first, get } from "lodash-es";
+import { compact, find, first, get, reverse } from "lodash-es";
 import { Layers, Palette, SparklesIcon, X } from "lucide-react";
 import React, {
   ComponentType,
@@ -131,6 +131,7 @@ const RootLayout: ComponentType = () => {
   const defaultPanels = useSidebarDefaultPanels();
   const topPanels = useChaiSidebarPanels("top");
   const bottomPanels = useChaiSidebarPanels("bottom");
+  const reversedBottomPanels = reverse([...(bottomPanels ?? [])]);
 
   /**
    * Prevents the context menu from appearing in production mode.
@@ -234,7 +235,7 @@ const RootLayout: ComponentType = () => {
               </div>
               <div className="flex flex-col space-y-1"></div>
               <div className="flex flex-col">
-                {bottomPanels?.map((item, index) => {
+                {reversedBottomPanels?.map((item, index) => {
                   return (
                     <Tooltip key={"button-bottom-" + index}>
                       <TooltipTrigger asChild>
@@ -300,7 +301,7 @@ const RootLayout: ComponentType = () => {
                         ) : panel === "theme" ? (
                           <div className="flex w-full items-center justify-between gap-2">
                             <span className="flex items-center gap-2">
-                            <Palette className="w-4 h-4 text-gray-600" />
+                              <Palette className="h-4 w-4 text-gray-600" />
                               {t("Theme Settings")}
                             </span>
                             <Button
