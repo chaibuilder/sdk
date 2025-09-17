@@ -1,12 +1,13 @@
 import { registerChaiSidebarPanel } from "@/core/main";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/ui/popover";
-import { CookieIcon, ThermometerIcon } from "lucide-react";
+import { IconJarLogoIcon } from "@radix-ui/react-icons";
+import { CookieIcon, EqualApproximatelyIcon, IceCream2Icon } from "lucide-react";
 
 const Panel1Button = ({ isActive, show }: { isActive: boolean; show: () => void }) => {
   return (
     <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
-      <ThermometerIcon />
+      <IconJarLogoIcon />
     </Button>
   );
 };
@@ -21,7 +22,7 @@ registerChaiSidebarPanel("panel-1", {
 const WhenEmptyCanvasButton = ({ isActive, show }: { isActive: boolean; show: () => void }) => {
   return (
     <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
-      <ThermometerIcon />
+      <EqualApproximatelyIcon />
     </Button>
   );
 };
@@ -40,21 +41,12 @@ registerChaiSidebarPanel("when-empty-canvas", {
   view: "overlay",
 });
 
-registerChaiSidebarPanel("when-empty-canvas2", {
-  panel: () => <div>WhenEmptyCanvas2</div>,
-  icon: <CookieIcon />,
-  button: WhenEmptyCanvasButton,
-  label: "Cookies Panel",
-  position: "bottom",
-  view: "overlay",
-});
-
 const PopoverButton = () => {
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="ghost" size="icon">
-          <ThermometerIcon />
+          <IceCream2Icon />
         </Button>
       </PopoverTrigger>
       <PopoverContent side="right">
@@ -65,9 +57,16 @@ const PopoverButton = () => {
     </Popover>
   );
 };
-
 registerChaiSidebarPanel("popover", {
   button: PopoverButton,
   label: "Popover",
   position: "bottom",
+});
+
+registerChaiSidebarPanel("when-empty-canvas2", {
+  panel: () => <div>WhenEmptyCanvas2</div>,
+  button: WhenEmptyCanvasButton,
+  label: "Cookies Panel",
+  position: "bottom",
+  view: "overlay",
 });
