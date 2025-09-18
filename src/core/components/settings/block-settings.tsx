@@ -17,7 +17,15 @@ const formDataWithSelectedLang = (formData, selectedLang: string, coreBlock) => 
   const updatedFormData = cloneDeep(formData);
   forEach(keys(formData), (key) => {
     if (includes(get(coreBlock, "i18nProps", []), key) && !isEmpty(selectedLang)) {
-      updatedFormData[key] = get(formData, `${key}-${selectedLang}`);
+      const langSpecificValue = get(formData, `${key}-${selectedLang}`);
+      const fallbackValue = get(formData, key);
+
+      // Use language-specific value if it exists, otherwise use fallback
+      if (langSpecificValue !== undefined) {
+        updatedFormData[key] = langSpecificValue;
+      } else {
+        updatedFormData[key] = fallbackValue;
+      }
     }
   });
 

@@ -296,4 +296,110 @@ describe("applyLanguage", () => {
       expect(result.title).toBe("Numeric Language Title");
     });
   });
+
+  describe("object i18n properties", () => {
+    const mockChaiBlockWithObjectI18n = {
+      i18nProps: ["title", "content", "link"],
+    };
+
+    const createBlockWithLink = (overrides: Partial<ChaiBlock> = {}): ChaiBlock => ({
+      _id: "link-block-1",
+      _type: "Link",
+      title: "Original Title",
+      content: "Original Content",
+      link: {
+        type: "url",
+        href: "https://example.com/en",
+        target: "_self",
+      },
+      ...overrides,
+    });
+
+    it("should apply language-specific object values", () => {
+      const block = createBlockWithLink({
+        "link-fr": {
+          type: "url",
+          href: "https://example.com/fr",
+          target: "_blank",
+        },
+      });
+
+      const result = applyLanguage(block, "fr", mockChaiBlockWithObjectI18n);
+
+      expect(result.link).toEqual({
+        type: "url",
+        href: "https://example.com/fr",
+        target: "_blank",
+      });
+      expect(result.title).toBe("Original Title");
+    });
+
+    it("should fall back to original object when language-specific doesn't exist", () => {
+      const block = createBlockWithLink();
+
+      const result = applyLanguage(block, "fr", mockChaiBlockWithObjectI18n);
+
+      expect(result.link).toEqual({
+        type: "url",
+        href: "https://example.com/en",
+        target: "_self",
+      });
+    });
+
+    it("should fall back to original when language-specific object is incompatible type", () => {
+      const block = createBlockWithLink({
+        "link-fr": "invalid string value",
+      });
+
+      const result = applyLanguage(block, "fr", mockChaiBlockWithObjectI18n);
+
+      expect(result.link).toEqual({
+        type: "url",
+        href: "https://example.com/en",
+        target: "_self",
+      });
+    });
+
+    it("should handle multiple languages with objects", () => {
+      const block = createBlockWithLink({
+        "link-fr": {
+          type: "url",
+          href: "https://example.com/fr",
+          target: "_blank",
+        },
+        "link-es": {
+          type: "url",
+          href: "https://example.com/es",
+          target: "_self",
+        },
+      });
+
+      const resultFr = applyLanguage(block, "fr", mockChaiBlockWithObjectI18n);
+      expect(resultFr.link.href).toBe("https://example.com/fr");
+
+      const resultEs = applyLanguage(block, "es", mockChaiBlockWithObjectI18n);
+      expect(resultEs.link.href).toBe("https://example.com/es");
+    });
+
+    it("should work with mixed string and object i18n properties", () => {
+      const block = createBlockWithLink({
+        "title-fr": "Titre français",
+        "link-fr": {
+          type: "url",
+          href: "https://example.com/fr",
+          target: "_blank",
+        },
+      });
+
+      const result = applyLanguage(block, "fr", mockChaiBlockWithObjectI18n);
+
+      expect(result.title).toBe("Titre français");
+      expect(result.link).toEqual({
+        type: "url",
+        href: "https://example.com/fr",
+        target: "_blank",
+      });
+      expect(result.content).toBe("Original Content");
+    });
+  });
 });
