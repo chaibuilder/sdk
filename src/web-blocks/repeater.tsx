@@ -109,6 +109,7 @@ export const RepeaterConfig: Omit<ChaiBlockDefinition, "component"> = {
       },
     },
   }),
+  canAcceptBlock: (type: string) => type === "Pagination",
 };
 
 export type RepeaterItemProps = {
