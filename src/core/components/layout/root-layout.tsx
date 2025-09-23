@@ -7,11 +7,9 @@ import { AddBlocksDialog } from "@/core/components/layout/add-blocks-dialog";
 import { NoopComponent } from "@/core/components/noop-component";
 import SettingsPanel from "@/core/components/settings/settings-panel";
 import ThemeConfigPanel from "@/core/components/sidepanels/panels/theme-configuration/ThemeConfigPanel";
-import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useChaiSidebarPanels } from "@/core/extensions/sidebar-panels";
 import { useTopBarComponent } from "@/core/extensions/top-bar";
 import { useBuilderProp, useSidebarActivePanel } from "@/core/hooks";
-import { usePubSub } from "@/core/hooks/use-pub-sub";
 import { useRightPanel } from "@/core/hooks/use-theme";
 import { isDevelopment } from "@/core/import-html/general";
 import { useChaiFeatureFlag } from "@/core/main";
@@ -124,10 +122,6 @@ const RootLayout: ComponentType = () => {
 
   const [panel, setRightPanel] = useRightPanel();
 
-  usePubSub(CHAI_BUILDER_EVENTS.SHOW_BLOCK_SETTINGS, () => {
-    setActivePanel("outline");
-  });
-
   const defaultPanels = useSidebarDefaultPanels();
   const topPanels = useChaiSidebarPanels("top");
   const bottomPanels = useChaiSidebarPanels("bottom");
@@ -143,9 +137,11 @@ const RootLayout: ComponentType = () => {
 
   const handleMenuItemClick = useCallback(
     (id: string) => {
+      console.log("handleMenuItemClick", id, activePanel);
+
       setActivePanel(activePanel === id ? null : id);
     },
-    [activePanel],
+    [activePanel, setActivePanel],
   );
 
   const { t } = useTranslation();
@@ -184,14 +180,14 @@ const RootLayout: ComponentType = () => {
   const handleNonStandardPanelClose = useCallback(() => {
     // Return to the last used standard panel when closing a non-standard panel
     setActivePanel(lastStandardPanelRef.current);
-  }, [setActivePanel]);
+  }, [setActivePanel, activePanel]);
 
   const closeNonStandardPanel = useCallback(() => {
     setActivePanel("outline");
   }, [setActivePanel]);
 
   useEffect(() => {
-    if (!find(allPanels, { id: activePanel })) {
+    if (activePanel !== null && !find(allPanels, { id: activePanel })) {
       setActivePanel("outline");
     }
   }, [activePanel, allPanels]);
