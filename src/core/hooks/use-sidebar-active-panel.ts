@@ -1,6 +1,6 @@
 import { atom, useAtom } from "jotai";
 
-export const sidebarActivePanelAtom = atom<string>("outline");
+export const sidebarActivePanelAtom = atom<string | null>("outline");
 sidebarActivePanelAtom.debugLabel = "sidebarActivePanelAtom";
 
 export const useSidebarActivePanel = () => {
