@@ -1,5 +1,5 @@
 import { ChaiBlockComponentProps, registerChaiBlockSchema } from "@chaibuilder/runtime";
-import { GlobeIcon } from "lucide-react";
+import { GlobeIcon } from "@radix-ui/react-icons";
 import * as React from "react";
 
 export type PartialBlockProps = {
