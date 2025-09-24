@@ -33,10 +33,13 @@ const useAutoSave = () => {
   const { savePage } = useSavePage();
   const autoSave = useBuilderProp("autoSave", true);
   const autoSaveInterval = useBuilderProp("autoSaveInterval", 60);
-  useIntervalEffect(() => {
-    if (!autoSave) return;
-    savePage(true);
-  }, autoSaveInterval * 1000);
+  useIntervalEffect(
+    () => {
+      if (!autoSave) return;
+      savePage(true);
+    },
+    autoSave ? autoSaveInterval * 1000 : undefined,
+  );
 };
 
 const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
