@@ -32,10 +32,10 @@ import {
 import { pubsub } from "@/core/pubsub";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
+import { DoubleArrowDownIcon, DoubleArrowUpIcon, EyeOpenIcon, PlusIcon } from "@radix-ui/react-icons";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { useAtom } from "jotai";
 import { find, first, isEmpty } from "lodash-es";
-import { DoubleArrowDownIcon, DoubleArrowUpIcon, EyeOpenIcon, PlusIcon } from "@radix-ui/react-icons";
 import { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
 import { MoveHandler, RenameHandler, Tree } from "react-arborist";
 import { useTranslation } from "react-i18next";
@@ -240,7 +240,7 @@ const ListTree = () => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button className="h-fit p-1" onClick={() => treeRef?.current?.openAll()} variant="outline" size="sm">
-                  <DoubleArrowUpIcon className="h-3.5 w-3.5" />
+                  <DoubleArrowDownIcon className="h-3.5 w-3.5" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent className="isolate z-[9999]">{t("Expand all")}</TooltipContent>
@@ -248,7 +248,7 @@ const ListTree = () => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button className="h-fit p-1" onClick={() => treeRef?.current?.closeAll()} variant="outline" size="sm">
-                  <DoubleArrowDownIcon className="h-3.5 w-3.5" />
+                  <DoubleArrowUpIcon className="h-3.5 w-3.5" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent className="isolate z-[9999]">{t("Collapse all")}</TooltipContent>

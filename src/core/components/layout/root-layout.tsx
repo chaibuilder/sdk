@@ -17,11 +17,10 @@ import { Button } from "@/ui/shadcn/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/ui/shadcn/components/ui/sheet";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
-import { LightningBoltIcon } from "@radix-ui/react-icons";
+import { Cross1Icon, LightningBoltIcon, MagicWandIcon, MixerHorizontalIcon, StackIcon } from "@radix-ui/react-icons";
 import { useFeature } from "flagged";
 import { motion } from "framer-motion";
 import { compact, find, first, get, reverse } from "lodash-es";
-import { StackIcon, MixerHorizontalIcon, MagicWandIcon, Cross1Icon } from "@radix-ui/react-icons";
 import React, {
   ComponentType,
   createElement,
@@ -40,7 +39,7 @@ const DEFAULT_PANEL_WIDTH = 280;
 const OutlineButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
   return (
     <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
-      <StackIcon className="w-5 h-5" />
+      <StackIcon className="h-5 w-5" />
     </Button>
   );
 };
@@ -204,7 +203,7 @@ const RootLayout: ComponentType = () => {
       <TooltipProvider>
         <div
           onContextMenu={preventContextMenu}
-          className="flex h-screen max-h-full flex-col bg-background text-foreground">
+          className="flex h-full max-h-full flex-col bg-background text-foreground">
           <div className="flex h-[50px] w-screen items-center border-b border-border">
             <Suspense>
               <TopBar />
