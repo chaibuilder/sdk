@@ -190,7 +190,7 @@ export interface ChaiBuilderEditorProps {
   /**
    * Auto save support
    */
-  autoSaveSupport?: boolean;
+  autoSave?: boolean;
   /**
    * Auto save interval in seconds
    */

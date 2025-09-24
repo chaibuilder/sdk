@@ -4,9 +4,9 @@ import { ChaiBlock, ChaiBuilderEditor, registerChaiSidebarPanel } from "@/core/m
 import { extendChaiBuilder } from "@/extentions";
 import { SavePageData } from "@/types/chaibuilder-editor-props";
 import { loadWebBlocks } from "@/web-blocks";
+import { ChatBubbleIcon } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
 import { isArray, map, pick } from "lodash-es";
-import { ChatBubbleIcon } from "@radix-ui/react-icons";
 import { EXTERNAL_DATA } from "./_demo/EXTERNAL_DATA";
 import { PARTIALS } from "./_demo/PARTIALS";
 import { Button } from "./ui";
@@ -42,7 +42,7 @@ function ChaiBuilderDefault() {
       languages={["fr"]}
       themePresets={[{ shadcn_default: defaultShadcnPreset }]}
       theme={theme}
-      autoSaveSupport={false}
+      autoSave={true}
       autoSaveInterval={15}
       blocks={blocks}
       onSave={async ({ blocks, theme, needTranslations }: SavePageData) => {

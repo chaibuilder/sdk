@@ -15,7 +15,7 @@ function ChaiBuilderCustom() {
       // translations={{ "pt-BR": ptBR, es: es }}
       layout={CustomLayout}
       debugLogs={true}
-      autoSaveSupport={false}
+      autoSave={false}
       previewComponent={PreviewWeb}
       blocks={blocks}
       onSave={async ({ blocks, providers, brandingOptions }: any) => {
