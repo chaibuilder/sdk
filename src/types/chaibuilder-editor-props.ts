@@ -221,11 +221,6 @@ export interface ChaiBuilderEditorProps {
   importHTMLSupport?: boolean;
 
   /**
-   * AI context
-   */
-  aiContext?: string;
-
-  /**
    * Ask AI callback
    */
   askAiCallBack?: (
@@ -234,7 +229,6 @@ export interface ChaiBuilderEditorProps {
     blocks: ChaiBlock[],
     lang: string,
   ) => Promise<AskAiResponse>;
-  saveAiContextCallback?: (content: string) => Promise<true | Error>;
 
   /**
    * Get partial blocks
