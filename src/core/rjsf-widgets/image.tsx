@@ -2,7 +2,7 @@ import MediaManagerModal from "@/core/components/sidepanels/panels/images/media-
 import { ChaiAsset } from "@/types";
 import { WidgetProps } from "@rjsf/utils";
 import { first, get, set, has, isArray, isEmpty } from "lodash-es";
-import { Edit2Icon, X } from "lucide-react";
+import { Pencil2Icon, Cross1Icon } from "@radix-ui/react-icons";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguages, useSelectedBlock, useUpdateBlocksProps } from "../hooks";
@@ -71,7 +71,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
               type="button"
               onClick={clearImage}
               className="absolute -right-2 -top-2 z-20 rounded-full bg-destructive p-1 text-destructive-foreground hover:bg-destructive/90">
-              <X className="h-3 w-3" />
+              <Cross1Icon className="h-3 w-3" />
             </button>
           )}
           {assetId && assetId !== "" && (
@@ -79,7 +79,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
               <button
                 type="button"
                 className="absolute inset-0 z-10 flex cursor-pointer items-center justify-center bg-black/10 opacity-0 transition duration-200 group-hover:bg-black/30 group-hover:opacity-100">
-                <Edit2Icon className="h-4 w-4 text-white" />
+                <Pencil2Icon className="h-4 w-4 text-white" />
               </button>
             </MediaManagerModal>
           )}

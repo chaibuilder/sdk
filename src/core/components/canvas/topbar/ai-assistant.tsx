@@ -4,7 +4,7 @@ import { useRightPanel } from "@/core/hooks/use-theme";
 import { PERMISSIONS, useChaiFeatureFlag, usePermissions } from "@/core/main";
 import { Label } from "@/ui/shadcn/components/ui/label";
 import { Switch } from "@/ui/shadcn/components/ui/switch";
-import { SparklesIcon } from "lucide-react";
+import { MagicWandIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
 
 export const AiAssistant = () => {
@@ -19,7 +19,7 @@ export const AiAssistant = () => {
   return (
     <div className="flex items-center space-x-2">
       <Label htmlFor="ai-assistant" className="flex items-center gap-x-1 text-sm text-yellow-600">
-        <SparklesIcon className="w-4" />
+        <MagicWandIcon className="w-4" />
         {t("AI Assistant")}
       </Label>
       <Switch

@@ -22,7 +22,7 @@ import {
 } from "@/ui/shadcn/components/ui/dropdown-menu";
 import { CardStackIcon, CardStackPlusIcon, CopyIcon, ScissorsIcon, TrashIcon } from "@radix-ui/react-icons";
 import { has, isEmpty } from "lodash-es";
-import { PencilIcon, PlusIcon } from "lucide-react";
+import { Pencil2Icon, PlusIcon } from "@radix-ui/react-icons";
 import React, { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -132,7 +132,7 @@ const RenameBlock = ({ node }: { node: any }) => {
         node.deselect();
       }}
       className="flex items-center gap-x-4 text-xs">
-      <PencilIcon className="h-4 w-4" /> {t("Rename")}
+      <Pencil2Icon className="h-4 w-4" /> {t("Rename")}
     </DropdownMenuItem>
   );
 };
@@ -160,7 +160,7 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
             disabled={!canAddChildBlock(selectedBlock?._type)}
             className="flex items-center gap-x-4 text-xs"
             onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, selectedBlock)}>
-            <PlusIcon size={"14"} /> {t("Add block")}
+            <PlusIcon className="h-3.5 w-3.5" /> {t("Add block")}
           </DropdownMenuItem>
           <DropdownMenuItem
             disabled={!canDuplicateBlock(selectedBlock?._type)}

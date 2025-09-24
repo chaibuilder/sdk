@@ -6,7 +6,7 @@ import { SavePageData } from "@/types/chaibuilder-editor-props";
 import { loadWebBlocks } from "@/web-blocks";
 import { useAtom } from "jotai";
 import { isArray, map, pick } from "lodash-es";
-import { BotIcon } from "lucide-react";
+import { ChatBubbleIcon } from "@radix-ui/react-icons";
 import { EXTERNAL_DATA } from "./_demo/EXTERNAL_DATA";
 import { PARTIALS } from "./_demo/PARTIALS";
 import { Button } from "./ui";
@@ -17,7 +17,7 @@ extendChaiBuilder();
 registerChaiSidebarPanel("popover", {
   button: () => (
     <Button variant="ghost" size="icon">
-      <BotIcon />
+      <ChatBubbleIcon />
     </Button>
   ),
   label: "Popover 2",

@@ -6,7 +6,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/s
 import { useRegisteredChaiBlocks } from "@chaibuilder/runtime";
 import { FieldTemplateProps } from "@rjsf/utils";
 import { get, isEmpty } from "lodash-es";
-import { ChevronDown, ChevronRight, Info, List } from "lucide-react";
+import { ChevronDownIcon, ChevronRightIcon, InfoCircledIcon, ListBulletIcon } from "@radix-ui/react-icons";
 import { useMemo, useState } from "react";
 import { DataBindingSelector } from "./data-binding-selector";
 
@@ -59,8 +59,8 @@ const JSONFormFieldTemplate = ({
               htmlFor={id}
               onClick={() => setOpenedList(isListOpen ? null : id)}
               className="flex cursor-pointer items-center gap-x-1 py-1 leading-tight duration-200 hover:bg-slate-100">
-              {isListOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
-              <List className="h-3 w-3" />
+              {isListOpen ? <ChevronDownIcon className="h-3 w-3" /> : <ChevronRightIcon className="h-3 w-3" />}
+              <ListBulletIcon className="h-3 w-3" />
               <span className="leading-tight">{label}</span>&nbsp;
               <Badge className="m-0 bg-gray-200 px-2 leading-tight text-gray-500 hover:bg-gray-200 hover:text-gray-500">
                 <span className="text-[9px] font-medium text-slate-600">{formData?.length}</span>
@@ -70,7 +70,7 @@ const JSONFormFieldTemplate = ({
                   <Tooltip>
                     <TooltipTrigger asChild>
                       {/* Prevent toggling list when clicking the info icon */}
-                      <Info
+                      <InfoCircledIcon
                         className="h-3 w-3 text-muted-foreground/70"
                         onClick={(e) => e.stopPropagation()}
                         onMouseDown={(e) => e.stopPropagation()}
@@ -109,7 +109,7 @@ const JSONFormFieldTemplate = ({
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Info className="h-3 w-3 text-muted-foreground/70" />
+                    <InfoCircledIcon className="h-3 w-3 text-muted-foreground/70" />
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
                    {schema.description}

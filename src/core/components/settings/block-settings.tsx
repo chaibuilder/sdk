@@ -10,7 +10,7 @@ import {
 import { getBlockFormSchemas, getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { IChangeEvent } from "@rjsf/core";
 import { cloneDeep, debounce, forEach, get, includes, isEmpty, keys, set, startCase, startsWith } from "lodash-es";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { useCallback, useMemo, useState } from "react";
 
 const formDataWithSelectedLang = (formData, selectedLang: string, coreBlock) => {
@@ -110,9 +110,9 @@ export default function BlockSettings() {
             onClick={() => setShowWrapperSetting((prev) => !prev)}
             className="flex cursor-pointer items-center gap-x-1 py-2 text-xs font-medium leading-tight hover:bg-slate-100">
             {showWrapperSetting ? (
-              <ChevronDown className="h-4 w-4 stroke-[3] text-slate-400" />
+              <ChevronDownIcon className="h-4 w-4 text-slate-400" />
             ) : (
-              <ChevronRight className="h-4 w-4 stroke-[3] text-slate-400" />
+              <ChevronRightIcon className="h-4 w-4 text-slate-400" />
             )}
             {startCase(wrapperBlock._type)} settings{" "}
             {wrapperBlock._name && (

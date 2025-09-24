@@ -7,7 +7,7 @@ import { PERMISSIONS, usePermissions } from "@/core/main";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/shadcn/components/ui/tabs";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
 import { isEmpty, isNull, noop } from "lodash-es";
-import { ChevronDown } from "lucide-react";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
 import React, { useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
@@ -27,7 +27,7 @@ function BlockAttributesToggle() {
         className="flex cursor-pointer items-center justify-between border-t border-border py-3 text-xs font-medium hover:underline">
         <span>{t("Attributes")}</span>
         <span>
-          <ChevronDown className={"h-4 w-4 text-gray-500 " + (showAttributes ? "rotate-180" : "")} />
+          <ChevronDownIcon className={"h-4 w-4 text-gray-500 " + (showAttributes ? "rotate-180" : "")} />
         </span>
       </div>
       {showAttributes && <BlockAttributesEditor />}

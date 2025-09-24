@@ -1,7 +1,7 @@
 import { useAddBlock, useBlocksStore, useSelectedBlock, useSelectedBlockIds, useWrapperBlock } from "@/core/hooks";
 import { FieldProps } from "@rjsf/utils";
 import { filter, find, findIndex, get } from "lodash-es";
-import { ChevronLeft, ChevronRight, PlusCircle } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 import { useEffect } from "react";
 
 const SliderField = ({ formData, onChange }: FieldProps) => {
@@ -69,7 +69,7 @@ const SliderField = ({ formData, onChange }: FieldProps) => {
     <div className="space-y-1.5 px-2">
       <div className="flex items-center gap-x-2 pb-2 text-[12px]">
         <button onClick={handlePrevious} className="rounded bg-gray-200 p-1.5 hover:opacity-80">
-          <ChevronLeft className="h-3 w-3 stroke-[3]" />
+          <ChevronLeftIcon className="h-3 w-3" />
         </button>
         <div className="whitespace-nowrap text-center text-[10px] text-slate-500">
           {currentSlide ? (
@@ -82,12 +82,12 @@ const SliderField = ({ formData, onChange }: FieldProps) => {
           )}
         </div>
         <button onClick={handleNext} className="rounded bg-gray-200 p-1.5 hover:opacity-80">
-          <ChevronRight className="h-3 w-3 stroke-[3]" />
+          <ChevronRightIcon className="h-3 w-3" />
         </button>
         <button
           onClick={addNextSlide}
           className="flex w-full items-center justify-center gap-x-1 rounded bg-gray-200 p-1.5 text-xs font-medium leading-tight hover:opacity-80">
-          <PlusCircle className="h-3 w-3 stroke-[2]" />
+          <PlusCircledIcon className="h-3 w-3" />
           Add Slide
         </button>
       </div>

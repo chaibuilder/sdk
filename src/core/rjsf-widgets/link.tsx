@@ -3,7 +3,7 @@ import { PageTypeItem } from "@/types/chaibuilder-editor-props";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { FieldProps } from "@rjsf/utils";
 import { get, isEmpty, map, split, startsWith } from "lodash-es";
-import { X } from "lucide-react";
+import { Cross1Icon } from "@radix-ui/react-icons";
 import { useEffect, useRef, useState } from "react";
 import { DataBindingSelector } from "./data-binding-selector";
 
@@ -143,7 +143,7 @@ const PageTypeField = ({
           <div className="absolute bottom-2 right-2 top-3 flex items-center gap-1.5">
             {searchQuery && (
               <button onClick={clearSearch} className="text-gray-400 hover:text-gray-600" title={t("Clear search")}>
-                <X className="h-4 w-4" />
+                <Cross1Icon className="h-4 w-4" />
               </button>
             )}
           </div>

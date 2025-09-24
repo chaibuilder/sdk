@@ -4,7 +4,7 @@ import { AskAiResponse } from "@/types/chaibuilder-editor-props";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
 import { Textarea } from "@/ui/shadcn/components/ui/textarea";
-import { Loader } from "lucide-react";
+import { ReloadIcon } from "@radix-ui/react-icons";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -60,7 +60,7 @@ export const AskAIStyles = ({ blockId }: { blockId: string | undefined }) => {
             size="sm">
             {loading ? (
               <>
-                <Loader className="h-5 w-5 animate-spin" />
+                <ReloadIcon className="h-5 w-5 animate-spin" />
                 {t("Generating... Please wait...")}
               </>
             ) : (
@@ -71,7 +71,7 @@ export const AskAIStyles = ({ blockId }: { blockId: string | undefined }) => {
         {loading ? (
           <div className="flex flex-col gap-2">
             <Skeleton className="flex w-full items-center space-x-1 px-4 py-1 pl-2">
-              <Loader className="h-4 w-4 animate-spin text-gray-500" size={16} />
+              <ReloadIcon className="h-4 w-4 animate-spin text-gray-500" />
               <p className="text-xs">{t("Generating... Please wait...")}</p>
             </Skeleton>
             <Button variant="destructive" onClick={() => stop()} className="hidden w-fit" size="sm">

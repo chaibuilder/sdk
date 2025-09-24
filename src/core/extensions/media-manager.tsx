@@ -2,7 +2,7 @@ import { ChaiAsset } from "@/types";
 import { Alert, AlertDescription } from "@/ui/shadcn/components/ui/alert";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Input } from "@/ui/shadcn/components/ui/input";
-import { AlertCircle } from "lucide-react";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -47,7 +47,7 @@ const DefaultMediaManager = ({ close, onSelect, mode = "image" }: MediaManagerPr
 
       {error && (
         <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
+          <ExclamationTriangleIcon className="h-4 w-4" />
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
