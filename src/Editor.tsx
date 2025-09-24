@@ -1,4 +1,4 @@
-import { lsAiContextAtom, lsBlocksAtom, lsThemeAtom } from "@/_demo/atoms-dev";
+import { lsBlocksAtom, lsThemeAtom } from "@/_demo/atoms-dev";
 import { defaultShadcnPreset } from "@/_demo/THEME_PRESETS";
 import { ChaiBlock, ChaiBuilderEditor, registerChaiSidebarPanel } from "@/core/main";
 import { extendChaiBuilder } from "@/extentions";
@@ -27,9 +27,6 @@ registerChaiSidebarPanel("popover", {
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
   const [theme, setTheme] = useAtom(lsThemeAtom);
-
-  const [aiContext, setAiContext] = useAtom(lsAiContextAtom);
-
   return (
     <ChaiBuilderEditor
       gotoPage={(args) => {
@@ -53,11 +50,6 @@ function ChaiBuilderDefault() {
         await new Promise((resolve) => setTimeout(resolve, 100));
         return true;
       }}
-      saveAiContextCallback={async (aiContext: string) => {
-        setAiContext(aiContext);
-        return true;
-      }}
-      aiContext={aiContext}
       askAiCallBack={async (type: "styles" | "content", prompt: string, blocks: ChaiBlock[], lang: string = "") => {
         console.log("askAiCallBack", type, prompt, blocks, lang);
         return {
