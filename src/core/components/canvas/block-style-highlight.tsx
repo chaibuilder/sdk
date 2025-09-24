@@ -3,7 +3,7 @@ import { ChaiBlock } from "@/types/chai-block";
 import { flip } from "@floating-ui/dom";
 import { shift, useFloating } from "@floating-ui/react-dom";
 import { useResizeObserver } from "@react-hookz/web";
-import { Paintbrush } from "lucide-react";
+import { MixerHorizontalIcon } from "@radix-ui/react-icons";
 
 // NOTE: this component is not used anymore, but keeping it for now. Might remove it later.
 // Author: surajair
@@ -42,7 +42,7 @@ export const BlockStyleHighlight = ({
         }}
         onKeyDown={(e) => e.stopPropagation()}
         className="isolate z-[999] flex items-center rounded-t bg-orange-500 p-px text-xs text-white">
-        <Paintbrush className="h-3 w-3" />
+        <MixerHorizontalIcon className="h-3 w-3" />
       </div>
     </>
   );

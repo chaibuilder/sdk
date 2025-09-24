@@ -1,7 +1,7 @@
 import { LanguageButton } from "@/_demo/lang-button";
 import RightTop from "@/_demo/right-top";
 import { Alert, AlertDescription } from "@/ui/shadcn/components/ui/alert";
-import { Info } from "lucide-react";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
 
 const Logo = () => {
   return (
@@ -22,7 +22,7 @@ const DemoAlert = () => {
   return (
     <Alert variant="default" className="border-b border-border px-4 py-2">
       <AlertDescription className="flex items-center gap-2">
-        <Info className="h-4 w-4" />
+        <InfoCircledIcon className="h-4 w-4" />
         <span className="font-bold">Demo mode</span> - Changes are saved in your browser local storage. AI actions are
         mocked.
       </AlertDescription>

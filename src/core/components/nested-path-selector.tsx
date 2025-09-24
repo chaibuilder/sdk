@@ -11,7 +11,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { LoopIcon } from "@radix-ui/react-icons";
 import { startsWith } from "lodash-es";
-import { ChevronLeft, ChevronRight, DatabaseIcon } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, IdCardIcon } from "@radix-ui/react-icons";
 import React from "react";
 import { COLLECTION_PREFIX, REPEATER_PREFIX } from "../constants/STRINGS";
 import { useBuilderProp } from "../hooks";
@@ -86,7 +86,7 @@ const PathDropdown = ({ data, onSelect, dataType }: NestedPathSelectorProps) => 
         <CommandGroup>
           {currentPath.length > 0 && (
             <CommandItem onSelect={handleBack} className="flex items-center text-sm">
-              <ChevronLeft className="mr-2 h-4 w-4" />
+              <ChevronLeftIcon className="mr-2 h-4 w-4" />
               Back
             </CommandItem>
           )}
@@ -101,7 +101,7 @@ const PathDropdown = ({ data, onSelect, dataType }: NestedPathSelectorProps) => 
                 {startsWith(option.key, REPEATER_PREFIX) ? (
                   <LoopIcon />
                 ) : startsWith(option.key, COLLECTION_PREFIX) ? (
-                  <DatabaseIcon />
+                  <IdCardIcon />
                 ) : null}
                 {startsWith(option.key, REPEATER_PREFIX)
                   ? "Repeater Data"
@@ -124,7 +124,7 @@ const PathDropdown = ({ data, onSelect, dataType }: NestedPathSelectorProps) => 
                 )}
                 {option.type === "object" && (
                   <div className="cursor-pointer rounded p-1 hover:bg-muted">
-                    <ChevronRight className="h-4 w-4 opacity-50" />
+                    <ChevronRightIcon className="h-4 w-4 opacity-50" />
                   </div>
                 )}
               </div>

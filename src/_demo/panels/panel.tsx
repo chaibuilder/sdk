@@ -2,7 +2,7 @@ import { registerChaiSidebarPanel } from "@/core/main";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/ui/popover";
 import { IconJarLogoIcon } from "@radix-ui/react-icons";
-import { CookieIcon, EqualApproximatelyIcon, IceCream2Icon } from "lucide-react";
+import { CookieIcon, DimensionsIcon, ArchiveIcon } from "@radix-ui/react-icons";
 
 const Panel1Button = ({ isActive, show }: { isActive: boolean; show: () => void }) => {
   return (
@@ -22,7 +22,7 @@ registerChaiSidebarPanel("panel-1", {
 const WhenEmptyCanvasButton = ({ isActive, show }: { isActive: boolean; show: () => void }) => {
   return (
     <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
-      <EqualApproximatelyIcon />
+      <DimensionsIcon />
     </Button>
   );
 };
@@ -46,7 +46,7 @@ const PopoverButton = () => {
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="ghost" size="icon">
-          <IceCream2Icon />
+          <ArchiveIcon />
         </Button>
       </PopoverTrigger>
       <PopoverContent side="right">

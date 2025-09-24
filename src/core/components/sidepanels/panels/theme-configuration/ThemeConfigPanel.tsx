@@ -16,7 +16,7 @@ import { Separator } from "@/ui/shadcn/components/ui/separator";
 import { Switch } from "@/ui/shadcn/components/ui/switch";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { capitalize, get, set } from "lodash-es";
-import { CornerUpRight, ImportIcon, Moon, Palette, Sun, Type, Undo } from "lucide-react";
+import { CornerTopRightIcon, UploadIcon, MoonIcon, MixerHorizontalIcon, SunIcon, TextIcon, ResetIcon } from "@radix-ui/react-icons";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -93,7 +93,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
         action: {
           label: (
             <span className="flex items-center gap-2">
-              <Undo className="h-4 w-4" /> Undo
+              <ResetIcon className="h-4 w-4" /> Undo
             </span>
           ),
           onClick: () => {
@@ -238,7 +238,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
               <Label className="text-sm">{t("Presets")}</Label>
               <div className="flex gap-2">
                 <Button className="px-1" variant="link" size="sm" onClick={() => setIsImportModalOpen(true)}>
-                  <ImportIcon className="h-4 w-4" />
+                  <UploadIcon className="h-4 w-4" />
                   {t("Import theme")}
                 </Button>
               </div>
@@ -278,7 +278,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
         <div className={cn("my-2 space-y-3", className)}>
           {/* Fonts Section */}
           <div className="flex items-center gap-2">
-            <Type className="h-3 w-3 text-gray-600" />
+            <TextIcon className="h-3 w-3 text-gray-600" />
             <span className="text-xs font-medium text-gray-700">Typography</span>
           </div>
           {chaiThemeOptions?.fontFamily && (
@@ -301,7 +301,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
             <div className="space-y-0.5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <CornerUpRight className="h-3 w-3 text-gray-600" />
+                  <CornerTopRightIcon className="h-3 w-3 text-gray-600" />
                   <span className="text-xs font-medium text-gray-700">Border Radius</span>
                 </div>
                 <Badge variant="secondary" className="text-xs">
@@ -321,19 +321,19 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Palette className="h-3 w-3 text-gray-600" />
+                  <MixerHorizontalIcon className="h-3 w-3 text-gray-600" />
                   <span className="text-xs font-medium text-gray-700">Colors</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="flex items-center gap-2">
-                    <Sun className="h-4 w-4" />
+                    <SunIcon className="h-4 w-4" />
                     <Switch
                       checked={isDarkMode}
                       onCheckedChange={(checked: boolean) => setIsDarkMode(checked)}
                       aria-label="Toggle dark mode"
                       className="mx-1"
                     />
-                    <Moon className="h-4 w-4" />
+                    <MoonIcon className="h-4 w-4" />
                   </div>
                 </div>
               </div>

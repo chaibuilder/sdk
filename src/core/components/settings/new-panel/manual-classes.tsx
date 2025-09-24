@@ -14,7 +14,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { first, get, isEmpty, map } from "lodash-es";
-import { SparklesIcon } from "lucide-react";
+import { MagicWandIcon } from "@radix-ui/react-icons";
 import { useMemo, useRef, useState } from "react";
 import Autosuggest from "react-autosuggest";
 import { useTranslation } from "react-i18next";
@@ -141,7 +141,7 @@ export function ManualClasses() {
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="default" className="h-6 w-fit" size="sm">
-                <SparklesIcon className="h-4 w-4" />
+                <MagicWandIcon className="h-4 w-4" />
                 <span className="ml-2">{t("Ask AI")}</span>
               </Button>
             </PopoverTrigger>

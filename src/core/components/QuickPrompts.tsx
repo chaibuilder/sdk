@@ -4,18 +4,18 @@ import { useLanguages } from "@/core/hooks/use-languages";
 import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/ui/popover";
 import { ArrowDownIcon, ArrowUpIcon, CheckIcon } from "@radix-ui/react-icons";
 import { get } from "lodash-es";
-import { FileEdit, Languages, Recycle, ShuffleIcon, SmileIcon } from "lucide-react";
+import { Pencil2Icon, ChatBubbleIcon, LoopIcon, ShuffleIcon, FaceIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
 
 const QUICK_PROMPTS = [
   {
     name: "Improve writing",
-    icon: FileEdit,
+    icon: Pencil2Icon,
     prompt: "Improving writing in all text elements. Replacing placeholder content with meaningful relevant content.",
   },
   {
     name: "Replace placeholder content",
-    icon: Recycle,
+    icon: LoopIcon,
     prompt: "Discard current placeholder content and replace with meaningful relevant content.",
   },
   //TODO: Add tone options
@@ -42,7 +42,7 @@ const QUICK_PROMPTS = [
   },
   {
     name: "Add emojis",
-    icon: SmileIcon,
+    icon: FaceIcon,
     prompt: "Add emojis to text elements if relevant.",
   },
   {
@@ -61,7 +61,7 @@ export function QuickPrompts({ onClick }: { onClick: (prompt: string) => void })
   if (selectedLang && selectedLang !== fallbackLang) {
     quickPrompts.splice(0, 0, {
       name: `Translate to ${get(LANGUAGES, selectedLang, selectedLang)}`,
-      icon: Languages,
+      icon: ChatBubbleIcon,
       prompt: `Translate the content to ${get(LANGUAGES, selectedLang, selectedLang)}. Maintain same tone, style and length.`,
     });
   }

@@ -2,7 +2,7 @@ import { useHiddenBlockIds } from "@/core/hooks";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { EyeOpenIcon } from "@radix-ui/react-icons";
-import { ChevronsDown, ChevronsUp } from "lucide-react";
+import { DoubleArrowDownIcon, DoubleArrowUpIcon } from "@radix-ui/react-icons";
 import { forwardRef } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -21,7 +21,7 @@ const CollapseAllTooltip = forwardRef((_props, ref: any) => {
           }}
           variant="outline"
           size="sm">
-          <ChevronsUp size={14} />
+          <DoubleArrowUpIcon className="h-3.5 w-3.5" />
         </Button>
       </TooltipTrigger>
       <TooltipContent className="isolate z-[9999]">{t("Collapse all")}</TooltipContent>
@@ -36,7 +36,7 @@ const ExpandAllTooltip = forwardRef((_props, ref: any) => {
     <Tooltip>
       <TooltipTrigger asChild>
         <Button className="h-fit p-1" onClick={() => ref?.current?.openAll()} variant="outline" size="sm">
-          <ChevronsDown size={14} />
+          <DoubleArrowDownIcon className="h-3.5 w-3.5" />
         </Button>
       </TooltipTrigger>
       <TooltipContent className="isolate z-[9999]">{t("Expand all")}</TooltipContent>

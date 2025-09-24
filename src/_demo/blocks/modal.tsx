@@ -9,7 +9,7 @@ import {
   registerChaiBlockSchema,
   StylesProp,
 } from "@chaibuilder/runtime";
-import { Layers } from "lucide-react";
+import { StackIcon } from "@radix-ui/react-icons";
 
 export type ModalProps = {
   children: React.ReactNode;
@@ -139,7 +139,7 @@ const Config = {
   group: "advanced",
   category: "core",
   wrapper: true,
-  icon: Layers,
+  icon: StackIcon,
   blocks: () =>
     [
       { _type: "Modal", _id: "modal" },

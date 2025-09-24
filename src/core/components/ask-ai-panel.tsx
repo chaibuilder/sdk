@@ -6,7 +6,7 @@ import { Button } from "@/ui/shadcn/components/ui/button";
 import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
 import { Textarea } from "@/ui/shadcn/components/ui/textarea";
 import { first } from "lodash-es";
-import { Loader, SparklesIcon } from "lucide-react";
+import { ReloadIcon, MagicWandIcon } from "@radix-ui/react-icons";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -63,7 +63,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
                 size="sm">
                 {loading ? (
                   <>
-                    <Loader className="h-5 w-5 animate-spin" />
+                    <ReloadIcon className="h-5 w-5 animate-spin" />
                     {t("Generating... Please wait...")}
                   </>
                 ) : (
@@ -74,7 +74,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
             {loading ? (
               <div className="flex flex-col gap-2">
                 <Skeleton className="flex w-full items-center space-x-1 px-4 py-1 pl-2">
-                  <Loader className="h-4 w-4 animate-spin text-gray-500" />
+                  <ReloadIcon className="h-4 w-4 animate-spin text-gray-500" />
                   <p className="text-xs">{t("Generating... Please wait...")}</p>
                 </Skeleton>
                 <Button variant="destructive" onClick={() => stop()} className="hidden w-fit" size="sm">
@@ -113,7 +113,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
       ) : (
         <div className="p-4 text-center">
           <div className="space-y-4 rounded-xl p-4 text-muted-foreground">
-            <SparklesIcon className="mx-auto text-3xl text-muted-foreground" />
+            <MagicWandIcon className="mx-auto text-3xl text-muted-foreground" />
             <h1>{t("Please select a block to Ask AI")}</h1>
           </div>
         </div>

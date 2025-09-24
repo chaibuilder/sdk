@@ -12,7 +12,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/
 import { PlusIcon } from "@radix-ui/react-icons";
 import { atom, useAtom } from "jotai";
 import { get, has, isEmpty, startCase } from "lodash-es";
-import { ChevronRight, EyeOffIcon, MoreVertical } from "lucide-react";
+import { ChevronRightIcon, EyeNoneIcon, DotsVerticalIcon } from "@radix-ui/react-icons";
 import { memo, useEffect, useMemo } from "react";
 import { NodeRendererProps } from "react-arborist";
 
@@ -241,7 +241,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
               }`}>
               {hasChildren && (
                 <button onClick={handleToggle} type="button">
-                  <ChevronRight className={`h-3 w-3 stroke-[3] ${isSelected ? "text-white" : "text-slate-400"}`} />
+                  <ChevronRightIcon className={`h-3 w-3 ${isSelected ? "text-white" : "text-slate-400"}`} />
                 </button>
               )}
             </div>
@@ -292,14 +292,14 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
                 }}
                 className="cursor-pointer rounded bg-transparent"
                 asChild>
-                <EyeOffIcon size={"15"} />
+                <EyeNoneIcon className="h-4 w-4" />
               </TooltipTrigger>
               <TooltipContent className="isolate z-[9999]" side="bottom">
                 {t("Hide block")}
               </TooltipContent>
             </Tooltip>
             <BlockMoreOptions node={node} id={id}>
-              <MoreVertical size={"15"} />
+              <DotsVerticalIcon className="h-4 w-4" />
             </BlockMoreOptions>
           </div>
         </div>

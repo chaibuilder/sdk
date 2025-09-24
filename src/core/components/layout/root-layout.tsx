@@ -21,7 +21,7 @@ import { LightningBoltIcon } from "@radix-ui/react-icons";
 import { useFeature } from "flagged";
 import { motion } from "framer-motion";
 import { compact, find, first, get, reverse } from "lodash-es";
-import { Layers, Palette, SparklesIcon, X } from "lucide-react";
+import { StackIcon, MixerHorizontalIcon, MagicWandIcon, Cross1Icon } from "@radix-ui/react-icons";
 import React, {
   ComponentType,
   createElement,
@@ -40,7 +40,7 @@ const DEFAULT_PANEL_WIDTH = 280;
 const OutlineButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
   return (
     <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
-      <Layers size={20} />
+      <StackIcon className="w-5 h-5" />
     </Button>
   );
 };
@@ -55,7 +55,7 @@ const AiButton = ({ isActive, show }: { isActive: boolean; show: () => void; pan
 const AskAiButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
   return (
     <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
-      <SparklesIcon className="rtl:ml-2" />
+      <MagicWandIcon className="rtl:ml-2" />
     </Button>
   );
 };
@@ -297,7 +297,7 @@ const RootLayout: ComponentType = () => {
                         ) : panel === "theme" ? (
                           <div className="flex w-full items-center justify-between gap-2">
                             <span className="flex items-center gap-2">
-                              <Palette className="h-4 w-4 text-gray-600" />
+                              <MixerHorizontalIcon className="h-4 w-4 text-gray-600" />
                               {t("Theme Settings")}
                             </span>
                             <Button
@@ -305,7 +305,7 @@ const RootLayout: ComponentType = () => {
                               variant="ghost"
                               size="icon"
                               className="text-xs">
-                              <X className="h-4 w-4 rtl:ml-2" />
+                              <Cross1Icon className="h-4 w-4 rtl:ml-2" />
                             </Button>
                           </div>
                         ) : null}
@@ -387,7 +387,7 @@ const RootLayout: ComponentType = () => {
                     <span>{t(get(activePanelItem, "label", ""))}</span>
                   </div>
                   <Button onClick={() => handleNonStandardPanelClose()} variant="ghost" size="icon" className="">
-                    <X className="h-5 w-5" />
+                    <Cross1Icon className="h-5 w-5" />
                   </Button>
                 </div>
                 <div className="flex-1 overflow-y-auto p-4">

@@ -1,7 +1,7 @@
 import { Switch, Input, Button } from "@/ui";
 import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
-import { Search, X } from "lucide-react";
+import { MagnifyingGlassIcon, Cross1Icon } from "@radix-ui/react-icons";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useState, useMemo, useEffect } from "react";
 import { useChaiFeatureFlag, useChaiFeatureFlags, useToggleChaiFeatureFlag } from "./register-chai-flag";
@@ -132,11 +132,11 @@ const ChaiFeatureFlagsWidgetComponent = ({
             size="sm"
             onClick={close}
             className="absolute -right-2 -top-2 p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
-            <X className="h-4 w-4" />
+            <Cross1Icon className="h-4 w-4" />
           </Button>
         </div>
         <div className="relative">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400" />
+          <MagnifyingGlassIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400" />
           <Input
             type="search"
             placeholder="Search features..."

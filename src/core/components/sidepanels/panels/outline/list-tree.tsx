@@ -35,7 +35,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/
 import { useDebouncedCallback } from "@react-hookz/web";
 import { useAtom } from "jotai";
 import { find, first, isEmpty } from "lodash-es";
-import { ChevronsDownUp, ChevronsUpDown, Eye, PlusIcon } from "lucide-react";
+import { DoubleArrowDownIcon, DoubleArrowUpIcon, EyeOpenIcon, PlusIcon } from "@radix-ui/react-icons";
 import { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
 import { MoveHandler, RenameHandler, Tree } from "react-arborist";
 import { useTranslation } from "react-i18next";
@@ -231,7 +231,7 @@ const ListTree = () => {
                   variant="outline"
                   className="h-fit p-1 disabled:cursor-not-allowed disabled:opacity-50"
                   size="sm">
-                  <Eye className="h-4 w-4" />
+                  <EyeOpenIcon className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent className="isolate z-[9999]">{t("Show hidden blocks")}</TooltipContent>
@@ -240,7 +240,7 @@ const ListTree = () => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button className="h-fit p-1" onClick={() => treeRef?.current?.openAll()} variant="outline" size="sm">
-                  <ChevronsUpDown size={14} />
+                  <DoubleArrowUpIcon className="h-3.5 w-3.5" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent className="isolate z-[9999]">{t("Expand all")}</TooltipContent>
@@ -248,7 +248,7 @@ const ListTree = () => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button className="h-fit p-1" onClick={() => treeRef?.current?.closeAll()} variant="outline" size="sm">
-                  <ChevronsDownUp size={14} />
+                  <DoubleArrowDownIcon className="h-3.5 w-3.5" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent className="isolate z-[9999]">{t("Collapse all")}</TooltipContent>

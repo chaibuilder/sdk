@@ -3,7 +3,7 @@ import { useBlockHighlight } from "@/core/hooks/use-block-highlight";
 import { useSelectedBlockHierarchy, useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { reverse } from "lodash-es";
-import { ChevronRight } from "lucide-react";
+import { ChevronRightIcon } from "@radix-ui/react-icons";
 
 export const Breadcrumb = () => {
   const hierarchy = useSelectedBlockHierarchy();
@@ -17,7 +17,7 @@ export const Breadcrumb = () => {
           <Button onClick={() => setSelected([])} variant={"ghost"} className="h-fit p-1 text-xs font-normal">
             Body
           </Button>
-          <ChevronRight className="rtl:rotate-180" size={16} />
+          <ChevronRightIcon className="rtl:rotate-180 h-4 w-4" />
         </li>
         {reverse(hierarchy).map((block, index) => (
           <li key={index} className="inline-flex items-center">
@@ -31,7 +31,7 @@ export const Breadcrumb = () => {
               <TypeIcon type={block?._type} />
               {block._name || block._type}
             </Button>
-            {index !== hierarchy.length - 1 && <ChevronRight className="rtl:rotate-180" size={16} />}
+            {index !== hierarchy.length - 1 && <ChevronRightIcon className="rtl:rotate-180 h-4 w-4" />}
           </li>
         ))}
       </ol>
