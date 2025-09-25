@@ -9,10 +9,9 @@ import { useBlockHighlight, useHiddenBlockIds, usePermissions, useTranslation } 
 import { pubsub } from "@/core/pubsub";
 import { cn } from "@/core/utils/cn";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
-import { PlusIcon } from "@radix-ui/react-icons";
+import { ChevronRightIcon, DotsVerticalIcon, EyeNoneIcon, PlusIcon } from "@radix-ui/react-icons";
 import { atom, useAtom } from "jotai";
 import { get, has, isEmpty, startCase } from "lodash-es";
-import { ChevronRightIcon, EyeNoneIcon, DotsVerticalIcon } from "@radix-ui/react-icons";
 import { memo, useEffect, useMemo } from "react";
 import { NodeRendererProps } from "react-arborist";
 
@@ -181,6 +180,9 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
     );
   }, [data, hasPermission]);
 
+  const isPartialBlock = useMemo(() => {
+    return data?._type === "PartialBlock" || data?._type === "GlobalBlock";
+  }, [data]);
 
   return (
     <div className="w-full">
@@ -248,8 +250,10 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
             <div
               className={cn(
                 "leading-1 flex items-center",
-                isLibBlock && "text-primary/60",
-                isLibBlock && isSelected && "text-primary/80",
+                isLibBlock && "text-orange-600/90",
+                isLibBlock && isSelected && "text-orange-600",
+                isPartialBlock && "text-purple-600/90",
+                isPartialBlock && isSelected && "text-purple-100",
               )}>
               <TypeIcon type={data?._type} />
               {isEditing ? (
