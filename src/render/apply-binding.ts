@@ -21,8 +21,12 @@ const applyBindingToValue = (
         } else if (index !== -1 && startsWith(binding, "$index")) {
           binding = `${repeaterKeyTrimed}.${index}`;
         }
-        const bindingValue = get(pageExternalData, binding, match);
-        result = isArray(bindingValue) ? bindingValue : result.replace(match, bindingValue);
+        const bindingValue = get(pageExternalData, binding);
+        if (bindingValue === undefined) {
+          result = result.replace(match, "");
+        } else {
+          result = isArray(bindingValue) ? bindingValue : result.replace(match, bindingValue);
+        }
       });
     }
     return result;
@@ -110,6 +114,13 @@ if (import.meta.vitest) {
       const pageExternalData = { items: [{ value: "apple" }, { value: "banana" }, { value: "cherry" }] };
       const result = applyBindingToValue(value, pageExternalData, { index: 1, key: "{{items}}" });
       expect(result).toBe("Item banana");
+    });
+
+    it("should return an empty string for non-existing bindings", () => {
+      const value = "Hello {{user.nonexistent}}";
+      const pageExternalData = { user: { name: "John" } };
+      const result = applyBindingToValue(value, pageExternalData, { index: -1, key: "" });
+      expect(result).toBe("Hello ");
     });
 
     it("should preserve private properties starting with _", () => {
