@@ -271,17 +271,17 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
               )}
             </div>
           </div>
-          <div className="invisible flex items-center space-x-1.5 pr-2 group-hover:visible">
+          <div className="invisible flex items-center space-x-1.5 pr-px group-hover:visible">
             {canAddChildBlock(data?._type) && !hiddenBlocks.includes(id) && hasPermission(PERMISSIONS.ADD_BLOCK) ? (
               <Tooltip>
                 <TooltipTrigger
                   onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, { _id: id })}
-                  className="cursor-pointer rounded bg-transparent"
+                  className="cursor-pointer rounded bg-transparent p-px hover:bg-primary/10"
                   asChild>
-                  <PlusIcon className="h-3 w-3" />
+                  <PlusIcon className="h-4 w-4" />
                 </TooltipTrigger>
                 <TooltipContent className="isolate z-[9999]" side="bottom">
-                  {t("Add block")}
+                  {t("Add block inside")}
                 </TooltipContent>
               </Tooltip>
             ) : null}
@@ -294,7 +294,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
                     node.toggle();
                   }
                 }}
-                className="cursor-pointer rounded bg-transparent"
+                className="cursor-pointer rounded bg-transparent p-0.5 hover:bg-primary/10"
                 asChild>
                 <EyeNoneIcon className="h-4 w-4" />
               </TooltipTrigger>
@@ -303,7 +303,9 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
               </TooltipContent>
             </Tooltip>
             <BlockMoreOptions node={node} id={id}>
-              <DotsVerticalIcon className="h-4 w-4" />
+              <div className="cursor-pointer rounded bg-transparent p-px hover:bg-primary/10">
+                <DotsVerticalIcon className="h-3 w-3" />
+              </div>
             </BlockMoreOptions>
           </div>
         </div>
