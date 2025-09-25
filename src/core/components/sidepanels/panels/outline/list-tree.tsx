@@ -223,15 +223,15 @@ const ListTree = () => {
               handleKeyDown(e);
             }
           }}>
-          <div className="mb-2 flex items-center justify-end gap-x-2 pb-2 text-sm text-muted-foreground">
+          <div className="mb-2 flex items-center justify-end gap-x-1 pb-2 text-sm text-muted-foreground">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   onClick={() => setHiddenBlocks([])}
-                  variant="outline"
+                  variant="ghost"
                   className="h-fit p-1 disabled:cursor-not-allowed disabled:opacity-50"
                   size="sm">
-                  <EyeOpenIcon className="h-4 w-4" />
+                  <EyeOpenIcon className="h-2 w-2" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent className="isolate z-[9999]">{t("Show hidden blocks")}</TooltipContent>
@@ -239,16 +239,16 @@ const ListTree = () => {
 
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button className="h-fit p-1" onClick={() => treeRef?.current?.openAll()} variant="outline" size="sm">
-                  <DoubleArrowDownIcon className="h-3.5 w-3.5" />
+                <Button className="h-fit p-1" onClick={() => treeRef?.current?.openAll()} variant="ghost" size="sm">
+                  <DoubleArrowDownIcon className="h-2 w-2" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent className="isolate z-[9999]">{t("Expand all")}</TooltipContent>
             </Tooltip>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button className="h-fit p-1" onClick={() => treeRef?.current?.closeAll()} variant="outline" size="sm">
-                  <DoubleArrowUpIcon className="h-3.5 w-3.5" />
+                <Button className="h-fit p-1" onClick={() => treeRef?.current?.closeAll()} variant="ghost" size="sm">
+                  <DoubleArrowUpIcon className="h-2 w-2" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent className="isolate z-[9999]">{t("Collapse all")}</TooltipContent>
