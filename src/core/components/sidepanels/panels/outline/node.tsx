@@ -44,6 +44,13 @@ export const getBlockDisplayName = (data: any): string => {
   return data?._type?.split("/").pop() || "";
 };
 
+const truncateText = (text: string, maxLength: number) => {
+  if (text.length > maxLength) {
+    return text.substring(0, maxLength) + "...";
+  }
+  return text;
+};
+
 export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const { t } = useTranslation();
   const updateBlockProps = useUpdateBlocksProps();
@@ -266,7 +273,9 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
                     node.edit();
                     node.deselect();
                   }}>
-                  <span>{getBlockDisplayName(data)}</span>
+                  <span title={getBlockDisplayName(data).length > 17 ? getBlockDisplayName(data) : ""}>
+                    {truncateText(getBlockDisplayName(data), 17)}
+                  </span>
                 </div>
               )}
             </div>
