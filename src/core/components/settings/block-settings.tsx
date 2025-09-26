@@ -8,10 +8,11 @@ import {
   useWrapperBlock,
 } from "@/core/hooks";
 import { getBlockFormSchemas, getRegisteredChaiBlock } from "@chaibuilder/runtime";
+import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { IChangeEvent } from "@rjsf/core";
 import { cloneDeep, debounce, forEach, get, includes, isEmpty, keys, set, startCase, startsWith } from "lodash-es";
-import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { useCallback, useMemo, useState } from "react";
+import { CommonSettings } from "./common-settings";
 
 const formDataWithSelectedLang = (formData, selectedLang: string, coreBlock) => {
   const updatedFormData = cloneDeep(formData);
@@ -104,6 +105,12 @@ export default function BlockSettings() {
 
   return (
     <div className="no-scrollbar overflow-x-hidden px-px">
+      <CommonSettings
+        block={selectedBlock}
+        updateBlockProps={updateBlockProps}
+        updateBlockPropsRealtime={updateBlockPropsRealtime}
+      />
+      <br />
       {!isEmpty(wrapperBlock) && (
         <div className="mb-4 rounded border bg-zinc-100 px-1">
           <div
