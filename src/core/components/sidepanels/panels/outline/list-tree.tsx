@@ -32,7 +32,7 @@ import {
 import { pubsub } from "@/core/pubsub";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
-import { DoubleArrowDownIcon, DoubleArrowUpIcon, EyeOpenIcon, PlusIcon } from "@radix-ui/react-icons";
+import { DoubleArrowDownIcon, DoubleArrowUpIcon, PlusIcon } from "@radix-ui/react-icons";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { useAtom } from "jotai";
 import { find, first, isEmpty } from "lodash-es";
@@ -224,19 +224,6 @@ const ListTree = () => {
             }
           }}>
           <div className="mb-2 flex items-center justify-end gap-x-1 pb-2 text-sm text-muted-foreground">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  onClick={() => setHiddenBlocks([])}
-                  variant="ghost"
-                  className="h-fit p-1 disabled:cursor-not-allowed disabled:opacity-50"
-                  size="sm">
-                  <EyeOpenIcon className="h-2 w-2" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent className="isolate z-[9999]">{t("Show hidden blocks")}</TooltipContent>
-            </Tooltip>
-
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button className="h-fit p-1" onClick={() => treeRef?.current?.openAll()} variant="ghost" size="sm">
