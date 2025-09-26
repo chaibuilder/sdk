@@ -264,7 +264,7 @@ const ListTree = () => {
             onSelect={onSelect}
             childrenAccessor={(d: any) => d.children}
             width={"100%"}
-            rowHeight={28}
+            rowHeight={25}
             renderDragPreview={DefaultDragPreview}
             indent={10}
             onContextMenu={onContextMenu}

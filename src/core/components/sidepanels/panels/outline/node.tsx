@@ -9,7 +9,7 @@ import { useBlockHighlight, usePermissions, useTranslation, useUpdateBlocksProps
 import { pubsub } from "@/core/pubsub";
 import { cn } from "@/core/utils/cn";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
-import { ChevronRightIcon, DotsVerticalIcon, EyeNoneIcon, PlusIcon } from "@radix-ui/react-icons";
+import { ChevronRightIcon, DotsVerticalIcon, EyeClosedIcon, EyeOpenIcon, PlusIcon } from "@radix-ui/react-icons";
 import { atom, useAtom } from "jotai";
 import { get, has, isEmpty, startCase } from "lodash-es";
 import { memo, useEffect, useMemo } from "react";
@@ -228,8 +228,8 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
           )}
         <div
           className={cn(
-            "group flex w-full cursor-pointer items-center justify-between space-x-px !rounded p-1 outline-none",
-            isSelected ? "bg-primary text-primary-foreground" : "hover:bg-primary/10 dark:hover:bg-gray-800",
+            "group flex w-full cursor-pointer items-center justify-between space-x-px !rounded p-1 py-0 outline-none",
+            isSelected ? "bg-primary/20" : "hover:bg-primary/10 dark:hover:bg-gray-800",
             willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
             node?.id === addSelectParentHighlight ? "bg-primary/10" : "",
             isDragging && "opacity-20",
@@ -243,7 +243,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
               }`}>
               {hasChildren && (
                 <button onClick={handleToggle} type="button">
-                  <ChevronRightIcon className={`h-3 w-3 ${isSelected ? "text-white" : "text-slate-400"}`} />
+                  <ChevronRightIcon className={`h-3 w-3`} />
                 </button>
               )}
             </div>
@@ -296,10 +296,10 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
                 }}
                 className="cursor-pointer rounded bg-transparent p-0.5 hover:bg-primary/10"
                 asChild>
-                <EyeNoneIcon className="h-4 w-4" />
+                {isShown ? <EyeClosedIcon className="h-4 w-4" /> : <EyeOpenIcon className="h-4 w-4" />}
               </TooltipTrigger>
-              <TooltipContent className="isolate z-[9999]" side="bottom">
-                {t("Hide block")}
+              <TooltipContent className="isolate z-[9999] text-xs" side="bottom">
+                {t(isShown ? "Hide the block from page" : "Show the block on page")}
               </TooltipContent>
             </Tooltip>
             <BlockMoreOptions node={node} id={id}>
