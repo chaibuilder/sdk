@@ -8,14 +8,7 @@ import {
   getBlockRuntimeProps,
   getBlockTagAttributes,
 } from "@/core/components/canvas/static/new-blocks-render-helpers";
-import {
-  useBlocksStore,
-  useBuilderProp,
-  useHiddenBlockIds,
-  useInlineEditing,
-  usePartailBlocksStore,
-  useSavePage,
-} from "@/core/hooks";
+import { useBlocksStore, useBuilderProp, useInlineEditing, usePartailBlocksStore, useSavePage } from "@/core/hooks";
 import { useLanguages } from "@/core/hooks/use-languages";
 import { useGetBlockAtom } from "@/core/hooks/use-update-block-atom";
 import { applyBindingToBlockProps } from "@/render/apply-binding";
@@ -89,7 +82,6 @@ const BlockRenderer = ({
   const { selectedLang, fallbackLang } = useLanguages();
   const getRuntimePropValues = useBlockRuntimeProps();
   const pageExternalData = usePageExternalData();
-  const [hiddenBlocks] = useHiddenBlockIds();
   const [dataBindingActive] = useAtom(dataBindingActiveAtom);
   const Component = get(registeredChaiBlock, "component", null);
   const { index, key } = useContext(RepeaterContext);
@@ -132,7 +124,8 @@ const BlockRenderer = ({
     ],
   );
   const needErrorBoundary = useMemo(() => !CORE_BLOCKS.includes(block._type), [block._type]);
-  if (isNull(Component) || hiddenBlocks.includes(block._id)) return null;
+  const isShown = useMemo(() => get(block, "_show", true), [block]);
+  if (isNull(Component) || !isShown) return null;
   let blockNode = (
     <Suspense>
       {createElement(Component, {
