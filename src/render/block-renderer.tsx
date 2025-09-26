@@ -61,8 +61,8 @@ export const RenderBlock = (
     lang: lang || fallbackLang,
     ...newBlock,
   };
-
-  if (isNull(Component)) return null;
+  const isShown = get(newBlock, "_show", true);
+  if (isNull(Component) || !isShown) return null;
 
   if (hasDataProvider) {
     const suspenseFallback = get(registeredChaiBlock, "suspenseFallback", SuspenseFallback) as React.ComponentType<any>;
