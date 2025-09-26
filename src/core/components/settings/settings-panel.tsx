@@ -11,7 +11,6 @@ import React, { useCallback, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { PartialWrapper } from "../canvas/static/new-blocks-renderer";
 import { ResetStylesButton } from "./choices/reset-all-styles";
 
 function BlockAttributesToggle() {
