@@ -15,8 +15,8 @@ import { useCurrentPage } from "@/core/hooks/use-current-page";
 import { useCutBlockIds } from "@/core/hooks/use-cut-blockIds";
 import { useDarkMode } from "@/core/hooks/use-dark-mode";
 import { useDuplicateBlocks } from "@/core/hooks/use-duplicate-blocks";
-import { useHiddenBlockIds } from "@/core/hooks/use-hidden-blocks";
 import { useHighlightBlockId } from "@/core/hooks/use-highlight-blockId";
+import { useIsPageLoaded } from "@/core/hooks/use-is-page-loaded";
 import { useLanguages } from "@/core/hooks/use-languages";
 import { useLibraryBlocks } from "@/core/hooks/use-library-blocks";
 import { usePartialBlocksList, usePartialBlocksStore } from "@/core/hooks/use-partial-blocks-store";
@@ -42,7 +42,6 @@ import { useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "@/core/hooks
 import { useWrapperBlock } from "@/core/hooks/use-wrapper-block";
 import { useTranslation } from "react-i18next";
 import { useInlineEditing } from "./use-inline-editing";
-import { useIsPageLoaded } from "@/core/hooks/use-is-page-loaded";
 export { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 export { useCanvasDisplayWidth, useScreenSizeWidth } from "@/core/hooks/use-screen-size-width";
 export { useSelectedLibrary } from "@/core/hooks/use-selected-library";
@@ -65,9 +64,9 @@ export {
   useCutBlockIds,
   useDarkMode,
   useDuplicateBlocks,
-  useHiddenBlockIds,
   useHighlightBlockId,
   useInlineEditing,
+  useIsPageLoaded,
   useLanguages,
   useLibraryBlocks,
   usePartialBlocksStore as usePartailBlocksStore,
@@ -75,9 +74,9 @@ export {
   usePasteBlocks,
   usePermissions,
   usePreviewMode,
+  useRemoveAllClassesForBlock,
   useRemoveBlocks,
   useRemoveClassesFromBlocks,
-  useRemoveAllClassesForBlock,
   useResetBlockStyles,
   useRightPanel,
   useSavePage,
@@ -97,5 +96,4 @@ export {
   useUpdateBlocksProps,
   useUpdateBlocksPropsRealtime,
   useWrapperBlock,
-  useIsPageLoaded,
 };

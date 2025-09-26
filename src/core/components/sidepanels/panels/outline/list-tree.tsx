@@ -23,7 +23,6 @@ import { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-u
 import {
   useBlocksStore,
   useCutBlockIds,
-  useHiddenBlockIds,
   usePermissions,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
@@ -54,7 +53,6 @@ const ListTree = () => {
   const [treeData] = useAtom(treeDSBlocks);
   const [ids, setIds] = useSelectedBlockIds();
   const [cutBlocksIds] = useCutBlockIds();
-  const [, setHiddenBlocks] = useHiddenBlockIds();
   const updateBlockProps = useUpdateBlocksProps();
   const [, setStyleBlocks] = useSelectedStylingBlocks();
   const { moveBlocks } = useBlocksStoreUndoableActions();
