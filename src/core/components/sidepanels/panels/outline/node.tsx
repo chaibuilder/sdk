@@ -236,7 +236,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
         <div
           className={cn(
             "group flex w-full cursor-pointer items-center justify-between space-x-px !rounded p-1 py-0 outline-none",
-            isSelected ? "bg-primary/20" : "hover:bg-primary/10 dark:hover:bg-gray-800",
+            isSelected ? "bg-primary/20" : "hover:bg-primary/10",
             willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
             node?.id === addSelectParentHighlight ? "bg-primary/10" : "",
             isDragging && "opacity-20",
@@ -258,9 +258,9 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
               className={cn(
                 "leading-1 flex items-center",
                 isLibBlock && "text-orange-600/90",
-                isLibBlock && isSelected && "text-orange-600",
+                isLibBlock && isSelected && "text-orange-800",
                 isPartialBlock && "text-purple-600/90",
-                isPartialBlock && isSelected && "text-purple-100",
+                isPartialBlock && isSelected && "text-purple-800",
               )}>
               <TypeIcon type={data?._type} />
               {isEditing ? (

@@ -1,5 +1,5 @@
 import { ChaiBlockComponentProps, registerChaiBlockSchema } from "@chaibuilder/runtime";
-import { GlobeIcon } from "@radix-ui/react-icons";
+import { FrameIcon } from "@radix-ui/react-icons";
 import * as React from "react";
 
 export type GlobalBlockProps = {
@@ -25,7 +25,7 @@ const Config = {
   type: "GlobalBlock",
   description: "A global block component",
   label: "Global Block",
-  icon: GlobeIcon,
+  icon: FrameIcon,
   category: "core",
   group: "basic",
   hidden: true,

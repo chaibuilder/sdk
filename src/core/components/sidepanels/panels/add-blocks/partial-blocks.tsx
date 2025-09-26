@@ -1,6 +1,6 @@
 import { ChaiBuilderBlocks } from "@/core/components/sidepanels/panels/add-blocks/add-blocks";
 import { usePartialBlocksList } from "@/core/hooks/use-partial-blocks-store";
-import { GlobeIcon } from "@radix-ui/react-icons";
+import { FrameIcon } from "@radix-ui/react-icons";
 import { atom, useAtom } from "jotai";
 import { map, uniq } from "lodash-es";
 import { useEffect } from "react";
@@ -92,7 +92,7 @@ export const PartialBlocks = ({
             type: "PartialBlock", // Set the type to PartialBlock
             label: formatReadableName(block.name || id),
             description: block.description || "",
-            icon: GlobeIcon,
+            icon: FrameIcon,
             group: formattedGroup, // Use formatted type as group
             category: "partial",
             partialBlockId: id, // Store the original ID as partialBlockId
