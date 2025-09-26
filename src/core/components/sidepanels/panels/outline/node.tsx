@@ -5,7 +5,7 @@ import { PERMISSIONS } from "@/core/constants/PERMISSIONS";
 import { ROOT_TEMP_KEY } from "@/core/constants/STRINGS";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { canAcceptChildBlock, canAddChildBlock } from "@/core/functions/block-helpers";
-import { useBlockHighlight, useHiddenBlockIds, usePermissions, useTranslation } from "@/core/hooks";
+import { useBlockHighlight, usePermissions, useTranslation, useUpdateBlocksProps } from "@/core/hooks";
 import { pubsub } from "@/core/pubsub";
 import { cn } from "@/core/utils/cn";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
@@ -46,17 +46,17 @@ export const getBlockDisplayName = (data: any): string => {
 
 export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const { t } = useTranslation();
-  const [hiddenBlocks, , toggleHidden] = useHiddenBlockIds();
+  const updateBlockProps = useUpdateBlocksProps();
   const [iframe] = useAtom<HTMLIFrameElement>(canvasIframeAtom);
   const { hasPermission } = usePermissions();
   let previousState: boolean | null = null;
   const hasChildren = node.children.length > 0;
   const { highlightBlock, clearHighlight } = useBlockHighlight();
   const { id, data, isSelected, willReceiveDrop, isDragging, isEditing, handleClick } = node;
-
+  const isShown = get(data, "_show", true);
   const handleToggle = (event: any) => {
     event.stopPropagation();
-    if (hiddenBlocks.includes(id)) return;
+    if (!isShown) return;
     /*Toggle the node open and close State*/
     node.toggle();
   };
@@ -101,7 +101,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
      * and allowing to select current block.
      */
     e.stopPropagation();
-    if (!node.isOpen && !hiddenBlocks.includes(id)) {
+    if (!node.isOpen && isShown) {
       node.toggle();
     }
     /**
@@ -115,7 +115,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
   useEffect(() => {
     //TODO: Come back to this later. Might lead to a performance issue
     const timedToggle = setTimeout(() => {
-      if (willReceiveDrop && !node.isOpen && !isDragging && !hiddenBlocks.includes(id)) {
+      if (willReceiveDrop && !node.isOpen && !isDragging && isShown) {
         node.toggle();
       }
     }, 500);
@@ -192,7 +192,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
         onClick={handleNodeClickWithoutPropagating}
         style={style}
         data-node-id={id}
-        ref={hiddenBlocks.includes(id) ? null : dragHandle}
+        ref={dragHandle}
         onDragStart={() => handleDragStart(node)}
         onDragEnd={() => handleDragEnd(node)}
         onDragOver={(e) => {
@@ -233,7 +233,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
             willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
             node?.id === addSelectParentHighlight ? "bg-primary/10" : "",
             isDragging && "opacity-20",
-            hiddenBlocks.includes(id) ? "opacity-50" : "",
+            !isShown ? "line-through opacity-50" : "",
             isLibBlock && isSelected && "bg-primary/20 text-primary",
           )}>
           <div className="flex items-center">
@@ -272,7 +272,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
             </div>
           </div>
           <div className="invisible flex items-center space-x-1.5 pr-px group-hover:visible">
-            {canAddChildBlock(data?._type) && !hiddenBlocks.includes(id) && hasPermission(PERMISSIONS.ADD_BLOCK) ? (
+            {canAddChildBlock(data?._type) && isShown && hasPermission(PERMISSIONS.ADD_BLOCK) ? (
               <Tooltip>
                 <TooltipTrigger
                   onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, { _id: id })}
@@ -289,7 +289,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
               <TooltipTrigger
                 onClick={(event) => {
                   event.stopPropagation();
-                  toggleHidden(id);
+                  updateBlockProps([id], { _show: !isShown });
                   if (node.isOpen) {
                     node.toggle();
                   }
