@@ -203,6 +203,7 @@ const ListTree = () => {
                 disabled={!hasPermission(PERMISSIONS.ADD_BLOCK)}
                 onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK)}
                 variant="default"
+                className="bg-primary/80"
                 size="sm">
                 + {t("Add Block")}
               </Button>
