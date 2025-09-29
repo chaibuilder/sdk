@@ -30,12 +30,13 @@ import { ErrorBoundary } from "react-error-boundary";
 import { Toaster } from "sonner";
 
 const useAutoSave = () => {
-  const { savePage } = useSavePage();
+  const { savePage, saveState } = useSavePage();
   const autoSave = useBuilderProp("autoSave", true);
   const autoSaveInterval = useBuilderProp("autoSaveInterval", 60);
   useIntervalEffect(
     () => {
       if (!autoSave) return;
+      if (saveState === "SAVED" || saveState === "SAVING") return;
       savePage(true);
     },
     autoSave ? autoSaveInterval * 1000 : undefined,
