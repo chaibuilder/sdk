@@ -12,9 +12,13 @@ const TopBar = lazy(() => import("@/_demo/top-bar"));
 
 export const extendChaiBuilder = () => {
   registerCustomBlocks();
-  registerChaiPreImportHTMLHook((html) => {
+  registerChaiPreImportHTMLHook(async (html) => {
     console.log(html);
-    return html.replace(/bg-yellow-light-4/g, "bg-destructive");
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(html.replace(/bg-yellow-light-4/g, "bg-destructive"));
+      }, 4000);
+    });
   });
 
   registerChaiFont("Ubuntu", {
