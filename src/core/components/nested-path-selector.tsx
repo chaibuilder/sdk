@@ -9,9 +9,9 @@ import {
 } from "@/ui/shadcn/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/ui/popover";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
-import { LoopIcon } from "@radix-ui/react-icons";
+import { ChevronLeftIcon, ChevronRightIcon, IdCardIcon, LoopIcon } from "@radix-ui/react-icons";
+import { t } from "i18next";
 import { startsWith } from "lodash-es";
-import { ChevronLeftIcon, ChevronRightIcon, IdCardIcon } from "@radix-ui/react-icons";
 import React from "react";
 import { COLLECTION_PREFIX, REPEATER_PREFIX } from "../constants/STRINGS";
 import { useBuilderProp } from "../hooks";
@@ -82,12 +82,12 @@ const PathDropdown = ({ data, onSelect, dataType }: NestedPathSelectorProps) => 
     <Command className="fields-command">
       <CommandInput className="border-none" placeholder="Search..." />
       <CommandList>
-        <CommandEmpty>No option found.</CommandEmpty>
+        <CommandEmpty>{t("No option found.")}</CommandEmpty>
         <CommandGroup>
           {currentPath.length > 0 && (
             <CommandItem onSelect={handleBack} className="flex items-center text-sm">
               <ChevronLeftIcon className="mr-2 h-4 w-4" />
-              Back
+              {t("Back")}
             </CommandItem>
           )}
           {options.map((option) => (
@@ -104,7 +104,7 @@ const PathDropdown = ({ data, onSelect, dataType }: NestedPathSelectorProps) => 
                   <IdCardIcon />
                 ) : null}
                 {startsWith(option.key, REPEATER_PREFIX)
-                  ? "Repeater Data"
+                  ? t("Repeater Data")
                   : startsWith(option.key, COLLECTION_PREFIX)
                     ? option.key.replace(COLLECTION_PREFIX, "")
                     : option.key}
@@ -119,7 +119,7 @@ const PathDropdown = ({ data, onSelect, dataType }: NestedPathSelectorProps) => 
                       e.stopPropagation();
                       onSelect([...currentPath, option.key].join("."), dataType);
                     }}>
-                    Select
+                    {t("Select")}
                   </Button>
                 )}
                 {option.type === "object" && (
@@ -171,7 +171,7 @@ export function NestedPathSelector({ data, onSelect, dataType = "value" }: Neste
             </Button>
           </PopoverTrigger>
         </TooltipTrigger>
-        <TooltipContent>Add field</TooltipContent>
+        <TooltipContent>{t("Add field")}</TooltipContent>
       </Tooltip>
 
       <PopoverContent className="z-[1000]! relative mr-3 w-[300px] p-0">

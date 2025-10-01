@@ -1,12 +1,11 @@
-import Countdown from "@/core/components/count-down";
 import { QuickPrompts } from "@/core/components/QuickPrompts";
 import { useAskAi, useSelectedBlockIds } from "@/core/hooks";
 import { AskAiResponse } from "@/types/chaibuilder-editor-props";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
 import { Textarea } from "@/ui/shadcn/components/ui/textarea";
+import { MagicWandIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { first } from "lodash-es";
-import { ReloadIcon, MagicWandIcon } from "@radix-ui/react-icons";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -83,16 +82,6 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
               </div>
             ) : null}
           </div>
-          {usage ? (
-            <div className="max-w-full">
-              <p className="mb-1 flex justify-between break-words rounded border border-blue-500 bg-blue-100 p-1 text-xs text-blue-500">
-                <span>
-                  {t("Total tokens used")}: {usage.totalTokens}
-                </span>
-                <Countdown />
-              </p>
-            </div>
-          ) : null}
           <div className="max-w-full">
             {error && (
               <p className="break-words rounded border border-red-500 bg-red-100 p-1 text-xs text-red-500">
