@@ -8,15 +8,15 @@ import { useTranslation } from "react-i18next";
 export const HotKeys = () => {
   const { t } = useTranslation();
   const keys: { [key: string]: string } = {
-    "ctrl + Z": "Undo",
-    "ctrl + Y": "Redo",
-    "ctrl + D": "Duplicate",
+    "ctrl + Z": t("Undo"),
+    "ctrl + Y": t("Redo"),
+    "ctrl + D": t("Duplicate"),
   };
   const keys2: { [key: string]: string } = {
     // "ctrl + /": "Rename block",
-    "ctrl + S": "Save page",
-    esc: "Deselect blocks",
-    del: "Delete block",
+    "ctrl + S": t("Save page"),
+    esc: t("Deselect blocks"),
+    del: t("Delete block"),
   };
   return (
     <Dialog>
