@@ -1,4 +1,5 @@
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
+import { getPreImportHTML } from "@/core/extensions/import-html-pre-hook";
 import { useAddBlock } from "@/core/hooks";
 import { getBlocksFromHTML } from "@/core/import-html/html-to-json";
 import { pubsub } from "@/core/pubsub";
@@ -15,7 +16,8 @@ const ImportHTML = ({ parentId, position }: { parentId?: string; position?: numb
   const { addPredefinedBlock } = useAddBlock();
 
   const importComponents = () => {
-    const blocks = getBlocksFromHTML(code);
+    const codeHtml = getPreImportHTML(code);
+    const blocks = getBlocksFromHTML(codeHtml);
     addPredefinedBlock([...blocks], parentId, position);
     setCode("");
     pubsub.publish(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK);

@@ -3,7 +3,7 @@ import registerCustomBlocks from "@/_demo/blocks";
 import "@/_demo/panels/panel";
 import { registerChaiAddBlockTab } from "@/core/extensions/add-block-tabs";
 import { registerChaiSaveToLibrary } from "@/core/extensions/save-to-library";
-import { registerChaiTopBar } from "@/core/main";
+import { registerChaiPreImportHTMLHook, registerChaiTopBar } from "@/core/main";
 import { ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 import { ChaiFontViaSrc, ChaiFontViaUrl, registerChaiFont } from "@chaibuilder/runtime";
 import { lazy } from "react";
@@ -12,6 +12,10 @@ const TopBar = lazy(() => import("@/_demo/top-bar"));
 
 export const extendChaiBuilder = () => {
   registerCustomBlocks();
+  registerChaiPreImportHTMLHook((html) => {
+    console.log(html);
+    return html.replace(/bg-yellow-light-4/g, "bg-destructive");
+  });
 
   registerChaiFont("Ubuntu", {
     url: "https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap",
