@@ -55,6 +55,7 @@ export {
   registerBlockSettingTemplate,
   registerBlockSettingWidget,
 } from "@/core/extensions/blocks-settings";
+export { registerChaiPreImportHTMLHook } from "@/core/extensions/import-html-pre-hook";
 export { registerChaiLibrary } from "@/core/extensions/libraries";
 export { registerChaiMediaManager } from "@/core/extensions/media-manager";
 export { registerChaiSaveToLibrary } from "@/core/extensions/save-to-library";
