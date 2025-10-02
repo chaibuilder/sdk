@@ -2,6 +2,7 @@ import { lsBlocksAtom, lsThemeAtom } from "@/_demo/atoms-dev";
 import { defaultShadcnPreset } from "@/_demo/THEME_PRESETS";
 import { ChaiBlock, ChaiBuilderEditor, registerChaiSidebarPanel } from "@/core/main";
 import { extendChaiBuilder } from "@/extentions";
+import "@/index.css";
 import { SavePageData } from "@/types/chaibuilder-editor-props";
 import { loadWebBlocks } from "@/web-blocks";
 import { ChatBubbleIcon } from "@radix-ui/react-icons";
