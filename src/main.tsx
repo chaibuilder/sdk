@@ -1,5 +1,4 @@
 import { MicrosoftClarity } from "@/_demo/microsoft-clarity";
-import "@/index.css";
 import { DevTools } from "jotai-devtools";
 import "jotai-devtools/styles.css";
 import React, { lazy } from "react";
