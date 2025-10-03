@@ -113,7 +113,7 @@ const Config = {
       },
     },
   }),
-  i18nProps: ["content"],
+  i18nProps: ["content", "link"],
   aiProps: ["content"],
 };
 export { Component, Config };
