@@ -1,6 +1,4 @@
 import { MicrosoftClarity } from "@/_demo/microsoft-clarity";
-import { DevTools } from "jotai-devtools";
-import "jotai-devtools/styles.css";
 import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
