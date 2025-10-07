@@ -131,7 +131,6 @@ const BlockCard = ({
       <TooltipContent>
         <div className="max-w-xs">
           <p className="font-medium">{name}</p>
-          {description && block.preview && <p className="mt-1 text-xs text-primary-foreground">{description}</p>}
         </div>
       </TooltipContent>
     </Tooltip>
