@@ -9,7 +9,6 @@ import { useAtom } from "jotai";
 import { isArray, map, pick } from "lodash-es";
 import { EXTERNAL_DATA } from "./_demo/EXTERNAL_DATA";
 import { PARTIALS } from "./_demo/PARTIALS";
-import ptBr from "./_demo/ptBR.json";
 import { Button } from "./ui";
 import { extendChaiBuilder } from "./extentions";
 
@@ -34,8 +33,6 @@ function ChaiBuilderDefault() {
       gotoPage={(args) => {
         console.log("gotoPage", args);
       }}
-      locale={"pt-BR"}
-      translations={{ "pt-BR": ptBr }}
       permissions={null}
       // permissions={[]}
       pageExternalData={EXTERNAL_DATA}
