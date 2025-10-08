@@ -24,7 +24,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
     isEmpty(selectedLang) && selectedBlock?._type === "Image" && has(selectedBlock, "assetId");
 
   const assetId = get(selectedBlock, propIdKey, hasImageBlockAssetId ? selectedBlock?.assetId : "");
-  const showRemoveIcons = !!assetId;
+  const showRemoveIcons = !!assetId || value !== PLACEHOLDER_IMAGE;
 
   const handleSelect = (assets: ChaiAsset[] | ChaiAsset) => {
     const asset = isArray(assets) ? first(assets) : assets;
@@ -50,9 +50,11 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
   const clearImage = useCallback(() => {
     onChange(PLACEHOLDER_IMAGE);
     if (selectedBlock?._id) {
-      updateBlockProps([selectedBlock._id], { assetId: "" });
+      const props = { assetId: "" };
+      set(props, propIdKey, "");
+      updateBlockProps([selectedBlock._id], props);
     }
-  }, [onChange, selectedBlock?._id, updateBlockProps]);
+  }, [onChange, selectedBlock?._id, updateBlockProps, propIdKey]);
 
   return (
     <div className="mt-1.5 flex items-center gap-x-3">
@@ -94,7 +96,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
           <>
             <MediaManagerModal onSelect={handleSelect} assetId="">
               <small className="h-6 cursor-pointer rounded-md bg-secondary px-2 py-1 text-center text-xs text-secondary-foreground hover:bg-secondary/80">
-                {value || !isEmpty(value) ? t("Replace image") : t("Choose image")}
+                {!isEmpty(value) && value !== PLACEHOLDER_IMAGE ? t("Replace image") : t("Choose image")}
               </small>
             </MediaManagerModal>
             <small className="-pl-4 pt-2 text-center text-xs text-secondary-foreground">OR</small>
