@@ -136,11 +136,11 @@ const SettingsPanel: React.FC = () => {
         <div className="flex items-center justify-between">
           <TabsList className="grid h-auto w-full grid-cols-2 p-1 py-1">
             <TabsTrigger value="settings" className="text-xs">
-              Settings
+              {t("Settings")}
             </TabsTrigger>
             <TabsTrigger value="styles" className="text-xs">
               <div className="flex w-full items-center justify-between">
-                <span className="w-[90%] text-center">Styles</span>
+                <span className="w-[90%] text-center">{t("Styling")}</span>
                 <span className="w-[10%]">
                   <ResetStylesButton />
                 </span>

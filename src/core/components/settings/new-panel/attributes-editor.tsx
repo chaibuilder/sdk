@@ -9,6 +9,7 @@ import { Textarea } from "@/ui/shadcn/components/ui/textarea";
 import { isEmpty } from "lodash-es";
 import { Pencil2Icon, Cross1Icon } from "@radix-ui/react-icons";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type Attribute = {
   key: string;
@@ -33,6 +34,7 @@ export default React.memo(function AttrsEditor({
   const valueTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   const pageExternalData = usePageExternalData();
+  const { t } = useTranslation();
 
   useEffect(() => {
     setAttributes(preloadedAttributes);
@@ -182,7 +184,7 @@ export default React.memo(function AttrsEditor({
               ref={keyInputRef}
               value={newKey}
               onChange={(e) => setNewKey(e.target.value)}
-              placeholder="Enter Key"
+              placeholder={t("Enter Key")}
               className="py-0 text-xs font-normal leading-tight placeholder:text-slate-400"
             />
           </div>
