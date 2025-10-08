@@ -11,9 +11,10 @@ import { EXTERNAL_DATA } from "./_demo/EXTERNAL_DATA";
 import { PARTIALS } from "./_demo/PARTIALS";
 import ptBr from "./_demo/ptBR.json";
 import { Button } from "./ui";
+import { extendChaiBuilder } from "./extentions";
 
 loadWebBlocks();
-// extendChaiBuilder();
+extendChaiBuilder();
 
 registerChaiSidebarPanel("popover", {
   button: () => (
