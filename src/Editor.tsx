@@ -1,7 +1,6 @@
 import { lsBlocksAtom, lsThemeAtom } from "@/_demo/atoms-dev";
 import { defaultShadcnPreset } from "@/_demo/THEME_PRESETS";
 import { ChaiBlock, ChaiBuilderEditor, registerChaiSidebarPanel } from "@/core/main";
-import { extendChaiBuilder } from "@/extentions";
 import "@/index.css";
 import { SavePageData } from "@/types/chaibuilder-editor-props";
 import { loadWebBlocks } from "@/web-blocks";
@@ -11,6 +10,7 @@ import { isArray, map, pick } from "lodash-es";
 import { EXTERNAL_DATA } from "./_demo/EXTERNAL_DATA";
 import { PARTIALS } from "./_demo/PARTIALS";
 import { Button } from "./ui";
+import { extendChaiBuilder } from "./extentions";
 
 loadWebBlocks();
 extendChaiBuilder();

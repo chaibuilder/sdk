@@ -1,6 +1,4 @@
 import { MicrosoftClarity } from "@/_demo/microsoft-clarity";
-import { DevTools } from "jotai-devtools";
-import "jotai-devtools/styles.css";
 import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -34,7 +32,6 @@ enableMocking().then(() => {
   ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
       <RouterProvider router={router} />
-      <DevTools position="bottom-right" />
       {import.meta.env.VITE_CLARITY_ID && <MicrosoftClarity clarityId={import.meta.env.VITE_CLARITY_ID} />}
     </React.StrictMode>,
   );
