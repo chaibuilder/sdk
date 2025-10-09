@@ -155,7 +155,7 @@ export function NestedPathSelector({ data, onSelect, dataType = "value" }: Neste
           <PopoverTrigger asChild>
             <Button
               size="sm"
-              variant="outline"
+              variant="ghost"
               className="h-5 rounded-sm px-1 py-0 text-[9px] text-muted-foreground"
               role="combobox"
               aria-expanded={open}>
