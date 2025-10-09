@@ -54,6 +54,12 @@ const Config = {
         default: PLACEHOLDER_IMAGE,
         ui: { "ui:widget": "image" },
       },
+      mobileImage: {
+        type: "string",
+        title: "Mobile Image",
+        default: "",
+        ui: { "ui:widget": "image" },
+      },
       alt: {
         type: "string",
         title: "Alt text",
@@ -76,12 +82,6 @@ const Config = {
         title: "Height",
         default: "",
         ui: { "ui:placeholder": "Enter height" },
-      },
-      mobileImage: {
-        type: "string",
-        title: "Mobile Image",
-        default: "",
-        ui: { "ui:widget": "image" },
       },
     },
   }),
