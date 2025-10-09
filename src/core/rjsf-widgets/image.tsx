@@ -68,7 +68,9 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
     onChange(PLACEHOLDER_IMAGE);
     if (selectedBlock?._id) {
       const props = { assetId: "" };
-      set(props, propIdKey, "");
+      const forMobile = propIdKey.includes("mobile");
+      set(props, forMobile ? "mobileWidth" : "width", "");
+      set(props, forMobile ? "mobileHeight" : "height", "");
       updateBlockProps([selectedBlock._id], props);
     }
   }, [onChange, selectedBlock?._id, updateBlockProps, propIdKey]);
