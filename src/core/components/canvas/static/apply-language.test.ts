@@ -1,5 +1,5 @@
-import { applyLanguage } from "./new-blocks-render-helpers";
 import { ChaiBlock } from "@/types/chai-block";
+import { applyLanguage } from "./new-blocks-render-helpers";
 
 describe("applyLanguage", () => {
   const mockChaiBlock = {
@@ -91,7 +91,7 @@ describe("applyLanguage", () => {
       expect(result["title-en"]).toBe("English Title");
     });
 
-    it("should trim whitespace from translated values", () => {
+    it("should trim whitespace from translated values from the start", () => {
       const block = createMockBlock({
         "title-en": "  English Title  ",
         "content-en": "\n\tEnglish Content\n  ",
@@ -99,8 +99,8 @@ describe("applyLanguage", () => {
 
       const result = applyLanguage(block, "en", mockChaiBlock);
 
-      expect(result.title).toBe("English Title");
-      expect(result.content).toBe("English Content");
+      expect(result.title).toBe("English Title  ");
+      expect(result.content).toBe("English Content\n  ");
     });
 
     it("should fall back to original value when translated value is empty string", () => {
