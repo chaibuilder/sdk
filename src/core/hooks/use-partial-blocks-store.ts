@@ -47,7 +47,15 @@ export const useWatchPartailBlocks = () => {
       setPartailBlocksLoadingState((prevState) => ({ ...prevState, [partialBlock]: { loading: true, error: null } }));
       getPartialBlockBlocks(partialBlock)
         .then((blocks) => {
-          setPartailBlocks((prevState) => ({ ...prevState, [partialBlock]: blocks }));
+          // Check if partial contains itself and filter it out
+          const filteredBlocks = blocks.filter((block) => {
+            if (block._type === "PartialBlock" || block._type === "GlobalBlock") {
+              const nestedPartialId = get(block, "partialBlockId", get(block, "globalBlock", ""));
+              return nestedPartialId !== partialBlock;
+            }
+            return true;
+          });
+          setPartailBlocks((prevState) => ({ ...prevState, [partialBlock]: filteredBlocks }));
           setPartailBlocksLoadingState((prevState) => ({
             ...prevState,
             [partialBlock]: { loading: false, error: null },
