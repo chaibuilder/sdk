@@ -85,6 +85,9 @@ const JSONFormFieldTemplate = (props: FieldTemplateProps) => {
     );
   }
 
+  const field = id.replace("root.", "");
+  const showMissingWarning = i18nProps.includes(field) && !isEmpty(selectedLang) && isEmpty(formData);
+
   return (
     <div className={classNames}>
       {schema.title && (
@@ -106,7 +109,32 @@ const JSONFormFieldTemplate = (props: FieldTemplateProps) => {
             )}
           </div>
           {!schema.enum && !schema.oneOf && pageExternalData && (
-            <>
+            <span className="flex items-center space-x-1">
+              {showMissingWarning ? (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      className="lucide lucide-triangle-alert-icon lucide-triangle-alert h-3 w-3 text-orange-400">
+                      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+                      <path d="M12 9v4" />
+                      <path d="M12 17h.01" />
+                    </svg>
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    No translation provided. <br />
+                    Using default language value.
+                  </TooltipContent>
+                </Tooltip>
+              ) : null}
               <DataBindingSelector
                 schema={schema}
                 onChange={(value) => {
@@ -115,7 +143,7 @@ const JSONFormFieldTemplate = (props: FieldTemplateProps) => {
                 id={id}
                 formData={formData}
               />
-            </>
+            </span>
           )}
         </div>
       )}
