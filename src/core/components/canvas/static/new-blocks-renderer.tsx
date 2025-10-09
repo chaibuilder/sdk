@@ -211,7 +211,7 @@ const BlocksRenderer = ({
   splitAtoms?: any;
   blocks: ChaiBlock[];
   parent?: string;
-  type: string;
+  type?: string;
 }) => {
   const getBlockAtom = useGetBlockAtom(splitAtoms);
   let filteredBlocks = useMemo(
