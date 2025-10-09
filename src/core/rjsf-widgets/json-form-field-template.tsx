@@ -87,7 +87,6 @@ const JSONFormFieldTemplate = (props: FieldTemplateProps) => {
 
   const field = id.replace("root.", "");
   const showMissingWarning = i18nProps.includes(field) && !isEmpty(selectedLang) && isEmpty(formData);
-
   return (
     <div className={classNames}>
       {schema.title && (
