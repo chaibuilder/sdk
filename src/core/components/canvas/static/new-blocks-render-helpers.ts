@@ -14,7 +14,7 @@ export function applyLanguage(_block: ChaiBlock, selectedLang: string, chaiBlock
     if (includes(i18nProps, key) && !isEmpty(selectedLang)) {
       const value = get(block, `${key}-${selectedLang}`, "");
       const fallbackValue = get(block, key, "");
-      block[key] = isString(value) ? value.trim() || fallbackValue : fallbackValue;
+      block[key] = isString(value) && !isEmpty(value.trim()) ? value.trimStart() || fallbackValue : fallbackValue;
     }
   });
   return block;
