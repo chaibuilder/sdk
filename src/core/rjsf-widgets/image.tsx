@@ -1,8 +1,8 @@
 import MediaManagerModal from "@/core/components/sidepanels/panels/images/media-manager-modal";
 import { ChaiAsset } from "@/types";
+import { Cross1Icon, Pencil2Icon } from "@radix-ui/react-icons";
 import { WidgetProps } from "@rjsf/utils";
-import { first, get, set, has, isArray, isEmpty } from "lodash-es";
-import { Pencil2Icon, Cross1Icon } from "@radix-ui/react-icons";
+import { first, get, has, isArray, isEmpty, set } from "lodash-es";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguages, useSelectedBlock, useUpdateBlocksProps } from "../hooks";
@@ -63,7 +63,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
           <img
             src={value}
             className={
-              `h-20 w-20 overflow-hidden rounded-md border border-border object-cover transition duration-200 ` +
+              `h-14 w-14 overflow-hidden rounded-md border border-border object-cover transition duration-200 ` +
               (assetId && assetId !== "" ? "cursor-pointer group-hover:blur-sm" : "")
             }
             alt=""
@@ -88,7 +88,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
         </div>
       ) : (
         <MediaManagerModal onSelect={handleSelect} mode="image" assetId={assetId}>
-          <div className="h-20 w-20 cursor-pointer rounded-md border border-border bg-[radial-gradient(#AAA,transparent_1px)] duration-300 [background-size:10px_10px]"></div>
+          <div className="h-14 w-14 cursor-pointer rounded-md border border-border bg-[radial-gradient(#AAA,transparent_1px)] duration-300 [background-size:10px_10px]"></div>
         </MediaManagerModal>
       )}
       <div className="flex w-3/5 flex-col">
@@ -99,7 +99,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
                 {!isEmpty(value) && value !== PLACEHOLDER_IMAGE ? t("Replace image") : t("Choose image")}
               </small>
             </MediaManagerModal>
-            <small className="-pl-4 pt-2 text-center text-xs text-secondary-foreground">OR</small>
+            <small className="-pl-4 hidden pt-2 text-center text-xs text-secondary-foreground">OR</small>
           </>
         )}
         <input
@@ -108,7 +108,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
           autoCorrect={"off"}
           spellCheck={"false"}
           type="url"
-          className="text-xs"
+          className="!hidden text-xs"
           placeholder={t("Enter image URL")}
           value={value}
           onBlur={({ target: { value: url } }) => onBlur(id, url)}
