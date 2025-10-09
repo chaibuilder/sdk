@@ -48,10 +48,11 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
       onChange(asset?.url);
       const width = asset?.width;
       const height = asset?.height;
+      const forMobile = propIdKey.includes("mobile");
       if (selectedBlock?._id) {
         const props = {
-          ...(width && { width: width }),
-          ...(height && { height: height }),
+          ...(width && { [forMobile ? "mobileWidth" : "width"]: width }),
+          ...(height && { [forMobile ? "mobileHeight" : "height"]: height }),
           ...(asset.description && { alt: asset.description }),
         };
         // handling asset id based on prop
