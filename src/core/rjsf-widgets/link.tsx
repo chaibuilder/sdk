@@ -1,10 +1,11 @@
-import { useBuilderProp, useTranslation } from "@/core/hooks";
+import { useBuilderProp, useLanguages, useTranslation } from "@/core/hooks";
 import { PageTypeItem } from "@/types/chaibuilder-editor-props";
+import { Cross1Icon } from "@radix-ui/react-icons";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { FieldProps } from "@rjsf/utils";
 import { get, isEmpty, map, split, startsWith } from "lodash-es";
-import { Cross1Icon } from "@radix-ui/react-icons";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { LANGUAGES } from "../constants/LANGUAGES";
 import { DataBindingSelector } from "./data-binding-selector";
 
 const PageTypeField = ({
@@ -187,19 +188,26 @@ const PageTypeField = ({
 
 const LinkField = ({ schema, formData, onChange, name }: FieldProps) => {
   const { t } = useTranslation();
-  const { type = "pageType", href = "", target = "self" } = formData;
+  const { type = "pageType", href = "", target = "self" } = formData ?? {};
   const pageTypes = useBuilderProp("pageTypes", []);
-
+  const { selectedLang, fallbackLang, languages } = useLanguages();
+  const lang = useMemo(
+    () => (isEmpty(languages) ? "" : isEmpty(selectedLang) ? fallbackLang : selectedLang),
+    [languages, selectedLang, fallbackLang],
+  );
+  const currentLanguage = useMemo(() => get(LANGUAGES, lang, lang), [lang]);
   const linkType = type === "pageType" && isEmpty(pageTypes) ? "url" : type;
 
   return (
     <div>
       <span className="flex items-center justify-between gap-x-2 text-xs font-medium">
-        {schema?.title ?? "Link"}
+        <span>
+          {schema?.title ?? "Link"}
+          <span className="pl-1 text-[9px] text-zinc-400">{currentLanguage}</span>
+        </span>
         <DataBindingSelector
           schema={schema}
           onChange={(value) => {
-            console.log("value", formData, value);
             onChange({ ...formData, href: value, ...(linkType === "pageType" ? { type: "url" } : {}) });
           }}
           id={`root.${name}.href`}

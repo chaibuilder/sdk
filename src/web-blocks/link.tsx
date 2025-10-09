@@ -102,7 +102,7 @@ const Config = {
     },
   }),
   aiProps: ["content"],
-  i18nProps: ["content"],
+  i18nProps: ["content", "link"],
   canAcceptBlock: (type: string) => type !== "Link",
 };
 
