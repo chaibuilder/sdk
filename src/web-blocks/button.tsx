@@ -108,12 +108,12 @@ const Config = {
       },
       prefetchLink: {
         type: "boolean",
-        default: false,
+        default: true,
         title: "Prefetch Link",
       },
     },
   }),
-  i18nProps: ["content"],
+  i18nProps: ["content", "link"],
   aiProps: ["content"],
 };
 export { Component, Config };

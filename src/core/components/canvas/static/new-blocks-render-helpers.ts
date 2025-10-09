@@ -12,9 +12,13 @@ export function applyLanguage(_block: ChaiBlock, selectedLang: string, chaiBlock
   const block = cloneDeep(_block);
   forEach(keys(block), (key) => {
     if (includes(i18nProps, key) && !isEmpty(selectedLang)) {
+      const fallbackValue = get(block, key);
       const value = get(block, `${key}-${selectedLang}`, "");
-      const fallbackValue = get(block, key, "");
-      block[key] = isString(value) && !isEmpty(value.trim()) ? value.trimStart() || fallbackValue : fallbackValue;
+      if (isString(fallbackValue)) {
+        block[key] = isString(value) && !isEmpty(value.trim()) ? value.trimStart() || fallbackValue : fallbackValue;
+      } else {
+        block[key] = isEmpty(value) ? fallbackValue : value;
+      }
     }
   });
   return block;
