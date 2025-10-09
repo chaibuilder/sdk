@@ -39,6 +39,9 @@ export function applyLanguage(_block: ChaiBlock, selectedLang: string, chaiBlock
       else {
         block[key] = fallbackValue;
       }
+      const value = get(block, `${key}-${selectedLang}`, "");
+      const fallbackValue = get(block, key, "");
+      block[key] = isString(value) && !isEmpty(value.trim()) ? value.trimStart() || fallbackValue : fallbackValue;
     }
   });
   return block;

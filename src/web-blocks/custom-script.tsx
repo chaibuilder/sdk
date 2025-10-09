@@ -1,6 +1,6 @@
 import { cn } from "@/core/functions/common-functions";
 import { ChaiBlockComponentProps, registerChaiBlockSchema } from "@chaibuilder/runtime";
-import { FileCode } from "lucide-react";
+import { CodeIcon } from "@radix-ui/react-icons";
 
 export type CustomScriptBlockProps = {
   scripts: string;
@@ -28,7 +28,7 @@ const Config = {
   description: "similar to a script element in HTML",
   label: "Custom Script",
   category: "core",
-  icon: FileCode,
+  icon: CodeIcon,
   group: "advanced",
   ...registerChaiBlockSchema({
     properties: {

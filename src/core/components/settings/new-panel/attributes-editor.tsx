@@ -7,8 +7,9 @@ import { Input } from "@/ui/shadcn/components/ui/input";
 import { Label } from "@/ui/shadcn/components/ui/label";
 import { Textarea } from "@/ui/shadcn/components/ui/textarea";
 import { isEmpty } from "lodash-es";
-import { Edit2, X } from "lucide-react";
+import { Pencil2Icon, Cross1Icon } from "@radix-ui/react-icons";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type Attribute = {
   key: string;
@@ -33,6 +34,7 @@ export default React.memo(function AttrsEditor({
   const valueTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   const pageExternalData = usePageExternalData();
+  const { t } = useTranslation();
 
   useEffect(() => {
     setAttributes(preloadedAttributes);
@@ -182,7 +184,7 @@ export default React.memo(function AttrsEditor({
               ref={keyInputRef}
               value={newKey}
               onChange={(e) => setNewKey(e.target.value)}
-              placeholder="Enter Key"
+              placeholder={t("Enter Key")}
               className="py-0 text-xs font-normal leading-tight placeholder:text-slate-400"
             />
           </div>
@@ -225,10 +227,10 @@ export default React.memo(function AttrsEditor({
             </div>
             <div className="flex-shrink-0 text-slate-400">
               <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => startEdit(index)}>
-                <Edit2 className="h-3 w-3" />
+                <Pencil2Icon className="h-3 w-3" />
               </Button>
               <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => removeAttribute(index)}>
-                <X className="h-3 w-3" />
+                <Cross1Icon className="h-3 w-3" />
               </Button>
             </div>
           </div>

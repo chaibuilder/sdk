@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/ui/shadcn/components/ui/dropdown-menu";
 import { find, get, isEmpty, map, startCase } from "lodash-es";
-import { MoreVertical } from "lucide-react";
+import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
 
 export const BlockStylingProps = () => {
@@ -63,7 +63,7 @@ export const BlockStylingProps = () => {
                           type="button"
                           className="ml-1 rounded-sm p-0.5 hover:bg-blue-300 hover:text-blue-600"
                           onClick={(e) => e.stopPropagation()}>
-                          <MoreVertical className="h-3 w-3" />
+                          <DotsVerticalIcon className="h-3 w-3" />
                         </button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent side="bottom" className="border-border text-xs">

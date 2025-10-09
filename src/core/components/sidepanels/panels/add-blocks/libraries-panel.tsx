@@ -22,7 +22,7 @@ import { useFeature } from "flagged";
 import Fuse from "fuse.js";
 import { useAtom } from "jotai";
 import { capitalize, filter, first, get, groupBy, has, isEmpty, keys, map } from "lodash-es";
-import { Loader, RefreshCw, Search, X } from "lucide-react";
+import { ReloadIcon, MagnifyingGlassIcon, Cross1Icon } from "@radix-ui/react-icons";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -114,7 +114,7 @@ const BlockCard = ({
           )}>
           {isAdding && (
             <div className="absolute flex h-full w-full items-center justify-center bg-black/70">
-              <Loader className="animate-spin" size={15} color="white" />
+              <ReloadIcon className="animate-spin h-4 w-4 text-white" />
               <span className="pl-2 text-sm text-white">Adding...</span>
             </div>
           )}
@@ -131,7 +131,6 @@ const BlockCard = ({
       <TooltipContent>
         <div className="max-w-xs">
           <p className="font-medium">{name}</p>
-          {description && block.preview && <p className="mt-1 text-xs text-primary-foreground">{description}</p>}
         </div>
       </TooltipContent>
     </Tooltip>
@@ -231,7 +230,7 @@ const UILibrarySection = ({ parentId, position }: { parentId?: string; position?
       <div className="flex h-full max-h-full flex-col">
         <div className="flex items-center gap-2 border-border py-2">
           <div className="relative w-full">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <MagnifyingGlassIcon className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder={t("Search blocks...")}
               value={searchQuery}
@@ -242,7 +241,7 @@ const UILibrarySection = ({ parentId, position }: { parentId?: string; position?
               <button
                 onClick={handleClearSearch}
                 className="absolute right-2 top-2.5 text-muted-foreground hover:text-foreground">
-                <X className="h-4 w-4" />
+                <Cross1Icon className="h-4 w-4" />
               </button>
             )}
           </div>
@@ -264,7 +263,7 @@ const UILibrarySection = ({ parentId, position }: { parentId?: string; position?
                         <>
                           <p className="text-sm">{t("Failed to load the UI library. Try again")}</p>
                           <Button onClick={handleRetry} variant="outline" size="sm" className="gap-2">
-                            <RefreshCw className="h-4 w-4" />
+                            <ReloadIcon className="h-4 w-4" />
                             {t("Retry")}
                           </Button>
                         </>

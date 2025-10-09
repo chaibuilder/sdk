@@ -1,6 +1,6 @@
 import { FieldProps } from "@rjsf/utils";
 import { get, map, reject } from "lodash-es";
-import { Plus, X } from "lucide-react";
+import { PlusIcon, Cross1Icon } from "@radix-ui/react-icons";
 
 const SourcesField = ({ formData, onChange }: FieldProps) => {
   const srcsets = get(formData, "srcsets", []) || [];
@@ -35,7 +35,7 @@ const SourcesField = ({ formData, onChange }: FieldProps) => {
           type="button"
           onClick={addNewSource}
           className="flex items-center gap-x-1 rounded-md border border-blue-500 bg-blue-100 px-2 py-px text-xs text-blue-600 hover:opacity-80">
-          <Plus size={12} />
+          <PlusIcon className="h-3 w-3" />
         </button>
       </div>
       <div className="space-y-2">
@@ -51,7 +51,7 @@ const SourcesField = ({ formData, onChange }: FieldProps) => {
                   type="button"
                   onClick={() => removeSource(index)}
                   className="absolute -right-px -top-0 -translate-y-1/2 rounded-full bg-red-100 p-1 opacity-0 hover:bg-red-200 group-hover:opacity-100">
-                  <X size={10} className="text-red-500" />
+                  <Cross1Icon className="h-2.5 w-2.5 text-red-500" />
                 </button>
                 <div className="flex items-center gap-x-2 rounded border">
                   <label className="flex !h-6 h-full w-1/4 items-center justify-center bg-gray-200 px-2 !text-[10px] !font-medium">

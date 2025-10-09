@@ -1,23 +1,33 @@
-import { lsAiContextAtom, lsBlocksAtom, lsThemeAtom } from "@/_demo/atoms-dev";
+import { lsBlocksAtom, lsThemeAtom } from "@/_demo/atoms-dev";
 import { defaultShadcnPreset } from "@/_demo/THEME_PRESETS";
-import { ChaiBlock, ChaiBuilderEditor } from "@/core/main";
-import { extendChaiBuilder } from "@/extentions";
+import { ChaiBlock, ChaiBuilderEditor, registerChaiSidebarPanel } from "@/core/main";
+import "@/index.css";
 import { SavePageData } from "@/types/chaibuilder-editor-props";
 import { loadWebBlocks } from "@/web-blocks";
+import { ChatBubbleIcon } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
 import { isArray, map, pick } from "lodash-es";
 import { EXTERNAL_DATA } from "./_demo/EXTERNAL_DATA";
 import { PARTIALS } from "./_demo/PARTIALS";
+import { Button } from "./ui";
+import { extendChaiBuilder } from "./extentions";
 
 loadWebBlocks();
 extendChaiBuilder();
 
+registerChaiSidebarPanel("popover", {
+  button: () => (
+    <Button variant="ghost" size="icon">
+      <ChatBubbleIcon />
+    </Button>
+  ),
+  label: "Popover 2",
+  position: "bottom",
+});
+
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
   const [theme, setTheme] = useAtom(lsThemeAtom);
-
-  const [aiContext, setAiContext] = useAtom(lsAiContextAtom);
-
   return (
     <ChaiBuilderEditor
       gotoPage={(args) => {
@@ -30,7 +40,7 @@ function ChaiBuilderDefault() {
       languages={["fr"]}
       themePresets={[{ shadcn_default: defaultShadcnPreset }]}
       theme={theme}
-      autoSaveSupport={false}
+      autoSave={true}
       autoSaveInterval={15}
       blocks={blocks}
       onSave={async ({ blocks, theme, needTranslations }: SavePageData) => {
@@ -41,11 +51,6 @@ function ChaiBuilderDefault() {
         await new Promise((resolve) => setTimeout(resolve, 100));
         return true;
       }}
-      saveAiContextCallback={async (aiContext: string) => {
-        setAiContext(aiContext);
-        return true;
-      }}
-      aiContext={aiContext}
       askAiCallBack={async (type: "styles" | "content", prompt: string, blocks: ChaiBlock[], lang: string = "") => {
         console.log("askAiCallBack", type, prompt, blocks, lang);
         return {

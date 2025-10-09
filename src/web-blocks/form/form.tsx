@@ -1,6 +1,6 @@
 import EmptySlot from "@/web-blocks/empty-slot";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
-import { GroupIcon } from "lucide-react";
+import { FileTextIcon } from "@radix-ui/react-icons";
 
 export type FormProps = {
   errorMessage: string;
@@ -46,7 +46,7 @@ const Config = {
   type: "Form",
   label: "Form",
   category: "core",
-  icon: GroupIcon,
+  icon: FileTextIcon,
   group: "form",
   blocks: () => [
     { _type: "Form", _id: "form", styles: "#styles:p-1 space-y-2," },

@@ -21,7 +21,7 @@ const Component = (props: ChaiBlockComponentProps<ButtonProps>) => {
 
   const child = children || (
     <>
-      {content && <span data-ai-key="content">{content}</span>}
+      {content && <span>{content}</span>}
       {_icon && (
         <div
           style={{ width: iconSize + "px" }}

@@ -15,16 +15,20 @@ export type ImageBlockProps = {
   lazyLoading: boolean;
   mobileImage: string;
   assetId?: string;
+  mobileWidth?: string;
+  mobileHeight?: string;
 };
 
 const ImageBlock = (props: ChaiBlockComponentProps<ImageBlockProps>) => {
-  const { blockProps, image, mobileImage, styles, alt, height, width, lazyLoading } = props;
+  const { blockProps, image, mobileImage, styles, alt, height, width, lazyLoading, mobileWidth, mobileHeight } = props;
 
   if (isEmpty(image)) return <EmptySlot className="h-36" />;
 
   return (
     <picture>
-      {mobileImage && <source srcSet={mobileImage} media="(max-width: 480px)" />}
+      {mobileImage && (
+        <source srcSet={mobileImage} media="(max-width: 480px)" width={mobileWidth} height={mobileHeight} />
+      )}
       <img
         {...blockProps}
         {...styles}
@@ -54,25 +58,14 @@ const Config = {
         default: PLACEHOLDER_IMAGE,
         ui: { "ui:widget": "image" },
       },
-      alt: {
-        type: "string",
-        title: "Alt text",
-        default: "",
-        ui: { "ui:placeholder": "Enter  alt text" },
-      },
-      lazyLoading: {
-        type: "boolean",
-        title: "Lazy Load",
-        default: true,
-      },
       width: {
-        type: "number",
+        type: "string",
         title: "Width",
         default: "",
         ui: { "ui:placeholder": "Enter width" },
       },
       height: {
-        type: "number",
+        type: "string",
         title: "Height",
         default: "",
         ui: { "ui:placeholder": "Enter height" },
@@ -82,6 +75,30 @@ const Config = {
         title: "Mobile Image",
         default: "",
         ui: { "ui:widget": "image" },
+      },
+      mobileWidth: {
+        type: "string",
+        title: "Mobile Width",
+        default: "",
+        ui: { "ui:placeholder": "Enter width" },
+      },
+      mobileHeight: {
+        type: "string",
+        title: "Mobile Height",
+        default: "",
+        ui: { "ui:placeholder": "Enter height" },
+      },
+      alt: {
+        type: "string",
+        title: "Alt text",
+        default: "",
+        ui: { "ui:placeholder": "Enter  alt text" },
+      },
+
+      lazyLoading: {
+        type: "boolean",
+        title: "Lazy Load",
+        default: true,
       },
     },
   }),

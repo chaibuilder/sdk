@@ -27,7 +27,11 @@ export const ResizableCanvasWrapper = ({ children, onMount, onResize }: any) => 
   }, [setSelected, setSelectedStyles]);
 
   return (
-    <div id={"main-content"} onClick={deselectSelected} className="h-full w-full p-8 pb-0" ref={mainContentRef}>
+    <div
+      id={"main-content"}
+      onClick={deselectSelected}
+      className="h-full w-full border-l-4 border-r-4 pb-0"
+      ref={mainContentRef}>
       {children}
     </div>
   );

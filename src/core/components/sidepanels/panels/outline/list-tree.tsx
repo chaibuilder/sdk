@@ -23,7 +23,6 @@ import { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-u
 import {
   useBlocksStore,
   useCutBlockIds,
-  useHiddenBlockIds,
   usePermissions,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
@@ -32,10 +31,10 @@ import {
 import { pubsub } from "@/core/pubsub";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
+import { DoubleArrowDownIcon, DoubleArrowUpIcon, PlusIcon } from "@radix-ui/react-icons";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { useAtom } from "jotai";
 import { find, first, isEmpty } from "lodash-es";
-import { ChevronsDownUp, ChevronsUpDown, Eye, PlusIcon } from "lucide-react";
 import { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
 import { MoveHandler, RenameHandler, Tree } from "react-arborist";
 import { useTranslation } from "react-i18next";
@@ -54,7 +53,6 @@ const ListTree = () => {
   const [treeData] = useAtom(treeDSBlocks);
   const [ids, setIds] = useSelectedBlockIds();
   const [cutBlocksIds] = useCutBlockIds();
-  const [, setHiddenBlocks] = useHiddenBlockIds();
   const updateBlockProps = useUpdateBlocksProps();
   const [, setStyleBlocks] = useSelectedStylingBlocks();
   const { moveBlocks } = useBlocksStoreUndoableActions();
@@ -203,6 +201,7 @@ const ListTree = () => {
                 disabled={!hasPermission(PERMISSIONS.ADD_BLOCK)}
                 onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK)}
                 variant="default"
+                className="bg-primary/80"
                 size="sm">
                 + {t("Add Block")}
               </Button>
@@ -223,32 +222,19 @@ const ListTree = () => {
               handleKeyDown(e);
             }
           }}>
-          <div className="mb-2 flex items-center justify-end gap-x-2 pb-2 text-sm text-muted-foreground">
+          <div className="mb-2 flex items-center justify-end gap-x-1 pb-2 text-sm text-muted-foreground">
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button
-                  onClick={() => setHiddenBlocks([])}
-                  variant="outline"
-                  className="h-fit p-1 disabled:cursor-not-allowed disabled:opacity-50"
-                  size="sm">
-                  <Eye className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent className="isolate z-[9999]">{t("Show hidden blocks")}</TooltipContent>
-            </Tooltip>
-
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button className="h-fit p-1" onClick={() => treeRef?.current?.openAll()} variant="outline" size="sm">
-                  <ChevronsUpDown size={14} />
+                <Button className="h-fit p-1" onClick={() => treeRef?.current?.openAll()} variant="ghost" size="sm">
+                  <DoubleArrowDownIcon className="h-2 w-2" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent className="isolate z-[9999]">{t("Expand all")}</TooltipContent>
             </Tooltip>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button className="h-fit p-1" onClick={() => treeRef?.current?.closeAll()} variant="outline" size="sm">
-                  <ChevronsDownUp size={14} />
+                <Button className="h-fit p-1" onClick={() => treeRef?.current?.closeAll()} variant="ghost" size="sm">
+                  <DoubleArrowUpIcon className="h-2 w-2" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent className="isolate z-[9999]">{t("Collapse all")}</TooltipContent>
@@ -277,7 +263,7 @@ const ListTree = () => {
             onSelect={onSelect}
             childrenAccessor={(d: any) => d.children}
             width={"100%"}
-            rowHeight={28}
+            rowHeight={25}
             renderDragPreview={DefaultDragPreview}
             indent={10}
             onContextMenu={onContextMenu}

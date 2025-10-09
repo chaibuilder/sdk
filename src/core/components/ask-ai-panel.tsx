@@ -1,12 +1,10 @@
-import Countdown from "@/core/components/count-down";
 import { QuickPrompts } from "@/core/components/QuickPrompts";
 import { useAskAi, useSelectedBlockIds } from "@/core/hooks";
-import { AskAiResponse } from "@/types/chaibuilder-editor-props";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
 import { Textarea } from "@/ui/shadcn/components/ui/textarea";
+import { MagicWandIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { first } from "lodash-es";
-import { Loader, SparklesIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -14,17 +12,13 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
   const { t } = useTranslation();
   const { askAi, loading, error } = useAskAi();
   const [prompt, setPrompt] = useState("");
-  const [usage, setUsage] = useState<AskAiResponse["usage"] | undefined>();
   const promptRef = useRef(null);
   const timerRef = useRef(null);
   useEffect(() => {
     promptRef.current?.focus();
   }, []);
 
-  const onComplete = (response?: AskAiResponse) => {
-    const { usage } = response || {};
-    if (!error && usage) setUsage(usage);
-    timerRef.current = setTimeout(() => setUsage(undefined), 10000);
+  const onComplete = () => {
     if (!error) setPrompt("");
   };
 
@@ -43,7 +37,6 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
               if (e.key === "Enter") {
                 e.preventDefault();
                 if (timerRef.current) clearTimeout(timerRef.current);
-                setUsage(undefined);
                 askAi("content", blockId, prompt, onComplete);
               }
             }}
@@ -55,7 +48,6 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
                 disabled={prompt.trim().length < 5 || loading}
                 onClick={() => {
                   if (timerRef.current) clearTimeout(timerRef.current);
-                  setUsage(undefined);
                   askAi("content", blockId, prompt, onComplete);
                 }}
                 variant="default"
@@ -63,7 +55,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
                 size="sm">
                 {loading ? (
                   <>
-                    <Loader className="h-5 w-5 animate-spin" />
+                    <ReloadIcon className="h-5 w-5 animate-spin" />
                     {t("Generating... Please wait...")}
                   </>
                 ) : (
@@ -74,7 +66,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
             {loading ? (
               <div className="flex flex-col gap-2">
                 <Skeleton className="flex w-full items-center space-x-1 px-4 py-1 pl-2">
-                  <Loader className="h-4 w-4 animate-spin text-gray-500" />
+                  <ReloadIcon className="h-4 w-4 animate-spin text-gray-500" />
                   <p className="text-xs">{t("Generating... Please wait...")}</p>
                 </Skeleton>
                 <Button variant="destructive" onClick={() => stop()} className="hidden w-fit" size="sm">
@@ -83,16 +75,6 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
               </div>
             ) : null}
           </div>
-          {usage ? (
-            <div className="max-w-full">
-              <p className="mb-1 flex justify-between break-words rounded border border-blue-500 bg-blue-100 p-1 text-xs text-blue-500">
-                <span>
-                  {t("Total tokens used")}: {usage.totalTokens}
-                </span>
-                <Countdown />
-              </p>
-            </div>
-          ) : null}
           <div className="max-w-full">
             {error && (
               <p className="break-words rounded border border-red-500 bg-red-100 p-1 text-xs text-red-500">
@@ -105,7 +87,6 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
           <QuickPrompts
             onClick={(prompt: string) => {
               if (timerRef.current) clearTimeout(timerRef.current);
-              setUsage(undefined);
               askAi("content", blockId, prompt, onComplete);
             }}
           />
@@ -113,7 +94,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
       ) : (
         <div className="p-4 text-center">
           <div className="space-y-4 rounded-xl p-4 text-muted-foreground">
-            <SparklesIcon className="mx-auto text-3xl text-muted-foreground" />
+            <MagicWandIcon className="mx-auto text-3xl text-muted-foreground" />
             <h1>{t("Please select a block to Ask AI")}</h1>
           </div>
         </div>

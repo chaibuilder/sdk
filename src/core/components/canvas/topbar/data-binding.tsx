@@ -5,7 +5,7 @@ import { Button } from "@/ui/shadcn/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { useAtom } from "jotai";
 import { isEmpty } from "lodash-es";
-import { DatabaseZapIcon } from "lucide-react";
+import { LightningBoltIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
 
 export const DataBinding = () => {
@@ -18,7 +18,7 @@ export const DataBinding = () => {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button className="rounded-full" variant="ghost" onClick={() => setDataBindingActive(!dataBindingActive)}>
-            <DatabaseZapIcon className={cn("h-4 w-4", dataBindingActive ? "text-green-500" : "text-gray-500")} />
+            <LightningBoltIcon className={cn("h-4 w-4", dataBindingActive ? "text-green-500" : "text-gray-500")} />
           </Button>
         </TooltipTrigger>
         <TooltipContent>

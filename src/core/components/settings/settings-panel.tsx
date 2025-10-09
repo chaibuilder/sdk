@@ -2,15 +2,15 @@ import { FallbackError } from "@/core/components/fallback-error";
 import BlockSettings from "@/core/components/settings/block-settings";
 import BlockStyling from "@/core/components/settings/block-styling";
 import { BlockAttributesEditor } from "@/core/components/settings/new-panel/block-attributes-editor";
-import { useBuilderProp, useSelectedBlock, useSelectedStylingBlocks } from "@/core/hooks";
+import { useBuilderProp, useLanguages, useSavePage, useSelectedBlock, useSelectedStylingBlocks } from "@/core/hooks";
 import { PERMISSIONS, usePermissions } from "@/core/main";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/shadcn/components/ui/tabs";
-import { MixerHorizontalIcon } from "@radix-ui/react-icons";
+import { ChevronDownIcon, MixerHorizontalIcon } from "@radix-ui/react-icons";
 import { isEmpty, isNull, noop } from "lodash-es";
-import { ChevronDown } from "lucide-react";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { ResetStylesButton } from "./choices/reset-all-styles";
 
 function BlockAttributesToggle() {
@@ -27,13 +27,39 @@ function BlockAttributesToggle() {
         className="flex cursor-pointer items-center justify-between border-t border-border py-3 text-xs font-medium hover:underline">
         <span>{t("Attributes")}</span>
         <span>
-          <ChevronDown className={"h-4 w-4 text-gray-500 " + (showAttributes ? "rotate-180" : "")} />
+          <ChevronDownIcon className={"h-4 w-4 text-gray-500 " + (showAttributes ? "rotate-180" : "")} />
         </span>
       </div>
       {showAttributes && <BlockAttributesEditor />}
     </>
   );
 }
+
+const PartialWrapper = ({ partialBlockId }: { partialBlockId: string }) => {
+  const gotoPage = useBuilderProp("gotoPage", noop);
+  const { saveState } = useSavePage();
+  const { selectedLang, fallbackLang } = useLanguages();
+  const onDoubleClick = useCallback(
+    (e: any) => {
+      e.stopPropagation();
+      if (saveState !== "SAVED") {
+        toast.error("You have unsaved changes. Please save the page first.");
+        return;
+      }
+      gotoPage({ pageId: partialBlockId, lang: selectedLang || fallbackLang });
+    },
+    [saveState, gotoPage, partialBlockId, selectedLang, fallbackLang],
+  );
+  return (
+    <>
+      <div className="hidden">
+        <div onDoubleClick={onDoubleClick} className="h-full w-full items-center justify-center">
+          <p className="rounded-md bg-white px-2 py-1 text-xs">Partial block. Double click to edit.</p>
+        </div>
+      </div>
+    </>
+  );
+};
 
 const SettingsPanel: React.FC = () => {
   const selectedBlock = useSelectedBlock();
@@ -42,6 +68,12 @@ const SettingsPanel: React.FC = () => {
   const { hasPermission } = usePermissions();
   let isSettingsDisabled = !hasPermission(PERMISSIONS.EDIT_BLOCK);
   const isStylesDisabled = !hasPermission(PERMISSIONS.EDIT_STYLES);
+
+  const isPartialBlock = selectedBlock && selectedBlock._type === "PartialBlock";
+
+  if (isPartialBlock) {
+    return <PartialWrapper partialBlockId={selectedBlock.partialBlockId} />;
+  }
 
   if (isNull(selectedBlock)) {
     return (
@@ -104,11 +136,11 @@ const SettingsPanel: React.FC = () => {
         <div className="flex items-center justify-between">
           <TabsList className="grid h-auto w-full grid-cols-2 p-1 py-1">
             <TabsTrigger value="settings" className="text-xs">
-              Settings
+              {t("Settings")}
             </TabsTrigger>
             <TabsTrigger value="styles" className="text-xs">
               <div className="flex w-full items-center justify-between">
-                <span className="w-[90%] text-center">Styles</span>
+                <span className="w-[90%] text-center">{t("Styling")}</span>
                 <span className="w-[10%]">
                   <ResetStylesButton />
                 </span>

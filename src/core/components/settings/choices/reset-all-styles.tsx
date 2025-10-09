@@ -4,7 +4,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/ui/shadcn/components/ui/dropdown-menu";
-import { MoreVertical } from "lucide-react";
+import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import { Cross2Icon, ResetIcon } from "@radix-ui/react-icons";
 import {
   useRemoveAllClassesForBlock,
@@ -30,7 +30,7 @@ export const ResetStylesButton = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div className="inline-flex rounded-sm p-0.5 hover:bg-gray-300" onClick={(e) => e.stopPropagation()}>
-          <MoreVertical className="h-3 w-3" />
+          <DotsVerticalIcon className="h-3 w-3" />
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent side="bottom" className="border-border text-xs">
