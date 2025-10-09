@@ -2,13 +2,29 @@ import MediaManagerModal from "@/core/components/sidepanels/panels/images/media-
 import { ChaiAsset } from "@/types";
 import { Cross1Icon, Pencil2Icon } from "@radix-ui/react-icons";
 import { WidgetProps } from "@rjsf/utils";
-import { first, get, has, isArray, isEmpty, set } from "lodash-es";
+import { first, get, has, isArray, isEmpty, set, startsWith } from "lodash-es";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguages, useSelectedBlock, useUpdateBlocksProps } from "../hooks";
 
 const PLACEHOLDER_IMAGE =
   "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZmlsbD0iI2Q1ZDdkYSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIFBsYWNlaG9sZGVyPC90ZXh0Pjwvc3ZnPg==";
+
+const getFileName = (value: string) => {
+  // Return empty for data URLs or empty values
+  if (!value || startsWith(value, "data")) return "";
+
+  // Extract filename from URL (remove query params)
+  const name = value.split("/").pop()?.split("?")[0] || "";
+
+  // Valid image extensions
+  const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg", ".bmp", ".ico", ".avif"];
+
+  // Check if filename has a valid image extension
+  const hasValidExtension = imageExtensions.some((ext) => name.toLowerCase().endsWith(ext));
+
+  return hasValidExtension ? name : "";
+};
 
 const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
   const { t } = useTranslation();
@@ -56,6 +72,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
     }
   }, [onChange, selectedBlock?._id, updateBlockProps, propIdKey]);
 
+  const fileName = getFileName(value);
   return (
     <div className="mt-1.5 flex items-center gap-x-3">
       {value ? (
@@ -94,12 +111,12 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
       <div className="flex w-3/5 flex-col">
         {showImagePicker && (
           <>
+            <p className="mb-1 max-w-[250px] truncate pr-2 text-xs text-gray-400">{fileName}</p>
             <MediaManagerModal onSelect={handleSelect} assetId="">
-              <small className="h-6 cursor-pointer rounded-md bg-secondary px-2 py-1 text-center text-xs text-secondary-foreground hover:bg-secondary/80">
+              <small className="h-6 w-fit cursor-pointer rounded-md bg-secondary px-1 py-1 text-center text-xs text-secondary-foreground hover:bg-secondary/80">
                 {!isEmpty(value) && value !== PLACEHOLDER_IMAGE ? t("Replace image") : t("Choose image")}
               </small>
             </MediaManagerModal>
-            <small className="-pl-4 hidden pt-2 text-center text-xs text-secondary-foreground">OR</small>
           </>
         )}
         <input
