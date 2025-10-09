@@ -4,25 +4,14 @@ import { useLanguages, useSelectedBlock } from "@/core/hooks";
 import { Badge } from "@/ui/shadcn/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { useRegisteredChaiBlocks } from "@chaibuilder/runtime";
+import { ChevronDownIcon, ChevronRightIcon, InfoCircledIcon, ListBulletIcon } from "@radix-ui/react-icons";
 import { FieldTemplateProps } from "@rjsf/utils";
 import { get, isEmpty } from "lodash-es";
-import { ChevronDownIcon, ChevronRightIcon, InfoCircledIcon, ListBulletIcon } from "@radix-ui/react-icons";
 import { useMemo, useState } from "react";
 import { DataBindingSelector } from "./data-binding-selector";
 
-const JSONFormFieldTemplate = ({
-  id,
-  classNames,
-  label,
-  children,
-  errors,
-  help,
-  hidden,
-  required,
-  schema,
-  formData,
-  onChange,
-}: FieldTemplateProps) => {
+const JSONFormFieldTemplate = (props: FieldTemplateProps) => {
+  const { id, classNames, label, children, errors, help, hidden, required, schema, formData, onChange } = props;
   const { selectedLang, fallbackLang, languages } = useLanguages();
   const lang = useMemo(
     () => (isEmpty(languages) ? "" : isEmpty(selectedLang) ? fallbackLang : selectedLang),
@@ -111,9 +100,7 @@ const JSONFormFieldTemplate = ({
                   <TooltipTrigger asChild>
                     <InfoCircledIcon className="h-3 w-3 text-muted-foreground/70" />
                   </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
-                   {schema.description}
-                  </TooltipContent>
+                  <TooltipContent className="max-w-xs">{schema.description}</TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             )}
