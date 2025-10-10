@@ -35,6 +35,18 @@ import { useDebouncedState } from "@react-hookz/web";
 import { ChaiBlock } from "@/types/common";
 import { useSelectedBlock } from "../hooks";
 
+const getActiveClasses = (editor: any, keys: string[] | boolean, from: string) => {
+  const isFromSettings = from === "settings";
+  const isActive = typeof keys === "boolean" ? keys : keys.some((key) => editor.isActive(key));
+  return {
+    "rounded p-1": true,
+    "hover:bg-gray-200": isFromSettings && !isActive,
+    "hover:bg-gray-700": !isFromSettings && !isActive,
+    "bg-primary text-white": isActive && isFromSettings,
+    "bg-blue-900 text-white": isActive && !isFromSettings,
+  };
+};
+
 // Common Color Picker Component
 const ColorPickerContent = ({
   color,
@@ -75,63 +87,8 @@ const ColorPickerContent = ({
   </DropdownMenuContent>
 );
 
-// Text Color Trigger Component
-const TextColorTrigger = ({ currentColor }: { currentColor?: string }) => (
-  <DropdownMenuTrigger className="relative outline-none">
-    <button
-      type="button"
-      className={cn("flex items-center rounded p-1 hover:bg-muted", {
-        "bg-primary/10 text-primary": currentColor,
-      })}
-      title="Text Color">
-      <svg className="h-[12px] w-[12px]" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-        <g strokeWidth="0"></g>
-        <g strokeLinecap="round" strokeLinejoin="round"></g>
-        <g>
-          <path d="M22,21h2L17,4H15L8,21h2l1.61-4h8.74Zm-9.57-6,3.44-8.37h.26L19.54,15Z"></path>
-          <rect x="6" y="24" width="20" height="4"></rect>
-        </g>
-      </svg>
-      <CaretDownIcon className="h-3 w-3 text-gray-500" />
-      {currentColor && (
-        <div className="absolute bottom-1 left-1 h-0.5 w-3 rounded" style={{ backgroundColor: currentColor }} />
-      )}
-    </button>
-  </DropdownMenuTrigger>
-);
-
-// Highlight Color Trigger Component
-const HighlightColorTrigger = ({ isActive, currentColor }: { isActive: boolean; currentColor?: string }) => (
-  <DropdownMenuTrigger className="relative outline-none">
-    <button
-      type="button"
-      className={cn("flex items-center rounded p-1 hover:bg-muted", {
-        "bg-primary/10 text-primary": isActive,
-      })}
-      title="Background Highlight">
-      <svg className="h-[12px] w-[12px]" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg">
-        <g strokeWidth="0"></g>
-        <g strokeLinecap="round" strokeLinejoin="round"></g>
-        <g>
-          <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-            <g fill="#000000" fillRule="nonzero">
-              <path
-                d="M20.2585648,2.00438474 C20.6382605,2.00472706 20.9518016,2.28716326 21.0011348,2.65328337 L21.0078899,2.75506004 L21.0038407,7.25276883 C21.0009137,8.40908568 20.1270954,9.36072944 19.0029371,9.48671858 L19.0024932,11.7464847 C19.0024932,12.9373487 18.0773316,13.9121296 16.906542,13.9912939 L16.7524932,13.9964847 L16.501,13.9963847 L16.5017549,16.7881212 C16.5017549,17.6030744 16.0616895,18.349347 15.3600767,18.7462439 L15.2057929,18.8258433 L8.57108142,21.9321389 C8.10484975,22.1504232 7.57411944,21.8450614 7.50959937,21.3535767 L7.50306874,21.2528982 L7.503,13.9963847 L7.25,13.9964847 C6.05913601,13.9964847 5.08435508,13.0713231 5.00519081,11.9005335 L5,11.7464847 L5.00043957,9.4871861 C3.92882124,9.36893736 3.08392302,8.49812196 3.0058865,7.41488149 L3,7.25086975 L3,2.75438506 C3,2.3401715 3.33578644,2.00438474 3.75,2.00438474 C4.12969577,2.00438474 4.44349096,2.28653894 4.49315338,2.6526145 L4.5,2.75438506 L4.5,7.25086975 C4.5,7.63056552 4.78215388,7.94436071 5.14822944,7.99402313 L5.25,8.00086975 L18.7512697,8.00087075 C19.1315998,8.00025031 19.4461483,7.71759877 19.4967392,7.3518545 L19.5038434,7.25019537 L19.5078902,2.75371008 C19.508263,2.33949668 19.8443515,2.00401258 20.2585648,2.00438474 Z M15.001,13.9963847 L9.003,13.9963847 L9.00306874,20.0736262 L14.5697676,17.4673619 C14.8004131,17.3593763 14.9581692,17.1431606 14.9940044,16.89581 L15.0017549,16.7881212 L15.001,13.9963847 Z M17.502,9.50038474 L6.5,9.50038474 L6.5,11.7464847 C6.5,12.1261805 6.78215388,12.4399757 7.14822944,12.4896381 L7.25,12.4964847 L16.7524932,12.4964847 C17.1321889,12.4964847 17.4459841,12.2143308 17.4956465,11.8482552 L17.5024932,11.7464847 L17.502,9.50038474 Z"
-                id="🎨-Color"></path>
-            </g>
-          </g>
-        </g>
-      </svg>
-      <CaretDownIcon className="h-3 w-3 text-gray-500" />
-      {isActive && currentColor && (
-        <div className="absolute bottom-1 left-1 h-0.5 w-3 rounded" style={{ backgroundColor: currentColor }} />
-      )}
-    </button>
-  </DropdownMenuTrigger>
-);
-
 // Text Color Picker Component
-const TextColorPicker = ({ editor, value }: { editor: any; value?: string }) => {
+const TextColorPicker = ({ editor, value, from }: { editor: any; value?: string; from?: string }) => {
   const currentColor = editor?.getAttributes("textStyle")?.color;
   const [color, setColor] = useState(value || currentColor);
   const [isOpen, setIsOpen] = useState(false);
@@ -154,7 +111,25 @@ const TextColorPicker = ({ editor, value }: { editor: any; value?: string }) => 
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-      <TextColorTrigger currentColor={currentColor} />
+      <DropdownMenuTrigger className="relative outline-none" onClick={(e) => e.stopPropagation()}>
+        <button
+          type="button"
+          className={cn("flex items-center", getActiveClasses(editor, Boolean(currentColor), from))}
+          title="Text Color">
+          <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 32 32">
+            <g strokeWidth="0"></g>
+            <g strokeLinecap="round" strokeLinejoin="round"></g>
+            <g>
+              <path d="M22,21h2L17,4H15L8,21h2l1.61-4h8.74Zm-9.57-6,3.44-8.37h.26L19.54,15Z"></path>
+              <rect x="6" y="24" width="20" height="4"></rect>
+            </g>
+          </svg>
+          <CaretDownIcon className="h-3 w-3 text-gray-500" />
+          {currentColor && (
+            <div className="absolute bottom-1 left-1 h-0.5 w-3 rounded" style={{ backgroundColor: currentColor }} />
+          )}
+        </button>
+      </DropdownMenuTrigger>
       {isOpen && (
         <ColorPickerContent
           color={color}
@@ -172,7 +147,7 @@ const TextColorPicker = ({ editor, value }: { editor: any; value?: string }) => 
 };
 
 // Highlight Color Picker Component
-const HighlightColorPicker = ({ editor, value }: { editor: any; value?: string }) => {
+const HighlightColorPicker = ({ editor, value, from }: { editor: any; value?: string; from?: string }) => {
   const currentColor = editor?.getAttributes("highlight")?.color;
   const [color, setColor] = useState(value || currentColor);
   const [isOpen, setIsOpen] = useState(false);
@@ -200,7 +175,30 @@ const HighlightColorPicker = ({ editor, value }: { editor: any; value?: string }
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-      <HighlightColorTrigger isActive={isHighlightActive} currentColor={currentColor} />
+      <DropdownMenuTrigger className="relative outline-none">
+        <button
+          type="button"
+          className={cn("flex items-center", getActiveClasses(editor, isHighlightActive, from))}
+          title="Background Highlight">
+          <svg className="h-[12px] w-[12px]" fill="currentColor" viewBox="0 0 24 24">
+            <g strokeWidth="0"></g>
+            <g strokeLinecap="round" strokeLinejoin="round"></g>
+            <g>
+              <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                <g fill="currentColor" fillRule="nonzero">
+                  <path
+                    d="M20.2585648,2.00438474 C20.6382605,2.00472706 20.9518016,2.28716326 21.0011348,2.65328337 L21.0078899,2.75506004 L21.0038407,7.25276883 C21.0009137,8.40908568 20.1270954,9.36072944 19.0029371,9.48671858 L19.0024932,11.7464847 C19.0024932,12.9373487 18.0773316,13.9121296 16.906542,13.9912939 L16.7524932,13.9964847 L16.501,13.9963847 L16.5017549,16.7881212 C16.5017549,17.6030744 16.0616895,18.349347 15.3600767,18.7462439 L15.2057929,18.8258433 L8.57108142,21.9321389 C8.10484975,22.1504232 7.57411944,21.8450614 7.50959937,21.3535767 L7.50306874,21.2528982 L7.503,13.9963847 L7.25,13.9964847 C6.05913601,13.9964847 5.08435508,13.0713231 5.00519081,11.9005335 L5,11.7464847 L5.00043957,9.4871861 C3.92882124,9.36893736 3.08392302,8.49812196 3.0058865,7.41488149 L3,7.25086975 L3,2.75438506 C3,2.3401715 3.33578644,2.00438474 3.75,2.00438474 C4.12969577,2.00438474 4.44349096,2.28653894 4.49315338,2.6526145 L4.5,2.75438506 L4.5,7.25086975 C4.5,7.63056552 4.78215388,7.94436071 5.14822944,7.99402313 L5.25,8.00086975 L18.7512697,8.00087075 C19.1315998,8.00025031 19.4461483,7.71759877 19.4967392,7.3518545 L19.5038434,7.25019537 L19.5078902,2.75371008 C19.508263,2.33949668 19.8443515,2.00401258 20.2585648,2.00438474 Z M15.001,13.9963847 L9.003,13.9963847 L9.00306874,20.0736262 L14.5697676,17.4673619 C14.8004131,17.3593763 14.9581692,17.1431606 14.9940044,16.89581 L15.0017549,16.7881212 L15.001,13.9963847 Z M17.502,9.50038474 L6.5,9.50038474 L6.5,11.7464847 C6.5,12.1261805 6.78215388,12.4399757 7.14822944,12.4896381 L7.25,12.4964847 L16.7524932,12.4964847 C17.1321889,12.4964847 17.4459841,12.2143308 17.4956465,11.8482552 L17.5024932,11.7464847 L17.502,9.50038474 Z"
+                    id="🎨-Color"></path>
+                </g>
+              </g>
+            </g>
+          </svg>
+          <CaretDownIcon className="h-3 w-3 text-gray-500" />
+          {isHighlightActive && currentColor && (
+            <div className="absolute bottom-1 left-1 h-0.5 w-3 rounded" style={{ backgroundColor: currentColor }} />
+          )}
+        </button>
+      </DropdownMenuTrigger>
       {isOpen && (
         <ColorPickerContent
           color={color}
@@ -217,7 +215,15 @@ const HighlightColorPicker = ({ editor, value }: { editor: any; value?: string }
 /**
  * Menu Bar Component
  */
-const MenuBar = ({ editor, onExpand }: { editor: any; onExpand?: () => void }) => {
+export const MenuBar = ({
+  editor,
+  from = "settings",
+  onExpand,
+}: {
+  editor: any;
+  from?: string;
+  onExpand?: () => void;
+}) => {
   if (!editor) {
     return null;
   }
@@ -234,40 +240,43 @@ const MenuBar = ({ editor, onExpand }: { editor: any; onExpand?: () => void }) =
   };
 
   return (
-    <div className="mb-1 flex flex-wrap gap-0.5 rounded-t-md border-b border-border bg-gray-50 p-1">
+    <div
+      className={cn("mb-1 flex flex-wrap gap-0.5 rounded-t-md border-b border-border bg-gray-50 p-1", {
+        "mb-0 rounded-md bg-primary text-white shadow-xl": from === "canvas",
+      })}>
       <button
         type="button"
         onClick={() => editor.chain().focus().toggleBold().run()}
-        className={cn("rounded p-1 hover:bg-muted", { "bg-primary/10 text-primary": editor.isActive("bold") })}
+        className={cn("", getActiveClasses(editor, ["bold"], from))}
         title="Bold">
         <FontBoldIcon className="h-4 w-4" />
       </button>
       <button
         type="button"
         onClick={() => editor.chain().focus().toggleItalic().run()}
-        className={cn("rounded p-1 hover:bg-muted", { "bg-primary/10 text-primary": editor.isActive("italic") })}
+        className={cn("", getActiveClasses(editor, ["italic"], from))}
         title="Italic">
         <FontItalicIcon className="h-4 w-4" />
       </button>
       <button
         type="button"
         onClick={() => editor.chain().focus().toggleUnderline().run()}
-        className={cn("rounded p-1 hover:bg-muted", { "bg-primary/10 text-primary": editor.isActive("underline") })}
+        className={cn("", getActiveClasses(editor, ["underline"], from))}
         title="Underline">
         <UnderlineIcon className="h-4 w-4" />
       </button>
       <button
         type="button"
         onClick={() => editor.chain().focus().toggleStrike().run()}
-        className={cn("rounded p-1 hover:bg-muted", { "bg-primary/10 text-primary": editor.isActive("strike") })}
+        className={cn("", getActiveClasses(editor, ["strike"], from))}
         title="Strike">
         <StrikethroughIcon className="h-4 w-4" />
       </button>
 
       <div className="mx-1 h-5 w-px self-center bg-border" />
 
-      <TextColorPicker editor={editor} />
-      <HighlightColorPicker editor={editor} />
+      <TextColorPicker editor={editor} from={from} />
+      <HighlightColorPicker editor={editor} from={from} />
 
       <div className="mx-1 h-5 w-px self-center bg-border" />
 
@@ -275,9 +284,7 @@ const MenuBar = ({ editor, onExpand }: { editor: any; onExpand?: () => void }) =
         <DropdownMenuTrigger className="outline-none">
           <button
             type="button"
-            className={cn("flex items-center rounded p-1 hover:bg-muted", {
-              "bg-primary/10 text-primary": editor.isActive("bulletList") || editor.isActive("orderedList"),
-            })}
+            className={cn("flex items-center", getActiveClasses(editor, ["bulletList", "orderedList"], from))}
             title="Bullet List">
             <ListBulletIcon className="h-4 w-4" />
             <CaretDownIcon className="h-3 w-3 text-gray-500" />
@@ -287,16 +294,16 @@ const MenuBar = ({ editor, onExpand }: { editor: any; onExpand?: () => void }) =
           <DropdownMenuItem
             onClick={() => editor.chain().focus().toggleBulletList().run()}
             className={cn(
-              "flex cursor-pointer items-center gap-x-1 rounded p-1 outline-none hover:bg-muted hover:outline-none",
-              { "bg-primary/10 text-primary": editor.isActive("bulletList") },
+              "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
+              getActiveClasses(editor, ["bulletList"], from),
             )}>
             <ListBulletIcon className="h-4 w-4" /> Unordered List
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
             className={cn(
-              "flex cursor-pointer items-center gap-x-1 rounded p-1 outline-none hover:bg-muted hover:outline-none",
-              { "bg-primary/10 text-primary": editor.isActive("orderedList") },
+              "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
+              getActiveClasses(editor, ["orderedList"], from),
             )}>
             <ValueIcon className="h-4 w-4" />
             Ordered List
@@ -307,10 +314,7 @@ const MenuBar = ({ editor, onExpand }: { editor: any; onExpand?: () => void }) =
         <DropdownMenuTrigger className="outline-none">
           <button
             type="button"
-            className={cn("flex items-center rounded p-1 hover:bg-muted", {
-              "bg-primary/10 text-primary":
-                editor.isActive({ textAlign: "center" }) || editor.isActive({ textAlign: "right" }),
-            })}
+            className={cn("flex items-center", getActiveClasses(editor, ["textAlign"], from))}
             title="Text Alignment">
             <TextAlignLeftIcon className="h-4 w-4" />
             <CaretDownIcon className="h-3 w-3 text-gray-500" />
@@ -320,24 +324,24 @@ const MenuBar = ({ editor, onExpand }: { editor: any; onExpand?: () => void }) =
           <DropdownMenuItem
             onClick={() => editor.chain().focus().setTextAlign("left").run()}
             className={cn(
-              "flex cursor-pointer items-center gap-x-1 rounded p-1 outline-none hover:bg-muted hover:outline-none",
-              { "bg-primary/10 text-primary": editor.isActive({ textAlign: "left" }) },
+              "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
+              getActiveClasses(editor, ["textAlign"], from),
             )}>
             <TextAlignLeftIcon className="h-4 w-4" /> Align Left
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => editor.chain().focus().setTextAlign("center").run()}
             className={cn(
-              "flex cursor-pointer items-center gap-x-1 rounded p-1 outline-none hover:bg-muted hover:outline-none",
-              { "bg-primary/10 text-primary": editor.isActive({ textAlign: "center" }) },
+              "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
+              getActiveClasses(editor, ["textAlign"], from),
             )}>
             <TextAlignCenterIcon className="h-4 w-4" /> Align Center
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => editor.chain().focus().setTextAlign("right").run()}
             className={cn(
-              "flex cursor-pointer items-center gap-x-1 rounded p-1 outline-none hover:bg-muted hover:outline-none",
-              { "bg-primary/10 text-primary": editor.isActive({ textAlign: "right" }) },
+              "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
+              getActiveClasses(editor, ["textAlign"], from),
             )}>
             <TextAlignRightIcon className="h-4 w-4" /> Align Right
           </DropdownMenuItem>
@@ -347,7 +351,7 @@ const MenuBar = ({ editor, onExpand }: { editor: any; onExpand?: () => void }) =
         <button
           type="button"
           onClick={addLink}
-          className={cn("rounded p-1 hover:bg-muted", { "bg-primary/10 text-primary": editor.isActive("link") })}
+          className={cn("", getActiveClasses(editor, ["link"], from))}
           title="Add Link">
           <Link2Icon className="h-3.5 w-3.5" />
         </button>
@@ -355,7 +359,7 @@ const MenuBar = ({ editor, onExpand }: { editor: any; onExpand?: () => void }) =
         <button
           type="button"
           onClick={removeLink}
-          className={cn("rounded bg-primary/10 p-1 text-primary hover:bg-muted")}
+          className={cn("rounded bg-primary/10 p-1 text-primary")}
           title="Remove Link"
           disabled={!editor.isActive("link")}>
           <LinkBreak2Icon className="h-3.5 w-3.5" />
@@ -364,11 +368,7 @@ const MenuBar = ({ editor, onExpand }: { editor: any; onExpand?: () => void }) =
       {onExpand && (
         <>
           <div className="mx-1 h-5 w-px self-center bg-border" />
-          <button
-            type="button"
-            onClick={onExpand}
-            className="rounded p-1 hover:bg-muted"
-            title="Open in full screen mode">
+          <button type="button" onClick={onExpand} className="" title="Open in full screen mode">
             <EnterFullScreenIcon className="h-4 w-4" />
           </button>
         </>
