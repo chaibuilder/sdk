@@ -40,7 +40,7 @@ const Config = {
         type: "string",
         default: "Heading goes here",
         title: "Content",
-        ui: { "ui:widget": "textarea" },
+        ui: { "ui:widget": "richtext" },
       },
     },
   }),
