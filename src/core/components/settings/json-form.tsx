@@ -17,8 +17,8 @@ import { useThrottledCallback } from "@react-hookz/web";
 import RjForm from "@rjsf/core";
 import { RJSFSchema, UiSchema } from "@rjsf/utils";
 import validator from "@rjsf/validator-ajv8";
-import { take } from "lodash-es";
-import { Plus } from "lucide-react";
+import { take, get, set } from "lodash-es";
+import { PlusIcon } from "@radix-ui/react-icons";
 import { memo } from "react";
 
 type JSONFormType = {
@@ -32,7 +32,7 @@ type JSONFormType = {
 const CustomAddButton = (props) => (
   <button {...props} className="duration absolute right-2 top-2 cursor-pointer text-blue-400 hover:text-blue-500">
     <div className="flex items-center gap-x-0.5 text-[11px] leading-tight">
-      <Plus className="h-3 w-3" /> <span>Add</span>
+      <PlusIcon className="h-3 w-3" /> <span>Add</span>
     </div>
   </button>
 );
@@ -45,9 +45,14 @@ export const JSONForm = memo(({ blockId, schema, uiSchema, formData, onChange }:
 
   const throttledChange = useThrottledCallback(
     async ({ formData }: any, id?: string) => {
+      // * Sanitize undefined values
+      let updatedPropData = get(formData, id);
+      if (updatedPropData === undefined) set(formData, id, "");
+
       onChange({ formData }, id);
     },
     [onChange, selectedLang],
+
     400, // save only every 5 seconds
   );
 

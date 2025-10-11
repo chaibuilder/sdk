@@ -13,7 +13,7 @@ import {
 import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
 import { TooltipProvider } from "@/ui/shadcn/components/ui/tooltip";
 import { motion } from "framer-motion";
-import { ChevronDown, Image, Layers, Settings, Type } from "lucide-react";
+import { ChevronDownIcon, ImageIcon, StackIcon, GearIcon, TextIcon } from "@radix-ui/react-icons";
 import React, { Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -31,7 +31,7 @@ const BlockEditor = () => {
             className="flex cursor-default items-center justify-between border-b border-gray-300 py-2 text-sm font-bold hover:bg-gray-50">
             <span>Attributes</span>
             <span>
-              <ChevronDown className={"h-4 w-4 text-gray-500 " + (showAttributes ? "rotate-180" : "")} />
+              <ChevronDownIcon className={"h-4 w-4 text-gray-500 " + (showAttributes ? "rotate-180" : "")} />
             </span>
           </div>
           {showAttributes && <BlockAttributesEditor />}
@@ -46,10 +46,10 @@ export default function CustomLayout() {
   const { t } = useTranslation();
 
   const menuItems = [
-    { icon: <Layers size={24} />, label: "Outline", component: ChaiOutline },
-    { icon: <Settings size={24} />, label: "Settings", component: BlockEditor },
-    { icon: <Type size={24} />, label: "Typography", component: () => <div>Typography</div> },
-    { icon: <Image size={24} />, label: "Images", component: () => <div>Images</div> },
+    { icon: <StackIcon className="w-6 h-6" />, label: "Outline", component: ChaiOutline },
+    { icon: <GearIcon className="w-6 h-6" />, label: "Settings", component: BlockEditor },
+    { icon: <TextIcon className="w-6 h-6" />, label: "Typography", component: () => <div>Typography</div> },
+    { icon: <ImageIcon className="w-6 h-6" />, label: "Images", component: () => <div>Images</div> },
   ];
 
   const handleMenuItemClick = (index: number) => {

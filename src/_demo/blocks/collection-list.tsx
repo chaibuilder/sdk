@@ -36,7 +36,13 @@ const Component = (props: ChaiBlockComponentProps<CollectionListProps & ServerPr
     <div {...blockProps} {...wrapperStyles}>
       {showTitle && <h1>{title1}</h1>}
       <p>new name:{newName}</p>
-      <div {...listStyles}>{items?.map((item) => <div {...itemStyles}>{JSON.stringify(item)}</div>)}</div>
+      <div {...listStyles}>
+        {items?.map((item) => (
+          <div key={item._id} {...itemStyles}>
+            {JSON.stringify(item)}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
@@ -63,9 +69,9 @@ const Config = {
         title: "Title",
         default: "Collection List 111",
       },
-      wrapperStyles: StylesProp("bg-red-100 p-2 border border-red-500"),
-      listStyles: StylesProp("text-blue-500"),
-      itemStyles: StylesProp("text-green-500"),
+      wrapperStyles: StylesProp("bg-green-100 p-2 border border-red-500"),
+      listStyles: StylesProp("text-blue-300 bg-blue-100"),
+      itemStyles: StylesProp("text-green-500 bg-red-400"),
     },
   }),
   i18nProps: ["sort", "title"],

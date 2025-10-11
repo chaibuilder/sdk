@@ -11,30 +11,103 @@ import { useTheme, useThemeOptions } from "@/core/hooks/use-theme";
 import { ChaiThemeValues } from "@/types/chaibuilder-editor-props";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Label } from "@/ui/shadcn/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/components/ui/select";
+import { Separator } from "@/ui/shadcn/components/ui/separator";
+import { Switch } from "@/ui/shadcn/components/ui/switch";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { capitalize, get, set } from "lodash-es";
+import { CornerTopRightIcon, UploadIcon, MoonIcon, MixerHorizontalIcon, SunIcon, TextIcon, ResetIcon } from "@radix-ui/react-icons";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
+
+import { Badge } from "@/ui/shadcn/components/ui/badge";
+import { lazy, Suspense } from "react";
+import { claude, defaultShadcnPreset, solarized, supabase, twitter } from "@/core/constants/THEME_PRESETS";
+
+const LazyCssImportModal = lazy(() =>
+  import("./css-import-modal").then((module) => ({ default: module.CssImportModal })),
+);
+
+// Local storage key for storing previous theme
+const PREV_THEME_KEY = "chai-builder-previous-theme";
+
+// Default theme preset
+const DEFAULT_THEME_PRESET = [
+  { shadcn_default: defaultShadcnPreset },
+  { twitter_theme: twitter },
+  { solarized_theme: solarized },
+  { claude_theme: claude },
+  { supabase_theme: supabase },
+];
+
+const setPreviousTheme = (theme: ChaiThemeValues) => {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(PREV_THEME_KEY, JSON.stringify(theme));
+  } catch (error) {
+    console.warn("Failed to save previous theme to localStorage:", error);
+  }
+};
+
+const clearPreviousTheme = () => {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.removeItem(PREV_THEME_KEY);
+  } catch (error) {
+    console.warn("Failed to clear previous theme from localStorage:", error);
+  }
+};
+
 interface ThemeConfigProps {
   className?: string;
 }
 
 const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "" }) => {
-  const [isDarkMode] = useDarkMode();
+  const [isDarkMode, setIsDarkMode] = useDarkMode();
   const [selectedPreset, setSelectedPreset] = React.useState<string>("");
+  const [isImportModalOpen, setIsImportModalOpen] = React.useState(false);
   const themePresets = useBuilderProp("themePresets", []);
   const themePanelComponent = useBuilderProp("themePanelComponent", null);
   const { hasPermission } = usePermissions();
 
+  if (themePresets) {
+    const existingKeys = themePresets.map((preset: any) => Object.keys(preset)[0]);
+    DEFAULT_THEME_PRESET.forEach((preset) => {
+      const key = Object.keys(preset)[0];
+      if (!existingKeys.includes(key)) {
+        themePresets.push(preset);
+      }
+    });
+  }
+
   const [themeValues, setThemeValues] = useTheme();
-
   const chaiThemeOptions = useThemeOptions();
-
   const { t } = useTranslation();
-
-  const handlePresetChange = (presetName: string) => {
-    setSelectedPreset(presetName);
-  };
+  const setThemeWithHistory = React.useCallback(
+    (newTheme: ChaiThemeValues) => {
+      const previousTheme = { ...themeValues };
+      setPreviousTheme(previousTheme);
+      setThemeValues(newTheme);
+      toast.success("Theme updated", {
+        action: {
+          label: (
+            <span className="flex items-center gap-2">
+              <ResetIcon className="h-4 w-4" /> Undo
+            </span>
+          ),
+          onClick: () => {
+            setThemeValues(previousTheme);
+            clearPreviousTheme();
+            toast.dismiss();
+          },
+        },
+        closeButton: true,
+        duration: 15000,
+      });
+    },
+    [themeValues, setThemeValues],
+  );
 
   const applyPreset = () => {
     const preset = (themePresets as any[]).find((p) => Object.keys(p)[0] === selectedPreset);
@@ -47,13 +120,20 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
         "borderRadius" in newThemeValues &&
         "colors" in newThemeValues
       ) {
-        setThemeValues(newThemeValues);
+        setThemeWithHistory(newThemeValues);
+        setSelectedPreset("");
       } else {
         console.error("Invalid preset structure:", newThemeValues);
       }
     } else {
       console.error("Preset not found:", selectedPreset);
     }
+  };
+
+  const handleCssImport = (importedTheme: ChaiThemeValues) => {
+    // Apply the imported theme values directly to the current theme
+    setThemeWithHistory(importedTheme);
+    setSelectedPreset("");
   };
 
   const handleFontChange = useDebouncedCallback(
@@ -70,7 +150,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
     200,
   );
 
-  const handleBorderRadiusChange = useDebouncedCallback(
+  const handleBorderRadiusChange = React.useCallback(
     (value: string) => {
       setThemeValues(() => ({
         ...themeValues,
@@ -78,7 +158,6 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
       }));
     },
     [themeValues],
-    200,
   );
 
   const handleColorChange = useDebouncedCallback(
@@ -107,6 +186,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
     <div className="grid grid-cols-1">
       {Object.entries(group.items).map(([key]: [string, [string, string]]) => {
         const themeColor = get(themeValues, `colors.${key}.${isDarkMode ? 1 : 0}`);
+        if (!themeColor) return null;
         return (
           <div key={key} className="mt-1 flex items-center gap-x-2">
             <ColorPickerInput
@@ -153,37 +233,56 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
     <div className="relative w-full">
       <div className={cn("no-scrollbar h-full w-full overflow-y-auto", className)}>
         {themePresets.length > 0 && (
-          <div className="flex gap-2 py-2">
-            <div className="w-full">
+          <div className="mx-0 my-2 flex flex-col gap-1 py-2">
+            <div className="flex w-full items-center justify-between">
               <Label className="text-sm">{t("Presets")}</Label>
-              <select
-                value={selectedPreset}
-                onChange={(e) => handlePresetChange(e.target.value)}
-                className="w-full space-y-0.5 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
-                <option value="">Select preset</option>
-                {Array.isArray(themePresets) &&
-                  themePresets.map((preset: any) => (
-                    <option key={Object.keys(preset)[0]} value={Object.keys(preset)[0]}>
-                      {capitalize(Object.keys(preset)[0])}
-                    </option>
-                  ))}
-              </select>
+              <div className="flex gap-2">
+                <Button className="px-1" variant="link" size="sm" onClick={() => setIsImportModalOpen(true)}>
+                  <UploadIcon className="h-4 w-4" />
+                  {t("Import theme")}
+                </Button>
+              </div>
             </div>
-            <div className="flex w-[30%] items-end">
-              <Button
-                className="w-full text-sm"
-                disabled={selectedPreset === ""}
-                variant="default"
-                onClick={applyPreset}>
-                {t("Apply")}
-              </Button>
+            {/* Presets Tab */}
+            <div className="flex items-center gap-2 px-0">
+              <div className="w-[70%]">
+                <Select value={selectedPreset} onValueChange={setSelectedPreset}>
+                  <SelectTrigger className="h-9 w-full text-sm">
+                    <SelectValue placeholder="Select preset" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Array.isArray(themePresets) &&
+                      themePresets.map((preset: any) => {
+                        const key = Object.keys(preset)[0];
+                        const label = key.replaceAll("_", " ");
+                        return (
+                          <SelectItem key={key} value={key}>
+                            {capitalize(label)}
+                          </SelectItem>
+                        );
+                      })}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="w-[25%]">
+                <Button className="w-full text-sm" disabled={!selectedPreset} onClick={applyPreset}>
+                  {t("Apply")}
+                </Button>
+              </div>
             </div>
           </div>
         )}
-        <div className={cn("space-y-2", className)}>
+
+        <Separator />
+
+        <div className={cn("my-2 space-y-3", className)}>
           {/* Fonts Section */}
+          <div className="flex items-center gap-2">
+            <TextIcon className="h-3 w-3 text-gray-600" />
+            <span className="text-xs font-medium text-gray-700">Typography</span>
+          </div>
           {chaiThemeOptions?.fontFamily && (
-            <div className="grid gap-4">
+            <div className="space-y-2">
               {Object.entries(chaiThemeOptions.fontFamily).map(([key, value]: [string, any]) => (
                 <FontSelector
                   key={key}
@@ -195,26 +294,61 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
             </div>
           )}
 
+          <Separator />
+
           {/* Border Radius Section */}
           {chaiThemeOptions?.borderRadius && (
-            <div className="space-y-0.5 py-3">
-              <Label className="text-sm">{t("Border Radius")}</Label>
+            <div className="space-y-0.5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <CornerTopRightIcon className="h-3 w-3 text-gray-600" />
+                  <span className="text-xs font-medium text-gray-700">Border Radius</span>
+                </div>
+                <Badge variant="secondary" className="text-xs">
+                  {themeValues.borderRadius}
+                </Badge>
+              </div>
               <div className="flex items-center gap-4 py-2">
                 <BorderRadiusInput value={themeValues.borderRadius} onChange={handleBorderRadiusChange} />
-                <span className="w-12 text-sm">{themeValues.borderRadius}</span>
               </div>
             </div>
           )}
 
+          <Separator />
+
           {/* Colors Section with Mode Switch */}
           {chaiThemeOptions?.colors && (
-            <div className="mt-4 space-y-0.5">
-              <Label className="text-sm">{t("Colors")}</Label>
-              <div className="w-full space-y-4 pt-2" key={isDarkMode ? "dark" : "light"}>
-                {chaiThemeOptions.colors.map((group) => renderColorGroup(group))}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <MixerHorizontalIcon className="h-3 w-3 text-gray-600" />
+                  <span className="text-xs font-medium text-gray-700">Colors</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2">
+                    <SunIcon className="h-4 w-4" />
+                    <Switch
+                      checked={isDarkMode}
+                      onCheckedChange={(checked: boolean) => setIsDarkMode(checked)}
+                      aria-label="Toggle dark mode"
+                      className="mx-1"
+                    />
+                    <MoonIcon className="h-4 w-4" />
+                  </div>
+                </div>
               </div>
+              <div className="space-y-2">{chaiThemeOptions.colors.map((group) => renderColorGroup(group))}</div>
             </div>
           )}
+          <Suspense fallback={<div>Loading...</div>}>
+            {isImportModalOpen && (
+              <LazyCssImportModal
+                open={isImportModalOpen}
+                onOpenChange={setIsImportModalOpen}
+                onImport={handleCssImport}
+              />
+            )}
+          </Suspense>
         </div>
         <br />
         <br />

@@ -10,20 +10,7 @@ import Underline from "@tiptap/extension-underline";
 import Placeholder from "@tiptap/extension-placeholder";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import {
-  AlignCenter,
-  AlignLeft,
-  AlignRight,
-  Bold,
-  Italic,
-  Link as LinkIcon,
-  List,
-  ListOrdered,
-  Maximize2,
-  Strikethrough,
-  Underline as UnderlineIcon,
-  Unlink,
-} from "lucide-react";
+import { TextAlignCenterIcon, TextAlignLeftIcon, TextAlignRightIcon, LetterCaseCapitalizeIcon, FontItalicIcon, Link1Icon, ListBulletIcon, ValueIcon, EnterFullScreenIcon, StrikethroughIcon, UnderlineIcon, LinkBreak1Icon } from "@radix-ui/react-icons";
 import { useEffect, useRef, useState } from "react";
 
 const MenuBar = ({ editor, onExpand }: { editor: any; onExpand?: () => void }) => {
@@ -49,14 +36,14 @@ const MenuBar = ({ editor, onExpand }: { editor: any; onExpand?: () => void }) =
         onClick={() => editor.chain().focus().toggleBold().run()}
         className={cn("rounded p-1 hover:bg-muted", { "bg-muted": editor.isActive("bold") })}
         title="Bold">
-        <Bold className="h-4 w-4" />
+        <LetterCaseCapitalizeIcon className="h-4 w-4" />
       </button>
       <button
         type="button"
         onClick={() => editor.chain().focus().toggleItalic().run()}
         className={cn("rounded p-1 hover:bg-muted", { "bg-muted": editor.isActive("italic") })}
         title="Italic">
-        <Italic className="h-4 w-4" />
+        <FontItalicIcon className="h-4 w-4" />
       </button>
       <button
         type="button"
@@ -70,7 +57,7 @@ const MenuBar = ({ editor, onExpand }: { editor: any; onExpand?: () => void }) =
         onClick={() => editor.chain().focus().toggleStrike().run()}
         className={cn("rounded p-1 hover:bg-muted", { "bg-muted": editor.isActive("strike") })}
         title="Strike">
-        <Strikethrough className="h-4 w-4" />
+        <StrikethroughIcon className="h-4 w-4" />
       </button>
       <div className="mx-1 h-6 w-px self-center bg-border" />
       <button
@@ -78,14 +65,14 @@ const MenuBar = ({ editor, onExpand }: { editor: any; onExpand?: () => void }) =
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         className={cn("rounded p-1 hover:bg-muted", { "bg-muted": editor.isActive("bulletList") })}
         title="Bullet List">
-        <List className="h-4 w-4" />
+        <ListBulletIcon className="h-4 w-4" />
       </button>
       <button
         type="button"
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
         className={cn("rounded p-1 hover:bg-muted", { "bg-muted": editor.isActive("orderedList") })}
         title="Ordered List">
-        <ListOrdered className="h-4 w-4" />
+        <ValueIcon className="h-4 w-4" />
       </button>
       <div className="mx-1 h-6 w-px self-center bg-border" />
       <button
@@ -93,21 +80,21 @@ const MenuBar = ({ editor, onExpand }: { editor: any; onExpand?: () => void }) =
         onClick={() => editor.chain().focus().setTextAlign("left").run()}
         className={cn("rounded p-1 hover:bg-muted", { "bg-muted": editor.isActive({ textAlign: "left" }) })}
         title="Align Left">
-        <AlignLeft className="h-4 w-4" />
+        <TextAlignLeftIcon className="h-4 w-4" />
       </button>
       <button
         type="button"
         onClick={() => editor.chain().focus().setTextAlign("center").run()}
         className={cn("rounded p-1 hover:bg-muted", { "bg-muted": editor.isActive({ textAlign: "center" }) })}
         title="Align Center">
-        <AlignCenter className="h-4 w-4" />
+        <TextAlignCenterIcon className="h-4 w-4" />
       </button>
       <button
         type="button"
         onClick={() => editor.chain().focus().setTextAlign("right").run()}
         className={cn("rounded p-1 hover:bg-muted", { "bg-muted": editor.isActive({ textAlign: "right" }) })}
         title="Align Right">
-        <AlignRight className="h-4 w-4" />
+        <TextAlignRightIcon className="h-4 w-4" />
       </button>
       <div className="mx-1 h-6 w-px self-center bg-border" />
       <button
@@ -115,7 +102,7 @@ const MenuBar = ({ editor, onExpand }: { editor: any; onExpand?: () => void }) =
         onClick={addLink}
         className={cn("rounded p-1 hover:bg-muted", { "bg-muted": editor.isActive("link") })}
         title="Add Link">
-        <LinkIcon className="h-4 w-4" />
+        <Link1Icon className="h-4 w-4" />
       </button>
       <button
         type="button"
@@ -123,7 +110,7 @@ const MenuBar = ({ editor, onExpand }: { editor: any; onExpand?: () => void }) =
         className={cn("rounded p-1 hover:bg-muted")}
         title="Remove Link"
         disabled={!editor.isActive("link")}>
-        <Unlink className="h-4 w-4" />
+        <LinkBreak1Icon className="h-4 w-4" />
       </button>
       {onExpand && (
         <>
@@ -133,7 +120,7 @@ const MenuBar = ({ editor, onExpand }: { editor: any; onExpand?: () => void }) =
             onClick={onExpand}
             className="rounded p-1 hover:bg-muted"
             title="Open in full screen mode">
-            <Maximize2 className="h-4 w-4" />
+            <EnterFullScreenIcon className="h-4 w-4" />
           </button>
         </>
       )}

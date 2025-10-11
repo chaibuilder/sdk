@@ -6,8 +6,8 @@ import {
   registerChaiBlockSchema,
   StylesProp,
 } from "@chaibuilder/runtime";
+import { LayoutIcon, RowsIcon } from "@radix-ui/react-icons";
 import { get } from "lodash-es";
-import { Columns, Rows } from "lucide-react";
 
 export type RowProps = {
   styles: ChaiStyles;
@@ -47,7 +47,7 @@ const ColumnConfig = {
   label: "Column",
   group: "basic",
   category: "core",
-  icon: Columns,
+  icon: LayoutIcon,
   wrapper: true,
   canDelete: () => true,
   canAcceptBlock: () => true,
@@ -104,7 +104,7 @@ const Config = {
   description: "A row component",
   label: "Row",
   group: "basic",
-  icon: Rows,
+  icon: RowsIcon,
   blocks: () =>
     [
       { _type: "Row", _id: "row", styles: "#styles:,p-1" },

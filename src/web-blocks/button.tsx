@@ -21,11 +21,11 @@ const Component = (props: ChaiBlockComponentProps<ButtonProps>) => {
 
   const child = children || (
     <>
-      <span data-ai-key="content">{content}</span>
+      {content && <span>{content}</span>}
       {_icon && (
         <div
           style={{ width: iconSize + "px" }}
-          className={iconPos + " " + (iconPos === "order-first" ? "mr-2" : "ml-2") || ""}
+          className={iconPos + " " + (content ? (iconPos === "order-first" ? "mr-2" : "ml-2") : "") || ""}
           dangerouslySetInnerHTML={{ __html: _icon }}
         />
       )}
@@ -108,12 +108,12 @@ const Config = {
       },
       prefetchLink: {
         type: "boolean",
-        default: false,
+        default: true,
         title: "Prefetch Link",
       },
     },
   }),
-  i18nProps: ["content"],
+  i18nProps: ["content", "link"],
   aiProps: ["content"],
 };
 export { Component, Config };

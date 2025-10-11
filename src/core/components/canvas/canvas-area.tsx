@@ -4,7 +4,6 @@ import { FallbackError } from "@/core/components/fallback-error";
 import { useBuilderProp, useCodeEditor } from "@/core/hooks";
 import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
 import { noop } from "lodash-es";
-import { Resizable } from "re-resizable";
 import React, { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -15,7 +14,7 @@ const CanvasArea: React.FC = () => {
   const onErrorFn = useBuilderProp("onError", noop);
   return (
     <div className="flex h-full max-h-full w-full flex-1 flex-col">
-      <div className="relative flex h-full max-h-full flex-col overflow-hidden bg-gray-100/40 px-2">
+      <div className="relative flex h-full max-h-full flex-col overflow-hidden bg-gray-100/40">
         <Suspense fallback={<Skeleton className="h-full" />}>
           <ErrorBoundary fallback={<FallbackError />} onError={onErrorFn}>
             <StaticCanvas />
@@ -23,9 +22,7 @@ const CanvasArea: React.FC = () => {
         </Suspense>
         {codeEditor ? (
           <Suspense fallback={<Skeleton className="h-full" />}>
-            <Resizable enable={{ top: true, bottom: false }} className="max-h-[400px] min-h-[200px]">
-              <CodeEditor />
-            </Resizable>
+            <CodeEditor />
           </Suspense>
         ) : null}
         <Breadcrumb />

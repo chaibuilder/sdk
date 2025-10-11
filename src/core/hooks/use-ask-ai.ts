@@ -10,7 +10,19 @@ import { ChaiBlock } from "@/types/chai-block";
 import { AskAiResponse } from "@/types/chaibuilder-editor-props";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { atom, useAtom } from "jotai";
-import { cloneDeep, compact, filter, find, flattenDeep, get, has, isEmpty, pick, startsWith } from "lodash-es";
+import {
+  cloneDeep,
+  compact,
+  filter,
+  find,
+  isString,
+  flattenDeep,
+  get,
+  has,
+  isEmpty,
+  pick,
+  startsWith,
+} from "lodash-es";
 import { useCallback, useState } from "react";
 
 function getChildBlocks(allBlocks: ChaiBlock[], blockId: string, blocks: any[]) {
@@ -28,7 +40,7 @@ const getBlockWithChildren = (blockId: string, allBlocks: ChaiBlock[]) => {
   return blocks;
 };
 
-const pickOnlyAIProps = (blocks: ChaiBlock[], lang: string) => {
+export const pickOnlyAIProps = (blocks: ChaiBlock[], lang: string, isTranslatePrompt: boolean) => {
   return compact(
     blocks.map((block) => {
       const keys = ["_id", "_type", "_parent"];
@@ -39,7 +51,12 @@ const pickOnlyAIProps = (blocks: ChaiBlock[], lang: string) => {
       for (const key in block) {
         if (keys.includes(key)) continue;
         if (blockAiProps.includes(key)) {
-          aiProps[key] = get(block, `${key}-${lang}`, block[key]);
+          const value = get(block, `${key}-${lang}`, "");
+          const fallbackValue = get(block, key, "");
+          aiProps[key] = isString(value) ? value.trim() || fallbackValue : fallbackValue;
+          if (isTranslatePrompt) {
+            aiProps[key] = fallbackValue;
+          }
         }
       }
       if (isEmpty(aiProps)) return false;
@@ -94,9 +111,11 @@ export const useAskAi = () => {
         setError(null);
         try {
           const lang = selectedLang === fallbackLang ? "" : selectedLang;
+          console.log("prompt", prompt);
+          const isTranslatePrompt = prompt.toLowerCase().includes("translate the content");
           const aiBlocks =
             type === "content"
-              ? pickOnlyAIProps(cloneDeep(getBlockWithChildren(blockId, blocks)), selectedLang)
+              ? pickOnlyAIProps(cloneDeep(getBlockWithChildren(blockId, blocks)), selectedLang, isTranslatePrompt)
               : [getBlockForStyles(blockId, blocks)];
 
           const askAiResponse = await callBack(type, addLangToPrompt(prompt, currentLang, type), aiBlocks, lang);

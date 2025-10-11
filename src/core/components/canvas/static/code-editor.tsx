@@ -1,6 +1,6 @@
 import { useCodeEditor, useSelectedBlockIds, useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "@/core/hooks";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Cross2Icon } from "@radix-ui/react-icons";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
+import { Textarea } from "@/ui/shadcn/components/ui/textarea";
 import { useThrottledCallback } from "@react-hookz/web";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -47,44 +47,40 @@ export default function CodeEditor() {
     }
   }, [ids]);
 
-  const handleClickOutside = () => {
+  const handleClose = () => {
+    saveCodeContent();
     // @ts-ignore
     setCodeEditor(null);
   };
 
   return (
-    <div className="h-full rounded-t-lg border-t-4 border-black bg-black text-white">
-      <button onClick={handleClickOutside} className="fixed inset-0 z-[100000] cursor-default bg-gray-400/20"></button>
-      <div className="relative z-[100001] h-full w-full flex-col gap-y-1">
-        <div className="-mt-1 flex items-center justify-between px-2 py-2">
-          <h3 className="space-x-3 text-sm font-semibold">
-            <span>{t("HTML Code Editor |")}</span>
-            <span className="text-xs text-gray-400">
-              {t("Scripts will be only executed in preview and live mode.")}
-            </span>
-          </h3>
-          <div className="flex gap-x-2">
-            <Button
-              // @ts-ignore
-              onClick={() => setCodeEditor(null)}
-              size={"sm"}
-              variant={"destructive"}
-              className={"h-6 w-fit"}>
-              <Cross2Icon />
-            </Button>
-          </div>
+    <Dialog open={true} onOpenChange={handleClose}>
+      <DialogContent className="flex max-h-[400px] min-h-[200px] max-w-4xl flex-col border-gray-700 text-black">
+        <DialogHeader className="shrink-0 border-b border-gray-700 pb-3">
+          <DialogTitle className="flex items-center justify-between text-black">
+            <div className="space-x-3 text-sm font-semibold">
+              <span>{t("HTML Code Editor |")}</span>
+              <span className="text-xs text-gray-400">
+                {t("Scripts will be only executed in preview and live mode.")}
+              </span>
+            </div>
+          </DialogTitle>
+        </DialogHeader>
+        <div className="min-h-0 flex-1 overflow-hidden">
+          <Textarea
+            className="h-full w-full resize-none font-mono text-xs"
+            value={code || codeEditor.initialCode}
+            onChange={(e) => {
+              const value = e.target.value;
+              setDirty(true);
+              setCode(value);
+              saveCodeContentRealTime(value);
+            }}
+            rows={10}
+            placeholder="Enter your code here..."
+          />
         </div>
-        <textarea
-          className="h-full w-full bg-black p-2 font-mono text-xs text-white/90"
-          value={code || codeEditor.initialCode}
-          onChange={(e) => {
-            const value = e.target.value;
-            setDirty(true);
-            setCode(value);
-            saveCodeContentRealTime(value);
-          }}
-        />
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }

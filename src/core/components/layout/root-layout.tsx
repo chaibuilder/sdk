@@ -7,22 +7,20 @@ import { AddBlocksDialog } from "@/core/components/layout/add-blocks-dialog";
 import { NoopComponent } from "@/core/components/noop-component";
 import SettingsPanel from "@/core/components/settings/settings-panel";
 import ThemeConfigPanel from "@/core/components/sidepanels/panels/theme-configuration/ThemeConfigPanel";
-import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useChaiSidebarPanels } from "@/core/extensions/sidebar-panels";
 import { useTopBarComponent } from "@/core/extensions/top-bar";
 import { useBuilderProp, useSidebarActivePanel } from "@/core/hooks";
-import { usePubSub } from "@/core/hooks/use-pub-sub";
 import { useRightPanel } from "@/core/hooks/use-theme";
 import { isDevelopment } from "@/core/import-html/general";
+import { useChaiFeatureFlag } from "@/core/main";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/ui/shadcn/components/ui/sheet";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
-import { LightningBoltIcon } from "@radix-ui/react-icons";
+import { Cross1Icon, LightningBoltIcon, MagicWandIcon, MixerHorizontalIcon, StackIcon } from "@radix-ui/react-icons";
 import { useFeature } from "flagged";
 import { motion } from "framer-motion";
-import { compact, find, first, get } from "lodash-es";
-import { Layers, Paintbrush, X } from "lucide-react";
+import { compact, find, first, get, reverse } from "lodash-es";
 import React, {
   ComponentType,
   createElement,
@@ -41,7 +39,7 @@ const DEFAULT_PANEL_WIDTH = 280;
 const OutlineButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
   return (
     <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
-      <Layers size={20} />
+      <StackIcon className="h-5 w-5" />
     </Button>
   );
 };
@@ -53,10 +51,17 @@ const AiButton = ({ isActive, show }: { isActive: boolean; show: () => void; pan
     </Button>
   );
 };
-
+const AskAiButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
+  return (
+    <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
+      <MagicWandIcon className="rtl:ml-2" />
+    </Button>
+  );
+};
 function useSidebarDefaultPanels() {
   const askAiCallBack = useBuilderProp("askAiCallBack", null);
   const aiChat = useFeature("aiChat");
+  const aiChatLeft = useChaiFeatureFlag("enable-ai-chat-left");
   return useMemo(() => {
     const items = [];
 
@@ -73,6 +78,20 @@ function useSidebarDefaultPanels() {
       ),
     });
 
+    if (aiChatLeft) {
+      items.unshift({
+        id: "ask-ai",
+        button: AskAiButton,
+        label: "Ask AI",
+        isInternal: true,
+        width: DEFAULT_PANEL_WIDTH,
+        panel: () => (
+          <div className="">
+            <AskAI />
+          </div>
+        ),
+      });
+    }
     if (askAiCallBack && aiChat) {
       items.unshift({
         id: "ai",
@@ -88,7 +107,7 @@ function useSidebarDefaultPanels() {
       });
     }
     return compact(items);
-  }, [askAiCallBack, aiChat]);
+  }, [askAiCallBack, aiChat, aiChatLeft]);
 }
 
 /**
@@ -102,13 +121,10 @@ const RootLayout: ComponentType = () => {
 
   const [panel, setRightPanel] = useRightPanel();
 
-  usePubSub(CHAI_BUILDER_EVENTS.SHOW_BLOCK_SETTINGS, () => {
-    setActivePanel("outline");
-  });
-
   const defaultPanels = useSidebarDefaultPanels();
   const topPanels = useChaiSidebarPanels("top");
   const bottomPanels = useChaiSidebarPanels("bottom");
+  const reversedBottomPanels = reverse([...(bottomPanels ?? [])]);
 
   /**
    * Prevents the context menu from appearing in production mode.
@@ -120,9 +136,11 @@ const RootLayout: ComponentType = () => {
 
   const handleMenuItemClick = useCallback(
     (id: string) => {
+      console.log("handleMenuItemClick", id, activePanel);
+
       setActivePanel(activePanel === id ? null : id);
     },
-    [activePanel],
+    [activePanel, setActivePanel],
   );
 
   const { t } = useTranslation();
@@ -161,14 +179,14 @@ const RootLayout: ComponentType = () => {
   const handleNonStandardPanelClose = useCallback(() => {
     // Return to the last used standard panel when closing a non-standard panel
     setActivePanel(lastStandardPanelRef.current);
-  }, [setActivePanel]);
+  }, [setActivePanel, activePanel]);
 
   const closeNonStandardPanel = useCallback(() => {
     setActivePanel("outline");
   }, [setActivePanel]);
 
   useEffect(() => {
-    if (!find(allPanels, { id: activePanel })) {
+    if (activePanel !== null && !find(allPanels, { id: activePanel })) {
       setActivePanel("outline");
     }
   }, [activePanel, allPanels]);
@@ -185,7 +203,7 @@ const RootLayout: ComponentType = () => {
       <TooltipProvider>
         <div
           onContextMenu={preventContextMenu}
-          className="flex h-screen max-h-full flex-col bg-background text-foreground">
+          className="flex h-full max-h-full flex-col bg-background text-foreground">
           <div className="flex h-[50px] w-screen items-center border-b border-border">
             <Suspense>
               <TopBar />
@@ -212,7 +230,7 @@ const RootLayout: ComponentType = () => {
               </div>
               <div className="flex flex-col space-y-1"></div>
               <div className="flex flex-col">
-                {bottomPanels?.map((item, index) => {
+                {reversedBottomPanels?.map((item, index) => {
                   return (
                     <Tooltip key={"button-bottom-" + index}>
                       <TooltipTrigger asChild>
@@ -278,7 +296,7 @@ const RootLayout: ComponentType = () => {
                         ) : panel === "theme" ? (
                           <div className="flex w-full items-center justify-between gap-2">
                             <span className="flex items-center gap-2">
-                              <Paintbrush className="h-4 w-4 rtl:ml-2" />
+                              <MixerHorizontalIcon className="h-4 w-4 text-gray-600" />
                               {t("Theme Settings")}
                             </span>
                             <Button
@@ -286,7 +304,7 @@ const RootLayout: ComponentType = () => {
                               variant="ghost"
                               size="icon"
                               className="text-xs">
-                              <X className="h-4 w-4 rtl:ml-2" />
+                              <Cross1Icon className="h-4 w-4 rtl:ml-2" />
                             </Button>
                           </div>
                         ) : null}
@@ -368,7 +386,7 @@ const RootLayout: ComponentType = () => {
                     <span>{t(get(activePanelItem, "label", ""))}</span>
                   </div>
                   <Button onClick={() => handleNonStandardPanelClose()} variant="ghost" size="icon" className="">
-                    <X className="h-5 w-5" />
+                    <Cross1Icon className="h-5 w-5" />
                   </Button>
                 </div>
                 <div className="flex-1 overflow-y-auto p-4">

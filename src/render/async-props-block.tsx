@@ -19,13 +19,15 @@ export default async function DataProviderPropsBlock(props: {
   draft: boolean;
   children: (dataProviderProps: Record<string, any>) => React.ReactNode;
 }) {
-  const dataProps = await props.dataProvider({
+  const dataProviderArgs = {
     pageProps: props.pageProps,
     block: props.block,
     lang: props.lang,
     draft: props.draft,
     inBuilder: false,
-  });
+  };
+
+  const dataProps = await props.dataProvider(dataProviderArgs);
 
   if (has(dataProps, "$metadata") && isFunction(props.dataProviderMetadataCallback)) {
     props.dataProviderMetadataCallback(props.block, dataProps.$metadata);

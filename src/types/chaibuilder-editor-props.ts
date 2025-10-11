@@ -50,6 +50,7 @@ export type SavePageData = {
   autoSave: boolean;
   blocks: ChaiBlock[];
   theme?: ChaiThemeValues;
+  needTranslations?: boolean;
 };
 
 type TimeInSeconds = number;
@@ -189,7 +190,7 @@ export interface ChaiBuilderEditorProps {
   /**
    * Auto save support
    */
-  autoSaveSupport?: boolean;
+  autoSave?: boolean;
   /**
    * Auto save interval in seconds
    */
@@ -220,11 +221,6 @@ export interface ChaiBuilderEditorProps {
   importHTMLSupport?: boolean;
 
   /**
-   * AI context
-   */
-  aiContext?: string;
-
-  /**
    * Ask AI callback
    */
   askAiCallBack?: (
@@ -233,7 +229,6 @@ export interface ChaiBuilderEditorProps {
     blocks: ChaiBlock[],
     lang: string,
   ) => Promise<AskAiResponse>;
-  saveAiContextCallback?: (content: string) => Promise<true | Error>;
 
   /**
    * Get partial blocks

@@ -18,6 +18,9 @@ import {
   set,
   some,
   startsWith,
+  compact,
+  map,
+  trim,
 } from "lodash-es";
 
 type Node = {
@@ -103,6 +106,39 @@ const getTextContent = (nodes: Node[]): string => {
  * @returns For boolean attributes without content marking true and passing if value is null
  */
 const getSanitizedValue = (value: any) => (value === null ? "" : value);
+
+/**
+ *
+ * @param classString
+ * @returns width and height from class string
+ */
+const getHeightAndWidthFromClass = (classString: string): { width: string; height: string } => {
+  const classes = compact(map(classString.split(/\s+/), trim));
+  const widthClass = find(classes, (cls) => /^w-/.test(cls));
+  const heightClass = find(classes, (cls) => /^h-/.test(cls));
+
+  if (!heightClass || !widthClass) return { height: "", width: "" };
+
+  const extractValue = (cls) => {
+    if (!cls) return undefined;
+    const match = cls.match(/^[wh]-(?:\[(.*?)\]|(.+))$/);
+    if (!match) return undefined;
+    if (match[1]) return match[1];
+
+    const val = match[2];
+    if (/^\d+(\.\d+)?$/.test(val)) return `${Number(val) * 4}px`;
+    if (val === "auto" || includes(val, "%")) return val;
+    return "16px";
+  };
+
+  const _width = extractValue(widthClass);
+  const _height = extractValue(heightClass);
+
+  return {
+    width: includes(_width, "px") ? _width : "16px",
+    height: includes(_height, "px") ? _height : "16px",
+  };
+};
 
 /**
  *
@@ -448,12 +484,23 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
        * handling svg tag
        * if svg tag just pass html stringify content as icon
        */
-      const svgHeight = find(node.attributes, { key: "height" });
-      const svgWidth = find(node.attributes, { key: "width" });
-      const height = get(svgHeight, "value") ? `[${get(svgHeight, "value")}px]` : "24px";
-      const width = get(svgWidth, "value") ? `[${get(svgWidth, "value")}px]` : "24px";
-      const svgClass = get(find(node.attributes, { key: "class" }), "value", "w-full h-full");
-      block.styles = `${STYLES_KEY}, ${cn(`w-${width} h-${height}`, svgClass)}`.trim();
+      const svgClass = get(find(node.attributes, { key: "class" }), "value", "");
+      const { height: classHeight, width: classWidth } = getHeightAndWidthFromClass(svgClass);
+      if (classHeight && classWidth) {
+        block.styles = `${STYLES_KEY}, ${cn(`w-${classWidth} h-${classHeight}`, svgClass)}`.trim();
+        block.height = classHeight?.replace("px", "");
+        block.width = classWidth?.replace("px", "");
+      } else {
+        const attrHeight = find(node.attributes, { key: "height" })?.value;
+        const attrWidth = find(node.attributes, { key: "width" })?.value;
+        if (attrHeight && attrWidth) {
+          block.styles = `${STYLES_KEY}, ${cn(`w-[${attrWidth}px] h-[${attrHeight}px]`, svgClass)}`.trim();
+          block.height = attrHeight;
+          block.width = attrWidth;
+        } else {
+          block.styles = `${STYLES_KEY}, ${cn(`w-full h-full`, svgClass)}`.trim();
+        }
+      }
 
       node.attributes = filter(node.attributes, (attr) => !includes(["style", "width", "height", "class"], attr.key));
       block.icon = stringify([node]);
@@ -477,12 +524,24 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
 
 const getSvgDimensions = (node: Node, defaultWidth: string, defaultHeight: string) => {
   const attributes = get(node, "attributes", []);
-  const svgHeight = find(attributes, { key: "height" });
-  const svgWidth = find(attributes, { key: "width" });
+
+  const { height: classHeight, width: classWidth } = getHeightAndWidthFromClass(
+    get(find(attributes, { key: "class" }), "value", ""),
+  );
+
+  if (classHeight && classWidth) {
+    return {
+      height: `[${classHeight}px]`,
+      width: `[${classWidth}px]`,
+    };
+  }
+
+  const attrHeight = find(attributes, { key: "height" })?.value;
+  const attrWidth = find(attributes, { key: "width" })?.value;
 
   return {
-    height: get(svgHeight, "value") ? `[${get(svgHeight, "value")}px]` : defaultHeight,
-    width: get(svgWidth, "value") ? `[${get(svgWidth, "value")}px]` : defaultWidth,
+    height: attrHeight ? `[${attrHeight}px]` : defaultHeight,
+    width: attrWidth ? `[${attrWidth}px]` : defaultWidth,
   };
 };
 

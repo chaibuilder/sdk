@@ -1,4 +1,3 @@
-import { generateUUID } from "@/core/functions/common-functions";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { DropdownMenuIcon } from "@radix-ui/react-icons";
 import { map } from "lodash-es";
@@ -13,17 +12,38 @@ export type SelectProps = {
   label: string;
   placeholder: string;
   fieldName: string;
+  defaultValue: string;
 };
 
 const SelectBlock = (props: ChaiBlockComponentProps<SelectProps>) => {
-  const { blockProps, fieldName, label, placeholder, styles, inputStyles, required, showLabel, _multiple, options } =
-    props;
-  const fieldId = generateUUID();
+  const {
+    blockProps,
+    fieldName,
+    label,
+    placeholder,
+    styles,
+    inputStyles,
+    required,
+    showLabel,
+    _multiple,
+    options,
+    defaultValue,
+  } = props;
+
+  // Process defaultValue for multi-select
+  const processedDefaultValues =
+    _multiple && defaultValue ? defaultValue.split(",").map((val) => val.trim()) : defaultValue || "";
 
   if (!showLabel) {
     return (
-      <select id={fieldId} {...styles} {...blockProps} required={required} multiple={_multiple} name={fieldName}>
-        <option value="" disabled selected hidden>
+      <select
+        {...styles}
+        {...blockProps}
+        required={required}
+        multiple={_multiple}
+        name={fieldName}
+        defaultValue={processedDefaultValues}>
+        <option value="" disabled hidden>
           {placeholder}
         </option>
         {map(options, (option) => (
@@ -37,9 +57,14 @@ const SelectBlock = (props: ChaiBlockComponentProps<SelectProps>) => {
 
   return (
     <div {...styles} {...blockProps}>
-      {showLabel && <label htmlFor={fieldId}>{label}</label>}
-      <select {...inputStyles} id={fieldId} required={required} multiple={_multiple} name={fieldName}>
-        <option value="" disabled selected hidden>
+      {showLabel && <label htmlFor={fieldName}>{label}</label>}
+      <select
+        {...inputStyles}
+        required={required}
+        multiple={_multiple}
+        name={fieldName}
+        defaultValue={processedDefaultValues}>
+        <option value="" disabled hidden>
           {placeholder}
         </option>
         {map(options, (option) => (
@@ -86,6 +111,11 @@ const Config = {
         type: "boolean",
         title: "Required",
         default: false,
+      },
+      defaultValue: {
+        type: "string",
+        title: "Default Value",
+        default: "",
       },
       _multiple: {
         type: "boolean",

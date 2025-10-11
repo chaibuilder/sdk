@@ -14,7 +14,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { first, get, isEmpty, map } from "lodash-es";
-import { SparklesIcon } from "lucide-react";
+import { MagicWandIcon } from "@radix-ui/react-icons";
 import { useMemo, useRef, useState } from "react";
 import Autosuggest from "react-autosuggest";
 import { useTranslation } from "react-i18next";
@@ -141,7 +141,7 @@ export function ManualClasses() {
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="default" className="h-6 w-fit" size="sm">
-                <SparklesIcon className="h-4 w-4" />
+                <MagicWandIcon className="h-4 w-4" />
                 <span className="ml-2">{t("Ask AI")}</span>
               </Button>
             </PopoverTrigger>
@@ -204,26 +204,42 @@ export function ManualClasses() {
               className="group relative flex max-w-[260px] cursor-default items-center gap-x-1 truncate break-words rounded border border-border bg-gray-200 p-px px-1.5 pr-2 text-[11px] text-gray-600 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
             />
           ) : (
-            <button
-              key={cls}
-              onDoubleClick={() => {
-                setNewCls(cls);
-                removeClassesFromBlocks(selectedIds, [cls]);
-                setTimeout(() => {
-                  if (inputRef.current) {
-                    inputRef.current.focus();
-                  }
-                }, 10);
-              }}
-              className="group relative flex max-w-[260px] cursor-default items-center gap-x-1 truncate break-words rounded border border-border bg-gray-200 p-px px-1.5 pr-2 text-[11px] text-gray-600 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
-              {cls}
-              {editingClass !== cls && (
-                <Cross2Icon
-                  onClick={() => removeClassesFromBlocks(selectedIds, [cls], true)}
-                  className="invisible absolute right-1 rounded-full bg-red-400 hover:text-white group-hover:visible group-hover:cursor-pointer"
-                />
-              )}
-            </button>
+            <div key={cls} className="group relative flex max-w-[260px] items-center">
+              <button
+                onDoubleClick={() => {
+                  setNewCls(cls);
+                  removeClassesFromBlocks(selectedIds, [cls]);
+                  setTimeout(() => {
+                    if (inputRef.current) {
+                      inputRef.current.focus();
+                    }
+                  }, 10);
+                }}
+                className="flex h-max cursor-default items-center gap-x-1 truncate break-words rounded bg-gray-200 py-px pl-0.5 pr-1 text-[11px] text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+                <div className="z-10 flex h-full w-max items-center justify-center">
+                  <Cross2Icon
+                    onClick={() => removeClassesFromBlocks(selectedIds, [cls], true)}
+                    className="hidden h-max w-3.5 cursor-pointer rounded bg-gray-100 p-0.5 text-red-500 hover:bg-gray-50 group-hover:block"
+                  />
+                  <svg
+                    className="h-3.5 w-3.5 group-hover:hidden"
+                    fill="rgba(55, 65, 81, 0.4)"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlSpace="preserve">
+                    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                    <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M12 6.036c-2.667 0-4.333 1.325-5 3.976 1-1.325 2.167-1.822 3.5-1.491.761.189 1.305.738 1.906 1.345C13.387 10.855 14.522 12 17 12c2.667 0 4.333-1.325 5-3.976-1 1.325-2.166 1.822-3.5 1.491-.761-.189-1.305-.738-1.907-1.345-.98-.99-2.114-2.134-4.593-2.134zM7 12c-2.667 0-4.333 1.325-5 3.976 1-1.326 2.167-1.822 3.5-1.491.761.189 1.305.738 1.907 1.345.98.989 2.115 2.134 4.594 2.134 2.667 0 4.333-1.325 5-3.976-1 1.325-2.167 1.822-3.5 1.491-.761-.189-1.305-.738-1.906-1.345C10.613 13.145 9.478 12 7 12z"></path>
+                    </g>
+                  </svg>
+                </div>
+                <div>{cls}</div>
+              </button>
+            </div>
           ),
         )}
       </div>

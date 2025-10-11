@@ -32,12 +32,6 @@ const Config = {
   ...registerChaiBlockSchema({
     properties: {
       styles: StylesProp(""),
-      backgroundImage: {
-        type: "string",
-        default: "",
-        title: "Background Image",
-        ui: { "ui:widget": "image" },
-      },
       tag: {
         type: "string",
         default: "div",
@@ -61,6 +55,12 @@ const Config = {
           { const: "figcaption", title: "figcaption" },
           { const: "mark", title: "mark" },
         ],
+      },
+      backgroundImage: {
+        type: "string",
+        default: "",
+        title: "Background Image",
+        ui: { "ui:widget": "image" },
       },
     },
   }),

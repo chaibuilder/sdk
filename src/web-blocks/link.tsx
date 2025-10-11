@@ -24,7 +24,7 @@ const LinkBlock = (props: ChaiBlockComponentProps<LinkBlockProps>) => {
   if (inBuilder) {
     if (children) {
       return (
-        <span {...blockProps} style={emptyStyles} {...styles}>
+        <span role="link" {...blockProps} style={emptyStyles} {...styles}>
           {children}
         </span>
       );
@@ -35,6 +35,7 @@ const LinkBlock = (props: ChaiBlockComponentProps<LinkBlockProps>) => {
           ...blockProps,
           ...styles,
           style: emptyStyles,
+          role: "link",
         },
         content,
       );
@@ -101,7 +102,7 @@ const Config = {
     },
   }),
   aiProps: ["content"],
-  i18nProps: ["content"],
+  i18nProps: ["content", "link"],
   canAcceptBlock: (type: string) => type !== "Link",
 };
 

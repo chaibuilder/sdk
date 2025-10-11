@@ -8,14 +8,7 @@ import {
   getBlockRuntimeProps,
   getBlockTagAttributes,
 } from "@/core/components/canvas/static/new-blocks-render-helpers";
-import {
-  useBlocksStore,
-  useBuilderProp,
-  useHiddenBlockIds,
-  useInlineEditing,
-  usePartailBlocksStore,
-  useSavePage,
-} from "@/core/hooks";
+import { useBlocksStore, useBuilderProp, useInlineEditing, usePartailBlocksStore, useSavePage } from "@/core/hooks";
 import { useLanguages } from "@/core/hooks/use-languages";
 import { useGetBlockAtom } from "@/core/hooks/use-update-block-atom";
 import { applyBindingToBlockProps } from "@/render/apply-binding";
@@ -27,6 +20,7 @@ import { filter, get, has, isArray, isEmpty, isNull, map, noop } from "lodash-es
 import React, { createContext, createElement, Suspense, useCallback, useContext, useMemo } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { toast } from "sonner";
+import { adjustSpacingInContentBlocks } from "./adjust-spacing-in-blocks";
 import { MayBeAsyncPropsWrapper } from "./async-props-wrapper";
 import { ErrorFallback } from "./error-fallback";
 import { useBlockRuntimeProps } from "./use-block-runtime-props";
@@ -89,7 +83,6 @@ const BlockRenderer = ({
   const { selectedLang, fallbackLang } = useLanguages();
   const getRuntimePropValues = useBlockRuntimeProps();
   const pageExternalData = usePageExternalData();
-  const [hiddenBlocks] = useHiddenBlockIds();
   const [dataBindingActive] = useAtom(dataBindingActiveAtom);
   const Component = get(registeredChaiBlock, "component", null);
   const { index, key } = useContext(RepeaterContext);
@@ -132,7 +125,8 @@ const BlockRenderer = ({
     ],
   );
   const needErrorBoundary = useMemo(() => !CORE_BLOCKS.includes(block._type), [block._type]);
-  if (isNull(Component) || hiddenBlocks.includes(block._id)) return null;
+  const isShown = useMemo(() => get(block, "_show", true), [block]);
+  if (isNull(Component) || !isShown) return null;
   let blockNode = (
     <Suspense>
       {createElement(Component, {
@@ -203,7 +197,7 @@ const PartialBlocksRenderer = ({ partialBlockId }: { partialBlockId: string }) =
   if (isEmpty(partialBlocks)) return null;
   return (
     <PartialWrapper partialBlockId={partialBlockId}>
-      <BlocksRenderer splitAtoms={partialBlocksAtoms} blocks={partialBlocks} />
+      <BlocksRenderer splitAtoms={partialBlocksAtoms} blocks={partialBlocks} type="PartialBlock" />
     </PartialWrapper>
   );
 };
@@ -212,13 +206,15 @@ const BlocksRenderer = ({
   blocks,
   parent = null,
   splitAtoms = undefined,
+  type = "",
 }: {
   splitAtoms?: any;
   blocks: ChaiBlock[];
   parent?: string;
+  type?: string;
 }) => {
   const getBlockAtom = useGetBlockAtom(splitAtoms);
-  const filteredBlocks = useMemo(
+  let filteredBlocks = useMemo(
     () =>
       filter(blocks, (block) => has(block, "_id") && (!isEmpty(parent) ? block._parent === parent : !block._parent)),
     [blocks, parent],
@@ -227,6 +223,10 @@ const BlocksRenderer = ({
     (blockId: string) => filter(blocks, (b) => b._parent === blockId).length > 0,
     [blocks],
   );
+
+  if (hasChildren && (type === "Heading" || type === "Paragraph" || type === "Link")) {
+    filteredBlocks = adjustSpacingInContentBlocks(filteredBlocks);
+  }
 
   return map(filteredBlocks, (block) => {
     const blockAtom = getBlockAtom(block._id);
@@ -240,7 +240,7 @@ const BlocksRenderer = ({
                 isArray(repeaterItems) &&
                   repeaterItems.map((_, index) => (
                     <RepeaterContext.Provider key={`${_id}-${index}`} value={{ index, key: $repeaterItemsKey }}>
-                      <BlocksRenderer splitAtoms={splitAtoms} blocks={blocks} parent={block._id} />
+                      <BlocksRenderer splitAtoms={splitAtoms} blocks={blocks} parent={block._id} type={_type} />
                     </RepeaterContext.Provider>
                   ))
               ) : _type === "GlobalBlock" || _type === "PartialBlock" ? (
@@ -248,7 +248,7 @@ const BlocksRenderer = ({
                   <PartialBlocksRenderer partialBlockId={partialBlockId} />
                 </Provider>
               ) : hasChildren(_id) ? (
-                <BlocksRenderer splitAtoms={splitAtoms} blocks={blocks} parent={block._id} />
+                <BlocksRenderer splitAtoms={splitAtoms} blocks={blocks} parent={block._id} type={_type} />
               ) : null;
             }}
           </BlockRenderer>

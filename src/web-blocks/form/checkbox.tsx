@@ -1,4 +1,3 @@
-import { generateUUID } from "@/core/functions/common-functions";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { CheckboxIcon } from "@radix-ui/react-icons";
 
@@ -14,32 +13,24 @@ export type CheckboxProps = {
 
 const CheckboxBlock = (props: ChaiBlockComponentProps<CheckboxProps>) => {
   const { blockProps, fieldName, label, styles, inputStyles, required, checked, showLabel = true } = props;
-  const fieldId = generateUUID();
 
   if (!showLabel)
     return (
       <input
-        id={fieldId}
+        name={fieldName}
         {...blockProps}
         {...inputStyles}
         {...styles}
         type="checkbox"
         required={required}
-        name={fieldName}
+        defaultChecked={checked}
       />
     );
 
   return (
     <div {...styles} {...blockProps}>
-      <input
-        {...inputStyles}
-        name={fieldName}
-        id={fieldId}
-        type="checkbox"
-        required={required}
-        defaultChecked={checked}
-      />
-      {label && <label htmlFor={fieldId}>{label}</label>}
+      <input {...inputStyles} name={fieldName} type="checkbox" required={required} defaultChecked={checked} />
+      {label && <label htmlFor={fieldName}>{label}</label>}
     </div>
   );
 };

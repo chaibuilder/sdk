@@ -5,14 +5,13 @@ import { PERMISSIONS } from "@/core/constants/PERMISSIONS";
 import { ROOT_TEMP_KEY } from "@/core/constants/STRINGS";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { canAcceptChildBlock, canAddChildBlock } from "@/core/functions/block-helpers";
-import { useBlockHighlight, useHiddenBlockIds, usePermissions, useTranslation } from "@/core/hooks";
+import { useBlockHighlight, usePermissions, useTranslation, useUpdateBlocksProps } from "@/core/hooks";
 import { pubsub } from "@/core/pubsub";
 import { cn } from "@/core/utils/cn";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
-import { PlusIcon } from "@radix-ui/react-icons";
+import { ChevronRightIcon, DotsVerticalIcon, EyeClosedIcon, EyeOpenIcon, PlusIcon } from "@radix-ui/react-icons";
 import { atom, useAtom } from "jotai";
-import { get, has, isEmpty } from "lodash-es";
-import { ChevronRight, EyeOffIcon, MoreVertical } from "lucide-react";
+import { get, has, isEmpty, startCase } from "lodash-es";
 import { memo, useEffect, useMemo } from "react";
 import { NodeRendererProps } from "react-arborist";
 
@@ -36,19 +35,35 @@ const Input = ({ node }) => {
 };
 
 const currentAddSelection = atom<any>(null);
+
+export const getBlockDisplayName = (data: any): string => {
+  if (data?._name) return data._name;
+  if (data?._type === "Box" && data?.tag && data?.tag !== "div") {
+    return startCase(data.tag);
+  }
+  return data?._type?.split("/").pop() || "";
+};
+
+const truncateText = (text: string, maxLength: number) => {
+  if (text.length > maxLength) {
+    return text.substring(0, maxLength) + "...";
+  }
+  return text;
+};
+
 export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) => {
   const { t } = useTranslation();
-  const [hiddenBlocks, , toggleHidden] = useHiddenBlockIds();
+  const updateBlockProps = useUpdateBlocksProps();
   const [iframe] = useAtom<HTMLIFrameElement>(canvasIframeAtom);
   const { hasPermission } = usePermissions();
   let previousState: boolean | null = null;
   const hasChildren = node.children.length > 0;
   const { highlightBlock, clearHighlight } = useBlockHighlight();
   const { id, data, isSelected, willReceiveDrop, isDragging, isEditing, handleClick } = node;
-
+  const isShown = get(data, "_show", true);
   const handleToggle = (event: any) => {
     event.stopPropagation();
-    if (hiddenBlocks.includes(id)) return;
+    if (!isShown) return;
     /*Toggle the node open and close State*/
     node.toggle();
   };
@@ -93,7 +108,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
      * and allowing to select current block.
      */
     e.stopPropagation();
-    if (!node.isOpen && !hiddenBlocks.includes(id)) {
+    if (!node.isOpen && isShown) {
       node.toggle();
     }
     /**
@@ -107,7 +122,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
   useEffect(() => {
     //TODO: Come back to this later. Might lead to a performance issue
     const timedToggle = setTimeout(() => {
-      if (willReceiveDrop && !node.isOpen && !isDragging && !hiddenBlocks.includes(id)) {
+      if (willReceiveDrop && !node.isOpen && !isDragging && isShown) {
         node.toggle();
       }
     }, 500);
@@ -172,6 +187,10 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
     );
   }, [data, hasPermission]);
 
+  const isPartialBlock = useMemo(() => {
+    return data?._type === "PartialBlock" || data?._type === "GlobalBlock";
+  }, [data]);
+
   return (
     <div className="w-full">
       <div
@@ -180,7 +199,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
         onClick={handleNodeClickWithoutPropagating}
         style={style}
         data-node-id={id}
-        ref={hiddenBlocks.includes(id) ? null : dragHandle}
+        ref={dragHandle}
         onDragStart={() => handleDragStart(node)}
         onDragEnd={() => handleDragEnd(node)}
         onDragOver={(e) => {
@@ -207,21 +226,21 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
                 }}
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
-                className="absolute -top-0.5 h-1 w-[90%] rounded bg-primary opacity-0 delay-200 duration-200 group-hover:opacity-100">
-                <div className="absolute left-1/2 top-1/2 flex h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full bg-primary p-1 outline outline-2 outline-white hover:bg-primary">
-                  <PlusIcon className="h-3 w-3 stroke-[4] text-white" />
+                className="absolute -top-0.5 h-0.5 w-[90%] rounded bg-primary/80 opacity-0 delay-200 duration-200 group-hover:opacity-100">
+                <div className="absolute left-1/2 top-1/2 flex h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full bg-primary/80 p-1 outline outline-2 outline-white hover:bg-primary/80">
+                  <PlusIcon className="h-2 w-2 stroke-[2] text-white" />
                 </div>
               </div>
             </div>
           )}
         <div
           className={cn(
-            "group flex w-full cursor-pointer items-center justify-between space-x-px !rounded p-1 outline-none",
-            isSelected ? "bg-primary text-primary-foreground" : "hover:bg-primary/10 dark:hover:bg-gray-800",
+            "group flex w-full cursor-pointer items-center justify-between space-x-px !rounded p-1 py-0 outline-none",
+            isSelected ? "bg-primary/20" : "hover:bg-primary/10",
             willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
             node?.id === addSelectParentHighlight ? "bg-primary/10" : "",
             isDragging && "opacity-20",
-            hiddenBlocks.includes(id) ? "opacity-50" : "",
+            !isShown ? "line-through opacity-50" : "",
             isLibBlock && isSelected && "bg-primary/20 text-primary",
           )}>
           <div className="flex items-center">
@@ -231,15 +250,17 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
               }`}>
               {hasChildren && (
                 <button onClick={handleToggle} type="button">
-                  <ChevronRight className={`h-3 w-3 stroke-[3] ${isSelected ? "text-white" : "text-slate-400"}`} />
+                  <ChevronRightIcon className={`h-3 w-3`} />
                 </button>
               )}
             </div>
             <div
               className={cn(
                 "leading-1 flex items-center",
-                isLibBlock && "text-primary/60",
-                isLibBlock && isSelected && "text-primary/80",
+                isLibBlock && "text-orange-600/90",
+                isLibBlock && isSelected && "text-orange-800",
+                isPartialBlock && "text-purple-600/90",
+                isPartialBlock && isSelected && "text-purple-800",
               )}>
               <TypeIcon type={data?._type} />
               {isEditing ? (
@@ -252,22 +273,24 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
                     node.edit();
                     node.deselect();
                   }}>
-                  <span>{data?._name || data?._type.split("/").pop()}</span>
+                  <span title={getBlockDisplayName(data).length > 17 ? getBlockDisplayName(data) : ""}>
+                    {truncateText(getBlockDisplayName(data), 17)}
+                  </span>
                 </div>
               )}
             </div>
           </div>
-          <div className="invisible flex items-center space-x-1.5 pr-2 group-hover:visible">
-            {canAddChildBlock(data?._type) && !hiddenBlocks.includes(id) && hasPermission(PERMISSIONS.ADD_BLOCK) ? (
+          <div className="invisible flex items-center space-x-1.5 pr-px group-hover:visible">
+            {canAddChildBlock(data?._type) && isShown && hasPermission(PERMISSIONS.ADD_BLOCK) ? (
               <Tooltip>
                 <TooltipTrigger
                   onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, { _id: id })}
-                  className="cursor-pointer rounded bg-transparent"
+                  className="cursor-pointer rounded bg-transparent p-px hover:bg-primary/10"
                   asChild>
-                  <PlusIcon className="h-3 w-3" />
+                  <PlusIcon className="h-4 w-4" />
                 </TooltipTrigger>
                 <TooltipContent className="isolate z-[9999]" side="bottom">
-                  {t("Add block")}
+                  {t("Add block inside")}
                 </TooltipContent>
               </Tooltip>
             ) : null}
@@ -275,21 +298,23 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
               <TooltipTrigger
                 onClick={(event) => {
                   event.stopPropagation();
-                  toggleHidden(id);
+                  updateBlockProps([id], { _show: !isShown });
                   if (node.isOpen) {
                     node.toggle();
                   }
                 }}
-                className="cursor-pointer rounded bg-transparent"
+                className="cursor-pointer rounded bg-transparent p-0.5 hover:bg-primary/10"
                 asChild>
-                <EyeOffIcon size={"15"} />
+                {isShown ? <EyeClosedIcon className="h-4 w-4" /> : <EyeOpenIcon className="h-4 w-4" />}
               </TooltipTrigger>
-              <TooltipContent className="isolate z-[9999]" side="bottom">
-                {t("Hide block")}
+              <TooltipContent className="isolate z-[9999] text-xs" side="bottom">
+                {t(isShown ? "Hide the block from page" : "Show the block on page")}
               </TooltipContent>
             </Tooltip>
             <BlockMoreOptions node={node} id={id}>
-              <MoreVertical size={"15"} />
+              <div className="cursor-pointer rounded bg-transparent p-px hover:bg-primary/10">
+                <DotsVerticalIcon className="h-3 w-3" />
+              </div>
             </BlockMoreOptions>
           </div>
         </div>

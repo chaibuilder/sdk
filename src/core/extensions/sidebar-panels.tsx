@@ -34,6 +34,6 @@ export const useChaiSidebarPanels = (position: "top" | "bottom") => {
       filter(values(CHAI_BUILDER_PANELS), (panel) => {
         return panel.position === position;
       }),
-    [position],
+    [position, CHAI_BUILDER_PANELS],
   );
 };

@@ -1,4 +1,3 @@
-import { generateUUID } from "@/core/functions/common-functions";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { InputIcon } from "@radix-ui/react-icons";
 
@@ -11,16 +10,16 @@ export type TextAreaProps = {
   rows: number;
   label: string;
   placeholder: string;
+  defaultValue: string;
 };
 
 const TextAreaBlock = (props: ChaiBlockComponentProps<TextAreaProps>) => {
-  const { blockProps, fieldName, label, placeholder, styles, inputStyles, rows, showLabel, required } = props;
-  const fieldId = generateUUID();
+  const { blockProps, fieldName, label, placeholder, styles, inputStyles, rows, showLabel, required, defaultValue } =
+    props;
 
   if (!showLabel) {
     return (
       <textarea
-        id={fieldId}
         name={fieldName}
         {...blockProps}
         {...inputStyles}
@@ -28,20 +27,21 @@ const TextAreaBlock = (props: ChaiBlockComponentProps<TextAreaProps>) => {
         placeholder={placeholder}
         rows={rows}
         required={required}
+        defaultValue={defaultValue}
       />
     );
   }
 
   return (
     <div {...styles} {...blockProps}>
-      {showLabel && <label htmlFor={fieldId}>{label}</label>}
+      {showLabel && <label htmlFor={fieldName}>{label}</label>}
       <textarea
         name={fieldName}
         {...inputStyles}
-        id={fieldId}
         placeholder={placeholder}
         rows={rows}
         required={required}
+        defaultValue={defaultValue}
       />
     </div>
   );
@@ -87,6 +87,12 @@ const Config = {
         type: "boolean",
         title: "Required",
         default: false,
+      },
+      defaultValue: {
+        type: "string",
+        title: "Default Value",
+        default: "",
+        ui: { "ui:widget": "textarea", "ui:autosize": true, "ui:rows": 3 },
       },
     },
   }),

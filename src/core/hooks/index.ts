@@ -15,8 +15,8 @@ import { useCurrentPage } from "@/core/hooks/use-current-page";
 import { useCutBlockIds } from "@/core/hooks/use-cut-blockIds";
 import { useDarkMode } from "@/core/hooks/use-dark-mode";
 import { useDuplicateBlocks } from "@/core/hooks/use-duplicate-blocks";
-import { useHiddenBlockIds } from "@/core/hooks/use-hidden-blocks";
 import { useHighlightBlockId } from "@/core/hooks/use-highlight-blockId";
+import { useIsPageLoaded } from "@/core/hooks/use-is-page-loaded";
 import { useLanguages } from "@/core/hooks/use-languages";
 import { useLibraryBlocks } from "@/core/hooks/use-library-blocks";
 import { usePartialBlocksList, usePartialBlocksStore } from "@/core/hooks/use-partial-blocks-store";
@@ -24,7 +24,8 @@ import { usePasteBlocks } from "@/core/hooks/use-paste-blocks";
 import { usePermissions } from "@/core/hooks/use-permissions";
 import { usePreviewMode } from "@/core/hooks/use-preview-mode";
 import { useRemoveBlocks } from "@/core/hooks/use-remove-blocks";
-import { useRemoveClassesFromBlocks } from "@/core/hooks/use-remove-classes-from-blocks";
+import { useRemoveAllClassesForBlock, useRemoveClassesFromBlocks } from "@/core/hooks/use-remove-classes-from-blocks";
+import { useResetBlockStyles } from "@/core/hooks/use-reset-block-styles";
 import { useSavePage } from "@/core/hooks/use-save-page";
 import { useSelectedBlockAllClasses, useSelectedBlockCurrentClasses } from "@/core/hooks/use-select-block-classes";
 import {
@@ -63,8 +64,9 @@ export {
   useCutBlockIds,
   useDarkMode,
   useDuplicateBlocks,
-  useHiddenBlockIds,
   useHighlightBlockId,
+  useInlineEditing,
+  useIsPageLoaded,
   useLanguages,
   useLibraryBlocks,
   usePartialBlocksStore as usePartailBlocksStore,
@@ -72,8 +74,10 @@ export {
   usePasteBlocks,
   usePermissions,
   usePreviewMode,
+  useRemoveAllClassesForBlock,
   useRemoveBlocks,
   useRemoveClassesFromBlocks,
+  useResetBlockStyles,
   useRightPanel,
   useSavePage,
   useSelectedBlock,
@@ -92,5 +96,4 @@ export {
   useUpdateBlocksProps,
   useUpdateBlocksPropsRealtime,
   useWrapperBlock,
-  useInlineEditing,
 };

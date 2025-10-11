@@ -7,6 +7,7 @@ import UILibrariesPanel from "@/core/components/sidepanels/panels/add-blocks/lib
 import Outline from "@/core/components/sidepanels/panels/outline/list-tree";
 import ThemeConfigPanel from "@/core/components/sidepanels/panels/theme-configuration/ThemeConfigPanel";
 import i18n from "@/core/locales/load";
+import { registerFeatureFlags } from "@/core/utils/feature-flag";
 import type { ChaiBlock } from "@/types/chai-block";
 import type { ChaiBuilderEditorProps } from "@/types/index";
 
@@ -14,8 +15,11 @@ if (typeof window === "undefined") {
   throw new Error("@chaibuilder/sdk is only supported in the browser. Avoid using it in the server side.");
 }
 
+// Register feature flags
+registerFeatureFlags();
+
 // components
-export { AISetContext as ChaiAskAiPanel, AIUserPrompt as ChaiAskAiUserPrompt } from "@/core/components/ask-ai-panel";
+export { AIUserPrompt as ChaiAskAiUserPrompt } from "@/core/components/ask-ai-panel";
 export { Breakpoints as ChaiScreenSizes } from "@/core/components/canvas/topbar/canvas-breakpoints";
 export { DarkMode as ChaiDarkModeSwitcher } from "@/core/components/canvas/topbar/dark-mode";
 export { UndoRedo as ChaiUndoRedo } from "@/core/components/canvas/topbar/undo-redo";
@@ -51,15 +55,23 @@ export {
   registerBlockSettingTemplate,
   registerBlockSettingWidget,
 } from "@/core/extensions/blocks-settings";
+export { registerChaiPreImportHTMLHook } from "@/core/extensions/import-html-pre-hook";
 export { registerChaiLibrary } from "@/core/extensions/libraries";
 export { registerChaiMediaManager } from "@/core/extensions/media-manager";
 export { registerChaiSaveToLibrary } from "@/core/extensions/save-to-library";
 export { registerChaiSidebarPanel } from "@/core/extensions/sidebar-panels";
 export { registerChaiTopBar } from "@/core/extensions/top-bar";
+export {
+  IfChaiFeatureFlag,
+  registerChaiFeatureFlag,
+  registerChaiFeatureFlags,
+  useChaiFeatureFlag,
+  useChaiFeatureFlags,
+  useToggleChaiFeatureFlag,
+} from "@/core/flags/register-chai-flag";
 export type { ChaiLibrary, ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 
 // hooks
-
 export { useMediaManagerComponent } from "@/core/extensions/media-manager";
 export type { ChaiSidebarPanel } from "@/core/extensions/sidebar-panels";
 export * from "@/core/hooks";

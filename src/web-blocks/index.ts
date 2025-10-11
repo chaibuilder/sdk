@@ -2,7 +2,6 @@ import { registerChaiBlock } from "@chaibuilder/runtime";
 
 import { Component as Box, Config as BoxConfig, BoxProps } from "@/web-blocks/box";
 import { Component as Button, Config as ButtonConfig, ButtonProps } from "@/web-blocks/button";
-import { Component as CopyButton, Config as CopyButtonConfig, CopyButtonProps } from "@/web-blocks/copy-button";
 import { Component as CustomHTML, CustomHTMLBlockProps, Config as CustomHTMLConfig } from "@/web-blocks/custom-html";
 import {
   Component as CustomScript,
@@ -104,7 +103,6 @@ const loadWebBlocks = () => {
   registerChaiBlock<PartialBlockProps>(PartialBlock, PartialBlockConfig);
   registerChaiBlock<RowProps>(Row, RowConfig);
   registerChaiBlock<ColumnProps>(Column, ColumnConfig);
-  registerChaiBlock<CopyButtonProps>(CopyButton, CopyButtonConfig);
   registerChaiBlock<RepeaterProps>(Repeater, RepeaterConfig);
   registerChaiBlock<RepeaterItemProps>(RepeaterItem, RepeaterItemConfig);
   registerChaiBlock<RepeaterEmptyStateProps>(RepeaterEmptyState, RepeaterEmptyStateConfig);

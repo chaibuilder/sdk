@@ -1,4 +1,4 @@
-import { lsAiContextAtom, lsBlocksAtom } from "@/_demo/atoms-dev";
+import { lsBlocksAtom } from "@/_demo/atoms-dev";
 import CustomLayout from "@/_demo/custom-layout";
 import PreviewWeb from "@/_demo/preview/web-preview";
 import { ChaiBlock, ChaiBuilderEditor } from "@/core/main";
@@ -8,14 +8,13 @@ loadWebBlocks();
 
 function ChaiBuilderCustom() {
   const [blocks] = useAtom(lsBlocksAtom);
-  const [aiContext, setAiContext] = useAtom(lsAiContextAtom);
   return (
     <ChaiBuilderEditor
       locale={"pt-BR"}
       // translations={{ "pt-BR": ptBR, es: es }}
       layout={CustomLayout}
       debugLogs={true}
-      autoSaveSupport={false}
+      autoSave={false}
       previewComponent={PreviewWeb}
       blocks={blocks}
       onSave={async ({ blocks, providers, brandingOptions }: any) => {
@@ -25,11 +24,6 @@ function ChaiBuilderCustom() {
         await new Promise((resolve) => setTimeout(resolve, 2000));
         return true;
       }}
-      saveAiContextCallback={async (aiContext: string) => {
-        setAiContext(aiContext);
-        return true;
-      }}
-      aiContext={aiContext}
       askAiCallBack={async (type: "styles" | "content", prompt: string, blocks: ChaiBlock[]) => {
         console.log("askAiCallBack", type, prompt, blocks);
         return new Promise((resolve) => resolve({ error: new Error("Not implemented") }));

@@ -1,6 +1,6 @@
 import { useRightPanel, useSavePage } from "@/core/hooks";
 import { Button } from "@/ui/shadcn/components/ui/button";
-import { Eye, Paintbrush, Save } from "lucide-react";
+import { EyeOpenIcon, MixerHorizontalIcon, CheckIcon } from "@radix-ui/react-icons";
 
 export default function RightTop() {
   const [panel, setRightPanel] = useRightPanel();
@@ -12,17 +12,17 @@ export default function RightTop() {
         size="sm"
         className="gap-2"
         onClick={() => setRightPanel(panel !== "theme" ? "theme" : "block")}>
-        <Paintbrush className="h-4 w-4" />
+        <MixerHorizontalIcon className="h-4 w-4" />
         Theme
       </Button>
       <a href="/preview" target="_blank" rel="noopener noreferrer">
         <Button variant="outline" size="sm" className="gap-2">
-          <Eye className="h-4 w-4" />
+          <EyeOpenIcon className="h-4 w-4" />
           Preview
         </Button>
       </a>
       <Button variant="default" size="sm" className="gap-2" onClick={() => savePage(false)}>
-        <Save className="h-4 w-4" />
+        <CheckIcon className="h-4 w-4" />
         {saveState === "UNSAVED" ? "Draft" : "Saved"}
       </Button>
     </div>

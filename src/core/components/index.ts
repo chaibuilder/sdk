@@ -8,7 +8,7 @@ import Outline from "@/core/components/sidepanels/panels/outline/list-tree";
 import ThemeOptions from "@/core/components/sidepanels/panels/theme-configuration/ThemeConfigPanel";
 import i18n from "@/core/locales/load";
 
-export { AISetContext, AIUserPrompt } from "@/core/components/ask-ai-panel";
+export { AIUserPrompt } from "@/core/components/ask-ai-panel";
 export { Breakpoints as ScreenSizes } from "@/core/components/canvas/topbar/canvas-breakpoints";
 export { DarkMode as DarkModeSwitcher } from "@/core/components/canvas/topbar/dark-mode";
 export { UndoRedo } from "@/core/components/canvas/topbar/undo-redo";
