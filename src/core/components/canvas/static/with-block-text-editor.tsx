@@ -84,14 +84,11 @@ const RichTextEditor = memo(
       return `${basicClassName} ${editingElementClassName}`;
     }, [editingElement]);
 
-    const onKeyDown = useCallback(
-      (e) => {
-        if (e.key === "Escape") {
-          onEscape(e);
-        }
-      },
-      [onEscape],
-    );
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") {
+        onEscape(e);
+      }
+    };
 
     return (
       <div onKeyDown={onKeyDown} onClick={(e) => e.stopPropagation()} className="relative">
@@ -100,7 +97,7 @@ const RichTextEditor = memo(
             <MenuBar editor={editor} from="canvas" />
           </div>
         )}
-        <EditorContent value={blockContent} editor={editor} className={editorClassName} />
+        <EditorContent onKeyDown={onKeyDown} value={blockContent} editor={editor} className={editorClassName} />
       </div>
     );
   },

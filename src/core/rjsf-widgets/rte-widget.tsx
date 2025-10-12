@@ -34,7 +34,10 @@ import { Color, TextStyle } from "@tiptap/extension-text-style";
 import { HexAlphaColorPicker } from "react-colorful";
 import { useDebouncedState } from "@react-hookz/web";
 import { ChaiBlock } from "@/types/common";
-import { useInlineEditing, useSelectedBlock } from "../hooks";
+import { useDarkMode, useInlineEditing, useSelectedBlock } from "../hooks";
+import { lsThemeAtom } from "@/_demo/atoms-dev";
+import { useAtom } from "jotai";
+import { get, uniq } from "lodash-es";
 
 const getActiveClasses = (editor: any, keys: string[] | boolean, from: string) => {
   const isFromSettings = from === "settings";
@@ -88,33 +91,54 @@ const ColorPickerContent = ({
   onChange: (color: string, isInput?: boolean) => void;
   onRemove: () => void;
   onClose: () => void;
-}) => (
-  <div id="rte-widget-color-picker">
-    <div className="mb-2 text-xs font-medium">{title}</div>
-    <HexAlphaColorPicker color={color} onChange={onChange} style={{ width: "200px", height: "200px" }} />
-    <div className="mt-2 flex items-center gap-2">
-      <Input
-        type="text"
-        value={color || "#000000f2"}
-        onChange={(e) => onChange(e.target.value, true)}
-        className="!h-7 !w-[85px] !p-0 text-center font-mono text-xs font-medium uppercase"
-        placeholder="#000000"
-      />
-      <Button
-        type="button"
-        variant="ghost"
-        size="sm"
-        className="h-7 w-max px-2 py-1 text-xs"
-        onClick={() => {
-          onRemove();
-          onClose();
-        }}>
-        Remove
-      </Button>
-      <CheckIcon className="h-4 w-4 rounded-full border border-gray-500" />
+}) => {
+  const [darkMode] = useDarkMode();
+  const [theme]: [any, any] = useAtom(lsThemeAtom);
+  const colors = theme?.colors || {};
+  const themeColors = Object.values(colors).map((color) => get(color, darkMode ? "1" : "0"));
+  return (
+    <div id="rte-widget-color-picker">
+      <div className="mb-2 text-xs font-medium">{title}</div>
+      {themeColors && themeColors?.length > 0 && (
+        <div className="flex w-[180px] flex-wrap gap-2 pb-2">
+          {uniq(themeColors).map((hex) => (
+            <button
+              key={hex}
+              className="h-5 w-5 cursor-pointer rounded-full shadow outline outline-1 outline-gray-900 hover:opacity-80 hover:shadow-lg"
+              style={{ backgroundColor: hex }}
+              onClick={() => {
+                onChange(hex);
+                onClose();
+              }}
+              title={(hex || "#000000")?.toUpperCase()}
+            />
+          ))}
+        </div>
+      )}
+      <HexAlphaColorPicker color={color} onChange={onChange} style={{ width: "200px", height: "200px" }} />
+      <div className="mt-2 flex w-full items-center justify-between gap-2">
+        <Input
+          type="text"
+          value={color || "#000000f2"}
+          onChange={(e) => onChange(e.target.value, true)}
+          className="!h-7 !w-[95px] !p-0 text-center font-mono text-xs font-medium uppercase"
+          placeholder="#000000"
+        />
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          className="h-7 w-max px-2 py-1 text-xs"
+          onClick={() => {
+            onRemove();
+            onClose();
+          }}>
+          Remove
+        </Button>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 // Text Color Picker Component
 const TextColorPicker = ({ editor, value, from }: { editor: any; value?: string; from?: string }) => {
