@@ -94,6 +94,9 @@ export const HeadTags = () => {
           width: 16px !important;
           height: 16px !important;
           border: 1.5px solid #fff !important;
+        }
+        .prose :where(strong):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+          color: inherit !important;
         }`}
       </style>
     </>
