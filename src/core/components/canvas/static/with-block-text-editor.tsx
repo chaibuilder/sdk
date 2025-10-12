@@ -1,22 +1,16 @@
 import { useFrame } from "@/core/frame/frame-context";
 import { ChaiBlock } from "@/types/chai-block";
-import { cloneDeep } from "lodash-es";
-import { createElement, useEffect, useState, useRef, memo, useMemo, useCallback } from "react";
+import { useEffect, useState, useRef, memo, useMemo, useCallback } from "react";
 import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
 import { useBlockHighlight } from "@/core/hooks/use-block-highlight";
-import { BubbleMenu as TiptapBubbleMenu, EditorContent, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import TextAlign from "@tiptap/extension-text-align";
-import Link from "@tiptap/extension-link";
+import { EditorContent } from "@tiptap/react";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
-import Underline from "@tiptap/extension-underline";
-import Placeholder from "@tiptap/extension-placeholder";
-import { BubbleMenu } from "./bubble-menu";
 import { useLanguages } from "@/core/hooks/use-languages";
 import { get, has } from "lodash-es";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { useInlineEditing } from "@/core/hooks/use-inline-editing";
+import { MenuBar, useRTEditor } from "@/core/rjsf-widgets";
 
 /**
  * @description This is the editor that is used to edit the block content
@@ -37,49 +31,34 @@ const RichTextEditor = memo(
     onChange: (content: string) => void;
     onEscape: (e: KeyboardEvent) => void;
   }) => {
+    const [showMenu, setShowMenu] = useState({ show: false, top: 0 });
     const { document } = useFrame();
 
-    const editor = useEditor(
-      {
-        editable: true,
-        content: blockContent,
-        extensions: [
-          StarterKit,
-          Underline,
-          TextAlign.configure({
-            types: ["heading", "paragraph"],
-          }),
-          Link.configure({
-            openOnClick: false,
-            HTMLAttributes: {
-              class: "text-blue-500 hover:text-blue-600 underline",
-            },
-          }),
-          Placeholder.configure({
-            placeholder: "Enter text here",
-            emptyEditorClass:
-              "cursor-text before:content-[attr(data-placeholder)] before:absolute before:opacity-50 before:pointer-events-none",
-          }),
-        ],
-        onUpdate: ({ editor }) => onChange(editor?.getHTML() || ""),
-        onBlur: ({ editor, event }) => {
-          // Only close if clicked outside both editor and bubble menu
-          const target = event.relatedTarget as HTMLElement;
-          const editorElement = document.querySelector(".ProseMirror");
-          const bubbleMenu = document.querySelector(".tippy-box");
+    const editor = useRTEditor({
+      value: blockContent,
+      blockId: "active-inline-editing-element",
+      placeholder: "Enter text here",
+      onUpdate: ({ editor }) => onChange(editor?.getHTML() || ""),
+      onBlur: ({ editor, event }) => {
+        // Only close if clicked outside both editor and bubble menu
+        const target = event?.relatedTarget as HTMLElement;
+        const editorElement = document.querySelector(".ProseMirror");
+        const bubbleMenu = document.querySelector(".tippy-box");
+        const menuBar = document.querySelector("#chai-rich-text-menu-bar");
 
-          const isEditorClicked = editorElement?.contains(target);
-          const isBubbleMenuClicked = bubbleMenu?.contains(target);
+        const isEditorClicked = editorElement?.contains(target);
+        const isBubbleMenuClicked = bubbleMenu?.contains(target);
+        const isMenuBarClicked = menuBar?.contains(target);
+        const isColorPickerOpen = window.document.getElementById("rte-widget-color-picker");
 
-          // Check if click was outside both editor and bubble menu
-          if (!isEditorClicked && !isBubbleMenuClicked) {
-            const content = editor?.getHTML() || "";
-            onClose(content);
-          }
-        },
+        // Check if click was outside both editor and bubble menu
+        if (!isEditorClicked && !isBubbleMenuClicked && !isMenuBarClicked && !isColorPickerOpen) {
+          const content = editor?.getHTML() || "";
+          onClose(content);
+        }
       },
-      [],
-    );
+      from: "canvas",
+    });
 
     useEffect(() => {
       editor?.commands?.focus();
@@ -88,6 +67,9 @@ const RichTextEditor = memo(
         event: new FocusEvent("focus"),
         transaction: [] as any,
       });
+      setTimeout(() => {
+        setShowMenu({ show: true, top: editor?.view?.dom?.getBoundingClientRect()?.top - 32 });
+      }, 100);
     }, [editor]);
 
     const editorClassName = useMemo(() => {
@@ -108,17 +90,13 @@ const RichTextEditor = memo(
     );
 
     return (
-      <div onKeyDown={onKeyDown} onClick={(e) => e.stopPropagation()}>
-        {editor && (
-          <TiptapBubbleMenu
-            editor={editor}
-            tippyOptions={{
-              duration: 100,
-            }}>
-            <BubbleMenu editor={editor} />
-          </TiptapBubbleMenu>
+      <div onKeyDown={onKeyDown} onClick={(e) => e.stopPropagation()} className="relative">
+        {showMenu?.show && (
+          <div className="fixed" style={{ top: showMenu.top }}>
+            <MenuBar editor={editor} from="canvas" />
+          </div>
         )}
-        <EditorContent editor={editor} className={editorClassName} />
+        <EditorContent value={blockContent} editor={editor} className={editorClassName} />
       </div>
     );
   },
@@ -129,105 +107,105 @@ const RichTextEditor = memo(
  * It is memoized to prevent unnecessary re-renders
  * Editor for : Heading, Paragraph, Text, Span
  */
-const MemoizedEditor = memo(
-  ({
-    editingElement,
-    blockContent,
-    onClose,
-    editorRef,
-    onChange,
-    onEscape,
-  }: {
-    editingElement: HTMLElement;
-    blockContent: string;
-    onClose: () => void;
-    editorRef: React.RefObject<HTMLElement>;
-    onChange: (content: string) => void;
-    onEscape: (e: KeyboardEvent) => void;
-  }) => {
-    const { document, window } = useFrame();
+// const MemoizedEditor = memo(
+//   ({
+//     editingElement,
+//     blockContent,
+//     onClose,
+//     editorRef,
+//     onChange,
+//     onEscape,
+//   }: {
+//     editingElement: HTMLElement;
+//     blockContent: string;
+//     onClose: () => void;
+//     editorRef: React.RefObject<HTMLElement>;
+//     onChange: (content: string) => void;
+//     onEscape: (e: KeyboardEvent) => void;
+//   }) => {
+//     const { document, window } = useFrame();
 
-    useEffect(() => {
-      if (editorRef.current) {
-        editorRef.current.innerText = blockContent;
-        editorRef.current.focus();
+//     useEffect(() => {
+//       if (editorRef.current) {
+//         editorRef.current.innerHTML = blockContent;
+//         editorRef.current.focus();
 
-        // Move cursor to the end of the text content
-        const range = document.createRange();
-        const selection = window.getSelection();
+//         // Move cursor to the end of the text content
+//         const range = document.createRange();
+//         const selection = window.getSelection();
 
-        // Move cursor to the end of the text content
-        range.selectNodeContents(editorRef.current);
-        range.collapse(false); // This collapses the range to the end point
+//         // Move cursor to the end of the text content
+//         range.selectNodeContents(editorRef.current);
+//         range.collapse(false); // This collapses the range to the end point
 
-        // Apply the selection
-        selection?.removeAllRanges();
-        selection?.addRange(range);
+//         // Apply the selection
+//         selection?.removeAllRanges();
+//         selection?.addRange(range);
 
-        // Force focus and cursor position
-        editorRef.current.focus();
-      } else {
-        onClose();
-      }
-    }, [document, window]);
+//         // Force focus and cursor position
+//         editorRef.current.focus();
+//       } else {
+//         onClose();
+//       }
+//     }, [document, window]);
 
-    const elementTag = useMemo(() => {
-      const tag = editingElement?.tagName?.toLowerCase() || "div";
-      return tag === "button" ? "div" : tag;
-    }, [editingElement]);
+//     const elementTag = useMemo(() => {
+//       const tag = editingElement?.tagName?.toLowerCase() || "div";
+//       return tag === "button" ? "div" : tag;
+//     }, [editingElement]);
 
-    const onKeyDown = useCallback(
-      (e) => {
-        if (e.key === "Enter" || e.key === "Escape") {
-          onEscape(e);
-        }
-      },
-      [onEscape],
-    );
+//     const onKeyDown = useCallback(
+//       (e) => {
+//         if (e.key === "Enter" || e.key === "Escape") {
+//           onEscape(e);
+//         }
+//       },
+//       [onEscape],
+//     );
 
-    const onBlur = useCallback(() => {
-      onClose();
-    }, [onClose]);
+//     const onBlur = useCallback(() => {
+//       onClose();
+//     }, [onClose]);
 
-    const memoizedProps = useMemo(() => {
-      return {
-        id: "active-inline-editing-element",
-        contentEditable: true,
-        className: `${editingElement?.className?.replace("sr-only", "") || ""} outline outline-[2px] outline-green-500 shadow-none empty:before:content-[attr(data-placeholder)] empty:before:text-gray-400 empty:before:absolute empty:before:pointer-events-none empty:before:select-none empty:before:inset-0 empty:before:z-0 relative min-h-[1em]`,
-        style: (cloneDeep(editingElement?.style) || {}) as any,
-        onInput: (e) => {
-          const element = e.target as HTMLElement;
-          if (!element) return;
-          if (element.innerText.trim() === "") {
-            element.setAttribute("data-placeholder", "Enter text here");
-            if (element.children.length > 0) {
-              element.children[0].remove();
-            }
-          } else {
-            e.target.removeAttribute("data-placeholder");
-          }
+//     const memoizedProps = useMemo(() => {
+//       return {
+//         id: "active-inline-editing-element",
+//         contentEditable: true,
+//         className: `${editingElement?.className?.replace("sr-only", "") || ""} outline outline-[2px] outline-green-500 shadow-none empty:before:content-[attr(data-placeholder)] empty:before:text-gray-400 empty:before:absolute empty:before:pointer-events-none empty:before:select-none empty:before:inset-0 empty:before:z-0 relative min-h-[1em]`,
+//         style: (cloneDeep(editingElement?.style) || {}) as any,
+//         onInput: (e) => {
+//           const element = e.target as HTMLElement;
+//           if (!element) return;
+//           if (element.innerText.trim() === "") {
+//             element.setAttribute("data-placeholder", "Enter text here");
+//             if (element.children.length > 0) {
+//               element.children[0].remove();
+//             }
+//           } else {
+//             e.target.removeAttribute("data-placeholder");
+//           }
 
-          onChange(e.target.innerText);
-        },
-        onClick: (e) => {
-          e.stopPropagation();
-          e.preventDefault();
-        },
-      };
-    }, [editingElement?.className, editingElement?.style]);
+//           onChange(e.target.innerText);
+//         },
+//         onClick: (e) => {
+//           e.stopPropagation();
+//           e.preventDefault();
+//         },
+//       };
+//     }, [editingElement?.className, editingElement?.style]);
 
-    return (
-      <>
-        {createElement(elementTag, {
-          ref: editorRef,
-          onBlur: onBlur,
-          onKeyDown: onKeyDown,
-          ...memoizedProps,
-        })}
-      </>
-    );
-  },
-);
+//     return (
+//       <>
+//         {createElement(elementTag, {
+//           ref: editorRef,
+//           onBlur: onBlur,
+//           onKeyDown: onKeyDown,
+//           ...memoizedProps,
+//         })}
+//       </>
+//     );
+//   },
+// );
 
 /**
  * @description This is the component that is used to edit the block content
@@ -268,7 +246,8 @@ const WithBlockTextEditor = memo(
         setEditingElement(null);
         setEditingBlockId(null);
         setEditingItemIndex(-1);
-        setIds(blockId ? [blockId] : []);
+        setIds([]);
+        if (blockId) setTimeout(() => setIds([blockId]), 100);
       },
       [blockId, updateContent, setEditingBlockId, setIds, selectedLang],
     );
@@ -317,7 +296,7 @@ const WithBlockTextEditor = memo(
       if (!editingElement) return null;
       clearHighlight();
 
-      if (blockType === "RichText") {
+      if (["RichText", "Heading", "Paragraph", "Span"].includes(blockType)) {
         return (
           <RichTextEditor
             blockContent={blockContent}
@@ -329,16 +308,17 @@ const WithBlockTextEditor = memo(
         );
       }
 
-      return (
-        <MemoizedEditor
-          editorRef={editorRef}
-          blockContent={blockContent}
-          editingElement={editingElement}
-          onClose={handleClose}
-          onChange={handleChange}
-          onEscape={handleEscape}
-        />
-      );
+      return null;
+      // return (
+      //   <MemoizedEditor
+      //     editorRef={editorRef}
+      //     blockContent={blockContent}
+      //     editingElement={editingElement}
+      //     onClose={handleClose}
+      //     onChange={handleChange}
+      //     onEscape={handleEscape}
+      //   />
+      // );
     }, [editingElement, blockId, blockType, blockContent, handleClose, selectedLang]);
 
     return (
