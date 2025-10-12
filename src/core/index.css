@@ -244,3 +244,6 @@ select:focus {
   height: 16px !important;
   border: 1.5px solid #fff !important;
 }
+.prose :where(strong):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  color: inherit !important;
+}
