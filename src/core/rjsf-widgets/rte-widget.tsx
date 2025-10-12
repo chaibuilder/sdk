@@ -44,7 +44,7 @@ const getActiveClasses = (editor: any, keys: string[] | boolean, from: string) =
     "hover:bg-gray-200": isFromSettings && !isActive,
     "hover:bg-gray-700": !isFromSettings && !isActive,
     "bg-primary text-white": isActive && isFromSettings,
-    "bg-blue-900 text-white": isActive && !isFromSettings,
+    "bg-green-900 text-white": isActive && !isFromSettings,
   };
 };
 
@@ -153,7 +153,7 @@ const TextColorPicker = ({ editor, value, from }: { editor: any; value?: string;
               <rect x="6" y="24" width="20" height="4"></rect>
             </g>
           </svg>
-          <CaretDownIcon className="h-3 w-3 text-gray-500" />
+          <CaretDownIcon className="h-3 w-3 opacity-50" />
           {currentColor && (
             <div className="absolute bottom-1 left-1 h-0.5 w-3 rounded" style={{ backgroundColor: currentColor }} />
           )}
@@ -224,7 +224,7 @@ const HighlightColorPicker = ({ editor, value, from }: { editor: any; value?: st
               </g>
             </g>
           </svg>
-          <CaretDownIcon className="h-3 w-3 text-gray-500" />
+          <CaretDownIcon className="h-3 w-3 opacity-50" />
           {isHighlightActive && currentColor && (
             <div className="absolute bottom-1 left-1 h-0.5 w-3 rounded" style={{ backgroundColor: currentColor }} />
           )}
@@ -276,7 +276,7 @@ export const MenuBar = ({
     <div
       id="chai-rich-text-menu-bar"
       className={cn("mb-1 flex flex-wrap gap-0.5 rounded-t-md border-b border-border bg-gray-50 p-1", {
-        "-ml-0.5 -mt-px mb-0 h-8 rounded-none bg-primary text-white": from === "canvas",
+        "rounded-t-xs -ml-0.5 -mt-px mb-0 h-8 border-none bg-green-500 text-white": from === "canvas",
       })}>
       <button
         type="button"
@@ -321,7 +321,7 @@ export const MenuBar = ({
             className={cn("flex items-center", getActiveClasses(editor, ["bulletList", "orderedList"], from))}
             title="Bullet List">
             <ListBulletIcon className="h-4 w-4" />
-            <CaretDownIcon className="h-3 w-3 text-gray-500" />
+            <CaretDownIcon className="h-3 w-3 opacity-50" />
           </button>
         }
         content={
@@ -356,7 +356,7 @@ export const MenuBar = ({
             className={cn("flex items-center", getActiveClasses(editor, ["textAlign"], from))}
             title="Text Alignment">
             <TextAlignLeftIcon className="h-4 w-4" />
-            <CaretDownIcon className="h-3 w-3 text-gray-500" />
+            <CaretDownIcon className="h-3 w-3 opacity-50" />
           </button>
         }
         content={

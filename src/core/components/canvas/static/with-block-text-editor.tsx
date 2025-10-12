@@ -68,7 +68,11 @@ const RichTextEditor = memo(
         transaction: [] as any,
       });
       setTimeout(() => {
-        setShowMenu({ show: true, top: editor?.view?.dom?.getBoundingClientRect()?.top - 32 });
+        let top = editor?.view?.dom?.getBoundingClientRect()?.top - 32;
+        if (top < 0) {
+          top = editor?.view?.dom?.getBoundingClientRect()?.bottom;
+        }
+        setShowMenu({ show: true, top: top });
       }, 100);
     }, [editor]);
 
