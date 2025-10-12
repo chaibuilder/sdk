@@ -236,7 +236,6 @@ select:focus {
 }
 .react-colorful__hue,
 .react-colorful__alpha {
-  /* margin-top: 4px !important; */
   height: 12px !important;
   border-radius: 4px !important;
 }

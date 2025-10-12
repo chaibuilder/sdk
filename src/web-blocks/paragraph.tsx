@@ -2,6 +2,7 @@ import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesPro
 import { TextIcon } from "@radix-ui/react-icons";
 import { isNull } from "lodash-es";
 import * as React from "react";
+import { addForcedClasses } from "./helper";
 
 export type ParagraphProps = {
   styles: ChaiStyles;
@@ -13,8 +14,14 @@ const ParagraphBlock = (props: ChaiBlockComponentProps<ParagraphProps>) => {
 
   if (!isNull(props.children)) return React.createElement("p", { ...styles, ...blockProps }, props.children);
 
+  const forcedStyles = addForcedClasses(
+    styles,
+    "prose dark:prose-invert prose-p:m-0 prose-p:min-h-[1rem] prose-blockquote:m-2 prose-blockquote:ml-4 prose-ul:m-0 prose-ol:m-0 prose-li:m-0",
+    "max-w-full",
+  );
+
   return React.createElement("p", {
-    ...styles,
+    ...forcedStyles,
     ...blockProps,
     dangerouslySetInnerHTML: { __html: content },
   });

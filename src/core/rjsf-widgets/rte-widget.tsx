@@ -9,7 +9,7 @@ import TextAlign from "@tiptap/extension-text-align";
 import Underline from "@tiptap/extension-underline";
 import Placeholder from "@tiptap/extension-placeholder";
 import Highlight from "@tiptap/extension-highlight";
-import { EditorContent, useEditor } from "@tiptap/react";
+import { Editor, EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import {
   TextAlignCenterIcon,
@@ -25,15 +25,16 @@ import {
   CaretDownIcon,
   Link2Icon,
   LinkBreak2Icon,
+  CheckIcon,
 } from "@radix-ui/react-icons";
-import { useEffect, useRef, useState } from "react";
+import React, { cloneElement, useEffect, useRef, useState } from "react";
 import { DropdownMenu, Input } from "@/ui";
 import { DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/ui/shadcn/components/ui/dropdown-menu";
 import { Color, TextStyle } from "@tiptap/extension-text-style";
 import { HexAlphaColorPicker } from "react-colorful";
 import { useDebouncedState } from "@react-hookz/web";
 import { ChaiBlock } from "@/types/common";
-import { useSelectedBlock } from "../hooks";
+import { useInlineEditing, useSelectedBlock } from "../hooks";
 
 const getActiveClasses = (editor: any, keys: string[] | boolean, from: string) => {
   const isFromSettings = from === "settings";
@@ -45,6 +46,33 @@ const getActiveClasses = (editor: any, keys: string[] | boolean, from: string) =
     "bg-primary text-white": isActive && isFromSettings,
     "bg-blue-900 text-white": isActive && !isFromSettings,
   };
+};
+
+const _DropdownMenu = ({
+  trigger,
+  content,
+  from,
+}: {
+  trigger: React.ReactNode;
+  content: React.ReactNode;
+  from?: string;
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      {from === "canvas" &&
+        cloneElement(trigger as any, {
+          onClick: () => setIsOpen((prev) => !prev),
+        })}
+      <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+        <DropdownMenuTrigger className={`relative outline-none ${from === "canvas" ? "max-w-0 overflow-hidden" : ""}`}>
+          {trigger}
+        </DropdownMenuTrigger>
+        {isOpen && content}
+      </DropdownMenu>
+    </>
+  );
 };
 
 // Common Color Picker Component
@@ -61,7 +89,7 @@ const ColorPickerContent = ({
   onRemove: () => void;
   onClose: () => void;
 }) => (
-  <DropdownMenuContent className="z-50 rounded-md border bg-white p-3 shadow-xl">
+  <div id="rte-widget-color-picker">
     <div className="mb-2 text-xs font-medium">{title}</div>
     <HexAlphaColorPicker color={color} onChange={onChange} style={{ width: "200px", height: "200px" }} />
     <div className="mt-2 flex items-center gap-2">
@@ -69,7 +97,7 @@ const ColorPickerContent = ({
         type="text"
         value={color || "#000000f2"}
         onChange={(e) => onChange(e.target.value, true)}
-        className="!h-7 !w-[100px] !p-0 text-center font-mono text-xs font-medium uppercase"
+        className="!h-7 !w-[85px] !p-0 text-center font-mono text-xs font-medium uppercase"
         placeholder="#000000"
       />
       <Button
@@ -83,15 +111,15 @@ const ColorPickerContent = ({
         }}>
         Remove
       </Button>
+      <CheckIcon className="h-4 w-4 rounded-full border border-gray-500" />
     </div>
-  </DropdownMenuContent>
+  </div>
 );
 
 // Text Color Picker Component
 const TextColorPicker = ({ editor, value, from }: { editor: any; value?: string; from?: string }) => {
   const currentColor = editor?.getAttributes("textStyle")?.color;
   const [color, setColor] = useState(value || currentColor);
-  const [isOpen, setIsOpen] = useState(false);
   const [debouncedColor, setDebouncedColor] = useDebouncedState(color, 500);
 
   const handleColorChange = (newColor: string, isInput?: boolean) => {
@@ -110,8 +138,9 @@ const TextColorPicker = ({ editor, value, from }: { editor: any; value?: string;
   }, [debouncedColor]);
 
   return (
-    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-      <DropdownMenuTrigger className="relative outline-none" onClick={(e) => e.stopPropagation()}>
+    <_DropdownMenu
+      from={from}
+      trigger={
         <button
           type="button"
           className={cn("flex items-center", getActiveClasses(editor, Boolean(currentColor), from))}
@@ -129,20 +158,22 @@ const TextColorPicker = ({ editor, value, from }: { editor: any; value?: string;
             <div className="absolute bottom-1 left-1 h-0.5 w-3 rounded" style={{ backgroundColor: currentColor }} />
           )}
         </button>
-      </DropdownMenuTrigger>
-      {isOpen && (
-        <ColorPickerContent
-          color={color}
-          title="Text Color"
-          onChange={handleColorChange}
-          onRemove={() => {
-            editor?.chain().focus().unsetColor().run();
-            setColor("#000000");
-          }}
-          onClose={() => setIsOpen(false)}
-        />
-      )}
-    </DropdownMenu>
+      }
+      content={
+        <DropdownMenuContent className="z-50 rounded-md border bg-white p-3 shadow-xl">
+          <ColorPickerContent
+            color={color}
+            title="Text Color"
+            onChange={handleColorChange}
+            onRemove={() => {
+              editor?.chain().focus().unsetColor().run();
+              setColor("#000000");
+            }}
+            onClose={() => {}}
+          />
+        </DropdownMenuContent>
+      }
+    />
   );
 };
 
@@ -150,7 +181,6 @@ const TextColorPicker = ({ editor, value, from }: { editor: any; value?: string;
 const HighlightColorPicker = ({ editor, value, from }: { editor: any; value?: string; from?: string }) => {
   const currentColor = editor?.getAttributes("highlight")?.color;
   const [color, setColor] = useState(value || currentColor);
-  const [isOpen, setIsOpen] = useState(false);
   const [debouncedColor, setDebouncedColor] = useDebouncedState(color, 500);
   const isHighlightActive = editor?.isActive("highlight");
 
@@ -174,13 +204,14 @@ const HighlightColorPicker = ({ editor, value, from }: { editor: any; value?: st
   }, [debouncedColor]);
 
   return (
-    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-      <DropdownMenuTrigger className="relative outline-none">
+    <_DropdownMenu
+      from={from}
+      trigger={
         <button
           type="button"
           className={cn("flex items-center", getActiveClasses(editor, isHighlightActive, from))}
           title="Background Highlight">
-          <svg className="h-[12px] w-[12px]" fill="currentColor" viewBox="0 0 24 24">
+          <svg className="h-[16px] w-[16px]" fill="currentColor" viewBox="0 0 24 24">
             <g strokeWidth="0"></g>
             <g strokeLinecap="round" strokeLinejoin="round"></g>
             <g>
@@ -198,17 +229,19 @@ const HighlightColorPicker = ({ editor, value, from }: { editor: any; value?: st
             <div className="absolute bottom-1 left-1 h-0.5 w-3 rounded" style={{ backgroundColor: currentColor }} />
           )}
         </button>
-      </DropdownMenuTrigger>
-      {isOpen && (
-        <ColorPickerContent
-          color={color}
-          title="Background Highlight"
-          onChange={handleColorChange}
-          onRemove={() => editor?.chain().focus().unsetHighlight().run()}
-          onClose={() => setIsOpen(false)}
-        />
-      )}
-    </DropdownMenu>
+      }
+      content={
+        <DropdownMenuContent className="z-50 rounded-md border bg-white p-3 shadow-xl">
+          <ColorPickerContent
+            color={color}
+            title="Background Highlight"
+            onChange={handleColorChange}
+            onRemove={() => editor?.chain().focus().unsetHighlight().run()}
+            onClose={() => {}}
+          />
+        </DropdownMenuContent>
+      }
+    />
   );
 };
 
@@ -241,8 +274,9 @@ export const MenuBar = ({
 
   return (
     <div
+      id="chai-rich-text-menu-bar"
       className={cn("mb-1 flex flex-wrap gap-0.5 rounded-t-md border-b border-border bg-gray-50 p-1", {
-        "mb-0 rounded-md bg-primary text-white shadow-xl": from === "canvas",
+        "-ml-0.5 -mt-px mb-0 h-8 rounded-none bg-primary text-white": from === "canvas",
       })}>
       <button
         type="button"
@@ -280,8 +314,8 @@ export const MenuBar = ({
 
       <div className="mx-1 h-5 w-px self-center bg-border" />
 
-      <DropdownMenu>
-        <DropdownMenuTrigger className="outline-none">
+      <_DropdownMenu
+        trigger={
           <button
             type="button"
             className={cn("flex items-center", getActiveClasses(editor, ["bulletList", "orderedList"], from))}
@@ -289,29 +323,34 @@ export const MenuBar = ({
             <ListBulletIcon className="h-4 w-4" />
             <CaretDownIcon className="h-3 w-3 text-gray-500" />
           </button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="z-50 rounded-md border bg-white p-1 text-xs shadow-xl">
-          <DropdownMenuItem
-            onClick={() => editor.chain().focus().toggleBulletList().run()}
-            className={cn(
-              "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
-              getActiveClasses(editor, ["bulletList"], from),
-            )}>
-            <ListBulletIcon className="h-4 w-4" /> Unordered List
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => editor.chain().focus().toggleOrderedList().run()}
-            className={cn(
-              "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
-              getActiveClasses(editor, ["orderedList"], from),
-            )}>
-            <ValueIcon className="h-4 w-4" />
-            Ordered List
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-      <DropdownMenu>
-        <DropdownMenuTrigger className="outline-none">
+        }
+        content={
+          <DropdownMenuContent className="z-50 rounded-md border bg-white p-1 text-xs shadow-xl">
+            <DropdownMenuItem
+              onClick={() => editor.chain().focus().toggleBulletList().run()}
+              className={cn(
+                "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
+                getActiveClasses(editor, ["bulletList"], from),
+              )}>
+              <ListBulletIcon className="h-4 w-4" /> Unordered List
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => editor.chain().focus().toggleOrderedList().run()}
+              className={cn(
+                "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
+                getActiveClasses(editor, ["orderedList"], from),
+              )}>
+              <ValueIcon className="h-4 w-4" />
+              Ordered List
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        }
+        from={from}
+      />
+
+      <_DropdownMenu
+        from={from}
+        trigger={
           <button
             type="button"
             className={cn("flex items-center", getActiveClasses(editor, ["textAlign"], from))}
@@ -319,34 +358,36 @@ export const MenuBar = ({
             <TextAlignLeftIcon className="h-4 w-4" />
             <CaretDownIcon className="h-3 w-3 text-gray-500" />
           </button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="z-50 rounded-md border bg-white p-1 text-xs shadow-xl">
-          <DropdownMenuItem
-            onClick={() => editor.chain().focus().setTextAlign("left").run()}
-            className={cn(
-              "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
-              getActiveClasses(editor, ["textAlign"], from),
-            )}>
-            <TextAlignLeftIcon className="h-4 w-4" /> Align Left
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => editor.chain().focus().setTextAlign("center").run()}
-            className={cn(
-              "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
-              getActiveClasses(editor, ["textAlign"], from),
-            )}>
-            <TextAlignCenterIcon className="h-4 w-4" /> Align Center
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => editor.chain().focus().setTextAlign("right").run()}
-            className={cn(
-              "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
-              getActiveClasses(editor, ["textAlign"], from),
-            )}>
-            <TextAlignRightIcon className="h-4 w-4" /> Align Right
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+        }
+        content={
+          <DropdownMenuContent className="z-50 rounded-md border bg-white p-1 text-xs shadow-xl">
+            <DropdownMenuItem
+              onClick={() => editor.chain().focus().setTextAlign("left").run()}
+              className={cn(
+                "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
+                getActiveClasses(editor, ["textAlign"], from),
+              )}>
+              <TextAlignLeftIcon className="h-4 w-4" /> Align Left
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => editor.chain().focus().setTextAlign("center").run()}
+              className={cn(
+                "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
+                getActiveClasses(editor, ["textAlign"], from),
+              )}>
+              <TextAlignCenterIcon className="h-4 w-4" /> Align Center
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => editor.chain().focus().setTextAlign("right").run()}
+              className={cn(
+                "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
+                getActiveClasses(editor, ["textAlign"], from),
+              )}>
+              <TextAlignRightIcon className="h-4 w-4" /> Align Right
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        }
+      />
       {!editor.isActive("link") ? (
         <button
           type="button"
@@ -383,118 +424,15 @@ export const MenuBar = ({
 const RTEModal = ({
   isOpen,
   onClose,
-  id,
-  value,
-  onChange,
-  onBlur,
+  editor,
+  rteElement,
 }: {
+  editor: Editor;
   isOpen: boolean;
   onClose: () => void;
-  id: string;
-  value: string;
-  onChange: (value: string) => void;
-  onBlur: (id: string, value: string) => void;
+  rteElement: React.ReactNode;
 }) => {
-  const rteRef = useRef(null);
-  const initialContentRef = useRef(value || "");
   const pageExternalData = usePageExternalData();
-
-  // Add a style element to fix the z-index issue
-  useEffect(() => {
-    if (isOpen) {
-      // Create a style element
-      const styleEl = document.createElement("style");
-      styleEl.id = "rte-modal-styles";
-      styleEl.innerHTML = `
-        /* Ensure the NestedPathSelector popover appears above the dialog */
-        .rte-path-selector + [data-radix-popper-content-wrapper],
-        [data-radix-popper-content-wrapper] {
-          z-index: 9999 !important;
-        }
-      `;
-      document.head.appendChild(styleEl);
-
-      // Clean up on unmount
-      return () => {
-        const existingStyle = document.getElementById("rte-modal-styles");
-        if (existingStyle) {
-          existingStyle.remove();
-        }
-      };
-    }
-  }, [isOpen]);
-
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      TextStyle,
-      Color.configure({
-        types: ["textStyle"],
-      }),
-      Highlight.configure({
-        multicolor: true,
-        HTMLAttributes: {
-          class: "highlight",
-        },
-      }),
-      Link.configure({
-        openOnClick: false,
-        HTMLAttributes: {
-          class: "text-primary underline",
-        },
-      }),
-      TextAlign.configure({
-        types: ["heading", "paragraph"],
-        alignments: ["left", "center", "right"],
-        defaultAlignment: "left",
-      }),
-      Underline,
-      Placeholder.configure({
-        placeholder: "Enter text here",
-        emptyEditorClass:
-          "cursor-text before:content-[attr(data-placeholder)] before:absolute before:opacity-50 before:pointer-events-none",
-      }),
-    ],
-    content: value || "",
-    onUpdate: ({ editor }) => {
-      const html = editor.getHTML();
-      onChange(html);
-    },
-    onBlur: ({ editor }) => {
-      const html = editor.getHTML();
-      onBlur(id, html);
-    },
-    editorProps: {
-      attributes: {
-        class:
-          "prose prose-sm focus:outline-none min-h-[300px] p-2 dark:prose-invert prose-p:m-0 prose-blockquote:m-2 prose-blockquote:ml-4 prose-ul:m-0 prose-ol:m-0 prose-li:m-0",
-      },
-    },
-  });
-
-  useEffect(() => {
-    if (isOpen && editor) {
-      // Only set content when the modal first opens
-      if (initialContentRef.current !== value) {
-        initialContentRef.current = value || "";
-        editor.commands.setContent(value || "");
-      }
-
-      // Focus the editor after a short delay to ensure it's rendered
-      setTimeout(() => {
-        editor.commands.focus();
-      }, 100);
-    }
-  }, [isOpen, editor]);
-
-  // Ensure the editor instance is attached to the DOM element for data binding
-  useEffect(() => {
-    if (rteRef.current && editor) {
-      // This is critical for data binding to work - JSONForm.tsx looks for this property
-      // to access the editor instance and insert data binding placeholders
-      rteRef.current.__chaiRTE = editor;
-    }
-  }, [editor, isOpen]);
 
   const handlePathSelect = (path: string) => {
     if (!editor) return;
@@ -558,10 +496,7 @@ const RTEModal = ({
             )}
           </DialogTitle>
         </DialogHeader>
-        <div id={`chai-rte-modal-${id}`} ref={rteRef} className="rounded-md border border-input">
-          <MenuBar editor={editor} />
-          <EditorContent editor={editor} id={`modal-${id}`} className="p-2" />
-        </div>
+        {rteElement}
         <div className="mt-4 flex justify-end">
           <Button onClick={onClose}>Done</Button>
         </div>
@@ -576,8 +511,91 @@ const RTEModal = ({
 const RichTextEditorFieldComp = ({ blockId, id, placeholder, value, onChange, onBlur }: WidgetProps) => {
   const rteRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState("");
-  const editor = useEditor(
+
+  const editor = useRTEditor({
+    blockId,
+    value,
+    placeholder,
+    onBlur: ({ editor }) => {
+      const html = editor?.getHTML();
+      onBlur(id, html);
+    },
+    onUpdate: ({ editor }) => {
+      const html = editor?.getHTML();
+      onChange(html);
+    },
+  });
+
+  useEffect(() => {
+    // This is critical for data binding to work - JSONForm.tsx looks for this property
+    // to access the editor instance and insert data binding placeholders
+    if (rteRef.current && editor) {
+      rteRef.current.__chaiRTE = editor;
+    }
+  }, [blockId, editor]);
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const rteElement = (
+    <div id={`chai-rte-${id}`} ref={rteRef} className="mt-1 rounded-md border border-input">
+      <MenuBar editor={editor} onExpand={() => setIsModalOpen(true)} />
+      <EditorContent
+        key={id}
+        editor={editor}
+        id={id}
+        placeholder={placeholder}
+        className={`overflow-auto ${isModalOpen ? "max-h-[500px] min-h-[400px]" : "max-h-[200px] min-h-[100px]"}`}
+      />
+    </div>
+  );
+
+  return (
+    <>
+      {isModalOpen && (
+        <RTEModal isOpen={isModalOpen} onClose={handleModalClose} editor={editor} rteElement={rteElement} />
+      )}
+      {!isModalOpen ? <div className="relative">{rteElement}</div> : <div>Open in modal</div>}
+    </>
+  );
+};
+
+const RichTextEditorField = (props: WidgetProps) => {
+  const { editingBlockId } = useInlineEditing();
+  const [currentBlockId, setCurrentBlockId] = useState<string | null>(null);
+  const selectedBlock = useSelectedBlock() as ChaiBlock;
+  const blockId = selectedBlock?._id;
+
+  useEffect(() => {
+    setCurrentBlockId(blockId);
+  }, [blockId]);
+
+  return currentBlockId && currentBlockId !== editingBlockId ? (
+    <RichTextEditorFieldComp key={currentBlockId} {...props} blockId={currentBlockId} />
+  ) : null;
+};
+
+export { RichTextEditorField as RTEField };
+
+export const useRTEditor = ({
+  blockId,
+  value = "",
+  onUpdate = () => {},
+  onBlur = () => {},
+  placeholder = "",
+  from = "settings",
+  style = {},
+}: {
+  blockId: string;
+  value: string;
+  onUpdate?: (arg: { editor: Editor; event: Event }) => void;
+  onBlur: (arg: { editor: Editor; event: FocusEvent }) => void;
+  placeholder?: string;
+  from?: "settings" | "canvas";
+  style?: React.CSSProperties;
+}) => {
+  return useEditor(
     {
       extensions: [
         StarterKit,
@@ -610,93 +628,18 @@ const RichTextEditorFieldComp = ({ blockId, id, placeholder, value, onChange, on
         }),
       ],
       content: value || "",
-      onUpdate: ({ editor }) => {
-        const html = editor.getHTML();
-        onChange(html);
-
-        // Update modal content state when inline editor changes
-        // but only if modal is closed to prevent feedback loops
-        if (!isModalOpen) {
-          setModalContent(html);
-        }
-      },
-      onBlur: ({ editor }) => {
-        const html = editor.getHTML();
-        onBlur(id, html);
-      },
+      onUpdate: onUpdate as any,
+      onBlur: onBlur as any,
       editorProps: {
         attributes: {
+          ...((style ? { style } : {}) as any),
           class:
-            "prose prose-sm focus:outline-none min-h-[100px] p-1 dark:prose-invert prose-p:m-0 prose-blockquote:m-2 prose-blockquote:ml-4 prose-ul:m-0 prose-ol:m-0 prose-li:m-0",
+            from === "canvas"
+              ? ""
+              : "prose prose-sm focus:outline-none min-h-max p-1 dark:prose-invert prose-p:m-0 prose-blockquote:m-2 prose-blockquote:ml-4 prose-ul:m-0 prose-ol:m-0 prose-li:m-0",
         },
       },
     },
     [blockId],
   );
-
-  useEffect(() => {
-    // This is critical for data binding to work - JSONForm.tsx looks for this property
-    // to access the editor instance and insert data binding placeholders
-    if (rteRef.current && editor) {
-      rteRef.current.__chaiRTE = editor;
-    }
-  }, [blockId, editor]);
-
-  // Update modal content when value changes from outside
-  useEffect(() => {
-    setModalContent(value || "");
-  }, [blockId, value]);
-
-  const handleModalChange = (newValue: string) => {
-    // Just call onChange to update the form data
-    onChange(newValue);
-
-    // Update the inline editor only when the modal is closed
-    // to prevent cursor jumping during editing
-  };
-
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-
-    // Update the inline editor content when modal is closed
-    if (editor) {
-      editor.commands.setContent(modalContent);
-    }
-  };
-
-  return (
-    <>
-      <div className="relative">
-        <div id={`chai-rte-${id}`} ref={rteRef} className="mt-1 rounded-md border border-input">
-          <MenuBar editor={editor} onExpand={() => setIsModalOpen(true)} />
-          <EditorContent key={id} editor={editor} id={id} placeholder={placeholder} />
-        </div>
-      </div>
-
-      {isModalOpen && (
-        <RTEModal
-          isOpen={isModalOpen}
-          onClose={handleModalClose}
-          id={id}
-          value={modalContent}
-          onChange={handleModalChange}
-          onBlur={onBlur}
-        />
-      )}
-    </>
-  );
 };
-
-const RichTextEditorField = (props: WidgetProps) => {
-  const [currentBlockId, setCurrentBlockId] = useState<string | null>(null);
-  const selectedBlock = useSelectedBlock() as ChaiBlock;
-  const blockId = selectedBlock?._id;
-
-  useEffect(() => {
-    setCurrentBlockId(blockId);
-  }, [blockId]);
-
-  return currentBlockId ? <RichTextEditorFieldComp key={currentBlockId} {...props} blockId={currentBlockId} /> : null;
-};
-
-export { RichTextEditorField as RTEField };
