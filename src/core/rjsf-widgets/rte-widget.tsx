@@ -353,7 +353,14 @@ export const MenuBar = ({
         trigger={
           <button
             type="button"
-            className={cn("flex items-center", getActiveClasses(editor, ["textAlign"], from))}
+            className={cn(
+              "flex items-center",
+              getActiveClasses(
+                editor,
+                editor.isActive({ textAlign: "center" }) || editor.isActive({ textAlign: "right" }),
+                from,
+              ),
+            )}
             title="Text Alignment">
             <TextAlignLeftIcon className="h-4 w-4" />
             <CaretDownIcon className="h-3 w-3 opacity-50" />
@@ -365,7 +372,7 @@ export const MenuBar = ({
               onClick={() => editor.chain().focus().setTextAlign("left").run()}
               className={cn(
                 "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
-                getActiveClasses(editor, ["textAlign"], from),
+                getActiveClasses(editor, editor.isActive({ textAlign: "left" }), from),
               )}>
               <TextAlignLeftIcon className="h-4 w-4" /> Align Left
             </DropdownMenuItem>
@@ -373,7 +380,7 @@ export const MenuBar = ({
               onClick={() => editor.chain().focus().setTextAlign("center").run()}
               className={cn(
                 "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
-                getActiveClasses(editor, ["textAlign"], from),
+                getActiveClasses(editor, editor.isActive({ textAlign: "center" }), from),
               )}>
               <TextAlignCenterIcon className="h-4 w-4" /> Align Center
             </DropdownMenuItem>
@@ -381,7 +388,7 @@ export const MenuBar = ({
               onClick={() => editor.chain().focus().setTextAlign("right").run()}
               className={cn(
                 "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
-                getActiveClasses(editor, ["textAlign"], from),
+                getActiveClasses(editor, editor.isActive({ textAlign: "right" }), from),
               )}>
               <TextAlignRightIcon className="h-4 w-4" /> Align Right
             </DropdownMenuItem>
