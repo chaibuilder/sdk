@@ -57,7 +57,7 @@ export const Repeater = (props: ChaiBlockComponentProps<RepeaterProps>) => {
             ))
           : items,
       )}
-      {pagination && inBuilder && <PaginationWrapper styles={paginationStyles} />}
+      {pagination && <PaginationWrapper styles={paginationStyles} />}
     </>
   );
 };
