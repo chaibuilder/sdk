@@ -57,7 +57,7 @@ const _DropdownMenu = ({
   from,
 }: {
   trigger: React.ReactNode;
-  content: React.ReactNode;
+  content: React.ReactNode | ((onClose: () => void) => React.ReactNode);
   from?: string;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -72,7 +72,7 @@ const _DropdownMenu = ({
         <DropdownMenuTrigger className={`relative outline-none ${from === "canvas" ? "max-w-0 overflow-hidden" : ""}`}>
           {trigger}
         </DropdownMenuTrigger>
-        {isOpen && content}
+        {isOpen && (typeof content === "function" ? content(() => setIsOpen(false)) : content)}
       </DropdownMenu>
     </>
   );
@@ -183,7 +183,7 @@ const TextColorPicker = ({ editor, value, from }: { editor: any; value?: string;
           )}
         </button>
       }
-      content={
+      content={(onClose) => (
         <DropdownMenuContent className="z-50 rounded-md border bg-white p-3 shadow-xl">
           <ColorPickerContent
             color={color}
@@ -193,10 +193,10 @@ const TextColorPicker = ({ editor, value, from }: { editor: any; value?: string;
               editor?.chain().focus().unsetColor().run();
               setColor("#000000");
             }}
-            onClose={() => {}}
+            onClose={onClose}
           />
         </DropdownMenuContent>
-      }
+      )}
     />
   );
 };
@@ -254,17 +254,17 @@ const HighlightColorPicker = ({ editor, value, from }: { editor: any; value?: st
           )}
         </button>
       }
-      content={
+      content={(onClose) => (
         <DropdownMenuContent className="z-50 rounded-md border bg-white p-3 shadow-xl">
           <ColorPickerContent
             color={color}
             title="Background Highlight"
             onChange={handleColorChange}
             onRemove={() => editor?.chain().focus().unsetHighlight().run()}
-            onClose={() => {}}
+            onClose={onClose}
           />
         </DropdownMenuContent>
-      }
+      )}
     />
   );
 };
