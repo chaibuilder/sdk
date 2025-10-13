@@ -7,7 +7,7 @@ import {
   stylesProp,
 } from "@chaibuilder/runtime";
 import { LoopIcon } from "@radix-ui/react-icons";
-import { isEmpty } from "lodash-es";
+import { isEmpty, pick } from "lodash-es";
 import * as React from "react";
 import { PaginationWrapper } from "./pagination-wrapper";
 
@@ -18,11 +18,13 @@ export type RepeaterProps = {
   paginationStyles: ChaiStyles;
   pagination: boolean;
   paginationStrategy: "query" | "segment";
-  itemsPerPage: number;
+  limit: number;
+  totalItems?: number;
+  repeaterItems?: any[];
 };
 
 export const Repeater = (props: ChaiBlockComponentProps<RepeaterProps>) => {
-  const { children, tag, styles, blockProps, $loading, paginationStyles } = props;
+  const { children, tag, styles, blockProps, $loading } = props;
   const { pagination, inBuilder } = props;
   let items = children;
   if (isEmpty(items) && inBuilder) {
@@ -57,7 +59,11 @@ export const Repeater = (props: ChaiBlockComponentProps<RepeaterProps>) => {
             ))
           : items,
       )}
-      {pagination && <PaginationWrapper styles={paginationStyles} />}
+      {pagination && (
+        <PaginationWrapper
+          {...pick(props, ["limit", "totalItems", "paginationStrategy", "inBuilder", "draft", "lang"])}
+        />
+      )}
     </>
   );
 };

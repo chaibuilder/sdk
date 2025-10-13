@@ -1,13 +1,25 @@
 import { ChaiStyles, getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import { omit } from "lodash-es";
 import * as React from "react";
 
-export const PaginationWrapper = ({ styles }: { styles?: ChaiStyles }) => {
+type PaginationProps = {
+  styles?: ChaiStyles;
+  limit: number;
+  totalItems?: number;
+  paginationStrategy: "query" | "segment";
+  inBuilder?: boolean;
+  draft?: boolean;
+  lang?: string;
+};
+
+export const PaginationWrapper = (props: PaginationProps) => {
+  const { styles } = props;
   const pagination = getRegisteredChaiBlock("Pagination");
   return (
     <div {...styles}>
       {pagination ? (
-        React.createElement(pagination.component)
+        React.createElement(pagination.component, { ...omit(props, ["styles"]), blockProps: {} })
       ) : (
         <>
           <button

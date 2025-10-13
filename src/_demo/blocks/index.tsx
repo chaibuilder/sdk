@@ -3,7 +3,7 @@ import { Component as ModalComponent, Config as ModalConfig } from "@/_demo/bloc
 import { registerChaiBlock } from "@chaibuilder/runtime";
 
 const PaginationComponent = () => {
-  return <div>Pagination</div>;
+  return <div>Pagination New </div>;
 };
 
 const PaginationConfig = {
