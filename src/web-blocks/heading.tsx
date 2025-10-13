@@ -16,7 +16,7 @@ const HeadingBlock = (props: ChaiBlockComponentProps<HeadingProps>) => {
 
   const forcedStyles = addForcedClasses(
     styles,
-    "prose dark:prose-invert prose-p:m-0 prose-p:min-h-[1rem] prose-blockquote:m-2 prose-blockquote:ml-4 prose-ul:m-0 prose-ol:m-0 prose-li:m-0",
+    "prose prose-p:m-0 prose-p:min-h-[1rem] prose-blockquote:m-2 prose-blockquote:ml-4 prose-ul:m-0 prose-ol:m-0 prose-li:m-0",
     "max-w-full",
   );
 
