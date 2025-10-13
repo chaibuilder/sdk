@@ -87,7 +87,7 @@ export const RenderBlock = (
                   ? {
                       repeaterItems: applyLimit(blockWithBinding.repeaterItems, block),
                       $repeaterItemsKey: blockWithBinding.$repeaterItemsKey,
-                      repeaterTotalItems: blockWithBinding.repeaterTotalItems,
+                      repeaterTotalItems: blockWithBinding.repeaterTotalItems ?? -1,
                     }
                   : {}),
               }),
@@ -109,7 +109,7 @@ export const RenderBlock = (
             ? {
                 repeaterItems: applyLimit(blockWithBinding.repeaterItems, block),
                 $repeaterItemsKey: blockWithBinding.$repeaterItemsKey,
-                repeaterTotalItems: blockWithBinding.repeaterTotalItems,
+                repeaterTotalItems: blockWithBinding.repeaterTotalItems ?? -1,
               }
             : {}),
         }),
