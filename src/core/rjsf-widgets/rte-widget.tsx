@@ -26,6 +26,7 @@ import {
   Link2Icon,
   LinkBreak2Icon,
   CheckIcon,
+  Cross1Icon,
 } from "@radix-ui/react-icons";
 import React, { cloneElement, useEffect, useRef, useState } from "react";
 import { DropdownMenu, Input } from "@/ui";
@@ -44,10 +45,9 @@ const getActiveClasses = (editor: any, keys: string[] | boolean, from: string) =
   const isActive = typeof keys === "boolean" ? keys : keys.some((key) => editor.isActive(key));
   return {
     "rounded p-1": true,
-    "hover:bg-gray-200": isFromSettings && !isActive,
+    "hover:bg-gray-200": !isActive,
     "hover:bg-gray-700": !isFromSettings && !isActive,
-    "bg-primary text-white": isActive && isFromSettings,
-    "bg-green-900 text-white": isActive && !isFromSettings,
+    "bg-gray-300 text-gray-900": isActive,
   };
 };
 
@@ -80,86 +80,158 @@ const _DropdownMenu = ({
 
 // Common Color Picker Component
 const ColorPickerContent = ({
-  color,
-  title,
-  onChange,
-  onRemove,
+  textColor,
+  highlightColor,
+  onChangeTextColor,
+  onChangeHighlightColor,
+  onRemoveTextColor,
+  onRemoveHighlightColor,
   onClose,
 }: {
-  color: string;
-  title: string;
-  onChange: (color: string, isInput?: boolean) => void;
-  onRemove: () => void;
+  textColor: string;
+  highlightColor: string;
+  onChangeTextColor: (color: string, isInput?: boolean) => void;
+  onChangeHighlightColor: (color: string, isInput?: boolean) => void;
+  onRemoveTextColor: () => void;
+  onRemoveHighlightColor: () => void;
   onClose: () => void;
 }) => {
+  const [moreColors, setMoreColors] = useState("TEXT");
   const [darkMode] = useDarkMode();
   const [theme]: [any, any] = useAtom(lsThemeAtom);
   const colors = theme?.colors || {};
   const themeColors = Object.values(colors).map((color) => get(color, darkMode ? "1" : "0"));
+
+  const Commons = ({ type, title, color, onChange, onRemove }: any) => {
+    return (
+      <>
+        <div className="mb-2 flex items-center justify-between">
+          <div className="text-xs font-medium">{title}</div>
+          <Input
+            type="text"
+            value={color || "#000000f2"}
+            onChange={(e) => onChange(e.target.value, true)}
+            className="!h-5 !w-[90px] !p-0 text-center font-mono text-xs font-medium uppercase text-gray-600"
+            placeholder="#000000"
+          />
+        </div>
+
+        <div className="flex w-[180px] flex-wrap gap-2 pb-2">
+          {themeColors?.length > 0 &&
+            uniq(themeColors).map((hex) => (
+              <button
+                key={hex}
+                className={cn(
+                  "h-5 w-5 cursor-pointer rounded-full border border-gray-900 shadow hover:opacity-80 hover:shadow-lg",
+                  {
+                    "border-2": hex === color,
+                  },
+                )}
+                style={{ backgroundColor: hex }}
+                onClick={() => {
+                  onChange(hex);
+                  onClose();
+                }}
+                title={(hex || "#000000")?.toUpperCase()}
+              />
+            ))}
+          <button
+            className="relative flex h-5 w-5 cursor-pointer items-center justify-center overflow-hidden rounded-full hover:opacity-80 hover:shadow-lg"
+            onClick={() => {
+              setMoreColors((prev) => (prev !== type ? type : ""));
+            }}
+            title="#000000f2">
+            <div
+              className="absolute inset-0 rounded-full"
+              style={{
+                background:
+                  "conic-gradient(#ff0000, #ff5f00, #ffee00, #00ff40, #00ffe7, #0085ff, #7f00ff, #ff00aa, #ff0000)",
+                boxShadow: "0 0 100px 40px #b7efd6",
+              }}></div>
+          </button>
+          <button
+            className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-gray-500 shadow hover:opacity-80 hover:shadow-lg"
+            onClick={() => {
+              onRemove();
+              onClose();
+            }}
+            title="Remove">
+            <svg className="h-3 w-3" viewBox="0 0 167.751 167.751">
+              <path d="M0 83.875c0 46.249 37.626 83.875 83.875 83.875s83.875-37.626 83.875-83.875S130.125 0 83.875 0 0 37.626 0 83.875m83.875 68.876C45.897 152.751 15 121.854 15 83.875c0-16.292 5.698-31.272 15.191-43.078l96.762 96.762c-11.806 9.493-26.785 15.192-43.078 15.192m68.875-68.876c0 16.292-5.698 31.272-15.19 43.078L40.797 30.191C52.603 20.698 67.583 15 83.875 15c37.978 0 68.875 30.897 68.875 68.875" />
+            </svg>
+          </button>
+        </div>
+        {moreColors === type && (
+          <HexAlphaColorPicker color={color} onChange={onChange} style={{ width: "200px", height: "200px" }} />
+        )}
+      </>
+    );
+  };
+
   return (
     <div id="rte-widget-color-picker">
-      <div className="mb-2 text-xs font-medium">{title}</div>
-      {themeColors && themeColors?.length > 0 && (
-        <div className="flex w-[180px] flex-wrap gap-2 pb-2">
-          {uniq(themeColors).map((hex) => (
-            <button
-              key={hex}
-              className="h-5 w-5 cursor-pointer rounded-full shadow outline outline-1 outline-gray-900 hover:opacity-80 hover:shadow-lg"
-              style={{ backgroundColor: hex }}
-              onClick={() => {
-                onChange(hex);
-                onClose();
-              }}
-              title={(hex || "#000000")?.toUpperCase()}
-            />
-          ))}
-        </div>
-      )}
-      <HexAlphaColorPicker color={color} onChange={onChange} style={{ width: "200px", height: "200px" }} />
-      <div className="mt-2 flex w-full items-center justify-between gap-2">
-        <Input
-          type="text"
-          value={color || "#000000f2"}
-          onChange={(e) => onChange(e.target.value, true)}
-          className="!h-7 !w-[95px] !p-0 text-center font-mono text-xs font-medium uppercase"
-          placeholder="#000000"
-        />
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          className="h-7 w-max px-2 py-1 text-xs"
-          onClick={() => {
-            onRemove();
-            onClose();
-          }}>
-          Remove
-        </Button>
-      </div>
+      <Commons
+        type="TEXT"
+        title="Text Color"
+        onChange={onChangeTextColor}
+        color={textColor}
+        onRemove={onRemoveTextColor}
+      />
+      <div className="my-2 h-px bg-gray-400" />
+      <Commons
+        type="HIGHLIGHT"
+        title="Highlight Color"
+        onChange={onChangeHighlightColor}
+        color={highlightColor}
+        onRemove={onRemoveHighlightColor}
+      />
     </div>
   );
 };
 
 // Text Color Picker Component
 const TextColorPicker = ({ editor, value, from }: { editor: any; value?: string; from?: string }) => {
-  const currentColor = editor?.getAttributes("textStyle")?.color;
-  const [color, setColor] = useState(value || currentColor);
-  const [debouncedColor, setDebouncedColor] = useDebouncedState(color, 500);
+  const currentTextColor = editor?.getAttributes("textStyle")?.color;
+  const [textColor, setTextColor] = useState(value || currentTextColor);
+  const [debouncedTextColor, setDebouncedTextColor] = useDebouncedState(textColor, 500);
 
-  const handleColorChange = (newColor: string, isInput?: boolean) => {
-    setColor(newColor);
+  const currentHighlightColor = editor?.getAttributes("highlight")?.color;
+  const [highlightColor, setHighlightColor] = useState(value || currentHighlightColor);
+  const [debouncedHighlightColor, setDebouncedHighlightColor] = useDebouncedState(highlightColor, 500);
+
+  const handleHighlightColorChange = (newColor: string, isInput?: boolean) => {
+    setHighlightColor(newColor);
     if (isInput) {
-      setDebouncedColor(newColor);
+      setDebouncedHighlightColor(newColor);
+    } else {
+      editor?.chain().focus().setHighlight({ color: newColor }).run();
+    }
+  };
+
+  useEffect(() => {
+    if (currentHighlightColor) setHighlightColor(currentHighlightColor);
+  }, [currentHighlightColor]);
+
+  useEffect(() => {
+    if (debouncedHighlightColor?.includes("#") && debouncedHighlightColor?.length >= 3) {
+      editor?.chain().focus().setHighlight({ color: debouncedHighlightColor }).run();
+    }
+  }, [debouncedHighlightColor]);
+
+  const handleTextColorChange = (newColor: string, isInput?: boolean) => {
+    setTextColor(newColor);
+    if (isInput) {
+      setDebouncedTextColor(newColor);
     } else {
       editor?.chain().focus().setColor(newColor).run();
     }
   };
 
   useEffect(() => {
-    if (debouncedColor?.includes("#") && debouncedColor?.length >= 3) {
-      editor?.chain().focus().setColor(debouncedColor).run();
+    if (debouncedTextColor?.includes("#") && debouncedTextColor?.length >= 3) {
+      editor?.chain().focus().setColor(debouncedTextColor).run();
     }
-  }, [debouncedColor]);
+  }, [debouncedTextColor]);
 
   return (
     <_DropdownMenu
@@ -167,31 +239,28 @@ const TextColorPicker = ({ editor, value, from }: { editor: any; value?: string;
       trigger={
         <button
           type="button"
-          className={cn("flex items-center", getActiveClasses(editor, Boolean(currentColor), from))}
+          className={cn("relative flex items-center", getActiveClasses(editor, Boolean(currentTextColor), from))}
           title="Text Color">
-          <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 32 32">
-            <g strokeWidth="0"></g>
-            <g strokeLinecap="round" strokeLinejoin="round"></g>
-            <g>
-              <path d="M22,21h2L17,4H15L8,21h2l1.61-4h8.74Zm-9.57-6,3.44-8.37h.26L19.54,15Z"></path>
-              <rect x="6" y="24" width="20" height="4"></rect>
-            </g>
-          </svg>
+          <div
+            className="h-4 w-4 rounded-full outline outline-1 outline-gray-400"
+            style={{ backgroundColor: currentTextColor || (from === "canvas" ? "#FFFFFF" : "#000000") }}
+          />
           <CaretDownIcon className="h-3 w-3 opacity-50" />
-          {currentColor && (
-            <div className="absolute bottom-1 left-1 h-0.5 w-3 rounded" style={{ backgroundColor: currentColor }} />
-          )}
         </button>
       }
       content={(onClose) => (
         <DropdownMenuContent className="z-50 rounded-md border bg-white p-3 shadow-xl">
           <ColorPickerContent
-            color={color}
-            title="Text Color"
-            onChange={handleColorChange}
-            onRemove={() => {
+            textColor={textColor}
+            highlightColor={highlightColor}
+            onChangeTextColor={handleTextColorChange}
+            onChangeHighlightColor={handleHighlightColorChange}
+            onRemoveTextColor={() => {
               editor?.chain().focus().unsetColor().run();
-              setColor("#000000");
+              setTextColor("#000000");
+            }}
+            onRemoveHighlightColor={() => {
+              editor?.chain().focus().unsetHighlight().run();
             }}
             onClose={onClose}
           />
@@ -200,75 +269,6 @@ const TextColorPicker = ({ editor, value, from }: { editor: any; value?: string;
     />
   );
 };
-
-// Highlight Color Picker Component
-const HighlightColorPicker = ({ editor, value, from }: { editor: any; value?: string; from?: string }) => {
-  const currentColor = editor?.getAttributes("highlight")?.color;
-  const [color, setColor] = useState(value || currentColor);
-  const [debouncedColor, setDebouncedColor] = useDebouncedState(color, 500);
-  const isHighlightActive = editor?.isActive("highlight");
-
-  const handleColorChange = (newColor: string, isInput?: boolean) => {
-    setColor(newColor);
-    if (isInput) {
-      setDebouncedColor(newColor);
-    } else {
-      editor?.chain().focus().setHighlight({ color: newColor }).run();
-    }
-  };
-
-  useEffect(() => {
-    if (currentColor) setColor(currentColor);
-  }, [currentColor]);
-
-  useEffect(() => {
-    if (debouncedColor?.includes("#") && debouncedColor?.length >= 3) {
-      editor?.chain().focus().setHighlight({ color: debouncedColor }).run();
-    }
-  }, [debouncedColor]);
-
-  return (
-    <_DropdownMenu
-      from={from}
-      trigger={
-        <button
-          type="button"
-          className={cn("flex items-center", getActiveClasses(editor, isHighlightActive, from))}
-          title="Background Highlight">
-          <svg className="h-[16px] w-[16px]" fill="currentColor" viewBox="0 0 24 24">
-            <g strokeWidth="0"></g>
-            <g strokeLinecap="round" strokeLinejoin="round"></g>
-            <g>
-              <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                <g fill="currentColor" fillRule="nonzero">
-                  <path
-                    d="M20.2585648,2.00438474 C20.6382605,2.00472706 20.9518016,2.28716326 21.0011348,2.65328337 L21.0078899,2.75506004 L21.0038407,7.25276883 C21.0009137,8.40908568 20.1270954,9.36072944 19.0029371,9.48671858 L19.0024932,11.7464847 C19.0024932,12.9373487 18.0773316,13.9121296 16.906542,13.9912939 L16.7524932,13.9964847 L16.501,13.9963847 L16.5017549,16.7881212 C16.5017549,17.6030744 16.0616895,18.349347 15.3600767,18.7462439 L15.2057929,18.8258433 L8.57108142,21.9321389 C8.10484975,22.1504232 7.57411944,21.8450614 7.50959937,21.3535767 L7.50306874,21.2528982 L7.503,13.9963847 L7.25,13.9964847 C6.05913601,13.9964847 5.08435508,13.0713231 5.00519081,11.9005335 L5,11.7464847 L5.00043957,9.4871861 C3.92882124,9.36893736 3.08392302,8.49812196 3.0058865,7.41488149 L3,7.25086975 L3,2.75438506 C3,2.3401715 3.33578644,2.00438474 3.75,2.00438474 C4.12969577,2.00438474 4.44349096,2.28653894 4.49315338,2.6526145 L4.5,2.75438506 L4.5,7.25086975 C4.5,7.63056552 4.78215388,7.94436071 5.14822944,7.99402313 L5.25,8.00086975 L18.7512697,8.00087075 C19.1315998,8.00025031 19.4461483,7.71759877 19.4967392,7.3518545 L19.5038434,7.25019537 L19.5078902,2.75371008 C19.508263,2.33949668 19.8443515,2.00401258 20.2585648,2.00438474 Z M15.001,13.9963847 L9.003,13.9963847 L9.00306874,20.0736262 L14.5697676,17.4673619 C14.8004131,17.3593763 14.9581692,17.1431606 14.9940044,16.89581 L15.0017549,16.7881212 L15.001,13.9963847 Z M17.502,9.50038474 L6.5,9.50038474 L6.5,11.7464847 C6.5,12.1261805 6.78215388,12.4399757 7.14822944,12.4896381 L7.25,12.4964847 L16.7524932,12.4964847 C17.1321889,12.4964847 17.4459841,12.2143308 17.4956465,11.8482552 L17.5024932,11.7464847 L17.502,9.50038474 Z"
-                    id="🎨-Color"></path>
-                </g>
-              </g>
-            </g>
-          </svg>
-          <CaretDownIcon className="h-3 w-3 opacity-50" />
-          {isHighlightActive && currentColor && (
-            <div className="absolute bottom-1 left-1 h-0.5 w-3 rounded" style={{ backgroundColor: currentColor }} />
-          )}
-        </button>
-      }
-      content={(onClose) => (
-        <DropdownMenuContent className="z-50 rounded-md border bg-white p-3 shadow-xl">
-          <ColorPickerContent
-            color={color}
-            title="Background Highlight"
-            onChange={handleColorChange}
-            onRemove={() => editor?.chain().focus().unsetHighlight().run()}
-            onClose={onClose}
-          />
-        </DropdownMenuContent>
-      )}
-    />
-  );
-};
-
 /**
  * Menu Bar Component
  */
@@ -334,7 +334,6 @@ export const MenuBar = ({
       <div className="mx-1 h-5 w-px self-center bg-border" />
 
       <TextColorPicker editor={editor} from={from} />
-      <HighlightColorPicker editor={editor} from={from} />
 
       <div className="mx-1 h-5 w-px self-center bg-border" />
 
