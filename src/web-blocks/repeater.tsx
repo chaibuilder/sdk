@@ -7,17 +7,25 @@ import {
   stylesProp,
 } from "@chaibuilder/runtime";
 import { LoopIcon } from "@radix-ui/react-icons";
-import { isEmpty } from "lodash-es";
+import { isEmpty, pick } from "lodash-es";
 import * as React from "react";
+import { PaginationWrapper } from "./pagination-wrapper";
 
 export type RepeaterProps = {
   children?: React.ReactNode;
   tag: string;
   styles: ChaiStyles;
+  paginationStyles: ChaiStyles;
+  pagination: boolean;
+  paginationStrategy: "query" | "segment";
+  limit: number;
+  totalItems?: number;
+  repeaterItems?: any[];
 };
 
 export const Repeater = (props: ChaiBlockComponentProps<RepeaterProps>) => {
-  const { children, tag, styles, blockProps, inBuilder, $loading } = props;
+  const { children, tag, styles, blockProps, $loading } = props;
+  const { pagination, inBuilder } = props;
   let items = children;
   if (isEmpty(items) && inBuilder) {
     items = (
@@ -37,17 +45,26 @@ export const Repeater = (props: ChaiBlockComponentProps<RepeaterProps>) => {
         ))
       : items;
   }
-  return React.createElement(
-    tag,
-    { ...blockProps, ...styles },
-    $loading && inBuilder
-      ? Array.from({ length: 2 }).map((_, i) => (
-          <div key={i} className="animate-pulse rounded-md bg-primary/10 p-5">
-            <div className="h-6 w-1/2 rounded-md bg-primary/10"></div>
-            <div className="mt-2 h-4 w-1/2 rounded-md bg-primary/10"></div>
-          </div>
-        ))
-      : items,
+  return (
+    <>
+      {React.createElement(
+        tag,
+        { ...blockProps, ...styles },
+        $loading && inBuilder
+          ? Array.from({ length: 2 }).map((_, i) => (
+              <div key={i} className="animate-pulse rounded-md bg-primary/10 p-5">
+                <div className="h-6 w-1/2 rounded-md bg-primary/10"></div>
+                <div className="mt-2 h-4 w-1/2 rounded-md bg-primary/10"></div>
+              </div>
+            ))
+          : items,
+      )}
+      {pagination && (
+        <PaginationWrapper
+          {...pick(props, ["limit", "totalItems", "paginationStrategy", "inBuilder", "draft", "lang"])}
+        />
+      )}
+    </>
   );
 };
 
@@ -61,19 +78,11 @@ export const RepeaterConfig: Omit<ChaiBlockDefinition, "component"> = {
   blocks: () => [
     { _id: "A", _type: "Repeater", tag: "ul" },
     { _id: "B", _name: "Repeater Item", _type: "RepeaterItem", parentTag: "ul", _parent: "A" },
-    // { _id: "C", _name: "Empty State", _type: "RepeaterEmptyState", _parent: "A" },
-    // {
-    //   _id: "D",
-    //   _name: "Empty State Heading",
-    //   _type: "Heading",
-    //   _parent: "C",
-    //   styles: "#styles:,text-2xl text-center",
-    //   content: "No items",
-    // },
   ],
   ...registerChaiBlockSchema({
     properties: {
       styles: stylesProp("grid gap-4 md:grid-cols-2 xl:grid-cols-3"),
+      paginationStyles: stylesProp("flex items-center justify-center gap-2 p-4"),
       repeaterItems: {
         title: "Collection",
         type: "string",
@@ -90,11 +99,6 @@ export const RepeaterConfig: Omit<ChaiBlockDefinition, "component"> = {
         default: "ul",
         enum: ["none", "div", "ul", "ol"],
       },
-      limit: {
-        title: "Limit",
-        type: "number",
-        default: 3,
-      },
       filter: {
         title: "Filter by",
         type: "string",
@@ -107,8 +111,57 @@ export const RepeaterConfig: Omit<ChaiBlockDefinition, "component"> = {
         default: "",
         ui: { "ui:widget": "collectionSelect" },
       },
+      pagination: {
+        title: "Pagination",
+        type: "boolean",
+        default: false,
+      },
     },
+    allOf: [
+      {
+        if: {
+          properties: {
+            pagination: { const: true },
+          },
+        },
+        then: {
+          properties: {
+            paginationStrategy: {
+              type: "string",
+              title: "Pagination Strategy",
+              default: "segment",
+              enum: ["query", "segment"],
+              enumNames: ["Query(/items?page=1)", "Segment(/items/1)"],
+            },
+            limit: {
+              type: "number",
+              title: "Items Per Page",
+              default: 10,
+              minimum: 1,
+            },
+          },
+        },
+      },
+      {
+        if: {
+          properties: {
+            pagination: { const: false },
+          },
+        },
+        then: {
+          properties: {
+            limit: {
+              type: "number",
+              title: "Max items",
+              default: 10,
+              minimum: 1,
+            },
+          },
+        },
+      },
+    ],
   }),
+  canAcceptBlock: (type: string) => type === "Pagination",
 };
 
 export type RepeaterItemProps = {
