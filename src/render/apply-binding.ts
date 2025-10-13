@@ -1,6 +1,6 @@
 import { COLLECTION_PREFIX } from "@/core/constants/STRINGS";
 import { ChaiBlock } from "@/types/chai-block";
-import { cloneDeep, forEach, get, isArray, isString, keys, startsWith } from "lodash-es";
+import { cloneDeep, forEach, get, isArray, isEmpty, isString, keys, startsWith } from "lodash-es";
 
 const applyBindingToValue = (
   value: any,
@@ -62,7 +62,9 @@ export const applyBindingToBlockProps = (
     if (startsWith(clonedBlock.repeaterItems, `{{${COLLECTION_PREFIX}`)) {
       clonedBlock.$repeaterItemsKey =
         clonedBlock.repeaterItems = `${clonedBlock.repeaterItems.replace("}}", `/${clonedBlock._id}}}`)}`;
-      clonedBlock.repeaterTotalItems = `${clonedBlock.repeaterItems.replace("}}", `/${clonedBlock._id}_total}}`)}`;
+    }
+    if (!isEmpty(clonedBlock.repeaterItems)) {
+      clonedBlock.repeaterTotalItems = `${clonedBlock.repeaterItems.replace("}}", `/${clonedBlock._id}/totalItems}}`)}`;
     }
   }
   return applyBindingToValue(clonedBlock, pageExternalData, { index, key: repeaterKey });
