@@ -62,6 +62,7 @@ export const applyBindingToBlockProps = (
     if (startsWith(clonedBlock.repeaterItems, `{{${COLLECTION_PREFIX}`)) {
       clonedBlock.$repeaterItemsKey =
         clonedBlock.repeaterItems = `${clonedBlock.repeaterItems.replace("}}", `/${clonedBlock._id}}}`)}`;
+      clonedBlock.repeaterTotalItems = `${clonedBlock.repeaterItems.replace("}}", `/${clonedBlock._id}_total}}`)}`;
     }
   }
   return applyBindingToValue(clonedBlock, pageExternalData, { index, key: repeaterKey });
