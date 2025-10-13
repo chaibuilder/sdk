@@ -84,7 +84,7 @@ const RichTextEditor = memo(
       return `${basicClassName} ${editingElementClassName}`;
     }, [editingElement]);
 
-    const onKeyDown = (e) => {
+    const onKeyDown: any = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         onEscape(e);
       }
