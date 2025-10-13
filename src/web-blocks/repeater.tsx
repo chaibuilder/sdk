@@ -9,7 +9,7 @@ import {
 import { LoopIcon } from "@radix-ui/react-icons";
 import { isEmpty } from "lodash-es";
 import * as React from "react";
-import { DummyPagination } from "./dummy-pagination";
+import { PaginationWrapper } from "./pagination-wrapper";
 
 export type RepeaterProps = {
   children?: React.ReactNode;
@@ -57,7 +57,7 @@ export const Repeater = (props: ChaiBlockComponentProps<RepeaterProps>) => {
             ))
           : items,
       )}
-      {pagination && inBuilder && <DummyPagination styles={paginationStyles} />}
+      {pagination && inBuilder && <PaginationWrapper styles={paginationStyles} />}
     </>
   );
 };
