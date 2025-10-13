@@ -74,31 +74,6 @@ export const HeadTags = () => {
       <Fonts />
       <SelectedBlocks />
       <SelectedStylingBlocks />
-      <style>
-        {`.react-colorful {
-          height: 150px !important;
-          width: 180px !important;
-        }
-        .react-colorful > div {
-          margin-bottom: 4px;
-        }
-        .react-colorful__saturation {
-          border-radius: 4px !important;
-        }
-        .react-colorful__hue,
-        .react-colorful__alpha {
-          height: 12px !important;
-          border-radius: 4px !important;
-        }
-        .react-colorful__pointer {
-          width: 16px !important;
-          height: 16px !important;
-          border: 1.5px solid #fff !important;
-        }
-        .prose :where(strong):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
-          color: inherit !important;
-        }`}
-      </style>
     </>
   );
 };
