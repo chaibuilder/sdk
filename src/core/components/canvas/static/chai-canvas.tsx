@@ -47,13 +47,6 @@ export const isInlineEditable = (chaiBlock: HTMLElement | null, _blockType?: str
   if (!blockType) return false;
 
   // If the block has children, return false
-  if (chaiBlock && chaiBlock.children.length > 0) {
-    return false;
-  }
-
-  // Button is not inline editable for now, we will add it later for nested content
-  if (blockType === "Button") return false;
-
   return INLINE_EDITABLE_BLOCKS.includes(blockType);
 };
 
@@ -66,7 +59,6 @@ const useHandleCanvasDblClick = () => {
       e?.stopPropagation();
       if (editingBlockId) return;
       const chaiBlock: HTMLElement = getTargetedBlock(e.target);
-
       if (!isInlineEditable(chaiBlock)) return;
 
       const blockId = chaiBlock.getAttribute("data-block-id");
