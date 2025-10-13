@@ -7,8 +7,9 @@ import { Avatar } from "@/ui/shadcn/components/ui/avatar";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
 import { Textarea } from "@/ui/shadcn/components/ui/textarea";
-import { ImageIcon, ReloadIcon, PaperPlaneIcon, MagicWandIcon, Cross1Icon } from "@radix-ui/react-icons";
+import { ImageIcon, ReloadIcon, PaperPlaneIcon, Cross1Icon } from "@radix-ui/react-icons";
 import { useEffect, useRef, useState } from "react";
+import { AiIcon } from "./ai-icon";
 
 interface Message {
   id: string;
@@ -104,7 +105,7 @@ export default function AIChatPanel() {
       <ScrollArea className="flex-1 p-3">
         {messages.length === 0 ? (
           <div className="mt-10 flex h-full flex-col items-center justify-center p-4 text-center text-muted-foreground">
-            <MagicWandIcon className="mb-2 h-8 w-8 text-primary/50" />
+            <AiIcon className="mb-2 h-8 w-8 text-primary/50" />
             <p className="text-sm">Ask me anything to get started</p>
           </div>
         ) : (
@@ -118,7 +119,7 @@ export default function AIChatPanel() {
                 )}>
                 {message.role === "assistant" && (
                   <Avatar className="h-6 w-6 bg-primary/10">
-                    <MagicWandIcon className="h-3 w-3 text-primary" />
+                    <AiIcon className="h-3 w-3 text-primary" />
                   </Avatar>
                 )}
                 <div
@@ -138,7 +139,7 @@ export default function AIChatPanel() {
             {isLoading && (
               <div className="flex items-start gap-2">
                 <Avatar className="h-6 w-6 bg-primary/10">
-                  <MagicWandIcon className="h-3 w-3 text-primary" />
+                  <AiIcon className="h-3 w-3 text-primary" />
                 </Avatar>
                 <div className="rounded-lg bg-muted px-3 py-2">
                   <ReloadIcon className="h-4 w-4 animate-spin text-muted-foreground" />
