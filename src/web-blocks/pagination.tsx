@@ -1,23 +1,17 @@
 import { cn } from "@/core/functions/common-functions";
-import {
-  ChaiBlockComponentProps,
-  ChaiStyles,
-  closestBlockProp,
-  registerChaiBlockSchema,
-  StylesProp,
-} from "@chaibuilder/runtime";
-import { ButtonIcon, ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import { ChaiStyles } from "@chaibuilder/runtime";
+import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { get } from "lodash-es";
 
 export type PaginationBlockProps = {
-  styles: ChaiStyles;
-  activeItemStyle: ChaiStyles;
-  inactiveItemStyle: ChaiStyles;
-  arrowButtonStyles: ChaiStyles;
-  strategy: "query" | "segment";
-  visibleButtonCounts: number;
-  totalItems: number;
-  limit: number;
+  styles?: ChaiStyles;
+  activeItemStyle?: ChaiStyles;
+  inactiveItemStyle?: ChaiStyles;
+  arrowButtonStyles?: ChaiStyles;
+  strategy?: "query" | "segment";
+  visibleButtonCounts?: number;
+  totalItems?: number;
+  limit?: number;
 };
 
 // Get current page from URL
@@ -42,9 +36,8 @@ const getPageUrl = (strategy: "query" | "segment", page: number) => {
   }
 };
 
-export const PaginationBlock = (props: ChaiBlockComponentProps<PaginationBlockProps>) => {
+export const PaginationBlock = (props: PaginationBlockProps) => {
   const {
-    blockProps,
     styles,
     activeItemStyle,
     inactiveItemStyle,
@@ -123,51 +116,5 @@ export const PaginationBlock = (props: ChaiBlockComponentProps<PaginationBlockPr
     return buttons;
   };
 
-  return (
-    <div {...blockProps} {...styles}>
-      {renderPaginationButtons()}
-    </div>
-  );
-};
-
-export const PaginationBlockConfig = {
-  type: "Pagination",
-  icon: ButtonIcon,
-  label: "Pagination",
-  category: "core",
-  group: "basic",
-  ...registerChaiBlockSchema({
-    properties: {
-      styles: StylesProp("flex items-center justify-center gap-2"),
-      activeItemStyle: StylesProp(
-        "flex h-8 w-8 font-medium items-center justify-center select-none bg-blue-500 text-white rounded-full text-xs",
-      ),
-      inactiveItemStyle: StylesProp(
-        "flex h-8 w-8 font-medium items-center justify-center select-none bg-gray-200 text-gray-700 rounded-full text-xs hover:bg-gray-300",
-      ),
-      arrowButtonStyles: StylesProp(
-        "flex h-8 w-8 font-medium items-center justify-center select-none bg-gray-200 text-gray-700 rounded-full text-xs hover:bg-gray-300",
-      ),
-      strategy: {
-        type: "string",
-        title: "Pagination Strategy",
-        default: "query",
-        oneOf: [
-          { enum: ["query"], title: "Query Parameters" },
-          { enum: ["segment"], title: "URL Segment" },
-        ],
-      },
-      visibleButtonCounts: {
-        type: "number",
-        title: "Visible Button Count",
-        default: 3,
-        minimum: 1,
-        maximum: 7,
-      },
-      totalItems: closestBlockProp("Repeater", "totalItems"),
-      limit: closestBlockProp("Repeater", "limit"),
-    },
-  }),
-  canAcceptBlock: () => false,
-  canBeNested: (type: string) => type === "Repeater",
+  return <div {...styles}>{renderPaginationButtons()}</div>;
 };
