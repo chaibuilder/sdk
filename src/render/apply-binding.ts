@@ -63,7 +63,7 @@ export const applyBindingToBlockProps = (
       clonedBlock.$repeaterItemsKey =
         clonedBlock.repeaterItems = `${clonedBlock.repeaterItems.replace("}}", `/${clonedBlock._id}}}`)}`;
     }
-    if (!isEmpty(clonedBlock.repeaterItems)) {
+    if (!isEmpty(clonedBlock.repeaterItems) && clonedBlock.pagination) {
       clonedBlock.repeaterTotalItems = `${clonedBlock.repeaterItems.replace("}}", `/${clonedBlock._id}/totalItems}}`)}`;
     }
   }
