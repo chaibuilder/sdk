@@ -666,7 +666,7 @@ export const useRTEditor = ({
           class:
             from === "canvas"
               ? ""
-              : "prose prose-sm focus:outline-none min-h-max p-1 dark:prose-invert prose-p:m-0 prose-blockquote:m-2 prose-blockquote:ml-4 prose-ul:m-0 prose-ol:m-0 prose-li:m-0",
+              : "prose prose-sm focus:outline-none min-h-max p-1 prose-p:m-0 prose-blockquote:m-2 prose-blockquote:ml-4 prose-ul:m-0 prose-ol:m-0 prose-li:m-0",
         },
       },
     },
