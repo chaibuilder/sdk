@@ -2,7 +2,7 @@ import { ChaiStyles, getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import * as React from "react";
 
-export const DummyPagination = ({ styles }: { styles?: ChaiStyles }) => {
+export const PaginationWrapper = ({ styles }: { styles?: ChaiStyles }) => {
   const pagination = getRegisteredChaiBlock("Pagination");
   return (
     <div {...styles}>
