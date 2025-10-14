@@ -7,8 +7,8 @@ import { useAtom } from "jotai";
 import { useEffect, useMemo, useState } from "react";
 import { EXTERNAL_DATA } from "./_demo/EXTERNAL_DATA";
 import { PARTIALS } from "./_demo/PARTIALS";
+import "./core/index.css";
 import { ChaiBuilderThemeValues } from "./types/types";
-
 loadWebBlocks();
 registerCustomBlocks();
 
@@ -20,7 +20,7 @@ function Preview() {
 
   useEffect(() => {
     (async () => {
-      const styles = await getStylesForBlocks(blocks);
+      const styles = await getStylesForBlocks(blocks, true);
       setStyles(styles);
     })();
   }, [blocks]);

@@ -1,4 +1,3 @@
-import { addForcedClasses } from "@/web-blocks/helper";
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { CursorTextIcon } from "@radix-ui/react-icons";
 
@@ -9,12 +8,7 @@ export type RichTextProps = {
 
 const RichTextBlock = (props: ChaiBlockComponentProps<RichTextProps>) => {
   const { blockProps, content, styles } = props;
-  const forcedStyles = addForcedClasses(
-    styles,
-    "prose prose-p:m-0 prose-p:min-h-[1rem] prose-blockquote:m-2 prose-blockquote:ml-4 prose-ul:m-0 prose-ol:m-0 prose-li:m-0",
-    "max-w-full",
-  );
-  return <div {...blockProps} {...forcedStyles} dangerouslySetInnerHTML={{ __html: content }}></div>;
+  return <div {...blockProps} {...styles} dangerouslySetInnerHTML={{ __html: content }}></div>;
 };
 
 const Config = {

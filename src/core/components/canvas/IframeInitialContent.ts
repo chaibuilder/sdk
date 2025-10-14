@@ -70,8 +70,50 @@ export const IframeInitialContent: string = `<!doctype html>
         height: 16px !important;
         border: 1.5px solid #fff !important;
       }
-      .prose :where(strong):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
-        color: inherit !important;
+    </style>
+    <style type="text/tailwindcss">
+      @layer utilities {
+        .rte {
+          h1 {
+            @apply text-2xl;
+          }
+          h2 {
+            @apply text-xl;
+          }
+          h3 {
+            @apply text-lg;
+          }
+          h4 {
+            @apply text-base;
+          }
+          h5 {
+            @apply text-sm;
+          }
+          h6 {
+            @apply text-xs;
+          }
+          p {
+            @apply text-base;
+            &:empty {
+              @apply h-4;
+            }
+          }
+          ul {
+            @apply list-disc pl-6 text-base;
+          }
+          ol {
+            @apply list-decimal pl-6 text-base;
+          }
+          li > p {
+            @apply m-0;
+          }
+          blockquote {
+            @apply pl-4 text-base;
+            p {
+              @apply pl-4 text-base;
+            }
+          }
+        }
       }
     </style>
   </head>

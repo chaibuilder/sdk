@@ -1,42 +1,42 @@
+import { lsThemeAtom } from "@/_demo/atoms-dev";
 import { usePageExternalData } from "@/core/atoms/builder";
 import { NestedPathSelector } from "@/core/components/nested-path-selector";
 import { cn } from "@/core/utils/cn";
+import { ChaiBlock } from "@/types/common";
+import { DropdownMenu, Input } from "@/ui";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
-import { WidgetProps } from "@rjsf/utils";
-import Link from "@tiptap/extension-link";
-import TextAlign from "@tiptap/extension-text-align";
-import Underline from "@tiptap/extension-underline";
-import Placeholder from "@tiptap/extension-placeholder";
-import Highlight from "@tiptap/extension-highlight";
-import { Editor, EditorContent, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import { DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/ui/shadcn/components/ui/dropdown-menu";
 import {
+  CaretDownIcon,
+  EnterFullScreenIcon,
+  FontBoldIcon,
+  FontItalicIcon,
+  Link2Icon,
+  LinkBreak2Icon,
+  ListBulletIcon,
+  StrikethroughIcon,
   TextAlignCenterIcon,
   TextAlignLeftIcon,
   TextAlignRightIcon,
-  FontItalicIcon,
-  ListBulletIcon,
-  ValueIcon,
-  EnterFullScreenIcon,
-  StrikethroughIcon,
   UnderlineIcon,
-  FontBoldIcon,
-  CaretDownIcon,
-  Link2Icon,
-  LinkBreak2Icon,
+  ValueIcon,
 } from "@radix-ui/react-icons";
-import React, { cloneElement, useEffect, useRef, useState } from "react";
-import { DropdownMenu, Input } from "@/ui";
-import { DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/ui/shadcn/components/ui/dropdown-menu";
-import { Color, TextStyle } from "@tiptap/extension-text-style";
-import { HexAlphaColorPicker } from "react-colorful";
 import { useDebouncedState } from "@react-hookz/web";
-import { ChaiBlock } from "@/types/common";
-import { useDarkMode, useInlineEditing, useSelectedBlock } from "../hooks";
-import { lsThemeAtom } from "@/_demo/atoms-dev";
+import { WidgetProps } from "@rjsf/utils";
+import Highlight from "@tiptap/extension-highlight";
+import Link from "@tiptap/extension-link";
+import Placeholder from "@tiptap/extension-placeholder";
+import TextAlign from "@tiptap/extension-text-align";
+import { Color, TextStyle } from "@tiptap/extension-text-style";
+import Underline from "@tiptap/extension-underline";
+import { Editor, EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 import { useAtom } from "jotai";
 import { get, uniq } from "lodash-es";
+import React, { cloneElement, useEffect, useRef, useState } from "react";
+import { HexAlphaColorPicker } from "react-colorful";
+import { useDarkMode, useInlineEditing, useSelectedBlock } from "../hooks";
 
 const getActiveClasses = (editor: any, keys: string[] | boolean, from: string) => {
   const isFromSettings = from === "settings";
@@ -661,10 +661,7 @@ export const useRTEditor = ({
       editorProps: {
         attributes: {
           ...((style ? { style } : {}) as any),
-          class:
-            from === "canvas"
-              ? ""
-              : "prose prose-sm focus:outline-none min-h-max p-1 prose-p:m-0 prose-blockquote:m-2 prose-blockquote:ml-4 prose-ul:m-0 prose-ol:m-0 prose-li:m-0",
+          class: "text-sm p-1 px-2 rte",
         },
       },
     },

@@ -1,6 +1,5 @@
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import * as React from "react";
-import { addForcedClasses } from "./helper";
 
 export type SpanProps = {
   styles: ChaiStyles;
@@ -13,14 +12,8 @@ const SpanBlock = (props: ChaiBlockComponentProps<SpanProps>) => {
 
   if (children) return React.createElement("span", { ...styles, ...blockProps }, children);
 
-  const forcedStyles = addForcedClasses(
-    styles,
-    "prose prose-p:m-0 prose-p:min-h-[1rem] prose-blockquote:m-2 prose-blockquote:ml-4 prose-ul:m-0 prose-ol:m-0 prose-li:m-0",
-    "max-w-full",
-  );
-
   return React.createElement(tag || "span", {
-    ...forcedStyles,
+    ...styles,
     ...blockProps,
     dangerouslySetInnerHTML: { __html: content || "" },
   });
