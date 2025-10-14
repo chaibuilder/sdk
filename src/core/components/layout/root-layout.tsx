@@ -12,12 +12,11 @@ import { useTopBarComponent } from "@/core/extensions/top-bar";
 import { useBuilderProp, useSidebarActivePanel } from "@/core/hooks";
 import { useRightPanel } from "@/core/hooks/use-theme";
 import { isDevelopment } from "@/core/import-html/general";
-import { useChaiFeatureFlag } from "@/core/main";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/ui/shadcn/components/ui/sheet";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
-import { Cross1Icon, LightningBoltIcon, MagicWandIcon, MixerHorizontalIcon, StackIcon } from "@radix-ui/react-icons";
+import { Cross1Icon, LightningBoltIcon, MixerHorizontalIcon, StackIcon } from "@radix-ui/react-icons";
 import { useFeature } from "flagged";
 import { motion } from "framer-motion";
 import { compact, find, first, get, reverse } from "lodash-es";
@@ -33,6 +32,7 @@ import React, {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
+import { AiIcon } from "../ai/ai-icon";
 
 const DEFAULT_PANEL_WIDTH = 280;
 
@@ -54,16 +54,28 @@ const AiButton = ({ isActive, show }: { isActive: boolean; show: () => void; pan
 const AskAiButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
   return (
     <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
-      <MagicWandIcon className="rtl:ml-2" />
+      <AiIcon />
     </Button>
   );
 };
 function useSidebarDefaultPanels() {
   const askAiCallBack = useBuilderProp("askAiCallBack", null);
   const aiChat = useFeature("aiChat");
-  const aiChatLeft = useChaiFeatureFlag("enable-ai-chat-left");
   return useMemo(() => {
     const items = [];
+
+    items.push({
+      id: "ask-ai",
+      button: AskAiButton,
+      label: "Ask AI",
+      isInternal: true,
+      width: DEFAULT_PANEL_WIDTH,
+      panel: () => (
+        <div className="">
+          <AskAI />
+        </div>
+      ),
+    });
 
     items.push({
       id: "outline",
@@ -78,20 +90,6 @@ function useSidebarDefaultPanels() {
       ),
     });
 
-    if (aiChatLeft) {
-      items.unshift({
-        id: "ask-ai",
-        button: AskAiButton,
-        label: "Ask AI",
-        isInternal: true,
-        width: DEFAULT_PANEL_WIDTH,
-        panel: () => (
-          <div className="">
-            <AskAI />
-          </div>
-        ),
-      });
-    }
     if (askAiCallBack && aiChat) {
       items.unshift({
         id: "ai",
@@ -107,7 +105,7 @@ function useSidebarDefaultPanels() {
       });
     }
     return compact(items);
-  }, [askAiCallBack, aiChat, aiChatLeft]);
+  }, [askAiCallBack, aiChat]);
 }
 
 /**

@@ -3,10 +3,11 @@ import { useAskAi, useSelectedBlockIds } from "@/core/hooks";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
 import { Textarea } from "@/ui/shadcn/components/ui/textarea";
-import { MagicWandIcon, ReloadIcon } from "@radix-ui/react-icons";
+import { ReloadIcon } from "@radix-ui/react-icons";
 import { first } from "lodash-es";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { AiIcon } from "./ai/ai-icon";
 
 export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
   const { t } = useTranslation();
@@ -94,7 +95,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
       ) : (
         <div className="p-4 text-center">
           <div className="space-y-4 rounded-xl p-4 text-muted-foreground">
-            <MagicWandIcon className="mx-auto text-3xl text-muted-foreground" />
+            <AiIcon className="mx-auto h-7 w-7 text-muted-foreground" />
             <h1>{t("Please select a block to Ask AI")}</h1>
           </div>
         </div>
