@@ -640,7 +640,7 @@ export const useRTEditor = ({
         Link.configure({
           openOnClick: false,
           HTMLAttributes: {
-            class: "text-primary underline",
+            class: "underline",
           },
         }),
         TextAlign.configure({
@@ -661,7 +661,7 @@ export const useRTEditor = ({
       editorProps: {
         attributes: {
           ...((style ? { style } : {}) as any),
-          class: "text-sm p-1 px-2 rte",
+          class: from !== "canvas" ? "text-sm p-1 px-2 rte" : "rte",
         },
       },
     },

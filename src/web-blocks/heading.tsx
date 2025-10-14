@@ -1,6 +1,7 @@
 import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { HeadingIcon } from "@radix-ui/react-icons";
 import * as React from "react";
+import { addForcedClasses } from "./helper";
 
 export type HeadingProps = {
   tag: string;
@@ -13,8 +14,10 @@ const HeadingBlock = (props: ChaiBlockComponentProps<HeadingProps>) => {
 
   if (children) return React.createElement(tag, { ...styles, ...blockProps }, children);
 
+  const forcedStyles = addForcedClasses(styles, "rte");
+
   return React.createElement(tag, {
-    ...styles,
+    ...forcedStyles,
     ...blockProps,
     dangerouslySetInnerHTML: { __html: content },
   });

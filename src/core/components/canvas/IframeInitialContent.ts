@@ -93,7 +93,6 @@ export const IframeInitialContent: string = `<!doctype html>
             @apply text-xs;
           }
           p {
-            @apply text-base;
             &:empty {
               @apply h-4;
             }

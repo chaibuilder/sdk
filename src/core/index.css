@@ -265,7 +265,6 @@ select:focus {
     @apply text-xs;
   }
   p {
-    @apply text-base;
     &:empty {
       @apply h-4;
     }
