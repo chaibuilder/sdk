@@ -74,6 +74,24 @@ const RichTextEditor = memo(
         }
         setShowMenu({ show: true, top: top });
       }, 100);
+
+      let timeout: any;
+      const handleScroll = () => {
+        setShowMenu({ show: false, top: 0 });
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          let top = editor?.view?.dom?.getBoundingClientRect()?.top - 32;
+          if (top < 0) {
+            top = editor?.view?.dom?.getBoundingClientRect()?.bottom;
+          }
+          setShowMenu({ show: true, top: top });
+        }, 500);
+      };
+      document.addEventListener("scroll", handleScroll);
+      return () => {
+        document.removeEventListener("scroll", handleScroll);
+        clearTimeout(timeout);
+      };
     }, [editor]);
 
     const editorClassName = useMemo(() => {
