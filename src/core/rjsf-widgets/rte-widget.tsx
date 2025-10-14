@@ -25,8 +25,6 @@ import {
   CaretDownIcon,
   Link2Icon,
   LinkBreak2Icon,
-  CheckIcon,
-  Cross1Icon,
 } from "@radix-ui/react-icons";
 import React, { cloneElement, useEffect, useRef, useState } from "react";
 import { DropdownMenu, Input } from "@/ui";
