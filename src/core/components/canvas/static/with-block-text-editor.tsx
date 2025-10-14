@@ -12,6 +12,21 @@ import { useDebouncedCallback } from "@react-hookz/web";
 import { useInlineEditing } from "@/core/hooks/use-inline-editing";
 import { MenuBar, useRTEditor } from "@/core/rjsf-widgets";
 
+function getInitialTextAlign(element: HTMLElement) {
+  let el = element;
+  while (el) {
+    if (el.style && el.style.textAlign) {
+      return el.style.textAlign;
+    }
+    const computed = window.getComputedStyle(el).textAlign;
+    if (computed && computed !== "start" && computed !== "initial" && computed !== "inherit") {
+      return computed;
+    }
+    el = el.parentElement;
+  }
+  return null;
+}
+
 /**
  * @description This is the editor that is used to edit the block content
  * It is memoized to prevent unnecessary re-renders
@@ -31,7 +46,7 @@ const RichTextEditor = memo(
     onChange: (content: string) => void;
     onEscape: (e: KeyboardEvent) => void;
   }) => {
-    const [showMenu, setShowMenu] = useState({ show: false, top: 0 });
+    const [showMenu, setShowMenu] = useState({ show: false, top: 0, left: 0 });
     const { document } = useFrame();
 
     const editor = useRTEditor({
@@ -61,6 +76,10 @@ const RichTextEditor = memo(
     });
 
     useEffect(() => {
+      // * Setting text alignment
+      const textAlign = getInitialTextAlign(editingElement);
+      if (textAlign) editor?.commands?.setTextAlign(textAlign);
+
       editor?.commands?.focus();
       editor?.emit("focus", {
         editor,
@@ -68,23 +87,33 @@ const RichTextEditor = memo(
         transaction: [] as any,
       });
       setTimeout(() => {
-        let top = editor?.view?.dom?.getBoundingClientRect()?.top - 32;
+        const editorRect = editor?.view?.dom?.getBoundingClientRect();
+        let top = editorRect?.top - 32;
+        let left = editorRect?.left;
         if (top < 0) {
-          top = editor?.view?.dom?.getBoundingClientRect()?.bottom;
+          top = editorRect?.bottom;
         }
-        setShowMenu({ show: true, top: top });
+        if (left + 276 >= document.body.offsetWidth) {
+          left = editorRect?.right - 276;
+        }
+        setShowMenu({ show: true, top: top, left: left });
       }, 100);
 
       let timeout: any;
       const handleScroll = () => {
-        setShowMenu({ show: false, top: 0 });
+        setShowMenu({ show: false, top: 0, left: 0 });
         clearTimeout(timeout);
         timeout = setTimeout(() => {
-          let top = editor?.view?.dom?.getBoundingClientRect()?.top - 32;
+          const editorRect = editor?.view?.dom?.getBoundingClientRect();
+          let top = editorRect?.top - 32;
+          let left = editorRect?.left;
           if (top < 0) {
-            top = editor?.view?.dom?.getBoundingClientRect()?.bottom;
+            top = editorRect?.bottom;
           }
-          setShowMenu({ show: true, top: top });
+          if (left + 276 >= document.body.offsetWidth) {
+            left = editorRect?.right - 276;
+          }
+          setShowMenu({ show: true, top: top, left: left });
         }, 500);
       };
       document.addEventListener("scroll", handleScroll);
@@ -111,7 +140,7 @@ const RichTextEditor = memo(
     return (
       <div onKeyDown={onKeyDown} onClick={(e) => e.stopPropagation()} className="relative">
         {showMenu?.show && (
-          <div className="fixed" style={{ top: showMenu.top }}>
+          <div className="fixed" style={{ top: showMenu.top, left: showMenu.left }}>
             <MenuBar editor={editor} from="canvas" />
           </div>
         )}
