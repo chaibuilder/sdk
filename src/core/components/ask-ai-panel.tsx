@@ -1,5 +1,5 @@
 import { QuickPrompts } from "@/core/components/QuickPrompts";
-import { useAskAi, useSelectedBlockIds } from "@/core/hooks";
+import { useAskAi, useSelectedBlock, useSelectedBlockIds } from "@/core/hooks";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Textarea } from "@/ui/shadcn/components/ui/textarea";
 import { ArrowTopRightIcon, ReloadIcon, StopIcon } from "@radix-ui/react-icons";
@@ -7,6 +7,7 @@ import { first } from "lodash-es";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AiIcon } from "./ai/ai-icon";
+import { TypeIcon } from "./sidepanels/panels/outline/block-type-icon";
 
 export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
   const { t } = useTranslation();
@@ -14,6 +15,8 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
   const [prompt, setPrompt] = useState("");
   const promptRef = useRef(null);
   const timerRef = useRef(null);
+  const selectedBlock = useSelectedBlock();
+
   useEffect(() => {
     promptRef.current?.focus();
   }, []);
@@ -25,8 +28,17 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
   return (
     <div className="">
       {blockId ? (
-        <div className="mt-2">
-          <label className="text-xs font-medium">Quick actions</label>
+        <div className="">
+          <label className="text-xs font-medium text-gray-500">Selected block</label>
+          {selectedBlock && (
+            <div className="flex items-center gap-x-1 rounded border border-primary/20 bg-primary/10 p-1.5 text-xs text-primary">
+              <TypeIcon type={selectedBlock._type} />{" "}
+              <p className="truncate whitespace-nowrap leading-none">{selectedBlock._name || selectedBlock._type}</p>
+            </div>
+          )}
+          <br />
+
+          <label className="text-xs font-medium text-gray-500">Quick actions</label>
 
           <div className="rounded border p-2 text-sm">
             <QuickPrompts
@@ -39,7 +51,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
 
           <br />
 
-          <label className="text-xs font-medium">Custom prompt</label>
+          <label className="text-xs font-medium text-gray-500">Custom prompt</label>
           <div className="rounded border p-2 text-xs focus-within:border-gray-300">
             <Textarea
               ref={promptRef}
