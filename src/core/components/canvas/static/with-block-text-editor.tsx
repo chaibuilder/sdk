@@ -1,16 +1,16 @@
 import { useFrame } from "@/core/frame/frame-context";
-import { ChaiBlock } from "@/types/chai-block";
-import { useEffect, useState, useRef, memo, useMemo, useCallback, createElement } from "react";
-import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
 import { useBlockHighlight } from "@/core/hooks/use-block-highlight";
-import { EditorContent } from "@tiptap/react";
-import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { useInlineEditing } from "@/core/hooks/use-inline-editing";
 import { useLanguages } from "@/core/hooks/use-languages";
-import { get, has, cloneDeep } from "lodash-es";
+import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
+import { MenuBar, useRTEditor } from "@/core/rjsf-widgets";
+import { ChaiBlock } from "@/types/chai-block";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { useDebouncedCallback } from "@react-hookz/web";
-import { useInlineEditing } from "@/core/hooks/use-inline-editing";
-import { MenuBar, useRTEditor } from "@/core/rjsf-widgets";
+import { EditorContent } from "@tiptap/react";
+import { cloneDeep, get, has } from "lodash-es";
+import { createElement, memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 function getInitialTextAlign(element: HTMLElement) {
   let el = element;
@@ -344,7 +344,7 @@ const WithBlockTextEditor = memo(
       if (!editingElement) return null;
       clearHighlight();
 
-      if (["RichText", "Heading", "Paragraph", "Span"].includes(blockType)) {
+      if (["RichText", "Heading", "Paragraph"].includes(blockType)) {
         return (
           <RichTextEditor
             blockContent={blockContent}
