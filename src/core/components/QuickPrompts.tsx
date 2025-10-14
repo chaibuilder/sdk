@@ -74,7 +74,7 @@ export function QuickPrompts({ onClick }: { onClick: (prompt: string) => void })
 
   return (
     <div className={loading ? "pointer-events-none opacity-50" : ""}>
-      <ul className="space-y-2">
+      <ul className="space-y-1">
         {quickPrompts.map(({ name, icon: Icon, subMenus, prompt }: any) =>
           subMenus ? (
             <Popover>
@@ -95,9 +95,9 @@ export function QuickPrompts({ onClick }: { onClick: (prompt: string) => void })
           ) : (
             <li
               onClick={() => onClick(prompt)}
-              className="flex cursor-pointer items-center space-x-2 rounded p-1 text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="flex cursor-pointer items-center space-x-2 rounded p-1 text-xs hover:bg-primary/10 hover:text-primary dark:hover:bg-gray-800"
               key={name}>
-              <Icon className="h-4 w-4" />
+              <Icon className="h-3.5 w-3.5" />
               <span>{t(name)}</span>
             </li>
           ),
