@@ -1,9 +1,8 @@
 import { QuickPrompts } from "@/core/components/QuickPrompts";
 import { useAskAi, useSelectedBlockIds } from "@/core/hooks";
 import { Button } from "@/ui/shadcn/components/ui/button";
-import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
 import { Textarea } from "@/ui/shadcn/components/ui/textarea";
-import { ReloadIcon } from "@radix-ui/react-icons";
+import { ArrowTopRightIcon, ReloadIcon, StopIcon } from "@radix-ui/react-icons";
 import { first } from "lodash-es";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -27,70 +26,63 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
     <div className="">
       {blockId ? (
         <div className="mt-2">
-          <Textarea
-            ref={promptRef}
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            placeholder={t("Ask AI to edit content")}
-            className="w-full"
-            rows={3}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
+          <label className="text-xs font-medium">Quick actions</label>
+
+          <div className="rounded border p-2 text-sm">
+            <QuickPrompts
+              onClick={(prompt: string) => {
                 if (timerRef.current) clearTimeout(timerRef.current);
                 askAi("content", blockId, prompt, onComplete);
-              }
-            }}
-          />
+              }}
+            />
+          </div>
 
-          <div className="my-2 flex items-center gap-2">
-            {!loading ? (
+          <br />
+
+          <label className="text-xs font-medium">Custom prompt</label>
+          <div className="rounded border p-2 text-xs focus-within:border-gray-300">
+            <Textarea
+              ref={promptRef}
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              placeholder={t("Ask AI to edit content")}
+              className="w-full resize-none border-none p-0 text-xs shadow-none outline-none"
+              rows={3}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  if (timerRef.current) clearTimeout(timerRef.current);
+                  askAi("content", blockId, prompt, onComplete);
+                }
+              }}
+            />
+            <div className="flex items-center justify-end">
+              {loading && (
+                <Button variant="destructive" onClick={() => stop()} className="hidden h-4 w-4" size="icon">
+                  <StopIcon className="h-4 w-4" />
+                </Button>
+              )}
               <Button
-                disabled={prompt.trim().length < 5 || loading}
                 onClick={() => {
                   if (timerRef.current) clearTimeout(timerRef.current);
                   askAi("content", blockId, prompt, onComplete);
                 }}
                 variant="default"
-                className="w-fit"
-                size="sm">
-                {loading ? (
-                  <>
-                    <ReloadIcon className="h-5 w-5 animate-spin" />
-                    {t("Generating... Please wait...")}
-                  </>
-                ) : (
-                  t("Edit with AI")
-                )}
+                className="h-7 w-7"
+                disabled={loading || prompt.trim().length < 1}
+                size="icon">
+                {loading ? <ReloadIcon className="h-4 w-4 animate-spin" /> : <ArrowTopRightIcon className="h-4 w-4" />}
               </Button>
-            ) : null}
-            {loading ? (
-              <div className="flex flex-col gap-2">
-                <Skeleton className="flex w-full items-center space-x-1 px-4 py-1 pl-2">
-                  <ReloadIcon className="h-4 w-4 animate-spin text-gray-500" />
-                  <p className="text-xs">{t("Generating... Please wait...")}</p>
-                </Skeleton>
-                <Button variant="destructive" onClick={() => stop()} className="hidden w-fit" size="sm">
-                  {t("Stop")}
-                </Button>
-              </div>
-            ) : null}
+            </div>
           </div>
-          <div className="max-w-full">
+
+          <div className="max-w-full pt-2">
             {error && (
               <p className="break-words rounded border border-red-500 bg-red-100 p-1 text-xs text-red-500">
                 {error.message}
               </p>
             )}
           </div>
-          <br />
-
-          <QuickPrompts
-            onClick={(prompt: string) => {
-              if (timerRef.current) clearTimeout(timerRef.current);
-              askAi("content", blockId, prompt, onComplete);
-            }}
-          />
         </div>
       ) : (
         <div className="p-4 text-center">
