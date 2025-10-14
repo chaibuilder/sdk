@@ -4,7 +4,7 @@ import { omit } from "lodash-es";
 import * as React from "react";
 
 type PaginationProps = {
-  styles?: ChaiStyles;
+  paginationStyles: ChaiStyles;
   limit: number;
   totalItems?: number;
   paginationStrategy: "query" | "segment";
@@ -14,12 +14,12 @@ type PaginationProps = {
 };
 
 export const PaginationWrapper = (props: PaginationProps) => {
-  const { styles } = props;
+  const { paginationStyles } = props;
   const pagination = getRegisteredChaiBlock("Pagination");
   return (
-    <div {...styles}>
+    <div {...paginationStyles}>
       {pagination ? (
-        React.createElement(pagination.component, { ...omit(props, ["styles"]), blockProps: {} })
+        React.createElement(pagination.component, { ...omit(props, ["paginationStyles"]), blockProps: {} })
       ) : (
         <>
           <button

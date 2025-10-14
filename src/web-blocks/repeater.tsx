@@ -61,7 +61,15 @@ export const Repeater = (props: ChaiBlockComponentProps<RepeaterProps>) => {
       )}
       {pagination && (
         <PaginationWrapper
-          {...pick(props, ["limit", "totalItems", "paginationStrategy", "inBuilder", "draft", "lang"])}
+          {...pick(props, [
+            "limit",
+            "totalItems",
+            "paginationStrategy",
+            "inBuilder",
+            "draft",
+            "lang",
+            "paginationStyles",
+          ])}
         />
       )}
     </>
