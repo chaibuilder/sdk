@@ -14,8 +14,9 @@ import {
   UnderlineIcon,
   ValueIcon,
 } from "@radix-ui/react-icons";
-import RteDropdownMenu from "./menu-bar-dropdown-item";
+import RteDropdownMenu from "./rte-dropdown-menu";
 import RteColorPicker from "./rte-color-picker";
+import { useRef } from "react";
 
 const getActiveClasses = (editor: any, keys: string[] | boolean, from: string) => {
   const isFromSettings = from === "settings";
@@ -36,6 +37,7 @@ interface RteMenubarProps {
 }
 
 const RteMenubar = ({ editor, from = "settings", onExpand }: RteMenubarProps) => {
+  const menuRef = useRef(null);
   if (!editor) return null;
 
   const addLink = () => {
@@ -51,6 +53,7 @@ const RteMenubar = ({ editor, from = "settings", onExpand }: RteMenubarProps) =>
 
   return (
     <div
+      ref={menuRef}
       id="chai-rich-text-menu-bar"
       className={cn("mb-1 flex flex-wrap gap-0.5 rounded-t-md border-b border-border bg-gray-50 p-1", {
         "mb-0 rounded-md border-none bg-blue-500 text-white": from === "canvas",
@@ -88,12 +91,14 @@ const RteMenubar = ({ editor, from = "settings", onExpand }: RteMenubarProps) =>
       <div className="mx-1 h-5 w-px self-center bg-border" />
 
       {/* COLOR PICKER */}
-      <RteColorPicker editor={editor} from={from} />
+      <RteColorPicker editor={editor} from={from} menuRef={menuRef} />
 
       <div className="mx-1 h-5 w-px self-center bg-border" />
 
       {/* LIST */}
       <RteDropdownMenu
+        menuRef={menuRef}
+        from={from}
         trigger={
           <button
             type="button"
@@ -134,6 +139,8 @@ const RteMenubar = ({ editor, from = "settings", onExpand }: RteMenubarProps) =>
 
       {/* TEXT ALIGNMENT */}
       <RteDropdownMenu
+        menuRef={menuRef}
+        from={from}
         trigger={
           <button
             type="button"

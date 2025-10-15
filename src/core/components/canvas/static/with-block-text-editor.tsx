@@ -5,7 +5,7 @@ import { useLanguages } from "@/core/hooks/use-languages";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
 import { useRTEditor } from "@/core/rjsf-widgets/rte-widget/use-rte-editor";
-import RteMenubar from "@/core/rjsf-widgets/rte-widget/menu-bar";
+import RteMenubar from "@/core/rjsf-widgets/rte-widget/rte-menu-bar";
 import { ChaiBlock } from "@/types/chai-block";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { useDebouncedCallback } from "@react-hookz/web";
@@ -47,7 +47,6 @@ const RichTextEditor = memo(
     onChange: (content: string) => void;
     onEscape: (e: KeyboardEvent) => void;
   }) => {
-    const [showMenu, setShowMenu] = useState({ show: false, top: 0, left: 0 });
     const { document } = useFrame();
 
     const editor = useRTEditor({
@@ -87,41 +86,6 @@ const RichTextEditor = memo(
         event: new FocusEvent("focus"),
         transaction: [] as any,
       });
-      setTimeout(() => {
-        const editorRect = editor?.view?.dom?.getBoundingClientRect();
-        let top = editorRect?.top - 32;
-        let left = editorRect?.left;
-        if (top < 0) {
-          top = editorRect?.bottom;
-        }
-        if (left + 276 >= document.body.offsetWidth) {
-          left = editorRect?.right - 276;
-        }
-        setShowMenu({ show: true, top: top, left: left });
-      }, 100);
-
-      let timeout: any;
-      const handleScroll = () => {
-        setShowMenu({ show: false, top: 0, left: 0 });
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {
-          const editorRect = editor?.view?.dom?.getBoundingClientRect();
-          let top = editorRect?.top - 32;
-          let left = editorRect?.left;
-          if (top < 0) {
-            top = editorRect?.bottom;
-          }
-          if (left + 276 >= document.body.offsetWidth) {
-            left = editorRect?.right - 276;
-          }
-          setShowMenu({ show: true, top: top, left: left });
-        }, 500);
-      };
-      document.addEventListener("scroll", handleScroll);
-      return () => {
-        document.removeEventListener("scroll", handleScroll);
-        clearTimeout(timeout);
-      };
     }, [editor]);
 
     const editorClassName = useMemo(() => {
@@ -141,7 +105,11 @@ const RichTextEditor = memo(
     return (
       editor && (
         <div onKeyDown={onKeyDown} onClick={(e) => e.stopPropagation()} className="relative">
-          <BubbleMenu editor={editor} className="w-max">
+          <BubbleMenu
+            editor={editor}
+            shouldShow={() => true}
+            tippyOptions={{ duration: 100, arrow: true, hideOnClick: false }}
+            className="w-max">
             <RteMenubar editor={editor} from="canvas" />
           </BubbleMenu>
           <EditorContent onKeyDown={onKeyDown} value={blockContent} editor={editor} className={editorClassName} />

@@ -1,7 +1,7 @@
 import { WidgetProps } from "@rjsf/utils";
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import { useInlineEditing, useSelectedBlock } from "../../hooks";
-import RteMenubar from "./menu-bar";
+import RteMenubar from "./rte-menu-bar";
 import { ChaiBlock } from "../../main";
 import { useRTEditor } from "./use-rte-editor";
 import { EditorContent } from "@tiptap/react";
