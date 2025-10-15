@@ -22,52 +22,46 @@ const getActiveClasses = (editor: any, keys: string[] | boolean, from: string) =
   };
 };
 
-const Commons = ({ themeColors, onClose, type, color, onChange, onRemove, moreColors, setMoreColors }: any) => {
+const Commons = ({ themeColors, onClose, color, onChange, onRemove }: any) => {
   return (
     <>
-      {type === moreColors && (
-        <>
-          <div className="flex w-[180px] flex-wrap gap-1 pb-2">
-            {themeColors?.length > 0 &&
-              uniq(themeColors).map((hex) => (
-                <button
-                  key={hex}
-                  className={cn(
-                    "h-5 w-5 cursor-pointer rounded-full border border-gray-900 shadow hover:opacity-80 hover:shadow-lg",
-                    {
-                      "border-2": hex === color,
-                    },
-                  )}
-                  style={{ backgroundColor: hex }}
-                  onClick={() => {
-                    onChange(hex);
-                    onClose();
-                  }}
-                  title={(hex || "#000000")?.toUpperCase()}
-                />
-              ))}
-            <Input
-              type="text"
-              value={color || "#000000f2"}
-              onChange={(e) => onChange(e.target.value, true)}
-              className="!h-5 !w-[92px] rounded-sm !p-0 text-center text-xs font-medium uppercase text-gray-600 outline-none"
-              placeholder="#000000"
-            />
+      <div className="flex w-[180px] flex-wrap gap-1 pb-2">
+        {themeColors?.length > 0 &&
+          uniq(themeColors).map((hex) => (
             <button
-              className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-red-100 text-red-600 shadow hover:opacity-80 hover:shadow-lg"
+              key={hex}
+              className={cn(
+                "h-5 w-5 cursor-pointer rounded-full border border-gray-900 shadow hover:opacity-80 hover:shadow-lg",
+                {
+                  "border-2": hex === color,
+                },
+              )}
+              style={{ backgroundColor: hex }}
               onClick={() => {
-                onRemove();
+                onChange(hex);
                 onClose();
               }}
-              title="Remove">
-              <Cross1Icon />
-            </button>
-          </div>
-          {moreColors === type && (
-            <HexAlphaColorPicker color={color} onChange={onChange} style={{ width: "200px", height: "200px" }} />
-          )}
-        </>
-      )}
+              title={(hex || "#000000")?.toUpperCase()}
+            />
+          ))}
+        <Input
+          type="text"
+          value={color || "#000000f2"}
+          onChange={(e) => onChange(e.target.value, true)}
+          className="!h-5 !w-[92px] rounded-sm !p-0 text-center text-xs font-medium uppercase text-gray-600 outline-none"
+          placeholder="#000000"
+        />
+        <button
+          className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-red-100 text-red-600 shadow hover:opacity-80 hover:shadow-lg"
+          onClick={() => {
+            onRemove();
+            onClose();
+          }}
+          title="Remove">
+          <Cross1Icon />
+        </button>
+      </div>
+      <HexAlphaColorPicker color={color} onChange={onChange} style={{ width: "200px", height: "200px" }} />
     </>
   );
 };
@@ -118,25 +112,17 @@ const ColorPickerContent = ({
         <Commons
           themeColors={themeColors}
           onClose={onClose}
-          type="TEXT"
-          title="Text Color"
           onChange={onChangeTextColor}
           color={textColor}
           onRemove={onRemoveTextColor}
-          moreColors={moreColors}
-          setMoreColors={setMoreColors}
         />
       ) : (
         <Commons
           themeColors={themeColors}
           onClose={onClose}
-          type="HIGHLIGHT"
-          title="Highlight Color"
           onChange={onChangeHighlightColor}
           color={highlightColor}
           onRemove={onRemoveHighlightColor}
-          moreColors={moreColors}
-          setMoreColors={setMoreColors}
         />
       )}
     </div>
@@ -147,8 +133,8 @@ const RteColorPicker = ({ editor, from, menuRef }: { editor: any; from?: "settin
   const currentTextColor = editor?.getAttributes("textStyle")?.color;
   const currentHighlightColor = editor?.getAttributes("highlight")?.color;
 
-  const [textColor, setTextColor] = useState(currentTextColor);
-  const [highlightColor, setHighlightColor] = useState(currentTextColor);
+  const [textColor, setTextColor] = useState(currentTextColor || "#000000F2");
+  const [highlightColor, setHighlightColor] = useState(currentHighlightColor || "#00000057");
   const [debouncedTextColor, setDebouncedTextColor] = useDebouncedState(textColor, 500);
   const [debouncedHighlightColor, setDebouncedHighlightColor] = useDebouncedState(highlightColor, 500);
 
@@ -174,12 +160,11 @@ const RteColorPicker = ({ editor, from, menuRef }: { editor: any; from?: "settin
 
   const handleRemoveTextColor = () => {
     editor?.chain().focus().unsetColor().run();
-    setTextColor("#000000");
+    setTextColor("#000000F2");
   };
 
   const handleRemoveHighlightColor = () => {
     editor?.chain().focus().unsetHighlight().run();
-    setHighlightColor("#000000");
   };
 
   useEffect(() => {
