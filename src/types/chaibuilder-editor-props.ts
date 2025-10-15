@@ -293,4 +293,9 @@ export interface ChaiBuilderEditorProps {
    * Get Block Async Props
    */
   getBlockAsyncProps?: (args: { block: ChaiBlock }) => Promise<{ [key: string]: any }>;
+
+  /**
+   * temporary props. Not to be used in production
+   */
+  _tempProps?: Record<string, any>;
 }

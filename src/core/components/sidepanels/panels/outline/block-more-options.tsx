@@ -4,6 +4,7 @@ import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { canAddChildBlock, canDeleteBlock, canDuplicateBlock } from "@/core/functions/block-helpers";
 import {
   useBlocksStore,
+  useBuilderProp,
   useCutBlockIds,
   useDuplicateBlocks,
   usePasteBlocks,
@@ -20,9 +21,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/ui/shadcn/components/ui/dropdown-menu";
-import { CardStackIcon, CardStackPlusIcon, CopyIcon, ScissorsIcon, TrashIcon } from "@radix-ui/react-icons";
+import {
+  CardStackIcon,
+  CardStackPlusIcon,
+  CopyIcon,
+  Pencil2Icon,
+  PlusIcon,
+  ScissorsIcon,
+  TrashIcon,
+} from "@radix-ui/react-icons";
 import { has, isEmpty } from "lodash-es";
-import { Pencil2Icon, PlusIcon } from "@radix-ui/react-icons";
 import React, { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -143,6 +151,7 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
   const duplicateBlocks = useDuplicateBlocks();
   const selectedBlock = useSelectedBlock();
   const { hasPermission } = usePermissions();
+  const { librarySite } = useBuilderProp("_tempProps", { librarySite: false });
 
   const duplicate = useCallback(() => {
     duplicateBlocks(selectedIds);
@@ -173,8 +182,8 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
       <RenameBlock node={node} />
       {hasPermission(PERMISSIONS.MOVE_BLOCK) && <CutBlocks />}
       {hasPermission(PERMISSIONS.ADD_BLOCK) && <CopyPasteBlocks />}
-      {isLibLinkedBlock && <UnlinkLibraryBlock />}
-      {hasPermission(PERMISSIONS.CREATE_LIBRARY_BLOCK) && <SaveToLibrary />}
+      {isLibLinkedBlock && librarySite && <UnlinkLibraryBlock />}
+      {hasPermission(PERMISSIONS.CREATE_LIBRARY_BLOCK) && librarySite && <SaveToLibrary />}
       {hasPermission(PERMISSIONS.DELETE_BLOCK) && <RemoveBlocks />}
     </DropdownMenuContent>
   );
