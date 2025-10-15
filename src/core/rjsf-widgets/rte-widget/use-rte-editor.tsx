@@ -46,9 +46,6 @@ export const useRTEditor = ({
         }),
         Highlight.configure({
           multicolor: true,
-          HTMLAttributes: {
-            class: "highlight",
-          },
         }),
         Link.configure({
           openOnClick: false,

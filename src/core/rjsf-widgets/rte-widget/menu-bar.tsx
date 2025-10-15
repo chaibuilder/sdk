@@ -1,5 +1,4 @@
 import { cn } from "@/core/utils/cn";
-import { DropdownMenuContent, DropdownMenuItem } from "@/ui/shadcn/components/ui/dropdown-menu";
 import {
   CaretDownIcon,
   EnterFullScreenIcon,
@@ -56,6 +55,7 @@ const RteMenubar = ({ editor, from = "settings", onExpand }: RteMenubarProps) =>
       className={cn("mb-1 flex flex-wrap gap-0.5 rounded-t-md border-b border-border bg-gray-50 p-1", {
         "-ml-0.5 -mt-px mb-0 h-8 rounded-md border-none bg-green-900 text-white": from === "canvas",
       })}>
+      {/* BOLD/ITALIC/UNDERLINE/STRIKE */}
       <button
         type="button"
         onClick={() => editor.chain().focus().toggleBold().run()}
@@ -87,10 +87,12 @@ const RteMenubar = ({ editor, from = "settings", onExpand }: RteMenubarProps) =>
 
       <div className="mx-1 h-5 w-px self-center bg-border" />
 
+      {/* COLOR PICKER */}
       <RteColorPicker editor={editor} from={from} />
 
       <div className="mx-1 h-5 w-px self-center bg-border" />
 
+      {/* LIST */}
       <RteDropdownMenu
         trigger={
           <button
@@ -101,29 +103,36 @@ const RteMenubar = ({ editor, from = "settings", onExpand }: RteMenubarProps) =>
             <CaretDownIcon className="h-3 w-3 opacity-50" />
           </button>
         }
-        content={
-          <DropdownMenuContent className="z-50 rounded-md border bg-white p-1 text-xs shadow-xl">
-            <DropdownMenuItem
-              onClick={() => editor.chain().focus().toggleBulletList().run()}
+        content={(onClose) => (
+          <>
+            <div
+              onClick={() => {
+                editor.chain().focus().toggleBulletList().run();
+                onClose();
+              }}
               className={cn(
                 "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
                 getActiveClasses(editor, ["bulletList"], from),
               )}>
               <ListBulletIcon className="h-4 w-4" /> Unordered List
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            </div>
+            <div
+              onClick={() => {
+                editor.chain().focus().toggleOrderedList().run();
+                onClose();
+              }}
               className={cn(
                 "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
                 getActiveClasses(editor, ["orderedList"], from),
               )}>
               <ValueIcon className="h-4 w-4" />
               Ordered List
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        }
+            </div>
+          </>
+        )}
       />
 
+      {/* TEXT ALIGNMENT */}
       <RteDropdownMenu
         trigger={
           <button
@@ -137,40 +146,56 @@ const RteMenubar = ({ editor, from = "settings", onExpand }: RteMenubarProps) =>
               ),
             )}
             title="Text Alignment">
-            <TextAlignLeftIcon className="h-4 w-4" />
+            {editor.isActive({ textAlign: "center" }) ? (
+              <TextAlignCenterIcon className="h-4 w-4" />
+            ) : editor.isActive({ textAlign: "right" }) ? (
+              <TextAlignRightIcon className="h-4 w-4" />
+            ) : (
+              <TextAlignLeftIcon className="h-4 w-4" />
+            )}
             <CaretDownIcon className="h-3 w-3 opacity-50" />
           </button>
         }
-        content={
-          <DropdownMenuContent className="z-50 rounded-md border bg-white p-1 text-xs shadow-xl">
-            <DropdownMenuItem
-              onClick={() => editor.chain().focus().setTextAlign("left").run()}
+        content={(onClose) => (
+          <>
+            <div
+              onClick={() => {
+                editor.chain().focus().setTextAlign("left").run();
+                onClose();
+              }}
               className={cn(
                 "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
                 getActiveClasses(editor, editor.isActive({ textAlign: "left" }), from),
               )}>
               <TextAlignLeftIcon className="h-4 w-4" /> Align Left
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => editor.chain().focus().setTextAlign("center").run()}
+            </div>
+            <div
+              onClick={() => {
+                editor.chain().focus().setTextAlign("center").run();
+                onClose();
+              }}
               className={cn(
                 "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
                 getActiveClasses(editor, editor.isActive({ textAlign: "center" }), from),
               )}>
               <TextAlignCenterIcon className="h-4 w-4" /> Align Center
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => editor.chain().focus().setTextAlign("right").run()}
+            </div>
+            <div
+              onClick={() => {
+                editor.chain().focus().setTextAlign("right").run();
+                onClose();
+              }}
               className={cn(
                 "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
                 getActiveClasses(editor, editor.isActive({ textAlign: "right" }), from),
               )}>
               <TextAlignRightIcon className="h-4 w-4" /> Align Right
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        }
+            </div>
+          </>
+        )}
       />
 
+      {/* LINK */}
       {!editor.isActive("link") ? (
         <button
           type="button"
@@ -190,11 +215,16 @@ const RteMenubar = ({ editor, from = "settings", onExpand }: RteMenubarProps) =>
         </button>
       )}
 
+      {/* FULL SCREEN */}
       {onExpand && (
         <>
           <div className="mx-1 h-5 w-px self-center bg-border" />
-          <button type="button" onClick={onExpand} className="" title="Open in full screen mode">
-            <EnterFullScreenIcon className="h-4 w-4" />
+          <button
+            type="button"
+            onClick={onExpand}
+            className={cn("", getActiveClasses(editor, false, from))}
+            title="Open in full screen mode">
+            <EnterFullScreenIcon className="h-3.5 w-3.5" />
           </button>
         </>
       )}
