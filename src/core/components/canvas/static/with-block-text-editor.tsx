@@ -4,11 +4,12 @@ import { useInlineEditing } from "@/core/hooks/use-inline-editing";
 import { useLanguages } from "@/core/hooks/use-languages";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
-import { MenuBar, useRTEditor } from "@/core/rjsf-widgets";
+import { useRTEditor } from "@/core/rjsf-widgets/rte-widget/use-rte-editor";
+import RteMenubar from "@/core/rjsf-widgets/rte-widget/menu-bar";
 import { ChaiBlock } from "@/types/chai-block";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { useDebouncedCallback } from "@react-hookz/web";
-import { EditorContent } from "@tiptap/react";
+import { BubbleMenu, EditorContent } from "@tiptap/react";
 import { cloneDeep, get, has } from "lodash-es";
 import { createElement, memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
@@ -138,14 +139,14 @@ const RichTextEditor = memo(
     };
 
     return (
-      <div onKeyDown={onKeyDown} onClick={(e) => e.stopPropagation()} className="relative">
-        {showMenu?.show && (
-          <div className="fixed" style={{ top: showMenu.top, left: showMenu.left }}>
-            <MenuBar editor={editor} from="canvas" />
-          </div>
-        )}
-        <EditorContent onKeyDown={onKeyDown} value={blockContent} editor={editor} className={editorClassName} />
-      </div>
+      editor && (
+        <div onKeyDown={onKeyDown} onClick={(e) => e.stopPropagation()} className="relative">
+          <BubbleMenu editor={editor} className="w-max">
+            <RteMenubar editor={editor} from="canvas" />
+          </BubbleMenu>
+          <EditorContent onKeyDown={onKeyDown} value={blockContent} editor={editor} className={editorClassName} />
+        </div>
+      )
     );
   },
 );
