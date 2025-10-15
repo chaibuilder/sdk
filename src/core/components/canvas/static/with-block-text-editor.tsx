@@ -344,7 +344,7 @@ const WithBlockTextEditor = memo(
       if (!editingElement) return null;
       clearHighlight();
 
-      if (["RichText", "Heading", "Paragraph"].includes(blockType)) {
+      if (["RichText", "Paragraph"].includes(blockType)) {
         return (
           <RichTextEditor
             blockContent={blockContent}
