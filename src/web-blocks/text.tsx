@@ -18,10 +18,10 @@ const RawTextBlock = (props: ChaiBlockComponentProps<TextBlockProps>) => {
 const Config = {
   type: "Text",
   description: "A text component with no styling",
-  label: "Text",
-  hidden: true,
+  label: "Raw Text",
   category: "core",
   group: "typography",
+  blocks: () => [{ _id: "a", _type: "Text", _name: "Raw Text", content: "" }],
   icon: SpaceBetweenVerticallyIcon,
   ...registerChaiBlockSchema({
     properties: {

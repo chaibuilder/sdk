@@ -19,6 +19,7 @@ const Config = {
   type: "RichText",
   description: "A rich text block",
   label: "Rich Text",
+  hidden: true,
   category: "core",
   icon: CursorTextIcon,
   group: "typography",

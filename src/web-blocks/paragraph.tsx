@@ -16,7 +16,7 @@ const ParagraphBlock = (props: ChaiBlockComponentProps<ParagraphProps>) => {
 
   const forcedStyles = addForcedClasses(styles, "rte");
 
-  return React.createElement("p", {
+  return React.createElement("div", {
     ...forcedStyles,
     ...blockProps,
     dangerouslySetInnerHTML: { __html: content },

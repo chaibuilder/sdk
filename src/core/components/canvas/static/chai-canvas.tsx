@@ -20,7 +20,7 @@ function getTargetedBlock(target) {
   return closest?.getAttribute("data-block-id") === "canvas" ? null : closest;
 }
 
-const INLINE_EDITABLE_BLOCKS = ["Heading", "Paragraph", "Text", "Link", "Span"];
+const INLINE_EDITABLE_BLOCKS = ["Heading", "Paragraph", "Text", "Link", "Span", "Button"];
 
 const isRichTextParent = (chaiBlock: HTMLElement | null): boolean => {
   return (

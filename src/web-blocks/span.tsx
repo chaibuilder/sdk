@@ -32,7 +32,7 @@ const Config = {
         type: "string",
         title: "Content",
         default: "",
-        ui: { "ui:widget": "richtext", "ui:autosize": true, "ui:rows": 3 },
+        ui: { "ui:widget": "textarea", "ui:autosize": true, "ui:rows": 3 },
       },
     },
   }),
