@@ -182,7 +182,7 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
       <RenameBlock node={node} />
       {hasPermission(PERMISSIONS.MOVE_BLOCK) && <CutBlocks />}
       {hasPermission(PERMISSIONS.ADD_BLOCK) && <CopyPasteBlocks />}
-      {isLibLinkedBlock && <UnlinkLibraryBlock />}
+      {isLibLinkedBlock && librarySite && <UnlinkLibraryBlock />}
       {hasPermission(PERMISSIONS.CREATE_LIBRARY_BLOCK) && librarySite && <SaveToLibrary />}
       {hasPermission(PERMISSIONS.DELETE_BLOCK) && <RemoveBlocks />}
     </DropdownMenuContent>
