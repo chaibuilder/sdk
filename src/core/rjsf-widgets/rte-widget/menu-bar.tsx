@@ -22,10 +22,10 @@ const getActiveClasses = (editor: any, keys: string[] | boolean, from: string) =
   const isActive = typeof keys === "boolean" ? keys : keys.some((key) => editor.isActive(key));
   return {
     "rounded p-1": true,
-    "hover:bg-gray-200 hover:text-gray-900": !isActive && isFromSettings,
-    "hover:bg-gray-500 hover:text-gray-200": !isActive && !isFromSettings,
-    "bg-gray-300 text-gray-900": isActive && isFromSettings,
-    "bg-gray-200 text-gray-900": isActive && !isFromSettings,
+    "hover:bg-blue-900 hover:text-blue-100": !isActive && !isFromSettings,
+    "hover:bg-blue-100 hover:text-blue-900": !isActive && isFromSettings,
+    "bg-blue-500 text-white": isActive && isFromSettings,
+    "bg-white text-blue-500": isActive && !isFromSettings,
   };
 };
 
@@ -53,7 +53,7 @@ const RteMenubar = ({ editor, from = "settings", onExpand }: RteMenubarProps) =>
     <div
       id="chai-rich-text-menu-bar"
       className={cn("mb-1 flex flex-wrap gap-0.5 rounded-t-md border-b border-border bg-gray-50 p-1", {
-        "-ml-0.5 -mt-px mb-0 h-8 rounded-md border-none bg-green-900 text-white": from === "canvas",
+        "mb-0 rounded-md border-none bg-blue-500 text-white": from === "canvas",
       })}>
       {/* BOLD/ITALIC/UNDERLINE/STRIKE */}
       <button

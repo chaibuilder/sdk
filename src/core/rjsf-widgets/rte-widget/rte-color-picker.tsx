@@ -15,9 +15,10 @@ const getActiveClasses = (editor: any, keys: string[] | boolean, from: string) =
   const isActive = typeof keys === "boolean" ? keys : keys.some((key) => editor.isActive(key));
   return {
     "rounded p-1": true,
-    "hover:bg-gray-200": !isActive,
-    "hover:bg-gray-700": !isFromSettings && !isActive,
-    "bg-gray-300 text-gray-900": isActive,
+    "hover:bg-blue-900 hover:text-blue-100": !isActive && !isFromSettings,
+    "hover:bg-blue-100 hover:text-blue-900": !isActive && isFromSettings,
+    "bg-blue-500 text-white": isActive && isFromSettings,
+    "bg-white text-blue-500": isActive && !isFromSettings,
   };
 };
 
@@ -200,7 +201,7 @@ const RteColorPicker = ({ editor, from }: { editor: any; from?: "settings" | "ca
           className={cn("relative flex items-center", getActiveClasses(editor, Boolean(currentTextColor), from))}
           title="Text Color">
           <div
-            className="h-4 w-4 rounded-full outline outline-1 outline-gray-400"
+            className="h-4 w-4 rounded-full"
             style={{ backgroundColor: currentTextColor || (from === "canvas" ? "#FFFFFF" : "#000000") }}
           />
           <CaretDownIcon className="h-3 w-3 opacity-50" />
