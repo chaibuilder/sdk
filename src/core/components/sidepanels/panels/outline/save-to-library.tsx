@@ -2,8 +2,8 @@ import { saveToLibraryModalAtom } from "@/core/components/sidepanels/panels/outl
 import { useSaveToLibraryComponent } from "@/core/extensions/save-to-library";
 import { useSelectedBlock } from "@/core/hooks";
 import { DropdownMenuItem } from "@/ui/shadcn/components/ui/dropdown-menu";
-import { useAtom } from "jotai";
 import { CheckIcon } from "@radix-ui/react-icons";
+import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
 
 export const SaveToLibrary = () => {
@@ -25,7 +25,7 @@ export const SaveToLibrary = () => {
 
   return (
     <DropdownMenuItem className="flex items-center gap-x-4 text-xs" onClick={handleSaveToLibrary}>
-      <CheckIcon className="h-4 w-4" /> {t(selectedBlock?._libBlockId ? "Update library block" : "Save to library")}
+      <CheckIcon className="h-4 w-4" /> {selectedBlock?._libBlockId ? t("Update library block") : t("Save to library")}
     </DropdownMenuItem>
   );
 };

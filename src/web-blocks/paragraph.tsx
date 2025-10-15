@@ -14,7 +14,7 @@ const ParagraphBlock = (props: ChaiBlockComponentProps<ParagraphProps>) => {
 
   if (!isNull(props.children)) return React.createElement("p", { ...styles, ...blockProps }, props.children);
 
-  const forcedStyles = addForcedClasses(styles, "rte rte-p");
+  const forcedStyles = addForcedClasses(styles, "rte");
 
   return React.createElement("p", {
     ...forcedStyles,

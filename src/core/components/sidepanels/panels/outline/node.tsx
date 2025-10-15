@@ -5,7 +5,7 @@ import { PERMISSIONS } from "@/core/constants/PERMISSIONS";
 import { ROOT_TEMP_KEY } from "@/core/constants/STRINGS";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { canAcceptChildBlock, canAddChildBlock } from "@/core/functions/block-helpers";
-import { useBlockHighlight, usePermissions, useTranslation, useUpdateBlocksProps } from "@/core/hooks";
+import { useBlockHighlight, useBuilderProp, usePermissions, useTranslation, useUpdateBlocksProps } from "@/core/hooks";
 import { pubsub } from "@/core/pubsub";
 import { cn } from "@/core/utils/cn";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
@@ -178,14 +178,15 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
       </div>
     );
   }
-
+  const { librarySite } = useBuilderProp("_tempProps", { librarySite: false });
   const isLibBlock = useMemo(() => {
     return (
+      librarySite &&
       has(data, "_libBlockId") &&
       !isEmpty(data._libBlockId) &&
       (hasPermission(PERMISSIONS.CREATE_LIBRARY_BLOCK) || hasPermission(PERMISSIONS.EDIT_LIBRARY_BLOCK))
     );
-  }, [data, hasPermission]);
+  }, [data, hasPermission, librarySite]);
 
   const isPartialBlock = useMemo(() => {
     return data?._type === "PartialBlock" || data?._type === "GlobalBlock";
