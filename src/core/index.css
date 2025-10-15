@@ -244,6 +244,9 @@ select:focus {
   height: 16px !important;
   border: 1.5px solid #fff !important;
 }
+.ProseMirror {
+  @apply min-h-[100px] outline-none;
+}
 
 .rte {
   h1 {
