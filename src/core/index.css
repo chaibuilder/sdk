@@ -243,7 +243,10 @@ select:focus {
   width: 16px !important;
   height: 16px !important;
   border: 1.5px solid #fff !important;
+  cursor: pointer !important;
+  z-index: 10002 !important;
 }
+
 .ProseMirror {
   @apply min-h-[100px] outline-none;
 }

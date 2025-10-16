@@ -45,7 +45,7 @@ const RteDropdownMenu = ({
   if (from === "canvas") {
     return (
       <>
-        <div ref={triggerRef} onClick={() => setIsOpen((prev) => !prev)}>
+        <div ref={triggerRef} onClick={() => setIsOpen((prev) => !prev)} className="cursor-pointer">
           {trigger}
         </div>
         {isOpen &&
@@ -54,7 +54,10 @@ const RteDropdownMenu = ({
             state.right !== undefined ||
             state.bottom !== undefined) &&
           createPortal(
-            <div onClick={() => setIsOpen(false)} className="fixed inset-0 left-0 top-0 z-[10001] h-full w-screen">
+            <div
+              id="chaibuilder-rte-dropdown-menu-content"
+              onClick={() => setIsOpen(false)}
+              className="fixed inset-0 left-0 top-0 z-[10001] h-full w-screen">
               <div
                 onClick={(e) => e.stopPropagation()}
                 className={`absolute rounded-md border border-gray-500 bg-white p-1.5 text-xs shadow-2xl`}

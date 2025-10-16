@@ -46,7 +46,7 @@ const Commons = ({ themeColors, onClose, color, onChange, onRemove }: any) => {
           ))}
       </div>
       <HexAlphaColorPicker color={color} onChange={onChange} style={{ width: "200px", height: "200px" }} />
-      <div className="flex items-center justify-between gap-1">
+      <div className="mt-1 flex items-center justify-between gap-1">
         <Input
           type="text"
           value={color || "#000000f2"}
@@ -190,8 +190,7 @@ const RteColorPicker = ({ editor, from, menuRef }: { editor: any; from?: "settin
       from={from}
       menuRef={menuRef}
       trigger={
-        <button
-          type="button"
+        <div
           className={cn("relative flex items-center", getActiveClasses(editor, Boolean(currentTextColor), from))}
           title="Text Color">
           <div
@@ -199,7 +198,7 @@ const RteColorPicker = ({ editor, from, menuRef }: { editor: any; from?: "settin
             style={{ backgroundColor: from === "canvas" ? "#C0C0C0" : "#000000" }}
           />
           <CaretDownIcon className="h-3 w-3 opacity-50" />
-        </button>
+        </div>
       }
       content={(onClose) => (
         <ColorPickerContent
