@@ -3,9 +3,11 @@ import { ChaiAsset } from "@/types";
 import { Cross1Icon, Pencil2Icon } from "@radix-ui/react-icons";
 import { WidgetProps } from "@rjsf/utils";
 import { first, get, has, isArray, isEmpty, set, startsWith } from "lodash-es";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguages, useSelectedBlock, useUpdateBlocksProps } from "../hooks";
+import { usePageExternalData } from "@/core/atoms/builder";
+import { applyBindingToBlockProps } from "@/render/apply-binding";
 
 const PLACEHOLDER_IMAGE =
   "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZmlsbD0iI2Q1ZDdkYSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIFBsYWNlaG9sZGVyPC90ZXh0Pjwvc3ZnPg==";
@@ -31,6 +33,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
   const { selectedLang } = useLanguages();
   const selectedBlock = useSelectedBlock();
   const updateBlockProps = useUpdateBlocksProps();
+  const pageExternalData = usePageExternalData();
   const showImagePicker = true;
 
   const propKey = id.split(".").pop() || "";
@@ -40,7 +43,21 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
     isEmpty(selectedLang) && selectedBlock?._type === "Image" && has(selectedBlock, "assetId");
 
   const assetId = get(selectedBlock, propIdKey, hasImageBlockAssetId ? selectedBlock?.assetId : "");
-  const showRemoveIcons = !!assetId || value !== PLACEHOLDER_IMAGE;
+
+  const resolvedValue = useMemo(() => {
+    if (!value || !selectedBlock) return value;
+
+    // Check if value contains data binding syntax
+    const hasBinding = /\{\{.*?\}\}/.test(value);
+    if (!hasBinding) return value;
+
+    // Apply binding resolution
+    const tempBlock = { ...selectedBlock, [propKey]: value };
+    const resolved = applyBindingToBlockProps(tempBlock, pageExternalData, { index: -1, key: "" });
+    return get(resolved, propKey, value);
+  }, [value, selectedBlock, pageExternalData, propKey]);
+
+  const showRemoveIcons = !!assetId || resolvedValue !== PLACEHOLDER_IMAGE;
 
   const handleSelect = (assets: ChaiAsset[] | ChaiAsset) => {
     const asset = isArray(assets) ? first(assets) : assets;
@@ -75,13 +92,13 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
     }
   }, [onChange, selectedBlock?._id, updateBlockProps, propIdKey]);
 
-  const fileName = getFileName(value);
+  const fileName = getFileName(resolvedValue);
   return (
     <div className="mt-1.5 flex items-center gap-x-3">
-      {value ? (
+      {resolvedValue ? (
         <div className="group relative">
           <img
-            src={value}
+            src={resolvedValue}
             className={
               `h-14 w-14 overflow-hidden rounded-md border border-border object-cover transition duration-200 ` +
               (assetId && assetId !== "" ? "cursor-pointer group-hover:blur-sm" : "")
@@ -117,7 +134,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
             <p className="mb-1 max-w-[250px] truncate pr-2 text-xs text-gray-400">{fileName}</p>
             <MediaManagerModal onSelect={handleSelect} assetId="">
               <small className="h-6 w-fit cursor-pointer rounded-md bg-secondary px-1 py-1 text-center text-xs text-secondary-foreground hover:bg-secondary/80">
-                {!isEmpty(value) && value !== PLACEHOLDER_IMAGE ? t("Replace image") : t("Choose image")}
+                {!isEmpty(resolvedValue) && resolvedValue !== PLACEHOLDER_IMAGE ? t("Replace image") : t("Choose image")}
               </small>
             </MediaManagerModal>
           </>
