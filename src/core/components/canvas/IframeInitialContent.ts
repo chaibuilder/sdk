@@ -51,7 +51,7 @@ export const IframeInitialContent: string = `<!doctype html>
     </style>
     <style>
       .react-colorful {
-        height: 150px !important;
+        height: 120px !important;
         width: 180px !important;
       }
       .react-colorful > div {
@@ -69,6 +69,8 @@ export const IframeInitialContent: string = `<!doctype html>
         width: 16px !important;
         height: 16px !important;
         border: 1.5px solid #fff !important;
+        cursor: pointer !important;
+        z-index: 10002 !important;
       }
     </style>
     <style type="text/tailwindcss">
