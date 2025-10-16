@@ -38,7 +38,7 @@ const RteDropdownMenu = ({
       left = undefined;
       right = document.body.offsetWidth - rect?.right;
     }
-    if (top + 300 >= document.body.clientHeight) {
+    if (top + 202 >= document.body.clientHeight) {
       top = null;
       bottom = document.body.clientHeight - rect?.bottom + menuRect?.height;
     }
