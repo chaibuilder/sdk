@@ -2,13 +2,16 @@ import { useFrame } from "@/core/frame";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/ui";
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { Editor } from "@tiptap/react";
 
 const RteDropdownMenu = ({
+  editor,
   trigger,
   content,
   from,
   menuRef,
 }: {
+  editor?: Editor;
   trigger: React.ReactNode;
   content: React.ReactNode | ((onClose: () => void) => React.ReactNode);
   from: "canvas" | "settings";
@@ -43,6 +46,13 @@ const RteDropdownMenu = ({
   }, [isOpen]);
 
   if (from === "canvas") {
+    const handleCanvasClose = () => {
+      setIsOpen(false);
+      if (!editor) return;
+      editor?.view.focus();
+      editor?.chain().focus().run();
+    };
+
     return (
       <>
         <div ref={triggerRef} onClick={() => setIsOpen((prev) => !prev)} className="cursor-pointer">
@@ -56,7 +66,7 @@ const RteDropdownMenu = ({
           createPortal(
             <div
               id="chaibuilder-rte-dropdown-menu-content"
-              onClick={() => setIsOpen(false)}
+              onClick={handleCanvasClose}
               className="fixed inset-0 left-0 top-0 z-[10001] h-full w-screen">
               <div
                 onClick={(e) => e.stopPropagation()}
@@ -65,7 +75,7 @@ const RteDropdownMenu = ({
                   {},
                   { left: state.left, top: state.top, right: state.right, bottom: state.bottom },
                 )}>
-                {typeof content === "function" ? content(() => setIsOpen(false)) : content}
+                {typeof content === "function" ? content(handleCanvasClose) : content}
               </div>
             </div>,
             document.body,

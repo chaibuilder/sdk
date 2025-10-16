@@ -107,7 +107,7 @@ const RichTextEditor = memo(
         <div onKeyDown={onKeyDown} onClick={(e) => e.stopPropagation()} className="relative">
           <BubbleMenu
             editor={editor}
-            shouldShow={() => true}
+            shouldShow={() => editor && editor?.isFocused}
             tippyOptions={{ duration: 100, arrow: true, hideOnClick: false }}
             className="w-max">
             <RteMenubar editor={editor} from="canvas" />

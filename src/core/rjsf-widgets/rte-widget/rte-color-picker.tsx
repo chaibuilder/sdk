@@ -161,12 +161,12 @@ const RteColorPicker = ({ editor, from, menuRef }: { editor: any; from?: "settin
   };
 
   const handleRemoveTextColor = () => {
-    editor?.chain().focus().unsetColor().run();
+    editor?.chain().unsetColor().run();
     setTextColor("#000000F2");
   };
 
   const handleRemoveHighlightColor = () => {
-    editor?.chain().focus().unsetHighlight().run();
+    editor?.chain().unsetHighlight().run();
   };
 
   useEffect(() => {
@@ -175,27 +175,29 @@ const RteColorPicker = ({ editor, from, menuRef }: { editor: any; from?: "settin
 
   useEffect(() => {
     if (debouncedHighlightColor?.includes("#") && debouncedHighlightColor?.length >= 3) {
-      editor?.chain().focus().setHighlight({ color: debouncedHighlightColor }).run();
+      editor?.chain().setHighlight({ color: debouncedHighlightColor }).run();
     }
   }, [debouncedHighlightColor]);
 
   useEffect(() => {
     if (debouncedTextColor?.includes("#") && debouncedTextColor?.length >= 3) {
-      editor?.chain().focus().setColor(debouncedTextColor).run();
+      editor?.chain().setColor(debouncedTextColor).run();
     }
   }, [debouncedTextColor]);
 
+  const isActive = Boolean(currentTextColor);
   return (
     <RteDropdownMenu
+      editor={editor}
       from={from}
       menuRef={menuRef}
       trigger={
-        <div
-          className={cn("relative flex items-center", getActiveClasses(editor, Boolean(currentTextColor), from))}
-          title="Text Color">
+        <div className={cn("relative flex items-center", getActiveClasses(editor, isActive, from))} title="Text Color">
           <div
             className="h-4 w-4 rounded-full"
-            style={{ backgroundColor: from === "canvas" ? "#C0C0C0" : "#000000" }}
+            style={{
+              backgroundColor: currentTextColor ? currentTextColor : from === "canvas" ? "#FFFFFF" : "#000000",
+            }}
           />
           <CaretDownIcon className="h-3 w-3 opacity-50" />
         </div>

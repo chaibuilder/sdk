@@ -97,6 +97,7 @@ const RteMenubar = ({ editor, from = "settings", onExpand }: RteMenubarProps) =>
 
       {/* LIST */}
       <RteDropdownMenu
+        editor={editor}
         menuRef={menuRef}
         from={from}
         trigger={
@@ -139,6 +140,7 @@ const RteMenubar = ({ editor, from = "settings", onExpand }: RteMenubarProps) =>
 
       {/* TEXT ALIGNMENT */}
       <RteDropdownMenu
+        editor={editor}
         menuRef={menuRef}
         from={from}
         trigger={
