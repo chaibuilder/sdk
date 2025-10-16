@@ -23,7 +23,6 @@ const Config = {
   category: "core",
   icon: CursorTextIcon,
   group: "typography",
-  hidden: true,
   ...registerChaiBlockSchema({
     properties: {
       styles: StylesProp(""),
