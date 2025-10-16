@@ -51,7 +51,7 @@ export const IframeInitialContent: string = `<!doctype html>
     </style>
     <style>
       .react-colorful {
-        height: 150px !important;
+        height: 120px !important;
         width: 180px !important;
       }
       .react-colorful > div {

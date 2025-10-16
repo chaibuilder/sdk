@@ -31,7 +31,7 @@ const Commons = ({ themeColors, onClose, color, onChange, onRemove }: any) => {
             <button
               key={hex}
               className={cn(
-                "h-5 w-5 cursor-pointer rounded-full border border-gray-900 shadow hover:opacity-80 hover:shadow-lg",
+                "h-4 w-4 cursor-pointer rounded-full border border-gray-900 shadow duration-200 hover:scale-105 hover:shadow-xl",
                 {
                   "border-2": hex === color,
                 },
@@ -44,24 +44,26 @@ const Commons = ({ themeColors, onClose, color, onChange, onRemove }: any) => {
               title={(hex || "#000000")?.toUpperCase()}
             />
           ))}
+      </div>
+      <HexAlphaColorPicker color={color} onChange={onChange} style={{ width: "200px", height: "200px" }} />
+      <div className="flex items-center justify-between gap-1">
         <Input
           type="text"
           value={color || "#000000f2"}
           onChange={(e) => onChange(e.target.value, true)}
-          className="!h-5 !w-[92px] rounded-sm !p-0 text-center text-xs font-medium uppercase text-gray-600 outline-none"
+          className="!h-5 !w-[105px] rounded-sm !p-0 text-center text-xs font-medium uppercase text-gray-600 outline-none ring-0 focus:ring-0"
           placeholder="#000000"
         />
         <button
-          className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-red-100 text-red-600 shadow hover:opacity-80 hover:shadow-lg"
+          className="flex h-4 w-max cursor-pointer items-center gap-x-1 rounded-full bg-red-500/10 px-1 text-red-600 shadow duration-200 hover:bg-red-100"
           onClick={() => {
             onRemove();
             onClose();
           }}
           title="Remove">
-          <Cross1Icon />
+          <Cross1Icon className="h-3 w-3" /> Remove
         </button>
       </div>
-      <HexAlphaColorPicker color={color} onChange={onChange} style={{ width: "200px", height: "200px" }} />
     </>
   );
 };

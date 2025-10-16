@@ -28,7 +28,7 @@ const RteDropdownMenu = ({
     const rect = triggerRef.current?.getBoundingClientRect();
     const menuRect = menuRef.current?.getBoundingClientRect();
     let left = rect?.left;
-    let top = rect?.bottom;
+    let top = rect?.bottom + 4;
     let right = undefined;
     let bottom = undefined;
     if (menuRect?.left + menuRect?.width + 50 >= document.body.offsetWidth) {
@@ -54,10 +54,10 @@ const RteDropdownMenu = ({
             state.right !== undefined ||
             state.bottom !== undefined) &&
           createPortal(
-            <div onClick={() => setIsOpen(false)} className="fixed inset-0 left-0 top-0 h-full w-screen">
+            <div onClick={() => setIsOpen(false)} className="fixed inset-0 left-0 top-0 z-[10001] h-full w-screen">
               <div
                 onClick={(e) => e.stopPropagation()}
-                className={`absolute z-50 rounded-md border bg-white p-1.5 text-xs shadow-xl`}
+                className={`absolute rounded-md border border-gray-500 bg-white p-1.5 text-xs shadow-2xl`}
                 style={Object.assign(
                   {},
                   { left: state.left, top: state.top, right: state.right, bottom: state.bottom },
@@ -66,6 +66,7 @@ const RteDropdownMenu = ({
               </div>
             </div>,
             document.body,
+            "chaibuilder-rte-dropdown-menu",
           )}
       </>
     );
