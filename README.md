@@ -17,7 +17,7 @@ npm install @chaibuilder/sdk
 ```
 
 Step 2: Add a custom tailwind config.
-Create a new file: `tailwind.chaibuilder.config.ts`. <br /> Pass the path to your source files.
+Create a new file: `tailwind.chaibuilder.config.ts`.  <br /> Pass the path to your source files.
 ```tsx
 import { getChaiBuilderTailwindConfig } from "@chaibuilder/sdk/tailwind";
 export default getChaiBuilderTailwindConfig(["./src/**/*.{js,ts,jsx,tsx}"]);
