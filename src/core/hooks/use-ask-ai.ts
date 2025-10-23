@@ -98,7 +98,6 @@ export const useAskAi = () => {
     return block;
   };
 
-  const debug = useBuilderProp("debug", false);
   return {
     askAi: useCallback(
       async (
@@ -117,8 +116,6 @@ export const useAskAi = () => {
             type === "content"
               ? pickOnlyAIProps(cloneDeep(getBlockWithChildren(blockId, blocks)), selectedLang, isTranslatePrompt)
               : [getBlockForStyles(blockId, blocks)];
-
-          console.log(aiBlocks);
 
           const askAiResponse = await callBack(type, addLangToPrompt(prompt, currentLang, type), aiBlocks, lang);
 
