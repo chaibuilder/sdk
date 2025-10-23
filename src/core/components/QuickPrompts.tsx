@@ -63,12 +63,11 @@ export function QuickPrompts({ onClick }: { onClick: (prompt: string) => void })
 
   if (selectedLang && selectedLang !== fallbackLang) {
     quickPrompts.splice(0, 0, {
-      name: t(`Translate to %s`, get(LANGUAGES, selectedLang, selectedLang)),
+      name: t(`Translate to {{lang}}`, { lang: get(LANGUAGES, selectedLang, selectedLang) }),
       icon: ChatBubbleIcon,
-      prompt: t(
-        `Translate the content to %s. Maintain same tone, style and length.`,
-        get(LANGUAGES, selectedLang, selectedLang),
-      ),
+      prompt: t(`Translate the content to {{lang}}. Maintain same tone, style and length.`, {
+        lang: get(LANGUAGES, selectedLang, selectedLang),
+      }),
     });
   }
 

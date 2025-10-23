@@ -15,11 +15,11 @@ import {
   compact,
   filter,
   find,
-  isString,
   flattenDeep,
   get,
   has,
   isEmpty,
+  isString,
   pick,
   startsWith,
 } from "lodash-es";
@@ -98,6 +98,7 @@ export const useAskAi = () => {
     return block;
   };
 
+  const debug = useBuilderProp("debug", false);
   return {
     askAi: useCallback(
       async (
@@ -111,12 +112,13 @@ export const useAskAi = () => {
         setError(null);
         try {
           const lang = selectedLang === fallbackLang ? "" : selectedLang;
-          console.log("prompt", prompt);
           const isTranslatePrompt = prompt.toLowerCase().includes("translate the content");
           const aiBlocks =
             type === "content"
               ? pickOnlyAIProps(cloneDeep(getBlockWithChildren(blockId, blocks)), selectedLang, isTranslatePrompt)
               : [getBlockForStyles(blockId, blocks)];
+
+          console.log(aiBlocks);
 
           const askAiResponse = await callBack(type, addLangToPrompt(prompt, currentLang, type), aiBlocks, lang);
 
