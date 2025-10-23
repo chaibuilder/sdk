@@ -84,8 +84,9 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
   const clearImage = useCallback(() => {
     onChange(PLACEHOLDER_IMAGE);
     if (selectedBlock?._id) {
-      const props = { assetId: "" };
+      const props = {};
       const forMobile = propIdKey.includes("mobile");
+      set(props, propIdKey, "");
       set(props, forMobile ? "mobileWidth" : "width", "");
       set(props, forMobile ? "mobileHeight" : "height", "");
       updateBlockProps([selectedBlock._id], props);
@@ -94,7 +95,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
 
   const fileName = getFileName(resolvedValue);
   return (
-    <div className="mt-1.5 flex items-center gap-x-3">
+    <div className="mt-1.5 flex items-start gap-x-3">
       {resolvedValue ? (
         <div className="group relative">
           <img
@@ -131,12 +132,15 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
       <div className="flex w-3/5 flex-col">
         {showImagePicker && (
           <>
-            <p className="mb-1 max-w-[250px] truncate pr-2 text-xs text-gray-400">{fileName}</p>
+            <p className="max-w-[250px] truncate pr-2 text-xs text-gray-400">{fileName}</p>
             <MediaManagerModal onSelect={handleSelect} assetId="">
-              <small className="h-6 w-fit cursor-pointer rounded-md bg-secondary px-1 py-1 text-center text-xs text-secondary-foreground hover:bg-secondary/80">
-                {!isEmpty(resolvedValue) && resolvedValue !== PLACEHOLDER_IMAGE ? t("Replace image") : t("Choose image")}
+              <small className="h-6 mb-1 w-full cursor-pointer rounded-md bg-secondary px-1 py-1 text-center text-xs text-secondary-foreground hover:bg-secondary/80">
+                {!isEmpty(resolvedValue) && resolvedValue !== PLACEHOLDER_IMAGE
+                  ? t("Replace image")
+                  : t("Choose image")}
               </small>
             </MediaManagerModal>
+            <div className="text-center text-xs text-gray-400">OR</div>
           </>
         )}
         <input
@@ -145,7 +149,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
           autoCorrect={"off"}
           spellCheck={"false"}
           type="url"
-          className="!hidden text-xs"
+          className="h-6  text-xs"
           placeholder={t("Enter image URL")}
           value={value}
           onBlur={({ target: { value: url } }) => onBlur(id, url)}
