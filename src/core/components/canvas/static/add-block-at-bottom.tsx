@@ -1,16 +1,29 @@
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { usePermissions } from "@/core/hooks";
+import { useBlocksStore, usePermissions } from "@/core/hooks";
 import { PERMISSIONS } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
+import { isEmpty } from "lodash-es";
 
 export const AddBlockAtBottom = () => {
   const { t } = useTranslation();
   const { hasPermission } = usePermissions();
+  const [blocks] = useBlocksStore();
   const canAddBlock = hasPermission(PERMISSIONS.ADD_BLOCK);
 
   if (!canAddBlock) return null;
+  if (isEmpty(blocks))
+    return (
+      <div
+        role="button"
+        onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK)}
+        className="flex h-full w-full cursor-pointer items-center justify-center text-center">
+        <div className="flex items-center justify-center gap-1 rounded-lg border-4 border-dotted border-gray-600 px-5 py-3 text-xl hover:bg-primary">
+          <PlusIcon className="size-8" /> {t("Add block")}
+        </div>
+      </div>
+    );
 
   return (
     <div className="group relative w-full cursor-pointer py-2">

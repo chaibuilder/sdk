@@ -168,8 +168,8 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
           <div
             role="button"
             onClick={() => addBlockOnPosition(-1)}
-            className="h-1 rounded bg-primary opacity-0 duration-200 group-hover:opacity-100">
-            <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 transform items-center gap-x-1 rounded-full bg-primary px-3 py-1 text-[9px] leading-tight text-white hover:bg-primary">
+            className="h-1 rounded bg-slate-500 hover:bg-primary opacity-60 duration-200 group-hover:opacity-100">
+            <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 transform items-center gap-x-1 rounded-full bg-slate-500 px-3 py-1 text-[9px] leading-tight text-white hover:bg-primary">
               <PlusIcon className="h-2 w-2 stroke-[3]" /> {t("Add block")}
             </div>
           </div>
