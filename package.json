@@ -119,6 +119,7 @@
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/line-clamp": "^0.4.4",
     "@tailwindcss/typography": "^0.5.16",
+    "@tanstack/react-virtual": "^3.13.12",
     "@tiptap/extension-bubble-menu": "^3.7.0",
     "@tiptap/extension-bullet-list": "^2.12.0",
     "@tiptap/extension-highlight": "^3.6.5",
@@ -143,6 +144,7 @@
     "jotai": "2.14.0",
     "lodash": "^4.17.21",
     "lodash-es": "4.17.21",
+    "lucide-react": "^0.471.2",
     "react-arborist": "3.4.3",
     "react-autosuggest": "10.1.0",
     "react-colorful": "5.6.1",
@@ -153,7 +155,8 @@
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.3.1",
     "tree-model": "^1.0.7",
-    "undo-manager": "1.1.1"
+    "undo-manager": "1.1.1",
+    "usehooks-ts": "^3.1.1"
   },
   "devDependencies": {
     "@commitlint/cli": "19.6.1",
