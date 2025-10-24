@@ -45,8 +45,6 @@ const IconPickerField = ({ value, onChange, id }: WidgetProps) => {
   };
 
   const handleIconSelect = (iconName: IconName) => {
-    console.log("Icon selected:", iconName);
-
     // Create a temporary div to render the icon and extract SVG
     const tempDiv = document.createElement("div");
     tempDiv.style.display = "none";
@@ -61,18 +59,12 @@ const IconPickerField = ({ value, onChange, id }: WidgetProps) => {
         // Wait for render and extract SVG
         setTimeout(() => {
           const svgElement = tempDiv.querySelector("svg");
-          console.log("SVG element found:", !!svgElement);
 
           if (svgElement) {
             const svgString = svgElement.outerHTML;
-            console.log("SVG string:", svgString);
             const sanitized = sanitizeSvg(svgString);
-            console.log("Sanitized SVG:", sanitized);
-
             setSvgInput(sanitized);
             onChange(sanitized);
-          } else {
-            console.error("No SVG element found in rendered icon");
           }
 
           // Cleanup
@@ -80,8 +72,7 @@ const IconPickerField = ({ value, onChange, id }: WidgetProps) => {
           document.body.removeChild(tempDiv);
         }, 100);
       })
-      .catch((error) => {
-        console.error("Error loading icon:", error);
+      .catch(() => {
         document.body.removeChild(tempDiv);
       });
   };

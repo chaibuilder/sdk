@@ -9,7 +9,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/s
 import { useVirtualizer, VirtualItem } from "@tanstack/react-virtual";
 import Fuse from "fuse.js";
 import { LucideIcon, LucideProps } from "lucide-react";
-import { DynamicIcon, IconName } from "lucide-react/dynamic";
+import { IconName } from "lucide-react/dynamic";
 import * as React from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
@@ -413,7 +413,7 @@ interface IconProps extends Omit<LucideProps, "ref"> {
 }
 
 const Icon = React.forwardRef<React.ComponentRef<LucideIcon>, IconProps>(({ name, ...props }, ref) => {
-  return <DynamicIcon name={name} {...props} ref={ref} />;
+  return null;
 });
 Icon.displayName = "Icon";
 
