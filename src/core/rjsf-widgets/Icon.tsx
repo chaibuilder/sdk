@@ -1,5 +1,6 @@
 import type { IconName } from "@/components/ui/icon-picker";
 import { Icon, IconPicker } from "@/components/ui/icon-picker";
+import { Button } from "@/ui/shadcn/components/ui/button";
 import { WidgetProps } from "@rjsf/utils";
 import { createElement, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
@@ -74,15 +75,13 @@ const IconPickerField = ({ value, onChange, id }: WidgetProps) => {
   return (
     <div className="mt-1 flex flex-col gap-2" id="icon-picker-field">
       <div className="flex items-center gap-x-2">
-        <IconPicker onValueChange={handleIconSelect} searchable={true} categorized={true} modal={true}>
-          <div className="flex h-12 w-12 cursor-pointer items-center justify-center overflow-hidden rounded-lg border bg-gray-50 transition-colors hover:bg-gray-100">
-            {svgInput ? (
-              <div className="h-6 w-6" dangerouslySetInnerHTML={{ __html: svgInput }} />
-            ) : (
-              <span className="text-xs text-gray-400">SVG</span>
-            )}
-          </div>
-        </IconPicker>
+        <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-lg border bg-gray-50">
+          {svgInput ? (
+            <div className="h-6 w-6" dangerouslySetInnerHTML={{ __html: svgInput }} />
+          ) : (
+            <span className="text-xs text-gray-400">SVG</span>
+          )}
+        </div>
         <textarea
           id={id}
           autoCapitalize="off"
@@ -95,7 +94,14 @@ const IconPickerField = ({ value, onChange, id }: WidgetProps) => {
           className="no-scrollbar w-full rounded-md border border-border bg-background px-3 py-1.5 text-xs shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
         />
       </div>
-      <p className="text-xs text-muted-foreground">{t("Paste SVG_code")}</p>
+      <div className="flex items-center gap-2">
+        <IconPicker onValueChange={handleIconSelect} searchable={true} categorized={true} modal={true}>
+          <Button variant="outline" size="sm" className="text-xs">
+            {t("Choose Icon")}
+          </Button>
+        </IconPicker>
+        <p className="text-xs text-muted-foreground">{t("Paste SVG_code")}</p>
+      </div>
     </div>
   );
 };
