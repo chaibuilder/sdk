@@ -1,7 +1,8 @@
 import type { IconName } from "@/components/ui/icon-picker";
 import { Icon, IconPicker } from "@/components/ui/icon-picker";
 import { WidgetProps } from "@rjsf/utils";
-import { Suspense, useEffect, useState } from "react";
+import { createElement, useEffect, useState } from "react";
+import { createRoot } from "react-dom/client";
 import { useTranslation } from "react-i18next";
 
 const sanitizeSvg = (svgString: string): string => {
@@ -49,50 +50,39 @@ const IconPickerField = ({ value, onChange, id }: WidgetProps) => {
     tempDiv.style.display = "none";
     document.body.appendChild(tempDiv);
 
-    // Use React to render the icon into the temp div
-    Promise.all([import("react-dom/client"), Icon, import("react")])
-      .then(([{ createRoot }, Icon, React]) => {
-        const root = createRoot(tempDiv);
-        root.render(React.createElement(Icon, { name: iconName }));
+    // Render the icon into the temp div
+    const root = createRoot(tempDiv);
+    root.render(createElement(Icon, { name: iconName }));
 
-        // Wait for render and extract SVG
-        setTimeout(() => {
-          const svgElement = tempDiv.querySelector("svg");
+    // Wait for render and extract SVG
+    setTimeout(() => {
+      const svgElement = tempDiv.querySelector("svg");
 
-          if (svgElement) {
-            const svgString = svgElement.outerHTML;
-            const sanitized = sanitizeSvg(svgString);
-            setSvgInput(sanitized);
-            onChange(sanitized);
-          }
+      if (svgElement) {
+        const svgString = svgElement.outerHTML;
+        const sanitized = sanitizeSvg(svgString);
+        setSvgInput(sanitized);
+        onChange(sanitized);
+      }
 
-          // Cleanup
-          root.unmount();
-          document.body.removeChild(tempDiv);
-        }, 100);
-      })
-      .catch(() => {
-        document.body.removeChild(tempDiv);
-      });
+      // Cleanup
+      root.unmount();
+      document.body.removeChild(tempDiv);
+    }, 100);
   };
 
   return (
     <div className="mt-1 flex flex-col gap-2" id="icon-picker-field">
       <div className="flex items-center gap-x-2">
-        <Suspense
-          fallback={
-            <div className="flex h-12 w-12 cursor-wait items-center justify-center overflow-hidden rounded-lg border bg-gray-50" />
-          }>
-          <IconPicker onValueChange={handleIconSelect} searchable={true} categorized={true} modal={true}>
-            <div className="flex h-12 w-12 cursor-pointer items-center justify-center overflow-hidden rounded-lg border bg-gray-50 transition-colors hover:bg-gray-100">
-              {svgInput ? (
-                <div className="h-6 w-6" dangerouslySetInnerHTML={{ __html: svgInput }} />
-              ) : (
-                <span className="text-xs text-gray-400">SVG</span>
-              )}
-            </div>
-          </IconPicker>
-        </Suspense>
+        <IconPicker onValueChange={handleIconSelect} searchable={true} categorized={true} modal={true}>
+          <div className="flex h-12 w-12 cursor-pointer items-center justify-center overflow-hidden rounded-lg border bg-gray-50 transition-colors hover:bg-gray-100">
+            {svgInput ? (
+              <div className="h-6 w-6" dangerouslySetInnerHTML={{ __html: svgInput }} />
+            ) : (
+              <span className="text-xs text-gray-400">SVG</span>
+            )}
+          </div>
+        </IconPicker>
         <textarea
           id={id}
           autoCapitalize="off"
