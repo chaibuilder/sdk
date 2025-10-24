@@ -1,9 +1,8 @@
 import type { IconName } from "@/components/ui/icon-picker";
+import { Icon, IconPicker } from "@/components/ui/icon-picker";
 import { WidgetProps } from "@rjsf/utils";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-
-const IconPicker = lazy(() => import("@/components/ui/icon-picker").then((mod) => ({ default: mod.IconPicker })));
 
 const sanitizeSvg = (svgString: string): string => {
   try {
@@ -51,8 +50,8 @@ const IconPickerField = ({ value, onChange, id }: WidgetProps) => {
     document.body.appendChild(tempDiv);
 
     // Use React to render the icon into the temp div
-    Promise.all([import("react-dom/client"), import("@/components/ui/icon-picker"), import("react")])
-      .then(([{ createRoot }, { Icon }, React]) => {
+    Promise.all([import("react-dom/client"), Icon, import("react")])
+      .then(([{ createRoot }, Icon, React]) => {
         const root = createRoot(tempDiv);
         root.render(React.createElement(Icon, { name: iconName }));
 

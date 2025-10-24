@@ -48,7 +48,7 @@
   "Settings": "Settings",
   "Styling": "Style",
   "SVG_code": "Enter SVG code here",
-  "Paste SVG_code": "Paste SVG code to use as an icon",
+  "Paste SVG_code": "Choose icon or paste SVG code",
   "Enter Key": "Enter Key",
   "Data Provider": "Data Provider",
   "Remove Provider Confirmation": "Are you sure you want to remove <span class='text-blue-500'>{name}</span> provider?",
