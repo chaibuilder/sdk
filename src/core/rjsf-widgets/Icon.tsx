@@ -1,10 +1,12 @@
 import type { IconName } from "@/components/ui/icon-picker";
-import { Icon, IconPicker } from "@/components/ui/icon-picker";
+import { Icon } from "@/components/ui/icon-picker";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { WidgetProps } from "@rjsf/utils";
-import { createElement, useEffect, useState } from "react";
+import { createElement, lazy, Suspense, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { useTranslation } from "react-i18next";
+
+const IconPicker = lazy(() => import("@/components/ui/icon-picker").then((mod) => ({ default: mod.IconPicker })));
 
 const sanitizeSvg = (svgString: string): string => {
   try {
@@ -95,11 +97,18 @@ const IconPickerField = ({ value, onChange, id }: WidgetProps) => {
         />
       </div>
       <div className="flex items-center gap-2">
-        <IconPicker onValueChange={handleIconSelect} searchable={true} categorized={true}>
-          <Button variant="outline" size="sm" className="text-xs">
-            {t("Choose Icon")}
-          </Button>
-        </IconPicker>
+        <Suspense
+          fallback={
+            <Button variant="outline" size="sm" className="text-xs" disabled>
+              {t("Choose Icon")}
+            </Button>
+          }>
+          <IconPicker onValueChange={handleIconSelect} searchable={true} categorized={true}>
+            <Button variant="outline" size="sm" className="text-xs">
+              {t("Choose Icon")}
+            </Button>
+          </IconPicker>
+        </Suspense>
         <p className="text-xs text-muted-foreground">{t("Paste SVG_code")}</p>
       </div>
     </div>
