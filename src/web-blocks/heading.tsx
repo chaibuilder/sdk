@@ -46,7 +46,7 @@ const Config = {
   }),
   aiProps: ["content"],
   i18nProps: ["content"],
-  canAcceptBlock: (type) => type === "Span" || type === "Text",
+  canAcceptBlock: () => true,
 };
 
 export { HeadingBlock as Component, Config };
