@@ -1,12 +1,6 @@
-import type { IconName } from "@/components/ui/icon-picker";
-import { Icon } from "@/components/ui/icon-picker";
-import { Button } from "@/ui/shadcn/components/ui/button";
 import { WidgetProps } from "@rjsf/utils";
-import { createElement, lazy, Suspense, useEffect, useState } from "react";
-import { createRoot } from "react-dom/client";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-
-const IconPicker = lazy(() => import("@/components/ui/icon-picker").then((mod) => ({ default: mod.IconPicker })));
 
 const sanitizeSvg = (svgString: string): string => {
   try {
@@ -47,33 +41,6 @@ const IconPickerField = ({ value, onChange, id }: WidgetProps) => {
     onChange(sanitized);
   };
 
-  const handleIconSelect = (iconName: IconName) => {
-    // Create a temporary div to render the icon and extract SVG
-    const tempDiv = document.createElement("div");
-    tempDiv.style.display = "none";
-    document.body.appendChild(tempDiv);
-
-    // Render the icon into the temp div
-    const root = createRoot(tempDiv);
-    root.render(createElement(Icon, { name: iconName }));
-
-    // Wait for render and extract SVG
-    setTimeout(() => {
-      const svgElement = tempDiv.querySelector("svg");
-
-      if (svgElement) {
-        const svgString = svgElement.outerHTML;
-        const sanitized = sanitizeSvg(svgString);
-        setSvgInput(sanitized);
-        onChange(sanitized);
-      }
-
-      // Cleanup
-      root.unmount();
-      document.body.removeChild(tempDiv);
-    }, 100);
-  };
-
   return (
     <div className="mt-1 flex flex-col gap-2" id="icon-picker-field">
       <div className="flex items-center gap-x-2">
@@ -97,18 +64,6 @@ const IconPickerField = ({ value, onChange, id }: WidgetProps) => {
         />
       </div>
       <div className="flex items-center gap-2">
-        <Suspense
-          fallback={
-            <Button variant="outline" size="sm" className="text-xs" disabled>
-              {t("Choose Icon")}
-            </Button>
-          }>
-          <IconPicker onValueChange={handleIconSelect} searchable={true} categorized={true}>
-            <Button variant="outline" size="sm" className="text-xs">
-              {t("Choose Icon")}
-            </Button>
-          </IconPicker>
-        </Suspense>
         <p className="text-xs text-muted-foreground">{t("Paste SVG_code")}</p>
       </div>
     </div>
