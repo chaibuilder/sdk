@@ -42,7 +42,6 @@ const Config = {
       },
     },
   }),
-  hidden: true,
 };
 
 export { CustomScript as Component, Config };
