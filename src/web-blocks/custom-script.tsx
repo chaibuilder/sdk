@@ -29,6 +29,7 @@ const Config = {
   label: "Custom Script",
   category: "core",
   icon: CodeIcon,
+  hidden: true,
   group: "advanced",
   ...registerChaiBlockSchema({
     properties: {
