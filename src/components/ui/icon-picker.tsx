@@ -4,13 +4,13 @@ import { Input } from "@/ui/shadcn/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/ui/popover";
 import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
+import { useDebouncedState } from "@react-hookz/web";
 import { useVirtualizer, VirtualItem } from "@tanstack/react-virtual";
 import Fuse from "fuse.js";
 import { LucideIcon, LucideProps } from "lucide-react";
 import { DynamicIcon, IconName } from "lucide-react/dynamic";
 import * as React from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useDebounceValue } from "usehooks-ts";
 import { iconsData } from "./icons-data";
 
 export type IconData = (typeof iconsData)[number];
@@ -98,7 +98,7 @@ const IconPicker = React.forwardRef<React.ComponentRef<typeof PopoverTrigger>, I
   ) => {
     const [selectedIcon, setSelectedIcon] = useState<IconName | undefined>(defaultValue);
     const [isOpen, setIsOpen] = useState(defaultOpen || false);
-    const [search, setSearch] = useDebounceValue("", 100);
+    const [search, setSearch] = useDebouncedState("", 100);
     const [isPopoverVisible, setIsPopoverVisible] = useState(false);
     const { icons } = useIconsData();
     const [isLoading, setIsLoading] = useState(true);

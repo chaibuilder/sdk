@@ -78,7 +78,6 @@ export default defineConfig({
         "@rjsf/validator-ajv8",
         "@tanstack/react-virtual",
         "lucide-react",
-        "usehooks-ts",
         "@tailwindcss/aspect-ratio",
         "@tailwindcss/forms",
         "@tailwindcss/line-clamp",

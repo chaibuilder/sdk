@@ -156,8 +156,7 @@
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.3.1",
     "tree-model": "^1.0.7",
-    "undo-manager": "1.1.1",
-    "usehooks-ts": "^3.1.1"
+    "undo-manager": "1.1.1"
   },
   "devDependencies": {
     "@commitlint/cli": "19.6.1",
