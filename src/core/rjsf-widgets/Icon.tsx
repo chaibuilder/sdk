@@ -1,6 +1,8 @@
 import { WidgetProps } from "@rjsf/utils";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+
+const IconPicker = lazy(() => import("./IconPicker").then((module) => ({ default: module.IconPicker })));
 
 const sanitizeSvg = (svgString: string): string => {
   try {
@@ -64,6 +66,9 @@ const IconPickerField = ({ value, onChange, id }: WidgetProps) => {
         />
       </div>
       <div className="flex items-center gap-2">
+        <Suspense fallback={<div className="text-xs text-muted-foreground">Loading...</div>}>
+          <IconPicker onSelectIcon={handleSvgChange} />
+        </Suspense>
         <p className="text-xs text-muted-foreground">{t("Paste SVG_code")}</p>
       </div>
     </div>

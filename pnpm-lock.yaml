@@ -17,6 +17,9 @@ importers:
       '@floating-ui/react-dom':
         specifier: 2.1.6
         version: 2.1.6(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@iconify-json/lucide':
+        specifier: ^1.2.71
+        version: 1.2.71
       '@mhsdesign/jit-browser-tailwindcss':
         specifier: 0.4.2
         version: 0.4.2(ts-node@10.9.2(@swc/core@1.10.4(@swc/helpers@0.5.2))(@types/node@20.17.11)(typescript@5.7.3))
@@ -1028,6 +1031,12 @@ packages:
   '@humanwhocodes/retry@0.4.1':
     resolution: {integrity: sha512-c7hNEllBlenFTHBky65mhq8WD2kbN9Q6gk0bTk8lSBvc554jpXSkST1iePudpt7+A/AQvuHs9EMqjHDXMY1lrA==}
     engines: {node: '>=18.18'}
+
+  '@iconify-json/lucide@1.2.71':
+    resolution: {integrity: sha512-KL+3JHW+wN8QqT3CN+7e1SzTe+gIunFBuUICtVmdCmdVRx+MdGNkX4xJhXoYHfhYO2azrEhoGPG+It9k30aZkw==}
+
+  '@iconify/types@2.0.0':
+    resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
 
   '@inquirer/confirm@5.1.1':
     resolution: {integrity: sha512-vVLSbGci+IKQvDOtzpPTCOiEJCNidHcAq9JYVoWTW0svb5FiwSLotkM+JXNXejfjnzVYV9n0DTBythl9+XgTxg==}
@@ -6370,6 +6379,12 @@ snapshots:
   '@humanwhocodes/retry@0.3.1': {}
 
   '@humanwhocodes/retry@0.4.1': {}
+
+  '@iconify-json/lucide@1.2.71':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify/types@2.0.0': {}
 
   '@inquirer/confirm@5.1.1(@types/node@20.17.11)':
     dependencies:

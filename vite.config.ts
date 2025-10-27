@@ -75,6 +75,7 @@ export default defineConfig({
         "react-hook-form",
         "@hookform/resolvers",
         "@rjsf/utils",
+        "@iconify-json/lucide",
         "@rjsf/validator-ajv8",
         "@tanstack/react-virtual",
         "@tailwindcss/aspect-ratio",
