@@ -37,7 +37,7 @@ export const extendChaiBuilder = () => {
     return <div className="h-96 w-96">Save to Lib</div>;
   });
 
-  registerChaiSidebarPanel("ask-ai", {
+  registerChaiSidebarPanel("chai-chat-panel", {
     button: AskAiButton,
     label: "Ask AI",
     position: "top",

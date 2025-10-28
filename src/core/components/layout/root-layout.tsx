@@ -17,7 +17,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/co
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/ui/shadcn/components/ui/sheet";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { Cross1Icon, LightningBoltIcon, MixerHorizontalIcon, StackIcon } from "@radix-ui/react-icons";
-import { useFeature } from "flagged";
 import { motion } from "framer-motion";
 import { compact, find, first, get, reverse } from "lodash-es";
 import React, {
@@ -60,7 +59,6 @@ export const AskAiButton = ({ isActive, show }: { isActive: boolean; show: () =>
 };
 function useSidebarDefaultPanels() {
   const askAiCallBack = useBuilderProp("askAiCallBack", null);
-  const aiChat = useFeature("aiChat");
   return useMemo(() => {
     const items = [];
     items.push({
@@ -76,7 +74,7 @@ function useSidebarDefaultPanels() {
       ),
     });
 
-    if (askAiCallBack && aiChat) {
+    if (askAiCallBack) {
       items.unshift({
         id: "ai",
         button: AiButton,
@@ -91,7 +89,7 @@ function useSidebarDefaultPanels() {
       });
     }
     return compact(items);
-  }, [askAiCallBack, aiChat]);
+  }, [askAiCallBack]);
 }
 
 /**
@@ -121,8 +119,8 @@ const RootLayout: ComponentType = () => {
   // Move "Ask AI" panel to the front of the array
   const totalTopPanels = useMemo(() => {
     const totalTopPanels = [defaultPanels, topPanels].flat();
-    const askAiPanel = totalTopPanels.find((panel) => panel.id === "ask-ai");
-    const otherPanels = totalTopPanels.filter((panel) => panel.id !== "ask-ai");
+    const askAiPanel = totalTopPanels.find((panel) => panel.id === "chai-chat-panel");
+    const otherPanels = totalTopPanels.filter((panel) => panel.id !== "chai-chat-panel");
     return askAiPanel ? [askAiPanel, ...otherPanels] : totalTopPanels;
   }, [defaultPanels, topPanels]);
 
