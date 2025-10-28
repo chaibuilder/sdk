@@ -34,7 +34,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { AiIcon } from "../ai/ai-icon";
 
-const DEFAULT_PANEL_WIDTH = 280;
+export const DEFAULT_PANEL_WIDTH = 280;
 
 const OutlineButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
   return (
@@ -51,7 +51,7 @@ const AiButton = ({ isActive, show }: { isActive: boolean; show: () => void; pan
     </Button>
   );
 };
-const AskAiButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
+export const AskAiButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
   return (
     <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
       <AiIcon />
@@ -63,20 +63,6 @@ function useSidebarDefaultPanels() {
   const aiChat = useFeature("aiChat");
   return useMemo(() => {
     const items = [];
-
-    items.push({
-      id: "ask-ai",
-      button: AskAiButton,
-      label: "Ask AI",
-      isInternal: true,
-      width: DEFAULT_PANEL_WIDTH,
-      panel: () => (
-        <div className="">
-          <AskAI />
-        </div>
-      ),
-    });
-
     items.push({
       id: "outline",
       label: "Outline",
@@ -131,6 +117,14 @@ const RootLayout: ComponentType = () => {
   const preventContextMenu = useCallback((e: MouseEvent<HTMLDivElement>) => {
     if (!isDevelopment()) e.preventDefault();
   }, []);
+
+  // Move "Ask AI" panel to the front of the array
+  const totalTopPanels = useMemo(() => {
+    const totalTopPanels = [defaultPanels, topPanels].flat();
+    const askAiPanel = totalTopPanels.find((panel) => panel.id === "ask-ai");
+    const otherPanels = totalTopPanels.filter((panel) => panel.id !== "ask-ai");
+    return askAiPanel ? [askAiPanel, ...otherPanels] : totalTopPanels;
+  }, [defaultPanels, topPanels]);
 
   const handleMenuItemClick = useCallback(
     (id: string) => {
@@ -210,7 +204,7 @@ const RootLayout: ComponentType = () => {
           <main className="relative flex h-[calc(100vh-56px)] max-w-full flex-1 flex-row">
             <div id="sidebar" className="flex w-12 flex-col items-center justify-between border-r border-border py-2">
               <div className="flex flex-col gap-y-1">
-                {[defaultPanels, topPanels].flat().map((item, index) => (
+                {totalTopPanels.map((item, index) => (
                   <Tooltip key={"button-top-" + index}>
                     <TooltipTrigger asChild>
                       {createElement(get(item, "button", NoopComponent), {
