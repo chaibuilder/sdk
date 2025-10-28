@@ -8,8 +8,8 @@ import { ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 import { ChaiFontViaSrc, ChaiFontViaUrl, registerChaiFont } from "@chaibuilder/runtime";
 import { lazy } from "react";
 import { registerChaiLibrary } from "./core/extensions/libraries";
-import { AskAI } from "./core/components/ask-ai-panel";
-import { AskAiButton, DEFAULT_PANEL_WIDTH } from "./core/components/layout/root-layout";
+import { default as AIChatPanel } from "@/core/components/ai/ai-chat-panel";
+import { AiButton, DEFAULT_PANEL_WIDTH } from "./core/components/layout/root-layout";
 const TopBar = lazy(() => import("@/_demo/top-bar"));
 
 export const extendChaiBuilder = () => {
@@ -38,14 +38,14 @@ export const extendChaiBuilder = () => {
   });
 
   registerChaiSidebarPanel("chai-chat-panel", {
-    button: AskAiButton,
+    button: AiButton,
     label: "Ask AI",
     position: "top",
     isInternal: true,
     width: DEFAULT_PANEL_WIDTH,
     panel: () => (
-      <div className="">
-        <AskAI />
+      <div className="-mt-8 h-full max-h-full">
+        <AIChatPanel />
       </div>
     ),
   });

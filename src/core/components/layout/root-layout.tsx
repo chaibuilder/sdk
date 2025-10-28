@@ -1,4 +1,3 @@
-import { default as AIChatPanel } from "@/core/components/ai/ai-chat-panel";
 import { AskAI } from "@/core/components/ask-ai-panel";
 import CanvasArea from "@/core/components/canvas/canvas-area";
 import { CanvasTopBar } from "@/core/components/canvas/topbar/canvas-top-bar";
@@ -7,7 +6,7 @@ import { AddBlocksDialog } from "@/core/components/layout/add-blocks-dialog";
 import { NoopComponent } from "@/core/components/noop-component";
 import SettingsPanel from "@/core/components/settings/settings-panel";
 import ThemeConfigPanel from "@/core/components/sidepanels/panels/theme-configuration/ThemeConfigPanel";
-import { useChaiSidebarPanels } from "@/core/extensions/sidebar-panels";
+import { registerChaiSidebarPanel, useChaiSidebarPanels } from "@/core/extensions/sidebar-panels";
 import { useTopBarComponent } from "@/core/extensions/top-bar";
 import { useBuilderProp, useSidebarActivePanel } from "@/core/hooks";
 import { useRightPanel } from "@/core/hooks/use-theme";
@@ -18,7 +17,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/ui/shadcn/compon
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { Cross1Icon, LightningBoltIcon, MixerHorizontalIcon, StackIcon } from "@radix-ui/react-icons";
 import { motion } from "framer-motion";
-import { compact, find, first, get, reverse } from "lodash-es";
+import { find, first, get, reverse } from "lodash-es";
 import React, {
   ComponentType,
   createElement,
@@ -43,54 +42,46 @@ const OutlineButton = ({ isActive, show }: { isActive: boolean; show: () => void
   );
 };
 
-const AiButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
+export const AiButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
   return (
     <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
       <LightningBoltIcon className="rtl:ml-2" />
     </Button>
   );
 };
-export const AskAiButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
+const AskAiButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
   return (
     <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
       <AiIcon />
     </Button>
   );
 };
-function useSidebarDefaultPanels() {
-  const askAiCallBack = useBuilderProp("askAiCallBack", null);
-  return useMemo(() => {
-    const items = [];
-    items.push({
-      id: "outline",
-      label: "Outline",
-      isInternal: true,
-      width: DEFAULT_PANEL_WIDTH,
-      button: OutlineButton,
-      panel: () => (
-        <div className="-mt-8">
-          <Outline />
-        </div>
-      ),
-    });
 
-    if (askAiCallBack) {
-      items.unshift({
-        id: "ai",
-        button: AiButton,
-        label: "AI Assistant",
-        isInternal: true,
-        width: 450,
-        panel: () => (
-          <div className="-mt-8 h-full max-h-full">
-            <AIChatPanel />
-          </div>
-        ),
-      });
-    }
-    return compact(items);
-  }, [askAiCallBack]);
-}
+registerChaiSidebarPanel("chai-chat-panel", {
+  button: AskAiButton,
+  label: "Ask AI",
+  position: "top",
+  isInternal: true,
+  width: DEFAULT_PANEL_WIDTH,
+  panel: () => (
+    <div className="">
+      <AskAI />
+    </div>
+  ),
+});
+
+registerChaiSidebarPanel("outline", {
+  button: OutlineButton,
+  label: "Outline",
+  position: "top",
+  isInternal: true,
+  width: DEFAULT_PANEL_WIDTH,
+  panel: () => (
+    <div className="">
+      <Outline />
+    </div>
+  ),
+});
 
 /**
  * RootLayout is a React component that renders the main layout of the application.
@@ -102,8 +93,6 @@ const RootLayout: ComponentType = () => {
   const [lastStandardPanelWidth, setLastStandardPanelWidth] = useState(DEFAULT_PANEL_WIDTH);
 
   const [panel, setRightPanel] = useRightPanel();
-
-  const defaultPanels = useSidebarDefaultPanels();
   const topPanels = useChaiSidebarPanels("top");
   const bottomPanels = useChaiSidebarPanels("bottom");
   const reversedBottomPanels = reverse([...(bottomPanels ?? [])]);
@@ -118,11 +107,11 @@ const RootLayout: ComponentType = () => {
 
   // Move "Ask AI" panel to the front of the array
   const totalTopPanels = useMemo(() => {
-    const totalTopPanels = [defaultPanels, topPanels].flat();
+    const totalTopPanels = [topPanels].flat();
     const askAiPanel = totalTopPanels.find((panel) => panel.id === "chai-chat-panel");
     const otherPanels = totalTopPanels.filter((panel) => panel.id !== "chai-chat-panel");
     return askAiPanel ? [askAiPanel, ...otherPanels] : totalTopPanels;
-  }, [defaultPanels, topPanels]);
+  }, [topPanels]);
 
   const handleMenuItemClick = useCallback(
     (id: string) => {
@@ -134,10 +123,7 @@ const RootLayout: ComponentType = () => {
   );
 
   const { t } = useTranslation();
-  const allPanels = useMemo(
-    () => [...defaultPanels, ...topPanels, ...bottomPanels],
-    [defaultPanels, topPanels, bottomPanels],
-  );
+  const allPanels = useMemo(() => [...topPanels, ...bottomPanels], [topPanels, bottomPanels]);
   const htmlDir = useBuilderProp("htmlDir", "ltr");
 
   // Update active panel item and get its width
