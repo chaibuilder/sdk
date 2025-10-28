@@ -42,6 +42,7 @@ import { useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "@/core/hooks
 import { useWrapperBlock } from "@/core/hooks/use-wrapper-block";
 import { useTranslation } from "react-i18next";
 import { useInlineEditing } from "./use-inline-editing";
+import { useReplaceBlock } from "./use-replace-block";
 export { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 export { useCanvasDisplayWidth, useScreenSizeWidth } from "@/core/hooks/use-screen-size-width";
 export { useSelectedLibrary } from "@/core/hooks/use-selected-library";
@@ -77,6 +78,7 @@ export {
   useRemoveAllClassesForBlock,
   useRemoveBlocks,
   useRemoveClassesFromBlocks,
+  useReplaceBlock,
   useResetBlockStyles,
   useRightPanel,
   useSavePage,
