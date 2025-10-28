@@ -3,11 +3,13 @@ import registerCustomBlocks from "@/_demo/blocks";
 import "@/_demo/panels/panel";
 import { registerChaiAddBlockTab } from "@/core/extensions/add-block-tabs";
 import { registerChaiSaveToLibrary } from "@/core/extensions/save-to-library";
-import { registerChaiPreImportHTMLHook, registerChaiTopBar } from "@/core/main";
+import { registerChaiPreImportHTMLHook, registerChaiSidebarPanel, registerChaiTopBar } from "@/core/main";
 import { ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 import { ChaiFontViaSrc, ChaiFontViaUrl, registerChaiFont } from "@chaibuilder/runtime";
 import { lazy } from "react";
 import { registerChaiLibrary } from "./core/extensions/libraries";
+import { AskAI } from "./core/components/ask-ai-panel";
+import { AskAiButton, DEFAULT_PANEL_WIDTH } from "./core/components/layout/root-layout";
 const TopBar = lazy(() => import("@/_demo/top-bar"));
 
 export const extendChaiBuilder = () => {
@@ -35,6 +37,18 @@ export const extendChaiBuilder = () => {
     return <div className="h-96 w-96">Save to Lib</div>;
   });
 
+  registerChaiSidebarPanel("ask-ai", {
+    button: AskAiButton,
+    label: "Ask AI",
+    position: "top",
+    isInternal: true,
+    width: DEFAULT_PANEL_WIDTH,
+    panel: () => (
+      <div className="">
+        <AskAI />
+      </div>
+    ),
+  });
   registerChaiTopBar(TopBar);
 
   registerChaiAddBlockTab("add-block-ai", {
