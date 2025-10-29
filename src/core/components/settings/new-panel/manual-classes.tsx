@@ -1,6 +1,7 @@
 import { useFuseSearch } from "@/core/constants/CLASSES_LIST";
 import {
   useAddClassesToBlocks,
+  useBuilderProp,
   useRemoveClassesFromBlocks,
   useSelectedBlock,
   useSelectedBlockIds,
@@ -31,6 +32,7 @@ export function ManualClasses() {
   const prop = first(styleBlock)?.prop as string;
   const { classes: classesString } = getSplitChaiClasses(get(block, prop, ""));
   const classes = classesString.split(" ").filter((cls) => !isEmpty(cls));
+  const enableCopyToClipboard = useBuilderProp("enableCopyToClipboard", false);
 
   const addNewClasses = () => {
     const fullClsNames: string[] = newCls
@@ -123,14 +125,16 @@ export function ManualClasses() {
       <div className="flex items-center justify-between gap-x-2">
         <div className="flex items-center gap-x-2 text-muted-foreground">
           <span>{t("Classes")}</span>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <CopyIcon onClick={onClickCopy} className={"cursor-pointer"} />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>{t("Copy classes to clipboard")}</p>
-            </TooltipContent>
-          </Tooltip>
+          {enableCopyToClipboard && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <CopyIcon onClick={onClickCopy} className={"cursor-pointer"} />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{t("Copy classes to clipboard")}</p>
+              </TooltipContent>
+            </Tooltip>
+          )}
         </div>
       </div>
       <div className={"relative flex items-center gap-x-3"}>

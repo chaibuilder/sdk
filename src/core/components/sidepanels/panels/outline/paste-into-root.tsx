@@ -5,16 +5,20 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/ui/sha
 import { CardStackIcon } from "@radix-ui/react-icons";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useBuilderProp } from "@/core/hooks";
 
 export const PasteAtRootContextMenu = ({ parentContext, setParentContext }) => {
   const { t } = useTranslation();
   const { canPaste, pasteBlocks } = usePasteBlocks();
+  const enableCopyToClipboard = useBuilderProp("enableCopyToClipboard", false);
 
   useEffect(() => {
     if (!canPaste("root")) setParentContext(null);
   }, [canPaste("root")]);
 
   if (!parentContext || !canPaste("root")) return null;
+
+  if (!enableCopyToClipboard) return null;
 
   return (
     <div className="absolute inset-0">

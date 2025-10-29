@@ -30,7 +30,7 @@ function ChaiBuilderDefault() {
   const [theme, setTheme] = useAtom(lsThemeAtom);
   return (
     <ChaiBuilderEditor
-      _tempProps={{
+      flags={{
         librarySite: false,
       }}
       gotoPage={(args) => {
@@ -38,6 +38,7 @@ function ChaiBuilderDefault() {
       }}
       permissions={null}
       // permissions={[]}
+      enableCopyToClipboard={true}
       pageExternalData={EXTERNAL_DATA}
       fallbackLang="en"
       languages={["fr"]}
