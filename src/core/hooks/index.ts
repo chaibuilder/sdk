@@ -38,9 +38,16 @@ import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-bloc
 import { useStylingBreakpoint } from "@/core/hooks/use-styling-breakpoint";
 import { useStylingState } from "@/core/hooks/use-styling-state";
 import { useRightPanel, useTheme, useThemeOptions } from "@/core/hooks/use-theme";
-import { useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "@/core/hooks/use-update-blocks-props";
+import {
+  useStreamMultipleBlocksProps,
+  useUpdateBlocksProps,
+  useUpdateBlocksPropsRealtime,
+} from "@/core/hooks/use-update-blocks-props";
 import { useWrapperBlock } from "@/core/hooks/use-wrapper-block";
 import { useTranslation } from "react-i18next";
+import { useBlocksHtmlForAi } from "./use-blocks-html-for-ai";
+import { useHtmlToBlocks } from "./use-html-to-blocks";
+import { useI18nBlocks } from "./use-i18n-blocks";
 import { useInlineEditing } from "./use-inline-editing";
 import { useReplaceBlock } from "./use-replace-block";
 export { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
@@ -53,6 +60,7 @@ export {
   useAddClassesToBlocks,
   useAskAi,
   useBlockHighlight,
+  useBlocksHtmlForAi,
   useBlocksStore,
   useBrandingOptions,
   useBuilderProp,
@@ -66,6 +74,8 @@ export {
   useDarkMode,
   useDuplicateBlocks,
   useHighlightBlockId,
+  useHtmlToBlocks,
+  useI18nBlocks,
   useInlineEditing,
   useIsPageLoaded,
   useLanguages,
@@ -89,6 +99,7 @@ export {
   useSelectedBlocksDisplayChild,
   useSelectedBreakpoints,
   useSelectedStylingBlocks,
+  useStreamMultipleBlocksProps,
   useStylingBreakpoint,
   useStylingState,
   useTheme,
