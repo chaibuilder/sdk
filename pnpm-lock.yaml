@@ -180,8 +180,8 @@ importers:
         specifier: 7.1.0
         version: 7.1.0
       himalaya:
-        specifier: ^1.1.0
-        version: 1.1.0
+        specifier: 1.1.1
+        version: 1.1.1
       i18next:
         specifier: 25.5.2
         version: 25.5.2(typescript@5.7.3)
@@ -3492,8 +3492,8 @@ packages:
   headers-polyfill@4.0.3:
     resolution: {integrity: sha512-IScLbePpkvO846sIwOtOTDjutRMWdXdJmXdMvk6gCBHxFO8d+QKOQedyZSxFTTFYRSmlgSTDtXqqq4pcenBXLQ==}
 
-  himalaya@1.1.0:
-    resolution: {integrity: sha512-LLase1dHCRMel68/HZTFft0N0wti0epHr3nNY7ynpLbyZpmrKMQ8YIpiOV77TM97cNpC8Wb2n6f66IRggwdWPw==}
+  himalaya@1.1.1:
+    resolution: {integrity: sha512-mJLY5tErGWtsw8hO2fJ2vK4IpG6S1AIgVkduRo4FqFJhgI2H3XLzgemRemk45zcnFyxNNpOfrIDle2KcnJM0lA==}
 
   hoist-non-react-statics@3.3.2:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
@@ -9152,7 +9152,7 @@ snapshots:
 
   headers-polyfill@4.0.3: {}
 
-  himalaya@1.1.0: {}
+  himalaya@1.1.1: {}
 
   hoist-non-react-statics@3.3.2:
     dependencies:
