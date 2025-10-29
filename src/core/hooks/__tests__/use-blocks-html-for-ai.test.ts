@@ -1,6 +1,8 @@
 import { transformNode, type HimalayaNode } from "../use-blocks-html-for-ai";
 
 describe("transformNode", () => {
+  const mockBlocks: any[] = [];
+
   describe("Core Blocks", () => {
     test("should remove data-block-type attribute from core block", () => {
       const node: HimalayaNode = {
@@ -13,7 +15,7 @@ describe("transformNode", () => {
         children: [],
       };
 
-      const result = transformNode(node);
+      const result = transformNode(node, mockBlocks);
 
       expect(result.attributes?.find((attr) => attr.key === "data-block-type")).toBeUndefined();
       expect(result.attributes?.find((attr) => attr.key === "class")).toBeDefined();
@@ -32,7 +34,7 @@ describe("transformNode", () => {
         children: [],
       };
 
-      const result = transformNode(node);
+      const result = transformNode(node, mockBlocks);
 
       expect(result.attributes?.find((attr) => attr.key === "data-block-id")).toBeUndefined();
       expect(result.attributes?.find((attr) => attr.key === "class")).toBeDefined();
@@ -53,7 +55,7 @@ describe("transformNode", () => {
         ],
       };
 
-      const result = transformNode(node);
+      const result = transformNode(node, mockBlocks);
 
       expect(result.children?.[0].attributes?.find((attr) => attr.key === "data-block-type")).toBeUndefined();
     });
@@ -71,7 +73,7 @@ describe("transformNode", () => {
         children: [],
       };
 
-      const result = transformNode(node);
+      const result = transformNode(node, mockBlocks);
 
       expect(result.tagName).toBe("chai-custom-widget");
     });
@@ -84,7 +86,7 @@ describe("transformNode", () => {
         children: [],
       };
 
-      const result = transformNode(node);
+      const result = transformNode(node, mockBlocks);
 
       expect(result.tagName).toBe("chai-my-custom-component");
     });
@@ -102,7 +104,7 @@ describe("transformNode", () => {
         children: [],
       };
 
-      const result = transformNode(node);
+      const result = transformNode(node, mockBlocks);
 
       expect(result.attributes).toHaveLength(1);
       expect(result.attributes?.[0]).toEqual({ key: "id", value: "custom123" });
@@ -119,7 +121,7 @@ describe("transformNode", () => {
         children: [],
       };
 
-      const result = transformNode(node);
+      const result = transformNode(node, mockBlocks);
 
       expect(result.attributes).toHaveLength(0);
     });
@@ -139,7 +141,7 @@ describe("transformNode", () => {
         ],
       };
 
-      const result = transformNode(node);
+      const result = transformNode(node, mockBlocks);
 
       expect(result.children).toHaveLength(0);
     });
@@ -161,7 +163,7 @@ describe("transformNode", () => {
         ],
       };
 
-      const result = transformNode(node);
+      const result = transformNode(node, mockBlocks);
 
       expect(result.tagName).toBe("div");
       expect(result.attributes?.[0]).toEqual({ key: "class", value: "wrapper" });
@@ -174,7 +176,7 @@ describe("transformNode", () => {
         content: "Hello World",
       };
 
-      const result = transformNode(node);
+      const result = transformNode(node, mockBlocks);
 
       expect(result).toEqual(node);
     });
@@ -186,7 +188,7 @@ describe("transformNode", () => {
         children: [],
       };
 
-      const result = transformNode(node);
+      const result = transformNode(node, mockBlocks);
 
       expect(result).toEqual(node);
     });
@@ -201,7 +203,7 @@ describe("transformNode", () => {
         children: [],
       };
 
-      const result = transformNode(node);
+      const result = transformNode(node, mockBlocks);
 
       expect(result.children).toHaveLength(0);
     });
@@ -228,7 +230,7 @@ describe("transformNode", () => {
         ],
       };
 
-      const result = transformNode(node);
+      const result = transformNode(node, mockBlocks);
 
       expect(result.attributes?.find((attr) => attr.key === "data-block-type")).toBeUndefined();
       expect(result.children?.[0].attributes?.find((attr) => attr.key === "data-block-type")).toBeUndefined();
@@ -262,7 +264,7 @@ describe("transformNode", () => {
         ],
       };
 
-      const result = transformNode(node);
+      const result = transformNode(node, mockBlocks);
 
       expect(result.tagName).toBe("div");
       expect(result.children?.[0].tagName).toBe("chai-custom-widget");
