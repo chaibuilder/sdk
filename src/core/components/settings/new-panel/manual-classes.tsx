@@ -32,7 +32,7 @@ export function ManualClasses() {
   const prop = first(styleBlock)?.prop as string;
   const { classes: classesString } = getSplitChaiClasses(get(block, prop, ""));
   const classes = classesString.split(" ").filter((cls) => !isEmpty(cls));
-  const enableCopyToClipboard = useBuilderProp("enableCopyToClipboard", false);
+  const enableCopyToClipboard = useBuilderProp("flags", { useClipboard: false }).useClipboard;
 
   const addNewClasses = () => {
     const fullClsNames: string[] = newCls

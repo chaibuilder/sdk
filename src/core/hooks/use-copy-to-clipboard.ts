@@ -7,7 +7,7 @@ type CopyFn = (text: string) => Promise<boolean>;
 
 export const useCopyToClipboard = (): [CopiedValue, CopyFn] => {
   const [copiedText, setCopiedText] = useState<CopiedValue>(null);
-  const enableCopyToClipboard = useBuilderProp("enableCopyToClipboard", false);
+  const enableCopyToClipboard = useBuilderProp("flags", { useClipboard: false }).useClipboard;
 
   const copy: CopyFn = useCallback(async (text) => {
     if (!enableCopyToClipboard) {
