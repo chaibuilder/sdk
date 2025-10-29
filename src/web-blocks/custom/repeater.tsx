@@ -81,6 +81,7 @@ export const RepeaterConfig: Omit<ChaiBlockDefinition, "component"> = {
   label: "Repeater",
   icon: LoopIcon,
   group: "basic",
+  description: "Repeater block is used to display a list of items based on data binding in repeaterItems",
   dataProviderMode: "live",
   dataProviderDependencies: ["filter", "sort", "limit", "repeaterItems"],
   blocks: () => [

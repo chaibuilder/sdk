@@ -58,6 +58,15 @@ const cleanNode = (node: HimalayaNode): HimalayaNode | null => {
     return node;
   }
 
+  // if id is add-block-bottom, remove it
+  if (
+    node.type === "element" &&
+    node.attributes &&
+    node.attributes.find((attr) => attr.key === "id" && attr.value === "add-block-bottom")
+  ) {
+    return null;
+  }
+
   // Clean attributes for element nodes
   if (node.type === "element" && node.attributes) {
     node.attributes = node.attributes.filter((attr) => !ATTRIBUTES_TO_REMOVE.includes(attr.key));
@@ -125,7 +134,7 @@ export const transformNode = (node: HimalayaNode, currentBlocks: ChaiBlock[]): H
       }
       if (blockDefinition && blockDefinition?.description) {
         node.attributes.push({
-          key: "component-description",
+          key: "about-this-component",
           value: blockDefinition.description,
         });
       }
@@ -156,11 +165,11 @@ export const useBlocksHtmlForAi = () => {
   const [currentBlocks] = useBlocksStore();
   const [iframeDocument] = useCanvasIframe();
   return useCallback(() => {
-    if (!iframeDocument || !selectedBlock) return "";
-
-    const html =
-      (iframeDocument as HTMLIFrameElement).contentDocument?.querySelector(`[data-block-id="${selectedBlock._id}"]`)
-        ?.outerHTML ?? "";
+    if (!iframeDocument) return "";
+    const id = selectedBlock?._id ? `[data-block-id="${selectedBlock._id}"]` : "#canvas";
+    const html = (iframeDocument as HTMLIFrameElement).contentDocument?.querySelector(id)?.[
+      id === "#canvas" ? "innerHTML" : "outerHTML"
+    ];
 
     if (!html) return "";
 

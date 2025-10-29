@@ -36,6 +36,7 @@ const Config = {
   type: "Icon",
   label: "web_blocks.icon",
   category: "core",
+  description: "Icon block is used to display an icon/svg.",
   icon: SketchLogoIcon,
   group: "media",
   ...registerChaiBlockSchema({
