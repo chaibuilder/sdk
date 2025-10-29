@@ -16,7 +16,11 @@ export const handlei18N = (blocks: ChaiBlock[], currentBlocks: ChaiBlock[]) => {
     const values = pick(block, i18nProps);
 
     each(values, (value, key) => {
-      const b = find(typeBlocks, (tB) => tB[key]?.trim().toLowerCase() === value.trim().toLowerCase());
+      const b = find(typeBlocks, (tB) => {
+        const v = typeof tB[key] === "string" ? tB[key]?.trim().toLowerCase() : JSON.stringify(tB[key]);
+        const v2 = typeof value === "string" ? value.trim().toLowerCase() : JSON.stringify(value);
+        return v === v2;
+      });
       if (b) {
         const i18nKeys = filter(Object.keys(b), (k) => startsWith(k, `${key}-`));
         const i18nValues = pick(b, i18nKeys);

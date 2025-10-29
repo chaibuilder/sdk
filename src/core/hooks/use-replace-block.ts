@@ -60,7 +60,7 @@ export const useReplaceBlock = () => {
   return useCallback(
     (blockId: string, replacementBlocks: ChaiBlock[]) => {
       if (!hasPermission(PERMISSIONS.EDIT_BLOCK)) return;
-      const newBlocks = replaceBlock(presentBlocks, blockId, replacementBlocks);
+      const newBlocks = blockId ? replaceBlock(presentBlocks, blockId, replacementBlocks) : replacementBlocks;
       setNewBlocks(newBlocks);
       // Select the first replacement block after replace
       if (replacementBlocks.length > 0) {
