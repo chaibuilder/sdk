@@ -13,7 +13,7 @@ export const AddBlockAtBottom = () => {
   if (!canAddBlock) return null;
 
   return (
-    <div className="group relative w-full cursor-pointer py-2">
+    <div id="add-block-bottom" className="group relative w-full cursor-pointer py-2">
       <br />
       <div
         role="button"
@@ -23,6 +23,9 @@ export const AddBlockAtBottom = () => {
           <PlusIcon className="size-2.5 stroke-[3]" /> {t("Add block")}
         </div>
       </div>
+      <br />
+      <br />
+      <br />
       <br />
     </div>
   );

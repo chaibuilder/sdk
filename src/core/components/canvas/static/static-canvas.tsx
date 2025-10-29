@@ -75,9 +75,6 @@ const StaticCanvas = () => {
                 <StaticBlocksRenderer />
               )}
               <AddBlockAtBottom />
-              <br />
-              <br />
-              <br />
             </Canvas>
             <CanvasEventsWatcher />
           </Provider>
