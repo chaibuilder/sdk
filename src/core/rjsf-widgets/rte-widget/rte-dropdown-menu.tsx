@@ -1,8 +1,8 @@
 import { useFrame } from "@/core/frame";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/ui";
+import { Editor } from "@tiptap/react";
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Editor } from "@tiptap/react";
 
 const RteDropdownMenu = ({
   editor,
@@ -88,7 +88,9 @@ const RteDropdownMenu = ({
   return (
     <>
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-        <DropdownMenuTrigger className={`relative outline-none`}>{trigger}</DropdownMenuTrigger>
+        <DropdownMenuTrigger className={`relative outline-none`} asChild>
+          {trigger}
+        </DropdownMenuTrigger>
         <DropdownMenuContent className={`z-50 rounded-md border bg-white p-1 text-xs shadow-xl`}>
           {isOpen && (typeof content === "function" ? content(() => setIsOpen(false)) : content)}
         </DropdownMenuContent>
