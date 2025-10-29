@@ -27,7 +27,7 @@ export const useCopyBlocks = (): [
   const [ids, setIds] = useAtom(copiedBlockIdsAtom);
   const resetCutBlockIds = useSetAtom(cutBlockIdsAtom);
   const { getPartailBlocks } = usePartailBlocksStore();
-  const enableCopyToClipboard = useBuilderProp("flags", { useClipboard: false }).useClipboard;
+  const enableCopyToClipboard = useBuilderProp("flags.useClipboard", false);
 
   const hasPartialBlocks = useCallback(
     (blockIds: Array<string>) => {
@@ -78,7 +78,6 @@ export const useCopyBlocks = (): [
           }),
         };
         if (!enableCopyToClipboard) {
-          toast.error("Clipboard feature is disabled.");
           return;
         }
         if (!navigator.clipboard) {
