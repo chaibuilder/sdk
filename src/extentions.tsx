@@ -1,15 +1,13 @@
-import AddBlockAi from "@/_demo/add-block-ai";
+import { default as AIChatPanel } from "@/_demo/ai-chat-panel";
 import registerCustomBlocks from "@/_demo/blocks";
 import "@/_demo/panels/panel";
-import { registerChaiAddBlockTab } from "@/core/extensions/add-block-tabs";
 import { registerChaiSaveToLibrary } from "@/core/extensions/save-to-library";
 import { registerChaiPreImportHTMLHook, registerChaiSidebarPanel, registerChaiTopBar } from "@/core/main";
 import { ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 import { ChaiFontViaSrc, ChaiFontViaUrl, registerChaiFont } from "@chaibuilder/runtime";
 import { lazy } from "react";
-import { registerChaiLibrary } from "./core/extensions/libraries";
-import { default as AIChatPanel } from "@/core/components/ai/ai-chat-panel";
 import { AiButton, DEFAULT_PANEL_WIDTH } from "./core/components/layout/root-layout";
+import { registerChaiLibrary } from "./core/extensions/libraries";
 const TopBar = lazy(() => import("@/_demo/top-bar"));
 
 export const extendChaiBuilder = () => {
@@ -51,10 +49,10 @@ export const extendChaiBuilder = () => {
   });
   registerChaiTopBar(TopBar);
 
-  registerChaiAddBlockTab("add-block-ai", {
-    tab: () => "With AI",
-    tabContent: AddBlockAi,
-  });
+  // registerChaiAddBlockTab("add-block-ai", {
+  //   tab: () => "With AI",
+  //   tabContent: AddBlockAi,
+  // });
 
   const url = "https://chai-ui-blocks.vercel.app";
   registerChaiLibrary("meraki-ui", {
