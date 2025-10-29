@@ -77,7 +77,7 @@ registerChaiSidebarPanel("outline", {
   isInternal: true,
   width: DEFAULT_PANEL_WIDTH,
   panel: () => (
-    <div className="">
+    <div className="-mt-8">
       <Outline />
     </div>
   ),
