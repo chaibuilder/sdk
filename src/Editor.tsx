@@ -32,13 +32,13 @@ function ChaiBuilderDefault() {
     <ChaiBuilderEditor
       flags={{
         librarySite: false,
+        useClipboard: true,
       }}
       gotoPage={(args) => {
         console.log("gotoPage", args);
       }}
       permissions={null}
       // permissions={[]}
-      enableCopyToClipboard={true}
       pageExternalData={EXTERNAL_DATA}
       fallbackLang="en"
       languages={["fr"]}
