@@ -6,6 +6,7 @@ import { ChaiBlock } from "@/types/chai-block";
 import { parse, stringify } from "himalaya";
 import {
   capitalize,
+  compact,
   filter,
   find,
   flatMapDeep,
@@ -15,11 +16,11 @@ import {
   has,
   includes,
   isEmpty,
+  map,
   set,
   some,
+  startCase,
   startsWith,
-  compact,
-  map,
   trim,
 } from "lodash-es";
 
@@ -350,6 +351,38 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
         }
       }
       return { ...block, _type: "Text", content: get(node, "content", "") };
+    }
+
+    // * Handle chai- prefixed custom blocks (web components)
+    if (startsWith(node.tagName, "chai-")) {
+      const blockType = startCase(node.tagName.replace("chai-", "")).replace(/\s+/g, "");
+      block._type = blockType;
+
+      // Process attributes and add to block props
+      const attributes: Array<{ key: string; value: string }> = node.attributes as any;
+      forEach(attributes, ({ key, value }) => {
+        // Skip about-this-component attribute
+        if (key === "about-this-component") return;
+
+        // Convert id to _id
+        if (key === "id") {
+          block._id = value;
+          return;
+        }
+
+        // Handle #styles: prefix - convert to #styles:,
+        let sanitizedValue = getSanitizedValue(value);
+        if (typeof sanitizedValue === "string" && startsWith(sanitizedValue, "#styles:")) {
+          sanitizedValue = sanitizedValue.replace("#styles:", "#styles:,");
+        }
+
+        // Add all other attributes to block props
+        block[key] = sanitizedValue;
+      });
+
+      // Process children if any
+      const children = traverseNodes(node.children, { block, node });
+      return [block, ...children] as ChaiBlock[];
     }
 
     const styleAttributes = get(node, "attributes", []);
