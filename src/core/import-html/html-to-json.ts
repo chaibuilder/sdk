@@ -623,6 +623,40 @@ export const getSanitizedHTML = (html: string) => {
 };
 
 /**
+ * Finds a block by _id in the blocks array
+ * @param blocks - Array of blocks to search in
+ * @param blockId - The _id to search for
+ * @returns The found block or undefined
+ */
+const findBlockById = (blocks: ChaiBlock[], blockId: string): ChaiBlock | undefined => {
+  return find(blocks, { _id: blockId });
+};
+
+/**
+ * Merges imported blocks with existing blocks based on _id
+ * If a block with the same _id exists, merge properties into existing block
+ * Otherwise, keep the imported block as is
+ * @param importedBlocks - Blocks imported from HTML
+ * @param existingBlocks - Current blocks in the store
+ * @returns Merged blocks array
+ */
+export const mergeBlocksWithExisting = (importedBlocks: ChaiBlock[], existingBlocks: ChaiBlock[]): ChaiBlock[] => {
+  if (isEmpty(existingBlocks)) return importedBlocks;
+
+  return map(importedBlocks, (importedBlock) => {
+    const existingBlock = findBlockById(existingBlocks, importedBlock._id);
+
+    if (existingBlock) {
+      // Merge imported block properties into existing block
+      return { ...existingBlock, ...importedBlock };
+    }
+
+    // No existing block found, return imported block as is
+    return importedBlock;
+  });
+};
+
+/**
  *
  * @param html
  * @returns Blocks JSON
