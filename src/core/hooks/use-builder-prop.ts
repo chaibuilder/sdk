@@ -7,7 +7,7 @@ import { useMemo } from "react";
 type ExcludedBuilderProps = "blocks" | "subPages" | "brandingOptions" | "dataProviders";
 
 export const useBuilderProp = <T>(
-  propKey: keyof Omit<ChaiBuilderEditorProps, ExcludedBuilderProps> | "languages",
+  propKey: keyof Omit<ChaiBuilderEditorProps, ExcludedBuilderProps> | "languages" | string,
   defaultValue: T = undefined,
 ): T => {
   const builderProps = useAtomValue(chaiBuilderPropsAtom);

@@ -297,5 +297,8 @@ export interface ChaiBuilderEditorProps {
   /**
    * temporary props. Not to be used in production
    */
-  flags?: Record<string, any>;
+  flags?: {
+    librarySite?: boolean;
+    useClipboard?: boolean;
+  };
 }
