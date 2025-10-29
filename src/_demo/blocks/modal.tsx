@@ -81,8 +81,6 @@ const BuilderPortal = ({ children }: { children: any }) => {
 const ModalContentComponent = (props: ChaiBlockComponentProps<ModalContentProps>) => {
   const { blockProps, children, styles, inBuilder, show } = props;
 
-  console.log("ModalContentComponent", props);
-
   if (inBuilder) {
     // * In builder showing children with a custom portal
     if (!show) return null;
@@ -137,6 +135,7 @@ const Config = {
   type: "Modal",
   label: "Modal",
   group: "advanced",
+  description: "This is a modal block",
   category: "core",
   wrapper: true,
   icon: StackIcon,

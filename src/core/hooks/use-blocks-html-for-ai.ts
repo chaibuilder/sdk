@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { useCanvasIframe } from "./use-canvas-iframe";
 import { useSelectedBlock } from "./use-selected-blockIds";
 
-type HimalayaNode = {
+export type HimalayaNode = {
   type: "element" | "text" | "comment";
   tagName?: string;
   attributes?: Array<{ key: string; value: string }>;
@@ -69,7 +69,7 @@ const cleanNode = (node: HimalayaNode): HimalayaNode | null => {
   return node;
 };
 
-const transformNode = (node: HimalayaNode): HimalayaNode => {
+export const transformNode = (node: HimalayaNode): HimalayaNode => {
   // Only process element nodes
   if (node.type !== "element" || !node.attributes) {
     return node;
