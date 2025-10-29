@@ -91,7 +91,7 @@ describe("transformNode", () => {
       expect(result.tagName).toBe("chai-my-custom-component");
     });
 
-    test("should keep only id attribute for custom blocks", () => {
+    test("should keep only id and chai-type attributes for custom blocks", () => {
       const node: HimalayaNode = {
         type: "element",
         tagName: "div",
@@ -106,11 +106,12 @@ describe("transformNode", () => {
 
       const result = transformNode(node, mockBlocks);
 
-      expect(result.attributes).toHaveLength(1);
-      expect(result.attributes?.[0]).toEqual({ key: "id", value: "custom123" });
+      expect(result.attributes).toHaveLength(2);
+      expect(result.attributes).toContainEqual({ key: "chai-type", value: "CustomBlock" });
+      expect(result.attributes).toContainEqual({ key: "id", value: "custom123" });
     });
 
-    test("should have empty attributes if no data-block-id", () => {
+    test("should have only chai-type attribute if no data-block-id", () => {
       const node: HimalayaNode = {
         type: "element",
         tagName: "div",
@@ -123,7 +124,8 @@ describe("transformNode", () => {
 
       const result = transformNode(node, mockBlocks);
 
-      expect(result.attributes).toHaveLength(0);
+      expect(result.attributes).toHaveLength(1);
+      expect(result.attributes?.[0]).toEqual({ key: "chai-type", value: "CustomBlock" });
     });
 
     test("should remove all children from custom blocks", () => {

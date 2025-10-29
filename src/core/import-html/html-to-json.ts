@@ -355,14 +355,16 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
 
     // * Handle chai- prefixed custom blocks (web components)
     if (startsWith(node.tagName, "chai-")) {
-      const blockType = startCase(node.tagName.replace("chai-", "")).replace(/\s+/g, "");
-      block._type = blockType;
-
       // Process attributes and add to block props
       const attributes: Array<{ key: string; value: string }> = node.attributes as any;
+
+      // Check for chai-type attribute first, otherwise derive from tag name
+      const chaiTypeAttr = find(attributes, { key: "chai-type" });
+      const blockType = chaiTypeAttr?.value || startCase(node.tagName.replace("chai-", "")).replace(/\s+/g, "");
+      block._type = blockType;
       forEach(attributes, ({ key, value }) => {
-        // Skip about-this-component attribute
-        if (key === "about-this-component") return;
+        // Skip about-this-component and chai-type attributes
+        if (key === "about-this-component" || key === "chai-type") return;
 
         // Convert id to _id
         if (key === "id") {
