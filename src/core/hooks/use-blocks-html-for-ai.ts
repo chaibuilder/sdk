@@ -141,10 +141,6 @@ export const transformNode = (node: HimalayaNode, currentBlocks: ChaiBlock[]): H
       //specially for icon block, empty the icon attr
       if (blockType === "Icon") {
         node.attributes = node.attributes.filter((attr) => attr.key !== "icon");
-        node.attributes.push({
-          key: "icon",
-          value: "add svg here only if asked in prompt",
-        });
       }
     }
   } else {
