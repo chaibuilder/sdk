@@ -221,6 +221,11 @@ export interface ChaiBuilderEditorProps {
   importHTMLSupport?: boolean;
 
   /**
+   * Enable copy to clipboard
+   */
+  enableCopyToClipboard?: boolean;
+
+  /**
    * Ask AI callback
    */
   askAiCallBack?: (
@@ -297,5 +302,5 @@ export interface ChaiBuilderEditorProps {
   /**
    * temporary props. Not to be used in production
    */
-  _tempProps?: Record<string, any>;
+  flags?: Record<string, any>;
 }
