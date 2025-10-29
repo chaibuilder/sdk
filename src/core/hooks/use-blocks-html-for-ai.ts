@@ -114,7 +114,7 @@ export const transformNode = (node: HimalayaNode, currentBlocks: ChaiBlock[]): H
       } else {
         node.attributes = [];
       }
-
+      node.attributes.push({ key: "chai-type", value: blockType });
       // Remove all children for custom blocks
       node.children = [];
 
