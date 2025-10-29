@@ -1,6 +1,5 @@
 // @ts-nochecks
 
-import { canvasIframeAtom } from "@/core/atoms/ui";
 import { BlockSelectionHighlighter } from "@/core/components/canvas/block-floating-actions";
 import { IframeInitialContent } from "@/core/components/canvas/IframeInitialContent";
 import { KeyboardHandler } from "@/core/components/canvas/keyboar-handler";
@@ -12,8 +11,8 @@ import { StaticBlocksRenderer } from "@/core/components/canvas/static/static-blo
 import { useCanvasScale } from "@/core/components/canvas/static/use-canvas-scale";
 import { ChaiFrame } from "@/core/frame";
 import { useBuilderProp, useCanvasDisplayWidth, useHighlightBlockId } from "@/core/hooks";
+import { useCanvasIframe } from "@/core/hooks/use-canvas-iframe";
 import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
-import { useAtom } from "jotai";
 import { isEmpty } from "lodash-es";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Provider } from "react-wrap-balancer";
@@ -26,7 +25,7 @@ const StaticCanvas = () => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [dimension, setDimension] = useState({ width: 0, height: 0 });
   const scale = useCanvasScale(dimension);
-  const [, setCanvasIframe] = useAtom(canvasIframeAtom);
+  const [, setCanvasIframe] = useCanvasIframe();
   const loadingCanvas = useBuilderProp("loading", false);
   const htmlDir = useBuilderProp("htmlDir", "ltr");
 
