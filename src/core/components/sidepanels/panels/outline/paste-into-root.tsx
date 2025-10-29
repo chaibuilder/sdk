@@ -10,7 +10,7 @@ import { useBuilderProp } from "@/core/hooks";
 export const PasteAtRootContextMenu = ({ parentContext, setParentContext }) => {
   const { t } = useTranslation();
   const { canPaste, pasteBlocks } = usePasteBlocks();
-  const enableCopyToClipboard = useBuilderProp("flags", { useClipboard: false }).useClipboard;
+  const enableCopyToClipboard = useBuilderProp("flags.useClipboard", false);
 
   useEffect(() => {
     if (!canPaste("root")) setParentContext(null);
