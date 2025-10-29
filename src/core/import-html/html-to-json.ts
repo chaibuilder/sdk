@@ -207,6 +207,10 @@ const getBlockProps = (node: Node): Record<string, any> => {
     (attr) => attr.key === "data-chai-dropdown-content" || attr.key === "chai-dropdown-content",
   );
 
+  // Check if element has "rte" class
+  const classAttr = attributes.find((attr) => attr.key === "class");
+  const hasRteClass = classAttr && classAttr.value.split(/\s+/).includes("rte");
+
   // Check for special attributes first
   if (isDropdown) {
     return { _type: "Dropdown" };
@@ -220,8 +224,8 @@ const getBlockProps = (node: Node): Record<string, any> => {
     return { _type: "DropdownContent" };
   }
 
-  if (isRichText) {
-    return { _type: "RichText" };
+  if (isRichText || hasRteClass) {
+    return { _type: "Paragraph" };
   }
 
   if (isLightboxLink) {
@@ -391,6 +395,8 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
     const isRichText = styleAttributes.find(
       (attr) => attr.key === "data-chai-richtext" || attr.key === "chai-richtext",
     );
+    const classAttr = styleAttributes.find((attr) => attr.key === "class");
+    const hasRteClass = classAttr && classAttr.value.split(/\s+/).includes("rte");
     const isLightboxLink = styleAttributes.find(
       (attr) => attr.key === "data-chai-lightbox" || attr.key === "chai-lightbox",
     );
@@ -421,7 +427,7 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
       }
     }
 
-    if (isRichText) {
+    if (isRichText || hasRteClass) {
       block.content = stringify(node.children);
       if (has(block, "styles_attrs.data-chai-richtext")) {
         delete block.styles_attrs["data-chai-richtext"];
