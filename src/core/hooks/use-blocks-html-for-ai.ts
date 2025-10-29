@@ -86,6 +86,16 @@ export const transformNode = (node: HimalayaNode, currentBlocks: ChaiBlock[]): H
     return node;
   }
 
+  // Convert span with role="link" to anchor tag
+  if (node.tagName === "span") {
+    const roleAttr = node.attributes.find((attr) => attr.key === "role" && attr.value === "link");
+    if (roleAttr) {
+      node.tagName = "a";
+      // Remove the role attribute
+      node.attributes = node.attributes.filter((attr) => attr.key !== "role");
+    }
+  }
+
   // Find data-block-type attribute
   const blockTypeAttr = node.attributes.find((attr) => attr.key === "data-block-type");
   const blockIdAttr = node.attributes.find((attr) => attr.key === "data-block-id");
@@ -115,13 +125,11 @@ export const transformNode = (node: HimalayaNode, currentBlocks: ChaiBlock[]): H
         node.attributes = [];
       }
       node.attributes.push({ key: "chai-type", value: blockType });
-      // Remove all children for custom blocks
-      node.children = [];
 
-      //TODO: get the block from currentBlocks and add the keys as attributes.
+      // Get the block from currentBlocks and add the keys as attributes.
       // omit, _id, _type, _parent, _index _name keys
       const blockDefinition = getRegisteredChaiBlock(blockType);
-      const block = currentBlocks.find((block) => block._id === blockIdAttr.value);
+      const block = currentBlocks.find((block) => block._id === blockIdAttr?.value);
       if (block) {
         node.attributes.push(
           ...Object.entries(block)
@@ -138,9 +146,42 @@ export const transformNode = (node: HimalayaNode, currentBlocks: ChaiBlock[]): H
           value: blockDefinition.description,
         });
       }
+
+      // Add can-move and can-delete attributes based on block definition
+      if (blockDefinition) {
+        if (blockDefinition.canMove) {
+          const canMove =
+            typeof blockDefinition.canMove === "function" ? blockDefinition.canMove() : blockDefinition.canMove;
+          node.attributes.push({
+            key: "can-move",
+            value: String(canMove),
+          });
+        }
+        if (blockDefinition.canDelete) {
+          const canDelete =
+            typeof blockDefinition.canDelete === "function" ? blockDefinition.canDelete() : blockDefinition.canDelete;
+          node.attributes.push({
+            key: "can-delete",
+            value: String(canDelete),
+          });
+        }
+      }
+
       //specially for icon block, empty the icon attr
       if (blockType === "Icon") {
         node.attributes = node.attributes.filter((attr) => attr.key !== "icon");
+      }
+
+      // Check if custom block has canAcceptBlock defined
+      // If yes, recursively transform children; otherwise remove all children
+      if (blockDefinition && blockDefinition.canAcceptBlock) {
+        // Custom block can accept children, so recursively transform them
+        if (node.children) {
+          node.children = node.children.map((node) => transformNode(node, currentBlocks));
+        }
+      } else {
+        // Remove all children for custom blocks that don't accept children
+        node.children = [];
       }
     }
   } else {
@@ -182,7 +223,6 @@ export const useBlocksHtmlForAi = () => {
     let cleanedHtml = stringify(transformedNodes);
 
     // Convert empty custom web component tags to self-closing format
-    cleanedHtml = cleanedHtml.replace(/<(chai-[a-z-]+)([^>]*)><\/\1>/g, "<$1$2 />");
     cleanedHtml = cleanedHtml.replace(/#styles:,/g, "#styles:");
 
     return cleanedHtml.replace(/\s+/g, " ").trim();

@@ -363,8 +363,8 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
       const blockType = chaiTypeAttr?.value || startCase(node.tagName.replace("chai-", "")).replace(/\s+/g, "");
       block._type = blockType;
       forEach(attributes, ({ key, value }) => {
-        // Skip about-this-component and chai-type attributes
-        if (key === "about-this-component" || key === "chai-type") return;
+        // Skip about-this-component, chai-type, can-move, and can-delete attributes
+        if (key === "about-this-component" || key === "chai-type" || key === "can-move" || key === "can-delete") return;
 
         // Convert id to _id
         if (key === "id") {
