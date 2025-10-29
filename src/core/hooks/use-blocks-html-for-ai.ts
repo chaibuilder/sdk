@@ -1,6 +1,9 @@
+import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { parse, stringify } from "himalaya";
 import { kebabCase } from "lodash-es";
 import { useCallback } from "react";
+import { ChaiBlock } from "../main";
+import { useBlocksStore } from "./hooks";
 import { useCanvasIframe } from "./use-canvas-iframe";
 import { useSelectedBlock } from "./use-selected-blockIds";
 
@@ -23,7 +26,6 @@ const CORE_BLOCKS = [
   "Form",
   "FormButton",
   "Heading",
-  "Icon",
   "Image",
   "Input",
   "Label",
@@ -69,7 +71,7 @@ const cleanNode = (node: HimalayaNode): HimalayaNode | null => {
   return node;
 };
 
-export const transformNode = (node: HimalayaNode): HimalayaNode => {
+export const transformNode = (node: HimalayaNode, currentBlocks: ChaiBlock[]): HimalayaNode => {
   // Only process element nodes
   if (node.type !== "element" || !node.attributes) {
     return node;
@@ -88,7 +90,7 @@ export const transformNode = (node: HimalayaNode): HimalayaNode => {
 
       // Recursively transform children for core blocks
       if (node.children) {
-        node.children = node.children.map(transformNode);
+        node.children = node.children.map((node) => transformNode(node, currentBlocks));
       }
     } else {
       // For custom blocks, convert to web component style tag
@@ -106,11 +108,40 @@ export const transformNode = (node: HimalayaNode): HimalayaNode => {
 
       // Remove all children for custom blocks
       node.children = [];
+
+      //TODO: get the block from currentBlocks and add the keys as attributes.
+      // omit, _id, _type, _parent, _index _name keys
+      const blockDefinition = getRegisteredChaiBlock(blockType);
+      const block = currentBlocks.find((block) => block._id === blockIdAttr.value);
+      if (block) {
+        node.attributes.push(
+          ...Object.entries(block)
+            .filter(([key]) => !["_id", "_type", "_parent", "_index", "_name"].includes(key))
+            .map(([key, value]) => ({
+              key,
+              value: typeof value === "string" ? value : JSON.stringify(value),
+            })),
+        );
+      }
+      if (blockDefinition && blockDefinition?.description) {
+        node.attributes.push({
+          key: "component-description",
+          value: blockDefinition.description,
+        });
+      }
+      //specially for icon block, empty the icon attr
+      if (blockType === "Icon") {
+        node.attributes = node.attributes.filter((attr) => attr.key !== "icon");
+        node.attributes.push({
+          key: "icon",
+          value: "add svg here only if asked in prompt",
+        });
+      }
     }
   } else {
     // For nodes without data-block-type, recursively transform children
     if (node.children) {
-      node.children = node.children.map(transformNode);
+      node.children = node.children.map((node) => transformNode(node, currentBlocks));
     }
   }
 
@@ -122,9 +153,10 @@ export const transformNode = (node: HimalayaNode): HimalayaNode => {
 
 export const useBlocksHtmlForAi = () => {
   const selectedBlock = useSelectedBlock();
+  const [currentBlocks] = useBlocksStore();
   const [iframeDocument] = useCanvasIframe();
   return useCallback(() => {
-    if (!iframeDocument) return "";
+    if (!iframeDocument || !selectedBlock) return "";
 
     const html =
       (iframeDocument as HTMLIFrameElement).contentDocument?.querySelector(`[data-block-id="${selectedBlock._id}"]`)
@@ -139,15 +171,15 @@ export const useBlocksHtmlForAi = () => {
     const cleanedNodes = nodes.map(cleanNode).filter((node): node is HimalayaNode => node !== null);
 
     // Transform nodes: remove data-block-type for core blocks, convert custom blocks to web components
-    const transformedNodes = cleanedNodes.map(transformNode);
+    const transformedNodes = cleanedNodes.map((node) => transformNode(node, currentBlocks));
 
     // Convert back to HTML and normalize whitespace
     let cleanedHtml = stringify(transformedNodes);
 
     // Convert empty custom web component tags to self-closing format
     cleanedHtml = cleanedHtml.replace(/<(chai-[a-z-]+)([^>]*)><\/\1>/g, "<$1$2 />");
+    cleanedHtml = cleanedHtml.replace(/#styles:,/g, "#styles:");
 
-    console.log(cleanedHtml);
     return cleanedHtml.replace(/\s+/g, " ").trim();
   }, [selectedBlock, iframeDocument]);
 };
