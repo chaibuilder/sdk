@@ -23,7 +23,7 @@ export default function AIChatPanel() {
       <textarea className="mt-10" rows={5} value={html} onChange={(e) => setHtml(e.target.value)}></textarea>
       <Button onClick={add}>Import HTML</Button>
       <Button onClick={() => console.log(blocksHtmlForAi())}>Get Blocks HTML</Button>
-      <Button onClick={() => console.log(i18nBlocks("ALL"))}>Get I18n Blocks</Button>
+      <Button onClick={() => console.log(i18nBlocks("fr"))}>Get I18n Blocks</Button>
     </div>
   );
 }

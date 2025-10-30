@@ -1,5 +1,5 @@
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
-import { compact, pick } from "lodash";
+import { compact, each, get, pick } from "lodash";
 import { useCallback } from "react";
 import { getBlockWithNestedChildren } from "./get-block-with-nested-children";
 import { useBlocksStore } from "./hooks";
@@ -22,7 +22,11 @@ export const useI18nBlocks = () => {
             lang === "ALL"
               ? Object.keys(block).filter((key) => i18nProps.find((prop) => key.startsWith(prop)))
               : i18nProps.map((prop) => (lang ? `${prop}-${lang}` : prop));
-          return pick(block, [...keys, "_id"]);
+          const blockProps = pick(block, ["_id"]);
+          each(keys, (key) => {
+            blockProps[key] = get(block, key, get(block, key.replace(`-${lang}`, "")));
+          });
+          return blockProps;
         }),
       );
     },
