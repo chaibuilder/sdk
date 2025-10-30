@@ -31,7 +31,7 @@ import {
 import { pubsub } from "@/core/pubsub";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
-import { DoubleArrowDownIcon, DoubleArrowUpIcon, PlusIcon } from "@radix-ui/react-icons";
+import { CardStackIcon, DoubleArrowDownIcon, DoubleArrowUpIcon, PlusIcon } from "@radix-ui/react-icons";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { useAtom } from "jotai";
 import { find, first, isEmpty } from "lodash-es";
@@ -246,6 +246,26 @@ const ListTree = () => {
               className="h-1 w-[90%] rounded bg-primary opacity-0 duration-200 group-hover:opacity-100">
               <div className="absolute left-[45%] top-1/2 flex h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full bg-primary p-1 outline outline-2 outline-white hover:bg-primary">
                 <PlusIcon className="h-3 w-3 stroke-[3] text-white" />
+              </div>
+            </div>
+          </div>
+          <div>
+            <div
+              role="treeitem"
+              aria-level={0}
+              aria-selected={true}
+              aria-expanded={false}
+              onClick={() => setIds([])}
+              className="flex h-full items-center border-b border-transparent">
+              <div
+                className={cn(
+                  "group flex w-full cursor-pointer items-center justify-between space-x-px !rounded p-1 py-0 outline-none",
+                  ids.length === 0 ? "bg-primary/20" : "",
+                )}>
+                <div className="leading-1 flex items-center">
+                  <CardStackIcon className="h-3 w-3 flex-shrink-0 rotate-180" />
+                  <div className="ml-1.5 flex items-center gap-x-1 truncate text-[13px]">Body</div>
+                </div>
               </div>
             </div>
           </div>
