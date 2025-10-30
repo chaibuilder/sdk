@@ -5,13 +5,14 @@ import { Button } from "@/ui/shadcn/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { LightningBoltIcon } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
+import { isEmpty } from "lodash-es";
 import { useTranslation } from "react-i18next";
 
 export const DataBinding = () => {
   const pageExternalData = usePageExternalData();
   const [dataBindingActive, setDataBindingActive] = useAtom(dataBindingActiveAtom);
   const { t } = useTranslation();
-  // if (isEmpty(pageExternalData)) return null;
+  if (isEmpty(pageExternalData)) return null;
   return (
     <div className="flex items-center">
       <Tooltip>
