@@ -5,7 +5,7 @@ export const AiIcon = ({
   onClick = noop,
 }: {
   className?: string;
-  onClick: () => void;
+  onClick?: () => void;
 }) => {
   return (
     <svg className={className} viewBox="0 0 256 256" fill="currentColor" onClick={onClick}>
