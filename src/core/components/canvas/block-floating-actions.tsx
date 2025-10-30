@@ -12,17 +12,18 @@ import {
   useSelectedBlock,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
+  useSidebarActivePanel,
 } from "@/core/hooks";
 import { PERMISSIONS } from "@/core/main";
 import { ChaiBlock } from "@/types/common";
 import { flip, limitShift, size } from "@floating-ui/dom";
 import { shift, useFloating } from "@floating-ui/react-dom";
-import { ArrowUpIcon, CopyIcon, DragHandleDots2Icon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
+import { ArrowUpIcon, CopyIcon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
 import { useResizeObserver } from "@react-hookz/web";
-import { useFeature } from "flagged";
 import { useAtom } from "jotai";
 import { first, get, isEmpty, pick } from "lodash-es";
 import { useEffect, useState } from "react";
+import { AiIcon } from "../ai/ai-icon";
 import { getElementByDataBlockId } from "./static/chai-canvas";
 
 /**
@@ -33,11 +34,10 @@ const BlockActionLabel = ({ block, label }: any) => {
   const [, setSelected] = useSelectedBlockIds();
   const [, setHighlighted] = useHighlightBlockId();
   const [, setDraggedBlock] = useAtom(draggedBlockAtom);
-  const dnd = useFeature("dnd");
   return (
     <div
       className="mr-10 flex cursor-default items-center space-x-1 px-1"
-      draggable={dnd ? "true" : "false"}
+      draggable="false"
       onDragStart={(ev) => {
         ev.dataTransfer.setData("text/plain", JSON.stringify(pick(block, ["_id", "_type", "_name"])));
         //@ts-ignore
@@ -47,7 +47,6 @@ const BlockActionLabel = ({ block, label }: any) => {
           setHighlighted(null);
         }, 200);
       }}>
-      <DragHandleDots2Icon />
       {label}
     </div>
   );
@@ -157,7 +156,7 @@ const BlockFloatingSelector = ({ block, selectedBlockElement }: BlockActionProps
       update();
     }
   }, [selectedBlockElement]);
-
+  const [, setActivePanel] = useSidebarActivePanel();
   if (!selectedBlockElement || !block || editingBlockId) return null;
 
   return (
@@ -179,7 +178,7 @@ const BlockFloatingSelector = ({ block, selectedBlockElement }: BlockActionProps
         className="isolate z-[999] flex h-6 items-center bg-blue-500 py-2 text-xs text-white">
         {parentId && (
           <ArrowUpIcon
-            className="hover:scale-105"
+            className="rounded p-0.5 hover:bg-white/20"
             onClick={() => {
               setStyleBlocks([]);
               setSelectedIds([parentId]);
@@ -188,15 +187,27 @@ const BlockFloatingSelector = ({ block, selectedBlockElement }: BlockActionProps
         )}
         <BlockActionLabel label={label} block={block} />
 
-        <div className="flex items-center gap-2 pl-1 pr-1.5">
+        <div className="flex items-center gap-1 pl-1 pr-1.5">
+          {hasPermission(PERMISSIONS.ADD_BLOCK) && (
+            <AiIcon
+              className="h-4 w-4 rounded hover:bg-white hover:text-blue-500"
+              onClick={() => setActivePanel("chai-chat-panel")}
+            />
+          )}
           <AddBlockDropdown block={block}>
-            <PlusIcon className="hover:scale-105" />
+            <PlusIcon className="h-4 w-4 rounded p-px hover:bg-white hover:text-blue-500" />
           </AddBlockDropdown>
           {canDuplicateBlock(get(block, "_type", "")) && hasPermission(PERMISSIONS.ADD_BLOCK) ? (
-            <CopyIcon className="hover:scale-105" onClick={() => duplicateBlock([block?._id])} />
+            <CopyIcon
+              className="h-4 w-4 rounded p-px hover:bg-white hover:text-blue-500"
+              onClick={() => duplicateBlock([block?._id])}
+            />
           ) : null}
           {canDeleteBlock(get(block, "_type", "")) && hasPermission(PERMISSIONS.DELETE_BLOCK) ? (
-            <TrashIcon className="hover:scale-105" onClick={() => removeBlock([block?._id])} />
+            <TrashIcon
+              className="h-4 w-4 rounded p-px hover:bg-white hover:text-blue-500"
+              onClick={() => removeBlock([block?._id])}
+            />
           ) : null}
 
           {hasPermission(PERMISSIONS.MOVE_BLOCK) && <BlockController block={block} updateFloatingBar={update} />}
