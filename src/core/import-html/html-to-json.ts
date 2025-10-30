@@ -655,6 +655,10 @@ export const mergeBlocksWithExisting = (importedBlocks: ChaiBlock[], existingBlo
     const existingBlock = findBlockById(existingBlocks, importedBlock._id);
 
     if (existingBlock) {
+      // remove icon if it is default icon
+      if (existingBlock._type === "Icon" && get(importedBlock, "icon", "").match(/chai-default-svg/)) {
+        delete importedBlock.icon;
+      }
       // Merge imported block properties into existing block
       return { ...existingBlock, ...importedBlock };
     }
