@@ -28,6 +28,7 @@ import { each, noop, omit } from "lodash-es";
 import React, { useEffect, useMemo } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Toaster } from "sonner";
+import { ExportCodeModal } from "../modals/export-code-modal";
 
 const useAutoSave = () => {
   const { savePage, saveState } = useSavePage();
@@ -120,6 +121,7 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
     <>
       <CssThemeVariables theme={builderTheme as ChaiBuilderThemeValues} />
       <RootLayoutComponent />
+      <ExportCodeModal />
     </>
   );
 };
