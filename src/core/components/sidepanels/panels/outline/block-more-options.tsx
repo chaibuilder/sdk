@@ -34,6 +34,7 @@ import { has, isEmpty } from "lodash-es";
 import React, { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { ExportCode } from "./export-code";
 
 const CopyPasteBlocks = () => {
   const [blocks] = useBlocksStore();
@@ -190,6 +191,7 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
       {hasPermission(PERMISSIONS.ADD_BLOCK) && <CopyPasteBlocks />}
       {isLibLinkedBlock && librarySite && <UnlinkLibraryBlock />}
       {hasPermission(PERMISSIONS.CREATE_LIBRARY_BLOCK) && librarySite && <SaveToLibrary />}
+      <ExportCode />
       {hasPermission(PERMISSIONS.DELETE_BLOCK) && <RemoveBlocks />}
     </DropdownMenuContent>
   );

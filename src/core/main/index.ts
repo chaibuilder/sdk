@@ -25,6 +25,7 @@ export { DarkMode as ChaiDarkModeSwitcher } from "@/core/components/canvas/topba
 export { UndoRedo as ChaiUndoRedo } from "@/core/components/canvas/topbar/undo-redo";
 export { ChaiBuilderEditor } from "@/core/components/chaibuilder-editor";
 export { AddBlocksDialog as ChaiAddBlocksDialog } from "@/core/components/layout/add-blocks-dialog";
+export { ExportCodeModal as ChaiExportCodeModal } from "@/core/modals/export-code-modal";
 export { BlockAttributesEditor as ChaiBlockAttributesEditor } from "@/core/components/settings/new-panel/block-attributes-editor";
 export { DefaultChaiBlocks as ChaiDefaultBlocks } from "@/core/components/sidepanels/panels/add-blocks/default-blocks";
 export {
