@@ -52,6 +52,8 @@ import { useInlineEditing } from "./use-inline-editing";
 import { useReplaceBlock } from "./use-replace-block";
 export { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 export { useCanvasDisplayWidth, useScreenSizeWidth } from "@/core/hooks/use-screen-size-width";
+export { useCanvasWidth } from "@/core/hooks/use-canvas-width";
+export type { BreakpointName } from "@/core/hooks/use-canvas-width";
 export { useSelectedLibrary } from "@/core/hooks/use-selected-library";
 export { useSidebarActivePanel } from "@/core/hooks/use-sidebar-active-panel";
 
