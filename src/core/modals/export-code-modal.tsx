@@ -3,13 +3,120 @@ import { useBlocksStore, useCopyToClipboard } from "@/core/hooks";
 import { usePubSub } from "@/core/hooks/use-pub-sub";
 import { RenderChaiBlocks } from "@/render";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
-import { useCallback, useState } from "react";
+import { lazy, Suspense, useCallback, useState } from "react";
 import ReactDOM from "react-dom/client";
+import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { getBlockWithNestedChildren } from "../hooks/get-block-with-nested-children";
+
+// Lazy load the CodeDisplay component
+const CodeDisplay = lazy(() => import("./code-display"));
+
+async function convertHtmlToJsx(html: string): Promise<string> {
+  try {
+    // Create a temporary DOM element to parse HTML
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = html;
+
+    // Convert DOM to JSX string
+    const jsx = domToJsx(tempDiv);
+
+    return jsx;
+  } catch (error) {
+    console.error("Error converting HTML to JSX:", error);
+    return html; // Fallback to original HTML
+  }
+}
+
+function domToJsx(element: Element, indent = 0): string {
+  const indentStr = "  ".repeat(indent);
+
+  if (element.nodeType === Node.TEXT_NODE) {
+    const text = element.textContent?.trim();
+    return text ? `${indentStr}${text}\n` : "";
+  }
+
+  if (element.nodeType !== Node.ELEMENT_NODE) {
+    return "";
+  }
+
+  const tagName = element.tagName.toLowerCase();
+
+  // Handle self-closing tags
+  const selfClosingTags = [
+    "img",
+    "br",
+    "hr",
+    "input",
+    "meta",
+    "link",
+    "area",
+    "base",
+    "col",
+    "embed",
+    "source",
+    "track",
+    "wbr",
+  ];
+  if (selfClosingTags.includes(tagName)) {
+    return `${indentStr}<${tagName} />\n`;
+  }
+
+  let jsx = `${indentStr}<${tagName}`;
+
+  // Add attributes
+  const attributes: string[] = [];
+  for (const attr of element.attributes) {
+    if (attr.name === "class") {
+      attributes.push(`className="${attr.value}"`);
+    } else if (attr.name === "for") {
+      attributes.push(`htmlFor="${attr.value}"`);
+    } else if (attr.name.startsWith("on") && attr.name !== "on") {
+      // Convert event handlers to camelCase
+      const eventName = attr.name.toLowerCase().replace(/on(\w)/, (_, letter) => "on" + letter.toUpperCase());
+      attributes.push(`${eventName}={${attr.value}}`);
+    } else if (attr.name === "style" && attr.value) {
+      // Convert style string to object
+      const styleObject = attr.value.split(";").reduce(
+        (acc, style) => {
+          const [property, value] = style.split(":").map((s) => s.trim());
+          if (property && value) {
+            const camelCaseProperty = property.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+            acc[camelCaseProperty] = value.replace(/['"]/g, "");
+          }
+          return acc;
+        },
+        {} as Record<string, string>,
+      );
+      attributes.push(`style={${JSON.stringify(styleObject)}}`);
+    } else {
+      attributes.push(`${attr.name}="${attr.value}"`);
+    }
+  }
+
+  if (attributes.length > 0) {
+    jsx += " " + attributes.join(" ");
+  }
+
+  // Add children
+  const children = Array.from(element.childNodes);
+  const hasChildren = children.some((child) => (child.nodeType === Node.TEXT_NODE ? child.textContent?.trim() : true));
+
+  if (!hasChildren) {
+    jsx += " />\n";
+  } else {
+    jsx += ">\n";
+
+    for (const child of children) {
+      jsx += domToJsx(child as Element, indent + 1);
+    }
+
+    jsx += `${indentStr}</${tagName}>\n`;
+  }
+
+  return jsx;
+}
 
 async function renderBlocksToExport(blocks: any[]) {
   // Create a hidden container div
@@ -38,8 +145,11 @@ async function renderBlocksToExport(blocks: any[]) {
 
     const html = await renderPromise;
 
+    // Convert HTML to JSX
+    const jsx = await convertHtmlToJsx(html);
+
     // Clean up
-    return html;
+    return jsx;
   } finally {
     // Always clean up the container
     document.body.removeChild(container);
@@ -90,11 +200,11 @@ export const ExportCodeModal = () => {
   );
 
   const downloadExportContent = (content: string) => {
-    const blob = new Blob([content], { type: "text/html" });
+    const blob = new Blob([content], { type: "text/jsx" });
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement("a");
     anchor.href = url;
-    anchor.download = "export.html";
+    anchor.download = "export.jsx";
     document.body.appendChild(anchor);
     anchor.click();
     URL.revokeObjectURL(url);
@@ -120,17 +230,16 @@ export const ExportCodeModal = () => {
               ? t("Exporting {{count}} blocks", { count: selectedBlockIds.length })
               : t("Exporting all blocks")}
           </div>
-          <ScrollArea className="h-[400px] max-h-full rounded-md border p-4">
-            <pre className="whitespace-pre-wrap text-xs">{exportContent}</pre>
-          </ScrollArea>
-          <div className="flex justify-end gap-2">
-            <Button type="button" variant="outline" onClick={() => handleCopy(exportContent)}>
-              {t("Copy")}
-            </Button>
-            <Button type="button" onClick={() => downloadExportContent(exportContent)}>
-              {t("Download")}
-            </Button>
-          </div>
+          <Suspense
+            fallback={
+              <div className="flex h-[400px] items-center justify-center text-muted-foreground">
+                Loading code editor...
+              </div>
+            }>
+            <ErrorBoundary fallback={<div>Something went wrong</div>}>
+              <CodeDisplay code={exportContent} onCopy={handleCopy} onDownload={downloadExportContent} />
+            </ErrorBoundary>
+          </Suspense>
         </div>
       </DialogContent>
     </Dialog>
