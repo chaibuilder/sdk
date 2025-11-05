@@ -1,12 +1,50 @@
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useBlocksStore, useCopyToClipboard } from "@/core/hooks";
 import { usePubSub } from "@/core/hooks/use-pub-sub";
+import { RenderChaiBlocks } from "@/render";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
 import { useCallback, useState } from "react";
+import ReactDOM from "react-dom/client";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { getBlockWithNestedChildren } from "../hooks/get-block-with-nested-children";
+
+async function renderBlocksToExport(blocks: any[]) {
+  // Create a hidden container div
+  const container = document.createElement("div");
+  container.style.position = "absolute";
+  container.style.left = "-9999px";
+  container.style.top = "-9999px";
+  document.body.appendChild(container);
+
+  try {
+    // Use ReactDOM.render for client-side rendering
+    const renderPromise = new Promise<string>((resolve, reject) => {
+      const root = ReactDOM.createRoot(container);
+      root.render(<RenderChaiBlocks blocks={blocks} />);
+
+      // Use setTimeout to ensure React has time to render
+      setTimeout(() => {
+        try {
+          const html = container.innerHTML;
+          resolve(html);
+        } catch (error) {
+          reject(error);
+        }
+      }, 100);
+    });
+
+    const html = await renderPromise;
+
+    // Clean up
+    return html;
+  } finally {
+    // Always clean up the container
+    document.body.removeChild(container);
+  }
+}
 
 export const ExportCodeModal = () => {
   const { t } = useTranslation();
@@ -17,15 +55,15 @@ export const ExportCodeModal = () => {
   const [blocks] = useBlocksStore();
 
   const handleExportEvent = useCallback(
-    (blockIds: string[] | undefined) => {
+    async (blockIds: string[] | undefined) => {
       // Prevent modal from opening if it's already open
-      if (open) return;
-
-      setSelectedBlockIds(blockIds || []);
+      const first = blockIds?.[0];
+      if (open || !first) return;
       setOpen(true);
 
       try {
-        const html = "";
+        const blocksSubset = getBlockWithNestedChildren(first, blocks);
+        const html = await renderBlocksToExport(blocksSubset);
         setExportContent(html);
       } catch (error) {
         console.error("Error generating HTML:", error);
@@ -34,7 +72,7 @@ export const ExportCodeModal = () => {
         toast.error(t("Failed to generate export HTML"));
       }
     },
-    [blocks, t, open],
+    [open, blocks, t],
   );
 
   usePubSub(CHAI_BUILDER_EVENTS.OPEN_EXPORT_CODE, handleExportEvent);
