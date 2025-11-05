@@ -9,6 +9,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { getBlockWithNestedChildren } from "../hooks/get-block-with-nested-children";
+import { domToJsx } from "./domToJsx";
 
 // Lazy load the CodeDisplay component
 const CodeDisplay = lazy(() => import("./code-display"));
@@ -27,95 +28,6 @@ async function convertHtmlToJsx(html: string): Promise<string> {
     console.error("Error converting HTML to JSX:", error);
     return html; // Fallback to original HTML
   }
-}
-
-function domToJsx(element: Element, indent = 0): string {
-  const indentStr = "  ".repeat(indent);
-
-  if (element.nodeType === Node.TEXT_NODE) {
-    const text = element.textContent?.trim();
-    return text ? `${indentStr}${text}\n` : "";
-  }
-
-  if (element.nodeType !== Node.ELEMENT_NODE) {
-    return "";
-  }
-
-  const tagName = element.tagName.toLowerCase();
-
-  // Handle self-closing tags
-  const selfClosingTags = [
-    "img",
-    "br",
-    "hr",
-    "input",
-    "meta",
-    "link",
-    "area",
-    "base",
-    "col",
-    "embed",
-    "source",
-    "track",
-    "wbr",
-  ];
-  if (selfClosingTags.includes(tagName)) {
-    return `${indentStr}<${tagName} />\n`;
-  }
-
-  let jsx = `${indentStr}<${tagName}`;
-
-  // Add attributes
-  const attributes: string[] = [];
-  for (const attr of element.attributes) {
-    if (attr.name === "class") {
-      attributes.push(`className="${attr.value}"`);
-    } else if (attr.name === "for") {
-      attributes.push(`htmlFor="${attr.value}"`);
-    } else if (attr.name.startsWith("on") && attr.name !== "on") {
-      // Convert event handlers to camelCase
-      const eventName = attr.name.toLowerCase().replace(/on(\w)/, (_, letter) => "on" + letter.toUpperCase());
-      attributes.push(`${eventName}={${attr.value}}`);
-    } else if (attr.name === "style" && attr.value) {
-      // Convert style string to object
-      const styleObject = attr.value.split(";").reduce(
-        (acc, style) => {
-          const [property, value] = style.split(":").map((s) => s.trim());
-          if (property && value) {
-            const camelCaseProperty = property.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-            acc[camelCaseProperty] = value.replace(/['"]/g, "");
-          }
-          return acc;
-        },
-        {} as Record<string, string>,
-      );
-      attributes.push(`style={${JSON.stringify(styleObject)}}`);
-    } else {
-      attributes.push(`${attr.name}="${attr.value}"`);
-    }
-  }
-
-  if (attributes.length > 0) {
-    jsx += " " + attributes.join(" ");
-  }
-
-  // Add children
-  const children = Array.from(element.childNodes);
-  const hasChildren = children.some((child) => (child.nodeType === Node.TEXT_NODE ? child.textContent?.trim() : true));
-
-  if (!hasChildren) {
-    jsx += " />\n";
-  } else {
-    jsx += ">\n";
-
-    for (const child of children) {
-      jsx += domToJsx(child as Element, indent + 1);
-    }
-
-    jsx += `${indentStr}</${tagName}>\n`;
-  }
-
-  return jsx;
 }
 
 async function renderBlocksToExport(blocks: any[]) {
@@ -160,7 +72,7 @@ export const ExportCodeModal = () => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [exportContent, setExportContent] = useState<string>("");
-  const [selectedBlockIds, setSelectedBlockIds] = useState<string[]>([]);
+  const [, setSelectedBlockIds] = useState<string[]>([]);
   const [, copy] = useCopyToClipboard();
   const [blocks] = useBlocksStore();
 
@@ -225,11 +137,6 @@ export const ExportCodeModal = () => {
           <DialogTitle className="text-foreground">{t("Export Code")}</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-4">
-          <div className="text-sm text-muted-foreground">
-            {selectedBlockIds.length > 0
-              ? t("Exporting {{count}} blocks", { count: selectedBlockIds.length })
-              : t("Exporting all blocks")}
-          </div>
           <Suspense
             fallback={
               <div className="flex h-[400px] items-center justify-center text-muted-foreground">
