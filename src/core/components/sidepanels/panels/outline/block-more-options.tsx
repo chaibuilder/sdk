@@ -1,3 +1,4 @@
+import { ClearCanvas } from "@/core/components/canvas/topbar/clear-canvas";
 import { SaveToLibrary } from "@/core/components/sidepanels/panels/outline/save-to-library";
 import { UnlinkLibraryBlock } from "@/core/components/sidepanels/panels/outline/unlink-library-block";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
@@ -25,6 +26,7 @@ import {
   CardStackIcon,
   CardStackPlusIcon,
   CopyIcon,
+  EraserIcon,
   Pencil2Icon,
   PlusIcon,
   ScissorsIcon,
@@ -167,6 +169,30 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
   const isLibLinkedBlock = useMemo(() => {
     return has(selectedBlock, "_libBlockId") && !isEmpty(selectedBlock._libBlockId);
   }, [selectedBlock?._libBlockId]);
+
+  if(node === 'BODY') {
+    return (
+      <DropdownMenuContent side="bottom" className="border-border text-xs">
+        {hasPermission(PERMISSIONS.ADD_BLOCK) && (
+          <>
+           <DropdownMenuItem
+            disabled={false}
+            className="flex items-center gap-x-4 text-xs"
+            onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, selectedBlock)}>
+            <PlusIcon className="h-3.5 w-3.5" /> {t("Add block")}
+          </DropdownMenuItem>
+           <ExportCode />
+            <DropdownMenuItem
+            disabled={false}
+            onClick={e => e.preventDefault()}
+            className="flex items-center gap-x-4 text-xs">
+            <ClearCanvas children={<div className="flex items-center gap-x-4 text-xs"><EraserIcon /> {t("Clear canvas")}</div>} />
+          </DropdownMenuItem>
+          </>
+        )}
+      </DropdownMenuContent>
+    );
+  }
 
   return (
     <DropdownMenuContent side="bottom" className="border-border text-xs">
