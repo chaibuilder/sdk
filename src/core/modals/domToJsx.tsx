@@ -29,7 +29,36 @@ export function domToJsx(element: Element, indent = 0): string {
     "wbr",
   ];
   if (selfClosingTags.includes(tagName)) {
-    return `${indentStr}<${tagName} />\n`;
+    // Add attributes for self-closing tags
+    const attributes: string[] = [];
+    for (const attr of element.attributes) {
+      if (attr.name === "class") {
+        attributes.push(`className="${attr.value}"`);
+      } else if (attr.name === "for") {
+        attributes.push(`htmlFor="${attr.value}"`);
+      } else if (attr.name.startsWith("on") && attr.name !== "on") {
+        const eventName = attr.name.toLowerCase().replace(/on(\w)/, (_, letter) => "on" + letter.toUpperCase());
+        attributes.push(`${eventName}={${attr.value}}`);
+      } else if (attr.name === "style" && attr.value) {
+        const styleObject = attr.value.split(";").reduce(
+          (acc, style) => {
+            const [property, value] = style.split(":").map((s) => s.trim());
+            if (property && value) {
+              const camelCaseProperty = property.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+              acc[camelCaseProperty] = value.replace(/['"]/g, "");
+            }
+            return acc;
+          },
+          {} as Record<string, string>
+        );
+        attributes.push(`style={${JSON.stringify(styleObject)}}`);
+      } else {
+        attributes.push(`${attr.name}="${attr.value}"`);
+      }
+    }
+
+    const attrs = attributes.length > 0 ? ` ${attributes.join(" ")}` : "";
+    return `${indentStr}<${tagName}${attrs} />\n`;
   }
 
   let jsx = `${indentStr}<${tagName}`;
