@@ -31,13 +31,14 @@ import {
 import { pubsub } from "@/core/pubsub";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
-import { CardStackIcon, DoubleArrowDownIcon, DoubleArrowUpIcon, PlusIcon } from "@radix-ui/react-icons";
+import { CardStackIcon, DotsVerticalIcon, DoubleArrowDownIcon, DoubleArrowUpIcon, PlusIcon } from "@radix-ui/react-icons";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { useAtom } from "jotai";
 import { find, first, isEmpty } from "lodash-es";
 import { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
 import { MoveHandler, RenameHandler, Tree } from "react-arborist";
 import { useTranslation } from "react-i18next";
+import { BlockMoreOptions } from "./block-more-options";
 import { PasteAtRootContextMenu } from "./paste-into-root";
 
 const useCanMove = () => {
@@ -266,6 +267,12 @@ const ListTree = () => {
                   <CardStackIcon className="h-3 w-3 flex-shrink-0 rotate-180" />
                   <div className="ml-1.5 flex items-center gap-x-1 truncate text-[13px]">Body</div>
                 </div>
+                
+              <BlockMoreOptions node={'BODY'} id={'BODY'}>
+                            <div className="cursor-pointer rounded bg-transparent p-px hover:bg-primary/10 hidden group-hover:block">
+                              <DotsVerticalIcon className="h-3 w-3" />
+                            </div>
+                          </BlockMoreOptions>
               </div>
             </div>
           </div>
