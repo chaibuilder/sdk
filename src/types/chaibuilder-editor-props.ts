@@ -302,6 +302,5 @@ export interface ChaiBuilderEditorProps {
     useClipboard?: boolean;
     disableDarkmode?: boolean;
     disableDataBinding?: boolean;
-    disableBlockGroupsSidebar?: boolean;
   };
 }
