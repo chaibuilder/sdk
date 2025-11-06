@@ -35,8 +35,6 @@ import React, { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
-const CANNOT_COPY_BLOCKS = !navigator.clipboard;
-
 const CopyPasteBlocks = () => {
   const [blocks] = useBlocksStore();
   const [selectedIds] = useSelectedBlockIds();
@@ -44,6 +42,7 @@ const CopyPasteBlocks = () => {
   const [, copyBlocks, hasPartialBlocks] = useCopyBlocks();
   const { t } = useTranslation();
   const selectedBlock = useSelectedBlock();
+  const enableCopyToClipboard = useBuilderProp("flags.useClipboard", false);
 
   const handleCopy = useCallback(() => {
     const selectedBlocks = selectedIds.map((id) => {
@@ -82,7 +81,7 @@ const CopyPasteBlocks = () => {
 
   return (
     <>
-      {!CANNOT_COPY_BLOCKS && (
+      {enableCopyToClipboard && (
         <DropdownMenuItem
           disabled={!canDuplicateBlock(selectedBlock?._type)}
           onClick={handleCopy}
@@ -90,13 +89,15 @@ const CopyPasteBlocks = () => {
           <CopyIcon /> {t("Copy")}
         </DropdownMenuItem>
       )}
-      <DropdownMenuItem
-        className="flex items-center gap-x-4 text-xs"
-        onClick={() => {
-          pasteBlocks(selectedIds);
-        }}>
-        <CardStackIcon /> {t("Paste")}
-      </DropdownMenuItem>
+      {enableCopyToClipboard && (
+        <DropdownMenuItem
+          className="flex items-center gap-x-4 text-xs"
+          onClick={() => {
+            pasteBlocks(selectedIds);
+          }}>
+          <CardStackIcon /> {t("Paste")}
+        </DropdownMenuItem>
+      )}
     </>
   );
 };
@@ -105,11 +106,16 @@ const CutBlocks = () => {
   const [selectedIds] = useSelectedBlockIds();
   const [, setCutBlockIds] = useCutBlockIds();
   const { t } = useTranslation();
+  const enableCopyToClipboard = useBuilderProp("flags", { useClipboard: false }).useClipboard;
 
   return (
-    <DropdownMenuItem className="flex items-center gap-x-4 text-xs" onClick={() => setCutBlockIds(selectedIds)}>
-      <ScissorsIcon /> {t("Cut")}
-    </DropdownMenuItem>
+    <>
+      {enableCopyToClipboard && (
+        <DropdownMenuItem className="flex items-center gap-x-4 text-xs" onClick={() => setCutBlockIds(selectedIds)}>
+          <ScissorsIcon /> {t("Cut")}
+        </DropdownMenuItem>
+      )}
+    </>
   );
 };
 
@@ -151,7 +157,7 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
   const duplicateBlocks = useDuplicateBlocks();
   const selectedBlock = useSelectedBlock();
   const { hasPermission } = usePermissions();
-  const { librarySite } = useBuilderProp("_tempProps", { librarySite: false });
+  const { librarySite } = useBuilderProp("flags", { librarySite: false });
 
   const duplicate = useCallback(() => {
     duplicateBlocks(selectedIds);

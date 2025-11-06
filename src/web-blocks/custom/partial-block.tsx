@@ -23,7 +23,7 @@ const Component = (props: ChaiBlockComponentProps<PartialBlockProps>) => {
 
 const Config = {
   type: "PartialBlock",
-  description: "A partial block component",
+  description: "A partial block component. Partial blocks are global blocks that can be used in multiple pages.",
   label: "Partial Block",
   icon: FrameIcon,
   category: "core",

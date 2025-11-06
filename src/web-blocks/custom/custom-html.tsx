@@ -6,8 +6,8 @@ const CustomHTMLBlock = (props: ChaiBlockComponentProps<{ htmlCode: string; styl
   const { blockProps, styles, htmlCode, inBuilder } = props;
 
   return inBuilder ? (
-    <div className={"relative"}>
-      {inBuilder ? <div {...blockProps} {...styles} className="absolute z-20 h-full w-full" /> : null}
+    <div className={"relative"} {...blockProps}>
+      {inBuilder ? <div {...styles} className="absolute z-20 h-full w-full" /> : null}
       {React.createElement("div", {
         ...styles,
         dangerouslySetInnerHTML: { __html: htmlCode.replace(/<script.*?>.*?<\/script>/g, "") },

@@ -6,7 +6,7 @@ export function DarkMode() {
   const [darkMode, setDarkMode] = useDarkMode();
   return (
     <div className="flex items-center">
-      <SunIcon className="size-4 shrink-0" />
+      {darkMode ? <MoonIcon className="size-4 shrink-0" /> : <SunIcon className="size-4 shrink-0" />}
       <Switch
         id="dark-mode-switch"
         checked={darkMode}
@@ -19,7 +19,6 @@ export function DarkMode() {
           className={`${darkMode ? "translate-x-5" : "translate-x-0"} pointer-events-none -mt-px inline-block h-[18px] w-[20px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
         />
       </Switch>
-      <MoonIcon className="ml-3 size-4 shrink-0" />
     </div>
   );
 }

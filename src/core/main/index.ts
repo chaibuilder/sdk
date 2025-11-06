@@ -42,6 +42,7 @@ export {
 export { i18n };
 
 // helper functions
+export { getClassValueAndUnit } from "@/core/functions/helper-fn";
 export { generateUUID as generateBlockId, cn as mergeClasses } from "@/core/functions/common-functions";
 export { getBlocksFromHTML as convertHTMLToChaiBlocks, getBlocksFromHTML } from "@/core/import-html/html-to-json";
 

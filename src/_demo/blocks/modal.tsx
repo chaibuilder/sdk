@@ -65,10 +65,11 @@ registerChaiBlock(ModalTriggerComponent, {
   aiProps: ["content"],
 });
 
-const BuilderPortal = ({ children }: { children: any }) => {
+const BuilderPortal = ({ children, show }: { children: any; show: boolean }) => {
   const container = document.getElementById("canvas-iframe");
   const width = container?.clientWidth;
   const height = container?.clientHeight;
+  if (!show) return children;
   return (
     <div style={{ height, width }} className="absolute left-0 top-0 bg-black/80">
       <div className="fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] bg-background">
@@ -81,14 +82,11 @@ const BuilderPortal = ({ children }: { children: any }) => {
 const ModalContentComponent = (props: ChaiBlockComponentProps<ModalContentProps>) => {
   const { blockProps, children, styles, inBuilder, show } = props;
 
-  console.log("ModalContentComponent", props);
-
   if (inBuilder) {
     // * In builder showing children with a custom portal
-    if (!show) return null;
     return (
-      <BuilderPortal>
-        <div {...blockProps} {...styles}>
+      <BuilderPortal show={show}>
+        <div {...blockProps} {...styles} style={{ display: show ? "block" : "none" }}>
           {children || "Modal Placeholder"}
         </div>
       </BuilderPortal>
@@ -137,9 +135,11 @@ const Config = {
   type: "Modal",
   label: "Modal",
   group: "advanced",
+  description: "This is a modal block",
   category: "core",
   wrapper: true,
   icon: StackIcon,
+  canAcceptBlock: (type: string) => type === "ModalTrigger" || type === "ModalContent",
   blocks: () =>
     [
       { _type: "Modal", _id: "modal" },

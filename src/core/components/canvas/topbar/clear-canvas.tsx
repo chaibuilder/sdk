@@ -31,7 +31,7 @@ export const ClearCanvas = () => {
     <div className="flex items-center">
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button size="sm" variant="ghost" className="flex items-center gap-x-1">
+          <Button size="sm" variant="ghost" className="flex items-center">
             <EraserIcon /> {t("Clear")}
           </Button>
         </AlertDialogTrigger>

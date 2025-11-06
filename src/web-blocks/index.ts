@@ -2,12 +2,31 @@ import { registerChaiBlock } from "@chaibuilder/runtime";
 
 import { Component as Box, Config as BoxConfig, BoxProps } from "@/web-blocks/box";
 import { Component as Button, Config as ButtonConfig, ButtonProps } from "@/web-blocks/button";
-import { Component as CustomHTML, CustomHTMLBlockProps, Config as CustomHTMLConfig } from "@/web-blocks/custom-html";
+import {
+  Component as CustomHTML,
+  CustomHTMLBlockProps,
+  Config as CustomHTMLConfig,
+} from "@/web-blocks/custom/custom-html";
 import {
   Component as CustomScript,
   CustomScriptBlockProps,
   Config as CustomScriptConfig,
-} from "@/web-blocks/custom-script";
+} from "@/web-blocks/custom/custom-script";
+import {
+  Component as GlobalBlock,
+  Config as GlobalBlockConfig,
+  GlobalBlockProps,
+} from "@/web-blocks/custom/global-block";
+import { Component as IconBlock, Config as IconBlockConfig, IconBlockProps } from "@/web-blocks/custom/icon";
+import { PartialBlock, PartialBlockConfig, PartialBlockProps } from "@/web-blocks/custom/partial-block";
+import {
+  Column,
+  ColumnConfig,
+  ColumnProps,
+  Component as Row,
+  Config as RowConfig,
+  RowProps,
+} from "@/web-blocks/custom/row-col";
 import { Component as DividerBlock, Config as DividerBlockConfig, DividerBlockProps } from "@/web-blocks/divider";
 import { Component as EmptyBox, Config as EmptyBoxConfig, EmptyBoxProps } from "@/web-blocks/empty-box";
 import { Component as CheckboxBlock, Config as CheckboxBlockConfig, CheckboxProps } from "@/web-blocks/form/checkbox";
@@ -22,7 +41,6 @@ import { Component as LabelBlock, Config as LabelBlockConfig, LabelProps } from 
 import { Component as RadioBlock, Config as RadioBlockConfig, RadioProps } from "@/web-blocks/form/radio";
 import { Component as SelectBlock, Config as SelectBlockConfig, SelectProps } from "@/web-blocks/form/select";
 import { Component as TextAreaBlock, Config as TextAreaBlockConfig, TextAreaProps } from "@/web-blocks/form/textarea";
-import { Component as GlobalBlock, Config as GlobalBlockConfig, GlobalBlockProps } from "@/web-blocks/global-block";
 import { Component as HeadingBlock, Config as HeadingBlockConfig, HeadingProps } from "@/web-blocks/heading";
 import {
   Component as LineBreakBlock,
@@ -30,21 +48,11 @@ import {
   LineBreakProps,
 } from "@/web-blocks/hidden/line-break";
 import "@/web-blocks/hidden/table";
-import { Component as IconBlock, Config as IconBlockConfig, IconBlockProps } from "@/web-blocks/icon";
 import { Component as ImageBlock, Config as ImageBlockConfig, ImageBlockProps } from "@/web-blocks/image";
 import { Component as LinkBlock, Config as LinkBlockConfig, LinkBlockProps } from "@/web-blocks/link";
 import { Component as ListBlock, Config as ListBlockConfig, ListBlockProps } from "@/web-blocks/list";
 import { Component as ListItemBlock, Config as ListItemBlockConfig, ListItemBlockProps } from "@/web-blocks/listitem";
 import { Component as ParagraphBlock, Config as ParagraphBlockConfig, ParagraphProps } from "@/web-blocks/paragraph";
-import { PartialBlock, PartialBlockConfig, PartialBlockProps } from "@/web-blocks/partial-block";
-import {
-  Column,
-  ColumnConfig,
-  ColumnProps,
-  Component as Row,
-  Config as RowConfig,
-  RowProps,
-} from "@/web-blocks/row-col";
 import { Component as RichTextBlock, Config as RichTextConfig, RichTextProps } from "@/web-blocks/rte";
 import { Component as SpanBlock, Config as SpanBlockConfig, SpanProps } from "@/web-blocks/span";
 import { Config as LayersConfig, Component as TextBlock, TextBlockProps } from "@/web-blocks/text";
@@ -59,7 +67,7 @@ import {
   RepeaterItemConfig,
   RepeaterItemProps,
   RepeaterProps,
-} from "./repeater";
+} from "./custom/repeater";
 /*
  * Register all web blocks.
  * This function should be called  in places where Builder is rendered or pages are rendered.

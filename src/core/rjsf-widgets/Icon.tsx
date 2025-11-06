@@ -1,12 +1,29 @@
 import { WidgetProps } from "@rjsf/utils";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-const removeSizeAttributes = (svgString: string): string => {
+const IconPicker = lazy(() => import("./IconPicker").then((module) => ({ default: module.IconPicker })));
+
+const sanitizeSvg = (svgString: string): string => {
   try {
-    return svgString
+    // Remove width and height attributes
+    let cleaned = svgString
       .replace(/<svg([^>]*)\sheight="[^"]*"([^>]*)>/gi, "<svg$1$2>")
       .replace(/<svg([^>]*)\swidth="[^"]*"([^>]*)>/gi, "<svg$1$2>");
+
+    // Remove extra whitespace between tags
+    cleaned = cleaned.replace(/>\s+</g, "><");
+
+    // Remove newlines and extra spaces
+    cleaned = cleaned.replace(/\n/g, "").replace(/\s{2,}/g, " ");
+
+    // Trim spaces around attributes
+    cleaned = cleaned.replace(/\s+=/g, "=").replace(/=\s+/g, "=");
+
+    // Remove comments
+    cleaned = cleaned.replace(/<!--[\s\S]*?-->/g, "");
+
+    return cleaned.trim();
   } catch (error) {
     return svgString;
   }
@@ -22,8 +39,8 @@ const IconPickerField = ({ value, onChange, id }: WidgetProps) => {
 
   const handleSvgChange = (newSvg: string) => {
     setSvgInput(newSvg);
-    const cleanedSvg = removeSizeAttributes(newSvg);
-    onChange(cleanedSvg);
+    const sanitized = sanitizeSvg(newSvg);
+    onChange(sanitized);
   };
 
   return (
@@ -48,7 +65,12 @@ const IconPickerField = ({ value, onChange, id }: WidgetProps) => {
           className="no-scrollbar w-full rounded-md border border-border bg-background px-3 py-1.5 text-xs shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
         />
       </div>
-      <p className="text-xs text-muted-foreground">{t("Paste SVG_code")}</p>
+      <div className="flex items-center gap-2">
+        <Suspense fallback={<div className="text-xs text-muted-foreground">Loading...</div>}>
+          <IconPicker onSelectIcon={handleSvgChange} />
+        </Suspense>
+        <p className="text-xs text-muted-foreground">{t("Paste SVG_code")}</p>
+      </div>
     </div>
   );
 };

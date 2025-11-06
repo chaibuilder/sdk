@@ -178,7 +178,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
       </div>
     );
   }
-  const { librarySite } = useBuilderProp("_tempProps", { librarySite: false });
+  const { librarySite } = useBuilderProp("flags", { librarySite: false });
   const isLibBlock = useMemo(() => {
     return (
       librarySite &&

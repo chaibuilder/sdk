@@ -1,18 +1,20 @@
 import { usePageExternalData } from "@/core/atoms/builder";
 import { dataBindingActiveAtom } from "@/core/atoms/ui";
+import { useBuilderProp } from "@/core/hooks";
 import { cn } from "@/core/functions/common-functions";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
+import { LightningBoltIcon } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
 import { isEmpty } from "lodash-es";
-import { LightningBoltIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
 
 export const DataBinding = () => {
   const pageExternalData = usePageExternalData();
+  const disableDataBinding = useBuilderProp("flags.disableDataBinding", false);
   const [dataBindingActive, setDataBindingActive] = useAtom(dataBindingActiveAtom);
   const { t } = useTranslation();
-  if (isEmpty(pageExternalData)) return null;
+  if (disableDataBinding || isEmpty(pageExternalData)) return null;
   return (
     <div className="flex items-center">
       <Tooltip>

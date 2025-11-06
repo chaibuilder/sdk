@@ -1,4 +1,3 @@
-import { default as AIChatPanel } from "@/core/components/ai/ai-chat-panel";
 import { AskAI } from "@/core/components/ask-ai-panel";
 import CanvasArea from "@/core/components/canvas/canvas-area";
 import { CanvasTopBar } from "@/core/components/canvas/topbar/canvas-top-bar";
@@ -7,7 +6,7 @@ import { AddBlocksDialog } from "@/core/components/layout/add-blocks-dialog";
 import { NoopComponent } from "@/core/components/noop-component";
 import SettingsPanel from "@/core/components/settings/settings-panel";
 import ThemeConfigPanel from "@/core/components/sidepanels/panels/theme-configuration/ThemeConfigPanel";
-import { useChaiSidebarPanels } from "@/core/extensions/sidebar-panels";
+import { registerChaiSidebarPanel, useChaiSidebarPanels } from "@/core/extensions/sidebar-panels";
 import { useTopBarComponent } from "@/core/extensions/top-bar";
 import { useBuilderProp, useSidebarActivePanel } from "@/core/hooks";
 import { useRightPanel } from "@/core/hooks/use-theme";
@@ -17,9 +16,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/co
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/ui/shadcn/components/ui/sheet";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { Cross1Icon, LightningBoltIcon, MixerHorizontalIcon, StackIcon } from "@radix-ui/react-icons";
-import { useFeature } from "flagged";
 import { motion } from "framer-motion";
-import { compact, find, first, get, reverse } from "lodash-es";
+import { find, first, get, reverse } from "lodash-es";
 import React, {
   ComponentType,
   createElement,
@@ -34,7 +32,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { AiIcon } from "../ai/ai-icon";
 
-const DEFAULT_PANEL_WIDTH = 280;
+export const DEFAULT_PANEL_WIDTH = 280;
 
 const OutlineButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
   return (
@@ -44,7 +42,7 @@ const OutlineButton = ({ isActive, show }: { isActive: boolean; show: () => void
   );
 };
 
-const AiButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
+export const AiButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
   return (
     <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
       <LightningBoltIcon className="rtl:ml-2" />
@@ -58,55 +56,32 @@ const AskAiButton = ({ isActive, show }: { isActive: boolean; show: () => void; 
     </Button>
   );
 };
-function useSidebarDefaultPanels() {
-  const askAiCallBack = useBuilderProp("askAiCallBack", null);
-  const aiChat = useFeature("aiChat");
-  return useMemo(() => {
-    const items = [];
 
-    items.push({
-      id: "ask-ai",
-      button: AskAiButton,
-      label: "Ask AI",
-      isInternal: true,
-      width: DEFAULT_PANEL_WIDTH,
-      panel: () => (
-        <div className="">
-          <AskAI />
-        </div>
-      ),
-    });
+registerChaiSidebarPanel("chai-chat-panel", {
+  button: AskAiButton,
+  label: "Ask AI",
+  position: "top",
+  isInternal: true,
+  width: DEFAULT_PANEL_WIDTH,
+  panel: () => (
+    <div className="">
+      <AskAI />
+    </div>
+  ),
+});
 
-    items.push({
-      id: "outline",
-      label: "Outline",
-      isInternal: true,
-      width: DEFAULT_PANEL_WIDTH,
-      button: OutlineButton,
-      panel: () => (
-        <div className="-mt-8">
-          <Outline />
-        </div>
-      ),
-    });
-
-    if (askAiCallBack && aiChat) {
-      items.unshift({
-        id: "ai",
-        button: AiButton,
-        label: "AI Assistant",
-        isInternal: true,
-        width: 450,
-        panel: () => (
-          <div className="-mt-8 h-full max-h-full">
-            <AIChatPanel />
-          </div>
-        ),
-      });
-    }
-    return compact(items);
-  }, [askAiCallBack, aiChat]);
-}
+registerChaiSidebarPanel("outline", {
+  button: OutlineButton,
+  label: "Outline",
+  position: "top",
+  isInternal: true,
+  width: DEFAULT_PANEL_WIDTH,
+  panel: () => (
+    <div className="-mt-8">
+      <Outline />
+    </div>
+  ),
+});
 
 /**
  * RootLayout is a React component that renders the main layout of the application.
@@ -118,8 +93,6 @@ const RootLayout: ComponentType = () => {
   const [lastStandardPanelWidth, setLastStandardPanelWidth] = useState(DEFAULT_PANEL_WIDTH);
 
   const [panel, setRightPanel] = useRightPanel();
-
-  const defaultPanels = useSidebarDefaultPanels();
   const topPanels = useChaiSidebarPanels("top");
   const bottomPanels = useChaiSidebarPanels("bottom");
   const reversedBottomPanels = reverse([...(bottomPanels ?? [])]);
@@ -132,6 +105,14 @@ const RootLayout: ComponentType = () => {
     if (!isDevelopment()) e.preventDefault();
   }, []);
 
+  // Move "Ask AI" panel to the front of the array
+  const totalTopPanels = useMemo(() => {
+    const totalTopPanels = [topPanels].flat();
+    const askAiPanel = totalTopPanels.find((panel) => panel.id === "chai-chat-panel");
+    const otherPanels = totalTopPanels.filter((panel) => panel.id !== "chai-chat-panel");
+    return askAiPanel ? [askAiPanel, ...otherPanels] : totalTopPanels;
+  }, [topPanels]);
+
   const handleMenuItemClick = useCallback(
     (id: string) => {
       console.log("handleMenuItemClick", id, activePanel);
@@ -142,10 +123,7 @@ const RootLayout: ComponentType = () => {
   );
 
   const { t } = useTranslation();
-  const allPanels = useMemo(
-    () => [...defaultPanels, ...topPanels, ...bottomPanels],
-    [defaultPanels, topPanels, bottomPanels],
-  );
+  const allPanels = useMemo(() => [...topPanels, ...bottomPanels], [topPanels, bottomPanels]);
   const htmlDir = useBuilderProp("htmlDir", "ltr");
 
   // Update active panel item and get its width
@@ -210,7 +188,7 @@ const RootLayout: ComponentType = () => {
           <main className="relative flex h-[calc(100vh-56px)] max-w-full flex-1 flex-row">
             <div id="sidebar" className="flex w-12 flex-col items-center justify-between border-r border-border py-2">
               <div className="flex flex-col gap-y-1">
-                {[defaultPanels, topPanels].flat().map((item, index) => (
+                {totalTopPanels.map((item, index) => (
                   <Tooltip key={"button-top-" + index}>
                     <TooltipTrigger asChild>
                       {createElement(get(item, "button", NoopComponent), {

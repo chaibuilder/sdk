@@ -297,5 +297,10 @@ export interface ChaiBuilderEditorProps {
   /**
    * temporary props. Not to be used in production
    */
-  _tempProps?: Record<string, any>;
+  flags?: {
+    librarySite?: boolean;
+    useClipboard?: boolean;
+    disableDarkmode?: boolean;
+    disableDataBinding?: boolean;
+  };
 }

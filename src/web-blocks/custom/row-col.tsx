@@ -49,6 +49,7 @@ const ColumnConfig = {
   category: "core",
   icon: LayoutIcon,
   wrapper: true,
+  hidden: true,
   canDelete: () => true,
   canAcceptBlock: () => true,
   canBeNested: (type: string) => type === "Row",
@@ -105,6 +106,7 @@ const Config = {
   label: "Row",
   group: "basic",
   icon: RowsIcon,
+  hidden: true,
   blocks: () =>
     [
       { _type: "Row", _id: "row", styles: "#styles:,p-1" },

@@ -30,8 +30,11 @@ function ChaiBuilderDefault() {
   const [theme, setTheme] = useAtom(lsThemeAtom);
   return (
     <ChaiBuilderEditor
-      _tempProps={{
+      flags={{
         librarySite: false,
+        useClipboard: true,
+        disableDarkmode: false,
+        disableDataBinding: false
       }}
       gotoPage={(args) => {
         console.log("gotoPage", args);
