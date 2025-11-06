@@ -35,6 +35,7 @@ function ChaiBuilderDefault() {
         useClipboard: true,
         disableDarkmode: true,
         disableDataBinding: true,
+        disableBlockGroupsSidebar: true,
       }}
       gotoPage={(args) => {
         console.log("gotoPage", args);
