@@ -33,6 +33,7 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
   const [selectedGroup, setSelectedGroup] = useState<string | null>("all");
   const [hoveredGroup, setHoveredGroup] = useState<string | null>(null);
   const debouncedSelectRef = useRef<any>(null);
+  const disableBlockGroupsSidebar = useBuilderProp("flags.disableBlockGroupsSidebar", false);
 
   // Focus search input on mount and tab change
   useEffect(() => {
@@ -146,7 +147,7 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
 
       <div className="sticky top-10 flex h-[calc(100%-48px)] overflow-hidden">
         {/* Sidebar for groups */}
-        {sortedGroups.length > 0 && (
+        {!disableBlockGroupsSidebar && sortedGroups.length > 0 && (
           <div className="w-1/4 min-w-[120px] border-r border-border">
             <ScrollArea className="h-full">
               <div className="space-y-1 p-2">
@@ -182,7 +183,10 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
         )}
 
         {/* Main content area */}
-        <div className="h-full w-3/4 flex-1 overflow-hidden">
+        <div
+          className={`h-full flex-1 overflow-hidden ${
+            !disableBlockGroupsSidebar && sortedGroups.length > 0 ? "w-3/4" : "w-full"
+          }`}>
           <ScrollArea id="add-blocks-scroll-area" className="no-scrollbar mr-4 h-full">
             {filteredGroups.length === 0 && searchTerm ? (
               <div className="flex flex-col items-center justify-center p-8 text-center text-muted-foreground">
