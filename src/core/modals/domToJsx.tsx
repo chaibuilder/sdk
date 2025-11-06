@@ -49,7 +49,7 @@ export function domToJsx(element: Element, indent = 0): string {
             }
             return acc;
           },
-          {} as Record<string, string>
+          {} as Record<string, string>,
         );
         attributes.push(`style={${JSON.stringify(styleObject)}}`);
       } else {
@@ -85,7 +85,7 @@ export function domToJsx(element: Element, indent = 0): string {
           }
           return acc;
         },
-        {} as Record<string, string>
+        {} as Record<string, string>,
       );
       attributes.push(`style={${JSON.stringify(styleObject)}}`);
     } else {
@@ -114,4 +114,43 @@ export function domToJsx(element: Element, indent = 0): string {
   }
 
   return jsx;
+}
+
+export function formatHtml(html?: string): string | undefined {
+  if (!html) {
+    return "";
+  }
+
+  let formatted = "";
+  let indent = 0;
+  const tab = "  "; // 2 spaces
+
+  // Remove extra whitespace and newlines
+  html = html.replace(/>\s+</g, "><").trim();
+
+  // Split by tags
+  const tokens = html.split(/(<\/?[^>]+>)/g).filter((token) => token.trim());
+
+  tokens.forEach((token) => {
+    // Closing tag
+    if (token.match(/^<\/\w/)) {
+      indent = Math.max(0, indent - 1);
+      formatted += tab.repeat(indent) + token + "\n";
+    }
+    // Self-closing tag
+    else if (token.match(/\/>$/)) {
+      formatted += tab.repeat(indent) + token + "\n";
+    }
+    // Opening tag
+    else if (token.match(/^<\w[^>]*[^\/]>$/)) {
+      formatted += tab.repeat(indent) + token + "\n";
+      indent++;
+    }
+    // Text content
+    else if (token.trim()) {
+      formatted += tab.repeat(indent) + token.trim() + "\n";
+    }
+  });
+
+  return formatted.trim();
 }
