@@ -23,7 +23,7 @@ import { useTranslation } from "react-i18next";
 
 const CORE_GROUPS = ["basic", "typography", "media", "layout", "form", "advanced", "other"];
 
-export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols = "grid-cols-4" }: any) => {
+export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols = "grid-cols-4", disableBlockGroupsSidebar}: any) => {
   const { t } = useTranslation();
   const [allBlocks] = useBlocksStore();
   const [searchTerm, setSearchTerm] = useState("");
@@ -33,7 +33,6 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
   const [selectedGroup, setSelectedGroup] = useState<string | null>("all");
   const [hoveredGroup, setHoveredGroup] = useState<string | null>(null);
   const debouncedSelectRef = useRef<any>(null);
-  const disableBlockGroupsSidebar = useBuilderProp("flags.disableBlockGroupsSidebar", false);
 
   // Focus search input on mount and tab change
   useEffect(() => {
