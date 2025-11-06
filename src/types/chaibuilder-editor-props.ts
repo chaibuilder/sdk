@@ -300,5 +300,7 @@ export interface ChaiBuilderEditorProps {
   flags?: {
     librarySite?: boolean;
     useClipboard?: boolean;
+    disableDarkmode?: boolean;
+    disableDataBinding?: boolean;
   };
 }
