@@ -25,6 +25,7 @@ import { MayBeAsyncPropsWrapper } from "./async-props-wrapper";
 import { ErrorFallback } from "./error-fallback";
 import { useBlockRuntimeProps } from "./use-block-runtime-props";
 import WithBlockTextEditor from "./with-block-text-editor";
+import { useEditorMode } from "@/core/hooks/use-editor-mode";
 
 export const RepeaterContext = createContext<{
   index: number;
@@ -86,6 +87,7 @@ const BlockRenderer = ({
   const [dataBindingActive] = useAtom(dataBindingActiveAtom);
   const Component = get(registeredChaiBlock, "component", null);
   const { index, key } = useContext(RepeaterContext);
+  const { mode } = useEditorMode();
 
   const dataBindingProps = useMemo(
     () =>
@@ -106,7 +108,7 @@ const BlockRenderer = ({
   const props = useMemo(
     () => ({
       blockProps: { "data-block-id": block._id, "data-block-type": block._type, "data-block-index": index },
-      inBuilder: true,
+      inBuilder: mode === 'edit',
       lang: selectedLang || fallbackLang,
       ...dataBindingProps,
       ...blockAttributesProps,
@@ -114,6 +116,7 @@ const BlockRenderer = ({
       ...asyncProps,
     }),
     [
+      mode,
       block._id,
       block._type,
       selectedLang,
