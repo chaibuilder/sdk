@@ -1,5 +1,4 @@
 import { chaiBuilderPropsAtom, chaiPageExternalDataAtom } from "@/core/atoms/builder";
-import { dataBindingActiveAtom } from "@/core/atoms/ui";
 import { builderStore } from "@/core/atoms/store";
 import { selectedLibraryAtom } from "@/core/atoms/ui";
 import { CssThemeVariables } from "@/core/components/css-theme-var";
@@ -10,7 +9,7 @@ import { ChaiFeatureFlagsWidget } from "@/core/flags/flags-widget";
 import { setDebugLogs } from "@/core/functions/logging";
 import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
 import { defaultThemeValues } from "@/core/hooks/default-theme-options";
-import { useBuilderProp, useBuilderReset, useDarkMode, useSavePage } from "@/core/hooks/index";
+import { useBuilderProp, useBuilderReset, useSavePage } from "@/core/hooks/index";
 import { useBroadcastChannel, useUnmountBroadcastChannel } from "@/core/hooks/use-broadcast-channel";
 import { useExpandTree } from "@/core/hooks/use-expand-tree";
 import { isPageLoadedAtom } from "@/core/hooks/use-is-page-loaded";
@@ -48,10 +47,6 @@ const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
   const [, setAllBlocks] = useBlocksStore();
   const reset = useBuilderReset();
   const [saveState] = useAtom(builderSaveStateAtom);
-  const [, setDataBindingActive] = useAtom(dataBindingActiveAtom);
-  const [isDarkMode, setDarkMode] = useDarkMode();
-  const disableDarkMode = useBuilderProp("flags.disableDarkmode", false);
-  const disableDataBinding = useBuilderProp("flags.disableDataBinding", false);
   useAtom(selectedLibraryAtom);
   useKeyEventWatcher();
   useExpandTree();
@@ -68,18 +63,6 @@ const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
       omit(props, ["blocks", "translations", "pageExternalData"]),
     );
   }, [props]);
-
-  useEffect(() => {
-    if (disableDarkMode && isDarkMode) {
-      setDarkMode(false);
-    }
-  }, [disableDarkMode, isDarkMode, setDarkMode]);
-
-  useEffect(() => {
-    if (disableDataBinding) {
-      setDataBindingActive(false);
-    }
-  }, [disableDataBinding, setDataBindingActive]);
 
   useEffect(() => {
     builderStore.set(chaiPageExternalDataAtom, props.pageExternalData || {});

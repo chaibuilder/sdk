@@ -84,19 +84,18 @@ const BlockRenderer = ({
   const getRuntimePropValues = useBlockRuntimeProps();
   const pageExternalData = usePageExternalData();
   const [dataBindingActive] = useAtom(dataBindingActiveAtom);
-  const disableDataBinding = useBuilderProp("flags.disableDataBinding", false);
   const Component = get(registeredChaiBlock, "component", null);
   const { index, key } = useContext(RepeaterContext);
 
   const dataBindingProps = useMemo(
     () =>
-      dataBindingActive && !disableDataBinding
+      dataBindingActive
         ? applyBindingToBlockProps(applyLanguage(block, selectedLang, registeredChaiBlock), pageExternalData, {
             index,
             key,
           })
         : applyLanguage(block, selectedLang, registeredChaiBlock),
-    [block, selectedLang, registeredChaiBlock, pageExternalData, dataBindingActive, index, key, disableDataBinding],
+    [block, selectedLang, registeredChaiBlock, pageExternalData, dataBindingActive, index, key],
   );
   const blockAttributesProps = useMemo(() => getBlockTagAttributes(block), [block, getBlockTagAttributes]);
   const runtimeProps = useMemo(
