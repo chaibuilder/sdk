@@ -241,7 +241,6 @@ const AddBlocksPanel = ({
   const { t } = useTranslation();
   const [tab, setTab] = useAtom(addBlockTabAtom);
   const [, setCategory] = useAtom(showPredefinedBlockCategoryAtom);
-  const importHTMLSupport = useBuilderProp("importHTMLSupport", true);
   const importHtmlEnabled = useBuilderProp("flags.importHtml", true);
   const { data: partialBlocksList } = usePartialBlocksList();
   const hasPartialBlocks = Object.keys(partialBlocksList || {}).length > 0;
@@ -259,7 +258,7 @@ const AddBlocksPanel = ({
   }, []);
 
   const addBlockAdditionalTabs = useChaiAddBlockTabs();
-  const canImportHTML = importHTMLSupport && importHtmlEnabled && hasPermission(PERMISSIONS.IMPORT_HTML);
+  const canImportHTML = importHtmlEnabled && hasPermission(PERMISSIONS.IMPORT_HTML);
   const uiLibraries = useChaiLibraries();
   const hasUiLibraries = uiLibraries.length > 0;
 
