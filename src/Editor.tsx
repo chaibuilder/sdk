@@ -33,6 +33,8 @@ function ChaiBuilderDefault() {
       flags={{
         librarySite: false,
         useClipboard: true,
+        disableDarkmode: false,
+        disableDataBinding: false
       }}
       gotoPage={(args) => {
         console.log("gotoPage", args);
