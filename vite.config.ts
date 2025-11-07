@@ -124,6 +124,8 @@ export default defineConfig({
         "tailwindcss-animate",
         "undo-manager",
         "zod",
+        "monaco-editor",
+        "@monaco-editor/react"
       ],
     },
   },
