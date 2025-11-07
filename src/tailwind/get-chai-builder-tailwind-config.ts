@@ -73,4 +73,4 @@ const getChaiBuilderTailwindConfig = (content: string[]) => {
   };
 };
 
-export { getChaiBuilderTailwindConfig };
+export { getChaiBuilderTailwindConfig, shadcnTheme };
