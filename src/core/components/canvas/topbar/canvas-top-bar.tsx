@@ -19,33 +19,38 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 const CanvasTopBar: React.FC = () => {
-  const darkModeSupport = useBuilderProp("darkMode", true);
+  const disableDarkMode = useBuilderProp("flags.disableDarkmode", false);
+  const disableDataBinding = useBuilderProp("flags.disableDataBinding", false);
   const [dataBindingActive, setDataBindingActive] = useAtom(dataBindingActiveAtom);
   const { t } = useTranslation();
+  const showDarkModeToggle = !disableDarkMode;
+  const showDataBindingToggle = !disableDataBinding;
 
   return (
     <div className="flex h-10 items-center justify-between border-b border-border bg-background/70 px-2 shadow-xl">
-      <div className="flex h-full space-x-2">{darkModeSupport ? <DarkMode /> : null}</div>
+      <div className="flex h-full space-x-2">{showDarkModeToggle ? <DarkMode /> : null}</div>
       <div className="flex h-full items-center space-x-2">
         <Breakpoints canvas openDelay={400} />
         <Separator orientation="vertical" />
         <UndoRedo />
       </div>
       <div className="flex h-full items-center">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button size="sm" variant="ghost" className="h-7 w-7 rounded-md p-1">
-              <DotsHorizontalIcon className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56 border-border text-xs">
-            <DropdownMenuItem className="flex items-center gap-2" onSelect={(e) => e.preventDefault()}>
-              <LightningBoltIcon className="h-4 w-4 text-gray-500" />
-              <span className="flex-1">{t("Data Binding")}</span>
-              <Switch checked={dataBindingActive} onCheckedChange={() => setDataBindingActive(!dataBindingActive)} />
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {showDataBindingToggle ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button size="sm" variant="ghost" className="h-7 w-7 rounded-md p-1">
+                <DotsHorizontalIcon className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56 border-border text-xs">
+              <DropdownMenuItem className="flex items-center gap-2" onSelect={(e) => e.preventDefault()}>
+                <LightningBoltIcon className="h-4 w-4 text-gray-500" />
+                <span className="flex-1">{t("Data Binding")}</span>
+                <Switch checked={dataBindingActive} onCheckedChange={() => setDataBindingActive(!dataBindingActive)} />
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : null}
         <ClearCanvas />
       </div>
     </div>

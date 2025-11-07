@@ -159,7 +159,7 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
 }`;
   }, []);
 
-  const editor = (
+  return exportContent?.jsx?.length > 0 && show ? (
     <CodeDisplay
       key={tab}
       onCopy={handleCopy}
@@ -168,10 +168,6 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
       downloadText={downloadText}
       onDownload={downloadExportContent}
     />
-  );
-
-  return exportContent?.jsx?.length > 0 && show ? (
-    editor
   ) : (
     <div className="flex h-[620px] w-full items-center justify-center p-4">Generating code...</div>
   );
