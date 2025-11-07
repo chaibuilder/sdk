@@ -91,7 +91,7 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
     try {
       setShow(false);
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      const html = blocksHtmlForAi();
+      const html = blocksHtmlForAi({ EXTRA_CORE_BLOCKS: ["Icon"] });
       const isTypeScript = tab === "ts";
       const {
         jsx: jsxCode,
