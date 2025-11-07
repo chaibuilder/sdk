@@ -1,9 +1,10 @@
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useBlocksHtmlForAi, useSelectedBlock } from "@/core/hooks";
 import { usePubSub } from "@/core/hooks/use-pub-sub";
+import { shadcnTheme } from "@/tailwind/get-chai-builder-tailwind-config";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, Tabs, TabsList, TabsTrigger } from "@/ui";
 import { camelCase } from "lodash";
-import { lazy, Suspense, useCallback, useEffect, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -25,14 +26,27 @@ async function convertHtmlToJsx(html: string): Promise<{ jsx: string; html: stri
   }
 }
 
-const getExportedCoded = async ({ selectedBlock, html }: { selectedBlock: ChaiBlock; html: string }) => {
+const getExportedCoded = async ({
+  selectedBlock,
+  html,
+  isTypeScript = false,
+}: {
+  selectedBlock: ChaiBlock;
+  html: string;
+  isTypeScript?: boolean;
+}) => {
   let componentName = selectedBlock?._name || selectedBlock?._type || "Component";
   componentName = camelCase(componentName).replace(/^./, (str) => str.toUpperCase());
 
   const SPACE = "  ";
   let { jsx, html: convertedHTML } = await convertHtmlToJsx(html);
   jsx = jsx?.split("\n").join(`\n${SPACE}${SPACE}`);
-  jsx = `export const ${componentName} = () => {
+
+  // Add TypeScript type annotations if TypeScript is enabled
+  const typeAnnotation = isTypeScript ? ": React.FC" : "";
+  const importStatement = isTypeScript ? "import React from 'react';\n\n" : "";
+
+  jsx = `${importStatement}export const ${componentName}${typeAnnotation} = () => {
 ${SPACE}return (
 ${SPACE}${SPACE}${jsx?.trimEnd()}
 ${SPACE})
@@ -64,10 +78,11 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
     switch (tab) {
       case "js":
       case "ts":
-      case "tailwind":
         return "javascript";
       case "html":
         return "HTML";
+      case "tailwind":
+        return "JSON";
     }
   };
 
@@ -75,7 +90,16 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       const html = blocksHtmlForAi();
-      const { jsx: jsxCode, html: htmlCode, componentName } = await getExportedCoded({ selectedBlock, html });
+      const isTypeScript = tab === "ts";
+      const {
+        jsx: jsxCode,
+        html: htmlCode,
+        componentName,
+      } = await getExportedCoded({
+        selectedBlock,
+        html,
+        isTypeScript,
+      });
       setExportContent({ html: htmlCode, jsx: jsxCode });
       setFileName(componentName);
     } catch (error) {
@@ -83,11 +107,11 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
       setExportContent({ html: fallbackContent, jsx: fallbackContent });
       toast.error(t("Failed to generate export HTML"));
     }
-  }, [t]);
+  }, [t, tab, selectedBlock, blocksHtmlForAi]);
 
   useEffect(() => {
     handleExportEvent();
-  }, []);
+  }, [handleExportEvent]);
 
   const handleCopy = useCallback(
     async (text: string) => {
@@ -120,11 +144,23 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
     </span>
   );
 
+  const tailwindConfig = useMemo(() => {
+    const theme = { extend: shadcnTheme() };
+    const extend = JSON.stringify(theme, null, 2);
+    return `{
+  // Your content ...
+
+  "theme": ${extend?.split("\n").join("\n  ")},
+
+  // Your plugins ...
+}`;
+  }, []);
+
   return exportContent?.jsx?.length > 0 ? (
     <CodeDisplay
       key={tab}
       onCopy={handleCopy}
-      code={tab === "html" ? exportContent.html : exportContent.jsx}
+      code={tab === "tailwind" ? tailwindConfig : tab === "html" ? exportContent.html : exportContent.jsx}
       language={getLanguage()}
       downloadText={downloadText}
       onDownload={downloadExportContent}
@@ -164,9 +200,7 @@ export const ExportCodeModal = () => {
               <TabsTrigger value="js">Javascript</TabsTrigger>
               <TabsTrigger value="ts">Typescript</TabsTrigger>
               <TabsTrigger value="html">HTML</TabsTrigger>
-              <TabsTrigger value="tailwind" className="hidden">
-                Tailwind config
-              </TabsTrigger>
+              <TabsTrigger value="tailwind">Tailwind config</TabsTrigger>
             </TabsList>
           </Tabs>
           <div />
