@@ -34,6 +34,7 @@ function ChaiBuilderDefault() {
         librarySite: false,
         copyPaste: false,
         darkMode: false,
+        exportCode : true,
         dataBinding: false,
         importHtml: false,
         importTheme: false,
