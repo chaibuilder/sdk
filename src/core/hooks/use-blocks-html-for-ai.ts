@@ -15,6 +15,10 @@ export type HimalayaNode = {
   content?: string;
 };
 
+type Options = {
+  EXTRA_CORE_BLOCKS?: string[];
+};
+
 const ATTRIBUTES_TO_REMOVE = ["data-block-index", "data-drop", "data-style-id", "data-block-parent", "data-style-prop"];
 
 const CORE_BLOCKS = [
@@ -80,7 +84,7 @@ const cleanNode = (node: HimalayaNode): HimalayaNode | null => {
   return node;
 };
 
-export const transformNode = (node: HimalayaNode, currentBlocks: ChaiBlock[]): HimalayaNode => {
+export const transformNode = (node: HimalayaNode, currentBlocks: ChaiBlock[], options: Options): HimalayaNode => {
   // Only process element nodes
   if (node.type !== "element" || !node.attributes) {
     return node;
@@ -103,13 +107,13 @@ export const transformNode = (node: HimalayaNode, currentBlocks: ChaiBlock[]): H
   if (blockTypeAttr) {
     const blockType = blockTypeAttr.value;
 
-    if (CORE_BLOCKS.includes(blockType)) {
+    if (CORE_BLOCKS.includes(blockType) || options?.EXTRA_CORE_BLOCKS?.includes(blockType)) {
       // For core blocks, just remove the data-block-type attribute
       node.attributes = node.attributes.filter((attr) => attr.key !== "data-block-type");
 
       // Recursively transform children for core blocks
       if (node.children) {
-        node.children = node.children.map((node) => transformNode(node, currentBlocks));
+        node.children = node.children.map((node) => transformNode(node, currentBlocks, options));
       }
     } else {
       // For custom blocks, convert to web component style tag
@@ -177,7 +181,7 @@ export const transformNode = (node: HimalayaNode, currentBlocks: ChaiBlock[]): H
       if (blockDefinition && blockDefinition.canAcceptBlock) {
         // Custom block can accept children, so recursively transform them
         if (node.children) {
-          node.children = node.children.map((node) => transformNode(node, currentBlocks));
+          node.children = node.children.map((node) => transformNode(node, currentBlocks, options));
         }
       } else {
         // Remove all children for custom blocks that don't accept children
@@ -187,7 +191,7 @@ export const transformNode = (node: HimalayaNode, currentBlocks: ChaiBlock[]): H
   } else {
     // For nodes without data-block-type, recursively transform children
     if (node.children) {
-      node.children = node.children.map((node) => transformNode(node, currentBlocks));
+      node.children = node.children.map((node) => transformNode(node, currentBlocks, options));
     }
   }
 
@@ -201,30 +205,33 @@ export const useBlocksHtmlForAi = () => {
   const selectedBlock = useSelectedBlock();
   const [currentBlocks] = useBlocksStore();
   const [iframeDocument] = useCanvasIframe();
-  return useCallback(() => {
-    if (!iframeDocument) return "";
-    const id = selectedBlock?._id ? `[data-block-id="${selectedBlock._id}"]` : "#canvas";
-    const html = (iframeDocument as HTMLIFrameElement).contentDocument?.querySelector(id)?.[
-      id === "#canvas" ? "innerHTML" : "outerHTML"
-    ];
+  return useCallback(
+    (options?: Options) => {
+      if (!iframeDocument) return "";
+      const id = selectedBlock?._id ? `[data-block-id="${selectedBlock._id}"]` : "#canvas";
+      const html = (iframeDocument as HTMLIFrameElement).contentDocument?.querySelector(id)?.[
+        id === "#canvas" ? "innerHTML" : "outerHTML"
+      ];
 
-    if (!html) return "";
+      if (!html) return "";
 
-    // Parse HTML into AST
-    const nodes = parse(html) as HimalayaNode[];
+      // Parse HTML into AST
+      const nodes = parse(html) as HimalayaNode[];
 
-    // Clean nodes
-    const cleanedNodes = nodes.map(cleanNode).filter((node): node is HimalayaNode => node !== null);
+      // Clean nodes
+      const cleanedNodes = nodes.map(cleanNode).filter((node): node is HimalayaNode => node !== null);
 
-    // Transform nodes: remove data-block-type for core blocks, convert custom blocks to web components
-    const transformedNodes = cleanedNodes.map((node) => transformNode(node, currentBlocks));
+      // Transform nodes: remove data-block-type for core blocks, convert custom blocks to web components
+      const transformedNodes = cleanedNodes.map((node) => transformNode(node, currentBlocks, options));
 
-    // Convert back to HTML and normalize whitespace
-    let cleanedHtml = stringify(transformedNodes);
+      // Convert back to HTML and normalize whitespace
+      let cleanedHtml = stringify(transformedNodes);
 
-    // Convert empty custom web component tags to self-closing format
-    cleanedHtml = cleanedHtml.replace(/#styles:,/g, "#styles:");
+      // Convert empty custom web component tags to self-closing format
+      cleanedHtml = cleanedHtml.replace(/#styles:,/g, "#styles:");
 
-    return cleanedHtml.replace(/\s+/g, " ").trim();
-  }, [selectedBlock, iframeDocument]);
+      return cleanedHtml.replace(/\s+/g, " ").trim();
+    },
+    [selectedBlock, iframeDocument],
+  );
 };

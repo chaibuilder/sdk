@@ -60,6 +60,7 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
   const selectedBlock = useSelectedBlock();
   const blocksHtmlForAi = useBlocksHtmlForAi();
   const [fileName, setFileName] = useState<string>("");
+  const [show, setShow] = useState(false);
 
   const getFileName = () => {
     switch (tab) {
@@ -88,8 +89,9 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
 
   const handleExportEvent = useCallback(async () => {
     try {
+      setShow(false);
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      const html = blocksHtmlForAi();
+      const html = blocksHtmlForAi({ EXTRA_CORE_BLOCKS: ["Icon"] });
       const isTypeScript = tab === "ts";
       const {
         jsx: jsxCode,
@@ -102,6 +104,7 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
       });
       setExportContent({ html: htmlCode, jsx: jsxCode });
       setFileName(componentName);
+      setShow(true);
     } catch (error) {
       const fallbackContent = `<div>Export failed. Close the modal and try again.</div>`;
       setExportContent({ html: fallbackContent, jsx: fallbackContent });
@@ -111,7 +114,7 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
 
   useEffect(() => {
     handleExportEvent();
-  }, [handleExportEvent]);
+  }, [handleExportEvent, tab]);
 
   const handleCopy = useCallback(
     async (text: string) => {
@@ -156,7 +159,7 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
 }`;
   }, []);
 
-  return exportContent?.jsx?.length > 0 ? (
+  return exportContent?.jsx?.length > 0 && show ? (
     <CodeDisplay
       key={tab}
       onCopy={handleCopy}
@@ -166,7 +169,7 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
       onDownload={downloadExportContent}
     />
   ) : (
-    <div className="flex h-full w-full items-center justify-center p-4">Generating code...</div>
+    <div className="flex h-[620px] w-full items-center justify-center p-4">Generating code...</div>
   );
 };
 
