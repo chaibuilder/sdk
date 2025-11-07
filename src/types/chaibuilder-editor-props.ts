@@ -211,16 +211,6 @@ export interface ChaiBuilderEditorProps {
   locale?: string;
 
   /**
-   * Dark mode
-   */
-  darkMode?: boolean;
-
-  /**
-   * Import HTML support
-   */
-  importHTMLSupport?: boolean;
-
-  /**
    * Ask AI callback
    */
   askAiCallBack?: (
