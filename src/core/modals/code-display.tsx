@@ -35,7 +35,7 @@ export default function CodeDisplay({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="h-[600px] max-h-full overflow-hidden rounded-md border py-2">
+      <div className="h-[500px] max-h-full overflow-hidden rounded-md border py-2">
         <Editor
           height="100%"
           defaultLanguage={language}
@@ -45,7 +45,7 @@ export default function CodeDisplay({
           theme="vs-light"
           options={{
             minimap: { enabled: false },
-            fontSize: 14,
+            fontSize: 12,
             lineNumbers: "off",
             roundedSelection: false,
             scrollBeyondLastLine: false,
