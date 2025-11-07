@@ -299,8 +299,11 @@ export interface ChaiBuilderEditorProps {
    */
   flags?: {
     librarySite?: boolean;
-    useClipboard?: boolean;
-    disableDarkmode?: boolean;
-    disableDataBinding?: boolean;
+    copyPaste?: boolean;
+    exportCode?: boolean;
+    darkMode?: boolean;
+    dataBinding?: boolean;
+    importHtml?: boolean;
+    importTheme?: boolean;
   };
 }

@@ -19,12 +19,12 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 const CanvasTopBar: React.FC = () => {
-  const disableDarkMode = useBuilderProp("flags.disableDarkmode", false);
-  const disableDataBinding = useBuilderProp("flags.disableDataBinding", false);
+  const darkModeEnabled = useBuilderProp("flags.darkMode", true);
+  const dataBindingEnabled = useBuilderProp("flags.dataBinding", true);
   const [dataBindingActive, setDataBindingActive] = useAtom(dataBindingActiveAtom);
   const { t } = useTranslation();
-  const showDarkModeToggle = !disableDarkMode;
-  const showDataBindingToggle = !disableDataBinding;
+  const showDarkModeToggle = darkModeEnabled;
+  const showDataBindingToggle = dataBindingEnabled;
 
   return (
     <div className="flex h-10 items-center justify-between border-b border-border bg-background/70 px-2 shadow-xl">

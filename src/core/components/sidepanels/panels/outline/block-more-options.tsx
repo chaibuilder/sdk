@@ -42,7 +42,7 @@ const CopyPasteBlocks = () => {
   const [, copyBlocks, hasPartialBlocks] = useCopyBlocks();
   const { t } = useTranslation();
   const selectedBlock = useSelectedBlock();
-  const enableCopyToClipboard = useBuilderProp("flags.useClipboard", false);
+  const enableCopyToClipboard = useBuilderProp("flags.copyPaste", true);
 
   const handleCopy = useCallback(() => {
     const selectedBlocks = selectedIds.map((id) => {
@@ -106,7 +106,7 @@ const CutBlocks = () => {
   const [selectedIds] = useSelectedBlockIds();
   const [, setCutBlockIds] = useCutBlockIds();
   const { t } = useTranslation();
-  const enableCopyToClipboard = useBuilderProp("flags", { useClipboard: false }).useClipboard;
+  const enableCopyToClipboard = useBuilderProp("flags.copyPaste", true);
 
   return (
     <>

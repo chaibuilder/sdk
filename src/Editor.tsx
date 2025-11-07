@@ -32,9 +32,11 @@ function ChaiBuilderDefault() {
     <ChaiBuilderEditor
       flags={{
         librarySite: false,
-        useClipboard: true,
-        disableDarkmode: false,
-        disableDataBinding: false
+        copyPaste: false,
+        darkMode: false,
+        dataBinding: false,
+        importHtml: false,
+        importTheme: false,
       }}
       gotoPage={(args) => {
         console.log("gotoPage", args);
