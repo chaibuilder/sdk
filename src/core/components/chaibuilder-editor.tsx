@@ -117,11 +117,12 @@ const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
 const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   const RootLayoutComponent = useMemo(() => props.layout || RootLayout, [props.layout]);
   const builderTheme = useBuilderProp("builderTheme", defaultThemeValues);
+  const exportCodeEnabled = useBuilderProp("flags.exportCode", false);
   return (
     <>
       <CssThemeVariables theme={builderTheme as ChaiBuilderThemeValues} />
       <RootLayoutComponent />
-      <ExportCodeModal />
+      {exportCodeEnabled && <ExportCodeModal />}
     </>
   );
 };
