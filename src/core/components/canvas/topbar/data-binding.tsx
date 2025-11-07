@@ -11,10 +11,10 @@ import { useTranslation } from "react-i18next";
 
 export const DataBinding = () => {
   const pageExternalData = usePageExternalData();
-  const disableDataBinding = useBuilderProp("flags.disableDataBinding", false);
+  const dataBindingEnabled = useBuilderProp("flags.dataBinding", true);
   const [dataBindingActive, setDataBindingActive] = useAtom(dataBindingActiveAtom);
   const { t } = useTranslation();
-  if (disableDataBinding || isEmpty(pageExternalData)) return null;
+  if (!dataBindingEnabled || isEmpty(pageExternalData)) return null;
   return (
     <div className="flex items-center">
       <Tooltip>

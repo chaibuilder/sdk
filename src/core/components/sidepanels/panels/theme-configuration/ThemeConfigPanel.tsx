@@ -70,6 +70,8 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const themePresets = useBuilderProp("themePresets", []);
   const themePanelComponent = useBuilderProp("themePanelComponent", null);
   const { hasPermission } = usePermissions();
+  const importThemeEnabled = useBuilderProp("flags.importTheme", true);
+  const darkModeEnabled = useBuilderProp("flags.darkMode", true);
 
   if (themePresets) {
     const existingKeys = themePresets.map((preset: any) => Object.keys(preset)[0]);
@@ -237,10 +239,12 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
             <div className="flex w-full items-center justify-between">
               <Label className="text-sm">{t("Presets")}</Label>
               <div className="flex gap-2">
-                <Button className="px-1" variant="link" size="sm" onClick={() => setIsImportModalOpen(true)}>
-                  <UploadIcon className="h-4 w-4" />
-                  {t("Import theme")}
-                </Button>
+                {importThemeEnabled && (
+                  <Button className="px-1" variant="link" size="sm" onClick={() => setIsImportModalOpen(true)}>
+                    <UploadIcon className="h-4 w-4" />
+                    {t("Import theme")}
+                  </Button>
+                )}
               </div>
             </div>
             {/* Presets Tab */}
@@ -324,7 +328,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
                   <MixerHorizontalIcon className="h-3 w-3 text-gray-600" />
                   <span className="text-xs font-medium text-gray-700">Colors</span>
                 </div>
-                <div className="flex items-center gap-2">
+                {darkModeEnabled && (
                   <div className="flex items-center gap-2">
                     <SunIcon className="h-4 w-4" />
                     <Switch
@@ -335,13 +339,13 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
                     />
                     <MoonIcon className="h-4 w-4" />
                   </div>
-                </div>
+                )}
               </div>
               <div className="space-y-2">{chaiThemeOptions.colors.map((group) => renderColorGroup(group))}</div>
             </div>
           )}
           <Suspense fallback={<div>Loading...</div>}>
-            {isImportModalOpen && (
+            {isImportModalOpen && importThemeEnabled && (
               <LazyCssImportModal
                 open={isImportModalOpen}
                 onOpenChange={setIsImportModalOpen}

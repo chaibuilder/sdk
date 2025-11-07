@@ -27,7 +27,7 @@ export const useCopyBlocks = (): [
   const [ids, setIds] = useAtom(copiedBlockIdsAtom);
   const resetCutBlockIds = useSetAtom(cutBlockIdsAtom);
   const { getPartailBlocks } = usePartailBlocksStore();
-  const enableCopyToClipboard = useBuilderProp("flags.useClipboard", false);
+  const enableCopyToClipboard = useBuilderProp("flags.copyPaste", true);
 
   const hasPartialBlocks = useCallback(
     (blockIds: Array<string>) => {

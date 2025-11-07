@@ -18,7 +18,7 @@ export const DataBindingSelector = ({
   formData: any;
 }) => {
   const pageExternalData = usePageExternalData();
-  const disableDataBinding = useBuilderProp("flags.disableDataBinding", false);
+  const dataBindingEnabled = useBuilderProp("flags.dataBinding", true);
   const hierarchy = useSelectedBlockHierarchy();
   const selectedBlock = useSelectedBlock();
   const repeaterKey = useMemo(() => {
@@ -175,7 +175,7 @@ export const DataBindingSelector = ({
     [id, onChange, formData, selectedBlock?._id, repeaterKey],
   );
 
-  if (disableDataBinding) {
+  if (!dataBindingEnabled) {
     return null;
   }
   return (
