@@ -151,11 +151,9 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
     const theme = { extend: shadcnTheme() };
     const extend = JSON.stringify(theme, null, 2);
     return `{
-  // Your content ...
+  // Your tailwind config ...
 
   "theme": ${extend?.split("\n").join("\n  ")},
-
-  // Your plugins ...
 }`;
   }, []);
 
