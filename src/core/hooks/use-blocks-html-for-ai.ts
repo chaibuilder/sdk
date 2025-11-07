@@ -84,7 +84,7 @@ const cleanNode = (node: HimalayaNode): HimalayaNode | null => {
   return node;
 };
 
-export const transformNode = (node: HimalayaNode, currentBlocks: ChaiBlock[], options: Options): HimalayaNode => {
+export const transformNode = (node: HimalayaNode, currentBlocks: ChaiBlock[], options: Options = {}): HimalayaNode => {
   // Only process element nodes
   if (node.type !== "element" || !node.attributes) {
     return node;
