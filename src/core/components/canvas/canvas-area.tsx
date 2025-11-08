@@ -2,6 +2,7 @@ import { Breadcrumb } from "@/core/components/canvas/bread-crumb";
 import StaticCanvas from "@/core/components/canvas/static/static-canvas";
 import { FallbackError } from "@/core/components/fallback-error";
 import { useBuilderProp, useCodeEditor } from "@/core/hooks";
+import { useEditorMode } from "@/core/hooks/use-editor-mode";
 import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
 import { noop } from "lodash-es";
 import React, { Suspense } from "react";
@@ -10,6 +11,7 @@ import { ErrorBoundary } from "react-error-boundary";
 const CodeEditor = React.lazy(() => import("@/core/components/canvas/static/code-editor"));
 
 const CanvasArea: React.FC = () => {
+  const { mode } = useEditorMode();
   const [codeEditor] = useCodeEditor();
   const onErrorFn = useBuilderProp("onError", noop);
   return (
@@ -20,12 +22,12 @@ const CanvasArea: React.FC = () => {
             <StaticCanvas />
           </ErrorBoundary>
         </Suspense>
-        {codeEditor ? (
+        {codeEditor && mode === "edit" ? (
           <Suspense fallback={<Skeleton className="h-full" />}>
             <CodeEditor />
           </Suspense>
         ) : null}
-        <Breadcrumb />
+        {mode === "edit" && <Breadcrumb />}
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import { ClearCanvas } from "@/core/components/canvas/topbar/clear-canvas";
 import { DarkMode } from "@/core/components/canvas/topbar/dark-mode";
 import { UndoRedo } from "@/core/components/canvas/topbar/undo-redo";
 import { useBuilderProp } from "@/core/hooks";
+import { useEditorMode } from "@/core/hooks/use-editor-mode";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import {
   DropdownMenu,
@@ -23,16 +24,22 @@ const CanvasTopBar: React.FC = () => {
   const dataBindingEnabled = useBuilderProp("flags.dataBinding", true);
   const [dataBindingActive, setDataBindingActive] = useAtom(dataBindingActiveAtom);
   const { t } = useTranslation();
+  const { mode, setMode } = useEditorMode();
+  const isPreview = mode === "preview";
   const showDarkModeToggle = darkModeEnabled;
-  const showDataBindingToggle = dataBindingEnabled;
+  const showDataBindingToggle = dataBindingEnabled && !isPreview;
 
   return (
     <div className="flex h-10 items-center justify-between border-b border-border bg-background/70 px-2 shadow-xl">
       <div className="flex h-full space-x-2">{showDarkModeToggle ? <DarkMode /> : null}</div>
       <div className="flex h-full items-center space-x-2">
         <Breakpoints canvas openDelay={400} />
-        <Separator orientation="vertical" />
-        <UndoRedo />
+        {!isPreview && (
+          <>
+            <Separator orientation="vertical" />
+            <UndoRedo />
+          </>
+        )}
       </div>
       <div className="flex h-full items-center">
         {showDataBindingToggle ? (
@@ -51,7 +58,13 @@ const CanvasTopBar: React.FC = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         ) : null}
-        <ClearCanvas />
+        {!isPreview ? (
+          <ClearCanvas />
+        ) : (
+          <Button size="sm" onClick={() => setMode("edit")} className="h-7">
+            Close preview
+          </Button>
+        )}
       </div>
     </div>
   );

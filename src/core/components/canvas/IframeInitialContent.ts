@@ -24,7 +24,6 @@ export const IframeInitialContent: string = `<!doctype html>
       .aspect-video{aspect-ratio: 16/9;}
       .dragging [data-dnd="leaf"] { pointer-events: none; } .dragging [data-dnd="leaf"] * { pointer-events: none; }
       .dragging [data-dnd="ignore"], .dragging [data-dnd="ignore"] * { pointer-events: none; }
-      a{ pointer-events: none !important; }
       [contenteditable="true"], [contenteditable="true"] * { cursor: text !important; }
       [contenteditable="true"] {
           outline: none;

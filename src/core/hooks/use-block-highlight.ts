@@ -1,16 +1,19 @@
 import { canvasIframeAtom } from "@/core/atoms/ui";
 import { useAtom } from "jotai";
 import { useCallback, useMemo } from "react";
+import { useEditorMode } from "./use-editor-mode";
 
 //module-level variable to track the last highlighted block
 let lastHighlighted: HTMLElement | null = null;
 
 export const useBlockHighlight = () => {
+  const { mode } = useEditorMode();
   const [iframe] = useAtom<HTMLIFrameElement>(canvasIframeAtom);
   const innerDoc = useMemo(() => iframe?.contentDocument || iframe?.contentWindow?.document, [iframe]);
+
   const highlightBlock = useCallback(
     (elementOrID: HTMLElement | string) => {
-      if (!innerDoc) return;
+      if (!innerDoc || mode !== "edit") return;
       if (lastHighlighted) {
         // Remove highlight from previous block
         lastHighlighted.removeAttribute("data-highlighted");

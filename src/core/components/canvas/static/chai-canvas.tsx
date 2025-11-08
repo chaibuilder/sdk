@@ -1,5 +1,6 @@
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useBlockHighlight, useInlineEditing } from "@/core/hooks";
+import { useEditorMode } from "@/core/hooks/use-editor-mode";
 import { pubsub } from "@/core/pubsub";
 import { useThrottledCallback } from "@react-hookz/web";
 import React, { useCallback, useRef } from "react";
@@ -120,18 +121,19 @@ const useHandleCanvasClick = () => {
 };
 
 const useHandleMouseMove = () => {
+  const { mode } = useEditorMode();
   const { editingBlockId } = useInlineEditing();
   const { highlightBlock } = useBlockHighlight();
 
   return useThrottledCallback(
     (e: any) => {
-      if (editingBlockId) return;
+      if (editingBlockId || mode !== "edit") return;
       const chaiBlock = getTargetedBlock(e.target);
       if (chaiBlock) {
         highlightBlock(chaiBlock);
       }
     },
-    [editingBlockId, highlightBlock],
+    [editingBlockId, highlightBlock, mode],
     100,
   );
 };
