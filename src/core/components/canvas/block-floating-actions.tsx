@@ -24,6 +24,7 @@ import { useAtom } from "jotai";
 import { first, get, isEmpty, pick } from "lodash-es";
 import { useEffect, useState } from "react";
 import { AiIcon } from "../ai/ai-icon";
+import { GotoSettingsIcon } from "./goto-settings-icon";
 import { getElementByDataBlockId } from "./static/chai-canvas";
 
 /**
@@ -192,6 +193,12 @@ const BlockFloatingSelector = ({ block, selectedBlockElement }: BlockActionProps
             <AiIcon
               className="h-4 w-4 rounded hover:bg-white hover:text-blue-500"
               onClick={() => setActivePanel("chai-chat-panel")}
+            />
+          )}
+          {hasPermission(PERMISSIONS.EDIT_BLOCK) && (
+            <GotoSettingsIcon
+              blockId={block?._id}
+              className="h-4 w-4 rounded p-px hover:bg-white hover:text-blue-500"
             />
           )}
           <AddBlockDropdown block={block}>
