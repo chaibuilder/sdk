@@ -23,7 +23,14 @@ import { useTranslation } from "react-i18next";
 
 const CORE_GROUPS = ["basic", "typography", "media", "layout", "form", "advanced", "other"];
 
-export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols = "grid-cols-4", disableBlockGroupsSidebar}: any) => {
+export const ChaiBuilderBlocks = ({
+  groups,
+  blocks,
+  parentId,
+  position,
+  gridCols = "grid-cols-4",
+  disableBlockGroupsSidebar,
+}: any) => {
   const { t } = useTranslation();
   const [allBlocks] = useBlocksStore();
   const [searchTerm, setSearchTerm] = useState("");
@@ -146,7 +153,7 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
 
       <div className="sticky top-10 flex h-[calc(100%-48px)] overflow-hidden">
         {/* Sidebar for groups */}
-        {!disableBlockGroupsSidebar && sortedGroups.length > 0 && (
+        {/* {!disableBlockGroupsSidebar && sortedGroups.length > 0 && (
           <div className="w-1/4 min-w-[120px] border-r border-border">
             <ScrollArea className="h-full">
               <div className="space-y-1 p-2">
@@ -179,7 +186,7 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
               </div>
             </ScrollArea>
           </div>
-        )}
+        )} */}
 
         {/* Main content area */}
         <div

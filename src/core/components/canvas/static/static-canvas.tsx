@@ -16,6 +16,7 @@ import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
 import { isEmpty } from "lodash-es";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Provider } from "react-wrap-balancer";
+import { useDragAndDrop } from "../dnd/use-drag-and-drop";
 import { CanvasEventsWatcher } from "./canvas-events-watcher";
 
 const StaticCanvas = () => {
@@ -28,6 +29,7 @@ const StaticCanvas = () => {
   const [, setCanvasIframe] = useCanvasIframe();
   const loadingCanvas = useBuilderProp("loading", false);
   const htmlDir = useBuilderProp("htmlDir", "ltr");
+  const { onDragOver, onDrop } = useDragAndDrop();
 
   const setNewWidth = useCallback(
     (newWidth: number) => {
@@ -53,6 +55,8 @@ const StaticCanvas = () => {
       <div
         onMouseLeave={() => setTimeout(() => highlight(""), 300)}
         className="relative mx-auto h-full w-full overflow-hidden"
+        onDragOver={onDragOver}
+        onDrop={onDrop}
         ref={wrapperRef}>
         {/*// @ts-ignore*/}
         <ChaiFrame
