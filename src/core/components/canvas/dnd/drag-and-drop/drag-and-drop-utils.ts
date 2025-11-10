@@ -482,6 +482,41 @@ export function detectDropZone(
   const scrollTop = iframeDoc.defaultView?.scrollY || 0;
   const scrollLeft = iframeDoc.defaultView?.scrollX || 0;
 
+  // Special handling for canvas (root container) with existing children
+  // Position placeholder after the last child instead of at canvas bottom
+  if (targetBlockId === "canvas" && hasChildBlocks(targetElement)) {
+    const children = getChildBlocks(targetElement);
+    const lastChild = children[children.length - 1];
+    
+    if (lastChild) {
+      const lastChildRect = lastChild.getBoundingClientRect();
+      const canvasRect = targetElement.getBoundingClientRect();
+      const canvasStyle = window.getComputedStyle(targetElement);
+      const canvasPaddingLeft = parseFloat(canvasStyle.paddingLeft) || 0;
+      const canvasPaddingRight = parseFloat(canvasStyle.paddingRight) || 0;
+      
+      // Canvas is typically vertical, so show horizontal placeholder after last child
+      const fullWidth = canvasRect.width - canvasPaddingLeft - canvasPaddingRight;
+      const leftPosition = canvasRect.left + scrollLeft + canvasPaddingLeft;
+      
+      return {
+        position: "after",
+        placeholderOrientation: "horizontal",
+        rect: {
+          top: lastChildRect.bottom + scrollTop,
+          left: leftPosition,
+          width: fullWidth,
+          height: 4,
+        },
+        targetElement: lastChild,
+        targetBlockId: lastChild.getAttribute("data-block-id")!,
+        targetParentId: "canvas",
+        isEmpty: false,
+        confidence: 1.0,
+      };
+    }
+  }
+
   // Priority 1: Check for gap zones in the target (if it's a container and not a leaf block)
   if (canAcceptChild && !isTargetLeafBlock && hasChildBlocks(targetElement)) {
     const gapZone = detectGapZone(targetElement, pointerX, pointerY, targetOrientation);
