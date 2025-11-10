@@ -71,8 +71,10 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
         return `${fileName}.tsx`;
       case "html":
         return `${fileName}.html`;
-      case "tailwind":
+      case "tailwind-v3":
         return "tailwind.config.js";
+      case "tailwind-v4":
+        return "global.css";
     }
   };
 
@@ -83,8 +85,10 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
         return "javascript";
       case "html":
         return "HTML";
-      case "tailwind":
-        return "JSON";
+      case "tailwind-v3":
+        return "javascript";
+      case "tailwind-v4":
+        return "css";
     }
   };
 
@@ -94,17 +98,22 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
       let html = blocksHtmlForAi({ EXTRA_CORE_BLOCKS: ["Icon"] })
       
       const isTypeScript = tab === "ts";
-      const {
-        jsx: jsxCode,
-        html: htmlCode,
-        componentName,
-      } = await getExportedCoded({
-        selectedBlock,
-        html,
-        isTypeScript,
-      });
-      setExportContent({ html: htmlCode, jsx: jsxCode });
-      setFileName(componentName);
+      const isTailwindExport = tab === "tailwind-v3" || tab === "tailwind-v4";
+      if (!isTailwindExport) {
+        const {
+          jsx: jsxCode,
+          html: htmlCode,
+          componentName,
+        } = await getExportedCoded({
+          selectedBlock,
+          html,
+          isTypeScript,
+        });
+        setExportContent({ html: htmlCode, jsx: jsxCode });
+        setFileName(componentName);
+      } else {
+        setFileName(`tailwind.config.${tab === "tailwind-v4" ? "ts" : "js"}`);
+      }
       setShow(true);
     } catch (error) {
       const fallbackContent = `<div>Export failed. Close the modal and try again.</div>`;
@@ -149,20 +158,120 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
   );
 
   const tailwindConfig = useMemo(() => {
-    const theme = { extend: shadcnTheme() };
-    const extend = JSON.stringify(theme, null, 2);
-    return `{
-  // Your tailwind config ...
+    if (tab === "tailwind-v3") {
+      const theme = { extend: shadcnTheme() };
+      const extend = JSON.stringify(theme, null, 2);
+      return `export default {
+  // Your tailwind v3 config ...
 
   "theme": ${extend?.split("\n").join("\n  ")},
 }`;
-  }, []);
+    } else if (tab === "tailwind-v4") {
+      return `@import "tailwindcss";
 
-  return exportContent?.jsx?.length > 0 && show ? (
+/* Tailwind v4 CSS-based configuration */
+
+:root {
+  --background: oklch(0.9818 0.0054 95.0986);
+  --foreground: oklch(0.3438 0.0269 95.7226);
+  --card: oklch(0.9818 0.0054 95.0986);
+  --card-foreground: oklch(0.1908 0.0020 106.5859);
+  --popover: oklch(1.0000 0 0);
+  --popover-foreground: oklch(0.2671 0.0196 98.9390);
+  --primary: oklch(0.6171 0.1375 39.0427);
+  --primary-foreground: oklch(1.0000 0 0);
+  --secondary: oklch(0.9245 0.0138 92.9892);
+  --secondary-foreground: oklch(0.4334 0.0177 98.6048);
+  --muted: oklch(0.9341 0.0153 90.2390);
+  --muted-foreground: oklch(0.6059 0.0075 97.4233);
+  --accent: oklch(0.9245 0.0138 92.9892);
+  --accent-foreground: oklch(0.2671 0.0196 98.9390);
+  --destructive: oklch(0.6368 0.2078 25.3313);
+  --destructive-foreground: oklch(1.0000 0 0);
+  --border: oklch(0.8847 0.0069 97.3627);
+  --input: oklch(0.7621 0.0156 98.3528);
+  --ring: oklch(0.6171 0.1375 39.0427);
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: oklch(0.2679 0.0036 106.6427);
+  --foreground: oklch(0.8074 0.0142 93.0137);
+  --card: oklch(0.2679 0.0036 106.6427);
+  --card-foreground: oklch(0.9818 0.0054 95.0986);
+  --popover: oklch(0.3085 0.0035 106.6039);
+  --popover-foreground: oklch(0.9211 0.0040 106.4781);
+  --primary: oklch(0.6724 0.1308 38.7559);
+  --primary-foreground: oklch(1.0000 0 0);
+  --secondary: oklch(0.9818 0.0054 95.0986);
+  --secondary-foreground: oklch(0.3085 0.0035 106.6039);
+  --muted: oklch(0.2213 0.0038 106.7070);
+  --muted-foreground: oklch(0.7713 0.0169 99.0657);
+  --accent: oklch(0.2130 0.0078 95.4245);
+  --accent-foreground: oklch(0.9663 0.0080 98.8792);
+  --destructive: oklch(0.6368 0.2078 25.3313);
+  --destructive-foreground: oklch(1.0000 0 0);
+  --border: oklch(0.3618 0.0101 106.8928);
+  --input: oklch(0.4336 0.0113 100.2195);
+  --ring: oklch(0.6724 0.1308 38.7559);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+}
+
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}`;
+    }
+    return '';
+  }, [tab]);
+
+  return (tab === "tailwind-v3" || tab === "tailwind-v4" || exportContent?.jsx?.length > 0) && show ? (
     <CodeDisplay
       key={tab}
       onCopy={handleCopy}
-      code={tab === "tailwind" ? tailwindConfig : tab === "html" ? exportContent.html : exportContent.jsx}
+      code={tab === "tailwind-v3" || tab === "tailwind-v4" ? tailwindConfig : tab === "html" ? exportContent.html : exportContent.jsx}
       language={getLanguage()}
       downloadText={downloadText}
       onDownload={downloadExportContent}
@@ -202,7 +311,8 @@ export const ExportCodeModal = () => {
               <TabsTrigger value="js">Javascript</TabsTrigger>
               <TabsTrigger value="ts">Typescript</TabsTrigger>
               <TabsTrigger value="html">HTML</TabsTrigger>
-              <TabsTrigger value="tailwind">Tailwind config</TabsTrigger>
+              <TabsTrigger value="tailwind-v3">Tailwind v3</TabsTrigger>
+              <TabsTrigger value="tailwind-v4">Tailwind v4</TabsTrigger>
             </TabsList>
           </Tabs>
           <div />
