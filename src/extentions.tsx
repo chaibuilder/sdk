@@ -13,11 +13,10 @@ const TopBar = lazy(() => import("@/_demo/top-bar"));
 export const extendChaiBuilder = () => {
   registerCustomBlocks();
   registerChaiPreImportHTMLHook(async (html) => {
-    console.log(html);
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(html.replace(/bg-yellow-light-4/g, "bg-destructive"));
-      }, 4000);
+      }, 1000);
     });
   });
 

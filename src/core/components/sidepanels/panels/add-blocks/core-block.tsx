@@ -7,8 +7,7 @@ import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { BoxIcon } from "@radix-ui/react-icons";
 import { useFeature } from "flagged";
 import { useAtom } from "jotai";
-import { kebabCase } from "lodash";
-import { capitalize, has, isFunction, omit } from "lodash-es";
+import { capitalize, has, isFunction, kebabCase, omit } from "lodash-es";
 import { createElement } from "react";
 import { useTranslation } from "react-i18next";
 

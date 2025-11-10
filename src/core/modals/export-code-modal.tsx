@@ -3,7 +3,7 @@ import { useBlocksHtmlForAi, useSelectedBlock } from "@/core/hooks";
 import { usePubSub } from "@/core/hooks/use-pub-sub";
 import { shadcnTheme } from "@/tailwind/get-chai-builder-tailwind-config";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, Tabs, TabsList, TabsTrigger } from "@/ui";
-import { camelCase } from "lodash";
+import { camelCase } from "lodash-es";
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";

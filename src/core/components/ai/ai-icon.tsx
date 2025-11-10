@@ -1,4 +1,4 @@
-import { noop } from "lodash";
+import { noop } from "lodash-es";
 
 export const AiIcon = ({
   className = "h-full w-full",
