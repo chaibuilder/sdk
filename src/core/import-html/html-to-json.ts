@@ -5,7 +5,7 @@ import { getVideoURLFromHTML, hasVideoEmbed } from "@/core/import-html/import-vi
 import { ChaiBlock } from "@/types/chai-block";
 import { parse, stringify } from "himalaya";
 import {
-  capitalize,
+  camelCase, capitalize,
   compact,
   filter,
   find,
@@ -21,7 +21,7 @@ import {
   some,
   startCase,
   startsWith,
-  trim,
+  trim
 } from "lodash-es";
 
 type Node = {
@@ -375,6 +375,7 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
           block._id = value;
           return;
         }
+        const formattedKey = !startsWith(key, "_") ? camelCase(key) : key;
 
         // Handle #styles: prefix - convert to #styles:,
         let sanitizedValue = getSanitizedValue(value);
@@ -383,7 +384,7 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
         }
 
         // Add all other attributes to block props
-        block[key] = sanitizedValue;
+        block[formattedKey] = sanitizedValue;
       });
 
       // Process children if any
