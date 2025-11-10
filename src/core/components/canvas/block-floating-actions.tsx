@@ -4,6 +4,7 @@ import BlockController from "@/core/components/sidepanels/panels/add-blocks/bloc
 import { useFrame } from "@/core/frame/frame-context";
 import { canDeleteBlock, canDuplicateBlock } from "@/core/functions/block-helpers";
 import {
+  useBuilderProp,
   useDuplicateBlocks,
   useHighlightBlockId,
   useInlineEditing,
@@ -111,6 +112,7 @@ const BlockFloatingSelector = ({ block, selectedBlockElement }: BlockActionProps
   const { hasPermission } = usePermissions();
   const { editingBlockId } = useInlineEditing();
   const { document } = useFrame();
+  const gotoSettingsEnabled = useBuilderProp("flags.gotoSettings", false);
 
   // * Floating element position and size
   const { floatingStyles, refs, update } = useFloating({
@@ -195,7 +197,7 @@ const BlockFloatingSelector = ({ block, selectedBlockElement }: BlockActionProps
               onClick={() => setActivePanel("chai-chat-panel")}
             />
           )}
-          {hasPermission(PERMISSIONS.EDIT_BLOCK) && (
+          {gotoSettingsEnabled && (
             <GotoSettingsIcon
               blockId={block?._id}
               className="h-4 w-4 rounded p-px hover:bg-white hover:text-blue-500"
