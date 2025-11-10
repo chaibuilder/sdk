@@ -1,0 +1,88 @@
+/**
+ * ============================================================================
+ * USE BLOCK DRAG START HOOK
+ * ============================================================================
+ * 
+ * Hook that handles the start of a drag operation.
+ * Initializes drag state, sets up the dragged block data, and prepares
+ * the initial drop indicator for a smooth drag experience.
+ * 
+ * @module use-block-drag-start
+ */
+
+import { useBlockHighlight, useSelectedBlockIds } from "@/core/hooks";
+import { pubsub } from "@/core/pubsub";
+import { CHAI_BUILDER_EVENTS } from "@/core/events";
+import { ChaiBlock } from "@/types/common";
+import { useAtom } from "jotai";
+import { pick } from "lodash";
+import { DragEvent, useCallback } from "react";
+import { dragAndDropAtom, dropIndicatorAtom, setIsDragging } from "./use-drag-and-drop";
+
+/**
+ * @HOOK useBlockDragStart
+ * @description
+ * Handles the initialization of drag operations for blocks.
+ * 
+ * Features:
+ * - Stores dragged block data (type only for new blocks, full data for existing)
+ * - Clears current selection and highlights
+ * - Sets up invisible drag image for custom cursor
+ * - Initializes drop indicator with default canvas state
+ * - Publishes event to close add block panel
+ * 
+ * @returns Function to call on drag start event
+ * 
+ * @example
+ * const onDragStart = useBlockDragStart();
+ * <div onDragStart={(e) => onDragStart(e, block, true)} />
+ */
+export const useBlockDragStart = () => {
+  const [, setSelectedBlockIds] = useSelectedBlockIds();
+  const { clearHighlight } = useBlockHighlight();
+  const [, setDraggedBlock] = useAtom(dragAndDropAtom);
+  const [, setDropIndicator] = useAtom(dropIndicatorAtom);
+
+  return useCallback(
+    (e: DragEvent, _block: ChaiBlock, isAddNew: boolean = true) => {
+      // For new blocks, only store the type and blocks; for existing blocks, store the full block
+      const block = (isAddNew ? pick(_block, ["type", "blocks"]) : _block) as ChaiBlock;
+
+      // Store the dragged block in atom for access by other hooks
+      // @ts-expect-error - Jotai type inference issue with generic ChaiBlock type
+      setDraggedBlock(block);
+
+      // Set up drag data transfer (required for drag/drop API)
+      e.dataTransfer.setData("text/plain", JSON.stringify({ block }));
+      e.dataTransfer.setDragImage(new Image(), 0, 0); // Invisible drag image
+      e.dataTransfer.effectAllowed = "move";
+
+      // Clear any existing selection and highlights
+      setSelectedBlockIds([]);
+      clearHighlight();
+      
+      // Close the add block panel
+      pubsub.publish(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK);
+      
+      // Set global dragging flag
+      setIsDragging(true);
+
+      // Initialize with a default valid drop indicator (canvas root)
+      // This ensures there's always a valid drop position available
+      setDropIndicator({
+        isVisible: true,
+        isValid: true,
+        position: "inside",
+        placeholderOrientation: "horizontal",
+        isEmpty: true,
+        top: 0,
+        left: 0,
+        width: 0,
+        height: 0,
+        targetBlockId: "canvas",
+        targetParentId: null,
+      });
+    },
+    [setSelectedBlockIds, clearHighlight, setDraggedBlock, setDropIndicator],
+  );
+};

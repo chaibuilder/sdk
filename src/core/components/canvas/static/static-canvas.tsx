@@ -16,7 +16,7 @@ import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
 import { isEmpty } from "lodash-es";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Provider } from "react-wrap-balancer";
-import { useDragAndDrop } from "../dnd/use-drag-and-drop";
+import { useDragAndDrop, useDropIndicator } from "../dnd/drag-and-drop/hooks";
 import { CanvasEventsWatcher } from "./canvas-events-watcher";
 
 const StaticCanvas = () => {
@@ -30,6 +30,7 @@ const StaticCanvas = () => {
   const loadingCanvas = useBuilderProp("loading", false);
   const htmlDir = useBuilderProp("htmlDir", "ltr");
   const { onDragOver, onDrop } = useDragAndDrop();
+  const dropIndicator = useDropIndicator();
 
   const setNewWidth = useCallback(
     (newWidth: number) => {
@@ -82,10 +83,20 @@ const StaticCanvas = () => {
             </Canvas>
             <CanvasEventsWatcher />
           </Provider>
-          <div
-            id="placeholder"
-            className="pointer-events-none absolute z-[99999] max-w-full bg-green-500 transition-transform"
-          />
+          {dropIndicator.isVisible && (
+            <div
+              id="placeholder"
+              className={`pointer-events-none absolute z-[99999] max-w-full transition-all duration-150 ${
+                dropIndicator.isEmpty ? "border-2 border-dashed border-green-500 bg-green-500/10" : "bg-green-500"
+              }`}
+              style={{
+                top: dropIndicator.top,
+                left: dropIndicator.left,
+                width: dropIndicator.width,
+                height: dropIndicator.height,
+              }}
+            />
+          )}
         </ChaiFrame>
       </div>
     </ResizableCanvasWrapper>
