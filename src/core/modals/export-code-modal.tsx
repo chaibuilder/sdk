@@ -92,7 +92,6 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
     try {
       setShow(false);
       let html = blocksHtmlForAi({ EXTRA_CORE_BLOCKS: ["Icon"] })
-      html = html.replace('data-highlighted="true"', '');
       
       const isTypeScript = tab === "ts";
       const {
