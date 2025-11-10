@@ -28,6 +28,8 @@ export interface BreakpointCardProps extends BreakpointItemType {
   onClick: Function;
   openDelay?: number;
   tooltip?: boolean;
+  buttonClass?: string;
+  activeButtonClass?: string;
 }
 
 const TabletIcon = ({ landscape = false, className = "" }) => (
@@ -98,6 +100,8 @@ const BreakpointCard = ({
   width,
   icon,
   onClick,
+  buttonClass = "",
+  activeButtonClass = "",
 }: BreakpointCardProps) => {
   const { t } = useTranslation();
 
@@ -119,7 +123,7 @@ const BreakpointCard = ({
         <Button
           onClick={() => onClick(width)}
           size="sm"
-          className="h-7 w-7 rounded-md p-1"
+          className={cn("h-7 w-7 rounded-md p-1", breakpoint === currentBreakpoint ? activeButtonClass : buttonClass)}
           variant={breakpoint === currentBreakpoint ? "outline" : "ghost"}>
           {icon}
         </Button>
@@ -140,10 +144,14 @@ export const Breakpoints = ({
   openDelay = 400,
   canvas = false,
   tooltip = true,
+  buttonClass = "",
+  activeButtonClass = "",
 }: {
   openDelay?: number;
   canvas?: boolean;
   tooltip?: boolean;
+  buttonClass?: string;
+  activeButtonClass?: string;
 }) => {
   const [currentWidth, , setNewWidth] = useScreenSizeWidth();
   const [canvasDisplayWidth, setCanvasDisplayWidth] = useCanvasDisplayWidth();
@@ -205,6 +213,8 @@ export const Breakpoints = ({
               onClick={handleCanvasWidthChange}
               key={bp.breakpoint}
               currentBreakpoint={breakpoint}
+              buttonClass={buttonClass}
+              activeButtonClass={activeButtonClass}
             />
           ),
         )}

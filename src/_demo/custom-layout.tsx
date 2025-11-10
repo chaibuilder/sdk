@@ -77,7 +77,7 @@ export default function CustomLayout() {
         <div className="flex h-16 items-center justify-between bg-neutral-900 px-4 text-white">
           <h1 className="ml-4 font-bold">Custom Layout Example</h1>
           <div className={`flex items-center space-x-2`}>
-            <ChaiScreenSizes />
+            <ChaiScreenSizes buttonClass={"text-yellow-500 hover:text-yellow-500"} activeButtonClass={"text-green-500 hover:text-green-500"} />
             |
             <ChaiUndoRedo />
           </div>
