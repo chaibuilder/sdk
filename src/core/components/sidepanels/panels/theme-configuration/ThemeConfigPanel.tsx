@@ -223,7 +223,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
         <div className={cn("no-scrollbar h-full w-full overflow-y-auto text-center", className)}>
           <div className="mt-10 h-full items-center justify-center gap-2 text-muted-foreground">
             <p className="text-sm">
-              You don't have permission to edit the theme. Please contact your administrator to get access.
+              {t("You don't have permission to edit the theme. Please contact your administrator to get access.")}
             </p>
           </div>
         </div>
@@ -252,7 +252,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
               <div className="w-[70%]">
                 <Select value={selectedPreset} onValueChange={setSelectedPreset}>
                   <SelectTrigger className="h-9 w-full text-sm">
-                    <SelectValue placeholder="Select preset" />
+                    <SelectValue placeholder={t("Select preset")} />
                   </SelectTrigger>
                   <SelectContent>
                     {Array.isArray(themePresets) &&
@@ -283,7 +283,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
           {/* Fonts Section */}
           <div className="flex items-center gap-2">
             <TextIcon className="h-3 w-3 text-gray-600" />
-            <span className="text-xs font-medium text-gray-700">Typography</span>
+            <span className="text-xs font-medium text-gray-700">{t("Typography")}</span>
           </div>
           {chaiThemeOptions?.fontFamily && (
             <div className="space-y-2">
@@ -306,7 +306,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <CornerTopRightIcon className="h-3 w-3 text-gray-600" />
-                  <span className="text-xs font-medium text-gray-700">Border Radius</span>
+                  <span className="text-xs font-medium text-gray-700">{t("Border Radius")}</span>
                 </div>
                 <Badge variant="secondary" className="text-xs">
                   {themeValues.borderRadius}
@@ -326,7 +326,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <MixerHorizontalIcon className="h-3 w-3 text-gray-600" />
-                  <span className="text-xs font-medium text-gray-700">Colors</span>
+                  <span className="text-xs font-medium text-gray-700">{t("Colors")}</span>
                 </div>
                 {darkModeEnabled && (
                   <div className="flex items-center gap-2">
@@ -344,7 +344,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
               <div className="space-y-2">{chaiThemeOptions.colors.map((group) => renderColorGroup(group))}</div>
             </div>
           )}
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<div>{t("Loading...")}</div>}>
             {isImportModalOpen && importThemeEnabled && (
               <LazyCssImportModal
                 open={isImportModalOpen}

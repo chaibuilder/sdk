@@ -48,7 +48,7 @@ export const CssImportModal: React.FC<CssImportModalProps> = ({ open, onOpenChan
       // Basic validation - check if the CSS contains some expected variables
       const validation = validateCssInput(cssText);
       if (!validation.isValid) {
-        setError(validation.error || "Invalid CSS format");
+        setError(validation.error || t("Invalid CSS format"));
         setTimeout(() => {
           setError(null);
         }, 5000);
@@ -62,7 +62,7 @@ export const CssImportModal: React.FC<CssImportModalProps> = ({ open, onOpenChan
       // Validate the parsed theme
       if (!validateChaiThemeValues(parsedTheme)) {
         setError(
-          "The CSS doesn't contain enough theme information. Please ensure it includes at least background, foreground, primary, and primary-foreground colors.",
+          t("The CSS doesn't contain enough theme information. Please ensure it includes at least background, foreground, primary, and primary-foreground colors."),
         );
         setTimeout(() => {
           setError(null);
@@ -78,7 +78,7 @@ export const CssImportModal: React.FC<CssImportModalProps> = ({ open, onOpenChan
       onOpenChange(false);
     } catch (err) {
       console.error("Error importing CSS:", err);
-      setError("Failed to parse CSS. Please check your syntax and try again.");
+      setError(t("Failed to parse CSS. Please check your syntax and try again."));
       setTimeout(() => {
         setError(null);
       }, 5000);
