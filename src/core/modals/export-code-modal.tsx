@@ -19,8 +19,9 @@ async function convertHtmlToJsx(html: string): Promise<{ jsx: string; html: stri
   try {
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = html;
-    const jsx = domToJsx(tempDiv?.children[0] as Element);
-    return { jsx, html: tempDiv?.children[0].outerHTML };
+    const children = Array.from(tempDiv.children) as Element[];
+    const jsx = domToJsx(children.length === 1 ? children[0] : children);
+    return { jsx, html: tempDiv.innerHTML };
   } catch (error) {
     return { html, jsx: html };
   }
@@ -90,8 +91,9 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
   const handleExportEvent = useCallback(async () => {
     try {
       setShow(false);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      const html = blocksHtmlForAi({ EXTRA_CORE_BLOCKS: ["Icon"] });
+      let html = blocksHtmlForAi({ EXTRA_CORE_BLOCKS: ["Icon"] })
+      html = html.replace('data-highlighted="true"', '');
+      
       const isTypeScript = tab === "ts";
       const {
         jsx: jsxCode,
