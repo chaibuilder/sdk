@@ -295,5 +295,6 @@ export interface ChaiBuilderEditorProps {
     dataBinding?: boolean;
     importHtml?: boolean;
     importTheme?: boolean;
+    gotoSettings?: boolean;
   };
 }

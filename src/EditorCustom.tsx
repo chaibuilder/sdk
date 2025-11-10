@@ -4,12 +4,17 @@ import PreviewWeb from "@/_demo/preview/web-preview";
 import { ChaiBlock, ChaiBuilderEditor } from "@/core/main";
 import { loadWebBlocks } from "@/web-blocks";
 import { useAtom } from "jotai";
+import "@/index.css";
+
 loadWebBlocks();
 
 function ChaiBuilderCustom() {
   const [blocks] = useAtom(lsBlocksAtom);
   return (
     <ChaiBuilderEditor
+      flags={{
+        gotoSettings: true,
+      }}
       locale={"pt-BR"}
       // translations={{ "pt-BR": ptBR, es: es }}
       layout={CustomLayout}
