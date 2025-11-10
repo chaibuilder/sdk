@@ -11,13 +11,13 @@
  */
 
 import { canAcceptChildBlock } from "@/core/functions/block-helpers";
-import { useBlockHighlight } from "@/core/hooks";
 import { useCanvasIframe } from "@/core/hooks/use-canvas-iframe";
 import { useAtom } from "jotai";
 import { throttle } from "lodash-es";
 import { DragEvent, useCallback } from "react";
 import { getOrientation } from "../../getOrientation";
 import { detectDropZone } from "../drag-and-drop-utils";
+import { useDragParentHighlight } from "./use-drag-parent-highlight";
 import { dragAndDropAtom, dropIndicatorAtom, isDragging } from "./use-drag-and-drop";
 
 // Leaf block types that cannot accept children
@@ -66,7 +66,7 @@ export const useBlockDragOver = () => {
   const [draggedBlock] = useAtom(dragAndDropAtom);
   const [iframe] = useCanvasIframe();
   const [, setDropIndicator] = useAtom(dropIndicatorAtom);
-  const { clearHighlight, highlightBlock } = useBlockHighlight();
+  const { clearParentHighlight, highlightParent } = useDragParentHighlight();
 
   // Get the document from the iframe element
   const iframeDoc = (iframe as HTMLIFrameElement)?.contentDocument;
@@ -80,7 +80,7 @@ export const useBlockDragOver = () => {
         return;
       }
 
-      clearHighlight();
+      clearParentHighlight();
 
       const targetDetail = getTargetDetail(e);
       const { element, targetBlockId, targetParentId } = targetDetail;
@@ -138,7 +138,7 @@ export const useBlockDragOver = () => {
         return;
       }
 
-      highlightBlock(dropZone.targetParentId);
+      highlightParent(dropZone.targetParentId);
 
       // Determine the final targetParentId to use
       // If dropZone has a targetParentId, use it; otherwise fall back to the one from getTargetDetail
@@ -163,7 +163,7 @@ export const useBlockDragOver = () => {
       removeDropTargetAttributes(iframeDoc);
       dropZone.targetElement.setAttribute("data-drop-target", "true");
     }, 300),
-    [iframeDoc, draggedBlock, setDropIndicator, clearHighlight, highlightBlock],
+    [iframeDoc, draggedBlock, setDropIndicator, clearParentHighlight, highlightParent],
   );
 
   return useCallback(

@@ -13,6 +13,7 @@
 import { useCanvasIframe } from "@/core/hooks/use-canvas-iframe";
 import { useAtom } from "jotai";
 import { useCallback } from "react";
+import { useDragParentHighlight } from "./use-drag-parent-highlight";
 import { dragAndDropAtom, dropIndicatorAtom, setIsDragging } from "./use-drag-and-drop";
 
 /**
@@ -41,6 +42,7 @@ export const useBlockDragEnd = () => {
   const [, setDraggedBlock] = useAtom(dragAndDropAtom);
   const [, setDropIndicator] = useAtom(dropIndicatorAtom);
   const [iframe] = useCanvasIframe();
+  const { clearParentHighlight } = useDragParentHighlight();
 
   // Get the document from the iframe element
   const iframeDoc = (iframe as HTMLIFrameElement)?.contentDocument;
@@ -65,10 +67,13 @@ export const useBlockDragEnd = () => {
 
     // Remove visual feedback attributes from all elements
     removeDropTargetAttributes(iframeDoc);
+    
+    // Clear parent highlight from drag operation
+    clearParentHighlight();
 
     // Reset global dragging flag
     setIsDragging(false);
-  }, [setDraggedBlock, setDropIndicator, iframeDoc]);
+  }, [setDraggedBlock, setDropIndicator, iframeDoc, clearParentHighlight]);
 };
 
 /**

@@ -26,6 +26,7 @@ export { useBlockDragEnd } from "./use-block-drag-end";
 export { useBlockDragOver } from "./use-block-drag-over";
 export { useBlockDragStart } from "./use-block-drag-start";
 export { useBlockDrop } from "./use-block-drop";
+export { useDragParentHighlight } from "./use-drag-parent-highlight";
 
 // Export atoms and state
 export { dragAndDropAtom, dropIndicatorAtom, isDragging, setIsDragging } from "./use-drag-and-drop";
