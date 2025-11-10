@@ -9,6 +9,7 @@ import ThemeConfigPanel from "@/core/components/sidepanels/panels/theme-configur
 import { registerChaiSidebarPanel, useChaiSidebarPanels } from "@/core/extensions/sidebar-panels";
 import { useTopBarComponent } from "@/core/extensions/top-bar";
 import { useBuilderProp, useSidebarActivePanel } from "@/core/hooks";
+import { useEditorMode } from "@/core/hooks/use-editor-mode";
 import { useRightPanel } from "@/core/hooks/use-theme";
 import { isDevelopment } from "@/core/import-html/general";
 import { Button } from "@/ui/shadcn/components/ui/button";
@@ -96,6 +97,8 @@ const RootLayout: ComponentType = () => {
   const topPanels = useChaiSidebarPanels("top");
   const bottomPanels = useChaiSidebarPanels("bottom");
   const reversedBottomPanels = reverse([...(bottomPanels ?? [])]);
+  const { mode } = useEditorMode();
+  const isPreview = mode === "preview";
 
   /**
    * Prevents the context menu from appearing in production mode.
@@ -180,121 +183,131 @@ const RootLayout: ComponentType = () => {
         <div
           onContextMenu={preventContextMenu}
           className="flex h-full max-h-full flex-col bg-background text-foreground">
-          <div className="flex h-[50px] w-screen items-center border-b border-border">
-            <Suspense>
-              <TopBar />
-            </Suspense>
-          </div>
-          <main className="relative flex h-[calc(100vh-56px)] max-w-full flex-1 flex-row">
-            <div id="sidebar" className="flex w-12 flex-col items-center justify-between border-r border-border py-2">
-              <div className="flex flex-col gap-y-1">
-                {totalTopPanels.map((item, index) => (
-                  <Tooltip key={"button-top-" + index}>
-                    <TooltipTrigger asChild>
-                      {createElement(get(item, "button", NoopComponent), {
-                        position: "top",
-                        panelId: item.id,
-                        isActive: activePanel === item.id,
-                        show: () => showPanel(item.id),
-                      })}
-                    </TooltipTrigger>
-                    <TooltipContent side={"right"}>
-                      <p>{t(item.label)}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                ))}
-              </div>
-              <div className="flex flex-col space-y-1"></div>
-              <div className="flex flex-col">
-                {reversedBottomPanels?.map((item, index) => {
-                  return (
-                    <Tooltip key={"button-bottom-" + index}>
-                      <TooltipTrigger asChild>
-                        {createElement(get(item, "button", NoopComponent), {
-                          position: "bottom",
-                          panelId: item.id,
-                          isActive: activePanel === item.id,
-                          show: () => showPanel(item.id),
-                        })}
-                      </TooltipTrigger>
-                      <TooltipContent side={"right"}>
-                        <p>{t(item.label)}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  );
-                })}
-              </div>
+          {!isPreview && (
+            <div className="flex h-[50px] w-screen items-center border-b border-border">
+              <Suspense>
+                <TopBar />
+              </Suspense>
             </div>
-            {/* Side Panel */}
-            <motion.div
-              id="left-panel"
-              className="h-full max-h-full border-r border-border"
-              initial={{ width: leftPanelWidth }}
-              animate={{ width: leftPanelWidth }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}>
-              {activePanel !== null && get(activePanelItem, "view", "standard") === "standard" && (
-                <div className="no-scrollbar flex h-full flex-col overflow-hidden px-3 py-2">
-                  <div
-                    className={`absolute top-2 flex h-10 items-center space-x-1 py-2 text-base font-bold ${get(activePanelItem, "isInternal", false) ? "" : "w-64"}`}>
-                    <span>{t(get(activePanelItem, "label", ""))}</span>
+          )}
+          <main className="relative flex h-[calc(100vh-56px)] max-w-full flex-1 flex-row">
+            {!isPreview && (
+              <>
+                <div
+                  id="sidebar"
+                  className="flex w-12 flex-col items-center justify-between border-r border-border py-2">
+                  <div className="flex flex-col gap-y-1">
+                    {totalTopPanels.map((item, index) => (
+                      <Tooltip key={"button-top-" + index}>
+                        <TooltipTrigger asChild>
+                          {createElement(get(item, "button", NoopComponent), {
+                            position: "top",
+                            panelId: item.id,
+                            isActive: activePanel === item.id,
+                            show: () => showPanel(item.id),
+                          })}
+                        </TooltipTrigger>
+                        <TooltipContent side={"right"}>
+                          <p>{t(item.label)}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    ))}
                   </div>
-                  <div className="no-scrollbar h-full max-h-full overflow-y-auto pt-10">
-                    <Suspense fallback={<div>Loading...</div>}>
-                      {React.createElement(get(activePanelItem, "panel", NoopComponent), {})}
-                    </Suspense>
+                  <div className="flex flex-col space-y-1"></div>
+                  <div className="flex flex-col">
+                    {reversedBottomPanels?.map((item, index) => {
+                      return (
+                        <Tooltip key={"button-bottom-" + index}>
+                          <TooltipTrigger asChild>
+                            {createElement(get(item, "button", NoopComponent), {
+                              position: "bottom",
+                              panelId: item.id,
+                              isActive: activePanel === item.id,
+                              show: () => showPanel(item.id),
+                            })}
+                          </TooltipTrigger>
+                          <TooltipContent side={"right"}>
+                            <p>{t(item.label)}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      );
+                    })}
                   </div>
                 </div>
-              )}
-            </motion.div>
+                {/* Side Panel */}
+                <motion.div
+                  id="left-panel"
+                  className="h-full max-h-full border-r border-border"
+                  initial={{ width: leftPanelWidth }}
+                  animate={{ width: leftPanelWidth }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}>
+                  {activePanel !== null && get(activePanelItem, "view", "standard") === "standard" && (
+                    <div className="no-scrollbar flex h-full flex-col overflow-hidden px-3 py-2">
+                      <div
+                        className={`absolute top-2 flex h-10 items-center space-x-1 py-2 text-base font-bold ${get(activePanelItem, "isInternal", false) ? "" : "w-64"}`}>
+                        <span>{t(get(activePanelItem, "label", ""))}</span>
+                      </div>
+                      <div className="no-scrollbar h-full max-h-full overflow-y-auto pt-10">
+                        <Suspense fallback={<div>Loading...</div>}>
+                          {React.createElement(get(activePanelItem, "panel", NoopComponent), {})}
+                        </Suspense>
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
+              </>
+            )}
             <div id="canvas-container" className="flex h-full max-h-full flex-1 flex-col bg-slate-800/20">
               <CanvasTopBar />
               <Suspense>
                 <CanvasArea />
               </Suspense>
             </div>
-            <motion.div
-              id="right-panel"
-              className="h-full max-h-full border-l border-border"
-              initial={{ width: activePanel === "ai" ? 0 : DEFAULT_PANEL_WIDTH }}
-              animate={{ width: activePanel === "ai" ? 0 : DEFAULT_PANEL_WIDTH }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}>
-              <div className="no-scrollbar overflow h-full max-h-full overflow-hidden">
-                <div className="flex h-full max-h-full flex-col overflow-hidden p-3">
-                  <h2 className="-mt-1 flex items-center space-x-1 text-base font-bold">
-                    <div className="flex grow items-center gap-2">
-                      <div className="flex w-full items-center justify-between gap-2">
-                        {panel === "ai" ? (
-                          <>
-                            <div className="flex items-center gap-2">
-                              <LightningBoltIcon className="rtl:ml-2" /> {t("AI Assistant")}
+            {!isPreview && (
+              <motion.div
+                id="right-panel"
+                className="h-full max-h-full border-l border-border"
+                initial={{ width: activePanel === "ai" ? 0 : DEFAULT_PANEL_WIDTH }}
+                animate={{ width: activePanel === "ai" ? 0 : DEFAULT_PANEL_WIDTH }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}>
+                <div className="no-scrollbar overflow h-full max-h-full overflow-hidden">
+                  <div className="flex h-full max-h-full flex-col overflow-hidden p-3">
+                    <h2 className="-mt-1 flex items-center space-x-1 text-base font-bold">
+                      <div className="flex grow items-center gap-2">
+                        <div className="flex w-full items-center justify-between gap-2">
+                          {panel === "ai" ? (
+                            <>
+                              <div className="flex items-center gap-2">
+                                <LightningBoltIcon className="rtl:ml-2" /> {t("AI Assistant")}
+                              </div>
+                            </>
+                          ) : panel === "theme" ? (
+                            <div className="flex w-full items-center justify-between gap-2">
+                              <span className="flex items-center gap-2">
+                                <MixerHorizontalIcon className="h-4 w-4 text-gray-600" />
+                                {t("Theme Settings")}
+                              </span>
+                              <Button
+                                onClick={() => setRightPanel("block")}
+                                variant="ghost"
+                                size="icon"
+                                className="text-xs">
+                                <Cross1Icon className="h-4 w-4 rtl:ml-2" />
+                              </Button>
                             </div>
-                          </>
-                        ) : panel === "theme" ? (
-                          <div className="flex w-full items-center justify-between gap-2">
-                            <span className="flex items-center gap-2">
-                              <MixerHorizontalIcon className="h-4 w-4 text-gray-600" />
-                              {t("Theme Settings")}
-                            </span>
-                            <Button
-                              onClick={() => setRightPanel("block")}
-                              variant="ghost"
-                              size="icon"
-                              className="text-xs">
-                              <Cross1Icon className="h-4 w-4 rtl:ml-2" />
-                            </Button>
-                          </div>
-                        ) : null}
+                          ) : null}
+                        </div>
                       </div>
+                    </h2>
+                    <div className="flex h-full max-h-full w-full">
+                      <Suspense fallback={<div>Loading...</div>}>
+                        {panel === "ai" ? <AskAI /> : panel === "theme" ? <ThemeConfigPanel /> : <SettingsPanel />}
+                      </Suspense>
                     </div>
-                  </h2>
-                  <div className="flex h-full max-h-full w-full">
-                    <Suspense fallback={<div>Loading...</div>}>
-                      {panel === "ai" ? <AskAI /> : panel === "theme" ? <ThemeConfigPanel /> : <SettingsPanel />}
-                    </Suspense>
                   </div>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            )}
           </main>
         </div>
         <AddBlocksDialog />

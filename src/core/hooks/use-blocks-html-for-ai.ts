@@ -5,6 +5,7 @@ import { useCallback } from "react";
 import { ChaiBlock } from "../main";
 import { useBlocksStore } from "./hooks";
 import { useCanvasIframe } from "./use-canvas-iframe";
+import { useEditorMode } from "./use-editor-mode";
 import { useSelectedBlock } from "./use-selected-blockIds";
 
 export type HimalayaNode = {
@@ -205,10 +206,12 @@ export const useBlocksHtmlForAi = () => {
   const selectedBlock = useSelectedBlock();
   const [currentBlocks] = useBlocksStore();
   const [iframeDocument] = useCanvasIframe();
+  const { mode } = useEditorMode();
   return useCallback(
     (options?: Options) => {
       if (!iframeDocument) return "";
-      const id = selectedBlock?._id ? `[data-block-id="${selectedBlock._id}"]` : "#canvas";
+      const id =
+        mode === "preview" ? "#canvas" : selectedBlock?._id ? `[data-block-id="${selectedBlock._id}"]` : "#canvas";
       const html = (iframeDocument as HTMLIFrameElement).contentDocument?.querySelector(id)?.[
         id === "#canvas" ? "innerHTML" : "outerHTML"
       ];

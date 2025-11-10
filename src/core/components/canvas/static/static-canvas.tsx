@@ -7,16 +7,17 @@ import { AddBlockAtBottom } from "@/core/components/canvas/static/add-block-at-b
 import { Canvas } from "@/core/components/canvas/static/chai-canvas";
 import { HeadTags } from "@/core/components/canvas/static/head-tags";
 import { ResizableCanvasWrapper } from "@/core/components/canvas/static/resizable-canvas-wrapper";
-import { StaticBlocksRenderer } from "@/core/components/canvas/static/static-blocks-renderer";
 import { useCanvasScale } from "@/core/components/canvas/static/use-canvas-scale";
 import { ChaiFrame } from "@/core/frame";
 import { useBuilderProp, useCanvasDisplayWidth, useHighlightBlockId } from "@/core/hooks";
 import { useCanvasIframe } from "@/core/hooks/use-canvas-iframe";
+import { useEditorMode } from "@/core/hooks/use-editor-mode";
 import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
 import { isEmpty } from "lodash-es";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Provider } from "react-wrap-balancer";
 import { CanvasEventsWatcher } from "./canvas-events-watcher";
+import { StaticBlocksRenderer } from "./static-blocks-renderer";
 
 const StaticCanvas = () => {
   const [width] = useCanvasDisplayWidth();
@@ -28,6 +29,8 @@ const StaticCanvas = () => {
   const [, setCanvasIframe] = useCanvasIframe();
   const loadingCanvas = useBuilderProp("loading", false);
   const htmlDir = useBuilderProp("htmlDir", "ltr");
+  const { mode } = useEditorMode();
+  const isEdit = mode === "edit";
 
   const setNewWidth = useCallback(
     (newWidth: number) => {
@@ -62,8 +65,12 @@ const StaticCanvas = () => {
           style={{ ...scale, ...(isEmpty(scale) ? { width: `${width}px` } : {}) }}
           className="relative mx-auto box-content h-full w-full max-w-full shadow-lg transition-all duration-300 ease-linear"
           initialContent={iframeContent}>
-          <KeyboardHandler />
-          <BlockSelectionHighlighter />
+          {isEdit && (
+            <>
+              <KeyboardHandler />
+              <BlockSelectionHighlighter />
+            </>
+          )}
           <HeadTags />
           <Provider>
             <Canvas>
@@ -74,9 +81,9 @@ const StaticCanvas = () => {
               ) : (
                 <StaticBlocksRenderer />
               )}
-              <AddBlockAtBottom />
+              {isEdit && <AddBlockAtBottom />}
             </Canvas>
-            <CanvasEventsWatcher />
+            {isEdit && <CanvasEventsWatcher />}
           </Provider>
           <div
             id="placeholder"

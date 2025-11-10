@@ -54,6 +54,7 @@ import { useReplaceBlock } from "./use-replace-block";
 export { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 export { useCanvasWidth } from "@/core/hooks/use-canvas-width";
 export type { BreakpointName } from "@/core/hooks/use-canvas-width";
+export { useEditorMode } from "@/core/hooks/use-editor-mode";
 export { useCanvasDisplayWidth, useScreenSizeWidth } from "@/core/hooks/use-screen-size-width";
 export { useSelectedLibrary } from "@/core/hooks/use-selected-library";
 export { useSidebarActivePanel } from "@/core/hooks/use-sidebar-active-panel";

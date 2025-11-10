@@ -9,6 +9,7 @@ import {
   getBlockTagAttributes,
 } from "@/core/components/canvas/static/new-blocks-render-helpers";
 import { useBlocksStore, useBuilderProp, useInlineEditing, usePartailBlocksStore, useSavePage } from "@/core/hooks";
+import { useEditorMode } from "@/core/hooks/use-editor-mode";
 import { useLanguages } from "@/core/hooks/use-languages";
 import { useGetBlockAtom } from "@/core/hooks/use-update-block-atom";
 import { applyBindingToBlockProps } from "@/render/apply-binding";
@@ -25,7 +26,6 @@ import { MayBeAsyncPropsWrapper } from "./async-props-wrapper";
 import { ErrorFallback } from "./error-fallback";
 import { useBlockRuntimeProps } from "./use-block-runtime-props";
 import WithBlockTextEditor from "./with-block-text-editor";
-import { useEditorMode } from "@/core/hooks/use-editor-mode";
 
 export const RepeaterContext = createContext<{
   index: number;
@@ -107,8 +107,11 @@ const BlockRenderer = ({
 
   const props = useMemo(
     () => ({
-      blockProps: { "data-block-id": block._id, "data-block-type": block._type, "data-block-index": index },
-      inBuilder: mode === 'edit',
+      blockProps:
+        mode === "preview"
+          ? {}
+          : { "data-block-id": block._id, "data-block-type": block._type, "data-block-index": index },
+      inBuilder: mode === "edit",
       lang: selectedLang || fallbackLang,
       ...dataBindingProps,
       ...blockAttributesProps,
@@ -168,6 +171,7 @@ const PartialWrapper = ({ children, partialBlockId }: { children: React.ReactNod
   const gotoPage = useBuilderProp("gotoPage", noop);
   const { saveState } = useSavePage();
   const { selectedLang, fallbackLang } = useLanguages();
+  const { mode } = useEditorMode();
   const onDoubleClick = useCallback(
     (e: any) => {
       e.stopPropagation();
@@ -182,13 +186,15 @@ const PartialWrapper = ({ children, partialBlockId }: { children: React.ReactNod
   return (
     <>
       {children}
-      <div className="partial-overlay group absolute inset-0 z-50">
-        <div
-          onDoubleClick={onDoubleClick}
-          className="flex h-full w-full items-center justify-center bg-black/10 opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100 group-hover:backdrop-opacity-85">
-          <p className="rounded-md bg-white px-2 py-1 text-xs">Partial block. Double click to edit.</p>
+      {mode === "edit" && (
+        <div className="partial-overlay group absolute inset-0 z-50">
+          <div
+            onDoubleClick={onDoubleClick}
+            className="flex h-full w-full items-center justify-center bg-black/10 opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100 group-hover:backdrop-opacity-85">
+            <p className="rounded-md bg-white px-2 py-1 text-xs">Partial block. Double click to edit.</p>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
