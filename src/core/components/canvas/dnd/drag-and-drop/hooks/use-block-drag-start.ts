@@ -11,13 +11,13 @@
  */
 
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { useBlockHighlight, useSelectedBlockIds } from "@/core/hooks";
+import { useBlockHighlight, useSelectedBlockIds, useSelectedStylingBlocks } from "@/core/hooks";
 import { pubsub } from "@/core/pubsub";
 import { ChaiBlock } from "@/types/common";
 import { useAtom } from "jotai";
 import { pick } from "lodash";
 import { DragEvent, useCallback, useRef } from "react";
-import { cleanupDragImage, createCoreDragImage, createLibraryDragImage } from "../create-drag-image";
+import { cleanupDragImage, createCoreDragImage } from "../create-drag-image";
 import { dragAndDropAtom, dropIndicatorAtom, setIsDragging } from "./use-drag-and-drop";
 
 /**
@@ -40,13 +40,14 @@ import { dragAndDropAtom, dropIndicatorAtom, setIsDragging } from "./use-drag-an
  */
 export const useBlockDragStart = () => {
   const [, setSelectedBlockIds] = useSelectedBlockIds();
+  const [, setStyleBlocks] = useSelectedStylingBlocks();
   const { clearHighlight } = useBlockHighlight();
   const [, setDraggedBlock] = useAtom(dragAndDropAtom);
   const [, setDropIndicator] = useAtom(dropIndicatorAtom);
   const dragImageRef = useRef<HTMLElement | null>(null);
 
   return useCallback(
-    (e: DragEvent, _block: ChaiBlock, isAddNew: boolean = true, previewUrl?: string) => {
+    (e: DragEvent, _block: ChaiBlock, isAddNew: boolean = true) => {
       // Clean up any previous drag image
       if (dragImageRef.current) {
         cleanupDragImage(dragImageRef.current);
@@ -65,18 +66,7 @@ export const useBlockDragStart = () => {
       e.dataTransfer.effectAllowed = "move";
 
       // Create custom drag image
-      if (previewUrl) {
-        // UI Library block with preview image
-        createLibraryDragImage(_block, previewUrl).then((dragImage) => {
-          dragImageRef.current = dragImage;
-          // Note: setDragImage must be called synchronously, so this won't work for async images
-          // The image will be cleaned up on drag end
-        });
-        // Use a temporary placeholder for now
-        const tempImage = createCoreDragImage(_block);
-        e.dataTransfer.setDragImage(tempImage, 0, 0);
-        setTimeout(() => cleanupDragImage(tempImage), 0);
-      } else {
+      if (_block?._type || _block?.type) {
         // Core block with icon and label
         const dragImage = createCoreDragImage(_block);
         dragImageRef.current = dragImage;
@@ -93,6 +83,7 @@ export const useBlockDragStart = () => {
       // Clear any existing selection and highlights
       setSelectedBlockIds([]);
       clearHighlight();
+      setStyleBlocks([]);
 
       // Close the add block panel
       pubsub.publish(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK);

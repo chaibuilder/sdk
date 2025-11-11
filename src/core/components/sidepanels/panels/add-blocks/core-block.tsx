@@ -34,7 +34,7 @@ export const CoreBlock = ({
   };
   const dnd = true;
   const { t } = useTranslation();
-  const { onDrag, onDragEnd } = useDragAndDrop();
+  const { onDragStart, onDragEnd } = useDragAndDrop();
 
   return (
     <>
@@ -44,7 +44,7 @@ export const CoreBlock = ({
             disabled={disabled}
             onClick={addBlockToPage}
             type="button"
-            onDragStart={(ev) => onDrag(ev, { ...block, label: label, icon: icon })}
+            onDragStart={(ev) => onDragStart(ev, { ...block, label: label, icon: icon })}
             onDragEnd={onDragEnd}
             draggable={dnd ? "true" : "false"}
             className={`${kebabCase(`chai-block-${type}`)} cursor-pointer space-y-2 rounded-lg border border-border p-3 text-center hover:bg-slate-300/50 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400 dark:border-gray-700 dark:text-white dark:hover:bg-slate-800/50 dark:disabled:bg-gray-900 dark:disabled:text-foreground ${

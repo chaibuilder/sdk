@@ -10,7 +10,7 @@
  *
  * @example
  * import { useDragAndDrop } from './hooks';
- * const { onDrag, onDragOver, onDrop, onDragEnd, isDragging } = useDragAndDrop();
+ * const { onDragStart, onDragOver, onDrop, onDragEnd, isDragging } = useDragAndDrop();
  */
 
 import { useAtom } from "jotai";
@@ -37,7 +37,7 @@ export type { DropIndicatorState } from "./use-drag-and-drop";
  */
 export interface DragAndDrop {
   /** Handler for drag start event */
-  onDrag: (e: DragEvent, block: any, isAddNew?: boolean, previewUrl?: string) => void;
+  onDragStart: (e: DragEvent, block: any, isAddNew?: boolean, previewUrl?: string) => void;
   /** Handler for drag over event */
   onDragOver: (e: DragEvent) => void;
   /** Handler for drop event */
@@ -67,11 +67,11 @@ export interface DragAndDrop {
  * @returns Object with all drag event handlers and state
  *
  * @example
- * const { onDrag, onDragOver, onDrop, onDragEnd, isDragging } = useDragAndDrop();
+ * const { onDragStart, onDragOver, onDrop, onDragEnd, isDragging } = useDragAndDrop();
  *
  * <div
  *   draggable
- *   onDragStart={(e) => onDrag(e, block)}
+ *   onDragStart={(e) => onDragStart(e, block)}
  *   onDragOver={onDragOver}
  *   onDrop={onDrop}
  *   onDragEnd={onDragEnd}
@@ -80,13 +80,13 @@ export interface DragAndDrop {
  * </div>
  */
 export const useDragAndDrop = (): DragAndDrop => {
-  const onDrag = useBlockDragStart();
+  const onDragStart = useBlockDragStart();
   const onDragOver = useBlockDragOver();
   const onDrop = useBlockDrop();
   const onDragEnd = useBlockDragEnd();
 
   return {
-    onDrag,
+    onDragStart,
     onDragOver,
     onDrop,
     onDragEnd,

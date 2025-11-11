@@ -1,9 +1,8 @@
-import { draggedBlockAtom } from "@/core/components/canvas/dnd/atoms";
 import { useDragAndDrop } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 import { UILibrariesSelect } from "@/core/components/sidepanels/panels/add-blocks/libraries-select";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useChaiLibraries } from "@/core/extensions/libraries";
-import { useAddBlock, useBlockHighlight, useSelectedBlockIds } from "@/core/hooks";
+import { useAddBlock } from "@/core/hooks";
 import { useLibraryBlocks } from "@/core/hooks/use-library-blocks";
 import { useSelectedLibrary } from "@/core/hooks/use-selected-library";
 import { getBlocksFromHTML } from "@/core/import-html/html-to-json";
@@ -20,7 +19,6 @@ import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { Cross1Icon, MagnifyingGlassIcon, ReloadIcon } from "@radix-ui/react-icons";
 import clsx from "clsx";
 import Fuse from "fuse.js";
-import { useAtom } from "jotai";
 import { capitalize, filter, first, get, groupBy, has, isEmpty, keys, map } from "lodash-es";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -39,18 +37,10 @@ const BlockCard = ({
   const [isAdding, setIsAdding] = useState(false);
   const getUILibraryBlock = useMemo(() => library?.getBlock || (() => []), [library]);
   const { addCoreBlock, addPredefinedBlock } = useAddBlock();
-  const [, setSelected] = useSelectedBlockIds();
-  const { clearHighlight } = useBlockHighlight();
   const name = get(block, "name", get(block, "label"));
   const description = get(block, "description", "");
   const dnd = true;
-  const [, setDraggedBlock] = useAtom(draggedBlockAtom);
-  const { onDrag, onDragEnd } = useDragAndDrop();
-
-  const isTopLevelSection = (block: ChaiBlock) => {
-    const isPageSection = has(block, "styles_attrs.data-page-section");
-    return block._type === "Box" && isPageSection;
-  };
+  const { onDragStart, onDragEnd } = useDragAndDrop();
 
   const addBlock = useCallback(
     async (e: any) => {
@@ -76,37 +66,7 @@ const BlockCard = ({
     if (typeof uiBlocks === "string") {
       uiBlocks = getBlocksFromHTML(uiBlocks);
     }
-    // Pass preview URL as 4th parameter for custom drag image
-    const previewUrl = block.preview || undefined;
-    onDrag(ev, { type: "Box", blocks: uiBlocks, name: name }, true, previewUrl);
-    return;
-    let parent = parentId;
-    if (isTopLevelSection(first(uiBlocks))) {
-      parent = null;
-    }
-
-    if (!isEmpty(uiBlocks)) {
-      const convertedBlock = { blocks: uiBlocks, uiLibrary: true, parent: parent };
-      ev.dataTransfer.setData("text/plain", JSON.stringify(convertedBlock));
-
-      if (block.preview) {
-        const img = new Image();
-        img.src = block.preview;
-        img.onload = () => {
-          ev.dataTransfer.setDragImage(img, 0, 0);
-        };
-      } else {
-        ev.dataTransfer.setDragImage(new Image(), 0, 0);
-      }
-
-      //@ts-ignore
-      setDraggedBlock(convertedBlock);
-      setTimeout(() => {
-        setSelected([]);
-        clearHighlight();
-        pubsub.publish(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK);
-      }, 200);
-    }
+    onDragStart(ev, { type: "Box", blocks: uiBlocks, name: name }, true);
   };
 
   return (
