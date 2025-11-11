@@ -813,13 +813,18 @@ export function detectDropZone(
     iframeDoc,
   );
 
+  // Determine the correct parent ID based on position
+  // - For "inside": parent is the target element itself
+  // - For "before"/"after": parent is the parent of the target element
+  const correctParentId = zoneResult.position === "inside" ? targetBlockId : parentBlockId;
+
   return {
     position: zoneResult.position,
     placeholderOrientation,
     rect,
     targetElement,
     targetBlockId,
-    targetParentId: parentBlockId,
+    targetParentId: correctParentId,
     isEmpty: zoneResult.position === "inside" && !hasChildBlocks(targetElement),
     confidence: zoneResult.confidence,
   };

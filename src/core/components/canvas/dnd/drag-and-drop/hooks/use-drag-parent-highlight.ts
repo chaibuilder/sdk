@@ -69,6 +69,7 @@ export const useDragParentHighlight = () => {
       if (lastDragHighlighted) {
         lastDragHighlighted.style.outline = "";
         lastDragHighlighted.style.outlineOffset = "";
+        lastDragHighlighted.style.backgroundColor = "";
       }
 
       // Handle null/undefined - just clear
@@ -90,8 +91,9 @@ export const useDragParentHighlight = () => {
 
       if (targetElement) {
         // Apply visual highlight styles directly
-        targetElement.style.outline = "2px dashed rgba(34, 197, 94, 0.6)";
+        targetElement.style.outline = "2px dashed rgba(34, 197, 94, 1)";
         targetElement.style.outlineOffset = "2px";
+        targetElement.style.backgroundColor = "rgba(34, 197, 94, 0.05)";
         lastDragHighlighted = targetElement;
       } else {
         lastDragHighlighted = null;
@@ -110,6 +112,7 @@ export const useDragParentHighlight = () => {
     if (lastDragHighlighted) {
       lastDragHighlighted.style.outline = "";
       lastDragHighlighted.style.outlineOffset = "";
+      lastDragHighlighted.style.backgroundColor = "";
       lastDragHighlighted = null;
     }
   }, []);
