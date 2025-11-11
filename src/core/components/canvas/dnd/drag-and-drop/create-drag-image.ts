@@ -1,0 +1,129 @@
+/**
+ * ============================================================================
+ * CREATE DRAG IMAGE UTILITY
+ * ============================================================================
+ *
+ * Utility functions to create custom drag images for drag-and-drop operations.
+ * Supports both core blocks (with icon and label) and UI library blocks (with preview image).
+ *
+ * @module create-drag-image
+ */
+
+import { BoxIcon } from "@radix-ui/react-icons";
+import React from "react";
+import ReactDOMServer from "react-dom/server";
+
+/**
+ * @FUNCTION createCoreDragImage
+ * @description
+ * Creates a custom drag image for core blocks showing the block icon and label.
+ * The image is styled with a semi-transparent background and rounded corners.
+ *
+ * @param block - The block being dragged (must have type, icon, and label)
+ * @returns HTMLElement that can be used as a drag image
+ */
+export function createCoreDragImage(block: any): HTMLElement {
+  const container = document.createElement("div");
+  container.className =
+    "absolute -top-[1000px] -left-[1000px] px-2 py-1 bg-white/60 border border-blue-400/30 rounded shadow-md flex items-center gap-1.5 font-sans pointer-events-none z-[9999] scale-90";
+
+  // Create icon element
+  const iconContainer = document.createElement("div");
+  iconContainer.className = "w-3 h-3 flex items-center justify-center text-blue-600";
+
+  // Try to render the icon if available
+  let icon = block.icon || BoxIcon;
+  try {
+    // Convert React icon component to HTML string
+    const iconElement = React.createElement(icon, { className: "w-3 h-3" });
+    const iconHtml = ReactDOMServer.renderToStaticMarkup(iconElement);
+    iconContainer.innerHTML = iconHtml;
+  } catch (e) {
+    // Fallback to text if icon rendering fails
+    iconContainer.textContent = "";
+  }
+
+  // Create label element
+  const label = document.createElement("span");
+  label.className = "text-[10px] font-medium text-blue-600 whitespace-nowrap";
+  label.textContent = block.label || block.type || "Block";
+
+  container.appendChild(iconContainer);
+  container.appendChild(label);
+
+  // Append to body temporarily
+  document.body.appendChild(container);
+
+  return container;
+}
+
+/**
+ * @FUNCTION createLibraryDragImage
+ * @description
+ * Creates a custom drag image for UI library blocks using their preview image.
+ * Falls back to a text-based drag image if no preview is available.
+ *
+ * @param block - The library block being dragged
+ * @param previewUrl - Optional preview image URL
+ * @returns Promise<HTMLElement> that resolves when the image is loaded
+ */
+export function createLibraryDragImage(block: any, previewUrl?: string): Promise<HTMLElement> {
+  return new Promise((resolve) => {
+    if (previewUrl) {
+      // Create image-based drag preview
+      const container = document.createElement("div");
+      container.className =
+        "absolute -top-[1000px] -left-[1000px] max-w-[150px] max-h-[100px] border border-blue-400/30 rounded overflow-hidden shadow-md pointer-events-none z-[9999] bg-white/60 scale-90";
+
+      const img = document.createElement("img");
+      img.className = "w-full h-full object-cover block";
+      img.src = previewUrl;
+
+      img.onload = () => {
+        container.appendChild(img);
+        document.body.appendChild(container);
+        resolve(container);
+      };
+
+      img.onerror = () => {
+        // Fallback to text-based preview
+        const fallback = createTextDragImage(block.name || block.label || "UI Component");
+        resolve(fallback);
+      };
+    } else {
+      // No preview URL, use text-based preview
+      const fallback = createTextDragImage(block.name || block.label || "UI Component");
+      resolve(fallback);
+    }
+  });
+}
+
+/**
+ * @FUNCTION createTextDragImage
+ * @description
+ * Creates a simple text-based drag image as a fallback.
+ *
+ * @param text - The text to display
+ * @returns HTMLElement that can be used as a drag image
+ */
+function createTextDragImage(text: string): HTMLElement {
+  const container = document.createElement("div");
+  container.className =
+    "absolute -top-[1000px] -left-[1000px] px-2 py-1 bg-white/60 border border-blue-400/30 rounded shadow-md font-sans text-[10px] font-medium text-gray-900 whitespace-nowrap pointer-events-none z-[9999] scale-90";
+  container.textContent = text;
+  document.body.appendChild(container);
+  return container;
+}
+
+/**
+ * @FUNCTION cleanupDragImage
+ * @description
+ * Removes the custom drag image from the DOM after drag operation completes.
+ *
+ * @param element - The drag image element to remove
+ */
+export function cleanupDragImage(element: HTMLElement | null) {
+  if (element && element.parentNode) {
+    element.parentNode.removeChild(element);
+  }
+}

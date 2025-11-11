@@ -239,11 +239,13 @@ const AddBlocksPanel = ({
   showHeading = true,
   parentId = undefined,
   position = -1,
+  fromSidebar = false,
 }: {
   parentId?: string;
   showHeading?: boolean;
   className?: string;
   position?: number;
+  fromSidebar?: boolean;
 }) => {
   const { t } = useTranslation();
   const [tab, setTab] = useAtom(addBlockTabAtom);
@@ -265,7 +267,7 @@ const AddBlocksPanel = ({
   }, []);
 
   const addBlockAdditionalTabs = useChaiAddBlockTabs();
-  const canImportHTML = importHtmlEnabled && hasPermission(PERMISSIONS.IMPORT_HTML);
+  const canImportHTML = importHtmlEnabled && hasPermission(PERMISSIONS.IMPORT_HTML) && !fromSidebar;
   const uiLibraries = useChaiLibraries();
   const hasUiLibraries = uiLibraries.length > 0;
 

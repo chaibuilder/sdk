@@ -230,7 +230,64 @@ function detectGapZone(
       return null;
     }
 
-    // Check each pair of adjacent children for gaps
+    // For multi-row grids, we need to find gaps in the same visual row
+    // First, find the closest sibling in the same row as the pointer
+    const closestInRow = findClosestSiblingInRow(children, pointerX, pointerY, orientation);
+    
+    if (closestInRow) {
+      // Get all siblings in the same row as the closest element
+      const siblingsInRow = getSiblingsInSameRow(children, closestInRow, orientation);
+      
+      // Sort siblings by their position (left to right for horizontal, top to bottom for vertical)
+      siblingsInRow.sort((a, b) => {
+        const aRect = a.getBoundingClientRect();
+        const bRect = b.getBoundingClientRect();
+        return orientation === "vertical" ? aRect.top - bRect.top : aRect.left - bRect.left;
+      });
+
+      // Check gaps between siblings in the same row
+      for (let i = 0; i < siblingsInRow.length - 1; i++) {
+        const current = siblingsInRow[i];
+        const next = siblingsInRow[i + 1];
+
+        const currentRect = current.getBoundingClientRect();
+        const nextRect = next.getBoundingClientRect();
+
+        if (orientation === "vertical") {
+          // Vertical layout: check for horizontal gaps (space between vertically stacked items)
+          const gapStart = currentRect.bottom;
+          const gapEnd = nextRect.top;
+          const gapSize = gapEnd - gapStart;
+
+          // Check if pointer is within the gap boundaries
+          const isInGapVertically = pointerY >= gapStart && pointerY <= gapEnd;
+          const isInGapHorizontally =
+            pointerX >= Math.min(currentRect.left, nextRect.left) &&
+            pointerX <= Math.max(currentRect.right, nextRect.right);
+
+          if (isInGapVertically && isInGapHorizontally && gapSize >= ZONE_CONFIG.GAP_THRESHOLD) {
+            return { before: current, after: next };
+          }
+        } else {
+          // Horizontal layout: check for vertical gaps (space between horizontally arranged items)
+          const gapStart = currentRect.right;
+          const gapEnd = nextRect.left;
+          const gapSize = gapEnd - gapStart;
+
+          // Check if pointer is within the gap boundaries
+          const isInGapHorizontally = pointerX >= gapStart && pointerX <= gapEnd;
+          const isInGapVertically =
+            pointerY >= Math.min(currentRect.top, nextRect.top) &&
+            pointerY <= Math.max(currentRect.bottom, nextRect.bottom);
+
+          if (isInGapHorizontally && isInGapVertically && gapSize >= ZONE_CONFIG.GAP_THRESHOLD) {
+            return { before: current, after: next };
+          }
+        }
+      }
+    }
+
+    // Fallback: check all adjacent children (original logic for simple layouts)
     for (let i = 0; i < children.length - 1; i++) {
       const current = children[i];
       const next = children[i + 1];
@@ -524,6 +581,7 @@ export function detectDropZone(
     if (gapZone) {
       // Found a gap! Create a drop zone after the 'before' element
       const beforeRect = gapZone.before.getBoundingClientRect();
+      const afterRect = gapZone.after.getBoundingClientRect();
 
       // Get parent (container) dimensions for full width/height
       const containerRect = targetElement.getBoundingClientRect();
@@ -532,6 +590,17 @@ export function detectDropZone(
       const containerPaddingRight = parseFloat(containerStyle.paddingRight) || 0;
       const containerPaddingTop = parseFloat(containerStyle.paddingTop) || 0;
       const containerPaddingBottom = parseFloat(containerStyle.paddingBottom) || 0;
+
+      // Get siblings in the same row for multi-row grid support
+      const allChildren = getChildBlocks(targetElement);
+      const siblingsInRow = getSiblingsInSameRow(allChildren, gapZone.before, targetOrientation);
+      
+      // Calculate max height of siblings in the same row
+      let maxRowHeight = 0;
+      siblingsInRow.forEach((sibling) => {
+        const siblingRect = sibling.getBoundingClientRect();
+        if (siblingRect.height > maxRowHeight) maxRowHeight = siblingRect.height;
+      });
 
       if (targetOrientation === "vertical") {
         // Horizontal line in the gap - use parent's full width
@@ -554,18 +623,21 @@ export function detectDropZone(
           confidence: 1.0, // High confidence for gap zones
         };
       } else {
-        // Vertical line in the gap - use parent's full height
-        const fullHeight = containerRect.height - containerPaddingTop - containerPaddingBottom;
-        const topPosition = containerRect.top + scrollTop + containerPaddingTop;
+        // Vertical line in the gap - use row height for multi-row grids
+        // Position at the top of the current row, not the container top
+        const rowTopPosition = beforeRect.top + scrollTop;
+        const placeholderHeight = maxRowHeight > 0
+          ? maxRowHeight
+          : Math.max(beforeRect.height, afterRect.height);
 
         return {
           position: "after",
           placeholderOrientation: "vertical",
           rect: {
-            top: topPosition,
+            top: rowTopPosition,
             left: beforeRect.right + scrollLeft,
             width: 4,
-            height: fullHeight,
+            height: placeholderHeight,
           },
           targetElement: gapZone.before,
           targetBlockId: gapZone.before.getAttribute("data-block-id")!,
@@ -595,6 +667,9 @@ export function detectDropZone(
 
       const placeholderOrientation = parentOrientation === "vertical" ? "horizontal" : "vertical";
 
+      // Get max sibling dimensions for better grid layout support
+      const maxSiblingDimensions = getMaxSiblingDimensions(parentElement);
+
       if (parentEdge === "start") {
         // Place before first child
         const firstChild = getChildBlocks(parentElement)[0];
@@ -621,9 +696,11 @@ export function detectDropZone(
               confidence: 0.9,
             };
           } else {
-            // Vertical placeholder - use parent's full height
-            const fullHeight = parentRect.height - parentPaddingTop - parentPaddingBottom;
+            // Vertical placeholder - use max sibling height for horizontal layouts
             const topPosition = parentRect.top + scrollTop + parentPaddingTop;
+            const placeholderHeight = maxSiblingDimensions.maxHeight > 0
+              ? maxSiblingDimensions.maxHeight
+              : parentRect.height - parentPaddingTop - parentPaddingBottom;
 
             return {
               position: "before",
@@ -632,7 +709,7 @@ export function detectDropZone(
                 top: topPosition,
                 left: firstChildRect.left + scrollLeft - 2,
                 width: 4,
-                height: fullHeight,
+                height: placeholderHeight,
               },
               targetElement: firstChild,
               targetBlockId: firstChild.getAttribute("data-block-id")!,
@@ -668,9 +745,11 @@ export function detectDropZone(
               confidence: 0.9,
             };
           } else {
-            // Vertical placeholder - use parent's full height
-            const fullHeight = parentRect.height - parentPaddingTop - parentPaddingBottom;
+            // Vertical placeholder - use max sibling height for horizontal layouts
             const topPosition = parentRect.top + scrollTop + parentPaddingTop;
+            const placeholderHeight = maxSiblingDimensions.maxHeight > 0
+              ? maxSiblingDimensions.maxHeight
+              : parentRect.height - parentPaddingTop - parentPaddingBottom;
 
             return {
               position: "after",
@@ -679,7 +758,7 @@ export function detectDropZone(
                 top: topPosition,
                 left: lastChildRect.right + scrollLeft - 2,
                 width: 4,
-                height: fullHeight,
+                height: placeholderHeight,
               },
               targetElement: lastChild,
               targetBlockId: lastChild.getAttribute("data-block-id")!,
@@ -747,16 +826,166 @@ export function detectDropZone(
 }
 
 /**
+ * @FUNCTION_NAME findClosestSiblingInRow
+ * @description
+ * Finds the closest sibling element that is in the same visual row/column as the pointer.
+ * This is crucial for multi-row grids and wrapped flex layouts where DOM order
+ * doesn't match visual layout.
+ *
+ * @param children - Array of sibling elements
+ * @param pointerX - X coordinate of the pointer
+ * @param pointerY - Y coordinate of the pointer
+ * @param orientation - Layout orientation
+ * @returns The closest sibling element in the same row, or null
+ */
+function findClosestSiblingInRow(
+  children: HTMLElement[],
+  pointerX: number,
+  pointerY: number,
+  orientation: "vertical" | "horizontal",
+): HTMLElement | null {
+  if (children.length === 0) return null;
+
+  // Find all siblings that are in the same row/column as the pointer
+  const siblingsInSameRow = children.filter((child) => {
+    const rect = child.getBoundingClientRect();
+    
+    if (orientation === "vertical") {
+      // For vertical layouts, check if pointer Y is within the element's vertical range
+      return pointerY >= rect.top && pointerY <= rect.bottom;
+    } else {
+      // For horizontal layouts, check if pointer X is within the element's horizontal range
+      return pointerX >= rect.left && pointerX <= rect.right;
+    }
+  });
+
+  if (siblingsInSameRow.length === 0) {
+    // If no exact match, find the row that contains the pointer
+    const rowsMap = new Map<number, HTMLElement[]>();
+    
+    children.forEach((child) => {
+      const rect = child.getBoundingClientRect();
+      const rowKey = orientation === "vertical" ? Math.round(rect.top) : Math.round(rect.left);
+      
+      if (!rowsMap.has(rowKey)) {
+        rowsMap.set(rowKey, []);
+      }
+      rowsMap.get(rowKey)!.push(child);
+    });
+
+    // Find the closest row to the pointer
+    let closestRow: HTMLElement[] | null = null;
+    let minDistance = Infinity;
+
+    rowsMap.forEach((row, rowKey) => {
+      const distance = orientation === "vertical" 
+        ? Math.abs(pointerY - rowKey)
+        : Math.abs(pointerX - rowKey);
+      
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestRow = row;
+      }
+    });
+
+    if (closestRow && closestRow.length > 0) {
+      siblingsInSameRow.push(...closestRow);
+    }
+  }
+
+  if (siblingsInSameRow.length === 0) return null;
+
+  // Find the closest sibling based on distance
+  let closest = siblingsInSameRow[0];
+  let minDistance = Infinity;
+
+  siblingsInSameRow.forEach((child) => {
+    const rect = child.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const distance = Math.sqrt(Math.pow(pointerX - centerX, 2) + Math.pow(pointerY - centerY, 2));
+
+    if (distance < minDistance) {
+      minDistance = distance;
+      closest = child;
+    }
+  });
+
+  return closest;
+}
+
+/**
+ * @FUNCTION_NAME getMaxSiblingDimensions
+ * @description
+ * Calculates the maximum width and height among all siblings in a container.
+ * Used to size the drop indicator to match the largest sibling for better visual clarity.
+ *
+ * @param parentElement - The parent container element
+ * @returns Object with maxWidth and maxHeight of siblings
+ */
+function getMaxSiblingDimensions(parentElement: HTMLElement): { maxWidth: number; maxHeight: number } {
+  const children = getChildBlocks(parentElement);
+  
+  if (children.length === 0) {
+    return { maxWidth: 0, maxHeight: 0 };
+  }
+
+  let maxWidth = 0;
+  let maxHeight = 0;
+
+  children.forEach((child) => {
+    const rect = child.getBoundingClientRect();
+    if (rect.width > maxWidth) maxWidth = rect.width;
+    if (rect.height > maxHeight) maxHeight = rect.height;
+  });
+
+  return { maxWidth, maxHeight };
+}
+
+/**
+ * @FUNCTION_NAME getSiblingsInSameRow
+ * @description
+ * Gets all sibling elements that are in the same visual row as a target element.
+ * Essential for calculating proper drop indicator dimensions in multi-row layouts.
+ *
+ * @param children - Array of sibling elements
+ * @param targetElement - The reference element
+ * @param orientation - Layout orientation
+ * @returns Array of siblings in the same row
+ */
+function getSiblingsInSameRow(
+  children: HTMLElement[],
+  targetElement: HTMLElement,
+  orientation: "vertical" | "horizontal",
+): HTMLElement[] {
+  const targetRect = targetElement.getBoundingClientRect();
+  const tolerance = 5; // pixels of tolerance for row detection
+
+  return children.filter((child) => {
+    const rect = child.getBoundingClientRect();
+    
+    if (orientation === "vertical") {
+      // Same row if tops are roughly aligned (within tolerance)
+      return Math.abs(rect.top - targetRect.top) <= tolerance;
+    } else {
+      // Same column if lefts are roughly aligned
+      return Math.abs(rect.left - targetRect.left) <= tolerance;
+    }
+  });
+}
+
+/**
  * @FUNCTION_NAME calculatePlaceholderRect
  * @arguments { element, parentElement, position, placeholderOrientation, iframeDoc }
  * @description
  * Calculates the exact rectangle dimensions for the placeholder.
  *
  * Key Rules:
- * - Horizontal placeholders: Use parent's full width
- * - Vertical placeholders: Use parent's full height
+ * - Horizontal placeholders: Use parent's full width OR max sibling height (for grid layouts)
+ * - Vertical placeholders: Use parent's full height OR max sibling width (for grid layouts)
  * - Empty containers: Show full container area
  * - Non-empty containers: Show insertion line at the end
+ * - For before/after positions: Use max sibling dimensions instead of parent's full size
  *
  * @param element - The target element
  * @param parentElement - The parent element (for full width/height)
@@ -794,6 +1023,23 @@ function calculatePlaceholderRect(
   const parentPaddingTop = parentElement ? parseFloat(window.getComputedStyle(parentElement).paddingTop) || 0 : 0;
   const parentPaddingBottom = parentElement ? parseFloat(window.getComputedStyle(parentElement).paddingBottom) || 0 : 0;
 
+  // Get max sibling dimensions for better grid layout support
+  const maxSiblingDimensions = parentElement ? getMaxSiblingDimensions(parentElement) : { maxWidth: 0, maxHeight: 0 };
+  const parentOrientation = parentElement ? getOrientation(parentElement) : "vertical";
+
+  // Get siblings in the same row for multi-row grid support
+  const allSiblings = parentElement ? getChildBlocks(parentElement) : [];
+  const siblingsInRow = getSiblingsInSameRow(allSiblings, element, parentOrientation);
+  
+  // Calculate max height/width of siblings in the same row
+  let maxRowHeight = 0;
+  let maxRowWidth = 0;
+  siblingsInRow.forEach((sibling) => {
+    const siblingRect = sibling.getBoundingClientRect();
+    if (siblingRect.height > maxRowHeight) maxRowHeight = siblingRect.height;
+    if (siblingRect.width > maxRowWidth) maxRowWidth = siblingRect.width;
+  });
+
   if (position === "before") {
     if (placeholderOrientation === "horizontal") {
       // Horizontal line above element - use parent's full width
@@ -807,15 +1053,22 @@ function calculatePlaceholderRect(
         height: 4,
       };
     } else {
-      // Vertical line before element - use parent's full height
-      const fullHeight = parentRect ? parentRect.height - parentPaddingTop - parentPaddingBottom : rect.height;
-      const topPosition = parentRect ? parentRect.top + scrollTop + parentPaddingTop : rect.top + scrollTop;
+      // Vertical line before element - use actual row height for multi-row grids
+      // Position at the top of the current row, not the parent top
+      const rowTopPosition = rect.top + scrollTop;
+      
+      // For horizontal parent layouts (grids/flex), use the height of siblings in the same row
+      const placeholderHeight = parentOrientation === "horizontal" && maxRowHeight > 0
+        ? maxRowHeight
+        : (maxSiblingDimensions.maxHeight > 0 
+          ? maxSiblingDimensions.maxHeight 
+          : (parentRect ? parentRect.height - parentPaddingTop - parentPaddingBottom : rect.height));
 
       return {
-        top: topPosition,
+        top: rowTopPosition,
         left: rect.left + scrollLeft - marginLeft - 2,
         width: 4,
-        height: fullHeight,
+        height: placeholderHeight,
       };
     }
   } else if (position === "after") {
@@ -831,15 +1084,22 @@ function calculatePlaceholderRect(
         height: 4,
       };
     } else {
-      // Vertical line after element - use parent's full height
-      const fullHeight = parentRect ? parentRect.height - parentPaddingTop - parentPaddingBottom : rect.height;
-      const topPosition = parentRect ? parentRect.top + scrollTop + parentPaddingTop : rect.top + scrollTop;
+      // Vertical line after element - use actual row height for multi-row grids
+      // Position at the top of the current row, not the parent top
+      const rowTopPosition = rect.top + scrollTop;
+
+      // For horizontal parent layouts (grids/flex), use the height of siblings in the same row
+      const placeholderHeight = parentOrientation === "horizontal" && maxRowHeight > 0
+        ? maxRowHeight
+        : (maxSiblingDimensions.maxHeight > 0 
+          ? maxSiblingDimensions.maxHeight 
+          : (parentRect ? parentRect.height - parentPaddingTop - parentPaddingBottom : rect.height));
 
       return {
-        top: topPosition,
+        top: rowTopPosition,
         left: rect.right + scrollLeft + marginRight - 2,
         width: 4,
-        height: fullHeight,
+        height: placeholderHeight,
       };
     }
   } else {

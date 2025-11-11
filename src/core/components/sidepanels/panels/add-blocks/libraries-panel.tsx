@@ -1,8 +1,8 @@
 import { draggedBlockAtom } from "@/core/components/canvas/dnd/atoms";
+import { useDragAndDrop } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 import { UILibrariesSelect } from "@/core/components/sidepanels/panels/add-blocks/libraries-select";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useChaiLibraries } from "@/core/extensions/libraries";
-import { cn } from "@/core/functions/common-functions";
 import { useAddBlock, useBlockHighlight, useSelectedBlockIds } from "@/core/hooks";
 import { useLibraryBlocks } from "@/core/hooks/use-library-blocks";
 import { useSelectedLibrary } from "@/core/hooks/use-selected-library";
@@ -10,19 +10,18 @@ import { getBlocksFromHTML } from "@/core/import-html/html-to-json";
 import { pubsub } from "@/core/pubsub";
 import { ChaiBlock } from "@/types/chai-block";
 import { ChaiLibrary, ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Input } from "@/ui/shadcn/components/ui/input";
 import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
 import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
-import { CaretRightIcon } from "@radix-ui/react-icons";
+import { Cross1Icon, MagnifyingGlassIcon, ReloadIcon } from "@radix-ui/react-icons";
 import clsx from "clsx";
-import { useFeature } from "flagged";
 import Fuse from "fuse.js";
 import { useAtom } from "jotai";
 import { capitalize, filter, first, get, groupBy, has, isEmpty, keys, map } from "lodash-es";
-import { ReloadIcon, MagnifyingGlassIcon, Cross1Icon } from "@radix-ui/react-icons";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -44,8 +43,9 @@ const BlockCard = ({
   const { clearHighlight } = useBlockHighlight();
   const name = get(block, "name", get(block, "label"));
   const description = get(block, "description", "");
-  const dnd = useFeature("dnd");
+  const dnd = true;
   const [, setDraggedBlock] = useAtom(draggedBlockAtom);
+  const { onDrag, onDragEnd } = useDragAndDrop();
 
   const isTopLevelSection = (block: ChaiBlock) => {
     const isPageSection = has(block, "styles_attrs.data-page-section");
@@ -72,7 +72,14 @@ const BlockCard = ({
   );
 
   const handleDragStart = async (ev) => {
-    const uiBlocks = await getUILibraryBlock({ library, block });
+    let uiBlocks = await getUILibraryBlock({ library, block });
+    if (typeof uiBlocks === "string") {
+      uiBlocks = getBlocksFromHTML(uiBlocks);
+    }
+    // Pass preview URL as 4th parameter for custom drag image
+    const previewUrl = block.preview || undefined;
+    onDrag(ev, { type: "Box", blocks: uiBlocks, name: name }, true, previewUrl);
+    return;
     let parent = parentId;
     if (isTopLevelSection(first(uiBlocks))) {
       parent = null;
@@ -109,12 +116,13 @@ const BlockCard = ({
           onClick={isAdding ? () => {} : addBlock}
           draggable={dnd ? "true" : "false"}
           onDragStart={handleDragStart}
+          onDragEnd={onDragEnd}
           className={clsx(
             "relative mt-2 cursor-pointer overflow-hidden rounded-md border border-border duration-200 hover:border-blue-500 hover:shadow-xl",
           )}>
           {isAdding && (
             <div className="absolute flex h-full w-full items-center justify-center bg-black/70">
-              <ReloadIcon className="animate-spin h-4 w-4 text-white" />
+              <ReloadIcon className="h-4 w-4 animate-spin text-white" />
               <span className="pl-2 text-sm text-white">Adding...</span>
             </div>
           )}
@@ -248,7 +256,7 @@ const UILibrarySection = ({ parentId, position }: { parentId?: string; position?
         </div>
 
         <div className="relative flex h-full max-h-full flex-1 overflow-hidden bg-background">
-          <div className={"flex h-full flex-1 pt-2"}>
+          <div className={"flex h-full flex-1 flex-col pt-2"}>
             <div className={"flex h-full max-h-full w-60 min-w-60 max-w-60 flex-col gap-1 px-1 pr-2"}>
               <UILibrariesSelect library={library?.id} setLibrary={setLibrary} uiLibraries={uiLibraries} />
               <div className="mt-2 flex h-full max-h-full w-full flex-1 flex-col">
@@ -270,21 +278,18 @@ const UILibrarySection = ({ parentId, position }: { parentId?: string; position?
                       )}
                     </div>
                   ) : (
-                    map(mergedGroups, (_groupedBlocks, group) => (
-                      <div
-                        onMouseEnter={() => handleMouseEnter(group)}
-                        onMouseLeave={() => clearTimeout(timeoutRef.current)}
-                        key={group}
-                        role="button"
-                        onClick={() => setGroup(group)}
-                        className={cn(
-                          "flex w-full cursor-pointer items-center justify-between rounded-md p-2 text-sm text-foreground transition-all ease-in-out hover:bg-gray-200 dark:hover:bg-gray-800",
-                          group === selectedGroup ? "bg-primary text-primary-foreground hover:bg-primary/80" : "",
-                        )}>
-                        <span>{capitalize(t(group.toLowerCase()))}</span>
-                        <CaretRightIcon className="ml-2 h-5 w-5" />
-                      </div>
-                    ))
+                    <Select value={selectedGroup} onValueChange={setGroup}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder={t("Select a group")} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {map(mergedGroups, (_groupedBlocks, group) => (
+                          <SelectItem key={group} value={group}>
+                            {capitalize(t(group.toLowerCase()))}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   )}
                 </div>
               </div>

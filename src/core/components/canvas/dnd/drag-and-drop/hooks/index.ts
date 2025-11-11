@@ -37,7 +37,7 @@ export type { DropIndicatorState } from "./use-drag-and-drop";
  */
 export interface DragAndDrop {
   /** Handler for drag start event */
-  onDrag: (e: DragEvent, block: any) => void;
+  onDrag: (e: DragEvent, block: any, isAddNew?: boolean, previewUrl?: string) => void;
   /** Handler for drag over event */
   onDragOver: (e: DragEvent) => void;
   /** Handler for drop event */

@@ -1,7 +1,7 @@
 import { AskAI } from "@/core/components/ask-ai-panel";
 import CanvasArea from "@/core/components/canvas/canvas-area";
 import { CanvasTopBar } from "@/core/components/canvas/topbar/canvas-top-bar";
-import { DefaultChaiBlocks, Outline } from "@/core/components/index";
+import { AddBlocksPanel, Outline } from "@/core/components/index";
 import { AddBlocksDialog } from "@/core/components/layout/add-blocks-dialog";
 import { NoopComponent } from "@/core/components/noop-component";
 import SettingsPanel from "@/core/components/settings/settings-panel";
@@ -91,7 +91,7 @@ registerChaiSidebarPanel("add-block", {
   width: DEFAULT_PANEL_WIDTH,
   panel: () => (
     <div>
-      <DefaultChaiBlocks gridCols={"grid-cols-4"} parentId={undefined} position={-1} />
+      <AddBlocksPanel fromSidebar={true} parentId={undefined} position={-1} />
     </div>
   ),
 });

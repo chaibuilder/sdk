@@ -2,38 +2,38 @@
  * ============================================================================
  * USE BLOCK DRAG END HOOK
  * ============================================================================
- * 
+ *
  * Hook that handles the cleanup when a drag operation ends.
  * Resets all drag state and clears visual feedback, ensuring the UI
  * returns to its normal state after drag completion or cancellation.
- * 
+ *
  * @module use-block-drag-end
  */
 
 import { useCanvasIframe } from "@/core/hooks/use-canvas-iframe";
 import { useAtom } from "jotai";
 import { useCallback } from "react";
-import { useDragParentHighlight } from "./use-drag-parent-highlight";
 import { dragAndDropAtom, dropIndicatorAtom, setIsDragging } from "./use-drag-and-drop";
+import { useDragParentHighlight } from "./use-drag-parent-highlight";
 
 /**
  * @HOOK useBlockDragEnd
  * @description
  * Handles cleanup when drag operation ends (either by drop or cancellation).
- * 
+ *
  * Features:
  * - Clears dragged block state
  * - Hides drop indicator
  * - Removes visual feedback attributes from DOM
  * - Resets global dragging flag
- * 
+ *
  * This hook is called automatically by the browser when:
  * - User drops the element (after onDrop)
  * - User cancels the drag (ESC key or invalid drop)
  * - Drag operation completes for any reason
- * 
+ *
  * @returns Function to call on drag end event
- * 
+ *
  * @example
  * const onDragEnd = useBlockDragEnd();
  * <div onDragEnd={onDragEnd} />
@@ -67,7 +67,7 @@ export const useBlockDragEnd = () => {
 
     // Remove visual feedback attributes from all elements
     removeDropTargetAttributes(iframeDoc);
-    
+
     // Clear parent highlight from drag operation
     clearParentHighlight();
 
@@ -81,12 +81,12 @@ export const useBlockDragEnd = () => {
  * @description
  * Removes the data-drop-target attribute from all elements in the iframe.
  * This clears any visual feedback that was applied during drag operations.
- * 
+ *
  * @param iframeDoc - The iframe document containing the canvas
  */
 function removeDropTargetAttributes(iframeDoc: Document | null | undefined) {
   if (!iframeDoc) return;
-  
+
   const elements = iframeDoc.querySelectorAll("[data-drop-target]");
   elements.forEach((el) => el.removeAttribute("data-drop-target"));
 }

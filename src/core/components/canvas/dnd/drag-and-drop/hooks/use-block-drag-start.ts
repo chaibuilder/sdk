@@ -2,37 +2,38 @@
  * ============================================================================
  * USE BLOCK DRAG START HOOK
  * ============================================================================
- * 
+ *
  * Hook that handles the start of a drag operation.
  * Initializes drag state, sets up the dragged block data, and prepares
  * the initial drop indicator for a smooth drag experience.
- * 
+ *
  * @module use-block-drag-start
  */
 
+import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useBlockHighlight, useSelectedBlockIds } from "@/core/hooks";
 import { pubsub } from "@/core/pubsub";
-import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { ChaiBlock } from "@/types/common";
 import { useAtom } from "jotai";
 import { pick } from "lodash";
-import { DragEvent, useCallback } from "react";
+import { DragEvent, useCallback, useRef } from "react";
+import { cleanupDragImage, createCoreDragImage, createLibraryDragImage } from "../create-drag-image";
 import { dragAndDropAtom, dropIndicatorAtom, setIsDragging } from "./use-drag-and-drop";
 
 /**
  * @HOOK useBlockDragStart
  * @description
  * Handles the initialization of drag operations for blocks.
- * 
+ *
  * Features:
  * - Stores dragged block data (type only for new blocks, full data for existing)
  * - Clears current selection and highlights
  * - Sets up invisible drag image for custom cursor
  * - Initializes drop indicator with default canvas state
  * - Publishes event to close add block panel
- * 
+ *
  * @returns Function to call on drag start event
- * 
+ *
  * @example
  * const onDragStart = useBlockDragStart();
  * <div onDragStart={(e) => onDragStart(e, block, true)} />
@@ -42,9 +43,16 @@ export const useBlockDragStart = () => {
   const { clearHighlight } = useBlockHighlight();
   const [, setDraggedBlock] = useAtom(dragAndDropAtom);
   const [, setDropIndicator] = useAtom(dropIndicatorAtom);
+  const dragImageRef = useRef<HTMLElement | null>(null);
 
   return useCallback(
-    (e: DragEvent, _block: ChaiBlock, isAddNew: boolean = true) => {
+    (e: DragEvent, _block: ChaiBlock, isAddNew: boolean = true, previewUrl?: string) => {
+      // Clean up any previous drag image
+      if (dragImageRef.current) {
+        cleanupDragImage(dragImageRef.current);
+        dragImageRef.current = null;
+      }
+
       // For new blocks, only store the type and blocks; for existing blocks, store the full block
       const block = (isAddNew ? pick(_block, ["type", "blocks"]) : _block) as ChaiBlock;
 
@@ -54,16 +62,41 @@ export const useBlockDragStart = () => {
 
       // Set up drag data transfer (required for drag/drop API)
       e.dataTransfer.setData("text/plain", JSON.stringify({ block }));
-      e.dataTransfer.setDragImage(new Image(), 0, 0); // Invisible drag image
       e.dataTransfer.effectAllowed = "move";
+
+      // Create custom drag image
+      if (previewUrl) {
+        // UI Library block with preview image
+        createLibraryDragImage(_block, previewUrl).then((dragImage) => {
+          dragImageRef.current = dragImage;
+          // Note: setDragImage must be called synchronously, so this won't work for async images
+          // The image will be cleaned up on drag end
+        });
+        // Use a temporary placeholder for now
+        const tempImage = createCoreDragImage(_block);
+        e.dataTransfer.setDragImage(tempImage, 0, 0);
+        setTimeout(() => cleanupDragImage(tempImage), 0);
+      } else {
+        // Core block with icon and label
+        const dragImage = createCoreDragImage(_block);
+        dragImageRef.current = dragImage;
+        e.dataTransfer.setDragImage(dragImage, 0, 0);
+        // Clean up after a short delay to ensure drag has started
+        setTimeout(() => {
+          if (dragImageRef.current) {
+            cleanupDragImage(dragImageRef.current);
+            dragImageRef.current = null;
+          }
+        }, 50);
+      }
 
       // Clear any existing selection and highlights
       setSelectedBlockIds([]);
       clearHighlight();
-      
+
       // Close the add block panel
       pubsub.publish(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK);
-      
+
       // Set global dragging flag
       setIsDragging(true);
 
