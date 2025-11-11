@@ -35,14 +35,18 @@ function BlockAttributesToggle() {
   );
 }
 
-const PartialWrapper = ({ partialBlockId }: { partialBlockId: string }) => {
+const PartialWrapper = ({ partialBlock }: { partialBlock: any }) => {
+  const partialBlockId = partialBlock?.partialBlockId;
+  const wrapperType = partialBlock?.wrapperType;
   const gotoPage = useBuilderProp("gotoPage", noop);
   const { saveState } = useSavePage();
+  const onErrorFn = useBuilderProp("onError", noop);
+  const { t } = useTranslation();
   const { selectedLang, fallbackLang } = useLanguages();
   const onDoubleClick = useCallback(
     (e: any) => {
       e.stopPropagation();
-      if (saveState !== "SAVED") {
+      if (saveState !== "SAVED") {ResetStylesButton
         toast.error("You have unsaved changes. Please save the page first.");
         return;
       }
@@ -50,14 +54,51 @@ const PartialWrapper = ({ partialBlockId }: { partialBlockId: string }) => {
     },
     [saveState, gotoPage, partialBlockId, selectedLang, fallbackLang],
   );
-  return (
-    <>
-      <div className="hidden">
-        <div onDoubleClick={onDoubleClick} className="h-full w-full items-center justify-center">
-          <p className="rounded-md bg-white px-2 py-1 text-xs">Partial block. Double click to edit.</p>
-        </div>
+  if(wrapperType === "div"){
+    return (
+    <ErrorBoundary fallback={<FallbackError />} onError={onErrorFn}>
+    <Tabs defaultValue="settings" className="flex flex-1 flex-col">
+      <div className="flex items-center justify-between">
+        <TabsList className="grid h-auto w-full grid-cols-2 p-1 py-1">
+          <TabsTrigger value="settings" className="text-xs">
+            {t("Settings")}
+          </TabsTrigger>
+          <TabsTrigger value="styles" className="text-xs">
+            <div className="flex w-full items-center justify-between">
+              <span className="w-[90%] text-center">{t("Styling")}</span>
+              <span className="w-[10%]">
+                <ResetStylesButton />
+              </span>
+            </div>
+          </TabsTrigger>
+        </TabsList>
       </div>
-    </>
+      <TabsContent value="settings" className="no-scrollbar h-full max-h-min overflow-y-auto">
+        <BlockSettings />
+        <br />
+        <br />
+      </TabsContent>
+      <TabsContent
+        value="styles"
+        className="no-scrollbar h-full max-h-min max-w-full overflow-y-auto overflow-x-hidden">
+        <BlockStyling />
+        <BlockAttributesToggle />
+        <br />
+        <br />
+        <br />
+      </TabsContent>
+    </Tabs>
+  </ErrorBoundary>
+  )}
+
+  return (
+      <ErrorBoundary fallback={<FallbackError />} onError={onErrorFn}>
+        <div className="no-scrollbar h-full max-h-min w-full overflow-y-auto">
+          <BlockSettings />
+          <br />
+          <br />
+        </div>
+      </ErrorBoundary>
   );
 };
 
@@ -72,7 +113,7 @@ const SettingsPanel: React.FC = () => {
   const isPartialBlock = selectedBlock && selectedBlock._type === "PartialBlock";
 
   if (isPartialBlock) {
-    return <PartialWrapper partialBlockId={selectedBlock.partialBlockId} />;
+    return <PartialWrapper partialBlock={selectedBlock} />;
   }
 
   if (isNull(selectedBlock)) {

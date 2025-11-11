@@ -3,26 +3,49 @@ import { ChaiBlock } from "@/types/chai-block";
 import { cloneDeep, flattenDeep, get, isEmpty, last } from "lodash-es";
 
 export function getMergedPartialBlocks(blocks: ChaiBlock[], partials: Record<string, ChaiBlock[]>) {
-  const partialBlocksList = blocks.filter(({ _type }) => _type === "GlobalBlock" || _type === "PartialBlock");
+  const clonedBlocks = cloneDeep(blocks);
+  const partialContainerIds = new Set<string>();
 
-  for (let i = 0; i < partialBlocksList.length; i++) {
-    const partialBlock = partialBlocksList[i];
-    const partialBlockId = get(partialBlock, "partialBlockId", get(partialBlock, "globalBlock", ""));
-    if (partialBlockId === "") continue;
-    let partialBlocks = cloneDeep(get(partials, partialBlockId, []));
-    if (partialBlock._parent && partialBlocks?.length > 0) {
-      partialBlocks = partialBlocks.map((block) => {
-        if (isEmpty(block._parent)) {
-          block._parent = partialBlock._parent;
-        }
-        return block;
-      });
+  clonedBlocks.forEach((block) => {
+    if (block._type === "PartialBlock") {
+      partialContainerIds.add(block._id);
     }
-    const index = blocks.indexOf(partialBlock);
-    blocks.splice(index, 1, ...partialBlocks);
-  }
+  });
 
-  return blocks;
+  const mergedBlocks: ChaiBlock[] = [];
+
+  clonedBlocks.forEach((block) => {
+    if (partialContainerIds.has(block._parent ?? "")) {
+      return;
+    }
+
+    mergedBlocks.push(block);
+
+    if (block._type !== "PartialBlock" && block._type !== "GlobalBlock") {
+      return;
+    }
+
+    const partialBlockId = get(block, "partialBlockId", get(block, "globalBlock", ""));
+    if (partialBlockId === "") {
+      return;
+    }
+
+    let partialBlocks = cloneDeep(get(partials, partialBlockId, []));
+    if (isEmpty(partialBlocks)) {
+      return;
+    }
+
+    partialBlocks = partialBlocks.map((partialBlock) => {
+      if (isEmpty(partialBlock._parent)) {
+        return { ...partialBlock, _parent: block._id } as ChaiBlock;
+      }
+      return partialBlock;
+    });
+
+    mergedBlocks.push(...partialBlocks);
+  });
+
+  return mergedBlocks;
 }
 
 /**
