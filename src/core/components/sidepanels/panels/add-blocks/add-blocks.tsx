@@ -296,13 +296,30 @@ const AddBlocksPanel = ({
         }}
         value={tab}
         className={"flex h-full max-h-full flex-col overflow-hidden"}>
-        <TabsList className={"flex w-full items-center"}>
-          {hasUiLibraries && <TabsTrigger value="library">{t("Library")}</TabsTrigger>}
-          <TabsTrigger value="core">{t("Blocks")}</TabsTrigger>
-          {hasPartialBlocks && <TabsTrigger value="partials">{t("Partials")}</TabsTrigger>}
-          {canImportHTML ? <TabsTrigger value="html">{t("Import")}</TabsTrigger> : null}
+        <TabsList className={`flex items-center ${fromSidebar ? "h-max w-max justify-start p-1" : "w-full"}`}>
+          {hasUiLibraries && (
+            <TabsTrigger value="library" className={fromSidebar ? "h-5 px-2 text-xs" : ""}>
+              {t("Library")}
+            </TabsTrigger>
+          )}
+          <TabsTrigger value="core" className={fromSidebar ? "h-5 px-2 text-xs" : ""}>
+            {t("Blocks")}
+          </TabsTrigger>
+          {hasPartialBlocks && (
+            <TabsTrigger value="partials" className={fromSidebar ? "h-5 px-2 text-xs" : ""}>
+              {t("Partials")}
+            </TabsTrigger>
+          )}
+          {canImportHTML ? (
+            <TabsTrigger value="html" className={fromSidebar ? "h-5 px-2 text-xs" : ""}>
+              {t("Import")}
+            </TabsTrigger>
+          ) : null}
           {map(addBlockAdditionalTabs, (tab) => (
-            <TabsTrigger key={`tab-add-block-${tab.id}`} value={tab.id}>
+            <TabsTrigger
+              key={`tab-add-block-${tab.id}`}
+              value={tab.id}
+              className={fromSidebar ? "h-5 px-2 text-xs" : ""}>
               {React.createElement(tab.tab)}
             </TabsTrigger>
           ))}
@@ -311,7 +328,7 @@ const AddBlocksPanel = ({
           <div className="-mx-1.5 h-full max-h-full overflow-hidden">
             <div className="mt-2 h-full w-full">
               <DefaultChaiBlocks
-                gridCols={fromSidebar ? "grid-cols-3" : "grid-cols-4"}
+                gridCols={fromSidebar ? "grid-cols-2" : "grid-cols-4"}
                 parentId={parentId}
                 position={position}
                 disableBlockGroupsSidebar={fromSidebar}
@@ -329,17 +346,18 @@ const AddBlocksPanel = ({
             <div className="-mx-1.5 h-full max-h-full overflow-hidden">
               <div className="mt-2 h-full w-full">
                 <PartialBlocks
-                  gridCols={fromSidebar ? "grid-cols-3" : "grid-cols-4"}
+                  gridCols={fromSidebar ? "grid-cols-2" : "grid-cols-4"}
                   parentId={parentId}
                   position={position}
+                  disableBlockGroupsSidebar={fromSidebar}
                 />
               </div>
             </div>
           </TabsContent>
         )}
         {canImportHTML ? (
-          <TabsContent value="html" className="h-full max-h-full flex-1 pb-20">
-            <ImportHTML parentId={parentId} position={position} />
+          <TabsContent value="html" className={`h-full max-h-full flex-1 pb-20 ${fromSidebar ? "" : ""}`}>
+            <ImportHTML parentId={parentId} position={position} fromSidebar={fromSidebar} />
           </TabsContent>
         ) : null}
         {map(addBlockAdditionalTabs, (tab) => (

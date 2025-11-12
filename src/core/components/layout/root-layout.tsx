@@ -105,11 +105,7 @@ registerChaiSidebarPanel("add-block", {
   position: "top",
   isInternal: true,
   width: DEFAULT_PANEL_WIDTH,
-  panel: () => (
-    <div>
-      <AddBlocksPanel showHeading={false} fromSidebar={true} parentId={undefined} position={-1} />
-    </div>
-  ),
+  panel: () => <AddBlocksPanel showHeading={false} fromSidebar={true} parentId={undefined} position={-1} />,
 });
 
 /**

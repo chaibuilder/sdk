@@ -296,7 +296,7 @@ const UILibrarySection = ({
                     <p className="text-sm">{t("No blocks found in this group")}</p>
                   </div>
                 ) : (
-                  <div className={`grid w-full gap-2 px-2 ${fromSidebar ? "grid-cols-1" : "grid-cols-2"}`}>
+                  <div className={`grid w-full gap-2 px-2 ${fromSidebar ? "grid-cols-1 pb-20" : "grid-cols-2"}`}>
                     <div className="flex flex-col gap-1">
                       {firstBlocks.map((block: ChaiLibraryBlock, index: number) => (
                         <BlockCard
