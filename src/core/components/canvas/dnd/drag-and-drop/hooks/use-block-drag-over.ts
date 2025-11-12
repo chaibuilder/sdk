@@ -11,12 +11,18 @@
  */
 
 import { canAcceptChildBlock } from "@/core/functions/block-helpers";
+import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
 import { useCanvasIframe } from "@/core/hooks/use-canvas-iframe";
 import { useAtom } from "jotai";
 import { throttle } from "lodash-es";
 import { DragEvent, useCallback } from "react";
 import { getOrientation } from "../../getOrientation";
 import { detectDropZone } from "../drag-and-drop-utils";
+import {
+  canDropAsSiblingWithoutCircularReference,
+  canDropWithoutCircularReference,
+  isDescendantOf,
+} from "../prevent-circular-drop";
 import { useDragParentHighlight } from "./use-drag-parent-highlight";
 import { dragAndDropAtom, dropIndicatorAtom, isDragging } from "./use-drag-and-drop";
 
@@ -67,6 +73,7 @@ export const useBlockDragOver = () => {
   const [iframe] = useCanvasIframe();
   const [, setDropIndicator] = useAtom(dropIndicatorAtom);
   const { clearParentHighlight, highlightParent } = useDragParentHighlight();
+  const [allBlocks] = useBlocksStore();
 
   // Get the document from the iframe element
   const iframeDoc = (iframe as HTMLIFrameElement)?.contentDocument;
@@ -88,6 +95,22 @@ export const useBlockDragOver = () => {
       // If no valid target element, keep the last valid position (don't clear)
       if (!element || !targetBlockId) {
         return;
+      }
+
+      // CRITICAL: Get the dragged block ID early to check various conditions
+      const draggedBlockId = draggedBlock._id;
+
+      // CRITICAL: Prevent dropping on the dragged element itself or any of its descendants
+      if (draggedBlockId) {
+        // Check if target is the dragged block itself
+        if (targetBlockId === draggedBlockId) {
+          return; // Cannot drop on itself
+        }
+
+        // Check if target is a descendant of the dragged block
+        if (isDescendantOf(targetBlockId, draggedBlockId, allBlocks)) {
+          return; // Cannot drop on its own descendants
+        }
       }
 
       // Get the dragged block type
@@ -119,6 +142,13 @@ export const useBlockDragOver = () => {
         if (isLeafBlock) {
           return;
         }
+
+        // CRITICAL: Prevent circular reference - cannot drop a block inside itself or its descendants
+        if (draggedBlockId && !canDropWithoutCircularReference(draggedBlockId, targetBlockId, allBlocks)) {
+          // Silently reject - this would create a circular reference
+          return;
+        }
+
         isValid = canAcceptChildBlock(targetBlockType, draggedBlockType);
       } else {
         // For before/after, validate with parent
@@ -130,6 +160,13 @@ export const useBlockDragOver = () => {
         if (parentElement) {
           parentBlockType = parentElement.getAttribute("data-block-type") || "Box";
         }
+
+        // CRITICAL: Prevent circular reference when dropping as sibling
+        if (draggedBlockId && !canDropAsSiblingWithoutCircularReference(draggedBlockId, targetBlockId, allBlocks)) {
+          // Silently reject - this would create a circular reference
+          return;
+        }
+
         isValid = canAcceptChildBlock(parentBlockType, draggedBlockType);
       }
 
@@ -163,7 +200,7 @@ export const useBlockDragOver = () => {
       removeDropTargetAttributes(iframeDoc);
       dropZone.targetElement.setAttribute("data-drop-target", "true");
     }, 300),
-    [iframeDoc, draggedBlock, setDropIndicator, clearParentHighlight, highlightParent],
+    [iframeDoc, draggedBlock, setDropIndicator, clearParentHighlight, highlightParent, allBlocks],
   );
 
   return useCallback(

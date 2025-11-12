@@ -65,6 +65,18 @@ export const useBlockDragStart = () => {
       e.dataTransfer.setData("text/plain", JSON.stringify({ block }));
       e.dataTransfer.effectAllowed = "move";
 
+      // Reduce opacity of the dragging element for visual feedback
+      if (!isAddNew && _block._id) {
+        const iframeDoc = (document.getElementById("canvas-iframe") as HTMLIFrameElement)?.contentDocument;
+        if (iframeDoc) {
+          const draggingElement = iframeDoc.querySelector(`[data-block-id="${_block._id}"]`) as HTMLElement;
+          if (draggingElement) {
+            draggingElement.style.opacity = "0.4";
+            draggingElement.setAttribute("data-dragging", "true");
+          }
+        }
+      }
+
       // Create custom drag image
       if (_block?._type || _block?.type) {
         // Core block with icon and label

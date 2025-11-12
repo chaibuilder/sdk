@@ -71,6 +71,15 @@ export const useBlockDragEnd = () => {
     // Clear parent highlight from drag operation
     clearParentHighlight();
 
+    // Restore opacity of any dragging elements
+    if (iframeDoc) {
+      const draggingElements = iframeDoc.querySelectorAll("[data-dragging]");
+      draggingElements.forEach((el) => {
+        (el as HTMLElement).style.opacity = "";
+        el.removeAttribute("data-dragging");
+      });
+    }
+
     // Reset global dragging flag
     setIsDragging(false);
   }, [setDraggedBlock, setDropIndicator, iframeDoc, clearParentHighlight]);
