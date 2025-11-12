@@ -59,6 +59,7 @@ const BlockCard = ({
       }
       if (!isEmpty(uiBlocks)) addPredefinedBlock(syncBlocksWithDefaults(uiBlocks), parentId, position);
       pubsub.publish(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK);
+      setTimeout(() => setIsAdding(false), 1000);
     },
     [addCoreBlock, addPredefinedBlock, block, getUILibraryBlock, library, parentId, position],
   );
