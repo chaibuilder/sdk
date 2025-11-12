@@ -179,7 +179,7 @@ const BlockFloatingSelector = ({ block, isDragging, selectedBlockElement }: Bloc
         <>
           <div className="flex items-center">
             {enabledDnd && (
-              <DragHandleDots2Icon className="flex-shrink-0 rounded p-0.5 hover:cursor-move hover:bg-white/20" />
+              <DragHandleDots2Icon className="flex-shrink-0 rounded p-0.5 cursor-grab active:cursor-grabbing hover:bg-white/20" />
             )}
             {parentId && (
               <ArrowUpIcon
@@ -192,7 +192,7 @@ const BlockFloatingSelector = ({ block, isDragging, selectedBlockElement }: Bloc
             )}
           </div>
 
-          <div className={`w-full ${enabledDnd ? "hover:cursor-move" : ""}`}>
+          <div className={`w-full ${enabledDnd ? "cursor-grab active:cursor-grabbing" : ""}`}>
             <div className="mr-10 w-full items-center space-x-1 px-1 leading-tight">{label}</div>
           </div>
           <div className="flex items-center gap-1 pl-1 pr-1.5">

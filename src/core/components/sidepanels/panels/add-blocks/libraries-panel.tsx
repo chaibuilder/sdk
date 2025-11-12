@@ -93,7 +93,7 @@ const BlockCard = ({
               onDragStart={handleDragStart}
               onDragEnd={onDragEnd}
               src={block.preview}
-              className="min-h-[45px] w-full rounded-md"
+              className={`min-h-[45px] w-full rounded-md ${enabledDnd ? "cursor-grab active:cursor-grabbing" : ""}`}
               alt={name}
             />
           ) : (
