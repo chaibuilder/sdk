@@ -140,7 +140,7 @@ export const ChaiBuilderBlocks = ({
   return (
     <div className="mx-auto flex h-full w-full max-w-3xl flex-col">
       {/* Search at top */}
-      <div className="sticky top-0 z-10 bg-background/80 px-4 py-2 backdrop-blur-sm">
+      <div className={`${ !disableBlockGroupsSidebar ? "px-4" : "px-2" } sticky top-0 py-2 z-10 bg-background/80 backdrop-blur-sm`}>
         <Input
           ref={searchInputRef}
           type="search"
@@ -201,7 +201,7 @@ export const ChaiBuilderBlocks = ({
                 </p>
               </div>
             ) : (
-              <div className="space-y-6 p-4">
+              <div className={`${ !disableBlockGroupsSidebar ? "p-4" : "p-0" } space-y-6`}>
                 {displayedGroups.map((group) => (
                   <div key={group} className="space-y-3">
                     <h3 className="px-1 text-sm font-medium">{capitalize(t(group.toLowerCase()))}</h3>

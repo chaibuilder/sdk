@@ -10,6 +10,8 @@ import {
   ChaiUndoRedo,
   useSelectedBlock,
 } from "@/core/main";
+import { CHAI_BUILDER_EVENTS } from "@/core/events";
+import { usePubSub, useSelectedBlockIds } from "@/core/hooks";
 import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
 import { TooltipProvider } from "@/ui/shadcn/components/ui/tooltip";
 import { motion } from "framer-motion";
@@ -44,6 +46,18 @@ const BlockEditor = () => {
 export default function CustomLayout() {
   const [activePanelIndex, setActivePanelIndex] = useState<number | null>(0);
   const { t } = useTranslation();
+  const [, setSelectedIds] = useSelectedBlockIds();
+
+  // PubSub listener for GOTO_BLOCK_SETTINGS event
+  usePubSub(
+    CHAI_BUILDER_EVENTS.GOTO_BLOCK_SETTINGS,
+    (id?: string) => {
+      if (id) {
+        setSelectedIds([id]);
+        setActivePanelIndex(1);
+      }
+    },
+  );
 
   const menuItems = [
     { icon: <StackIcon className="w-6 h-6" />, label: "Outline", component: ChaiOutline },
@@ -63,7 +77,7 @@ export default function CustomLayout() {
         <div className="flex h-16 items-center justify-between bg-neutral-900 px-4 text-white">
           <h1 className="ml-4 font-bold">Custom Layout Example</h1>
           <div className={`flex items-center space-x-2`}>
-            <ChaiScreenSizes />
+            <ChaiScreenSizes buttonClass={"text-yellow-500 hover:text-yellow-500"} activeButtonClass={"text-green-500 hover:text-green-500"} />
             |
             <ChaiUndoRedo />
           </div>

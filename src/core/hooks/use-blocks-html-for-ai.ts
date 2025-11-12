@@ -19,7 +19,7 @@ type Options = {
   EXTRA_CORE_BLOCKS?: string[];
 };
 
-const ATTRIBUTES_TO_REMOVE = ["data-block-index", "data-drop", "data-style-id", "data-block-parent", "data-style-prop"];
+const ATTRIBUTES_TO_REMOVE = ["data-block-index", "data-drop", "data-style-id", "data-block-parent", "data-style-prop", "data-highlighted"];
 
 const CORE_BLOCKS = [
   "Box",

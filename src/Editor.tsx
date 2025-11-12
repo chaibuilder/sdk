@@ -36,7 +36,7 @@ function ChaiBuilderDefault() {
         darkMode: false,
         exportCode : true,
         dataBinding: false,
-        importHtml: false,
+        importHtml: true,
         importTheme: false,
       }}
       gotoPage={(args) => {

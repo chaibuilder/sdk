@@ -1,5 +1,5 @@
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
-import { compact, each, get, pick } from "lodash";
+import { compact, each, get, pick } from "lodash-es";
 import { useCallback } from "react";
 import { getBlockWithNestedChildren } from "./get-block-with-nested-children";
 import { useBlocksStore } from "./hooks";

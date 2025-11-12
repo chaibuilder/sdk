@@ -6,8 +6,7 @@ import { pubsub } from "@/core/pubsub";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { BoxIcon } from "@radix-ui/react-icons";
-import { kebabCase } from "lodash";
-import { capitalize, has, isFunction } from "lodash-es";
+import { capitalize, has, isFunction, kebabCase } from "lodash-es";
 import { createElement } from "react";
 import { useTranslation } from "react-i18next";
 

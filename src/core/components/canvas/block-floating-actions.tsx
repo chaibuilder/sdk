@@ -5,6 +5,7 @@ import { useChaiFeatureFlag } from "@/core/flags/register-chai-flag";
 import { useFrame } from "@/core/frame/frame-context";
 import { canDeleteBlock, canDuplicateBlock } from "@/core/functions/block-helpers";
 import {
+  useBuilderProp,
   useDuplicateBlocks,
   useHighlightBlockId,
   useInlineEditing,
@@ -24,6 +25,7 @@ import { useResizeObserver } from "@react-hookz/web";
 import { first, get, isEmpty } from "lodash-es";
 import { useEffect, useState } from "react";
 import { AiIcon } from "../ai/ai-icon";
+import { GotoSettingsIcon } from "./goto-settings-icon";
 import { getElementByDataBlockId } from "./static/chai-canvas";
 
 type BlockActionProps = {
@@ -106,6 +108,7 @@ const BlockFloatingSelector = ({ block, isDragging, selectedBlockElement }: Bloc
   const { editingBlockId } = useInlineEditing();
   const { document } = useFrame();
   const enabledDnd = useChaiFeatureFlag("enable-drag-and-drop");
+  const gotoSettingsEnabled = useBuilderProp("flags.gotoSettings", false);
 
   // * Floating element position and size
   const { floatingStyles, refs, update } = useFloating({
@@ -192,12 +195,17 @@ const BlockFloatingSelector = ({ block, isDragging, selectedBlockElement }: Bloc
           <div className={`w-full ${enabledDnd ? "hover:cursor-move" : ""}`}>
             <div className="mr-10 w-full items-center space-x-1 px-1 leading-tight">{label}</div>
           </div>
-
           <div className="flex items-center gap-1 pl-1 pr-1.5">
             {hasPermission(PERMISSIONS.ADD_BLOCK) && (
               <AiIcon
                 className="h-4 w-4 rounded hover:bg-white hover:text-blue-500"
                 onClick={() => setActivePanel("chai-chat-panel")}
+              />
+            )}
+            {gotoSettingsEnabled && (
+              <GotoSettingsIcon
+                blockId={block?._id}
+                className="h-4 w-4 rounded p-px hover:bg-white hover:text-blue-500"
               />
             )}
             <AddBlockDropdown block={block}>
