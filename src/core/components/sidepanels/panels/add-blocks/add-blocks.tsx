@@ -310,20 +310,28 @@ const AddBlocksPanel = ({
         <TabsContent value="core" className="h-full max-h-full flex-1 pb-20">
           <div className="-mx-1.5 h-full max-h-full overflow-hidden">
             <div className="mt-2 h-full w-full">
-              <DefaultChaiBlocks gridCols={"grid-cols-4"} parentId={parentId} position={position} />
+              <DefaultChaiBlocks
+                gridCols={fromSidebar ? "grid-cols-3" : "grid-cols-4"}
+                parentId={parentId}
+                position={position}
+              />
             </div>
           </div>
         </TabsContent>
         {hasUiLibraries && (
           <TabsContent value="library" className="h-full max-h-full flex-1 pb-20">
-            <UILibrariesPanel parentId={parentId} position={position} />
+            <UILibrariesPanel fromSidebar={fromSidebar} parentId={parentId} position={position} />
           </TabsContent>
         )}
         {hasPartialBlocks && (
           <TabsContent value="partials" className="h-full max-h-full flex-1 pb-20">
             <div className="-mx-1.5 h-full max-h-full overflow-hidden">
               <div className="mt-2 h-full w-full">
-                <PartialBlocks gridCols={"grid-cols-4"} parentId={parentId} position={position} />
+                <PartialBlocks
+                  gridCols={fromSidebar ? "grid-cols-3" : "grid-cols-4"}
+                  parentId={parentId}
+                  position={position}
+                />
               </div>
             </div>
           </TabsContent>

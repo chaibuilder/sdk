@@ -15,7 +15,7 @@ import { Button } from "@/ui/shadcn/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/ui/shadcn/components/ui/sheet";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
-import { Cross1Icon, LightningBoltIcon, MixerHorizontalIcon, StackIcon } from "@radix-ui/react-icons";
+import { Cross1Icon, LightningBoltIcon, MixerHorizontalIcon, PlusCircledIcon, StackIcon } from "@radix-ui/react-icons";
 import { motion } from "framer-motion";
 import { find, first, get, reverse } from "lodash-es";
 import React, {
@@ -38,6 +38,14 @@ const OutlineButton = ({ isActive, show }: { isActive: boolean; show: () => void
   return (
     <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
       <StackIcon className="h-5 w-5" />
+    </Button>
+  );
+};
+
+const AddBlocksButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
+  return (
+    <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
+      <PlusCircledIcon className="h-5 w-5" />
     </Button>
   );
 };
@@ -84,14 +92,14 @@ registerChaiSidebarPanel("outline", {
 });
 
 registerChaiSidebarPanel("add-block", {
-  button: OutlineButton,
-  label: "Outline",
+  button: AddBlocksButton,
+  label: "Add Blocks",
   position: "top",
   isInternal: true,
   width: DEFAULT_PANEL_WIDTH,
   panel: () => (
     <div>
-      <AddBlocksPanel fromSidebar={true} parentId={undefined} position={-1} />
+      <AddBlocksPanel showHeading={false} fromSidebar={true} parentId={undefined} position={-1} />
     </div>
   ),
 });

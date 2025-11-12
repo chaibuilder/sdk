@@ -105,7 +105,15 @@ const BlockCard = ({
   );
 };
 
-const UILibrarySection = ({ parentId, position }: { parentId?: string; position?: number }) => {
+const UILibrarySection = ({
+  parentId,
+  position,
+  fromSidebar,
+}: {
+  parentId?: string;
+  position?: number;
+  fromSidebar?: boolean;
+}) => {
   const [selectedLibrary, setLibrary] = useSelectedLibrary();
   const uiLibraries = useChaiLibraries();
   const library = uiLibraries.find((library) => library.id === selectedLibrary) || first(uiLibraries);
@@ -216,13 +224,15 @@ const UILibrarySection = ({ parentId, position }: { parentId?: string; position?
         </div>
 
         <div className="relative flex h-full max-h-full flex-1 overflow-hidden bg-background">
-          <div className={"flex h-full flex-1 flex-col pt-2"}>
-            <div className={"flex h-full max-h-full w-60 min-w-60 max-w-60 flex-col gap-1 px-1 pr-2"}>
+          <div className={`flex h-full flex-1 pt-2 ${fromSidebar ? "flex-col" : ""}`}>
+            <div
+              className={`flex h-full max-h-full min-w-60 flex-col gap-1 px-1 pr-2 ${fromSidebar ? "" : "w-60 max-w-60"}`}>
               <UILibrariesSelect library={library?.id} setLibrary={setLibrary} uiLibraries={uiLibraries} />
               <div className="mt-2 flex h-full max-h-full w-full flex-1 flex-col">
                 <span className="text-xs font-bold text-gray-500">{t("Groups")}</span>
-                <hr className="mt-1 border-border" />
-                <div className="no-scrollbar mt-2 h-full max-h-full flex-1 overflow-y-auto pb-20">
+                {!fromSidebar && <hr className="mt-1 border-border" />}
+                <div
+                  className={`no-scrollbar mt-2 h-full max-h-full flex-1 overflow-y-auto ${fromSidebar ? "" : "pb-20"}`}>
                   {isEmpty(mergedGroups) ? (
                     <div className="mt-4 flex flex-col items-center justify-center gap-3 p-4 text-center">
                       {searchQuery ? (
@@ -254,7 +264,7 @@ const UILibrarySection = ({ parentId, position }: { parentId?: string; position?
                 </div>
               </div>
             </div>
-            <div className="flex h-full max-h-full w-full flex-col border-l border-border">
+            <div className={`flex h-full max-h-full w-full flex-col border-border ${fromSidebar ? "" : "border-l"}`}>
               <ScrollArea
                 onMouseEnter={() => (timeoutRef.current ? clearTimeout(timeoutRef.current) : null)}
                 className="z-10 flex h-full max-h-full w-full flex-col gap-2 transition-all ease-linear">
@@ -263,7 +273,7 @@ const UILibrarySection = ({ parentId, position }: { parentId?: string; position?
                     <p className="text-sm">{t("No blocks found in this group")}</p>
                   </div>
                 ) : (
-                  <div className="grid w-full grid-cols-2 gap-2 px-2">
+                  <div className={`grid w-full gap-2 px-2 ${fromSidebar ? "grid-cols-1" : ""}`}>
                     <div className="flex flex-col gap-1">
                       {firstBlocks.map((block: ChaiLibraryBlock, index: number) => (
                         <BlockCard
@@ -300,8 +310,16 @@ const UILibrarySection = ({ parentId, position }: { parentId?: string; position?
   );
 };
 
-const UILibrariesPanel = ({ parentId, position }: { parentId?: string; position?: number }) => {
-  return <UILibrarySection parentId={parentId} position={position} />;
+const UILibrariesPanel = ({
+  parentId,
+  position,
+  fromSidebar,
+}: {
+  parentId?: string;
+  position?: number;
+  fromSidebar?: boolean;
+}) => {
+  return <UILibrarySection parentId={parentId} position={position} fromSidebar={fromSidebar} />;
 };
 
 export default UILibrariesPanel;

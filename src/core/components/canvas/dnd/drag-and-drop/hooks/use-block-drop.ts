@@ -2,16 +2,16 @@
  * ============================================================================
  * USE BLOCK DROP HOOK
  * ============================================================================
- * 
+ *
  * Hook that handles the actual drop operation when a dragged block is released.
  * Calculates the correct insertion point and adds the block to the canvas
  * at the position indicated by the placeholder.
- * 
+ *
  * @module use-block-drop
  */
 
-import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
-import { useAddBlock } from "@/core/hooks";
+import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
+import { useAddBlock, useBlockHighlight, useSelectedBlockIds, useSelectedStylingBlocks } from "@/core/hooks";
 import { useCanvasIframe } from "@/core/hooks/use-canvas-iframe";
 import { ChaiBlock } from "@/types/common";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
@@ -24,20 +24,24 @@ import { dragAndDropAtom, dropIndicatorAtom } from "./use-drag-and-drop";
  * @HOOK useBlockDrop
  * @description
  * Handles the drop event when a dragged block is released.
- * 
+ *
  * Features:
  * - Validates drop state and dragged block
  * - Calculates precise insertion index based on drop indicator
  * - Handles both new blocks (type only) and predefined blocks (with children)
+ * - Supports moving existing blocks to new positions (reordering/reparenting)
  * - Supports root-level and nested insertions
  * - Immediately clears drag state to prevent race conditions
  * - Syncs block defaults for predefined blocks
- * 
+ *
  * The insertion logic uses the drop indicator state (set during dragOver)
- * to ensure the block is added exactly where the placeholder was shown.
- * 
+ * to ensure the block is added/moved exactly where the placeholder was shown.
+ *
+ * For existing blocks (with _id), uses moveBlocks() to reposition.
+ * For new blocks (without _id), uses addCoreBlock() to create.
+ *
  * @returns Function to call on drop event
- * 
+ *
  * @example
  * const onDrop = useBlockDrop();
  * <div onDrop={onDrop} />
@@ -48,6 +52,10 @@ export const useBlockDrop = () => {
   const [allBlocks] = useBlocksStore();
   const [iframe] = useCanvasIframe();
   const { addCoreBlock } = useAddBlock();
+  const { moveBlocks } = useBlocksStoreUndoableActions();
+  const [, setSelectedBlockIds] = useSelectedBlockIds();
+  const [, setStyleBlocks] = useSelectedStylingBlocks();
+  const { clearHighlight } = useBlockHighlight();
 
   // Get the document from the iframe element
   const iframeDoc = (iframe as HTMLIFrameElement)?.contentDocument;
@@ -91,23 +99,30 @@ export const useBlockDrop = () => {
         dropIndicator.position,
       );
 
-      // Add the block using the SDK's addCoreBlock function
-      const draggedBlockType = draggedBlock._type || draggedBlock.type;
-      
-      // Handle predefined blocks with children
-      const preBlocks = !draggedBlock?.blocks
-        ? null
-        : isFunction(draggedBlock?.blocks)
-          ? syncBlocksWithDefaults(draggedBlock?.blocks())
-          : draggedBlock?.blocks;
+      // Check if this is an existing block being moved or a new block being added
+      const isExistingBlock = draggedBlock._id !== undefined;
 
-      addCoreBlock(
-        preBlocks?.length > 0 ? { blocks: [...preBlocks] } : { type: draggedBlockType },
-        parentId,
-        index,
-      );
+      if (isExistingBlock) {
+        // Move existing block to new position
+        moveBlocks([draggedBlock._id], parentId === null ? undefined : parentId, index);
+        clearHighlight();
+        setStyleBlocks([]);
+        setSelectedBlockIds([draggedBlock._id]);
+      } else {
+        // Add new block
+        const draggedBlockType = draggedBlock._type || draggedBlock.type;
+
+        // Handle predefined blocks with children
+        const preBlocks = !draggedBlock?.blocks
+          ? null
+          : isFunction(draggedBlock?.blocks)
+            ? syncBlocksWithDefaults(draggedBlock?.blocks())
+            : draggedBlock?.blocks;
+
+        addCoreBlock(preBlocks?.length > 0 ? { blocks: [...preBlocks] } : { type: draggedBlockType }, parentId, index);
+      }
     },
-    [draggedBlock, dropIndicator, allBlocks, iframeDoc, addCoreBlock, setDraggedBlock],
+    [draggedBlock, dropIndicator, allBlocks, iframeDoc, addCoreBlock, moveBlocks, setDraggedBlock],
   );
 };
 
@@ -115,14 +130,14 @@ export const useBlockDrop = () => {
  * @FUNCTION calculateInsertionIndex
  * @description
  * Calculates the parent ID and index where a new block should be inserted.
- * 
+ *
  * Logic:
  * - "inside": Insert as last child of target block
  * - "before": Insert as sibling before target block
  * - "after": Insert as sibling after target block
  * - Special handling for canvas root drops
  * - Converts "canvas" parent ID to null for root-level insertions
- * 
+ *
  * @param blocks - All blocks in the canvas
  * @param targetBlockId - The ID of the target block (where placeholder is shown)
  * @param targetParentId - The ID of the target's parent block
@@ -191,7 +206,7 @@ function calculateInsertionIndex(
  * @description
  * Removes the data-drop-target attribute from all elements in the iframe.
  * This clears any visual feedback that was applied during drag operations.
- * 
+ *
  * @param iframeDoc - The iframe document containing the canvas
  */
 function removeDropTargetAttributes(iframeDoc: Document | null | undefined) {
