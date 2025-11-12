@@ -1,6 +1,7 @@
 import AddBlockDropdown from "@/core/components/canvas/add-block-placements";
 import { useDragAndDrop } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 import BlockController from "@/core/components/sidepanels/panels/add-blocks/block-controller";
+import { useChaiFeatureFlag } from "@/core/flags/register-chai-flag";
 import { useFrame } from "@/core/frame/frame-context";
 import { canDeleteBlock, canDuplicateBlock } from "@/core/functions/block-helpers";
 import {
@@ -41,6 +42,7 @@ export const BlockSelectionHighlighter = () => {
   const [, setSelectedStyleElements] = useState<HTMLElement[] | null[]>([]);
   const { onDragStart, onDragEnd, isDragging } = useDragAndDrop();
   const [dragging, setDragging] = useState(null);
+  const enabledDnd = useChaiFeatureFlag("enable-drag-and-drop");
 
   const isInViewport = (element: HTMLElement, offset = 0) => {
     const { top } = element.getBoundingClientRect();
@@ -80,7 +82,7 @@ export const BlockSelectionHighlighter = () => {
         setDragging(null);
         onDragEnd();
       }}
-      draggable={Boolean(selectedBlock)}
+      draggable={enabledDnd && Boolean(selectedBlock)}
       onDragStart={(e: any) => {
         setDragging(selectedElements?.[0]);
         onDragStart(e, selectedBlock, false);
@@ -103,6 +105,7 @@ const BlockFloatingSelector = ({ block, isDragging, selectedBlockElement }: Bloc
   const { hasPermission } = usePermissions();
   const { editingBlockId } = useInlineEditing();
   const { document } = useFrame();
+  const enabledDnd = useChaiFeatureFlag("enable-drag-and-drop");
 
   // * Floating element position and size
   const { floatingStyles, refs, update } = useFloating({
@@ -172,7 +175,9 @@ const BlockFloatingSelector = ({ block, isDragging, selectedBlockElement }: Bloc
         className={`isolate z-[999] flex h-6 items-center justify-between bg-blue-500 py-2 text-xs text-white ${isDragging ? "opacity-0" : ""}`}>
         <>
           <div className="flex items-center">
-            <DragHandleDots2Icon className="flex-shrink-0 rounded p-0.5 hover:cursor-move hover:bg-white/20" />
+            {enabledDnd && (
+              <DragHandleDots2Icon className="flex-shrink-0 rounded p-0.5 hover:cursor-move hover:bg-white/20" />
+            )}
             {parentId && (
               <ArrowUpIcon
                 className="flex-shrink-0 rounded p-0.5 hover:bg-white/20"
@@ -184,7 +189,7 @@ const BlockFloatingSelector = ({ block, isDragging, selectedBlockElement }: Bloc
             )}
           </div>
 
-          <div className="w-full hover:cursor-move">
+          <div className={`w-full ${enabledDnd ? "hover:cursor-move" : ""}`}>
             <div className="mr-10 w-full items-center space-x-1 px-1 leading-tight">{label}</div>
           </div>
 

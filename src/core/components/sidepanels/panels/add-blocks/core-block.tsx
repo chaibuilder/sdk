@@ -1,6 +1,7 @@
 import { useDragAndDrop } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useAddBlock } from "@/core/hooks";
+import { useChaiFeatureFlag } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
@@ -32,7 +33,8 @@ export const CoreBlock = ({
     }
     pubsub.publish(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK);
   };
-  const dnd = true;
+  const enabledDnd = useChaiFeatureFlag("enable-drag-and-drop");
+
   const { t } = useTranslation();
   const { onDragStart, onDragEnd } = useDragAndDrop();
 
@@ -46,7 +48,7 @@ export const CoreBlock = ({
             type="button"
             onDragStart={(ev) => onDragStart(ev, { ...block, label: label, icon: icon })}
             onDragEnd={onDragEnd}
-            draggable={dnd ? "true" : "false"}
+            draggable={enabledDnd}
             className={`${kebabCase(`chai-block-${type}`)} cursor-pointer space-y-2 rounded-lg border border-border p-3 text-center hover:bg-slate-300/50 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400 dark:border-gray-700 dark:text-white dark:hover:bg-slate-800/50 dark:disabled:bg-gray-900 dark:disabled:text-foreground ${
               disabled ? "opacity-50" : ""
             }`}>

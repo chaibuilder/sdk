@@ -6,7 +6,9 @@ import { useAddBlock } from "@/core/hooks";
 import { useLibraryBlocks } from "@/core/hooks/use-library-blocks";
 import { useSelectedLibrary } from "@/core/hooks/use-selected-library";
 import { getBlocksFromHTML } from "@/core/import-html/html-to-json";
+import { useChaiFeatureFlag } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
+import { cn } from "@/lib/utils";
 import { ChaiBlock } from "@/types/chai-block";
 import { ChaiLibrary, ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui";
@@ -16,7 +18,7 @@ import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
 import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
-import { Cross1Icon, MagnifyingGlassIcon, ReloadIcon } from "@radix-ui/react-icons";
+import { CaretRightIcon, Cross1Icon, MagnifyingGlassIcon, ReloadIcon } from "@radix-ui/react-icons";
 import clsx from "clsx";
 import Fuse from "fuse.js";
 import { capitalize, filter, first, get, groupBy, has, isEmpty, keys, map } from "lodash-es";
@@ -39,8 +41,8 @@ const BlockCard = ({
   const { addCoreBlock, addPredefinedBlock } = useAddBlock();
   const name = get(block, "name", get(block, "label"));
   const description = get(block, "description", "");
-  const dnd = true;
   const { onDragStart, onDragEnd } = useDragAndDrop();
+  const enabledDnd = useChaiFeatureFlag("enable-drag-and-drop");
 
   const addBlock = useCallback(
     async (e: any) => {
@@ -62,6 +64,7 @@ const BlockCard = ({
   );
 
   const handleDragStart = async (ev) => {
+    if (!enabledDnd) return;
     let uiBlocks = await getUILibraryBlock({ library, block });
     if (typeof uiBlocks === "string") {
       uiBlocks = getBlocksFromHTML(uiBlocks);
@@ -74,9 +77,6 @@ const BlockCard = ({
       <TooltipTrigger asChild>
         <div
           onClick={isAdding ? () => {} : addBlock}
-          draggable={dnd ? "true" : "false"}
-          onDragStart={handleDragStart}
-          onDragEnd={onDragEnd}
           className={clsx(
             "relative mt-2 cursor-pointer overflow-hidden rounded-md border border-border duration-200 hover:border-blue-500 hover:shadow-xl",
           )}>
@@ -87,7 +87,14 @@ const BlockCard = ({
             </div>
           )}
           {block.preview ? (
-            <img src={block.preview} className="min-h-[45px] w-full rounded-md" alt={name} />
+            <img
+              draggable={enabledDnd}
+              onDragStart={handleDragStart}
+              onDragEnd={onDragEnd}
+              src={block.preview}
+              className="min-h-[45px] w-full rounded-md"
+              alt={name}
+            />
           ) : (
             <div className="flex h-fit w-full flex-col items-center justify-center gap-1 rounded-md border border-border p-6 py-10 text-center">
               <p className="font-medium text-gray-800">{name}</p>
@@ -247,7 +254,7 @@ const UILibrarySection = ({
                         </>
                       )}
                     </div>
-                  ) : (
+                  ) : fromSidebar ? (
                     <Select value={selectedGroup} onValueChange={setGroup}>
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder={t("Select a group")} />
@@ -260,6 +267,22 @@ const UILibrarySection = ({
                         ))}
                       </SelectContent>
                     </Select>
+                  ) : (
+                    map(mergedGroups, (_groupedBlocks, group) => (
+                      <div
+                        onMouseEnter={() => handleMouseEnter(group)}
+                        onMouseLeave={() => clearTimeout(timeoutRef.current)}
+                        key={group}
+                        role="button"
+                        onClick={() => setGroup(group)}
+                        className={cn(
+                          "flex w-full cursor-pointer items-center justify-between rounded-md p-2 text-sm text-foreground transition-all ease-in-out hover:bg-gray-200 dark:hover:bg-gray-800",
+                          group === selectedGroup ? "bg-primary text-primary-foreground hover:bg-primary/80" : "",
+                        )}>
+                        <span>{capitalize(t(group.toLowerCase()))}</span>
+                        <CaretRightIcon className="ml-2 h-5 w-5" />
+                      </div>
+                    ))
                   )}
                 </div>
               </div>
@@ -273,7 +296,7 @@ const UILibrarySection = ({
                     <p className="text-sm">{t("No blocks found in this group")}</p>
                   </div>
                 ) : (
-                  <div className={`grid w-full gap-2 px-2 ${fromSidebar ? "grid-cols-1" : ""}`}>
+                  <div className={`grid w-full gap-2 px-2 ${fromSidebar ? "grid-cols-1" : "grid-cols-2"}`}>
                     <div className="flex flex-col gap-1">
                       {firstBlocks.map((block: ChaiLibraryBlock, index: number) => (
                         <BlockCard

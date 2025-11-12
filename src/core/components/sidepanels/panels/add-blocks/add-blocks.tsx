@@ -153,7 +153,7 @@ export const ChaiBuilderBlocks = ({
 
       <div className="sticky top-10 flex h-[calc(100%-48px)] overflow-hidden">
         {/* Sidebar for groups */}
-        {/* {!disableBlockGroupsSidebar && sortedGroups.length > 0 && (
+        {!disableBlockGroupsSidebar && sortedGroups.length > 0 && (
           <div className="w-1/4 min-w-[120px] border-r border-border">
             <ScrollArea className="h-full">
               <div className="space-y-1 p-2">
@@ -186,7 +186,7 @@ export const ChaiBuilderBlocks = ({
               </div>
             </ScrollArea>
           </div>
-        )} */}
+        )}
 
         {/* Main content area */}
         <div
@@ -314,6 +314,7 @@ const AddBlocksPanel = ({
                 gridCols={fromSidebar ? "grid-cols-3" : "grid-cols-4"}
                 parentId={parentId}
                 position={position}
+                disableBlockGroupsSidebar={fromSidebar}
               />
             </div>
           </div>
