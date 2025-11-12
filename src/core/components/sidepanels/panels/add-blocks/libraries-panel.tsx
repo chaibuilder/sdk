@@ -13,17 +13,17 @@ import { ChaiBlock } from "@/types/chai-block";
 import { ChaiLibrary, ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui";
 import { Button } from "@/ui/shadcn/components/ui/button";
-import { Input } from "@/ui/shadcn/components/ui/input";
 import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
 import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
-import { CaretRightIcon, Cross1Icon, MagnifyingGlassIcon, ReloadIcon } from "@radix-ui/react-icons";
+import { CaretRightIcon, ReloadIcon } from "@radix-ui/react-icons";
 import clsx from "clsx";
 import Fuse from "fuse.js";
 import { capitalize, filter, first, get, groupBy, has, isEmpty, keys, map } from "lodash-es";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import SearchInput from "./search-input";
 
 const BlockCard = ({
   block,
@@ -193,10 +193,6 @@ const UILibrarySection = ({
     if (library?.id) resetLibrary(library.id);
   };
 
-  const handleClearSearch = () => {
-    setSearchQuery("");
-  };
-
   if (isLoading)
     return (
       <div className="mt-4 grid h-full w-full grid-cols-12 gap-2">
@@ -212,29 +208,12 @@ const UILibrarySection = ({
   return (
     <>
       <div className="flex h-full max-h-full flex-col">
-        <div className="flex items-center gap-2 border-border py-2">
-          <div className="relative w-full">
-            <MagnifyingGlassIcon className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder={t("Search blocks...")}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-8 pr-8"
-            />
-            {searchQuery && (
-              <button
-                onClick={handleClearSearch}
-                className="absolute right-2 top-2.5 text-muted-foreground hover:text-foreground">
-                <Cross1Icon className="h-4 w-4" />
-              </button>
-            )}
-          </div>
-        </div>
+        <SearchInput value={searchQuery} setValue={setSearchQuery} />
 
         <div className="relative flex h-full max-h-full flex-1 overflow-hidden bg-background">
           <div className={`flex h-full flex-1 pt-2 ${fromSidebar ? "flex-col" : ""}`}>
             <div
-              className={`flex h-full max-h-full min-w-60 flex-col gap-1 px-1 pr-2 ${fromSidebar ? "" : "w-60 max-w-60"}`}>
+              className={`flex h-full max-h-full min-w-60 flex-col gap-1 ${fromSidebar ? "pb-2" : "w-60 max-w-60 px-1 pr-2"}`}>
               <UILibrariesSelect library={library?.id} setLibrary={setLibrary} uiLibraries={uiLibraries} />
               <div className="mt-2 flex h-full max-h-full w-full flex-1 flex-col">
                 <span className="text-xs font-bold text-gray-500">{t("Groups")}</span>
@@ -297,7 +276,7 @@ const UILibrarySection = ({
                     <p className="text-sm">{t("No blocks found in this group")}</p>
                   </div>
                 ) : (
-                  <div className={`grid w-full gap-2 px-2 ${fromSidebar ? "grid-cols-1 pb-20" : "grid-cols-2"}`}>
+                  <div className={`grid w-full gap-2 ${fromSidebar ? "grid-cols-1 pb-20" : "grid-cols-2 px-2"}`}>
                     <div className="flex flex-col gap-1">
                       {firstBlocks.map((block: ChaiLibraryBlock, index: number) => (
                         <BlockCard

@@ -12,7 +12,6 @@ import { useBlocksStore, useBuilderProp, usePermissions } from "@/core/hooks";
 import { usePartialBlocksList } from "@/core/hooks/use-partial-blocks-store";
 import { mergeClasses, PERMISSIONS } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
-import { Input } from "@/ui/shadcn/components/ui/input";
 import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/shadcn/components/ui/tabs";
 import { useAtom } from "jotai";
@@ -20,6 +19,7 @@ import { atomWithStorage } from "jotai/utils";
 import { capitalize, debounce, filter, find, map, reject, sortBy, values } from "lodash-es";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import SearchInput from "./search-input";
 
 const CORE_GROUPS = ["basic", "typography", "media", "layout", "form", "advanced", "other"];
 
@@ -138,25 +138,16 @@ export const ChaiBuilderBlocks = ({
   }, [sortedGroups, selectedGroup]);
 
   return (
-    <div className="mx-auto flex h-full w-full max-w-3xl flex-col">
+    <div className="mx-auto flex h-full w-full flex-col">
       {/* Search at top */}
-      <div className={`${ !disableBlockGroupsSidebar ? "px-4" : "px-2" } sticky top-0 py-2 z-10 bg-background/80 backdrop-blur-sm`}>
-        <Input
-          ref={searchInputRef}
-          type="search"
-          placeholder={t("Search blocks...")}
-          value={searchTerm}
-          className="-ml-2"
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
+      <SearchInput value={searchTerm} setValue={setSearchTerm} />
 
-      <div className="sticky top-10 flex h-[calc(100%-48px)] overflow-hidden">
+      <div className="sticky top-10 flex h-[calc(100%-48px)] overflow-hidden pt-2">
         {/* Sidebar for groups */}
         {!disableBlockGroupsSidebar && sortedGroups.length > 0 && (
           <div className="w-1/4 min-w-[120px] border-r border-border">
             <ScrollArea className="h-full">
-              <div className="space-y-1 p-2">
+              <div className="space-y-1">
                 <button
                   key="sidebar-all"
                   onClick={() => handleGroupClick("all")}
@@ -201,7 +192,7 @@ export const ChaiBuilderBlocks = ({
                 </p>
               </div>
             ) : (
-              <div className={`${ !disableBlockGroupsSidebar ? "p-4" : "p-0" } space-y-6`}>
+              <div className={`${!disableBlockGroupsSidebar ? "p-4" : "p-0"} space-y-6`}>
                 {displayedGroups.map((group) => (
                   <div key={group} className="space-y-3">
                     <h3 className="px-1 text-sm font-medium">{capitalize(t(group.toLowerCase()))}</h3>
@@ -325,8 +316,8 @@ const AddBlocksPanel = ({
           ))}
         </TabsList>
         <TabsContent value="core" className="h-full max-h-full flex-1 pb-20">
-          <div className="-mx-1.5 h-full max-h-full overflow-hidden">
-            <div className="mt-2 h-full w-full">
+          <div className={`h-full max-h-full overflow-hidden`}>
+            <div className={`h-full w-full`}>
               <DefaultChaiBlocks
                 gridCols={fromSidebar ? "grid-cols-2" : "grid-cols-4"}
                 parentId={parentId}
@@ -343,8 +334,8 @@ const AddBlocksPanel = ({
         )}
         {hasPartialBlocks && (
           <TabsContent value="partials" className="h-full max-h-full flex-1 pb-20">
-            <div className="-mx-1.5 h-full max-h-full overflow-hidden">
-              <div className="mt-2 h-full w-full">
+            <div className="h-full max-h-full overflow-hidden">
+              <div className="h-full w-full">
                 <PartialBlocks
                   gridCols={fromSidebar ? "grid-cols-2" : "grid-cols-4"}
                   parentId={parentId}
