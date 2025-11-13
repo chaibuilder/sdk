@@ -1,3 +1,4 @@
+import { useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 import { ClearCanvas } from "@/core/components/canvas/topbar/clear-canvas";
 import { SaveToLibrary } from "@/core/components/sidepanels/panels/outline/save-to-library";
 import { UnlinkLibraryBlock } from "@/core/components/sidepanels/panels/outline/unlink-library-block";
@@ -14,7 +15,7 @@ import {
   useSelectedBlockIds,
 } from "@/core/hooks";
 import { useCopyBlocks } from "@/core/hooks/use-copy-blockIds";
-import { PERMISSIONS, useChaiFeatureFlag, usePermissions } from "@/core/main";
+import { PERMISSIONS, usePermissions } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
 import {
   DropdownMenu,
@@ -161,7 +162,7 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
   const selectedBlock = useSelectedBlock();
   const { hasPermission } = usePermissions();
   const { librarySite } = useBuilderProp("flags", { librarySite: false });
-  const enabledDnd = useChaiFeatureFlag("enable-drag-and-drop");
+  const isDragAndDropEnabled = useIsDragAndDropEnabled();
 
   const duplicate = useCallback(() => {
     duplicateBlocks(selectedIds);
@@ -205,7 +206,7 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
     <DropdownMenuContent side="bottom" className="border-border text-xs">
       {hasPermission(PERMISSIONS.ADD_BLOCK) && (
         <>
-          {!enabledDnd && (
+          {!isDragAndDropEnabled && (
             <DropdownMenuItem
               disabled={!canAddChildBlock(selectedBlock?._type)}
               className="flex items-center gap-x-4 text-xs"
