@@ -1,4 +1,4 @@
-import { useDragAndDrop } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
+import { useDragAndDrop, useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 import { UILibrariesSelect } from "@/core/components/sidepanels/panels/add-blocks/libraries-select";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useChaiLibraries } from "@/core/extensions/libraries";
@@ -6,7 +6,6 @@ import { useAddBlock } from "@/core/hooks";
 import { useLibraryBlocks } from "@/core/hooks/use-library-blocks";
 import { useSelectedLibrary } from "@/core/hooks/use-selected-library";
 import { getBlocksFromHTML } from "@/core/import-html/html-to-json";
-import { useChaiFeatureFlag } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
 import { cn } from "@/lib/utils";
 import { ChaiBlock } from "@/types/chai-block";
@@ -42,7 +41,7 @@ const BlockCard = ({
   const name = get(block, "name", get(block, "label"));
   const description = get(block, "description", "");
   const { onDragStart, onDragEnd } = useDragAndDrop();
-  const enabledDnd = useChaiFeatureFlag("enable-drag-and-drop");
+  const isDragAndDropEnabled = useIsDragAndDropEnabled();
 
   const addBlock = useCallback(
     async (e: any) => {
@@ -65,7 +64,7 @@ const BlockCard = ({
   );
 
   const handleDragStart = async (ev) => {
-    if (!enabledDnd) return;
+    if (!isDragAndDropEnabled) return;
     let uiBlocks = await getUILibraryBlock({ library, block });
     if (typeof uiBlocks === "string") {
       uiBlocks = getBlocksFromHTML(uiBlocks);
@@ -89,11 +88,11 @@ const BlockCard = ({
           )}
           {block.preview ? (
             <img
-              draggable={enabledDnd}
+              draggable={isDragAndDropEnabled}
               onDragStart={handleDragStart}
               onDragEnd={onDragEnd}
               src={block.preview}
-              className={`min-h-[45px] w-full rounded-md ${enabledDnd ? "cursor-grab active:cursor-grabbing" : ""}`}
+              className={`min-h-[45px] w-full rounded-md ${isDragAndDropEnabled ? "cursor-grab active:cursor-grabbing" : ""}`}
               alt={name}
             />
           ) : (

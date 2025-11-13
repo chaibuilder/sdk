@@ -1,4 +1,5 @@
 import { canvasIframeAtom } from "@/core/atoms/ui";
+import { useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 import { BlockMoreOptions } from "@/core/components/sidepanels/panels/outline/block-more-options";
 import { TypeIcon } from "@/core/components/sidepanels/panels/outline/block-type-icon";
 import { PERMISSIONS } from "@/core/constants/PERMISSIONS";
@@ -6,7 +7,6 @@ import { ROOT_TEMP_KEY } from "@/core/constants/STRINGS";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { canAcceptChildBlock, canAddChildBlock } from "@/core/functions/block-helpers";
 import { useBlockHighlight, useBuilderProp, usePermissions, useTranslation, useUpdateBlocksProps } from "@/core/hooks";
-import { useChaiFeatureFlag } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
 import { cn } from "@/core/utils/cn";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
@@ -60,7 +60,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
   let previousState: boolean | null = null;
   const hasChildren = node.children.length > 0;
   const { highlightBlock, clearHighlight } = useBlockHighlight();
-  const enabledDnd = useChaiFeatureFlag("enable-drag-and-drop");
+  const isDragAndDropEnabled = useIsDragAndDropEnabled();
 
   const { id, data, isSelected, willReceiveDrop, isDragging, isEditing, handleClick } = node;
   const isShown = get(data, "_show", true);
@@ -219,7 +219,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
           setDropAttribute(id, "no");
         }}>
         {hasPermission(PERMISSIONS.ADD_BLOCK) &&
-          !enabledDnd &&
+          !isDragAndDropEnabled &&
           node?.rowIndex > 0 &&
           ((node.parent.isOpen && canAddChildBlock(get(node, "parent.data._type"))) ||
             node?.parent?.id === "__REACT_ARBORIST_INTERNAL_ROOT__") && (

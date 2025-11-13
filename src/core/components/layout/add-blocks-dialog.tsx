@@ -1,7 +1,7 @@
 import AddBlocksPanel from "@/core/components/sidepanels/panels/add-blocks/add-blocks";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { usePubSub } from "@/core/hooks/use-pub-sub";
-import { useChaiFeatureFlag, useSidebarActivePanel } from "@/core/main";
+import { useSidebarActivePanel } from "@/core/main";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -11,17 +11,18 @@ import {
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useIsDragAndDropEnabled } from "../canvas/dnd/drag-and-drop/hooks";
 
 export const AddBlocksDialog = () => {
   const { t } = useTranslation();
   const [parentId, setParentId] = useState<string>("");
   const [position, setPosition] = useState<number>(-1);
   const [open, setOpen] = useState(false);
-  const enabledDnd = useChaiFeatureFlag("enable-drag-and-drop");
+  const isDragAndDropEnabled = useIsDragAndDropEnabled();
   const [, setActivePanel] = useSidebarActivePanel();
 
   usePubSub(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, (data: { _id: string; position?: number } | undefined) => {
-    if (enabledDnd) {
+    if (isDragAndDropEnabled) {
       setActivePanel("add-block");
     } else {
       setParentId(data ? data._id : null);

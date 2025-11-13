@@ -296,5 +296,6 @@ export interface ChaiBuilderEditorProps {
     importHtml?: boolean;
     importTheme?: boolean;
     gotoSettings?: boolean;
+    dragAndDrop?: boolean;
   };
 }

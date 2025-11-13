@@ -8,11 +8,12 @@
  *
  * @module hooks/index
  *
- * 
+ *
  * import { useDragAndDrop } from './hooks';
  * const { onDragStart, onDragOver, onDrop, onDragEnd, isDragging } = useDragAndDrop();
  */
 
+import { useBuilderProp } from "@/core/hooks";
 import { useAtom } from "jotai";
 import { DragEvent } from "react";
 import { useBlockDragEnd } from "./use-block-drag-end";
@@ -97,4 +98,9 @@ export const useDragAndDrop = (): DragAndDrop => {
 export const useDropIndicator = () => {
   const [dropIndicator] = useAtom(dropIndicatorAtom);
   return dropIndicator;
+};
+
+export const useIsDragAndDropEnabled = () => {
+  const { dragAndDrop } = useBuilderProp("flags", { dragAndDrop: false });
+  return dragAndDrop;
 };

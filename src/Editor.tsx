@@ -34,10 +34,11 @@ function ChaiBuilderDefault() {
         librarySite: false,
         copyPaste: false,
         darkMode: false,
-        exportCode : true,
+        exportCode: true,
         dataBinding: false,
         importHtml: true,
         importTheme: false,
+        dragAndDrop: false,
       }}
       gotoPage={(args) => {
         console.log("gotoPage", args);

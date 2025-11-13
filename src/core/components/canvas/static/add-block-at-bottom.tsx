@@ -1,22 +1,23 @@
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { usePermissions } from "@/core/hooks";
-import { PERMISSIONS, useChaiFeatureFlag } from "@/core/main";
+import { PERMISSIONS } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
+import { useIsDragAndDropEnabled } from "../dnd/drag-and-drop/hooks";
 
 export const AddBlockAtBottom = () => {
   const { t } = useTranslation();
   const { hasPermission } = usePermissions();
   const canAddBlock = hasPermission(PERMISSIONS.ADD_BLOCK);
-  const enabledDnd = useChaiFeatureFlag("enable-drag-and-drop");
+  const isDragAndDropEnabled = useIsDragAndDropEnabled();
 
   if (!canAddBlock) return null;
 
   return (
     <div id="add-block-bottom" className="group relative w-full cursor-pointer py-2">
       <br />
-      {!enabledDnd && (
+      {!isDragAndDropEnabled && (
         <div
           role="button"
           onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK)}

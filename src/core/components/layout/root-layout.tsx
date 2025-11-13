@@ -8,7 +8,6 @@ import SettingsPanel from "@/core/components/settings/settings-panel";
 import ThemeConfigPanel from "@/core/components/sidepanels/panels/theme-configuration/ThemeConfigPanel";
 import { registerChaiSidebarPanel, useChaiSidebarPanels } from "@/core/extensions/sidebar-panels";
 import { useTopBarComponent } from "@/core/extensions/top-bar";
-import { registerChaiFeatureFlag, useChaiFeatureFlag } from "@/core/flags/register-chai-flag";
 import { useBuilderProp, useSidebarActivePanel } from "@/core/hooks";
 import { useRightPanel } from "@/core/hooks/use-theme";
 import { isDevelopment } from "@/core/import-html/general";
@@ -32,12 +31,9 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { AiIcon } from "../ai/ai-icon";
+import { useIsDragAndDropEnabled } from "../canvas/dnd/drag-and-drop/hooks";
 
 export const DEFAULT_PANEL_WIDTH = 280;
-
-registerChaiFeatureFlag("enable-drag-and-drop", {
-  description: "Enable drag and drop",
-});
 
 const OutlineButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
   return (
@@ -48,9 +44,9 @@ const OutlineButton = ({ isActive, show }: { isActive: boolean; show: () => void
 };
 
 const AddBlocksButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
-  const enabledDnd = useChaiFeatureFlag("enable-drag-and-drop");
+  const isDragAndDropEnabled = useIsDragAndDropEnabled();
   return (
-    enabledDnd && (
+    isDragAndDropEnabled && (
       <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
         <PlusCircledIcon className="h-5 w-5" />
       </Button>
