@@ -14,7 +14,7 @@ import {
   useSelectedBlockIds,
 } from "@/core/hooks";
 import { useCopyBlocks } from "@/core/hooks/use-copy-blockIds";
-import { PERMISSIONS, usePermissions } from "@/core/main";
+import { PERMISSIONS, useChaiFeatureFlag, usePermissions } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
 import {
   DropdownMenu,
@@ -161,6 +161,7 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
   const selectedBlock = useSelectedBlock();
   const { hasPermission } = usePermissions();
   const { librarySite } = useBuilderProp("flags", { librarySite: false });
+  const enabledDnd = useChaiFeatureFlag("enable-drag-and-drop");
 
   const duplicate = useCallback(() => {
     duplicateBlocks(selectedIds);
@@ -170,24 +171,30 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
     return has(selectedBlock, "_libBlockId") && !isEmpty(selectedBlock._libBlockId);
   }, [selectedBlock?._libBlockId]);
 
-  if(node === 'BODY') {
+  if (node === "BODY") {
     return (
       <DropdownMenuContent side="bottom" className="border-border text-xs">
         {hasPermission(PERMISSIONS.ADD_BLOCK) && (
           <>
-           <DropdownMenuItem
-            disabled={false}
-            className="flex items-center gap-x-4 text-xs"
-            onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, selectedBlock)}>
-            <PlusIcon className="h-3.5 w-3.5" /> {t("Add block")}
-          </DropdownMenuItem>
-           <ExportCode />
             <DropdownMenuItem
-            disabled={false}
-            onClick={e => e.preventDefault()}
-            className="flex items-center gap-x-4 text-xs">
-            <ClearCanvas children={<div className="flex items-center gap-x-4 text-xs"><EraserIcon /> {t("Clear canvas")}</div>} />
-          </DropdownMenuItem>
+              disabled={false}
+              className="flex items-center gap-x-4 text-xs"
+              onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, selectedBlock)}>
+              <PlusIcon className="h-3.5 w-3.5" /> {t("Add block")}
+            </DropdownMenuItem>
+            <ExportCode />
+            <DropdownMenuItem
+              disabled={false}
+              onClick={(e) => e.preventDefault()}
+              className="flex items-center gap-x-4 text-xs">
+              <ClearCanvas
+                children={
+                  <div className="flex items-center gap-x-4 text-xs">
+                    <EraserIcon /> {t("Clear canvas")}
+                  </div>
+                }
+              />
+            </DropdownMenuItem>
           </>
         )}
       </DropdownMenuContent>
@@ -198,12 +205,14 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
     <DropdownMenuContent side="bottom" className="border-border text-xs">
       {hasPermission(PERMISSIONS.ADD_BLOCK) && (
         <>
-          <DropdownMenuItem
-            disabled={!canAddChildBlock(selectedBlock?._type)}
-            className="flex items-center gap-x-4 text-xs"
-            onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, selectedBlock)}>
-            <PlusIcon className="h-3.5 w-3.5" /> {t("Add block")}
-          </DropdownMenuItem>
+          {!enabledDnd && (
+            <DropdownMenuItem
+              disabled={!canAddChildBlock(selectedBlock?._type)}
+              className="flex items-center gap-x-4 text-xs"
+              onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, selectedBlock)}>
+              <PlusIcon className="h-3.5 w-3.5" /> {t("Add block")}
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem
             disabled={!canDuplicateBlock(selectedBlock?._type)}
             className="flex items-center gap-x-4 text-xs"

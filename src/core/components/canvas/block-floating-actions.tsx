@@ -179,7 +179,7 @@ const BlockFloatingSelector = ({ block, isDragging, selectedBlockElement }: Bloc
         <>
           <div className="flex items-center">
             {enabledDnd && (
-              <DragHandleDots2Icon className="flex-shrink-0 rounded p-0.5 cursor-grab active:cursor-grabbing hover:bg-white/20" />
+              <DragHandleDots2Icon className="flex-shrink-0 cursor-grab rounded p-0.5 hover:bg-white/20 active:cursor-grabbing" />
             )}
             {parentId && (
               <ArrowUpIcon
@@ -208,9 +208,11 @@ const BlockFloatingSelector = ({ block, isDragging, selectedBlockElement }: Bloc
                 className="h-4 w-4 rounded p-px hover:bg-white hover:text-blue-500"
               />
             )}
-            <AddBlockDropdown block={block}>
-              <PlusIcon className="h-4 w-4 rounded p-px hover:bg-white hover:text-blue-500" />
-            </AddBlockDropdown>
+            {!enabledDnd && (
+              <AddBlockDropdown block={block}>
+                <PlusIcon className="h-4 w-4 rounded p-px hover:bg-white hover:text-blue-500" />
+              </AddBlockDropdown>
+            )}
             {canDuplicateBlock(get(block, "_type", "")) && hasPermission(PERMISSIONS.ADD_BLOCK) ? (
               <CopyIcon
                 className="h-4 w-4 rounded p-px hover:bg-white hover:text-blue-500"
