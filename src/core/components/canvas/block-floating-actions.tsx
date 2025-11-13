@@ -79,7 +79,7 @@ export const BlockSelectionHighlighter = () => {
 
   return (
     <div
-      onDragEnd={(e: any) => {
+      onDragEnd={() => {
         setDragging(null);
         onDragEnd();
       }}
