@@ -184,7 +184,7 @@ export const ChaiBuilderBlocks = ({
           className={`h-full flex-1 overflow-hidden ${
             !disableBlockGroupsSidebar && sortedGroups.length > 0 ? "w-3/4" : "w-full"
           }`}>
-          <ScrollArea id="add-blocks-scroll-area" className="no-scrollbar mr-4 h-full">
+          <ScrollArea id="add-blocks-scroll-area" className="no-scrollbar h-full">
             {filteredGroups.length === 0 && searchTerm ? (
               <div className="flex flex-col items-center justify-center p-8 text-center text-muted-foreground">
                 <p>
@@ -258,7 +258,7 @@ const AddBlocksPanel = ({
   }, []);
 
   const addBlockAdditionalTabs = useChaiAddBlockTabs();
-  const canImportHTML = importHtmlEnabled && hasPermission(PERMISSIONS.IMPORT_HTML) && !fromSidebar;
+  const canImportHTML = importHtmlEnabled && hasPermission(PERMISSIONS.IMPORT_HTML);
   const uiLibraries = useChaiLibraries();
   const hasUiLibraries = uiLibraries.length > 0;
 
