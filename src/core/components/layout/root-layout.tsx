@@ -1,13 +1,14 @@
 import { AskAI } from "@/core/components/ask-ai-panel";
 import CanvasArea from "@/core/components/canvas/canvas-area";
 import { CanvasTopBar } from "@/core/components/canvas/topbar/canvas-top-bar";
-import { Outline } from "@/core/components/index";
+import { AddBlocksPanel, Outline } from "@/core/components/index";
 import { AddBlocksDialog } from "@/core/components/layout/add-blocks-dialog";
 import { NoopComponent } from "@/core/components/noop-component";
 import SettingsPanel from "@/core/components/settings/settings-panel";
 import ThemeConfigPanel from "@/core/components/sidepanels/panels/theme-configuration/ThemeConfigPanel";
 import { registerChaiSidebarPanel, useChaiSidebarPanels } from "@/core/extensions/sidebar-panels";
 import { useTopBarComponent } from "@/core/extensions/top-bar";
+import { registerChaiFeatureFlag, useChaiFeatureFlag } from "@/core/flags/register-chai-flag";
 import { useBuilderProp, useSidebarActivePanel } from "@/core/hooks";
 import { useRightPanel } from "@/core/hooks/use-theme";
 import { isDevelopment } from "@/core/import-html/general";
@@ -15,7 +16,7 @@ import { Button } from "@/ui/shadcn/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/ui/shadcn/components/ui/sheet";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
-import { Cross1Icon, LightningBoltIcon, MixerHorizontalIcon, StackIcon } from "@radix-ui/react-icons";
+import { Cross1Icon, LightningBoltIcon, MixerHorizontalIcon, PlusCircledIcon, StackIcon } from "@radix-ui/react-icons";
 import { motion } from "framer-motion";
 import { find, first, get, reverse } from "lodash-es";
 import React, {
@@ -34,11 +35,26 @@ import { AiIcon } from "../ai/ai-icon";
 
 export const DEFAULT_PANEL_WIDTH = 280;
 
+registerChaiFeatureFlag("enable-drag-and-drop", {
+  description: "Enable drag and drop",
+});
+
 const OutlineButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
   return (
     <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
       <StackIcon className="h-5 w-5" />
     </Button>
+  );
+};
+
+const AddBlocksButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
+  const enabledDnd = useChaiFeatureFlag("enable-drag-and-drop");
+  return (
+    enabledDnd && (
+      <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
+        <PlusCircledIcon className="h-5 w-5" />
+      </Button>
+    )
   );
 };
 
@@ -81,6 +97,15 @@ registerChaiSidebarPanel("outline", {
       <Outline />
     </div>
   ),
+});
+
+registerChaiSidebarPanel("add-block", {
+  button: AddBlocksButton,
+  label: "Add Blocks",
+  position: "top",
+  isInternal: true,
+  width: DEFAULT_PANEL_WIDTH,
+  panel: () => <AddBlocksPanel showHeading={false} fromSidebar={true} parentId={undefined} position={-1} />,
 });
 
 /**

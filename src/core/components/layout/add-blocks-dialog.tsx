@@ -1,6 +1,7 @@
 import AddBlocksPanel from "@/core/components/sidepanels/panels/add-blocks/add-blocks";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { usePubSub } from "@/core/hooks/use-pub-sub";
+import { useChaiFeatureFlag, useSidebarActivePanel } from "@/core/main";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -16,11 +17,17 @@ export const AddBlocksDialog = () => {
   const [parentId, setParentId] = useState<string>("");
   const [position, setPosition] = useState<number>(-1);
   const [open, setOpen] = useState(false);
+  const enabledDnd = useChaiFeatureFlag("enable-drag-and-drop");
+  const [, setActivePanel] = useSidebarActivePanel();
 
   usePubSub(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, (data: { _id: string; position?: number } | undefined) => {
-    setParentId(data ? data._id : null);
-    setPosition(isNaN(data?.position) ? -1 : data?.position);
-    setOpen(true);
+    if (enabledDnd) {
+      setActivePanel("add-block");
+    } else {
+      setParentId(data ? data._id : null);
+      setPosition(isNaN(data?.position) ? -1 : data?.position);
+      setOpen(true);
+    }
   });
 
   usePubSub(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK, () => {

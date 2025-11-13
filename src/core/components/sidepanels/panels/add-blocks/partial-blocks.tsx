@@ -55,10 +55,12 @@ export const PartialBlocks = ({
   parentId,
   position,
   gridCols = "grid-cols-2",
+  disableBlockGroupsSidebar = false,
 }: {
   parentId?: string;
   position?: number;
   gridCols?: string;
+  disableBlockGroupsSidebar?: boolean;
 }) => {
   const { data: partialBlocksList, isLoading, refetch, error: apiError } = usePartialBlocksList();
   const [partialBlocksData, setPartialBlocksData] = useAtom(partialBlocksDataAtom);
@@ -168,6 +170,7 @@ export const PartialBlocks = ({
       position={position}
       groups={partialBlocksData.groups}
       blocks={partialBlocksData.blocks}
+      disableBlockGroupsSidebar={disableBlockGroupsSidebar}
     />
   );
 };

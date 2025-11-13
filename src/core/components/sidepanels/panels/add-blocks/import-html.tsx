@@ -11,7 +11,15 @@ import { CircleIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-const ImportHTML = ({ parentId, position }: { parentId?: string; position?: number }) => {
+const ImportHTML = ({
+  parentId,
+  position,
+  fromSidebar,
+}: {
+  parentId?: string;
+  position?: number;
+  fromSidebar?: boolean;
+}) => {
   const { t } = useTranslation();
   const [code, setCode] = useState("");
   const { addPredefinedBlock } = useAddBlock();
@@ -28,11 +36,13 @@ const ImportHTML = ({ parentId, position }: { parentId?: string; position?: numb
   };
 
   return (
-    <Card className="border-border/0 p-0 shadow-none">
-      <CardHeader className="p-3">
-        <CardDescription>{t("Use HTML snippets from Tailwind CSS component libraries")}</CardDescription>
+    <Card className={`border-border/0 p-0 shadow-none ${fromSidebar ? "w-full" : "max-w-full"}`}>
+      <CardHeader className={fromSidebar ? "p-0" : "p-3"}>
+        <CardDescription className={fromSidebar ? "text-xs" : ""}>
+          {t("Use HTML snippets from Tailwind CSS component libraries")}
+        </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-2 px-3 py-0">
+      <CardContent className={`space-y-2 py-0 ${fromSidebar ? "p-0" : "px-3"}`}>
         <div className="space-y-1">
           <Label htmlFor="current" className="text-sm">
             {t("Tailwind HTML snippet")}

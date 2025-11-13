@@ -31,7 +31,14 @@ import {
 import { pubsub } from "@/core/pubsub";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
-import { CardStackIcon, DotsVerticalIcon, DoubleArrowDownIcon, DoubleArrowUpIcon, PlusIcon } from "@radix-ui/react-icons";
+import {
+  CardStackIcon,
+  DotsVerticalIcon,
+  DoubleArrowDownIcon,
+  DoubleArrowUpIcon,
+  PlusIcon,
+  StackIcon,
+} from "@radix-ui/react-icons";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { useAtom } from "jotai";
 import { find, first, isEmpty } from "lodash-es";
@@ -192,22 +199,27 @@ const ListTree = () => {
   if (isEmpty(treeData))
     return (
       <div>
-        <div className="mt-10 flex h-full w-full items-center justify-center p-8 text-center">
-          <p className="mb-1.5 text-sm">
-            {t("This page is empty")}
-            <br />
-            <br />
+        <div className="mt-10 flex h-full w-full items-center justify-center p-8">
+          <div className="flex flex-col items-center space-y-6 text-center">
+            <div className="rounded-full bg-muted p-6">
+              <StackIcon className="h-12 w-12 text-muted-foreground" />
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold text-foreground">{t("This page is empty")}</h3>
+              <p className="max-w-sm text-sm text-muted-foreground">
+                {t("Get started by adding your first block to begin building your page")}
+              </p>
+            </div>
             {hasPermission(PERMISSIONS.ADD_BLOCK) && (
               <Button
-                disabled={!hasPermission(PERMISSIONS.ADD_BLOCK)}
                 onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK)}
-                variant="default"
-                className="bg-primary/80"
+                className="bg-primary shadow-sm hover:bg-primary/90"
                 size="sm">
-                + {t("Add Block")}
+                <PlusIcon className="h-4 w-4" />
+                {t("Add Block")}
               </Button>
             )}
-          </p>
+          </div>
         </div>
       </div>
     );
@@ -267,12 +279,12 @@ const ListTree = () => {
                   <CardStackIcon className="h-3 w-3 flex-shrink-0 rotate-180" />
                   <div className="ml-1.5 flex items-center gap-x-1 truncate text-[13px]">Body</div>
                 </div>
-                
-              <BlockMoreOptions node={'BODY'} id={'BODY'}>
-                            <div className="cursor-pointer rounded bg-transparent p-px hover:bg-primary/10 hidden group-hover:block">
-                              <DotsVerticalIcon className="h-3 w-3" />
-                            </div>
-                          </BlockMoreOptions>
+
+                <BlockMoreOptions node={"BODY"} id={"BODY"}>
+                  <div className="hidden cursor-pointer rounded bg-transparent p-px hover:bg-primary/10 group-hover:block">
+                    <DotsVerticalIcon className="h-3 w-3" />
+                  </div>
+                </BlockMoreOptions>
               </div>
             </div>
           </div>
