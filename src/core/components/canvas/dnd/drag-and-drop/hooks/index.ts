@@ -8,7 +8,7 @@
  *
  * @module hooks/index
  *
- * @example
+ * 
  * import { useDragAndDrop } from './hooks';
  * const { onDragStart, onDragOver, onDrop, onDragEnd, isDragging } = useDragAndDrop();
  */
