@@ -9,9 +9,6 @@
  * @module create-drag-image
  */
 
-import { BoxIcon } from "@radix-ui/react-icons";
-import React from "react";
-import ReactDOMServer from "react-dom/server";
 
 /**
  * @FUNCTION createCoreDragImage
@@ -32,12 +29,9 @@ export function createCoreDragImage(block: any): HTMLElement {
   iconContainer.className = "w-3 h-3 flex items-center justify-center text-blue-600";
 
   // Try to render the icon if available
-  let icon = block.icon || BoxIcon;
   try {
-    // Convert React icon component to HTML string
-    const iconElement = React.createElement(icon, { className: "w-3 h-3" });
-    const iconHtml = ReactDOMServer.renderToStaticMarkup(iconElement);
-    iconContainer.innerHTML = iconHtml;
+    // Create a simple SVG fallback for icons since we can't use server-side rendering
+    iconContainer.innerHTML = '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V4z"/></svg>';
   } catch (e) {
     // Fallback to text if icon rendering fails
     iconContainer.textContent = "";
