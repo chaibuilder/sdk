@@ -22,6 +22,7 @@ import Fuse from "fuse.js";
 import { capitalize, filter, first, get, groupBy, has, isEmpty, keys, map } from "lodash-es";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { ChaiDraggableBlock } from "./draggable-block";
 import SearchInput from "./search-input";
 
 const BlockCard = ({
@@ -73,8 +74,12 @@ const BlockCard = ({
   };
 
   return (
+    
     <Tooltip>
       <TooltipTrigger asChild>
+        <ChaiDraggableBlock draggable={isDragAndDropEnabled}
+              onDragStart={handleDragStart}
+              onDragEnd={onDragEnd}>
         <div
           onClick={isAdding ? () => {} : addBlock}
           className={clsx(
@@ -88,9 +93,6 @@ const BlockCard = ({
           )}
           {block.preview ? (
             <img
-              draggable={isDragAndDropEnabled}
-              onDragStart={handleDragStart}
-              onDragEnd={onDragEnd}
               src={block.preview}
               className={`min-h-[45px] w-full rounded-md ${isDragAndDropEnabled ? "cursor-grab active:cursor-grabbing" : ""}`}
               alt={name}
@@ -102,6 +104,7 @@ const BlockCard = ({
             </div>
           )}
         </div>
+        </ChaiDraggableBlock>
       </TooltipTrigger>
       <TooltipContent>
         <div className="max-w-xs">
