@@ -38,6 +38,7 @@ export {
   ThemeConfigPanel as ChaiThemeConfigPanel,
   UILibrariesPanel as ChaiUILibrariesPanel,
 };
+export { ChaiDraggableBlock } from "@/core/components/sidepanels/panels/add-blocks/draggable-block";
 
 // i18n
 export { i18n };
