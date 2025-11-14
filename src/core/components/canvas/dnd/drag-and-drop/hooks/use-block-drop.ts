@@ -18,7 +18,8 @@ import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { useAtom } from "jotai";
 import { filter, isFunction } from "lodash";
 import { DragEvent, useCallback } from "react";
-import { dragAndDropAtom, dropIndicatorAtom } from "./use-drag-and-drop";
+import { dragAndDropAtom, dropIndicatorAtom, setIsDragging } from "./use-drag-and-drop";
+import { useDragParentHighlight } from "./use-drag-parent-highlight";
 
 /**
  * @HOOK useBlockDrop
@@ -48,7 +49,7 @@ import { dragAndDropAtom, dropIndicatorAtom } from "./use-drag-and-drop";
  */
 export const useBlockDrop = () => {
   const [draggedBlock, setDraggedBlock] = useAtom(dragAndDropAtom);
-  const [dropIndicator] = useAtom(dropIndicatorAtom);
+  const [dropIndicator, setDropIndicator] = useAtom(dropIndicatorAtom);
   const [allBlocks] = useBlocksStore();
   const [iframe] = useCanvasIframe();
   const { addCoreBlock } = useAddBlock();
@@ -56,6 +57,7 @@ export const useBlockDrop = () => {
   const [, setSelectedBlockIds] = useSelectedBlockIds();
   const [, setStyleBlocks] = useSelectedStylingBlocks();
   const { clearHighlight } = useBlockHighlight();
+  const { clearParentHighlight } = useDragParentHighlight();
 
   // Get the document from the iframe element
   const iframeDoc = (iframe as HTMLIFrameElement)?.contentDocument;
@@ -65,8 +67,42 @@ export const useBlockDrop = () => {
       e.preventDefault();
       e.stopPropagation();
 
+      // CRITICAL: Set isDragging to false immediately to prevent any subsequent dragOver events
+      setIsDragging(false);
+
       // Immediate cleanup to prevent race conditions with dragOver
       removeDropTargetAttributes(iframeDoc);
+      
+      // Clear parent highlight and drop indicator immediately
+      clearParentHighlight();
+      setDropIndicator({
+        isVisible: false,
+        isValid: false,
+        position: "inside",
+        placeholderOrientation: "horizontal",
+        isEmpty: false,
+        top: 0,
+        left: 0,
+        width: 0,
+        height: 0,
+      });
+      
+      // Additional cleanup after a short delay to catch any lingering state
+      setTimeout(() => {
+        clearParentHighlight();
+        removeDropTargetAttributes(iframeDoc);
+        setDropIndicator({
+          isVisible: false,
+          isValid: false,
+          position: "inside",
+          placeholderOrientation: "horizontal",
+          isEmpty: false,
+          top: 0,
+          left: 0,
+          width: 0,
+          height: 0,
+        });
+      }, 50);
 
       // Validate drop state
       if (!draggedBlock) {
@@ -75,6 +111,7 @@ export const useBlockDrop = () => {
 
       // Since we maintain the last valid position, this should always be valid
       if (!dropIndicator.isValid || !dropIndicator.targetBlockId) {
+        clearParentHighlight();
         return;
       }
 
@@ -122,7 +159,20 @@ export const useBlockDrop = () => {
         addCoreBlock(preBlocks?.length > 0 ? { blocks: [...preBlocks] } : { type: draggedBlockType }, parentId, index);
       }
     },
-    [draggedBlock, dropIndicator, allBlocks, iframeDoc, addCoreBlock, moveBlocks, setDraggedBlock],
+    [
+      draggedBlock,
+      dropIndicator,
+      allBlocks,
+      iframeDoc,
+      addCoreBlock,
+      moveBlocks,
+      setDraggedBlock,
+      setDropIndicator,
+      clearParentHighlight,
+      clearHighlight,
+      setSelectedBlockIds,
+      setStyleBlocks,
+    ],
   );
 };
 

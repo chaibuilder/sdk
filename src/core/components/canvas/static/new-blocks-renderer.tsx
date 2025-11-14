@@ -2,6 +2,8 @@ import { pageBlocksAtomsAtom } from "@/core/atoms/blocks";
 import { usePageExternalData } from "@/core/atoms/builder";
 import { builderStore } from "@/core/atoms/store";
 import { dataBindingActiveAtom } from "@/core/atoms/ui";
+import { useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
+import { useDirectBlockDrag } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-direct-block-drag";
 import {
   applyLanguage,
   applyLimit,
@@ -9,6 +11,7 @@ import {
   getBlockTagAttributes,
 } from "@/core/components/canvas/static/new-blocks-render-helpers";
 import { useBlocksStore, useBuilderProp, useInlineEditing, usePartailBlocksStore, useSavePage } from "@/core/hooks";
+import { useEditorMode } from "@/core/hooks/use-editor-mode";
 import { useLanguages } from "@/core/hooks/use-languages";
 import { useGetBlockAtom } from "@/core/hooks/use-update-block-atom";
 import { applyBindingToBlockProps } from "@/render/apply-binding";
@@ -25,7 +28,6 @@ import { MayBeAsyncPropsWrapper } from "./async-props-wrapper";
 import { ErrorFallback } from "./error-fallback";
 import { useBlockRuntimeProps } from "./use-block-runtime-props";
 import WithBlockTextEditor from "./with-block-text-editor";
-import { useEditorMode } from "@/core/hooks/use-editor-mode";
 
 export const RepeaterContext = createContext<{
   index: number;
@@ -89,6 +91,11 @@ const BlockRenderer = ({
   const { index, key } = useContext(RepeaterContext);
   const { mode } = useEditorMode();
 
+  // Enable direct drag-and-drop for blocks in edit mode
+  const isDragAndDropEnabled = useIsDragAndDropEnabled();
+  const isEditMode = mode === "edit";
+  const directDragHandlers = useDirectBlockDrag();
+
   const dataBindingProps = useMemo(
     () =>
       dataBindingActive
@@ -105,27 +112,40 @@ const BlockRenderer = ({
     [block._id, block._type, getRuntimePropValues, getBlockRuntimeProps],
   );
 
+  // Prepare blockProps with drag handlers if DnD is enabled
+  const blockProps = useMemo(() => {
+    const baseProps = {
+      "data-block-id": block._id,
+      "data-block-type": block._type,
+      "data-block-index": index,
+    };
+
+    // Add drag handlers if DnD is enabled in edit mode
+    if (isEditMode && isDragAndDropEnabled) {
+      const propsWithDrag = {
+        ...baseProps,
+        draggable: true,
+        onMouseDown: directDragHandlers.onMouseDown,
+        onDragStart: directDragHandlers.onDragStart,
+        onDragEnd: directDragHandlers.onDragEnd,
+      };
+      return propsWithDrag;
+    }
+
+    return baseProps;
+  }, [block._id, block._type, index, isEditMode, isDragAndDropEnabled, directDragHandlers]);
+
   const props = useMemo(
     () => ({
-      blockProps: { "data-block-id": block._id, "data-block-type": block._type, "data-block-index": index },
-      inBuilder: mode === 'edit',
+      blockProps,
+      inBuilder: mode === "edit",
       lang: selectedLang || fallbackLang,
       ...dataBindingProps,
       ...blockAttributesProps,
       ...runtimeProps,
       ...asyncProps,
     }),
-    [
-      mode,
-      block._id,
-      block._type,
-      selectedLang,
-      fallbackLang,
-      dataBindingProps,
-      blockAttributesProps,
-      runtimeProps,
-      asyncProps,
-    ],
+    [mode, blockProps, selectedLang, fallbackLang, dataBindingProps, blockAttributesProps, runtimeProps, asyncProps],
   );
   const needErrorBoundary = useMemo(() => !CORE_BLOCKS.includes(block._type), [block._type]);
   const isShown = useMemo(() => get(block, "_show", true), [block]);

@@ -29,7 +29,7 @@ const StaticCanvas = () => {
   const [, setCanvasIframe] = useCanvasIframe();
   const loadingCanvas = useBuilderProp("loading", false);
   const htmlDir = useBuilderProp("htmlDir", "ltr");
-  const { onDragOver, onDrop } = useDragAndDrop();
+  const { onDragOver, onDrop, onDragEnd } = useDragAndDrop();
   const dropIndicator = useDropIndicator();
 
   const setNewWidth = useCallback(
@@ -58,6 +58,7 @@ const StaticCanvas = () => {
         className="relative mx-auto h-full w-full overflow-hidden"
         onDragOver={onDragOver}
         onDrop={onDrop}
+        onDragEnd={onDragEnd}
         ref={wrapperRef}>
         {/*// @ts-ignore*/}
         <ChaiFrame

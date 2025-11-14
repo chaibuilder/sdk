@@ -46,7 +46,7 @@ export function createCoreDragImage(block: any): HTMLElement {
   // Create label element
   const label = document.createElement("span");
   label.className = "text-[10px] font-medium text-blue-600 whitespace-nowrap";
-  label.textContent = block.label || block.type || "Block";
+  label.textContent = block.label || block.type || block._name || block._type || "Block";
 
   container.appendChild(iconContainer);
   container.appendChild(label);
