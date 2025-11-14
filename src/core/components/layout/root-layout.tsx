@@ -68,6 +68,14 @@ const AskAiButton = ({ isActive, show }: { isActive: boolean; show: () => void; 
     </Button>
   );
 };
+registerChaiSidebarPanel("add-block", {
+  button: AddBlocksButton,
+  label: "Add Blocks",
+  position: "top",
+  isInternal: true,
+  width: DEFAULT_PANEL_WIDTH,
+  panel: () => <AddBlocksPanel showHeading={false} fromSidebar={true} parentId={undefined} position={-1} />,
+});
 
 registerChaiSidebarPanel("chai-chat-panel", {
   button: AskAiButton,
@@ -95,14 +103,6 @@ registerChaiSidebarPanel("outline", {
   ),
 });
 
-registerChaiSidebarPanel("add-block", {
-  button: AddBlocksButton,
-  label: "Add Blocks",
-  position: "top",
-  isInternal: true,
-  width: DEFAULT_PANEL_WIDTH,
-  panel: () => <AddBlocksPanel showHeading={false} fromSidebar={true} parentId={undefined} position={-1} />,
-});
 
 /**
  * RootLayout is a React component that renders the main layout of the application.
@@ -129,9 +129,7 @@ const RootLayout: ComponentType = () => {
   // Move "Ask AI" panel to the front of the array
   const totalTopPanels = useMemo(() => {
     const totalTopPanels = [topPanels].flat();
-    const askAiPanel = totalTopPanels.find((panel) => panel.id === "chai-chat-panel");
-    const otherPanels = totalTopPanels.filter((panel) => panel.id !== "chai-chat-panel");
-    return askAiPanel ? [askAiPanel, ...otherPanels] : totalTopPanels;
+    return totalTopPanels;
   }, [topPanels]);
 
   const handleMenuItemClick = useCallback(
