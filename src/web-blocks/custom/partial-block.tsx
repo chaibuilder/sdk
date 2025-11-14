@@ -1,13 +1,15 @@
-import { ChaiBlockComponentProps, registerChaiBlockSchema } from "@chaibuilder/runtime";
+import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { FrameIcon } from "@radix-ui/react-icons";
 import * as React from "react";
 
 export type PartialBlockProps = {
   partialBlockId: string;
+  style?: ChaiStyles;
+  wrapperType?: "none" | "div";
 };
 
 const Component = (props: ChaiBlockComponentProps<PartialBlockProps>) => {
-  const { blockProps, inBuilder, children, partialBlockId } = props;
+  const { blockProps, inBuilder, children, partialBlockId, style ,wrapperType="none" } = props;
   if (inBuilder && !partialBlockId) {
     return (
       <div
@@ -17,6 +19,9 @@ const Component = (props: ChaiBlockComponentProps<PartialBlockProps>) => {
         <p>Choose a block from the sidebar to add it to this page.</p>
       </div>
     );
+  }
+  if(wrapperType === "div") {
+    return React.createElement("div", { ...blockProps, ...style }, children);
   }
   return React.createElement("span", { ...blockProps }, children);
 };
@@ -31,11 +36,19 @@ const Config = {
   hidden: true,
   ...registerChaiBlockSchema({
     properties: {
+      style : StylesProp(""), 
       partialBlockId: {
         type: "string",
         title: "Partial Block",
         default: "",
         ui: { "ui:widget": "hidden" },
+      },
+      wrapperType: {
+        type: "string",
+        title: "Wrapper Type",
+        default: "none",
+        enum: ["none", "div"],
+        enumNames: ["Without Wrapper", "Div Wrapper"],
       },
     },
   }),
