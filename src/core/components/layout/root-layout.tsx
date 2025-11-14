@@ -126,7 +126,6 @@ const RootLayout: ComponentType = () => {
     if (!isDevelopment()) e.preventDefault();
   }, []);
 
-  // Move "Ask AI" panel to the front of the array
   const totalTopPanels = useMemo(() => {
     const totalTopPanels = [topPanels].flat();
     return totalTopPanels;
