@@ -70,7 +70,6 @@ describe("getBlocksFromHTML - RichText handling", () => {
     const html = '<div class="rte"><p>Rich text content</p><strong>Bold text</strong></div>';
     const blocks = getBlocksFromHTML(html);
 
-    console.log("Blocks:", JSON.stringify(blocks, null, 2));
     expect(blocks).toHaveLength(1);
     expect(blocks[0]._type).toBe("Paragraph");
     expect(blocks[0].content).toContain("<p>Rich text content</p>");

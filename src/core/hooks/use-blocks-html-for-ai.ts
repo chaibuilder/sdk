@@ -196,6 +196,10 @@ export const transformNode = (node: HimalayaNode, currentBlocks: ChaiBlock[], op
   }
 
   //remove data-block-type and data-block-id attributes
+  // Convert data-block-id to bid before removing
+  if (blockIdAttr) {
+    node.attributes.push({ key: "bid", value: blockIdAttr.value });
+  }
   node.attributes = node.attributes.filter((attr) => attr.key !== "data-block-type" && attr.key !== "data-block-id");
 
   return node;
