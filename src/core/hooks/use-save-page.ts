@@ -1,13 +1,13 @@
 import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { useGetPageData } from "@/core/hooks/use-get-page-data";
+import { useIsPageLoaded } from "@/core/hooks/use-is-page-loaded";
+import { useLanguages } from "@/core/hooks/use-languages";
 import { usePermissions } from "@/core/hooks/use-permissions";
 import { useTheme } from "@/core/hooks/use-theme";
-import { useThrottledCallback } from "@react-hookz/web";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
+import { useThrottledCallback } from "@react-hookz/web";
 import { atom, useAtom } from "jotai";
 import { has, isEmpty, noop } from "lodash-es";
-import { useLanguages } from "@/core/hooks/use-languages";
-import { useIsPageLoaded } from "@/core/hooks/use-is-page-loaded";
 export const builderSaveStateAtom = atom<"SAVED" | "SAVING" | "UNSAVED">("SAVED"); // SAVING
 builderSaveStateAtom.debugLabel = "builderSaveStateAtom";
 
@@ -67,7 +67,6 @@ export const useSavePage = () => {
         blocks: pageData.blocks,
         theme,
         needTranslations: needTranslations(),
-        force,
       });
       setTimeout(() => {
         setSaveState("SAVED");
@@ -92,7 +91,6 @@ export const useSavePage = () => {
       blocks: pageData.blocks,
       theme,
       needTranslations: needTranslations(),
-      force,
     });
     setTimeout(() => {
       setSaveState("SAVED");
