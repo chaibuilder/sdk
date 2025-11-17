@@ -78,3 +78,9 @@ export let isDragging = false;
 export const setIsDragging = (value: boolean) => {
   isDragging = value;
 };
+
+/**
+ * Atom to force re-render of canvas after drag operations
+ * Incremented on drag end to trigger component updates
+ */
+export const canvasRenderKeyAtom = atom<number>(0);

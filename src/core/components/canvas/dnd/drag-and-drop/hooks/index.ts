@@ -30,7 +30,7 @@ export { useBlockDrop } from "./use-block-drop";
 export { useDragParentHighlight } from "./use-drag-parent-highlight";
 
 // Export atoms and state
-export { dragAndDropAtom, dropIndicatorAtom, isDragging, setIsDragging } from "./use-drag-and-drop";
+export { canvasRenderKeyAtom, dragAndDropAtom, dropIndicatorAtom, isDragging, setIsDragging } from "./use-drag-and-drop";
 export type { DropIndicatorState } from "./use-drag-and-drop";
 
 /**

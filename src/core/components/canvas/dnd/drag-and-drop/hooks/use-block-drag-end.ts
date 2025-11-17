@@ -13,7 +13,7 @@
 import { useCanvasIframe } from "@/core/hooks/use-canvas-iframe";
 import { useAtom } from "jotai";
 import { useCallback } from "react";
-import { dragAndDropAtom, dropIndicatorAtom, setIsDragging } from "./use-drag-and-drop";
+import { canvasRenderKeyAtom, dragAndDropAtom, dropIndicatorAtom, setIsDragging } from "./use-drag-and-drop";
 import { useDragParentHighlight } from "./use-drag-parent-highlight";
 
 /**
@@ -43,6 +43,7 @@ export const useBlockDragEnd = () => {
   const [, setDropIndicator] = useAtom(dropIndicatorAtom);
   const [iframe] = useCanvasIframe();
   const { clearParentHighlight } = useDragParentHighlight();
+  const [renderKey, setRenderKey] = useAtom(canvasRenderKeyAtom);
 
   // Get the document from the iframe element
   const iframeDoc = (iframe as HTMLIFrameElement)?.contentDocument;
@@ -71,18 +72,20 @@ export const useBlockDragEnd = () => {
     // Clear parent highlight from drag operation
     clearParentHighlight();
 
-    // Restore opacity of any dragging elements
+    // Clean up dragging elements (re-render will restore proper state)
     if (iframeDoc) {
       const draggingElements = iframeDoc.querySelectorAll("[data-dragging]");
       draggingElements.forEach((el) => {
-        (el as HTMLElement).style.opacity = "";
         el.removeAttribute("data-dragging");
       });
     }
 
     // Reset global dragging flag
     setIsDragging(false);
-  }, [setDraggedBlock, setDropIndicator, iframeDoc, clearParentHighlight]);
+
+    // Force re-render of canvas by incrementing render key
+    setRenderKey(renderKey + 1);
+  }, [setDraggedBlock, setDropIndicator, iframeDoc, clearParentHighlight, renderKey, setRenderKey]);
 };
 
 /**

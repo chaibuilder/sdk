@@ -17,6 +17,7 @@ import { ChaiBlock } from "@/types/common";
 import { useAtom } from "jotai";
 import { pick } from "lodash";
 import { DragEvent, useCallback, useRef } from "react";
+import { getOrientation } from "../../getOrientation";
 import { cleanupDragImage, createCoreDragImage } from "../create-drag-image";
 import { dragAndDropAtom, dropIndicatorAtom, setIsDragging } from "./use-drag-and-drop";
 
@@ -65,14 +66,37 @@ export const useBlockDragStart = () => {
       e.dataTransfer.setData("text/plain", JSON.stringify({ block }));
       e.dataTransfer.effectAllowed = "move";
 
-      // Reduce opacity of the dragging element for visual feedback
+      // Reduce height and opacity of tall dragging elements for visual feedback
       if (!isAddNew && _block._id) {
         const iframeDoc = (document.getElementById("canvas-iframe") as HTMLIFrameElement)?.contentDocument;
         if (iframeDoc) {
           const draggingElement = iframeDoc.querySelector(`[data-block-id="${_block._id}"]`) as HTMLElement;
           if (draggingElement) {
-            draggingElement.style.opacity = "0.4";
-            draggingElement.setAttribute("data-dragging", "true");
+            // Use a small timeout to allow browser to capture drag image first
+            setTimeout(() => {
+              if (draggingElement) {
+                const rect = draggingElement.getBoundingClientRect();
+                const currentHeight = rect.height;
+                // Check if parent has vertical orientation (flex-direction: column or default block flow)
+                const orientation = getOrientation(draggingElement?.parentElement);
+
+                // If height > 200px and parent has vertical orientation, reduce height to 100px
+                if (orientation === "vertical" && currentHeight > 200) {
+                  // Force height to 100px by setting both height and max-height
+                  draggingElement.style.height = "max-content";
+                  draggingElement.style.maxHeight = "max-content";
+                  draggingElement.style.minHeight = "0";
+                  draggingElement.style.overflow = "hidden";
+                  draggingElement.innerHTML =
+                    "<div class='flex items-center justify-center w-full h-full outline-dashed font-medium outline-gray-500 py-4'>Currently dragging</div>";
+                  draggingElement.style.opacity = "0.4";
+                }
+                // Reduce opacity for visual feedback
+                draggingElement.style.opacity = "0.4";
+
+                draggingElement.setAttribute("data-dragging", "true");
+              }
+            }, 0);
           }
         }
       }
