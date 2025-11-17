@@ -9,7 +9,6 @@
  * @module create-drag-image
  */
 
-
 /**
  * @FUNCTION createCoreDragImage
  * @description
@@ -25,13 +24,16 @@ export function createCoreDragImage(block: any): HTMLElement {
     "absolute -top-[1000px] -left-[1000px] px-2 py-1 bg-white/60 border border-blue-400/30 rounded shadow-md flex items-center gap-1.5 font-sans pointer-events-none z-[9999] scale-90";
 
   // Create icon element
+  const type = block.type || block._type || "Box";
   const iconContainer = document.createElement("div");
   iconContainer.className = "w-3 h-3 flex items-center justify-center text-blue-600";
 
   // Try to render the icon if available
   try {
     // Create a simple SVG fallback for icons since we can't use server-side rendering
-    iconContainer.innerHTML = '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V4z"/></svg>';
+    iconContainer.innerHTML =
+      document.querySelector(`[data-add-core-block-icon="${type}"]`)?.outerHTML ||
+      '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V4z"/></svg>';
   } catch (e) {
     // Fallback to text if icon rendering fails
     iconContainer.textContent = "";
