@@ -56,18 +56,7 @@ export const useDirectBlockDrag = (): DirectDragHandlers => {
       // Only handle left mouse button
       if (e.button !== 0) return;
 
-      // Don't interfere with text selection or input interactions
       const target = e.target as HTMLElement;
-      if (
-        target.isContentEditable ||
-        target.tagName === "INPUT" ||
-        target.tagName === "TEXTAREA" ||
-        target.tagName === "SELECT" ||
-        target.tagName === "BUTTON" ||
-        target.tagName === "A"
-      ) {
-        return;
-      }
 
       // Check if clicking on a child block (let child handle it)
       const clickedBlockId = target.closest("[data-block-id]")?.getAttribute("data-block-id");

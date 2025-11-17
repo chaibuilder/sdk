@@ -74,36 +74,30 @@ const BlockCard = ({
   };
 
   return (
-    
     <Tooltip>
       <TooltipTrigger asChild>
-        <ChaiDraggableBlock draggable={isDragAndDropEnabled}
-              onDragStart={handleDragStart}
-              onDragEnd={onDragEnd}>
-        <div
-          onClick={isAdding ? () => {} : addBlock}
-          className={clsx(
-            "relative mt-2 cursor-pointer overflow-hidden rounded-md border border-border duration-200 hover:border-blue-500 hover:shadow-xl",
-          )}>
-          {isAdding && (
-            <div className="absolute flex h-full w-full items-center justify-center bg-black/70">
-              <ReloadIcon className="h-4 w-4 animate-spin text-white" />
-              <span className="pl-2 text-sm text-white">Adding...</span>
-            </div>
-          )}
-          {block.preview ? (
-            <img
-              src={block.preview}
-              className={`min-h-[45px] w-full rounded-md ${isDragAndDropEnabled ? "cursor-grab active:cursor-grabbing" : ""}`}
-              alt={name}
-            />
-          ) : (
-            <div className="flex h-fit w-full flex-col items-center justify-center gap-1 rounded-md border border-border p-6 py-10 text-center">
-              <p className="font-medium text-gray-800">{name}</p>
-              {description && <p className="text-sm text-gray-600">{description}</p>}
-            </div>
-          )}
-        </div>
+        <ChaiDraggableBlock draggable={isDragAndDropEnabled} onDragStart={handleDragStart} onDragEnd={onDragEnd}>
+          <div
+            onClick={isAdding ? () => {} : addBlock}
+            className={clsx(
+              "relative mt-2 overflow-hidden rounded-md border border-border duration-200 hover:border-blue-500 hover:shadow-xl",
+              isDragAndDropEnabled ? "" : "cursor-pointer",
+            )}>
+            {isAdding && (
+              <div className="absolute flex h-full w-full items-center justify-center bg-black/70">
+                <ReloadIcon className="h-4 w-4 animate-spin text-white" />
+                <span className="pl-2 text-sm text-white">Adding...</span>
+              </div>
+            )}
+            {block.preview ? (
+              <img src={block.preview} className={`min-h-[45px] w-full rounded-md`} alt={name} />
+            ) : (
+              <div className="flex h-fit w-full flex-col items-center justify-center gap-1 rounded-md border border-border p-6 py-10 text-center">
+                <p className="font-medium text-gray-800">{name}</p>
+                {description && <p className="text-sm text-gray-600">{description}</p>}
+              </div>
+            )}
+          </div>
         </ChaiDraggableBlock>
       </TooltipTrigger>
       <TooltipContent>
