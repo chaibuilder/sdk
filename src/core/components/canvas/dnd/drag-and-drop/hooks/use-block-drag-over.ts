@@ -15,7 +15,7 @@ import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions
 import { useCanvasIframe } from "@/core/hooks/use-canvas-iframe";
 import { useAtom } from "jotai";
 import { throttle } from "lodash-es";
-import { DragEvent, useCallback } from "react";
+import { DragEvent, useCallback, useEffect, useRef } from "react";
 import { getOrientation } from "../../getOrientation";
 import { detectDropZone } from "../drag-and-drop-utils";
 import {
@@ -23,8 +23,8 @@ import {
   canDropWithoutCircularReference,
   isDescendantOf,
 } from "../prevent-circular-drop";
-import { useDragParentHighlight } from "./use-drag-parent-highlight";
 import { dragAndDropAtom, dropIndicatorAtom, isDragging } from "./use-drag-and-drop";
+import { useDragParentHighlight } from "./use-drag-parent-highlight";
 
 // Leaf block types that cannot accept children
 const LEAF_BLOCK_TYPES = [
@@ -43,6 +43,16 @@ const LEAF_BLOCK_TYPES = [
   "Repeater",
   "Video",
 ];
+
+// Auto-scroll configuration
+const AUTO_SCROLL_CONFIG = {
+  /** Edge zone size in pixels where auto-scroll triggers */
+  EDGE_ZONE: 50,
+  /** Maximum scroll speed in pixels per frame */
+  MAX_SCROLL_SPEED: 10,
+  /** Minimum scroll speed in pixels per frame */
+  MIN_SCROLL_SPEED: 10,
+} as const;
 
 /**
  * @HOOK useBlockDragOver
@@ -77,6 +87,119 @@ export const useBlockDragOver = () => {
 
   // Get the document from the iframe element
   const iframeDoc = (iframe as HTMLIFrameElement)?.contentDocument;
+
+  // Auto-scroll state
+  const autoScrollRef = useRef<number | null>(null);
+  const lastPointerYRef = useRef<number>(0);
+
+  /**
+   * Handle auto-scrolling when dragging near edges
+   */
+  const handleAutoScroll = useCallback(
+    (pointerY: number) => {
+      if (!iframeDoc?.defaultView) return;
+
+      const viewport = iframeDoc.defaultView;
+      const viewportHeight = viewport.innerHeight;
+      const scrollTop = viewport.scrollY;
+      const documentHeight = iframeDoc.documentElement.scrollHeight;
+
+      // Store pointer position for continuous scrolling
+      lastPointerYRef.current = pointerY;
+
+      // Calculate distance from edges
+      const distanceFromTop = pointerY;
+      const distanceFromBottom = viewportHeight - pointerY;
+
+      // Determine if we should scroll and in which direction
+      let shouldScroll = false;
+      let scrollDirection: "up" | "down" | null = null;
+      let edgeDistance = 0;
+
+      if (distanceFromTop < AUTO_SCROLL_CONFIG.EDGE_ZONE && scrollTop > 0) {
+        // Near top edge and can scroll up
+        shouldScroll = true;
+        scrollDirection = "up";
+        edgeDistance = distanceFromTop;
+      } else if (distanceFromBottom < AUTO_SCROLL_CONFIG.EDGE_ZONE && scrollTop + viewportHeight < documentHeight) {
+        // Near bottom edge and can scroll down
+        shouldScroll = true;
+        scrollDirection = "down";
+        edgeDistance = distanceFromBottom;
+      }
+
+      // Cancel existing animation if scrolling stopped
+      if (!shouldScroll && autoScrollRef.current !== null) {
+        cancelAnimationFrame(autoScrollRef.current);
+        autoScrollRef.current = null;
+        return;
+      }
+
+      // Start or continue scrolling
+      if (shouldScroll && scrollDirection) {
+        // Calculate scroll speed based on proximity to edge
+        // Closer to edge = faster scroll
+        const proximityRatio = 1 - edgeDistance / AUTO_SCROLL_CONFIG.EDGE_ZONE;
+        const scrollSpeed =
+          AUTO_SCROLL_CONFIG.MIN_SCROLL_SPEED +
+          (AUTO_SCROLL_CONFIG.MAX_SCROLL_SPEED - AUTO_SCROLL_CONFIG.MIN_SCROLL_SPEED) * proximityRatio;
+
+        const scroll = () => {
+          if (!isDragging || !viewport) {
+            autoScrollRef.current = null;
+            return;
+          }
+
+          // Perform the scroll
+          const scrollAmount = scrollDirection === "up" ? -scrollSpeed : scrollSpeed;
+          viewport.scrollBy(0, scrollAmount);
+
+          // Check if we should continue scrolling
+          const currentScrollTop = viewport.scrollY;
+          const canScrollUp = currentScrollTop > 0;
+          const canScrollDown = currentScrollTop + viewportHeight < documentHeight;
+
+          // Recalculate distances with current pointer position
+          const currentDistanceFromTop = lastPointerYRef.current;
+          const currentDistanceFromBottom = viewportHeight - lastPointerYRef.current;
+
+          const shouldContinue =
+            (scrollDirection === "up" && canScrollUp && currentDistanceFromTop < AUTO_SCROLL_CONFIG.EDGE_ZONE) ||
+            (scrollDirection === "down" && canScrollDown && currentDistanceFromBottom < AUTO_SCROLL_CONFIG.EDGE_ZONE);
+
+          if (shouldContinue) {
+            autoScrollRef.current = requestAnimationFrame(scroll);
+          } else {
+            autoScrollRef.current = null;
+          }
+        };
+
+        // Start animation if not already running
+        if (autoScrollRef.current === null) {
+          autoScrollRef.current = requestAnimationFrame(scroll);
+        }
+      }
+    },
+    [iframeDoc],
+  );
+
+  // Cleanup auto-scroll on unmount or when dragging stops
+  useEffect(() => {
+    return () => {
+      if (autoScrollRef.current !== null) {
+        cancelAnimationFrame(autoScrollRef.current);
+        autoScrollRef.current = null;
+      }
+    };
+  }, []);
+
+  // Stop auto-scroll when dragging ends
+  useEffect(() => {
+    if (!isDragging && autoScrollRef.current !== null) {
+      cancelAnimationFrame(autoScrollRef.current);
+      autoScrollRef.current = null;
+    }
+  }, [isDragging]);
 
   const throttledHandler = useCallback(
     throttle((e: DragEvent) => {
@@ -122,6 +245,9 @@ export const useBlockDragOver = () => {
       // Get pointer coordinates for intelligent drop zone detection
       const pointerX = e.clientX;
       const pointerY = e.clientY;
+
+      // Handle auto-scrolling based on pointer position
+      handleAutoScroll(pointerY);
 
       const dropZone = detectDropZone(element, pointerX, pointerY, draggedBlockType, iframeDoc);
 
@@ -200,7 +326,7 @@ export const useBlockDragOver = () => {
       removeDropTargetAttributes(iframeDoc);
       dropZone.targetElement.setAttribute("data-drop-target", "true");
     }, 300),
-    [iframeDoc, draggedBlock, setDropIndicator, clearParentHighlight, highlightParent, allBlocks],
+    [iframeDoc, draggedBlock, setDropIndicator, clearParentHighlight, highlightParent, allBlocks, handleAutoScroll],
   );
 
   return useCallback(
