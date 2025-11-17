@@ -1,5 +1,6 @@
 import AddBlockDropdown from "@/core/components/canvas/add-block-placements";
 import { useDragAndDrop, useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
+import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import BlockController from "@/core/components/sidepanels/panels/add-blocks/block-controller";
 import { useFrame } from "@/core/frame/frame-context";
 import { canDeleteBlock, canDuplicateBlock } from "@/core/functions/block-helpers";
@@ -17,6 +18,7 @@ import {
 } from "@/core/hooks";
 import { PERMISSIONS } from "@/core/main";
 import { ChaiBlock } from "@/types/common";
+import { pubsub } from "@/core/pubsub";
 import { flip, limitShift, size } from "@floating-ui/dom";
 import { shift, useFloating } from "@floating-ui/react-dom";
 import { ArrowUpIcon, CopyIcon, DragHandleDots2Icon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
@@ -198,7 +200,10 @@ const BlockFloatingSelector = ({ block, isDragging, selectedBlockElement }: Bloc
             {hasPermission(PERMISSIONS.ADD_BLOCK) && (
               <AiIcon
                 className="h-4 w-4 rounded hover:bg-white hover:text-blue-500"
-                onClick={() => setActivePanel("chai-chat-panel")}
+                onClick={() => {
+                  setActivePanel("chai-chat-panel");
+                  pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_AI_PANEL);
+                }}
               />
             )}
             {gotoSettingsEnabled && (
