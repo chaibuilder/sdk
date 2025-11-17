@@ -91,7 +91,8 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
   const handleExportEvent = useCallback(async () => {
     try {
       setShow(false);
-      let html = blocksHtmlForAi({ EXTRA_CORE_BLOCKS: ["Icon"] })
+      let html = blocksHtmlForAi({ blockId: selectedBlock?._id, additionalCoreBlocks: ["Icon"] })
+      html = html.replace(/\s*bid=["'][^"']*["']/g, "");
       
       const isTypeScript = tab === "ts";
       const {
