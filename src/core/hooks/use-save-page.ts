@@ -54,8 +54,8 @@ export const useSavePage = () => {
   };
 
   const savePage = useThrottledCallback(
-    async (autoSave: boolean = false) => {
-      if (!hasPermission("save_page") || !isPageLoaded) {
+    async (autoSave: boolean = false, force: boolean = false) => {
+      if (!force && (!hasPermission("save_page") || !isPageLoaded)) {
         return;
       }
       setSaveState("SAVING");
@@ -67,6 +67,7 @@ export const useSavePage = () => {
         blocks: pageData.blocks,
         theme,
         needTranslations: needTranslations(),
+        force,
       });
       setTimeout(() => {
         setSaveState("SAVED");
@@ -78,8 +79,8 @@ export const useSavePage = () => {
     3000, // save only every 5 seconds
   );
 
-  const savePageAsync = async () => {
-    if (!hasPermission("save_page") || !isPageLoaded) {
+  const savePageAsync = async (force: boolean = false) => {
+    if (!force && (!hasPermission("save_page") || !isPageLoaded)) {
       return;
     }
     setSaveState("SAVING");
@@ -91,6 +92,7 @@ export const useSavePage = () => {
       blocks: pageData.blocks,
       theme,
       needTranslations: needTranslations(),
+      force,
     });
     setTimeout(() => {
       setSaveState("SAVED");
