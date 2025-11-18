@@ -18,7 +18,7 @@ import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { useAtom } from "jotai";
 import { filter, isFunction } from "lodash";
 import { DragEvent, useCallback } from "react";
-import { dragAndDropAtom, dropIndicatorAtom, setIsDragging } from "./use-drag-and-drop";
+import { canvasRenderKeyAtom, dragAndDropAtom, dropIndicatorAtom, setIsDragging } from "./use-drag-and-drop";
 import { useDragParentHighlight } from "./use-drag-parent-highlight";
 
 /**
@@ -58,6 +58,7 @@ export const useBlockDrop = () => {
   const [, setStyleBlocks] = useSelectedStylingBlocks();
   const { clearHighlight } = useBlockHighlight();
   const { clearParentHighlight } = useDragParentHighlight();
+  const [renderKey, setRenderKey] = useAtom(canvasRenderKeyAtom);
 
   // Get the document from the iframe element
   const iframeDoc = (iframe as HTMLIFrameElement)?.contentDocument;
@@ -69,6 +70,9 @@ export const useBlockDrop = () => {
 
       // CRITICAL: Set isDragging to false immediately to prevent any subsequent dragOver events
       setIsDragging(false);
+
+      // Restore dragged element styles immediately
+      restoreDraggedElementStyles(iframeDoc);
 
       // Immediate cleanup to prevent race conditions with dragOver
       removeDropTargetAttributes(iframeDoc);
@@ -158,6 +162,11 @@ export const useBlockDrop = () => {
 
         addCoreBlock(preBlocks?.length > 0 ? { blocks: [...preBlocks] } : { type: draggedBlockType }, parentId, index);
       }
+
+      // Force re-render of canvas by incrementing render key
+      setTimeout(() => {
+        setRenderKey(renderKey + 1);
+      }, 50);
     },
     [
       draggedBlock,
@@ -172,6 +181,8 @@ export const useBlockDrop = () => {
       clearHighlight,
       setSelectedBlockIds,
       setStyleBlocks,
+      renderKey,
+      setRenderKey,
     ],
   );
 };
@@ -264,4 +275,20 @@ function removeDropTargetAttributes(iframeDoc: Document | null | undefined) {
 
   const elements = iframeDoc.querySelectorAll("[data-drop-target]");
   elements.forEach((el) => el.removeAttribute("data-drop-target"));
+}
+
+/**
+ * @FUNCTION restoreDraggedElementStyles
+ * @description
+ * Cleans up dragging attributes. Re-render will restore proper element state.
+ *
+ * @param iframeDoc - The iframe document containing the canvas
+ */
+function restoreDraggedElementStyles(iframeDoc: Document | null | undefined) {
+  if (!iframeDoc) return;
+
+  const draggingElements = iframeDoc.querySelectorAll("[data-dragging]");
+  draggingElements.forEach((el) => {
+    el.removeAttribute("data-dragging");
+  });
 }
