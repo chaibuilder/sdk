@@ -88,7 +88,7 @@ export const useBlockDragStart = () => {
                   draggingElement.style.minHeight = "0";
                   draggingElement.style.overflow = "hidden";
                   draggingElement.innerHTML =
-                    "<div class='flex items-center justify-center w-full h-full outline-dashed font-medium outline-gray-500 py-4'>Currently dragging</div>";
+                    "<div class='flex items-center justify-center w-full h-full outline-[1px] outline-dashed font-medium outline-gray-500 bg-gray-500/10 py-4 text-transparent'>-</div>";
                   draggingElement.style.opacity = "0.4";
                 }
                 // Reduce opacity for visual feedback
