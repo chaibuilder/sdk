@@ -1,13 +1,13 @@
 import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { useGetPageData } from "@/core/hooks/use-get-page-data";
+import { useIsPageLoaded } from "@/core/hooks/use-is-page-loaded";
+import { useLanguages } from "@/core/hooks/use-languages";
 import { usePermissions } from "@/core/hooks/use-permissions";
 import { useTheme } from "@/core/hooks/use-theme";
-import { useThrottledCallback } from "@react-hookz/web";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
+import { useThrottledCallback } from "@react-hookz/web";
 import { atom, useAtom } from "jotai";
 import { has, isEmpty, noop } from "lodash-es";
-import { useLanguages } from "@/core/hooks/use-languages";
-import { useIsPageLoaded } from "@/core/hooks/use-is-page-loaded";
 export const builderSaveStateAtom = atom<"SAVED" | "SAVING" | "UNSAVED">("SAVED"); // SAVING
 builderSaveStateAtom.debugLabel = "builderSaveStateAtom";
 
@@ -54,8 +54,8 @@ export const useSavePage = () => {
   };
 
   const savePage = useThrottledCallback(
-    async (autoSave: boolean = false) => {
-      if (!hasPermission("save_page") || !isPageLoaded) {
+    async (autoSave: boolean = false, force: boolean = false) => {
+      if (!force && (!hasPermission("save_page") || !isPageLoaded)) {
         return;
       }
       setSaveState("SAVING");
@@ -78,8 +78,8 @@ export const useSavePage = () => {
     3000, // save only every 5 seconds
   );
 
-  const savePageAsync = async () => {
-    if (!hasPermission("save_page") || !isPageLoaded) {
+  const savePageAsync = async (force: boolean = false) => {
+    if (!force && (!hasPermission("save_page") || !isPageLoaded)) {
       return;
     }
     setSaveState("SAVING");

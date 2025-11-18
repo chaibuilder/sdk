@@ -4,6 +4,7 @@ import { cn, generateUUID } from "@/core/functions/common-functions";
 import { getVideoURLFromHTML, hasVideoEmbed } from "@/core/import-html/import-video";
 import { ChaiBlock } from "@/types/chai-block";
 import { parse, stringify } from "himalaya";
+import { unset } from "lodash";
 import {
   camelCase, capitalize,
   compact,
@@ -149,25 +150,29 @@ const getHeightAndWidthFromClass = (classString: string): { width: string; heigh
 const getAttrs = (node: Node) => {
   if (node.tagName === "svg") return {};
 
-  const attrs: Record<string, string> = {};
+  const attrs: Record<string, string | { id: string }> = {};
   const replacers = ATTRIBUTE_MAP[node.tagName] || {};
   const attributes: Array<{ key: string; value: string }> = node.attributes as any;
 
   forEach(attributes, ({ key, value }) => {
     if (includes(NAME_ATTRIBUTES, key)) return;
+    if (key === "bid") {
+      // Handle bid attribute specially - add as _bid: {id}
+      attrs._bid = getSanitizedValue(value);
+    }
     if (replacers[key]) {
       // for img tag if the src is not absolute then replace with placeholder image
       if (node.tagName === "img" && key === "src" && !value.startsWith("http")) {
         const width = find(node.attributes, { key: "width" }) as { value: string } | undefined;
         const height = find(node.attributes, { key: "height" }) as { value: string } | undefined;
         if (width && height) {
-          value = `https://via.placeholder.com/${width?.value}x${height?.value}`;
+          value = `https://picsum.photos/${width?.value}x${height?.value}`;
         } else {
-          value = `https://via.placeholder.com/150x150`;
+          value = `https://picsum.photos/150x150`;
         }
       }
       set(attrs, replacers[key], getSanitizedValue(value));
-    } else if (!includes(["style", "class", "srcset"], key)) {
+    } else if (!includes(["style", "class", "srcset", "bid"], key)) {
       if (!has(attrs, "styles_attrs")) {
         // @ts-ignore
         attrs.styles_attrs = {};
@@ -650,10 +655,13 @@ const findBlockById = (blocks: ChaiBlock[], blockId: string): ChaiBlock | undefi
  * @returns Merged blocks array
  */
 export const mergeBlocksWithExisting = (importedBlocks: ChaiBlock[], existingBlocks: ChaiBlock[]): ChaiBlock[] => {
-  if (isEmpty(existingBlocks)) return importedBlocks;
+  if (isEmpty(existingBlocks)) return importedBlocks.map((b) => {
+    unset(b, "_bid");
+    return b;
+  });
 
   return map(importedBlocks, (importedBlock) => {
-    const existingBlock = findBlockById(existingBlocks, importedBlock._id);
+    const existingBlock = !isEmpty(importedBlock._bid) ? findBlockById(existingBlocks, importedBlock._bid) : undefined;
 
     if (existingBlock) {
       // remove icon if it is default icon
@@ -661,10 +669,13 @@ export const mergeBlocksWithExisting = (importedBlocks: ChaiBlock[], existingBlo
         delete importedBlock.icon;
       }
       // Merge imported block properties into existing block
-      return { ...existingBlock, ...importedBlock };
+      const mergedBlock = { ...existingBlock, ...importedBlock };
+      unset(mergedBlock, "_bid");
+      return mergedBlock;
     }
 
     // No existing block found, return imported block as is
+    unset(importedBlock, "_bid");
     return importedBlock;
   });
 };

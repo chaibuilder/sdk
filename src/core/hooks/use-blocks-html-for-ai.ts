@@ -5,7 +5,6 @@ import { useCallback } from "react";
 import { ChaiBlock } from "../main";
 import { useBlocksStore } from "./hooks";
 import { useCanvasIframe } from "./use-canvas-iframe";
-import { useSelectedBlock } from "./use-selected-blockIds";
 
 export type HimalayaNode = {
   type: "element" | "text" | "comment";
@@ -16,10 +15,11 @@ export type HimalayaNode = {
 };
 
 type Options = {
-  EXTRA_CORE_BLOCKS?: string[];
+  blockId?: string;
+  additionalCoreBlocks?: string[];
 };
 
-const ATTRIBUTES_TO_REMOVE = ["data-block-index", "data-drop", "data-style-id", "data-block-parent", "data-style-prop", "data-highlighted"];
+const ATTRIBUTES_TO_REMOVE = ["data-block-index", "draggable", "data-drop", "data-style-id", "data-block-parent", "data-style-prop", "data-highlighted"];
 
 const CORE_BLOCKS = [
   "Box",
@@ -107,7 +107,7 @@ export const transformNode = (node: HimalayaNode, currentBlocks: ChaiBlock[], op
   if (blockTypeAttr) {
     const blockType = blockTypeAttr.value;
 
-    if (CORE_BLOCKS.includes(blockType) || options?.EXTRA_CORE_BLOCKS?.includes(blockType)) {
+    if (CORE_BLOCKS.includes(blockType) || options?.additionalCoreBlocks?.includes(blockType)) {
       // For core blocks, just remove the data-block-type attribute
       node.attributes = node.attributes.filter((attr) => attr.key !== "data-block-type");
 
@@ -123,11 +123,7 @@ export const transformNode = (node: HimalayaNode, currentBlocks: ChaiBlock[], op
       node.tagName = customTagName;
 
       // Keep only the id attribute (from data-block-id)
-      if (blockIdAttr) {
-        node.attributes = [{ key: "id", value: blockIdAttr.value }];
-      } else {
-        node.attributes = [];
-      }
+      node.attributes = [];
       node.attributes.push({ key: "chai-type", value: blockType });
 
       // Get the block from currentBlocks and add the keys as attributes.
@@ -206,13 +202,12 @@ export const transformNode = (node: HimalayaNode, currentBlocks: ChaiBlock[], op
 };
 
 export const useBlocksHtmlForAi = () => {
-  const selectedBlock = useSelectedBlock();
   const [currentBlocks] = useBlocksStore();
   const [iframeDocument] = useCanvasIframe();
   return useCallback(
     (options?: Options) => {
       if (!iframeDocument) return "";
-      const id = selectedBlock?._id ? `[data-block-id="${selectedBlock._id}"]` : "#canvas";
+      const id = options?.blockId ? `[data-block-id="${options.blockId}"]` : "#canvas";
       const html = (iframeDocument as HTMLIFrameElement).contentDocument?.querySelector(id)?.[
         id === "#canvas" ? "innerHTML" : "outerHTML"
       ];
@@ -236,6 +231,6 @@ export const useBlocksHtmlForAi = () => {
 
       return cleanedHtml.replace(/\s+/g, " ").trim();
     },
-    [selectedBlock, iframeDocument],
+    [iframeDocument],
   );
 };

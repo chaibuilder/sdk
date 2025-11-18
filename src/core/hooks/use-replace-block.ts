@@ -58,7 +58,7 @@ export const useReplaceBlock = () => {
   const { hasPermission } = usePermissions();
 
   return useCallback(
-    (blockId: string, replacementBlocks: ChaiBlock[]) => {
+    (blockId: string | undefined, replacementBlocks: ChaiBlock[]) => {
       if (!hasPermission(PERMISSIONS.EDIT_BLOCK)) return;
       const newBlocks = blockId ? replaceBlock(presentBlocks, blockId, replacementBlocks) : replacementBlocks;
       setNewBlocks(newBlocks);

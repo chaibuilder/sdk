@@ -106,9 +106,8 @@ describe("transformNode", () => {
 
       const result = transformNode(node, mockBlocks);
 
-      expect(result.attributes).toHaveLength(3);
+      expect(result.attributes).toHaveLength(2);
       expect(result.attributes).toContainEqual({ key: "chai-type", value: "CustomBlock" });
-      expect(result.attributes).toContainEqual({ key: "id", value: "custom123" });
       expect(result.attributes).toContainEqual({ key: "bid", value: "custom123" });
     });
 
