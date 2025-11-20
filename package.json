@@ -187,6 +187,7 @@
     "jsdoc": "^4.0.4",
     "msw": "^2.7.0",
     "postcss": "^8.5.1",
+    "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "prop-types": "^15.8.1",
     "react": "19.2.0",
