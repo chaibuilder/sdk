@@ -1,8 +1,10 @@
+import { clickCountAtom } from "@/core/atoms/click-detection";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useBlockHighlight, useInlineEditing } from "@/core/hooks";
 import { pubsub } from "@/core/pubsub";
 import { useThrottledCallback } from "@react-hookz/web";
-import React, { useCallback, useRef } from "react";
+import { useAtom } from "jotai";
+import React, { useCallback } from "react";
 
 function getTargetedBlock(target) {
   // First check if the target is the canvas itself
@@ -54,7 +56,7 @@ const useHandleCanvasDblClick = () => {
   const { editingBlockId, setEditingBlockId, setEditingItemIndex } = useInlineEditing();
 
   return useCallback(
-    (e) => {
+    (e: any) => {
       e?.preventDefault();
       e?.stopPropagation();
       if (editingBlockId) return;
@@ -85,17 +87,14 @@ const useHandleCanvasDblClick = () => {
 const useHandleCanvasClick = () => {
   const { editingBlockId } = useInlineEditing();
   const { clearHighlight } = useBlockHighlight();
-  const lastClickTimeRef = useRef(0);
+  const [clickCount] = useAtom(clickCountAtom);
 
   return useCallback(
     (e: any) => {
-      const currentTime = new Date().getTime();
       if (editingBlockId) return;
       e.stopPropagation();
 
-      // Check for double click
-      const isDoubleClick = currentTime - lastClickTimeRef.current < 400; // 400ms threshold for double click
-      if (isDoubleClick) return;
+      if (clickCount === 2) return;
 
       const chaiBlock: HTMLElement = getTargetedBlock(e.target);
       if (chaiBlock?.getAttribute("data-block-id") && chaiBlock?.getAttribute("data-block-id") === "container") {
@@ -113,9 +112,8 @@ const useHandleCanvasClick = () => {
         pubsub.publish(CHAI_BUILDER_EVENTS.CANVAS_BLOCK_SELECTED, blockId === "canvas" ? [] : [blockId]);
       }
       clearHighlight();
-      lastClickTimeRef.current = new Date().getTime();
     },
-    [editingBlockId],
+    [editingBlockId, clickCount],
   );
 };
 
