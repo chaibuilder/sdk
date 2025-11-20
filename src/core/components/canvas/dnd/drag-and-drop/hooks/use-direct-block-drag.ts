@@ -10,7 +10,9 @@
  * @module use-direct-block-drag
  */
 
+import { clickCountAtom, lastClickTimeAtom } from "@/core/atoms/click-detection";
 import { useBlocksStore, useSelectedBlockIds } from "@/core/hooks";
+import { useAtom } from "jotai";
 import { find } from "lodash";
 import { useCallback, useRef } from "react";
 import { useDragAndDrop } from ".";
@@ -47,6 +49,8 @@ export const useDirectBlockDrag = (): DirectDragHandlers => {
   const { onDragStart, onDragEnd } = useDragAndDrop();
   const [allBlocks] = useBlocksStore();
   const dragBlockIdRef = useRef<string | null>(null);
+  const [lastClickTime, setLastClickTime] = useAtom(lastClickTimeAtom);
+  const [clickCount, setClickCount] = useAtom(clickCountAtom);
 
   /**
    * Handle mousedown - prepare for potential drag
@@ -55,6 +59,13 @@ export const useDirectBlockDrag = (): DirectDragHandlers => {
     (e: React.MouseEvent) => {
       // Only handle left mouse button
       if (e.button !== 0) return;
+      const currentTime = Date.now();
+      const timeSinceLastClick = currentTime - lastClickTime;
+      if (timeSinceLastClick < 400 && timeSinceLastClick > 0) {
+        setClickCount(2);
+        return;
+      }
+      setLastClickTime(currentTime);
 
       const target = e.target as HTMLElement;
 
@@ -66,7 +77,7 @@ export const useDirectBlockDrag = (): DirectDragHandlers => {
       setSelectedBlockIds([clickedBlockId]);
       dragBlockIdRef.current = clickedBlockId;
     },
-    [setSelectedBlockIds],
+    [setSelectedBlockIds, lastClickTime, setLastClickTime, clickCount, setClickCount],
   );
 
   /**
