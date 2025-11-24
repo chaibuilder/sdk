@@ -99,7 +99,6 @@ export function ManualClasses() {
   );
 
   const handleEditClass = (clsToRemove: string) => {
-    debugger;
     const fullClsNames: string[] = editingClass
       .trim()
       .toLowerCase()

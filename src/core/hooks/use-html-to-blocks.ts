@@ -37,7 +37,6 @@ export const useHtmlToBlocks = () => {
     (html: string) => {
       const importedBlocks = syncBlocksWithDefaults(getBlocksFromHTML(html));
       const mergedBlocks = mergeBlocksWithExisting(importedBlocks, currentBlocks);
-      debugger
       return handlei18N(mergedBlocks, currentBlocks);
     },
     [currentBlocks],

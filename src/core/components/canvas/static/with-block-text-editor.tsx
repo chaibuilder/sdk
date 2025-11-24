@@ -89,7 +89,7 @@ const RichTextEditor = memo(
     }, [editor]);
 
     const editorClassName = useMemo(() => {
-      const basicClassName = "max-w-none shadow-none outline outline-[2px] outline-green-500 [&_*]:shadow-none";
+      const basicClassName = "max-w-none shadow-none outline outline-[2px] [&_*]:shadow-none";
       if (!editingElement) return basicClassName;
 
       const editingElementClassName = editingElement?.className?.replace("sr-only", "") || "";
@@ -112,7 +112,13 @@ const RichTextEditor = memo(
             className="w-max">
             <RteMenubar editor={editor} from="canvas" />
           </BubbleMenu>
-          <EditorContent onKeyDown={onKeyDown} value={blockContent} editor={editor} className={editorClassName} />
+          <EditorContent
+            id="active-inline-editing-element"
+            onKeyDown={onKeyDown}
+            value={blockContent}
+            editor={editor}
+            className={editorClassName}
+          />
         </div>
       )
     );

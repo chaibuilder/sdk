@@ -72,6 +72,7 @@ export const IframeInitialContent: string = `<!doctype html>
         cursor: pointer !important;
         z-index: 10002 !important;
       }
+      #active-inline-editing-element{outline: 2px solid #00c951;}
     </style>
     <style type="text/tailwindcss">
       @layer utilities {
