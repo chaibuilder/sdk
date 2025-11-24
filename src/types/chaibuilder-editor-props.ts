@@ -106,6 +106,7 @@ export type ChaiThemeValues = {
 };
 
 export interface ChaiBuilderEditorProps {
+  children?: React.ReactNode;
   /**
    * Goto page callback
    */

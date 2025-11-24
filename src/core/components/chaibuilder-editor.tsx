@@ -120,6 +120,7 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   const exportCodeEnabled = useBuilderProp("flags.exportCode", false);
   return (
     <>
+      {props.children}
       <CssThemeVariables theme={builderTheme as ChaiBuilderThemeValues} />
       <RootLayoutComponent />
       {exportCodeEnabled && <ExportCodeModal />}
