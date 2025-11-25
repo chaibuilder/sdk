@@ -4,6 +4,7 @@ import { useBlockHighlight, useInlineEditing } from "@/core/hooks";
 import { pubsub } from "@/core/pubsub";
 import { useThrottledCallback } from "@react-hookz/web";
 import { useAtom } from "jotai";
+import { some } from "lodash";
 import React, { useCallback } from "react";
 
 function getTargetedBlock(target) {
@@ -29,6 +30,14 @@ const isRichTextParent = (chaiBlock: HTMLElement | null): boolean => {
     chaiBlock?.getAttribute("data-block-type") === "RichText" ||
     chaiBlock?.parentElement?.getAttribute("data-block-type") === "RichText"
   );
+};
+
+const hasDataBlockIdInChildren = (element: HTMLElement | null): boolean => {
+  if (!element) return false;
+  return some(element.children, (child) => {
+    const htmlChild = child as HTMLElement;
+    return htmlChild.hasAttribute("data-block-id") || hasDataBlockIdInChildren(htmlChild);
+  });
 };
 
 /**
@@ -61,7 +70,10 @@ const useHandleCanvasDblClick = () => {
       e?.stopPropagation();
       if (editingBlockId) return;
       const chaiBlock: HTMLElement = getTargetedBlock(e.target);
+
       if (!isInlineEditable(chaiBlock)) return;
+
+      if (hasDataBlockIdInChildren(chaiBlock)) return;
 
       const blockId = chaiBlock.getAttribute("data-block-id");
       if (!blockId || !chaiBlock) return;
