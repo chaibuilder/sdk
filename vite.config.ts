@@ -1,3 +1,4 @@
+import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react-swc";
 import path, { resolve } from "path";
 import { defineConfig } from "vite";
@@ -5,7 +6,7 @@ import dts from "vite-plugin-dts";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), dts({ rollupTypes: true })],
+  plugins: [react(), dts({ rollupTypes: true }), tailwindcss()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -84,6 +85,7 @@ export default defineConfig({
         "@tailwindcss/typography",
         "@tailwindcss/container-queries",
         "class-variance-authority",
+        "@tiptap/core",
         "@bobthered/tailwindcssPaletteGenerator",
         "clsx",
         "cmdk",
@@ -125,7 +127,7 @@ export default defineConfig({
         "undo-manager",
         "zod",
         "monaco-editor",
-        "@monaco-editor/react"
+        "@monaco-editor/react",
       ],
     },
   },

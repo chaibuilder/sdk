@@ -258,6 +258,9 @@ importers:
       '@tailwindcss/postcss':
         specifier: ^4.1.17
         version: 4.1.17
+      '@tailwindcss/vite':
+        specifier: ^4.1.17
+        version: 4.1.17(vite@6.0.11(@types/node@20.17.11)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.37.0)(yaml@2.7.0))
       '@tanstack/eslint-plugin-query':
         specifier: ^5.64.2
         version: 5.64.2(eslint@9.18.0(jiti@2.6.1))(typescript@5.7.3)
@@ -2203,6 +2206,11 @@ packages:
     resolution: {integrity: sha512-0wDLwCVF5V3x3b1SGXPCDcdsbDHMBe+lkFzBRaHeLvNi+nrrnZ1lA18u+OTWO8iSWU2GxUOCvlXtDuqftc1oiA==}
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders || >=4.0.0-alpha.20 || >=4.0.0-beta.1'
+
+  '@tailwindcss/vite@4.1.17':
+    resolution: {integrity: sha512-4+9w8ZHOiGnpcGI6z1TVVfWaX/koK7fKeSYF3qlYg2xpBtbteP2ddBxiarL+HVgfSJGeK5RIxRQmKm4rTJJAwA==}
+    peerDependencies:
+      vite: ^5.2.0 || ^6 || ^7
 
   '@tanstack/eslint-plugin-query@5.64.2':
     resolution: {integrity: sha512-Xq7jRYvNtGMHjQEGUZLHgEMNB59hgTlqdmKor6cdJ6CMZ/nwmBGpnlr/dcHden7W7BPCdBVN4PWMZBICWvCNQQ==}
@@ -7868,6 +7876,13 @@ snapshots:
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
       tailwindcss: 4.1.17
+
+  '@tailwindcss/vite@4.1.17(vite@6.0.11(@types/node@20.17.11)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.37.0)(yaml@2.7.0))':
+    dependencies:
+      '@tailwindcss/node': 4.1.17
+      '@tailwindcss/oxide': 4.1.17
+      tailwindcss: 4.1.17
+      vite: 6.0.11(@types/node@20.17.11)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.37.0)(yaml@2.7.0)
 
   '@tanstack/eslint-plugin-query@5.64.2(eslint@9.18.0(jiti@2.6.1))(typescript@5.7.3)':
     dependencies:
