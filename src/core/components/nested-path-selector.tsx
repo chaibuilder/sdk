@@ -174,7 +174,7 @@ export function NestedPathSelector({ data, onSelect, dataType = "value" }: Neste
         <TooltipContent>{t("Add field")}</TooltipContent>
       </Tooltip>
 
-      <PopoverContent className="z-[1000]! relative mr-3 w-[300px] p-0">
+      <PopoverContent className="z-1000! relative mr-3 w-[300px] p-0">
         <PathDropdown
           data={pageData}
           onSelect={(path, type) => {

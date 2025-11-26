@@ -88,7 +88,7 @@ export const BlockStylingProps = () => {
               );
             })}
           </div>
-          <div className="my-2 h-[1px] w-full bg-border" />
+          <div className="my-2 h-px w-full bg-border" />
         </div>
       )}
     </>

@@ -41,7 +41,7 @@ export const BlockStyleHighlight = ({
           e.stopPropagation();
         }}
         onKeyDown={(e) => e.stopPropagation()}
-        className="isolate z-[999] flex items-center rounded-t bg-orange-500 p-px text-xs text-white">
+        className="isolate z-999 flex items-center rounded-t bg-orange-500 p-px text-xs text-white">
         <MixerHorizontalIcon className="h-3 w-3" />
       </div>
     </>

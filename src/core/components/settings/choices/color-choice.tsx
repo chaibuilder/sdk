@@ -9,13 +9,13 @@ export const COLOR_PROP = {
   backgroundColor: "bg",
   textColor: "text",
   borderColor: "border",
-  boxShadowColor: "shadow",
-  outlineColor: "outline",
+  boxShadowColor: "shadow-sm",
+  outlineColor: "outline-solid",
   divideColor: "divide",
   fromColor: "from",
   viaColor: "via",
   toColor: "to",
-  ringColor: "ring",
+  ringColor: "ring-3",
   ringOffsetColor: "ring-offset",
 };
 

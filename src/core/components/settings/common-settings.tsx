@@ -46,8 +46,8 @@ export const CommonSettings = ({ block, updateBlockProps, updateBlockPropsRealti
         <div className="grid grid-cols-3 items-center">
           <label className="text-xs font-medium text-gray-500">Show</label>
           <Switch
-            className="!col-span-2 !h-4 !w-7"
-            thumbClassName="!h-3 !w-3"
+            className="col-span-2! h-4! w-7!"
+            thumbClassName="h-3! w-3!"
             checked={show}
             onCheckedChange={onShowChange}
           />

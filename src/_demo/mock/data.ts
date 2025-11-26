@@ -89,12 +89,12 @@ export const library = [
 ];
 export const html = `
     <!-- Announcement Banner -->
-    <div class="bg-gradient-to-r from-primary-500 via-primary-400 to-secondary-500">
-      <div class="max-w-[85rem] px-4 py-4 sm:px-6 lg:px-8 mx-auto">
+    <div class="bg-linear-to-r from-primary-500 via-primary-400 to-secondary-500">
+      <div class="max-w-340 px-4 py-4 sm:px-6 lg:px-8 mx-auto">
         <!-- Grid -->
         <div class="grid justify-center md:grid-cols-2 md:justify-between md:items-center gap-2">
           <div class="text-center md:text-left">
-            <p class="text-xs text-white/[.8] uppercase tracking-wider">
+            <p class="text-xs text-white/80 uppercase tracking-wider">
               Preview of Preline
             </p>
             <p class="mt-1 text-white font-medium">
@@ -104,7 +104,7 @@ export const html = `
           <!-- End Col -->
 
           <div class="mt-3 text-center md:text-left md:flex md:justify-end md:items-center">
-            <a class="py-3 px-6 inline-flex justify-center items-center gap-2 rounded-full font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-primary-600 transition-all text-sm" href="#">
+            <a class="py-3 px-6 inline-flex justify-center items-center gap-2 rounded-full font-medium bg-white text-gray-700 shadow-xs align-middle hover:bg-gray-50 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-primary-600 transition-all text-sm" href="#">
               Sign up free
             </a>
           </div>

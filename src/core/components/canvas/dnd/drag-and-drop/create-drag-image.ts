@@ -21,7 +21,7 @@
 export function createCoreDragImage(block: any): HTMLElement {
   const container = document.createElement("div");
   container.className =
-    "absolute -top-[1000px] -left-[1000px] px-2 py-1 bg-white/60 border border-blue-400/30 rounded shadow-md flex items-center gap-1.5 font-sans pointer-events-none z-[9999] scale-90";
+    "absolute -top-[1000px] -left-[1000px] px-2 py-1 bg-white/60 border border-blue-400/30 rounded shadow-md flex items-center gap-1.5 font-sans pointer-events-none z-9999 scale-90";
 
   // Create icon element
   const type = block.type || block._type || "Box";
@@ -69,7 +69,7 @@ export function createLibraryDragImage(block: any, previewUrl?: string): Promise
       // Create image-based drag preview
       const container = document.createElement("div");
       container.className =
-        "absolute -top-[1000px] -left-[1000px] max-w-[150px] max-h-[100px] border border-blue-400/30 rounded overflow-hidden shadow-md pointer-events-none z-[9999] bg-white/60 scale-90";
+        "absolute -top-[1000px] -left-[1000px] max-w-[150px] max-h-[100px] border border-blue-400/30 rounded overflow-hidden shadow-md pointer-events-none z-9999 bg-white/60 scale-90";
 
       const img = document.createElement("img");
       img.className = "w-full h-full object-cover block";
@@ -105,7 +105,7 @@ export function createLibraryDragImage(block: any, previewUrl?: string): Promise
 function createTextDragImage(text: string): HTMLElement {
   const container = document.createElement("div");
   container.className =
-    "absolute -top-[1000px] -left-[1000px] px-2 py-1 bg-white/60 border border-blue-400/30 rounded shadow-md font-sans text-[10px] font-medium text-gray-900 whitespace-nowrap pointer-events-none z-[9999] scale-90";
+    "absolute -top-[1000px] -left-[1000px] px-2 py-1 bg-white/60 border border-blue-400/30 rounded shadow-md font-sans text-[10px] font-medium text-gray-900 whitespace-nowrap pointer-events-none z-9999 scale-90";
   container.textContent = text;
   document.body.appendChild(container);
   return container;

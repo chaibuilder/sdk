@@ -50,11 +50,11 @@ const SourcesField = ({ formData, onChange }: FieldProps) => {
                 <button
                   type="button"
                   onClick={() => removeSource(index)}
-                  className="absolute -right-px -top-0 -translate-y-1/2 rounded-full bg-red-100 p-1 opacity-0 hover:bg-red-200 group-hover:opacity-100">
+                  className="absolute -right-px top-0 -translate-y-1/2 rounded-full bg-red-100 p-1 opacity-0 hover:bg-red-200 group-hover:opacity-100">
                   <Cross1Icon className="h-2.5 w-2.5 text-red-500" />
                 </button>
                 <div className="flex items-center gap-x-2 rounded border">
-                  <label className="flex !h-6 h-full w-1/4 items-center justify-center bg-gray-200 px-2 !text-[10px] !font-medium">
+                  <label className="flex h-6! h-full w-1/4 items-center justify-center bg-gray-200 px-2 text-[10px]! font-medium!">
                     Width
                   </label>
                   <input
@@ -63,17 +63,17 @@ const SourcesField = ({ formData, onChange }: FieldProps) => {
                     type="number"
                     value={get(source, "width")}
                     onChange={(e) => onChangeSources(e, index)}
-                    className="!placeholder:text-gray-100 !mt-0 !rounded-none !border-0 !p-0 !text-xs"
+                    className="!placeholder:text-gray-100 mt-0! rounded-none! border-0! p-0! text-xs!"
                   />
                 </div>
                 <div className="flex items-center gap-x-2 rounded border">
-                  <label className="flex !h-6 h-full w-1/4 items-center justify-center bg-gray-200 px-2 !text-[10px] !font-medium">
+                  <label className="flex h-6! h-full w-1/4 items-center justify-center bg-gray-200 px-2 text-[10px]! font-medium!">
                     URL
                   </label>
                   <input
                     name="url"
                     placeholder="Enter url"
-                    className="!mt-0 !rounded-none !border-0 !p-0 !text-xs !shadow-none"
+                    className="mt-0! rounded-none! border-0! p-0! text-xs! shadow-none!"
                     value={get(source, "url", "")}
                     onChange={(e) => onChangeSources(e, index)}
                   />

@@ -95,7 +95,7 @@ export const BubbleMenu = ({ editor }: BubbleMenuProps) => {
           onClick={() => editor.chain().focus().toggleStrike().run()}
           isActive={editor.isActive("strike")}
         />
-        <div className="mx-1 h-4 w-[1px] bg-white/20" />
+        <div className="mx-1 h-4 w-px bg-white/20" />
         <BubbleMenuButton
           icon="link"
           title={editor.isActive("link") ? "Remove link" : "Add link"}
@@ -108,7 +108,7 @@ export const BubbleMenu = ({ editor }: BubbleMenuProps) => {
           }}
           isActive={editor.isActive("link")}
         />
-        <div className="mx-1 h-4 w-[1px] bg-white/20" />
+        <div className="mx-1 h-4 w-px bg-white/20" />
         <BubbleMenuButton
           icon="bulletList"
           title="Bullet list"
@@ -121,7 +121,7 @@ export const BubbleMenu = ({ editor }: BubbleMenuProps) => {
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
           isActive={editor.isActive("orderedList")}
         />
-        <div className="mx-1 h-4 w-[1px] bg-white/20" />
+        <div className="mx-1 h-4 w-px bg-white/20" />
         <BubbleMenuButton
           icon="alignLeft"
           title="Align left"

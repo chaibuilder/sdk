@@ -22,7 +22,7 @@ export const LanguageButton = () => {
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild className="focus:outline-none">
+        <DropdownMenuTrigger asChild className="focus:outline-hidden">
           <Button variant="ghost" size="sm" className="gap-2">
             <ChatBubbleIcon className="h-4 w-4" />
             {get(LANGUAGES, currentLang, currentLang)}
@@ -35,7 +35,7 @@ export const LanguageButton = () => {
               key={option.value}
               className={mergeClasses(
                 "flex cursor-pointer items-center justify-between text-xs font-medium text-gray-800",
-                option.key === currentLang && "!bg-gray-200 text-gray-700",
+                option.key === currentLang && "bg-gray-200! text-gray-700",
               )}
               onClick={() => setSelectedLang(option.key)}>
               <div className="text-slate-600">{option.value}</div>

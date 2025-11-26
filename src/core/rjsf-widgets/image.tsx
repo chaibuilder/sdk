@@ -102,7 +102,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
             src={resolvedValue}
             className={
               `h-14 w-14 overflow-hidden rounded-md border border-border object-cover transition duration-200 ` +
-              (assetId && assetId !== "" ? "cursor-pointer group-hover:blur-sm" : "")
+              (assetId && assetId !== "" ? "cursor-pointer group-hover:blur-xs" : "")
             }
             alt=""
           />
@@ -126,7 +126,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
         </div>
       ) : (
         <MediaManagerModal onSelect={handleSelect} mode="image" assetId={assetId}>
-          <div className="h-14 w-14 cursor-pointer rounded-md border border-border bg-[radial-gradient(#AAA,transparent_1px)] duration-300 [background-size:10px_10px]"></div>
+          <div className="h-14 w-14 cursor-pointer rounded-md border border-border bg-[radial-gradient(#AAA,transparent_1px)] duration-300 bg-size-[10px_10px]"></div>
         </MediaManagerModal>
       )}
       <div className="flex w-3/5 flex-col">

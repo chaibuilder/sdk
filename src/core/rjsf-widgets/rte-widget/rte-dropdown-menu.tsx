@@ -67,7 +67,7 @@ const RteDropdownMenu = ({
             <div
               id="chaibuilder-rte-dropdown-menu-content"
               onClick={handleCanvasClose}
-              className="fixed inset-0 left-0 top-0 z-[10001] h-full w-screen">
+              className="fixed inset-0 left-0 top-0 z-10001 h-full w-screen">
               <div
                 onClick={(e) => e.stopPropagation()}
                 className={`absolute rounded-md border border-gray-500 bg-white p-1.5 text-xs shadow-2xl`}
@@ -88,7 +88,7 @@ const RteDropdownMenu = ({
   return (
     <>
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-        <DropdownMenuTrigger className={`relative outline-none`} asChild>
+        <DropdownMenuTrigger className={`relative outline-hidden`} asChild>
           {trigger}
         </DropdownMenuTrigger>
         <DropdownMenuContent className={`z-50 rounded-md border bg-white p-1 text-xs shadow-xl`}>

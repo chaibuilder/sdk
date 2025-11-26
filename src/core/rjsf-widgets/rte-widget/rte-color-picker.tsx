@@ -31,7 +31,7 @@ const Commons = ({ themeColors, onClose, color, onChange, onRemove }: any) => {
             <button
               key={hex}
               className={cn(
-                "h-4 w-4 cursor-pointer rounded-full border border-gray-900 shadow duration-200 hover:scale-105 hover:shadow-xl",
+                "h-4 w-4 cursor-pointer rounded-full border border-gray-900 shadow-sm duration-200 hover:scale-105 hover:shadow-xl",
                 {
                   "border-2": hex === color,
                 },
@@ -51,7 +51,7 @@ const Commons = ({ themeColors, onClose, color, onChange, onRemove }: any) => {
           type="text"
           value={color || "#000000f2"}
           onChange={(e) => onChange(e.target.value, true)}
-          className="!h-5 !w-[105px] rounded-sm !p-0 text-center font-light uppercase text-gray-600 outline-none ring-0 focus:ring-0"
+          className="h-5! w-[105px]! rounded-sm p-0! text-center font-light uppercase text-gray-600 outline-hidden ring-0 focus:ring-0"
           placeholder="#000000"
         />
         <button

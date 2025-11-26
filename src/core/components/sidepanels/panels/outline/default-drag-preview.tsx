@@ -7,7 +7,7 @@ import { DragPreviewProps } from "react-arborist";
 const Overlay = memo(function Overlay({ children, isDragging }: { children: React.ReactNode; isDragging: boolean }) {
   if (!isDragging) return null;
 
-  return <div className="pointer-events-none fixed left-0 top-0 z-[100] h-full w-full">{children}</div>;
+  return <div className="pointer-events-none fixed left-0 top-0 z-100 h-full w-full">{children}</div>;
 });
 
 export const DefaultDragPreview = memo(({ id, isDragging, mouse }: Omit<DragPreviewProps, "dragIds" | "offset">) => {
@@ -34,7 +34,7 @@ export const DefaultDragPreview = memo(({ id, isDragging, mouse }: Omit<DragPrev
         <div
           className="pointer-events-none absolute z-50 rounded border border-border bg-gray-100/80 font-semibold text-blue-600 shadow-md dark:border-gray-700 dark:bg-gray-800"
           style={style}>
-          <button type="button" className="flex !cursor-grab items-center p-0.5" aria-label={`Type: ${block?._type}`}>
+          <button type="button" className="flex cursor-grab! items-center p-0.5" aria-label={`Type: ${block?._type}`}>
             <div className="-mt-0.5 h-3 w-3">
               <TypeIcon type={block?._type} />
             </div>

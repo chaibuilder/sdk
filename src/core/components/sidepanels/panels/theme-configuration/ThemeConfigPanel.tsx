@@ -14,16 +14,24 @@ import { Label } from "@/ui/shadcn/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/components/ui/select";
 import { Separator } from "@/ui/shadcn/components/ui/separator";
 import { Switch } from "@/ui/shadcn/components/ui/switch";
+import {
+  CornerTopRightIcon,
+  MixerHorizontalIcon,
+  MoonIcon,
+  ResetIcon,
+  SunIcon,
+  TextIcon,
+  UploadIcon,
+} from "@radix-ui/react-icons";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { capitalize, get, set } from "lodash-es";
-import { CornerTopRightIcon, UploadIcon, MoonIcon, MixerHorizontalIcon, SunIcon, TextIcon, ResetIcon } from "@radix-ui/react-icons";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
+import { claude, defaultShadcnPreset, solarized, supabase, twitter } from "@/core/constants/THEME_PRESETS";
 import { Badge } from "@/ui/shadcn/components/ui/badge";
 import { lazy, Suspense } from "react";
-import { claude, defaultShadcnPreset, solarized, supabase, twitter } from "@/core/constants/THEME_PRESETS";
 
 const LazyCssImportModal = lazy(() =>
   import("./css-import-modal").then((module) => ({ default: module.CssImportModal })),
@@ -195,7 +203,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
               value={themeColor as string}
               onChange={(newValue: string) => handleColorChange(key, newValue)}
             />
-            <Label className="text-xs font-normal leading-tight">
+            <Label className="text-xs leading-tight font-normal">
               {key
                 .split(/(?=[A-Z])/)
                 .join(" ")
@@ -221,7 +229,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
     return (
       <div className="relative w-full">
         <div className={cn("no-scrollbar h-full w-full overflow-y-auto text-center", className)}>
-          <div className="mt-10 h-full items-center justify-center gap-2 text-muted-foreground">
+          <div className="text-muted-foreground mt-10 h-full items-center justify-center gap-2">
             <p className="text-sm">
               {t("You don't have permission to edit the theme. Please contact your administrator to get access.")}
             </p>

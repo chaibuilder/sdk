@@ -89,7 +89,7 @@ const RichTextEditor = memo(
     }, [editor]);
 
     const editorClassName = useMemo(() => {
-      const basicClassName = "max-w-none shadow-none outline outline-[2px] [&_*]:shadow-none";
+      const basicClassName = "max-w-none shadow-none outline-solid outline-2 **:shadow-none";
       if (!editingElement) return basicClassName;
 
       const editingElementClassName = editingElement?.className?.replace("sr-only", "") || "";
@@ -194,7 +194,7 @@ const MemoizedEditor = memo(
       return {
         id: "active-inline-editing-element",
         contentEditable: true,
-        className: `${editingElement?.className?.replace("sr-only", "") || ""} outline outline-[2px] outline-green-500 shadow-none empty:before:content-[attr(data-placeholder)] empty:before:text-gray-400 empty:before:absolute empty:before:pointer-events-none empty:before:select-none empty:before:inset-0 empty:before:z-0 relative min-h-[1em]`,
+        className: `${editingElement?.className?.replace("sr-only", "") || ""} outline-solid outline-2 outline-green-500 shadow-none empty:before:content-[attr(data-placeholder)] empty:before:text-gray-400 empty:before:absolute empty:before:pointer-events-none empty:before:select-none empty:before:inset-0 empty:before:z-0 relative min-h-[1em]`,
         style: (cloneDeep(editingElement?.style) || {}) as any,
         onInput: (e) => {
           const element = e.target as HTMLElement;

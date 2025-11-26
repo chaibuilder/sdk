@@ -1,10 +1,10 @@
 export const html = `<!-- Icon Blocks -->
 <!-- Card Blog -->
-<div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
+<div class="max-w-340 px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
   <!-- Grid -->
   <div class="grid lg:grid-cols-2 lg:gap-y-16 gap-10">
     <!-- Card -->
-    <a class="group block rounded-xl overflow-hidden focus:outline-none" href="#">
+    <a class="group block rounded-xl overflow-hidden focus:outline-hidden" href="#">
       <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5">
         <div class="shrink-0 relative rounded-xl overflow-hidden w-full sm:w-56 h-44">
           <img class="group-hover:scale-105 group-focus:scale-105 transition-transform duration-500 ease-in-out size-full absolute top-0 start-0 object-cover rounded-xl" src="https://images.unsplash.com/photo-1540575861501-7cf05a4b125a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=320&q=80" alt="Blog Image">

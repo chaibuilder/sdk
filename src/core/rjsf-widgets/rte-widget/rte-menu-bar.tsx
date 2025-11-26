@@ -117,7 +117,7 @@ const RteMenubar = ({ editor, from = "settings", onExpand }: RteMenubarProps) =>
                 onClose();
               }}
               className={cn(
-                "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
+                "flex cursor-pointer items-center gap-x-1 outline-hidden hover:outline-hidden",
                 getActiveClasses(editor, ["bulletList"], from),
               )}>
               <ListBulletIcon className="h-4 w-4" /> Unordered List
@@ -128,7 +128,7 @@ const RteMenubar = ({ editor, from = "settings", onExpand }: RteMenubarProps) =>
                 onClose();
               }}
               className={cn(
-                "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
+                "flex cursor-pointer items-center gap-x-1 outline-hidden hover:outline-hidden",
                 getActiveClasses(editor, ["orderedList"], from),
               )}>
               <ValueIcon className="h-4 w-4" />
@@ -173,7 +173,7 @@ const RteMenubar = ({ editor, from = "settings", onExpand }: RteMenubarProps) =>
                 onClose();
               }}
               className={cn(
-                "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
+                "flex cursor-pointer items-center gap-x-1 outline-hidden hover:outline-hidden",
                 getActiveClasses(editor, editor.isActive({ textAlign: "left" }), from),
               )}>
               <TextAlignLeftIcon className="h-4 w-4" /> Align Left
@@ -184,7 +184,7 @@ const RteMenubar = ({ editor, from = "settings", onExpand }: RteMenubarProps) =>
                 onClose();
               }}
               className={cn(
-                "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
+                "flex cursor-pointer items-center gap-x-1 outline-hidden hover:outline-hidden",
                 getActiveClasses(editor, editor.isActive({ textAlign: "center" }), from),
               )}>
               <TextAlignCenterIcon className="h-4 w-4" /> Align Center
@@ -195,7 +195,7 @@ const RteMenubar = ({ editor, from = "settings", onExpand }: RteMenubarProps) =>
                 onClose();
               }}
               className={cn(
-                "flex cursor-pointer items-center gap-x-1 outline-none hover:outline-none",
+                "flex cursor-pointer items-center gap-x-1 outline-hidden hover:outline-hidden",
                 getActiveClasses(editor, editor.isActive({ textAlign: "right" }), from),
               )}>
               <TextAlignRightIcon className="h-4 w-4" /> Align Right

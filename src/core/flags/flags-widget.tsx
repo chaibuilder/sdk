@@ -110,7 +110,7 @@ const ChaiFeatureFlagsWidgetComponent = ({
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
-      className="fixed z-[9999999] select-none rounded-md border border-gray-300 bg-white p-3 shadow-2xl"
+      className="fixed z-9999999 select-none rounded-md border border-gray-300 bg-white p-3 shadow-2xl"
       style={{
         left: position.x,
         top: position.y,

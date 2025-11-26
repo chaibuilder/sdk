@@ -12,7 +12,7 @@ export const PreviewScreen = () => {
   const previewComponent = useBuilderProp("previewComponent", null);
   if (!isPreviewOn) return null;
   return (
-    <div className={cn("fixed inset-0 z-[999] bg-background", isPreviewOn ? "block" : "hidden")}>
+    <div className={cn("fixed inset-0 z-999 bg-background", isPreviewOn ? "block" : "hidden")}>
       <Button size="sm" className="absolute right-0 top-0 m-4 space-x-2" onClick={() => setPreviewMode(false)}>
         <EyeClosedIcon />
         <span>{t("Close Preview")}</span>

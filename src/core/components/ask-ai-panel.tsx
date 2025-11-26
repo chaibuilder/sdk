@@ -58,7 +58,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               placeholder={t("Ask AI to edit content")}
-              className="w-full resize-none border-none p-0 text-xs shadow-none outline-none"
+              className="w-full resize-none border-none p-0 text-xs shadow-none outline-hidden"
               rows={3}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
@@ -90,7 +90,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
 
           <div className="max-w-full pt-2">
             {error && (
-              <p className="break-words rounded border border-red-500 bg-red-100 p-1 text-xs text-red-500">
+              <p className="wrap-break-word rounded border border-red-500 bg-red-100 p-1 text-xs text-red-500">
                 {error.message}
               </p>
             )}

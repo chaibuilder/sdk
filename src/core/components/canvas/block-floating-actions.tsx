@@ -176,15 +176,15 @@ const BlockFloatingSelector = ({ block, isDragging, selectedBlockElement }: Bloc
           setHighlighted(null);
         }}
         onKeyDown={(e) => e.stopPropagation()}
-        className={`isolate z-[999] flex h-6 items-center justify-between bg-blue-500 py-2 text-xs text-white ${isDragging ? "opacity-0" : ""}`}>
+        className={`isolate z-999 flex h-6 items-center justify-between bg-blue-500 py-2 text-xs text-white ${isDragging ? "opacity-0" : ""}`}>
         <>
           <div className="flex items-center">
             {isDragAndDropEnabled && (
-              <DragHandleDots2Icon className="flex-shrink-0 cursor-grab rounded p-0.5 hover:bg-white/20 active:cursor-grabbing" />
+              <DragHandleDots2Icon className="shrink-0 cursor-grab rounded p-0.5 hover:bg-white/20 active:cursor-grabbing" />
             )}
             {parentId && (
               <ArrowUpIcon
-                className="flex-shrink-0 rounded p-0.5 hover:bg-white/20"
+                className="shrink-0 rounded p-0.5 hover:bg-white/20"
                 onClick={() => {
                   setStyleBlocks([]);
                   setSelectedIds([parentId]);

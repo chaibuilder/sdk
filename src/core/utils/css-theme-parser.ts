@@ -1,6 +1,6 @@
 import { ChaiThemeValues } from "@/types/chaibuilder-editor-props";
-import { toHex } from "./color-formatter";
 import { getAllRegisteredFonts } from "@chaibuilder/runtime";
+import { toHex } from "./color-formatter";
 
 /**
  * Parses CSS input and converts it to ChaiThemeValues format

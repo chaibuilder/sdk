@@ -46,7 +46,7 @@ function createFloatingLabel(targetElement: HTMLElement, innerDoc: Document): HT
 
   // Apply inline styles for positioning and appearance
   label.className =
-    "absolute top-0 -left-0.5 -translate-x-0.5 -translate-y-full -mt-1 bg-green-500/95 text-white px-2 py-1 text-xs font-semibold font-sans leading-tight whitespace-nowrap shadow-lg z-[999999] pointer-events-none select-none";
+    "absolute top-0 -left-0.5 -translate-x-0.5 -translate-y-full -mt-1 bg-green-500/95 text-white px-2 py-1 text-xs font-semibold font-sans leading-tight whitespace-nowrap shadow-lg z-999999 pointer-events-none select-none";
 
   return label;
 }

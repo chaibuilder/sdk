@@ -90,7 +90,7 @@ registerChaiSidebarPanel("chai-chat-panel", {
   ),
 });
 
-registerChaiSidebarPanel("outline", {
+registerChaiSidebarPanel("outline-solid", {
   button: OutlineButton,
   label: "Outline",
   position: "top",
@@ -110,7 +110,7 @@ registerChaiSidebarPanel("outline", {
 const RootLayout: ComponentType = () => {
   const TopBar = useTopBarComponent();
   const [activePanel, setActivePanel] = useSidebarActivePanel();
-  const lastStandardPanelRef = useRef<string | null>("outline"); // Default to "outline"
+  const lastStandardPanelRef = useRef<string | null>("outline-solid"); // Default to "outline-solid"
   const [lastStandardPanelWidth, setLastStandardPanelWidth] = useState(DEFAULT_PANEL_WIDTH);
 
   const [panel, setRightPanel] = useRightPanel();
@@ -176,12 +176,12 @@ const RootLayout: ComponentType = () => {
   }, [setActivePanel, activePanel]);
 
   const closeNonStandardPanel = useCallback(() => {
-    setActivePanel("outline");
+    setActivePanel("outline-solid");
   }, [setActivePanel]);
 
   useEffect(() => {
     if (activePanel !== null && !find(allPanels, { id: activePanel })) {
-      setActivePanel("outline");
+      setActivePanel("outline-solid");
     }
   }, [activePanel, allPanels]);
 

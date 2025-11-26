@@ -150,7 +150,7 @@ export function ManualClasses() {
             }}
             theme={{
               suggestion: "bg-transparent",
-              suggestionHighlighted: "!bg-gray-300 dark:!bg-gray-800 cursor-pointer",
+              suggestionHighlighted: "bg-gray-300! dark:bg-gray-800! cursor-pointer",
               suggestionsContainerOpen:
                 "absolute bg-background no-scrollbar z-50 max-h-[230px] overflow-y-auto w-full  border border-border rounded-md",
             }}
@@ -186,7 +186,7 @@ export function ManualClasses() {
                   e.target.select();
                 }, 0);
               }}
-              className="group relative flex max-w-[260px] cursor-default items-center gap-x-1 truncate break-words rounded border border-border bg-gray-200 p-px px-1.5 pr-2 text-[11px] text-gray-600 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
+              className="group relative flex max-w-[260px] cursor-default items-center gap-x-1 truncate wrap-break-word rounded border border-border bg-gray-200 p-px px-1.5 pr-2 text-[11px] text-gray-600 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
             />
           ) : (
             <div key={cls} className="group relative flex max-w-[260px] items-center">
@@ -200,7 +200,7 @@ export function ManualClasses() {
                     }
                   }, 10);
                 }}
-                className="flex h-max cursor-default items-center gap-x-1 truncate break-words rounded bg-gray-200 py-px pl-0.5 pr-1 text-[11px] text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+                className="flex h-max cursor-default items-center gap-x-1 truncate wrap-break-word rounded bg-gray-200 py-px pl-0.5 pr-1 text-[11px] text-gray-600 dark:bg-gray-800 dark:text-gray-300">
                 <div className="z-10 flex h-full w-max items-center justify-center">
                   <Cross2Icon
                     onClick={() => removeClassesFromBlocks(selectedIds, [cls], true)}

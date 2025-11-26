@@ -245,7 +245,7 @@ const LinkField = ({ schema, formData, onChange, name }: FieldProps) => {
           spellCheck={"false"}
           name="href"
           type="text"
-          className={linkType === "pageType" ? "!hidden" : ""}
+          className={linkType === "pageType" ? "hidden!" : ""}
           value={href}
           onChange={(e) => onChange({ ...formData, href: e.target.value })}
           placeholder={t(type === "url" ? "Enter URL" : type === "scroll" ? "#ElementID" : "Enter details")}
@@ -259,7 +259,7 @@ const LinkField = ({ schema, formData, onChange, name }: FieldProps) => {
               spellCheck={"false"}
               type="checkbox"
               defaultChecked={target === "_blank"}
-              className="!w-fit cursor-pointer rounded-md border border-border"
+              className="w-fit! cursor-pointer rounded-md border border-border"
               onChange={() => onChange({ ...formData, target: target === "_blank" ? "_self" : "_blank" })}
             />
             <span className="pt-1 text-xs">{t("Open in new tab")}</span>
