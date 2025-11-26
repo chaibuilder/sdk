@@ -48,18 +48,19 @@ export function getPureClsName(cls: string): string {
 const memoizedProps: { [cls: string]: string } = {};
 
 export function getPropertyForClass(pureCls: string): string {
-  if (isEmpty(pureCls)) return "";
+  const pureClsName = getPureClsName(pureCls);
+  if (isEmpty(pureClsName)) return "";
   // check if memoized
-  if (memoizedProps[pureCls]) {
-    return memoizedProps[pureCls];
+  if (memoizedProps[pureClsName]) {
+    return memoizedProps[pureClsName];
   }
   let property: string = "";
   // eslint-disable-next-line guard-for-in,no-restricted-syntax
   for (const key in CLASSES_LIST) {
     const expression = get(CLASSES_LIST, `${key}.regExp`, "") as string;
-    if (new RegExp(expression, "g").test(pureCls)) {
+    if (new RegExp(`^${expression}`, "g").test(pureClsName)) {
       property = key;
-      memoizedProps[pureCls] = property;
+      memoizedProps[pureClsName] = property;
       break;
     }
   }

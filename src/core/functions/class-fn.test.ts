@@ -1,7 +1,7 @@
-import { CLASSES_LIST } from "@/core/constants/CLASSES_LIST";
 import { getModForCls, getMqForCls, getPropertyForClass, getPureClsName } from "@/core/functions/class-fn";
 import { convertArbitraryToTailwindClass } from "@/core/functions/convert-brbitrary-to-tailwind-class";
-import { each } from "lodash-es";
+import { each } from "lodash";
+import { CLASSES_LIST } from "../constants/CLASSES_LIST";
 
 describe("Class functions", () => {
   test.skip("convertArbitraryToTw", () => {
@@ -114,7 +114,6 @@ describe("Class functions", () => {
   });
 
   test("getPropertyForClass", () => {
-    expect(getPropertyForClass("rounded-lg")).toBe("borderRadius");
     // check for all available classes
     // eslint-disable-next-line guard-for-in,no-restricted-syntax
     for (const key in CLASSES_LIST) {
@@ -122,12 +121,17 @@ describe("Class functions", () => {
         expect(getPropertyForClass(pureCls)).toBe(key);
       });
     }
-
-    // //colors
+    expect(getPropertyForClass("rounded-lg")).toBe("borderRadius");
+    expect(getPropertyForClass("wrap-break-word")).toEqual("wordBreak");
+    expect(getPropertyForClass("break-normal")).toEqual("wordBreak");
+    expect(getPropertyForClass("break-all")).toEqual("wordBreak");
     expect(getPropertyForClass("text-red-500")).toEqual("textColor");
     expect(getPropertyForClass("from-red-500")).toEqual("fromColor");
     expect(getPropertyForClass("via-red-500")).toEqual("viaColor");
     expect(getPropertyForClass("leading-[2px]")).toEqual("lineHeight");
+  });
+
+  test("getClassesForProperty", () => {
     expect(getPropertyForClass("sm:w-[30%]")).toEqual("width");
   });
 });

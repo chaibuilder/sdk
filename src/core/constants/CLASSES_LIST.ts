@@ -630,7 +630,7 @@ export const CLASSES_LIST: ClassListType = {
   },
   wordBreak: {
     classes: ["break-normal", "wrap-break-word", "break-all"],
-    regExp: "break-(normal|words|all)",
+    regExp: "wrap-break-word|break-(normal|all)",
   },
   content: { classes: ["content-none"], regExp: "content-none" },
 
@@ -678,7 +678,7 @@ export const CLASSES_LIST: ClassListType = {
       "bg-linear-to-l",
       "bg-linear-to-tl",
     ],
-    regExp: "bg-gradient-(none|to-(t|tr|r|br|b|bl|l|tl))",
+    regExp: "bg-gradient-none|bg-linear-to-(t|tr|r|br|b|bl|l|tl)",
   },
 
   viaColor: {
