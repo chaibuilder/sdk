@@ -2,8 +2,8 @@ import { useInlineEditing } from "@/core/hooks/hooks";
 import { ChaiBlock } from "@/types/chai-block";
 import { flip } from "@floating-ui/dom";
 import { shift, useFloating } from "@floating-ui/react-dom";
-import { useResizeObserver } from "@react-hookz/web";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
+import { useResizeObserver } from "@react-hookz/web";
 
 // NOTE: this component is not used anymore, but keeping it for now. Might remove it later.
 // Author: surajair
@@ -41,7 +41,7 @@ export const BlockStyleHighlight = ({
           e.stopPropagation();
         }}
         onKeyDown={(e) => e.stopPropagation()}
-        className="isolate z-999 flex items-center rounded-t bg-orange-500 p-px text-xs text-white">
+        className="isolate z-[999] flex items-center rounded-t bg-orange-500 p-px text-xs text-white">
         <MixerHorizontalIcon className="h-3 w-3" />
       </div>
     </>

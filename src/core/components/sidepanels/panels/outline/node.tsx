@@ -21,7 +21,7 @@ const Input = ({ node }) => {
     <input
       autoFocus
       className={cn(
-        "ml-2 h-4! w-full rounded-sm border border-border bg-background px-1 text-[11px] leading-tight outline-hidden",
+        "border-border bg-background ml-2 h-4! w-full rounded-sm border px-1 text-[11px] leading-tight outline-hidden",
         node.isSelected ? "text-black dark:text-white" : "",
       )}
       type="text"
@@ -171,8 +171,8 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
           <div
             role="button"
             onClick={() => addBlockOnPosition(-1)}
-            className="h-1 rounded bg-primary opacity-0 duration-200 group-hover:opacity-100">
-            <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 transform items-center gap-x-1 rounded-full bg-primary px-3 py-1 text-[9px] leading-tight text-white hover:bg-primary">
+            className="bg-primary h-1 rounded opacity-0 duration-200 group-hover:opacity-100">
+            <div className="bg-primary hover:bg-primary absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 transform items-center gap-x-1 rounded-full px-3 py-1 text-[9px] leading-tight text-white">
               <PlusIcon className="w-2.4 h-2.5 stroke-5 text-white" /> {t("Add block")}
             </div>
           </div>
@@ -231,8 +231,8 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
                 }}
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
-                className="absolute -top-0.5 h-0.5 w-[90%] rounded bg-primary/80 opacity-0 delay-200 duration-200 group-hover:opacity-100">
-                <div className="absolute left-1/2 top-1/2 flex h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full bg-primary/80 p-1 outline-solid outline-2 outline-white hover:bg-primary/80">
+                className="bg-primary/80 absolute -top-0.5 h-0.5 w-[90%] rounded opacity-0 delay-200 duration-200 group-hover:opacity-100">
+                <div className="bg-primary/80 hover:bg-primary/80 absolute top-1/2 left-1/2 flex h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full p-1 outline-2 outline-white outline-solid">
                   <PlusIcon className="h-2 w-2 stroke-2 text-white" />
                 </div>
               </div>
@@ -261,7 +261,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
             </div>
             <div
               className={cn(
-                "leading-1 flex items-center",
+                "flex items-center leading-1",
                 isLibBlock && "text-orange-600/90",
                 isLibBlock && isSelected && "text-orange-800",
                 isPartialBlock && "text-purple-600/90",
@@ -272,7 +272,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
                 <Input node={node} />
               ) : (
                 <div
-                  className={"ml-1.5 flex items-center gap-x-1 truncate text-[13px]"}
+                  className={"ml-1.5 flex h-5 items-center gap-x-1 truncate text-[13px]"}
                   onDoubleClick={(e) => {
                     e.stopPropagation();
                     node.edit();
@@ -290,11 +290,11 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
               <Tooltip>
                 <TooltipTrigger
                   onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, { _id: id })}
-                  className="cursor-pointer rounded bg-transparent p-px hover:bg-primary/10"
+                  className="hover:bg-primary/10 cursor-pointer rounded bg-transparent p-px"
                   asChild>
                   <PlusIcon className="h-4 w-4" />
                 </TooltipTrigger>
-                <TooltipContent className="isolate z-9999" side="bottom">
+                <TooltipContent className="isolate z-[9999]" side="bottom">
                   {t("Add block inside")}
                 </TooltipContent>
               </Tooltip>
@@ -308,16 +308,16 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
                     node.toggle();
                   }
                 }}
-                className="cursor-pointer rounded bg-transparent p-0.5 hover:bg-primary/10"
+                className="hover:bg-primary/10 cursor-pointer rounded bg-transparent p-0.5"
                 asChild>
                 {isShown ? <EyeClosedIcon className="h-4 w-4" /> : <EyeOpenIcon className="h-4 w-4" />}
               </TooltipTrigger>
-              <TooltipContent className="isolate z-9999 text-xs" side="bottom">
+              <TooltipContent className="isolate z-[9999] text-xs" side="bottom">
                 {t(isShown ? "Hide the block from page" : "Show the block on page")}
               </TooltipContent>
             </Tooltip>
             <BlockMoreOptions node={node} id={id}>
-              <div className="cursor-pointer rounded bg-transparent p-px hover:bg-primary/10">
+              <div className="hover:bg-primary/10 cursor-pointer rounded bg-transparent p-px">
                 <DotsVerticalIcon className="h-3 w-3" />
               </div>
             </BlockMoreOptions>

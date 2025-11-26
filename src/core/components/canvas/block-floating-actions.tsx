@@ -1,7 +1,7 @@
 import AddBlockDropdown from "@/core/components/canvas/add-block-placements";
 import { useDragAndDrop, useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
-import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import BlockController from "@/core/components/sidepanels/panels/add-blocks/block-controller";
+import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useFrame } from "@/core/frame/frame-context";
 import { canDeleteBlock, canDuplicateBlock } from "@/core/functions/block-helpers";
 import {
@@ -17,8 +17,8 @@ import {
   useSidebarActivePanel,
 } from "@/core/hooks";
 import { PERMISSIONS } from "@/core/main";
-import { ChaiBlock } from "@/types/common";
 import { pubsub } from "@/core/pubsub";
+import { ChaiBlock } from "@/types/common";
 import { flip, limitShift, size } from "@floating-ui/dom";
 import { shift, useFloating } from "@floating-ui/react-dom";
 import { ArrowUpIcon, CopyIcon, DragHandleDots2Icon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
@@ -176,7 +176,7 @@ const BlockFloatingSelector = ({ block, isDragging, selectedBlockElement }: Bloc
           setHighlighted(null);
         }}
         onKeyDown={(e) => e.stopPropagation()}
-        className={`isolate z-999 flex h-6 items-center justify-between bg-blue-500 py-2 text-xs text-white ${isDragging ? "opacity-0" : ""}`}>
+        className={`isolate z-[999] flex h-6 items-center justify-between bg-blue-500 py-2 text-xs text-white ${isDragging ? "opacity-0" : ""}`}>
         <>
           <div className="flex items-center">
             {isDragAndDropEnabled && (
@@ -196,7 +196,7 @@ const BlockFloatingSelector = ({ block, isDragging, selectedBlockElement }: Bloc
           <div className={`w-full ${isDragAndDropEnabled ? "cursor-grab active:cursor-grabbing" : ""}`}>
             <div className="mr-10 w-full items-center space-x-1 px-1 leading-tight">{label}</div>
           </div>
-          <div className="flex items-center gap-1 pl-1 pr-1.5">
+          <div className="flex items-center gap-1 pr-1.5 pl-1">
             {hasPermission(PERMISSIONS.ADD_BLOCK) && (
               <AiIcon
                 className="h-4 w-4 rounded hover:bg-white hover:text-blue-500"

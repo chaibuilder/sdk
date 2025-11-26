@@ -1,11 +1,10 @@
-import { Switch, Input, Button } from "@/ui";
+import { Button, Input, Switch } from "@/ui";
+import { Cross1Icon, DragHandleDots2Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
-import { MagnifyingGlassIcon, Cross1Icon } from "@radix-ui/react-icons";
+import { useEffect, useMemo, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
-import { useState, useMemo, useEffect } from "react";
 import { useChaiFeatureFlag, useChaiFeatureFlags, useToggleChaiFeatureFlag } from "./register-chai-flag";
-import { DragHandleDots2Icon } from "@radix-ui/react-icons";
 
 const FeatureToggle = ({
   featureKey,
@@ -110,14 +109,14 @@ const ChaiFeatureFlagsWidgetComponent = ({
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
-      className="fixed z-9999999 select-none rounded-md border border-gray-300 bg-white p-3 shadow-2xl"
+      className="fixed z-[9999999] rounded-md border border-gray-300 bg-white p-3 shadow-2xl select-none"
       style={{
         left: position.x,
         top: position.y,
         cursor: isDragging ? "grabbing" : "grab",
         userSelect: "none",
       }}>
-      <div className="relative sticky top-0 rounded-t-lg bg-white">
+      <div className="sticky top-0 rounded-t-lg bg-white">
         <div className="mb-3 flex items-center justify-between">
           <div>
             <h3 className="flex items-center gap-x-2 text-base font-semibold text-gray-900 dark:text-gray-100">
@@ -131,12 +130,12 @@ const ChaiFeatureFlagsWidgetComponent = ({
             variant="ghost"
             size="sm"
             onClick={close}
-            className="absolute -right-2 -top-2 p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+            className="absolute -top-2 -right-2 p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
             <Cross1Icon className="h-4 w-4" />
           </Button>
         </div>
         <div className="relative">
-          <MagnifyingGlassIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400" />
+          <MagnifyingGlassIcon className="absolute top-2.5 left-2.5 h-4 w-4 text-gray-400" />
           <Input
             type="search"
             placeholder="Search features..."

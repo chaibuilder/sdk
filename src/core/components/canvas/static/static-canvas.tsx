@@ -87,9 +87,9 @@ const StaticCanvas = () => {
           {dropIndicator.isVisible && (
             <div
               id="placeholder"
-              className={`pointer-events-none absolute z-99999 max-w-full transition-all duration-150 ${
+              className={`pointer-events-none absolute z-[99999] max-w-full transition-all duration-150 ${
                 dropIndicator.isEmpty
-                  ? "bg-purple-500/10 outline-dashed outline-2 -outline-offset-2 outline-purple-500"
+                  ? "bg-purple-500/10 outline-2 -outline-offset-2 outline-purple-500 outline-dashed"
                   : "rounded-full bg-green-500"
               }`}
               style={{

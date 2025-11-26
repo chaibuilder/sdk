@@ -201,19 +201,19 @@ const ListTree = () => {
       <div>
         <div className="mt-10 flex h-full w-full items-center justify-center p-8">
           <div className="flex flex-col items-center space-y-6 text-center">
-            <div className="rounded-full bg-muted p-6">
-              <StackIcon className="h-12 w-12 text-muted-foreground" />
+            <div className="bg-muted rounded-full p-6">
+              <StackIcon className="text-muted-foreground h-12 w-12" />
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-foreground">{t("This page is empty")}</h3>
-              <p className="max-w-sm text-sm text-muted-foreground">
+              <h3 className="text-foreground text-lg font-semibold">{t("This page is empty")}</h3>
+              <p className="text-muted-foreground max-w-sm text-sm">
                 {t("Get started by adding your first block to begin building your page")}
               </p>
             </div>
             {hasPermission(PERMISSIONS.ADD_BLOCK) && (
               <Button
                 onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK)}
-                className="bg-primary shadow-xs hover:bg-primary/90"
+                className="bg-primary hover:bg-primary/90 shadow-xs"
                 size="sm">
                 <PlusIcon className="h-4 w-4" />
                 {t("Add Block")}
@@ -226,7 +226,7 @@ const ListTree = () => {
 
   return (
     <>
-      <div className={cn("flex h-full select-none flex-col space-y-1")} onClick={() => clearSelection()}>
+      <div className={cn("flex h-full flex-col space-y-1 select-none")} onClick={() => clearSelection()}>
         <div
           id="outline-view "
           className="no-scrollbar h-full overflow-y-auto text-sm"
@@ -235,14 +235,14 @@ const ListTree = () => {
               handleKeyDown(e);
             }
           }}>
-          <div className="mb-2 flex items-center justify-end gap-x-1 pb-2 text-sm text-muted-foreground">
+          <div className="text-muted-foreground mb-2 flex items-center justify-end gap-x-1 pb-2 text-sm">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button className="h-fit p-1" onClick={() => treeRef?.current?.openAll()} variant="ghost" size="sm">
                   <DoubleArrowDownIcon className="h-2 w-2" />
                 </Button>
               </TooltipTrigger>
-              <TooltipContent className="isolate z-9999">{t("Expand all")}</TooltipContent>
+              <TooltipContent className="isolate z-[9999]">{t("Expand all")}</TooltipContent>
             </Tooltip>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -250,14 +250,14 @@ const ListTree = () => {
                   <DoubleArrowUpIcon className="h-2 w-2" />
                 </Button>
               </TooltipTrigger>
-              <TooltipContent className="isolate z-9999">{t("Collapse all")}</TooltipContent>
+              <TooltipContent className="isolate z-[9999]">{t("Collapse all")}</TooltipContent>
             </Tooltip>
           </div>
           <div className="group relative z-30 ml-5 w-full cursor-pointer">
             <div
               onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, { position: 0 })}
-              className="h-1 w-[90%] rounded bg-primary opacity-0 duration-200 group-hover:opacity-100">
-              <div className="absolute left-[45%] top-1/2 flex h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full bg-primary p-1 outline-solid outline-2 outline-white hover:bg-primary">
+              className="bg-primary h-1 w-[90%] rounded opacity-0 duration-200 group-hover:opacity-100">
+              <div className="bg-primary hover:bg-primary absolute top-1/2 left-[45%] flex h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full p-1 outline-2 outline-white outline-solid">
                 <PlusIcon className="h-3 w-3 stroke-3 text-white" />
               </div>
             </div>
@@ -275,13 +275,13 @@ const ListTree = () => {
                   "group flex w-full cursor-pointer items-center justify-between space-x-px rounded! p-1 py-0 outline-hidden",
                   ids.length === 0 ? "bg-primary/20" : "",
                 )}>
-                <div className="leading-1 flex items-center">
+                <div className="flex items-center leading-1">
                   <CardStackIcon className="h-3 w-3 shrink-0 rotate-180" />
-                  <div className="ml-1.5 flex items-center gap-x-1 truncate text-[13px]">Body</div>
+                  <div className="ml-1.5 flex h-5 items-center gap-x-1 truncate text-[13px]">Body</div>
                 </div>
 
                 <BlockMoreOptions node={"BODY"} id={"BODY"}>
-                  <div className="hidden cursor-pointer rounded bg-transparent p-px hover:bg-primary/10 group-hover:block">
+                  <div className="hover:bg-primary/10 hidden cursor-pointer rounded bg-transparent p-px group-hover:block">
                     <DotsVerticalIcon className="h-3 w-3" />
                   </div>
                 </BlockMoreOptions>
@@ -291,7 +291,7 @@ const ListTree = () => {
           <Tree
             ref={treeRef}
             height={window.innerHeight - 160}
-            className="no-scrollbar h-full! max-w-full space-y-1 overflow-y-auto! overflow-x-hidden!"
+            className="no-scrollbar h-full! max-w-full space-y-1 overflow-x-hidden! overflow-y-auto!"
             rowClassName="flex items-center h-full border-b border-transparent"
             selection={ids[0] || ""}
             onRename={onRename}

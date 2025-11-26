@@ -76,45 +76,57 @@ export const IframeInitialContent: string = `<!doctype html>
     </style>
     <style type="text/tailwindcss">
       @layer utilities {
-        .rte {
-          h1 {
-            @apply text-2xl;
-          }
-          h2 {
-            @apply text-xl;
-          }
-          h3 {
-            @apply text-lg;
-          }
-          h4 {
-            @apply text-base;
-          }
-          h5 {
-            @apply text-sm;
-          }
-          h6 {
-            @apply text-xs;
-          }
-          p {
-            &:empty {
-              @apply h-4;
-            }
-          }
-          ul {
-            @apply list-disc pl-6 text-base;
-          }
-          ol {
-            @apply list-decimal pl-6 text-base;
-          }
-          li > p {
-            @apply m-0;
-          }
-          blockquote {
-            @apply pl-4 text-base;
-            p {
-              @apply pl-4 text-base;
-            }
-          }
+        .rte h1 {
+          font-size: 1.5rem;
+          line-height: 2rem;
+        }
+        .rte h2 {
+          font-size: 1.25rem;
+          line-height: 1.75rem;
+        }
+        .rte h3 {
+          font-size: 1.125rem;
+          line-height: 1.75rem;
+        }
+        .rte h4 {
+          font-size: 1rem;
+          line-height: 1.5rem;
+        }
+        .rte h5 {
+          font-size: 0.875rem;
+          line-height: 1.25rem;
+        }
+        .rte h6 {
+          font-size: 0.75rem;
+          line-height: 1rem;
+        }
+        .rte p:empty {
+          height: 1rem;
+        }
+        .rte ul {
+          list-style-type: disc;
+          padding-left: 1.5rem;
+          font-size: 1rem;
+          line-height: 1.5rem;
+        }
+        .rte ol {
+          list-style-type: decimal;
+          padding-left: 1.5rem;
+          font-size: 1rem;
+          line-height: 1.5rem;
+        }
+        .rte li > p {
+          margin: 0px;
+        }
+        .rte blockquote {
+          padding-left: 1rem;
+          font-size: 1rem;
+          line-height: 1.5rem;
+        }
+        .rte blockquote p {
+          padding-left: 1rem;
+          font-size: 1rem;
+          line-height: 1.5rem;
         }
       }
     </style>
