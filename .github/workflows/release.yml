@@ -65,7 +65,13 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Publish to npm
-        run: pnpm publish --no-git-checks
+        run: |
+          VERSION="${{ steps.get_version.outputs.VERSION }}"
+          if [[ "$VERSION" == 4.* ]]; then
+            pnpm publish --no-git-checks --tag next
+          else
+            pnpm publish --no-git-checks
+          fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
