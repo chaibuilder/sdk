@@ -9,11 +9,10 @@ import { useAtom } from "jotai";
 import { isArray, map, pick } from "lodash-es";
 import { EXTERNAL_DATA } from "./_demo/EXTERNAL_DATA";
 import { PARTIALS } from "./_demo/PARTIALS";
-import { extendChaiBuilder } from "./extentions";
 import { Button } from "./ui";
 
 loadWebBlocks();
-extendChaiBuilder();
+// extendChaiBuilder();
 
 registerChaiSidebarPanel("popover", {
   button: () => (
