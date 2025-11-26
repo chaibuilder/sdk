@@ -111,7 +111,7 @@ const BreakpointCard = ({
         onClick={() => onClick(width)}
         size="sm"
         className="h-7 w-7 rounded-md p-1"
-        variant={breakpoint === currentBreakpoint ? "outline-solid" : "ghost"}>
+        variant={breakpoint === currentBreakpoint ? "outline" : "ghost"}>
         {icon}
       </Button>
     );
@@ -124,11 +124,11 @@ const BreakpointCard = ({
           onClick={() => onClick(width)}
           size="sm"
           className={cn("h-7 w-7 rounded-md p-1", breakpoint === currentBreakpoint ? activeButtonClass : buttonClass)}
-          variant={breakpoint === currentBreakpoint ? "outline-solid" : "ghost"}>
+          variant={breakpoint === currentBreakpoint ? "outline" : "ghost"}>
           {icon}
         </Button>
       </HoverCardTrigger>
-      <HoverCardContent className="w-fit max-w-52 border-border">
+      <HoverCardContent className="border-border w-fit max-w-52">
         <div className="flex justify-between space-x-4">
           <div className="space-y-1">
             <h4 className="text-sm font-semibold">{t(title)}</h4>
@@ -221,11 +221,11 @@ export const Breakpoints = ({
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <span className="cursor-pointer rounded-md p-1 hover:bg-background">
+          <span className="hover:bg-background cursor-pointer rounded-md p-1">
             <ChevronDownIcon className="scale-90 transform" />
           </span>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56 border-border text-xs">
+        <DropdownMenuContent className="border-border w-56 text-xs">
           <DropdownMenuLabel>{t("Screen sizes")}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {map(breakpoints, (bp: BreakpointItemType) => (
