@@ -16,7 +16,6 @@ import { isPageLoadedAtom } from "@/core/hooks/use-is-page-loaded";
 import { useKeyEventWatcher } from "@/core/hooks/use-key-event-watcher";
 import { useWatchPartailBlocks } from "@/core/hooks/use-partial-blocks-store";
 import { builderSaveStateAtom } from "@/core/hooks/use-save-page";
-import "@/core/index.css";
 import i18n from "@/core/locales/load";
 import { ScreenTooSmall } from "@/core/screen-too-small";
 import { ChaiBuilderEditorProps } from "@/types/index";
