@@ -21,7 +21,7 @@
 export function createCoreDragImage(block: any): HTMLElement {
   const container = document.createElement("div");
   container.className =
-    "absolute -top-[1000px] -left-[1000px] px-2 py-1 bg-white/60 border border-blue-400/30 rounded shadow-md flex items-center gap-1.5 font-sans pointer-events-none z-[9999] scale-90";
+    "absolute -top-[1000px] -left-[1000px] pl-3 pr-1 py-1 bg-white/60 border border-blue-400/30 rounded shadow-md flex items-center gap-1.5 font-sans pointer-events-none z-[9999] scale-90";
 
   // Create icon element
   const type = block.type || block._type || "Box";
@@ -30,10 +30,14 @@ export function createCoreDragImage(block: any): HTMLElement {
 
   // Try to render the icon if available
   try {
-    // Create a simple SVG fallback for icons since we can't use server-side rendering
-    iconContainer.innerHTML =
-      document.querySelector(`[data-add-core-block-icon="${type}"]`)?.outerHTML ||
-      '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V4z"/></svg>';
+    if (type === "Image") {
+      iconContainer.innerHTML = `<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 0.72 0.72"><path d="M.57.12H.15a.09.09 0 0 0-.09.09v.3A.09.09 0 0 0 .15.6h.42A.09.09 0 0 0 .66.51v-.3A.09.09 0 0 0 .57.12M.15.54A.03.03 0 0 1 .12.51V.437L.219.338a.03.03 0 0 1 .042 0L.462.54ZM.6.51a.03.03 0 0 1-.03.03H.547L.433.425.459.399a.03.03 0 0 1 .042 0L.6.498Zm0-.097L.544.357a.09.09 0 0 0-.127 0L.391.383.305.297a.09.09 0 0 0-.127 0L.12.353V.21A.03.03 0 0 1 .15.18h.42A.03.03 0 0 1 .6.21Z"/></svg>`;
+    } else {
+      // Create a simple SVG fallback for icons since we can't use server-side rendering
+      iconContainer.innerHTML =
+        document.querySelector(`[data-add-core-block-icon="${type}"]`)?.outerHTML ||
+        '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V4z"/></svg>';
+    }
   } catch (e) {
     // Fallback to text if icon rendering fails
     iconContainer.textContent = "";
