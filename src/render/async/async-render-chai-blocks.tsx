@@ -88,5 +88,9 @@ export async function AsyncRenderChaiBlocks(props: RenderChaiBlocksProps) {
     },
     {} as Record<string, Promise<Record<string, any>>>,
   );
+
+  // Wait for all data provider promises to settle
+  await Promise.allSettled(Object.values(dataProviders));
+
   return <AsyncRenderBlocks {...props} lang={lang} fallbackLang={fallbackLang} dataProviders={dataProviders} />;
 }
