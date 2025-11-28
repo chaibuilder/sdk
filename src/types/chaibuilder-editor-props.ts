@@ -298,5 +298,6 @@ export interface ChaiBuilderEditorProps {
     importTheme?: boolean;
     gotoSettings?: boolean;
     dragAndDrop?: boolean;
+    validateStructure?: boolean;
   };
 }
