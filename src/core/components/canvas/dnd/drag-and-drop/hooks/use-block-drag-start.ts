@@ -56,7 +56,7 @@ export const useBlockDragStart = () => {
       }
 
       // For new blocks, only store the type and blocks; for existing blocks, store the full block
-      const block = (isAddNew ? pick(_block, ["type", "blocks"]) : _block) as ChaiBlock;
+      const block = (isAddNew ? pick(_block, ["type", "blocks", "partialBlockId"]) : _block) as ChaiBlock;
 
       // Store the dragged block in atom for access by other hooks
       // @ts-expect-error - Jotai type inference issue with generic ChaiBlock type
