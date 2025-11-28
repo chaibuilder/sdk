@@ -8,6 +8,10 @@ import { getDefaultBlockProps } from "@chaibuilder/runtime";
 import { filter, find, first, has } from "lodash-es";
 import { useCallback } from "react";
 
+// Delay before selecting a newly added block to ensure the block is rendered in the DOM
+// and the state has been updated before attempting to highlight it
+const BLOCK_SELECTION_DELAY_MS = 100;
+
 type AddBlocks = {
   addCoreBlock: any;
   addPredefinedBlock: any;
@@ -85,7 +89,7 @@ export const useAddBlock = (): AddBlocks => {
       const newBlocks: ChaiBlock[] = [newBlock];
 
       addBlocks(newBlocks, parentBlockId, position);
-      setTimeout(() => setSelected([newBlock._id]), 100);
+      setTimeout(() => setSelected([newBlock._id]), BLOCK_SELECTION_DELAY_MS);
       return newBlock;
     },
     [addBlocks, addPredefinedBlock, allBlocks, setSelected],
