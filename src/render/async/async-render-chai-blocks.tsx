@@ -54,6 +54,7 @@ export type RenderChaiBlocksProps = {
   pageProps?: ChaiPageProps;
   draft?: boolean;
   dataProviderMetadataCallback?: (block: ChaiBlock, meta: Record<string, any>) => void;
+  dataProviders?: Record<string, Promise<Record<string, any>>>;
 };
 
 export async function AsyncRenderChaiBlocks(props: RenderChaiBlocksProps) {
@@ -66,6 +67,11 @@ export async function AsyncRenderChaiBlocks(props: RenderChaiBlocksProps) {
 
   const lang = props.lang ?? "en";
   const fallbackLang = props.fallbackLang ?? lang;
+
+  if (props.dataProviders) {
+    return <AsyncRenderBlocks {...props} lang={lang} fallbackLang={fallbackLang} dataProviders={props.dataProviders} />;
+  }
+
   const blocks = props.blocks.filter((block) => {
     const registeredChaiBlock = getRegisteredChaiBlock(block._type);
     if (has(registeredChaiBlock, "dataProvider") && isFunction(registeredChaiBlock.dataProvider)) {
@@ -88,9 +94,5 @@ export async function AsyncRenderChaiBlocks(props: RenderChaiBlocksProps) {
     },
     {} as Record<string, Promise<Record<string, any>>>,
   );
-
-  // Wait for all data provider promises to settle
-  await Promise.allSettled(Object.values(dataProviders));
-
   return <AsyncRenderBlocks {...props} lang={lang} fallbackLang={fallbackLang} dataProviders={dataProviders} />;
 }
