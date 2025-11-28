@@ -40,6 +40,7 @@ export const ChaiBuilderBlocks = ({
   const [selectedGroup, setSelectedGroup] = useState<string | null>("all");
   const [hoveredGroup, setHoveredGroup] = useState<string | null>(null);
   const debouncedSelectRef = useRef<any>(null);
+  const dnd = useBuilderProp("flags.dragAndDrop", false);
 
   // Focus search input on mount and tab change
   useEffect(() => {
@@ -207,7 +208,8 @@ export const ChaiBuilderBlocks = ({
                           position={position}
                           block={block}
                           disabled={
-                            !canAcceptChildBlock(parentType, block.type) || !canBeNestedInside(parentType, block.type)
+                            !dnd &&
+                            (!canAcceptChildBlock(parentType, block.type) || !canBeNestedInside(parentType, block.type))
                           }
                         />
                       ))}
