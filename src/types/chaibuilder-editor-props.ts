@@ -1,3 +1,4 @@
+import { StructureRule } from "@/core/hooks/structure-rules";
 import { ChaiBlock } from "@/types/chai-block";
 import React from "react";
 import { ChaiCollectoin } from "./collections";
@@ -300,4 +301,6 @@ export interface ChaiBuilderEditorProps {
     dragAndDrop?: boolean;
     validateStructure?: boolean;
   };
+
+  structureRules?: StructureRule[];
 }
