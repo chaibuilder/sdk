@@ -85,7 +85,7 @@ export const useAddBlock = (): AddBlocks => {
       const newBlocks: ChaiBlock[] = [newBlock];
 
       addBlocks(newBlocks, parentBlockId, position);
-      setSelected([newBlock._id]);
+      setTimeout(() => setSelected([newBlock._id]), 100);
       return newBlock;
     },
     [addBlocks, addPredefinedBlock, allBlocks, setSelected],

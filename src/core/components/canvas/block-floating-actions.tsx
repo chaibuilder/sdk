@@ -1,7 +1,7 @@
 import AddBlockDropdown from "@/core/components/canvas/add-block-placements";
 import { useDragAndDrop, useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
-import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import BlockController from "@/core/components/sidepanels/panels/add-blocks/block-controller";
+import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useFrame } from "@/core/frame/frame-context";
 import { canDeleteBlock, canDuplicateBlock } from "@/core/functions/block-helpers";
 import {
@@ -17,8 +17,8 @@ import {
   useSidebarActivePanel,
 } from "@/core/hooks";
 import { PERMISSIONS } from "@/core/main";
-import { ChaiBlock } from "@/types/common";
 import { pubsub } from "@/core/pubsub";
+import { ChaiBlock } from "@/types/common";
 import { flip, limitShift, size } from "@floating-ui/dom";
 import { shift, useFloating } from "@floating-ui/react-dom";
 import { ArrowUpIcon, CopyIcon, DragHandleDots2Icon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
@@ -149,13 +149,19 @@ const BlockFloatingSelector = ({ block, isDragging, selectedBlockElement }: Bloc
 
   // * Updating position of floating element when selected block element changes
   useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
     if (selectedBlockElement) {
-      const timer = setTimeout(() => update(), 500);
-      return () => clearTimeout(timer);
+      timer = setTimeout(() => update(), 500);
+      return () => {
+        if (timer) clearTimeout(timer);
+      };
     } else {
       update();
     }
-  }, [selectedBlockElement]);
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [selectedBlockElement, block?._id]);
 
   const [, setActivePanel] = useSidebarActivePanel();
   if (!isDragging && (!selectedBlockElement || !block || editingBlockId)) return null;
