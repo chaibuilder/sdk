@@ -76,7 +76,7 @@ export const useBlockDrop = () => {
 
       // Immediate cleanup to prevent race conditions with dragOver
       removeDropTargetAttributes(iframeDoc);
-      
+
       // Clear parent highlight and drop indicator immediately
       clearParentHighlight();
       setDropIndicator({
@@ -90,7 +90,7 @@ export const useBlockDrop = () => {
         width: 0,
         height: 0,
       });
-      
+
       // Additional cleanup after a short delay to catch any lingering state
       setTimeout(() => {
         clearParentHighlight();
@@ -160,7 +160,21 @@ export const useBlockDrop = () => {
             ? syncBlocksWithDefaults(draggedBlock?.blocks())
             : draggedBlock?.blocks;
 
-        addCoreBlock(preBlocks?.length > 0 ? { blocks: [...preBlocks] } : { type: draggedBlockType }, parentId, index);
+        if (draggedBlockType === "PartialBlock") {
+          addCoreBlock(
+            {
+              blocks: [{ _type: draggedBlockType, _id: "partial-block", partialBlockId: draggedBlock.partialBlockId }],
+            },
+            parentId,
+            index,
+          );
+        } else {
+          addCoreBlock(
+            preBlocks?.length > 0 ? { blocks: [...preBlocks] } : { type: draggedBlockType },
+            parentId,
+            index,
+          );
+        }
       }
 
       // Force re-render of canvas by incrementing render key
