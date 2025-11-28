@@ -7,7 +7,7 @@ import {
 import { useSetAtom } from "jotai";
 import { useEffect } from "react";
 import { convertToBlocksTree } from "../functions/blocks-fn";
-import { useBlocksStore } from "./hooks";
+import { useBlocksStore, useBuilderProp } from "./hooks";
 import { StructureError, StructureRule, defaultRuleRegistry } from "./structure-rules";
 
 export interface UseCheckStructureOptions {
@@ -17,7 +17,7 @@ export interface UseCheckStructureOptions {
 
 export const useCheckStructure = (options: UseCheckStructureOptions = {}) => {
   const [blocks] = useBlocksStore();
-
+  const validateStructure = useBuilderProp("flags.validateStructure", true);
   // Atoms to update
   const setStructureErrors = useSetAtom(structureErrorsAtom);
   const setStructureValidationValid = useSetAtom(structureValidationValidAtom);
@@ -25,6 +25,8 @@ export const useCheckStructure = (options: UseCheckStructureOptions = {}) => {
   const setHasStructureWarnings = useSetAtom(hasStructureWarningsAtom);
 
   useEffect(() => {
+    if (!validateStructure) return;
+
     const tree = convertToBlocksTree(blocks);
     const allErrors: StructureError[] = [];
 
@@ -62,6 +64,7 @@ export const useCheckStructure = (options: UseCheckStructureOptions = {}) => {
     setHasStructureErrors(hasErrors);
     setHasStructureWarnings(hasWarnings);
   }, [
+    validateStructure,
     blocks,
     options.enableAccessibilityRules,
     options.customRules,
