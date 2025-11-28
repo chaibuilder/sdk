@@ -6,12 +6,12 @@ import { InfoCircledIcon } from "@radix-ui/react-icons";
 const Logo = () => {
   return (
     <div className="flex w-96 items-center gap-2">
-      <a href="https://chaibuilder.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+      <a href="https://chaibuilder.com" target="_blank" className="flex items-center gap-2">
         <img src="/chaibuilder-logo.png" alt="Chai Builder" width={32} height={32} className="rounded-md" />
-        <span className="text-2xl font-bold tracking-tight">Chai Builder</span>
+        <span className="font-mono font-bold tracking-tight">ChaiBuilder</span>
       </a>
 
-      <a href="https://github.com/chaibuilder/sdk" target="_blank" rel="noopener noreferrer">
+      <a href="https://github.com/chaibuilder/sdk" target="_blank">
         <img src="https://img.shields.io/github/stars/chaibuilder/sdk" alt="Chai Builder" className="rounded-md" />
       </a>
     </div>
@@ -21,7 +21,7 @@ const Logo = () => {
 const DemoAlert = () => {
   return (
     <Alert variant="default" className="border-b border-border px-4 py-2">
-      <AlertDescription className="flex items-center gap-2">
+      <AlertDescription className="flex items-center gap-2 text-xs leading-tight">
         <InfoCircledIcon className="h-4 w-4" />
         <span className="font-bold">Demo mode</span> - Changes are saved in your browser local storage. AI actions are
         mocked.
