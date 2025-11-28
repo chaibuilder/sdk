@@ -12,7 +12,7 @@ const Logo = () => {
         <span className="font-mono font-bold tracking-tight">ChaiBuilder</span>
       </a>
 
-      <a href="https://github.com/chaibuilder/sdk" target="_blank">
+      <a href="https://github.com/chaibuilder/sdk" target="_blank" rel="noopener noreferrer">
         <img src="https://img.shields.io/github/stars/chaibuilder/sdk" alt="Chai Builder" className="rounded-md" />
       </a>
     </div>
