@@ -41,7 +41,7 @@ export const PageValidation = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className={`flex cursor-pointer items-center gap-2 ${getSeverityColor()}`}>
+        <div className={`ml-2 flex cursor-pointer items-center gap-2 ${getSeverityColor()}`}>
           {getIcon()}
           <span className="text-xs font-medium">{getMessage()}</span>
         </div>

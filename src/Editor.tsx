@@ -24,7 +24,7 @@ function ChaiBuilderDefault() {
         copyPaste: false,
         darkMode: false,
         exportCode: true,
-        dataBinding: false,
+        // dataBinding: false,
         importHtml: true,
         importTheme: false,
         dragAndDrop: true,
