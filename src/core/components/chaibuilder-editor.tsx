@@ -54,8 +54,8 @@ const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
   useExpandTree();
   useAutoSave();
   useWatchPartailBlocks();
-  useCheckStructure();
   useUnmountBroadcastChannel();
+  useCheckStructure();
   const { postMessage } = useBroadcastChannel();
   const [, setIsPageLoaded] = useAtom(isPageLoadedAtom);
 

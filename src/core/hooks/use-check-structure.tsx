@@ -5,7 +5,7 @@ import {
   structureValidationValidAtom,
 } from "@/core/atoms/blocks";
 import { useSetAtom } from "jotai";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { convertToBlocksTree } from "../functions/blocks-fn";
 import { useBlocksStore } from "./hooks";
 import { StructureError, StructureRule, defaultRuleRegistry } from "./structure-rules";
@@ -17,8 +17,6 @@ export interface UseCheckStructureOptions {
 
 export const useCheckStructure = (options: UseCheckStructureOptions = {}) => {
   const [blocks] = useBlocksStore();
-  const [errors, setErrors] = useState<StructureError[]>([]);
-  const [isValid, setIsValid] = useState(true);
 
   // Atoms to update
   const setStructureErrors = useSetAtom(structureErrorsAtom);
@@ -58,19 +56,11 @@ export const useCheckStructure = (options: UseCheckStructureOptions = {}) => {
     const hasWarnings = allErrors.filter((e) => e.severity === "warning").length > 0;
     const isStructureValid = !hasErrors;
 
-    // Update local state
-    setErrors(allErrors);
-    setIsValid(isStructureValid);
-
     // Update atoms
     setStructureErrors(allErrors);
     setStructureValidationValid(isStructureValid);
     setHasStructureErrors(hasErrors);
     setHasStructureWarnings(hasWarnings);
-
-    if (allErrors.length > 0) {
-      console.log("Structure validation found issues:", allErrors);
-    }
   }, [
     blocks,
     options.enableAccessibilityRules,
@@ -81,23 +71,7 @@ export const useCheckStructure = (options: UseCheckStructureOptions = {}) => {
     setHasStructureWarnings,
   ]);
 
-  return {
-    isValid,
-    errors,
-    hasErrors: errors.filter((e) => e.severity === "error").length > 0,
-    hasWarnings: errors.filter((e) => e.severity === "warning").length > 0,
-    errorCount: errors.filter((e) => e.severity === "error").length,
-    warningCount: errors.filter((e) => e.severity === "warning").length,
-    // Helper to get errors for a specific block
-    getBlockErrors: (blockId: string) => errors.filter((e) => e.blockId === blockId),
-    // Helper to get errors by severity
-    getErrorsBySeverity: (severity: "error" | "warning") => errors.filter((e) => e.severity === severity),
-    // Helper to get all error messages
-    getErrorMessages: () => errors.map((e) => e.message),
-    // Helper to get all error messages by severity
-    getErrorMessagesBySeverity: (severity: "error" | "warning") =>
-      errors.filter((e) => e.severity === severity).map((e) => e.message),
-  };
+  return null;
 };
 
 // Export the rule registry for external use
