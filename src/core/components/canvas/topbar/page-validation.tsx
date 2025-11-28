@@ -1,9 +1,13 @@
+import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import { useStructureValidation } from "@/core/hooks/use-structure-validation";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/ui";
 import { ExclamationTriangleIcon, InfoCircledIcon } from "@radix-ui/react-icons";
+import { useTranslation } from "react-i18next";
 
 export const PageValidation = () => {
   const { hasErrors, hasWarnings, errorCount, warningCount, errors } = useStructureValidation();
+  const [, setSelectedBlockIds] = useSelectedBlockIds();
+  const { t } = useTranslation();
 
   if (!hasErrors && !hasWarnings) {
     return null;
@@ -42,18 +46,23 @@ export const PageValidation = () => {
           <span className="text-xs font-medium">{getMessage()}</span>
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent side="bottom" className="max-w-xs" align="end">
+      <DropdownMenuContent side="bottom" className="max-w-xs p-2" align="end">
         <div className="space-y-2">
-          <h4 className="text-sm font-semibold">Structure Validation Issues</h4>
+          <h4 className="text-sm font-semibold">{t("Invalid structure")}</h4>
 
           {errors.length === 0 ? (
-            <p className="text-xs">No validation issues found.</p>
+            <p className="text-xs">{t("No validation issues found.")}</p>
           ) : (
             <div className="space-y-1">
               {errors.slice(0, 5).map((error) => (
                 <div
                   key={error.id}
-                  className={`rounded p-2 text-xs ${
+                  onClick={() => {
+                    if (error.blockId) {
+                      setSelectedBlockIds([error.blockId]);
+                    }
+                  }}
+                  className={`cursor-pointer rounded p-2 text-xs transition-opacity hover:opacity-80 ${
                     error.severity === "error"
                       ? "border border-red-200 bg-red-50 text-red-700"
                       : "border border-orange-200 bg-orange-50 text-orange-700"
@@ -68,10 +77,6 @@ export const PageValidation = () => {
               )}
             </div>
           )}
-
-          <div className="border-t pt-2 text-xs text-gray-500">
-            Check the outline panel for detailed error locations
-          </div>
         </div>
       </DropdownMenuContent>
     </DropdownMenu>
