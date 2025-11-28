@@ -29,7 +29,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
     <div className="">
       {blockId ? (
         <div className="">
-          <label className="text-xs font-medium text-gray-500">Selected block</label>
+          <label className="text-xs font-medium text-gray-500">{t("Selected block")}</label>
           {selectedBlock && (
             <div className="flex items-center gap-x-1 rounded border border-primary/20 bg-primary/10 p-1.5 text-xs text-primary">
               <TypeIcon type={selectedBlock._type} />{" "}
@@ -38,7 +38,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
           )}
           <br />
 
-          <label className="text-xs font-medium text-gray-500">Quick actions</label>
+          <label className="text-xs font-medium text-gray-500">{t("Quick actions")}</label>
 
           <div className="rounded border p-2 text-sm">
             <QuickPrompts
@@ -51,7 +51,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
 
           <br />
 
-          <label className="text-xs font-medium text-gray-500">Custom prompt</label>
+          <label className="text-xs font-medium text-gray-500">{t("Ask AI")}</label>
           <div className="rounded border p-2 text-xs focus-within:border-gray-300">
             <Textarea
               ref={promptRef}
