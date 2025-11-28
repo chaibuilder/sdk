@@ -286,6 +286,37 @@ export const CORE_STRUCTURE_RULES: StructureRule[] = [
   },
 
   {
+    name: "no-nested-paragraphs",
+    description: "Prevents paragraph elements from being nested inside other paragraph elements at any level",
+    validate: (_blocks: ChaiBlock[], tree: any[]) => {
+      const errors: StructureError[] = [];
+
+      const findNestedParagraphs = (nodes: any[], ancestorParagraphs: string[] = []) => {
+        nodes.forEach((node) => {
+          const isParagraph = node._type === "Paragraph";
+
+          if (isParagraph && ancestorParagraphs.length > 0) {
+            errors.push({
+              id: `nested-paragraph-${node._id}`,
+              message: "Paragraph cannot be nested inside another paragraph",
+              severity: "error",
+              blockId: node._id,
+            });
+          }
+
+          if (node.children && node.children.length > 0) {
+            const newAncestors = isParagraph ? [...ancestorParagraphs, node._id] : ancestorParagraphs;
+            findNestedParagraphs(node.children, newAncestors);
+          }
+        });
+      };
+
+      findNestedParagraphs(tree);
+      return errors;
+    },
+  },
+
+  {
     name: "heading-structure",
     description: "Checks for proper heading hierarchy and warns about skipped levels",
     validate: (_blocks: ChaiBlock[], tree: any[]) => {
