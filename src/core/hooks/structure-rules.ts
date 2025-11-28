@@ -65,62 +65,97 @@ export const CORE_STRUCTURE_RULES: StructureRule[] = [
     },
   },
   {
-    name: "no-nested-links",
-    description: "Prevents links from being nested inside other links",
+    name: "no-interactive-nesting",
+    description:
+      "Prevents interactive elements (links, buttons with href) from being nested inside other interactive elements",
     validate: (blocks: ChaiBlock[], tree: any[]) => {
       const errors: StructureError[] = [];
 
       // Check tree structure for visual nesting
-      const findNestedLinksInTree = (nodes: any[], parentIsLink: boolean = false, parentPath: string[] = []) => {
+      const findNestedInteractiveInTree = (
+        nodes: any[],
+        parentIsInteractive: boolean = false,
+        parentPath: string[] = [],
+      ) => {
         nodes.forEach((node) => {
           const currentPath = [...parentPath, node._id];
           const isLink = node._type === "Link";
+          const isButtonWithHref =
+            node._type === "Button" && node.link && node.link.href && node.link.href.trim() !== "";
+          const isInteractive = isLink || isButtonWithHref;
 
-          if (isLink && parentIsLink) {
+          if (isInteractive && parentIsInteractive) {
+            const elementType = isLink ? "Link" : "Button with href";
             errors.push({
-              id: `nested-link-tree-${node._id}`,
-              message: "Link cannot be nested inside another link",
+              id: `nested-interactive-tree-${node._id}`,
+              message: `${elementType} cannot be nested inside another interactive element (link or button with href)`,
               severity: "error",
               blockId: node._id,
             });
           }
 
           if (node.children && node.children.length > 0) {
-            findNestedLinksInTree(node.children, isLink, currentPath);
+            findNestedInteractiveInTree(node.children, isInteractive, currentPath);
           }
         });
       };
 
       // Check flat blocks array for parent-child relationships
-      const findNestedLinksInBlocks = (blocksList: ChaiBlock[]) => {
-        const linkBlocks = blocksList.filter((block) => block._type === "Link");
+      const findNestedInteractiveInBlocks = (blocksList: ChaiBlock[]) => {
+        const interactiveBlocks = blocksList.filter((block) => {
+          return (
+            block._type === "Link" ||
+            (block._type === "Button" && block.link && block.link.href && block.link.href.trim() !== "")
+          );
+        });
 
-        linkBlocks.forEach((linkBlock) => {
-          if (linkBlock._parent) {
-            const parentBlock = blocksList.find((block) => block._id === linkBlock._parent);
+        interactiveBlocks.forEach((interactiveBlock) => {
+          if (interactiveBlock._parent) {
+            const parentBlock = blocksList.find((block) => block._id === interactiveBlock._parent);
 
-            // Check if parent is also a link (direct nesting)
-            if (parentBlock && parentBlock._type === "Link") {
+            // Check if parent is also interactive (direct nesting)
+            const parentIsLink = parentBlock && parentBlock._type === "Link";
+            const parentIsButtonWithHref =
+              parentBlock &&
+              parentBlock._type === "Button" &&
+              parentBlock.link &&
+              parentBlock.link.href &&
+              parentBlock.link.href.trim() !== "";
+
+            if (parentIsLink || parentIsButtonWithHref) {
+              const childType = interactiveBlock._type === "Link" ? "Link" : "Button with href";
+              const parentType = parentIsLink ? "Link" : "Button with href";
               errors.push({
-                id: `nested-link-parent-${linkBlock._id}`,
-                message: "Link cannot be nested inside another link",
+                id: `nested-interactive-parent-${interactiveBlock._id}`,
+                message: `${childType} cannot be nested inside ${parentType}`,
                 severity: "error",
-                blockId: linkBlock._id,
+                blockId: interactiveBlock._id,
               });
             }
 
-            // Check if any ancestor is a link (deep nesting)
+            // Check if any ancestor is interactive (deep nesting)
             let currentAncestor = parentBlock;
             while (currentAncestor && currentAncestor._parent) {
               const ancestorBlock = blocksList.find((block) => block._id === currentAncestor!._parent);
-              if (ancestorBlock && ancestorBlock._type === "Link") {
-                errors.push({
-                  id: `nested-link-ancestor-${linkBlock._id}`,
-                  message: "Link cannot be nested inside another link",
-                  severity: "error",
-                  blockId: linkBlock._id,
-                });
-                break; // Found an ancestor link, no need to check further
+              if (ancestorBlock) {
+                const ancestorIsLink = ancestorBlock._type === "Link";
+                const ancestorIsButtonWithHref =
+                  ancestorBlock._type === "Button" &&
+                  ancestorBlock.link &&
+                  ancestorBlock.link.href &&
+                  ancestorBlock.link.href.trim() !== "";
+
+                if (ancestorIsLink || ancestorIsButtonWithHref) {
+                  const childType = interactiveBlock._type === "Link" ? "Link" : "Button with href";
+                  const ancestorType = ancestorIsLink ? "Link" : "Button with href";
+                  errors.push({
+                    id: `nested-interactive-ancestor-${interactiveBlock._id}`,
+                    message: `${childType} cannot be nested inside ${ancestorType}`,
+                    severity: "error",
+                    blockId: interactiveBlock._id,
+                  });
+                  break; // Found an interactive ancestor, no need to check further
+                }
               }
               currentAncestor = ancestorBlock;
             }
@@ -128,8 +163,8 @@ export const CORE_STRUCTURE_RULES: StructureRule[] = [
         });
       };
 
-      findNestedLinksInTree(tree);
-      findNestedLinksInBlocks(blocks);
+      findNestedInteractiveInTree(tree);
+      findNestedInteractiveInBlocks(blocks);
       return errors;
     },
   },
