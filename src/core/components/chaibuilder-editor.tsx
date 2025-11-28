@@ -28,6 +28,7 @@ import { each, noop, omit } from "lodash-es";
 import React, { useEffect, useMemo } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Toaster } from "sonner";
+import { useCheckStructure } from "../hooks/use-check-structure";
 import { ExportCodeModal } from "../modals/export-code-modal";
 
 const useAutoSave = () => {
@@ -53,6 +54,7 @@ const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
   useExpandTree();
   useAutoSave();
   useWatchPartailBlocks();
+  useCheckStructure();
   useUnmountBroadcastChannel();
   const { postMessage } = useBroadcastChannel();
   const [, setIsPageLoaded] = useAtom(isPageLoadedAtom);

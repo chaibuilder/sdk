@@ -69,7 +69,6 @@ const ListTree = () => {
   const [, setTreeRef] = useAtom(treeRefAtom);
   const { t } = useTranslation();
   const [parentContext, setParentContext] = useState(null);
-
   const clearSelection = () => {
     setIds([]);
     setStyleBlocks([]);

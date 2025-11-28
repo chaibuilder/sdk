@@ -7,10 +7,18 @@ import { ROOT_TEMP_KEY } from "@/core/constants/STRINGS";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { canAcceptChildBlock, canAddChildBlock } from "@/core/functions/block-helpers";
 import { useBlockHighlight, useBuilderProp, usePermissions, useTranslation, useUpdateBlocksProps } from "@/core/hooks";
+import { useStructureValidation } from "@/core/hooks/use-structure-validation";
 import { pubsub } from "@/core/pubsub";
 import { cn } from "@/core/utils/cn";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
-import { ChevronRightIcon, DotsVerticalIcon, EyeClosedIcon, EyeOpenIcon, PlusIcon } from "@radix-ui/react-icons";
+import {
+  ChevronRightIcon,
+  DotsVerticalIcon,
+  ExclamationTriangleIcon,
+  EyeClosedIcon,
+  EyeOpenIcon,
+  PlusIcon,
+} from "@radix-ui/react-icons";
 import { atom, useAtom } from "jotai";
 import { get, has, isEmpty, startCase } from "lodash-es";
 import { memo, useEffect, useMemo } from "react";
@@ -61,8 +69,9 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
   const hasChildren = node.children.length > 0;
   const { highlightBlock, clearHighlight } = useBlockHighlight();
   const isDragAndDropEnabled = useIsDragAndDropEnabled();
-
   const { id, data, isSelected, willReceiveDrop, isDragging, isEditing, handleClick } = node;
+  const validations = useStructureValidation();
+  const errors = useMemo(() => validations.getBlockErrors(id), [validations, id]);
   const isShown = get(data, "_show", true);
   const handleToggle = (event: any) => {
     event.stopPropagation();
@@ -196,7 +205,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
   }, [data]);
 
   return (
-    <div className="w-full">
+    <div className={"w-full"}>
       <div
         onMouseEnter={() => highlightBlock(id)}
         onMouseLeave={() => clearHighlight()}
@@ -267,7 +276,14 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
                 isPartialBlock && "text-purple-600/90",
                 isPartialBlock && isSelected && "text-purple-800",
               )}>
-              <TypeIcon type={data?._type} />
+              {errors.length > 0 ? (
+                <div className="text-red-500">
+                  <ExclamationTriangleIcon className="h-3 w-3" />
+                </div>
+              ) : (
+                <TypeIcon type={data?._type} />
+              )}
+
               {isEditing ? (
                 <Input node={node} />
               ) : (

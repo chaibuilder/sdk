@@ -17,6 +17,7 @@ import { DotsHorizontalIcon, LightningBoltIcon } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { PageValidation } from "./page-validation";
 
 const CanvasTopBar: React.FC = () => {
   const darkModeEnabled = useBuilderProp("flags.darkMode", true);
@@ -51,6 +52,7 @@ const CanvasTopBar: React.FC = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         ) : null}
+        <PageValidation />
         <ClearCanvas />
       </div>
     </div>
