@@ -1,4 +1,4 @@
-import { chaiGlobalStylesAtom } from "@/core/atoms/builder";
+import { chaiDesignTokensAtom } from "@/core/atoms/builder";
 import { useBuilderProp } from "@/core/hooks";
 import {
   AlertDialog,
@@ -38,8 +38,8 @@ interface ManageDesignTokensProps {
 
 export const ManageDesignTokens = ({ open, onOpenChange }: ManageDesignTokensProps) => {
   const { t } = useTranslation();
-  const [globalStyles, setGlobalStyles] = useAtom(chaiGlobalStylesAtom);
-  const onGlobalStylesChange = useBuilderProp("onGlobalStylesChange", null);
+  const [globalStyles, setGlobalStyles] = useAtom(chaiDesignTokensAtom);
+  const onDesignTokenChange = useBuilderProp("onDesignTokenChange", null);
 
   const [isAdding, setIsAdding] = useState(false);
   const [editingToken, setEditingToken] = useState<string | null>(null);
@@ -61,7 +61,7 @@ export const ManageDesignTokens = ({ open, onOpenChange }: ManageDesignTokensPro
     return nameRegex.test(trimmed);
   };
 
-  const getTokenNameError = (tokenName: string, isEditing: boolean = false, currentName?: string): string => {
+  const getTokenNameError = (tokenName: string, isEditing: boolean = false, currentTokenId?: string): string => {
     const trimmed = tokenName.trim();
 
     if (trimmed.length === 0) {
@@ -77,8 +77,11 @@ export const ManageDesignTokens = ({ open, onOpenChange }: ManageDesignTokensPro
       return t("Only alphanumeric characters and single spaces allowed");
     }
 
-    // Check for duplicates
-    if (globalStyles[trimmed] && (!isEditing || trimmed !== currentName)) {
+    // Check for duplicates by name
+    const existingTokenWithName = Object.entries(globalStyles).find(
+      ([id, token]) => token.name === trimmed && (!isEditing || id !== currentTokenId),
+    );
+    if (existingTokenWithName) {
       return t("Token name already exists");
     }
 
@@ -96,18 +99,26 @@ export const ManageDesignTokens = ({ open, onOpenChange }: ManageDesignTokensPro
       return;
     }
 
-    if (globalStyles[newTokenName]) {
+    // Check if token name already exists
+    const existingTokenWithName = Object.values(globalStyles).find((token) => token.name === newTokenName.trim());
+    if (existingTokenWithName) {
       toast.error(t("Token already exists"));
       return;
     }
 
+    // Generate a unique ID for the token
+    const tokenId = `token_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
     const newStyles = {
       ...globalStyles,
-      [newTokenName]: newClasses,
+      [tokenId]: {
+        name: newTokenName.trim(),
+        value: newClasses.trim(),
+      },
     };
     setGlobalStyles(newStyles);
-    if (onGlobalStylesChange) {
-      onGlobalStylesChange(newStyles);
+    if (onDesignTokenChange) {
+      onDesignTokenChange(newStyles);
     }
 
     setNewTokenName("");
@@ -127,19 +138,29 @@ export const ManageDesignTokens = ({ open, onOpenChange }: ManageDesignTokensPro
       return;
     }
 
-    if (editingToken && editTokenName !== editingToken && globalStyles[editTokenName]) {
+    // Check if token name already exists (excluding current token)
+    const existingTokenWithName = Object.entries(globalStyles).find(
+      ([id, token]) => token.name === editTokenName.trim() && id !== editingToken,
+    );
+    if (existingTokenWithName) {
       toast.error(t("Token already exists"));
       return;
     }
 
-    const newStyles = { ...globalStyles };
-    if (editingToken && editTokenName !== editingToken) {
-      delete newStyles[editingToken];
+    if (!editingToken) {
+      return;
     }
-    newStyles[editTokenName] = editClasses;
+
+    const newStyles = {
+      ...globalStyles,
+      [editingToken]: {
+        name: editTokenName.trim(),
+        value: editClasses.trim(),
+      },
+    };
     setGlobalStyles(newStyles);
-    if (onGlobalStylesChange) {
-      onGlobalStylesChange(newStyles);
+    if (onDesignTokenChange) {
+      onDesignTokenChange(newStyles);
     }
 
     setEditingToken(null);
@@ -148,20 +169,23 @@ export const ManageDesignTokens = ({ open, onOpenChange }: ManageDesignTokensPro
     toast.success(t("Token updated successfully"));
   };
 
-  const handleDeleteStyle = (selector: string) => {
+  const handleDeleteStyle = (tokenId: string) => {
     const newStyles = { ...globalStyles };
-    delete newStyles[selector];
+    delete newStyles[tokenId];
     setGlobalStyles(newStyles);
-    if (onGlobalStylesChange) {
-      onGlobalStylesChange(newStyles);
+    if (onDesignTokenChange) {
+      onDesignTokenChange(newStyles);
     }
     toast.success(t("Token deleted successfully"));
   };
 
-  const startEdit = (selector: string) => {
-    setEditingToken(selector);
-    setEditTokenName(selector);
-    setEditClasses(globalStyles[selector]);
+  const startEdit = (tokenId: string) => {
+    const token = globalStyles[tokenId];
+    if (!token) return;
+
+    setEditingToken(tokenId);
+    setEditTokenName(token.name);
+    setEditClasses(token.value);
     setIsAdding(false);
   };
 
@@ -276,12 +300,12 @@ export const ManageDesignTokens = ({ open, onOpenChange }: ManageDesignTokensPro
                   <p className="text-xs">{t("No design tokens defined")}</p>
                 </div>
               ) : (
-                Object.entries(globalStyles).map(([selector, classes]) => (
+                Object.entries(globalStyles).map(([tokenId, token]) => (
                   <Card
-                    key={selector}
-                    className={`${editingToken === selector ? "border-primary" : ""} transition-colors`}>
+                    key={tokenId}
+                    className={`${editingToken === tokenId ? "border-primary" : ""} transition-colors`}>
                     <CardContent className="p-3">
-                      {editingToken === selector ? (
+                      {editingToken === tokenId ? (
                         // Edit Mode
                         <div className="space-y-3">
                           <div className="grid grid-cols-2 gap-3">
@@ -325,15 +349,17 @@ export const ManageDesignTokens = ({ open, onOpenChange }: ManageDesignTokensPro
                         <div className="flex items-start justify-between gap-3">
                           <div className="min-w-0 flex-1">
                             <code className="text-nowrap rounded bg-muted px-1.5 py-0.5 font-mono text-xs">
-                              {selector}
+                              {token.name}
                             </code>
-                            <div className="mt-1 line-clamp-2 break-words text-xs text-muted-foreground">{classes}</div>
+                            <div className="mt-1 line-clamp-2 break-words text-xs text-muted-foreground">
+                              {token.value}
+                            </div>
                           </div>
                           <div className="flex flex-shrink-0 space-x-0.5">
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => startEdit(selector)}
+                              onClick={() => startEdit(tokenId)}
                               disabled={isAdding || editingToken !== null}
                               className="h-6 w-6 p-0">
                               <Pencil1Icon className="h-3 w-3" />
@@ -355,14 +381,14 @@ export const ManageDesignTokens = ({ open, onOpenChange }: ManageDesignTokensPro
                                     {t("Delete this token?")}
                                     <br />
                                     <code className="mt-1 inline-block rounded bg-muted px-1 py-0.5 font-mono text-xs">
-                                      {selector}
+                                      {token.name}
                                     </code>
                                   </AlertDialogDescription>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
                                   <AlertDialogCancel className="h-7 text-xs">{t("Cancel")}</AlertDialogCancel>
                                   <AlertDialogAction
-                                    onClick={() => handleDeleteStyle(selector)}
+                                    onClick={() => handleDeleteStyle(tokenId)}
                                     className="h-7 bg-destructive text-xs text-destructive-foreground hover:bg-destructive/90">
                                     {t("Delete")}
                                   </AlertDialogAction>

@@ -1,4 +1,4 @@
-import { chaiBuilderPropsAtom, chaiGlobalStylesAtom, chaiPageExternalDataAtom } from "@/core/atoms/builder";
+import { chaiBuilderPropsAtom, chaiDesignTokensAtom, chaiPageExternalDataAtom } from "@/core/atoms/builder";
 import { builderStore } from "@/core/atoms/store";
 import { selectedLibraryAtom } from "@/core/atoms/ui";
 import { CssThemeVariables } from "@/core/components/css-theme-var";
@@ -72,8 +72,8 @@ const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
   }, [props.pageExternalData]);
 
   useEffect(() => {
-    builderStore.set(chaiGlobalStylesAtom, props.globalStyles || {});
-  }, [props.globalStyles]);
+    builderStore.set(chaiDesignTokensAtom, props.designTokens || {});
+  }, [props.designTokens]);
 
   useEffect(() => {
     setIsPageLoaded(false);

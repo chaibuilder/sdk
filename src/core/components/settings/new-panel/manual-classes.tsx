@@ -35,7 +35,7 @@ export function ManualClasses() {
   const { classes: classesString } = getSplitChaiClasses(get(block, prop, ""));
   const classes = classesString.split(" ").filter((cls) => !isEmpty(cls));
   const enableCopyToClipboard = useBuilderProp("flags.copyPaste", true);
-  const enableGlobalStyles = useBuilderProp("flags.globalStyles", false);
+  const enableDesignTokens = useBuilderProp("flags.designTokens", false);
 
   const addNewClasses = () => {
     const fullClsNames: string[] = newCls
@@ -139,7 +139,7 @@ export function ManualClasses() {
               </Tooltip>
             )}
           </span>
-          {enableGlobalStyles && (
+          {enableDesignTokens && (
             <span
               className="cursor-pointer text-xs transition-colors hover:text-primary"
               onClick={() => setIsGlobalStylesModalOpen(true)}>

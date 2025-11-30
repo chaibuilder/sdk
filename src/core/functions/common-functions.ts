@@ -1,5 +1,6 @@
-import { isEmpty, startsWith } from "lodash-es";
 import { ClassValue, clsx } from "clsx";
+import { isEmpty, startsWith } from "lodash-es";
+import { nanoid } from "nanoid";
 import { twMerge } from "tailwind-merge";
 
 /**
@@ -14,23 +15,21 @@ export function getBgImageValue(value: string) {
 /**
  * Get the unique uuid
  */
-export function generateUUID(length: number = 6, chars = "abcdefghijklmnopqrstuvwxyzABCD"): string {
-  let result = "";
-  for (let i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
-  return result;
+export function generateUUID(length: number = 6): string {
+  return nanoid(length);
 }
 
 export const getBreakpointValue = (width: number) =>
   width >= 1536
     ? "2XL"
     : width >= 1280
-    ? "XL"
-    : width >= 1024
-    ? "LG"
-    : width >= 768
-    ? "MD"
-    : width >= 640
-    ? "SM"
-    : "XS";
+      ? "XL"
+      : width >= 1024
+        ? "LG"
+        : width >= 768
+          ? "MD"
+          : width >= 640
+            ? "SM"
+            : "XS";
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
