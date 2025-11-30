@@ -1,4 +1,4 @@
-import { chaiBuilderPropsAtom, chaiPageExternalDataAtom } from "@/core/atoms/builder";
+import { chaiBuilderPropsAtom, chaiGlobalStylesAtom, chaiPageExternalDataAtom } from "@/core/atoms/builder";
 import { builderStore } from "@/core/atoms/store";
 import { selectedLibraryAtom } from "@/core/atoms/ui";
 import { CssThemeVariables } from "@/core/components/css-theme-var";
@@ -63,13 +63,17 @@ const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
     builderStore.set(
       // @ts-ignore
       chaiBuilderPropsAtom,
-      omit(props, ["blocks", "translations", "pageExternalData"]),
+      omit(props, ["blocks", "translations", "pageExternalData", "globalStyles"]),
     );
   }, [props]);
 
   useEffect(() => {
     builderStore.set(chaiPageExternalDataAtom, props.pageExternalData || {});
   }, [props.pageExternalData]);
+
+  useEffect(() => {
+    builderStore.set(chaiGlobalStylesAtom, props.globalStyles || {});
+  }, [props.globalStyles]);
 
   useEffect(() => {
     setIsPageLoaded(false);

@@ -16,7 +16,7 @@ import { useMemo, useRef, useState } from "react";
 import Autosuggest from "react-autosuggest";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { ManageGlobalStyles } from "./manage-global-styles";
+import { ManageDesignTokens } from "./manage-design-tokens";
 
 export function ManualClasses() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -125,23 +125,25 @@ export function ManualClasses() {
   return (
     <div className={`flex w-full flex-col gap-y-1.5 border-b border-border pb-4`}>
       <div className="flex items-center justify-between gap-x-2">
-        <div className="flex items-center gap-x-2 text-muted-foreground">
-          <span>{t("Classes")}</span>
-          {enableCopyToClipboard && (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <CopyIcon onClick={onClickCopy} className={"cursor-pointer"} />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t("Copy classes to clipboard")}</p>
-              </TooltipContent>
-            </Tooltip>
-          )}
+        <div className="flex w-full items-center justify-between gap-x-2 text-muted-foreground">
+          <span className="flex items-center gap-x-1">
+            <span>{t("Classes")}</span>
+            {enableCopyToClipboard && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <CopyIcon onClick={onClickCopy} className={"cursor-pointer"} />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{t("Copy classes to clipboard")}</p>
+                </TooltipContent>
+              </Tooltip>
+            )}
+          </span>
           {enableGlobalStyles && (
             <span
               className="cursor-pointer text-xs transition-colors hover:text-primary"
               onClick={() => setIsGlobalStylesModalOpen(true)}>
-              {t("Global Styles")}
+              {t("Design Tokens")}
             </span>
           )}
         </div>
@@ -238,7 +240,7 @@ export function ManualClasses() {
           ),
         )}
       </div>
-      <ManageGlobalStyles open={isGlobalStylesModalOpen} onOpenChange={setIsGlobalStylesModalOpen} />
+      <ManageDesignTokens open={isGlobalStylesModalOpen} onOpenChange={setIsGlobalStylesModalOpen} />
     </div>
   );
 }
