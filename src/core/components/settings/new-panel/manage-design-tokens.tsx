@@ -1,3 +1,5 @@
+import { chaiGlobalStylesAtom } from "@/core/atoms/builder";
+import { useBuilderProp } from "@/core/hooks";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,127 +26,175 @@ import { Label } from "@/ui/shadcn/components/ui/label";
 import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
 import { Textarea } from "@/ui/shadcn/components/ui/textarea";
 import { CheckIcon, Cross2Icon, Pencil1Icon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
+import { useAtom } from "jotai";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
-interface GlobalStyles {
-  [selector: string]: string;
-}
-
-interface ManageGlobalStylesProps {
+interface ManageDesignTokensProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export const ManageGlobalStyles = ({ open, onOpenChange }: ManageGlobalStylesProps) => {
+export const ManageDesignTokens = ({ open, onOpenChange }: ManageDesignTokensProps) => {
   const { t } = useTranslation();
-  const [globalStyles, setGlobalStyles] = useState<GlobalStyles>({});
+  const [globalStyles, setGlobalStyles] = useAtom(chaiGlobalStylesAtom);
+  const onGlobalStylesChange = useBuilderProp("onGlobalStylesChange", null);
 
   const [isAdding, setIsAdding] = useState(false);
-  const [editingSelector, setEditingSelector] = useState<string | null>(null);
-  const [newSelector, setNewSelector] = useState("");
+  const [editingToken, setEditingToken] = useState<string | null>(null);
+  const [newTokenName, setNewTokenName] = useState("");
   const [newClasses, setNewClasses] = useState("");
-  const [editSelector, setEditSelector] = useState("");
+  const [editTokenName, setEditTokenName] = useState("");
   const [editClasses, setEditClasses] = useState("");
+  const [newTokenNameError, setNewTokenNameError] = useState("");
+  const [editTokenNameError, setEditTokenNameError] = useState("");
 
-  const validateSelector = (selector: string): boolean => {
-    // Basic CSS selector validation
-    const selectorRegex = /^[.#]?[a-zA-Z][a-zA-Z0-9_-]*(\s*[>+~]\s*[.#]?[a-zA-Z][a-zA-Z0-9_-]*)*$/;
-    return selectorRegex.test(selector.trim());
+  const validateTokenName = (tokenName: string): boolean => {
+    // Alphanumeric names with spaces, max 25 characters
+    const trimmed = tokenName.trim();
+    if (trimmed.length === 0 || trimmed.length > 25) {
+      return false;
+    }
+    // Allow alphanumeric characters and single spaces (no consecutive spaces)
+    const nameRegex = /^[a-zA-Z0-9]+(\s[a-zA-Z0-9]+)*$/;
+    return nameRegex.test(trimmed);
+  };
+
+  const getTokenNameError = (tokenName: string, isEditing: boolean = false, currentName?: string): string => {
+    const trimmed = tokenName.trim();
+
+    if (trimmed.length === 0) {
+      return "";
+    }
+
+    if (trimmed.length > 25) {
+      return t("Token name must be 25 characters or less");
+    }
+
+    const nameRegex = /^[a-zA-Z0-9]+(\s[a-zA-Z0-9]+)*$/;
+    if (!nameRegex.test(trimmed)) {
+      return t("Only alphanumeric characters and single spaces allowed");
+    }
+
+    // Check for duplicates
+    if (globalStyles[trimmed] && (!isEditing || trimmed !== currentName)) {
+      return t("Token name already exists");
+    }
+
+    return "";
   };
 
   const handleAddStyle = () => {
-    if (!newSelector.trim() || !newClasses.trim()) {
-      toast.error(t("Please fill in both selector and classes"));
+    if (!newTokenName.trim() || !newClasses.trim()) {
+      toast.error(t("Please fill in both token name and classes"));
       return;
     }
 
-    if (!validateSelector(newSelector)) {
-      toast.error(t("Invalid CSS selector format"));
+    if (!validateTokenName(newTokenName)) {
+      toast.error(t("Invalid design token name format"));
       return;
     }
 
-    if (globalStyles[newSelector]) {
-      toast.error(t("Selector already exists"));
+    if (globalStyles[newTokenName]) {
+      toast.error(t("Token already exists"));
       return;
     }
 
-    setGlobalStyles((prev) => ({
-      ...prev,
-      [newSelector]: newClasses,
-    }));
+    const newStyles = {
+      ...globalStyles,
+      [newTokenName]: newClasses,
+    };
+    setGlobalStyles(newStyles);
+    if (onGlobalStylesChange) {
+      onGlobalStylesChange(newStyles);
+    }
 
-    setNewSelector("");
+    setNewTokenName("");
     setNewClasses("");
     setIsAdding(false);
-    toast.success(t("Style added successfully"));
+    toast.success(t("Token added successfully"));
   };
 
   const handleEditStyle = () => {
-    if (!editSelector.trim() || !editClasses.trim()) {
-      toast.error(t("Please fill in both selector and classes"));
+    if (!editTokenName.trim() || !editClasses.trim()) {
+      toast.error(t("Please fill in both token name and classes"));
       return;
     }
 
-    if (!validateSelector(editSelector)) {
-      toast.error(t("Invalid CSS selector format"));
+    if (!validateTokenName(editTokenName)) {
+      toast.error(t("Invalid design token name format"));
       return;
     }
 
-    if (editingSelector && editSelector !== editingSelector && globalStyles[editSelector]) {
-      toast.error(t("Selector already exists"));
+    if (editingToken && editTokenName !== editingToken && globalStyles[editTokenName]) {
+      toast.error(t("Token already exists"));
       return;
     }
 
-    setGlobalStyles((prev) => {
-      const newStyles = { ...prev };
-      if (editingSelector && editSelector !== editingSelector) {
-        delete newStyles[editingSelector];
-      }
-      newStyles[editSelector] = editClasses;
-      return newStyles;
-    });
+    const newStyles = { ...globalStyles };
+    if (editingToken && editTokenName !== editingToken) {
+      delete newStyles[editingToken];
+    }
+    newStyles[editTokenName] = editClasses;
+    setGlobalStyles(newStyles);
+    if (onGlobalStylesChange) {
+      onGlobalStylesChange(newStyles);
+    }
 
-    setEditingSelector(null);
-    setEditSelector("");
+    setEditingToken(null);
+    setEditTokenName("");
     setEditClasses("");
-    toast.success(t("Style updated successfully"));
+    toast.success(t("Token updated successfully"));
   };
 
   const handleDeleteStyle = (selector: string) => {
-    setGlobalStyles((prev) => {
-      const newStyles = { ...prev };
-      delete newStyles[selector];
-      return newStyles;
-    });
-    toast.success(t("Style deleted successfully"));
+    const newStyles = { ...globalStyles };
+    delete newStyles[selector];
+    setGlobalStyles(newStyles);
+    if (onGlobalStylesChange) {
+      onGlobalStylesChange(newStyles);
+    }
+    toast.success(t("Token deleted successfully"));
   };
 
   const startEdit = (selector: string) => {
-    setEditingSelector(selector);
-    setEditSelector(selector);
+    setEditingToken(selector);
+    setEditTokenName(selector);
     setEditClasses(globalStyles[selector]);
     setIsAdding(false);
   };
 
   const cancelEdit = () => {
-    setEditingSelector(null);
-    setEditSelector("");
+    setEditingToken(null);
+    setEditTokenName("");
     setEditClasses("");
+    setEditTokenNameError("");
   };
 
   const cancelAdd = () => {
     setIsAdding(false);
-    setNewSelector("");
+    setNewTokenName("");
     setNewClasses("");
+    setNewTokenNameError("");
+  };
+
+  const handleNewTokenNameChange = (value: string) => {
+    setNewTokenName(value);
+    setNewTokenNameError(getTokenNameError(value));
+  };
+
+  const handleEditTokenNameChange = (value: string) => {
+    setEditTokenName(value);
+    setEditTokenNameError(getTokenNameError(value, true, editingToken || undefined));
   };
 
   const startAdd = () => {
     setIsAdding(true);
-    setEditingSelector(null);
-    setNewSelector("");
+    setEditingToken(null);
+    setNewTokenName("");
     setNewClasses("");
+    setNewTokenNameError("");
   };
 
   return (
@@ -152,11 +202,11 @@ export const ManageGlobalStyles = ({ open, onOpenChange }: ManageGlobalStylesPro
       <DialogContent className="flex max-h-[80vh] max-w-4xl flex-col">
         <DialogHeader className="pb-3">
           <DialogTitle className="text-base">
-            <span>{t("Global Styles")}</span>
+            <span>{t("Design Tokens")}</span>
             <Button
               variant="outline"
               onClick={startAdd}
-              disabled={isAdding || editingSelector !== null}
+              disabled={isAdding || editingToken !== null}
               size="sm"
               className="ml-3 h-7 text-xs">
               <PlusIcon className="mr-1 h-3 w-3" />
@@ -164,7 +214,7 @@ export const ManageGlobalStyles = ({ open, onOpenChange }: ManageGlobalStylesPro
             </Button>
           </DialogTitle>
           <DialogDescription className="text-xs">
-            {t("Manage custom CSS styles using Tailwind-like classes.")}
+            {t("Manage reusable design tokens using Tailwind-like classes.")}
           </DialogDescription>
         </DialogHeader>
 
@@ -175,16 +225,22 @@ export const ManageGlobalStyles = ({ open, onOpenChange }: ManageGlobalStylesPro
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1">
                     <Label htmlFor="new-selector" className="text-xs">
-                      {t("Selector")}
+                      {t("Token Name")}
                     </Label>
                     <Input
                       id="new-selector"
-                      placeholder=".my-class"
-                      value={newSelector}
-                      onChange={(e) => setNewSelector(e.target.value)}
+                      placeholder="Button Primary"
+                      value={newTokenName}
+                      onChange={(e) => handleNewTokenNameChange(e.target.value)}
                       className="h-7 text-xs"
                     />
-                    <span className="text-xs text-muted-foreground">{t(".my-class, #my-id, h1")}</span>
+                    {newTokenNameError ? (
+                      <span className="text-xs text-destructive">{newTokenNameError}</span>
+                    ) : (
+                      <span className="text-xs text-muted-foreground">
+                        {t("Button Primary, Card Header, Text Large")}
+                      </span>
+                    )}
                   </div>
                   <div className="space-y-1">
                     <Label htmlFor="new-classes" className="text-xs">
@@ -217,28 +273,31 @@ export const ManageGlobalStyles = ({ open, onOpenChange }: ManageGlobalStylesPro
               {Object.entries(globalStyles).length === 0 ? (
                 <div className="py-6 text-center text-muted-foreground">
                   <div className="mb-1 text-2xl">🎨</div>
-                  <p className="text-xs">{t("No styles defined")}</p>
+                  <p className="text-xs">{t("No design tokens defined")}</p>
                 </div>
               ) : (
                 Object.entries(globalStyles).map(([selector, classes]) => (
                   <Card
                     key={selector}
-                    className={`${editingSelector === selector ? "border-primary" : ""} transition-colors`}>
+                    className={`${editingToken === selector ? "border-primary" : ""} transition-colors`}>
                     <CardContent className="p-3">
-                      {editingSelector === selector ? (
+                      {editingToken === selector ? (
                         // Edit Mode
                         <div className="space-y-3">
                           <div className="grid grid-cols-2 gap-3">
                             <div className="space-y-1">
                               <Label htmlFor="edit-selector" className="text-xs">
-                                {t("Selector")}
+                                {t("Token Name")}
                               </Label>
                               <Input
                                 id="edit-selector"
-                                value={editSelector}
-                                onChange={(e) => setEditSelector(e.target.value)}
+                                value={editTokenName}
+                                onChange={(e) => handleEditTokenNameChange(e.target.value)}
                                 className="h-7 text-xs"
                               />
+                              {editTokenNameError && (
+                                <span className="text-xs text-destructive">{editTokenNameError}</span>
+                              )}
                             </div>
                             <div className="space-y-1">
                               <Label htmlFor="edit-classes" className="text-xs">
@@ -275,7 +334,7 @@ export const ManageGlobalStyles = ({ open, onOpenChange }: ManageGlobalStylesPro
                               variant="ghost"
                               size="sm"
                               onClick={() => startEdit(selector)}
-                              disabled={isAdding || editingSelector !== null}
+                              disabled={isAdding || editingToken !== null}
                               className="h-6 w-6 p-0">
                               <Pencil1Icon className="h-3 w-3" />
                             </Button>
@@ -284,16 +343,16 @@ export const ManageGlobalStyles = ({ open, onOpenChange }: ManageGlobalStylesPro
                                 <Button
                                   variant="ghost"
                                   size="sm"
-                                  disabled={isAdding || editingSelector !== null}
+                                  disabled={isAdding || editingToken !== null}
                                   className="h-6 w-6 p-0">
                                   <TrashIcon className="h-3 w-3 text-destructive" />
                                 </Button>
                               </AlertDialogTrigger>
                               <AlertDialogContent className="max-w-md">
                                 <AlertDialogHeader>
-                                  <AlertDialogTitle className="text-base">{t("Delete Style")}</AlertDialogTitle>
+                                  <AlertDialogTitle className="text-base">{t("Delete Token")}</AlertDialogTitle>
                                   <AlertDialogDescription className="text-sm">
-                                    {t("Delete this style?")}
+                                    {t("Delete this token?")}
                                     <br />
                                     <code className="mt-1 inline-block rounded bg-muted px-1 py-0.5 font-mono text-xs">
                                       {selector}

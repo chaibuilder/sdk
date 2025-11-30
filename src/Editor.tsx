@@ -19,6 +19,7 @@ function ChaiBuilderDefault() {
   const [theme, setTheme] = useAtom(lsThemeAtom);
   return (
     <ChaiBuilderEditor
+      globalStyles={{ img: "w-full rounded-md", ".btn": "bg-primary p-2 px-2 text-primary-foreground" }}
       flags={{
         librarySite: false,
         copyPaste: true,
