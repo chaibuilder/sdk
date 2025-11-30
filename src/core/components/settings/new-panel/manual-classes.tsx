@@ -16,6 +16,7 @@ import { useMemo, useRef, useState } from "react";
 import Autosuggest from "react-autosuggest";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { ManageGlobalStyles } from "./manage-global-styles";
 
 export function ManualClasses() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -29,10 +30,12 @@ export function ManualClasses() {
   const removeClassesFromBlocks = useRemoveClassesFromBlocks();
   const [selectedIds] = useSelectedBlockIds();
   const [newCls, setNewCls] = useState("");
+  const [isGlobalStylesModalOpen, setIsGlobalStylesModalOpen] = useState(false);
   const prop = first(styleBlock)?.prop as string;
   const { classes: classesString } = getSplitChaiClasses(get(block, prop, ""));
   const classes = classesString.split(" ").filter((cls) => !isEmpty(cls));
   const enableCopyToClipboard = useBuilderProp("flags.copyPaste", true);
+  const enableGlobalStyles = useBuilderProp("flags.globalStyles", false);
 
   const addNewClasses = () => {
     const fullClsNames: string[] = newCls
@@ -134,6 +137,13 @@ export function ManualClasses() {
               </TooltipContent>
             </Tooltip>
           )}
+          {enableGlobalStyles && (
+            <span
+              className="cursor-pointer text-xs transition-colors hover:text-primary"
+              onClick={() => setIsGlobalStylesModalOpen(true)}>
+              {t("Global Styles")}
+            </span>
+          )}
         </div>
       </div>
       <div className={"relative flex items-center gap-x-3"}>
@@ -228,6 +238,7 @@ export function ManualClasses() {
           ),
         )}
       </div>
+      <ManageGlobalStyles open={isGlobalStylesModalOpen} onOpenChange={setIsGlobalStylesModalOpen} />
     </div>
   );
 }
