@@ -21,13 +21,14 @@ function ChaiBuilderDefault() {
     <ChaiBuilderEditor
       flags={{
         librarySite: false,
-        copyPaste: false,
+        copyPaste: true,
         darkMode: false,
         exportCode: true,
         // dataBinding: false,
         importHtml: true,
         importTheme: false,
         dragAndDrop: true,
+        globalStyles: true,
       }}
       gotoPage={(args) => {
         console.log("gotoPage", args);

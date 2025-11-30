@@ -300,6 +300,7 @@ export interface ChaiBuilderEditorProps {
     gotoSettings?: boolean;
     dragAndDrop?: boolean;
     validateStructure?: boolean;
+    globalStyles?: boolean;
   };
 
   structureRules?: StructureRule[];
