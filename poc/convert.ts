@@ -1,8 +1,9 @@
 import * as cheerio from "cheerio";
 import { get } from "lodash-es";
+import { nanoid } from "nanoid";
 import { html } from "./html.ts";
 
-const generateUUID = () => Math.random().toString(36).substring(2, 5);
+const generateUUID = () => nanoid(5);
 
 export type ChaiBlock = {
   _id: string;

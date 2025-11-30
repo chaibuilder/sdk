@@ -2,7 +2,7 @@ import { StructureRule } from "@/core/hooks/structure-rules";
 import { ChaiBlock } from "@/types/chai-block";
 import React from "react";
 import { ChaiCollectoin } from "./collections";
-import { GlobalStyles } from "./types";
+import { DesignTokens } from "./types";
 
 export type ChaiLibraryBlock<T = Record<string, any>> = {
   id: string;
@@ -301,11 +301,11 @@ export interface ChaiBuilderEditorProps {
     gotoSettings?: boolean;
     dragAndDrop?: boolean;
     validateStructure?: boolean;
-    globalStyles?: boolean;
+    designTokens?: boolean;
   };
 
   structureRules?: StructureRule[];
 
-  globalStyles?: GlobalStyles;
-  onGlobalStylesChange?: (globalStyles: GlobalStyles) => void;
+  designTokens?: DesignTokens;
+  onDesignTokenChange?: (designTokens: DesignTokens) => void;
 }

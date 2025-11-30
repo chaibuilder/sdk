@@ -5,7 +5,8 @@ import "@/index.css";
 import { SavePageData } from "@/types/chaibuilder-editor-props";
 import { loadWebBlocks } from "@/web-blocks";
 import { useAtom } from "jotai";
-import { isArray, map, pick } from "lodash-es";
+import { isArray } from "lodash-es";
+import { nanoid } from "nanoid";
 import { EXTERNAL_DATA } from "./_demo/EXTERNAL_DATA";
 import { PARTIALS } from "./_demo/PARTIALS";
 import Topbar from "./_demo/top-bar";
@@ -19,7 +20,10 @@ function ChaiBuilderDefault() {
   const [theme, setTheme] = useAtom(lsThemeAtom);
   return (
     <ChaiBuilderEditor
-      globalStyles={{ img: "w-full rounded-md", ".btn": "bg-primary p-2 px-2 text-primary-foreground" }}
+      designTokens={{
+        [nanoid(8)]: { name: "Primary Button", value: "bg-primary p-2 px-2 text-primary-foreground" },
+        [nanoid(8)]: { name: "Secondary Button", value: "bg-secondary p-2 px-2 text-secondary-foreground" },
+      }}
       flags={{
         librarySite: false,
         copyPaste: true,
@@ -29,7 +33,7 @@ function ChaiBuilderDefault() {
         importHtml: true,
         importTheme: false,
         dragAndDrop: true,
-        globalStyles: true,
+        designTokens: true,
       }}
       gotoPage={(args) => {
         console.log("gotoPage", args);
@@ -51,15 +55,6 @@ function ChaiBuilderDefault() {
         setTheme(theme);
         await new Promise((resolve) => setTimeout(resolve, 100));
         return true;
-      }}
-      askAiCallBack={async (type: "styles" | "content", prompt: string, blocks: ChaiBlock[], lang: string = "") => {
-        console.log("askAiCallBack", type, prompt, blocks, lang);
-        return {
-          blocks: map(blocks, (b) => ({
-            ...pick(b, ["_id"]),
-          })) as ChaiBlock[],
-          usage: { completionTokens: 151, promptTokens: 227, totalTokens: 378 },
-        };
       }}
       getPartialBlockBlocks={async (partialBlockKey: string) => {
         const blocks = PARTIALS[partialBlockKey] ?? PARTIALS["header"];

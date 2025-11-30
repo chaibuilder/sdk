@@ -1,6 +1,6 @@
 import { useBlockRepeaterDataAtom } from "@/core/async-props/use-async-props";
 import { ChaiBuilderEditorProps } from "@/types";
-import { GlobalStyles } from "@/types/types";
+import { DesignTokens } from "@/types/types";
 import { atom, useAtomValue } from "jotai";
 import { useMemo } from "react";
 
@@ -25,8 +25,8 @@ chaiRjsfTemplatesAtom.debugLabel = "chaiRjsfTemplatesAtom";
 export const chaiPageExternalDataAtom = atom<Record<string, any>>({});
 chaiPageExternalDataAtom.debugLabel = "chaiPageExternalDataAtom";
 
-export const chaiGlobalStylesAtom = atom<GlobalStyles>({});
-chaiGlobalStylesAtom.debugLabel = "chaiGlobalStylesAtom";
+export const chaiDesignTokensAtom = atom<DesignTokens>({});
+chaiDesignTokensAtom.debugLabel = "chaiDesignTokensAtom";
 
 export const usePageExternalData = () => {
   const [blockRepeaterData] = useBlockRepeaterDataAtom();
