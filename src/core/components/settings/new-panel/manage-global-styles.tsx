@@ -39,10 +39,7 @@ interface ManageGlobalStylesProps {
 
 export const ManageGlobalStyles = ({ open, onOpenChange }: ManageGlobalStylesProps) => {
   const { t } = useTranslation();
-  const [globalStyles, setGlobalStyles] = useState<GlobalStyles>({
-    ".custom-button": "bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg",
-    ".custom-card": "bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 border",
-  });
+  const [globalStyles, setGlobalStyles] = useState<GlobalStyles>({});
 
   const [isAdding, setIsAdding] = useState(false);
   const [editingSelector, setEditingSelector] = useState<string | null>(null);
