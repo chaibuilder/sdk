@@ -103,7 +103,6 @@ registerChaiSidebarPanel("outline", {
   ),
 });
 
-
 /**
  * RootLayout is a React component that renders the main layout of the application.
  */
@@ -333,7 +332,7 @@ const RootLayout: ComponentType = () => {
                 <Suspense fallback={<div>Loading...</div>}>
                   {React.createElement(get(activePanelItem, "panel", NoopComponent), {
                     close: closeNonStandardPanel,
-                  })}
+                  } as any)}
                 </Suspense>
               </div>
             </SheetContent>
@@ -353,7 +352,7 @@ const RootLayout: ComponentType = () => {
                 <Suspense fallback={<div>Loading...</div>}>
                   {React.createElement(get(activePanelItem, "panel", NoopComponent), {
                     close: closeNonStandardPanel,
-                  })}
+                  } as any)}
                 </Suspense>
               </div>
             </DialogContent>
@@ -387,7 +386,7 @@ const RootLayout: ComponentType = () => {
                   <Suspense fallback={<div>Loading...</div>}>
                     {React.createElement(get(activePanelItem, "panel", NoopComponent), {
                       close: closeNonStandardPanel,
-                    })}
+                    } as any)}
                   </Suspense>
                 </div>
               </motion.div>

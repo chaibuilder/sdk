@@ -181,7 +181,7 @@ export const DataBindingSelector = ({
   return (
     <NestedPathSelector
       data={{
-        ...(repeaterData && { [repeaterKey]: repeaterData }),
+        ...((repeaterData && { [repeaterKey]: repeaterData }) as any),
         ...pageExternalData,
       }}
       onSelect={handlePathSelect}

@@ -92,5 +92,9 @@ export function insertBlocksAtPosition(
   }
 
   // Insert the new blocks at the specified position within the parent block
-  return [...modifiedAllBlocks.slice(0, insertIndex), ...processedNewBlocks, ...modifiedAllBlocks.slice(insertIndex)];
+  return [
+    ...modifiedAllBlocks.slice(0, insertIndex),
+    ...processedNewBlocks,
+    ...modifiedAllBlocks.slice(insertIndex),
+  ] as ChaiBlock[];
 }

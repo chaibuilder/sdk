@@ -1,14 +1,14 @@
 import { lsThemeAtom } from "@/_demo/atoms-dev";
+import { useDarkMode } from "@/core/hooks";
 import { cn } from "@/core/utils/cn";
 import { Input } from "@/ui";
+import { CaretDownIcon, Cross1Icon } from "@radix-ui/react-icons";
+import { useDebouncedState } from "@react-hookz/web";
 import { useAtom } from "jotai";
 import { get, uniq } from "lodash-es";
 import { useEffect, useState } from "react";
 import { HexAlphaColorPicker } from "react-colorful";
 import RteDropdownMenu from "./rte-dropdown-menu";
-import { CaretDownIcon, Cross1Icon } from "@radix-ui/react-icons";
-import { useDarkMode } from "@/core/hooks";
-import { useDebouncedState } from "@react-hookz/web";
 
 const getActiveClasses = (editor: any, keys: string[] | boolean, from: string) => {
   const isFromSettings = from === "settings";
@@ -27,7 +27,7 @@ const Commons = ({ themeColors, onClose, color, onChange, onRemove }: any) => {
     <>
       <div className="flex w-[180px] flex-wrap gap-1 pb-2">
         {themeColors?.length > 0 &&
-          uniq(themeColors).map((hex) => (
+          uniq(themeColors).map((hex: string) => (
             <button
               key={hex}
               className={cn(

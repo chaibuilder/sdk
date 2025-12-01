@@ -9,7 +9,7 @@ const applyBindingToValue = (
   propertyKey?: string,
 ) => {
   if (isString(value)) {
-    let result = value;
+    let result: any = value;
 
     const bindingRegex = /\{\{(.*?)\}\}/g;
     const matches = value.match(bindingRegex);

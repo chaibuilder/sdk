@@ -355,7 +355,7 @@ const AddBlocksPanel = ({
         ) : null}
         {map(addBlockAdditionalTabs, (tab) => (
           <TabsContent key={`panel-add-block-${tab.id}`} value={tab.id}>
-            {React.createElement(tab.tabContent, { close, parentId, position })}
+            {React.createElement(tab.tabContent, { close, parentId, position } as any)}
           </TabsContent>
         ))}
       </Tabs>
