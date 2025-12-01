@@ -13,7 +13,7 @@
 import { clickCountAtom, lastClickTimeAtom } from "@/core/atoms/click-detection";
 import { useBlocksStore, useSelectedBlockIds } from "@/core/hooks";
 import { useAtom } from "jotai";
-import { find } from "lodash";
+import { find } from "lodash-es";
 import { useCallback, useRef } from "react";
 import { useDragAndDrop } from ".";
 

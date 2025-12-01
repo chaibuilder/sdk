@@ -16,7 +16,7 @@ import { useCanvasIframe } from "@/core/hooks/use-canvas-iframe";
 import { ChaiBlock } from "@/types/common";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { useAtom } from "jotai";
-import { filter, isFunction } from "lodash";
+import { filter, isFunction } from "lodash-es";
 import { DragEvent, useCallback } from "react";
 import { canvasRenderKeyAtom, dragAndDropAtom, dropIndicatorAtom, setIsDragging } from "./use-drag-and-drop";
 import { useDragParentHighlight } from "./use-drag-parent-highlight";

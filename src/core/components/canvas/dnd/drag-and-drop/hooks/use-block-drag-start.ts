@@ -15,7 +15,7 @@ import { useBlockHighlight, useSelectedBlockIds, useSelectedStylingBlocks } from
 import { pubsub } from "@/core/pubsub";
 import { ChaiBlock } from "@/types/common";
 import { useAtom } from "jotai";
-import { pick } from "lodash";
+import { pick } from "lodash-es";
 import { DragEvent, useCallback, useRef } from "react";
 import { getOrientation } from "../../getOrientation";
 import { cleanupDragImage, createCoreDragImage } from "../create-drag-image";

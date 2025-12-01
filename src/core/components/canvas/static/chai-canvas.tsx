@@ -4,7 +4,7 @@ import { useBlockHighlight, useInlineEditing } from "@/core/hooks";
 import { pubsub } from "@/core/pubsub";
 import { useThrottledCallback } from "@react-hookz/web";
 import { useAtom } from "jotai";
-import { some } from "lodash";
+import { some } from "lodash-es";
 import React, { useCallback } from "react";
 
 function getTargetedBlock(target) {
