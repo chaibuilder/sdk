@@ -4,9 +4,9 @@ import { cn, generateUUID } from "@/core/functions/common-functions";
 import { getVideoURLFromHTML, hasVideoEmbed } from "@/core/import-html/import-video";
 import { ChaiBlock } from "@/types/chai-block";
 import { parse, stringify } from "himalaya";
-import { unset } from "lodash";
 import {
-  camelCase, capitalize,
+  camelCase,
+  capitalize,
   compact,
   filter,
   find,
@@ -22,7 +22,8 @@ import {
   some,
   startCase,
   startsWith,
-  trim
+  trim,
+  unset,
 } from "lodash-es";
 
 type Node = {
@@ -655,10 +656,11 @@ const findBlockById = (blocks: ChaiBlock[], blockId: string): ChaiBlock | undefi
  * @returns Merged blocks array
  */
 export const mergeBlocksWithExisting = (importedBlocks: ChaiBlock[], existingBlocks: ChaiBlock[]): ChaiBlock[] => {
-  if (isEmpty(existingBlocks)) return importedBlocks.map((b) => {
-    unset(b, "_bid");
-    return b;
-  });
+  if (isEmpty(existingBlocks))
+    return importedBlocks.map((b) => {
+      unset(b, "_bid");
+      return b;
+    });
 
   return map(importedBlocks, (importedBlock) => {
     const existingBlock = !isEmpty(importedBlock._bid) ? findBlockById(existingBlocks, importedBlock._bid) : undefined;
