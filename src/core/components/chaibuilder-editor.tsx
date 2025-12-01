@@ -55,9 +55,9 @@ const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
   useAutoSave();
   useWatchPartailBlocks();
   useUnmountBroadcastChannel();
-  useCheckStructure({ customRules: props.structureRules ?? [] });
   const { postMessage } = useBroadcastChannel();
   const [, setIsPageLoaded] = useAtom(isPageLoadedAtom);
+  const runValidation = useCheckStructure();
 
   useEffect(() => {
     builderStore.set(
@@ -83,6 +83,7 @@ const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
       }
       reset();
       setIsPageLoaded(true);
+      runValidation(withDefaults);
     }, 400);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.blocks]);
