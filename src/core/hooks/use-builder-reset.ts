@@ -17,7 +17,6 @@ export const useBuilderReset = () => {
   const { reset: resetPartialBlocks } = usePartialBlocksStore();
   const { setSaveState } = useSavePage();
   const [, setBlockRepeaterDataAtom] = useBlockRepeaterDataAtom();
-
   return () => {
     setBlockRepeaterDataAtom({});
     setSelectedIds([]);

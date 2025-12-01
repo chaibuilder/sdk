@@ -1,11 +1,12 @@
 import { generateUUID } from "@/core/functions/common-functions";
+import { ChaiBlock } from "../main";
 
 export function insertBlocksAtPosition(
   allBlocks: { _id: string; _parent?: string; [key: string]: any }[],
   newBlocks: { _id: string; _parent?: string; [key: string]: any }[],
   parentId?: string,
   position?: number,
-) {
+): ChaiBlock[] {
   // Process new blocks
   const processedNewBlocks = [...newBlocks];
 
