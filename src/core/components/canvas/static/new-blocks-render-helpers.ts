@@ -32,7 +32,7 @@ export const applyBinding = (
   const clonedBlock = cloneDeep(block);
   forEach(keys(clonedBlock), (key) => {
     if (isString(clonedBlock[key]) && !startsWith(key, "_")) {
-      let value = clonedBlock[key];
+      let value: any = clonedBlock[key];
       if (key === "repeaterItems") {
         clonedBlock["repeaterItemsBinding"] = value;
       }
@@ -114,7 +114,7 @@ export const applyChaiDataBinding = (block: Record<string, string>, pageExternal
   const clonedBlock = cloneDeep(block);
   forEach(keys(clonedBlock), (key: string) => {
     if (isString(clonedBlock[key]) && !startsWith(key, "_")) {
-      let value = clonedBlock[key];
+      let value: any = clonedBlock[key];
       if (key === "repeaterItems") {
         clonedBlock["repeaterItemsBinding"] = value;
       }

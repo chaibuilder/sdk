@@ -55,7 +55,7 @@ function ChaiBuilderDefault() {
         return {
           blocks: map(blocks, (b) => ({
             ...pick(b, ["_id"]),
-          })),
+          })) as ChaiBlock[],
           usage: { completionTokens: 151, promptTokens: 227, totalTokens: 378 },
         };
       }}

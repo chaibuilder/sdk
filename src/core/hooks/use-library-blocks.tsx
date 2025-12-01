@@ -10,8 +10,8 @@ export const useLibraryBlocks = (library?: Partial<ChaiLibrary> & { id: string }
   const [libraryBlocks, setLibraryBlocks] = useAtom(libraryBlocksAtom);
   const getBlocks = useMemo(() => library?.getBlocksList || (() => []), [library]);
   const blocks = get(libraryBlocks, `${library?.id}.blocks`, null);
-  const state = get(libraryBlocks, `${library?.id}.loading`, "idle");
-  const loadingRef = useRef("idle");
+  const state = get(libraryBlocks, `${library?.id}.loading`, "idle") as "idle" | "loading" | "complete";
+  const loadingRef = useRef<"idle" | "loading" | "complete">("idle");
 
   useEffect(() => {
     (async () => {

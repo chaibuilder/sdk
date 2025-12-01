@@ -8,7 +8,7 @@ import { useFrame } from "@/core/frame";
 import { useDarkMode, useSelectedBlockIds, useSelectedStylingBlocks } from "@/core/hooks";
 import { useTheme, useThemeOptions } from "@/core/hooks/use-theme";
 import { ChaiBuilderThemeValues } from "@/types/types";
-import { useRegisteredFonts } from "@chaibuilder/runtime";
+import { ChaiFontViaSrc, ChaiFontViaUrl, useRegisteredFonts } from "@chaibuilder/runtime";
 import aspectRatio from "@tailwindcss/aspect-ratio";
 import containerQueries from "@tailwindcss/container-queries";
 import forms from "@tailwindcss/forms";
@@ -110,9 +110,12 @@ const Fonts = () => {
     return registeredFonts.filter((font) => font.family === heading || font.family === body);
   }, [chaiTheme?.fontFamily, registeredFonts]);
 
-  const fonts = useMemo(() => getThemeFontsUrls(filter(pickedFonts, (font) => has(font, "url"))), [pickedFonts]);
+  const fonts = useMemo(
+    () => getThemeFontsUrls(filter(pickedFonts, (font) => has(font, "url")) as ChaiFontViaUrl[]),
+    [pickedFonts],
+  );
   const customFonts = useMemo(
-    () => getThemeCustomFontFace(filter(pickedFonts, (font) => has(font, "src"))),
+    () => getThemeCustomFontFace(filter(pickedFonts, (font) => has(font, "src")) as ChaiFontViaSrc[]),
     [pickedFonts],
   );
   return (

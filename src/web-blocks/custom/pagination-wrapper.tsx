@@ -19,7 +19,7 @@ export const PaginationWrapper = (props: PaginationProps) => {
   return (
     <div {...paginationStyles}>
       {pagination ? (
-        React.createElement(pagination.component, { ...omit(props, ["paginationStyles"]), blockProps: {} })
+        React.createElement(pagination.component, { ...omit(props, ["paginationStyles"]), blockProps: {} } as any)
       ) : (
         <>
           <button
