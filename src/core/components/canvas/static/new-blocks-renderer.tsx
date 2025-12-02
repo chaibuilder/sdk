@@ -107,10 +107,12 @@ const BlockRenderer = ({
         : applyLanguage(block, selectedLang, registeredChaiBlock),
     [block, selectedLang, registeredChaiBlock, pageExternalData, dataBindingActive, index, key],
   );
+
   const blockAttributesProps = useMemo(
     () => getBlockTagAttributes(block, true, designTokens),
     [block, getBlockTagAttributes, designTokens],
   );
+
   const runtimeProps = useMemo(
     () => getRuntimePropValues(block._id, getBlockRuntimeProps(block._type)),
     [block._id, block._type, getRuntimePropValues, getBlockRuntimeProps],

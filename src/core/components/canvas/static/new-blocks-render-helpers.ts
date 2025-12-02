@@ -56,14 +56,13 @@ export const applyBinding = (
   return clonedBlock;
 };
 
-const generateClassNames = memoize((styles: string, designTokens: DesignTokens) => {
+const generateClassNames = (styles: string, designTokens: DesignTokens) => {
   const { baseClasses, classes } = getSplitChaiClasses(styles);
   const tokens = classes.split(" ").filter((token) => token.startsWith("dt-"));
   const tokenValues = tokens.map((token) => designTokens[token.replace("dt-", "")]?.value);
   console.log("Tokens", tokens, tokenValues);
-
   return twMerge.apply(null, [baseClasses, ...tokenValues, classes]);
-});
+};
 
 function getElementAttrs(block: ChaiBlock, key: string) {
   return get(block, `${key}_attrs`, {}) as Record<string, string>;
