@@ -51,13 +51,13 @@ export const ManageDesignTokens = ({ open, onOpenChange }: ManageDesignTokensPro
   const [editTokenNameError, setEditTokenNameError] = useState("");
 
   const validateTokenName = (tokenName: string): boolean => {
-    // Alphanumeric names with spaces, max 25 characters
+    // Alphanumeric names with hyphens, max 25 characters
     const trimmed = tokenName.trim();
     if (trimmed.length === 0 || trimmed.length > 25) {
       return false;
     }
-    // Allow alphanumeric characters and single spaces (no consecutive spaces)
-    const nameRegex = /^[a-zA-Z0-9]+(\s[a-zA-Z0-9]+)*$/;
+    // Allow alphanumeric characters and hyphens (no consecutive hyphens)
+    const nameRegex = /^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$/;
     return nameRegex.test(trimmed);
   };
 
@@ -72,9 +72,9 @@ export const ManageDesignTokens = ({ open, onOpenChange }: ManageDesignTokensPro
       return t("Token name must be 25 characters or less");
     }
 
-    const nameRegex = /^[a-zA-Z0-9]+(\s[a-zA-Z0-9]+)*$/;
+    const nameRegex = /^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$/;
     if (!nameRegex.test(trimmed)) {
-      return t("Only alphanumeric characters and single spaces allowed");
+      return t("Only alphanumeric characters and hyphens allowed");
     }
 
     // Check for duplicates by name
@@ -204,13 +204,15 @@ export const ManageDesignTokens = ({ open, onOpenChange }: ManageDesignTokensPro
   };
 
   const handleNewTokenNameChange = (value: string) => {
-    setNewTokenName(value);
-    setNewTokenNameError(getTokenNameError(value));
+    const convertedValue = value.replace(/\s+/g, "-"); // Convert spaces to hyphens
+    setNewTokenName(convertedValue);
+    setNewTokenNameError(getTokenNameError(convertedValue));
   };
 
   const handleEditTokenNameChange = (value: string) => {
-    setEditTokenName(value);
-    setEditTokenNameError(getTokenNameError(value, true, editingToken || undefined));
+    const convertedValue = value.replace(/\s+/g, "-"); // Convert spaces to hyphens
+    setEditTokenName(convertedValue);
+    setEditTokenNameError(getTokenNameError(convertedValue, true, editingToken || undefined));
   };
 
   const startAdd = () => {
@@ -253,7 +255,7 @@ export const ManageDesignTokens = ({ open, onOpenChange }: ManageDesignTokensPro
                     </Label>
                     <Input
                       id="new-selector"
-                      placeholder="Button Primary"
+                      placeholder="Button-Primary"
                       value={newTokenName}
                       onChange={(e) => handleNewTokenNameChange(e.target.value)}
                       className="h-7 text-xs"
@@ -262,13 +264,13 @@ export const ManageDesignTokens = ({ open, onOpenChange }: ManageDesignTokensPro
                       <span className="text-xs text-destructive">{newTokenNameError}</span>
                     ) : (
                       <span className="text-xs text-muted-foreground">
-                        {t("Button Primary, Card Header, Text Large")}
+                        {t("Button-Primary, Card-Header, Text-Large")}
                       </span>
                     )}
                   </div>
                   <div className="space-y-1">
                     <Label htmlFor="new-classes" className="text-xs">
-                      {t("Classes")}
+                      {t("Tailwind Classes")}
                     </Label>
                     <Textarea
                       id="new-classes"
@@ -303,8 +305,8 @@ export const ManageDesignTokens = ({ open, onOpenChange }: ManageDesignTokensPro
                 Object.entries(globalStyles).map(([tokenId, token]) => (
                   <Card
                     key={tokenId}
-                    className={`${editingToken === tokenId ? "border-primary" : ""} transition-colors`}>
-                    <CardContent className="p-3">
+                    className={`${editingToken === tokenId ? "border-primary" : ""} transition-colors` + " " + "p-0"}>
+                    <CardContent className="p-1">
                       {editingToken === tokenId ? (
                         // Edit Mode
                         <div className="space-y-3">
@@ -348,12 +350,7 @@ export const ManageDesignTokens = ({ open, onOpenChange }: ManageDesignTokensPro
                         // View Mode
                         <div className="flex items-start justify-between gap-3">
                           <div className="min-w-0 flex-1">
-                            <code className="text-nowrap rounded bg-muted px-1.5 py-0.5 font-mono text-xs">
-                              {token.name}
-                            </code>
-                            <div className="mt-1 line-clamp-2 break-words text-xs text-muted-foreground">
-                              {token.value}
-                            </div>
+                            <code className="text-nowrap rounded bg-muted p-1 font-mono text-xs">{token.name}</code>
                           </div>
                           <div className="flex flex-shrink-0 space-x-0.5">
                             <Button

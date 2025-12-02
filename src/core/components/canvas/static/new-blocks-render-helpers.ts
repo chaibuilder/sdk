@@ -1,6 +1,7 @@
 import { STYLES_KEY } from "@/core/constants/STRINGS";
 import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
 import { ChaiBlock } from "@/types/chai-block";
+import { DesignTokens } from "@/types/types";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { cloneDeep, forEach, get, includes, isArray, isEmpty, isString, keys, memoize, startsWith } from "lodash-es";
 import { twMerge } from "tailwind-merge";
@@ -55,20 +56,22 @@ export const applyBinding = (
   return clonedBlock;
 };
 
-const generateClassNames = memoize((styles: string) => {
+const generateClassNames = memoize((styles: string, designTokens: DesignTokens) => {
   const { baseClasses, classes } = getSplitChaiClasses(styles);
-  return twMerge(baseClasses, classes);
+  const tokens = classes.split(" ").filter((token) => token.startsWith("dt-"));
+  const tokenValues = tokens.map((token) => designTokens[token.replace("dt-", "")]?.value);
+  return twMerge.apply(null, [baseClasses, ...tokenValues, classes]);
 });
 
 function getElementAttrs(block: ChaiBlock, key: string) {
   return get(block, `${key}_attrs`, {}) as Record<string, string>;
 }
 
-export function getBlockTagAttributes(block: ChaiBlock, isInBuilder: boolean = true) {
+export function getBlockTagAttributes(block: ChaiBlock, isInBuilder: boolean = true, designTokens: DesignTokens = {}) {
   const styles: Record<string, any> = {};
   Object.keys(block).forEach((key) => {
     if (isString(block[key]) && block[key].startsWith(STYLES_KEY)) {
-      const className = generateClassNames(block[key]);
+      const className = generateClassNames(block[key], designTokens);
       const attrs = getElementAttrs(block, key);
       styles[key] = {
         ...(!isEmpty(className) && { className }),

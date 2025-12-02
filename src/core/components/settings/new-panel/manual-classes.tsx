@@ -1,3 +1,4 @@
+import { chaiDesignTokensAtom } from "@/core/atoms/builder";
 import { useFuseSearch } from "@/core/constants/CLASSES_LIST";
 import {
   useAddClassesToBlocks,
@@ -11,6 +12,7 @@ import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
+import { useAtomValue } from "jotai";
 import { first, get, isEmpty, map } from "lodash-es";
 import { useMemo, useRef, useState } from "react";
 import Autosuggest from "react-autosuggest";
@@ -31,18 +33,39 @@ export function ManualClasses() {
   const [selectedIds] = useSelectedBlockIds();
   const [newCls, setNewCls] = useState("");
   const [isGlobalStylesModalOpen, setIsGlobalStylesModalOpen] = useState(false);
+  const designTokens = useAtomValue(chaiDesignTokensAtom);
   const prop = first(styleBlock)?.prop as string;
   const { classes: classesString } = getSplitChaiClasses(get(block, prop, ""));
   const classes = classesString.split(" ").filter((cls) => !isEmpty(cls));
   const enableCopyToClipboard = useBuilderProp("flags.copyPaste", true);
   const enableDesignTokens = useBuilderProp("flags.designTokens", false);
 
+  // Helper function to get display name for classes
+  const getDisplayName = (cls: string) => {
+    if (cls.startsWith("dt-")) {
+      const tokenId = cls.substring(3); // Remove "dt-" prefix
+      const token = designTokens[tokenId];
+      return token ? token.name : cls; // Return token name or fallback to class name
+    }
+    return cls;
+  };
+
+  // Helper function to convert design token names back to dt-{id} format
+  const convertToStorageFormat = (className: string) => {
+    // Check if this className matches any design token name
+    const tokenEntry = Object.entries(designTokens).find(([_, token]) => token.name === className);
+    if (tokenEntry) {
+      return `dt-${tokenEntry[0]}`; // Return dt-{id} format
+    }
+    return className; // Return as-is if not a design token
+  };
+
   const addNewClasses = () => {
     const fullClsNames: string[] = newCls
       .trim()
-      .toLowerCase()
       .replace(/ +(?= )/g, "")
-      .split(" ");
+      .split(" ")
+      .map(convertToStorageFormat); // Convert design token names to dt-{id} format
 
     addClassesToBlocks(selectedIds, fullClsNames, true);
     setNewCls("");
@@ -54,6 +77,27 @@ export function ManualClasses() {
     const search = value.trim().toLowerCase();
     const matches = search.match(/.+:/g);
     let classMatches = [];
+
+    // Get design token suggestions
+    let designTokenSuggestions = [];
+    if (search === "") {
+      // Show all design tokens when no search term
+      designTokenSuggestions = Object.entries(designTokens).map(([id, token]) => ({
+        name: token.name,
+        id: `dt-${id}`,
+        isDesignToken: true,
+      }));
+    } else {
+      // Filter design tokens by search term
+      designTokenSuggestions = Object.entries(designTokens)
+        .filter(([_, token]) => token.name.toLowerCase().includes(search))
+        .map(([id, token]) => ({
+          name: token.name,
+          id: `dt-${id}`,
+          isDesignToken: true,
+        }));
+    }
+
     if (matches && matches.length > 0) {
       const [prefix] = matches;
       const searchWithoutPrefix = search.replace(prefix, "");
@@ -65,16 +109,28 @@ export function ManualClasses() {
     } else {
       classMatches = fuse.search(search);
     }
-    return setSuggestions(map(classMatches, "item"));
+
+    // Combine design tokens with regular class suggestions, design tokens first
+    const allSuggestions = [...designTokenSuggestions, ...map(classMatches, "item")];
+    return setSuggestions(allSuggestions);
   };
 
   const handleSuggestionsClearRequested = () => {
     setSuggestions([]);
   };
 
-  const getSuggestionValue = (suggestion: any) => suggestion.name;
+  const getSuggestionValue = (suggestion: any) => {
+    return suggestion.name; // Always return the display name
+  };
 
-  const renderSuggestion = (suggestion: any) => <div className="rounded-md p-1">{suggestion.name}</div>;
+  const renderSuggestion = (suggestion: any) => (
+    <div className="flex items-center gap-2 rounded-md p-1">
+      {suggestion.isDesignToken && (
+        <span className="rounded bg-blue-100 px-1.5 py-0.5 text-xs text-blue-800 dark:bg-blue-900">DT</span>
+      )}
+      <span>{suggestion.name}</span>
+    </div>
+  );
 
   const inputProps = useMemo(
     () => ({
@@ -104,9 +160,9 @@ export function ManualClasses() {
   const handleEditClass = (clsToRemove: string) => {
     const fullClsNames: string[] = editingClass
       .trim()
-      .toLowerCase()
       .replace(/ +(?= )/g, "")
-      .split(" ");
+      .split(" ")
+      .map(convertToStorageFormat); // Convert design token names to dt-{id} format
     removeClassesFromBlocks(selectedIds, [clsToRemove]);
     addClassesToBlocks(selectedIds, fullClsNames, true);
     setEditingClass("");
@@ -204,7 +260,7 @@ export function ManualClasses() {
             <div key={cls} className="group relative flex max-w-[260px] items-center">
               <button
                 onDoubleClick={() => {
-                  setNewCls(cls);
+                  setNewCls(getDisplayName(cls));
                   removeClassesFromBlocks(selectedIds, [cls]);
                   setTimeout(() => {
                     if (inputRef.current) {
@@ -234,7 +290,7 @@ export function ManualClasses() {
                     </g>
                   </svg>
                 </div>
-                <div>{cls}</div>
+                <div>{getDisplayName(cls)}</div>
               </button>
             </div>
           ),

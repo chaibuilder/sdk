@@ -1,5 +1,5 @@
 import { pageBlocksAtomsAtom } from "@/core/atoms/blocks";
-import { usePageExternalData } from "@/core/atoms/builder";
+import { chaiDesignTokensAtom, usePageExternalData } from "@/core/atoms/builder";
 import { builderStore } from "@/core/atoms/store";
 import { dataBindingActiveAtom } from "@/core/atoms/ui";
 import { useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
@@ -17,7 +17,7 @@ import { useGetBlockAtom } from "@/core/hooks/use-update-block-atom";
 import { applyBindingToBlockProps } from "@/render/apply-binding";
 import { ChaiBlock } from "@/types/chai-block";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
-import { atom, Atom, Provider, useAtom } from "jotai";
+import { atom, Atom, Provider, useAtom, useAtomValue } from "jotai";
 import { splitAtom } from "jotai/utils";
 import { filter, get, has, isArray, isEmpty, isNull, map, noop } from "lodash-es";
 import React, { createContext, createElement, Suspense, useCallback, useContext, useMemo } from "react";
@@ -90,6 +90,7 @@ const BlockRenderer = ({
   const Component = get(registeredChaiBlock, "component", null);
   const { index, key } = useContext(RepeaterContext);
   const { mode } = useEditorMode();
+  const designTokens = useAtomValue(chaiDesignTokensAtom);
 
   // Enable direct drag-and-drop for blocks in edit mode
   const isDragAndDropEnabled = useIsDragAndDropEnabled();
@@ -106,7 +107,10 @@ const BlockRenderer = ({
         : applyLanguage(block, selectedLang, registeredChaiBlock),
     [block, selectedLang, registeredChaiBlock, pageExternalData, dataBindingActive, index, key],
   );
-  const blockAttributesProps = useMemo(() => getBlockTagAttributes(block), [block, getBlockTagAttributes]);
+  const blockAttributesProps = useMemo(
+    () => getBlockTagAttributes(block, true, designTokens),
+    [block, getBlockTagAttributes, designTokens],
+  );
   const runtimeProps = useMemo(
     () => getRuntimePropValues(block._id, getBlockRuntimeProps(block._type)),
     [block._id, block._type, getRuntimePropValues, getBlockRuntimeProps],
