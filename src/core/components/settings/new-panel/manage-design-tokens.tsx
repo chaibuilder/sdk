@@ -236,7 +236,7 @@ export const ManageDesignTokens = ({}: ManageDesignTokensProps) => {
       <div className="no-scrollbar flex flex-1 flex-col overflow-hidden pt-2">
         {/* Tokens List */}
         <ScrollArea className="h-full flex-1">
-          <div className="space-y-2">
+          <div className="space-y-1">
             {Object.entries(designTokens).length === 0 ? (
               <div className="py-6 text-center text-muted-foreground">
                 <div className="mb-1 text-2xl">🎨</div>
@@ -246,13 +246,11 @@ export const ManageDesignTokens = ({}: ManageDesignTokensProps) => {
               Object.entries(designTokens).map(([tokenId, token]) => (
                 <div
                   key={tokenId}
-                  className={`group flex items-start justify-between gap-2 rounded-lg border p-px transition-colors hover:bg-muted/50 ${editingToken === tokenId ? "border-primary bg-primary/5" : "border-border"}`}>
+                  className={`group flex items-center justify-between px-2 py-1 hover:bg-muted/50 ${editingToken === tokenId ? "bg-primary/5" : ""}`}>
                   <div className="min-w-0 flex-1">
-                    <div className="space-y-1">
-                      <code className="ml-1 break-all rounded bg-muted p-1 font-mono text-xs">{token.name}</code>
-                    </div>
+                    <code className="break-all text-xs">{token.name}</code>
                   </div>
-                  <div className="flex flex-shrink-0 items-center space-y-1 opacity-0 group-hover:opacity-100">
+                  <div className="flex flex-shrink-0 items-center opacity-0 group-hover:opacity-100">
                     <Button
                       variant="ghost"
                       size="sm"
@@ -336,7 +334,7 @@ export const ManageDesignTokens = ({}: ManageDesignTokensProps) => {
                 placeholder="bg-blue-500 text-white px-4 py-2"
                 value={newClasses}
                 onChange={(e) => setNewClasses(e.target.value)}
-                className="min-h-[80px] resize-none text-sm"
+                className="min-h-[80px] resize-none font-mono text-xs"
               />
             </div>
           </div>
@@ -379,7 +377,7 @@ export const ManageDesignTokens = ({}: ManageDesignTokensProps) => {
                 id="edit-classes"
                 value={editClasses}
                 onChange={(e) => setEditClasses(e.target.value)}
-                className="min-h-[80px] resize-none text-sm"
+                className="min-h-[80px] resize-none font-mono text-xs"
               />
             </div>
           </div>
