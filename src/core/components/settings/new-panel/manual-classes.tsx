@@ -11,14 +11,13 @@ import {
 import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
-import { CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
+import { CopyIcon, Cross2Icon, PlusIcon, TransformIcon } from "@radix-ui/react-icons";
 import { useAtomValue } from "jotai";
 import { first, get, isEmpty, map } from "lodash-es";
 import { useMemo, useRef, useState } from "react";
 import Autosuggest from "react-autosuggest";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { ManageDesignTokens } from "./manage-design-tokens";
 
 export function ManualClasses() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -32,13 +31,26 @@ export function ManualClasses() {
   const removeClassesFromBlocks = useRemoveClassesFromBlocks();
   const [selectedIds] = useSelectedBlockIds();
   const [newCls, setNewCls] = useState("");
-  const [isGlobalStylesModalOpen, setIsGlobalStylesModalOpen] = useState(false);
   const designTokens = useAtomValue(chaiDesignTokensAtom);
   const prop = first(styleBlock)?.prop as string;
   const { classes: classesString } = getSplitChaiClasses(get(block, prop, ""));
   const classes = classesString.split(" ").filter((cls) => !isEmpty(cls));
+
+  // Sort classes to ensure design tokens (dt-{id}) are always first
+  const sortedClasses = useMemo(() => {
+    return [...classes].sort((a, b) => {
+      // Design tokens (dt-{id}) should come first
+      const aIsDesignToken = a.startsWith("dt-");
+      const bIsDesignToken = b.startsWith("dt-");
+
+      if (aIsDesignToken && !bIsDesignToken) return -1;
+      if (!aIsDesignToken && bIsDesignToken) return 1;
+
+      // If both are design tokens or both are regular classes, maintain original order
+      return 0;
+    });
+  }, [classes]);
   const enableCopyToClipboard = useBuilderProp("flags.copyPaste", true);
-  const enableDesignTokens = useBuilderProp("flags.designTokens", false);
 
   // Helper function to get display name for classes
   const getDisplayName = (cls: string) => {
@@ -195,13 +207,6 @@ export function ManualClasses() {
               </Tooltip>
             )}
           </span>
-          {enableDesignTokens && (
-            <span
-              className="cursor-pointer text-xs transition-colors hover:text-primary"
-              onClick={() => setIsGlobalStylesModalOpen(true)}>
-              {t("Design Tokens")}
-            </span>
-          )}
         </div>
       </div>
       <div className={"relative flex items-center gap-x-3"}>
@@ -234,7 +239,7 @@ export function ManualClasses() {
         </Button>
       </div>
       <div className="flex w-full flex-wrap gap-2 overflow-x-hidden">
-        {classes.map((cls: string, index: number) =>
+        {sortedClasses.map((cls: string, index: number) =>
           editingClassIndex === index ? (
             <input
               ref={inputRef}
@@ -274,21 +279,25 @@ export function ManualClasses() {
                     onClick={() => removeClassesFromBlocks(selectedIds, [cls], true)}
                     className="hidden h-max w-3.5 cursor-pointer rounded bg-gray-100 p-0.5 text-red-500 hover:bg-gray-50 group-hover:block"
                   />
-                  <svg
-                    className="h-3.5 w-3.5 group-hover:hidden"
-                    fill="rgba(55, 65, 81, 0.4)"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlSpace="preserve">
-                    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                    <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
-                    <g id="SVGRepo_iconCarrier">
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M12 6.036c-2.667 0-4.333 1.325-5 3.976 1-1.325 2.167-1.822 3.5-1.491.761.189 1.305.738 1.906 1.345C13.387 10.855 14.522 12 17 12c2.667 0 4.333-1.325 5-3.976-1 1.325-2.166 1.822-3.5 1.491-.761-.189-1.305-.738-1.907-1.345-.98-.99-2.114-2.134-4.593-2.134zM7 12c-2.667 0-4.333 1.325-5 3.976 1-1.326 2.167-1.822 3.5-1.491.761.189 1.305.738 1.907 1.345.98.989 2.115 2.134 4.594 2.134 2.667 0 4.333-1.325 5-3.976-1 1.325-2.167 1.822-3.5 1.491-.761-.189-1.305-.738-1.906-1.345C10.613 13.145 9.478 12 7 12z"></path>
-                    </g>
-                  </svg>
+                  {cls.startsWith("dt-") ? (
+                    <TransformIcon className="text-[rgba(55, 65, 81, 0.4)] h-3.5 w-3.5 group-hover:hidden" />
+                  ) : (
+                    <svg
+                      className="h-3.5 w-3.5 group-hover:hidden"
+                      fill="rgba(55, 65, 81, 0.4)"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlSpace="preserve">
+                      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                      <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
+                      <g id="SVGRepo_iconCarrier">
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M12 6.036c-2.667 0-4.333 1.325-5 3.976 1-1.325 2.167-1.822 3.5-1.491.761.189 1.305.738 1.906 1.345C13.387 10.855 14.522 12 17 12c2.667 0 4.333-1.325 5-3.976-1 1.325-2.166 1.822-3.5 1.491-.761-.189-1.305-.738-1.907-1.345-.98-.99-2.114-2.134-4.593-2.134zM7 12c-2.667 0-4.333 1.325-5 3.976 1-1.326 2.167-1.822 3.5-1.491.761.189 1.305.738 1.907 1.345.98.989 2.115 2.134 4.594 2.134 2.667 0 4.333-1.325 5-3.976-1 1.325-2.167 1.822-3.5 1.491-.761-.189-1.305-.738-1.906-1.345C10.613 13.145 9.478 12 7 12z"></path>
+                      </g>
+                    </svg>
+                  )}
                 </div>
                 <div>{getDisplayName(cls)}</div>
               </button>
@@ -296,7 +305,6 @@ export function ManualClasses() {
           ),
         )}
       </div>
-      <ManageDesignTokens open={isGlobalStylesModalOpen} onOpenChange={setIsGlobalStylesModalOpen} />
     </div>
   );
 }

@@ -60,7 +60,6 @@ const generateClassNames = (styles: string, designTokens: DesignTokens) => {
   const { baseClasses, classes } = getSplitChaiClasses(styles);
   const tokens = classes.split(" ").filter((token) => token.startsWith("dt-"));
   const tokenValues = tokens.map((token) => designTokens[token.replace("dt-", "")]?.value);
-  console.log("Tokens", tokens, tokenValues);
   return twMerge.apply(null, [baseClasses, ...tokenValues, classes]);
 };
 
