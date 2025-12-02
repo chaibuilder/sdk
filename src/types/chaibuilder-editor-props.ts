@@ -53,6 +53,7 @@ export type SavePageData = {
   blocks: ChaiBlock[];
   theme?: ChaiThemeValues;
   needTranslations?: boolean;
+  designTokens: DesignTokens;
 };
 
 type TimeInSeconds = number;

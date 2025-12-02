@@ -6,8 +6,9 @@ import { usePermissions } from "@/core/hooks/use-permissions";
 import { useTheme } from "@/core/hooks/use-theme";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { useThrottledCallback } from "@react-hookz/web";
-import { atom, useAtom } from "jotai";
+import { atom, useAtom, useAtomValue } from "jotai";
 import { has, isEmpty, noop } from "lodash-es";
+import { chaiDesignTokensAtom } from "../atoms/builder";
 export const builderSaveStateAtom = atom<"SAVED" | "SAVING" | "UNSAVED">("SAVED"); // SAVING
 builderSaveStateAtom.debugLabel = "builderSaveStateAtom";
 
@@ -45,6 +46,7 @@ export const useSavePage = () => {
   const { hasPermission } = usePermissions();
   const { selectedLang, fallbackLang } = useLanguages();
   const [isPageLoaded] = useIsPageLoaded();
+  const designTokens = useAtomValue(chaiDesignTokensAtom);
 
   const needTranslations = () => {
     const pageData = getPageData();
@@ -67,6 +69,7 @@ export const useSavePage = () => {
         blocks: pageData.blocks,
         theme,
         needTranslations: needTranslations(),
+        designTokens,
       });
       setTimeout(() => {
         setSaveState("SAVED");
@@ -74,7 +77,7 @@ export const useSavePage = () => {
       }, 100);
       return true;
     },
-    [getPageData, setSaveState, theme, onSave, onSaveStateChange, isPageLoaded],
+    [getPageData, setSaveState, designTokens, theme, onSave, onSaveStateChange, isPageLoaded],
     3000, // save only every 5 seconds
   );
 
@@ -91,6 +94,7 @@ export const useSavePage = () => {
       blocks: pageData.blocks,
       theme,
       needTranslations: needTranslations(),
+      designTokens,
     });
     setTimeout(() => {
       setSaveState("SAVED");
