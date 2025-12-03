@@ -17,6 +17,7 @@ import { DotsHorizontalIcon, LightningBoltIcon } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { ScalePercent } from "../scale-percent";
 import { PageValidation } from "./page-validation";
 
 const CanvasTopBar: React.FC = () => {
@@ -32,6 +33,8 @@ const CanvasTopBar: React.FC = () => {
       <div className="flex h-full space-x-2">{showDarkModeToggle ? <DarkMode /> : null}</div>
       <div className="flex h-full items-center space-x-2">
         <Breakpoints canvas openDelay={400} />
+        <Separator orientation="vertical" />
+        <ScalePercent />
         <Separator orientation="vertical" />
         <UndoRedo />
       </div>

@@ -1,11 +1,11 @@
-import { lsBlocksAtom, lsThemeAtom } from "@/_demo/atoms-dev";
+import { lsBlocksAtom, lsDesignTokensAtom, lsThemeAtom } from "@/_demo/atoms-dev";
 import { defaultShadcnPreset } from "@/_demo/THEME_PRESETS";
 import { ChaiBlock, ChaiBuilderEditor } from "@/core/main";
 import "@/index.css";
 import { SavePageData } from "@/types/chaibuilder-editor-props";
 import { loadWebBlocks } from "@/web-blocks";
 import { useAtom } from "jotai";
-import { isArray, map, pick } from "lodash-es";
+import { isArray } from "lodash-es";
 import { EXTERNAL_DATA } from "./_demo/EXTERNAL_DATA";
 import { PARTIALS } from "./_demo/PARTIALS";
 import Topbar from "./_demo/top-bar";
@@ -17,17 +17,20 @@ registerChaiTopBar(Topbar);
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
   const [theme, setTheme] = useAtom(lsThemeAtom);
+  const [designTokensValue, setDesignTokensValue] = useAtom(lsDesignTokensAtom);
   return (
     <ChaiBuilderEditor
+      designTokens={designTokensValue}
       flags={{
         librarySite: false,
-        copyPaste: false,
+        copyPaste: true,
         darkMode: false,
         exportCode: true,
         // dataBinding: false,
         importHtml: true,
         importTheme: false,
         dragAndDrop: true,
+        designTokens: true,
       }}
       gotoPage={(args) => {
         console.log("gotoPage", args);
@@ -42,22 +45,15 @@ function ChaiBuilderDefault() {
       autoSave={true}
       autoSaveInterval={15}
       blocks={blocks}
-      onSave={async ({ blocks, theme, needTranslations }: SavePageData) => {
-        console.log("onSave", blocks, theme, needTranslations);
+      onSave={async ({ blocks, theme, needTranslations, designTokens }: SavePageData) => {
+        console.log("onSave", blocks, theme, needTranslations, designTokens);
         localStorage.setItem("chai-builder-blocks", JSON.stringify(blocks));
         localStorage.setItem("chai-builder-theme", JSON.stringify(theme));
+        localStorage.setItem("chai-builder-design-tokens", JSON.stringify(designTokens));
         setTheme(theme);
+        setDesignTokensValue(designTokens);
         await new Promise((resolve) => setTimeout(resolve, 100));
         return true;
-      }}
-      askAiCallBack={async (type: "styles" | "content", prompt: string, blocks: ChaiBlock[], lang: string = "") => {
-        console.log("askAiCallBack", type, prompt, blocks, lang);
-        return {
-          blocks: map(blocks, (b) => ({
-            ...pick(b, ["_id"]),
-          })) as ChaiBlock[],
-          usage: { completionTokens: 151, promptTokens: 227, totalTokens: 378 },
-        };
       }}
       getPartialBlockBlocks={async (partialBlockKey: string) => {
         const blocks = PARTIALS[partialBlockKey] ?? PARTIALS["header"];

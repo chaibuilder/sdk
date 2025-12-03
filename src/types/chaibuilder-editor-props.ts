@@ -2,6 +2,7 @@ import { StructureRule } from "@/core/hooks/structure-rules";
 import { ChaiBlock } from "@/types/chai-block";
 import React from "react";
 import { ChaiCollectoin } from "./collections";
+import { DesignTokens } from "./types";
 
 export type ChaiLibraryBlock<T = Record<string, any>> = {
   id: string;
@@ -52,6 +53,7 @@ export type SavePageData = {
   blocks: ChaiBlock[];
   theme?: ChaiThemeValues;
   needTranslations?: boolean;
+  designTokens: DesignTokens;
 };
 
 type TimeInSeconds = number;
@@ -300,7 +302,11 @@ export interface ChaiBuilderEditorProps {
     gotoSettings?: boolean;
     dragAndDrop?: boolean;
     validateStructure?: boolean;
+    designTokens?: boolean;
   };
 
   structureRules?: StructureRule[];
+
+  designTokens?: DesignTokens;
+  onDesignTokenChange?: (designTokens: DesignTokens) => void;
 }

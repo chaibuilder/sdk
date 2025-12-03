@@ -1,3 +1,4 @@
+import { chaiDesignTokensAtom } from "@/core/atoms/builder";
 import { useFuseSearch } from "@/core/constants/CLASSES_LIST";
 import {
   useAddClassesToBlocks,
@@ -10,7 +11,8 @@ import {
 import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
-import { CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
+import { CopyIcon, Cross2Icon, FontStyleIcon, PlusIcon } from "@radix-ui/react-icons";
+import { useAtomValue } from "jotai";
 import { first, get, isEmpty, map } from "lodash-es";
 import { useMemo, useRef, useState } from "react";
 import Autosuggest from "react-autosuggest";
@@ -29,28 +31,86 @@ export function ManualClasses() {
   const removeClassesFromBlocks = useRemoveClassesFromBlocks();
   const [selectedIds] = useSelectedBlockIds();
   const [newCls, setNewCls] = useState("");
+  const designTokens = useAtomValue(chaiDesignTokensAtom);
   const prop = first(styleBlock)?.prop as string;
   const { classes: classesString } = getSplitChaiClasses(get(block, prop, ""));
   const classes = classesString.split(" ").filter((cls) => !isEmpty(cls));
+
+  // Sort classes to ensure design tokens (dt-{id}) are always first
+  const sortedClasses = useMemo(() => {
+    return [...classes].sort((a, b) => {
+      // Design tokens (dt-{id}) should come first
+      const aIsDesignToken = a.startsWith("dt-");
+      const bIsDesignToken = b.startsWith("dt-");
+
+      if (aIsDesignToken && !bIsDesignToken) return -1;
+      if (!aIsDesignToken && bIsDesignToken) return 1;
+
+      // If both are design tokens or both are regular classes, maintain original order
+      return 0;
+    });
+  }, [classes]);
   const enableCopyToClipboard = useBuilderProp("flags.copyPaste", true);
+
+  // Helper function to get display name for classes
+  const getDisplayName = (cls: string) => {
+    if (cls.startsWith("dt-")) {
+      const tokenId = cls.substring(3); // Remove "dt-" prefix
+      const token = designTokens[tokenId];
+      return token ? token.name : cls; // Return token name or fallback to class name
+    }
+    return cls;
+  };
+
+  // Helper function to convert design token names back to dt-{id} format
+  const convertToStorageFormat = (className: string) => {
+    // Check if this className matches any design token name
+    const tokenEntry = Object.entries(designTokens).find(([_, token]) => token.name === className);
+    if (tokenEntry) {
+      return `dt-${tokenEntry[0]}`; // Return dt-{id} format
+    }
+    return className; // Return as-is if not a design token
+  };
 
   const addNewClasses = () => {
     const fullClsNames: string[] = newCls
       .trim()
-      .toLowerCase()
       .replace(/ +(?= )/g, "")
-      .split(" ");
+      .split(" ")
+      .map(convertToStorageFormat); // Convert design token names to dt-{id} format
 
     addClassesToBlocks(selectedIds, fullClsNames, true);
     setNewCls("");
   };
 
   const [suggestions, setSuggestions] = useState<any[]>([]);
-
+  const designTokensEnabled = useBuilderProp("flags.designTokens", false);
   const handleSuggestionsFetchRequested = ({ value }: any) => {
     const search = value.trim().toLowerCase();
     const matches = search.match(/.+:/g);
     let classMatches = [];
+
+    // Get design token suggestions
+    let designTokenSuggestions = [];
+    if (designTokensEnabled) {
+      if (search === "") {
+        // Show all design tokens when no search term
+        designTokenSuggestions = Object.entries(designTokens).map(([id, token]) => ({
+          name: token.name,
+          id: `dt-${id}`,
+          isDesignToken: true,
+        }));
+      } else {
+        // Filter design tokens by search term
+        designTokenSuggestions = Object.entries(designTokens)
+          .filter(([_, token]) => token.name.toLowerCase().includes(search))
+          .map(([id, token]) => ({
+            name: token.name,
+            id: `dt-${id}`,
+            isDesignToken: true,
+          }));
+      }
+    }
     if (matches && matches.length > 0) {
       const [prefix] = matches;
       const searchWithoutPrefix = search.replace(prefix, "");
@@ -62,16 +122,28 @@ export function ManualClasses() {
     } else {
       classMatches = fuse.search(search);
     }
-    return setSuggestions(map(classMatches, "item"));
+
+    // Combine design tokens with regular class suggestions, design tokens first
+    const allSuggestions = [...designTokenSuggestions, ...map(classMatches, "item")];
+    return setSuggestions(allSuggestions);
   };
 
   const handleSuggestionsClearRequested = () => {
     setSuggestions([]);
   };
 
-  const getSuggestionValue = (suggestion: any) => suggestion.name;
+  const getSuggestionValue = (suggestion: any) => {
+    return suggestion.name; // Always return the display name
+  };
 
-  const renderSuggestion = (suggestion: any) => <div className="rounded-md p-1">{suggestion.name}</div>;
+  const renderSuggestion = (suggestion: any) => (
+    <div className="flex items-center gap-2 rounded-md p-1">
+      {suggestion.isDesignToken && (
+        <span className="rounded bg-blue-100 px-1.5 py-0.5 text-xs text-blue-800 dark:bg-blue-900">DT</span>
+      )}
+      <span>{suggestion.name}</span>
+    </div>
+  );
 
   const inputProps = useMemo(
     () => ({
@@ -101,9 +173,9 @@ export function ManualClasses() {
   const handleEditClass = (clsToRemove: string) => {
     const fullClsNames: string[] = editingClass
       .trim()
-      .toLowerCase()
       .replace(/ +(?= )/g, "")
-      .split(" ");
+      .split(" ")
+      .map(convertToStorageFormat); // Convert design token names to dt-{id} format
     removeClassesFromBlocks(selectedIds, [clsToRemove]);
     addClassesToBlocks(selectedIds, fullClsNames, true);
     setEditingClass("");
@@ -122,18 +194,20 @@ export function ManualClasses() {
   return (
     <div className={`flex w-full flex-col gap-y-1.5 border-b border-border pb-4`}>
       <div className="flex items-center justify-between gap-x-2">
-        <div className="flex items-center gap-x-2 text-muted-foreground">
-          <span>{t("Classes")}</span>
-          {enableCopyToClipboard && (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <CopyIcon onClick={onClickCopy} className={"cursor-pointer"} />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t("Copy classes to clipboard")}</p>
-              </TooltipContent>
-            </Tooltip>
-          )}
+        <div className="flex w-full items-center justify-between gap-x-2 text-muted-foreground">
+          <span className="flex items-center gap-x-1">
+            <span>{t("Classes")}</span>
+            {enableCopyToClipboard && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <CopyIcon onClick={onClickCopy} className={"cursor-pointer"} />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{t("Copy classes to clipboard")}</p>
+                </TooltipContent>
+              </Tooltip>
+            )}
+          </span>
         </div>
       </div>
       <div className={"relative flex items-center gap-x-3"}>
@@ -166,7 +240,7 @@ export function ManualClasses() {
         </Button>
       </div>
       <div className="flex w-full flex-wrap gap-2 overflow-x-hidden">
-        {classes.map((cls: string, index: number) =>
+        {sortedClasses.map((cls: string, index: number) =>
           editingClassIndex === index ? (
             <input
               ref={inputRef}
@@ -192,7 +266,7 @@ export function ManualClasses() {
             <div key={cls} className="group relative flex max-w-[260px] items-center">
               <button
                 onDoubleClick={() => {
-                  setNewCls(cls);
+                  setNewCls(getDisplayName(cls));
                   removeClassesFromBlocks(selectedIds, [cls]);
                   setTimeout(() => {
                     if (inputRef.current) {
@@ -206,23 +280,27 @@ export function ManualClasses() {
                     onClick={() => removeClassesFromBlocks(selectedIds, [cls], true)}
                     className="hidden h-max w-3.5 cursor-pointer rounded bg-gray-100 p-0.5 text-red-500 hover:bg-gray-50 group-hover:block"
                   />
-                  <svg
-                    className="h-3.5 w-3.5 group-hover:hidden"
-                    fill="rgba(55, 65, 81, 0.4)"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlSpace="preserve">
-                    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                    <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
-                    <g id="SVGRepo_iconCarrier">
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M12 6.036c-2.667 0-4.333 1.325-5 3.976 1-1.325 2.167-1.822 3.5-1.491.761.189 1.305.738 1.906 1.345C13.387 10.855 14.522 12 17 12c2.667 0 4.333-1.325 5-3.976-1 1.325-2.166 1.822-3.5 1.491-.761-.189-1.305-.738-1.907-1.345-.98-.99-2.114-2.134-4.593-2.134zM7 12c-2.667 0-4.333 1.325-5 3.976 1-1.326 2.167-1.822 3.5-1.491.761.189 1.305.738 1.907 1.345.98.989 2.115 2.134 4.594 2.134 2.667 0 4.333-1.325 5-3.976-1 1.325-2.167 1.822-3.5 1.491-.761-.189-1.305-.738-1.906-1.345C10.613 13.145 9.478 12 7 12z"></path>
-                    </g>
-                  </svg>
+                  {cls.startsWith("dt-") ? (
+                    <FontStyleIcon className="text-[rgba(55, 65, 81, 0.4)] h-3.5 w-3.5 group-hover:hidden" />
+                  ) : (
+                    <svg
+                      className="h-3.5 w-3.5 group-hover:hidden"
+                      fill="rgba(55, 65, 81, 0.4)"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlSpace="preserve">
+                      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                      <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
+                      <g id="SVGRepo_iconCarrier">
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M12 6.036c-2.667 0-4.333 1.325-5 3.976 1-1.325 2.167-1.822 3.5-1.491.761.189 1.305.738 1.906 1.345C13.387 10.855 14.522 12 17 12c2.667 0 4.333-1.325 5-3.976-1 1.325-2.166 1.822-3.5 1.491-.761-.189-1.305-.738-1.907-1.345-.98-.99-2.114-2.134-4.593-2.134zM7 12c-2.667 0-4.333 1.325-5 3.976 1-1.326 2.167-1.822 3.5-1.491.761.189 1.305.738 1.907 1.345.98.989 2.115 2.134 4.594 2.134 2.667 0 4.333-1.325 5-3.976-1 1.325-2.167 1.822-3.5 1.491-.761-.189-1.305-.738-1.906-1.345C10.613 13.145 9.478 12 7 12z"></path>
+                      </g>
+                    </svg>
+                  )}
                 </div>
-                <div>{cls}</div>
+                <div>{getDisplayName(cls)}</div>
               </button>
             </div>
           ),

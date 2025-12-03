@@ -1,4 +1,3 @@
-import { Breadcrumb } from "@/core/components/canvas/bread-crumb";
 import StaticCanvas from "@/core/components/canvas/static/static-canvas";
 import { FallbackError } from "@/core/components/fallback-error";
 import { useBuilderProp, useCodeEditor } from "@/core/hooks";
@@ -25,7 +24,6 @@ const CanvasArea: React.FC = () => {
             <CodeEditor />
           </Suspense>
         ) : null}
-        <Breadcrumb />
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ export const RenderBlocks = (
   );
   const hasChildren = (blockId: string) => filter(blocks, (b) => b._parent === blockId).length > 0;
 
-  if (hasChildren && (type === "Heading" || type === "Paragraph" || type === "Link")) {
+  if (type === "Heading" || type === "Paragraph" || type === "Link" || type === "Span") {
     filteredBlocks = adjustSpacingInContentBlocks(filteredBlocks);
   }
 

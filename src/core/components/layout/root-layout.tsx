@@ -32,6 +32,8 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { AiIcon } from "../ai/ai-icon";
 import { useIsDragAndDropEnabled } from "../canvas/dnd/drag-and-drop/hooks";
+import { ManageDesignTokens } from "../settings/new-panel/manage-design-tokens";
+import { PanelButton } from "../sidepanels/panels/design-tokens/panel";
 
 export const DEFAULT_PANEL_WIDTH = 280;
 
@@ -101,6 +103,13 @@ registerChaiSidebarPanel("outline", {
       <Outline />
     </div>
   ),
+});
+
+registerChaiSidebarPanel("desgin-tokens", {
+  label: "Design Tokens",
+  panel: ManageDesignTokens,
+  position: "top",
+  button: PanelButton,
 });
 
 /**
