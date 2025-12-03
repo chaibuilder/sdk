@@ -6,7 +6,7 @@ import { each, isString, keys } from "lodash-es";
 
 export const applyDesignTokens = (blocks: ChaiBlock[], designTokens: DesignTokens) => {
   return blocks.map((block) => {
-    const styleKeys = keys(block).filter((key) => isString(block[key]) && block[key].startsWith("#styles:"));
+    const styleKeys = keys(block).filter((key) => isString(block[key]) && block[key].startsWith(STYLES_KEY));
     each(styleKeys, (styleKey) => {
       block[styleKey] = `${STYLES_KEY},${generateClassNames(block[styleKey], designTokens)}`;
     });
