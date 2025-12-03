@@ -1,6 +1,6 @@
 import { clickCountAtom } from "@/core/atoms/click-detection";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { useBlockHighlight, useInlineEditing } from "@/core/hooks";
+import { useBlockHighlight, useInlineEditing, useSelectedStylingBlocks } from "@/core/hooks";
 import { pubsub } from "@/core/pubsub";
 import { useThrottledCallback } from "@react-hookz/web";
 import { useAtom } from "jotai";
@@ -99,16 +99,22 @@ const useHandleCanvasDblClick = () => {
 const useHandleCanvasClick = () => {
   const { editingBlockId } = useInlineEditing();
   const { clearHighlight } = useBlockHighlight();
+  const [, setSelectedStylingBlocks] = useSelectedStylingBlocks();
   const [clickCount] = useAtom(clickCountAtom);
 
   return useCallback(
     (e: any) => {
       if (editingBlockId) return;
       e.stopPropagation();
-
-      if (clickCount === 2) return;
-
       const chaiBlock: HTMLElement = getTargetedBlock(e.target);
+      // If clicked on empty canvas area (no block found), deselect all blocks
+      if (!chaiBlock) {
+        clearHighlight();
+        setSelectedStylingBlocks([]);
+        pubsub.publish(CHAI_BUILDER_EVENTS.CANVAS_BLOCK_SELECTED, []);
+        return;
+      }
+      if (clickCount === 2) return;     
       if (chaiBlock?.getAttribute("data-block-id") && chaiBlock?.getAttribute("data-block-id") === "container") {
         pubsub.publish(CHAI_BUILDER_EVENTS.CLEAR_CANVAS_SELECTION);
         return;
@@ -125,7 +131,7 @@ const useHandleCanvasClick = () => {
       }
       clearHighlight();
     },
-    [editingBlockId, clickCount],
+    [editingBlockId, clickCount, clearHighlight, setSelectedStylingBlocks],
   );
 };
 
