@@ -48,9 +48,6 @@ const ImportHTML = ({
             {t("Tailwind HTML snippet")}
           </Label>
           <Textarea
-            autoFocus
-            tabIndex={1}
-            ref={(el) => el && el.focus()}
             onChange={(evt) => setCode(evt.target.value)}
             rows={12}
             value={code}
