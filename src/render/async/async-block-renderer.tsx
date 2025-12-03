@@ -90,6 +90,7 @@ export const AsyncRenderBlock = async (
           {(dataProviderProps) => {
             return createElement(Component, {
               ...blockProps,
+              draft,
               ...dataProviderProps,
               children: children({
                 _id: block._id,
@@ -109,22 +110,19 @@ export const AsyncRenderBlock = async (
     );
   }
 
-  return (
-    <Suspense>
-      {createElement(Component, {
-        ...blockProps,
-        children: children({
-          _id: block._id,
-          _type: block._type,
-          ...(isArray(blockWithBinding.repeaterItems)
-            ? {
-                repeaterItems: applyLimit(blockWithBinding.repeaterItems, block),
-                $repeaterItemsKey: blockWithBinding.$repeaterItemsKey,
-                repeaterTotalItems: blockWithBinding.repeaterTotalItems ?? -1,
-              }
-            : {}),
-        }),
-      })}
-    </Suspense>
-  );
+  return createElement(Component, {
+    ...blockProps,
+    draft,
+    children: children({
+      _id: block._id,
+      _type: block._type,
+      ...(isArray(blockWithBinding.repeaterItems)
+        ? {
+            repeaterItems: applyLimit(blockWithBinding.repeaterItems, block),
+            $repeaterItemsKey: blockWithBinding.$repeaterItemsKey,
+            repeaterTotalItems: blockWithBinding.repeaterTotalItems ?? -1,
+          }
+        : {}),
+    }),
+  });
 };

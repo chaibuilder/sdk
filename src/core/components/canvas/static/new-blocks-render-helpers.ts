@@ -56,11 +56,15 @@ export const applyBinding = (
   return clonedBlock;
 };
 
-const generateClassNames = (styles: string, designTokens: DesignTokens) => {
+export const generateClassNames = (styles: string, designTokens: DesignTokens) => {
   const { baseClasses, classes } = getSplitChaiClasses(styles);
   const tokens = classes.split(" ").filter((token) => token.startsWith("dt-"));
   const tokenValues = tokens.map((token) => designTokens[token.replace("dt-", "")]?.value);
-  return twMerge.apply(null, [baseClasses, ...tokenValues, classes]);
+  const nonTokenClasses = classes
+    .split(" ")
+    .filter((token) => !token.startsWith("dt-"))
+    .join(" ");
+  return twMerge.apply(null, [baseClasses, ...tokenValues, nonTokenClasses]);
 };
 
 function getElementAttrs(block: ChaiBlock, key: string) {
