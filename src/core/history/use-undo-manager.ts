@@ -8,6 +8,8 @@ import UndoManager from "undo-manager";
 const undoManager = new UndoManager();
 undoManager.setLimit(50);
 
+export { undoManager };
+
 const undoRedoStateAtom = atom({
   canUndo: false,
   canRedo: false,
