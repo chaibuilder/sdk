@@ -11,7 +11,7 @@ import {
 import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
-import { CopyIcon, Cross2Icon, PlusIcon, TransformIcon } from "@radix-ui/react-icons";
+import { CopyIcon, Cross2Icon, FontStyleIcon, PlusIcon } from "@radix-ui/react-icons";
 import { useAtomValue } from "jotai";
 import { first, get, isEmpty, map } from "lodash-es";
 import { useMemo, useRef, useState } from "react";
@@ -84,7 +84,7 @@ export function ManualClasses() {
   };
 
   const [suggestions, setSuggestions] = useState<any[]>([]);
-
+  const designTokensEnabled = useBuilderProp("flags.designTokens", false);
   const handleSuggestionsFetchRequested = ({ value }: any) => {
     const search = value.trim().toLowerCase();
     const matches = search.match(/.+:/g);
@@ -92,24 +92,25 @@ export function ManualClasses() {
 
     // Get design token suggestions
     let designTokenSuggestions = [];
-    if (search === "") {
-      // Show all design tokens when no search term
-      designTokenSuggestions = Object.entries(designTokens).map(([id, token]) => ({
-        name: token.name,
-        id: `dt-${id}`,
-        isDesignToken: true,
-      }));
-    } else {
-      // Filter design tokens by search term
-      designTokenSuggestions = Object.entries(designTokens)
-        .filter(([_, token]) => token.name.toLowerCase().includes(search))
-        .map(([id, token]) => ({
+    if (designTokensEnabled) {
+      if (search === "") {
+        // Show all design tokens when no search term
+        designTokenSuggestions = Object.entries(designTokens).map(([id, token]) => ({
           name: token.name,
           id: `dt-${id}`,
           isDesignToken: true,
         }));
+      } else {
+        // Filter design tokens by search term
+        designTokenSuggestions = Object.entries(designTokens)
+          .filter(([_, token]) => token.name.toLowerCase().includes(search))
+          .map(([id, token]) => ({
+            name: token.name,
+            id: `dt-${id}`,
+            isDesignToken: true,
+          }));
+      }
     }
-
     if (matches && matches.length > 0) {
       const [prefix] = matches;
       const searchWithoutPrefix = search.replace(prefix, "");
@@ -280,7 +281,7 @@ export function ManualClasses() {
                     className="hidden h-max w-3.5 cursor-pointer rounded bg-gray-100 p-0.5 text-red-500 hover:bg-gray-50 group-hover:block"
                   />
                   {cls.startsWith("dt-") ? (
-                    <TransformIcon className="text-[rgba(55, 65, 81, 0.4)] h-3.5 w-3.5 group-hover:hidden" />
+                    <FontStyleIcon className="text-[rgba(55, 65, 81, 0.4)] h-3.5 w-3.5 group-hover:hidden" />
                   ) : (
                     <svg
                       className="h-3.5 w-3.5 group-hover:hidden"

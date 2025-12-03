@@ -218,7 +218,7 @@ export const ManageDesignTokens = ({}: ManageDesignTokensProps) => {
   return (
     <div className="flex h-full max-w-[300px] flex-col">
       {/* Header */}
-      <div className="border-b">
+      <div className="">
         <div className="flex items-center justify-between">
           <Button
             variant="outline"
@@ -246,9 +246,9 @@ export const ManageDesignTokens = ({}: ManageDesignTokensProps) => {
               Object.entries(designTokens).map(([tokenId, token]) => (
                 <div
                   key={tokenId}
-                  className={`group flex items-center justify-between px-2 py-1 hover:bg-muted/50 ${editingToken === tokenId ? "bg-primary/5" : ""}`}>
+                  className={`group flex items-center justify-between hover:bg-muted/90 ${editingToken === tokenId ? "bg-primary/10" : ""}`}>
                   <div className="min-w-0 flex-1">
-                    <code className="break-all text-xs">{token.name}</code>
+                    <span className="flex items-center break-all pl-1 text-xs font-semibold">{token.name}</span>
                   </div>
                   <div className="flex flex-shrink-0 items-center opacity-0 group-hover:opacity-100">
                     <Button
