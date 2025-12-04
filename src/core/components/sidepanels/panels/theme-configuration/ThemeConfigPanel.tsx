@@ -334,7 +334,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
                     <Switch
                       checked={isDarkMode}
                       onCheckedChange={(checked: boolean) => setIsDarkMode(checked)}
-                      aria-label="Toggle dark mode"
+                      aria-label={t("Toggle dark mode")}
                       className="mx-1"
                     />
                     <MoonIcon className="h-4 w-4" />

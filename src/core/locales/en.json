@@ -549,5 +549,11 @@
   "Export code copied!": "Export code copied!",
   "Failed to copy export code": "Failed to copy export code",
   "Export code downloaded successfully!": "Export code downloaded successfully!",
-  "Failed to generate export HTML": "Failed to generate export HTML"
+  "Failed to generate export HTML": "Failed to generate export HTML",
+  "Enter value": "Enter value",
+  "Attribute keys cannot start with @": "Attribute keys cannot start with @",
+  "Enter key": "Enter key",
+  "Add": "Add",
+  "Save": "Save",
+  "Screen": "Screen"
 }

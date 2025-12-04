@@ -3,6 +3,7 @@ import { Label } from "@/ui/shadcn/components/ui/label";
 import { useRegisteredFonts } from "@chaibuilder/runtime";
 import { startCase } from "lodash-es";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 const FontSelector = ({
   label,
@@ -14,6 +15,7 @@ const FontSelector = ({
   onChange: (value: string) => void;
 }) => {
   const availableFonts = useRegisteredFonts();
+    const { t } = useTranslation() 
 
   useEffect(() => {
     if (!availableFonts.some((font) => font.family === value)) {
@@ -23,10 +25,10 @@ const FontSelector = ({
 
   return (
     <div className="space-y-0.5">
-      <Label className="mb-1 block text-xs text-gray-600">{startCase(label)}</Label>
+      <Label className="mb-1 block text-xs text-gray-600">{t(startCase(label))}</Label>
       <Select value={value} onValueChange={onChange}>
         <SelectTrigger className="h-8 w-full text-xs text-black">
-          <SelectValue placeholder="Select font" />
+          <SelectValue placeholder={t("Select font")} />
         </SelectTrigger>
         <SelectContent>
           {availableFonts.map((font) => (
