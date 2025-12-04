@@ -236,7 +236,7 @@
   "layout.margin_right": "Direita",
   "layout.margin_bottom": "Base",
   "layout.margin_left": "Esquerda",
-  "layout.padding": "Preenchimento",
+  "layout.padding": "Preench",
   "layout.padding_all": "Todos",
   "layout.padding_lr": "Esquerda-Direita",
   "layout.padding_tb": "Topo-Base",
@@ -539,5 +539,11 @@
   "Fetching...": "Buscando...",
   "No images found": "Nenhuma imagem encontrada",
   "It looks like you haven't uploaded any images yet. Start by clicking the upload button above.": "Parece que você ainda não enviou nenhuma imagem. Comece clicando no botão de envio acima.",
-  "Open Code Editor": "Abrir Editor de Código"
+  "Open Code Editor": "Abrir Editor de Código",
+  "Screen": "Tela",
+  "Enter value": "Insira um valor",
+  "Attribute keys cannot start with @": "As chaves de atributo não podem começar com @",
+  "Enter key": "Insira uma chave",
+  "Add": "Adicionar",
+  "Save": "Salvar"
 }

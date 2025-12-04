@@ -65,7 +65,7 @@ export const SETTINGS_SECTIONS = [
       },
       {
         styleType: "accordion",
-        heading: "Typography",
+        heading: "typography.heading",
         items: [
           { type: "dropdown", property: "textAlign", label: "typography.align" },
           { type: "dropdown", property: "fontFamily", label: "typography.font" },
@@ -77,7 +77,7 @@ export const SETTINGS_SECTIONS = [
       },
       {
         styleType: "accordion",
-        heading: "Background",
+        heading: "background.heading",
         items: [
           { type: "color", label: "background.bgcolor", property: "backgroundColor" },
           { type: "dropdown", label: "background.attachment", property: "backgroundAttachment" },

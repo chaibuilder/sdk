@@ -42,7 +42,7 @@ export default React.memo(function AttrsEditor({
 
   const addAttribute = () => {
     if (newKey.startsWith("@")) {
-      setError("Attribute keys cannot start with '@'");
+      setError(t('Attribute keys cannot start with @'));
       return;
     }
     if (newKey) {
@@ -69,7 +69,7 @@ export default React.memo(function AttrsEditor({
 
   const saveEdit = () => {
     if (newKey.startsWith("@")) {
-      setError("Attribute keys cannot start with '@'");
+      setError(t('Attribute keys cannot start with @'));
       return;
     }
     if (editIndex !== null && newKey) {
@@ -174,7 +174,7 @@ export default React.memo(function AttrsEditor({
         <div className="flex flex-col gap-y-1">
           <div className="w-full">
             <Label htmlFor="attrKey" className="text-[11px] font-normal leading-tight text-slate-600">
-              Key
+              {t('Key')}
             </Label>
             <Input
               autoCapitalize={"off"}
@@ -184,14 +184,14 @@ export default React.memo(function AttrsEditor({
               ref={keyInputRef}
               value={newKey}
               onChange={(e) => setNewKey(e.target.value)}
-              placeholder={t("Enter Key")}
+              placeholder={t('Enter key')}
               className="py-0 text-xs font-normal leading-tight placeholder:text-slate-400"
             />
           </div>
           <div className="w-full">
             <div className="flex items-center justify-between">
               <Label htmlFor="attrValue" className="text-[11px] font-normal text-slate-600">
-                Value
+                {t('Value')}
               </Label>
               {!isEmpty(pageExternalData) && <NestedPathSelector data={pageExternalData} onSelect={handlePathSelect} />}
             </div>
@@ -200,19 +200,18 @@ export default React.memo(function AttrsEditor({
               autoCorrect={"off"}
               spellCheck={"false"}
               id="attrValue"
-              rows={2}
               ref={valueTextareaRef}
               value={newValue}
               onChange={(e) => setNewValue(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Enter Value"
+              placeholder={t('Enter value')}
               className="text-xs font-normal leading-tight placeholder:text-slate-400"
             />
           </div>
         </div>
         <div className="flex justify-end">
           <Button type="submit" disabled={!newKey.length} variant="default" size="sm" className="h-8 w-24 text-xs">
-            {editIndex !== null ? "Save" : "Add"}
+            {editIndex !== null ? t('Save') : t('Add')}
           </Button>
         </div>
         {error && <p className="text-xs text-red-500">{error}</p>}
