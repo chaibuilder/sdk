@@ -1,6 +1,6 @@
 import { canDeleteBlock } from "@/core/functions/block-helpers";
-import { useCopyBlockIds, useCutBlockIds, useUndoManager } from "@/core/hooks";
 import { undoManager } from "@/core/history/use-undo-manager";
+import { useCopyBlockIds, useCutBlockIds, useUndoManager } from "@/core/hooks";
 import { useDuplicateBlocks } from "@/core/hooks/use-duplicate-blocks";
 import { usePasteBlocks } from "@/core/hooks/use-paste-blocks";
 import { useRemoveBlocks } from "@/core/hooks/use-remove-blocks";
@@ -20,7 +20,7 @@ export const useKeyEventWatcher = (doc?: Document) => {
   const options = doc ? { document: doc } : {};
 
   useHotkeys(
-    "ctrl+z,command+z",
+    "ctrl+z,meta+z",
     (e) => {
       e.preventDefault();
       if (undoManager.hasUndo()) {
@@ -31,7 +31,7 @@ export const useKeyEventWatcher = (doc?: Document) => {
     [undo],
   );
   useHotkeys(
-    "ctrl+y,command+z",
+    "ctrl+y,meta+y",
     (e) => {
       e.preventDefault();
       if (undoManager.hasRedo()) {
@@ -42,7 +42,7 @@ export const useKeyEventWatcher = (doc?: Document) => {
     [redo],
   );
   useHotkeys(
-    "ctrl+x,command+x",
+    "ctrl+x,meta+x",
     (e) => {
       e.preventDefault();
       if (!isEmpty(ids)) {
@@ -53,13 +53,13 @@ export const useKeyEventWatcher = (doc?: Document) => {
     [ids, setCutBlockIds],
   );
   useHotkeys(
-    "ctrl+c,command+c",
+    "ctrl+c,meta+c",
     () => setCopyBlockIds(ids),
-    { ...options,  enabled: !isEmpty(ids), preventDefault: true },
+    { ...options, enabled: !isEmpty(ids), preventDefault: true },
     [ids, setCopyBlockIds],
   );
   useHotkeys(
-    "ctrl+v,command+v",
+    "ctrl+v,meta+v",
     () => {
       if (canPaste(ids[0])) {
         pasteBlocks(ids);
@@ -70,10 +70,12 @@ export const useKeyEventWatcher = (doc?: Document) => {
   );
 
   useHotkeys("esc", () => setIds([]), options, [setIds]);
-  useHotkeys("ctrl+d,command+d", () => duplicateBlocks(ids), { ...options, enabled: !isEmpty(ids), preventDefault: true }, [
-    ids,
-    duplicateBlocks,
-  ]);
+  useHotkeys(
+    "ctrl+d,meta+d",
+    () => duplicateBlocks(ids),
+    { ...options, enabled: !isEmpty(ids), preventDefault: true },
+    [ids, duplicateBlocks],
+  );
   useHotkeys(
     "del, backspace",
     (event: any) => {
