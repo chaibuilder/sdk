@@ -1,11 +1,10 @@
-import { Switch, Input, Button } from "@/ui";
+import { Button, Input, Switch } from "@/ui";
+import { Cross1Icon, DragHandleDots2Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
-import { MagnifyingGlassIcon, Cross1Icon } from "@radix-ui/react-icons";
+import { useEffect, useMemo, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
-import { useState, useMemo, useEffect } from "react";
 import { useChaiFeatureFlag, useChaiFeatureFlags, useToggleChaiFeatureFlag } from "./register-chai-flag";
-import { DragHandleDots2Icon } from "@radix-ui/react-icons";
 
 const FeatureToggle = ({
   featureKey,
@@ -171,7 +170,7 @@ const ChaiFeatureFlagsWidgetComponent = ({
 export const ChaiFeatureFlagsWidget = () => {
   const [show, setShow] = useAtom(showFeatureFlagAtom);
   useHotkeys(
-    "ctrl+shift+1,command+shift+1",
+    "ctrl+shift+1,meta+shift+1",
     () =>
       setShow((prev) => {
         if (!prev) {
