@@ -6,6 +6,7 @@ import { SavePageData } from "@/types/chaibuilder-editor-props";
 import { loadWebBlocks } from "@/web-blocks";
 import { useAtom } from "jotai";
 import { isArray } from "lodash-es";
+import { toast } from "sonner";
 import { EXTERNAL_DATA } from "./_demo/EXTERNAL_DATA";
 import { PARTIALS } from "./_demo/PARTIALS";
 import Topbar from "./_demo/top-bar";
@@ -43,7 +44,6 @@ function ChaiBuilderDefault() {
       themePresets={[{ shadcn_default: defaultShadcnPreset }]}
       theme={theme}
       autoSave={true}
-      autoSaveInterval={15}
       blocks={blocks}
       onSave={async ({ blocks, theme, needTranslations, designTokens }: SavePageData) => {
         console.log("onSave", blocks, theme, needTranslations, designTokens);
@@ -52,6 +52,7 @@ function ChaiBuilderDefault() {
         localStorage.setItem("chai-builder-design-tokens", JSON.stringify(designTokens));
         setTheme(theme);
         setDesignTokensValue(designTokens);
+        toast.success("Page saved successfully");
         await new Promise((resolve) => setTimeout(resolve, 100));
         return true;
       }}
