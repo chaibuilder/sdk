@@ -29,6 +29,7 @@ import { nanoid } from "nanoid";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { useIncrementActionsCount } from "../../use-auto-save";
 
 interface ManageDesignTokensProps {}
 
@@ -46,6 +47,7 @@ export const ManageDesignTokens = ({}: ManageDesignTokensProps) => {
   const [editClasses, setEditClasses] = useState("");
   const [newTokenNameError, setNewTokenNameError] = useState("");
   const [editTokenNameError, setEditTokenNameError] = useState("");
+  const incrementActionsCount = useIncrementActionsCount();
 
   const validateTokenName = (tokenName: string): boolean => {
     // Alphanumeric names with hyphens, max 25 characters
@@ -117,6 +119,7 @@ export const ManageDesignTokens = ({}: ManageDesignTokensProps) => {
     setNewClasses("");
     setIsAdding(false);
     setIsAddModalOpen(false);
+    incrementActionsCount();
     toast.success(t("Token added successfully"));
   };
 
@@ -157,6 +160,7 @@ export const ManageDesignTokens = ({}: ManageDesignTokensProps) => {
     setEditTokenName("");
     setEditClasses("");
     setIsEditModalOpen(false);
+    incrementActionsCount();
     toast.success(t("Token updated successfully"));
   };
 
@@ -164,6 +168,7 @@ export const ManageDesignTokens = ({}: ManageDesignTokensProps) => {
     const newTokens = { ...designTokens };
     delete newTokens[tokenId];
     setDesignTokens(newTokens);
+    incrementActionsCount();
     toast.success(t("Token deleted successfully"));
   };
 

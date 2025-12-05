@@ -198,7 +198,7 @@ export interface ChaiBuilderEditorProps {
   /**
    * Auto save interval in seconds
    */
-  autoSaveInterval?: TimeInSeconds;
+  autoSaveActionsCount?: number;
   /**
    * Breakpoints
    */
