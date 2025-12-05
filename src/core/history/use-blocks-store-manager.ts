@@ -6,6 +6,7 @@ import { removeNestedBlocks } from "@/core/hooks/use-remove-blocks";
 import { useUpdateBlockAtom } from "@/core/hooks/use-update-block-atom";
 import { ChaiBlock } from "@/types/chai-block";
 import { each, find, omit } from "lodash-es";
+import { useIncrementActionsCount } from "../components/use-auto-save";
 import { useCheckStructure } from "../hooks/use-check-structure";
 
 export const useBlocksStoreManager = () => {
@@ -13,6 +14,7 @@ export const useBlocksStoreManager = () => {
   const { postMessage } = useBroadcastChannel();
   const updateBlockAtom = useUpdateBlockAtom();
   const runValidation = useCheckStructure();
+  const incrementActionsCount = useIncrementActionsCount();
   return {
     setNewBlocks: (newBlocks: ChaiBlock[]) => {
       setBlocks(newBlocks);
@@ -23,6 +25,7 @@ export const useBlocksStoreManager = () => {
         const blocks = insertBlocksAtPosition(prevBlocks, newBlocks, parent, position);
         postMessage({ type: "blocks-updated", blocks });
         runValidation(blocks);
+        incrementActionsCount();
         return blocks;
       });
     },
@@ -31,6 +34,7 @@ export const useBlocksStoreManager = () => {
         const blocks = removeNestedBlocks(prevBlocks, blockIds);
         postMessage({ type: "blocks-updated", blocks });
         runValidation(blocks);
+        incrementActionsCount();
         return blocks;
       });
     },
@@ -48,6 +52,7 @@ export const useBlocksStoreManager = () => {
         });
         postMessage({ type: "blocks-updated", blocks });
         runValidation(blocks);
+        incrementActionsCount();
         return blocks;
       });
     },
@@ -57,6 +62,7 @@ export const useBlocksStoreManager = () => {
         updateBlockAtom({ id: block._id, props: updatedBlock });
       });
       postMessage({ type: "blocks-props-updated", blocks });
+      incrementActionsCount();
     },
   };
 };

@@ -1,0 +1,26 @@
+import { atom, useAtom } from "jotai";
+import { useCallback, useEffect } from "react";
+import { useBuilderProp, useSavePage } from "../hooks";
+
+export const userActionsCountAtom = atom(0);
+
+export const useAutoSave = () => {
+  const { savePage, saveState } = useSavePage();
+  const autoSave = useBuilderProp("autoSave", true);
+  const autoSaveActionsCount = useBuilderProp("autoSaveActionsCount", 10);
+  const [actionsCount] = useAtom(userActionsCountAtom);
+  useEffect(() => {
+    if (!autoSave) return;
+    if (saveState === "SAVED" || saveState === "SAVING") return;
+    if (actionsCount >= autoSaveActionsCount) {
+      savePage(true);
+    }
+  }, [autoSave, saveState, actionsCount, autoSaveActionsCount]);
+};
+
+export const useIncrementActionsCount = () => {
+  const [, setActionsCount] = useAtom(userActionsCountAtom);
+  return useCallback(() => {
+    setActionsCount((prev) => prev + 1);
+  }, [setActionsCount]);
+};
