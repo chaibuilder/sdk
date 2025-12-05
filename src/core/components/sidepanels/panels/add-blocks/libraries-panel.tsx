@@ -216,7 +216,7 @@ const UILibrarySection = ({
         <div className="relative flex h-full max-h-full flex-1 overflow-hidden bg-background">
           <div className={`flex h-full flex-1 pt-2 ${fromSidebar ? "flex-col" : ""}`}>
             <div
-              className={`flex h-full max-h-full min-w-60 flex-col gap-1 ${fromSidebar ? "pb-2" : "w-60 max-w-60 px-1 pr-2"}`}>
+              className={`flex max-h-full min-w-60 flex-col gap-1 ${fromSidebar ? "pb-2" : "w-60 max-w-60 px-1 pr-2"}`}>
               <UILibrariesSelect library={library?.id} setLibrary={setLibrary} uiLibraries={uiLibraries} />
               <div className="mt-2 flex h-full max-h-full w-full flex-1 flex-col">
                 <span className="text-xs font-bold text-gray-500">{t("Groups")}</span>
