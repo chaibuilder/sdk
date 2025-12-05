@@ -39,7 +39,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { ExportCode } from "./export-code";
 
-const CopyPasteBlocks = () => {
+const CopyPasteBlocks = ({ isFromBody = false }: { isFromBody?: boolean }) => {
   const [blocks] = useBlocksStore();
   const [selectedIds] = useSelectedBlockIds();
   const { pasteBlocks } = usePasteBlocks();
@@ -49,13 +49,17 @@ const CopyPasteBlocks = () => {
   const enableCopyToClipboard = useBuilderProp("flags.copyPaste", true);
 
   const handleCopy = useCallback(() => {
-    const selectedBlocks = selectedIds.map((id) => {
+    const actionableBlocks = isFromBody
+      ? blocks?.filter((block) => !block?._parent)?.map((block) => block?._id)
+      : selectedIds;
+    const selectedBlocks = actionableBlocks.map((id) => {
       const block = blocks.find((b) => b._id === id);
       return {
         id,
         data: block,
       };
     });
+
     if (hasPartialBlocks(selectedBlocks.map((block) => block.id))) {
       toast.warning("Partial blocks detected. Clone partial blocks?", {
         cancel: {
@@ -183,6 +187,7 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
               onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, selectedBlock)}>
               <PlusIcon className="h-3.5 w-3.5" /> {t("Add block")}
             </DropdownMenuItem>
+            {hasPermission(PERMISSIONS.ADD_BLOCK) && <CopyPasteBlocks isFromBody={true} />}
             <ExportCode />
             <DropdownMenuItem
               disabled={false}
