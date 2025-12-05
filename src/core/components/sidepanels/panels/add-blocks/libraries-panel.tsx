@@ -172,7 +172,14 @@ const UILibrarySection = ({
   const blocks = get(mergedGroups, selectedGroup, []);
   const timeoutRef = useRef(null);
   const { t } = useTranslation();
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    const scrollContainer = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]');
+    if (scrollContainer) {
+      scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [library, selectedGroup]);
   const handleMouseEnter = (group: string) => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -265,6 +272,7 @@ const UILibrarySection = ({
             </div>
             <div className={`flex h-full max-h-full w-full flex-col border-border ${fromSidebar ? "" : "border-l"}`}>
               <ScrollArea
+                ref={scrollAreaRef}
                 onMouseEnter={() => (timeoutRef.current ? clearTimeout(timeoutRef.current) : null)}
                 className="z-10 flex h-full max-h-full w-full flex-col gap-2 transition-all ease-linear">
                 {isEmpty(blocks) && !isEmpty(mergedGroups) ? (
