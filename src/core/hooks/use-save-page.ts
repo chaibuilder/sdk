@@ -4,7 +4,8 @@ import { useIsPageLoaded } from "@/core/hooks/use-is-page-loaded";
 import { useLanguages } from "@/core/hooks/use-languages";
 import { usePermissions } from "@/core/hooks/use-permissions";
 import { useTheme } from "@/core/hooks/use-theme";
-import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
+import { useCheckStructure } from "@/core/hooks/use-check-structure";
+import { ChaiBlock, getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { useThrottledCallback } from "@react-hookz/web";
 import { atom, useAtom, useAtomValue } from "jotai";
 import { has, isEmpty, noop } from "lodash-es";
@@ -47,6 +48,7 @@ export const useSavePage = () => {
   const { selectedLang, fallbackLang } = useLanguages();
   const [isPageLoaded] = useIsPageLoaded();
   const designTokens = useAtomValue(chaiDesignTokensAtom);
+  const checkStructure = useCheckStructure();
 
   const needTranslations = () => {
     const pageData = getPageData();
@@ -59,10 +61,14 @@ export const useSavePage = () => {
     async (autoSave: boolean = false, force: boolean = false) => {
       if (!force && (!hasPermission("save_page") || !isPageLoaded)) {
         return;
+      }     
+      // Run structure validation before saving
+      const pageData = getPageData();
+      if (pageData?.blocks) {
+        checkStructure(pageData.blocks as ChaiBlock[]);
       }
       setSaveState("SAVING");
       onSaveStateChange("SAVING");
-      const pageData = getPageData();
 
       await onSave({
         autoSave,
@@ -77,7 +83,7 @@ export const useSavePage = () => {
       }, 100);
       return true;
     },
-    [getPageData, setSaveState, designTokens, theme, onSave, onSaveStateChange, isPageLoaded],
+    [getPageData, setSaveState, designTokens, theme, onSave, onSaveStateChange, isPageLoaded, checkStructure],
     3000, // save only every 5 seconds
   );
 
