@@ -190,7 +190,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
         const themeColor = get(themeValues, `colors.${key}.${isDarkMode ? 1 : 0}`);
         if (!themeColor) return null;
         return (
-          <div key={key} className="mt-1 flex items-center gap-x-2">
+          <div key={key} id={`theme-${key}`} className="mt-1 flex items-center gap-x-2">
             <ColorPickerInput
               value={themeColor as string}
               onChange={(newValue: string) => handleColorChange(key, newValue)}
