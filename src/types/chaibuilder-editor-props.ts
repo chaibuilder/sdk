@@ -56,7 +56,6 @@ export type SavePageData = {
   designTokens: DesignTokens;
 };
 
-type TimeInSeconds = number;
 export type AskAiResponse = {
   blocks?: Array<{ _id: string } & Partial<ChaiBlock>>;
   usage?: Record<any, number>;
