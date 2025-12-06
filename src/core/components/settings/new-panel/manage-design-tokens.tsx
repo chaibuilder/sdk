@@ -221,7 +221,7 @@ export const ManageDesignTokens = ({}: ManageDesignTokensProps) => {
   };
 
   return (
-    <div className="flex h-full max-w-[300px] flex-col">
+    <div className="flex h-full w-full flex-col">
       {/* Header */}
       <div className="">
         <div className="flex items-center justify-between">
@@ -304,7 +304,7 @@ export const ManageDesignTokens = ({}: ManageDesignTokensProps) => {
       </div>
 
       {/* Add Token Modal */}
-      <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
+      <Dialog open={isAddModalOpen} onOpenChange={cancelAdd}>
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle className="text-base">{t("Add Design Token")}</DialogTitle>
@@ -355,7 +355,7 @@ export const ManageDesignTokens = ({}: ManageDesignTokensProps) => {
       </Dialog>
 
       {/* Edit Token Modal */}
-      <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
+      <Dialog open={isEditModalOpen} onOpenChange={cancelEdit}>
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle className="text-base">{t("Edit Design Token")}</DialogTitle>

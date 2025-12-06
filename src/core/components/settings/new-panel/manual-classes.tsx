@@ -4,6 +4,7 @@ import {
   useAddClassesToBlocks,
   useBuilderProp,
   useRemoveClassesFromBlocks,
+  useRightPanel,
   useSelectedBlock,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
@@ -18,11 +19,13 @@ import { useMemo, useRef, useState } from "react";
 import Autosuggest from "react-autosuggest";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { DesignTokensIcon } from "../../sidepanels/panels/design-tokens/DesignTokensIcon";
 
 export function ManualClasses() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [editingClass, setEditingClass] = useState("");
   const [editingClassIndex, setEditingClassIndex] = useState(-1);
+  const [, setRightPanel] = useRightPanel();
   const fuse = useFuseSearch();
   const { t } = useTranslation();
   const [styleBlock] = useSelectedStylingBlocks();
@@ -138,9 +141,7 @@ export function ManualClasses() {
 
   const renderSuggestion = (suggestion: any) => (
     <div className="flex items-center gap-2 rounded-md p-1">
-      {suggestion.isDesignToken && (
-        <span className="rounded bg-blue-100 px-1.5 py-0.5 text-xs text-blue-800 dark:bg-blue-900">DT</span>
-      )}
+      {suggestion.isDesignToken && <DesignTokensIcon className="h-4 w-4 text-gray-600" />}
       <span>{suggestion.name}</span>
     </div>
   );
@@ -196,7 +197,7 @@ export function ManualClasses() {
       <div className="flex items-center justify-between gap-x-2">
         <div className="flex w-full items-center justify-between gap-x-2 text-muted-foreground">
           <span className="flex items-center gap-x-1">
-            <span>{t("Classes")}</span>
+            <span>{designTokensEnabled ? t("Styles") : t("Classes")}</span>
             {enableCopyToClipboard && (
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -208,6 +209,11 @@ export function ManualClasses() {
               </Tooltip>
             )}
           </span>
+          {designTokensEnabled && (
+            <Button variant="link" className="underline" onClick={() => setRightPanel("design-tokens")}>
+              {t("Design Tokens")}
+            </Button>
+          )}
         </div>
       </div>
       <div className={"relative flex items-center gap-x-3"}>
@@ -281,7 +287,7 @@ export function ManualClasses() {
                     className="hidden h-max w-3.5 cursor-pointer rounded bg-gray-100 p-0.5 text-red-500 hover:bg-gray-50 group-hover:block"
                   />
                   {cls.startsWith("dt-") ? (
-                    <FontStyleIcon className="text-[rgba(55, 65, 81, 0.4)] h-3.5 w-3.5 group-hover:hidden" />
+                    <DesignTokensIcon className="text-[rgba(55, 65, 81, 0.4)] h-3.5 w-3.5 group-hover:hidden" />
                   ) : (
                     <svg
                       className="h-3.5 w-3.5 group-hover:hidden"

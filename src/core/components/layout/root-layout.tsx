@@ -33,7 +33,7 @@ import { useTranslation } from "react-i18next";
 import { AiIcon } from "../ai/ai-icon";
 import { useIsDragAndDropEnabled } from "../canvas/dnd/drag-and-drop/hooks";
 import { ManageDesignTokens } from "../settings/new-panel/manage-design-tokens";
-import { PanelButton } from "../sidepanels/panels/design-tokens/panel";
+import { DesignTokensIcon } from "../sidepanels/panels/design-tokens/DesignTokensIcon";
 
 export const DEFAULT_PANEL_WIDTH = 280;
 
@@ -103,13 +103,6 @@ registerChaiSidebarPanel("outline", {
       <Outline />
     </div>
   ),
-});
-
-registerChaiSidebarPanel("desgin-tokens", {
-  label: "Design Tokens",
-  panel: ManageDesignTokens,
-  position: "top",
-  button: PanelButton,
 });
 
 /**
@@ -295,6 +288,20 @@ const RootLayout: ComponentType = () => {
                               <LightningBoltIcon className="rtl:ml-2" /> {t("AI Assistant")}
                             </div>
                           </>
+                        ) : panel === "design-tokens" ? (
+                          <div className="mb-1 flex w-full items-center justify-between gap-2">
+                            <span className="flex items-center gap-2">
+                              <DesignTokensIcon className="h-4 w-4 text-gray-600" />
+                              {t("Design Tokens")}
+                            </span>
+                            <Button
+                              onClick={() => setRightPanel("block")}
+                              variant="ghost"
+                              size="icon"
+                              className="text-xs">
+                              <Cross1Icon className="h-4 w-4 rtl:ml-2" />
+                            </Button>
+                          </div>
                         ) : panel === "theme" ? (
                           <div className="flex w-full items-center justify-between gap-2">
                             <span className="flex items-center gap-2">
@@ -315,7 +322,15 @@ const RootLayout: ComponentType = () => {
                   </h2>
                   <div className="flex h-full max-h-full w-full">
                     <Suspense fallback={<div>Loading...</div>}>
-                      {panel === "ai" ? <AskAI /> : panel === "theme" ? <ThemeConfigPanel /> : <SettingsPanel />}
+                      {panel === "ai" ? (
+                        <AskAI />
+                      ) : panel === "design-tokens" ? (
+                        <ManageDesignTokens />
+                      ) : panel === "theme" ? (
+                        <ThemeConfigPanel />
+                      ) : (
+                        <SettingsPanel />
+                      )}
                     </Suspense>
                   </div>
                 </div>
