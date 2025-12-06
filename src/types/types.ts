@@ -18,3 +18,14 @@ export interface DesignTokens {
     value: string;
   };
 }
+
+type BlocksWithDesignTokens = Record<string, string>;
+export interface SiteWideUsage {
+  [pageId: string]: {
+    name: string;
+    isPartial: boolean;
+    partialBlocks: string[];
+    links: string[];
+    designTokens: BlocksWithDesignTokens; // { blockId: Name, blockId: name 2}
+  };
+}
