@@ -30,6 +30,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useIncrementActionsCount } from "../../use-auto-save";
+import { TokenUsagePopover } from "./token-usage-popover";
 
 interface ManageDesignTokensProps {}
 
@@ -256,6 +257,7 @@ export const ManageDesignTokens = ({}: ManageDesignTokensProps) => {
                     <span className="flex items-center break-all pl-1 text-xs font-semibold">{token.name}</span>
                   </div>
                   <div className="flex flex-shrink-0 items-center opacity-0 group-hover:opacity-100">
+                    <TokenUsagePopover tokenId={tokenId} tokenName={token.name} />
                     <Button
                       variant="ghost"
                       size="sm"
