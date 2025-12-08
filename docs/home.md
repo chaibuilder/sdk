@@ -4,6 +4,7 @@ Welcome to the ChaiBuilder SDK documentation. ChaiBuilder is a powerful visual p
 
 ## Quick Links
 
+- [Introduction](./introduction.md)
 - [Getting Started](./getting-started.md)
 - [Editor Props Reference](./editor-props-reference.md)
 - [Registering Custom Blocks](./registering-custom-blocks.md)

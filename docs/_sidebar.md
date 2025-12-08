@@ -1,6 +1,13 @@
 - **Getting Started**
   - [Home](/)
+  - [Introduction](introduction.md)
   - [Getting Started](getting-started.md)
+
+- **Core Concepts**
+  - [Blocks](core-concepts/blocks.md)
+  - [Theme](core-concepts/theme.md)
+  - [Design Tokens](core-concepts/design-tokens.md)
+  - [Rendering](core-concepts/rendering.md)
 
 - **Configuration**
   - [Editor Props Reference](editor-props-reference.md)
