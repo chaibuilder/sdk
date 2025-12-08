@@ -8,6 +8,13 @@
   - [Theme](core-concepts/theme.md)
   - [Design Tokens](core-concepts/design-tokens.md)
   - [Rendering](core-concepts/rendering.md)
+  - [Data Binding](core-concepts/data-binding.md)
+  - [i18n](core-concepts/i18n.md)
+  - [AI](core-concepts/ai.md)
+  - [RBAC](core-concepts/rbac.md)
+  - [Data Collections & Repeaters](core-concepts/data-collections.md)
+  - [Partial Blocks (Multi-Page)](core-concepts/partial-blocks.md)
+  - [Page Types (Multi-Page)](core-concepts/page-types.md)
 
 - **Configuration**
   - [Editor Props Reference](editor-props-reference.md)
