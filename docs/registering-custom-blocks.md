@@ -9,7 +9,7 @@ The `registerChaiBlock` function enables you to register custom React components
 ## Basic Syntax
 
 ```typescript
-import { registerChaiBlock } from "@chaibuilder/runtime";
+import { registerChaiBlock } from "@chaibuilder/sdk/runtime";
 
 registerChaiBlock<PropsType>(Component, Config);
 ```
@@ -23,7 +23,7 @@ import {
   ChaiBlockComponentProps,
   ChaiStyles,
   StylesProp,
-} from "@chaibuilder/runtime";
+} from "@chaibuilder/sdk/runtime";
 
 // 1. Define component props
 type ButtonProps = {
@@ -159,7 +159,7 @@ registerChaiBlockSchema({
 Always include styles for visual customization:
 
 ```typescript
-import { StylesProp } from "@chaibuilder/runtime";
+import { StylesProp } from "@chaibuilder/sdk/runtime";
 
 registerChaiBlockSchema({
   properties: {

@@ -279,7 +279,7 @@ type AddBlockTab = {
 Register custom fonts for use in the theme.
 
 ```typescript
-import { registerChaiFont } from "@chaibuilder/runtime";
+import { registerChaiFont } from "@chaibuilder/sdk/runtime";
 
 // Via URL (Google Fonts, etc.)
 registerChaiFont("Ubuntu", {
