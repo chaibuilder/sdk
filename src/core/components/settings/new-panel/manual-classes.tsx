@@ -161,14 +161,14 @@ export function ManualClasses() {
         }, 0);
       },
       onKeyDown: (e: any) => {
-        if (e.key === "Enter" && newCls.trim() !== "") {
+        if (e.key === "Enter" && newCls.trim() !== "" && suggestions.length === 0) {
           addNewClasses();
         }
       },
       onChange: (_e: any, { newValue }: any) => setNewCls(newValue),
       className: "w-full rounded-md text-xs px-2 hover:outline-0 bg-background border-border py-1",
     }),
-    [newCls, t, inputRef],
+    [newCls, t, inputRef, suggestions.length],
   );
 
   const handleEditClass = (clsToRemove: string) => {
@@ -225,6 +225,12 @@ export function ManualClasses() {
             getSuggestionValue={getSuggestionValue}
             renderSuggestion={renderSuggestion}
             inputProps={inputProps}
+            highlightFirstSuggestion={true}
+            onSuggestionSelected={(_e, { suggestionValue }) => {
+              const storageFormat = convertToStorageFormat(suggestionValue);
+              addClassesToBlocks(selectedIds, [storageFormat], true);
+              setNewCls("");
+            }}
             containerProps={{
               className: "relative h-8 w-full gap-y-1 py-1 border-border text-xs",
             }}
