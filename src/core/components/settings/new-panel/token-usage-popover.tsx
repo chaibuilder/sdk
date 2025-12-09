@@ -1,10 +1,10 @@
-import { DESIGN_TOKEN_PREFIX } from "@/core/constants/STRINGS";
-import { useBlocksStore, useBuilderProp } from "@/core/hooks";
+import { useBlocksStore, useBuilderProp, useLanguages, useSavePage } from "@/core/hooks";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import { ChaiBlock } from "@/types/chai-block";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/ui/popover";
-import { BoxIcon, EyeOpenIcon, FileIcon, GlobeIcon } from "@radix-ui/react-icons";
+import { ArrowRightIcon, EyeOpenIcon, FileIcon, GlobeIcon } from "@radix-ui/react-icons";
+import { noop } from "lodash-es";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { TokenUsageSection, TokenUsageSectionItem } from "./token-usage-section";
@@ -36,7 +36,7 @@ const getBlockLabel = (block: ChaiBlock): string => {
 };
 
 const collectTokenUsageOnPage = (blocks: ChaiBlock[], tokenId: string): BlockUsageSummary[] => {
-  const tokenMarker = `${DESIGN_TOKEN_PREFIX}${tokenId}`;
+  const tokenMarker = `${tokenId}`;
 
   return blocks
     .filter((block) => {
@@ -118,12 +118,13 @@ export const TokenUsagePopover = ({ tokenId, tokenName }: TokenUsagePopoverProps
     },
     [setSelectedBlockIds],
   );
-
-  const handleSelectPage = (pageId: string) => {
+  const gotoPage = useBuilderProp("gotoPage", noop);
+  const { selectedLang, fallbackLang } = useLanguages();
+  const { savePageAsync } = useSavePage();
+  const handleSelectPage = async (pageId: string) => {
     if (!pageId) return;
-    const url = new URL(window.location.href);
-    url.searchParams.set("pageId", pageId);
-    window.open(url.toString(), "_blank");
+    await savePageAsync(true);
+    gotoPage({ pageId, lang: selectedLang || fallbackLang });
   };
 
   return (
@@ -146,7 +147,7 @@ export const TokenUsagePopover = ({ tokenId, tokenName }: TokenUsagePopoverProps
             items={currentPageItems}
             emptyLabel={t("None")}
             onSelect={handleSelectBlock}
-            icon={<BoxIcon fontSize={8} />}
+            icon={<ArrowRightIcon fontSize={4} />}
           />
           <TokenUsageSection
             title={t("Blocks affected on other pages")}
