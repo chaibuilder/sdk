@@ -59,7 +59,7 @@ export const applyBinding = (
 export const generateClassNames = (styles: string, designTokens: DesignTokens) => {
   const { baseClasses, classes } = getSplitChaiClasses(styles);
   const tokens = classes.split(" ").filter((token) => token.startsWith(DESIGN_TOKEN_PREFIX));
-  const tokenValues = tokens.map((token) => designTokens[token.replace(DESIGN_TOKEN_PREFIX, "")]?.value);
+  const tokenValues = tokens.map((token) => designTokens[token]?.value);
   const nonTokenClasses = classes
     .split(" ")
     .filter((token) => !token.startsWith(DESIGN_TOKEN_PREFIX))
