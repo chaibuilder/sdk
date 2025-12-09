@@ -399,9 +399,10 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
     }
 
     const styleAttributes = get(node, "attributes", []);
-    const isRichText = styleAttributes.find(
-      (attr) => attr.key === "data-chai-richtext" || attr.key === "chai-richtext",
-    );
+    const isRichText =
+      node.tagName === "p" ||
+      styleAttributes.find((attr) => attr.key === "data-chai-richtext" || attr.key === "chai-richtext");
+
     const classAttr = styleAttributes.find((attr) => attr.key === "class");
     const hasRteClass = classAttr && classAttr.value.split(/\s+/).includes("rte");
     const isLightboxLink = styleAttributes.find(
@@ -435,7 +436,7 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
     }
 
     if (isRichText || hasRteClass) {
-      block.content = stringify(node.children);
+      block.content = `<p>${stringify(node.children || [])}</p>`;
       if (has(block, "styles_attrs.data-chai-richtext")) {
         delete block.styles_attrs["data-chai-richtext"];
       }

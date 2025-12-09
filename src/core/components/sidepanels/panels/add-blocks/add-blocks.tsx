@@ -194,16 +194,16 @@ export const ChaiBuilderBlocks = ({
               </div>
             ) : (
               <div className={`${!disableBlockGroupsSidebar ? "p-4" : "p-0"} space-y-6`}>
-                {displayedGroups.map((group) => (
+                {displayedGroups.map((group, index: number) => (
                   <div key={group} className="space-y-3">
                     <h3 className="px-1 text-sm font-medium">{capitalize(t(group.toLowerCase()))}</h3>
                     <div className={"grid gap-2 " + gridCols}>
                       {reject(
                         selectedGroup === "all" ? filter(values(displayedBlocks), { group }) : values(displayedBlocks),
                         { hidden: true },
-                      ).map((block) => (
+                      ).map((block, blockIndex) => (
                         <CoreBlock
-                          key={block.type}
+                          key={block.type + "-" + index + "-" + blockIndex}
                           parentId={parentId}
                           position={position}
                           block={block}
