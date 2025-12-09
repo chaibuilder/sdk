@@ -83,13 +83,9 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const darkModeEnabled = useBuilderProp("flags.darkMode", true);
   const incrementActionsCount = useIncrementActionsCount();
 
-  if (themePresets) {
-    const existingKeys = themePresets.map((preset: any) => Object.keys(preset)[0]);
-    DEFAULT_THEME_PRESET.forEach((preset) => {
-      const key = Object.keys(preset)[0];
-      if (!existingKeys.includes(key)) {
-        themePresets.push(preset);
-      }
+  if (!themePresets || themePresets.length === 0) {
+    DEFAULT_THEME_PRESET.map((preset) => {
+      themePresets.push(preset);
     });
   }
 
