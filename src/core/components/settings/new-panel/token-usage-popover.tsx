@@ -1,12 +1,13 @@
+import { DESIGN_TOKEN_PREFIX } from "@/core/constants/STRINGS";
+import { useBlocksStore, useBuilderProp } from "@/core/hooks";
+import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { ChaiBlock } from "@/types/chai-block";
+import { Button } from "@/ui/shadcn/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/ui/popover";
 import { BoxIcon, EyeOpenIcon, FileIcon, GlobeIcon } from "@radix-ui/react-icons";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { ChaiBlock } from "@/types/chai-block";
-import { Button } from "@/ui/shadcn/components/ui/button";
 import { TokenUsageSection, TokenUsageSectionItem } from "./token-usage-section";
-import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
-import { useBlocksStore, useBuilderProp } from "@/core/hooks";
 
 const STYLES_PREFIX = "#styles:";
 
@@ -35,7 +36,7 @@ const getBlockLabel = (block: ChaiBlock): string => {
 };
 
 const collectTokenUsageOnPage = (blocks: ChaiBlock[], tokenId: string): BlockUsageSummary[] => {
-  const tokenMarker = `dt-${tokenId}`;
+  const tokenMarker = `${DESIGN_TOKEN_PREFIX}${tokenId}`;
 
   return blocks
     .filter((block) => {
@@ -70,6 +71,7 @@ export const TokenUsagePopover = ({ tokenId, tokenName }: TokenUsagePopoverProps
   );
 
   const pagesUsingToken = useMemo(() => {
+    if (!siteWideUsage) return [];
     return Object.entries(siteWideUsage).reduce<Array<{ id: string; name: string; isPartial: boolean }>>(
       (acc, [pageId, pageUsage]) => {
         if (pageId === currentPageId || !pageUsage?.designTokens) return acc;

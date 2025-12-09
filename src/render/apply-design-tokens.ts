@@ -17,17 +17,17 @@ export const applyDesignTokens = (blocks: ChaiBlock[], designTokens: DesignToken
 if (import.meta.vitest) {
   describe("applyDesignTokens", () => {
     const mockDesignTokens: DesignTokens = {
-      token1: { name: "primary-color", value: "bg-blue-500" },
-      token2: { name: "text-size", value: "text-lg" },
-      token3: { name: "spacing", value: "p-4" },
+      "dt#token1": { name: "primary-color", value: "bg-blue-500" },
+      "dt#token2": { name: "text-size", value: "text-lg" },
+      "dt#token3": { name: "spacing", value: "p-4" },
     };
 
     const mockBlocks: ChaiBlock[] = [
       {
         _id: "block1",
         _type: "div",
-        styles: "#styles:,dt-token1bg-white text-sm",
-        className: "#styles:,dt-token2 dt-token3",
+        styles: "#styles:,dt#token1 bg-white text-sm",
+        className: "#styles:,dt#token2 dt#token3",
         otherProp: "not-a-style",
         _name: "Test Block",
       },
@@ -52,7 +52,7 @@ if (import.meta.vitest) {
       expect(result).toHaveLength(3);
 
       // Check first block - styles property should be transformed
-      expect(result[0].styles).toBe("#styles:,text-sm");
+      expect(result[0].styles).toBe("#styles:,bg-white text-sm");
 
       // Check first block - className property should be transformed
       expect(result[0].className).toBe("#styles:,text-lg p-4");
@@ -80,7 +80,7 @@ if (import.meta.vitest) {
       const result = applyDesignTokens(mockBlocks, {});
 
       // Should still prepend STYLES_KEY but tokens won't be resolved
-      expect(result[0].styles).toBe("#styles:,text-sm");
+      expect(result[0].styles).toBe("#styles:,bg-white text-sm");
     });
 
     it("should handle blocks with only style prefix", () => {
@@ -102,9 +102,9 @@ if (import.meta.vitest) {
         {
           _id: "block1",
           _type: "div",
-          styles: "#styles:bg-white dt-token1",
-          hoverStyles: "#styles:bg-gray-100 dt-token2",
-          focusStyles: "#styles:outline-none dt-token3",
+          styles: "#styles:bg-white dt#token1",
+          hoverStyles: "#styles:bg-gray-100 dt#token2",
+          focusStyles: "#styles:outline-none dt#token3",
           _name: "Multi Style",
         },
       ];
@@ -167,15 +167,15 @@ if (import.meta.vitest) {
 
     it("should handle complex design token values", () => {
       const complexTokens: DesignTokens = {
-        complex1: { name: "complex-token", value: "hover:bg-blue-600 focus:outline-none transition-colors" },
-        complex2: { name: "spacing-token", value: "px-6 py-3 m-2" },
+        "dt#complex1": { name: "complex-token", value: "hover:bg-blue-600 focus:outline-none transition-colors" },
+        "dt#complex2": { name: "spacing-token", value: "px-6 py-3 m-2" },
       };
 
       const blocksWithComplexTokens: ChaiBlock[] = [
         {
           _id: "block1",
           _type: "div",
-          styles: "#styles:bg-white dt-complex1",
+          styles: "#styles:bg-white dt#complex1",
           _name: "Complex Tokens",
         },
       ];
@@ -186,15 +186,15 @@ if (import.meta.vitest) {
 
     it("should handle tokens with empty values", () => {
       const tokensWithEmptyValues: DesignTokens = {
-        empty1: { name: "empty-token", value: "" },
-        valid1: { name: "valid-token", value: "bg-green-500" },
+        "dt#empty1": { name: "empty-token", value: "" },
+        "dt#valid1": { name: "valid-token", value: "bg-green-500" },
       };
 
       const blocksWithEmptyTokens: ChaiBlock[] = [
         {
           _id: "block1",
           _type: "div",
-          styles: "#styles:bg-white dt-empty1 dt-valid1",
+          styles: "#styles:bg-white dt#empty1 dt#valid1",
           _name: "Empty Value Tokens",
         },
       ];
