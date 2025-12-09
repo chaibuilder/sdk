@@ -1,4 +1,4 @@
-import { STYLES_KEY } from "@/core/constants/STRINGS";
+import { DESIGN_TOKEN_PREFIX, STYLES_KEY } from "@/core/constants/STRINGS";
 import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
 import { ChaiBlock } from "@/types/chai-block";
 import { DesignTokens } from "@/types/types";
@@ -58,11 +58,11 @@ export const applyBinding = (
 
 export const generateClassNames = (styles: string, designTokens: DesignTokens) => {
   const { baseClasses, classes } = getSplitChaiClasses(styles);
-  const tokens = classes.split(" ").filter((token) => token.startsWith("dt-"));
-  const tokenValues = tokens.map((token) => designTokens[token.replace("dt-", "")]?.value);
+  const tokens = classes.split(" ").filter((token) => token.startsWith(DESIGN_TOKEN_PREFIX));
+  const tokenValues = tokens.map((token) => designTokens[token.replace(DESIGN_TOKEN_PREFIX, "")]?.value);
   const nonTokenClasses = classes
     .split(" ")
-    .filter((token) => !token.startsWith("dt-"))
+    .filter((token) => !token.startsWith(DESIGN_TOKEN_PREFIX))
     .join(" ");
   return twMerge.apply(null, [baseClasses, ...tokenValues, nonTokenClasses]);
 };

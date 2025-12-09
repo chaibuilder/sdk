@@ -1,4 +1,5 @@
 import { chaiDesignTokensAtom } from "@/core/atoms/builder";
+import { DESIGN_TOKEN_PREFIX } from "@/core/constants/STRINGS";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -106,7 +107,7 @@ export const ManageDesignTokens = ({}: ManageDesignTokensProps) => {
       return;
     }
     // Generate a unique ID for the token
-    const tokenId = `token_${nanoid(12)}`;
+    const tokenId = `${DESIGN_TOKEN_PREFIX}${nanoid(12)}`;
     const newTokens = {
       ...designTokens,
       [tokenId]: {

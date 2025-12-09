@@ -47,4 +47,4 @@ Once created, design tokens appear in the class suggestions when styling a block
 
 ## Storage Format
 
-Internally, design tokens are stored with a `dt-{id}` prefix for identification. However, users always see the readable token name in the UI—the internal format is never exposed.
+Internally, design tokens are stored with a `${DESIGN_TOKEN_PREFIX}-{id}` prefix for identification. However, users always see the readable token name in the UI—the internal format is never exposed.

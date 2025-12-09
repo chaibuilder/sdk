@@ -1,5 +1,6 @@
 import { chaiDesignTokensAtom } from "@/core/atoms/builder";
 import { useFuseSearch } from "@/core/constants/CLASSES_LIST";
+import { DESIGN_TOKEN_PREFIX } from "@/core/constants/STRINGS";
 import {
   useAddClassesToBlocks,
   useBuilderProp,
@@ -39,12 +40,12 @@ export function ManualClasses() {
   const { classes: classesString } = getSplitChaiClasses(get(block, prop, ""));
   const classes = classesString.split(" ").filter((cls) => !isEmpty(cls));
 
-  // Sort classes to ensure design tokens (dt-{id}) are always first
+  // Sort classes to ensure design tokens ({DESIGN_TOKEN_PREFIX{id}) are always first
   const sortedClasses = useMemo(() => {
     return [...classes].sort((a, b) => {
-      // Design tokens (dt-{id}) should come first
-      const aIsDesignToken = a.startsWith("dt-");
-      const bIsDesignToken = b.startsWith("dt-");
+      // Design tokens ({DESIGN_TOKEN_PREFIX}-{id}) should come first
+      const aIsDesignToken = a.startsWith(DESIGN_TOKEN_PREFIX);
+      const bIsDesignToken = b.startsWith(DESIGN_TOKEN_PREFIX);
 
       if (aIsDesignToken && !bIsDesignToken) return -1;
       if (!aIsDesignToken && bIsDesignToken) return 1;
@@ -57,20 +58,19 @@ export function ManualClasses() {
 
   // Helper function to get display name for classes
   const getDisplayName = (cls: string) => {
-    if (cls.startsWith("dt-")) {
-      const tokenId = cls.substring(3); // Remove "dt-" prefix
-      const token = designTokens[tokenId];
-      return token ? token.name : cls; // Return token name or fallback to class name
+    if (cls.startsWith(DESIGN_TOKEN_PREFIX)) {
+      const token = designTokens[cls];
+      return token ? token.name : cls;
     }
     return cls;
   };
 
-  // Helper function to convert design token names back to dt-{id} format
+  // Helper function to convert design token names back to DESIGN_TOKEN_PREFIX-{id} format
   const convertToStorageFormat = (className: string) => {
     // Check if this className matches any design token name
     const tokenEntry = Object.entries(designTokens).find(([_, token]) => token.name === className);
     if (tokenEntry) {
-      return `dt-${tokenEntry[0]}`; // Return dt-{id} format
+      return `${tokenEntry[0]}`; // Return DESIGN_TOKEN_PREFIX-{id} format
     }
     return className; // Return as-is if not a design token
   };
@@ -80,7 +80,7 @@ export function ManualClasses() {
       .trim()
       .replace(/ +(?= )/g, "")
       .split(" ")
-      .map(convertToStorageFormat); // Convert design token names to dt-{id} format
+      .map(convertToStorageFormat); // Convert design token names to DESIGN_TOKEN_PREFIX-{id} format
 
     addClassesToBlocks(selectedIds, fullClsNames, true);
     setNewCls("");
@@ -100,7 +100,7 @@ export function ManualClasses() {
         // Show all design tokens when no search term
         designTokenSuggestions = Object.entries(designTokens).map(([id, token]) => ({
           name: token.name,
-          id: `dt-${id}`,
+          id: `${id}`,
           isDesignToken: true,
         }));
       } else {
@@ -109,7 +109,7 @@ export function ManualClasses() {
           .filter(([_, token]) => token.name.toLowerCase().includes(search))
           .map(([id, token]) => ({
             name: token.name,
-            id: `dt-${id}`,
+            id: `${id}`,
             isDesignToken: true,
           }));
       }
@@ -176,7 +176,7 @@ export function ManualClasses() {
       .trim()
       .replace(/ +(?= )/g, "")
       .split(" ")
-      .map(convertToStorageFormat); // Convert design token names to dt-{id} format
+      .map(convertToStorageFormat); // Convert design token names to DESIGN_TOKEN_PREFIX-{id} format
     removeClassesFromBlocks(selectedIds, [clsToRemove]);
     addClassesToBlocks(selectedIds, fullClsNames, true);
     setEditingClass("");
@@ -286,7 +286,7 @@ export function ManualClasses() {
                     onClick={() => removeClassesFromBlocks(selectedIds, [cls], true)}
                     className="hidden h-max w-3.5 cursor-pointer rounded bg-gray-100 p-0.5 text-red-500 hover:bg-gray-50 group-hover:block"
                   />
-                  {cls.startsWith("dt-") ? (
+                  {cls.startsWith(DESIGN_TOKEN_PREFIX) ? (
                     <DesignTokensIcon className="text-[rgba(55, 65, 81, 0.4)] h-3.5 w-3.5 group-hover:hidden" />
                   ) : (
                     <svg

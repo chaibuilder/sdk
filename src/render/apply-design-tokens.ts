@@ -26,8 +26,8 @@ if (import.meta.vitest) {
       {
         _id: "block1",
         _type: "div",
-        styles: "#styles:,dt-token1bg-white text-sm",
-        className: "#styles:,dt-token2 dt-token3",
+        styles: "#styles:,@dtoken-token1 bg-white text-sm",
+        className: "#styles:,@dtoken-token2 @dtoken-token3 ",
         otherProp: "not-a-style",
         _name: "Test Block",
       },
@@ -102,9 +102,9 @@ if (import.meta.vitest) {
         {
           _id: "block1",
           _type: "div",
-          styles: "#styles:bg-white dt-token1",
-          hoverStyles: "#styles:bg-gray-100 dt-token2",
-          focusStyles: "#styles:outline-none dt-token3",
+          styles: "#styles:bg-white @dtoken-1 ",
+          hoverStyles: "#styles:bg-gray-100 @dtoken-2 ",
+          focusStyles: "#styles:outline-none @dtoken-3 ",
           _name: "Multi Style",
         },
       ];
@@ -175,7 +175,7 @@ if (import.meta.vitest) {
         {
           _id: "block1",
           _type: "div",
-          styles: "#styles:bg-white dt-complex1",
+          styles: "#styles:bg-white @dtoken-complex1",
           _name: "Complex Tokens",
         },
       ];
@@ -194,7 +194,7 @@ if (import.meta.vitest) {
         {
           _id: "block1",
           _type: "div",
-          styles: "#styles:bg-white dt-empty1 dt-valid1",
+          styles: "#styles:bg-white @dtoken-empty1 @dtoken-valid1",
           _name: "Empty Value Tokens",
         },
       ];
