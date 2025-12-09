@@ -27,20 +27,19 @@ export const TokenUsageSection = ({ title, items, emptyLabel, onSelect, icon }: 
               type="button"
               onClick={() => onSelect(item.id)}
               className={cn(
-                "group flex w-full items-center justify-between rounded-md border border-transparent bg-muted/40 px-3 py-2 text-left text-xs transition",
+                "group flex w-full items-center justify-between rounded-md border border-transparent bg-muted/40 px-3 py-1 text-left text-xs transition",
                 "hover:border-muted-foreground/20 hover:bg-muted/70 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-offset-1",
                 item.isSelected && "border-primary/40 bg-primary/10 text-primary",
               )}>
               <span className="flex items-center space-x-2">
                 {icon && icon}
-                <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/50 group-hover:bg-primary/60" />
                 <span className="truncate">{item.label}</span>
               </span>
             </button>
           ))}
         </div>
       ) : (
-        <div className="rounded border border-dashed border-muted px-3 py-2 text-xs text-muted-foreground">
+        <div className="rounded border border-dashed border-muted px-3 py-1 text-xs text-muted-foreground">
           {emptyLabel}
         </div>
       )}
