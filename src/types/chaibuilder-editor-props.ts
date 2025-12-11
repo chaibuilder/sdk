@@ -309,4 +309,9 @@ export interface ChaiBuilderEditorProps {
   designTokens?: DesignTokens;
 
   siteWideUsage?: SiteWideUsage;
+
+  /**
+   * Screen to small message component
+   */
+  smallScreenComponent?: ReactComponentType;
 }
