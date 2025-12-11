@@ -130,7 +130,7 @@ const BlockRenderer = ({
     if (isEditMode && isDragAndDropEnabled) {
       const propsWithDrag = {
         ...baseProps,
-        draggable: true,
+        draggable: !editingBlockId,
         onMouseDown: directDragHandlers.onMouseDown,
         onDragStart: directDragHandlers.onDragStart,
         onDragEnd: directDragHandlers.onDragEnd,
@@ -139,7 +139,7 @@ const BlockRenderer = ({
     }
 
     return baseProps;
-  }, [block._id, block._type, index, isEditMode, isDragAndDropEnabled, directDragHandlers]);
+  }, [block._id, block._type, index, isEditMode, isDragAndDropEnabled, directDragHandlers, editingBlockId]);
 
   const props = useMemo(
     () => ({

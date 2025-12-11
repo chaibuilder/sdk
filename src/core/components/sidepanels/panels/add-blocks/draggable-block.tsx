@@ -82,7 +82,7 @@ export const ChaiDraggableBlock = ({
           blocks: [
             {
               _type: "Image",
-              styles: "#styles:,w-full",
+              styles: "#styles:,w-full h-full object-cover",
               image: block?.image,
               alt: block?.alt || "",
               _name: block?.name || "Image",

@@ -51,7 +51,7 @@ const Config = {
   group: "media",
   ...registerChaiBlockSchema({
     properties: {
-      styles: StylesProp(""),
+      styles: StylesProp("w-full h-full object-cover"),
       image: {
         type: "string",
         title: "Image",
