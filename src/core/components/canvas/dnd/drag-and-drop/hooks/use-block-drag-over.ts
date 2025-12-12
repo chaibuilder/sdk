@@ -23,6 +23,7 @@ import {
   canDropWithoutCircularReference,
   isDescendantOf,
 } from "../prevent-circular-drop";
+import { isDraggingOnlyImageBlock } from "./use-block-drop";
 import { dragAndDropAtom, dropIndicatorAtom, isDragging } from "./use-drag-and-drop";
 import { useDragParentHighlight } from "./use-drag-parent-highlight";
 
@@ -262,6 +263,24 @@ export const useBlockDragOver = () => {
 
       // Check if target is a leaf block
       const isLeafBlock = LEAF_BLOCK_TYPES.includes(targetBlockType);
+
+      if (targetBlockType === "Image" && draggedBlockType === "Image" && isDraggingOnlyImageBlock(draggedBlock)) {
+        highlightParent(targetBlockId);
+        setDropIndicator({
+          isVisible: true,
+          isValid: true,
+          position: dropZone.position,
+          placeholderOrientation: dropZone.placeholderOrientation,
+          isEmpty: true,
+          top: element.offsetTop,
+          left: dropZone.rect.left,
+          width: element.clientWidth,
+          height: element.clientHeight,
+          targetBlockId: dropZone.targetBlockId,
+          targetParentId: dropZone.targetBlockId,
+        });
+        return;
+      }
 
       if (dropZone.position === "inside") {
         // Leaf blocks cannot accept children
