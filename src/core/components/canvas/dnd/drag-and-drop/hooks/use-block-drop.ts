@@ -11,12 +11,18 @@
  */
 
 import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
-import { useAddBlock, useBlockHighlight, useSelectedBlockIds, useSelectedStylingBlocks } from "@/core/hooks";
+import {
+  useAddBlock,
+  useBlockHighlight,
+  useSelectedBlockIds,
+  useSelectedStylingBlocks,
+  useUpdateBlocksProps,
+} from "@/core/hooks";
 import { useCanvasIframe } from "@/core/hooks/use-canvas-iframe";
 import { ChaiBlock } from "@/types/common";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { useAtom } from "jotai";
-import { filter, isFunction } from "lodash-es";
+import { filter, find, get, has, isFunction } from "lodash-es";
 import { DragEvent, useCallback } from "react";
 import { canvasRenderKeyAtom, dragAndDropAtom, dropIndicatorAtom, setIsDragging } from "./use-drag-and-drop";
 import { useDragParentHighlight } from "./use-drag-parent-highlight";
@@ -59,6 +65,7 @@ export const useBlockDrop = () => {
   const { clearHighlight } = useBlockHighlight();
   const { clearParentHighlight } = useDragParentHighlight();
   const [renderKey, setRenderKey] = useAtom(canvasRenderKeyAtom);
+  const updateContent = useUpdateBlocksProps();
 
   // Get the document from the iframe element
   const iframeDoc = (iframe as HTMLIFrameElement)?.contentDocument;
@@ -133,15 +140,24 @@ export const useBlockDrop = () => {
       }
 
       // Calculate insertion point using the drop indicator's target information
-      const { parentId, index } = calculateInsertionIndex(
+      const { parentId, index, replaceImageUrl } = calculateInsertionIndex(
         allBlocks,
         targetBlockId,
         targetParentId,
         dropIndicator.position,
+        draggedBlock,
       );
 
       // Check if this is an existing block being moved or a new block being added
       const isExistingBlock = draggedBlock._id !== undefined;
+
+      if (replaceImageUrl && isDraggingOnlyImageBlock(draggedBlock)) {
+        updateContent([targetBlockId], { image: get(draggedBlock, "blocks.0.image") });
+        setTimeout(() => {
+          setRenderKey(renderKey + 1);
+        }, 50);
+        return;
+      }
 
       if (isExistingBlock) {
         // Move existing block to new position
@@ -197,8 +213,17 @@ export const useBlockDrop = () => {
       setStyleBlocks,
       renderKey,
       setRenderKey,
+      updateContent,
     ],
   );
+};
+
+export const isDraggingOnlyImageBlock = (draggedBlock: any) => {
+  const hasBlocks = has(draggedBlock, "blocks");
+  const blocks = draggedBlock?.blocks as ChaiBlock[];
+  const isOnlyImageBlock = blocks?.length === 1 && blocks?.[0]?._type === "Image";
+  const notHasId = !blocks?.[0]?._id;
+  return hasBlocks && isOnlyImageBlock && notHasId;
 };
 
 /**
@@ -224,8 +249,20 @@ function calculateInsertionIndex(
   targetBlockId: string,
   targetParentId: string | undefined,
   position: "before" | "after" | "inside",
-): { parentId: string | null | undefined; index: number } {
+  draggedBlock: ChaiBlock,
+): { parentId: string | null | undefined; index: number; replaceImageUrl?: boolean } {
   try {
+    if (
+      targetBlockId === targetParentId &&
+      draggedBlock?.blocks?.length === 1 &&
+      get(draggedBlock, "blocks.0._type") === "Image"
+    ) {
+      const targetBlockType = find(blocks, { _id: targetBlockId })?._type;
+      if (targetBlockType === "Image") {
+        return { parentId: "", index: -1, replaceImageUrl: true };
+      }
+    }
+
     // Special case: dropping on canvas root (empty canvas or inside canvas)
     if (targetBlockId === "canvas" || (position === "inside" && targetBlockId === "canvas")) {
       // Insert at the end of root-level blocks
