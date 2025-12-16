@@ -161,7 +161,8 @@ export function ManualClasses() {
         }, 0);
       },
       onKeyDown: (e: any) => {
-        if (e.key === "Enter" && newCls.trim() !== "" && suggestions.length === 0) {
+        if (e.key === "Enter" && newCls.trim() !== "") {
+          e.preventDefault();
           addNewClasses();
         }
       },
@@ -225,7 +226,6 @@ export function ManualClasses() {
             getSuggestionValue={getSuggestionValue}
             renderSuggestion={renderSuggestion}
             inputProps={inputProps}
-            highlightFirstSuggestion={true}
             onSuggestionSelected={(_e, { suggestionValue }) => {
               const storageFormat = convertToStorageFormat(suggestionValue);
               addClassesToBlocks(selectedIds, [storageFormat], true);
