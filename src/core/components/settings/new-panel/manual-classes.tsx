@@ -161,8 +161,20 @@ export function ManualClasses() {
         }, 0);
       },
       onKeyDown: (e: any) => {
-        if (e.key === "Enter" && newCls.trim() !== "" && suggestions.length === 0) {
+        if (e.key === "Enter" && newCls.trim() !== "") {
+          e.preventDefault();
           addNewClasses();
+        }
+        if (e.key === "Tab" && suggestions.length > 0) {
+          e.preventDefault();
+          // Simulate ArrowDown to highlight
+          const downEvent = new KeyboardEvent("keydown", {
+            key: "ArrowDown",
+            code: "ArrowDown",
+            keyCode: 40,
+            bubbles: true,
+          });
+          e.target.dispatchEvent(downEvent);
         }
       },
       onChange: (_e: any, { newValue }: any) => setNewCls(newValue),
@@ -225,7 +237,6 @@ export function ManualClasses() {
             getSuggestionValue={getSuggestionValue}
             renderSuggestion={renderSuggestion}
             inputProps={inputProps}
-            highlightFirstSuggestion={true}
             onSuggestionSelected={(_e, { suggestionValue }) => {
               const storageFormat = convertToStorageFormat(suggestionValue);
               addClassesToBlocks(selectedIds, [storageFormat], true);
