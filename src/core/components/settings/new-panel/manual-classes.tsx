@@ -165,6 +165,17 @@ export function ManualClasses() {
           e.preventDefault();
           addNewClasses();
         }
+        if (e.key === "Tab" && suggestions.length > 0) {
+          e.preventDefault();
+          // Simulate ArrowDown to highlight
+          const downEvent = new KeyboardEvent("keydown", {
+            key: "ArrowDown",
+            code: "ArrowDown",
+            keyCode: 40,
+            bubbles: true,
+          });
+          e.target.dispatchEvent(downEvent);
+        }
       },
       onChange: (_e: any, { newValue }: any) => setNewCls(newValue),
       className: "w-full rounded-md text-xs px-2 hover:outline-0 bg-background border-border py-1",
