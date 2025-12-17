@@ -113,7 +113,9 @@ export const transformNode = (node: HimalayaNode, currentBlocks: ChaiBlock[], op
         const href = linkBlock?.link?.href;
         const target = linkBlock?.link?.target;
         node.attributes.push({ key: "href", value: href });
-        node.attributes.push({ key: "target", value: target });
+        if (typeof target === "string" && target.length > 0) {
+          node.attributes.push({ key: "target", value: target });
+        }
       }
     }
   }
