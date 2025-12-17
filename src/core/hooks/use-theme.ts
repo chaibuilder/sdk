@@ -59,3 +59,8 @@ const rightPanelAtom = atom<"block" | "theme" | "ai" | "settings" | "design-toke
 export const useRightPanel = () => {
   return useAtom(rightPanelAtom);
 };
+
+const activeSettingsTabAtom = atom<"settings" | "styles">("settings");
+export const useActiveSettingsTab = () => {
+  return useAtom(activeSettingsTabAtom);
+};

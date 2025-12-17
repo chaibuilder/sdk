@@ -37,7 +37,7 @@ import { useSelectedBreakpoints } from "@/core/hooks/use-selected-breakpoints";
 import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
 import { useStylingBreakpoint } from "@/core/hooks/use-styling-breakpoint";
 import { useStylingState } from "@/core/hooks/use-styling-state";
-import { useRightPanel, useTheme, useThemeOptions } from "@/core/hooks/use-theme";
+import { useActiveSettingsTab, useRightPanel, useTheme, useThemeOptions } from "@/core/hooks/use-theme";
 import {
   useStreamMultipleBlocksProps,
   useUpdateBlocksProps,
@@ -59,6 +59,7 @@ export { useSelectedLibrary } from "@/core/hooks/use-selected-library";
 export { useSidebarActivePanel } from "@/core/hooks/use-sidebar-active-panel";
 
 export {
+  useActiveSettingsTab,
   useAddBlock,
   useAddClassesToBlocks,
   useAskAi,
