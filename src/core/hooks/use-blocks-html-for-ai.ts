@@ -2,8 +2,8 @@ import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { parse, stringify } from "himalaya";
 import { kebabCase } from "lodash-es";
 import { useCallback } from "react";
+import { getCurrentBlocks } from "../atoms/store";
 import { ChaiBlock } from "../main";
-import { useBlocksStore } from "./hooks";
 import { useCanvasIframe } from "./use-canvas-iframe";
 
 export type HimalayaNode = {
@@ -19,7 +19,15 @@ type Options = {
   additionalCoreBlocks?: string[];
 };
 
-const ATTRIBUTES_TO_REMOVE = ["data-block-index", "draggable", "data-drop", "data-style-id", "data-block-parent", "data-style-prop", "data-highlighted"];
+const ATTRIBUTES_TO_REMOVE = [
+  "data-block-index",
+  "draggable",
+  "data-drop",
+  "data-style-id",
+  "data-block-parent",
+  "data-style-prop",
+  "data-highlighted",
+];
 
 const CORE_BLOCKS = [
   "Box",
@@ -97,6 +105,16 @@ export const transformNode = (node: HimalayaNode, currentBlocks: ChaiBlock[], op
       node.tagName = "a";
       // Remove the role attribute
       node.attributes = node.attributes.filter((attr) => attr.key !== "role");
+
+      // Adding link config
+      const blockId = node.attributes.find((attr) => attr.key === "data-block-id")?.value;
+      const linkBlock = currentBlocks?.find((block) => block?._id === blockId);
+      if (linkBlock?.link && linkBlock?.link?.href?.length > 0) {
+        const href = linkBlock?.link?.href;
+        const target = linkBlock?.link?.target;
+        node.attributes.push({ key: "href", value: href });
+        node.attributes.push({ key: "target", value: target });
+      }
     }
   }
 
@@ -202,7 +220,6 @@ export const transformNode = (node: HimalayaNode, currentBlocks: ChaiBlock[], op
 };
 
 export const useBlocksHtmlForAi = () => {
-  const [currentBlocks] = useBlocksStore();
   const [iframeDocument] = useCanvasIframe();
   return useCallback(
     (options?: Options) => {
@@ -219,6 +236,9 @@ export const useBlocksHtmlForAi = () => {
 
       // Clean nodes
       const cleanedNodes = nodes.map(cleanNode).filter((node): node is HimalayaNode => node !== null);
+
+      // * Getting current blocks`
+      const currentBlocks = getCurrentBlocks();
 
       // Transform nodes: remove data-block-type for core blocks, convert custom blocks to web components
       const transformedNodes = cleanedNodes.map((node) => transformNode(node, currentBlocks, options));

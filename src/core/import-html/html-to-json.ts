@@ -171,6 +171,12 @@ const getAttrs = (node: Node) => {
         } else {
           value = `https://picsum.photos/150x150`;
         }
+      } else if (node.tagName === "a") {
+        // * If importing page with type as pageType, setting attribute
+        const href = find(node.attributes, { key: "href" }) as { value: string } | undefined;
+        if (href && typeof href?.value === "string" && href?.value?.startsWith("pageType:")) {
+          set(attrs, "link.type", "pageType");
+        }
       }
       set(attrs, replacers[key], getSanitizedValue(value));
     } else if (!includes(["style", "class", "srcset", "bid"], key)) {
