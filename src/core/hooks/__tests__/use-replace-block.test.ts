@@ -20,7 +20,9 @@ vi.mock("@/core/main", () => ({
   usePermissions: vi.fn(),
 }));
 
-import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
+import { presentBlocksAtom } from "@/core/atoms/blocks";
+import { builderStore } from "@/core/atoms/store";
+import { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import { usePermissions } from "@/core/main";
 
@@ -183,11 +185,11 @@ describe("replaceBlock", () => {
     const result = replaceBlock(blocks, "2", replacementBlocks);
 
     expect(result).toHaveLength(5); // Block 1 + 4 replacement blocks
-    
+
     // Root-level replacement blocks should have parent "1"
     expect(result.find((b) => b._id === "3")?._parent).toBe("1");
     expect(result.find((b) => b._id === "6")?._parent).toBe("1");
-    
+
     // Nested structure should be preserved
     expect(result.find((b) => b._id === "4")?._parent).toBe("3");
     expect(result.find((b) => b._id === "5")?._parent).toBe("4");
@@ -226,12 +228,10 @@ describe("useReplaceBlock", () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    (useBlocksStore as any).mockReturnValue([
-      [
-        { _id: "1", _parent: undefined, _type: "Container" },
-        { _id: "2", _parent: "1", _type: "Text" },
-        { _id: "3", _parent: "1", _type: "Button" },
-      ],
+    builderStore.set(presentBlocksAtom, [
+      { _id: "1", _parent: undefined, _type: "Container" },
+      { _id: "2", _parent: "1", _type: "Text" },
+      { _id: "3", _parent: "1", _type: "Button" },
     ]);
 
     (useBlocksStoreUndoableActions as any).mockReturnValue({
