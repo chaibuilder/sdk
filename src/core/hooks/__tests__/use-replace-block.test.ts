@@ -1,3 +1,5 @@
+import { presentBlocksAtom } from "@/core/atoms/blocks";
+import { builderStore } from "@/core/atoms/store";
 import { ChaiBlock } from "@/types/chai-block";
 import { act, renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -20,8 +22,6 @@ vi.mock("@/core/main", () => ({
   usePermissions: vi.fn(),
 }));
 
-import { presentBlocksAtom } from "@/core/atoms/blocks";
-import { builderStore } from "@/core/atoms/store";
 import { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import { usePermissions } from "@/core/main";
