@@ -1,4 +1,6 @@
-import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
+import { presentBlocksAtom } from "@/core/atoms/blocks";
+import { builderStore } from "@/core/atoms/store";
+import { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import { PERMISSIONS, usePermissions } from "@/core/main";
 import { ChaiBlock } from "@/types/chai-block";
@@ -52,7 +54,6 @@ export const replaceBlock = (blocks: ChaiBlock[], blockId: string, replacementBl
 };
 
 export const useReplaceBlock = () => {
-  const [presentBlocks] = useBlocksStore();
   const [, setSelectedIds] = useSelectedBlockIds();
   const { setNewBlocks } = useBlocksStoreUndoableActions();
   const { hasPermission } = usePermissions();
@@ -60,13 +61,14 @@ export const useReplaceBlock = () => {
   return useCallback(
     (blockId: string | undefined, replacementBlocks: ChaiBlock[]) => {
       if (!hasPermission(PERMISSIONS.EDIT_BLOCK)) return;
-      const newBlocks = blockId ? replaceBlock(presentBlocks, blockId, replacementBlocks) : replacementBlocks;
+      const latestUpdatedBlocks = builderStore.get(presentBlocksAtom) as ChaiBlock[];
+      const newBlocks = blockId ? replaceBlock(latestUpdatedBlocks, blockId, replacementBlocks) : replacementBlocks;
       setNewBlocks(newBlocks);
       // Select the first replacement block after replace
       if (replacementBlocks.length > 0) {
         setTimeout(() => setSelectedIds([replacementBlocks[0]._id]), 200);
       }
     },
-    [presentBlocks, setSelectedIds, setNewBlocks, hasPermission],
+    [setSelectedIds, setNewBlocks, hasPermission],
   );
 };
