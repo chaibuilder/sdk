@@ -137,13 +137,16 @@ const SettingsPanel: React.FC = () => {
     );
   }
 
+  const handleTabChange = (value: string) => {
+    if (value === "settings" || value === "styles") {
+      setActiveTab(value);
+    }
+  };
+
   // Show both tabs if both permissions are enabled
   return (
     <ErrorBoundary fallback={<FallbackError />} onError={onErrorFn}>
-      <Tabs
-        value={activeTab}
-        onValueChange={(value) => setActiveTab(value as "settings" | "styles")}
-        className="flex flex-1 flex-col">
+      <Tabs value={activeTab} onValueChange={handleTabChange} className="flex flex-1 flex-col">
         <div className="flex items-center justify-between">
           <TabsList className="grid h-auto w-full grid-cols-2 p-1 py-1">
             <TabsTrigger value="settings" className="text-xs">
