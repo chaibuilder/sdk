@@ -2,7 +2,14 @@ import { FallbackError } from "@/core/components/fallback-error";
 import BlockSettings from "@/core/components/settings/block-settings";
 import BlockStyling from "@/core/components/settings/block-styling";
 import { BlockAttributesEditor } from "@/core/components/settings/new-panel/block-attributes-editor";
-import { useBuilderProp, useLanguages, useSavePage, useSelectedBlock, useSelectedStylingBlocks } from "@/core/hooks";
+import {
+  useActiveSettingsTab,
+  useBuilderProp,
+  useLanguages,
+  useSavePage,
+  useSelectedBlock,
+  useSelectedStylingBlocks,
+} from "@/core/hooks";
 import { PERMISSIONS, usePermissions } from "@/core/main";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/shadcn/components/ui/tabs";
 import { ChevronDownIcon, MixerHorizontalIcon } from "@radix-ui/react-icons";
@@ -68,6 +75,7 @@ const SettingsPanel: React.FC = () => {
   const { hasPermission } = usePermissions();
   let isSettingsDisabled = !hasPermission(PERMISSIONS.EDIT_BLOCK);
   const isStylesDisabled = !hasPermission(PERMISSIONS.EDIT_STYLES);
+  const [activeTab, setActiveTab] = useActiveSettingsTab();
 
   const isPartialBlock = selectedBlock && selectedBlock._type === "PartialBlock";
 
@@ -129,10 +137,16 @@ const SettingsPanel: React.FC = () => {
     );
   }
 
+  const handleTabChange = (value: string) => {
+    if (value === "settings" || value === "styles") {
+      setActiveTab(value);
+    }
+  };
+
   // Show both tabs if both permissions are enabled
   return (
     <ErrorBoundary fallback={<FallbackError />} onError={onErrorFn}>
-      <Tabs defaultValue="settings" className="flex flex-1 flex-col">
+      <Tabs value={activeTab} onValueChange={handleTabChange} className="flex flex-1 flex-col">
         <div className="flex items-center justify-between">
           <TabsList className="grid h-auto w-full grid-cols-2 p-1 py-1">
             <TabsTrigger value="settings" className="text-xs">

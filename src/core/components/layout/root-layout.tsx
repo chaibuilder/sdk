@@ -9,7 +9,7 @@ import ThemeConfigPanel from "@/core/components/sidepanels/panels/theme-configur
 import { registerChaiSidebarPanel, useChaiSidebarPanels } from "@/core/extensions/sidebar-panels";
 import { useTopBarComponent } from "@/core/extensions/top-bar";
 import { useBuilderProp, useSidebarActivePanel } from "@/core/hooks";
-import { useRightPanel } from "@/core/hooks/use-theme";
+import { useActiveSettingsTab, useRightPanel } from "@/core/hooks/use-theme";
 import { isDevelopment } from "@/core/import-html/general";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
@@ -115,6 +115,7 @@ const RootLayout: ComponentType = () => {
   const [lastStandardPanelWidth, setLastStandardPanelWidth] = useState(DEFAULT_PANEL_WIDTH);
 
   const [panel, setRightPanel] = useRightPanel();
+  const [, setActiveSettingsTab] = useActiveSettingsTab();
   const topPanels = useChaiSidebarPanels("top");
   const bottomPanels = useChaiSidebarPanels("bottom");
   const reversedBottomPanels = reverse([...(bottomPanels ?? [])]);
@@ -295,7 +296,10 @@ const RootLayout: ComponentType = () => {
                               {t("Design Tokens")}
                             </span>
                             <Button
-                              onClick={() => setRightPanel("block")}
+                              onClick={() => {
+                                setActiveSettingsTab("styles");
+                                setRightPanel("block");
+                              }}
                               variant="ghost"
                               size="icon"
                               className="text-xs">
