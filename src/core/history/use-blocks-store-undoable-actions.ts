@@ -1,4 +1,5 @@
 import { presentBlocksAtom } from "@/core/atoms/blocks";
+import { builderStore } from "@/core/atoms/store";
 import { useBlocksStoreManager } from "@/core/history/use-blocks-store-manager";
 import { useUndoManager } from "@/core/history/use-undo-manager";
 import { ChaiBlock } from "@/types/chai-block";
@@ -21,9 +22,10 @@ export const useBlocksStoreUndoableActions = () => {
   } = useBlocksStoreManager();
 
   const setNewBlocks = (newBlocks: ChaiBlock[]) => {
+    const previousBlocks = builderStore.get(presentBlocksAtom) as ChaiBlock[];
     setBlocks(newBlocks);
     add({
-      undo: () => setBlocks(currentBlocks),
+      undo: () => setBlocks(previousBlocks),
       redo: () => setBlocks(newBlocks),
     });
   };
@@ -37,8 +39,9 @@ export const useBlocksStoreUndoableActions = () => {
   };
 
   const removeBlocks = (blocks: ChaiBlock[]) => {
+    const latestBlocks = builderStore.get(presentBlocksAtom) as ChaiBlock[];
     const parentId = first(blocks)?._parent;
-    const siblings = currentBlocks.filter((block) => (parentId ? block._parent === parentId : !block._parent));
+    const siblings = latestBlocks.filter((block) => (parentId ? block._parent === parentId : !block._parent));
     const position = siblings.indexOf(first(blocks));
 
     removeExistingBlocks(map(blocks, "_id"));
