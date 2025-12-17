@@ -12,7 +12,6 @@ export const useBlocksStore = () => {
 
 export const useBlocksStoreUndoableActions = () => {
   const { add } = useUndoManager();
-  const [currentBlocks] = useBlocksStore();
   const {
     setNewBlocks: setBlocks,
     addBlocks: addNewBlocks,
@@ -52,11 +51,12 @@ export const useBlocksStoreUndoableActions = () => {
   };
 
   const moveBlocks = (blockIds: string[], parent: string | undefined, position: number) => {
+    const latestBlocks = builderStore.get(presentBlocksAtom) as ChaiBlock[];
     // Save the current positions of the blocks for undo
     const currentPositions = map(blockIds, (_id: string) => {
-      const block = currentBlocks.find((block) => block._id === _id) as ChaiBlock;
+      const block = latestBlocks.find((block) => block._id === _id) as ChaiBlock;
       const oldParent = block._parent || null;
-      const siblings = currentBlocks
+      const siblings = latestBlocks
         .filter((block) => (oldParent ? block._parent === oldParent : !block._parent))
         .map((block) => block._id);
       const oldPosition = siblings.indexOf(_id);
@@ -80,6 +80,7 @@ export const useBlocksStoreUndoableActions = () => {
   };
 
   const updateBlocks = (blockIds: string[], props: Partial<ChaiBlock>, oldPropsState?: Partial<ChaiBlock>) => {
+    const latestBlocks = builderStore.get(presentBlocksAtom) as ChaiBlock[];
     let previousPropsState = [];
     if (oldPropsState) {
       previousPropsState = map(blockIds, (_id: string) => {
@@ -88,7 +89,7 @@ export const useBlocksStoreUndoableActions = () => {
     } else {
       const propKeys = keys(props);
       previousPropsState = map(blockIds, (_id: string) => {
-        const block = currentBlocks.find((block) => block._id === _id);
+        const block = latestBlocks.find((block) => block._id === _id);
         const prevProps = { _id };
         each(propKeys, (key: string) => (prevProps[key] = block[key]));
         return prevProps;
@@ -103,10 +104,11 @@ export const useBlocksStoreUndoableActions = () => {
   };
 
   const updateMultipleBlocksProps = (blocks: Array<{ _id: string } & Partial<ChaiBlock>>) => {
+    const latestBlocks = builderStore.get(presentBlocksAtom) as ChaiBlock[];
     let previousPropsState = [];
     previousPropsState = map(blocks, (block: Partial<ChaiBlock>) => {
       const propKeys = keys(block);
-      const currentBlock = currentBlocks.find((currentBlock) => currentBlock._id === block._id);
+      const currentBlock = latestBlocks.find((currentBlock) => currentBlock._id === block._id);
       const prevProps = {};
       each(propKeys, (key: string) => (prevProps[key] = currentBlock[key]));
       return prevProps;

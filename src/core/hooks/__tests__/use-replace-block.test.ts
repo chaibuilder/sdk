@@ -22,7 +22,7 @@ vi.mock("@/core/main", () => ({
   usePermissions: vi.fn(),
 }));
 
-import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
+import { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import { usePermissions } from "@/core/main";
 
@@ -232,14 +232,6 @@ describe("useReplaceBlock", () => {
       { _id: "1", _parent: undefined, _type: "Container" },
       { _id: "2", _parent: "1", _type: "Text" },
       { _id: "3", _parent: "1", _type: "Button" },
-    ]);
-
-    (useBlocksStore as any).mockReturnValue([
-      [
-        { _id: "1", _parent: undefined, _type: "Container" },
-        { _id: "2", _parent: "1", _type: "Text" },
-        { _id: "3", _parent: "1", _type: "Button" },
-      ],
     ]);
 
     (useBlocksStoreUndoableActions as any).mockReturnValue({
