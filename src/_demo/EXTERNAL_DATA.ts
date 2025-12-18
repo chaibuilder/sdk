@@ -40,3 +40,5 @@ export const EXTERNAL_DATA = {
     description: "This is a description of my page",
   },
 };
+
+export type ExternalDataType = typeof EXTERNAL_DATA;

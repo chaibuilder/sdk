@@ -146,6 +146,7 @@ const BlockRenderer = ({
       blockProps,
       inBuilder: mode === "edit",
       lang: selectedLang || fallbackLang,
+      pageData: pageExternalData,
       ...dataBindingProps,
       ...blockAttributesProps,
       ...runtimeProps,

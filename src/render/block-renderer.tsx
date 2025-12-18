@@ -59,6 +59,7 @@ export const RenderBlock = (
     blockProps: {},
     inBuilder: false,
     lang: lang || fallbackLang,
+    pageData: externalData,
     ...newBlock,
   };
   const isShown = get(newBlock, "_show", true);

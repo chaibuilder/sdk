@@ -1,5 +1,11 @@
 import EmptySlot from "@/web-blocks/empty-slot";
-import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
+import {
+  ChaiBlockComponentProps,
+  ChaiBlockDefinition,
+  ChaiStyles,
+  registerChaiBlockSchema,
+  StylesProp,
+} from "@chaibuilder/runtime";
 import * as React from "react";
 
 export type BoxProps = {
@@ -23,7 +29,7 @@ const Component = (props: ChaiBlockComponentProps<BoxProps>) => {
   return React.createElement(tag, { ...blockProps, ...styles, style: cssStyles }, nestedChildren);
 };
 
-const Config = {
+const Config: Omit<ChaiBlockDefinition<BoxProps>, "component"> = {
   type: "Box",
   description: "Similar to a div or section elements in HTML",
   label: "Box",
