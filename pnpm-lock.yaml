@@ -126,14 +126,14 @@ importers:
         specifier: ^3.13.12
         version: 3.13.12(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@tiptap/extension-bubble-menu':
-        specifier: ^3.7.0
-        version: 3.11.1(@tiptap/core@2.27.1(@tiptap/pm@2.27.1))(@tiptap/pm@2.27.1)
+        specifier: ^2.11.5
+        version: 2.27.1(@tiptap/core@2.27.1(@tiptap/pm@2.27.1))(@tiptap/pm@2.27.1)
       '@tiptap/extension-bullet-list':
         specifier: ^2.12.0
         version: 2.27.1(@tiptap/core@2.27.1(@tiptap/pm@2.27.1))
       '@tiptap/extension-highlight':
-        specifier: ^3.6.5
-        version: 3.11.1(@tiptap/core@2.27.1(@tiptap/pm@2.27.1))
+        specifier: ^2.11.5
+        version: 2.27.1(@tiptap/core@2.27.1(@tiptap/pm@2.27.1))
       '@tiptap/extension-link':
         specifier: ^2.11.5
         version: 2.27.1(@tiptap/core@2.27.1(@tiptap/pm@2.27.1))(@tiptap/pm@2.27.1)
@@ -147,8 +147,8 @@ importers:
         specifier: ^2.11.5
         version: 2.27.1(@tiptap/core@2.27.1(@tiptap/pm@2.27.1))
       '@tiptap/extension-text-style':
-        specifier: ^3.6.5
-        version: 3.11.1(@tiptap/core@2.27.1(@tiptap/pm@2.27.1))
+        specifier: ^2.11.5
+        version: 2.27.1(@tiptap/core@2.27.1(@tiptap/pm@2.27.1))
       '@tiptap/extension-underline':
         specifier: ^2.11.5
         version: 2.27.1(@tiptap/core@2.27.1(@tiptap/pm@2.27.1))
@@ -2167,12 +2167,6 @@ packages:
       '@tiptap/core': ^2.7.0
       '@tiptap/pm': ^2.7.0
 
-  '@tiptap/extension-bubble-menu@3.11.1':
-    resolution: {integrity: sha512-rLgU2drvoSTpdXEmoo61ZSmtRR44vMeS36OoDpUA1dNzo/vWAiOzQeLnm8gC9cD2TmvJ+WIe7tOkpAEfw4kmiQ==}
-    peerDependencies:
-      '@tiptap/core': ^3.11.1
-      '@tiptap/pm': ^3.11.1
-
   '@tiptap/extension-bullet-list@2.27.1':
     resolution: {integrity: sha512-5FmnfXkJ76wN4EbJNzBhAlmQxho8yEMIJLchTGmXdsD/n/tsyVVtewnQYaIOj/Z7naaGySTGDmjVtLgTuQ+Sxw==}
     peerDependencies:
@@ -2222,10 +2216,10 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.7.0
 
-  '@tiptap/extension-highlight@3.11.1':
-    resolution: {integrity: sha512-oD7v0o+0+D2m2XfXQz2scHfxN35sDKTNbtXfY33ptdZH9G2Em8lDn2gSSWZKhTU504gjYxaHro70RndgRCD2RA==}
+  '@tiptap/extension-highlight@2.27.1':
+    resolution: {integrity: sha512-ntuYX09tvHQE/R/8WbTOxbFuQhRr2jhTkKz/gLwDD2o8IhccSy3f0nm+mVmVamKQnbsBBbLohojd5IGOnX9f1A==}
     peerDependencies:
-      '@tiptap/core': ^3.11.1
+      '@tiptap/core': ^2.7.0
 
   '@tiptap/extension-history@2.27.1':
     resolution: {integrity: sha512-K8PHC9gegSAt0wzSlsd4aUpoEyIJYOmVVeyniHr1P1mIblW1KYEDbRGbDlrLALTyUEfMcBhdIm8zrB9X2Nihvg==}
@@ -2285,11 +2279,6 @@ packages:
     resolution: {integrity: sha512-NagQ9qLk0Ril83gfrk+C65SvTqPjL3WVnLF2arsEVnCrxcx3uDOvdJW67f/K5HEwEHsoqJ4Zq9Irco/koXrOXA==}
     peerDependencies:
       '@tiptap/core': ^2.7.0
-
-  '@tiptap/extension-text-style@3.11.1':
-    resolution: {integrity: sha512-KLLrABvf609/Z4dPChRowvpqeefYiq5csEj4Ogfp4EFd3KqDvPZIoFepau1+BW4gOAlm8UK+ig+fOLgnUzH7ww==}
-    peerDependencies:
-      '@tiptap/core': ^3.11.1
 
   '@tiptap/extension-text@2.27.1':
     resolution: {integrity: sha512-a4GCT+GZ9tUwl82F4CEum9/+WsuW0/De9Be/NqrMmi7eNfAwbUTbLCTFU0gEvv25WMHCoUzaeNk/qGmzeVPJ1Q==}
@@ -7693,12 +7682,6 @@ snapshots:
       '@tiptap/pm': 2.27.1
       tippy.js: 6.3.7
 
-  '@tiptap/extension-bubble-menu@3.11.1(@tiptap/core@2.27.1(@tiptap/pm@2.27.1))(@tiptap/pm@2.27.1)':
-    dependencies:
-      '@floating-ui/dom': 1.7.4
-      '@tiptap/core': 2.27.1(@tiptap/pm@2.27.1)
-      '@tiptap/pm': 2.27.1
-
   '@tiptap/extension-bullet-list@2.27.1(@tiptap/core@2.27.1(@tiptap/pm@2.27.1))':
     dependencies:
       '@tiptap/core': 2.27.1(@tiptap/pm@2.27.1)
@@ -7740,7 +7723,7 @@ snapshots:
     dependencies:
       '@tiptap/core': 2.27.1(@tiptap/pm@2.27.1)
 
-  '@tiptap/extension-highlight@3.11.1(@tiptap/core@2.27.1(@tiptap/pm@2.27.1))':
+  '@tiptap/extension-highlight@2.27.1(@tiptap/core@2.27.1(@tiptap/pm@2.27.1))':
     dependencies:
       '@tiptap/core': 2.27.1(@tiptap/pm@2.27.1)
 
@@ -7790,10 +7773,6 @@ snapshots:
       '@tiptap/core': 2.27.1(@tiptap/pm@2.27.1)
 
   '@tiptap/extension-text-style@2.27.1(@tiptap/core@2.27.1(@tiptap/pm@2.27.1))':
-    dependencies:
-      '@tiptap/core': 2.27.1(@tiptap/pm@2.27.1)
-
-  '@tiptap/extension-text-style@3.11.1(@tiptap/core@2.27.1(@tiptap/pm@2.27.1))':
     dependencies:
       '@tiptap/core': 2.27.1(@tiptap/pm@2.27.1)
 
