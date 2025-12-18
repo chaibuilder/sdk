@@ -33,7 +33,6 @@ type ServerProps = {
 
 const Component = (props: ChaiBlockComponentProps<CollectionListProps & ServerProps, ExternalDataType>) => {
   const { title1, blockProps, newName, wrapperStyles, listStyles, itemStyles, items, showTitle } = props;
-  console.log(props);
   return (
     <div {...blockProps} {...wrapperStyles}>
       External Data: {props.pageData?.global?.siteName}
