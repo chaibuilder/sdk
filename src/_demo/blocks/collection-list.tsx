@@ -6,6 +6,7 @@ import {
   registerChaiBlockSchema,
   StylesProp,
 } from "@chaibuilder/runtime";
+import { ExternalDataType } from "../EXTERNAL_DATA";
 
 type Sort = {
   field: string;
@@ -30,10 +31,12 @@ type ServerProps = {
   items: any[];
 };
 
-const Component = (props: ChaiBlockComponentProps<CollectionListProps & ServerProps>) => {
+const Component = (props: ChaiBlockComponentProps<CollectionListProps & ServerProps, ExternalDataType>) => {
   const { title1, blockProps, newName, wrapperStyles, listStyles, itemStyles, items, showTitle } = props;
+  console.log(props);
   return (
     <div {...blockProps} {...wrapperStyles}>
+      External Data: {props.pageData?.global?.siteName}
       {showTitle && <h1>{title1}</h1>}
       <p>new name:{newName}</p>
       <div {...listStyles}>

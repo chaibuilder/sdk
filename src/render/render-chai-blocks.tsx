@@ -47,7 +47,7 @@ export const getRuntimePropValues = (allBlocks: ChaiBlock[], blockId: string, ru
 export type RenderChaiBlocksProps = {
   blocks: ChaiBlock[];
   parent?: string;
-  externalData?: Record<string, any>;
+  externalData?: Record<string, unknown>;
   lang?: string;
   fallbackLang?: string;
   pageProps?: ChaiPageProps;
