@@ -13,18 +13,28 @@ import {
 import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
-import { CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
+import { Label } from "@radix-ui/react-dropdown-menu";
+import { CheckIcon, CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { useAtomValue } from "jotai";
-import { first, get, isEmpty, map } from "lodash-es";
+import { first, get, isEmpty, isFunction, map } from "lodash-es";
 import { useMemo, useRef, useState } from "react";
 import Autosuggest from "react-autosuggest";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { DesignTokensIcon } from "../../sidepanels/panels/design-tokens/DesignTokensIcon";
 
-export function ManualClasses() {
+export function ManualClasses({
+  from = "default",
+  classFromProps,
+  onAddNew,
+}: {
+  from?: "default" | "designToken";
+  classFromProps?: string;
+  onAddNew?: any;
+}) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [editingClass, setEditingClass] = useState("");
+  const [isCopied, setIsCopied] = useState(false);
   const [editingClassIndex, setEditingClassIndex] = useState(-1);
   const [, setRightPanel] = useRightPanel();
   const fuse = useFuseSearch();
@@ -38,7 +48,7 @@ export function ManualClasses() {
   const designTokens = useAtomValue(chaiDesignTokensAtom);
   const prop = first(styleBlock)?.prop as string;
   const { classes: classesString } = getSplitChaiClasses(get(block, prop, ""));
-  const classes = classesString.split(" ").filter((cls) => !isEmpty(cls));
+  const classes = (from === "default" ? classesString : classFromProps).split(" ").filter((cls) => !isEmpty(cls));
 
   // Sort classes to ensure design tokens ({DESIGN_TOKEN_PREFIX{id}) are always first
   const sortedClasses = useMemo(() => {
@@ -82,7 +92,11 @@ export function ManualClasses() {
       .split(" ")
       .map(convertToStorageFormat); // Convert design token names to DESIGN_TOKEN_PREFIX-{id} format
 
-    addClassesToBlocks(selectedIds, fullClsNames, true);
+    if (from === "designToken") {
+      if (isFunction(onAddNew)) onAddNew(fullClsNames);
+    } else {
+      addClassesToBlocks(selectedIds, fullClsNames, true);
+    }
     setNewCls("");
   };
 
@@ -202,18 +216,35 @@ export function ManualClasses() {
     }
     navigator.clipboard.writeText(classes.join(" "));
     toast.success(t("Classes copied to clipboard"));
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
   };
 
   return (
-    <div className={`flex w-full flex-col gap-y-1.5 border-b border-border pb-4`}>
+    <div
+      className={`flex w-full flex-col gap-y-1.5 pb-4 ${from === "designToken" ? "border-none" : "border-b border-border"}`}>
       <div className="flex items-center justify-between gap-x-2">
         <div className="flex w-full items-center justify-between gap-x-2 text-muted-foreground">
           <span className="flex items-center gap-x-1">
-            <span>{designTokensEnabled ? t("Styles") : t("Classes")}</span>
+            <span>
+              {from === "designToken" ? (
+                <Label className="text-sm font-medium leading-tight text-gray-900 peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                  {t("Token Classes")}
+                </Label>
+              ) : designTokensEnabled ? (
+                t("Styles")
+              ) : (
+                t("Classes")
+              )}
+            </span>
             {enableCopyToClipboard && (
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <CopyIcon onClick={onClickCopy} className={"cursor-pointer"} />
+                  {isCopied ? (
+                    <CheckIcon className="rounded-full border border-green-500 bg-green-500/10 text-green-500" />
+                  ) : (
+                    <CopyIcon onClick={onClickCopy} className={"cursor-pointer"} />
+                  )}
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>{t("Copy classes to clipboard")}</p>
@@ -221,7 +252,7 @@ export function ManualClasses() {
               </Tooltip>
             )}
           </span>
-          {designTokensEnabled && (
+          {designTokensEnabled && from === "default" && (
             <Button variant="link" className="underline" onClick={() => setRightPanel("design-tokens")}>
               {t("Design Tokens")}
             </Button>

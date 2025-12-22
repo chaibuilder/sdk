@@ -31,7 +31,7 @@ interface SingleDesignTokenProps {
 const SingleDesignToken = ({ tokenId, token, isEditing, isDisabled, onEdit, onDelete }: SingleDesignTokenProps) => {
   return (
     <div
-      className={`group relative flex items-center justify-between rounded border px-2 py-1 hover:bg-muted/90 ${isEditing ? "bg-primary/10" : ""}`}>
+      className={`group relative flex items-center justify-between rounded border p-2 hover:bg-muted/90 ${isEditing ? "bg-primary/10" : ""}`}>
       <div className="min-w-0 flex-1">
         <div className="text-xs font-semibold">{token.name}</div>
         <div className="w-full max-w-52 truncate text-[10px] font-light">{token.value}</div>
