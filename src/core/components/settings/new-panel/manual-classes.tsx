@@ -27,10 +27,12 @@ export function ManualClasses({
   from = "default",
   classFromProps,
   onAddNew,
+  onRemove,
 }: {
   from?: "default" | "designToken";
   classFromProps?: string;
   onAddNew?: any;
+  onRemove?: any;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [editingClass, setEditingClass] = useState("");
@@ -192,7 +194,7 @@ export function ManualClasses({
         }
       },
       onChange: (_e: any, { newValue }: any) => setNewCls(newValue),
-      className: "w-full rounded-md text-xs px-2 hover:outline-0 bg-background border-border py-1",
+      className: `w-full rounded-md text-xs px-2 hover:outline-0 bg-background border-border ${from === "default" ? "py-1" : "py-1.5"}`,
     }),
     [newCls, t, inputRef, suggestions.length],
   );
@@ -270,7 +272,12 @@ export function ManualClasses({
             inputProps={inputProps}
             onSuggestionSelected={(_e, { suggestionValue }) => {
               const storageFormat = convertToStorageFormat(suggestionValue);
-              addClassesToBlocks(selectedIds, [storageFormat], true);
+              const fullClsNames = [storageFormat];
+              if (from === "designToken") {
+                if (isFunction(onAddNew)) onAddNew(fullClsNames);
+              } else {
+                addClassesToBlocks(selectedIds, fullClsNames, true);
+              }
               setNewCls("");
             }}
             containerProps={{
@@ -286,7 +293,7 @@ export function ManualClasses({
         </div>
         <Button
           variant="outline"
-          className="h-6 border-border"
+          className={`border-border ${from === "default" ? "h-6" : "mt-1 h-7"}`}
           onClick={addNewClasses}
           disabled={newCls.trim() === ""}
           size="sm">
@@ -321,7 +328,12 @@ export function ManualClasses({
               <button
                 onDoubleClick={() => {
                   setNewCls(getDisplayName(cls));
-                  removeClassesFromBlocks(selectedIds, [cls]);
+                  if (from === "default") {
+                    removeClassesFromBlocks(selectedIds, [cls]);
+                  } else {
+                    onRemove(cls);
+                    setNewCls(cls);
+                  }
                   setTimeout(() => {
                     if (inputRef.current) {
                       inputRef.current.focus();
@@ -331,7 +343,13 @@ export function ManualClasses({
                 className="flex h-max cursor-default items-center gap-x-1 truncate break-words rounded bg-gray-200 py-px pl-0.5 pr-1 text-[11px] text-gray-600 dark:bg-gray-800 dark:text-gray-300">
                 <div className="z-10 flex h-full w-max items-center justify-center">
                   <Cross2Icon
-                    onClick={() => removeClassesFromBlocks(selectedIds, [cls], true)}
+                    onClick={() => {
+                      if (from === "default") {
+                        removeClassesFromBlocks(selectedIds, [cls]);
+                      } else {
+                        onRemove(cls);
+                      }
+                    }}
                     className="hidden h-max w-3.5 cursor-pointer rounded bg-gray-100 p-0.5 text-red-500 hover:bg-gray-50 group-hover:block"
                   />
                   {cls.startsWith(DESIGN_TOKEN_PREFIX) ? (

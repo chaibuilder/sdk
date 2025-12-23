@@ -76,6 +76,13 @@ export const AddDesignTokenModal = ({
               const newCls = orderClassesByBreakpoint(removeDuplicateClasses(twMerge(classes, cls)));
               onClassesChange(newCls);
             }}
+            onRemove={(cls: string) => {
+              const updatedClasses = classes
+                .split(" ")
+                .filter((c) => c !== cls)
+                .join(" ");
+              onClassesChange(updatedClasses);
+            }}
           />
         </div>
         <SheetFooter className="mt-6">
