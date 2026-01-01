@@ -31,8 +31,8 @@ export function ManualClasses({
 }: {
   from?: "default" | "designToken";
   classFromProps?: string;
-  onAddNew?: any;
-  onRemove?: any;
+  onAddNew?: (classes: string[]) => void;
+  onRemove?: (className: string) => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [editingClass, setEditingClass] = useState("");
