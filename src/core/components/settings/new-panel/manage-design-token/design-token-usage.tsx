@@ -1,19 +1,19 @@
 import { useBlocksStore, useBuilderProp, useLanguages, useSavePage } from "@/core/hooks";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import { ChaiBlock } from "@/types/chai-block";
-import { Button } from "@/ui/shadcn/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/ui/popover";
-import { ArrowRightIcon, EyeOpenIcon, FileIcon, GlobeIcon } from "@radix-ui/react-icons";
+import { ArrowRightIcon, FileIcon, GlobeIcon } from "@radix-ui/react-icons";
 import { noop } from "lodash-es";
-import { useCallback, useMemo } from "react";
+import { ReactNode, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { TokenUsageSection, TokenUsageSectionItem } from "./token-usage-section";
+import { TokenUsageSection, TokenUsageSectionItem } from "../token-usage-section";
 
 const STYLES_PREFIX = "#styles:";
 
-export interface TokenUsagePopoverProps {
+export interface DesignTokenUsageProps {
   tokenId: string;
   tokenName: string;
+  children: ReactNode;
 }
 
 interface BlockUsageSummary {
@@ -52,7 +52,7 @@ const collectTokenUsageOnPage = (blocks: ChaiBlock[], tokenId: string): BlockUsa
     }));
 };
 
-export const TokenUsagePopover = ({ tokenId, tokenName }: TokenUsagePopoverProps) => {
+const DesignTokenUsage = ({ tokenId, tokenName, children }: DesignTokenUsageProps) => {
   const { t } = useTranslation();
   const [blocks] = useBlocksStore();
   const [selectedBlockIds, setSelectedBlockIds] = useSelectedBlockIds();
@@ -129,11 +129,7 @@ export const TokenUsagePopover = ({ tokenId, tokenName }: TokenUsagePopoverProps
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
-          <EyeOpenIcon className="h-3 w-3" />
-        </Button>
-      </PopoverTrigger>
+      <PopoverTrigger asChild>{children}</PopoverTrigger>
       <PopoverContent side="bottom" align="end" className="w-80 p-0">
         <div className="space-y-1 px-4 py-3">
           <p className="text-xs font-semibold">{tokenName}</p>
@@ -168,3 +164,5 @@ export const TokenUsagePopover = ({ tokenId, tokenName }: TokenUsagePopoverProps
     </Popover>
   );
 };
+
+export default DesignTokenUsage;

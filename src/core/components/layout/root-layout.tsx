@@ -32,8 +32,9 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { AiIcon } from "../ai/ai-icon";
 import { useIsDragAndDropEnabled } from "../canvas/dnd/drag-and-drop/hooks";
-import { ManageDesignTokens } from "../settings/new-panel/manage-design-tokens";
 import { DesignTokensIcon } from "../sidepanels/panels/design-tokens/DesignTokensIcon";
+
+const ManageDesignTokens = React.lazy(() => import("../settings/new-panel/manage-design-token/manage-design-tokens"));
 
 export const DEFAULT_PANEL_WIDTH = 280;
 
@@ -329,7 +330,9 @@ const RootLayout: ComponentType = () => {
                       {panel === "ai" ? (
                         <AskAI />
                       ) : panel === "design-tokens" ? (
-                        <ManageDesignTokens />
+                        <React.Suspense fallback={<div className="h-1/2 w-full animate-pulse"></div>}>
+                          <ManageDesignTokens />
+                        </React.Suspense>
                       ) : panel === "theme" ? (
                         <ThemeConfigPanel />
                       ) : (
