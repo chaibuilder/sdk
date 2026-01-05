@@ -5,6 +5,7 @@ import { darkModeAtom } from "@/core/hooks/use-dark-mode";
 import { canvasBreakpointAtom } from "@/core/hooks/use-screen-size-width";
 import { selectedBlockAtom, styleStateAtom } from "@/core/hooks/use-selected-blockIds";
 import { selectedStylingBlocksAtom } from "@/core/hooks/use-selected-styling-blocks";
+import { getQueries } from "@/core/utils/get-queries";
 import { atom, useAtomValue } from "jotai";
 import { filter, first, get as getProp, isNull, map, startsWith } from "lodash-es";
 
@@ -55,35 +56,6 @@ export const selectedBlockCurrentClassesAtom = atom((get) => {
   }
   return classes;
 });
-
-// TODO: move fromm here
-const getQueries = (mq: string) => {
-  let str: Array<string> = [];
-  switch (mq) {
-    case "xs":
-      str = ["xs"];
-      break;
-    case "sm":
-      str = ["xs", "sm"];
-      break;
-    case "md":
-      str = ["xs", "sm", "md"];
-      break;
-    case "lg":
-      str = ["xs", "sm", "md", "lg"];
-      break;
-    case "xl":
-      str = ["xs", "sm", "md", "lg", "xl"];
-      break;
-    case "2xl":
-      str = ["xs", "sm", "md", "lg", "xl", "2xl"];
-      break;
-    default:
-      str = ["xs"];
-      break;
-  }
-  return str;
-};
 
 export const useSelectedBlockCurrentClasses = (): Array<ClassDerivedObject> =>
   useAtomValue(selectedBlockCurrentClassesAtom) as Array<ClassDerivedObject>;
