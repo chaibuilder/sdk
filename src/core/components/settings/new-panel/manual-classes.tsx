@@ -12,19 +12,31 @@ import {
 } from "@/core/hooks";
 import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
 import { Button } from "@/ui/shadcn/components/ui/button";
+import { Label } from "@/ui/shadcn/components/ui/label";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
-import { CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
+import { CheckIcon, CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { useAtomValue } from "jotai";
-import { first, get, isEmpty, map } from "lodash-es";
+import { first, get, isEmpty, isFunction, map } from "lodash-es";
 import { useMemo, useRef, useState } from "react";
 import Autosuggest from "react-autosuggest";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { DesignTokensIcon } from "../../sidepanels/panels/design-tokens/DesignTokensIcon";
 
-export function ManualClasses() {
+export function ManualClasses({
+  from = "default",
+  classFromProps,
+  onAddNew,
+  onRemove,
+}: {
+  from?: "default" | "designToken";
+  classFromProps?: string;
+  onAddNew?: (classes: string[]) => void;
+  onRemove?: (className: string) => void;
+}) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [editingClass, setEditingClass] = useState("");
+  const [isCopied, setIsCopied] = useState(false);
   const [editingClassIndex, setEditingClassIndex] = useState(-1);
   const [, setRightPanel] = useRightPanel();
   const fuse = useFuseSearch();
@@ -38,7 +50,7 @@ export function ManualClasses() {
   const designTokens = useAtomValue(chaiDesignTokensAtom);
   const prop = first(styleBlock)?.prop as string;
   const { classes: classesString } = getSplitChaiClasses(get(block, prop, ""));
-  const classes = classesString.split(" ").filter((cls) => !isEmpty(cls));
+  const classes = (from === "default" ? classesString : (classFromProps || "")).split(" ").filter((cls) => !isEmpty(cls));
 
   // Sort classes to ensure design tokens ({DESIGN_TOKEN_PREFIX{id}) are always first
   const sortedClasses = useMemo(() => {
@@ -82,7 +94,11 @@ export function ManualClasses() {
       .split(" ")
       .map(convertToStorageFormat); // Convert design token names to DESIGN_TOKEN_PREFIX-{id} format
 
-    addClassesToBlocks(selectedIds, fullClsNames, true);
+    if (from === "designToken") {
+      if (isFunction(onAddNew)) onAddNew(fullClsNames);
+    } else {
+      addClassesToBlocks(selectedIds, fullClsNames, true);
+    }
     setNewCls("");
   };
 
@@ -178,7 +194,7 @@ export function ManualClasses() {
         }
       },
       onChange: (_e: any, { newValue }: any) => setNewCls(newValue),
-      className: "w-full rounded-md text-xs px-2 hover:outline-0 bg-background border-border py-1",
+      className: `w-full rounded-md text-xs px-2 hover:outline-0 bg-background border-border ${from === "default" ? "py-1" : "py-1.5"}`,
     }),
     [newCls, t, inputRef, suggestions.length],
   );
@@ -202,18 +218,35 @@ export function ManualClasses() {
     }
     navigator.clipboard.writeText(classes.join(" "));
     toast.success(t("Classes copied to clipboard"));
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
   };
 
   return (
-    <div className={`flex w-full flex-col gap-y-1.5 border-b border-border pb-4`}>
+    <div
+      className={`flex w-full flex-col gap-y-1.5 pb-4 ${from === "designToken" ? "border-none" : "border-b border-border"}`}>
       <div className="flex items-center justify-between gap-x-2">
         <div className="flex w-full items-center justify-between gap-x-2 text-muted-foreground">
           <span className="flex items-center gap-x-1">
-            <span>{designTokensEnabled ? t("Styles") : t("Classes")}</span>
+            <span>
+              {from === "designToken" ? (
+                <Label className="text-sm font-medium leading-tight text-gray-900 peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                  {t("Token Classes")}
+                </Label>
+              ) : designTokensEnabled ? (
+                t("Styles")
+              ) : (
+                t("Classes")
+              )}
+            </span>
             {enableCopyToClipboard && (
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <CopyIcon onClick={onClickCopy} className={"cursor-pointer"} />
+                  {isCopied ? (
+                    <CheckIcon className="rounded-full border border-green-500 bg-green-500/10 text-green-500" />
+                  ) : (
+                    <CopyIcon onClick={onClickCopy} className={"cursor-pointer"} />
+                  )}
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>{t("Copy classes to clipboard")}</p>
@@ -221,7 +254,7 @@ export function ManualClasses() {
               </Tooltip>
             )}
           </span>
-          {designTokensEnabled && (
+          {designTokensEnabled && from === "default" && (
             <Button variant="link" className="underline" onClick={() => setRightPanel("design-tokens")}>
               {t("Design Tokens")}
             </Button>
@@ -239,7 +272,12 @@ export function ManualClasses() {
             inputProps={inputProps}
             onSuggestionSelected={(_e, { suggestionValue }) => {
               const storageFormat = convertToStorageFormat(suggestionValue);
-              addClassesToBlocks(selectedIds, [storageFormat], true);
+              const fullClsNames = [storageFormat];
+              if (from === "designToken") {
+                if (isFunction(onAddNew)) onAddNew(fullClsNames);
+              } else {
+                addClassesToBlocks(selectedIds, fullClsNames, true);
+              }
               setNewCls("");
             }}
             containerProps={{
@@ -255,7 +293,7 @@ export function ManualClasses() {
         </div>
         <Button
           variant="outline"
-          className="h-6 border-border"
+          className={`border-border ${from === "default" ? "h-6" : "mt-1 h-7"}`}
           onClick={addNewClasses}
           disabled={newCls.trim() === ""}
           size="sm">
@@ -290,7 +328,12 @@ export function ManualClasses() {
               <button
                 onDoubleClick={() => {
                   setNewCls(getDisplayName(cls));
-                  removeClassesFromBlocks(selectedIds, [cls]);
+                  if (from === "default") {
+                    removeClassesFromBlocks(selectedIds, [cls]);
+                  } else {
+                    if (isFunction(onRemove)) onRemove(cls);
+                    setNewCls(cls);
+                  }
                   setTimeout(() => {
                     if (inputRef.current) {
                       inputRef.current.focus();
@@ -300,7 +343,13 @@ export function ManualClasses() {
                 className="flex h-max cursor-default items-center gap-x-1 truncate break-words rounded bg-gray-200 py-px pl-0.5 pr-1 text-[11px] text-gray-600 dark:bg-gray-800 dark:text-gray-300">
                 <div className="z-10 flex h-full w-max items-center justify-center">
                   <Cross2Icon
-                    onClick={() => removeClassesFromBlocks(selectedIds, [cls], true)}
+                    onClick={() => {
+                      if (from === "default") {
+                        removeClassesFromBlocks(selectedIds, [cls]);
+                      } else {
+                        if (isFunction(onRemove)) onRemove(cls);
+                      }
+                    }}
                     className="hidden h-max w-3.5 cursor-pointer rounded bg-gray-100 p-0.5 text-red-500 hover:bg-gray-50 group-hover:block"
                   />
                   {cls.startsWith(DESIGN_TOKEN_PREFIX) ? (
