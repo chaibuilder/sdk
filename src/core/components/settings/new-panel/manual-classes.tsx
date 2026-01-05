@@ -12,8 +12,8 @@ import {
 } from "@/core/hooks";
 import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
 import { Button } from "@/ui/shadcn/components/ui/button";
+import { Label } from "@/ui/shadcn/components/ui/label";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
-import { Label } from "@radix-ui/react-dropdown-menu";
 import { CheckIcon, CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { useAtomValue } from "jotai";
 import { first, get, isEmpty, isFunction, map } from "lodash-es";
@@ -50,7 +50,8 @@ export function ManualClasses({
   const designTokens = useAtomValue(chaiDesignTokensAtom);
   const prop = first(styleBlock)?.prop as string;
   const { classes: classesString } = getSplitChaiClasses(get(block, prop, ""));
-  const classes = (from === "default" ? classesString : classFromProps).split(" ").filter((cls) => !isEmpty(cls));
+  const classesSource = from === "default" ? classesString : (classFromProps ?? "");
+  const classes = classesSource.split(" ").filter((cls) => !isEmpty(cls));
 
   // Sort classes to ensure design tokens ({DESIGN_TOKEN_PREFIX{id}) are always first
   const sortedClasses = useMemo(() => {
@@ -331,7 +332,7 @@ export function ManualClasses({
                   if (from === "default") {
                     removeClassesFromBlocks(selectedIds, [cls]);
                   } else {
-                    onRemove(cls);
+                    if (isFunction(onRemove)) onRemove(cls);
                     setNewCls(cls);
                   }
                   setTimeout(() => {
@@ -346,7 +347,7 @@ export function ManualClasses({
                     onClick={() => {
                       if (from === "default") {
                         removeClassesFromBlocks(selectedIds, [cls]);
-                      } else {
+                      } else if (isFunction(onRemove)) {
                         onRemove(cls);
                       }
                     }}
