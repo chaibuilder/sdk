@@ -23,7 +23,7 @@ export { NestedPathSelector };
 
 /** Hooks */
 export * from "@/core/main";
-export { useChaiCurrentPage as useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
+export { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
 export { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
 export { useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
 export { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
