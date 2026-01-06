@@ -2,10 +2,11 @@ import react from "@vitejs/plugin-react-swc";
 import path, { resolve } from "path";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
+import express from "./src/express/express-plugin";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), dts({ rollupTypes: true })],
+  plugins: [react(), dts({ rollupTypes: true }), express("./src/server/index.ts")],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
