@@ -315,9 +315,6 @@ importers:
       jsdoc:
         specifier: ^4.0.4
         version: 4.0.4
-      msw:
-        specifier: ^2.7.0
-        version: 2.7.0(@types/node@20.17.11)(typescript@5.7.3)
       postcss:
         specifier: ^8.5.1
         version: 8.5.1
@@ -6063,15 +6060,18 @@ snapshots:
   '@bundled-es-modules/cookie@2.0.1':
     dependencies:
       cookie: 0.7.2
+    optional: true
 
   '@bundled-es-modules/statuses@1.0.1':
     dependencies:
       statuses: 2.0.1
+    optional: true
 
   '@bundled-es-modules/tough-cookie@0.1.6':
     dependencies:
       '@types/tough-cookie': 4.0.5
       tough-cookie: 4.1.4
+    optional: true
 
   '@chaibuilder/runtime@2.3.0(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
     dependencies:
@@ -6431,6 +6431,7 @@ snapshots:
       '@inquirer/core': 10.1.2(@types/node@20.17.11)
       '@inquirer/type': 3.0.2(@types/node@20.17.11)
       '@types/node': 20.17.11
+    optional: true
 
   '@inquirer/core@10.1.2(@types/node@20.17.11)':
     dependencies:
@@ -6445,12 +6446,15 @@ snapshots:
       yoctocolors-cjs: 2.1.2
     transitivePeerDependencies:
       - '@types/node'
+    optional: true
 
-  '@inquirer/figures@1.0.9': {}
+  '@inquirer/figures@1.0.9':
+    optional: true
 
   '@inquirer/type@3.0.2(@types/node@20.17.11)':
     dependencies:
       '@types/node': 20.17.11
+    optional: true
 
   '@isaacs/cliui@8.0.2':
     dependencies:
@@ -6748,6 +6752,7 @@ snapshots:
       is-node-process: 1.2.0
       outvariant: 1.4.3
       strict-event-emitter: 0.5.1
+    optional: true
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
@@ -6761,14 +6766,17 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.18.0
 
-  '@open-draft/deferred-promise@2.2.0': {}
+  '@open-draft/deferred-promise@2.2.0':
+    optional: true
 
   '@open-draft/logger@0.3.0':
     dependencies:
       is-node-process: 1.2.0
       outvariant: 1.4.3
+    optional: true
 
-  '@open-draft/until@2.1.0': {}
+  '@open-draft/until@2.1.0':
+    optional: true
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
@@ -7962,7 +7970,8 @@ snapshots:
 
   '@types/stack-utils@2.0.3': {}
 
-  '@types/statuses@2.0.5': {}
+  '@types/statuses@2.0.5':
+    optional: true
 
   '@types/tough-cookie@4.0.5': {}
 
@@ -8554,7 +8563,8 @@ snapshots:
 
   cli-spinners@2.9.2: {}
 
-  cli-width@4.1.0: {}
+  cli-width@4.1.0:
+    optional: true
 
   cliui@8.0.1:
     dependencies:
@@ -8644,7 +8654,8 @@ snapshots:
 
   convert-source-map@2.0.0: {}
 
-  cookie@0.7.2: {}
+  cookie@0.7.2:
+    optional: true
 
   cookie@1.0.2: {}
 
@@ -9189,7 +9200,8 @@ snapshots:
 
   graphemer@1.4.0: {}
 
-  graphql@16.10.0: {}
+  graphql@16.10.0:
+    optional: true
 
   has-flag@4.0.0: {}
 
@@ -9199,7 +9211,8 @@ snapshots:
 
   he@1.2.0: {}
 
-  headers-polyfill@4.0.3: {}
+  headers-polyfill@4.0.3:
+    optional: true
 
   himalaya@1.1.1: {}
 
@@ -9313,7 +9326,8 @@ snapshots:
 
   is-interactive@2.0.0: {}
 
-  is-node-process@1.2.0: {}
+  is-node-process@1.2.0:
+    optional: true
 
   is-number@7.0.0: {}
 
@@ -10097,10 +10111,12 @@ snapshots:
       typescript: 5.7.3
     transitivePeerDependencies:
       - '@types/node'
+    optional: true
 
   muggle-string@0.4.1: {}
 
-  mute-stream@2.0.0: {}
+  mute-stream@2.0.0:
+    optional: true
 
   mz@2.7.0:
     dependencies:
@@ -10185,7 +10201,8 @@ snapshots:
 
   orderedmap@2.1.1: {}
 
-  outvariant@1.4.3: {}
+  outvariant@1.4.3:
+    optional: true
 
   p-limit@2.3.0:
     dependencies:
@@ -10254,7 +10271,8 @@ snapshots:
       lru-cache: 10.4.3
       minipass: 7.1.2
 
-  path-to-regexp@6.3.0: {}
+  path-to-regexp@6.3.0:
+    optional: true
 
   path-type@4.0.0: {}
 
@@ -10823,7 +10841,8 @@ snapshots:
 
   state-local@1.0.7: {}
 
-  statuses@2.0.1: {}
+  statuses@2.0.1:
+    optional: true
 
   std-env@3.8.0: {}
 
@@ -10831,7 +10850,8 @@ snapshots:
     dependencies:
       bl: 5.1.0
 
-  strict-event-emitter@0.5.1: {}
+  strict-event-emitter@0.5.1:
+    optional: true
 
   string-argv@0.3.2: {}
 
@@ -11075,7 +11095,8 @@ snapshots:
 
   type-fest@0.21.3: {}
 
-  type-fest@4.31.0: {}
+  type-fest@4.31.0:
+    optional: true
 
   typescript@5.7.2: {}
 
@@ -11300,6 +11321,7 @@ snapshots:
       ansi-styles: 4.3.0
       string-width: 4.2.3
       strip-ansi: 6.0.1
+    optional: true
 
   wrap-ansi@7.0.0:
     dependencies:
@@ -11356,6 +11378,7 @@ snapshots:
 
   yocto-queue@1.1.1: {}
 
-  yoctocolors-cjs@2.1.2: {}
+  yoctocolors-cjs@2.1.2:
+    optional: true
 
   zod@3.24.1: {}
