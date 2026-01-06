@@ -30,6 +30,7 @@ You must follow the **Conventional Commits** specification when generating commi
 
 1. **Subject**: Use the imperative mood ("add" not "added"). No period at the end. Lowercase.
 2. **Body**: Motivation for the change and contrast with previous behavior.
+   - **IMPORTANT**: Wrap all lines at 72 characters. Never exceed 100 characters per line.
 3. **Footer**: References to issues (e.g., "Fixes #123").
 4. **Scope**: Optional but encouraged (e.g., `feat(button): add variant prop`).
 

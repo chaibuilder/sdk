@@ -1,6 +1,6 @@
 {
   "name": "@chaibuilder/sdk",
-  "description": "AI Enabled Open source visual builder",
+  "description": "AI Enabled Open source website builder for ReactJS",
   "private": false,
   "author": "Suraj Air",
   "license": "BSD-3-Clause",
