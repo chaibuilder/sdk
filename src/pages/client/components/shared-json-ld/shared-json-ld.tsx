@@ -28,7 +28,7 @@ import {
 import { filter, find } from "lodash-es";
 import { Edit, Eye, Loader, Plus, Trash } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { useCurrentPage } from "../../../hooks/pages/use-current-page";
+import { useChaiCurrentPage } from "../../../hooks/pages/use-current-page";
 import { useLanguagePages } from "../../../hooks/pages/use-language-pages";
 import { useDeleteGlobalSchema, useTogglePageGlobalSchema } from "../../../hooks/project/mutations";
 import { AddSharedJsonLD } from "./add-shared-json-ld";
@@ -44,7 +44,7 @@ export default function SharedJsonLD() {
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const { data: globalJsonLDItems, isLoading } = useGlobalJsonLDItems();
   const { selectedLang } = useLanguages();
-  const { data: currentPage } = useCurrentPage();
+  const { data: currentPage } = useChaiCurrentPage();
   const { data: languagePages } = useLanguagePages();
   const { mutateAsync: deleteGlobalSchema } = useDeleteGlobalSchema();
   const { mutateAsync: togglePageGlobalSchema } = useTogglePageGlobalSchema();

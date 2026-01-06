@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { registerDemoFeatureFlags } from "./routes/demo/demo-flags";
 import { MicrosoftClarity } from "./routes/demo/microsoft-clarity";
+import { WebsiteBuilder } from "./routes/website-builder";
 
 async function enableMocking() {
   if (import.meta.env.MODE !== "development") {
@@ -11,9 +12,9 @@ async function enableMocking() {
   return true;
 }
 
-const ChaiBuilderDefault = lazy(() => import("./routes/Editor"));
-const Preview = lazy(() => import("./routes/Preview"));
-const ChaiBuilderCustom = lazy(() => import("./routes/EditorCustom"));
+const ChaiBuilderDefault = lazy(() => import("./routes/builder"));
+const Preview = lazy(() => import("./routes/page-preview"));
+const ChaiBuilderCustom = lazy(() => import("./routes/custom-layout"));
 
 const router = createBrowserRouter([
   {
@@ -30,7 +31,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/website",
-    element: <ChaiBuilderDefault />,
+    element: <WebsiteBuilder />,
   },
 ]);
 

@@ -1,6 +1,6 @@
 import { useSavePage } from "@/core/hooks/use-save-page";
 import { useTranslation } from "@/core/main";
-import { useCurrentPage } from "@/pages/hooks/pages/use-current-page";
+import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
 import { useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { navigateToPage } from "@/pages/utils/navigation";
@@ -26,7 +26,7 @@ const PagesManagerTrigger = ({ children }: { children?: React.ReactNode }) => {
   const { t } = useTranslation();
   const [searchParams, setQueryParams] = useSearchParams();
   const page = searchParams.get("page");
-  const { data: currentPage, isFetching } = useCurrentPage();
+  const { data: currentPage, isFetching } = useChaiCurrentPage();
   const { data: allPages, isFetching: isPagesLoading } = useWebsitePages();
   const [pageManager, setPageManager] = useState(false);
   const [isInitialLoad, setIsInitialLoad] = useState(true);

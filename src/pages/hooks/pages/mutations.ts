@@ -1,7 +1,7 @@
 import { useSavePage } from "@/core/hooks/use-save-page";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { ERRORS } from "@/pages/constants/ERRORS";
-import { useActivePage, useCurrentPage } from "@/pages/hooks/pages/use-current-page";
+import { useActivePage, useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
 import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useFetch } from "@/pages/hooks/utils/use-fetch";
@@ -200,7 +200,7 @@ export const usePublishPages = () => {
   const apiUrl = useApiUrl();
   const fetchAPI = useFetch();
   const queryClient = useQueryClient();
-  const { data: currentPage } = useCurrentPage();
+  const { data: currentPage } = useChaiCurrentPage();
   const { savePageAsync } = useSavePage();
 
   return useMutation({

@@ -7,7 +7,7 @@ import {
 } from "@/core/main";
 import { Topbar } from "@/pages/extensions/topbar";
 import { useAskAi } from "@/pages/hooks/ai/use-ask-ai";
-import { useCurrentPage } from "@/pages/hooks/pages/use-current-page";
+import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
 import { useExtractPageBlocks } from "@/pages/hooks/pages/use-extract-page-blocks";
 import { useBuilderPageData, usePageDraftBlocks } from "@/pages/hooks/pages/use-page-draft-blocks";
 import { useUpdateWebsiteSettings } from "@/pages/hooks/project/mutations";
@@ -106,7 +106,7 @@ const DefaultChaiBuilder = (props: ChaiBuilderPagesProps) => {
   // * PAGE DATA
   const [searchParams] = useSearchParams();
   const page = searchParams.get("page");
-  const { data: currentPage } = useCurrentPage();
+  const { data: currentPage } = useChaiCurrentPage();
   const { data: draftBlocks, isFetching: isDraftBlocksFetching } = usePageDraftBlocks();
   const { blocks } = useExtractPageBlocks(draftBlocks);
   const { data: builderPageData, isFetching: isBuilderPageDataFetching } = useBuilderPageData();

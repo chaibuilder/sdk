@@ -5,7 +5,7 @@ import PermissionChecker from "@/pages/client/components/permission-checker";
 import PublishPages from "@/pages/client/components/publish-pages/publish-pages";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
 import { usePublishPages } from "@/pages/hooks/pages/mutations";
-import { useActivePage, useCurrentPage } from "@/pages/hooks/pages/use-current-page";
+import { useActivePage, useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
 import { useIsLanguagePageCreated } from "@/pages/hooks/pages/use-is-languagep-page-created";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
 import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
@@ -30,7 +30,7 @@ const PreviewButton = () => {
   const getPreviewUrl = usePagesProp("getPreviewUrl", async (_slug: string) => _slug);
 
   const [previewUrl, setPreviewUrl] = useState("");
-  const { data: currentPage } = useCurrentPage();
+  const { data: currentPage } = useChaiCurrentPage();
   const { data: languagePages } = useLanguagePages();
   const { data: pageTypes } = usePageTypes();
   const slug = useMemo(
@@ -159,7 +159,7 @@ const PublishButton = () => {
   const { savePageAsync } = useSavePage();
   const [showTranslationWarning, setShowTranslationWarning] = useState(false);
 
-  const { data: currentPage } = useCurrentPage();
+  const { data: currentPage } = useChaiCurrentPage();
   const { mutate: publishPage, isPending } = usePublishPages();
   const { needTranslations } = useSavePage();
   const needTranslation = needTranslations();

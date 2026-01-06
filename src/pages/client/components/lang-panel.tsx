@@ -3,7 +3,7 @@ import { ChangeSlug } from "@/pages/client/components/change-slug";
 import PermissionChecker from "@/pages/client/components/permission-checker";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
-import { useCurrentPage } from "@/pages/hooks/pages/use-current-page";
+import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
@@ -23,7 +23,7 @@ const LangPanel = () => {
   const setAddNewLang = useSetAtom(addNewLangAtom);
   const { selectedLang, fallbackLang, setSelectedLang } = useLanguages();
   const { data: languagePages, isFetching } = useLanguagePages();
-  const { data: currentPage } = useCurrentPage();
+  const { data: currentPage } = useChaiCurrentPage();
   const { data: pageTypes } = usePageTypes();
 
   const dynamicSlug = useMemo(() => {

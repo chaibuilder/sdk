@@ -13,8 +13,9 @@ const pageEditInfoAtom = atom<{
 export const usePageEditInfo = () => {
   return useAtom(pageEditInfoAtom);
 };
+``;
 
-export const useCurrentPage = () => {
+export const useChaiCurrentPage = () => {
   const [searchParams] = useSearchParams();
   const page = searchParams.get("page");
   const { data: pages, isFetching } = useLanguagePages();

@@ -1,5 +1,5 @@
 import { LANGUAGES } from "@/core/constants/LANGUAGES";
-import { useLanguages } from "@/core/hooks";
+import { useLanguages } from "@/core/hooks/use-languages";
 import { mergeClasses } from "@/core/main";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import {
@@ -8,8 +8,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/ui/shadcn/components/ui/dropdown-menu";
-import { get, isEmpty, map } from "lodash-es";
 import { ChatBubbleIcon, ChevronDownIcon, StarIcon } from "@radix-ui/react-icons";
+import { get, isEmpty, map } from "lodash-es";
 
 export const LanguageButton = () => {
   const { fallbackLang, selectedLang, setSelectedLang } = useLanguages();

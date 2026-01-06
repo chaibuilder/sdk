@@ -5,7 +5,7 @@ import { atom, PrimitiveAtom, useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useApiUrl } from "../project/use-builder-prop";
 import { useFetch } from "../utils/use-fetch";
-import { useCurrentPage } from "./use-current-page";
+import { useChaiCurrentPage } from "./use-current-page";
 
 type DynamicPage = { id: string; name: string; slug: string; lang: string; primaryPage?: string };
 
@@ -31,7 +31,7 @@ function useDebouncedValue<T>(value: T, delay: number) {
 
 const useGetDynamicPages = ({ query, uuid }: { query: string; uuid?: string }) => {
   const { selectedLang, fallbackLang } = useLanguages();
-  const { data: currentPage } = useCurrentPage();
+  const { data: currentPage } = useChaiCurrentPage();
   const pageType = currentPage?.pageType;
   const apiUrl = useApiUrl();
   const fetchAPI = useFetch();

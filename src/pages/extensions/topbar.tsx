@@ -1,7 +1,7 @@
 import { mergeClasses, useChaiFeatureFlag } from "@/core/main";
 import TopbarLeft, { LanguageSwitcher } from "@/pages/client/components/topbar-left";
 import TopbarRight from "@/pages/client/components/topbar-right";
-import { useCurrentPage, useGetPageFullSlug } from "@/pages/hooks/pages/use-current-page";
+import { useChaiCurrentPage, useGetPageFullSlug } from "@/pages/hooks/pages/use-current-page";
 import { get } from "lodash-es";
 import { ExternalLink } from "lucide-react";
 import { lazy, Suspense } from "react";
@@ -28,7 +28,7 @@ const DynamicPageSelectorSuspense = () => {
 
 const AddressBar = () => {
   const { data: activePage, isFetching: isFetchingActivePage } = useActivePage();
-  const { data: page, isFetching: isFetchingCurrentPage } = useCurrentPage();
+  const { data: page, isFetching: isFetchingCurrentPage } = useChaiCurrentPage();
   const dynamic = get(page, "dynamic", false);
   const dynamicPageSlug = useDynamicPageSlug();
   const isDynamicPageSelectorEnabled = useChaiFeatureFlag("dynamic-page-selector");

@@ -4,7 +4,7 @@ import { Info, Loader } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ACTIONS } from "../../../constants/ACTIONS";
-import { useCurrentPage } from "../../../hooks/pages/use-current-page";
+import { useChaiCurrentPage } from "../../../hooks/pages/use-current-page";
 import { useAddGlobalSchema, useTogglePageGlobalSchema } from "../../../hooks/project/mutations";
 import { parseJSONWithPlaceholders } from "../../../utils/json-utils";
 import { SmartJsonInput } from "../smart-json-input";
@@ -41,7 +41,7 @@ const AddSharedJsonLDDialogContent = ({
     enabledByDefaultForNewPages: false,
   });
   const [addToAllExistingPages, setAddToAllExistingPages] = useState(false);
-  const { data: currentPage } = useCurrentPage();
+  const { data: currentPage } = useChaiCurrentPage();
   const { mutateAsync: addGlobalSchema, isPending } = useAddGlobalSchema();
   const { mutateAsync: togglePageGlobalSchema } = useTogglePageGlobalSchema();
   const queryClient = useQueryClient();

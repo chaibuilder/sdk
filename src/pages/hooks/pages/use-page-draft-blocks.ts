@@ -1,7 +1,12 @@
 import { useIsPageLoaded } from "@/core/main";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { useAiContext } from "@/pages/hooks/ai/use-ai-context";
-import { useActivePage, useCurrentPage, usePageEditInfo, usePageMetaData } from "@/pages/hooks/pages/use-current-page";
+import {
+  useActivePage,
+  useChaiCurrentPage,
+  usePageEditInfo,
+  usePageMetaData,
+} from "@/pages/hooks/pages/use-current-page";
 import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
 import { useFetch } from "@/pages/hooks/utils/use-fetch";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
@@ -43,7 +48,7 @@ export const usePageDraftBlocks = () => {
 };
 
 export const useBuilderPageData = () => {
-  const { data: currentPage } = useCurrentPage();
+  const { data: currentPage } = useChaiCurrentPage();
   const { data: activePage } = useActivePage();
   const apiUrl = useApiUrl();
   const fetchAPI = useFetch();

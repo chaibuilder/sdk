@@ -1,6 +1,6 @@
 import { mergeClasses, useLanguages, useTranslation } from "@/core/main";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
-import { useCurrentPage } from "@/pages/hooks/pages/use-current-page";
+import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
 import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
 import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
@@ -58,7 +58,7 @@ export const LanguageSwitcher = ({
 
   const setAddNewLang = useSetAtom(addNewLangAtom);
 
-  const { data: currentPage } = useCurrentPage();
+  const { data: currentPage } = useChaiCurrentPage();
   const { data: websiteSettings } = useWebsiteSetting();
   const { data: languagePages } = useLanguagePages();
 

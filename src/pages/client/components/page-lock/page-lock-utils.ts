@@ -1,4 +1,4 @@
-import { useCurrentPage } from "@/pages/hooks/pages/use-current-page";
+import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
 import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
 import { useChaiAuth } from "@/pages/hooks/use-chai-auth";
 import { RealtimeChannel } from "@supabase/supabase-js";
@@ -69,6 +69,6 @@ export const useChannelId = () => {
 };
 
 export const usePageId = () => {
-  const { data: currentPage } = useCurrentPage();
+  const { data: currentPage } = useChaiCurrentPage();
   return currentPage?.id;
 };
