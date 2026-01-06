@@ -2,6 +2,7 @@ import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesPro
 import { TextIcon } from "@radix-ui/react-icons";
 import { isNull } from "lodash-es";
 import * as React from "react";
+import { addForcedClasses } from "./helper";
 
 export type ParagraphProps = {
   styles: ChaiStyles;
@@ -13,8 +14,10 @@ const ParagraphBlock = (props: ChaiBlockComponentProps<ParagraphProps>) => {
 
   if (!isNull(props.children)) return React.createElement("p", { ...styles, ...blockProps }, props.children);
 
-  return React.createElement("p", {
-    ...styles,
+  const forcedStyles = addForcedClasses(styles, "rte");
+
+  return React.createElement("div", {
+    ...forcedStyles,
     ...blockProps,
     dangerouslySetInnerHTML: { __html: content },
   });
@@ -34,7 +37,7 @@ const Config = {
         type: "string",
         title: "Content",
         default: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.`,
-        ui: { "ui:widget": "textarea", "ui:autosize": true, "ui:rows": 5 },
+        ui: { "ui:widget": "richtext", "ui:autosize": true, "ui:rows": 5 },
       },
     },
   }),

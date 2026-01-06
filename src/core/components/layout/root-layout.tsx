@@ -1,26 +1,23 @@
-import { default as AIChatPanel } from "@/core/components/ai/ai-chat-panel";
 import { AskAI } from "@/core/components/ask-ai-panel";
 import CanvasArea from "@/core/components/canvas/canvas-area";
 import { CanvasTopBar } from "@/core/components/canvas/topbar/canvas-top-bar";
-import { Outline } from "@/core/components/index";
+import { AddBlocksPanel, Outline } from "@/core/components/index";
 import { AddBlocksDialog } from "@/core/components/layout/add-blocks-dialog";
 import { NoopComponent } from "@/core/components/noop-component";
 import SettingsPanel from "@/core/components/settings/settings-panel";
 import ThemeConfigPanel from "@/core/components/sidepanels/panels/theme-configuration/ThemeConfigPanel";
-import { useChaiSidebarPanels } from "@/core/extensions/sidebar-panels";
+import { registerChaiSidebarPanel, useChaiSidebarPanels } from "@/core/extensions/sidebar-panels";
 import { useTopBarComponent } from "@/core/extensions/top-bar";
 import { useBuilderProp, useSidebarActivePanel } from "@/core/hooks";
-import { useRightPanel } from "@/core/hooks/use-theme";
+import { useActiveSettingsTab, useRightPanel } from "@/core/hooks/use-theme";
 import { isDevelopment } from "@/core/import-html/general";
-import { useChaiFeatureFlag } from "@/core/main";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/ui/shadcn/components/ui/sheet";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
-import { Cross1Icon, LightningBoltIcon, MagicWandIcon, MixerHorizontalIcon, StackIcon } from "@radix-ui/react-icons";
-import { useFeature } from "flagged";
+import { Cross1Icon, LightningBoltIcon, MixerHorizontalIcon, PlusCircledIcon, StackIcon } from "@radix-ui/react-icons";
 import { motion } from "framer-motion";
-import { compact, find, first, get, reverse } from "lodash-es";
+import { find, first, get, reverse } from "lodash-es";
 import React, {
   ComponentType,
   createElement,
@@ -33,8 +30,13 @@ import React, {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
+import { AiIcon } from "../ai/ai-icon";
+import { useIsDragAndDropEnabled } from "../canvas/dnd/drag-and-drop/hooks";
+import { DesignTokensIcon } from "../sidepanels/panels/design-tokens/DesignTokensIcon";
 
-const DEFAULT_PANEL_WIDTH = 280;
+const ManageDesignTokens = React.lazy(() => import("../settings/new-panel/manage-design-token/manage-design-tokens"));
+
+export const DEFAULT_PANEL_WIDTH = 280;
 
 const OutlineButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
   return (
@@ -44,7 +46,18 @@ const OutlineButton = ({ isActive, show }: { isActive: boolean; show: () => void
   );
 };
 
-const AiButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
+const AddBlocksButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
+  const isDragAndDropEnabled = useIsDragAndDropEnabled();
+  return (
+    isDragAndDropEnabled && (
+      <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
+        <PlusCircledIcon className="h-5 w-5" />
+      </Button>
+    )
+  );
+};
+
+export const AiButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
   return (
     <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
       <LightningBoltIcon className="rtl:ml-2" />
@@ -54,61 +67,44 @@ const AiButton = ({ isActive, show }: { isActive: boolean; show: () => void; pan
 const AskAiButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
   return (
     <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
-      <MagicWandIcon className="rtl:ml-2" />
+      <AiIcon />
     </Button>
   );
 };
-function useSidebarDefaultPanels() {
-  const askAiCallBack = useBuilderProp("askAiCallBack", null);
-  const aiChat = useFeature("aiChat");
-  const aiChatLeft = useChaiFeatureFlag("enable-ai-chat-left");
-  return useMemo(() => {
-    const items = [];
+registerChaiSidebarPanel("add-block", {
+  button: AddBlocksButton,
+  label: "Add Blocks",
+  position: "top",
+  isInternal: true,
+  width: DEFAULT_PANEL_WIDTH,
+  panel: () => <AddBlocksPanel showHeading={false} fromSidebar={true} parentId={undefined} position={-1} />,
+});
 
-    items.push({
-      id: "outline",
-      label: "Outline",
-      isInternal: true,
-      width: DEFAULT_PANEL_WIDTH,
-      button: OutlineButton,
-      panel: () => (
-        <div className="-mt-8">
-          <Outline />
-        </div>
-      ),
-    });
+registerChaiSidebarPanel("chai-chat-panel", {
+  button: AskAiButton,
+  label: "Ask AI",
+  position: "top",
+  isInternal: true,
+  width: DEFAULT_PANEL_WIDTH,
+  panel: () => (
+    <div className="">
+      <AskAI />
+    </div>
+  ),
+});
 
-    if (aiChatLeft) {
-      items.unshift({
-        id: "ask-ai",
-        button: AskAiButton,
-        label: "Ask AI",
-        isInternal: true,
-        width: DEFAULT_PANEL_WIDTH,
-        panel: () => (
-          <div className="">
-            <AskAI />
-          </div>
-        ),
-      });
-    }
-    if (askAiCallBack && aiChat) {
-      items.unshift({
-        id: "ai",
-        button: AiButton,
-        label: "AI Assistant",
-        isInternal: true,
-        width: 450,
-        panel: () => (
-          <div className="-mt-8 h-full max-h-full">
-            <AIChatPanel />
-          </div>
-        ),
-      });
-    }
-    return compact(items);
-  }, [askAiCallBack, aiChat, aiChatLeft]);
-}
+registerChaiSidebarPanel("outline", {
+  button: OutlineButton,
+  label: "Outline",
+  position: "top",
+  isInternal: true,
+  width: DEFAULT_PANEL_WIDTH,
+  panel: () => (
+    <div className="-mt-8">
+      <Outline />
+    </div>
+  ),
+});
 
 /**
  * RootLayout is a React component that renders the main layout of the application.
@@ -120,8 +116,7 @@ const RootLayout: ComponentType = () => {
   const [lastStandardPanelWidth, setLastStandardPanelWidth] = useState(DEFAULT_PANEL_WIDTH);
 
   const [panel, setRightPanel] = useRightPanel();
-
-  const defaultPanels = useSidebarDefaultPanels();
+  const [, setActiveSettingsTab] = useActiveSettingsTab();
   const topPanels = useChaiSidebarPanels("top");
   const bottomPanels = useChaiSidebarPanels("bottom");
   const reversedBottomPanels = reverse([...(bottomPanels ?? [])]);
@@ -134,6 +129,11 @@ const RootLayout: ComponentType = () => {
     if (!isDevelopment()) e.preventDefault();
   }, []);
 
+  const totalTopPanels = useMemo(() => {
+    const totalTopPanels = [topPanels].flat();
+    return totalTopPanels;
+  }, [topPanels]);
+
   const handleMenuItemClick = useCallback(
     (id: string) => {
       console.log("handleMenuItemClick", id, activePanel);
@@ -144,10 +144,7 @@ const RootLayout: ComponentType = () => {
   );
 
   const { t } = useTranslation();
-  const allPanels = useMemo(
-    () => [...defaultPanels, ...topPanels, ...bottomPanels],
-    [defaultPanels, topPanels, bottomPanels],
-  );
+  const allPanels = useMemo(() => [...topPanels, ...bottomPanels], [topPanels, bottomPanels]);
   const htmlDir = useBuilderProp("htmlDir", "ltr");
 
   // Update active panel item and get its width
@@ -212,7 +209,7 @@ const RootLayout: ComponentType = () => {
           <main className="relative flex h-[calc(100vh-56px)] max-w-full flex-1 flex-row">
             <div id="sidebar" className="flex w-12 flex-col items-center justify-between border-r border-border py-2">
               <div className="flex flex-col gap-y-1">
-                {[defaultPanels, topPanels].flat().map((item, index) => (
+                {totalTopPanels.map((item, index) => (
                   <Tooltip key={"button-top-" + index}>
                     <TooltipTrigger asChild>
                       {createElement(get(item, "button", NoopComponent), {
@@ -293,6 +290,23 @@ const RootLayout: ComponentType = () => {
                               <LightningBoltIcon className="rtl:ml-2" /> {t("AI Assistant")}
                             </div>
                           </>
+                        ) : panel === "design-tokens" ? (
+                          <div className="mb-1 flex w-full items-center justify-between gap-2">
+                            <span className="flex items-center gap-2">
+                              <DesignTokensIcon className="h-4 w-4 text-gray-600" />
+                              {t("Design Tokens")}
+                            </span>
+                            <Button
+                              onClick={() => {
+                                setActiveSettingsTab("styles");
+                                setRightPanel("block");
+                              }}
+                              variant="ghost"
+                              size="icon"
+                              className="text-xs">
+                              <Cross1Icon className="h-4 w-4 rtl:ml-2" />
+                            </Button>
+                          </div>
                         ) : panel === "theme" ? (
                           <div className="flex w-full items-center justify-between gap-2">
                             <span className="flex items-center gap-2">
@@ -313,7 +327,17 @@ const RootLayout: ComponentType = () => {
                   </h2>
                   <div className="flex h-full max-h-full w-full">
                     <Suspense fallback={<div>Loading...</div>}>
-                      {panel === "ai" ? <AskAI /> : panel === "theme" ? <ThemeConfigPanel /> : <SettingsPanel />}
+                      {panel === "ai" ? (
+                        <AskAI />
+                      ) : panel === "design-tokens" ? (
+                        <React.Suspense fallback={<div className="h-1/2 w-full animate-pulse"></div>}>
+                          <ManageDesignTokens />
+                        </React.Suspense>
+                      ) : panel === "theme" ? (
+                        <ThemeConfigPanel />
+                      ) : (
+                        <SettingsPanel />
+                      )}
                     </Suspense>
                   </div>
                 </div>
@@ -339,7 +363,7 @@ const RootLayout: ComponentType = () => {
                 <Suspense fallback={<div>Loading...</div>}>
                   {React.createElement(get(activePanelItem, "panel", NoopComponent), {
                     close: closeNonStandardPanel,
-                  })}
+                  } as any)}
                 </Suspense>
               </div>
             </SheetContent>
@@ -359,7 +383,7 @@ const RootLayout: ComponentType = () => {
                 <Suspense fallback={<div>Loading...</div>}>
                   {React.createElement(get(activePanelItem, "panel", NoopComponent), {
                     close: closeNonStandardPanel,
-                  })}
+                  } as any)}
                 </Suspense>
               </div>
             </DialogContent>
@@ -393,7 +417,7 @@ const RootLayout: ComponentType = () => {
                   <Suspense fallback={<div>Loading...</div>}>
                     {React.createElement(get(activePanelItem, "panel", NoopComponent), {
                       close: closeNonStandardPanel,
-                    })}
+                    } as any)}
                   </Suspense>
                 </div>
               </motion.div>

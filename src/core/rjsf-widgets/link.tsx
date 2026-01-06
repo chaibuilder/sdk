@@ -258,7 +258,7 @@ const LinkField = ({ schema, formData, onChange, name }: FieldProps) => {
               autoCorrect={"off"}
               spellCheck={"false"}
               type="checkbox"
-              defaultChecked={target === "_blank"}
+              checked={target === "_blank"}
               className="!w-fit cursor-pointer rounded-md border border-border"
               onChange={() => onChange({ ...formData, target: target === "_blank" ? "_self" : "_blank" })}
             />

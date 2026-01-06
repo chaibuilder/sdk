@@ -1,13 +1,16 @@
 import { useBuilderProp } from "@/core/hooks/use-builder-prop";
+import { useCheckStructure } from "@/core/hooks/use-check-structure";
 import { useGetPageData } from "@/core/hooks/use-get-page-data";
+import { useIsPageLoaded } from "@/core/hooks/use-is-page-loaded";
+import { useLanguages } from "@/core/hooks/use-languages";
 import { usePermissions } from "@/core/hooks/use-permissions";
 import { useTheme } from "@/core/hooks/use-theme";
+import { ChaiBlock, getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { useThrottledCallback } from "@react-hookz/web";
-import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
-import { atom, useAtom } from "jotai";
+import { atom, useAtom, useAtomValue } from "jotai";
 import { has, isEmpty, noop } from "lodash-es";
-import { useLanguages } from "@/core/hooks/use-languages";
-import { useIsPageLoaded } from "@/core/hooks/use-is-page-loaded";
+import { chaiDesignTokensAtom } from "../atoms/builder";
+import { userActionsCountAtom } from "../components/use-auto-save";
 export const builderSaveStateAtom = atom<"SAVED" | "SAVING" | "UNSAVED">("SAVED"); // SAVING
 builderSaveStateAtom.debugLabel = "builderSaveStateAtom";
 
@@ -45,6 +48,9 @@ export const useSavePage = () => {
   const { hasPermission } = usePermissions();
   const { selectedLang, fallbackLang } = useLanguages();
   const [isPageLoaded] = useIsPageLoaded();
+  const designTokens = useAtomValue(chaiDesignTokensAtom);
+  const checkStructure = useCheckStructure();
+  const [, setActionsCount] = useAtom(userActionsCountAtom);
 
   const needTranslations = () => {
     const pageData = getPageData();
@@ -54,19 +60,24 @@ export const useSavePage = () => {
   };
 
   const savePage = useThrottledCallback(
-    async (autoSave: boolean = false) => {
-      if (!hasPermission("save_page") || !isPageLoaded) {
+    async (autoSave: boolean = false, force: boolean = false) => {
+      if (!force && (!hasPermission("save_page") || !isPageLoaded)) {
         return;
+      }
+      // Run structure validation before saving
+      const pageData = getPageData();
+      if (pageData?.blocks) {
+        checkStructure(pageData.blocks as ChaiBlock[]);
       }
       setSaveState("SAVING");
       onSaveStateChange("SAVING");
-      const pageData = getPageData();
-
+      setActionsCount(0);
       await onSave({
         autoSave,
         blocks: pageData.blocks,
         theme,
         needTranslations: needTranslations(),
+        designTokens,
       });
       setTimeout(() => {
         setSaveState("SAVED");
@@ -74,23 +85,34 @@ export const useSavePage = () => {
       }, 100);
       return true;
     },
-    [getPageData, setSaveState, theme, onSave, onSaveStateChange, isPageLoaded],
+    [
+      getPageData,
+      setSaveState,
+      designTokens,
+      theme,
+      setActionsCount,
+      onSave,
+      onSaveStateChange,
+      isPageLoaded,
+      checkStructure,
+    ],
     3000, // save only every 5 seconds
   );
 
-  const savePageAsync = async () => {
-    if (!hasPermission("save_page") || !isPageLoaded) {
+  const savePageAsync = async (force: boolean = false) => {
+    if (!force && (!hasPermission("save_page") || !isPageLoaded)) {
       return;
     }
     setSaveState("SAVING");
     onSaveStateChange("SAVING");
     const pageData = getPageData();
-
+    setActionsCount(0);
     await onSave({
       autoSave: true,
       blocks: pageData.blocks,
       theme,
       needTranslations: needTranslations(),
+      designTokens,
     });
     setTimeout(() => {
       setSaveState("SAVED");

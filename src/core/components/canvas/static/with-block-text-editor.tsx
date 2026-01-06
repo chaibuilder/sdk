@@ -1,22 +1,32 @@
 import { useFrame } from "@/core/frame/frame-context";
-import { ChaiBlock } from "@/types/chai-block";
-import { cloneDeep } from "lodash-es";
-import { createElement, useEffect, useState, useRef, memo, useMemo, useCallback } from "react";
-import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
 import { useBlockHighlight } from "@/core/hooks/use-block-highlight";
-import { BubbleMenu as TiptapBubbleMenu, EditorContent, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import TextAlign from "@tiptap/extension-text-align";
-import Link from "@tiptap/extension-link";
-import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
-import Underline from "@tiptap/extension-underline";
-import Placeholder from "@tiptap/extension-placeholder";
-import { BubbleMenu } from "./bubble-menu";
+import { useInlineEditing } from "@/core/hooks/use-inline-editing";
 import { useLanguages } from "@/core/hooks/use-languages";
-import { get, has } from "lodash-es";
+import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
+import RteMenubar from "@/core/rjsf-widgets/rte-widget/rte-menu-bar";
+import { useRTEditor } from "@/core/rjsf-widgets/rte-widget/use-rte-editor";
+import { ChaiBlock } from "@/types/chai-block";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { useDebouncedCallback } from "@react-hookz/web";
-import { useInlineEditing } from "@/core/hooks/use-inline-editing";
+import { BubbleMenu, EditorContent } from "@tiptap/react";
+import { cloneDeep, get, has } from "lodash-es";
+import { createElement, memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+
+function getInitialTextAlign(element: HTMLElement) {
+  let el = element;
+  while (el) {
+    if (el.style && el.style.textAlign) {
+      return el.style.textAlign;
+    }
+    const computed = window.getComputedStyle(el).textAlign;
+    if (computed && computed !== "start" && computed !== "initial" && computed !== "inherit") {
+      return computed;
+    }
+    el = el.parentElement;
+  }
+  return null;
+}
 
 /**
  * @description This is the editor that is used to edit the block content
@@ -39,49 +49,37 @@ const RichTextEditor = memo(
   }) => {
     const { document } = useFrame();
 
-    const editor = useEditor(
-      {
-        editable: true,
-        content: blockContent,
-        extensions: [
-          StarterKit,
-          Underline,
-          TextAlign.configure({
-            types: ["heading", "paragraph"],
-          }),
-          Link.configure({
-            openOnClick: false,
-            HTMLAttributes: {
-              class: "text-blue-500 hover:text-blue-600 underline",
-            },
-          }),
-          Placeholder.configure({
-            placeholder: "Enter text here",
-            emptyEditorClass:
-              "cursor-text before:content-[attr(data-placeholder)] before:absolute before:opacity-50 before:pointer-events-none",
-          }),
-        ],
-        onUpdate: ({ editor }) => onChange(editor?.getHTML() || ""),
-        onBlur: ({ editor, event }) => {
-          // Only close if clicked outside both editor and bubble menu
-          const target = event.relatedTarget as HTMLElement;
-          const editorElement = document.querySelector(".ProseMirror");
-          const bubbleMenu = document.querySelector(".tippy-box");
+    const editor = useRTEditor({
+      value: blockContent,
+      blockId: "active-inline-editing-element",
+      placeholder: "Enter text here",
+      onUpdate: ({ editor }) => onChange(editor?.getHTML() || ""),
+      onBlur: ({ editor, event }) => {
+        // Only close if clicked outside both editor and bubble menu
+        const target = event?.relatedTarget as HTMLElement;
+        const editorElement = document.querySelector(".ProseMirror");
+        const bubbleMenu = document.querySelector(".tippy-box");
+        const menuBar = document.querySelector("#chai-rich-text-menu-bar");
 
-          const isEditorClicked = editorElement?.contains(target);
-          const isBubbleMenuClicked = bubbleMenu?.contains(target);
+        const isEditorClicked = editorElement?.contains(target);
+        const isBubbleMenuClicked = bubbleMenu?.contains(target);
+        const isMenuBarClicked = menuBar?.contains(target);
+        const isColorPickerOpen = window.document.getElementById("rte-widget-color-picker");
 
-          // Check if click was outside both editor and bubble menu
-          if (!isEditorClicked && !isBubbleMenuClicked) {
-            const content = editor?.getHTML() || "";
-            onClose(content);
-          }
-        },
+        // Check if click was outside both editor and bubble menu
+        if (!isEditorClicked && !isBubbleMenuClicked && !isMenuBarClicked && !isColorPickerOpen) {
+          const content = editor?.getHTML() || "";
+          onClose(content);
+        }
       },
-      [],
-    );
+      from: "canvas",
+    });
 
     useEffect(() => {
+      // * Setting text alignment
+      const textAlign = getInitialTextAlign(editingElement);
+      if (textAlign) editor?.commands?.setTextAlign(textAlign);
+
       editor?.commands?.focus();
       editor?.emit("focus", {
         editor,
@@ -91,35 +89,38 @@ const RichTextEditor = memo(
     }, [editor]);
 
     const editorClassName = useMemo(() => {
-      const basicClassName = "max-w-none shadow-none outline outline-[2px] outline-green-500 [&_*]:shadow-none";
+      const basicClassName = "max-w-none shadow-none outline outline-[2px] [&_*]:shadow-none";
       if (!editingElement) return basicClassName;
 
       const editingElementClassName = editingElement?.className?.replace("sr-only", "") || "";
       return `${basicClassName} ${editingElementClassName}`;
     }, [editingElement]);
 
-    const onKeyDown = useCallback(
-      (e) => {
-        if (e.key === "Escape") {
-          onEscape(e);
-        }
-      },
-      [onEscape],
-    );
+    const onKeyDown: any = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onEscape(e);
+      }
+    };
 
     return (
-      <div onKeyDown={onKeyDown} onClick={(e) => e.stopPropagation()}>
-        {editor && (
-          <TiptapBubbleMenu
+      editor && (
+        <div onKeyDown={onKeyDown} onClick={(e) => e.stopPropagation()} className="relative">
+          <BubbleMenu
             editor={editor}
-            tippyOptions={{
-              duration: 100,
-            }}>
-            <BubbleMenu editor={editor} />
-          </TiptapBubbleMenu>
-        )}
-        <EditorContent editor={editor} className={editorClassName} />
-      </div>
+            shouldShow={() => editor && editor?.isFocused}
+            tippyOptions={{ duration: 100, arrow: true, hideOnClick: false }}
+            className="w-max">
+            <RteMenubar editor={editor} from="canvas" />
+          </BubbleMenu>
+          <EditorContent
+            id="active-inline-editing-element"
+            onKeyDown={onKeyDown}
+            value={blockContent}
+            editor={editor}
+            className={editorClassName}
+          />
+        </div>
+      )
     );
   },
 );
@@ -149,7 +150,7 @@ const MemoizedEditor = memo(
 
     useEffect(() => {
       if (editorRef.current) {
-        editorRef.current.innerText = blockContent;
+        editorRef.current.innerHTML = blockContent;
         editorRef.current.focus();
 
         // Move cursor to the end of the text content
@@ -268,7 +269,8 @@ const WithBlockTextEditor = memo(
         setEditingElement(null);
         setEditingBlockId(null);
         setEditingItemIndex(-1);
-        setIds(blockId ? [blockId] : []);
+        setIds([]);
+        if (blockId) setTimeout(() => setIds([blockId]), 100);
       },
       [blockId, updateContent, setEditingBlockId, setIds, selectedLang],
     );
@@ -317,7 +319,7 @@ const WithBlockTextEditor = memo(
       if (!editingElement) return null;
       clearHighlight();
 
-      if (blockType === "RichText") {
+      if (["RichText", "Paragraph"].includes(blockType)) {
         return (
           <RichTextEditor
             blockContent={blockContent}

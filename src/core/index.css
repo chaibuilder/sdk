@@ -222,3 +222,72 @@ select:focus {
   --tw-text-opacity: 1;
   --tw-content: "↓";
 }
+
+/* Color picker */
+.react-colorful {
+  height: 120px !important;
+  width: 180px !important;
+}
+.react-colorful > div {
+  margin-bottom: 4px;
+}
+.react-colorful__saturation {
+  border-radius: 4px !important;
+}
+.react-colorful__hue,
+.react-colorful__alpha {
+  height: 12px !important;
+  border-radius: 4px !important;
+}
+.react-colorful__pointer {
+  width: 16px !important;
+  height: 16px !important;
+  border: 1.5px solid #fff !important;
+  cursor: pointer !important;
+  z-index: 10002 !important;
+}
+
+.ProseMirror {
+  @apply min-h-[100px] outline-none;
+}
+
+.rte {
+  h1 {
+    @apply text-2xl;
+  }
+  h2 {
+    @apply text-xl;
+  }
+  h3 {
+    @apply text-lg;
+  }
+  h4 {
+    @apply text-base;
+  }
+  h5 {
+    @apply text-sm;
+  }
+  h6 {
+    @apply text-xs;
+  }
+  p {
+    &:empty {
+      @apply h-4;
+    }
+  }
+  ul {
+    @apply list-disc pl-4 text-base;
+  }
+  ol {
+    @apply list-decimal pl-4 text-base;
+  }
+  li > p {
+    @apply m-0;
+  }
+  blockquote {
+    @apply pl-4 text-base;
+    p {
+      @apply pl-4 text-base;
+    }
+  }
+}

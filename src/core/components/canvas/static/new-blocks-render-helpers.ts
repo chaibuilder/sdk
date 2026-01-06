@@ -1,6 +1,7 @@
-import { STYLES_KEY } from "@/core/constants/STRINGS";
+import { DESIGN_TOKEN_PREFIX, STYLES_KEY } from "@/core/constants/STRINGS";
 import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
 import { ChaiBlock } from "@/types/chai-block";
+import { DesignTokens } from "@/types/types";
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { cloneDeep, forEach, get, includes, isArray, isEmpty, isString, keys, memoize, startsWith } from "lodash-es";
 import { twMerge } from "tailwind-merge";
@@ -32,7 +33,7 @@ export const applyBinding = (
   const clonedBlock = cloneDeep(block);
   forEach(keys(clonedBlock), (key) => {
     if (isString(clonedBlock[key]) && !startsWith(key, "_")) {
-      let value = clonedBlock[key];
+      let value: any = clonedBlock[key];
       if (key === "repeaterItems") {
         clonedBlock["repeaterItemsBinding"] = value;
       }
@@ -55,20 +56,26 @@ export const applyBinding = (
   return clonedBlock;
 };
 
-const generateClassNames = memoize((styles: string) => {
+export const generateClassNames = (styles: string, designTokens: DesignTokens) => {
   const { baseClasses, classes } = getSplitChaiClasses(styles);
-  return twMerge(baseClasses, classes);
-});
+  const tokens = classes.split(" ").filter((token) => token.startsWith(DESIGN_TOKEN_PREFIX));
+  const tokenValues = tokens.map((token) => designTokens[token]?.value);
+  const nonTokenClasses = classes
+    .split(" ")
+    .filter((token) => !token.startsWith(DESIGN_TOKEN_PREFIX))
+    .join(" ");
+  return twMerge.apply(null, [baseClasses, ...tokenValues, nonTokenClasses]);
+};
 
 function getElementAttrs(block: ChaiBlock, key: string) {
   return get(block, `${key}_attrs`, {}) as Record<string, string>;
 }
 
-export function getBlockTagAttributes(block: ChaiBlock, isInBuilder: boolean = true) {
+export function getBlockTagAttributes(block: ChaiBlock, isInBuilder: boolean = true, designTokens: DesignTokens = {}) {
   const styles: Record<string, any> = {};
   Object.keys(block).forEach((key) => {
     if (isString(block[key]) && block[key].startsWith(STYLES_KEY)) {
-      const className = generateClassNames(block[key]);
+      const className = generateClassNames(block[key], designTokens);
       const attrs = getElementAttrs(block, key);
       styles[key] = {
         ...(!isEmpty(className) && { className }),
@@ -114,7 +121,7 @@ export const applyChaiDataBinding = (block: Record<string, string>, pageExternal
   const clonedBlock = cloneDeep(block);
   forEach(keys(clonedBlock), (key: string) => {
     if (isString(clonedBlock[key]) && !startsWith(key, "_")) {
-      let value = clonedBlock[key];
+      let value: any = clonedBlock[key];
       if (key === "repeaterItems") {
         clonedBlock["repeaterItemsBinding"] = value;
       }

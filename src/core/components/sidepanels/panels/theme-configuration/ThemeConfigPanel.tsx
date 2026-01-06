@@ -14,16 +14,25 @@ import { Label } from "@/ui/shadcn/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/components/ui/select";
 import { Separator } from "@/ui/shadcn/components/ui/separator";
 import { Switch } from "@/ui/shadcn/components/ui/switch";
+import {
+  CornerTopRightIcon,
+  MixerHorizontalIcon,
+  MoonIcon,
+  ResetIcon,
+  SunIcon,
+  TextIcon,
+  UploadIcon,
+} from "@radix-ui/react-icons";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { capitalize, get, set } from "lodash-es";
-import { CornerTopRightIcon, UploadIcon, MoonIcon, MixerHorizontalIcon, SunIcon, TextIcon, ResetIcon } from "@radix-ui/react-icons";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
+import { useIncrementActionsCount } from "@/core/components/use-auto-save";
+import { claude, defaultShadcnPreset, solarized, supabase, twitter } from "@/core/constants/THEME_PRESETS";
 import { Badge } from "@/ui/shadcn/components/ui/badge";
 import { lazy, Suspense } from "react";
-import { claude, defaultShadcnPreset, solarized, supabase, twitter } from "@/core/constants/THEME_PRESETS";
 
 const LazyCssImportModal = lazy(() =>
   import("./css-import-modal").then((module) => ({ default: module.CssImportModal })),
@@ -70,14 +79,13 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const themePresets = useBuilderProp("themePresets", []);
   const themePanelComponent = useBuilderProp("themePanelComponent", null);
   const { hasPermission } = usePermissions();
+  const importThemeEnabled = useBuilderProp("flags.importTheme", true);
+  const darkModeEnabled = useBuilderProp("flags.darkMode", true);
+  const incrementActionsCount = useIncrementActionsCount();
 
-  if (themePresets) {
-    const existingKeys = themePresets.map((preset: any) => Object.keys(preset)[0]);
-    DEFAULT_THEME_PRESET.forEach((preset) => {
-      const key = Object.keys(preset)[0];
-      if (!existingKeys.includes(key)) {
-        themePresets.push(preset);
-      }
+  if (!themePresets || themePresets.length === 0) {
+    DEFAULT_THEME_PRESET.map((preset) => {
+      themePresets.push(preset);
     });
   }
 
@@ -89,6 +97,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
       const previousTheme = { ...themeValues };
       setPreviousTheme(previousTheme);
       setThemeValues(newTheme);
+      incrementActionsCount();
       toast.success("Theme updated", {
         action: {
           label: (
@@ -106,7 +115,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
         duration: 15000,
       });
     },
-    [themeValues, setThemeValues],
+    [themeValues, setThemeValues, incrementActionsCount],
   );
 
   const applyPreset = () => {
@@ -122,6 +131,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
       ) {
         setThemeWithHistory(newThemeValues);
         setSelectedPreset("");
+        incrementActionsCount();
       } else {
         console.error("Invalid preset structure:", newThemeValues);
       }
@@ -134,6 +144,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
     // Apply the imported theme values directly to the current theme
     setThemeWithHistory(importedTheme);
     setSelectedPreset("");
+    incrementActionsCount();
   };
 
   const handleFontChange = useDebouncedCallback(
@@ -145,8 +156,9 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
           [key.replace(/font-/g, "")]: newValue,
         },
       }));
+      incrementActionsCount();
     },
-    [themeValues],
+    [themeValues, incrementActionsCount],
     200,
   );
 
@@ -156,8 +168,9 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
         ...themeValues,
         borderRadius: `${value}px`,
       }));
+      incrementActionsCount();
     },
-    [themeValues],
+    [themeValues, incrementActionsCount],
   );
 
   const handleColorChange = useDebouncedCallback(
@@ -169,6 +182,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
         } else {
           set(prevColor, 1, newValue);
         }
+        incrementActionsCount();
         return {
           ...themeValues,
           colors: {
@@ -178,7 +192,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
         };
       });
     },
-    [themeValues],
+    [themeValues, incrementActionsCount],
     200,
   );
 
@@ -188,7 +202,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
         const themeColor = get(themeValues, `colors.${key}.${isDarkMode ? 1 : 0}`);
         if (!themeColor) return null;
         return (
-          <div key={key} className="mt-1 flex items-center gap-x-2">
+          <div key={key} id={`theme-${key}`} className="mt-1 flex items-center gap-x-2">
             <ColorPickerInput
               value={themeColor as string}
               onChange={(newValue: string) => handleColorChange(key, newValue)}
@@ -221,7 +235,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
         <div className={cn("no-scrollbar h-full w-full overflow-y-auto text-center", className)}>
           <div className="mt-10 h-full items-center justify-center gap-2 text-muted-foreground">
             <p className="text-sm">
-              You don't have permission to edit the theme. Please contact your administrator to get access.
+              {t("You don't have permission to edit the theme. Please contact your administrator to get access.")}
             </p>
           </div>
         </div>
@@ -237,10 +251,12 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
             <div className="flex w-full items-center justify-between">
               <Label className="text-sm">{t("Presets")}</Label>
               <div className="flex gap-2">
-                <Button className="px-1" variant="link" size="sm" onClick={() => setIsImportModalOpen(true)}>
-                  <UploadIcon className="h-4 w-4" />
-                  {t("Import theme")}
-                </Button>
+                {importThemeEnabled && (
+                  <Button className="px-1" variant="link" size="sm" onClick={() => setIsImportModalOpen(true)}>
+                    <UploadIcon className="h-4 w-4" />
+                    {t("Import theme")}
+                  </Button>
+                )}
               </div>
             </div>
             {/* Presets Tab */}
@@ -248,7 +264,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
               <div className="w-[70%]">
                 <Select value={selectedPreset} onValueChange={setSelectedPreset}>
                   <SelectTrigger className="h-9 w-full text-sm">
-                    <SelectValue placeholder="Select preset" />
+                    <SelectValue placeholder={t("Select preset")} />
                   </SelectTrigger>
                   <SelectContent>
                     {Array.isArray(themePresets) &&
@@ -279,7 +295,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
           {/* Fonts Section */}
           <div className="flex items-center gap-2">
             <TextIcon className="h-3 w-3 text-gray-600" />
-            <span className="text-xs font-medium text-gray-700">Typography</span>
+            <span className="text-xs font-medium text-gray-700">{t("Typography")}</span>
           </div>
           {chaiThemeOptions?.fontFamily && (
             <div className="space-y-2">
@@ -302,7 +318,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <CornerTopRightIcon className="h-3 w-3 text-gray-600" />
-                  <span className="text-xs font-medium text-gray-700">Border Radius</span>
+                  <span className="text-xs font-medium text-gray-700">{t("Border Radius")}</span>
                 </div>
                 <Badge variant="secondary" className="text-xs">
                   {themeValues.borderRadius}
@@ -322,26 +338,26 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <MixerHorizontalIcon className="h-3 w-3 text-gray-600" />
-                  <span className="text-xs font-medium text-gray-700">Colors</span>
+                  <span className="text-xs font-medium text-gray-700">{t("Colors")}</span>
                 </div>
-                <div className="flex items-center gap-2">
+                {darkModeEnabled && (
                   <div className="flex items-center gap-2">
                     <SunIcon className="h-4 w-4" />
                     <Switch
                       checked={isDarkMode}
                       onCheckedChange={(checked: boolean) => setIsDarkMode(checked)}
-                      aria-label="Toggle dark mode"
+                      aria-label={t("Toggle dark mode")}
                       className="mx-1"
                     />
                     <MoonIcon className="h-4 w-4" />
                   </div>
-                </div>
+                )}
               </div>
               <div className="space-y-2">{chaiThemeOptions.colors.map((group) => renderColorGroup(group))}</div>
             </div>
           )}
-          <Suspense fallback={<div>Loading...</div>}>
-            {isImportModalOpen && (
+          <Suspense fallback={<div>{t("Loading...")}</div>}>
+            {isImportModalOpen && importThemeEnabled && (
               <LazyCssImportModal
                 open={isImportModalOpen}
                 onOpenChange={setIsImportModalOpen}

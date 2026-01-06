@@ -1,11 +1,12 @@
 import { generateUUID } from "@/core/functions/common-functions";
+import { ChaiBlock } from "@/types/common";
 
 export function insertBlocksAtPosition(
   allBlocks: { _id: string; _parent?: string; [key: string]: any }[],
   newBlocks: { _id: string; _parent?: string; [key: string]: any }[],
   parentId?: string,
   position?: number,
-) {
+): ChaiBlock[] {
   // Process new blocks
   const processedNewBlocks = [...newBlocks];
 
@@ -91,5 +92,9 @@ export function insertBlocksAtPosition(
   }
 
   // Insert the new blocks at the specified position within the parent block
-  return [...modifiedAllBlocks.slice(0, insertIndex), ...processedNewBlocks, ...modifiedAllBlocks.slice(insertIndex)];
+  return [
+    ...modifiedAllBlocks.slice(0, insertIndex),
+    ...processedNewBlocks,
+    ...modifiedAllBlocks.slice(insertIndex),
+  ] as ChaiBlock[];
 }

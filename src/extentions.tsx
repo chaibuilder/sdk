@@ -1,23 +1,22 @@
-import AddBlockAi from "@/_demo/add-block-ai";
+import { default as AIChatPanel } from "@/_demo/ai-chat-panel";
 import registerCustomBlocks from "@/_demo/blocks";
 import "@/_demo/panels/panel";
-import { registerChaiAddBlockTab } from "@/core/extensions/add-block-tabs";
 import { registerChaiSaveToLibrary } from "@/core/extensions/save-to-library";
-import { registerChaiPreImportHTMLHook, registerChaiTopBar } from "@/core/main";
+import { registerChaiPreImportHTMLHook, registerChaiSidebarPanel, registerChaiTopBar } from "@/core/main";
 import { ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 import { ChaiFontViaSrc, ChaiFontViaUrl, registerChaiFont } from "@chaibuilder/runtime";
 import { lazy } from "react";
+import { AiButton, DEFAULT_PANEL_WIDTH } from "./core/components/layout/root-layout";
 import { registerChaiLibrary } from "./core/extensions/libraries";
 const TopBar = lazy(() => import("@/_demo/top-bar"));
 
 export const extendChaiBuilder = () => {
   registerCustomBlocks();
   registerChaiPreImportHTMLHook(async (html) => {
-    console.log(html);
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(html.replace(/bg-yellow-light-4/g, "bg-destructive"));
-      }, 4000);
+      }, 1000);
     });
   });
 
@@ -35,12 +34,24 @@ export const extendChaiBuilder = () => {
     return <div className="h-96 w-96">Save to Lib</div>;
   });
 
+  registerChaiSidebarPanel("chai-chat-panel", {
+    button: AiButton,
+    label: "Ask AI",
+    position: "top",
+    isInternal: true,
+    width: DEFAULT_PANEL_WIDTH,
+    panel: () => (
+      <div className="-mt-8 h-full max-h-full">
+        <AIChatPanel />
+      </div>
+    ),
+  });
   registerChaiTopBar(TopBar);
 
-  registerChaiAddBlockTab("add-block-ai", {
-    tab: () => "With AI",
-    tabContent: AddBlockAi,
-  });
+  // registerChaiAddBlockTab("add-block-ai", {
+  //   tab: () => "With AI",
+  //   tabContent: AddBlockAi,
+  // });
 
   const url = "https://chai-ui-blocks.vercel.app";
   registerChaiLibrary("meraki-ui", {

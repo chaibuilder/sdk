@@ -15,11 +15,11 @@ import {
   compact,
   filter,
   find,
-  isString,
   flattenDeep,
   get,
   has,
   isEmpty,
+  isString,
   pick,
   startsWith,
 } from "lodash-es";
@@ -111,7 +111,6 @@ export const useAskAi = () => {
         setError(null);
         try {
           const lang = selectedLang === fallbackLang ? "" : selectedLang;
-          console.log("prompt", prompt);
           const isTranslatePrompt = prompt.toLowerCase().includes("translate the content");
           const aiBlocks =
             type === "content"

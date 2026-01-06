@@ -1,18 +1,22 @@
 import { COLLECTION_PREFIX } from "@/core/constants/STRINGS";
 import { ChaiBlock } from "@/types/chai-block";
-import { cloneDeep, forEach, get, isArray, isString, keys, startsWith } from "lodash-es";
+import { cloneDeep, forEach, get, isArray, isEmpty, isString, keys, startsWith } from "lodash-es";
 
 const applyBindingToValue = (
   value: any,
   pageExternalData: Record<string, any>,
   { index, key: repeaterKey }: { index: number; key: string },
+  propertyKey?: string,
 ) => {
   if (isString(value)) {
-    let result = value;
+    let result: any = value;
 
     const bindingRegex = /\{\{(.*?)\}\}/g;
     const matches = value.match(bindingRegex);
     if (matches) {
+      // For image properties, if binding exists, use only the binding value
+      const isImageProperty = propertyKey === "image" || propertyKey === "mobileImage";
+
       matches.forEach((match: string) => {
         let binding = match.slice(2, -2).trim();
         let repeaterKeyTrimed = repeaterKey.slice(2, -2).trim();
@@ -25,7 +29,11 @@ const applyBindingToValue = (
         if (bindingValue === undefined) {
           result = result.replace(match, "");
         } else {
-          result = isArray(bindingValue) ? bindingValue : result.replace(match, bindingValue);
+          if (isImageProperty && !isArray(bindingValue)) {
+            result = bindingValue;
+          } else {
+            result = isArray(bindingValue) ? bindingValue : result.replace(match, bindingValue);
+          }
         }
       });
     }
@@ -33,14 +41,14 @@ const applyBindingToValue = (
   }
 
   if (isArray(value)) {
-    return value.map((item) => applyBindingToValue(item, pageExternalData, { index, key: repeaterKey }));
+    return value.map((item) => applyBindingToValue(item, pageExternalData, { index, key: repeaterKey }, propertyKey));
   }
 
   if (value && typeof value === "object") {
     const result: Record<string, any> = {};
     forEach(keys(value), (key) => {
       if (!startsWith(key, "_") && key !== "$repeaterItemsKey") {
-        result[key] = applyBindingToValue(value[key], pageExternalData, { index, key: repeaterKey });
+        result[key] = applyBindingToValue(value[key], pageExternalData, { index, key: repeaterKey }, key);
       } else {
         result[key] = value[key];
       }
@@ -62,6 +70,9 @@ export const applyBindingToBlockProps = (
     if (startsWith(clonedBlock.repeaterItems, `{{${COLLECTION_PREFIX}`)) {
       clonedBlock.$repeaterItemsKey =
         clonedBlock.repeaterItems = `${clonedBlock.repeaterItems.replace("}}", `/${clonedBlock._id}}}`)}`;
+    }
+    if (!isEmpty(clonedBlock.repeaterItems) && clonedBlock.pagination) {
+      clonedBlock.repeaterTotalItems = `${clonedBlock.repeaterItems.replace("}}", `/${clonedBlock._id}/totalItems}}`)}`;
     }
   }
   return applyBindingToValue(clonedBlock, pageExternalData, { index, key: repeaterKey });
@@ -132,6 +143,56 @@ if (import.meta.vitest) {
       expect(result).toEqual({
         name: "John",
         _private: "secret",
+      });
+    });
+
+    it("should completely replace image property value when binding exists", () => {
+      const value = {
+        image: "https://default.jpg{{user.avatar}}",
+        title: "Hello {{user.name}}",
+      };
+      const pageExternalData = { user: { avatar: "https://avatar.jpg", name: "John" } };
+      const result = applyBindingToValue(value, pageExternalData, { index: -1, key: "" });
+      expect(result).toEqual({
+        image: "https://avatar.jpg", // Completely replaced, not concatenated
+        title: "Hello John", // Normal replacement
+      });
+    });
+
+    it("should completely replace mobileImage property value when binding exists", () => {
+      const value = {
+        mobileImage: "https://default-mobile.jpg{{user.mobileAvatar}}",
+        alt: "Avatar for {{user.name}}",
+      };
+      const pageExternalData = { user: { mobileAvatar: "https://mobile-avatar.jpg", name: "John" } };
+      const result = applyBindingToValue(value, pageExternalData, { index: -1, key: "" });
+      expect(result).toEqual({
+        mobileImage: "https://mobile-avatar.jpg", // Completely replaced
+        alt: "Avatar for John", // Normal replacement
+      });
+    });
+
+    it("should handle image binding with only binding syntax", () => {
+      const value = {
+        image: "{{product.thumbnail}}",
+      };
+      const pageExternalData = { product: { thumbnail: "https://product.jpg" } };
+      const result = applyBindingToValue(value, pageExternalData, { index: -1, key: "" });
+      expect(result).toEqual({
+        image: "https://product.jpg",
+      });
+    });
+
+    it("should not affect non-image properties with similar bindings", () => {
+      const value = {
+        url: "https://default.com{{page.slug}}",
+        link: "https://example.com/{{page.id}}",
+      };
+      const pageExternalData = { page: { slug: "/about", id: "123" } };
+      const result = applyBindingToValue(value, pageExternalData, { index: -1, key: "" });
+      expect(result).toEqual({
+        url: "https://default.com/about", // Concatenated normally
+        link: "https://example.com/123", // Concatenated normally
       });
     });
   });

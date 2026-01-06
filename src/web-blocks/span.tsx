@@ -24,7 +24,7 @@ const Config = {
   description: "A span component",
   label: "Span",
   category: "core",
-  group: "typography",
+  group: "basic",
   ...registerChaiBlockSchema({
     properties: {
       styles: StylesProp(""),

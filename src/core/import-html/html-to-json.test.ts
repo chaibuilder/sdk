@@ -1,4 +1,4 @@
-import { getSanitizedHTML } from "@/core/import-html/html-to-json";
+import { getBlocksFromHTML, getSanitizedHTML } from "@/core/import-html/html-to-json";
 
 describe("getSanitizedHTML", () => {
   test("should remove $name attributes", () => {
@@ -62,5 +62,40 @@ describe("getSanitizedHTML", () => {
     const input = '<div data-special=\\"<>/?\\">Content</div>';
     const expected = '<div data-special="<>/?">Content</div>';
     expect(getSanitizedHTML(input)).toBe(expected);
+  });
+});
+
+describe("getBlocksFromHTML - RichText handling", () => {
+  test("should detect div with 'rte' class as RichText block", () => {
+    const html = '<div class="rte"><p>Rich text content</p><strong>Bold text</strong></div>';
+    const blocks = getBlocksFromHTML(html);
+
+    expect(blocks).toHaveLength(1);
+    expect(blocks[0]._type).toBe("Paragraph");
+    expect(blocks[0].content).toContain("<p>Rich text content</p>");
+    expect(blocks[0].content).toContain("<strong>Bold text</strong>");
+  });
+
+  test("should detect div with 'rte' class among other classes as Paragraph block", () => {
+    const html = '<div class="container rte text-lg"><p>Content</p></div>';
+    const blocks = getBlocksFromHTML(html);
+
+    expect(blocks).toHaveLength(1);
+    expect(blocks[0]._type).toBe("Paragraph");
+  });
+
+  test("should detect element with data-chai-richtext attribute as Paragraph block", () => {
+    const html = "<div data-chai-richtext><p>Rich text content</p></div>";
+    const blocks = getBlocksFromHTML(html);
+
+    expect(blocks).toHaveLength(1);
+    expect(blocks[0]._type).toBe("Paragraph");
+  });
+
+  test("should not treat regular div without rte class as Paragraph", () => {
+    const html = '<div class="container"><p>Regular content</p></div>';
+    const blocks = getBlocksFromHTML(html);
+
+    expect(blocks[0]._type).toBe("Box");
   });
 });

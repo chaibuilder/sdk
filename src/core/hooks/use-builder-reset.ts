@@ -7,6 +7,7 @@ import { useSavePage } from "@/core/hooks/use-save-page";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
 import { useAtom } from "jotai";
+import { userActionsCountAtom } from "../components/use-auto-save";
 
 export const useBuilderReset = () => {
   const { clear } = useUndoManager();
@@ -17,6 +18,7 @@ export const useBuilderReset = () => {
   const { reset: resetPartialBlocks } = usePartialBlocksStore();
   const { setSaveState } = useSavePage();
   const [, setBlockRepeaterDataAtom] = useBlockRepeaterDataAtom();
+  const [, setActionsCount] = useAtom(userActionsCountAtom);
 
   return () => {
     setBlockRepeaterDataAtom({});
@@ -27,5 +29,6 @@ export const useBuilderReset = () => {
     setAiAssistantActive(false);
     resetPartialBlocks();
     setSaveState("SAVED");
+    setActionsCount(0);
   };
 };

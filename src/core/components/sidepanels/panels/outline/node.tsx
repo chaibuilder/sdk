@@ -1,15 +1,24 @@
 import { canvasIframeAtom } from "@/core/atoms/ui";
+import { useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 import { BlockMoreOptions } from "@/core/components/sidepanels/panels/outline/block-more-options";
 import { TypeIcon } from "@/core/components/sidepanels/panels/outline/block-type-icon";
 import { PERMISSIONS } from "@/core/constants/PERMISSIONS";
 import { ROOT_TEMP_KEY } from "@/core/constants/STRINGS";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { canAcceptChildBlock, canAddChildBlock } from "@/core/functions/block-helpers";
-import { useBlockHighlight, usePermissions, useTranslation, useUpdateBlocksProps } from "@/core/hooks";
+import { useBlockHighlight, useBuilderProp, usePermissions, useTranslation, useUpdateBlocksProps } from "@/core/hooks";
+import { useStructureValidation } from "@/core/hooks/use-structure-validation";
 import { pubsub } from "@/core/pubsub";
 import { cn } from "@/core/utils/cn";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
-import { ChevronRightIcon, DotsVerticalIcon, EyeClosedIcon, EyeOpenIcon, PlusIcon } from "@radix-ui/react-icons";
+import {
+  ChevronRightIcon,
+  DotsVerticalIcon,
+  ExclamationTriangleIcon,
+  EyeClosedIcon,
+  EyeOpenIcon,
+  PlusIcon,
+} from "@radix-ui/react-icons";
 import { atom, useAtom } from "jotai";
 import { get, has, isEmpty, startCase } from "lodash-es";
 import { memo, useEffect, useMemo } from "react";
@@ -59,7 +68,10 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
   let previousState: boolean | null = null;
   const hasChildren = node.children.length > 0;
   const { highlightBlock, clearHighlight } = useBlockHighlight();
+  const isDragAndDropEnabled = useIsDragAndDropEnabled();
   const { id, data, isSelected, willReceiveDrop, isDragging, isEditing, handleClick } = node;
+  const validations = useStructureValidation();
+  const errors = useMemo(() => validations.getBlockErrors(id), [validations, id]);
   const isShown = get(data, "_show", true);
   const handleToggle = (event: any) => {
     event.stopPropagation();
@@ -162,7 +174,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
 
   if (id === ROOT_TEMP_KEY) {
     return (
-      <div className="group relative w-full cursor-pointer">
+      <div className="group relative mt-2 w-full cursor-pointer">
         <br />
         {hasPermission(PERMISSIONS.ADD_BLOCK) && (
           <div
@@ -170,7 +182,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
             onClick={() => addBlockOnPosition(-1)}
             className="h-1 rounded bg-primary opacity-0 duration-200 group-hover:opacity-100">
             <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 transform items-center gap-x-1 rounded-full bg-primary px-3 py-1 text-[9px] leading-tight text-white hover:bg-primary">
-              <PlusIcon className="h-2 w-2 stroke-[3]" /> {t("Add block")}
+              <PlusIcon className="w-2.4 h-2.5 stroke-[5] text-white" /> {t("Add block")}
             </div>
           </div>
         )}
@@ -178,21 +190,22 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
       </div>
     );
   }
-
+  const { librarySite } = useBuilderProp("flags", { librarySite: false });
   const isLibBlock = useMemo(() => {
     return (
+      librarySite &&
       has(data, "_libBlockId") &&
       !isEmpty(data._libBlockId) &&
       (hasPermission(PERMISSIONS.CREATE_LIBRARY_BLOCK) || hasPermission(PERMISSIONS.EDIT_LIBRARY_BLOCK))
     );
-  }, [data, hasPermission]);
+  }, [data, hasPermission, librarySite]);
 
   const isPartialBlock = useMemo(() => {
     return data?._type === "PartialBlock" || data?._type === "GlobalBlock";
   }, [data]);
 
   return (
-    <div className="w-full">
+    <div className={"w-full"}>
       <div
         onMouseEnter={() => highlightBlock(id)}
         onMouseLeave={() => clearHighlight()}
@@ -215,6 +228,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
           setDropAttribute(id, "no");
         }}>
         {hasPermission(PERMISSIONS.ADD_BLOCK) &&
+          !isDragAndDropEnabled &&
           node?.rowIndex > 0 &&
           ((node.parent.isOpen && canAddChildBlock(get(node, "parent.data._type"))) ||
             node?.parent?.id === "__REACT_ARBORIST_INTERNAL_ROOT__") && (
@@ -262,7 +276,14 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
                 isPartialBlock && "text-purple-600/90",
                 isPartialBlock && isSelected && "text-purple-800",
               )}>
-              <TypeIcon type={data?._type} />
+              {errors.length > 0 ? (
+                <div className="text-red-500">
+                  <ExclamationTriangleIcon className="h-3 w-3" />
+                </div>
+              ) : (
+                <TypeIcon type={data?._type} />
+              )}
+
               {isEditing ? (
                 <Input node={node} />
               ) : (

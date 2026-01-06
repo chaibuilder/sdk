@@ -5,7 +5,9 @@ import { getVideoURLFromHTML, hasVideoEmbed } from "@/core/import-html/import-vi
 import { ChaiBlock } from "@/types/chai-block";
 import { parse, stringify } from "himalaya";
 import {
+  camelCase,
   capitalize,
+  compact,
   filter,
   find,
   flatMapDeep,
@@ -15,12 +17,13 @@ import {
   has,
   includes,
   isEmpty,
+  map,
   set,
   some,
+  startCase,
   startsWith,
-  compact,
-  map,
   trim,
+  unset,
 } from "lodash-es";
 
 type Node = {
@@ -148,25 +151,35 @@ const getHeightAndWidthFromClass = (classString: string): { width: string; heigh
 const getAttrs = (node: Node) => {
   if (node.tagName === "svg") return {};
 
-  const attrs: Record<string, string> = {};
+  const attrs: Record<string, string | { id: string }> = {};
   const replacers = ATTRIBUTE_MAP[node.tagName] || {};
   const attributes: Array<{ key: string; value: string }> = node.attributes as any;
 
   forEach(attributes, ({ key, value }) => {
     if (includes(NAME_ATTRIBUTES, key)) return;
+    if (key === "bid") {
+      // Handle bid attribute specially - add as _bid: {id}
+      attrs._bid = getSanitizedValue(value);
+    }
     if (replacers[key]) {
       // for img tag if the src is not absolute then replace with placeholder image
       if (node.tagName === "img" && key === "src" && !value.startsWith("http")) {
         const width = find(node.attributes, { key: "width" }) as { value: string } | undefined;
         const height = find(node.attributes, { key: "height" }) as { value: string } | undefined;
         if (width && height) {
-          value = `https://via.placeholder.com/${width?.value}x${height?.value}`;
+          value = `https://picsum.photos/${width?.value}x${height?.value}`;
         } else {
-          value = `https://via.placeholder.com/150x150`;
+          value = `https://picsum.photos/150x150`;
+        }
+      } else if (node.tagName === "a") {
+        // * If importing page with type as pageType, setting attribute
+        const href = find(node.attributes, { key: "href" }) as { value: string } | undefined;
+        if (href && typeof href?.value === "string" && href?.value?.startsWith("pageType:")) {
+          set(attrs, "link.type", "pageType");
         }
       }
       set(attrs, replacers[key], getSanitizedValue(value));
-    } else if (!includes(["style", "class", "srcset"], key)) {
+    } else if (!includes(["style", "class", "srcset", "bid"], key)) {
       if (!has(attrs, "styles_attrs")) {
         // @ts-ignore
         attrs.styles_attrs = {};
@@ -206,6 +219,10 @@ const getBlockProps = (node: Node): Record<string, any> => {
     (attr) => attr.key === "data-chai-dropdown-content" || attr.key === "chai-dropdown-content",
   );
 
+  // Check if element has "rte" class
+  const classAttr = attributes.find((attr) => attr.key === "class");
+  const hasRteClass = classAttr && classAttr.value.split(/\s+/).includes("rte");
+
   // Check for special attributes first
   if (isDropdown) {
     return { _type: "Dropdown" };
@@ -219,8 +236,8 @@ const getBlockProps = (node: Node): Record<string, any> => {
     return { _type: "DropdownContent" };
   }
 
-  if (isRichText) {
-    return { _type: "RichText" };
+  if (isRichText || hasRteClass) {
+    return { _type: "Paragraph" };
   }
 
   if (isLightboxLink) {
@@ -352,10 +369,48 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
       return { ...block, _type: "Text", content: get(node, "content", "") };
     }
 
+    // * Handle chai- prefixed custom blocks (web components)
+    if (startsWith(node.tagName, "chai-")) {
+      // Process attributes and add to block props
+      const attributes: Array<{ key: string; value: string }> = node.attributes as any;
+
+      // Check for chai-type attribute first, otherwise derive from tag name
+      const chaiTypeAttr = find(attributes, { key: "chai-type" });
+      const blockType = chaiTypeAttr?.value || startCase(node.tagName.replace("chai-", "")).replace(/\s+/g, "");
+      block._type = blockType;
+      forEach(attributes, ({ key, value }) => {
+        // Skip about-this-component, chai-type, can-move, and can-delete attributes
+        if (key === "about-this-component" || key === "chai-type" || key === "can-move" || key === "can-delete") return;
+
+        // Convert id to _id
+        if (key === "id") {
+          block._id = value;
+          return;
+        }
+        const formattedKey = !startsWith(key, "_") ? camelCase(key) : key;
+
+        // Handle #styles: prefix - convert to #styles:,
+        let sanitizedValue = getSanitizedValue(value);
+        if (typeof sanitizedValue === "string" && startsWith(sanitizedValue, "#styles:")) {
+          sanitizedValue = sanitizedValue.replace("#styles:", "#styles:,");
+        }
+
+        // Add all other attributes to block props
+        block[formattedKey] = sanitizedValue;
+      });
+
+      // Process children if any
+      const children = traverseNodes(node.children, { block, node });
+      return [block, ...children] as ChaiBlock[];
+    }
+
     const styleAttributes = get(node, "attributes", []);
-    const isRichText = styleAttributes.find(
-      (attr) => attr.key === "data-chai-richtext" || attr.key === "chai-richtext",
-    );
+    const isRichText =
+      node.tagName === "p" ||
+      styleAttributes.find((attr) => attr.key === "data-chai-richtext" || attr.key === "chai-richtext");
+
+    const classAttr = styleAttributes.find((attr) => attr.key === "class");
+    const hasRteClass = classAttr && classAttr.value.split(/\s+/).includes("rte");
     const isLightboxLink = styleAttributes.find(
       (attr) => attr.key === "data-chai-lightbox" || attr.key === "chai-lightbox",
     );
@@ -386,8 +441,8 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
       }
     }
 
-    if (isRichText) {
-      block.content = stringify(node.children);
+    if (isRichText || hasRteClass) {
+      block.content = `<p>${stringify(node.children || [])}</p>`;
       if (has(block, "styles_attrs.data-chai-richtext")) {
         delete block.styles_attrs["data-chai-richtext"];
       }
@@ -587,6 +642,51 @@ export const getSanitizedHTML = (html: string) => {
     .replaceAll("> <", "><")
     .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
     .trim();
+};
+
+/**
+ * Finds a block by _id in the blocks array
+ * @param blocks - Array of blocks to search in
+ * @param blockId - The _id to search for
+ * @returns The found block or undefined
+ */
+const findBlockById = (blocks: ChaiBlock[], blockId: string): ChaiBlock | undefined => {
+  return find(blocks, { _id: blockId });
+};
+
+/**
+ * Merges imported blocks with existing blocks based on _id
+ * If a block with the same _id exists, merge properties into existing block
+ * Otherwise, keep the imported block as is
+ * @param importedBlocks - Blocks imported from HTML
+ * @param existingBlocks - Current blocks in the store
+ * @returns Merged blocks array
+ */
+export const mergeBlocksWithExisting = (importedBlocks: ChaiBlock[], existingBlocks: ChaiBlock[]): ChaiBlock[] => {
+  if (isEmpty(existingBlocks))
+    return importedBlocks.map((b) => {
+      unset(b, "_bid");
+      return b;
+    });
+
+  return map(importedBlocks, (importedBlock) => {
+    const existingBlock = !isEmpty(importedBlock._bid) ? findBlockById(existingBlocks, importedBlock._bid) : undefined;
+
+    if (existingBlock) {
+      // remove icon if it is default icon
+      if (existingBlock._type === "Icon" && get(importedBlock, "icon", "").match(/chai-default-svg/)) {
+        delete importedBlock.icon;
+      }
+      // Merge imported block properties into existing block
+      const mergedBlock = { ...existingBlock, ...importedBlock };
+      unset(mergedBlock, "_bid");
+      return mergedBlock;
+    }
+
+    // No existing block found, return imported block as is
+    unset(importedBlock, "_bid");
+    return importedBlock;
+  });
 };
 
 /**

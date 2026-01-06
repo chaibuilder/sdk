@@ -1,5 +1,5 @@
 import { usePageExternalData } from "@/core/atoms/builder";
-import { useSelectedBlock } from "@/core/hooks";
+import { useBuilderProp, useSelectedBlock } from "@/core/hooks";
 import { first, get, isEmpty, startsWith } from "lodash-es";
 import { useCallback, useMemo } from "react";
 import { NestedPathSelector } from "../components/nested-path-selector";
@@ -18,6 +18,7 @@ export const DataBindingSelector = ({
   formData: any;
 }) => {
   const pageExternalData = usePageExternalData();
+  const dataBindingEnabled = useBuilderProp("flags.dataBinding", true);
   const hierarchy = useSelectedBlockHierarchy();
   const selectedBlock = useSelectedBlock();
   const repeaterKey = useMemo(() => {
@@ -173,10 +174,14 @@ export const DataBindingSelector = ({
     },
     [id, onChange, formData, selectedBlock?._id, repeaterKey],
   );
+
+  if (!dataBindingEnabled) {
+    return null;
+  }
   return (
     <NestedPathSelector
       data={{
-        ...(repeaterData && { [repeaterKey]: repeaterData }),
+        ...((repeaterData && { [repeaterKey]: repeaterData }) as any),
         ...pageExternalData,
       }}
       onSelect={handlePathSelect}

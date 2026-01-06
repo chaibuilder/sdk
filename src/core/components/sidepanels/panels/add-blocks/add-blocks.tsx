@@ -12,7 +12,6 @@ import { useBlocksStore, useBuilderProp, usePermissions } from "@/core/hooks";
 import { usePartialBlocksList } from "@/core/hooks/use-partial-blocks-store";
 import { mergeClasses, PERMISSIONS } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
-import { Input } from "@/ui/shadcn/components/ui/input";
 import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/shadcn/components/ui/tabs";
 import { useAtom } from "jotai";
@@ -20,10 +19,18 @@ import { atomWithStorage } from "jotai/utils";
 import { capitalize, debounce, filter, find, map, reject, sortBy, values } from "lodash-es";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import SearchInput from "./search-input";
 
 const CORE_GROUPS = ["basic", "typography", "media", "layout", "form", "advanced", "other"];
 
-export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols = "grid-cols-4" }: any) => {
+export const ChaiBuilderBlocks = ({
+  groups,
+  blocks,
+  parentId,
+  position,
+  gridCols = "grid-cols-4",
+  disableBlockGroupsSidebar,
+}: any) => {
   const { t } = useTranslation();
   const [allBlocks] = useBlocksStore();
   const [searchTerm, setSearchTerm] = useState("");
@@ -33,6 +40,7 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
   const [selectedGroup, setSelectedGroup] = useState<string | null>("all");
   const [hoveredGroup, setHoveredGroup] = useState<string | null>(null);
   const debouncedSelectRef = useRef<any>(null);
+  const dnd = useBuilderProp("flags.dragAndDrop", false);
 
   // Focus search input on mount and tab change
   useEffect(() => {
@@ -131,25 +139,16 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
   }, [sortedGroups, selectedGroup]);
 
   return (
-    <div className="mx-auto flex h-full w-full max-w-3xl flex-col">
+    <div className="mx-auto flex h-full w-full flex-col">
       {/* Search at top */}
-      <div className="sticky top-0 z-10 bg-background/80 px-4 py-2 backdrop-blur-sm">
-        <Input
-          ref={searchInputRef}
-          type="search"
-          placeholder={t("Search blocks...")}
-          value={searchTerm}
-          className="-ml-2"
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
+      <SearchInput value={searchTerm} setValue={setSearchTerm} />
 
-      <div className="sticky top-10 flex h-[calc(100%-48px)] overflow-hidden">
+      <div className="sticky top-10 flex h-[calc(100%-48px)] overflow-hidden pt-2">
         {/* Sidebar for groups */}
-        {sortedGroups.length > 0 && (
+        {!disableBlockGroupsSidebar && sortedGroups.length > 0 && (
           <div className="w-1/4 min-w-[120px] border-r border-border">
             <ScrollArea className="h-full">
-              <div className="space-y-1 p-2">
+              <div className="space-y-1">
                 <button
                   key="sidebar-all"
                   onClick={() => handleGroupClick("all")}
@@ -182,8 +181,11 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
         )}
 
         {/* Main content area */}
-        <div className="h-full w-3/4 flex-1 overflow-hidden">
-          <ScrollArea id="add-blocks-scroll-area" className="no-scrollbar mr-4 h-full">
+        <div
+          className={`h-full flex-1 overflow-hidden ${
+            !disableBlockGroupsSidebar && sortedGroups.length > 0 ? "w-3/4" : "w-full"
+          }`}>
+          <ScrollArea id="add-blocks-scroll-area" className="no-scrollbar h-full">
             {filteredGroups.length === 0 && searchTerm ? (
               <div className="flex flex-col items-center justify-center p-8 text-center text-muted-foreground">
                 <p>
@@ -191,22 +193,23 @@ export const ChaiBuilderBlocks = ({ groups, blocks, parentId, position, gridCols
                 </p>
               </div>
             ) : (
-              <div className="space-y-6 p-4">
-                {displayedGroups.map((group) => (
+              <div className={`${!disableBlockGroupsSidebar ? "p-4" : "p-0"} space-y-6`}>
+                {displayedGroups.map((group, index: number) => (
                   <div key={group} className="space-y-3">
                     <h3 className="px-1 text-sm font-medium">{capitalize(t(group.toLowerCase()))}</h3>
                     <div className={"grid gap-2 " + gridCols}>
                       {reject(
                         selectedGroup === "all" ? filter(values(displayedBlocks), { group }) : values(displayedBlocks),
                         { hidden: true },
-                      ).map((block) => (
+                      ).map((block, blockIndex) => (
                         <CoreBlock
-                          key={block.type}
+                          key={block.type + "-" + index + "-" + blockIndex}
                           parentId={parentId}
                           position={position}
                           block={block}
                           disabled={
-                            !canAcceptChildBlock(parentType, block.type) || !canBeNestedInside(parentType, block.type)
+                            !dnd &&
+                            (!canAcceptChildBlock(parentType, block.type) || !canBeNestedInside(parentType, block.type))
                           }
                         />
                       ))}
@@ -229,16 +232,18 @@ const AddBlocksPanel = ({
   showHeading = true,
   parentId = undefined,
   position = -1,
+  fromSidebar = false,
 }: {
   parentId?: string;
   showHeading?: boolean;
   className?: string;
   position?: number;
+  fromSidebar?: boolean;
 }) => {
   const { t } = useTranslation();
   const [tab, setTab] = useAtom(addBlockTabAtom);
   const [, setCategory] = useAtom(showPredefinedBlockCategoryAtom);
-  const importHTMLSupport = useBuilderProp("importHTMLSupport", true);
+  const importHtmlEnabled = useBuilderProp("flags.importHtml", true);
   const { data: partialBlocksList } = usePartialBlocksList();
   const hasPartialBlocks = Object.keys(partialBlocksList || {}).length > 0;
   const { hasPermission } = usePermissions();
@@ -255,7 +260,7 @@ const AddBlocksPanel = ({
   }, []);
 
   const addBlockAdditionalTabs = useChaiAddBlockTabs();
-  const canImportHTML = importHTMLSupport && hasPermission(PERMISSIONS.IMPORT_HTML);
+  const canImportHTML = importHtmlEnabled && hasPermission(PERMISSIONS.IMPORT_HTML);
   const uiLibraries = useChaiLibraries();
   const hasUiLibraries = uiLibraries.length > 0;
 
@@ -284,46 +289,73 @@ const AddBlocksPanel = ({
         }}
         value={tab}
         className={"flex h-full max-h-full flex-col overflow-hidden"}>
-        <TabsList className={"flex w-full items-center"}>
-          {hasUiLibraries && <TabsTrigger value="library">{t("Library")}</TabsTrigger>}
-          <TabsTrigger value="core">{t("Blocks")}</TabsTrigger>
-          {hasPartialBlocks && <TabsTrigger value="partials">{t("Partials")}</TabsTrigger>}
-          {canImportHTML ? <TabsTrigger value="html">{t("Import")}</TabsTrigger> : null}
+        <TabsList className={`flex items-center ${fromSidebar ? "h-max w-max justify-start p-1" : "w-full"}`}>
+          {hasUiLibraries && (
+            <TabsTrigger value="library" className={fromSidebar ? "h-5 px-2 text-xs" : ""}>
+              {t("Library")}
+            </TabsTrigger>
+          )}
+          <TabsTrigger value="core" className={fromSidebar ? "h-5 px-2 text-xs" : ""}>
+            {t("Blocks")}
+          </TabsTrigger>
+          {hasPartialBlocks && (
+            <TabsTrigger value="partials" className={fromSidebar ? "h-5 px-2 text-xs" : ""}>
+              {t("Partials")}
+            </TabsTrigger>
+          )}
+          {canImportHTML ? (
+            <TabsTrigger value="html" className={fromSidebar ? "h-5 px-2 text-xs" : ""}>
+              {t("Import")}
+            </TabsTrigger>
+          ) : null}
           {map(addBlockAdditionalTabs, (tab) => (
-            <TabsTrigger key={`tab-add-block-${tab.id}`} value={tab.id}>
+            <TabsTrigger
+              key={`tab-add-block-${tab.id}`}
+              value={tab.id}
+              className={fromSidebar ? "h-5 px-2 text-xs" : ""}>
               {React.createElement(tab.tab)}
             </TabsTrigger>
           ))}
         </TabsList>
         <TabsContent value="core" className="h-full max-h-full flex-1 pb-20">
-          <div className="-mx-1.5 h-full max-h-full overflow-hidden">
-            <div className="mt-2 h-full w-full">
-              <DefaultChaiBlocks gridCols={"grid-cols-4"} parentId={parentId} position={position} />
+          <div className={`h-full max-h-full overflow-hidden`}>
+            <div className={`h-full w-full`}>
+              <DefaultChaiBlocks
+                gridCols={fromSidebar ? "grid-cols-2" : "grid-cols-4"}
+                parentId={parentId}
+                position={position}
+                disableBlockGroupsSidebar={fromSidebar}
+              />
             </div>
           </div>
         </TabsContent>
         {hasUiLibraries && (
           <TabsContent value="library" className="h-full max-h-full flex-1 pb-20">
-            <UILibrariesPanel parentId={parentId} position={position} />
+            <UILibrariesPanel fromSidebar={fromSidebar} parentId={parentId} position={position} />
           </TabsContent>
         )}
         {hasPartialBlocks && (
           <TabsContent value="partials" className="h-full max-h-full flex-1 pb-20">
-            <div className="-mx-1.5 h-full max-h-full overflow-hidden">
-              <div className="mt-2 h-full w-full">
-                <PartialBlocks gridCols={"grid-cols-4"} parentId={parentId} position={position} />
+            <div className="h-full max-h-full overflow-hidden">
+              <div className="h-full w-full">
+                <PartialBlocks
+                  gridCols={fromSidebar ? "grid-cols-2" : "grid-cols-4"}
+                  parentId={parentId}
+                  position={position}
+                  disableBlockGroupsSidebar={fromSidebar}
+                />
               </div>
             </div>
           </TabsContent>
         )}
         {canImportHTML ? (
-          <TabsContent value="html" className="h-full max-h-full flex-1 pb-20">
-            <ImportHTML parentId={parentId} position={position} />
+          <TabsContent value="html" className={`h-full max-h-full flex-1 pb-20 ${fromSidebar ? "" : ""}`}>
+            <ImportHTML parentId={parentId} position={position} fromSidebar={fromSidebar} />
           </TabsContent>
         ) : null}
         {map(addBlockAdditionalTabs, (tab) => (
           <TabsContent key={`panel-add-block-${tab.id}`} value={tab.id}>
-            {React.createElement(tab.tabContent, { close, parentId, position })}
+            {React.createElement(tab.tabContent, { close, parentId, position } as any)}
           </TabsContent>
         ))}
       </Tabs>

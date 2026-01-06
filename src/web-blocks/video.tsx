@@ -10,6 +10,7 @@ export type VideoBlockProps = {
   url: string;
   videoSource: "Custom" | "Youtube" | "Vimeo";
   sources: { srcsets: Array<{ url: string; width: number }> };
+  title: string;
 };
 
 const ControlsProp: any = {
@@ -99,7 +100,7 @@ const getEmbedURL = (url, controls) => {
  * It returns a div element with an iframe containing the video content.
  */
 const SupportedVideoSource = (props: ChaiBlockComponentProps<VideoBlockProps>) => {
-  const { url, blockProps, styles, controls, videoSource, inBuilder } = props;
+  const { url, blockProps, styles, controls, videoSource, inBuilder, title } = props;
 
   const embedURL = getEmbedURL(url, controls);
 
@@ -112,7 +113,7 @@ const SupportedVideoSource = (props: ChaiBlockComponentProps<VideoBlockProps>) =
             : `Provided ${videoSource} video link is invalid.`}
         </div>
       ) : (
-        <iframe width="100%" src={embedURL} {...pick(styles, "className")} />
+        <iframe width="100%" src={embedURL} title={title || "Video player"} {...pick(styles, "className")} />
       )}
       {inBuilder && <div {...blockProps} className="absolute top-0 h-full w-full" />}
     </div>
@@ -125,7 +126,7 @@ const SupportedVideoSource = (props: ChaiBlockComponentProps<VideoBlockProps>) =
  * @returns Custom mp4 video provider
  */
 const CustomVideoSource = (props: ChaiBlockComponentProps<VideoBlockProps>) => {
-  const { url, styles, controls, sources, poster, blockProps } = props;
+  const { url, styles, controls, sources, poster, blockProps, title } = props;
   let _poster = poster;
 
   const srcsets = [...(get(sources, "srcsets", []) || [])];
@@ -146,6 +147,7 @@ const CustomVideoSource = (props: ChaiBlockComponentProps<VideoBlockProps>) => {
         <video
           {...styles}
           {...blockProps}
+          title={title || "Video player"}
           key={JSON.stringify(sortedSources)}
           controls={get(controls, "controls", false)}
           autoPlay={get(controls, "autoplay", false)}
@@ -192,6 +194,11 @@ const Config = {
         default: "Custom",
         enum: ["Custom", "Youtube", "Vimeo"],
         title: "Video source",
+      },
+      title: {
+        type: "string",
+        title: "Video Title",
+        default: "Video player",
       },
     },
     allOf: [
@@ -263,7 +270,7 @@ const Config = {
       poster: { "ui:placeholder": "Enter poster URL" },
     },
   }),
-  i18nProps: ["url"],
+  i18nProps: ["url", "title"],
 };
 
 export { VideoBlock as Component, Config };

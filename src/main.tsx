@@ -13,6 +13,7 @@ async function enableMocking() {
 
 const ChaiBuilderDefault = lazy(() => import("@/Editor"));
 const Preview = lazy(() => import("@/Preview"));
+const ChaiBuilderCustom = lazy(() => import("@/EditorCustom"));
 
 const router = createBrowserRouter([
   {
@@ -20,9 +21,13 @@ const router = createBrowserRouter([
     element: <ChaiBuilderDefault />,
   },
   {
-    path: "/preview",
+    path: "/preview/*",
     element: <Preview />,
   },
+  {
+    path: "/custom",
+    element: <ChaiBuilderCustom />
+  }
 ]);
 
 // Register demo feature flags

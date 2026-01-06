@@ -1,5 +1,5 @@
 import { getDuplicatedBlocks } from "@/core/functions/blocks-fn";
-import { useBlocksStore, usePartailBlocksStore } from "@/core/hooks";
+import { useBlocksStore, usePartailBlocksStore, useBuilderProp } from "@/core/hooks";
 import { cutBlockIdsAtom } from "@/core/hooks/use-cut-blockIds";
 import { ChaiBlock } from "@/types/chai-block";
 import { atom, useAtom, useSetAtom } from "jotai";
@@ -27,6 +27,7 @@ export const useCopyBlocks = (): [
   const [ids, setIds] = useAtom(copiedBlockIdsAtom);
   const resetCutBlockIds = useSetAtom(cutBlockIdsAtom);
   const { getPartailBlocks } = usePartailBlocksStore();
+  const enableCopyToClipboard = useBuilderProp("flags.copyPaste", true);
 
   const hasPartialBlocks = useCallback(
     (blockIds: Array<string>) => {
@@ -76,6 +77,9 @@ export const useCopyBlocks = (): [
             return result;
           }),
         };
+        if (!enableCopyToClipboard) {
+          return;
+        }
         if (!navigator.clipboard) {
           toast.error("Clipboard not available.");
           return;

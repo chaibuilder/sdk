@@ -1,4 +1,4 @@
-import { chaiBuilderPropsAtom, chaiPageExternalDataAtom } from "@/core/atoms/builder";
+import { chaiBuilderPropsAtom, chaiDesignTokensAtom, chaiPageExternalDataAtom } from "@/core/atoms/builder";
 import { builderStore } from "@/core/atoms/store";
 import { selectedLibraryAtom } from "@/core/atoms/ui";
 import { CssThemeVariables } from "@/core/components/css-theme-var";
@@ -9,7 +9,7 @@ import { ChaiFeatureFlagsWidget } from "@/core/flags/flags-widget";
 import { setDebugLogs } from "@/core/functions/logging";
 import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
 import { defaultThemeValues } from "@/core/hooks/default-theme-options";
-import { useBuilderProp, useBuilderReset, useSavePage } from "@/core/hooks/index";
+import { useBuilderProp, useBuilderReset } from "@/core/hooks/index";
 import { useBroadcastChannel, useUnmountBroadcastChannel } from "@/core/hooks/use-broadcast-channel";
 import { useExpandTree } from "@/core/hooks/use-expand-tree";
 import { isPageLoadedAtom } from "@/core/hooks/use-is-page-loaded";
@@ -22,26 +22,14 @@ import { ScreenTooSmall } from "@/core/screen-too-small";
 import { ChaiBuilderEditorProps } from "@/types/index";
 import { ChaiBuilderThemeValues } from "@/types/types";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
-import { useIntervalEffect } from "@react-hookz/web";
 import { useAtom } from "jotai/index";
 import { each, noop, omit } from "lodash-es";
 import React, { useEffect, useMemo } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Toaster } from "sonner";
-
-const useAutoSave = () => {
-  const { savePage, saveState } = useSavePage();
-  const autoSave = useBuilderProp("autoSave", true);
-  const autoSaveInterval = useBuilderProp("autoSaveInterval", 60);
-  useIntervalEffect(
-    () => {
-      if (!autoSave) return;
-      if (saveState === "SAVED" || saveState === "SAVING") return;
-      savePage(true);
-    },
-    autoSave ? autoSaveInterval * 1000 : undefined,
-  );
-};
+import { useCheckStructure } from "../hooks/use-check-structure";
+import { ExportCodeModal } from "../modals/export-code-modal";
+import { useAutoSave } from "./use-auto-save";
 
 const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
   const [, setAllBlocks] = useBlocksStore();
@@ -55,18 +43,23 @@ const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
   useUnmountBroadcastChannel();
   const { postMessage } = useBroadcastChannel();
   const [, setIsPageLoaded] = useAtom(isPageLoadedAtom);
+  const runValidation = useCheckStructure();
 
   useEffect(() => {
     builderStore.set(
       // @ts-ignore
       chaiBuilderPropsAtom,
-      omit(props, ["blocks", "translations", "pageExternalData"]),
+      omit(props, ["blocks", "translations", "pageExternalData", "globalStyles"]),
     );
   }, [props]);
 
   useEffect(() => {
     builderStore.set(chaiPageExternalDataAtom, props.pageExternalData || {});
   }, [props.pageExternalData]);
+
+  useEffect(() => {
+    builderStore.set(chaiDesignTokensAtom, props.designTokens || {});
+  }, [props.designTokens]);
 
   useEffect(() => {
     setIsPageLoaded(false);
@@ -80,6 +73,7 @@ const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
       }
       reset();
       setIsPageLoaded(true);
+      runValidation(withDefaults);
     }, 400);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.blocks]);
@@ -116,10 +110,13 @@ const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
 const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   const RootLayoutComponent = useMemo(() => props.layout || RootLayout, [props.layout]);
   const builderTheme = useBuilderProp("builderTheme", defaultThemeValues);
+  const exportCodeEnabled = useBuilderProp("flags.exportCode", false);
   return (
     <>
+      {props.children}
       <CssThemeVariables theme={builderTheme as ChaiBuilderThemeValues} />
       <RootLayoutComponent />
+      {exportCodeEnabled && <ExportCodeModal />}
     </>
   );
 };

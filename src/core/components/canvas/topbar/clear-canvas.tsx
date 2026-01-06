@@ -16,7 +16,7 @@ import { EraserIcon } from "@radix-ui/react-icons";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
-export const ClearCanvas = () => {
+export const ClearCanvas = ({ children }: { children?: React.ReactNode   }) => {
   const { t } = useTranslation();
   const { setNewBlocks } = useBlocksStoreUndoableActions();
   const [, setIds] = useSelectedBlockIds();
@@ -31,9 +31,9 @@ export const ClearCanvas = () => {
     <div className="flex items-center">
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button size="sm" variant="ghost" className="flex items-center gap-x-1">
+          {children || <Button size="sm" variant="ghost" className="flex items-center">
             <EraserIcon /> {t("Clear")}
-          </Button>
+          </Button>}
         </AlertDialogTrigger>
         <AlertDialogContent className={"border-border"}>
           <AlertDialogHeader>

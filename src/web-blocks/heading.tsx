@@ -40,13 +40,13 @@ const Config = {
         type: "string",
         default: "Heading goes here",
         title: "Content",
-        ui: { "ui:widget": "textarea" },
+        ui: { "ui:widget": "textarea", "ui:rows": 3 },
       },
     },
   }),
   aiProps: ["content"],
   i18nProps: ["content"],
-  canAcceptBlock: (type) => type === "Span" || type === "Text",
+  canAcceptBlock: () => true,
 };
 
 export { HeadingBlock as Component, Config };

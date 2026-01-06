@@ -1,35 +1,38 @@
-import { lsBlocksAtom, lsThemeAtom } from "@/_demo/atoms-dev";
+import { lsBlocksAtom, lsDesignTokensAtom, lsThemeAtom } from "@/_demo/atoms-dev";
 import { defaultShadcnPreset } from "@/_demo/THEME_PRESETS";
-import { ChaiBlock, ChaiBuilderEditor, registerChaiSidebarPanel } from "@/core/main";
+import { ChaiBlock, ChaiBuilderEditor } from "@/core/main";
 import "@/index.css";
 import { SavePageData } from "@/types/chaibuilder-editor-props";
 import { loadWebBlocks } from "@/web-blocks";
-import { ChatBubbleIcon } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
-import { isArray, map, pick } from "lodash-es";
+import { isArray } from "lodash-es";
+import { toast } from "sonner";
 import { EXTERNAL_DATA } from "./_demo/EXTERNAL_DATA";
 import { PARTIALS } from "./_demo/PARTIALS";
-import { Button } from "./ui";
-import { extendChaiBuilder } from "./extentions";
+import Topbar from "./_demo/top-bar";
+import { registerChaiTopBar } from "./core/main";
 
 loadWebBlocks();
-extendChaiBuilder();
-
-registerChaiSidebarPanel("popover", {
-  button: () => (
-    <Button variant="ghost" size="icon">
-      <ChatBubbleIcon />
-    </Button>
-  ),
-  label: "Popover 2",
-  position: "bottom",
-});
+registerChaiTopBar(Topbar);
 
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
   const [theme, setTheme] = useAtom(lsThemeAtom);
+  const [designTokensValue, setDesignTokensValue] = useAtom(lsDesignTokensAtom);
   return (
     <ChaiBuilderEditor
+      designTokens={designTokensValue}
+      flags={{
+        librarySite: false,
+        copyPaste: true,
+        darkMode: false,
+        exportCode: true,
+        // dataBinding: false,
+        importHtml: true,
+        importTheme: false,
+        dragAndDrop: true,
+        designTokens: true,
+      }}
       gotoPage={(args) => {
         console.log("gotoPage", args);
       }}
@@ -41,24 +44,17 @@ function ChaiBuilderDefault() {
       themePresets={[{ shadcn_default: defaultShadcnPreset }]}
       theme={theme}
       autoSave={true}
-      autoSaveInterval={15}
       blocks={blocks}
-      onSave={async ({ blocks, theme, needTranslations }: SavePageData) => {
-        console.log("onSave", blocks, theme, needTranslations);
+      onSave={async ({ blocks, theme, needTranslations, designTokens }: SavePageData) => {
+        console.log("onSave", blocks, theme, needTranslations, designTokens);
         localStorage.setItem("chai-builder-blocks", JSON.stringify(blocks));
         localStorage.setItem("chai-builder-theme", JSON.stringify(theme));
+        localStorage.setItem("chai-builder-design-tokens", JSON.stringify(designTokens));
         setTheme(theme);
+        setDesignTokensValue(designTokens);
+        toast.success("Page saved successfully");
         await new Promise((resolve) => setTimeout(resolve, 100));
         return true;
-      }}
-      askAiCallBack={async (type: "styles" | "content", prompt: string, blocks: ChaiBlock[], lang: string = "") => {
-        console.log("askAiCallBack", type, prompt, blocks, lang);
-        return {
-          blocks: map(blocks, (b) => ({
-            ...pick(b, ["_id"]),
-          })),
-          usage: { completionTokens: 151, promptTokens: 227, totalTokens: 378 },
-        };
       }}
       getPartialBlockBlocks={async (partialBlockKey: string) => {
         const blocks = PARTIALS[partialBlockKey] ?? PARTIALS["header"];
@@ -115,7 +111,7 @@ function ChaiBuilderDefault() {
           setTimeout(
             () =>
               resolve({
-                items: Array.from({ length: 10 }, (_, i) => ({
+                items: Array.from({ length: 2 }, (_, i) => ({
                   name: `Promotion ${i + 1}`,
                   date: new Date(Date.now() + i * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
                   image: `https://picsum.photos/500/300`,

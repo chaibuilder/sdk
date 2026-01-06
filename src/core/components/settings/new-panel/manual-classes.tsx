@@ -1,29 +1,44 @@
-import { AskAIStyles } from "@/core/components/settings/ask-ai-style";
+import { chaiDesignTokensAtom } from "@/core/atoms/builder";
 import { useFuseSearch } from "@/core/constants/CLASSES_LIST";
+import { DESIGN_TOKEN_PREFIX } from "@/core/constants/STRINGS";
 import {
   useAddClassesToBlocks,
   useBuilderProp,
   useRemoveClassesFromBlocks,
+  useRightPanel,
   useSelectedBlock,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
 } from "@/core/hooks";
 import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
 import { Button } from "@/ui/shadcn/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/ui/popover";
+import { Label } from "@/ui/shadcn/components/ui/label";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
-import { CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
-import { first, get, isEmpty, map } from "lodash-es";
-import { MagicWandIcon } from "@radix-ui/react-icons";
+import { CheckIcon, CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
+import { useAtomValue } from "jotai";
+import { first, get, isEmpty, isFunction, map } from "lodash-es";
 import { useMemo, useRef, useState } from "react";
 import Autosuggest from "react-autosuggest";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { DesignTokensIcon } from "../../sidepanels/panels/design-tokens/DesignTokensIcon";
 
-export function ManualClasses() {
+export function ManualClasses({
+  from = "default",
+  classFromProps,
+  onAddNew,
+  onRemove,
+}: {
+  from?: "default" | "designToken";
+  classFromProps?: string;
+  onAddNew?: any;
+  onRemove?: any;
+}) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [editingClass, setEditingClass] = useState("");
+  const [isCopied, setIsCopied] = useState(false);
   const [editingClassIndex, setEditingClassIndex] = useState(-1);
+  const [, setRightPanel] = useRightPanel();
   const fuse = useFuseSearch();
   const { t } = useTranslation();
   const [styleBlock] = useSelectedStylingBlocks();
@@ -31,29 +46,91 @@ export function ManualClasses() {
   const addClassesToBlocks = useAddClassesToBlocks();
   const removeClassesFromBlocks = useRemoveClassesFromBlocks();
   const [selectedIds] = useSelectedBlockIds();
-  const askAiCallBack = useBuilderProp("askAiCallBack", null);
   const [newCls, setNewCls] = useState("");
+  const designTokens = useAtomValue(chaiDesignTokensAtom);
   const prop = first(styleBlock)?.prop as string;
   const { classes: classesString } = getSplitChaiClasses(get(block, prop, ""));
-  const classes = classesString.split(" ").filter((cls) => !isEmpty(cls));
+  const classesSource = from === "default" ? classesString : (classFromProps ?? "");
+  const classes = classesSource.split(" ").filter((cls) => !isEmpty(cls));
+
+  // Sort classes to ensure design tokens ({DESIGN_TOKEN_PREFIX{id}) are always first
+  const sortedClasses = useMemo(() => {
+    return [...classes].sort((a, b) => {
+      // Design tokens ({DESIGN_TOKEN_PREFIX}-{id}) should come first
+      const aIsDesignToken = a.startsWith(DESIGN_TOKEN_PREFIX);
+      const bIsDesignToken = b.startsWith(DESIGN_TOKEN_PREFIX);
+
+      if (aIsDesignToken && !bIsDesignToken) return -1;
+      if (!aIsDesignToken && bIsDesignToken) return 1;
+
+      // If both are design tokens or both are regular classes, maintain original order
+      return 0;
+    });
+  }, [classes]);
+  const enableCopyToClipboard = useBuilderProp("flags.copyPaste", true);
+
+  // Helper function to get display name for classes
+  const getDisplayName = (cls: string) => {
+    if (cls.startsWith(DESIGN_TOKEN_PREFIX)) {
+      const token = designTokens[cls];
+      return token ? token.name : cls;
+    }
+    return cls;
+  };
+
+  // Helper function to convert design token names back to DESIGN_TOKEN_PREFIX-{id} format
+  const convertToStorageFormat = (className: string) => {
+    // Check if this className matches any design token name
+    const tokenEntry = Object.entries(designTokens).find(([_, token]) => token.name === className);
+    if (tokenEntry) {
+      return `${tokenEntry[0]}`; // Return DESIGN_TOKEN_PREFIX-{id} format
+    }
+    return className; // Return as-is if not a design token
+  };
 
   const addNewClasses = () => {
     const fullClsNames: string[] = newCls
       .trim()
-      .toLowerCase()
       .replace(/ +(?= )/g, "")
-      .split(" ");
+      .split(" ")
+      .map(convertToStorageFormat); // Convert design token names to DESIGN_TOKEN_PREFIX-{id} format
 
-    addClassesToBlocks(selectedIds, fullClsNames, true);
+    if (from === "designToken") {
+      if (isFunction(onAddNew)) onAddNew(fullClsNames);
+    } else {
+      addClassesToBlocks(selectedIds, fullClsNames, true);
+    }
     setNewCls("");
   };
 
   const [suggestions, setSuggestions] = useState<any[]>([]);
-
+  const designTokensEnabled = useBuilderProp("flags.designTokens", false);
   const handleSuggestionsFetchRequested = ({ value }: any) => {
     const search = value.trim().toLowerCase();
     const matches = search.match(/.+:/g);
     let classMatches = [];
+
+    // Get design token suggestions
+    let designTokenSuggestions = [];
+    if (designTokensEnabled) {
+      if (search === "") {
+        // Show all design tokens when no search term
+        designTokenSuggestions = Object.entries(designTokens).map(([id, token]) => ({
+          name: token.name,
+          id: `${id}`,
+          isDesignToken: true,
+        }));
+      } else {
+        // Filter design tokens by search term
+        designTokenSuggestions = Object.entries(designTokens)
+          .filter(([_, token]) => token.name.toLowerCase().includes(search))
+          .map(([id, token]) => ({
+            name: token.name,
+            id: `${id}`,
+            isDesignToken: true,
+          }));
+      }
+    }
     if (matches && matches.length > 0) {
       const [prefix] = matches;
       const searchWithoutPrefix = search.replace(prefix, "");
@@ -65,16 +142,26 @@ export function ManualClasses() {
     } else {
       classMatches = fuse.search(search);
     }
-    return setSuggestions(map(classMatches, "item"));
+
+    // Combine design tokens with regular class suggestions, design tokens first
+    const allSuggestions = [...designTokenSuggestions, ...map(classMatches, "item")];
+    return setSuggestions(allSuggestions);
   };
 
   const handleSuggestionsClearRequested = () => {
     setSuggestions([]);
   };
 
-  const getSuggestionValue = (suggestion: any) => suggestion.name;
+  const getSuggestionValue = (suggestion: any) => {
+    return suggestion.name; // Always return the display name
+  };
 
-  const renderSuggestion = (suggestion: any) => <div className="rounded-md p-1">{suggestion.name}</div>;
+  const renderSuggestion = (suggestion: any) => (
+    <div className="flex items-center gap-2 rounded-md p-1">
+      {suggestion.isDesignToken && <DesignTokensIcon className="h-4 w-4 text-gray-600" />}
+      <span>{suggestion.name}</span>
+    </div>
+  );
 
   const inputProps = useMemo(
     () => ({
@@ -92,22 +179,33 @@ export function ManualClasses() {
       },
       onKeyDown: (e: any) => {
         if (e.key === "Enter" && newCls.trim() !== "") {
+          e.preventDefault();
           addNewClasses();
+        }
+        if (e.key === "Tab" && suggestions.length > 0) {
+          e.preventDefault();
+          // Simulate ArrowDown to highlight
+          const downEvent = new KeyboardEvent("keydown", {
+            key: "ArrowDown",
+            code: "ArrowDown",
+            keyCode: 40,
+            bubbles: true,
+          });
+          e.target.dispatchEvent(downEvent);
         }
       },
       onChange: (_e: any, { newValue }: any) => setNewCls(newValue),
-      className: "w-full rounded-md text-xs px-2 hover:outline-0 bg-background border-border py-1",
+      className: `w-full rounded-md text-xs px-2 hover:outline-0 bg-background border-border ${from === "default" ? "py-1" : "py-1.5"}`,
     }),
-    [newCls, t, inputRef],
+    [newCls, t, inputRef, suggestions.length],
   );
 
   const handleEditClass = (clsToRemove: string) => {
-    debugger;
     const fullClsNames: string[] = editingClass
       .trim()
-      .toLowerCase()
       .replace(/ +(?= )/g, "")
-      .split(" ");
+      .split(" ")
+      .map(convertToStorageFormat); // Convert design token names to DESIGN_TOKEN_PREFIX-{id} format
     removeClassesFromBlocks(selectedIds, [clsToRemove]);
     addClassesToBlocks(selectedIds, fullClsNames, true);
     setEditingClass("");
@@ -121,35 +219,48 @@ export function ManualClasses() {
     }
     navigator.clipboard.writeText(classes.join(" "));
     toast.success(t("Classes copied to clipboard"));
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
   };
 
   return (
-    <div className={`flex w-full flex-col gap-y-1.5 border-b border-border pb-4`}>
+    <div
+      className={`flex w-full flex-col gap-y-1.5 pb-4 ${from === "designToken" ? "border-none" : "border-b border-border"}`}>
       <div className="flex items-center justify-between gap-x-2">
-        <div className="flex items-center gap-x-2 text-muted-foreground">
-          <span>{t("Classes")}</span>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <CopyIcon onClick={onClickCopy} className={"cursor-pointer"} />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>{t("Copy classes to clipboard")}</p>
-            </TooltipContent>
-          </Tooltip>
+        <div className="flex w-full items-center justify-between gap-x-2 text-muted-foreground">
+          <span className="flex items-center gap-x-1">
+            <span>
+              {from === "designToken" ? (
+                <Label className="text-sm font-medium leading-tight text-gray-900 peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                  {t("Token Classes")}
+                </Label>
+              ) : designTokensEnabled ? (
+                t("Styles")
+              ) : (
+                t("Classes")
+              )}
+            </span>
+            {enableCopyToClipboard && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  {isCopied ? (
+                    <CheckIcon className="rounded-full border border-green-500 bg-green-500/10 text-green-500" />
+                  ) : (
+                    <CopyIcon onClick={onClickCopy} className={"cursor-pointer"} />
+                  )}
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{t("Copy classes to clipboard")}</p>
+                </TooltipContent>
+              </Tooltip>
+            )}
+          </span>
+          {designTokensEnabled && from === "default" && (
+            <Button variant="link" className="underline" onClick={() => setRightPanel("design-tokens")}>
+              {t("Design Tokens")}
+            </Button>
+          )}
         </div>
-        {askAiCallBack ? (
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="default" className="h-6 w-fit" size="sm">
-                <MagicWandIcon className="h-4 w-4" />
-                <span className="ml-2">{t("Ask AI")}</span>
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent side="left" className="p-2">
-              <AskAIStyles blockId={block?._id} />
-            </PopoverContent>
-          </Popover>
-        ) : null}
       </div>
       <div className={"relative flex items-center gap-x-3"}>
         <div className="relative flex w-full items-center gap-x-3">
@@ -160,6 +271,16 @@ export function ManualClasses() {
             getSuggestionValue={getSuggestionValue}
             renderSuggestion={renderSuggestion}
             inputProps={inputProps}
+            onSuggestionSelected={(_e, { suggestionValue }) => {
+              const storageFormat = convertToStorageFormat(suggestionValue);
+              const fullClsNames = [storageFormat];
+              if (from === "designToken") {
+                if (isFunction(onAddNew)) onAddNew(fullClsNames);
+              } else {
+                addClassesToBlocks(selectedIds, fullClsNames, true);
+              }
+              setNewCls("");
+            }}
             containerProps={{
               className: "relative h-8 w-full gap-y-1 py-1 border-border text-xs",
             }}
@@ -173,7 +294,7 @@ export function ManualClasses() {
         </div>
         <Button
           variant="outline"
-          className="h-6 border-border"
+          className={`border-border ${from === "default" ? "h-6" : "mt-1 h-7"}`}
           onClick={addNewClasses}
           disabled={newCls.trim() === ""}
           size="sm">
@@ -181,7 +302,7 @@ export function ManualClasses() {
         </Button>
       </div>
       <div className="flex w-full flex-wrap gap-2 overflow-x-hidden">
-        {classes.map((cls: string, index: number) =>
+        {sortedClasses.map((cls: string, index: number) =>
           editingClassIndex === index ? (
             <input
               ref={inputRef}
@@ -207,8 +328,13 @@ export function ManualClasses() {
             <div key={cls} className="group relative flex max-w-[260px] items-center">
               <button
                 onDoubleClick={() => {
-                  setNewCls(cls);
-                  removeClassesFromBlocks(selectedIds, [cls]);
+                  setNewCls(getDisplayName(cls));
+                  if (from === "default") {
+                    removeClassesFromBlocks(selectedIds, [cls]);
+                  } else {
+                    if (isFunction(onRemove)) onRemove(cls);
+                    setNewCls(cls);
+                  }
                   setTimeout(() => {
                     if (inputRef.current) {
                       inputRef.current.focus();
@@ -218,26 +344,36 @@ export function ManualClasses() {
                 className="flex h-max cursor-default items-center gap-x-1 truncate break-words rounded bg-gray-200 py-px pl-0.5 pr-1 text-[11px] text-gray-600 dark:bg-gray-800 dark:text-gray-300">
                 <div className="z-10 flex h-full w-max items-center justify-center">
                   <Cross2Icon
-                    onClick={() => removeClassesFromBlocks(selectedIds, [cls], true)}
+                    onClick={() => {
+                      if (from === "default") {
+                        removeClassesFromBlocks(selectedIds, [cls]);
+                      } else if (isFunction(onRemove)) {
+                        onRemove(cls);
+                      }
+                    }}
                     className="hidden h-max w-3.5 cursor-pointer rounded bg-gray-100 p-0.5 text-red-500 hover:bg-gray-50 group-hover:block"
                   />
-                  <svg
-                    className="h-3.5 w-3.5 group-hover:hidden"
-                    fill="rgba(55, 65, 81, 0.4)"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlSpace="preserve">
-                    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                    <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
-                    <g id="SVGRepo_iconCarrier">
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M12 6.036c-2.667 0-4.333 1.325-5 3.976 1-1.325 2.167-1.822 3.5-1.491.761.189 1.305.738 1.906 1.345C13.387 10.855 14.522 12 17 12c2.667 0 4.333-1.325 5-3.976-1 1.325-2.166 1.822-3.5 1.491-.761-.189-1.305-.738-1.907-1.345-.98-.99-2.114-2.134-4.593-2.134zM7 12c-2.667 0-4.333 1.325-5 3.976 1-1.326 2.167-1.822 3.5-1.491.761.189 1.305.738 1.907 1.345.98.989 2.115 2.134 4.594 2.134 2.667 0 4.333-1.325 5-3.976-1 1.325-2.167 1.822-3.5 1.491-.761-.189-1.305-.738-1.906-1.345C10.613 13.145 9.478 12 7 12z"></path>
-                    </g>
-                  </svg>
+                  {cls.startsWith(DESIGN_TOKEN_PREFIX) ? (
+                    <DesignTokensIcon className="text-[rgba(55, 65, 81, 0.4)] h-3.5 w-3.5 group-hover:hidden" />
+                  ) : (
+                    <svg
+                      className="h-3.5 w-3.5 group-hover:hidden"
+                      fill="rgba(55, 65, 81, 0.4)"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlSpace="preserve">
+                      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                      <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
+                      <g id="SVGRepo_iconCarrier">
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M12 6.036c-2.667 0-4.333 1.325-5 3.976 1-1.325 2.167-1.822 3.5-1.491.761.189 1.305.738 1.906 1.345C13.387 10.855 14.522 12 17 12c2.667 0 4.333-1.325 5-3.976-1 1.325-2.166 1.822-3.5 1.491-.761-.189-1.305-.738-1.907-1.345-.98-.99-2.114-2.134-4.593-2.134zM7 12c-2.667 0-4.333 1.325-5 3.976 1-1.326 2.167-1.822 3.5-1.491.761.189 1.305.738 1.907 1.345.98.989 2.115 2.134 4.594 2.134 2.667 0 4.333-1.325 5-3.976-1 1.325-2.167 1.822-3.5 1.491-.761-.189-1.305-.738-1.906-1.345C10.613 13.145 9.478 12 7 12z"></path>
+                      </g>
+                    </svg>
+                  )}
                 </div>
-                <div>{cls}</div>
+                <div>{getDisplayName(cls)}</div>
               </button>
             </div>
           ),

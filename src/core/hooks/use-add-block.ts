@@ -5,8 +5,12 @@ import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import { ChaiBlock } from "@/types/chai-block";
 import { CoreBlock } from "@/types/core-block";
 import { getDefaultBlockProps } from "@chaibuilder/runtime";
-import { filter, find, first, has } from "lodash-es";
+import { filter, find, first, forEach, has } from "lodash-es";
 import { useCallback } from "react";
+
+// Delay before selecting a newly added block to ensure the block is rendered in the DOM
+// and the state has been updated before attempting to highlight it
+const BLOCK_SELECTION_DELAY_MS = 100;
 
 type AddBlocks = {
   addCoreBlock: any;
@@ -36,6 +40,9 @@ export const useAddBlock = (): AddBlocks => {
       if (parentId) {
         parentBlock = find(allBlocks, { _id: parentId }) as ChaiBlock;
         blocks[0]._parent = parentId;
+        forEach(blocks, (block) => {
+          if (!block?._parent) block._parent = parentId;
+        });
         parentBlockId = parentId;
       }
 
@@ -85,7 +92,7 @@ export const useAddBlock = (): AddBlocks => {
       const newBlocks: ChaiBlock[] = [newBlock];
 
       addBlocks(newBlocks, parentBlockId, position);
-      setSelected([newBlock._id]);
+      setTimeout(() => setSelected([newBlock._id]), BLOCK_SELECTION_DELAY_MS);
       return newBlock;
     },
     [addBlocks, addPredefinedBlock, allBlocks, setSelected],

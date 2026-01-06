@@ -1,6 +1,5 @@
 // @ts-nochecks
 
-import { canvasIframeAtom } from "@/core/atoms/ui";
 import { BlockSelectionHighlighter } from "@/core/components/canvas/block-floating-actions";
 import { IframeInitialContent } from "@/core/components/canvas/IframeInitialContent";
 import { KeyboardHandler } from "@/core/components/canvas/keyboar-handler";
@@ -12,11 +11,12 @@ import { StaticBlocksRenderer } from "@/core/components/canvas/static/static-blo
 import { useCanvasScale } from "@/core/components/canvas/static/use-canvas-scale";
 import { ChaiFrame } from "@/core/frame";
 import { useBuilderProp, useCanvasDisplayWidth, useHighlightBlockId } from "@/core/hooks";
+import { useCanvasIframe } from "@/core/hooks/use-canvas-iframe";
 import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
-import { useAtom } from "jotai";
 import { isEmpty } from "lodash-es";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Provider } from "react-wrap-balancer";
+import { useDragAndDrop, useDropIndicator } from "../dnd/drag-and-drop/hooks";
 import { CanvasEventsWatcher } from "./canvas-events-watcher";
 
 const StaticCanvas = () => {
@@ -26,9 +26,11 @@ const StaticCanvas = () => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [dimension, setDimension] = useState({ width: 0, height: 0 });
   const scale = useCanvasScale(dimension);
-  const [, setCanvasIframe] = useAtom(canvasIframeAtom);
+  const [, setCanvasIframe] = useCanvasIframe();
   const loadingCanvas = useBuilderProp("loading", false);
   const htmlDir = useBuilderProp("htmlDir", "ltr");
+  const { onDragOver, onDrop, onDragEnd } = useDragAndDrop();
+  const dropIndicator = useDropIndicator();
 
   const setNewWidth = useCallback(
     (newWidth: number) => {
@@ -54,6 +56,9 @@ const StaticCanvas = () => {
       <div
         onMouseLeave={() => setTimeout(() => highlight(""), 300)}
         className="relative mx-auto h-full w-full overflow-hidden"
+        onDragOver={onDragOver}
+        onDrop={onDrop}
+        onDragEnd={onDragEnd}
         ref={wrapperRef}>
         {/*// @ts-ignore*/}
         <ChaiFrame
@@ -76,16 +81,25 @@ const StaticCanvas = () => {
                 <StaticBlocksRenderer />
               )}
               <AddBlockAtBottom />
-              <br />
-              <br />
-              <br />
             </Canvas>
             <CanvasEventsWatcher />
           </Provider>
-          <div
-            id="placeholder"
-            className="pointer-events-none absolute z-[99999] max-w-full bg-green-500 transition-transform"
-          />
+          {dropIndicator.isVisible && (
+            <div
+              id="placeholder"
+              className={`pointer-events-none absolute z-[99999] max-w-full transition-all duration-150 ${
+                dropIndicator.isEmpty
+                  ? "bg-purple-500/10 outline-dashed outline-2 -outline-offset-2 outline-purple-500"
+                  : "rounded-full bg-green-500"
+              }`}
+              style={{
+                top: dropIndicator.top,
+                left: dropIndicator.left,
+                width: dropIndicator.width,
+                height: dropIndicator.height,
+              }}
+            />
+          )}
         </ChaiFrame>
       </div>
     </ResizableCanvasWrapper>

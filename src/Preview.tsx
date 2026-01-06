@@ -1,4 +1,4 @@
-import { lsBlocksAtom, lsThemeAtom } from "@/_demo/atoms-dev";
+import { lsBlocksAtom, lsDesignTokensAtom, lsThemeAtom } from "@/_demo/atoms-dev";
 import registerCustomBlocks from "@/_demo/blocks";
 import { getChaiThemeCssVariables, getStylesForBlocks, RenderChaiBlocks } from "@/render";
 import { getMergedPartialBlocks } from "@/render/functions";
@@ -7,6 +7,8 @@ import { useAtom } from "jotai";
 import { useEffect, useMemo, useState } from "react";
 import { EXTERNAL_DATA } from "./_demo/EXTERNAL_DATA";
 import { PARTIALS } from "./_demo/PARTIALS";
+import "./core/index.css";
+import { applyDesignTokens } from "./render/apply-design-tokens";
 import { ChaiBuilderThemeValues } from "./types/types";
 
 loadWebBlocks();
@@ -15,12 +17,13 @@ registerCustomBlocks();
 function Preview() {
   const [blocks] = useAtom(lsBlocksAtom);
   const [theme] = useAtom(lsThemeAtom);
+  const [designTokens] = useAtom(lsDesignTokensAtom);
 
   const [allStyles, setStyles] = useState("");
 
   useEffect(() => {
     (async () => {
-      const styles = await getStylesForBlocks(blocks);
+      const styles = await getStylesForBlocks(applyDesignTokens(blocks, designTokens), true);
       setStyles(styles);
     })();
   }, [blocks]);

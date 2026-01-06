@@ -72,10 +72,10 @@ const Config = {
   group: "basic",
   ...registerChaiBlockSchema({
     properties: {
-      styles: StylesProp(""),
+      styles: StylesProp("block"),
       content: {
         type: "string",
-        default: "Link goes here",
+        default: "Link text goes here",
         title: "Content",
       },
       link: {

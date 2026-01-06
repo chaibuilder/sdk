@@ -1,6 +1,8 @@
+import { StructureRule } from "@/core/hooks/structure-rules";
 import { ChaiBlock } from "@/types/chai-block";
 import React from "react";
 import { ChaiCollectoin } from "./collections";
+import { DesignTokens, SiteWideUsage } from "./types";
 
 export type ChaiLibraryBlock<T = Record<string, any>> = {
   id: string;
@@ -51,9 +53,9 @@ export type SavePageData = {
   blocks: ChaiBlock[];
   theme?: ChaiThemeValues;
   needTranslations?: boolean;
+  designTokens: DesignTokens;
 };
 
-type TimeInSeconds = number;
 export type AskAiResponse = {
   blocks?: Array<{ _id: string } & Partial<ChaiBlock>>;
   usage?: Record<any, number>;
@@ -106,6 +108,7 @@ export type ChaiThemeValues = {
 };
 
 export interface ChaiBuilderEditorProps {
+  children?: React.ReactNode;
   /**
    * Goto page callback
    */
@@ -194,7 +197,7 @@ export interface ChaiBuilderEditorProps {
   /**
    * Auto save interval in seconds
    */
-  autoSaveInterval?: TimeInSeconds;
+  autoSaveActionsCount?: number;
   /**
    * Breakpoints
    */
@@ -209,16 +212,6 @@ export interface ChaiBuilderEditorProps {
    * Locale
    */
   locale?: string;
-
-  /**
-   * Dark mode
-   */
-  darkMode?: boolean;
-
-  /**
-   * Import HTML support
-   */
-  importHTMLSupport?: boolean;
 
   /**
    * Ask AI callback
@@ -293,4 +286,32 @@ export interface ChaiBuilderEditorProps {
    * Get Block Async Props
    */
   getBlockAsyncProps?: (args: { block: ChaiBlock }) => Promise<{ [key: string]: any }>;
+
+  /**
+   * temporary props. Not to be used in production
+   */
+  flags?: {
+    librarySite?: boolean;
+    copyPaste?: boolean;
+    exportCode?: boolean;
+    darkMode?: boolean;
+    dataBinding?: boolean;
+    importHtml?: boolean;
+    importTheme?: boolean;
+    gotoSettings?: boolean;
+    dragAndDrop?: boolean;
+    validateStructure?: boolean;
+    designTokens?: boolean;
+  };
+
+  structureRules?: StructureRule[];
+
+  designTokens?: DesignTokens;
+
+  siteWideUsage?: SiteWideUsage;
+
+  /**
+   * Screen to small message component
+   */
+  smallScreenComponent?: ReactComponentType;
 }

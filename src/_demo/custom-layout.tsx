@@ -1,6 +1,8 @@
 "use client";
 
 import { BlockAttributesEditor } from "@/core/components/settings/new-panel/block-attributes-editor";
+import { CHAI_BUILDER_EVENTS } from "@/core/events";
+import { usePubSub, useSelectedBlockIds } from "@/core/hooks";
 import {
   ChaiBlockPropsEditor,
   ChaiBlockStyleEditor,
@@ -12,9 +14,9 @@ import {
 } from "@/core/main";
 import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
 import { TooltipProvider } from "@/ui/shadcn/components/ui/tooltip";
+import { ChevronDownIcon, GearIcon, ImageIcon, StackIcon, TextIcon } from "@radix-ui/react-icons";
 import { motion } from "framer-motion";
-import { ChevronDownIcon, ImageIcon, StackIcon, GearIcon, TextIcon } from "@radix-ui/react-icons";
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const BlockEditor = () => {
@@ -44,12 +46,40 @@ const BlockEditor = () => {
 export default function CustomLayout() {
   const [activePanelIndex, setActivePanelIndex] = useState<number | null>(0);
   const { t } = useTranslation();
+  const [, setSelectedIds] = useSelectedBlockIds();
+
+  useEffect(() => {
+    setTimeout(() => {
+      const canvasIframe = document.getElementById("canvas-iframe") as HTMLIFrameElement;
+      if (!canvasIframe) return;
+      const iframeDoc = canvasIframe.contentDocument || canvasIframe.contentWindow?.document;
+      if (!iframeDoc) return;
+      // Inject CSS inside iframe
+      const style = iframeDoc.createElement("style");
+      style.innerHTML = `
+        /* Match by ID */
+        #active-inline-editing-element {
+          outline: 2px solid #60A5FA !important;  /* blue-300 */
+          outline-offset: 2px !important;
+        }
+      `;
+      iframeDoc.head.appendChild(style);
+    }, 400);
+  }, []);
+
+  // PubSub listener for GOTO_BLOCK_SETTINGS event
+  usePubSub(CHAI_BUILDER_EVENTS.GOTO_BLOCK_SETTINGS, (id?: string) => {
+    if (id) {
+      setSelectedIds([id]);
+      setActivePanelIndex(1);
+    }
+  });
 
   const menuItems = [
-    { icon: <StackIcon className="w-6 h-6" />, label: "Outline", component: ChaiOutline },
-    { icon: <GearIcon className="w-6 h-6" />, label: "Settings", component: BlockEditor },
-    { icon: <TextIcon className="w-6 h-6" />, label: "Typography", component: () => <div>Typography</div> },
-    { icon: <ImageIcon className="w-6 h-6" />, label: "Images", component: () => <div>Images</div> },
+    { icon: <StackIcon className="h-6 w-6" />, label: "Outline", component: ChaiOutline },
+    { icon: <GearIcon className="h-6 w-6" />, label: "Settings", component: BlockEditor },
+    { icon: <TextIcon className="h-6 w-6" />, label: "Typography", component: () => <div>Typography</div> },
+    { icon: <ImageIcon className="h-6 w-6" />, label: "Images", component: () => <div>Images</div> },
   ];
 
   const handleMenuItemClick = (index: number) => {
@@ -63,7 +93,10 @@ export default function CustomLayout() {
         <div className="flex h-16 items-center justify-between bg-neutral-900 px-4 text-white">
           <h1 className="ml-4 font-bold">Custom Layout Example</h1>
           <div className={`flex items-center space-x-2`}>
-            <ChaiScreenSizes />
+            <ChaiScreenSizes
+              buttonClass={"text-yellow-500 hover:text-yellow-500"}
+              activeButtonClass={"text-green-500 hover:text-green-500"}
+            />
             |
             <ChaiUndoRedo />
           </div>

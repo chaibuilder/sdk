@@ -4,9 +4,11 @@ Chai Builder is an Open Source Low Code React + Tailwind CSS Visual Builder.
 It allows you to create web pages visually by dragging and dropping elements onto the canvas. 
 It is a simple React component that renders a full-fledged visual builder into any React application. 
 
+Docs: https://docs.chaibuilder.com/
+
 Demo: https://chaibuilder-sdk.vercel.app/
 
-NextJS Starter: https://github.com/chaibuilder/chaibuilder-nextjs
+![CHAI BUILDER](https://fldwljgzcktqnysdkxnn.supabase.co/storage/v1/object/public/dam-assets/assets/chai-builder.jpg)
 
 ---
 
@@ -18,7 +20,7 @@ npm install @chaibuilder/sdk
 ```
 
 Step 2: Add a custom tailwind config.
-Create a new file: `tailwind.chaibuilder.config.ts`. <br /> Pass the path to your source files.
+Create a new file: `tailwind.chaibuilder.config.ts`.  <br /> Pass the path to your source files.
 ```tsx
 import { getChaiBuilderTailwindConfig } from "@chaibuilder/sdk/tailwind";
 export default getChaiBuilderTailwindConfig(["./src/**/*.{js,ts,jsx,tsx}"]);
@@ -68,7 +70,7 @@ export default () => {
 ## Support
 If you like the project, you can assist us in expanding. ChaiBuilder is a collaborative endeavor crafted by developers in their free time. We value every contribution, no matter how modest, as each one represents a significant step forward in various ways, particularly in fueling our drive to enhance this tool continually.
 
-<a href="https://www.buymeacoffee.com/chaibuilder" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 30px !important;width: 117px !important;" ></a>
+<a href="https://www.buymeacoffee.com/chaibuilder" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 25px !important;width: 117px !important;" ></a>
 
 
 ## Acknowledgments

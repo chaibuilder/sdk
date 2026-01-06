@@ -1,9 +1,11 @@
 import AddBlockDropdown from "@/core/components/canvas/add-block-placements";
-import { draggedBlockAtom } from "@/core/components/canvas/dnd/atoms";
+import { useDragAndDrop, useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 import BlockController from "@/core/components/sidepanels/panels/add-blocks/block-controller";
+import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useFrame } from "@/core/frame/frame-context";
 import { canDeleteBlock, canDuplicateBlock } from "@/core/functions/block-helpers";
 import {
+  useBuilderProp,
   useDuplicateBlocks,
   useHighlightBlockId,
   useInlineEditing,
@@ -12,49 +14,24 @@ import {
   useSelectedBlock,
   useSelectedBlockIds,
   useSelectedStylingBlocks,
+  useSidebarActivePanel,
 } from "@/core/hooks";
 import { PERMISSIONS } from "@/core/main";
+import { pubsub } from "@/core/pubsub";
 import { ChaiBlock } from "@/types/common";
 import { flip, limitShift, size } from "@floating-ui/dom";
 import { shift, useFloating } from "@floating-ui/react-dom";
 import { ArrowUpIcon, CopyIcon, DragHandleDots2Icon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
 import { useResizeObserver } from "@react-hookz/web";
-import { useFeature } from "flagged";
-import { useAtom } from "jotai";
-import { first, get, isEmpty, pick } from "lodash-es";
+import { first, get, isEmpty } from "lodash-es";
 import { useEffect, useState } from "react";
+import { AiIcon } from "../ai/ai-icon";
+import { GotoSettingsIcon } from "./goto-settings-icon";
 import { getElementByDataBlockId } from "./static/chai-canvas";
-
-/**
- * @param block
- * @param label
- */
-const BlockActionLabel = ({ block, label }: any) => {
-  const [, setSelected] = useSelectedBlockIds();
-  const [, setHighlighted] = useHighlightBlockId();
-  const [, setDraggedBlock] = useAtom(draggedBlockAtom);
-  const dnd = useFeature("dnd");
-  return (
-    <div
-      className="mr-10 flex cursor-default items-center space-x-1 px-1"
-      draggable={dnd ? "true" : "false"}
-      onDragStart={(ev) => {
-        ev.dataTransfer.setData("text/plain", JSON.stringify(pick(block, ["_id", "_type", "_name"])));
-        //@ts-ignore
-        setDraggedBlock(block);
-        setTimeout(() => {
-          setSelected([]);
-          setHighlighted(null);
-        }, 200);
-      }}>
-      <DragHandleDots2Icon />
-      {label}
-    </div>
-  );
-};
 
 type BlockActionProps = {
   block: ChaiBlock | null;
+  isDragging: boolean;
   selectedBlockElement: HTMLElement | null;
 };
 const getElementByStyleId = (doc: any, styleId: string): HTMLElement =>
@@ -66,6 +43,9 @@ export const BlockSelectionHighlighter = () => {
   const [stylingBlocks] = useSelectedStylingBlocks();
   const [selectedElements, setSelectedElements] = useState<HTMLElement[]>([]);
   const [, setSelectedStyleElements] = useState<HTMLElement[] | null[]>([]);
+  const { onDragStart, onDragEnd, isDragging } = useDragAndDrop();
+  const [dragging, setDragging] = useState(null);
+  const isDragAndDropEnabled = useIsDragAndDropEnabled();
 
   const isInViewport = (element: HTMLElement, offset = 0) => {
     const { top } = element.getBoundingClientRect();
@@ -99,10 +79,27 @@ export const BlockSelectionHighlighter = () => {
     }
   }, [stylingBlocks, document]);
 
-  return <BlockFloatingSelector block={selectedBlock} selectedBlockElement={selectedElements[0]} />;
+  return (
+    <div
+      onDragEnd={() => {
+        setDragging(null);
+        onDragEnd();
+      }}
+      draggable={isDragAndDropEnabled && Boolean(selectedBlock)}
+      onDragStart={(e: any) => {
+        setDragging(selectedElements?.[0]);
+        onDragStart(e, selectedBlock, false);
+      }}>
+      <BlockFloatingSelector
+        block={selectedBlock}
+        isDragging={isDragging && Boolean(dragging)}
+        selectedBlockElement={selectedElements[0] || (isDragging ? dragging : null)}
+      />
+    </div>
+  );
 };
 
-const BlockFloatingSelector = ({ block, selectedBlockElement }: BlockActionProps) => {
+const BlockFloatingSelector = ({ block, isDragging, selectedBlockElement }: BlockActionProps) => {
   const removeBlock = useRemoveBlocks();
   const duplicateBlock = useDuplicateBlocks();
   const [, setSelectedIds] = useSelectedBlockIds();
@@ -111,6 +108,8 @@ const BlockFloatingSelector = ({ block, selectedBlockElement }: BlockActionProps
   const { hasPermission } = usePermissions();
   const { editingBlockId } = useInlineEditing();
   const { document } = useFrame();
+  const isDragAndDropEnabled = useIsDragAndDropEnabled();
+  const gotoSettingsEnabled = useBuilderProp("flags.gotoSettings", false);
 
   // * Floating element position and size
   const { floatingStyles, refs, update } = useFloating({
@@ -150,15 +149,22 @@ const BlockFloatingSelector = ({ block, selectedBlockElement }: BlockActionProps
 
   // * Updating position of floating element when selected block element changes
   useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
     if (selectedBlockElement) {
-      const timer = setTimeout(() => update(), 500);
-      return () => clearTimeout(timer);
+      timer = setTimeout(() => update(), 500);
+      return () => {
+        if (timer) clearTimeout(timer);
+      };
     } else {
       update();
     }
-  }, [selectedBlockElement]);
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [selectedBlockElement, block?._id]);
 
-  if (!selectedBlockElement || !block || editingBlockId) return null;
+  const [, setActivePanel] = useSidebarActivePanel();
+  if (!isDragging && (!selectedBlockElement || !block || editingBlockId)) return null;
 
   return (
     <>
@@ -176,31 +182,63 @@ const BlockFloatingSelector = ({ block, selectedBlockElement }: BlockActionProps
           setHighlighted(null);
         }}
         onKeyDown={(e) => e.stopPropagation()}
-        className="isolate z-[999] flex h-6 items-center bg-blue-500 py-2 text-xs text-white">
-        {parentId && (
-          <ArrowUpIcon
-            className="hover:scale-105"
-            onClick={() => {
-              setStyleBlocks([]);
-              setSelectedIds([parentId]);
-            }}
-          />
-        )}
-        <BlockActionLabel label={label} block={block} />
+        className={`isolate z-[999] flex h-6 items-center justify-between bg-blue-500 py-2 text-xs text-white ${isDragging ? "opacity-0" : ""}`}>
+        <>
+          <div className="flex items-center">
+            {isDragAndDropEnabled && (
+              <DragHandleDots2Icon className="flex-shrink-0 cursor-grab rounded p-0.5 hover:bg-white/20 active:cursor-grabbing" />
+            )}
+            {parentId && (
+              <ArrowUpIcon
+                className="flex-shrink-0 rounded p-0.5 hover:bg-white/20"
+                onClick={() => {
+                  setStyleBlocks([]);
+                  setSelectedIds([parentId]);
+                }}
+              />
+            )}
+          </div>
 
-        <div className="flex items-center gap-2 pl-1 pr-1.5">
-          <AddBlockDropdown block={block}>
-            <PlusIcon className="hover:scale-105" />
-          </AddBlockDropdown>
-          {canDuplicateBlock(get(block, "_type", "")) && hasPermission(PERMISSIONS.ADD_BLOCK) ? (
-            <CopyIcon className="hover:scale-105" onClick={() => duplicateBlock([block?._id])} />
-          ) : null}
-          {canDeleteBlock(get(block, "_type", "")) && hasPermission(PERMISSIONS.DELETE_BLOCK) ? (
-            <TrashIcon className="hover:scale-105" onClick={() => removeBlock([block?._id])} />
-          ) : null}
+          <div className={`w-full ${isDragAndDropEnabled ? "cursor-grab active:cursor-grabbing" : ""}`}>
+            <div className="mr-10 w-full items-center space-x-1 px-1 leading-tight">{label}</div>
+          </div>
+          <div className="flex items-center gap-1 pl-1 pr-1.5">
+            {hasPermission(PERMISSIONS.ADD_BLOCK) && (
+              <AiIcon
+                className="h-4 w-4 rounded hover:bg-white hover:text-blue-500"
+                onClick={() => {
+                  setActivePanel("chai-chat-panel");
+                  pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_AI_PANEL);
+                }}
+              />
+            )}
+            {gotoSettingsEnabled && (
+              <GotoSettingsIcon
+                blockId={block?._id}
+                className="h-4 w-4 rounded p-px hover:bg-white hover:text-blue-500"
+              />
+            )}
+            {!isDragAndDropEnabled && (
+              <AddBlockDropdown block={block}>
+                <PlusIcon className="h-4 w-4 rounded p-px hover:bg-white hover:text-blue-500" />
+              </AddBlockDropdown>
+            )}
+            {canDuplicateBlock(get(block, "_type", "")) && hasPermission(PERMISSIONS.ADD_BLOCK) ? (
+              <CopyIcon
+                className="h-4 w-4 rounded p-px hover:bg-white hover:text-blue-500"
+                onClick={() => duplicateBlock([block?._id])}
+              />
+            ) : null}
+            {canDeleteBlock(get(block, "_type", "")) && hasPermission(PERMISSIONS.DELETE_BLOCK) ? (
+              <TrashIcon
+                className="h-4 w-4 rounded p-px hover:bg-white hover:text-blue-500"
+                onClick={() => removeBlock([block?._id])}
+              />
+            ) : null}
 
-          {hasPermission(PERMISSIONS.MOVE_BLOCK) && <BlockController block={block} updateFloatingBar={update} />}
-        </div>
+            {hasPermission(PERMISSIONS.MOVE_BLOCK) && <BlockController block={block} updateFloatingBar={update} />}
+          </div>
+        </>
       </div>
     </>
   );

@@ -89,6 +89,7 @@ const Config = {
         title: "Icon position",
         default: "order-last",
         enum: ["order-first", "order-last"],
+        enumNames: ["Left", "Right"],
       },
       link: {
         type: "object",
@@ -102,9 +103,7 @@ const Config = {
           href: "",
           target: "_self",
         },
-        ui: {
-          "ui:field": "link",
-        },
+        ui: { "ui:field": "link" },
       },
       prefetchLink: {
         type: "boolean",

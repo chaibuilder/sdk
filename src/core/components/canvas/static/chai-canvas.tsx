@@ -1,8 +1,11 @@
+import { clickCountAtom } from "@/core/atoms/click-detection";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { useBlockHighlight, useInlineEditing } from "@/core/hooks";
+import { useBlockHighlight, useInlineEditing, useSelectedStylingBlocks } from "@/core/hooks";
 import { pubsub } from "@/core/pubsub";
 import { useThrottledCallback } from "@react-hookz/web";
-import React, { useCallback, useRef } from "react";
+import { useAtom } from "jotai";
+import { some } from "lodash-es";
+import React, { useCallback } from "react";
 
 function getTargetedBlock(target) {
   // First check if the target is the canvas itself
@@ -20,13 +23,21 @@ function getTargetedBlock(target) {
   return closest?.getAttribute("data-block-id") === "canvas" ? null : closest;
 }
 
-const INLINE_EDITABLE_BLOCKS = ["Heading", "Paragraph", "Text", "Link", "Span"];
+const INLINE_EDITABLE_BLOCKS = ["Heading", "Paragraph", "Text", "Link", "Span", "Button"];
 
 const isRichTextParent = (chaiBlock: HTMLElement | null): boolean => {
   return (
     chaiBlock?.getAttribute("data-block-type") === "RichText" ||
     chaiBlock?.parentElement?.getAttribute("data-block-type") === "RichText"
   );
+};
+
+const hasDataBlockIdInChildren = (element: HTMLElement | null): boolean => {
+  if (!element) return false;
+  return some(element.children, (child) => {
+    const htmlChild = child as HTMLElement;
+    return htmlChild.hasAttribute("data-block-id") || hasDataBlockIdInChildren(htmlChild);
+  });
 };
 
 /**
@@ -47,13 +58,6 @@ export const isInlineEditable = (chaiBlock: HTMLElement | null, _blockType?: str
   if (!blockType) return false;
 
   // If the block has children, return false
-  if (chaiBlock && chaiBlock.children.length > 0) {
-    return false;
-  }
-
-  // Button is not inline editable for now, we will add it later for nested content
-  if (blockType === "Button") return false;
-
   return INLINE_EDITABLE_BLOCKS.includes(blockType);
 };
 
@@ -61,13 +65,15 @@ const useHandleCanvasDblClick = () => {
   const { editingBlockId, setEditingBlockId, setEditingItemIndex } = useInlineEditing();
 
   return useCallback(
-    (e) => {
+    (e: any) => {
       e?.preventDefault();
       e?.stopPropagation();
       if (editingBlockId) return;
       const chaiBlock: HTMLElement = getTargetedBlock(e.target);
 
       if (!isInlineEditable(chaiBlock)) return;
+
+      if (hasDataBlockIdInChildren(chaiBlock)) return;
 
       const blockId = chaiBlock.getAttribute("data-block-id");
       if (!blockId || !chaiBlock) return;
@@ -93,19 +99,22 @@ const useHandleCanvasDblClick = () => {
 const useHandleCanvasClick = () => {
   const { editingBlockId } = useInlineEditing();
   const { clearHighlight } = useBlockHighlight();
-  const lastClickTimeRef = useRef(0);
+  const [, setSelectedStylingBlocks] = useSelectedStylingBlocks();
+  const [clickCount] = useAtom(clickCountAtom);
 
   return useCallback(
     (e: any) => {
-      const currentTime = new Date().getTime();
       if (editingBlockId) return;
       e.stopPropagation();
-
-      // Check for double click
-      const isDoubleClick = currentTime - lastClickTimeRef.current < 400; // 400ms threshold for double click
-      if (isDoubleClick) return;
-
       const chaiBlock: HTMLElement = getTargetedBlock(e.target);
+      // If clicked on empty canvas area (no block found), deselect all blocks
+      if (!chaiBlock) {
+        clearHighlight();
+        setSelectedStylingBlocks([]);
+        pubsub.publish(CHAI_BUILDER_EVENTS.CANVAS_BLOCK_SELECTED, []);
+        return;
+      }
+      if (clickCount === 2) return;     
       if (chaiBlock?.getAttribute("data-block-id") && chaiBlock?.getAttribute("data-block-id") === "container") {
         pubsub.publish(CHAI_BUILDER_EVENTS.CLEAR_CANVAS_SELECTION);
         return;
@@ -121,9 +130,8 @@ const useHandleCanvasClick = () => {
         pubsub.publish(CHAI_BUILDER_EVENTS.CANVAS_BLOCK_SELECTED, blockId === "canvas" ? [] : [blockId]);
       }
       clearHighlight();
-      lastClickTimeRef.current = new Date().getTime();
     },
-    [editingBlockId],
+    [editingBlockId, clickCount, clearHighlight, setSelectedStylingBlocks],
   );
 };
 

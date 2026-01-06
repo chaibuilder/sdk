@@ -1,4 +1,4 @@
-import { getBreakpointValue } from "@/core/functions/common-functions";
+import { cn, getBreakpointValue } from "@/core/functions/common-functions";
 import { useBuilderProp, useCanvasDisplayWidth, useScreenSizeWidth, useSelectedBreakpoints } from "@/core/hooks";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import {
@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/ui/shadcn/components/ui/dropdown-menu";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/ui/shadcn/components/ui/hover-card";
-import { DesktopIcon, DotsVerticalIcon, LaptopIcon, MobileIcon } from "@radix-ui/react-icons";
+import { ChevronDownIcon, DesktopIcon, LaptopIcon, MobileIcon } from "@radix-ui/react-icons";
 import { includes, map, toUpper } from "lodash-es";
 import { useTranslation } from "react-i18next";
 
@@ -28,17 +28,17 @@ export interface BreakpointCardProps extends BreakpointItemType {
   onClick: Function;
   openDelay?: number;
   tooltip?: boolean;
+  buttonClass?: string;
+  activeButtonClass?: string;
 }
 
-const TabletIcon = ({ landscape = false }) => (
+const TabletIcon = ({ landscape = false, className = "" }) => (
   <svg
-    className={landscape ? "rotate-90" : ""}
+    className={cn("h-3 w-3", landscape ? "rotate-90" : "", className)}
     stroke="currentColor"
     fill="currentColor"
     strokeWidth="0"
     viewBox="0 0 448 512"
-    height="14px"
-    width="14px"
     xmlns="http://www.w3.org/2000/svg">
     <path d="M400 0H48C21.5 0 0 21.5 0 48v416c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48zM224 480c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm176-108c0 6.6-5.4 12-12 12H60c-6.6 0-12-5.4-12-12V60c0-6.6 5.4-12 12-12h328c6.6 0 12 5.4 12 12v312z"></path>
   </svg>
@@ -49,14 +49,14 @@ export const WEB_BREAKPOINTS: BreakpointItemType[] = [
     title: "Mobile (Base)",
     content: "Styles set here are applied to all screen unless edited at higher breakpoint",
     breakpoint: "xs",
-    icon: <MobileIcon />,
+    icon: <MobileIcon className="h-4 w-4" />,
     width: 400,
   },
   {
     title: "Mobile landscape (SM)",
     content: "Styles set here are applied at 640px and up unless edited at higher breakpoint",
     breakpoint: "sm",
-    icon: <MobileIcon className="rotate-90" />,
+    icon: <MobileIcon className="h-4 w-4 rotate-90" />,
     width: 640,
   },
   {
@@ -77,14 +77,14 @@ export const WEB_BREAKPOINTS: BreakpointItemType[] = [
     title: "Desktop (XL)",
     content: "Styles set here are applied at 1280px and up unless edited at higher breakpoint",
     breakpoint: "xl",
-    icon: <LaptopIcon />,
+    icon: <LaptopIcon className="h-4 w-4" />,
     width: 1420,
   },
   {
     title: "Large Desktop (2XL)",
     content: "Styles set here are applied at 1536px and up",
     breakpoint: "2xl",
-    icon: <DesktopIcon />,
+    icon: <DesktopIcon className="h-4 w-4" />,
     width: 1920,
   },
 ];
@@ -100,6 +100,8 @@ const BreakpointCard = ({
   width,
   icon,
   onClick,
+  buttonClass = "",
+  activeButtonClass = "",
 }: BreakpointCardProps) => {
   const { t } = useTranslation();
 
@@ -121,7 +123,7 @@ const BreakpointCard = ({
         <Button
           onClick={() => onClick(width)}
           size="sm"
-          className="h-7 w-7 rounded-md p-1"
+          className={cn("h-7 w-7 rounded-md p-1", breakpoint === currentBreakpoint ? activeButtonClass : buttonClass)}
           variant={breakpoint === currentBreakpoint ? "outline" : "ghost"}>
           {icon}
         </Button>
@@ -142,10 +144,14 @@ export const Breakpoints = ({
   openDelay = 400,
   canvas = false,
   tooltip = true,
+  buttonClass = "",
+  activeButtonClass = "",
 }: {
   openDelay?: number;
   canvas?: boolean;
   tooltip?: boolean;
+  buttonClass?: string;
+  activeButtonClass?: string;
 }) => {
   const [currentWidth, , setNewWidth] = useScreenSizeWidth();
   const [canvasDisplayWidth, setCanvasDisplayWidth] = useCanvasDisplayWidth();
@@ -207,14 +213,16 @@ export const Breakpoints = ({
               onClick={handleCanvasWidthChange}
               key={bp.breakpoint}
               currentBreakpoint={breakpoint}
+              buttonClass={buttonClass}
+              activeButtonClass={activeButtonClass}
             />
           ),
         )}
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <span className="cursor-pointer px-2.5 hover:opacity-80">
-            <DotsVerticalIcon className="scale-90 transform" />
+          <span className="cursor-pointer rounded-md p-1 hover:bg-background">
+            <ChevronDownIcon className="scale-90 transform" />
           </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56 border-border text-xs">
@@ -225,7 +233,8 @@ export const Breakpoints = ({
               key={bp.breakpoint}
               disabled={bp.breakpoint === "xs"}
               onCheckedChange={() => toggleBreakpoint(toUpper(bp.breakpoint))}
-              checked={includes(selectedBreakpoints, toUpper(bp.breakpoint))}>
+              checked={includes(selectedBreakpoints, toUpper(bp.breakpoint))}
+              onSelect={(event) => event.preventDefault()}>
               {t(bp.title)}
             </DropdownMenuCheckboxItem>
           ))}
