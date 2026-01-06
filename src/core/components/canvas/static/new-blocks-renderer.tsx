@@ -10,9 +10,11 @@ import {
   getBlockRuntimeProps,
   getBlockTagAttributes,
 } from "@/core/components/canvas/static/new-blocks-render-helpers";
-import { useBlocksStore, useBuilderProp, useInlineEditing, usePartailBlocksStore, useSavePage } from "@/core/hooks";
+import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { useBuilderProp, useInlineEditing, usePartailBlocksStore } from "@/core/hooks";
 import { useEditorMode } from "@/core/hooks/use-editor-mode";
 import { useLanguages } from "@/core/hooks/use-languages";
+import { useSavePage } from "@/core/hooks/use-save-page";
 import { useGetBlockAtom } from "@/core/hooks/use-update-block-atom";
 import { applyBindingToBlockProps } from "@/render/apply-binding";
 import { ChaiBlock } from "@/types/chai-block";

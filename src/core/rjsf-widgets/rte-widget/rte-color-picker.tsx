@@ -1,6 +1,6 @@
-import { lsThemeAtom } from "@/_demo/atoms-dev";
 import { useDarkMode } from "@/core/hooks";
 import { cn } from "@/core/utils/cn";
+import { lsThemeAtom } from "@/routes/demo/atoms-dev";
 import { Input } from "@/ui";
 import { CaretDownIcon, Cross1Icon } from "@radix-ui/react-icons";
 import { useDebouncedState } from "@react-hookz/web";

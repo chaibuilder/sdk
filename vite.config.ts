@@ -2,10 +2,15 @@ import react from "@vitejs/plugin-react-swc";
 import path, { resolve } from "path";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
+import express from "./src/express/express-plugin";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), dts({ rollupTypes: true })],
+  plugins: [
+    react(),
+    dts({ include: ["src/**/*"], exclude: ["**/*.test.*", "**/*.spec.*"] }),
+    express("./src/express/index.ts"),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -21,12 +26,14 @@ export default defineConfig({
         "web-blocks": resolve(__dirname, "src/web-blocks/index.ts"),
         tailwind: resolve(__dirname, "src/tailwind/index.ts"),
         runtime: resolve(__dirname, "src/runtime.ts"),
+        pages: resolve(__dirname, "src/pages/index.ts"),
       },
       formats: ["es", "cjs"],
     },
     rollupOptions: {
       treeshake: true,
       output: {
+        exports: "named",
         globals: {
           "react-dom": "ReactDom",
           react: "React",
@@ -127,6 +134,20 @@ export default defineConfig({
         "nanoid",
         "monaco-editor",
         "@monaco-editor/react",
+        "use-stick-to-bottom",
+        "streamdown",
+        "lucide-react",
+        "motion",
+        "@tanstack/react-query",
+        "@radix-ui/react-use-controllable-state",
+        "compressorjs",
+        "canvas-confetti",
+        "react-filerobot-image-editor",
+        "react-dropzone",
+        "date-fns",
+        "react-diff-view",
+        "@radix-ui/react-collapsible",
+        "react-error-boundary",
       ],
     },
   },

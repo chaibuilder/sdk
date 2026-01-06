@@ -129,6 +129,33 @@ const ListTree = () => {
     300,
   );
 
+  const evaluateCondition = (condition: string, selectedNode: any): boolean => {
+    if (!condition) return true;
+
+    // Create a safe evaluation context with only the variables we need
+    const context = {
+      isLeaf: !selectedNode.isInternal,
+      isClosed: !selectedNode.isOpen,
+      isOpen: selectedNode.isOpen,
+    };
+
+    // Simple condition evaluator that supports basic boolean logic
+    try {
+      // Replace variables with their actual values
+      let evalCondition = condition;
+      Object.keys(context).forEach((key) => {
+        const regex = new RegExp(`\\b${key}\\b`, "g");
+        evalCondition = evalCondition.replace(regex, context[key]);
+      });
+
+      // Use Function constructor instead of eval for better security
+      return new Function(`return ${evalCondition}`)();
+    } catch (error) {
+      console.warn("Invalid condition expression:", condition);
+      return false;
+    }
+  };
+
   const handleKeyDown = (e) => {
     if (!treeRef.current) return;
 
@@ -143,7 +170,9 @@ const ListTree = () => {
     const isClosed = !selectedNode.isOpen;
     const isOpen = selectedNode.isOpen;
 
-    const shortcut = defaultShortcuts.find((s) => s.key === e.key && (!s.when || eval(s.when)));
+    const shortcut = defaultShortcuts.find(
+      (s) => s.key === e.key && (!s.when || evaluateCondition(s.when, selectedNode)),
+    );
 
     if (shortcut) {
       e.preventDefault();
