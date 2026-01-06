@@ -1,4 +1,10 @@
-import { useSelectedBlock, useSelectedStylingBlocks, useTranslation, useUpdateBlocksProps } from "@/core/hooks";
+import {
+  useBuilderProp,
+  useSelectedBlock,
+  useSelectedStylingBlocks,
+  useTranslation,
+  useUpdateBlocksProps,
+} from "@/core/hooks";
 import {
   ArrowDownIcon,
   ArrowLeftIcon,
@@ -258,4 +264,9 @@ const AnimationField = React.memo(() => {
   );
 });
 
-export default AnimationField;
+const AnimationFieldWrapper = () => {
+  const animationEnabled = useBuilderProp("flags.animation", false);
+  return animationEnabled ? <AnimationField /> : null;
+};
+
+export default AnimationFieldWrapper;
