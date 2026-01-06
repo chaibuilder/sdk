@@ -1,4 +1,4 @@
-import type { ChaiBlock } from "@chaibuilder/sdk";
+import type { ChaiBlock } from "@/core/main";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useMemo, useRef } from "react";
 import { ACTIONS } from "../constants/ACTIONS";

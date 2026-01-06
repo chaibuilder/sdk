@@ -1,5 +1,5 @@
 import { usePublishPages } from "@/pages/hooks/pages/mutations";
-import { Dialog } from "@chaibuilder/sdk/ui";
+import { Dialog } from "@/ui";
 import { lazy, Suspense } from "react";
 const PublishPagesModalContent = lazy(() => import("./publish-pages-content"));
 

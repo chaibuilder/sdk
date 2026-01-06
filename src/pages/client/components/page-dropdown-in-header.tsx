@@ -1,6 +1,6 @@
+import { useLanguages } from "@/core/main";
 import { useActivePage } from "@/pages/hooks/pages/use-current-page";
-import { useLanguages } from "@chaibuilder/sdk";
-import { Button } from "@chaibuilder/sdk/ui";
+import { Button } from "@/ui";
 import { useAtom } from "jotai";
 import { get } from "lodash-es";
 import { File, Hash, Loader, MoreHorizontal } from "lucide-react";

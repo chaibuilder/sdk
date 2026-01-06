@@ -1,8 +1,8 @@
+import { useLanguages, useSidebarActivePanel, useTranslation } from "@/core/main";
 import { SlugInput } from "@/pages/components/slug-input";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { parseSlugForEdit, removeSlugExtension } from "@/pages/utils/slug-utils";
-import { useLanguages, useSidebarActivePanel, useTranslation } from "@chaibuilder/sdk";
 import {
   Alert,
   Button,
@@ -14,7 +14,7 @@ import {
   DialogTitle,
   Input,
   Label,
-} from "@chaibuilder/sdk/ui";
+} from "@/ui";
 import { filter, find, startsWith } from "lodash-es";
 import { Loader } from "lucide-react";
 import React, { FormEvent, useEffect, useMemo, useState } from "react";

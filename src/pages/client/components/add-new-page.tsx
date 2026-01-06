@@ -1,5 +1,5 @@
-import { useTranslation } from "@chaibuilder/sdk";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@chaibuilder/sdk/ui";
+import { useTranslation } from "@/core/main";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/ui";
 import { lazy, Suspense } from "react";
 
 const PageCreator = lazy(() => import("@/pages/components/page-creator"));

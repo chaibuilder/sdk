@@ -16,7 +16,7 @@ import {
   PromptInputTextarea,
   PromptInputTools,
 } from "@/components/ai-elements/prompt-input";
-import { ChaiBlock, useTranslation } from "@chaibuilder/sdk";
+import { ChaiBlock, useTranslation } from "@/core/main";
 import { GlobeIcon, Paperclip, Send, Square } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { ModelSelectorDropdown } from "./model-selector-dropdown";

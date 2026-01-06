@@ -1,14 +1,4 @@
-import {
-  Alert,
-  AlertDescription,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  Input,
-  Label,
-} from "@chaibuilder/sdk/ui";
+import { Alert, AlertDescription, Button, Dialog, DialogContent, DialogHeader, DialogTitle, Input, Label } from "@/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import { Info, Loader } from "lucide-react";
 import { useEffect, useState } from "react";

@@ -1,8 +1,8 @@
 import { each, get, isEmpty } from "lodash-es";
 
+import { useLanguages } from "@/core/main";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
 import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
-import { useLanguages } from "@chaibuilder/sdk";
 import { find } from "lodash-es";
 import { useMemo } from "react";
 

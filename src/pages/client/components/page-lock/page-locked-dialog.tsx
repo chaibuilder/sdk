@@ -1,5 +1,5 @@
+import { useTranslation } from "@/core/main";
 import { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
-import { useTranslation } from "@chaibuilder/sdk";
 import {
   Accordion,
   AccordionContent,
@@ -11,7 +11,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@chaibuilder/sdk/ui";
+} from "@/ui";
 import { AlertCircleIcon, Edit, LockKeyhole, ShieldAlert, UserIcon, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { BlurContainer } from "../chai-loader";

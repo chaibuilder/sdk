@@ -1,4 +1,4 @@
-import { ChaiBlock } from "@chaibuilder/sdk";
+import { ChaiBlock } from "@/core/main";
 import { usePageEditInfo } from "../pages/use-current-page.ts";
 import { useApiUrl } from "../project/use-builder-prop.ts";
 import { useFetch } from "./use-fetch.ts";

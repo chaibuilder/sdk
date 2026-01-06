@@ -1,5 +1,5 @@
 {
-  "name": "@chaibuilder/sdk",
+  "name": "@/core/main",
   "description": "AI Enabled Open source website builder for ReactJS",
   "private": false,
   "author": "Suraj Air",

@@ -1,3 +1,4 @@
+import { useTranslation } from "@/core/main";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,10 +13,9 @@ import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@chaibuilder/sdk/ui";
+} from "@/ui";
 import { isFunction, noop } from "lodash-es";
 import { User } from "lucide-react";
-import { useTranslation } from "@chaibuilder/sdk";
 import { usePagesProp } from "../hooks/project/use-builder-prop";
 import { useChaiAuth } from "../hooks/use-chai-auth";
 export const userInfoPanelId = "user-info";

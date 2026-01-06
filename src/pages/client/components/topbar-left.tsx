@@ -1,3 +1,4 @@
+import { mergeClasses, useLanguages, useTranslation } from "@/core/main";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { useCurrentPage } from "@/pages/hooks/pages/use-current-page";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
@@ -5,15 +6,7 @@ import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
 import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { navigateToPage } from "@/pages/utils/navigation";
-import { mergeClasses, useLanguages, useTranslation } from "@chaibuilder/sdk";
-import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  Separator,
-} from "@chaibuilder/sdk/ui";
+import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Separator } from "@/ui";
 import { useAtom } from "jotai";
 import { compact, find, get, isEmpty, map } from "lodash-es";
 import { ChevronDown, Languages, Plus, Star } from "lucide-react";

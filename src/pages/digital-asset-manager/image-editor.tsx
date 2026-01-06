@@ -1,5 +1,5 @@
-import { useTranslation } from "@chaibuilder/sdk";
-import { Dialog, DialogContent } from "@chaibuilder/sdk/ui";
+import { useTranslation } from "@/core/main";
+import { Dialog, DialogContent } from "@/ui";
 import { debounce } from "lodash-es";
 import { Copy, Loader, Save } from "lucide-react";
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";

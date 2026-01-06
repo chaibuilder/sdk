@@ -1,15 +1,6 @@
 "use client";
 
-import {
-  Badge,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  ScrollArea,
-  Switch,
-} from "@chaibuilder/sdk/ui";
+import { Badge, Button, Dialog, DialogContent, DialogHeader, DialogTitle, ScrollArea, Switch } from "@/ui";
 import { formatDate } from "date-fns";
 import { isArray, isPlainObject, isString, map, mapValues, startsWith, trim } from "lodash-es";
 import { Check, Copy, FileJson, Loader } from "lucide-react";

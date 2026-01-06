@@ -1,14 +1,6 @@
+import { useTranslation } from "@/core/main";
 import { useUnpublishPage } from "@/pages/hooks/pages/mutations";
-import { useTranslation } from "@chaibuilder/sdk";
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@chaibuilder/sdk/ui";
+import { Button, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/ui";
 
 const UnpublishPage = ({ page, onClose }: { page: any; onClose: () => void }) => {
   const { t } = useTranslation();

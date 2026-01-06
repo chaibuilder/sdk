@@ -1,8 +1,8 @@
+import { ChaiBlock } from "@/core/main";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { useAiContext } from "@/pages/hooks/ai/use-ai-context";
 import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
 import { useFetch } from "@/pages/hooks/utils/use-fetch";
-import { ChaiBlock } from "@chaibuilder/sdk";
 import { useCallback } from "react";
 
 export const useAskAi = () => {

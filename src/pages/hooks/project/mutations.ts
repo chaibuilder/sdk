@@ -1,4 +1,4 @@
-import { useLanguages } from "@chaibuilder/sdk";
+import { useLanguages } from "@/core/main";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { ACTIONS } from "../../constants/ACTIONS.ts";

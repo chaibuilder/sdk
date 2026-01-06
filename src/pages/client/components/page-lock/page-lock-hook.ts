@@ -1,5 +1,5 @@
+import { useSavePage } from "@/core/main";
 import { useWebsocket } from "@/pages/hooks/project/use-builder-prop";
-import { useSavePage } from "@chaibuilder/sdk";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useRef } from "react";

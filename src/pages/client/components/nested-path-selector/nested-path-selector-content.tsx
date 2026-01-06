@@ -12,7 +12,7 @@ import {
   CommandItem,
   CommandList,
   PopoverContent,
-} from "@chaibuilder/sdk/ui";
+} from "@/ui";
 
 type NestedPathSelectorContentProps = {
   data: Record<string, any>;

@@ -1,8 +1,8 @@
+import { useLanguages, useTranslation } from "@/core/main";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { useIsLanguagePageCreated } from "@/pages/hooks/pages/use-is-languagep-page-created";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
-import { useLanguages, useTranslation } from "@chaibuilder/sdk";
-import { Button, Card, CardContent, CardFooter, CardHeader, CardTitle } from "@chaibuilder/sdk/ui";
+import { Button, Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/ui";
 import { get } from "lodash-es";
 import { LockIcon } from "lucide-react";
 import { BlurContainer } from "../chai-loader";

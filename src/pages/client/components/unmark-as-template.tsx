@@ -1,14 +1,6 @@
+import { useTranslation } from "@/core/main";
 import { useUnmarkAsTemplate } from "@/pages/hooks/pages/mutations";
-import { useTranslation } from "@chaibuilder/sdk";
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@chaibuilder/sdk/ui";
+import { Button, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/ui";
 import { useState } from "react";
 
 const UnmarkAsTemplate = ({ page, onClose }: { page: any; onClose: () => void }) => {

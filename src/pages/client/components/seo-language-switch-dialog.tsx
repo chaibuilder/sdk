@@ -1,5 +1,5 @@
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
-import { Button, Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@chaibuilder/sdk/ui";
+import { Button, Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/ui";
 
 interface SeoLanguageSwitchDialogProps {
   isOpen: boolean;

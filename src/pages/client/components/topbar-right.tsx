@@ -1,3 +1,4 @@
+import { useLanguages, useRightPanel, useSavePage, useTranslation } from "@/core/main";
 import PageRevisions from "@/pages/components/page-revisions/page-revisions-trigger";
 import PermissionChecker from "@/pages/components/permission-checker";
 import PublishPages from "@/pages/components/publish-pages/publish-pages";
@@ -11,8 +12,7 @@ import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { throwConfetti } from "@/pages/utils/confetti";
 import Tooltip from "@/pages/utils/tooltip";
-import { useLanguages, useRightPanel, useSavePage, useTranslation } from "@chaibuilder/sdk";
-import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@chaibuilder/sdk/ui";
+import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/ui";
 import { compact, find, map, upperCase } from "lodash-es";
 import { CheckCircle, ChevronDown, Loader, Palette, Play, Rocket, Save, Send } from "lucide-react";
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";

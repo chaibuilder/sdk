@@ -1,10 +1,10 @@
+import { useTranslation } from "@/core/main";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useFallbackLang } from "@/pages/hooks/use-fallback-lang";
 import { usePageExpandManager } from "@/pages/hooks/utils/use-page-expand-manager";
 import { ChaiPage } from "@/pages/utils/page-organization";
-import { useTranslation } from "@chaibuilder/sdk";
 import {
   Button,
   Input,
@@ -15,7 +15,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@chaibuilder/sdk/ui";
+} from "@/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import { filter, get, isEmpty, map } from "lodash-es";
 import {

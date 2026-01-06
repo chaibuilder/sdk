@@ -1,6 +1,6 @@
+import { useTranslation } from "@/core/main";
 import { useMarkAsTemplate } from "@/pages/hooks/pages/mutations";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
-import { useTranslation } from "@chaibuilder/sdk";
 import {
   Button,
   Dialog,
@@ -12,7 +12,7 @@ import {
   Input,
   Label,
   Textarea,
-} from "@chaibuilder/sdk/ui";
+} from "@/ui";
 import { startCase } from "lodash-es";
 import { File, ImageIcon, Tag, X } from "lucide-react";
 import { useCallback, useRef, useState } from "react";

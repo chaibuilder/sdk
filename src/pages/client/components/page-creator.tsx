@@ -1,5 +1,6 @@
 "use client";
 
+import { useChaiFeatureFlag, useLanguages, usePermissions } from "@/core/main";
 import { DynamicSlugInput } from "@/pages/components/dynamic-slug-input";
 import { ParentPageSelector } from "@/pages/components/parent-page-selector";
 import { SlugInput } from "@/pages/components/slug-input";
@@ -10,7 +11,6 @@ import { useCreatePage, useUpdatePage } from "@/pages/hooks/pages/mutations";
 import { useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
 import { useTemplatesWithLibraries } from "@/pages/hooks/project/use-templates-with-libraries";
 import { combineParentChildSlugs, removeSlugExtension } from "@/pages/utils/slug-utils";
-import { useChaiFeatureFlag, useLanguages, usePermissions } from "@chaibuilder/sdk";
 import {
   Button,
   Command,
@@ -22,7 +22,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@chaibuilder/sdk/ui";
+} from "@/ui";
 import { find, isEmpty, pick, set } from "lodash-es";
 import { Check, ChevronDown, Search } from "lucide-react";
 import { useMemo, useState } from "react";

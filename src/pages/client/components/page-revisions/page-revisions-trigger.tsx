@@ -8,7 +8,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@chaibuilder/sdk/ui";
+} from "@/ui";
 import { History } from "lucide-react";
 import * as React from "react";
 import { Suspense } from "react";
@@ -39,7 +39,7 @@ export default function PageRevisionsTrigger() {
 
   return (
     <TooltipProvider>
-      <Tooltip  delayDuration={0}>
+      <Tooltip delayDuration={0}>
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
             <TooltipTrigger asChild>

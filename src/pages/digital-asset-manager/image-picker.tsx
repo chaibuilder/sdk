@@ -1,7 +1,7 @@
 "use client";
 
-import { useTranslation } from "@chaibuilder/sdk";
-import { Button, Dialog, DialogContent, DialogHeader, DialogTitle } from "@chaibuilder/sdk/ui";
+import { useTranslation } from "@/core/main";
+import { Button, Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui";
 import { pick } from "lodash-es";
 import { ImageIcon, Trash2, X } from "lucide-react";
 import React, { lazy, Suspense, useState } from "react";

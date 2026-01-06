@@ -1,4 +1,4 @@
-import { Button } from "@chaibuilder/sdk/ui";
+import { Button } from "@/ui";
 import { useAtom } from "jotai";
 import { map } from "lodash-es";
 import { Laptop, LaptopMinimal, Smartphone, Tablet } from "lucide-react";

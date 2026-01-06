@@ -1,13 +1,4 @@
-import {
-  Alert,
-  AlertDescription,
-  Button,
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-  Textarea,
-} from "@chaibuilder/sdk/ui";
+import { Alert, AlertDescription, Button, Tabs, TabsContent, TabsList, TabsTrigger, Textarea } from "@/ui";
 import { get } from "lodash-es";
 import { AlertTriangle, Code, Eye, FileCode2, Plus, Share2 } from "lucide-react";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";

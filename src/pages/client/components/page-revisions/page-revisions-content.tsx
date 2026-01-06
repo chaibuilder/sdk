@@ -1,12 +1,12 @@
 "use client";
 
+import { useLanguages, useSavePage } from "@/core/main";
 import PermissionChecker from "@/pages/components/permission-checker";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
 import { useCurrentPage, usePageEditInfo } from "@/pages/hooks/pages/use-current-page";
 import { type Revision, useDeleteRevision, useRestoreRevision, useRevisions } from "@/pages/hooks/use-revisions";
 import { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
-import { useLanguages, useSavePage } from "@chaibuilder/sdk";
 import {
   Button,
   Dialog,
@@ -24,7 +24,7 @@ import {
   SheetHeader,
   SheetTitle,
   Skeleton,
-} from "@chaibuilder/sdk/ui";
+} from "@/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import { format, formatDistanceToNow } from "date-fns";
 import { isEmpty } from "lodash-es";

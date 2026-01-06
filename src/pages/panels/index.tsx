@@ -1,4 +1,4 @@
-import { registerChaiSidebarPanel } from "@chaibuilder/sdk";
+import { registerChaiSidebarPanel } from "@/core/main";
 import { aiPanel, aiPanelId } from "./ai-panel/ai-panel";
 import { langPanel, langPanelId } from "./lang-panel";
 import { seoPanel, seoPanelId } from "./seo-panel";

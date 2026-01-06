@@ -1,9 +1,9 @@
 "use client";
 
+import { useLanguages, useTranslation } from "@/core/main";
 import { useBuilderFetch } from "@/pages/hooks/utils/use-fetch";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
-import { useLanguages, useTranslation } from "@chaibuilder/sdk";
-import { Button } from "@chaibuilder/sdk/ui";
+import { Button } from "@/ui";
 import { Plus } from "lucide-react";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { toast } from "sonner";

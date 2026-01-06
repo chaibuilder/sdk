@@ -1,5 +1,5 @@
+import { useLanguages } from "@/core/main";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
-import { useLanguages } from "@chaibuilder/sdk";
 import { find } from "lodash-es";
 import { useMemo } from "react";
 

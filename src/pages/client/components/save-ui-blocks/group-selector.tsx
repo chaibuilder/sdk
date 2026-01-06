@@ -1,5 +1,5 @@
 import { LibraryGroup, useLibraryGroups } from "@/pages/hooks/project/use-library-groups";
-import { Button, Input } from "@chaibuilder/sdk/ui";
+import { Button, Input } from "@/ui";
 import { Plus } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 

@@ -1,6 +1,6 @@
+import { usePermissions } from "@/core/main";
 import { DeleteBlockConfirmation } from "@/pages/components/save-ui-blocks/delete-block-confirmation";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
-import { usePermissions } from "@chaibuilder/sdk";
 import {
   Button,
   Card,
@@ -9,7 +9,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@chaibuilder/sdk/ui";
+} from "@/ui";
 import { Edit, MoreVertical, Trash2 } from "lucide-react";
 import { useState } from "react";
 

@@ -1,4 +1,4 @@
-import { ChaiLibrary, ChaiLibraryBlock, getBlocksFromHTML, registerChaiLibrary } from "@chaibuilder/sdk";
+import { ChaiLibrary, ChaiLibraryBlock, getBlocksFromHTML, registerChaiLibrary } from "@/core/main";
 import { useQuery } from "@tanstack/react-query";
 import { get, isArray } from "lodash-es";
 import { useFetch } from "../utils/use-fetch";

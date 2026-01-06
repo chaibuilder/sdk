@@ -1,16 +1,6 @@
+import { useTranslation } from "@/core/main";
 import { useDuplicatePage } from "@/pages/hooks/pages/use-duplicate-page";
-import { useTranslation } from "@chaibuilder/sdk";
-import {
-  Alert,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  Input,
-  Label,
-} from "@chaibuilder/sdk/ui";
+import { Alert, Button, Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Input, Label } from "@/ui";
 import { initial, isEmpty } from "lodash-es";
 import { AlertCircle } from "lucide-react";
 import { useState } from "react";

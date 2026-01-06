@@ -1,4 +1,4 @@
-import { Button, Input } from "@chaibuilder/sdk/ui";
+import { Button, Input } from "@/ui";
 import { ImageIcon, X } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 import { toast } from "sonner";

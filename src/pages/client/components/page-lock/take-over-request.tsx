@@ -1,6 +1,6 @@
+import { useSavePage, useTranslation } from "@/core/main";
 import { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
-import { useSavePage, useTranslation } from "@chaibuilder/sdk";
-import { Button, Card, CardContent, CardFooter, CardHeader, CardTitle } from "@chaibuilder/sdk/ui";
+import { Button, Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/ui";
 import { AlertCircle, Check, UserIcon, X } from "lucide-react";
 import { useState } from "react";
 import { BlurContainer } from "../chai-loader";

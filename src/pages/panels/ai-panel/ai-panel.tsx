@@ -1,4 +1,4 @@
-import { Button } from "@chaibuilder/sdk/ui";
+import { Button } from "@/ui";
 import { lazy } from "react";
 const AiPanelContent = lazy(() => import("./ai-panel-content"));
 

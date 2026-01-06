@@ -1,10 +1,10 @@
+import { useIsPageLoaded } from "@/core/main";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { useAiContext } from "@/pages/hooks/ai/use-ai-context";
 import { useActivePage, useCurrentPage, usePageEditInfo, usePageMetaData } from "@/pages/hooks/pages/use-current-page";
 import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
 import { useFetch } from "@/pages/hooks/utils/use-fetch";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
-import { useIsPageLoaded } from "@chaibuilder/sdk";
 import { useQuery } from "@tanstack/react-query";
 import { find, get } from "lodash-es";
 import { useFallbackLang } from "../use-fallback-lang";

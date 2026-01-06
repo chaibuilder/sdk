@@ -1,9 +1,9 @@
+import { useSavePage, useTranslation } from "@/core/main";
 import { useCurrentPage } from "@/pages/hooks/pages/use-current-page";
 import { useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { navigateToPage } from "@/pages/utils/navigation";
 import { ChaiPage } from "@/pages/utils/page-organization";
-import { useSavePage, useTranslation } from "@chaibuilder/sdk";
 import {
   Button,
   Sheet,
@@ -14,7 +14,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@chaibuilder/sdk/ui";
+} from "@/ui";
 import { isEmpty } from "lodash-es";
 import { Folder, LogsIcon } from "lucide-react";
 import { lazy, Suspense, useEffect, useMemo, useState } from "react";

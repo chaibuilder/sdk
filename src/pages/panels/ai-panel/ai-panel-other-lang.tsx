@@ -11,7 +11,7 @@ import {
   useSelectedBlockIds,
   useStreamMultipleBlocksProps,
   useTranslation,
-} from "@chaibuilder/sdk";
+} from "@/core/main";
 import { Bot } from "lucide-react";
 import { Fragment, lazy, Suspense, useEffect, useRef } from "react";
 import { Message } from "./ai-panel-helper";

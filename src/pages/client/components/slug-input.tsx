@@ -1,7 +1,7 @@
 "use client";
 
 import { formatParentSlug } from "@/pages/utils/slug-utils";
-import { Input } from "@chaibuilder/sdk/ui";
+import { Input } from "@/ui";
 import { useEffect, useState } from "react";
 
 interface SlugInputProps {

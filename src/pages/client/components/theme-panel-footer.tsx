@@ -1,8 +1,8 @@
+import { useTheme, useTranslation } from "@/core/main";
 import { usePublishPages } from "@/pages/hooks/pages/mutations";
 import { useUpdateWebsiteSettings } from "@/pages/hooks/project/mutations";
 import { throwConfetti } from "@/pages/utils/confetti";
-import { useTheme, useTranslation } from "@chaibuilder/sdk";
-import { Button } from "@chaibuilder/sdk/ui";
+import { Button } from "@/ui";
 
 const ThemePanelFooter = () => {
   const [theme] = useTheme();

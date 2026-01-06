@@ -1,7 +1,7 @@
 "use client";
 
+import { useChaiFeatureFlag } from "@/core/main";
 import { removeSlugExtension } from "@/pages/utils/slug-utils";
-import { useChaiFeatureFlag } from "@chaibuilder/sdk";
 import {
   Button,
   Command,
@@ -13,7 +13,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@chaibuilder/sdk/ui";
+} from "@/ui";
 import { isEmpty } from "lodash-es";
 import { Check, ChevronDown, Search } from "lucide-react";
 import { useMemo, useState } from "react";

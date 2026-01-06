@@ -1,6 +1,6 @@
+import { useUpdateBlocksPropsRealtime } from "@/core/main";
 import { useDeleteUIBlock } from "@/pages/hooks/project/use-block-library-mutations";
-import { useUpdateBlocksPropsRealtime } from "@chaibuilder/sdk";
-import { Button, Popover, PopoverContent, PopoverTrigger } from "@chaibuilder/sdk/ui";
+import { Button, Popover, PopoverContent, PopoverTrigger } from "@/ui";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";

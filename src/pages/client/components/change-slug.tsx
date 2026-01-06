@@ -1,7 +1,7 @@
+import { useTranslation } from "@/core/main";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { useChangeSlug } from "@/pages/hooks/pages/mutations";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
-import { useTranslation } from "@chaibuilder/sdk";
 import {
   Alert,
   Button,
@@ -13,7 +13,7 @@ import {
   DialogTitle,
   Input,
   Label,
-} from "@chaibuilder/sdk/ui";
+} from "@/ui";
 import { find, isEqual, startsWith } from "lodash-es";
 import { AlertCircle } from "lucide-react";
 import { FormEvent, useState } from "react";

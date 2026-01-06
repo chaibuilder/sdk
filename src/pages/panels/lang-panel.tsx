@@ -1,5 +1,5 @@
 import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
-import { Button } from "@chaibuilder/sdk/ui";
+import { Button } from "@/ui";
 import { get, has } from "lodash-es";
 import { LanguagesIcon } from "lucide-react";
 import { lazy } from "react";

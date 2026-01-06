@@ -1,4 +1,4 @@
-import { Button, Input } from "@chaibuilder/sdk/ui";
+import { Button, Input } from "@/ui";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useMemo, useState } from "react";
 
@@ -105,7 +105,7 @@ export function Pagination({
           onClick={handlePrevious}
           disabled={currentPage === 1}
           className="px-2 py-1 text-sm hover:bg-gray-50">
-          <ChevronLeft className=" h-4 w-4" />
+          <ChevronLeft className="h-4 w-4" />
           Previous
         </Button>
 
@@ -148,7 +148,7 @@ export function Pagination({
           disabled={currentPage === totalPages}
           className="px-2 py-1 text-sm hover:bg-gray-50">
           Next
-          <ChevronRight className=" h-4 w-4" />
+          <ChevronRight className="h-4 w-4" />
         </Button>
       </div>
 

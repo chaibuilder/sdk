@@ -24,7 +24,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@chaibuilder/sdk/ui";
+} from "@/ui";
 import { filter, find } from "lodash-es";
 import { Edit, Eye, Loader, Plus, Trash } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";

@@ -1,3 +1,10 @@
+import {
+  ChaiBuilderEditor,
+  ChaiBuilderEditorProps,
+  registerChaiMediaManager,
+  registerChaiSaveToLibrary,
+  registerChaiTopBar,
+} from "@/core/main";
 import { Topbar } from "@/pages/extensions/topbar";
 import { useAskAi } from "@/pages/hooks/ai/use-ask-ai";
 import { useCurrentPage } from "@/pages/hooks/pages/use-current-page";
@@ -14,15 +21,7 @@ import { usePartialBlocksFn } from "@/pages/hooks/utils/use-partial-blocks";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { registerChaiPanels } from "@/pages/panels";
 import { LoggedInUser } from "@/pages/types/loggedin-user.ts";
-import {
-  ChaiBuilderEditor,
-  ChaiBuilderEditorProps,
-  registerChaiMediaManager,
-  registerChaiSaveToLibrary,
-  registerChaiTopBar,
-} from "@chaibuilder/sdk";
-import "@chaibuilder/sdk/styles";
-import { loadWebBlocks } from "@chaibuilder/sdk/web-blocks";
+import { loadWebBlocks } from "@/web-blocks";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useAtom } from "jotai";

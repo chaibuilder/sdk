@@ -6,7 +6,7 @@ import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useFallbackLang } from "@/pages/hooks/use-fallback-lang";
 import { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
 import { throwConfetti } from "@/pages/utils/confetti";
-import { Button, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@chaibuilder/sdk/ui";
+import { Button, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/ui";
 import { concat, filter, find, first, get, includes, isEmpty, keys, map, orderBy, uniq } from "lodash-es";
 import { Edit, File, GlobeIcon, Lock } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";

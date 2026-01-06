@@ -1,16 +1,16 @@
-import { DeleteBlockButton } from "@/pages/components/save-ui-blocks/delete-block-confirmation";
-import { GroupSelector } from "@/pages/components/save-ui-blocks/group-selector";
-import { ImageUpload } from "@/pages/components/save-ui-blocks/image-upload";
-import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
-import { useGetUIBlockDetails, useSaveUIBlock } from "@/pages/hooks/project/use-block-library-mutations";
 import {
   ChaiBlock,
   useLibraryBlocks,
   usePartailBlocksStore,
   usePermissions,
   useUpdateBlocksPropsRealtime,
-} from "@chaibuilder/sdk";
-import { Button, Input, Label } from "@chaibuilder/sdk/ui";
+} from "@/core/main";
+import { DeleteBlockButton } from "@/pages/components/save-ui-blocks/delete-block-confirmation";
+import { GroupSelector } from "@/pages/components/save-ui-blocks/group-selector";
+import { ImageUpload } from "@/pages/components/save-ui-blocks/image-upload";
+import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
+import { useGetUIBlockDetails, useSaveUIBlock } from "@/pages/hooks/project/use-block-library-mutations";
+import { Button, Input, Label } from "@/ui";
 import { has, isEmpty, set } from "lodash-es";
 import { AlertCircle } from "lucide-react";
 import { FormEvent, useEffect, useMemo, useState } from "react";

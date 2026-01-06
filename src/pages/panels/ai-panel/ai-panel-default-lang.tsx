@@ -9,7 +9,7 @@ import {
 import { Message as AiMessage, MessageContent, MessageResponse } from "@/components/ai-elements/message";
 import { Reasoning, ReasoningContent, ReasoningTrigger } from "@/components/ai-elements/reasoning";
 import { TaskMessage } from "@/components/ai-elements/task-message";
-import { ChaiBlock, useBlocksHtmlForAi, useSelectedBlock, useSelectedBlockIds } from "@chaibuilder/sdk";
+import { ChaiBlock, useBlocksHtmlForAi, useSelectedBlock, useSelectedBlockIds } from "@/core/main";
 import { Bot } from "lucide-react";
 import { Fragment, lazy, Suspense } from "react";
 import { toast } from "sonner";

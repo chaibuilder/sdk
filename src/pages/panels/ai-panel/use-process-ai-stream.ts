@@ -1,10 +1,10 @@
-import { getBlocksFromHTML, useRemoveBlocks, useReplaceBlock } from "@chaibuilder/sdk";
+import { getBlocksFromHTML, useRemoveBlocks, useReplaceBlock } from "@/core/main";
 import { useCallback } from "react";
 import { Message } from "./ai-panel-helper";
 
 // We need to check the actual SDK API for these functions
 // For now, commenting them out until we can verify the correct signatures
-import { useAddBlock } from "@chaibuilder/sdk";
+import { useAddBlock } from "@/core/main";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface ActionData {

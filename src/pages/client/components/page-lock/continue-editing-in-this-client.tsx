@@ -1,5 +1,5 @@
-import { useTranslation } from "@chaibuilder/sdk";
-import { Button, Card, CardContent, CardFooter, CardHeader, CardTitle } from "@chaibuilder/sdk/ui";
+import { useTranslation } from "@/core/main";
+import { Button, Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/ui";
 import { Check, CheckCircle } from "lucide-react";
 import { BlurContainer } from "../chai-loader";
 import { usePageLockMeta } from "./page-lock-hook";

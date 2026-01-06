@@ -1,8 +1,8 @@
 "use client";
 
+import { useTranslation } from "@/core/main";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
-import { useTranslation } from "@chaibuilder/sdk";
-import { Button } from "@chaibuilder/sdk/ui";
+import { Button } from "@/ui";
 import { ArrowRight } from "lucide-react";
 
 const TranslationPrompts = ({

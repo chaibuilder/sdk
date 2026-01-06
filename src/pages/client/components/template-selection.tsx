@@ -1,5 +1,5 @@
+import { useChaiFeatureFlag } from "@/core/main";
 import { TemplateWithLibrary } from "@/pages/hooks/project/use-templates-with-libraries";
-import { useChaiFeatureFlag } from "@chaibuilder/sdk";
 import {
   Button,
   Command,
@@ -10,7 +10,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@chaibuilder/sdk/ui";
+} from "@/ui";
 import { startCase } from "lodash-es";
 import { Check, ChevronDown, Search } from "lucide-react";
 import { useEffect, useState } from "react";

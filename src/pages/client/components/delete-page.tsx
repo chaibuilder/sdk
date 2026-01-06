@@ -1,3 +1,4 @@
+import { useLanguages, useSidebarActivePanel, useTranslation } from "@/core/main";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { useDeletePage } from "@/pages/hooks/pages/mutations";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
@@ -6,16 +7,7 @@ import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { ChaiPage } from "@/pages/utils/page-organization";
 import { ChaiBuilderPageType } from "@/server/types";
-import { useLanguages, useSidebarActivePanel, useTranslation } from "@chaibuilder/sdk";
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@chaibuilder/sdk/ui";
+import { Button, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/ui";
 import { get } from "lodash-es";
 import { useMemo } from "react";
 

@@ -1,10 +1,10 @@
+import { useSavePage } from "@/core/main";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { ERRORS } from "@/pages/constants/ERRORS";
 import { useActivePage, useCurrentPage } from "@/pages/hooks/pages/use-current-page";
 import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useFetch } from "@/pages/hooks/utils/use-fetch";
-import { useSavePage } from "@chaibuilder/sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { find, get } from "lodash-es";
 import { toast } from "sonner";

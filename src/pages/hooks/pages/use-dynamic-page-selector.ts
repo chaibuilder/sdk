@@ -1,5 +1,5 @@
+import { useLanguages } from "@/core/main";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
-import { useLanguages } from "@chaibuilder/sdk";
 import { useQuery } from "@tanstack/react-query";
 import { atom, useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useState } from "react";

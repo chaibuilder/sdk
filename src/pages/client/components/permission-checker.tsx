@@ -1,4 +1,4 @@
-import { usePermissions } from "@chaibuilder/sdk";
+import { usePermissions } from "@/core/main";
 
 export const PermissionChecker = ({
   permission,

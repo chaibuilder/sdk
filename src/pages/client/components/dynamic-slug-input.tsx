@@ -1,6 +1,6 @@
 "use client";
 
-import { Input } from "@chaibuilder/sdk/ui";
+import { Input } from "@/ui";
 import { useEffect, useRef, useState } from "react";
 
 interface DynamicSlugInputProps {
@@ -113,9 +113,7 @@ export function DynamicSlugInput({
   return (
     <div>
       <div className="relative">
-        <p className="text-gray-500 text-xs mb-2">
-          {`${dynamicPattern}`} is a dynamic segment of slug
-        </p>
+        <p className="mb-2 text-xs text-gray-500">{`${dynamicPattern}`} is a dynamic segment of slug</p>
         <Input
           ref={inputRef}
           value={displayValue}
@@ -125,7 +123,7 @@ export function DynamicSlugInput({
           placeholder={placeholder}
           className={error ? "border-red-500" : ""}
         />
-        {error && <div className="text-red-500 text-xs mt-1">{error}</div>}
+        {error && <div className="mt-1 text-xs text-red-500">{error}</div>}
       </div>
     </div>
   );

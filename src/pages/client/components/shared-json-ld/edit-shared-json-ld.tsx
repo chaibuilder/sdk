@@ -14,7 +14,7 @@ import {
   DialogTitle,
   Input,
   Label,
-} from "@chaibuilder/sdk/ui";
+} from "@/ui";
 import { Loader } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";

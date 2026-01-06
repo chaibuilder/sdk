@@ -1,12 +1,5 @@
-import { useLanguages } from "@chaibuilder/sdk";
-import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  Input,
-} from "@chaibuilder/sdk/ui";
+import { useLanguages } from "@/core/main";
+import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Input } from "@/ui";
 import { get } from "lodash-es";
 import { ChevronDown } from "lucide-react";
 import { useEffect, useRef } from "react";

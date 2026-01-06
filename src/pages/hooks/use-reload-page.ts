@@ -1,4 +1,4 @@
-import { useSavePage } from "@chaibuilder/sdk";
+import { useSavePage } from "@/core/main";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 import { usePageLockStatus } from "../client/components/page-lock/page-lock-hook";

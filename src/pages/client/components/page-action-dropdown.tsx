@@ -1,6 +1,6 @@
+import { usePermissions, useTranslation } from "@/core/main";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
-import { usePermissions, useTranslation } from "@chaibuilder/sdk";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@chaibuilder/sdk/ui";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/ui";
 import { find } from "lodash-es";
 import { CopyPlusIcon, Pencil, Power, SquareLibrary, Trash } from "lucide-react";
 import { useMemo } from "react";

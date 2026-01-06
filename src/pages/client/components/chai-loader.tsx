@@ -1,4 +1,4 @@
-import { mergeClasses } from "@chaibuilder/sdk";
+import { mergeClasses } from "@/core/main";
 
 export const BlurContainer = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => {
   return (

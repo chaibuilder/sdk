@@ -1,5 +1,5 @@
-import { useSelectedBlock, useTranslation } from "@chaibuilder/sdk";
-import { Button } from "@chaibuilder/sdk/ui";
+import { useSelectedBlock, useTranslation } from "@/core/main";
+import { Button } from "@/ui";
 import { X } from "lucide-react";
 
 interface SelectedBlockDisplayProps {

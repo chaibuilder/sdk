@@ -1,4 +1,4 @@
-import { Tooltip as _Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@chaibuilder/sdk/ui";
+import { Tooltip as _Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui";
 
 export default function Tooltip({
   children,

@@ -1,3 +1,4 @@
+import { useLanguages, useTranslation } from "@/core/main";
 import { addNewLangAtom } from "@/pages/atom/add-new-lang";
 import { useWebsiteLanguagePages, useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
@@ -6,7 +7,6 @@ import { usePageExpandManager } from "@/pages/hooks/utils/use-page-expand-manage
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { navigateToPage } from "@/pages/utils/navigation";
 import { organizePages } from "@/pages/utils/page-organization";
-import { useLanguages, useTranslation } from "@chaibuilder/sdk";
 import { useAtom } from "jotai";
 import { filter, find, isEmpty, map } from "lodash-es";
 import { File } from "lucide-react";

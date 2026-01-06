@@ -1,6 +1,6 @@
 "use client";
 
-import { mergeClasses, useTranslation } from "@chaibuilder/sdk";
+import { mergeClasses, useTranslation } from "@/core/main";
 import {
   Button,
   Dialog,
@@ -15,7 +15,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@chaibuilder/sdk/ui";
+} from "@/ui";
 import { UseMutateFunction } from "@tanstack/react-query";
 import { find, first, isEmpty, merge, pick } from "lodash-es";
 import {
@@ -144,7 +144,7 @@ const Uploader = ({ isUpdatingAsset, allowedTypes, uploadAssets, isUploadingAsse
 
     if (fileLimitExceedCount > 0) {
       toast.error(
-        `${fileLimitExceedCount === 1 && files.length === 1 ? t("File") : fileLimitExceedCount + (fileLimitExceedCount === 1 ? t(" file") : t(" files"))} ${t("exceed the maximum size limit of 10MB.")}`
+        `${fileLimitExceedCount === 1 && files.length === 1 ? t("File") : fileLimitExceedCount + (fileLimitExceedCount === 1 ? t(" file") : t(" files"))} ${t("exceed the maximum size limit of 10MB.")}`,
       );
     }
     return isEmpty(valid) ? [] : onDrop(valid);
@@ -200,7 +200,8 @@ const Uploader = ({ isUpdatingAsset, allowedTypes, uploadAssets, isUploadingAsse
                   </div>
                   <div className="text-xs font-light text-muted-foreground">
                     <span className="">
-                      {t("Accepted file types:")}{" "}<span className="capitalize text-indigo-400">{allowedTypes.join(", ")}</span>
+                      {t("Accepted file types:")}{" "}
+                      <span className="capitalize text-indigo-400">{allowedTypes.join(", ")}</span>
                     </span>
                   </div>
                 </div>
@@ -209,7 +210,7 @@ const Uploader = ({ isUpdatingAsset, allowedTypes, uploadAssets, isUploadingAsse
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <div className="flex items-center gap-2">
                 <span className="text-xs">
-                  {t("Optimization:")} {" "}
+                  {t("Optimization:")}{" "}
                   <span className={optimizeImages ? "text-indigo-600" : "text-gray-400"}>
                     {optimizeImages ? t("On") : t("Off")}
                   </span>
@@ -494,7 +495,9 @@ export default function DigitalAssetManager({ close, onSelect, mode = "image", a
                           size="sm"
                           onClick={() => handleConfirmSelection(selectedAssets)}
                           disabled={selectedAssets.length === 0}>
-                          {multiple ? t("Select {{count}} Assets", { count: selectedAssets.length }) : t("Select Asset")}
+                          {multiple
+                            ? t("Select {{count}} Assets", { count: selectedAssets.length })
+                            : t("Select Asset")}
                         </Button>
                       </div>
                     </div>
@@ -756,7 +759,9 @@ export default function DigitalAssetManager({ close, onSelect, mode = "image", a
             <DialogHeader>
               <DialogTitle>{t("Delete Asset")}</DialogTitle>
               <DialogDescription>
-                {t('Are you sure you want to delete "{{name}}"? This action cannot be undone.', { name: assetToDelete.name })}
+                {t('Are you sure you want to delete "{{name}}"? This action cannot be undone.', {
+                  name: assetToDelete.name,
+                })}
               </DialogDescription>
             </DialogHeader>
             <DialogFooter className="gap-2 sm:gap-0">
