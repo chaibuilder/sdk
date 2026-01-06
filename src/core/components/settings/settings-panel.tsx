@@ -11,6 +11,7 @@ import {
   useSelectedStylingBlocks,
 } from "@/core/hooks";
 import { PERMISSIONS, usePermissions } from "@/core/main";
+import AnimationField from "@/render/animation/animation-field";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/shadcn/components/ui/tabs";
 import { ChevronDownIcon, MixerHorizontalIcon } from "@radix-ui/react-icons";
 import { isEmpty, isNull, noop } from "lodash-es";
@@ -28,17 +29,17 @@ function BlockAttributesToggle() {
     return null;
   }
   return (
-    <>
+    <div className="my-1 h-max rounded border">
       <div
         onClick={() => setShowAttributes(!showAttributes)}
-        className="flex cursor-pointer items-center justify-between border-t border-border py-3 text-xs font-medium hover:underline">
+        className={`flex cursor-pointer items-center justify-between p-2 text-xs font-medium hover:bg-blue-50`}>
         <span>{t("Attributes")}</span>
         <span>
           <ChevronDownIcon className={"h-4 w-4 text-gray-500 " + (showAttributes ? "rotate-180" : "")} />
         </span>
       </div>
       {showAttributes && <BlockAttributesEditor />}
-    </>
+    </div>
   );
 }
 
@@ -128,6 +129,7 @@ const SettingsPanel: React.FC = () => {
             <ResetStylesButton />
           </div>
           <BlockStyling />
+          <AnimationField />
           <BlockAttributesToggle />
           <br />
           <br />
@@ -171,6 +173,7 @@ const SettingsPanel: React.FC = () => {
           value="styles"
           className="no-scrollbar h-full max-h-min max-w-full overflow-y-auto overflow-x-hidden">
           <BlockStyling />
+          <AnimationField />
           <BlockAttributesToggle />
           <br />
           <br />
