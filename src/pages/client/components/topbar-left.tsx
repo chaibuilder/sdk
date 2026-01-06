@@ -188,7 +188,7 @@ export const LanguageSwitcher = ({
                   });
                 }}
                 className="text-xs font-normal duration-200 hover:bg-slate-300 hover:text-slate-800">
-                <Plus className="mr-1 h-3 w-3" /> Add Langauge
+                <Plus className="mr-1 h-3 w-3" /> Add Language
               </Button>
             </>
           )}
