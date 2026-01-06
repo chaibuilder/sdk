@@ -1,3 +1,4 @@
+import AnimationContainer from "@/render/animation/animation-container";
 import { ChaiBlock } from "@/types/chai-block";
 import { ChaiPageProps } from "@chaibuilder/runtime";
 import { cloneDeep, find, forEach, get, isEmpty, isObject, isString, keys } from "lodash-es";
@@ -65,5 +66,9 @@ export function RenderChaiBlocks(props: RenderChaiBlocksProps) {
 
   const lang = props.lang ?? "en";
   const fallbackLang = props.fallbackLang ?? lang;
-  return <RenderBlocks {...props} lang={lang} fallbackLang={fallbackLang} />;
+  return (
+    <AnimationContainer>
+      <RenderBlocks {...props} lang={lang} fallbackLang={fallbackLang} />
+    </AnimationContainer>
+  );
 }

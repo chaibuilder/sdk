@@ -115,6 +115,7 @@ interface ChaiBuilderEditorProps {
     dragAndDrop?: boolean;
     validateStructure?: boolean;
     designTokens?: boolean;
+    animation?: boolean;
   };
 
   // Advanced

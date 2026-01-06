@@ -29,6 +29,7 @@ export { BlockAttributesEditor as ChaiBlockAttributesEditor } from "@/core/compo
 export { DefaultChaiBlocks as ChaiDefaultBlocks } from "@/core/components/sidepanels/panels/add-blocks/default-blocks";
 export { ChaiDraggableBlock } from "@/core/components/sidepanels/panels/add-blocks/draggable-block";
 export { ExportCodeModal as ChaiExportCodeModal } from "@/core/modals/export-code-modal";
+export { default as ChaiAnimationContainer } from "@/render/animation/animation-container";
 export {
   AddBlocksPanel as ChaiAddBlocksPanel,
   BlockPropsEditor as ChaiBlockPropsEditor,
@@ -37,42 +38,42 @@ export {
   ImportHTML as ChaiImportHTML,
   Outline as ChaiOutline,
   ThemeConfigPanel as ChaiThemeConfigPanel,
-  UILibrariesPanel as ChaiUILibrariesPanel
+  UILibrariesPanel as ChaiUILibrariesPanel,
 };
 
 // i18n
-  export { i18n };
+export { i18n };
 
 // helper functions
-  export { generateUUID as generateBlockId, cn as mergeClasses } from "@/core/functions/common-functions";
-  export { getClassValueAndUnit } from "@/core/functions/helper-fn";
-  export { getBlocksFromHTML as convertHTMLToChaiBlocks, getBlocksFromHTML } from "@/core/import-html/html-to-json";
+export { generateUUID as generateBlockId, cn as mergeClasses } from "@/core/functions/common-functions";
+export { getClassValueAndUnit } from "@/core/functions/helper-fn";
+export { getBlocksFromHTML as convertHTMLToChaiBlocks, getBlocksFromHTML } from "@/core/import-html/html-to-json";
 
 // types
 export type { ChaiBlock, ChaiBuilderEditorProps };
 
 // registration apis
-  export { registerChaiAddBlockTab } from "@/core/extensions/add-block-tabs";
-  export {
-    registerBlockSettingField,
-    registerBlockSettingTemplate,
-    registerBlockSettingWidget
-  } from "@/core/extensions/blocks-settings";
-  export { registerChaiPreImportHTMLHook } from "@/core/extensions/import-html-pre-hook";
-  export { registerChaiLibrary } from "@/core/extensions/libraries";
-  export { registerChaiMediaManager } from "@/core/extensions/media-manager";
-  export { registerChaiSaveToLibrary } from "@/core/extensions/save-to-library";
-  export { registerChaiSidebarPanel } from "@/core/extensions/sidebar-panels";
-  export { registerChaiTopBar } from "@/core/extensions/top-bar";
-  export {
-    IfChaiFeatureFlag,
-    registerChaiFeatureFlag,
-    registerChaiFeatureFlags,
-    useChaiFeatureFlag,
-    useChaiFeatureFlags,
-    useToggleChaiFeatureFlag
-  } from "@/core/flags/register-chai-flag";
-  export type { ChaiLibrary, ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
+export { registerChaiAddBlockTab } from "@/core/extensions/add-block-tabs";
+export {
+  registerBlockSettingField,
+  registerBlockSettingTemplate,
+  registerBlockSettingWidget,
+} from "@/core/extensions/blocks-settings";
+export { registerChaiPreImportHTMLHook } from "@/core/extensions/import-html-pre-hook";
+export { registerChaiLibrary } from "@/core/extensions/libraries";
+export { registerChaiMediaManager } from "@/core/extensions/media-manager";
+export { registerChaiSaveToLibrary } from "@/core/extensions/save-to-library";
+export { registerChaiSidebarPanel } from "@/core/extensions/sidebar-panels";
+export { registerChaiTopBar } from "@/core/extensions/top-bar";
+export {
+  IfChaiFeatureFlag,
+  registerChaiFeatureFlag,
+  registerChaiFeatureFlags,
+  useChaiFeatureFlag,
+  useChaiFeatureFlags,
+  useToggleChaiFeatureFlag,
+} from "@/core/flags/register-chai-flag";
+export type { ChaiLibrary, ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 
 // hooks
 export { useMediaManagerComponent } from "@/core/extensions/media-manager";
@@ -82,4 +83,3 @@ export * from "@/core/hooks";
 // constants
 export { PERMISSIONS } from "@/core/constants/PERMISSIONS";
 export type { ChaiThemeValues } from "@/types/chaibuilder-editor-props";
-

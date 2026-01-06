@@ -13,7 +13,9 @@ export const BlockAttributesEditor = React.memo(() => {
   const attrKey = `${get(selectedStylingBlock, "0.prop")}_attrs`;
 
   React.useEffect(() => {
-    const _attributes = map(get(block, attrKey), (value, key) => ({ key, value }));
+    const _attributes = map(get(block, attrKey), (value, key) => ({ key, value })).filter(
+      (attr) => attr.key !== "data-animation",
+    );
     if (!isEmpty(_attributes)) setAttributes(_attributes as any);
     else setAttributes([]);
 
@@ -23,6 +25,11 @@ export const BlockAttributesEditor = React.memo(() => {
   const updateAttributes = React.useCallback(
     (updatedAttributes: any = []) => {
       const _attrs = {};
+      // Preserve existing data-animation if it exists
+      const existingAnimation = get(block, `${attrKey}.data-animation`);
+      if (existingAnimation) {
+        set(_attrs, "data-animation", existingAnimation);
+      }
       forEach(updatedAttributes, (item) => {
         if (!isEmpty(item.key)) {
           set(_attrs, item.key, item.value);
@@ -34,7 +41,7 @@ export const BlockAttributesEditor = React.memo(() => {
   );
 
   return (
-    <div className="flex-col gap-y-2">
+    <div className="flex-col gap-y-2 px-2 pb-2">
       <div className="flex flex-col">
         <div>
           <AttrsEditor preloadedAttributes={attributes} onAttributesChange={updateAttributes} />

@@ -20,6 +20,7 @@ import { ChaiBuilderEditor } from "@chaibuilder/sdk";
     dragAndDrop: true,
     validateStructure: true,
     designTokens: true,
+    animation: true,
   }}
   // ... other props
 />;
@@ -40,6 +41,7 @@ import { ChaiBuilderEditor } from "@chaibuilder/sdk";
 | `designTokens`      | `false` | Enable design tokens feature           |
 | `librarySite`       | `false` | Enable library site features           |
 | `gotoSettings`      | `false` | Enable settings navigation             |
+| `animation`         | `false` | Enable animation feature               |
 
 ## Custom Feature Flags
 
