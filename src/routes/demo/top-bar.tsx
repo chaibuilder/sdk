@@ -1,5 +1,5 @@
-import { LanguageButton } from "@/_demo/lang-button";
-import RightTop from "@/_demo/right-top";
+import { LanguageButton } from "@/routes/demo/lang-button";
+import RightTop from "@/routes/demo/right-top";
 import { Alert, AlertDescription } from "@/ui/shadcn/components/ui/alert";
 import { Cross2Icon, InfoCircledIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";

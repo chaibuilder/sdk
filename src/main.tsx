@@ -1,8 +1,8 @@
-import { MicrosoftClarity } from "@/_demo/microsoft-clarity";
 import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { registerDemoFeatureFlags } from "./_demo/demo-flags";
+import { registerDemoFeatureFlags } from "./routes/demo/demo-flags";
+import { MicrosoftClarity } from "./routes/demo/microsoft-clarity";
 
 async function enableMocking() {
   if (import.meta.env.MODE !== "development") {
@@ -11,9 +11,9 @@ async function enableMocking() {
   return true;
 }
 
-const ChaiBuilderDefault = lazy(() => import("@/Editor"));
-const Preview = lazy(() => import("@/Preview"));
-const ChaiBuilderCustom = lazy(() => import("@/EditorCustom"));
+const ChaiBuilderDefault = lazy(() => import("./routes/Editor"));
+const Preview = lazy(() => import("./routes/Preview"));
+const ChaiBuilderCustom = lazy(() => import("./routes/EditorCustom"));
 
 const router = createBrowserRouter([
   {
@@ -26,8 +26,12 @@ const router = createBrowserRouter([
   },
   {
     path: "/custom",
-    element: <ChaiBuilderCustom />
-  }
+    element: <ChaiBuilderCustom />,
+  },
+  {
+    path: "/website",
+    element: <ChaiBuilderDefault />,
+  },
 ]);
 
 // Register demo feature flags

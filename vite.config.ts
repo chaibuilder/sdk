@@ -9,7 +9,7 @@ export default defineConfig({
   plugins: [
     react(),
     dts({ include: ["src/**/*"], exclude: ["**/*.test.*", "**/*.spec.*"] }),
-    express("./src/server/index.ts"),
+    express("./src/express/index.ts"),
   ],
   resolve: {
     alias: {
@@ -147,6 +147,7 @@ export default defineConfig({
         "date-fns",
         "react-diff-view",
         "@radix-ui/react-collapsible",
+        "react-error-boundary",
       ],
     },
   },

@@ -1,16 +1,15 @@
-import { lsBlocksAtom, lsDesignTokensAtom, lsThemeAtom } from "@/_demo/atoms-dev";
-import { defaultShadcnPreset } from "@/_demo/THEME_PRESETS";
-import { ChaiBlock, ChaiBuilderEditor } from "@/core/main";
+import { ChaiBlock, ChaiBuilderEditor, registerChaiTopBar } from "@/core/main";
 import "@/index.css";
+import { lsBlocksAtom, lsDesignTokensAtom, lsThemeAtom } from "@/routes/demo/atoms-dev";
+import { EXTERNAL_DATA } from "@/routes/demo/EXTERNAL_DATA";
+import { PARTIALS } from "@/routes/demo/PARTIALS";
+import { defaultShadcnPreset } from "@/routes/demo/THEME_PRESETS";
+import Topbar from "@/routes/demo/top-bar";
 import { SavePageData } from "@/types/chaibuilder-editor-props";
 import { loadWebBlocks } from "@/web-blocks";
 import { useAtom } from "jotai";
 import { isArray } from "lodash-es";
 import { toast } from "sonner";
-import { EXTERNAL_DATA } from "./_demo/EXTERNAL_DATA";
-import { PARTIALS } from "./_demo/PARTIALS";
-import Topbar from "./_demo/top-bar";
-import { registerChaiTopBar } from "./core/main";
 
 loadWebBlocks();
 registerChaiTopBar(Topbar);

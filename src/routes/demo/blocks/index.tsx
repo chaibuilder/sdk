@@ -1,5 +1,8 @@
-import { Component as CollectionListComponent, Config as CollectionListConfig } from "@/_demo/blocks/collection-list";
-import { Component as ModalComponent, Config as ModalConfig } from "@/_demo/blocks/modal";
+import {
+  Component as CollectionListComponent,
+  Config as CollectionListConfig,
+} from "@/routes/demo/blocks/collection-list";
+import { Component as ModalComponent, Config as ModalConfig } from "@/routes/demo/blocks/modal";
 import { ChaiBlockComponentProps, registerChaiBlock } from "@chaibuilder/runtime";
 
 const PaginationComponent = (props: ChaiBlockComponentProps<any>) => {

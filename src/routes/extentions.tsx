@@ -1,14 +1,14 @@
-import { default as AIChatPanel } from "@/_demo/ai-chat-panel";
-import registerCustomBlocks from "@/_demo/blocks";
-import "@/_demo/panels/panel";
+import { AiButton, DEFAULT_PANEL_WIDTH } from "@/core/components/layout/root-layout";
+import { registerChaiLibrary } from "@/core/extensions/libraries";
 import { registerChaiSaveToLibrary } from "@/core/extensions/save-to-library";
 import { registerChaiPreImportHTMLHook, registerChaiSidebarPanel, registerChaiTopBar } from "@/core/main";
+import { default as AIChatPanel } from "@/routes/demo/ai-chat-panel";
+import registerCustomBlocks from "@/routes/demo/blocks";
+import "@/routes/demo/panels/panel";
 import { ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 import { ChaiFontViaSrc, ChaiFontViaUrl, registerChaiFont } from "@chaibuilder/runtime";
 import { lazy } from "react";
-import { AiButton, DEFAULT_PANEL_WIDTH } from "./core/components/layout/root-layout";
-import { registerChaiLibrary } from "./core/extensions/libraries";
-const TopBar = lazy(() => import("@/_demo/top-bar"));
+const TopBar = lazy(() => import("@/routes/demo/top-bar"));
 
 export const extendChaiBuilder = () => {
   registerCustomBlocks();

@@ -1,10 +1,10 @@
-import { lsBlocksAtom } from "@/_demo/atoms-dev";
-import CustomLayout from "@/_demo/custom-layout";
-import PreviewWeb from "@/_demo/preview/web-preview";
 import { ChaiBlock, ChaiBuilderEditor } from "@/core/main";
+import "@/index.css";
+import { lsBlocksAtom } from "@/routes/demo/atoms-dev";
+import CustomLayout from "@/routes/demo/custom-layout";
+import PreviewWeb from "@/routes/demo/preview/web-preview";
 import { loadWebBlocks } from "@/web-blocks";
 import { useAtom } from "jotai";
-import "@/index.css";
 
 loadWebBlocks();
 

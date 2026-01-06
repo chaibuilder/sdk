@@ -1,7 +1,8 @@
-import { SettingsWatcher } from "@/_demo/preview/preview-settings";
 import { ChaiFrame } from "@/core/frame/Frame";
-import { useBlocksStore, useBrandingOptions, useLanguages } from "@/core/hooks";
+import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { useBrandingOptions, useLanguages } from "@/core/hooks";
 import { RenderChaiBlocks } from "@/render";
+import { SettingsWatcher } from "@/routes/demo/preview/preview-settings";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { DesktopIcon, LaptopIcon, MobileIcon } from "@radix-ui/react-icons";
 import clsx from "clsx";

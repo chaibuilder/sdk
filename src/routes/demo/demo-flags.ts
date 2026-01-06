@@ -1,4 +1,4 @@
-import { registerChaiFeatureFlags } from "../core/flags/register-chai-flag";
+import { registerChaiFeatureFlags } from "@/core/flags/register-chai-flag";
 
 /**
  * Register demo feature flags for testing purposes
