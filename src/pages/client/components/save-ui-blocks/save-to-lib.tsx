@@ -5,9 +5,9 @@ import {
   usePermissions,
   useUpdateBlocksPropsRealtime,
 } from "@/core/main";
-import { DeleteBlockButton } from "@/pages/components/save-ui-blocks/delete-block-confirmation";
-import { GroupSelector } from "@/pages/components/save-ui-blocks/group-selector";
-import { ImageUpload } from "@/pages/components/save-ui-blocks/image-upload";
+import { DeleteBlockButton } from "@/pages/client/components/save-ui-blocks/delete-block-confirmation";
+import { GroupSelector } from "@/pages/client/components/save-ui-blocks/group-selector";
+import { ImageUpload } from "@/pages/client/components/save-ui-blocks/image-upload";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
 import { useGetUIBlockDetails, useSaveUIBlock } from "@/pages/hooks/project/use-block-library-mutations";
 import { Button, Input, Label } from "@/ui";

@@ -1,4 +1,7 @@
-import { useBlocksStore, useBuilderProp, useLanguages, useSavePage } from "@/core/hooks";
+import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { useLanguages } from "@/core/hooks";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
+import { useSavePage } from "@/core/hooks/use-save-page";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import { ChaiBlock } from "@/types/chai-block";
 import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/ui/popover";

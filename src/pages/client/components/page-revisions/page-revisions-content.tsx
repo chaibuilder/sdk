@@ -1,6 +1,7 @@
 "use client";
 
-import { useLanguages, useSavePage } from "@/core/main";
+import { useSavePage } from "@/core/hooks/use-save-page";
+import { useLanguages } from "@/core/main";
 import PermissionChecker from "@/pages/client/components/permission-checker";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
@@ -33,7 +34,7 @@ import * as React from "react";
 import { lazy, Suspense, useEffect, useState } from "react";
 
 // Lazy load the JsonDiffViewer component
-const JsonDiffViewer = lazy(() => import("@/pages/components/json-diff-viewer"));
+const JsonDiffViewer = lazy(() => import("@/pages/client/components/json-diff-viewer"));
 
 const Tags = ({ tag }: { tag: string }) => {
   if (tag === "draft") {

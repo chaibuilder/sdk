@@ -1,8 +1,10 @@
-import { atom } from "jotai";
+import { atom, PrimitiveAtom } from "jotai";
 
-export const addNewLangAtom = atom<null | {
+export type AddNewLangState = null | {
   edit: boolean;
   primaryPage: string;
   id?: string;
   preselectedLang?: string;
-}>(null);
+};
+
+export const addNewLangAtom = atom<AddNewLangState>(null) as PrimitiveAtom<AddNewLangState>;

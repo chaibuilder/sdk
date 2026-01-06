@@ -1,4 +1,5 @@
-import { useSavePage, useTranslation } from "@/core/main";
+import { useSavePage } from "@/core/hooks/use-save-page";
+import { useTranslation } from "@/core/main";
 import { useCurrentPage } from "@/pages/hooks/pages/use-current-page";
 import { useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";

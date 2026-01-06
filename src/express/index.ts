@@ -1,6 +1,6 @@
-import express from "@/express";
 import cors from "cors";
 import dotenv from "dotenv";
+import express, { Express } from "express";
 import fileUpload from "express-fileupload";
 import { ChaiBuilderPages } from "../server/classes/class-chaibuilder-pages";
 import { ChaiBuilderPagesBackend } from "../server/classes/class-chaibuilder-pages-backend";
@@ -14,7 +14,7 @@ import "./register";
 
 dotenv.config();
 
-export const app = express();
+export const app: Express = express();
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
 app.use(

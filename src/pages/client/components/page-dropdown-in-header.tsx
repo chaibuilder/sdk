@@ -1,7 +1,7 @@
 import { useLanguages } from "@/core/main";
 import { useActivePage } from "@/pages/hooks/pages/use-current-page";
 import { Button } from "@/ui";
-import { useAtom } from "jotai";
+import { useSetAtom } from "jotai";
 import { get } from "lodash-es";
 import { File, Hash, Loader, MoreHorizontal } from "lucide-react";
 import { lazy, Suspense, useState } from "react";
@@ -33,7 +33,7 @@ export const PageDropdownInHeader = () => {
   const currentLangPage = languagePages?.find((langPage) => langPage.lang === selectedLang);
   const { isLocked } = usePageLockStatus();
   const isPartial = !page?.slug;
-  const [, setAddNewLang] = useAtom(addNewLangAtom);
+  const setAddNewLang = useSetAtom(addNewLangAtom);
 
   if (!page) return null;
 

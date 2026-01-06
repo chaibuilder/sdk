@@ -1,4 +1,4 @@
-import { useSavePage } from "@/core/main";
+import { useSavePage } from "@/core/hooks/use-save-page";
 import { useWebsocket } from "@/pages/hooks/project/use-builder-prop";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { useAtom } from "jotai";
@@ -219,7 +219,10 @@ export const useChaibuilderRealtime = () => {
   const userId = useUserId();
   const pageId = usePageId();
   const channelId = useChannelId();
-  const [channel, setChannel] = useAtom(realtimeChannel);
+  const [channel, setChannel] = useAtom(realtimeChannel) as [
+    RealtimeChannel | null,
+    (value: RealtimeChannel | null) => void,
+  ];
 
   const onReceiveEvent = useReceiveRealtimeEvent();
   const updateOnlineUsers = useUpdateOnlineUsers();

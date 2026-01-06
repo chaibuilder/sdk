@@ -363,7 +363,10 @@ const SeoPanel = () => {
   const onAiGenerate = (field: string) => {
     return (data: { fieldValue: string | null; error?: string }) => {
       if (!isEmpty(data.fieldValue)) {
-        const result = processAiSeoResponse(data.fieldValue, field);
+        const result: { success: true; value: string } | { success: false; error: string } = processAiSeoResponse(
+          data.fieldValue,
+          field,
+        );
 
         if (result.success) {
           handleInputChange({
@@ -376,7 +379,7 @@ const SeoPanel = () => {
           toast.error(
             <div>
               <h2>Failed to process AI response:</h2>
-              <p>{result.error}</p>
+              <p>{(result as { success: false; error: string }).error}</p>
             </div>,
           );
         }

@@ -1,4 +1,5 @@
-import { useSavePage, useTranslation } from "@/core/main";
+import { useSavePage } from "@/core/hooks/use-save-page";
+import { useTranslation } from "@/core/main";
 import { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
 import { Button, Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/ui";
 import { AlertCircle, Check, UserIcon, X } from "lucide-react";

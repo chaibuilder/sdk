@@ -1,15 +1,15 @@
 import { useLanguages } from "@/core/main";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { useQuery } from "@tanstack/react-query";
-import { atom, useAtom } from "jotai";
+import { atom, PrimitiveAtom, useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useApiUrl } from "../project/use-builder-prop";
 import { useFetch } from "../utils/use-fetch";
 import { useCurrentPage } from "./use-current-page";
 
-const selectedDynamicPage = atom<null | { id: string; name: string; slug: string; lang: string; primaryPage?: string }>(
-  null,
-);
+type DynamicPage = { id: string; name: string; slug: string; lang: string; primaryPage?: string };
+
+const selectedDynamicPage = atom<null | DynamicPage>(null) as PrimitiveAtom<null | DynamicPage>;
 
 export const useSelectedDynamicPage = () => useAtom(selectedDynamicPage);
 

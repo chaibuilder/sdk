@@ -7,7 +7,7 @@ import { usePageExpandManager } from "@/pages/hooks/utils/use-page-expand-manage
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { navigateToPage } from "@/pages/utils/navigation";
 import { organizePages } from "@/pages/utils/page-organization";
-import { useAtom } from "jotai";
+import { useSetAtom } from "jotai";
 import { filter, find, isEmpty, map } from "lodash-es";
 import { File } from "lucide-react";
 import { Suspense, lazy, useCallback, useEffect, useMemo, useState } from "react";
@@ -47,7 +47,7 @@ const PagesManagerNew = ({ close }: PageManagerNewProps) => {
   const [unmarkAsTemplate, setUnmarkAsTemplate] = useState(null);
   const [selectedLanguage, setSelectedLanguage] = useState(fallbackLang);
   const [_showUntranslatedPages, setShowUntranslatedPages] = useState(false);
-  const [, setAddNewLang] = useAtom(addNewLangAtom);
+  const setAddNewLang = useSetAtom(addNewLangAtom);
   const showUntranslatedPages = _showUntranslatedPages && selectedLanguage !== fallbackLang;
 
   const { data: languagePages, isFetching: isFetchingLangPages } = useWebsiteLanguagePages(selectedLanguage);

@@ -1,5 +1,5 @@
 import { usePermissions } from "@/core/main";
-import { DeleteBlockConfirmation } from "@/pages/components/save-ui-blocks/delete-block-confirmation";
+import { DeleteBlockConfirmation } from "@/pages/client/components/save-ui-blocks/delete-block-confirmation";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
 import {
   Button,

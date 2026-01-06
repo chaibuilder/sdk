@@ -7,7 +7,7 @@ import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { navigateToPage } from "@/pages/utils/navigation";
 import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Separator } from "@/ui";
-import { useAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { compact, find, get, isEmpty, map } from "lodash-es";
 import { ChevronDown, Languages, Plus, Star } from "lucide-react";
 import React, { lazy, Suspense, useEffect, useMemo } from "react";
@@ -56,7 +56,7 @@ export const LanguageSwitcher = ({
     }
   }, [languages, setSearchParams, setSelectedLang]);
 
-  const [, setAddNewLang] = useAtom(addNewLangAtom);
+  const setAddNewLang = useSetAtom(addNewLangAtom);
 
   const { data: currentPage } = useCurrentPage();
   const { data: websiteSettings } = useWebsiteSetting();
@@ -199,7 +199,8 @@ export const LanguageSwitcher = ({
 };
 
 export default function TopbarLeft() {
-  const [addNewLang, setAddNewLang] = useAtom(addNewLangAtom);
+  const addNewLang = useAtomValue(addNewLangAtom);
+  const setAddNewLang = useSetAtom(addNewLangAtom);
 
   return (
     <div className="relative z-10 flex items-center justify-end gap-1">

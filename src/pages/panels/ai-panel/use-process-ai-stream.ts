@@ -1,4 +1,6 @@
-import { getBlocksFromHTML, useRemoveBlocks, useReplaceBlock } from "@/core/main";
+import { useRemoveBlocks } from "@/core/hooks/use-remove-blocks";
+import { useReplaceBlock } from "@/core/hooks/use-replace-block";
+import { getBlocksFromHTML } from "@/core/main";
 import { useCallback } from "react";
 import { Message } from "./ai-panel-helper";
 

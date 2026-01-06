@@ -9,7 +9,7 @@ import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
 import { ChaiBuilderPageType } from "@/server/types";
 import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/ui";
-import { useAtom } from "jotai";
+import { useSetAtom } from "jotai";
 import { filter, find, get, isEmpty, map } from "lodash-es";
 import { MoreHorizontal, PencilIcon, Power, StarIcon, TrashIcon } from "lucide-react";
 import { lazy, Suspense, useMemo, useState } from "react";
@@ -20,7 +20,7 @@ const UnpublishPage = lazy(() => import("@/pages/client/components/unpublish-pag
 
 const LangPanel = () => {
   const { t } = useTranslation();
-  const [, setAddNewLang] = useAtom(addNewLangAtom);
+  const setAddNewLang = useSetAtom(addNewLangAtom);
   const { selectedLang, fallbackLang, setSelectedLang } = useLanguages();
   const { data: languagePages, isFetching } = useLanguagePages();
   const { data: currentPage } = useCurrentPage();

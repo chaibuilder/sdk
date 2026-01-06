@@ -5,16 +5,16 @@ import { useWebsitePages } from "../pages/use-project-pages.ts";
 import { useApiUrl } from "../project/use-builder-prop.ts";
 import { useFetch } from "./use-fetch.ts";
 
-export const usePartialBlocksFn = () => {
+export const usePartialBlocksFn = (): {
+  getPartialBlocks: () => Promise<Record<string, { name: string; description?: string; type: string }>>;
+  getPartialBlockBlocks: (partialBlockKey: string) => Promise<ChaiBlock[]>;
+} => {
   const { data: projectPages } = useWebsitePages();
   const apiUrl = useApiUrl();
   const fetchAPI = useFetch();
   return {
     getPartialBlocks: useCallback(async () => {
-      const partialBlocks: Record<
-        string,
-        { name: string; description?: string; type: string }
-      > = {};
+      const partialBlocks: Record<string, { name: string; description?: string; type: string }> = {};
       for (const page of projectPages ?? []) {
         if (isEmpty(page?.slug)) {
           partialBlocks[page.id as string] = {
@@ -40,7 +40,7 @@ export const usePartialBlocksFn = () => {
           return [];
         }
       },
-      [fetchAPI, apiUrl]
+      [fetchAPI, apiUrl],
     ),
   };
 };

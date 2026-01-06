@@ -6,7 +6,11 @@ import express from "./src/express/express-plugin";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), dts({ rollupTypes: true }), express("./src/server/index.ts")],
+  plugins: [
+    react(),
+    dts({ include: ["src/**/*"], exclude: ["**/*.test.*", "**/*.spec.*"] }),
+    express("./src/server/index.ts"),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -29,6 +33,7 @@ export default defineConfig({
     rollupOptions: {
       treeshake: true,
       output: {
+        exports: "named",
         globals: {
           "react-dom": "ReactDom",
           react: "React",
