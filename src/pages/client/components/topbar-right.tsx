@@ -1,7 +1,7 @@
 import { useLanguages, useRightPanel, useSavePage, useTranslation } from "@/core/main";
-import PageRevisions from "@/pages/components/page-revisions/page-revisions-trigger";
-import PermissionChecker from "@/pages/components/permission-checker";
-import PublishPages from "@/pages/components/publish-pages/publish-pages";
+import PageRevisions from "@/pages/client/components/page-revisions/page-revisions-trigger";
+import PermissionChecker from "@/pages/client/components/permission-checker";
+import PublishPages from "@/pages/client/components/publish-pages/publish-pages";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
 import { usePublishPages } from "@/pages/hooks/pages/mutations";
 import { useActivePage, useCurrentPage } from "@/pages/hooks/pages/use-current-page";
@@ -18,8 +18,10 @@ import { CheckCircle, ChevronDown, Loader, Palette, Play, Rocket, Save, Send } f
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { usePageLockStatus } from "./page-lock/page-lock-hook";
 
-const UnpublishPage = lazy(() => import("@/pages/components/unpublish-page"));
-const TranslationWarningModal = lazy(() => import("@/pages/components/save-ui-blocks/translation-warning-modal"));
+const UnpublishPage = lazy(() => import("@/pages/client/components/unpublish-page"));
+const TranslationWarningModal = lazy(
+  () => import("@/pages/client/components/save-ui-blocks/translation-warning-modal"),
+);
 
 const PreviewButton = () => {
   const { t } = useTranslation();

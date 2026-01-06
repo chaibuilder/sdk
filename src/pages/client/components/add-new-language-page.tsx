@@ -1,5 +1,5 @@
 import { useLanguages, useSidebarActivePanel, useTranslation } from "@/core/main";
-import { SlugInput } from "@/pages/components/slug-input";
+import { SlugInput } from "@/pages/client/components/slug-input";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { parseSlugForEdit, removeSlugExtension } from "@/pages/utils/slug-utils";

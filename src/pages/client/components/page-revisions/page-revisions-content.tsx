@@ -1,7 +1,7 @@
 "use client";
 
 import { useLanguages, useSavePage } from "@/core/main";
-import PermissionChecker from "@/pages/components/permission-checker";
+import PermissionChecker from "@/pages/client/components/permission-checker";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
 import { useCurrentPage, usePageEditInfo } from "@/pages/hooks/pages/use-current-page";

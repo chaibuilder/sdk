@@ -1,6 +1,6 @@
 "use client";
 
-import { LanguageSelector } from "@/pages/components/page-manager/page-manager-search-and-filter";
+import { LanguageSelector } from "@/pages/client/components/page-manager/page-manager-search-and-filter";
 import { useGetPageChanges } from "@/pages/hooks/pages/use-get-page-changes";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useFallbackLang } from "@/pages/hooks/use-fallback-lang";

@@ -27,5 +27,6 @@
     }
   },
   "include": ["src", "lib", "e2e_tests"],
+  "exclude": ["src/express/express-plugin.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

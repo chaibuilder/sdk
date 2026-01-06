@@ -1,10 +1,10 @@
 "use client";
 
 import { useChaiFeatureFlag, useLanguages, usePermissions } from "@/core/main";
-import { DynamicSlugInput } from "@/pages/components/dynamic-slug-input";
-import { ParentPageSelector } from "@/pages/components/parent-page-selector";
-import { SlugInput } from "@/pages/components/slug-input";
-import { TemplateSelection } from "@/pages/components/template-selection";
+import { DynamicSlugInput } from "@/pages/client/components/dynamic-slug-input";
+import { ParentPageSelector } from "@/pages/client/components/parent-page-selector";
+import { SlugInput } from "@/pages/client/components/slug-input";
+import { TemplateSelection } from "@/pages/client/components/template-selection";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
 import { useCreatePage, useUpdatePage } from "@/pages/hooks/pages/mutations";

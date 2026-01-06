@@ -1,6 +1,6 @@
 import { useLanguages, useTranslation } from "@/core/main";
-import { ChangeSlug } from "@/pages/components/change-slug";
-import PermissionChecker from "@/pages/components/permission-checker";
+import { ChangeSlug } from "@/pages/client/components/change-slug";
+import PermissionChecker from "@/pages/client/components/permission-checker";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
 import { useCurrentPage } from "@/pages/hooks/pages/use-current-page";
@@ -15,8 +15,8 @@ import { MoreHorizontal, PencilIcon, Power, StarIcon, TrashIcon } from "lucide-r
 import { lazy, Suspense, useMemo, useState } from "react";
 import { addNewLangAtom } from "../../atom/add-new-lang";
 
-const DeletePage = lazy(() => import("@/pages/components/delete-page"));
-const UnpublishPage = lazy(() => import("@/pages/components/unpublish-page"));
+const DeletePage = lazy(() => import("@/pages/client/components/delete-page"));
+const UnpublishPage = lazy(() => import("@/pages/client/components/unpublish-page"));
 
 const LangPanel = () => {
   const { t } = useTranslation();

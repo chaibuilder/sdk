@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/ui";
 import { useAtom } from "jotai";
 import { ExternalLink } from "lucide-react";
 import { useEffect, useRef } from "react";

@@ -1,15 +1,15 @@
 "use client";
 
+import { ChaiBlock, useBlocksHtmlForAi, useSelectedBlock, useSelectedBlockIds } from "@/core/main";
 import {
   Conversation,
   ConversationContent,
   ConversationEmptyState,
   ConversationScrollButton,
-} from "@/components/ai-elements/conversation";
-import { Message as AiMessage, MessageContent, MessageResponse } from "@/components/ai-elements/message";
-import { Reasoning, ReasoningContent, ReasoningTrigger } from "@/components/ai-elements/reasoning";
-import { TaskMessage } from "@/components/ai-elements/task-message";
-import { ChaiBlock, useBlocksHtmlForAi, useSelectedBlock, useSelectedBlockIds } from "@/core/main";
+} from "@/pages/components/ai-elements/conversation";
+import { Message as AiMessage, MessageContent, MessageResponse } from "@/pages/components/ai-elements/message";
+import { Reasoning, ReasoningContent, ReasoningTrigger } from "@/pages/components/ai-elements/reasoning";
+import { TaskMessage } from "@/pages/components/ai-elements/task-message";
 import { Bot } from "lucide-react";
 import { Fragment, lazy, Suspense } from "react";
 import { toast } from "sonner";

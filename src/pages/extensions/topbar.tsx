@@ -1,6 +1,6 @@
 import { mergeClasses, useChaiFeatureFlag } from "@/core/main";
-import TopbarLeft, { LanguageSwitcher } from "@/pages/components/topbar-left";
-import TopbarRight from "@/pages/components/topbar-right";
+import TopbarLeft, { LanguageSwitcher } from "@/pages/client/components/topbar-left";
+import TopbarRight from "@/pages/client/components/topbar-right";
 import { useCurrentPage, useGetPageFullSlug } from "@/pages/hooks/pages/use-current-page";
 import { get } from "lodash-es";
 import { ExternalLink } from "lucide-react";

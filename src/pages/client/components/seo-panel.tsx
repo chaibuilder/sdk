@@ -1,4 +1,4 @@
-import { NestedPathSelector } from "@/pages/components/nested-path-selector/nested-path-selector";
+import { NestedPathSelector } from "@/pages/client/components/nested-path-selector/nested-path-selector";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
 import { useUpdatePage } from "@/pages/hooks/pages/mutations";
 import { useCurrentLanguagePage } from "@/pages/hooks/pages/use-current-language-page";

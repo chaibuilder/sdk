@@ -1,4 +1,4 @@
-import { useLanguages } from "@/builder";
+import { useLanguages } from "@/core/main";
 import { useGlobalJsonLDItems } from "@/pages/hooks/use-global-json-ld";
 import {
   AlertDialog,
