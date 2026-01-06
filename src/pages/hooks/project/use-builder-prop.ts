@@ -1,4 +1,3 @@
-import { SupabaseClient } from "@supabase/supabase-js";
 import { get } from "lodash-es";
 import { useMemo } from "react";
 import { usePagesProps } from "../utils/use-pages-props";
@@ -21,5 +20,5 @@ export const useAssetsApiUrl = () => {
 };
 
 export const useWebsocket = () => {
-  return usePagesProp("websocket", null) as SupabaseClient | null;
+  return usePagesProp("websocket", null) as any | null;
 };

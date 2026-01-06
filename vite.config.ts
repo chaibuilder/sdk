@@ -141,6 +141,7 @@ export default defineConfig({
         "react-dropzone",
         "date-fns",
         "react-diff-view",
+        "@radix-ui/react-collapsible",
       ],
     },
   },
