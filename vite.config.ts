@@ -27,6 +27,7 @@ export default defineConfig({
         tailwind: resolve(__dirname, "src/tailwind/index.ts"),
         runtime: resolve(__dirname, "src/runtime.ts"),
         pages: resolve(__dirname, "src/pages/index.ts"),
+        server: resolve(__dirname, "src/server/export.ts"),
       },
       formats: ["es", "cjs"],
     },
