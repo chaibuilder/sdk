@@ -47,13 +47,6 @@ const SaveToLibrary = lazy(() => import("@/pages/client/components/save-ui-block
 const ThemePanelFooter = lazy(() => import("@/pages/client/components/theme-panel-footer"));
 const PreviewWeb = lazy(() => import("./client/components/web-preview.tsx"));
 
-registerPagesFeatureFlags();
-loadWebBlocks();
-registerChaiTopBar(Topbar);
-registerChaiPanels();
-registerChaiMediaManager(DigitalAssetManager as any);
-registerChaiSaveToLibrary(SaveToLibrary);
-
 export type ChaiBuilderPagesProps = {
   hasReactQueryProvider?: boolean;
   topLeftCorner?: React.FC;
@@ -257,6 +250,17 @@ const queryClient = new QueryClient({
 const ChaiBuilderPages = (props: ChaiBuilderPagesProps) => {
   const [, setPagesProps] = usePagesProps();
   const [ready, setReady] = useState(false);
+  
+  // Register pages-specific extensions only when ChaiBuilderPages is mounted
+  useEffect(() => {
+    registerPagesFeatureFlags();
+    loadWebBlocks();
+    registerChaiTopBar(Topbar);
+    registerChaiPanels();
+    registerChaiMediaManager(DigitalAssetManager as any);
+    registerChaiSaveToLibrary(SaveToLibrary);
+  }, []);
+  
   useEffect(() => {
     setPagesProps(
       pick(props, [
