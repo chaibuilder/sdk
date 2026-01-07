@@ -1,6 +1,5 @@
 import { default as AIChatPanel } from "@/_demo/ai-chat-panel";
 import registerCustomBlocks from "@/_demo/blocks";
-import "@/_demo/panels/panel";
 import { registerChaiSaveToLibrary } from "@/core/extensions/save-to-library";
 import { registerChaiPreImportHTMLHook, registerChaiSidebarPanel, registerChaiTopBar } from "@/core/main";
 import { ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
@@ -11,6 +10,10 @@ import { registerChaiLibrary } from "./core/extensions/libraries";
 const TopBar = lazy(() => import("@/_demo/top-bar"));
 
 export const extendChaiBuilder = () => {
+  // Import demo panels only when extendChaiBuilder is called, not at module load time
+  // This prevents side effects from running before the app is ready
+  import("@/_demo/panels/panel");
+  
   registerCustomBlocks();
   registerChaiPreImportHTMLHook(async (html) => {
     return new Promise((resolve) => {
