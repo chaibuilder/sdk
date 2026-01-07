@@ -12,7 +12,9 @@ const TopBar = lazy(() => import("@/_demo/top-bar"));
 export const extendChaiBuilder = () => {
   // Import demo panels only when extendChaiBuilder is called, not at module load time
   // This prevents side effects from running before the app is ready
-  import("@/_demo/panels/panel");
+  import("@/_demo/panels/panel").catch((error) => {
+    console.error("Failed to load demo panels:", error);
+  });
   
   registerCustomBlocks();
   registerChaiPreImportHTMLHook(async (html) => {
