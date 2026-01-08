@@ -3,11 +3,13 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { registerDemoFeatureFlags } from "./routes/demo/demo-flags";
 import { MicrosoftClarity } from "./routes/demo/microsoft-clarity";
-import { WebsiteBuilder } from "./routes/website-builder";
 
 const ChaiBuilderDefault = lazy(() => import("./routes/builder"));
 const Preview = lazy(() => import("./routes/page-preview"));
 const ChaiBuilderCustom = lazy(() => import("./routes/custom-layout"));
+const WebsiteBuilder = lazy(() =>
+  import("./routes/website-builder").then((module) => ({ default: module.WebsiteBuilder })),
+);
 
 const router = createBrowserRouter([
   {
