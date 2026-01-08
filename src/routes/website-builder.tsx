@@ -8,7 +8,7 @@ export const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.m
   realtime: { worker: true },
 });
 
-export const WebsiteBuilder = () => {
+const WebsiteBuilder = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<null | boolean>(null);
   const [user, setUser] = useState<LoggedInUser | null>(null);
 
@@ -102,3 +102,5 @@ export const WebsiteBuilder = () => {
     />
   );
 };
+
+export default WebsiteBuilder;
