@@ -1,10 +1,10 @@
-import { drizzle } from "drizzle-orm/postgres-js";
+import { drizzle, type PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import * as schema from "./drizzle/schema";
 
 const connectionString = import.meta.env.VITE_CHAIBUILDER_DATABASE_URL;
 
-let db: ReturnType<typeof drizzle> | null = null;
+let db: PostgresJsDatabase<typeof schema> | null = null;
 
 if (connectionString) {
   const client = postgres(connectionString, { max: 10 });
