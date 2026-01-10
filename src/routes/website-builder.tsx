@@ -1,12 +1,8 @@
 import ChaiBuilderPages from "@/pages";
 import { LoggedInUser } from "@/pages/types/loggedin-user";
 import { LoginScreen } from "@/routes/login";
-import { createClient } from "@supabase/supabase-js";
 import { useCallback, useEffect, useState } from "react";
-
-export const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_ANON_KEY, {
-  realtime: { worker: true },
-});
+import { supabaseClient } from "./supabase";
 
 const WebsiteBuilder = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<null | boolean>(null);
@@ -17,7 +13,7 @@ const WebsiteBuilder = () => {
     const checkInitialSession = async () => {
       const {
         data: { session },
-      } = await supabase.auth.getSession();
+      } = await supabaseClient.auth.getSession();
 
       if (session?.user) {
         setUser({
@@ -37,7 +33,7 @@ const WebsiteBuilder = () => {
     // Listen to auth state changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabaseClient.auth.onAuthStateChange((_event, session) => {
       if (user?.id && session?.user) {
         //already logged in
         return;
@@ -63,13 +59,13 @@ const WebsiteBuilder = () => {
   }, [user?.id]);
 
   const handleLogout = useCallback(async () => {
-    await supabase.auth.signOut();
+    await supabaseClient.auth.signOut();
   }, []);
 
   const getAccessToken = useCallback(async () => {
     const {
       data: { session },
-    } = await supabase.auth.getSession();
+    } = await supabaseClient.auth.getSession();
     return session?.access_token as string;
   }, []);
 
@@ -96,7 +92,7 @@ const WebsiteBuilder = () => {
       onLogout={handleLogout}
       getAccessToken={getAccessToken}
       currentUser={user}
-      websocket={supabase}
+      websocket={supabaseClient}
       autoSaveActionsCount={10}
       autoSave={true}
     />
