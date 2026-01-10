@@ -1,4 +1,4 @@
-import { ChaiBlock } from "@chaibuilder/sdk";
+import { ChaiBlock } from "@/types/common";
 import { eq } from "drizzle-orm";
 import { set } from "lodash-es";
 import { randomUUID } from "node:crypto";

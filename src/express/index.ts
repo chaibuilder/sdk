@@ -83,12 +83,6 @@ async function handleApi(req: express.Request, res: express.Response) {
     //   return;
     // }
 
-    // Short-circuit specific actions to return empty response
-    if (body.action === "GET_ROLE_AND_PERMISSIONS") {
-      res.json({});
-      return;
-    }
-
     // Handle all other actions normally
     const action = getChaiAction(body.action);
     if (!action) {
