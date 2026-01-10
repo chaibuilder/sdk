@@ -9,7 +9,7 @@ const WebsiteBuilder = () => {
   const [user, setUser] = useState<LoggedInUser | null>(null);
 
   useEffect(() => {
-    console.log("WebsiteBuilder");        
+    console.log("WebsiteBuilder");
     // Check initial session
     const checkInitialSession = async () => {
       const {
@@ -90,6 +90,7 @@ const WebsiteBuilder = () => {
       translations={{ "fr-CA": { Outline: "Contour" } }}
       getPreviewUrl={getPreviewUrl}
       getLiveUrl={getLiveUrl}
+      apiUrl="/chai/api"
       onLogout={handleLogout}
       getAccessToken={getAccessToken}
       currentUser={user}
