@@ -1,5 +1,5 @@
 import { supabase } from "@/routes/supabase-admin";
-import { getChaiAction } from "@/server/actions/actions-registery";
+import { initChaiBuilderActionHandler } from "@/server/actions/chai-builder-actions-handler";
 import cors from "cors";
 import dotenv from "dotenv";
 import express, { Express } from "express";
@@ -70,33 +70,12 @@ async function handleApi(req: express.Request, res: express.Response) {
   }
   authTokenOrUserId = supabaseUser.data.user?.id || "";
   try {
-    // Handle AI chat streaming separately
-    // if (body.action === "ASK_AI") {
-    //   const aiHandler = chaiPages.getAIHandler();
-
-    //   if (!aiHandler || !aiHandler.isConfigured()) {
-    //     res.status(500).json({ error: "AI is not configured" });
-    //     return;
-    //   }
-
-    //   await aiHandler.handleRequest(body.data, res);
-    //   return;
-    // }
-
-    // Handle all other actions normally
-    const action = getChaiAction(body.action);
-    if (!action) {
-      res.status(404).json({ error: "Action not found" });
-      return;
-    }
-    action.setContext({
-      appId: apiKey,
-      userId: authTokenOrUserId,
-    });
-    const response = await action.execute(body.data);
+    const actionHandler = initChaiBuilderActionHandler({ apiKey, userId: authTokenOrUserId });
+    const response = await actionHandler(body);
     res.json(response);
     return;
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: (error as Error).message });
   }
 }
