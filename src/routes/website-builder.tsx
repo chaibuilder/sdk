@@ -9,6 +9,7 @@ const WebsiteBuilder = () => {
   const [user, setUser] = useState<LoggedInUser | null>(null);
 
   useEffect(() => {
+    console.log("WebsiteBuilder");        
     // Check initial session
     const checkInitialSession = async () => {
       const {

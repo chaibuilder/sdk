@@ -42,6 +42,11 @@ app.post("/chai/api", async (req, res) => {
   handleApi(req, res);
 });
 
+// Users endpoint to support hooks that use usersApiUrl (e.g., GET_CHAI_USER)
+app.post("/chai/users", async (req, res) => {
+  handleUsersApi(req, res);
+});
+
 if (!process.env["VITE"]) {
   const frontendFiles = process.cwd() + "/dist";
   app.use(express.static(frontendFiles));
@@ -51,11 +56,58 @@ if (!process.env["VITE"]) {
   app.listen(process.env["PORT"]);
 }
 
+async function handleUsersApi(req: express.Request, res: express.Response) {
+  const authorization = req.headers["authorization"] as string;
+  const body = req.body ?? {};
+  const bearerToken = (authorization ? authorization.split(" ")[1] : "") as string;
+
+  try {
+    if (!supabase) {
+      res.status(500).json({ error: "Supabase not configured" });
+      return;
+    }
+
+    // Validate the provided token
+    const currentUser = await supabase.auth.getUser(bearerToken);
+    if (currentUser.error) {
+      return res.status(401).json({ error: "Invalid or expired token" });
+    }
+
+    switch (body.action) {
+      case "GET_CHAI_USER": {
+        // Per request: return empty response for GET_CHAI_USER
+        res.json({});
+        return;
+      }
+      case "CHECK_USER_STATUS": {
+        // If token is valid, user is active
+        res.json({ success: true });
+        return;
+      }
+      default: {
+        res.status(400).json({ error: `Unsupported users action: ${body.action}` });
+        return;
+      }
+    }
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+}
+
 async function handleApi(req: express.Request, res: express.Response) {
   const authorization = req.headers["authorization"] as string;
   const body = req.body;
   let authTokenOrUserId: string = "";
   authTokenOrUserId = (authorization ? authorization.split(" ")[1] : "") as string;
+
+  if (!supabase) {
+    return res
+      .status(500)
+      .json({
+        error: "Supabase not configured. Please set VITE_SUPABASE_URL and SUPABASE_SECRET_KEY environment variables.",
+      });
+  }
+
   const supabaseUser = await supabase.auth.getUser(authTokenOrUserId);
   if (supabaseUser.error) {
     // If the token is invalid or expired, return a 401 response
@@ -76,6 +128,12 @@ async function handleApi(req: express.Request, res: express.Response) {
     //   return;
     // }
 
+    // Short-circuit specific actions to return empty response
+    if (body.action === "GET_ROLE_AND_PERMISSIONS") {
+      res.json({});
+      return;
+    }
+
     // Handle all other actions normally
     const action = getChaiAction(body.action);
     if (!action) {
@@ -87,7 +145,8 @@ async function handleApi(req: express.Request, res: express.Response) {
       userId: authTokenOrUserId,
     });
     const response = await action.execute(body.data);
-    return response;
+    res.json(response);
+    return;
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
   }

@@ -1,6 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 
-export const supabase = createClient(
-  import.meta.env.CHAIBUILDER_SUPABASE_URL,
-  import.meta.env.CHAIBUILDER_SUPABASE_SECRET_KEY,
-);
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseSecretKey = import.meta.env.VITE_SUPABASE_SECRET_KEY;
+
+export const supabase = supabaseUrl && supabaseSecretKey ? createClient(supabaseUrl, supabaseSecretKey) : null;
