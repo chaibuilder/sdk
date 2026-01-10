@@ -21,7 +21,7 @@ app.use(
 );
 const apiKey = process.env["CHAIBUILDER_APP_ID"]!;
 
-export type GlobalData = {
+export type DevGlobalData = {
   lang: string;
   logo: string;
   title: string;
@@ -73,7 +73,6 @@ async function handleApi(req: express.Request, res: express.Response) {
     const actionHandler = initChaiBuilderActionHandler({ apiKey, userId: authTokenOrUserId });
     const response = await actionHandler(body);
     res.json(response);
-    return;
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: (error as Error).message });
