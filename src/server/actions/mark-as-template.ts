@@ -3,6 +3,7 @@ import { z } from "zod";
 import { db, safeQuery, schema } from "../db";
 import { ActionError } from "./action-error";
 import { ChaiBaseAction } from "./base-action";
+import { getChaiAction } from "./actions-registery";
 
 /**
  * Data type for MarkAsTemplateAction
@@ -72,8 +73,27 @@ export class MarkAsTemplateAction extends ChaiBaseAction<MarkAsTemplateActionDat
     }
 
     // Handle preview image upload if provided
-    const uploadedImageUrl = await this.uploadPreviewImage(previewImage, appId, userId ?? null, siteLibrary.id);
-    const finalPreviewImageUrl = uploadedImageUrl || previewImageUrl;
+    let finalPreviewImageUrl = previewImageUrl;
+    if (previewImage) {
+      const uploadAction = getChaiAction("UPLOAD_TO_STORAGE");
+      uploadAction?.setContext(this.context);
+      
+      const fileName = `template-${Date.now()}.webp`;
+      const folderPath = `${appId}/templates`;
+      
+      const uploadResult = await uploadAction?.execute({
+        file: previewImage,
+        fileName,
+        contentType: "image/webp",
+        folder: folderPath,
+      });
+      
+      if (uploadResult?.error) {
+        throw new ActionError("Failed to upload preview image", "UPLOAD_PREVIEW_FAILED", uploadResult.error);
+      }
+      
+      finalPreviewImageUrl = uploadResult?.data?.url || previewImageUrl;
+    }
 
     // Insert the template
     const { data: template, error } = await safeQuery(() =>
