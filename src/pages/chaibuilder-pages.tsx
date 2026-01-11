@@ -58,8 +58,6 @@ export type ChaiBuilderPagesProps = {
   hasReactQueryProvider?: boolean;
   topLeftCorner?: React.FC;
   apiUrl?: string;
-  usersApiUrl?: string;
-  assetsApiUrl?: string;
   getPreviewUrl?: (slug: string) => string;
   getLiveUrl?: (slug: string) => string;
   onLogout?: () => void;

@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { z } from "zod";
-import { apps, libraries } from "../../../../drizzle/schema";
+import { apps, libraries } from "../drizzle/schema";
 import { db, safeQuery } from "../db";
 import { ActionError } from "./action-error";
 import { ChaiBaseAction } from "./base-action";

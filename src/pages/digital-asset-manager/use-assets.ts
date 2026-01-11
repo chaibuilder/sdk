@@ -1,6 +1,6 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { ACTIONS } from "../constants/ACTIONS";
-import { useAssetsApiUrl } from "../hooks/project/use-builder-prop";
+import { useApiUrl } from "../hooks/project/use-builder-prop";
 import { useFetch } from "../hooks/utils/use-fetch";
 
 export interface Asset {
@@ -37,7 +37,7 @@ export interface AssetsQueryParams {
 }
 
 export const useAssets = (params: AssetsQueryParams = {}): UseQueryResult<AssetsResponse> => {
-  const apiUrl = useAssetsApiUrl();
+  const apiUrl = useApiUrl();
   const fetchAPI = useFetch();
 
   const { search, page = 1, limit = 30 } = params;
@@ -63,7 +63,7 @@ export const useAssets = (params: AssetsQueryParams = {}): UseQueryResult<Assets
 };
 
 export const useAsset = (id: string): UseQueryResult<Asset | null> => {
-  const apiUrl = useAssetsApiUrl();
+  const apiUrl = useApiUrl();
   const fetchAPI = useFetch();
 
   return useQuery({

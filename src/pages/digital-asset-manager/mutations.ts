@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { ACTIONS } from "../constants/ACTIONS";
-import { useAssetsApiUrl } from "../hooks/project/use-builder-prop";
+import { useApiUrl } from "../hooks/project/use-builder-prop";
 import { useFetch } from "../hooks/utils/use-fetch";
 
 export const useUploadAsset = () => {
-  const apiUrl = useAssetsApiUrl();
+  const apiUrl = useApiUrl();
   const queryClient = useQueryClient();
   const fetchAPI = useFetch();
 
@@ -45,7 +45,7 @@ export const useUploadAsset = () => {
 };
 
 export const useDeleteAsset = () => {
-  const apiUrl = useAssetsApiUrl();
+  const apiUrl = useApiUrl();
   const queryClient = useQueryClient();
   const fetchAPI = useFetch();
 
@@ -73,7 +73,7 @@ export const useDeleteAsset = () => {
 };
 
 export const useUpdateAsset = () => {
-  const apiUrl = useAssetsApiUrl();
+  const apiUrl = useApiUrl();
   const queryClient = useQueryClient();
   const fetchAPI = useFetch();
 

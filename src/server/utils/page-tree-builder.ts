@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { db, safeQuery, schema } from "../../../db";
+import { db, safeQuery, schema } from "../db";
 import { apiError } from "../lib";
 
 /**
