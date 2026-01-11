@@ -86,16 +86,27 @@ export class UpsertLibraryItemAction extends ChaiBaseAction<
     }
 
     // Handle preview image upload if provided
-    //TODO: HANDLE WITH ACTION
-    const uploadAction = getChaiAction("UPLOAD_ASSET");
-    uploadAction?.setContext(this.context);
-    const uploadedImageUrl = await uploadAction?.execute({
-      file: previewImage,
-      appId,
-      userId: userId ?? null,
-      libraryId: siteLibrary.id,
-    });
-    const finalPreviewImageUrl = uploadedImageUrl || previewImageUrl;
+    let finalPreviewImageUrl = previewImageUrl;
+    if (previewImage) {
+      const uploadAction = getChaiAction("UPLOAD_TO_STORAGE");
+      uploadAction?.setContext(this.context);
+      
+      const fileName = `library-item-${Date.now()}.webp`;
+      const folderPath = `${appId}/library-items`;
+      
+      const uploadResult = await uploadAction?.execute({
+        file: previewImage,
+        fileName,
+        contentType: "image/webp",
+        folder: folderPath,
+      });
+      
+      if (uploadResult?.error) {
+        throw new ActionError("Failed to upload preview image", "UPLOAD_PREVIEW_FAILED", uploadResult.error);
+      }
+      
+      finalPreviewImageUrl = uploadResult?.data?.url || previewImageUrl;
+    }
 
     // If id is provided, update existing library item
     if (id) {

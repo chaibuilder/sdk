@@ -84,37 +84,4 @@ export abstract class ChaiBaseAction<T = any, K = any> implements ChaiAction<T, 
       throw new ActionError(message, "ACTION_ERROR");
     }
   }
-
-  /**
-   * Helper method to upload preview image to storage
-   * @param previewImage Base64 encoded image
-   * @param appId The app ID
-   * @param userId The user ID
-   * @param libraryId The library ID for path generation
-   * @returns The uploaded image URL or null if no image provided
-   * @throws ActionError if upload fails
-   */
-  protected async uploadPreviewImage(
-    previewImage: string | undefined,
-    appId: string,
-    userId: string | null,
-    libraryId: string,
-  ): Promise<string | null> {
-    if (!previewImage) {
-      return null;
-    }
-
-    const supabase = await getSupabaseAdmin();
-    const dam = new ChaiBuilderDAM(supabase, appId, userId ?? "");
-    const uploadedImage = await dam.uploadAssetToStorage({
-      base64File: previewImage,
-      path: "library-previews/" + libraryId,
-    });
-
-    if (uploadedImage.error) {
-      throw new ActionError(`Failed to upload preview image: ${uploadedImage.error}`, "UPLOAD_PREVIEW_FAILED");
-    }
-
-    return uploadedImage.url ?? null;
-  }
 }
