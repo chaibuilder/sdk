@@ -1,6 +1,6 @@
-import { z } from "zod";
 import { ChaiBaseAction } from "@/server/actions/base-action";
-import { supabase } from "@/express/supabase-admin";
+import { SupabaseClient } from "@supabase/supabase-js";
+import { z } from "zod";
 
 const UploadToStorageSchema = z.object({
   file: z.string(), // Base64 string
@@ -18,6 +18,10 @@ type UploadToStorageInput = z.infer<typeof UploadToStorageSchema>;
  */
 export class UploadToStorageAction extends ChaiBaseAction<UploadToStorageInput> {
   private bucketName = "dam-assets";
+
+  constructor(private supabase: SupabaseClient) {
+    super();
+  }
 
   protected getValidationSchema() {
     return UploadToStorageSchema;
@@ -46,7 +50,7 @@ export class UploadToStorageAction extends ChaiBaseAction<UploadToStorageInput> 
       const filePath = folder ? `${folder}/${fileName}` : `${appId}/${fileName}`;
 
       // Upload to Supabase Storage
-      const { data: uploadData, error: uploadError } = await supabase.storage
+      const { data: uploadData, error: uploadError } = await this.supabase.storage
         .from(this.bucketName)
         .upload(filePath, buffer, {
           contentType: contentType || "application/octet-stream",
@@ -64,7 +68,7 @@ export class UploadToStorageAction extends ChaiBaseAction<UploadToStorageInput> 
       // Get public URL
       const {
         data: { publicUrl },
-      } = supabase.storage.from(this.bucketName).getPublicUrl(filePath);
+      } = this.supabase.storage.from(this.bucketName).getPublicUrl(filePath);
 
       return {
         data: {

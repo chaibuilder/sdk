@@ -1,6 +1,6 @@
-import { z } from "zod";
 import { ChaiBaseAction } from "@/server/actions/base-action";
-import { supabase } from "@/express/supabase-admin";
+import { SupabaseClient } from "@supabase/supabase-js";
+import { z } from "zod";
 
 const DeleteFromStorageSchema = z.object({
   key: z.string(), // Storage key/path to delete
@@ -15,6 +15,10 @@ type DeleteFromStorageInput = z.infer<typeof DeleteFromStorageSchema>;
 export class DeleteFromStorageAction extends ChaiBaseAction<DeleteFromStorageInput> {
   private bucketName = "dam-assets";
 
+  constructor(private supabase: SupabaseClient) {
+    super();
+  }
+
   protected getValidationSchema() {
     return DeleteFromStorageSchema;
   }
@@ -24,7 +28,7 @@ export class DeleteFromStorageAction extends ChaiBaseAction<DeleteFromStorageInp
       const { key } = data;
 
       // Delete from Supabase Storage
-      const { error } = await supabase.storage.from(this.bucketName).remove([key]);
+      const { error } = await this.supabase.storage.from(this.bucketName).remove([key]);
 
       if (error) {
         return {
