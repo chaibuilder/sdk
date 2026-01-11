@@ -1,4 +1,4 @@
-import { supabase } from "@/routes/supabase-admin";
+import { supabase } from "@/express/supabase-admin";
 import { initChaiBuilderActionHandler } from "@/server/actions/chai-builder-actions-handler";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -56,12 +56,6 @@ async function handleApi(req: express.Request, res: express.Response) {
   const body = req.body;
   let authTokenOrUserId: string = "";
   authTokenOrUserId = (authorization ? authorization.split(" ")[1] : "") as string;
-
-  if (!supabase) {
-    return res.status(500).json({
-      error: "Supabase not configured. Please set VITE_SUPABASE_URL and SUPABASE_SECRET_KEY environment variables.",
-    });
-  }
 
   const supabaseUser = await supabase.auth.getUser(authTokenOrUserId);
   if (supabaseUser.error) {

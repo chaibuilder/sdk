@@ -2,7 +2,7 @@ import { drizzle, type PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import * as schema from "./drizzle/schema";
 
-const connectionString = import.meta.env.VITE_CHAIBUILDER_DATABASE_URL;
+const connectionString = process.env.CHAIBUILDER_DATABASE_URL;
 
 let db: PostgresJsDatabase<typeof schema> | null = null;
 
