@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { ChaiBaseAction } from "@/server/actions/base-action";
 import { ChaiAssets } from "../../assets/class-chai-assets";
+import { SupabaseClient } from "@supabase/supabase-js";
 
 const DeleteAssetSchema = z.object({
   id: z.string(),
@@ -9,6 +10,9 @@ const DeleteAssetSchema = z.object({
 type DeleteAssetInput = z.infer<typeof DeleteAssetSchema>;
 
 export class DeleteAssetAction extends ChaiBaseAction<DeleteAssetInput> {
+  constructor(private supabase: SupabaseClient) {
+    super();
+  }
   protected getValidationSchema() {
     return DeleteAssetSchema;
   }
@@ -24,7 +28,7 @@ export class DeleteAssetAction extends ChaiBaseAction<DeleteAssetInput> {
         return { error: "User ID is required", status: 401 };
       }
 
-      const backend = new ChaiAssets(appId, userId);
+      const backend = new ChaiAssets(appId, userId , this.supabase);
       const response = await backend.deleteAsset(data);
 
       if ("error" in response) {

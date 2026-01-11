@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { ChaiBaseAction } from "@/server/actions/base-action";
 import { ChaiAssets } from "../../assets/class-chai-assets";
+import { SupabaseClient } from "@supabase/supabase-js";
 
 const GetAssetsSchema = z.object({
   search: z.string().optional(),
@@ -11,6 +12,9 @@ const GetAssetsSchema = z.object({
 type GetAssetsInput = z.infer<typeof GetAssetsSchema>;
 
 export class GetAssetsAction extends ChaiBaseAction<GetAssetsInput> {
+  constructor(private supabase: SupabaseClient) {
+    super();
+  }
   protected getValidationSchema() {
     return GetAssetsSchema;
   }
@@ -26,7 +30,7 @@ export class GetAssetsAction extends ChaiBaseAction<GetAssetsInput> {
         return { error: "User ID is required", status: 401 };
       }
 
-      const backend = new ChaiAssets(appId, userId);
+      const backend = new ChaiAssets(appId, userId, this.supabase);
       const response = await backend.getAssets(data);
 
       if ("error" in response) {

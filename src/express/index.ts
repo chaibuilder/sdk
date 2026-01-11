@@ -5,7 +5,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express, { Express } from "express";
 import fileUpload from "express-fileupload";
-import { SubabaseAuthActions } from "./actions/storage";
+import { SubabaseAuthActions, SubabaseStorageActions } from "./actions/storage";
 import "./register";
 import { registerPageTypes } from "./registerPageTypes";
 

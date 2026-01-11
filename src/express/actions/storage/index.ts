@@ -1,5 +1,6 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { DeleteAssetAction, GetAssetAction, GetAssetsAction, UpdateAssetAction, UploadAssetAction } from "../assets";
+import { GetChaiUserAction } from "../user";
 import { DeleteFromStorageAction } from "./delete-from-storage";
 import { UploadToStorageAction } from "./upload-to-storage";
 
@@ -7,7 +8,7 @@ export { DeleteFromStorageAction } from "./delete-from-storage";
 export { UploadToStorageAction } from "./upload-to-storage";
 
 export const SubabaseAuthActions = (supabase: SupabaseClient) => ({
-  //TODO: implement
+  GET_CHAI_USER: new GetChaiUserAction(supabase),
 });
 
 export const SubabaseStorageActions = (supabase: SupabaseClient) => ({
