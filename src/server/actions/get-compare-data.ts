@@ -1,4 +1,4 @@
-import { ChaiBlock } from "@chaibuilder/sdk";
+import { ChaiBlock } from "@/types/common";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { db, safeQuery, schema } from "../db";

@@ -7,16 +7,22 @@ import { DeletePageRevisionAction } from "./delete-page-revision";
 import { DuplicatePageAction } from "./duplicate-page";
 import { GenerateHtmlFromPromptAction } from "./generate-html-from-prompt";
 import { GenerateSeoFieldAction } from "./generate-seo-field";
+import { GetBlockAsyncPropsAction } from "./get-block-async-props";
+import { GetBuilderPageDataAction } from "./get-builder-page-data";
 import { GetChangesAction } from "./get-changes";
+import { GetCollectionsAction } from "./get-collections";
 import { GetCompareDataAction } from "./get-compare-data";
 import { GetDraftPageAction } from "./get-draft-page";
+import { GetDynamicPagesAction } from "./get-dynamic-pages";
 import { GetLanguagePagesAction } from "./get-language-pages";
 import { GetLibrariesAction } from "./get-libraries";
 import { GetLibraryGroupsAction } from "./get-library-groups";
 import { GetLibraryItemAction } from "./get-library-item";
 import { GetLibraryItemsAction } from "./get-library-items";
 import { GetPageRevisionsAction } from "./get-page-revisions";
+import { GetPageTypesAction } from "./get-page-types";
 import { GetRevisionPageAction } from "./get-revision-page";
+import { GetRoleAndPermissionsAction } from "./get-role-and-permissions";
 import { GetSiteWideDataAction } from "./get-site-wide-data";
 import { GetTemplatesByTypeAction } from "./get-templates-by-type";
 import { GetWebsitePagesAction } from "./get-website-pages";
@@ -24,6 +30,7 @@ import { GetWebsiteSettingsAction } from "./get-website-settings";
 import { MarkAsTemplateAction } from "./mark-as-template";
 import { PublishChangesAction } from "./publish-changes";
 import { RestorePageAction } from "./restore-page";
+import { SearchPageTypeItemsAction } from "./search-page-type-items";
 import { SearchPagesAction } from "./search-pages";
 import { TakeOfflineAction } from "./take-offline";
 import { UnmarkAsTemplateAction } from "./unmark-as-template";
@@ -75,6 +82,13 @@ class ChaiActionsRegistry {
     this.register("UPDATE_WEBSITE_DATA", new UpdateWebsiteDataAction());
     this.register("GET_LIBRARY_GROUPS", new GetLibraryGroupsAction());
     this.register("DELETE_PAGE_REVISION", new DeletePageRevisionAction());
+    this.register("GET_COLLECTIONS", new GetCollectionsAction());
+    this.register("GET_BLOCK_ASYNC_PROPS", new GetBlockAsyncPropsAction());
+    this.register("GET_BUILDER_PAGE_DATA", new GetBuilderPageDataAction());
+    this.register("GET_PAGE_TYPES", new GetPageTypesAction());
+    this.register("SEARCH_PAGE_TYPE_ITEMS", new SearchPageTypeItemsAction());
+    this.register("GET_DYNAMIC_PAGES", new GetDynamicPagesAction());
+    this.register("GET_ROLE_AND_PERMISSIONS", new GetRoleAndPermissionsAction());
     // Add more actions here as they are created
   }
 

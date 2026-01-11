@@ -1,13 +1,35 @@
-import { supabase } from "@/routes/supabase-admin";
-import { getChaiAction } from "@/server/actions/actions-registery";
+import { supabase } from "@/express/supabase-admin";
+import { initChaiBuilderActionHandler } from "@/server/actions/chai-builder-actions-handler";
+import ChaiActionsRegistry from "@/server/actions/actions-registery";
 import cors from "cors";
 import dotenv from "dotenv";
 import express, { Express } from "express";
 import fileUpload from "express-fileupload";
 import "./register";
 import { registerPageTypes } from "./registerPageTypes";
+import {
+  DeleteAssetAction,
+  GetAssetAction,
+  GetAssetsAction,
+  UpdateAssetAction,
+  UploadAssetAction,
+} from "./actions/assets";
+import { DeleteFromStorageAction, UploadToStorageAction } from "./actions/storage";
 
 dotenv.config();
+
+// Register storage actions
+ChaiActionsRegistry.registerActions({
+  // Asset management actions
+  UPLOAD_ASSET: new UploadAssetAction(),
+  GET_ASSET: new GetAssetAction(),
+  GET_ASSETS: new GetAssetsAction(),
+  DELETE_ASSET: new DeleteAssetAction(),
+  UPDATE_ASSET: new UpdateAssetAction(),
+  // Generic storage actions
+  UPLOAD_TO_STORAGE: new UploadToStorageAction(),
+  DELETE_FROM_STORAGE: new DeleteFromStorageAction(),
+});
 
 export const app: Express = express();
 app.use(cors());
@@ -21,7 +43,7 @@ app.use(
 );
 const apiKey = process.env["CHAIBUILDER_APP_ID"]!;
 
-export type GlobalData = {
+export type DevGlobalData = {
   lang: string;
   logo: string;
   title: string;
@@ -56,6 +78,7 @@ async function handleApi(req: express.Request, res: express.Response) {
   const body = req.body;
   let authTokenOrUserId: string = "";
   authTokenOrUserId = (authorization ? authorization.split(" ")[1] : "") as string;
+
   const supabaseUser = await supabase.auth.getUser(authTokenOrUserId);
   if (supabaseUser.error) {
     // If the token is invalid or expired, return a 401 response
@@ -63,32 +86,11 @@ async function handleApi(req: express.Request, res: express.Response) {
   }
   authTokenOrUserId = supabaseUser.data.user?.id || "";
   try {
-    // Handle AI chat streaming separately
-    // if (body.action === "ASK_AI") {
-    //   const aiHandler = chaiPages.getAIHandler();
-
-    //   if (!aiHandler || !aiHandler.isConfigured()) {
-    //     res.status(500).json({ error: "AI is not configured" });
-    //     return;
-    //   }
-
-    //   await aiHandler.handleRequest(body.data, res);
-    //   return;
-    // }
-
-    // Handle all other actions normally
-    const action = getChaiAction(body.action);
-    if (!action) {
-      res.status(404).json({ error: "Action not found" });
-      return;
-    }
-    action.setContext({
-      appId: apiKey,
-      userId: authTokenOrUserId,
-    });
-    const response = await action.execute(body.data);
-    return response;
+    const actionHandler = initChaiBuilderActionHandler({ apiKey, userId: authTokenOrUserId });
+    const response = await actionHandler(body);
+    res.json(response);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: (error as Error).message });
   }
 }

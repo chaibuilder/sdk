@@ -8,7 +8,6 @@ export const initChaiBuilderActionHandler = (params: { apiKey: string; userId: s
     try {
       const requestBody = actionData;
       // Check for `authorization` header
-      let response = null;
       // if (requestBody.action === "ASK_AI") {
       //   const startTime = new Date().getTime();
       //   const ai = new ChaiAIChatHandler({

@@ -4,7 +4,7 @@ import {
   registerChaiPageType,
   registerChaiPartialType,
 } from "@/server/export";
-import { GlobalData } from ".";
+import { DevGlobalData } from ".";
 
 export const registerPageTypes = () => {
   registerChaiPartialType("form", {
@@ -39,7 +39,7 @@ export const registerPageTypes = () => {
     filters: [{ id: "most-viewed", name: "Most viewed" }],
   });
 
-  registerChaiGlobalDataProvider<GlobalData>(async ({ lang, draft, inBuilder }) => ({
+  registerChaiGlobalDataProvider<DevGlobalData>(async ({ lang, draft, inBuilder }) => ({
     lang,
     draft,
     inBuilder,

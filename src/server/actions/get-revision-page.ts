@@ -1,4 +1,4 @@
-import { ChaiBlock } from "@chaibuilder/sdk";
+import { ChaiBlock } from "@/types/common";
 import { and, eq, inArray } from "drizzle-orm";
 import { get, has, isEmpty } from "lodash-es";
 import { z } from "zod";

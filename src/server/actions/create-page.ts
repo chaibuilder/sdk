@@ -1,8 +1,8 @@
-import { ChaiBlock } from "@chaibuilder/sdk";
+import { ChaiBlock } from "@/types/common";
 import { and, eq } from "drizzle-orm";
 import { isEmpty, omit } from "lodash-es";
 import { z } from "zod";
-import { safeQuery, schema } from "../db";
+import { db, safeQuery, schema } from "../db";
 import { ActionError } from "./action-error";
 import { ChaiBaseAction } from "./base-action";
 
@@ -82,7 +82,7 @@ export class CreatePageAction extends ChaiBaseAction<CreatePageActionData, Creat
     if (!this.context) {
       throw new ActionError("Context not set", "CONTEXT_NOT_SET");
     }
-    const { appId, db } = this.context;
+    const { appId } = this.context;
 
     // Determine if slug validation is needed
     const hasSlug = data.hasSlug ?? (data.pageType === "global" ? false : true);
@@ -175,7 +175,7 @@ export class CreatePageAction extends ChaiBaseAction<CreatePageActionData, Creat
     if (!this.context) {
       throw new ActionError("Context not set", "CONTEXT_NOT_SET");
     }
-    const { appId, db } = this.context;
+    const { appId } = this.context;
 
     const { data: existingPage, error } = await safeQuery(() =>
       db.query.appPages.findFirst({

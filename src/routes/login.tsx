@@ -1,7 +1,7 @@
 import { Button, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/ui";
 import { Loader } from "lucide-react";
 import { useState } from "react";
-import { supabase } from "./website-builder";
+import { supabaseClient } from "./supabase";
 
 export const LoginScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -12,10 +12,10 @@ export const LoginScreen = () => {
     setIsLoading(true);
 
     try {
-      const { error } = await supabase?.auth.signInWithOAuth({
+      const { error } = await supabaseClient?.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: window.location.origin,
+          redirectTo: `${window.location.origin}/website`,
         },
       });
 
