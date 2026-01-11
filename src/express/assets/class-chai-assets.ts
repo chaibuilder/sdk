@@ -1,0 +1,479 @@
+import { isEmpty, set, kebabCase } from "lodash-es";
+import { supabase } from "@/express/supabase-admin";
+import { getChaiAction } from "@/server/actions/actions-registery";
+import sharp from "sharp";
+
+type ChaiAsset = any;
+
+export class ChaiAssets {
+  constructor(
+    private appId: string,
+    private userId: string,
+  ) {}
+
+  private appendUpdatedAtToUrl(url: string, updatedAt: string): string {
+    if (isEmpty(url)) {
+      return "";
+    }
+    const urlObj = new URL(url);
+    const timestamp = new Date(updatedAt).getTime();
+    urlObj.searchParams.set("t", timestamp.toString());
+    return `${urlObj.origin}${urlObj.pathname}${urlObj.search}${urlObj.hash}`;
+  }
+
+  private getBufferFromBase64(base64String: string): Buffer {
+    try {
+      const base64Data = base64String.split(",")[1] || base64String;
+      return Buffer.from(base64Data, "base64");
+    } catch {
+      throw new Error("Invalid base64 string format");
+    }
+  }
+
+  /**
+   * Upload an image file using UPLOAD_TO_STORAGE action
+   * Processes, optimizes, and creates thumbnails
+   */
+  private async uploadImageFile(
+    file: string,
+    folderId: string | null | undefined,
+    name: string,
+    optimize: boolean,
+  ): Promise<
+    | { url: string; thumbnailUrl: string; size: number; width: number; height: number; mimeType: string }
+    | { error: string }
+  > {
+    try {
+      const buffer = this.getBufferFromBase64(file);
+
+      // Validate file is an image
+      const metadata = await sharp(buffer).metadata();
+      const validImageFormats = ["jpeg", "jpg", "png", "webp", "gif", "svg", "tiff"];
+      if (!metadata.format || !validImageFormats.includes(metadata.format.toLowerCase())) {
+        throw new Error(`Invalid image format: ${metadata.format || "unknown"}`);
+      }
+
+      // Optimize image
+      const optimizedBuffer = optimize
+        ? await sharp(buffer)
+            .webp({ quality: 100 })
+            .resize({ width: Math.min(metadata.width || 2000, 2000) })
+            .toBuffer()
+        : await sharp(buffer).webp({ quality: 100 }).toBuffer();
+
+      // Further optimize if too large
+      let finalBuffer = optimizedBuffer;
+      if (optimize && optimizedBuffer.length > 120 * 1024) {
+        const compressionLevel = Math.floor(90 * ((120 * 1024) / optimizedBuffer.length));
+        finalBuffer = await sharp(buffer)
+          .webp({ quality: compressionLevel })
+          .resize({ width: Math.min(metadata.width || 2000, 2000) })
+          .toBuffer();
+      }
+
+      const optimizedInfo = await sharp(finalBuffer).metadata();
+
+      // Create thumbnail
+      const thumbnailBuffer = await sharp(buffer).webp({ quality: 70 }).resize({ width: 300 }).toBuffer();
+
+      // Prepare file names and paths
+      const parts = name.split(".");
+      const originalFileName = parts.length > 1 ? parts.slice(0, -1).join(".") : name;
+      const fileName = `${kebabCase(originalFileName)}.webp`;
+      const thumbnailName = `${fileName}_thumbnail.webp`;
+
+      const baseFolder = this.appId;
+      const folderPath = folderId ? `${baseFolder}/${folderId}` : baseFolder;
+
+      // Upload main image using UPLOAD_TO_STORAGE action
+      const uploadAction = getChaiAction("UPLOAD_TO_STORAGE");
+      if (!uploadAction) {
+        throw new Error("UPLOAD_TO_STORAGE action not found");
+      }
+
+      uploadAction.setContext({ appId: this.appId, userId: this.userId });
+
+      const mainImageResult = await uploadAction.execute({
+        file: finalBuffer.toString("base64"),
+        fileName,
+        contentType: "image/webp",
+        folder: folderPath,
+      });
+
+      if (mainImageResult.error) {
+        throw new Error(mainImageResult.error);
+      }
+
+      // Upload thumbnail
+      const thumbnailResult = await uploadAction.execute({
+        file: thumbnailBuffer.toString("base64"),
+        fileName: thumbnailName,
+        contentType: "image/webp",
+        folder: folderPath,
+      });
+
+      if (thumbnailResult.error) {
+        throw new Error(thumbnailResult.error);
+      }
+
+      return {
+        url: mainImageResult.data.url,
+        thumbnailUrl: thumbnailResult.data.url,
+        size: optimizedInfo.size || finalBuffer.length,
+        width: optimizedInfo.width || 0,
+        height: optimizedInfo.height || 0,
+        mimeType: "image/webp",
+      };
+    } catch (error) {
+      console.error("Upload image error:", error);
+      return { error: error instanceof Error ? error.message : "Unknown error" };
+    }
+  }
+
+  /**
+   * Upload an SVG file using UPLOAD_TO_STORAGE action
+   */
+  private async uploadSvgFile(
+    file: string,
+    folderId: string | null | undefined,
+    name: string,
+  ): Promise<
+    | { url: string; thumbnailUrl: string; size: number; width?: number; height?: number; mimeType: string }
+    | { error: string }
+  > {
+    try {
+      const buffer = this.getBufferFromBase64(file);
+
+      // Get SVG dimensions if possible
+      let width: number | undefined;
+      let height: number | undefined;
+      try {
+        const metadata = await sharp(buffer).metadata();
+        width = metadata.width;
+        height = metadata.height;
+      } catch {
+        // If sharp can't read SVG metadata, continue without dimensions
+      }
+
+      // Prepare file name and path
+      const parts = name.split(".");
+      const originalFileName = parts.length > 1 ? parts.slice(0, -1).join(".") : name;
+      const fileName = `${kebabCase(originalFileName)}.svg`;
+
+      const baseFolder = this.appId;
+      const folderPath = folderId ? `${baseFolder}/${folderId}` : baseFolder;
+
+      // Upload SVG using UPLOAD_TO_STORAGE action
+      const uploadAction = getChaiAction("UPLOAD_TO_STORAGE");
+      if (!uploadAction) {
+        throw new Error("UPLOAD_TO_STORAGE action not found");
+      }
+
+      uploadAction.setContext({ appId: this.appId, userId: this.userId });
+
+      const result = await uploadAction.execute({
+        file: buffer.toString("base64"),
+        fileName,
+        contentType: "image/svg+xml",
+        folder: folderPath,
+      });
+
+      if (result.error) {
+        throw new Error(result.error);
+      }
+
+      // For SVG, use the same URL as thumbnail since it's vector
+      return {
+        url: result.data.url,
+        thumbnailUrl: result.data.url,
+        size: buffer.length,
+        width,
+        height,
+        mimeType: "image/svg+xml",
+      };
+    } catch (error) {
+      console.error("SVG upload error:", error);
+      return { error: error instanceof Error ? error.message : "Unknown error" };
+    }
+  }
+
+  async upload({
+    file,
+    folderId,
+    name,
+    optimize = true,
+  }: {
+    name: string;
+    file: string;
+    folderId?: string | null;
+    optimize?: boolean;
+  }): Promise<any | { error: string }> {
+    try {
+      // Check if the file is an SVG
+      const isSvg = name.toLowerCase().endsWith(".svg") || file.includes("data:image/svg+xml");
+
+      // Process and upload the file using UPLOAD_TO_STORAGE action
+      const uploadedAsset = isSvg
+        ? await this.uploadSvgFile(file, folderId, name)
+        : await this.uploadImageFile(file, folderId, name, optimize ?? true);
+
+      if ("error" in uploadedAsset) {
+        return uploadedAsset;
+      }
+
+      // Prepare the asset data for Supabase
+      const assetData = {
+        name,
+        app: this.appId,
+        url: uploadedAsset.url,
+        thumbnailUrl: uploadedAsset.thumbnailUrl,
+        size: uploadedAsset.size?.toString(),
+        width: uploadedAsset.width,
+        height: uploadedAsset.height,
+        format: uploadedAsset.mimeType.split("/")[1],
+        folderId: folderId,
+        type: uploadedAsset.mimeType.startsWith("image/") ? "image" : "file",
+        createdBy: this.userId,
+        updatedAt: new Date().toISOString(),
+      };
+
+      // Insert into app_assets table
+      const { data, error } = await supabase.from("app_assets").insert(assetData).select("*").single();
+
+      if (error) {
+        throw new Error(`Failed to store asset in database: ${error.message}`);
+      }
+
+      // Return the ChaiAsset format
+      return {
+        id: data.id,
+        name: data.name,
+        type: data.type,
+        url: this.appendUpdatedAtToUrl(data.url, data.updatedAt),
+        size: data.size,
+        thumbnailUrl: this.appendUpdatedAtToUrl(data.thumbnailUrl || "", data.updatedAt),
+        width: data.width,
+        height: data.height,
+        format: data.format,
+        folderId: data.folderId,
+        createdBy: data.createdBy || "",
+        createdAt: data.createdAt,
+        updatedAt: data.updatedAt,
+      };
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
+      return { error: errorMessage };
+    }
+  }
+
+  async getAsset({ id }: { id: string }): Promise<ChaiAsset | { error: string }> {
+    try {
+      const { data, error } = await supabase.from("app_assets").select("*").eq("id", id).eq("app", this.appId).single();
+
+      if (error) {
+        throw new Error(`Failed to fetch asset: ${error.message}`);
+      }
+      set(data, "url", this.appendUpdatedAtToUrl(data.url, data.updatedAt));
+      set(data, "thumbnailUrl", this.appendUpdatedAtToUrl(data.thumbnailUrl || "", data.updatedAt));
+      return data as ChaiAsset;
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
+      return { error: errorMessage };
+    }
+  }
+
+  async getAssets({
+    search = "",
+    page = 1,
+    limit = 20,
+  }: {
+    search?: string;
+    page?: number;
+    limit?: number;
+  } = {}): Promise<
+    | {
+        assets: Partial<ChaiAsset>[];
+        total: number;
+        page: number;
+        pageSize: number;
+      }
+    | {
+        error: string;
+      }
+  > {
+    try {
+      const offset = (page - 1) * limit;
+      // Build the query
+      let assetsQuery = supabase
+        .from("app_assets")
+        .select("*", { count: "exact" })
+        .eq("app", this.appId)
+        .order("updatedAt", { ascending: false });
+
+      if (search) {
+        assetsQuery = assetsQuery.or(`name.ilike.%${search}%,description.ilike.%${search}%`);
+      }
+      // Apply pagination
+      const { data: assetsData, error, count } = await assetsQuery.range(offset, offset + limit - 1);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+      const assets = assetsData.map((asset) => {
+        set(asset, "url", this.appendUpdatedAtToUrl(asset.url, asset.updatedAt));
+        set(asset, "thsupabaseumbnailUrl", this.appendUpdatedAtToUrl(asset.thumbnailUrl || "", asset.updatedAt));
+        return asset;
+      });
+      return {
+        assets,
+        total: count || 0,
+        page,
+        pageSize: limit,
+      };
+    } catch (error) {
+      console.error("Error fetching assets:", error);
+      throw error;
+    }
+  }
+
+  async deleteAsset({ id }: { id: string }): Promise<{ success: boolean } | { error: string }> {
+    try {
+      // First, get the asset to retrieve storage keys
+      const { data: asset, error: fetchError } = await supabase
+        .from("app_assets")
+        .select("*")
+        .eq("id", id)
+        .eq("app", this.appId)
+        .single();
+
+      if (fetchError) {
+        throw new Error(`Failed to fetch asset: ${fetchError.message}`);
+      }
+
+      // Extract storage keys from URLs
+      if (asset.url) {
+        try {
+          const urlObj = new URL(asset.url);
+          const pathParts = urlObj.pathname.split("/");
+          // Get the key from the URL path (everything after /object/public/bucket-name/)
+          const bucketIndex = pathParts.indexOf("dam-assets");
+          if (bucketIndex !== -1) {
+            const key = pathParts.slice(bucketIndex + 1).join("/");
+
+            // Delete main file from storage using DELETE_FROM_STORAGE action
+            const deleteAction = getChaiAction("DELETE_FROM_STORAGE");
+            if (deleteAction) {
+              deleteAction.setContext({ appId: this.appId, userId: this.userId });
+              await deleteAction.execute({ key });
+            }
+
+            // Delete thumbnail if it exists
+            if (asset.thumbnailUrl && asset.thumbnailUrl !== asset.url) {
+              const thumbnailUrlObj = new URL(asset.thumbnailUrl);
+              const thumbnailPathParts = thumbnailUrlObj.pathname.split("/");
+              const thumbnailBucketIndex = thumbnailPathParts.indexOf("dam-assets");
+              if (thumbnailBucketIndex !== -1) {
+                const thumbnailKey = thumbnailPathParts.slice(thumbnailBucketIndex + 1).join("/");
+                if (deleteAction) {
+                  await deleteAction.execute({ key: thumbnailKey });
+                }
+              }
+            }
+          }
+        } catch (urlError) {
+          console.warn("Failed to delete from storage, continuing with database deletion:", urlError);
+        }
+      }
+
+      // Delete from the database
+      const { error } = await supabase.from("app_assets").delete().eq("id", id);
+
+      if (error) {
+        throw new Error(`Failed to delete asset: ${error.message}`);
+      }
+
+      return { success: true };
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
+      return { error: errorMessage };
+    }
+  }
+
+  async updateAsset({
+    id,
+    file,
+    description,
+  }: {
+    id: string;
+    file?: string;
+    description?: string;
+  }): Promise<ChaiAsset | { error: string }> {
+    try {
+      // Get current asset
+      const { data: currentAsset, error: fetchError } = await supabase
+        .from("app_assets")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+      if (fetchError) {
+        throw new Error(`Failed to fetch asset: ${fetchError.message}`);
+      }
+
+      // Prepare update data
+      const updateData: Record<string, unknown> = {};
+
+      if (description !== undefined) {
+        updateData.description = description;
+        updateData.updatedAt = new Date().toISOString();
+      }
+
+      // Handle file update if provided
+      if (file) {
+        // Check if the file is an SVG to skip optimization
+        const isSvg = currentAsset.format?.toLowerCase() === "svg" || file.includes("data:image/svg+xml");
+
+        // Re-upload the file using appropriate method
+        const uploadedAsset = isSvg
+          ? await this.uploadSvgFile(file, currentAsset.folderId, currentAsset.name)
+          : await this.uploadImageFile(file, currentAsset.folderId, currentAsset.name, true);
+
+        if ("error" in uploadedAsset) {
+          return uploadedAsset;
+        }
+
+        // Update asset information
+        updateData.url = uploadedAsset.url;
+        updateData.thumbnailUrl = uploadedAsset.thumbnailUrl;
+        updateData.size = uploadedAsset.size?.toString();
+        updateData.width = uploadedAsset.width;
+        updateData.height = uploadedAsset.height;
+        updateData.format = uploadedAsset.mimeType.split("/")[1];
+        updateData.updatedAt = new Date().toISOString();
+      }
+
+      // Update the asset
+      const { data: updatedAsset, error } = await supabase
+        .from("app_assets")
+        .update(updateData)
+        .eq("id", id)
+        .select()
+        .single();
+
+      if (error) {
+        throw new Error(`Failed to update asset: ${error.message}`);
+      }
+
+      set(updatedAsset, "url", this.appendUpdatedAtToUrl(updatedAsset.url, updatedAsset.updatedAt));
+      set(
+        updatedAsset,
+        "thumbnailUrl",
+        this.appendUpdatedAtToUrl(updatedAsset.thumbnailUrl || "", updatedAsset.updatedAt),
+      );
+      return updatedAsset as ChaiAsset;
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
+      return { error: errorMessage };
+    }
+  }
+}
