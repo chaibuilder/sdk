@@ -16,8 +16,13 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 
+const getTableName = (name: string): string => {
+  const prefix = process.env.CHAIBUILDER_TABLE_PREFIX || "";
+  return `${prefix}${name}`;
+};
+
 export const libraryTemplates = pgTable(
-  "library_templates",
+  getTableName("library_templates"),
   {
     id: uuid().defaultRandom().primaryKey().notNull(),
     createdAt: timestamp({ withTimezone: true, mode: "string" }).defaultNow().notNull(),
@@ -33,22 +38,24 @@ export const libraryTemplates = pgTable(
     foreignKey({
       columns: [table.library],
       foreignColumns: [libraries.id],
-      name: "library_templates_library_fkey",
+      name: getTableName("library_templates_library_fkey"),
     }),
   ],
 );
 
 export const webhookEvents = pgTable(
-  "webhook_events",
+  getTableName("webhook_events"),
   {
     // You can use { mode: "bigint" } if numbers are exceeding js number limitations
-    id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity({
-      name: "webhook_events_id_seq",
-      startWith: 1,
-      increment: 1,
-      minValue: 1,
-      cache: 1,
-    }),
+    id: bigint({ mode: "number" })
+      .primaryKey()
+      .generatedByDefaultAsIdentity({
+        name: getTableName("webhook_events_id_seq"),
+        startWith: 1,
+        increment: 1,
+        minValue: 1,
+        cache: 1,
+      }),
     createdAt: timestamp({ withTimezone: true, mode: "string" }).defaultNow().notNull(),
     provider: text(),
     eventType: text(),
@@ -60,13 +67,13 @@ export const webhookEvents = pgTable(
     foreignKey({
       columns: [table.clientId],
       foreignColumns: [clients.id],
-      name: "webhook_events_clientId_fkey",
+      name: getTableName("webhook_events_clientId_fkey"),
     }),
   ],
 );
 
 export const appUsers = pgTable(
-  "app_users",
+  getTableName("app_users"),
   {
     id: uuid().defaultRandom().primaryKey().notNull(),
     createdAt: timestamp({ withTimezone: true, mode: "string" }).defaultNow().notNull(),
@@ -80,13 +87,13 @@ export const appUsers = pgTable(
     foreignKey({
       columns: [table.app],
       foreignColumns: [apps.id],
-      name: "app_users_app_fkey",
+      name: getTableName("app_users_app_fkey"),
     }),
   ],
 );
 
 export const appDomains = pgTable(
-  "app_domains",
+  getTableName("app_domains"),
   {
     id: uuid().defaultRandom().primaryKey().notNull(),
     createdAt: timestamp({ withTimezone: true, mode: "string" }).defaultNow().notNull(),
@@ -101,13 +108,13 @@ export const appDomains = pgTable(
     foreignKey({
       columns: [table.app],
       foreignColumns: [apps.id],
-      name: "app_domains_app_fkey",
+      name: getTableName("app_domains_app_fkey"),
     }),
   ],
 );
 
 export const appPagesRevisions = pgTable(
-  "app_pages_revisions",
+  getTableName("app_pages_revisions"),
   {
     createdAt: timestamp({ withTimezone: true, mode: "string" }).defaultNow().notNull(),
     slug: text().notNull(),
@@ -143,12 +150,12 @@ export const appPagesRevisions = pgTable(
     foreignKey({
       columns: [table.app],
       foreignColumns: [apps.id],
-      name: "app_pages_revisions_app_fkey",
+      name: getTableName("app_pages_revisions_app_fkey"),
     }),
   ],
 );
 
-export const clients = pgTable("clients", {
+export const clients = pgTable(getTableName("clients"), {
   id: uuid().defaultRandom().primaryKey().notNull(),
   createdAt: timestamp({ withTimezone: true, mode: "string" }).defaultNow().notNull(),
   name: text(),
@@ -165,7 +172,7 @@ export const clients = pgTable("clients", {
 });
 
 export const appsOnline = pgTable(
-  "apps_online",
+  getTableName("apps_online"),
   {
     id: uuid().primaryKey().notNull(),
     createdAt: timestamp({ withTimezone: true, mode: "string" }).defaultNow().notNull(),
@@ -186,20 +193,22 @@ export const appsOnline = pgTable(
     foreignKey({
       columns: [table.client],
       foreignColumns: [clients.id],
-      name: "apps_online_client_fkey",
+      name: getTableName("apps_online_client_fkey"),
     }),
   ],
 );
 
-export const aiLogs = pgTable("ai_logs", {
+export const aiLogs = pgTable(getTableName("ai_logs"), {
   // You can use { mode: "bigint" } if numbers are exceeding js number limitations
-  id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity({
-    name: "ai_logs_id_seq",
-    startWith: 1,
-    increment: 1,
-    minValue: 1,
-    cache: 1,
-  }),
+  id: bigint({ mode: "number" })
+    .primaryKey()
+    .generatedByDefaultAsIdentity({
+      name: getTableName("ai_logs_id_seq"),
+      startWith: 1,
+      increment: 1,
+      minValue: 1,
+      cache: 1,
+    }),
   createdAt: timestamp({ withTimezone: true, mode: "string" }).defaultNow().notNull(),
   model: text(),
   totalDuration: numeric(),
@@ -213,7 +222,7 @@ export const aiLogs = pgTable("ai_logs", {
 });
 
 export const appApiKeys = pgTable(
-  "app_api_keys",
+  getTableName("app_api_keys"),
   {
     id: uuid().defaultRandom().primaryKey().notNull(),
     createdAt: timestamp({ withTimezone: true, mode: "string" }).defaultNow().notNull(),
@@ -225,13 +234,13 @@ export const appApiKeys = pgTable(
     foreignKey({
       columns: [table.app],
       foreignColumns: [apps.id],
-      name: "app_api_keys_app_fkey",
+      name: getTableName("app_api_keys_app_fkey"),
     }),
   ],
 );
 
 export const libraries = pgTable(
-  "libraries",
+  getTableName("libraries"),
   {
     id: uuid().defaultRandom().primaryKey().notNull(),
     createdAt: timestamp({ withTimezone: true, mode: "string" }).defaultNow().notNull(),
@@ -245,18 +254,18 @@ export const libraries = pgTable(
     foreignKey({
       columns: [table.app],
       foreignColumns: [apps.id],
-      name: "libraries_app_fkey",
+      name: getTableName("libraries_app_fkey"),
     }),
     foreignKey({
       columns: [table.client],
       foreignColumns: [clients.id],
-      name: "libraries_client_fkey",
+      name: getTableName("libraries_client_fkey"),
     }),
   ],
 );
 
 export const apps = pgTable(
-  "apps",
+  getTableName("apps"),
   {
     id: uuid().defaultRandom().primaryKey().notNull(),
     createdAt: timestamp({ withTimezone: true, mode: "string" }).defaultNow().notNull(),
@@ -276,13 +285,13 @@ export const apps = pgTable(
     foreignKey({
       columns: [table.client],
       foreignColumns: [clients.id],
-      name: "apps_client_fkey",
+      name: getTableName("apps_client_fkey"),
     }),
   ],
 );
 
 export const libraryItems = pgTable(
-  "library_items",
+  getTableName("library_items"),
   {
     id: uuid().defaultRandom().primaryKey().notNull(),
     createdAt: timestamp({ withTimezone: true, mode: "string" }).defaultNow().notNull(),
@@ -299,13 +308,13 @@ export const libraryItems = pgTable(
     foreignKey({
       columns: [table.library],
       foreignColumns: [libraries.id],
-      name: "library_items_library_fkey",
+      name: getTableName("library_items_library_fkey"),
     }),
   ],
 );
 
 export const appAssets = pgTable(
-  "app_assets",
+  getTableName("app_assets"),
   {
     id: uuid().defaultRandom().primaryKey().notNull(),
     app: uuid(),
@@ -328,13 +337,13 @@ export const appAssets = pgTable(
     foreignKey({
       columns: [table.app],
       foreignColumns: [apps.id],
-      name: "app_assets_app_fkey",
+      name: getTableName("app_assets_app_fkey"),
     }),
   ],
 );
 
 export const appFormSubmissions = pgTable(
-  "app_form_submissions",
+  getTableName("app_form_submissions"),
   {
     id: uuid().defaultRandom().primaryKey().notNull(),
     createdAt: timestamp({ withTimezone: true, mode: "string" }).defaultNow().notNull(),
@@ -348,13 +357,13 @@ export const appFormSubmissions = pgTable(
     foreignKey({
       columns: [table.app],
       foreignColumns: [apps.id],
-      name: "app_form_submissions_app_fkey",
+      name: getTableName("app_form_submissions_app_fkey"),
     }),
   ],
 );
 
 export const appPagesOnline = pgTable(
-  "app_pages_online",
+  getTableName("app_pages_online"),
   {
     createdAt: timestamp({ withTimezone: true, mode: "string" }).defaultNow().notNull(),
     slug: text().notNull(),
@@ -388,13 +397,13 @@ export const appPagesOnline = pgTable(
     foreignKey({
       columns: [table.app],
       foreignColumns: [apps.id],
-      name: "app_pages_online_app_fkey",
+      name: getTableName("app_pages_online_app_fkey"),
     }),
   ],
 );
 
 export const appUserPlans = pgTable(
-  "app_user_plans",
+  getTableName("app_user_plans"),
   {
     id: uuid().defaultRandom().primaryKey().notNull(),
     createdAt: timestamp({ withTimezone: true, mode: "string" }).defaultNow().notNull(),
@@ -409,13 +418,13 @@ export const appUserPlans = pgTable(
     foreignKey({
       columns: [table.client],
       foreignColumns: [clients.id],
-      name: "app_user_plans_client_fkey",
+      name: getTableName("app_user_plans_client_fkey"),
     }),
   ],
 );
 
 export const appPages = pgTable(
-  "app_pages",
+  getTableName("app_pages"),
   {
     createdAt: timestamp({ withTimezone: true, mode: "string" }).defaultNow().notNull(),
     slug: text().notNull(),
@@ -449,22 +458,22 @@ export const appPages = pgTable(
     foreignKey({
       columns: [table.app],
       foreignColumns: [apps.id],
-      name: "app_pages_app_fkey",
+      name: getTableName("app_pages_app_fkey"),
     }),
     foreignKey({
       columns: [table.parent],
       foreignColumns: [table.id],
-      name: "app_pages_parent_fkey",
+      name: getTableName("app_pages_parent_fkey"),
     }),
   ],
 );
 
 export const appPagesMetadata = pgTable(
-  "app_pages_metadata",
+  getTableName("app_pages_metadata"),
   {
     // You can use { mode: "bigint" } if numbers are exceeding js number limitations
     id: bigint({ mode: "number" }).generatedByDefaultAsIdentity({
-      name: "app_pages_metadata_id_seq",
+      name: getTableName("app_pages_metadata_id_seq"),
       startWith: 1,
       increment: 1,
       minValue: 1,
