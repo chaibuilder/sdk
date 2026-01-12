@@ -79,6 +79,7 @@ export default defineConfig({
         "react-arborist",
         "jotai/utils",
         "sonner",
+        "sharp",
         "@rjsf/core",
         "react-hook-form",
         "@hookform/resolvers",
