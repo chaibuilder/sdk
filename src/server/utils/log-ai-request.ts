@@ -1,39 +1,5 @@
+import { AI_MODELS } from "@/pages/panels/ai-panel/models";
 import { db, safeQuery, schema } from "@/server/db";
-
-export const AI_MODELS = [
-  {
-    id: "google/gemini-2.5-flash",
-    multiplier: 0.5,
-  },
-  {
-    id: "google/gemini-2.5-flash-pro",
-    multiplier: 1.25,
-  },
-  {
-    id: "google/gemini-3-pro",
-    multiplier: 2.5,
-  },
-  {
-    id: "openai/gpt-5",
-    multiplier: 2,
-  },
-  {
-    id: "openai/claude-haiku-4.5",
-    multiplier: 1,
-  },
-  {
-    id: "anthropic/claude-sonnet-4",
-    multiplier: 3,
-  },
-  {
-    id: "anthropic/claude-sonnet-4.5",
-    multiplier: 3,
-  },
-  {
-    id: "openai/gpt-4.1",
-    multiplier: 2,
-  },
-];
 
 const getModelMultiplier = (id: string) => {
   return AI_MODELS.find((model) => model.id === id)?.multiplier || 1;
