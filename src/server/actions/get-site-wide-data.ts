@@ -36,7 +36,7 @@ export class GetSiteWideDataAction extends ChaiBaseAction<GetSiteWideDataActionD
   /**
    * Execute the duplicate page action
    */
-  async execute(data: GetSiteWideDataActionData): Promise<GetSiteWideDataActionResponse> {
+  async execute(): Promise<GetSiteWideDataActionResponse> {
     if (!this.context) {
       throw apiError("CONTEXT_NOT_SET", new Error("CONTEXT_NOT_SET"));
     }

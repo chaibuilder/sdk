@@ -72,6 +72,30 @@ async function handleApi(req: express.Request, res: express.Response) {
   try {
     const actionHandler = initChaiBuilderActionHandler({ apiKey, userId: authTokenOrUserId });
     const response = await actionHandler(body);
+    
+    // Handle streaming responses
+    if (response?._streamingResponse && response?._streamResult) {
+      const result = response._streamResult;
+      
+      if (!result?.textStream) {
+        return res.status(500).json({ error: "No streaming response available" });
+      }
+
+      // Set headers for streaming
+      res.setHeader("Content-Type", "text/plain; charset=utf-8");
+      res.setHeader("Cache-Control", "no-cache");
+      
+      // Stream the AI response chunks
+      for await (const chunk of result.textStream) {
+        if (chunk) {
+          res.write(chunk);
+        }
+      }
+      
+      res.end();
+      return;
+    }
+    
     res.json(response);
   } catch (error) {
     console.log(error);

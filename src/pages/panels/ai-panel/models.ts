@@ -14,6 +14,13 @@ export const AI_MODELS = [
     multiplier: 1.25,
   },
   {
+    id: "google/gemini-3-flash",
+    name: "Gemini 3 Flash",
+    provider: "google",
+    description: "1x Credits",
+    multiplier: 1,
+  },
+  {
     id: "google/gemini-3-pro",
     name: "Gemini 3 Pro",
     provider: "google",

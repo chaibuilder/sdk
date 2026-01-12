@@ -8,9 +8,5 @@ export const registerChaiPanels = () => {
   registerChaiSidebarPanel(seoPanelId, seoPanel);
   registerChaiSidebarPanel(langPanelId, langPanel);
   registerChaiSidebarPanel(userInfoPanelId, userInfoPanel);
-  const flags = localStorage.getItem("chai-feature-flags") ?? "";
-
-  if (flags.includes("enable-ai-chat-panel")) {
-    registerChaiSidebarPanel(aiPanelId, aiPanel);
-  }
+  registerChaiSidebarPanel(aiPanelId, aiPanel);
 };
