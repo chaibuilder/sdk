@@ -10,16 +10,6 @@ export const registerPageTypes = () => {
   registerChaiPartialType("form", {
     name: "Form",
   });
-  registerChaiPartialType("global", {
-    name: "Global Block",
-    helpText: "A reusable global block that can be used across multiple pages",
-    icon: "Box",
-  });
-  registerChaiPageType("page", {
-    name: "Page",
-    helpText: "A standard page with a URL slug",
-    icon: "File",
-  });
 
   registerChaiCollection("blogs", {
     name: "Blogs",

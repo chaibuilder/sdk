@@ -1,5 +1,7 @@
 import { get } from "lodash-es";
 import { ChaiAction } from "./chai-action-interface";
+import { registerChaiPageType } from "../register/register-page-type";
+import { registerChaiPartialType } from "../register/register-partial-type";
 import { AskAIAction } from "./ask-ai-action";
 import { CreatePageAction } from "./create-page";
 import { DeleteLibraryItemAction } from "./delete-library-item";
@@ -50,6 +52,16 @@ class ChaiActionsRegistry {
   private actions: Record<string, ChaiAction<any, any>> = {};
 
   private constructor() {
+    registerChaiPageType("page", {
+      name: "Static Page",
+      icon: `<svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M5 8V20H19V8H5ZM5 6H19V4H5V6ZM20 22H4C3.44772 22 3 21.5523 3 21V3C3 2.44772 3.44772 2 4 2H20C20.5523 2 21 2.44772 21 3V21C21 21.5523 20.5523 22 20 22ZM7 10H11V14H7V10ZM7 16H17V18H7V16ZM13 11H17V13H13V11Z"></path></svg>`,
+    });
+    registerChaiPartialType("global", {
+      name: "Global Block",
+      helpText: "A global block can be reused in multiple pages.",
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-hash-icon lucide-hash"><line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/></svg>`,
+    });
+
     // Register all actions
     this.register("ASK_AI", new AskAIAction());
     this.register("CREATE_PAGE", new CreatePageAction());
