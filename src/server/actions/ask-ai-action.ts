@@ -32,18 +32,19 @@ export class AskAIAction extends ChaiBaseAction<AskAIActionData, any> {
     }
 
     const startTime = new Date().getTime();
-    const userId = this.context.userId || "";
-    
+    const { userId, appId } = this.context;
+
     const ai = new ChaiAIChatHandler({
       // @ts-ignore
       onFinish: (arg: any) => {
         try {
           logAiRequest({
             arg,
-            prompt: data.messages?.[data.messages.length - 1]?.content as string || "",
+            prompt: (data.messages?.[data.messages.length - 1]?.content as string) || "",
             userId,
             model: data.model || "",
             startTime,
+            appId,
           });
         } catch (e) {
           console.error("Error logging AI request:", e);
@@ -56,14 +57,15 @@ export class AskAIAction extends ChaiBaseAction<AskAIActionData, any> {
             userId,
             startTime: startTime,
             model: data.model || "",
-            prompt: data.messages?.[data.messages.length - 1]?.content as string || "",
+            prompt: (data.messages?.[data.messages.length - 1]?.content as string) || "",
+            appId,
           });
         } catch (e) {
           console.error("Error logging AI request error:", e);
         }
       },
     });
-    
+
     // Prepare request options matching AIChatOptions type
     const requestOptions = {
       messages: data.messages || [],
@@ -71,9 +73,9 @@ export class AskAIAction extends ChaiBaseAction<AskAIActionData, any> {
       model: data.model,
       initiator: data.type || null,
     };
-    
+
     const result = await ai.handleRequest(requestOptions);
-    
+
     // Return a special marker for streaming
     return {
       _streamingResponse: true,

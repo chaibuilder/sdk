@@ -45,12 +45,14 @@ export async function logAiRequestError({
   error,
   model,
   prompt,
+  appId,
 }: {
   userId: string;
   startTime: number;
   error: any;
   model: string;
   prompt: string;
+  appId: string;
 }) {
   const errorStr = String(error);
 
@@ -65,6 +67,7 @@ export async function logAiRequestError({
     prompt,
     user: authTokenOrUserId,
     client: process?.env?.CHAIBUILDER_CLIENT_ID || "",
+    app: appId,
   };
 
   const { error: dbError } = await safeQuery(() => db!.insert(schema.aiLogs).values(payload));
@@ -79,12 +82,14 @@ export async function logAiRequest({
   arg,
   prompt,
   model,
+  appId,
 }: {
   userId: string;
   startTime: number;
   arg: any;
   prompt: string;
   model: string;
+  appId: string;
 }) {
   const totalUsage = arg?.totalUsage;
   const cost = arg?.providerMetadata?.gateway?.cost;
@@ -102,6 +107,7 @@ export async function logAiRequest({
     prompt,
     user: userId,
     client: process?.env?.CHAIBUILDER_CLIENT_ID || "",
+    app: appId,
   };
   const { error: dbError } = await safeQuery(() => db!.insert(schema.aiLogs).values(payload));
   if (dbError) {
