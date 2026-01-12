@@ -1,5 +1,5 @@
 import { isEmpty, set, kebabCase } from "lodash-es";
-import { supabase } from "@/express/supabase-admin";
+import { SupabaseClient } from "@supabase/supabase-js";
 import { getChaiAction } from "@/server/actions/actions-registery";
 import sharp from "sharp";
 
@@ -9,6 +9,7 @@ export class ChaiAssets {
   constructor(
     private appId: string,
     private userId: string,
+    private supabase: SupabaseClient,
   ) {}
 
   private appendUpdatedAtToUrl(url: string, updatedAt: string): string {
@@ -238,7 +239,7 @@ export class ChaiAssets {
       };
 
       // Insert into app_assets table
-      const { data, error } = await supabase.from("app_assets").insert(assetData).select("*").single();
+      const { data, error } = await this.supabase.from("app_assets").insert(assetData).select("*").single();
 
       if (error) {
         throw new Error(`Failed to store asset in database: ${error.message}`);
@@ -268,7 +269,12 @@ export class ChaiAssets {
 
   async getAsset({ id }: { id: string }): Promise<ChaiAsset | { error: string }> {
     try {
-      const { data, error } = await supabase.from("app_assets").select("*").eq("id", id).eq("app", this.appId).single();
+      const { data, error } = await this.supabase
+        .from("app_assets")
+        .select("*")
+        .eq("id", id)
+        .eq("app", this.appId)
+        .single();
 
       if (error) {
         throw new Error(`Failed to fetch asset: ${error.message}`);
@@ -304,7 +310,7 @@ export class ChaiAssets {
     try {
       const offset = (page - 1) * limit;
       // Build the query
-      let assetsQuery = supabase
+      let assetsQuery = this.supabase
         .from("app_assets")
         .select("*", { count: "exact" })
         .eq("app", this.appId)
@@ -339,7 +345,7 @@ export class ChaiAssets {
   async deleteAsset({ id }: { id: string }): Promise<{ success: boolean } | { error: string }> {
     try {
       // First, get the asset to retrieve storage keys
-      const { data: asset, error: fetchError } = await supabase
+      const { data: asset, error: fetchError } = await this.supabase
         .from("app_assets")
         .select("*")
         .eq("id", id)
@@ -386,7 +392,7 @@ export class ChaiAssets {
       }
 
       // Delete from the database
-      const { error } = await supabase.from("app_assets").delete().eq("id", id);
+      const { error } = await this.supabase.from("app_assets").delete().eq("id", id);
 
       if (error) {
         throw new Error(`Failed to delete asset: ${error.message}`);
@@ -410,7 +416,7 @@ export class ChaiAssets {
   }): Promise<ChaiAsset | { error: string }> {
     try {
       // Get current asset
-      const { data: currentAsset, error: fetchError } = await supabase
+      const { data: currentAsset, error: fetchError } = await this.supabase
         .from("app_assets")
         .select("*")
         .eq("id", id)
@@ -453,7 +459,7 @@ export class ChaiAssets {
       }
 
       // Update the asset
-      const { data: updatedAsset, error } = await supabase
+      const { data: updatedAsset, error } = await this.supabase
         .from("app_assets")
         .update(updateData)
         .eq("id", id)

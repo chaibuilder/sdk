@@ -1,35 +1,19 @@
 import { supabase } from "@/express/supabase-admin";
-import { initChaiBuilderActionHandler } from "@/server/actions/chai-builder-actions-handler";
 import ChaiActionsRegistry from "@/server/actions/actions-registery";
+import { initChaiBuilderActionHandler } from "@/server/actions/chai-builder-actions-handler";
 import cors from "cors";
 import dotenv from "dotenv";
 import express, { Express } from "express";
 import fileUpload from "express-fileupload";
+import { SupabaseAuthActions, SupabaseStorageActions } from "./actions/storage";
 import "./register";
 import { registerPageTypes } from "./registerPageTypes";
-import {
-  DeleteAssetAction,
-  GetAssetAction,
-  GetAssetsAction,
-  UpdateAssetAction,
-  UploadAssetAction,
-} from "./actions/assets";
-import { DeleteFromStorageAction, UploadToStorageAction } from "./actions/storage";
 
 dotenv.config();
 
 // Register storage actions
-ChaiActionsRegistry.registerActions({
-  // Asset management actions
-  UPLOAD_ASSET: new UploadAssetAction(),
-  GET_ASSET: new GetAssetAction(),
-  GET_ASSETS: new GetAssetsAction(),
-  DELETE_ASSET: new DeleteAssetAction(),
-  UPDATE_ASSET: new UpdateAssetAction(),
-  // Generic storage actions
-  UPLOAD_TO_STORAGE: new UploadToStorageAction(),
-  DELETE_FROM_STORAGE: new DeleteFromStorageAction(),
-});
+ChaiActionsRegistry.registerActions(SupabaseAuthActions(supabase));
+ChaiActionsRegistry.registerActions(SupabaseStorageActions(supabase));
 
 export const app: Express = express();
 app.use(cors());
