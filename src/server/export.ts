@@ -1,5 +1,6 @@
 "use server";
 
+import { StreamTextResult } from "ai";
 import ChaiActionsRegistry from "./actions/actions-registery";
 import { getAskAiSystemPrompt } from "./classes/system-prompt";
 import { registerChaiGlobalDataProvider } from "./register/register-global-data-provider";
@@ -55,6 +56,28 @@ export type AIChatOptions = {
   initiator?: string | null;
   model?: string;
 };
+
+export interface ChaiBuilderPagesAIInterface {
+  handleRequest(options: AIChatOptions, res: any): Promise<StreamTextResult<any, any>>;
+  isConfigured(): boolean;
+}
+
+export declare class ChaiAIChatHandler implements ChaiBuilderPagesAIInterface {
+  private options?;
+  private model;
+  private temperature;
+  constructor(
+    options?:
+      | {
+          model?: string;
+          onFinish?: () => void;
+          onError?: (error: Error) => void;
+        }
+      | undefined,
+  );
+  handleRequest(options: AIChatOptions, res?: any): Promise<StreamTextResult<any, any>>;
+  isConfigured(): boolean;
+}
 
 export { initChaiBuilderActionHandler } from "./actions/chai-builder-actions-handler";
 export { LANGUAGES } from "./LANGUAGES";
