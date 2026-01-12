@@ -62,23 +62,6 @@ export interface ChaiBuilderPagesAIInterface {
   isConfigured(): boolean;
 }
 
-export declare class ChaiAIChatHandler implements ChaiBuilderPagesAIInterface {
-  private options?;
-  private model;
-  private temperature;
-  constructor(
-    options?:
-      | {
-          model?: string;
-          onFinish?: () => void;
-          onError?: (error: Error) => void;
-        }
-      | undefined,
-  );
-  handleRequest(options: AIChatOptions, res?: any): Promise<StreamTextResult<any, any>>;
-  isConfigured(): boolean;
-}
-
 export { initChaiBuilderActionHandler } from "./actions/chai-builder-actions-handler";
 export { LANGUAGES } from "./LANGUAGES";
 export * from "./types";

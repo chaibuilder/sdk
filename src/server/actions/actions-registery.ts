@@ -1,5 +1,6 @@
 import { get } from "lodash-es";
 import { ChaiAction } from "./chai-action-interface";
+import { AskAIAction } from "./ask-ai-action";
 import { CreatePageAction } from "./create-page";
 import { DeleteLibraryItemAction } from "./delete-library-item";
 import { DeletePageAction } from "./delete-page";
@@ -50,6 +51,7 @@ class ChaiActionsRegistry {
 
   private constructor() {
     // Register all actions
+    this.register("ASK_AI", new AskAIAction());
     this.register("CREATE_PAGE", new CreatePageAction());
     this.register("DELETE_PAGE", new DeletePageAction());
     this.register("DUPLICATE_PAGE", new DuplicatePageAction());

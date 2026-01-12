@@ -1,7 +1,7 @@
-import { ChaiBaseAction } from "@/server/actions/base-action";
+import { ChaiBaseAction } from "./base-action";
 import { z } from "zod";
-import { ChaiAIChatHandler } from "./chai-ai-chat-handler";
-import { logAiRequest, logAiRequestError } from "./log-ai-request";
+import { ChaiAIChatHandler } from "../classes/chai-ai-chat-handler";
+import { logAiRequest, logAiRequestError } from "../utils/log-ai-request";
 
 type AskAIActionData = {
   messages?: Array<{
