@@ -198,28 +198,39 @@ export const appsOnline = pgTable(
   ],
 );
 
-export const aiLogs = pgTable(getTableName("ai_logs"), {
-  // You can use { mode: "bigint" } if numbers are exceeding js number limitations
-  id: bigint({ mode: "number" })
-    .primaryKey()
-    .generatedByDefaultAsIdentity({
-      name: getTableName("ai_logs_id_seq"),
-      startWith: 1,
-      increment: 1,
-      minValue: 1,
-      cache: 1,
+export const aiLogs = pgTable(
+  getTableName("ai_logs"),
+  {
+    // You can use { mode: "bigint" } if numbers are exceeding js number limitations
+    id: bigint({ mode: "number" })
+      .primaryKey()
+      .generatedByDefaultAsIdentity({
+        name: getTableName("ai_logs_id_seq"),
+        startWith: 1,
+        increment: 1,
+        minValue: 1,
+        cache: 1,
+      }),
+    createdAt: timestamp({ withTimezone: true, mode: "string" }).defaultNow().notNull(),
+    model: text(),
+    totalDuration: numeric(),
+    app: uuid().notNull(),
+    error: text(),
+    totalTokens: numeric(),
+    tokenUsage: jsonb(),
+    user: text(),
+    client: varchar(),
+    cost: doublePrecision().default(sql`'0'`),
+    prompt: text(),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.app],
+      foreignColumns: [apps.id],
+      name: getTableName("app_pages_app_fkey"),
     }),
-  createdAt: timestamp({ withTimezone: true, mode: "string" }).defaultNow().notNull(),
-  model: text(),
-  totalDuration: numeric(),
-  error: text(),
-  totalTokens: numeric(),
-  tokenUsage: jsonb(),
-  user: text(),
-  client: varchar(),
-  cost: doublePrecision().default(sql`'0'`),
-  prompt: text(),
-});
+  ],
+);
 
 export const appApiKeys = pgTable(
   getTableName("app_api_keys"),
