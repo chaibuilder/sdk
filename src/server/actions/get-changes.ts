@@ -44,7 +44,7 @@ export class GetChangesAction extends ChaiBaseAction<GetChangesActionData, GetCh
   /**
    * Execute the get changes action
    */
-  async execute(data: GetChangesActionData): Promise<GetChangesActionResponse> {
+  async execute(): Promise<GetChangesActionResponse> {
     if (!this.context) {
       throw new ActionError("Context not set", "CONTEXT_NOT_SET");
     }
@@ -127,8 +127,14 @@ export class GetChangesAction extends ChaiBaseAction<GetChangesActionData, GetCh
     // Filter changed pages to remove those that are in takeOnlinePages
     const filteredChangedPages = (changedPages || []).filter((page) => !takeOnlinePages.some((t) => t.id === page.id));
 
-    // Merge the two arrays
-    const mergedPages: PageChange[] = [...filteredChangedPages, ...takeOnlinePages];
+    // Merge the two arrays - cast changedPages to proper type since changes is returned as unknown from DB
+    const mergedPages: PageChange[] = [
+      ...filteredChangedPages.map((page) => ({
+        ...page,
+        changes: page.changes as string[],
+      })),
+      ...takeOnlinePages,
+    ];
 
     // Check for theme changes in the apps table
     const { data: apps, error: appsError } = await safeQuery(() =>

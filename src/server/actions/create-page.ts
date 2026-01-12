@@ -231,8 +231,8 @@ export class CreatePageAction extends ChaiBaseAction<CreatePageActionData, Creat
       throw new ActionError(`Template not found with ID: ${templateId}`, "TEMPLATE_NOT_FOUND");
     }
 
-    const template = result.template;
-    const library = result.library;
+    const template = result.template as typeof schema.libraryTemplates.$inferSelect;
+    const library = result.library as typeof schema.libraries.$inferSelect;
 
     // Fetch template blocks
     const { data: templatePage, error: templateBlocksError } = await safeQuery(() =>

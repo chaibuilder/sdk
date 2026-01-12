@@ -1,4 +1,4 @@
-import { supabase } from "@/express/supabase-admin";
+import { db, safeQuery, schema } from "@/server/db";
 
 export const AI_MODELS = [
   {
@@ -57,17 +57,20 @@ export async function logAiRequestError({
   const totalDuration = startTime > 0 ? new Date().getTime() - startTime : 0;
   const payload = {
     model,
-    totalDuration,
+    totalDuration: String(totalDuration),
     error: errorStr,
-    totalTokens: {},
-    tokenUsage: 0,
+    totalTokens: "0",
+    tokenUsage: {},
     cost: 0,
     prompt,
     user: authTokenOrUserId,
     client: process?.env?.CHAIBUILDER_CLIENT_ID || "",
   };
 
-  await supabase.from("ai_logs").insert(payload);
+  const { error: dbError } = await safeQuery(() => db!.insert(schema.aiLogs).values(payload));
+  if (dbError) {
+    console.error("Error logging AI request error:", dbError);
+  }
 }
 
 export async function logAiRequest({
@@ -91,17 +94,17 @@ export async function logAiRequest({
   prompt = prompt.substring(requestStartIndex).trim();
   const payload = {
     model,
-    totalDuration,
+    totalDuration: String(totalDuration),
     error: null,
-    totalTokens: Math.round((totalUsage?.totalTokens ?? 0) * getModelMultiplier(model)),
+    totalTokens: String(Math.round((totalUsage?.totalTokens ?? 0) * getModelMultiplier(model))),
     tokenUsage: totalUsage,
     cost,
     prompt,
     user: userId,
     client: process?.env?.CHAIBUILDER_CLIENT_ID || "",
   };
-  const { error } = await supabase.from("ai_logs").insert(payload);
-  if (error) {
-    console.error("Error logging AI request:", error);
+  const { error: dbError } = await safeQuery(() => db!.insert(schema.aiLogs).values(payload));
+  if (dbError) {
+    console.error("Error logging AI request:", dbError);
   }
 }
