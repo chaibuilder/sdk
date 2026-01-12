@@ -5,15 +5,15 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express, { Express } from "express";
 import fileUpload from "express-fileupload";
-import { SubabaseAuthActions, SubabaseStorageActions } from "./actions/storage";
+import { SupabaseAuthActions, SupabaseStorageActions } from "./actions/storage";
 import "./register";
 import { registerPageTypes } from "./registerPageTypes";
 
 dotenv.config();
 
 // Register storage actions
-ChaiActionsRegistry.registerActions(SubabaseAuthActions(supabase));
-ChaiActionsRegistry.registerActions(SubabaseStorageActions(supabase));
+ChaiActionsRegistry.registerActions(SupabaseAuthActions(supabase));
+ChaiActionsRegistry.registerActions(SupabaseStorageActions(supabase));
 
 export const app: Express = express();
 app.use(cors());

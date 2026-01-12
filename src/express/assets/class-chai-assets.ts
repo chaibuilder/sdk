@@ -10,9 +10,7 @@ export class ChaiAssets {
     private appId: string,
     private userId: string,
     private supabase: SupabaseClient,
-  ) {
-    this.supabase = supabase;
-  }
+  ) {}
 
   private appendUpdatedAtToUrl(url: string, updatedAt: string): string {
     if (isEmpty(url)) {

@@ -7,11 +7,11 @@ import { UploadToStorageAction } from "./upload-to-storage";
 export { DeleteFromStorageAction } from "./delete-from-storage";
 export { UploadToStorageAction } from "./upload-to-storage";
 
-export const SubabaseAuthActions = (supabase: SupabaseClient) => ({
+export const SupabaseAuthActions = (supabase: SupabaseClient) => ({
   GET_CHAI_USER: new GetChaiUserAction(supabase),
 });
 
-export const SubabaseStorageActions = (supabase: SupabaseClient) => ({
+export const SupabaseStorageActions = (supabase: SupabaseClient) => ({
   // Asset management actions
   UPLOAD_ASSET: new UploadAssetAction(supabase),
   GET_ASSET: new GetAssetAction(supabase),

@@ -28,7 +28,7 @@ export class DeleteAssetAction extends ChaiBaseAction<DeleteAssetInput> {
         return { error: "User ID is required", status: 401 };
       }
 
-      const backend = new ChaiAssets(appId, userId , this.supabase);
+      const backend = new ChaiAssets(appId, userId, this.supabase);
       const response = await backend.deleteAsset(data);
 
       if ("error" in response) {
