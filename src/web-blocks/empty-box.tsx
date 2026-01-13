@@ -28,7 +28,7 @@ const Config = {
         type: "string",
         title: "Background Image",
         default: "",
-        ui: { "ui:widget": "image" },
+        ui: { "ui:widget": "image", "ui:allowEmpty": true },
       },
     },
   }),
