@@ -4,12 +4,20 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseClient } from "../supabase";
 import { getSupabaseAdmin } from "../supabase-admin";
 
-const apiKey = process.env.CHAIBUILDER_API_KEY!;
 const supabase = getSupabaseAdmin();
 ChaiActionsRegistry.registerActions(SupabaseAuthActions(supabase));
 ChaiActionsRegistry.registerActions(SupabaseStorageActions(supabase));
 
 export async function POST(req: NextRequest) {
+  const apiKey = process.env.CHAIBUILDER_API_KEY;
+  
+  if (!apiKey) {
+    console.error("CHAIBUILDER_API_KEY environment variable is not set.");
+    return NextResponse.json(
+      { error: "Server misconfiguration: CHAIBUILDER_API_KEY is not set" },
+      { status: 500 }
+    );
+  }
   try {
     // Get authorization header
     const authorization = req.headers.get("authorization") || "";
@@ -68,7 +76,9 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(response);
   } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: (error as Error).message }, { status: 500 });
+    console.error("Error handling POST request", {
+      message: error instanceof Error ? error.message : String(error),
+    });
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

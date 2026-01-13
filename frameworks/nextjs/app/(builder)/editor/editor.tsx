@@ -6,7 +6,7 @@ import "@chaibuilder/sdk/styles";
 import { useCallback, useEffect, useState } from "react";
 import { LoginScreen } from "./login";
 import dynamic from "next/dynamic";
-const ChaiBuilderEditor = dynamic(() => import("@chaibuilder/sdk/pages").then((mod) => mod.default), {
+const ChaiBuilderEditor = dynamic(() => import("@chaibuilder/sdk/pages"), {
   ssr: false,
 });
 
@@ -18,9 +18,9 @@ type LoggedInUser = {
   metadata?: Record<string, unknown>;
 };
 
-const supabase = getSupabaseClient();
 
 export default function Editor() {
+  const supabase = getSupabaseClient();
   const [isLoggedIn, setIsLoggedIn] = useState<null | boolean>(null);
   const [user, setUser] = useState<LoggedInUser | null>(null);
 
@@ -76,14 +76,14 @@ export default function Editor() {
 
   const handleLogout = useCallback(async () => {
     await supabase.auth.signOut();
-  }, []);
+  }, [supabase]);
 
   const getAccessToken = useCallback(async () => {
     const {
       data: { session },
     } = await supabase.auth.getSession();
     return session?.access_token as string;
-  }, []);
+  }, [supabase]);
 
   const getPreviewUrl = useCallback((slug: string) => `/api/preview?slug=${slug}`, []);
   const getLiveUrl = useCallback((slug: string) => `/api/preview?disable=true&slug=${slug}`, []);
