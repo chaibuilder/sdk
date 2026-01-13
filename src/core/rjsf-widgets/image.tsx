@@ -28,13 +28,16 @@ const getFileName = (value: string) => {
   return hasValidExtension ? name : "";
 };
 
-const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
+const ImagePickerField = ({ value, onChange, id, onBlur, uiSchema }: WidgetProps) => {
   const { t } = useTranslation();
   const { selectedLang } = useLanguages();
   const selectedBlock = useSelectedBlock();
   const updateBlockProps = useUpdateBlocksProps();
   const pageExternalData = usePageExternalData();
   const showImagePicker = true;
+
+  // Check if this field allows empty values (for background images)
+  const allowEmpty = uiSchema?.["ui:allowEmpty"] === true;
 
   const propKey = id.split(".").pop() || "";
   const propIdKey = selectedLang ? `_${propKey}Id-${selectedLang}` : `_${propKey}Id`;
@@ -57,7 +60,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
     return get(resolved, propKey, value);
   }, [value, selectedBlock, pageExternalData, propKey]);
 
-  const showRemoveIcons = !!assetId || resolvedValue !== PLACEHOLDER_IMAGE;
+  const showRemoveIcons = !!assetId || (resolvedValue !== PLACEHOLDER_IMAGE && resolvedValue !== "");
 
   const handleSelect = (assets: ChaiAsset[] | ChaiAsset) => {
     const asset = isArray(assets) ? first(assets) : assets;
@@ -82,7 +85,10 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
   };
 
   const clearImage = useCallback(() => {
-    onChange(PLACEHOLDER_IMAGE);
+    // For background images or fields that allow empty, use empty string
+    // For regular images (like Image block), use placeholder
+    const clearedValue = allowEmpty ? "" : PLACEHOLDER_IMAGE;
+    onChange(clearedValue);
     if (selectedBlock?._id) {
       const props = {};
       const forMobile = propIdKey.includes("mobile");
@@ -91,7 +97,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur }: WidgetProps) => {
       set(props, forMobile ? "mobileHeight" : "height", "");
       updateBlockProps([selectedBlock._id], props);
     }
-  }, [onChange, selectedBlock?._id, updateBlockProps, propIdKey]);
+  }, [onChange, selectedBlock?._id, updateBlockProps, propIdKey, allowEmpty]);
 
   const fileName = getFileName(resolvedValue);
   return (
