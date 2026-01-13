@@ -9,7 +9,7 @@ const checkForEnv = (envVar: string | undefined, name: string) => {
   return envVar;
 };
 
-export const getSupabaseAdmin = async () => {
+export const getSupabaseAdmin = () => {
   checkForEnv(process.env.SUPABASE_SERVICE_KEY, "SUPABASE_SERVICE_KEY");
   checkForEnv(process.env.NEXT_PUBLIC_SUPABASE_URL, "NEXT_PUBLIC_SUPABASE_URL");
   if (ADMIIN_INSTANCE) {
@@ -17,6 +17,6 @@ export const getSupabaseAdmin = async () => {
   }
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
   const supabaseKey = process.env.SUPABASE_SERVICE_KEY || "";
-  ADMIIN_INSTANCE = await createClient(supabaseUrl, supabaseKey);
+  ADMIIN_INSTANCE = createClient(supabaseUrl, supabaseKey);
   return ADMIIN_INSTANCE;
 };

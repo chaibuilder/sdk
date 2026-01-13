@@ -5,8 +5,7 @@ import { getSupabaseClient } from "../supabase";
 import { getSupabaseAdmin } from "../supabase-admin";
 
 const apiKey = process.env.CHAIBUILDER_API_KEY!;
-const supabase = (async () => await getSupabaseAdmin())();
-
+const supabase = getSupabaseAdmin();
 ChaiActionsRegistry.registerActions(SupabaseAuthActions(supabase));
 ChaiActionsRegistry.registerActions(SupabaseStorageActions(supabase));
 
