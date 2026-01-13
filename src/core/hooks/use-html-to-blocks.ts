@@ -1,5 +1,5 @@
 import { ChaiBlock } from "@/types/chai-block";
-import { getRegisteredChaiBlock, syncBlocksWithDefaults } from "@chaibuilder/runtime";
+import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { each, filter, find, pick, startsWith } from "lodash-es";
 import { useCallback } from "react";
 import { getBlocksFromHTML, mergeBlocksWithExisting } from "../import-html/html-to-json";
@@ -35,7 +35,7 @@ export const useHtmlToBlocks = () => {
   const [currentBlocks] = useBlocksStore();
   return useCallback(
     (html: string) => {
-      const importedBlocks = syncBlocksWithDefaults(getBlocksFromHTML(html));
+      const importedBlocks = getBlocksFromHTML(html);
       const mergedBlocks = mergeBlocksWithExisting(importedBlocks, currentBlocks);
       return handlei18N(mergedBlocks, currentBlocks);
     },
