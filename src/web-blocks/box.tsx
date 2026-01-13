@@ -66,7 +66,7 @@ const Config: Omit<ChaiBlockDefinition<BoxProps>, "component"> = {
         type: "string",
         default: "",
         title: "Background Image",
-        ui: { "ui:widget": "image" },
+        ui: { "ui:widget": "image", "ui:allowEmpty": true },
       },
     },
   }),
