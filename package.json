@@ -87,7 +87,8 @@
     "postgres": "^3.4.8",
     "ai": "^6.0.11",
     "streamdown": "^1.6.10",
-    "sharp": "^0.34.5"
+    "sharp": "^0.34.5",
+    "next": "16.1.1"
   },
   "peerDependenciesMeta": {
     "@types/react": {
@@ -109,6 +110,9 @@
       "optional": true
     },
     "sharp": {
+      "optional": true
+    },
+    "next": {
       "optional": true
     }
   },
