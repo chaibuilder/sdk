@@ -1,8 +1,14 @@
-import { initChaiBuilderActionHandler } from "@chaibuilder/sdk/server";
+import { ChaiActionsRegistry, initChaiBuilderActionHandler } from "@chaibuilder/sdk/server";
+import { SupabaseAuthActions, SupabaseStorageActions } from "@chaibuilder/sdk/supabase-actions";
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseClient } from "../supabase";
+import { getSupabaseAdmin } from "../supabase-admin";
 
 const apiKey = process.env.CHAIBUILDER_API_KEY!;
+const supabase = (async () => await getSupabaseAdmin())();
+
+ChaiActionsRegistry.registerActions(SupabaseAuthActions(supabase));
+ChaiActionsRegistry.registerActions(SupabaseStorageActions(supabase));
 
 export async function POST(req: NextRequest) {
   try {
