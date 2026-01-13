@@ -7,6 +7,7 @@ import { Button } from "@/ui/shadcn/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/ui/shadcn/components/ui/card";
 import { Label } from "@/ui/shadcn/components/ui/label";
 import { Textarea } from "@/ui/shadcn/components/ui/textarea";
+import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { CircleIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -28,7 +29,7 @@ const ImportHTML = ({
   const importComponents = async () => {
     setLoading(true);
     const codeHtml = await getPreImportHTML(code);
-    const blocks = getBlocksFromHTML(codeHtml);
+    const blocks = syncBlocksWithDefaults(getBlocksFromHTML(codeHtml));
     addPredefinedBlock([...blocks], parentId, position);
     setCode("");
     setLoading(false);
