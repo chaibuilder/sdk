@@ -72,6 +72,11 @@
       "import": "./dist/runtime.js",
       "require": "./dist/runtime.cjs"
     },
+    "./supabase-actions": {
+      "types": "./dist/supabase-actions.d.ts",
+      "import": "./dist/supabase-actions.js",
+      "require": "./dist/supabase-actions.cjs"
+    },
     "./styles": {
       "import": "./dist/sdk.css",
       "require": "./dist/sdk.css"
@@ -88,7 +93,8 @@
     "ai": "^6.0.11",
     "streamdown": "^1.6.10",
     "sharp": "^0.34.5",
-    "next": "16.1.1"
+    "next": "16.1.1",
+    "@supabase/supabase-js": "^2.89.0"
   },
   "peerDependenciesMeta": {
     "@types/react": {
@@ -113,6 +119,9 @@
       "optional": true
     },
     "next": {
+      "optional": true
+    },
+    "@supabase/supabase-js": {
       "optional": true
     }
   },
