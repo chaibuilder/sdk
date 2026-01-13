@@ -3,6 +3,7 @@ import { STYLES_KEY } from "@/core/constants/STRINGS";
 import { cn, generateUUID } from "@/core/functions/common-functions";
 import { getVideoURLFromHTML, hasVideoEmbed } from "@/core/import-html/import-video";
 import { ChaiBlock } from "@/types/chai-block";
+import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { parse, stringify } from "himalaya";
 import {
   camelCase,
@@ -697,5 +698,6 @@ export const mergeBlocksWithExisting = (importedBlocks: ChaiBlock[], existingBlo
 export const getBlocksFromHTML = (html: string): ChaiBlock[] => {
   const nodes: Node[] = parse(getSanitizedHTML(html));
   if (isEmpty(html)) return [];
-  return flatten(traverseNodes(nodes)) as ChaiBlock[];
+  const blocks = flatten(traverseNodes(nodes)) as ChaiBlock[];
+  return syncBlocksWithDefaults(blocks);
 };
