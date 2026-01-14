@@ -6,8 +6,8 @@ import { Button } from "@/ui/shadcn/components/ui/button";
 import { Input } from "@/ui/shadcn/components/ui/input";
 import { Label } from "@/ui/shadcn/components/ui/label";
 import { Textarea } from "@/ui/shadcn/components/ui/textarea";
+import { Cross1Icon, Pencil2Icon } from "@radix-ui/react-icons";
 import { isEmpty } from "lodash-es";
-import { Pencil2Icon, Cross1Icon } from "@radix-ui/react-icons";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -42,7 +42,7 @@ export default React.memo(function AttrsEditor({
 
   const addAttribute = () => {
     if (newKey.startsWith("@")) {
-      setError(t('Attribute keys cannot start with @'));
+      setError(t("Attribute keys cannot start with @"));
       return;
     }
     if (newKey) {
@@ -69,7 +69,7 @@ export default React.memo(function AttrsEditor({
 
   const saveEdit = () => {
     if (newKey.startsWith("@")) {
-      setError(t('Attribute keys cannot start with @'));
+      setError(t("Attribute keys cannot start with @"));
       return;
     }
     if (editIndex !== null && newKey) {
@@ -171,10 +171,10 @@ export default React.memo(function AttrsEditor({
           editIndex !== null ? saveEdit() : addAttribute();
         }}
         className="space-y-3">
-        <div className="flex flex-col gap-y-1">
-          <div className="w-full">
-            <Label htmlFor="attrKey" className="text-[11px] font-normal leading-tight text-slate-600">
-              {t('Key')}
+        <div className="space-y-2">
+          <div>
+            <Label htmlFor="attrKey" className="mb-1 block text-[11px] font-medium text-gray-700">
+              {t("Key")}
             </Label>
             <Input
               autoCapitalize={"off"}
@@ -184,14 +184,14 @@ export default React.memo(function AttrsEditor({
               ref={keyInputRef}
               value={newKey}
               onChange={(e) => setNewKey(e.target.value)}
-              placeholder={t('Enter key')}
-              className="py-0 text-xs font-normal leading-tight placeholder:text-slate-400"
+              placeholder={t("Enter key")}
+              className="h-7 text-[11px] transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
             />
           </div>
-          <div className="w-full">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="attrValue" className="text-[11px] font-normal text-slate-600">
-                {t('Value')}
+          <div>
+            <div className="mb-1 flex items-center justify-between">
+              <Label htmlFor="attrValue" className="text-[11px] font-medium text-gray-700">
+                {t("Value")}
               </Label>
               {!isEmpty(pageExternalData) && <NestedPathSelector data={pageExternalData} onSelect={handlePathSelect} />}
             </div>
@@ -204,37 +204,39 @@ export default React.memo(function AttrsEditor({
               value={newValue}
               onChange={(e) => setNewValue(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder={t('Enter value')}
-              className="text-xs font-normal leading-tight placeholder:text-slate-400"
+              placeholder={t("Enter value")}
+              className="min-h-[60px] resize-y text-[11px] transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
             />
           </div>
         </div>
         <div className="flex justify-end">
           <Button type="submit" disabled={!newKey.length} variant="default" size="sm" className="h-8 w-24 text-xs">
-            {editIndex !== null ? t('Save') : t('Add')}
+            {editIndex !== null ? t("Save") : t("Add")}
           </Button>
         </div>
         {error && <p className="text-xs text-red-500">{error}</p>}
       </form>
 
-      <div className="space-y-1 py-4">
-        {attributes.map((attr, index) => (
-          <div key={index} className="flex items-center justify-between rounded border p-2 text-sm">
-            <div className="flex flex-col text-xs leading-tight">
-              <span className="truncate text-[12px] font-light text-muted-foreground">{attr.key}</span>
-              <span className="max-w-[200px] text-wrap font-normal">{attr.value.toString()}</span>
+      {attributes?.length > 0 && (
+        <div className="space-y-1 pt-4">
+          {attributes.map((attr, index) => (
+            <div key={index} className="flex items-center justify-between rounded border p-2 text-sm">
+              <div className="flex flex-col text-xs leading-tight">
+                <span className="truncate text-[12px] font-light text-muted-foreground">{attr.key}</span>
+                <span className="max-w-[200px] text-wrap font-normal">{attr.value.toString()}</span>
+              </div>
+              <div className="flex-shrink-0 text-slate-400">
+                <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => startEdit(index)}>
+                  <Pencil2Icon className="h-3 w-3" />
+                </Button>
+                <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => removeAttribute(index)}>
+                  <Cross1Icon className="h-3 w-3" />
+                </Button>
+              </div>
             </div>
-            <div className="flex-shrink-0 text-slate-400">
-              <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => startEdit(index)}>
-                <Pencil2Icon className="h-3 w-3" />
-              </Button>
-              <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => removeAttribute(index)}>
-                <Cross1Icon className="h-3 w-3" />
-              </Button>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 });
