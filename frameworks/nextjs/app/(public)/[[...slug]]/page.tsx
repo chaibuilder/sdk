@@ -1,9 +1,10 @@
-import { NextJSRenderChaiBlocks } from "@/package/NextRenderChaiBlocks";
-import { ChaiPageProps, loadWebBlocks } from "@chaibuilder/nextjs/blocks";
-import { ChaiPageStyles, PreviewBanner } from "@chaibuilder/nextjs/blocks/rsc";
-import ChaiBuilder from "@chaibuilder/nextjs/server";
+import { loadWebBlocks } from "@chaibuilder/sdk/web-blocks";
+import { PreviewBanner, NextJSRenderChaiBlocks, ChaiPageStyles } from "../../../package/rsc/index";
+import { ChaiBuilder } from "../.././../package/ChaiBuilder";
 import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
+import "@chaibuilder/sdk/styles";
+import { ChaiPageProps } from "@chaibuilder/runtime";
 
 loadWebBlocks();
 
@@ -26,7 +27,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string[
   ChaiBuilder.init(process.env.CHAIBUILDER_API_KEY!, isEnabled);
   let page = null;
   try {
-    page = await ChaiBuilder.getPage(slug);
+    page = await ChaiBuilder.getPageBySlug(slug);
     if ("error" in page) {
       return notFound();
     }

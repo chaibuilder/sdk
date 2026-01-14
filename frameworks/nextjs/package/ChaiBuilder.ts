@@ -1,21 +1,9 @@
-import { ChaiBlock } from "@chaibuilder/runtime";
+import { ChaiBlock, ChaiPageProps } from "@chaibuilder/runtime";
 import { unstable_cache } from "next/cache";
 import { cache } from "react";
-import { getPageStyles } from "./get-page-styles";
-
-//TODO: https://github.com/chaibuilder/frameworks/blob/main/packages/next/src/blocks/rsc/render-chai-blocks.tsx
-
-type ChaiBuilderPage =
-  | {
-      id: string;
-      slug: string;
-      lang: string;
-      name: string;
-      pageType: string;
-      languagePageId: string;
-      blocks: ChaiBlock[];
-    }
-  | { error: string };
+import { applyChaiDataBinding } from "@chaibuilder/sdk/render";
+import * as utils from "./utils";
+import type { ChaiBuilderPage } from "./utils";
 
 class ChaiBuilder {
   private static appId?: string;
@@ -44,7 +32,7 @@ class ChaiBuilder {
     ChaiBuilder.verifyInit();
     const siteSettings = await ChaiBuilder.getSiteSettings();
 
-    ChaiBuilder?.setFallbackLang(siteSettings?.fallbackLang);
+    ChaiBuilder?.setFallbackLang(siteSettings?.fallbackLang || "en");
     ChaiBuilder?.setDraftMode(draftMode);
   }
 
@@ -63,14 +51,28 @@ class ChaiBuilder {
     return ChaiBuilder.fallbackLang;
   }
 
-  static async getSiteSettings() {
+  static async getSiteSettings(): Promise<{ fallbackLang?: string; [key: string]: unknown }> {
     ChaiBuilder.verifyInit();
-    return await unstable_cache(async () => /* TODO: implement */ {}, [`website-settings-${ChaiBuilder.getAppId()}`], {
-      tags: [`website-settings`, `website-settings-${ChaiBuilder.getAppId()}`],
-    })();
+    return await unstable_cache(
+      async () => await utils.getSiteSettings(ChaiBuilder.appId!, ChaiBuilder.draftMode),
+      [`website-settings-${ChaiBuilder.getAppId()}`],
+      {
+        tags: [`website-settings`, `website-settings-${ChaiBuilder.getAppId()}`],
+      },
+    )();
   }
 
-  static async getPartialPageBySlug(slug: string) {
+  static async getPageBySlug(slug: string): Promise<ChaiBuilderPage | { error: string }> {
+    ChaiBuilder.verifyInit();
+    return await utils.getPageBySlug(slug, this.appId!, this.draftMode);
+  }
+
+  static async getFullPage(pageId: string): Promise<Record<string, unknown>> {
+    ChaiBuilder.verifyInit();
+    return await utils.getFullPage(pageId, this.appId!, this.draftMode);
+  }
+
+  static async getPartialPageBySlug(slug: string): Promise<Record<string, unknown>> {
     ChaiBuilder.verifyInit();
     // if the slug is of format /_partial/{langcode}/{uuid}, get the uuid. langcode is optional
     const uuid = slug.split("/").pop();
@@ -80,31 +82,32 @@ class ChaiBuilder {
 
     // Fetch the partial page data
     const siteSettings = await ChaiBuilder.getSiteSettings();
-    const data = await ChaiBuilder.getFullPage(uuid); //TODO: Replace by ORM https://github.com/chaibuilder/frameworks/blob/main/packages/next/src/server/builder-api/src/ChaiBuilderPages.ts#L843
+    const data = await ChaiBuilder.getFullPage(uuid);
     const fallbackLang = siteSettings?.fallbackLang;
     const lang = slug.split("/").length > 3 ? slug.split("/")[2] : fallbackLang;
     return { ...data, fallbackLang, lang };
   }
 
-  static getPage = cache(async (slug: string) => {
+  static getPage = cache(async (slug: string): Promise<ChaiBuilderPage | Record<string, unknown>> => {
     ChaiBuilder.verifyInit();
     if (slug.startsWith("/_partial/")) {
       return await ChaiBuilder.getPartialPageBySlug(slug);
     }
-    const page: ChaiBuilderPage = await ChaiBuilder.getPageBySlug(slug); //TODO: Replace by ORM https://github.com/chaibuilder/frameworks/blob/main/packages/next/src/server/builder-api/src/ChaiBuilderPages.ts#L686
+    const page: ChaiBuilderPage = await ChaiBuilder.getPageBySlug(slug);
     if ("error" in page) {
       return page;
     }
 
     const siteSettings = await ChaiBuilder.getSiteSettings();
     const tagPageId = page.id;
+    const languagePageId = page.languagePageId || page.id;
     return await unstable_cache(
       async () => {
-        const data = await ChaiBuilder.pages?.getFullPage(page.languagePageId);
+        const data = await ChaiBuilder.getFullPage(languagePageId);
         const fallbackLang = siteSettings?.fallbackLang;
         return { ...data, fallbackLang, lang: page.lang || fallbackLang };
       },
-      ["page-" + page.languagePageId, page.lang, page.id, slug],
+      ["page-" + languagePageId, page.lang, page.id, slug],
       { tags: ["page-" + tagPageId] },
     )();
   });
@@ -134,14 +137,17 @@ class ChaiBuilder {
       };
     }
 
+    // Type assertion after error check
+    const pageData = page as Exclude<ChaiBuilderPage, { error: string }>;
+
     const externalData = await ChaiBuilder.getPageExternalData({
-      blocks: page.blocks,
-      pageProps: page,
-      pageType: page.pageType,
-      lang: page.lang,
+      blocks: pageData.blocks,
+      pageProps: pageData,
+      pageType: pageData.pageType,
+      lang: pageData.lang,
     });
 
-    const seo = withDataBinding(page?.seo ?? {}, externalData);
+    const seo = applyChaiDataBinding(pageData?.seo ?? {}, externalData);
 
     return {
       title: seo?.title,
@@ -172,18 +178,35 @@ class ChaiBuilder {
     lang: string;
   }) {
     ChaiBuilder.verifyInit();
-    return await ChaiBuilder.getPageData(args); //TODO: Replace by orm
+    return await ChaiBuilder.getPageData(args);
   }
 
   static async getPageStyles(blocks: ChaiBlock[]) {
     ChaiBuilder.verifyInit();
-    return await getPageStyles(blocks);
+    return await utils.getPageStyles(blocks);
   }
 
-  static resolvePageLink = cache(async (href: string, lang: string) => {
+  static resolvePageLink = cache(async (href: string, lang: string): Promise<string> => {
     ChaiBuilder.verifyInit();
-    return await ChaiBuilder?.resolvePageLink(href, lang); //TODO: Replace by orm
+    return await ChaiBuilder.resolveLinks(href, lang);
   });
+
+  static async getPageData(args: {
+    blocks: ChaiBlock[];
+    pageProps: Record<string, unknown>;
+    pageType: string;
+    lang: string;
+  }): Promise<Record<string, unknown>> {
+    return await utils.getPageData({ ...args, draftMode: this.draftMode });
+  }
+
+  static async getBlocksStyles(blocks: ChaiBlock[]): Promise<string> {
+    return await utils.getBlocksStyles(blocks);
+  }
+
+  static async resolveLinks(href: string, lang: string): Promise<string> {
+    return await utils.resolveLinks(href, lang, this.appId!, this.draftMode, this.fallbackLang);
+  }
 }
 
 export { ChaiBuilder };
