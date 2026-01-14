@@ -4,6 +4,7 @@ import {
   structureErrorsAtom,
   structureValidationValidAtom,
 } from "@/core/atoms/blocks";
+import { useDebouncedCallback } from "@react-hookz/web";
 import { useSetAtom } from "jotai";
 import { useCallback } from "react";
 import { convertToBlocksTree } from "../functions/blocks-fn";
@@ -24,10 +25,10 @@ export const useCheckStructure = (options: UseCheckStructureOptions = {}) => {
   const setHasStructureErrors = useSetAtom(hasStructureErrorsAtom);
   const setHasStructureWarnings = useSetAtom(hasStructureWarningsAtom);
 
-  const runValidation = useCallback(
+  const validateImmediately = useCallback(
     (passedBlocks?: ChaiBlock[]) => {
       const finalBlocks = passedBlocks;
-      if (!validateStructure || finalBlocks.length === 0) return;
+      if (!validateStructure || !finalBlocks || finalBlocks.length === 0) return;
       const tree = convertToBlocksTree(finalBlocks);
       const allErrors: StructureError[] = [];
 
@@ -74,6 +75,20 @@ export const useCheckStructure = (options: UseCheckStructureOptions = {}) => {
       setHasStructureWarnings,
     ],
   );
+
+  const runValidation = useDebouncedCallback(
+    validateImmediately,
+    [
+      validateStructure,
+      options,
+      setStructureErrors,
+      setStructureValidationValid,
+      setHasStructureErrors,
+      setHasStructureWarnings,
+    ],
+    1000,
+  );
+
   return runValidation;
 };
 
