@@ -63,6 +63,7 @@ export interface ChaiBuilderPagesAIInterface {
 }
 
 export { initChaiBuilderActionHandler } from "./actions/chai-builder-actions-handler";
+export { db, safeQuery, schema } from "./db";
 export { LANGUAGES } from "./LANGUAGES";
 export * from "./types";
 export {
