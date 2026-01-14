@@ -1,5 +1,3 @@
-import { presentBlocksAtom } from "@/core/atoms/blocks";
-import { builderStore } from "@/core/atoms/store";
 import { insertBlocksAtPosition } from "@/core/history/insert-block-at-position";
 import { moveBlocksWithChildren } from "@/core/history/move-blocks-with-children";
 import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
@@ -64,9 +62,11 @@ export const useBlocksStoreManager = () => {
         updateBlockAtom({ id: block._id, props: updatedBlock });
       });
       postMessage({ type: "blocks-props-updated", blocks });
+      setBlocks((prevBlocks) => {
+        runValidation(prevBlocks);
+        return prevBlocks;
+      });
       incrementActionsCount();
-      const updatedBlocks = builderStore.get(presentBlocksAtom);
-      runValidation(updatedBlocks);
     },
   };
 };

@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 // Note: Since ImagePickerField is a React component with many dependencies and hooks,
 // this test file validates the placeholder constant and the logic flow.
@@ -30,14 +30,14 @@ describe('ImagePickerField clearImage logic', () => {
 describe('showRemoveIcons logic', () => {
   it('should show remove icon when assetId exists', () => {
     const assetId = "some-asset-id";
-    const resolvedValue = "https://example.com/image.jpg";
+    const resolvedValue = "https://example.com/image.jpg" as string;
     const showRemoveIcons = !!assetId || (resolvedValue !== PLACEHOLDER_IMAGE && resolvedValue !== "");
     expect(showRemoveIcons).toBe(true);
   });
 
   it('should show remove icon when value is not placeholder and not empty', () => {
     const assetId = "";
-    const resolvedValue = "https://example.com/image.jpg";
+    const resolvedValue = "https://example.com/image.jpg" as string;
     const showRemoveIcons = !!assetId || (resolvedValue !== PLACEHOLDER_IMAGE && resolvedValue !== "");
     expect(showRemoveIcons).toBe(true);
   });
@@ -51,7 +51,7 @@ describe('showRemoveIcons logic', () => {
 
   it('should not show remove icon when value is empty string', () => {
     const assetId = "";
-    const resolvedValue = "";
+    const resolvedValue = "" as string;
     const showRemoveIcons = !!assetId || (resolvedValue !== PLACEHOLDER_IMAGE && resolvedValue !== "");
     expect(showRemoveIcons).toBe(false);
   });

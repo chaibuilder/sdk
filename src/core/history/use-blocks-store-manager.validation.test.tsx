@@ -1,11 +1,9 @@
 import { renderHook, act } from '@testing-library/react';
 import { useBlocksStoreManager } from './use-blocks-store-manager';
-import { useBlocksStore } from './use-blocks-store-undoable-actions';
 import { builderStore } from '../atoms/store';
 import { presentBlocksAtom } from '../atoms/blocks';
-import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ChaiBlock } from '@/types/chai-block';
-import { Atom } from 'jotai';
 
 // Mock dependencies
 vi.mock('../hooks/use-broadcast-channel', () => ({
