@@ -86,7 +86,7 @@ export const useCheckStructure = (options: UseCheckStructureOptions = {}) => {
       setHasStructureErrors,
       setHasStructureWarnings,
     ],
-    1500,
+    1000,
   );
 
   return runValidation;
