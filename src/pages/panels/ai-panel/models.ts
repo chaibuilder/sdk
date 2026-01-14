@@ -7,8 +7,8 @@ export const AI_MODELS = [
     multiplier: 0.5,
   },
   {
-    id: "google/gemini-2.5-flash-pro",
-    name: "Gemini 2.5 Flash Pro",
+    id: "google/gemini-2.5-pro",
+    name: "Gemini 2.5 Pro",
     provider: "google",
     description: "1.25x Credits",
     multiplier: 1.25,
