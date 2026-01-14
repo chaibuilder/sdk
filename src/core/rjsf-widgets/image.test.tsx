@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 // this test file validates the placeholder constant and the logic flow.
 // Full integration tests would require a complete React testing environment.
 
-const PLACEHOLDER_IMAGE =
+const PLACEHOLDER_IMAGE: string =
   "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZmlsbD0iI2Q1ZDdkYSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIFBsYWNlaG9sZGVyPC90ZXh0Pjwvc3ZnPg==";
 
 describe("ImagePickerField clearImage logic", () => {
@@ -30,21 +30,21 @@ describe("ImagePickerField clearImage logic", () => {
 describe("showRemoveIcons logic", () => {
   it("should show remove icon when assetId exists", () => {
     const assetId = "some-asset-id";
-    const resolvedValue = "https://example.com/image.jpg";
+    const resolvedValue: string = "https://example.com/image.jpg";
     const showRemoveIcons = !!assetId || (resolvedValue !== PLACEHOLDER_IMAGE && resolvedValue !== "");
     expect(showRemoveIcons).toBe(true);
   });
 
   it("should show remove icon when value is not placeholder and not empty", () => {
     const assetId = "";
-    const resolvedValue = "https://example.com/image.jpg";
+    const resolvedValue: string = "https://example.com/image.jpg";
     const showRemoveIcons = !!assetId || (resolvedValue !== PLACEHOLDER_IMAGE && resolvedValue !== "");
     expect(showRemoveIcons).toBe(true);
   });
 
   it("should not show remove icon when value is placeholder", () => {
     const assetId = "";
-    const resolvedValue = PLACEHOLDER_IMAGE;
+    const resolvedValue: string = PLACEHOLDER_IMAGE;
     const showRemoveIcons = !!assetId || (resolvedValue !== PLACEHOLDER_IMAGE && resolvedValue !== "");
     expect(showRemoveIcons).toBe(false);
   });

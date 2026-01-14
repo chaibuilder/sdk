@@ -4,12 +4,12 @@ import * as schema from "./drizzle/schema";
 
 const connectionString = process.env.CHAIBUILDER_DATABASE_URL;
 
-let db: PostgresJsDatabase<typeof schema> | null = null;
-
-if (connectionString) {
-  const client = postgres(connectionString, { max: 10 });
-  db = drizzle(client, { schema });
+if (!connectionString) {
+  throw new Error("Database not configured. Please set CHAIBUILDER_DATABASE_URL environment variable.");
 }
+
+const client = postgres(connectionString, { max: 10 });
+const db: PostgresJsDatabase<typeof schema> = drizzle(client, { schema });
 
 export { db };
 
@@ -19,12 +19,6 @@ type DbResult<T> = { data: T; error: null } | { data: null; error: Error };
 
 export async function safeQuery<T>(queryFn: () => Promise<T>): Promise<DbResult<T>> {
   try {
-    if (!db) {
-      return {
-        data: null,
-        error: new Error("Database not configured. Please set CHAIBUILDER_DATABASE_URL environment variable."),
-      };
-    }
     const data = await queryFn();
     return { data, error: null };
   } catch (error) {

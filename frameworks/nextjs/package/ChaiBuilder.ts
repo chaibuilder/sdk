@@ -1,3 +1,4 @@
+import { ChaiBlock } from "@chaibuilder/runtime";
 import { db, safeQuery, schema } from "@chaibuilder/sdk/server";
 import { error } from "console";
 import { and, eq } from "drizzle-orm";
@@ -37,16 +38,19 @@ class ChaiBuilder {
 
   public static async getPageBySlug(slug: string): Promise<Record<string, unknown>> {
     //TODO: GetPageBySlug(slug: string)
+    console.log("GetPageBySlug", slug);
     return {};
   }
 
   public static async getFullPage(pageId: string): Promise<Record<string, unknown>> {
     //TODO: GetFullPage(pageId: string)
+    console.log("GetFullPage", pageId);
     return {};
   }
 
   public static async getBlocksStyles(blocks: ChaiBlock[]): Promise<string> {
     //TODO: GetBlocksStyles(blocks: ChaiBlock[])
+    console.log("GetBlocksStyles", blocks);
     return "";
   }
 
@@ -57,11 +61,13 @@ class ChaiBuilder {
     lang: string;
   }): Promise<Record<string, unknown>> {
     //TODO: GetPageExternalData({ blocks: ChaiBlock[], pageProps: Record<string, any>, pageType: string, lang: string })
+    console.log("GetPageExternalData", args);
     return {};
   }
 
   public static async resolveLinks(args: { blocks: ChaiBlock[] }): Promise<Partial<ChaiBlock>[]> {
     //TODO: GetResolveLinks(blocks: ChaiBlock[])
+    console.log("GetResolveLinks", args);
     return [];
   }
 }
