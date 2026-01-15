@@ -9,8 +9,8 @@ import { useSetAtom } from "jotai";
 import { useCallback } from "react";
 import { convertToBlocksTree } from "../functions/blocks-fn";
 import { ChaiBlock } from "../main";
-import { useBuilderProp } from "./hooks";
 import { StructureError, StructureRule, defaultRuleRegistry } from "./structure-rules";
+import { useBuilderProp } from "./use-builder-prop";
 
 export interface UseCheckStructureOptions {
   enableAccessibilityRules?: boolean;

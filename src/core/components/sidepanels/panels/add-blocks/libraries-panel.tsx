@@ -7,7 +7,7 @@ import { useDragAndDrop, useIsDragAndDropEnabled } from "@/core/components/canva
 import { UILibrariesSelect } from "@/core/components/sidepanels/panels/add-blocks/libraries-select";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useChaiLibraries } from "@/core/extensions/libraries";
-import { useAddBlock } from "@/core/hooks";
+import { useAddBlock } from "@/core/hooks/use-add-block";
 import { useLibraryBlocks } from "@/core/hooks/use-library-blocks";
 import { useSelectedLibrary } from "@/core/hooks/use-selected-library";
 import { getBlocksFromHTML } from "@/core/import-html/html-to-json";

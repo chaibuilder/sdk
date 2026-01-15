@@ -1,7 +1,7 @@
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { useBuilderProp } from "@/core/hooks";
 import { useAiAssistant } from "@/core/hooks/use-ask-ai";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { useRightPanel } from "@/core/hooks/use-theme";
 import { PERMISSIONS, usePermissions } from "@/core/main";
 import { useTranslation } from "react-i18next";

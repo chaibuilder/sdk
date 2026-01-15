@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { getPreImportHTML } from "@/core/extensions/import-html-pre-hook";
-import { useAddBlock } from "@/core/hooks";
+import { useAddBlock } from "@/core/hooks/use-add-block";
 import { getBlocksFromHTML } from "@/core/import-html/html-to-json";
 import { pubsub } from "@/core/pubsub";
 import { CircleIcon } from "@radix-ui/react-icons";

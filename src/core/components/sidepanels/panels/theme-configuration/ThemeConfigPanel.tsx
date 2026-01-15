@@ -9,8 +9,8 @@ import {
   FontSelector,
 } from "@/core/components/sidepanels/panels/theme-configuration";
 import { cn } from "@/core/functions/common-functions";
-import { useDarkMode } from "@/core/hooks";
-import { useBuilderProp } from "@/core/hooks/index";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
+import { useDarkMode } from "@/core/hooks/use-dark-mode";
 import { usePermissions } from "@/core/hooks/use-permissions";
 import { useTheme, useThemeOptions } from "@/core/hooks/use-theme";
 import { ChaiThemeValues } from "@/types/chaibuilder-editor-props";

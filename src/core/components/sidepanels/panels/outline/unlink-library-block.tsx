@@ -1,5 +1,6 @@
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { useSelectedBlock, useUpdateBlocksProps } from "@/core/hooks";
+import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
+import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
 import { LinkBreak2Icon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
 

@@ -12,7 +12,7 @@ import { Breakpoints } from "@/core/components/canvas/topbar/canvas-breakpoints"
 import { ClearCanvas } from "@/core/components/canvas/topbar/clear-canvas";
 import { DarkMode } from "@/core/components/canvas/topbar/dark-mode";
 import { UndoRedo } from "@/core/components/canvas/topbar/undo-redo";
-import { useBuilderProp } from "@/core/hooks";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { DotsHorizontalIcon, LightningBoltIcon } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
 import React from "react";

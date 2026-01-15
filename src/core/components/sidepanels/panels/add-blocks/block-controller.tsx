@@ -1,6 +1,6 @@
 import { getOrientation } from "@/core/components/canvas/dnd/getOrientation";
 import { useFrame } from "@/core/frame/frame-context";
-import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/hooks";
+import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 import { ChaiBlock } from "@/types/chai-block";
 import { PinBottomIcon, PinLeftIcon, PinRightIcon, PinTopIcon } from "@radix-ui/react-icons";
 import { filter, findIndex, get } from "lodash-es";

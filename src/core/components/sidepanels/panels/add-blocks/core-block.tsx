@@ -1,7 +1,7 @@
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useDragAndDrop, useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { useAddBlock } from "@/core/hooks";
+import { useAddBlock } from "@/core/hooks/use-add-block";
 import { pubsub } from "@/core/pubsub";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { BoxIcon } from "@radix-ui/react-icons";

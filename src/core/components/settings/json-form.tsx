@@ -1,5 +1,5 @@
 import { useBlockSettingComponents } from "@/core/extensions/blocks-settings";
-import { useLanguages } from "@/core/hooks";
+import { useLanguages } from "@/core/hooks/use-languages";
 import {
   IconPickerField,
   ImagePickerField,
@@ -13,12 +13,12 @@ import { CodeEditor } from "@/core/rjsf-widgets/code-widget";
 import { CollectionFilterSortField } from "@/core/rjsf-widgets/collection-select";
 import JSONFormFieldTemplate from "@/core/rjsf-widgets/json-form-field-template";
 import { RepeaterBindingWidget } from "@/core/rjsf-widgets/repeater-binding";
+import { PlusIcon } from "@radix-ui/react-icons";
 import { useThrottledCallback } from "@react-hookz/web";
 import RjForm from "@rjsf/core";
 import { RJSFSchema, UiSchema } from "@rjsf/utils";
 import validator from "@rjsf/validator-ajv8";
-import { take, get, set } from "lodash-es";
-import { PlusIcon } from "@radix-ui/react-icons";
+import { get, set, take } from "lodash-es";
 import { memo } from "react";
 
 type JSONFormType = {

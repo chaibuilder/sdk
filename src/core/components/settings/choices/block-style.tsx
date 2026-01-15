@@ -6,15 +6,13 @@ import { IconChoices } from "@/core/components/settings/choices/icon-choice";
 import { RangeChoices } from "@/core/components/settings/choices/range-choices";
 import { BlockStyleProvider } from "@/core/components/settings/choices/style-context";
 import { ClassDerivedObject, generateFullClsName } from "@/core/functions/class-fn";
-import {
-  useAddClassesToBlocks,
-  useDarkMode,
-  useRemoveClassesFromBlocks,
-  useScreenSizeWidth,
-  useSelectedBlockCurrentClasses,
-  useSelectedBlockIds,
-  useStylingState,
-} from "@/core/hooks";
+import { useAddClassesToBlocks } from "@/core/hooks/use-add-classes-to-blocks";
+import { useDarkMode } from "@/core/hooks/use-dark-mode";
+import { useRemoveClassesFromBlocks } from "@/core/hooks/use-remove-classes-from-blocks";
+import { useScreenSizeWidth } from "@/core/hooks/use-screen-size-width";
+import { useSelectedBlockCurrentClasses } from "@/core/hooks/use-select-block-classes";
+import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { useStylingState } from "@/core/hooks/use-styling-state";
 import { CrossCircledIcon, InfoCircledIcon } from "@radix-ui/react-icons";
 import { findLast, get } from "lodash-es";
 import { useCallback, useEffect, useMemo } from "react";

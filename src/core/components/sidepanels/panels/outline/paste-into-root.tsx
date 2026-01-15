@@ -1,7 +1,7 @@
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { useBuilderProp } from "@/core/hooks";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { usePasteBlocks } from "@/core/hooks/use-paste-blocks";
 import { CardStackIcon } from "@radix-ui/react-icons";
 import { useEffect } from "react";

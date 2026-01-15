@@ -1,7 +1,7 @@
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
-import { useLanguages } from "@/core/hooks";
 import { useBuilderProp } from "@/core/hooks/use-builder-prop";
+import { useLanguages } from "@/core/hooks/use-languages";
 import { useSavePage } from "@/core/hooks/use-save-page";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import { ChaiBlock } from "@/types/chai-block";

@@ -1,6 +1,8 @@
 import { getDuplicatedBlocks } from "@/core/functions/blocks-fn";
-import { useBlocksStore, usePartailBlocksStore, useBuilderProp } from "@/core/hooks";
+import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { cutBlockIdsAtom } from "@/core/hooks/use-cut-blockIds";
+import { usePartialBlocksStore as usePartailBlocksStore } from "@/core/hooks/use-partial-blocks-store";
 import { ChaiBlock } from "@/types/chai-block";
 import { atom, useAtom, useSetAtom } from "jotai";
 import { isEmpty, set } from "lodash-es";

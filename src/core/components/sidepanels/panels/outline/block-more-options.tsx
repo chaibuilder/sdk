@@ -10,17 +10,14 @@ import { SaveToLibrary } from "@/core/components/sidepanels/panels/outline/save-
 import { UnlinkLibraryBlock } from "@/core/components/sidepanels/panels/outline/unlink-library-block";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { canAddChildBlock, canDeleteBlock, canDuplicateBlock } from "@/core/functions/block-helpers";
-import {
-  useBlocksStore,
-  useBuilderProp,
-  useCutBlockIds,
-  useDuplicateBlocks,
-  usePasteBlocks,
-  useRemoveBlocks,
-  useSelectedBlock,
-  useSelectedBlockIds,
-} from "@/core/hooks";
+import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { useCopyBlocks } from "@/core/hooks/use-copy-blockIds";
+import { useCutBlockIds } from "@/core/hooks/use-cut-blockIds";
+import { useDuplicateBlocks } from "@/core/hooks/use-duplicate-blocks";
+import { usePasteBlocks } from "@/core/hooks/use-paste-blocks";
+import { useRemoveBlocks } from "@/core/hooks/use-remove-blocks";
+import { useSelectedBlock, useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import { PERMISSIONS, usePermissions } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
 import {

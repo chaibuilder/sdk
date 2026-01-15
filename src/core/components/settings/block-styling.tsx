@@ -3,7 +3,8 @@ import { BlockStylingProps } from "@/core/components/settings/block-styling-prop
 import { StylingGroup } from "@/core/components/settings/new-panel/setting-section";
 import { BlockSettingsContext } from "@/core/components/settings/settings-context";
 import { FLEX_CHILD_SECTION, GRID_CHILD_SECTION, SETTINGS_SECTIONS } from "@/core/constants/STYLING_GROUPS";
-import { useSelectedBlocksDisplayChild, useSelectedStylingBlocks } from "@/core/hooks";
+import { useSelectedBlocksDisplayChild } from "@/core/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
 import { useThrottledCallback } from "@react-hookz/web";
 import { get, isEmpty, startsWith } from "lodash-es";
 import React, { useCallback } from "react";

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { useCodeEditor, useSelectedBlock } from "@/core/hooks";
+import { useCodeEditor } from "@/core/hooks/use-code-editor";
+import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
 import { ChaiBlock } from "@/types/chai-block";
 import { WidgetProps } from "@rjsf/utils";
 import { get } from "lodash-es";

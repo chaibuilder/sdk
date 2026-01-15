@@ -1,6 +1,7 @@
 import { canDeleteBlock } from "@/core/functions/block-helpers";
-import { undoManager } from "@/core/history/use-undo-manager";
-import { useCopyBlockIds, useCutBlockIds, useUndoManager } from "@/core/hooks";
+import { undoManager, useUndoManager } from "@/core/history/use-undo-manager";
+import { useCopyBlocks as useCopyBlockIds } from "@/core/hooks/use-copy-blockIds";
+import { useCutBlockIds } from "@/core/hooks/use-cut-blockIds";
 import { useDuplicateBlocks } from "@/core/hooks/use-duplicate-blocks";
 import { usePasteBlocks } from "@/core/hooks/use-paste-blocks";
 import { useRemoveBlocks } from "@/core/hooks/use-remove-blocks";

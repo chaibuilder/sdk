@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { ChaiFrame } from "@/core/frame/Frame";
 import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
-import { useBrandingOptions, useLanguages } from "@/core/hooks";
+import { useBrandingOptions } from "@/core/hooks/use-branding-options";
+import { useLanguages } from "@/core/hooks/use-languages";
 import { RenderChaiBlocks } from "@/render";
 import { SettingsWatcher } from "@/routes/demo/preview/preview-settings";
 import { DesktopIcon, LaptopIcon, MobileIcon } from "@radix-ui/react-icons";

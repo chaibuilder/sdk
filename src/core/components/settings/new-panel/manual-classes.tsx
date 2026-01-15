@@ -4,16 +4,13 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { chaiDesignTokensAtom } from "@/core/atoms/builder";
 import { useFuseSearch } from "@/core/constants/CLASSES_LIST";
 import { DESIGN_TOKEN_PREFIX } from "@/core/constants/STRINGS";
-import {
-  useAddClassesToBlocks,
-  useBuilderProp,
-  useRemoveClassesFromBlocks,
-  useRightPanel,
-  useSelectedBlock,
-  useSelectedBlockIds,
-  useSelectedStylingBlocks,
-} from "@/core/hooks";
 import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
+import { useAddClassesToBlocks } from "@/core/hooks/use-add-classes-to-blocks";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
+import { useRemoveClassesFromBlocks } from "@/core/hooks/use-remove-classes-from-blocks";
+import { useSelectedBlock, useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
+import { useRightPanel } from "@/core/hooks/use-theme";
 import { CheckIcon, CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { useAtomValue } from "jotai";
 import { first, get, isEmpty, isFunction, map } from "lodash-es";

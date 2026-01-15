@@ -1,7 +1,10 @@
-import { useAddBlock, useBlocksStore, useSelectedBlock, useSelectedBlockIds, useWrapperBlock } from "@/core/hooks";
+import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { useAddBlock } from "@/core/hooks/use-add-block";
+import { useSelectedBlock, useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { useWrapperBlock } from "@/core/hooks/use-wrapper-block";
+import { ChevronLeftIcon, ChevronRightIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 import { FieldProps } from "@rjsf/utils";
 import { filter, find, findIndex, get } from "lodash-es";
-import { ChevronLeftIcon, ChevronRightIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 import { useEffect } from "react";
 
 const SliderField = ({ formData, onChange }: FieldProps) => {

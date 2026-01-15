@@ -7,8 +7,11 @@ import { PERMISSIONS } from "@/core/constants/PERMISSIONS";
 import { ROOT_TEMP_KEY } from "@/core/constants/STRINGS";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { canAcceptChildBlock, canAddChildBlock } from "@/core/functions/block-helpers";
-import { useBlockHighlight, useBuilderProp, usePermissions, useTranslation, useUpdateBlocksProps } from "@/core/hooks";
+import { useBlockHighlight } from "@/core/hooks/use-block-highlight";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
+import { usePermissions } from "@/core/hooks/use-permissions";
 import { useStructureValidation } from "@/core/hooks/use-structure-validation";
+import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
 import { pubsub } from "@/core/pubsub";
 import { cn } from "@/core/utils/cn";
 import {
@@ -23,6 +26,7 @@ import { atom, useAtom } from "jotai";
 import { get, has, isEmpty, startCase } from "lodash-es";
 import { memo, useEffect, useMemo } from "react";
 import { NodeRendererProps } from "react-arborist";
+import { useTranslation } from "react-i18next";
 
 const Input = ({ node }) => {
   return (
