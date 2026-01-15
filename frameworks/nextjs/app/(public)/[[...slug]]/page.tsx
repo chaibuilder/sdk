@@ -1,10 +1,10 @@
+import { ChaiBuilder } from "@/package/ChaiBuilder";
+import { ChaiPageStyles, NextJSRenderChaiBlocks, PreviewBanner } from "@/package/rsc/index";
+import { ChaiPageProps } from "@chaibuilder/runtime";
+import "@chaibuilder/sdk/styles";
 import { loadWebBlocks } from "@chaibuilder/sdk/web-blocks";
-import { PreviewBanner, NextJSRenderChaiBlocks, ChaiPageStyles } from "../../../package/rsc/index";
-import { ChaiBuilder } from "../.././../package/ChaiBuilder";
 import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
-import "@chaibuilder/sdk/styles";
-import { ChaiPageProps } from "@chaibuilder/runtime";
 
 loadWebBlocks();
 
@@ -15,7 +15,7 @@ export const generateMetadata = async (props: { params: Promise<{ slug: string[]
   const slug = nextParams.slug ? `/${nextParams.slug.join("/")}` : "/";
 
   const { isEnabled } = await draftMode();
-  ChaiBuilder.init(process.env.CHAIBUILDER_API_KEY!, isEnabled);
+  ChaiBuilder.init(process.env.CHAIBUILDER_APP_KEY!, isEnabled);
   return await ChaiBuilder.getPageSeoData(slug);
 };
 
@@ -24,7 +24,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string[
   const slug = nextParams.slug ? `/${nextParams.slug.join("/")}` : "/";
 
   const { isEnabled } = await draftMode();
-  ChaiBuilder.init(process.env.CHAIBUILDER_API_KEY!, isEnabled);
+  ChaiBuilder.init(process.env.CHAIBUILDER_APP_KEY!, isEnabled);
   let page = null;
   try {
     page = await ChaiBuilder.getPageBySlug(slug);

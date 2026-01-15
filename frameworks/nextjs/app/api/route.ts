@@ -9,14 +9,11 @@ ChaiActionsRegistry.registerActions(SupabaseAuthActions(supabase));
 ChaiActionsRegistry.registerActions(SupabaseStorageActions(supabase));
 
 export async function POST(req: NextRequest) {
-  const apiKey = process.env.CHAIBUILDER_API_KEY;
-  
+  const apiKey = process.env.CHAIBUILDER_APP_KEY;
+
   if (!apiKey) {
-    console.error("CHAIBUILDER_API_KEY environment variable is not set.");
-    return NextResponse.json(
-      { error: "Server misconfiguration: CHAIBUILDER_API_KEY is not set" },
-      { status: 500 }
-    );
+    console.error("CHAIBUILDER_APP_KEY environment variable is not set.");
+    return NextResponse.json({ error: "Server misconfiguration: CHAIBUILDER_APP_KEY is not set" }, { status: 500 });
   }
   try {
     // Get authorization header
