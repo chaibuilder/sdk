@@ -1,0 +1,12 @@
+{
+  "name": "@chaibuilder/nextjs",
+  "version": "1.0.0",
+  "description": "Next.js package for ChaiBuilder",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

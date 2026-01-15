@@ -22,7 +22,7 @@ export class GetCollectionsAction extends ChaiBaseAction<GetCollectionsActionDat
     return z.object({});
   }
 
-  async execute(_data: GetCollectionsActionData): Promise<GetCollectionsActionResponse> {
+  async execute(_: GetCollectionsActionData): Promise<GetCollectionsActionResponse> {
     try {
       // Get all registered collections and omit the fetch function
       const collections = getChaiCollections().map((collection) => omit(collection, "fetch"));

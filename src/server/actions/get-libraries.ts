@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import { z } from "zod";
-import { apps, libraries } from "../drizzle/schema";
 import { db, safeQuery } from "../db";
+import { apps, libraries } from "../drizzle/schema";
 import { ActionError } from "./action-error";
 import { ChaiBaseAction } from "./base-action";
 
@@ -22,7 +22,7 @@ export class GetLibrariesAction extends ChaiBaseAction<GetLibrariesActionData, G
     return z.object({}).optional().default({});
   }
 
-  async execute(_data: GetLibrariesActionData): Promise<GetLibrariesActionResponse> {
+  async execute(_: GetLibrariesActionData): Promise<GetLibrariesActionResponse> {
     if (!this.context) {
       throw new ActionError("Context not set", "CONTEXT_NOT_SET");
     }
