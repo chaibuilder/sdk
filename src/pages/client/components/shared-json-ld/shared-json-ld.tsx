@@ -110,7 +110,7 @@ export default function SharedJsonLD() {
         pageId: currentPage.id,
         enabled: !isEnabled,
       });
-    } catch (error) {
+    } catch {
       // Revert on error
       setOptimisticSchemas(currentPage.globalJsonLds as string[]);
     } finally {

@@ -62,7 +62,7 @@ export const extendChaiBuilder = () => {
         const response = await fetch(url + "/blocks.json");
         const blocks = await response.json();
         return blocks.map((b: any) => ({ ...b, preview: url + b.preview }));
-      } catch (error) {
+      } catch {
         return [];
       }
     },

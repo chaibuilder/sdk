@@ -60,7 +60,7 @@ export class GetChaiUserAction extends ChaiBaseAction<GetChaiUserInput> {
         },
         status: 200,
       };
-    } catch (error) {
+    } catch {
       return {
         data: {
           id: "unknown",

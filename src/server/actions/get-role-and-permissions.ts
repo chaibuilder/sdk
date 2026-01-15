@@ -20,7 +20,7 @@ export class GetRoleAndPermissionsAction extends ChaiBaseAction<
     return z.object({});
   }
 
-  async execute(_data: GetRoleAndPermissionsActionData): Promise<GetRoleAndPermissionsActionResponse> {
+  async execute(): Promise<GetRoleAndPermissionsActionResponse> {
     return {
       role: "admin",
       permissions: null,

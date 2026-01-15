@@ -56,7 +56,7 @@ export const usePasteBlocks = (): {
           const clipboardData = JSON.parse(clipboardContent);
           return has(clipboardData, "_chai_copied_blocks");
         }
-      } catch (error) {
+      } catch {
         return false;
       }
       return false;
@@ -81,7 +81,7 @@ export const usePasteBlocks = (): {
             toast.error("Clipboard paste permission denied. Please allow clipboard access.");
             return;
           }
-        } catch (err) {
+        } catch {
           toast.error("Failed to check clipboard permissions. Please allow clipboard access.");
           return;
         }

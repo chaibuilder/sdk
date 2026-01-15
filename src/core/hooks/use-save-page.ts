@@ -41,7 +41,7 @@ export const checkMissingTranslations = (blocks: any[], lang: string): boolean =
 
 export const useSavePage = () => {
   const [saveState, setSaveState] = useAtom(builderSaveStateAtom);
-  const onSave = useBuilderProp("onSave", async (_args) => {});
+  const onSave = useBuilderProp("onSave", async () => {});
   const onSaveStateChange = useBuilderProp("onSaveStateChange", noop);
   const getPageData = useGetPageData();
   const [theme] = useTheme();

@@ -22,7 +22,7 @@ export class GetLibrariesAction extends ChaiBaseAction<GetLibrariesActionData, G
     return z.object({}).optional().default({});
   }
 
-  async execute(_: GetLibrariesActionData): Promise<GetLibrariesActionResponse> {
+  async execute(): Promise<GetLibrariesActionResponse> {
     if (!this.context) {
       throw new ActionError("Context not set", "CONTEXT_NOT_SET");
     }
