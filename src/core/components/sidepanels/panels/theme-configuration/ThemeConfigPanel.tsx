@@ -1,3 +1,8 @@
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
 import {
   BorderRadiusInput,
   ColorPickerInput,
@@ -9,11 +14,6 @@ import { useBuilderProp } from "@/core/hooks/index";
 import { usePermissions } from "@/core/hooks/use-permissions";
 import { useTheme, useThemeOptions } from "@/core/hooks/use-theme";
 import { ChaiThemeValues } from "@/types/chaibuilder-editor-props";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Label } from "@/ui/shadcn/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/components/ui/select";
-import { Separator } from "@/ui/shadcn/components/ui/separator";
-import { Switch } from "@/ui/shadcn/components/ui/switch";
 import {
   CornerTopRightIcon,
   MixerHorizontalIcon,
@@ -29,9 +29,9 @@ import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
+import { Badge } from "@/components/ui/badge";
 import { useIncrementActionsCount } from "@/core/components/use-auto-save";
 import { claude, defaultShadcnPreset, solarized, supabase, twitter } from "@/core/constants/THEME_PRESETS";
-import { Badge } from "@/ui/shadcn/components/ui/badge";
 import { lazy, Suspense } from "react";
 
 const LazyCssImportModal = lazy(() =>

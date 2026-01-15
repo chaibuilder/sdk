@@ -1,4 +1,4 @@
-import { Switch } from "@/ui/shadcn/components/ui/switch";
+import { Switch } from "@/components/ui/switch";
 import { debounce } from "lodash-es";
 import { useCallback, useEffect, useState } from "react";
 

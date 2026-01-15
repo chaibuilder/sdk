@@ -1,19 +1,13 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { LanguageSelector } from "@/pages/client/components/page-manager/page-manager-search-and-filter";
 import { useGetPageChanges } from "@/pages/hooks/pages/use-get-page-changes";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useFallbackLang } from "@/pages/hooks/use-fallback-lang";
 import { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
 import { throwConfetti } from "@/pages/utils/confetti";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import {
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/ui/shadcn/components/ui/dialog";
 import { concat, filter, find, first, get, includes, isEmpty, keys, map, orderBy, uniq } from "lodash-es";
 import { Edit, File, GlobeIcon, Lock } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";

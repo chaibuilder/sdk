@@ -1,7 +1,4 @@
-import * as React from "react";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Label } from "@/ui/shadcn/components/ui/label";
-import { Textarea } from "@/ui/shadcn/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,9 +6,12 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/ui/shadcn/components/ui/dialog";
-import { parseToChaiThemeValues, validateCssInput, validateChaiThemeValues } from "@/core/utils/css-theme-parser";
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { parseToChaiThemeValues, validateChaiThemeValues, validateCssInput } from "@/core/utils/css-theme-parser";
 import { ChaiThemeValues } from "@/types/chaibuilder-editor-props";
+import * as React from "react";
 import { useTranslation } from "react-i18next";
 
 interface CssImportModalProps {
@@ -62,7 +62,9 @@ export const CssImportModal: React.FC<CssImportModalProps> = ({ open, onOpenChan
       // Validate the parsed theme
       if (!validateChaiThemeValues(parsedTheme)) {
         setError(
-          t("The CSS doesn't contain enough theme information. Please ensure it includes at least background, foreground, primary, and primary-foreground colors."),
+          t(
+            "The CSS doesn't contain enough theme information. Please ensure it includes at least background, foreground, primary, and primary-foreground colors.",
+          ),
         );
         setTimeout(() => {
           setError(null);

@@ -3,17 +3,16 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/ui/shadcn/components/ui/dropdown-menu";
-import { DotsVerticalIcon } from "@radix-ui/react-icons";
-import { Cross2Icon, ResetIcon } from "@radix-ui/react-icons";
+} from "@/components/ui/dropdown-menu";
 import {
   useRemoveAllClassesForBlock,
   useResetBlockStyles,
   useSelectedBlock,
   useSelectedStylingBlocks,
 } from "@/core/hooks";
-import { useTranslation } from "react-i18next";
+import { Cross2Icon, DotsVerticalIcon, ResetIcon } from "@radix-ui/react-icons";
 import { isEmpty } from "lodash-es";
+import { useTranslation } from "react-i18next";
 
 export const ResetStylesButton = () => {
   const { resetAll } = useResetBlockStyles();

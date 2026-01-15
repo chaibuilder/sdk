@@ -1,3 +1,11 @@
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Separator } from "@/components/ui/separator";
 import { mergeClasses, useLanguages, useTranslation } from "@/core/main";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
@@ -6,14 +14,6 @@ import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
 import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { navigateToPage } from "@/pages/utils/navigation";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/ui/shadcn/components/ui/dropdown-menu";
-import { Separator } from "@/ui/shadcn/components/ui/separator";
 import { useAtomValue, useSetAtom } from "jotai";
 import { compact, find, get, isEmpty, map } from "lodash-es";
 import { ChevronDown, Languages, Plus, Star } from "lucide-react";

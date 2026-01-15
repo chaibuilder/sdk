@@ -1,6 +1,6 @@
+import { Button } from "@/components/ui/button";
 import { useCodeEditor, useSelectedBlock } from "@/core/hooks";
 import { ChaiBlock } from "@/types/chai-block";
-import { Button } from "@/ui/shadcn/components/ui/button";
 import { WidgetProps } from "@rjsf/utils";
 import { get } from "lodash-es";
 import { useTranslation } from "react-i18next";

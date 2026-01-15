@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { treeDSBlocks } from "@/core/atoms/blocks";
 import { treeRefAtom } from "@/core/atoms/ui";
 import { DefaultCursor } from "@/core/components/sidepanels/panels/outline/default-cursor";
@@ -29,8 +31,6 @@ import {
   useUpdateBlocksProps,
 } from "@/core/hooks";
 import { pubsub } from "@/core/pubsub";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import {
   CardStackIcon,
   DotsVerticalIcon,

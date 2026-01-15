@@ -1,6 +1,6 @@
+import { Button } from "@/components/ui/button";
 import { cn } from "@/core/functions/common-functions";
 import { useSavePage } from "@/core/hooks/use-save-page";
-import { Button } from "@/ui/shadcn/components/ui/button";
 import { CheckIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
 

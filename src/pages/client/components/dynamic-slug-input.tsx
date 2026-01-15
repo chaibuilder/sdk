@@ -1,6 +1,6 @@
 "use client";
 
-import { Input } from "@/ui/shadcn/components/ui/input";
+import { Input } from "@/components/ui/input";
 import { useEffect, useRef, useState } from "react";
 
 interface DynamicSlugInputProps {

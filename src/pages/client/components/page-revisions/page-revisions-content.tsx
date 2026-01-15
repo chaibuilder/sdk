@@ -1,5 +1,24 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useSavePage } from "@/core/hooks/use-save-page";
 import { useLanguages } from "@/core/main";
 import PermissionChecker from "@/pages/client/components/permission-checker";
@@ -8,25 +27,6 @@ import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
 import { useChaiCurrentPage, usePageEditInfo } from "@/pages/hooks/pages/use-current-page";
 import { type Revision, useDeleteRevision, useRestoreRevision, useRevisions } from "@/pages/hooks/use-revisions";
 import { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/ui/shadcn/components/ui/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/ui/shadcn/components/ui/dropdown-menu";
-import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
-import { SheetHeader, SheetTitle } from "@/ui/shadcn/components/ui/sheet";
-import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
 import { useQueryClient } from "@tanstack/react-query";
 import { format, formatDistanceToNow } from "date-fns";
 import { isEmpty } from "lodash-es";

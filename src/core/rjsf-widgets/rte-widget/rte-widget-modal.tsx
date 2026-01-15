@@ -1,7 +1,7 @@
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { usePageExternalData } from "@/core/atoms/builder";
 import { NestedPathSelector } from "@/core/components/nested-path-selector";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
 import { Editor } from "@tiptap/react";
 import React from "react";
 

@@ -3,16 +3,9 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import * as React from "react";
 
-import { Button } from "@/ui/shadcn/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/ui/shadcn/components/ui/command";
-import { PopoverContent } from "@/ui/shadcn/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { PopoverContent } from "@/components/ui/popover";
 
 type NestedPathSelectorContentProps = {
   data: Record<string, any>;

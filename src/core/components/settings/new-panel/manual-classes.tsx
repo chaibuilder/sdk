@@ -1,3 +1,6 @@
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { chaiDesignTokensAtom } from "@/core/atoms/builder";
 import { useFuseSearch } from "@/core/constants/CLASSES_LIST";
 import { DESIGN_TOKEN_PREFIX } from "@/core/constants/STRINGS";
@@ -11,9 +14,6 @@ import {
   useSelectedStylingBlocks,
 } from "@/core/hooks";
 import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Label } from "@/ui/shadcn/components/ui/label";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { CheckIcon, CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { useAtomValue } from "jotai";
 import { first, get, isEmpty, isFunction, map } from "lodash-es";

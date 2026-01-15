@@ -1,5 +1,5 @@
+import { Button } from "@/components/ui/button";
 import { useSelectedBlock, useTranslation } from "@/core/main";
-import { Button } from "@/ui/shadcn/components/ui/button";
 import { X } from "lucide-react";
 
 interface SelectedBlockDisplayProps {

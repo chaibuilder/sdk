@@ -1,8 +1,8 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useTranslation } from "@/core/main";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
 import { pick } from "lodash-es";
 import { ImageIcon, Trash2, X } from "lucide-react";
 import React, { lazy, Suspense, useState } from "react";

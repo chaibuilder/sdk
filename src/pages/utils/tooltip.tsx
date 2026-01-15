@@ -1,9 +1,4 @@
-import {
-  Tooltip as _Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/ui/shadcn/components/ui/tooltip";
+import { Tooltip as _Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 export default function Tooltip({
   children,

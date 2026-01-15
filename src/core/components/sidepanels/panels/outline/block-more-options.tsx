@@ -1,3 +1,9 @@
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 import { ClearCanvas } from "@/core/components/canvas/topbar/clear-canvas";
 import { SaveToLibrary } from "@/core/components/sidepanels/panels/outline/save-to-library";
@@ -17,12 +23,6 @@ import {
 import { useCopyBlocks } from "@/core/hooks/use-copy-blockIds";
 import { PERMISSIONS, usePermissions } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/ui/shadcn/components/ui/dropdown-menu";
 import {
   CardStackIcon,
   CardStackPlusIcon,

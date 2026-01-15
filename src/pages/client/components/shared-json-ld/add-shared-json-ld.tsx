@@ -1,8 +1,8 @@
-import { Alert, AlertDescription } from "@/ui/shadcn/components/ui/alert";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
-import { Input } from "@/ui/shadcn/components/ui/input";
-import { Label } from "@/ui/shadcn/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useQueryClient } from "@tanstack/react-query";
 import { Info, Loader } from "lucide-react";
 import { useEffect, useState } from "react";

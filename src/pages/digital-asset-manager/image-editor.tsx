@@ -1,5 +1,5 @@
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useTranslation } from "@/core/main";
-import { Dialog, DialogContent } from "@/ui/shadcn/components/ui/dialog";
 import { debounce } from "lodash-es";
 import { Copy, Loader, Save } from "lucide-react";
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";

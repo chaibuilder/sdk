@@ -1,5 +1,5 @@
+import { Button } from "@/components/ui/button";
 import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
-import { Button } from "@/ui/shadcn/components/ui/button";
 import { get, has } from "lodash-es";
 import { LanguagesIcon } from "lucide-react";
 import { lazy } from "react";

@@ -1,3 +1,10 @@
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useSavePage } from "@/core/hooks/use-save-page";
 import { useLanguages, useRightPanel, useTranslation } from "@/core/main";
 import PageRevisions from "@/pages/client/components/page-revisions/page-revisions-trigger";
@@ -13,13 +20,6 @@ import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { throwConfetti } from "@/pages/utils/confetti";
 import Tooltip from "@/pages/utils/tooltip";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/ui/shadcn/components/ui/dropdown-menu";
 import { compact, find, map, upperCase } from "lodash-es";
 import { CheckCircle, ChevronDown, Loader, Palette, Play, Rocket, Save, Send } from "lucide-react";
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";

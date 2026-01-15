@@ -1,11 +1,11 @@
-import { usePermissions, useTranslation } from "@/core/main";
-import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/ui/shadcn/components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
+import { usePermissions, useTranslation } from "@/core/main";
+import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
 import { find } from "lodash-es";
 import { CopyPlusIcon, Pencil, Power, SquareLibrary, Trash } from "lucide-react";
 import { useMemo } from "react";

@@ -1,10 +1,10 @@
+import { Alert } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useTranslation } from "@/core/main";
 import { useDuplicatePage } from "@/pages/hooks/pages/use-duplicate-page";
-import { Alert } from "@/ui/shadcn/components/ui/alert";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
-import { Input } from "@/ui/shadcn/components/ui/input";
-import { Label } from "@/ui/shadcn/components/ui/label";
 import { initial, isEmpty } from "lodash-es";
 import { AlertCircle } from "lucide-react";
 import { useState } from "react";

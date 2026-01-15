@@ -1,7 +1,7 @@
-import { Alert, AlertDescription } from "@/ui/shadcn/components/ui/alert";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/shadcn/components/ui/tabs";
-import { Textarea } from "@/ui/shadcn/components/ui/textarea";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
 import { get } from "lodash-es";
 import { AlertTriangle, Code, Eye, FileCode2, Plus, Share2 } from "lucide-react";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";

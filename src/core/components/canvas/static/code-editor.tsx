@@ -1,6 +1,6 @@
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
 import { useCodeEditor, useSelectedBlockIds, useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "@/core/hooks";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
-import { Textarea } from "@/ui/shadcn/components/ui/textarea";
 import { useThrottledCallback } from "@react-hookz/web";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";

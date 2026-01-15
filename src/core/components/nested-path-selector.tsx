@@ -1,14 +1,7 @@
-import { Button } from "@/ui/shadcn/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/ui/shadcn/components/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/ui/popover";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { ChevronLeftIcon, ChevronRightIcon, IdCardIcon, LoopIcon } from "@radix-ui/react-icons";
 import { t } from "i18next";
 import { startsWith } from "lodash-es";

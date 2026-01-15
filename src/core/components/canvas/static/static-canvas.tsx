@@ -1,5 +1,6 @@
 // @ts-nochecks
 
+import { Skeleton } from "@/components/ui/skeleton";
 import { BlockSelectionHighlighter } from "@/core/components/canvas/block-floating-actions";
 import { IframeInitialContent } from "@/core/components/canvas/IframeInitialContent";
 import { KeyboardHandler } from "@/core/components/canvas/keyboar-handler";
@@ -12,7 +13,6 @@ import { useCanvasScale } from "@/core/components/canvas/static/use-canvas-scale
 import { ChaiFrame } from "@/core/frame";
 import { useBuilderProp, useCanvasDisplayWidth, useHighlightBlockId } from "@/core/hooks";
 import { useCanvasIframe } from "@/core/hooks/use-canvas-iframe";
-import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
 import { isEmpty } from "lodash-es";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Provider } from "react-wrap-balancer";

@@ -1,6 +1,4 @@
-import { useTranslation } from "@/core/main";
-import { useUnmarkAsTemplate } from "@/pages/hooks/pages/mutations";
-import { Button } from "@/ui/shadcn/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,7 +6,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/ui/shadcn/components/ui/dialog";
+} from "@/components/ui/dialog";
+import { useTranslation } from "@/core/main";
+import { useUnmarkAsTemplate } from "@/pages/hooks/pages/mutations";
 import { useState } from "react";
 
 const UnmarkAsTemplate = ({ page, onClose }: { page: any; onClose: () => void }) => {

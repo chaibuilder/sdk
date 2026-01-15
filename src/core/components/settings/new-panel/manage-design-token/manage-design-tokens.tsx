@@ -1,11 +1,11 @@
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { chaiDesignTokensAtom } from "@/core/atoms/builder";
 import { DESIGN_TOKEN_PREFIX } from "@/core/constants/STRINGS";
 import { orderClassesByBreakpoint } from "@/core/functions/order-classes-by-breakpoint";
 import { removeDuplicateClasses } from "@/core/functions/remove-duplicate-classes";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Input } from "@/ui/shadcn/components/ui/input";
-import { Label } from "@/ui/shadcn/components/ui/label";
-import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
 import {
   ArrowLeftIcon,
   EyeOpenIcon,

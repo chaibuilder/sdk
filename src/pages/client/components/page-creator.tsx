@@ -1,5 +1,10 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Command, CommandEmpty, CommandGroup, CommandItem } from "@/components/ui/command";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useChaiFeatureFlag, useLanguages, usePermissions } from "@/core/main";
 import { DynamicSlugInput } from "@/pages/client/components/dynamic-slug-input";
 import { ParentPageSelector } from "@/pages/client/components/parent-page-selector";
@@ -11,11 +16,6 @@ import { useCreatePage, useUpdatePage } from "@/pages/hooks/pages/mutations";
 import { useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
 import { useTemplatesWithLibraries } from "@/pages/hooks/project/use-templates-with-libraries";
 import { combineParentChildSlugs, removeSlugExtension } from "@/pages/utils/slug-utils";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Command, CommandEmpty, CommandGroup, CommandItem } from "@/ui/shadcn/components/ui/command";
-import { Input } from "@/ui/shadcn/components/ui/input";
-import { Label } from "@/ui/shadcn/components/ui/label";
-import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/ui/popover";
 import { find, isEmpty, pick, set } from "lodash-es";
 import { Check, ChevronDown, Search } from "lucide-react";
 import { useMemo, useState } from "react";

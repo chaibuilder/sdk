@@ -1,6 +1,6 @@
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useSaveToLibraryComponent } from "@/core/extensions/save-to-library";
 import { ChaiBlock, useBlocksStore } from "@/core/main";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
 import { atom, useAtom } from "jotai";
 import { filter, find, isEmpty } from "lodash-es";
 import { useMemo } from "react";

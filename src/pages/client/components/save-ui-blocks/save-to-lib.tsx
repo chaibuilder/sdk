@@ -1,3 +1,6 @@
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   ChaiBlock,
   useLibraryBlocks,
@@ -10,9 +13,6 @@ import { GroupSelector } from "@/pages/client/components/save-ui-blocks/group-se
 import { ImageUpload } from "@/pages/client/components/save-ui-blocks/image-upload";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
 import { useGetUIBlockDetails, useSaveUIBlock } from "@/pages/hooks/project/use-block-library-mutations";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Input } from "@/ui/shadcn/components/ui/input";
-import { Label } from "@/ui/shadcn/components/ui/label";
 import { has, isEmpty, set } from "lodash-es";
 import { AlertCircle } from "lucide-react";
 import { FormEvent, useEffect, useMemo, useState } from "react";

@@ -1,9 +1,9 @@
+import { Accordion } from "@/components/ui/accordion";
 import { BlockStylingProps } from "@/core/components/settings/block-styling-props";
 import { StylingGroup } from "@/core/components/settings/new-panel/setting-section";
 import { BlockSettingsContext } from "@/core/components/settings/settings-context";
 import { FLEX_CHILD_SECTION, GRID_CHILD_SECTION, SETTINGS_SECTIONS } from "@/core/constants/STYLING_GROUPS";
 import { useSelectedBlocksDisplayChild, useSelectedStylingBlocks } from "@/core/hooks";
-import { Accordion } from "@/ui/shadcn/components/ui/accordion";
 import { useThrottledCallback } from "@react-hookz/web";
 import { get, isEmpty, startsWith } from "lodash-es";
 import React, { useCallback } from "react";

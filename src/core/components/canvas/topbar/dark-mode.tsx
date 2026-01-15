@@ -1,5 +1,5 @@
+import { Switch } from "@/components/ui/switch";
 import { useDarkMode } from "@/core/hooks";
-import { Switch } from "@/ui/shadcn/components/ui/switch";
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 
 export function DarkMode() {

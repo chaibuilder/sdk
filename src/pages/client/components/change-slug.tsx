@@ -1,9 +1,5 @@
-import { useTranslation } from "@/core/main";
-import { LANGUAGES } from "@/pages/constants/LANGUAGES";
-import { useChangeSlug } from "@/pages/hooks/pages/mutations";
-import { usePageTypes } from "@/pages/hooks/project/use-page-types";
-import { Alert } from "@/ui/shadcn/components/ui/alert";
-import { Button } from "@/ui/shadcn/components/ui/button";
+import { Alert } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -11,9 +7,13 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/ui/shadcn/components/ui/dialog";
-import { Input } from "@/ui/shadcn/components/ui/input";
-import { Label } from "@/ui/shadcn/components/ui/label";
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useTranslation } from "@/core/main";
+import { LANGUAGES } from "@/pages/constants/LANGUAGES";
+import { useChangeSlug } from "@/pages/hooks/pages/mutations";
+import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { find, isEqual, startsWith } from "lodash-es";
 import { AlertCircle } from "lucide-react";
 import { FormEvent, useState } from "react";

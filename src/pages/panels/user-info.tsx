@@ -1,4 +1,3 @@
-import { useTranslation } from "@/core/main";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,9 +8,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/ui/shadcn/components/ui/alert-dialog";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/ui/shadcn/components/ui/hover-card";
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { useTranslation } from "@/core/main";
 import { isFunction, noop } from "lodash-es";
 import { User } from "lucide-react";
 import { usePagesProp } from "../hooks/project/use-builder-prop";

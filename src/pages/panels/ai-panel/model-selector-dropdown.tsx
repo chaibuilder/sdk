@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import {
   ModelSelector,
   ModelSelectorContent,
@@ -11,7 +12,6 @@ import {
   ModelSelectorName,
   ModelSelectorTrigger,
 } from "@/pages/components/ai-elements/model-selector";
-import { Button } from "@/ui/shadcn/components/ui/button";
 import { Cpu } from "lucide-react";
 import { useState } from "react";
 import { AI_MODELS, getDefaultModel, getModelById } from "./models";

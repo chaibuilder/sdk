@@ -1,3 +1,4 @@
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { canvasIframeAtom } from "@/core/atoms/ui";
 import { useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 import { BlockMoreOptions } from "@/core/components/sidepanels/panels/outline/block-more-options";
@@ -10,7 +11,6 @@ import { useBlockHighlight, useBuilderProp, usePermissions, useTranslation, useU
 import { useStructureValidation } from "@/core/hooks/use-structure-validation";
 import { pubsub } from "@/core/pubsub";
 import { cn } from "@/core/utils/cn";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import {
   ChevronRightIcon,
   DotsVerticalIcon,

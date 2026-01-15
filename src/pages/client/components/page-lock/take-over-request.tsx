@@ -1,8 +1,8 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSavePage } from "@/core/hooks/use-save-page";
 import { useTranslation } from "@/core/main";
 import { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/ui/shadcn/components/ui/card";
 import { AlertCircle, Check, UserIcon, X } from "lucide-react";
 import { useState } from "react";
 import { BlurContainer } from "../chai-loader";

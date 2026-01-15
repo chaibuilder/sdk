@@ -1,6 +1,6 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTranslation } from "@/core/main";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/ui/shadcn/components/ui/card";
 import { Check, CheckCircle } from "lucide-react";
 import { BlurContainer } from "../chai-loader";
 import { usePageLockMeta } from "./page-lock-hook";

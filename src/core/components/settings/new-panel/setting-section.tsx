@@ -1,7 +1,7 @@
+import { AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { BlockStyle } from "@/core/components/settings/choices/block-style";
 import { MultipleChoices } from "@/core/components/settings/choices/multiple-choices";
 import { useSelectedBlockCurrentClasses } from "@/core/hooks";
-import { AccordionContent, AccordionItem, AccordionTrigger } from "@/ui/shadcn/components/ui/accordion";
 import { flatten, has, intersection, map, startCase } from "lodash-es";
 import React, { createContext, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -72,7 +72,7 @@ export const StylingGroup = ({ section, showAccordian }: any) => {
         active[currentClasses[i].property] = currentClasses[i].cls;
       }
       let match = true;
-       
+
       for (const property in conditions) {
         if (!has(active, property) || active[property] !== conditions[property]) {
           match = false;

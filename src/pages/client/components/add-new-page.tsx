@@ -1,5 +1,5 @@
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useTranslation } from "@/core/main";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
 import { lazy, Suspense } from "react";
 
 const PageCreator = lazy(() => import("@/pages/client/components/page-creator"));

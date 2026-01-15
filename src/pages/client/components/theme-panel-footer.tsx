@@ -1,8 +1,8 @@
+import { Button } from "@/components/ui/button";
 import { useTheme, useTranslation } from "@/core/main";
 import { usePublishPages } from "@/pages/hooks/pages/mutations";
 import { useUpdateWebsiteSettings } from "@/pages/hooks/project/mutations";
 import { throwConfetti } from "@/pages/utils/confetti";
-import { Button } from "@/ui/shadcn/components/ui/button";
 
 const ThemePanelFooter = () => {
   const [theme] = useTheme();

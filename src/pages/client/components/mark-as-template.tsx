@@ -1,7 +1,4 @@
-import { useTranslation } from "@/core/main";
-import { useMarkAsTemplate } from "@/pages/hooks/pages/mutations";
-import { usePageTypes } from "@/pages/hooks/project/use-page-types";
-import { Button } from "@/ui/shadcn/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,10 +6,13 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/ui/shadcn/components/ui/dialog";
-import { Input } from "@/ui/shadcn/components/ui/input";
-import { Label } from "@/ui/shadcn/components/ui/label";
-import { Textarea } from "@/ui/shadcn/components/ui/textarea";
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { useTranslation } from "@/core/main";
+import { useMarkAsTemplate } from "@/pages/hooks/pages/mutations";
+import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { startCase } from "lodash-es";
 import { File, ImageIcon, Tag, X } from "lucide-react";
 import { useCallback, useRef, useState } from "react";

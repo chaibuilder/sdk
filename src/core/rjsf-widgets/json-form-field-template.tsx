@@ -1,8 +1,8 @@
+import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { usePageExternalData } from "@/core/atoms/builder";
 import { LANGUAGES } from "@/core/constants/LANGUAGES";
 import { useLanguages, useSelectedBlock } from "@/core/hooks";
-import { Badge } from "@/ui/shadcn/components/ui/badge";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { useRegisteredChaiBlocks } from "@chaibuilder/runtime";
 import { ChevronDownIcon, ChevronRightIcon, InfoCircledIcon, ListBulletIcon } from "@radix-ui/react-icons";
 import { FieldTemplateProps } from "@rjsf/utils";

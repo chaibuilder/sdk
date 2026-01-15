@@ -1,12 +1,12 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Command, CommandEmpty, CommandGroup, CommandItem } from "@/components/ui/command";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useChaiFeatureFlag } from "@/core/main";
 import { removeSlugExtension } from "@/pages/utils/slug-utils";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Command, CommandEmpty, CommandGroup, CommandItem } from "@/ui/shadcn/components/ui/command";
-import { Input } from "@/ui/shadcn/components/ui/input";
-import { Label } from "@/ui/shadcn/components/ui/label";
-import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/ui/popover";
 import { isEmpty } from "lodash-es";
 import { Check, ChevronDown, Search } from "lucide-react";
 import { useMemo, useState } from "react";

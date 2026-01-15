@@ -1,7 +1,7 @@
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { QuickPrompts } from "@/core/components/QuickPrompts";
 import { useAskAi, useSelectedBlock, useSelectedBlockIds } from "@/core/hooks";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Textarea } from "@/ui/shadcn/components/ui/textarea";
 import { ArrowTopRightIcon, ReloadIcon, StopIcon } from "@radix-ui/react-icons";
 import { first } from "lodash-es";
 import { useEffect, useRef, useState } from "react";

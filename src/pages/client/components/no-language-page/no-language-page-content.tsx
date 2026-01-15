@@ -1,9 +1,9 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguages, useTranslation } from "@/core/main";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { useIsLanguagePageCreated } from "@/pages/hooks/pages/use-is-languagep-page-created";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/ui/shadcn/components/ui/card";
 import { get } from "lodash-es";
 import { LockIcon } from "lucide-react";
 import { BlurContainer } from "../chai-loader";

@@ -1,5 +1,3 @@
-import { useLanguages } from "@/core/main";
-import { useGlobalJsonLDItems } from "@/pages/hooks/use-global-json-ld";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,13 +8,15 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/ui/shadcn/components/ui/alert-dialog";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/ui/shadcn/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
-import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
-import { Textarea } from "@/ui/shadcn/components/ui/textarea";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Textarea } from "@/components/ui/textarea";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { useLanguages } from "@/core/main";
+import { useGlobalJsonLDItems } from "@/pages/hooks/use-global-json-ld";
 import { filter, find } from "lodash-es";
 import { Edit, Eye, Loader, Plus, Trash } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";

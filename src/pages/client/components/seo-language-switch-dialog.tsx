@@ -1,6 +1,6 @@
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
 
 interface SeoLanguageSwitchDialogProps {
   isOpen: boolean;

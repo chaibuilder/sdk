@@ -1,6 +1,6 @@
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Input } from "@/ui/shadcn/components/ui/input";
-import { Switch } from "@/ui/shadcn/components/ui/switch";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { Cross1Icon, DragHandleDots2Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";

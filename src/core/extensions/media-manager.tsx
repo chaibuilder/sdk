@@ -1,7 +1,7 @@
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { ChaiAsset } from "@/types";
-import { Alert, AlertDescription } from "@/ui/shadcn/components/ui/alert";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Input } from "@/ui/shadcn/components/ui/input";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";

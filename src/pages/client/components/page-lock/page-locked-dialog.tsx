@@ -1,8 +1,8 @@
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTranslation } from "@/core/main";
 import { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/ui/shadcn/components/ui/accordion";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/ui/shadcn/components/ui/card";
 import { AlertCircleIcon, Edit, LockKeyhole, ShieldAlert, UserIcon, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { BlurContainer } from "../chai-loader";

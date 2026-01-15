@@ -1,3 +1,4 @@
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FallbackError } from "@/core/components/fallback-error";
 import BlockSettings from "@/core/components/settings/block-settings";
 import BlockStyling from "@/core/components/settings/block-styling";
@@ -11,7 +12,6 @@ import {
   useSelectedStylingBlocks,
 } from "@/core/hooks";
 import { PERMISSIONS, usePermissions } from "@/core/main";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/shadcn/components/ui/tabs";
 import { ChevronDownIcon, MixerHorizontalIcon } from "@radix-ui/react-icons";
 import { isEmpty, isNull, noop } from "lodash-es";
 import React, { useCallback, useState } from "react";

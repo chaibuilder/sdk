@@ -1,13 +1,13 @@
-import { LANGUAGES } from "@/core/constants/LANGUAGES";
-import { useLanguages } from "@/core/hooks/use-languages";
-import { mergeClasses } from "@/core/main";
-import { Button } from "@/ui/shadcn/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/ui/shadcn/components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
+import { LANGUAGES } from "@/core/constants/LANGUAGES";
+import { useLanguages } from "@/core/hooks/use-languages";
+import { mergeClasses } from "@/core/main";
 import { ChatBubbleIcon, ChevronDownIcon, StarIcon } from "@radix-ui/react-icons";
 import { get, isEmpty, map } from "lodash-es";
 

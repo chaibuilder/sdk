@@ -1,8 +1,8 @@
-import { WidgetProps } from "@rjsf/utils";
-import { IdCardIcon, FileIcon, Cross1Icon } from "@radix-ui/react-icons";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { COLLECTION_PREFIX } from "@/core/constants/STRINGS";
+import { Cross1Icon, FileIcon, IdCardIcon } from "@radix-ui/react-icons";
+import { WidgetProps } from "@rjsf/utils";
 
 export const RepeaterBindingWidget = ({ value, onChange }: WidgetProps) => {
   if (!value) {

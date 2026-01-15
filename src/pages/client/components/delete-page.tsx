@@ -1,3 +1,12 @@
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useLanguages, useSidebarActivePanel, useTranslation } from "@/core/main";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { useDeletePage } from "@/pages/hooks/pages/mutations";
@@ -7,15 +16,6 @@ import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { ChaiPage } from "@/pages/utils/page-organization";
 import { ChaiBuilderPageType } from "@/server/types";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/ui/shadcn/components/ui/dialog";
 import { get } from "lodash-es";
 import { useMemo } from "react";
 

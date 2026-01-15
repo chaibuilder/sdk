@@ -1,5 +1,5 @@
+import { Button } from "@/components/ui/button";
 import { useBuilderProp, usePreviewMode } from "@/core/hooks";
-import { Button } from "@/ui/shadcn/components/ui/button";
 import { EyeOpenIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
 

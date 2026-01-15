@@ -1,10 +1,5 @@
-import { useLanguages, useSidebarActivePanel, useTranslation } from "@/core/main";
-import { SlugInput } from "@/pages/client/components/slug-input";
-import { LANGUAGES } from "@/pages/constants/LANGUAGES";
-import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
-import { parseSlugForEdit, removeSlugExtension } from "@/pages/utils/slug-utils";
-import { Alert } from "@/ui/shadcn/components/ui/alert";
-import { Button } from "@/ui/shadcn/components/ui/button";
+import { Alert } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -12,9 +7,14 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/ui/shadcn/components/ui/dialog";
-import { Input } from "@/ui/shadcn/components/ui/input";
-import { Label } from "@/ui/shadcn/components/ui/label";
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useLanguages, useSidebarActivePanel, useTranslation } from "@/core/main";
+import { SlugInput } from "@/pages/client/components/slug-input";
+import { LANGUAGES } from "@/pages/constants/LANGUAGES";
+import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
+import { parseSlugForEdit, removeSlugExtension } from "@/pages/utils/slug-utils";
 import { filter, find, startsWith } from "lodash-es";
 import { Loader } from "lucide-react";
 import React, { FormEvent, useEffect, useMemo, useState } from "react";

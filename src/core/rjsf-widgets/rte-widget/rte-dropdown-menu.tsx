@@ -1,5 +1,5 @@
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useFrame } from "@/core/frame";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/ui/shadcn/components/ui/dropdown-menu";
 import { Editor } from "@tiptap/react";
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";

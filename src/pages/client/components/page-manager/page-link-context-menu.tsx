@@ -1,4 +1,4 @@
-import { Button } from "@/ui/shadcn/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { useAtom } from "jotai";
 import { ExternalLink } from "lucide-react";
 import { useEffect, useRef } from "react";

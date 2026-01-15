@@ -1,5 +1,7 @@
 "use client";
 
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { BlockAttributesEditor } from "@/core/components/settings/new-panel/block-attributes-editor";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { usePubSub, useSelectedBlockIds } from "@/core/hooks";
@@ -12,8 +14,6 @@ import {
   ChaiUndoRedo,
   useSelectedBlock,
 } from "@/core/main";
-import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
-import { TooltipProvider } from "@/ui/shadcn/components/ui/tooltip";
 import { ChevronDownIcon, GearIcon, ImageIcon, StackIcon, TextIcon } from "@radix-ui/react-icons";
 import { motion } from "framer-motion";
 import React, { Suspense, useEffect, useState } from "react";

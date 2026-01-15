@@ -1,7 +1,7 @@
 "use client";
 
+import { Input } from "@/components/ui/input";
 import { formatParentSlug } from "@/pages/utils/slug-utils";
-import { Input } from "@/ui/shadcn/components/ui/input";
 import { useEffect, useState } from "react";
 
 interface SlugInputProps {

@@ -1,3 +1,5 @@
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { showPredefinedBlockCategoryAtom } from "@/core/atoms/ui";
 import { CoreBlock } from "@/core/components/sidepanels/panels/add-blocks/core-block";
 import { DefaultChaiBlocks } from "@/core/components/sidepanels/panels/add-blocks/default-blocks";
@@ -12,8 +14,6 @@ import { useBlocksStore, useBuilderProp, usePermissions } from "@/core/hooks";
 import { usePartialBlocksList } from "@/core/hooks/use-partial-blocks-store";
 import { mergeClasses, PERMISSIONS } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
-import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/shadcn/components/ui/tabs";
 import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { capitalize, debounce, filter, find, map, reject, sortBy, values } from "lodash-es";

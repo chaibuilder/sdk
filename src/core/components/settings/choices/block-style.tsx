@@ -1,3 +1,4 @@
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { AdvanceChoices } from "@/core/components/settings/choices/advance-choices";
 import { ColorChoice } from "@/core/components/settings/choices/color-choice";
 import { DropDownChoices } from "@/core/components/settings/choices/dropdown-choices";
@@ -14,7 +15,6 @@ import {
   useSelectedBlockIds,
   useStylingState,
 } from "@/core/hooks";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { CrossCircledIcon, InfoCircledIcon } from "@radix-ui/react-icons";
 import { findLast, get } from "lodash-es";
 import { useCallback, useEffect, useMemo } from "react";

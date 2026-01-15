@@ -1,9 +1,9 @@
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import { useBuilderProp } from "@/core/hooks";
 import { useAiAssistant } from "@/core/hooks/use-ask-ai";
 import { useRightPanel } from "@/core/hooks/use-theme";
 import { PERMISSIONS, usePermissions } from "@/core/main";
-import { Label } from "@/ui/shadcn/components/ui/label";
-import { Switch } from "@/ui/shadcn/components/ui/switch";
 import { useTranslation } from "react-i18next";
 import { AiIcon } from "../../ai/ai-icon";
 

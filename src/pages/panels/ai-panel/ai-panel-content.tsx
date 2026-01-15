@@ -1,9 +1,9 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { useLanguages, useTranslation } from "@/core/main";
 import { useBuilderFetch } from "@/pages/hooks/utils/use-fetch";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
-import { Button } from "@/ui/shadcn/components/ui/button";
 import { Plus } from "lucide-react";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { toast } from "sonner";
