@@ -32,8 +32,8 @@ class ChaiBuilder {
     ChaiBuilder.verifyInit();
     const siteSettings = await ChaiBuilder.getSiteSettings();
 
-    ChaiBuilder?.setFallbackLang(siteSettings?.fallbackLang || "en");
-    ChaiBuilder?.setDraftMode(draftMode);
+    ChaiBuilder.setFallbackLang(siteSettings?.fallbackLang || "en");
+    ChaiBuilder.setDraftMode(draftMode);
   }
 
   static setDraftMode(draftMode: boolean) {
