@@ -1,0 +1,80 @@
+{
+  "name": "@chaibuilder/nextjs",
+  "description": "AI Enabled Open source website builder for ReactJS",
+  "private": false,
+  "author": "Suraj Air",
+  "license": "BSD-3-Clause",
+  "homepage": "https://chaibuilder.com",
+  "version": "0.0.0",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chaibuilder/sdk.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "dist/core.js",
+  "sideEffects": false,
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "dev": "tsup  --watch --format esm,cjs",
+    "build": "tsup --format esm,cjs"
+  },
+  "keywords": [],
+  "peerDependencies": {
+    "ai": "^6.0.11",
+    "drizzle-orm": "^0.45.1",
+    "next": "16.1.1",
+    "postgres": "^3.4.8",
+    "react": "^18.0 || ^19.0 || ^19.1 || ^19.2",
+    "react-dom": "^18.0 || ^19.0 || ^19.1 || ^19.2",
+    "sharp": "^0.34.5",
+    "streamdown": "^1.6.10",
+    "tailwindcss": "^3 || ^4"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/core/index.d.ts",
+      "import": "./dist/core/index.js",
+      "require": "./dist/core/index.cjs"
+    },
+    "./blocks": {
+      "types": "./dist/blocks/index.d.ts",
+      "import": "./dist/blocks/index.js",
+      "require": "./dist/blocks/index.cjs"
+    },
+    "./blocks/rsc": {
+      "types": "./dist/blocks/rsc/index.d.ts",
+      "import": "./dist/blocks/rsc/index.js",
+      "require": "./dist/blocks/rsc/index.cjs"
+    },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "import": "./dist/utils/index.js",
+      "require": "./dist/utils/index.cjs"
+    },
+    "./server": {
+      "types": "./dist/server/index.d.ts",
+      "import": "./dist/server/index.js",
+      "require": "./dist/server/index.cjs"
+    },
+    "./builder-styles": {
+      "import": "./dist/core/index.css",
+      "require": "./dist/core/index.css"
+    },
+    "./config": {
+      "types": "./dist/config/index.d.ts",
+      "import": "./dist/config/index.js",
+      "require": "./dist/config/index.cjs"
+    }
+  },
+  "dependencies": {
+    "@chaibuilder/sdk": "workspace:*"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.9.3"
+  }
+}

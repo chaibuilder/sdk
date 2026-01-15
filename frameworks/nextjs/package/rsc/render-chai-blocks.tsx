@@ -7,7 +7,7 @@ import { ImageBlock } from "./image-block";
 import { JSONLD } from "./json-ld";
 import { LinkBlock } from "./link-block";
 
-type DesignTokens = {
+export type DesignTokens = {
   [token: string]: {
     value: string;
     name: string;
