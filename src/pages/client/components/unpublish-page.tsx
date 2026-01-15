@@ -1,6 +1,14 @@
 import { useTranslation } from "@/core/main";
 import { useUnpublishPage } from "@/pages/hooks/pages/mutations";
-import { Button, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/ui";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/ui/shadcn/components/ui/dialog";
 
 const UnpublishPage = ({ page, onClose }: { page: any; onClose: () => void }) => {
   const { t } = useTranslation();

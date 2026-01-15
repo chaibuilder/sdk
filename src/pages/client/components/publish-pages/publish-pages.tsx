@@ -1,5 +1,5 @@
 import { usePublishPages } from "@/pages/hooks/pages/mutations";
-import { Dialog } from "@/ui";
+import { Dialog } from "@/ui/shadcn/components/ui/dialog";
 import { lazy, Suspense } from "react";
 const PublishPagesModalContent = lazy(() => import("./publish-pages-content"));
 

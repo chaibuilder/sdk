@@ -3,18 +3,18 @@ import { SlugInput } from "@/pages/client/components/slug-input";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { parseSlugForEdit, removeSlugExtension } from "@/pages/utils/slug-utils";
+import { Alert } from "@/ui/shadcn/components/ui/alert";
+import { Button } from "@/ui/shadcn/components/ui/button";
 import {
-  Alert,
-  Button,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  Input,
-  Label,
-} from "@/ui";
+} from "@/ui/shadcn/components/ui/dialog";
+import { Input } from "@/ui/shadcn/components/ui/input";
+import { Label } from "@/ui/shadcn/components/ui/label";
 import { filter, find, startsWith } from "lodash-es";
 import { Loader } from "lucide-react";
 import React, { FormEvent, useEffect, useMemo, useState } from "react";

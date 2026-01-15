@@ -1,4 +1,12 @@
-import { Button, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/ui";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/ui/shadcn/components/ui/dialog";
 
 interface TranslationWarningModalProps {
   isOpen: boolean;

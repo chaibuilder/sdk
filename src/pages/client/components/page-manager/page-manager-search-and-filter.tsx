@@ -5,17 +5,10 @@ import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useFallbackLang } from "@/pages/hooks/use-fallback-lang";
 import { usePageExpandManager } from "@/pages/hooks/utils/use-page-expand-manager";
 import { ChaiPage } from "@/pages/utils/page-organization";
-import {
-  Button,
-  Input,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/ui";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { Input } from "@/ui/shadcn/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger } from "@/ui/shadcn/components/ui/select";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { useQueryClient } from "@tanstack/react-query";
 import { filter, get, isEmpty, map } from "lodash-es";
 import {

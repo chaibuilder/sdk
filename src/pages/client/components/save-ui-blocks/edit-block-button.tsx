@@ -1,15 +1,14 @@
 import { usePermissions } from "@/core/main";
 import { DeleteBlockConfirmation } from "@/pages/client/components/save-ui-blocks/delete-block-confirmation";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { Card, CardContent } from "@/ui/shadcn/components/ui/card";
 import {
-  Button,
-  Card,
-  CardContent,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/ui";
+} from "@/ui/shadcn/components/ui/dropdown-menu";
 import { Edit, MoreVertical, Trash2 } from "lucide-react";
 import { useState } from "react";
 

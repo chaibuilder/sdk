@@ -1,21 +1,18 @@
 "use client";
 
 import { mergeClasses, useTranslation } from "@/core/main";
+import { Button } from "@/ui/shadcn/components/ui/button";
 import {
-  Button,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  Input,
-  Switch,
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/ui";
+} from "@/ui/shadcn/components/ui/dialog";
+import { Input } from "@/ui/shadcn/components/ui/input";
+import { Switch } from "@/ui/shadcn/components/ui/switch";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { UseMutateFunction } from "@tanstack/react-query";
 import { find, first, isEmpty, merge, pick } from "lodash-es";
 import {

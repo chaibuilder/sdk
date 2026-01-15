@@ -1,5 +1,6 @@
 import { LibraryGroup, useLibraryGroups } from "@/pages/hooks/project/use-library-groups";
-import { Button, Input } from "@/ui";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { Input } from "@/ui/shadcn/components/ui/input";
 import { Plus } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 

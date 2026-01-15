@@ -1,6 +1,10 @@
 "use client";
 
-import { Badge, Button, Dialog, DialogContent, DialogHeader, DialogTitle, ScrollArea, Switch } from "@/ui";
+import { Badge } from "@/ui/shadcn/components/ui/badge";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
+import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
+import { Switch } from "@/ui/shadcn/components/ui/switch";
 import { formatDate } from "date-fns";
 import { isArray, isPlainObject, isString, map, mapValues, startsWith, trim } from "lodash-es";
 import { Check, Copy, FileJson, Loader } from "lucide-react";

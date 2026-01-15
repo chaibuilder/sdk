@@ -1,4 +1,4 @@
-import { Button } from "@/ui";
+import { Button } from "@/ui/shadcn/components/ui/button";
 import { lazy } from "react";
 const AiPanelContent = lazy(() => import("./ai-panel-content"));
 

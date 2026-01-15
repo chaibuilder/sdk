@@ -2,7 +2,7 @@
 
 import { useTranslation } from "@/core/main";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
-import { Button } from "@/ui";
+import { Button } from "@/ui/shadcn/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 const TranslationPrompts = ({

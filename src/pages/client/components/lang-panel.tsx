@@ -8,7 +8,13 @@ import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
 import { ChaiBuilderPageType } from "@/server/types";
-import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/ui";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/ui/shadcn/components/ui/dropdown-menu";
 import { useSetAtom } from "jotai";
 import { filter, find, get, isEmpty, map } from "lodash-es";
 import { MoreHorizontal, PencilIcon, Power, StarIcon, TrashIcon } from "lucide-react";

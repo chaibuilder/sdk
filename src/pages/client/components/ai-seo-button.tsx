@@ -1,5 +1,5 @@
 import { useLanguages } from "@/core/main";
-import { Button } from "@/ui";
+import { Button } from "@/ui/shadcn/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { Loader, Wand2Icon } from "lucide-react";
 import { ACTIONS } from "../../constants/ACTIONS";

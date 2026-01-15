@@ -1,7 +1,9 @@
 "use client";
 
 import { useTranslation } from "@/core/main";
-import { Button, Label, Textarea } from "@/ui";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { Label } from "@/ui/shadcn/components/ui/label";
+import { Textarea } from "@/ui/shadcn/components/ui/textarea";
 import { AlertCircle, ChevronLeft, Copy, Link, Loader, Pencil } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";

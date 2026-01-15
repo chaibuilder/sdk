@@ -2,7 +2,8 @@ import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useBlocksHtmlForAi, useSelectedBlock } from "@/core/hooks";
 import { usePubSub } from "@/core/hooks/use-pub-sub";
 import { shadcnTheme } from "@/tailwind/get-chai-builder-tailwind-config";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, Tabs, TabsList, TabsTrigger } from "@/ui";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
+import { Tabs, TabsList, TabsTrigger } from "@/ui/shadcn/components/ui/tabs";
 import { camelCase } from "lodash-es";
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -91,9 +92,9 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
   const handleExportEvent = useCallback(async () => {
     try {
       setShow(false);
-      let html = blocksHtmlForAi({ blockId: selectedBlock?._id, additionalCoreBlocks: ["Icon"] })
+      let html = blocksHtmlForAi({ blockId: selectedBlock?._id, additionalCoreBlocks: ["Icon"] });
       html = html.replace(/\s*bid=["'][^"']*["']/g, "");
-      
+
       const isTypeScript = tab === "ts";
       const {
         jsx: jsxCode,

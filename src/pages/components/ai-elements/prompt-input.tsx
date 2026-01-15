@@ -1,8 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/ui/shadcn/components/ui/button";
 import {
-  Button,
   Command,
   CommandEmpty,
   CommandGroup,
@@ -10,19 +10,15 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
+} from "@/ui/shadcn/components/ui/command";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/ui";
+} from "@/ui/shadcn/components/ui/dropdown-menu";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/ui/shadcn/components/ui/hover-card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/components/ui/select";
 import type { ChatStatus, FileUIPart } from "ai";
 import {
   CornerDownLeftIcon,

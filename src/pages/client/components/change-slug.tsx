@@ -2,18 +2,18 @@ import { useTranslation } from "@/core/main";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { useChangeSlug } from "@/pages/hooks/pages/mutations";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
+import { Alert } from "@/ui/shadcn/components/ui/alert";
+import { Button } from "@/ui/shadcn/components/ui/button";
 import {
-  Alert,
-  Button,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  Input,
-  Label,
-} from "@/ui";
+} from "@/ui/shadcn/components/ui/dialog";
+import { Input } from "@/ui/shadcn/components/ui/input";
+import { Label } from "@/ui/shadcn/components/ui/label";
 import { find, isEqual, startsWith } from "lodash-es";
 import { AlertCircle } from "lucide-react";
 import { FormEvent, useState } from "react";

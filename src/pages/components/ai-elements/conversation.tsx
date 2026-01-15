@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/ui";
+import { Button } from "@/ui/shadcn/components/ui/button";
 import { ArrowDownIcon } from "lucide-react";
 import type { ComponentProps } from "react";
 import { useCallback } from "react";

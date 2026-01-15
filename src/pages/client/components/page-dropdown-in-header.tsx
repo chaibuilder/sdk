@@ -1,6 +1,6 @@
 import { useLanguages } from "@/core/main";
 import { useActivePage } from "@/pages/hooks/pages/use-current-page";
-import { Button } from "@/ui";
+import { Button } from "@/ui/shadcn/components/ui/button";
 import { useSetAtom } from "jotai";
 import { get } from "lodash-es";
 import { File, Hash, Loader, MoreHorizontal } from "lucide-react";

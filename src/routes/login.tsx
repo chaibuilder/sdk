@@ -1,4 +1,5 @@
-import { Button, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/ui";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/ui/shadcn/components/ui/card";
 import { Loader } from "lucide-react";
 import { useState } from "react";
 import { supabaseClient } from "./supabase";

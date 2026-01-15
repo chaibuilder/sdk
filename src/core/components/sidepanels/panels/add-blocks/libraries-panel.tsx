@@ -10,9 +10,9 @@ import { pubsub } from "@/core/pubsub";
 import { cn } from "@/lib/utils";
 import { ChaiBlock } from "@/types/chai-block";
 import { ChaiLibrary, ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui";
 import { Button } from "@/ui/shadcn/components/ui/button";
 import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/components/ui/select";
 import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
@@ -175,9 +175,9 @@ const UILibrarySection = ({
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const scrollContainer = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]');
+    const scrollContainer = scrollAreaRef.current?.querySelector("[data-radix-scroll-area-viewport]");
     if (scrollContainer) {
-      scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollContainer.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [library, selectedGroup]);
   const handleMouseEnter = (group: string) => {

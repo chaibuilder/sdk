@@ -8,24 +8,25 @@ import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
 import { useChaiCurrentPage, usePageEditInfo } from "@/pages/hooks/pages/use-current-page";
 import { type Revision, useDeleteRevision, useRestoreRevision, useRevisions } from "@/pages/hooks/use-revisions";
 import { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
+import { Button } from "@/ui/shadcn/components/ui/button";
 import {
-  Button,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
+} from "@/ui/shadcn/components/ui/dialog";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  ScrollArea,
-  SheetHeader,
-  SheetTitle,
-  Skeleton,
-} from "@/ui";
+} from "@/ui/shadcn/components/ui/dropdown-menu";
+import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
+import { SheetHeader, SheetTitle } from "@/ui/shadcn/components/ui/sheet";
+import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
 import { useQueryClient } from "@tanstack/react-query";
 import { format, formatDistanceToNow } from "date-fns";
 import { isEmpty } from "lodash-es";

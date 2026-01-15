@@ -1,5 +1,12 @@
 import { useLanguages } from "@/core/main";
-import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Input } from "@/ui";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/ui/shadcn/components/ui/dropdown-menu";
+import { Input } from "@/ui/shadcn/components/ui/input";
 import { get } from "lodash-es";
 import { ChevronDown } from "lucide-react";
 import { useEffect, useRef } from "react";

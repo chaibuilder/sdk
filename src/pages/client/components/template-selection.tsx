@@ -1,16 +1,9 @@
 import { useChaiFeatureFlag } from "@/core/main";
 import { TemplateWithLibrary } from "@/pages/hooks/project/use-templates-with-libraries";
-import {
-  Button,
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandItem,
-  Input,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/ui";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { Command, CommandEmpty, CommandGroup, CommandItem } from "@/ui/shadcn/components/ui/command";
+import { Input } from "@/ui/shadcn/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/ui/popover";
 import { startCase } from "lodash-es";
 import { Check, ChevronDown, Search } from "lucide-react";
 import { useEffect, useState } from "react";

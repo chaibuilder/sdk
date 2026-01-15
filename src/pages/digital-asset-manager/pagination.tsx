@@ -1,4 +1,5 @@
-import { Button, Input } from "@/ui";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { Input } from "@/ui/shadcn/components/ui/input";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useMemo, useState } from "react";
 

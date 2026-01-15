@@ -6,7 +6,12 @@ import { useBuilderPageData } from "@/pages/hooks/pages/use-page-draft-blocks";
 import { usePageType } from "@/pages/hooks/project/use-page-types";
 
 import { useLanguages, usePermissions, useSidebarActivePanel, useTranslation } from "@/core/main";
-import { Alert, AlertDescription, Button, Input, Label, Tabs, TabsList, TabsTrigger, Textarea } from "@/ui";
+import { Alert, AlertDescription } from "@/ui/shadcn/components/ui/alert";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { Input } from "@/ui/shadcn/components/ui/input";
+import { Label } from "@/ui/shadcn/components/ui/label";
+import { Tabs, TabsList, TabsTrigger } from "@/ui/shadcn/components/ui/tabs";
+import { Textarea } from "@/ui/shadcn/components/ui/textarea";
 import { get, isEmpty, isEqual } from "lodash-es";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";

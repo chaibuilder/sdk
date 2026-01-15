@@ -7,14 +7,11 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  Input,
-  Label,
-} from "@/ui";
+} from "@/ui/shadcn/components/ui/alert-dialog";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
+import { Input } from "@/ui/shadcn/components/ui/input";
+import { Label } from "@/ui/shadcn/components/ui/label";
 import { Loader } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";

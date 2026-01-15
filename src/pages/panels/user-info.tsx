@@ -9,11 +9,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-  Button,
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/ui";
+} from "@/ui/shadcn/components/ui/alert-dialog";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/ui/shadcn/components/ui/hover-card";
 import { isFunction, noop } from "lodash-es";
 import { User } from "lucide-react";
 import { usePagesProp } from "../hooks/project/use-builder-prop";

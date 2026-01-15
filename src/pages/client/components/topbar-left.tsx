@@ -6,7 +6,14 @@ import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
 import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { navigateToPage } from "@/pages/utils/navigation";
-import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Separator } from "@/ui";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/ui/shadcn/components/ui/dropdown-menu";
+import { Separator } from "@/ui/shadcn/components/ui/separator";
 import { useAtomValue, useSetAtom } from "jotai";
 import { compact, find, get, isEmpty, map } from "lodash-es";
 import { ChevronDown, Languages, Plus, Star } from "lucide-react";

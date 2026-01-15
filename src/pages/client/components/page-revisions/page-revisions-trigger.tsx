@@ -1,14 +1,7 @@
-import {
-  Button,
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-  Skeleton,
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/ui";
+import { Button } from "@/ui/shadcn/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/ui/shadcn/components/ui/sheet";
+import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { History } from "lucide-react";
 import * as React from "react";
 import { Suspense } from "react";
