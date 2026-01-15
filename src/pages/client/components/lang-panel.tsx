@@ -5,7 +5,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useLanguages, useTranslation } from "@/core/main";
+import { useLanguages } from "@/core/hooks/use-languages";
+import { useTranslation } from "@/core/main";
+import { addNewLangAtom } from "@/pages/atom/add-new-lang";
 import { ChangeSlug } from "@/pages/client/components/change-slug";
 import PermissionChecker from "@/pages/client/components/permission-checker";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
@@ -19,7 +21,6 @@ import { useSetAtom } from "jotai";
 import { filter, find, get, isEmpty, map } from "lodash-es";
 import { MoreHorizontal, PencilIcon, Power, StarIcon, TrashIcon } from "lucide-react";
 import { lazy, Suspense, useMemo, useState } from "react";
-import { addNewLangAtom } from "@/pages/atom/add-new-lang";
 
 const DeletePage = lazy(() => import("@/pages/client/components/delete-page"));
 const UnpublishPage = lazy(() => import("@/pages/client/components/unpublish-page"));

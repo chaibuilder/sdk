@@ -1,4 +1,5 @@
-import { useLanguages, useTranslation } from "@/core/main";
+import { useLanguages } from "@/core/hooks/use-languages";
+import { useTranslation } from "@/core/main";
 import { addNewLangAtom } from "@/pages/atom/add-new-lang";
 import { useWebsiteLanguagePages, useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";

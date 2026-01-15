@@ -1,7 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useLanguages, useTranslation } from "@/core/main";
+import { useLanguages } from "@/core/hooks/use-languages";
+import { useTranslation } from "@/core/main";
 import { useBuilderFetch } from "@/pages/hooks/utils/use-fetch";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { Plus } from "lucide-react";
