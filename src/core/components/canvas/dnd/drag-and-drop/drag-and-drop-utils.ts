@@ -60,7 +60,7 @@ const LEAF_BLOCK_TYPES = [
 function isLeafBlock(blockType: string): boolean {
   try {
     return LEAF_BLOCK_TYPES.includes(blockType as any);
-  } catch (error) {
+  } catch {
     return false;
   }
 }
@@ -146,7 +146,7 @@ function calculateEdgeZoneSize(elementSize: number): number {
 
     // Clamp between MIN and MAX to ensure consistent UX
     return Math.max(ZONE_CONFIG.MIN_EDGE_ZONE, Math.min(ZONE_CONFIG.MAX_EDGE_ZONE, dynamicSize));
-  } catch (error) {
+  } catch {
     return ZONE_CONFIG.MIN_EDGE_ZONE; // Fallback to minimum
   }
 }
@@ -174,7 +174,7 @@ function getChildBlocks(element: HTMLElement): HTMLElement[] {
     }
 
     return children;
-  } catch (error) {
+  } catch {
     return [];
   }
 }
@@ -192,7 +192,7 @@ function getChildBlocks(element: HTMLElement): HTMLElement[] {
 function hasChildBlocks(element: HTMLElement): boolean {
   try {
     return getChildBlocks(element).length > 0;
-  } catch (error) {
+  } catch {
     return false;
   }
 }
@@ -329,7 +329,7 @@ function detectGapZone(
     }
 
     return null;
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -382,7 +382,7 @@ function detectParentEdgeProximity(
     }
 
     return null;
-  } catch (error) {
+  } catch {
     return null;
   }
 }

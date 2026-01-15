@@ -38,7 +38,7 @@ const getParentBlockOrientation = (
     }
 
     return "VERTICAL";
-  } catch (error) {
+  } catch {
     return "VERTICAL";
   }
 };

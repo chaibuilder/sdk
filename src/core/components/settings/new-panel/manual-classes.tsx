@@ -81,7 +81,7 @@ export function ManualClasses({
   // Helper function to convert design token names back to DESIGN_TOKEN_PREFIX-{id} format
   const convertToStorageFormat = (className: string) => {
     // Check if this className matches any design token name
-    const tokenEntry = Object.entries(designTokens).find(([_, token]) => token.name === className);
+    const tokenEntry = Object.entries(designTokens).find(([, token]) => token.name === className);
     if (tokenEntry) {
       return `${tokenEntry[0]}`; // Return DESIGN_TOKEN_PREFIX-{id} format
     }
@@ -123,7 +123,7 @@ export function ManualClasses({
       } else {
         // Filter design tokens by search term
         designTokenSuggestions = Object.entries(designTokens)
-          .filter(([_, token]) => token.name.toLowerCase().includes(search))
+          .filter(([, token]) => token.name.toLowerCase().includes(search))
           .map(([id, token]) => ({
             name: token.name,
             id: `${id}`,

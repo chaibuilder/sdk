@@ -22,7 +22,7 @@ async function convertHtmlToJsx(html: string): Promise<{ jsx: string; html: stri
     const children = Array.from(tempDiv.children) as Element[];
     const jsx = domToJsx(children.length === 1 ? children[0] : children);
     return { jsx, html: tempDiv.innerHTML };
-  } catch (error) {
+  } catch {
     return { html, jsx: html };
   }
 }
@@ -107,7 +107,7 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
       setExportContent({ html: htmlCode, jsx: jsxCode });
       setFileName(componentName);
       setShow(true);
-    } catch (error) {
+    } catch {
       const fallbackContent = `<div>Export failed. Close the modal and try again.</div>`;
       setExportContent({ html: fallbackContent, jsx: fallbackContent });
       toast.error(t("Failed to generate export HTML"));
@@ -123,7 +123,7 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
       try {
         navigator.clipboard.writeText(text);
         toast.success(t("Export code copied!"));
-      } catch (error) {
+      } catch {
         toast.error(t("Failed to copy export code"));
       }
     },

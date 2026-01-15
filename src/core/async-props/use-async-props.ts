@@ -33,6 +33,7 @@ export const useAsyncProps = (
     error: undefined,
   });
   const updateRuntimeProps = useUpdateBlocksPropsRealtime();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getAsyncBlockProps = useBuilderProp("getBlockAsyncProps", async (_args: { block: ChaiBlock }) => ({}));
   const setBlockRepeaterDataAtom = useSetAtom(blockRepeaterDataAtom);
   const depsString = JSON.stringify([block?._id, ...values(pick(block, dependencies ?? []))]);

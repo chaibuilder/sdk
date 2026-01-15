@@ -25,7 +25,7 @@ export abstract class ChaiBaseAction<T = any, K = any> implements ChaiAction<T, 
       const schema = this.getValidationSchema();
       schema.parse(data);
       return true;
-    } catch (error) {
+    } catch {
       return false;
     }
   }

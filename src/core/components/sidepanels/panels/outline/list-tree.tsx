@@ -150,7 +150,7 @@ const ListTree = () => {
 
       // Use Function constructor instead of eval for better security
       return new Function(`return ${evalCondition}`)();
-    } catch (error) {
+    } catch {
       console.warn("Invalid condition expression:", condition);
       return false;
     }

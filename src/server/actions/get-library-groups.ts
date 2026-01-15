@@ -29,7 +29,7 @@ export class GetLibraryGroupsAction extends ChaiBaseAction<GetLibraryGroupsActio
   /**
    * Execute the get library groups action
    */
-  async execute(_data: GetLibraryGroupsActionData): Promise<GetLibraryGroupsActionResponse> {
+  async execute(): Promise<GetLibraryGroupsActionResponse> {
     if (!this.context) {
       throw new ActionError("Context not set", "CONTEXT_NOT_SET");
     }
