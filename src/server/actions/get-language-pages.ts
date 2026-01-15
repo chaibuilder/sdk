@@ -1,8 +1,8 @@
+import { db, safeQuery, schema } from "@/server/db";
+import { apiError } from "@/server/lib";
 import { and, eq, or } from "drizzle-orm";
 import { omit } from "lodash-es";
 import { z } from "zod";
-import { db, safeQuery, schema } from "../db";
-import { apiError } from "../lib";
 import { ChaiBaseAction } from "./base-action";
 
 type GetLanguagePagesActionData = {

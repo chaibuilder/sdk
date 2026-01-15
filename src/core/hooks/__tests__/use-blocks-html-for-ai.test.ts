@@ -1,4 +1,4 @@
-import { transformNode, type HimalayaNode } from "../use-blocks-html-for-ai";
+import { transformNode, type HimalayaNode } from "@/core/hooks/use-blocks-html-for-ai";
 
 describe("transformNode", () => {
   const mockBlocks: any[] = [];

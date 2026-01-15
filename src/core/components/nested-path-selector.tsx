@@ -6,8 +6,8 @@ import { ChevronLeftIcon, ChevronRightIcon, IdCardIcon, LoopIcon } from "@radix-
 import { t } from "i18next";
 import { startsWith } from "lodash-es";
 import React from "react";
-import { COLLECTION_PREFIX, REPEATER_PREFIX } from "../constants/STRINGS";
-import { useBuilderProp } from "../hooks";
+import { COLLECTION_PREFIX, REPEATER_PREFIX } from "@/core/constants/STRINGS";
+import { useBuilderProp } from "@/core/hooks";
 
 type NestedPathSelectorProps = {
   data: Record<string, any>;

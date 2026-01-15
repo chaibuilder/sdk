@@ -19,9 +19,9 @@ import { ChaiBlock } from "@/types/common";
 import { useAtom } from "jotai";
 import { pick } from "lodash-es";
 import { DragEvent, useCallback, useRef } from "react";
-import { getOrientation } from "../../getOrientation";
-import { cleanupDragImage, createCoreDragImage } from "../create-drag-image";
-import { dragAndDropAtom, dropIndicatorAtom, setIsDragging } from "./use-drag-and-drop";
+import { getOrientation } from "@/core/components/canvas/dnd/getOrientation";
+import { cleanupDragImage, createCoreDragImage } from "@/core/components/canvas/dnd/drag-and-drop/create-drag-image";
+import { dragAndDropAtom, dropIndicatorAtom, setIsDragging } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
 
 /**
  * @HOOK useBlockDragStart

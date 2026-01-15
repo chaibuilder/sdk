@@ -1,7 +1,7 @@
 import { WidgetProps } from "@rjsf/utils";
 import { find, get } from "lodash-es";
-import { COLLECTION_PREFIX } from "../constants/STRINGS";
-import { useBuilderProp, useSelectedBlock } from "../hooks";
+import { COLLECTION_PREFIX } from "@/core/constants/STRINGS";
+import { useBuilderProp, useSelectedBlock } from "@/core/hooks";
 
 const CollectionFilterSortField = ({ id, value, onChange, onBlur }: WidgetProps) => {
   const collections = useBuilderProp("collections", []);

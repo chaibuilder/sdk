@@ -11,7 +11,7 @@ import { ChaiPage } from "@/pages/utils/page-organization";
 import { isEmpty } from "lodash-es";
 import { Folder, LogsIcon } from "lucide-react";
 import { lazy, Suspense, useEffect, useMemo, useState } from "react";
-import { usePageLockStatus } from "../page-lock/page-lock-hook";
+import { usePageLockStatus } from "@/pages/client/components/page-lock/page-lock-hook";
 const PagesManagerNew = lazy(() => import("./page-manager-new"));
 
 const PagesManagerTrigger = ({ children }: { children?: React.ReactNode }) => {

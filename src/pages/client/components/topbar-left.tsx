@@ -18,7 +18,7 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { compact, find, get, isEmpty, map } from "lodash-es";
 import { ChevronDown, Languages, Plus, Star } from "lucide-react";
 import React, { lazy, Suspense, useEffect, useMemo } from "react";
-import { addNewLangAtom } from "../../atom/add-new-lang";
+import { addNewLangAtom } from "@/pages/atom/add-new-lang";
 import { usePageLockStatus } from "./page-lock/page-lock-hook";
 import PagesManagerTrigger from "./page-manager/page-manager-trigger";
 

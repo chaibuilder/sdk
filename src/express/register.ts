@@ -1,4 +1,4 @@
-import { registerChaiPageType } from "../server/register/register-page-type";
+import { registerChaiPageType } from "@/server/register/register-page-type";
 
 registerChaiPageType("listing", {
   name: "Listings",

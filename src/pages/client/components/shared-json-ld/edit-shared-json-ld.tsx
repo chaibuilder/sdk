@@ -19,10 +19,10 @@ import {
   useApplySchemaToAllPages,
   useRemoveSchemaFromAllPages,
   useUpdateGlobalSchema,
-} from "../../../hooks/project/mutations";
-import { useGlobalJsonLDItems } from "../../../hooks/use-global-json-ld";
-import { parseJSONWithPlaceholders } from "../../../utils/json-utils";
-import { SmartJsonInput } from "../smart-json-input";
+} from "@/pages/hooks/project/mutations";
+import { useGlobalJsonLDItems } from "@/pages/hooks/use-global-json-ld";
+import { parseJSONWithPlaceholders } from "@/pages/utils/json-utils";
+import { SmartJsonInput } from "@/pages/client/components/smart-json-input";
 
 export const EditSharedJsonLD = ({ id, onClose }: { id: string | null; onClose: () => void }) => {
   return (

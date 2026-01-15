@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
-import { db, safeQuery, schema } from "../db";
-import { apiError } from "../lib";
+import { db, safeQuery, schema } from "@/server/db";
+import { apiError } from "@/server/lib";
 import { ChaiBaseAction } from "./base-action";
 
 type GetDraftPageActionData = {

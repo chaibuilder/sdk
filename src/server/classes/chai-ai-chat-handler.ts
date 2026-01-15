@@ -1,6 +1,6 @@
 import { streamText, StreamTextResult } from "ai";
 import { noop } from "lodash-es";
-import { AIChatOptions, ChaiBuilderPagesAIInterface } from "../export";
+import { AIChatOptions, ChaiBuilderPagesAIInterface } from "@/server/export";
 import { getAskAiSystemPrompt } from "./system-prompt";
 
 const DEFAULT_MODEL = "google/gemini-2.5-flash";

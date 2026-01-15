@@ -1,4 +1,4 @@
-import { ChaiBuilderPageType } from "../types";
+import { ChaiBuilderPageType } from "@/server/types";
 import { PAGE_TYPES } from "./register-page-type";
 
 export const registerChaiPartialType = (

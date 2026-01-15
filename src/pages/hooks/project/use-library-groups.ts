@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { useFetch } from "../utils/use-fetch";
+import { useFetch } from "@/pages/hooks/utils/use-fetch";
 import { useApiUrl } from "./use-builder-prop";
 
 export interface LibraryGroup {

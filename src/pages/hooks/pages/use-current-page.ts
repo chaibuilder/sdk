@@ -3,7 +3,7 @@ import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { atom, useAtom } from "jotai";
 import { find, noop } from "lodash-es";
 import { useMemo } from "react";
-import { usePagesProp } from "../project/use-builder-prop";
+import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
 import { useDynamicPageSlug } from "./use-dynamic-page-selector";
 
 const pageEditInfoAtom = atom<{

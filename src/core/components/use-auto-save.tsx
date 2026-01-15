@@ -1,6 +1,6 @@
 import { atom, useAtom } from "jotai";
 import { useCallback, useEffect } from "react";
-import { useBuilderProp, useSavePage } from "../hooks";
+import { useBuilderProp, useSavePage } from "@/core/hooks";
 
 export const userActionsCountAtom = atom(0);
 

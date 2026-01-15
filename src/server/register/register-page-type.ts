@@ -1,15 +1,11 @@
-import { ChaiBuilderPageType } from "../types";
+import { ChaiBuilderPageType } from "@/server/types";
 
 export const PAGE_TYPES: Record<string, ChaiBuilderPageType> = {};
 
 export const getChaiPageTypes = () => Object.values(PAGE_TYPES);
 
-export const getChaiPageType = (key: keyof typeof PAGE_TYPES) =>
-  PAGE_TYPES[key];
+export const getChaiPageType = (key: keyof typeof PAGE_TYPES) => PAGE_TYPES[key];
 
-export const registerChaiPageType = (
-  key: string,
-  pageTypeOptions: Omit<ChaiBuilderPageType, "key" | "hasSlug">
-) => {
+export const registerChaiPageType = (key: string, pageTypeOptions: Omit<ChaiBuilderPageType, "key" | "hasSlug">) => {
   PAGE_TYPES[key] = { key, ...pageTypeOptions, hasSlug: true };
 };

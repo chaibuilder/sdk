@@ -3,8 +3,8 @@ import { isObject } from "@rjsf/utils";
 import { atom, useAtom, useSetAtom } from "jotai";
 import { get, isFunction, pick, startsWith, values } from "lodash-es";
 import { useEffect, useState } from "react";
-import { COLLECTION_PREFIX } from "../constants/STRINGS";
-import { useBuilderProp, useUpdateBlocksPropsRealtime } from "../hooks";
+import { COLLECTION_PREFIX } from "@/core/constants/STRINGS";
+import { useBuilderProp, useUpdateBlocksPropsRealtime } from "@/core/hooks";
 
 type BlockAsyncProps = {
   status: "idle" | "loading" | "loaded" | "error";

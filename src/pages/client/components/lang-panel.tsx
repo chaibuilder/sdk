@@ -19,7 +19,7 @@ import { useSetAtom } from "jotai";
 import { filter, find, get, isEmpty, map } from "lodash-es";
 import { MoreHorizontal, PencilIcon, Power, StarIcon, TrashIcon } from "lucide-react";
 import { lazy, Suspense, useMemo, useState } from "react";
-import { addNewLangAtom } from "../../atom/add-new-lang";
+import { addNewLangAtom } from "@/pages/atom/add-new-lang";
 
 const DeletePage = lazy(() => import("@/pages/client/components/delete-page"));
 const UnpublishPage = lazy(() => import("@/pages/client/components/unpublish-page"));

@@ -20,8 +20,8 @@ import { find, isEmpty, pick, set } from "lodash-es";
 import { Check, ChevronDown, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
-import { usePageTypes } from "../../hooks/project/use-page-types";
-import { useChangePage } from "../../hooks/use-change-page";
+import { usePageTypes } from "@/pages/hooks/project/use-page-types";
+import { useChangePage } from "@/pages/hooks/use-change-page";
 import { getSeoDefaults } from "./get-seo-defaults";
 import ChaiCommandList from "./ui/chai-command-list";
 // Simple utility to conditionally join class names

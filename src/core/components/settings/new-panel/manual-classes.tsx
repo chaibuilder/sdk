@@ -18,7 +18,7 @@ import { useMemo, useRef, useState } from "react";
 import Autosuggest from "react-autosuggest";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { DesignTokensIcon } from "../../sidepanels/panels/design-tokens/DesignTokensIcon";
+import { DesignTokensIcon } from "@/core/components/sidepanels/panels/design-tokens/DesignTokensIcon";
 
 export function ManualClasses({
   from = "default",

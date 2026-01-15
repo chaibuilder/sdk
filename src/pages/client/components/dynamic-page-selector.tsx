@@ -10,7 +10,7 @@ import { useLanguages } from "@/core/main";
 import { get } from "lodash-es";
 import { ChevronDown } from "lucide-react";
 import { useEffect, useRef } from "react";
-import { useDynamicPageSelector } from "../../hooks/pages/use-dynamic-page-selector";
+import { useDynamicPageSelector } from "@/pages/hooks/pages/use-dynamic-page-selector";
 
 const SearchInput = ({
   isDefaultLang,

@@ -6,7 +6,7 @@ import { useAtomValue } from "jotai";
 import { find, first, has, isEmpty } from "lodash-es";
 import { useCallback } from "react";
 import { toast } from "sonner";
-import { useAddBlock } from "./use-add-block";
+import { useAddBlock } from "@/core/hooks/use-add-block";
 
 const useCanPaste = () => {
   const [blocks] = useBlocksStore();

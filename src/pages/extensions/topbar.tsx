@@ -5,10 +5,10 @@ import { useChaiCurrentPage, useGetPageFullSlug } from "@/pages/hooks/pages/use-
 import { get } from "lodash-es";
 import { ExternalLink } from "lucide-react";
 import { lazy, Suspense } from "react";
-import { PageDropdownInHeader } from "../client/components/page-dropdown-in-header";
-import { ScreenOverlay } from "../client/components/screen-overlay";
-import { useActivePage } from "../hooks/pages/use-current-page";
-import { useDynamicPageSelector, useDynamicPageSlug } from "../hooks/pages/use-dynamic-page-selector";
+import { PageDropdownInHeader } from "@/pages/client/components/page-dropdown-in-header";
+import { ScreenOverlay } from "@/pages/client/components/screen-overlay";
+import { useActivePage } from "@/pages/hooks/pages/use-current-page";
+import { useDynamicPageSelector, useDynamicPageSlug } from "@/pages/hooks/pages/use-dynamic-page-selector";
 const DynamicPageSelector = lazy(() => import("../client/components/dynamic-page-selector"));
 
 const DynamicPageSelectorSuspense = () => {

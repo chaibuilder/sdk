@@ -1,8 +1,8 @@
 import { useLanguages } from "@/core/main";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { ACTIONS } from "../../constants/ACTIONS.ts";
-import { useFetch } from "../utils/use-fetch.ts";
+import { ACTIONS } from "@/pages/constants/ACTIONS";
+import { useFetch } from "@/pages/hooks/utils/use-fetch";
 import { useApiUrl } from "./use-builder-prop.ts";
 
 export const useUpdateWebsiteSettings = () => {

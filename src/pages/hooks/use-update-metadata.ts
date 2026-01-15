@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ACTIONS } from "../constants/ACTIONS";
+import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { useActivePage } from "./pages/use-current-page";
 import { useApiUrl } from "./project/use-builder-prop";
 import { useFetch } from "./utils/use-fetch";

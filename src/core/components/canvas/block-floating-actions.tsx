@@ -1,3 +1,4 @@
+import { AiIcon } from "@/core/components/ai/ai-icon";
 import AddBlockDropdown from "@/core/components/canvas/add-block-placements";
 import { useDragAndDrop, useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 import BlockController from "@/core/components/sidepanels/panels/add-blocks/block-controller";
@@ -22,7 +23,6 @@ import { ArrowUpIcon, CopyIcon, DragHandleDots2Icon, PlusIcon, TrashIcon } from 
 import { useResizeObserver } from "@react-hookz/web";
 import { first, get, isEmpty } from "lodash-es";
 import { useEffect, useState } from "react";
-import { AiIcon } from "../ai/ai-icon";
 import { GotoSettingsIcon } from "./goto-settings-icon";
 import { getElementByDataBlockId } from "./static/chai-canvas";
 

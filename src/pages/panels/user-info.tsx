@@ -14,8 +14,8 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/h
 import { useTranslation } from "@/core/main";
 import { isFunction, noop } from "lodash-es";
 import { User } from "lucide-react";
-import { usePagesProp } from "../hooks/project/use-builder-prop";
-import { useChaiAuth } from "../hooks/use-chai-auth";
+import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
+import { useChaiAuth } from "@/pages/hooks/use-chai-auth";
 export const userInfoPanelId = "user-info";
 
 export const UserInfoButton = () => {

@@ -11,9 +11,9 @@ import { throwConfetti } from "@/pages/utils/confetti";
 import { concat, filter, find, first, get, includes, isEmpty, keys, map, orderBy, uniq } from "lodash-es";
 import { Edit, File, GlobeIcon, Lock } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import Tooltip from "../../../utils/tooltip";
-import { usePageToUser } from "../page-lock/page-lock-hook";
-import { useUserId } from "../page-lock/page-lock-utils";
+import Tooltip from "@/pages/utils/tooltip";
+import { usePageToUser } from "@/pages/client/components/page-lock/page-lock-hook";
+import { useUserId } from "@/pages/client/components/page-lock/page-lock-utils";
 
 const SinglePageItem = ({ page, selectedPages, handleCheckboxChange, getPageType, hasSlug, currentOwnerId }: any) => {
   const userId = useUserId();

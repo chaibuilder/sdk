@@ -1,7 +1,7 @@
 import { renderHook, act } from '@testing-library/react';
 import { useBlocksStoreManager } from './use-blocks-store-manager';
-import { builderStore } from '../atoms/store';
-import { presentBlocksAtom } from '../atoms/blocks';
+import { builderStore } from "@/core/atoms/store";
+import { presentBlocksAtom } from "@/core/atoms/blocks";
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ChaiBlock } from '@/types/chai-block';
 

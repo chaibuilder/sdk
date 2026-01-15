@@ -3,7 +3,7 @@ import { builderStore } from "@/core/atoms/store";
 import { ChaiBlock } from "@/types/chai-block";
 import { act, renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { replaceBlock, useReplaceBlock } from "../use-replace-block";
+import { replaceBlock, useReplaceBlock } from "@/core/hooks/use-replace-block";
 
 // Mock dependencies
 vi.mock("@/core/history/use-blocks-store-undoable-actions", () => ({

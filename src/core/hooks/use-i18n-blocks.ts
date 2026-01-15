@@ -1,9 +1,9 @@
 import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { compact, each, get, pick } from "lodash-es";
 import { useCallback } from "react";
-import { useBlocksStore } from "../history/use-blocks-store-undoable-actions";
+import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
 import { getBlockWithNestedChildren } from "./get-block-with-nested-children";
-import { useSelectedBlock } from "./use-selected-blockIds";
+import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
 
 export const useI18nBlocks = () => {
   const selectedBlock = useSelectedBlock();

@@ -1,6 +1,6 @@
 import { SupabaseClient } from "@supabase/supabase-js";
-import { DeleteAssetAction, GetAssetAction, GetAssetsAction, UpdateAssetAction, UploadAssetAction } from "../assets";
-import { GetChaiUserAction } from "../user";
+import { DeleteAssetAction, GetAssetAction, GetAssetsAction, UpdateAssetAction, UploadAssetAction } from "@/express/actions/assets";
+import { GetChaiUserAction } from "@/express/actions/user";
 import { DeleteFromStorageAction } from "./delete-from-storage";
 import { UploadToStorageAction } from "./upload-to-storage";
 

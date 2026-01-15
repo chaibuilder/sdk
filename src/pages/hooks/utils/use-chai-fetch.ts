@@ -1,6 +1,6 @@
 import { useChaiAuth } from "@/pages/hooks/use-chai-auth";
 import { useCallback } from "react";
-import { useAccessToken } from "../use-access-token";
+import { useAccessToken } from "@/pages/hooks/use-access-token";
 
 export const useChaiFetch = () => {
   const { logout } = useChaiAuth();

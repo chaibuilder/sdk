@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { checkMissingTranslations } from '../use-save-page';
+import { checkMissingTranslations } from "@/core/hooks/use-save-page";
 import { getRegisteredChaiBlock } from '@chaibuilder/runtime';
 
 vi.mock('@chaibuilder/runtime', () => ({

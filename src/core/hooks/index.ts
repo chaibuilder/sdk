@@ -45,12 +45,12 @@ import {
 } from "@/core/hooks/use-update-blocks-props";
 import { useWrapperBlock } from "@/core/hooks/use-wrapper-block";
 import { useTranslation } from "react-i18next";
-import { useBlocksHtmlForAi } from "./use-blocks-html-for-ai";
-import { useHtmlToBlocks } from "./use-html-to-blocks";
-import { useI18nBlocks } from "./use-i18n-blocks";
-import { useInlineEditing } from "./use-inline-editing";
-import { usePubSub } from "./use-pub-sub";
-import { useReplaceBlock } from "./use-replace-block";
+import { useBlocksHtmlForAi } from "@/core/hooks/use-blocks-html-for-ai";
+import { useHtmlToBlocks } from "@/core/hooks/use-html-to-blocks";
+import { useI18nBlocks } from "@/core/hooks/use-i18n-blocks";
+import { useInlineEditing } from "@/core/hooks/use-inline-editing";
+import { usePubSub } from "@/core/hooks/use-pub-sub";
+import { useReplaceBlock } from "@/core/hooks/use-replace-block";
 export { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 export { useCanvasWidth } from "@/core/hooks/use-canvas-width";
 export type { BreakpointName } from "@/core/hooks/use-canvas-width";

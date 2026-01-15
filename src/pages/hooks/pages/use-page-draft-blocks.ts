@@ -12,7 +12,7 @@ import { useFetch } from "@/pages/hooks/utils/use-fetch";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { useQuery } from "@tanstack/react-query";
 import { find, get } from "lodash-es";
-import { useFallbackLang } from "../use-fallback-lang";
+import { useFallbackLang } from "@/pages/hooks/use-fallback-lang";
 import { useDynamicPageSlug } from "./use-dynamic-page-selector";
 
 export const usePageDraftBlocks = () => {

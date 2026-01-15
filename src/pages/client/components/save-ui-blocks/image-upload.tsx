@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { ImageIcon, X } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 import { toast } from "sonner";
-import { compressImageIfNeeded } from "../../../utils/image-compression";
+import { compressImageIfNeeded } from "@/pages/utils/image-compression";
 
 interface ImageUploadProps {
   value: string;

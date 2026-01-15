@@ -7,11 +7,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Info, Loader } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ACTIONS } from "../../../constants/ACTIONS";
-import { useChaiCurrentPage } from "../../../hooks/pages/use-current-page";
-import { useAddGlobalSchema, useTogglePageGlobalSchema } from "../../../hooks/project/mutations";
-import { parseJSONWithPlaceholders } from "../../../utils/json-utils";
-import { SmartJsonInput } from "../smart-json-input";
+import { ACTIONS } from "@/pages/constants/ACTIONS";
+import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
+import { useAddGlobalSchema, useTogglePageGlobalSchema } from "@/pages/hooks/project/mutations";
+import { parseJSONWithPlaceholders } from "@/pages/utils/json-utils";
+import { SmartJsonInput } from "@/pages/client/components/smart-json-input";
 
 export const AddSharedJsonLD = ({
   show,

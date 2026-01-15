@@ -6,7 +6,7 @@ import {
   registerChaiBlockSchema,
   StylesProp,
 } from "@chaibuilder/runtime";
-import { ExternalDataType } from "../EXTERNAL_DATA";
+import { ExternalDataType } from "@/routes/demo/EXTERNAL_DATA";
 
 type Sort = {
   field: string;

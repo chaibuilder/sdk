@@ -7,9 +7,9 @@ import Tooltip from "@/pages/utils/tooltip";
 import { find, get } from "lodash-es";
 import { ChevronRight, Edit, File, Hash, Lock, MoreHorizontal, NotepadText, Plus, StarsIcon } from "lucide-react";
 import { useMemo } from "react";
-import { PageActionsDropdown } from "../page-action-dropdown";
-import { usePageToUser } from "../page-lock/page-lock-hook";
-import { useUserId } from "../page-lock/page-lock-utils";
+import { PageActionsDropdown } from "@/pages/client/components/page-action-dropdown";
+import { usePageToUser } from "@/pages/client/components/page-lock/page-lock-hook";
+import { useUserId } from "@/pages/client/components/page-lock/page-lock-utils";
 import { PageLinkContextMenu } from "./page-link-context-menu";
 
 /**

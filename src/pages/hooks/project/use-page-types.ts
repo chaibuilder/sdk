@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
-import { ChaiBuilderPageType } from "../../../server/types";
-import { ACTIONS } from "../../constants/ACTIONS";
-import { useFetch } from "../utils/use-fetch";
+import { ChaiBuilderPageType } from "@/server/types";
+import { ACTIONS } from "@/pages/constants/ACTIONS";
+import { useFetch } from "@/pages/hooks/utils/use-fetch";
 import { useApiUrl } from "./use-builder-prop";
 
 export const usePageTypes = () => {

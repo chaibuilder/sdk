@@ -9,7 +9,7 @@ import { ArrowRightIcon, FileIcon, GlobeIcon } from "@radix-ui/react-icons";
 import { noop } from "lodash-es";
 import { ReactNode, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { TokenUsageSection, TokenUsageSectionItem } from "../token-usage-section";
+import { TokenUsageSection, TokenUsageSectionItem } from "@/core/components/settings/new-panel/token-usage-section";
 
 const STYLES_PREFIX = "#styles:";
 

@@ -1,7 +1,7 @@
 import { and, eq, sql } from "drizzle-orm";
 import { pick } from "lodash-es";
-import { db, safeQuery, schema } from "../db";
-import { PageTreeBuilder } from "../utils/page-tree-builder";
+import { db, safeQuery, schema } from "@/server/db";
+import { PageTreeBuilder } from "@/server/utils/page-tree-builder";
 import { ActionError } from "./action-error";
 
 /**

@@ -17,7 +17,7 @@ import { DotsHorizontalIcon, LightningBoltIcon } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { ScalePercent } from "../scale-percent";
+import { ScalePercent } from "@/core/components/canvas/scale-percent";
 import { PageValidation } from "./page-validation";
 
 const CanvasTopBar: React.FC = () => {

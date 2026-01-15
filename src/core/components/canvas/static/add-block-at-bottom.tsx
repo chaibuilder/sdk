@@ -4,7 +4,7 @@ import { PERMISSIONS } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
-import { useIsDragAndDropEnabled } from "../dnd/drag-and-drop/hooks";
+import { useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 
 export const AddBlockAtBottom = () => {
   const { t } = useTranslation();

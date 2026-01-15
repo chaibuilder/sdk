@@ -5,7 +5,7 @@ import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { useRightPanel } from "@/core/hooks/use-theme";
 import { PERMISSIONS, usePermissions } from "@/core/main";
 import { useTranslation } from "react-i18next";
-import { AiIcon } from "../../ai/ai-icon";
+import { AiIcon } from "@/core/components/ai/ai-icon";
 
 export const AiAssistant = () => {
   const setAiAssistantActive = useAiAssistant();

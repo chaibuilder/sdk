@@ -5,7 +5,7 @@ import { useTranslation } from "@/core/main";
 import { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
 import { AlertCircle, Check, UserIcon, X } from "lucide-react";
 import { useState } from "react";
-import { BlurContainer } from "../chai-loader";
+import { BlurContainer } from "@/pages/client/components/chai-loader";
 import { usePageLockMeta, usePageLockStatus, useSendRealtimeEvent } from "./page-lock-hook";
 import { EVENT, PAGE_STATUS } from "./page-lock-utils";
 

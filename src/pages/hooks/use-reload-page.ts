@@ -1,8 +1,8 @@
 import { useSavePage } from "@/core/hooks/use-save-page";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
-import { usePageLockStatus } from "../client/components/page-lock/page-lock-hook";
-import { ACTIONS } from "../constants/ACTIONS";
+import { usePageLockStatus } from "@/pages/client/components/page-lock/page-lock-hook";
+import { ACTIONS } from "@/pages/constants/ACTIONS";
 
 export const useReloadPage = () => {
   const { savePageAsync } = useSavePage();

@@ -2,8 +2,8 @@ import { ChaiBlock } from "@/types/common";
 import { and, eq, inArray } from "drizzle-orm";
 import { get, has, isEmpty } from "lodash-es";
 import { z } from "zod";
-import { db, safeQuery, schema } from "../db";
-import { apiError } from "../lib";
+import { db, safeQuery, schema } from "@/server/db";
+import { apiError } from "@/server/lib";
 import { ChaiBaseAction } from "./base-action";
 
 /**

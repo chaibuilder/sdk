@@ -1,8 +1,8 @@
 import { and, eq, inArray } from "drizzle-orm";
 import { z } from "zod";
-import { db, safeQuery, schema } from "../db";
-import { apiError } from "../lib";
-import { PageTreeBuilder } from "../utils/page-tree-builder";
+import { db, safeQuery, schema } from "@/server/db";
+import { apiError } from "@/server/lib";
+import { PageTreeBuilder } from "@/server/utils/page-tree-builder";
 import { ActionError } from "./action-error";
 import { ChaiBaseAction } from "./base-action";
 

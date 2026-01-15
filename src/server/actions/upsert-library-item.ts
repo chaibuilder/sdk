@@ -1,9 +1,9 @@
+import { db, safeQuery, schema } from "@/server/db";
 import { ChaiBlock } from "@/types/common";
 import { eq } from "drizzle-orm";
 import { set } from "lodash-es";
 import { randomUUID } from "node:crypto";
 import { z } from "zod";
-import { db, safeQuery, schema } from "../db";
 import { ActionError } from "./action-error";
 import { getChaiAction } from "./actions-registery";
 import { ChaiBaseAction } from "./base-action";
@@ -90,21 +90,21 @@ export class UpsertLibraryItemAction extends ChaiBaseAction<
     if (previewImage) {
       const uploadAction = getChaiAction("UPLOAD_TO_STORAGE");
       uploadAction?.setContext(this.context);
-      
+
       const fileName = `library-item-${Date.now()}.webp`;
       const folderPath = `${appId}/library-items`;
-      
+
       const uploadResult = await uploadAction?.execute({
         file: previewImage,
         fileName,
         contentType: "image/webp",
         folder: folderPath,
       });
-      
+
       if (uploadResult?.error) {
         throw new ActionError("Failed to upload preview image", "UPLOAD_PREVIEW_FAILED", uploadResult.error);
       }
-      
+
       finalPreviewImageUrl = uploadResult?.data?.url || previewImageUrl;
     }
 

@@ -18,7 +18,7 @@ import { useCanvasDisplayWidth } from "@/core/hooks/use-screen-size-width";
 import { isEmpty } from "lodash-es";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Provider } from "react-wrap-balancer";
-import { useDragAndDrop, useDropIndicator } from "../dnd/drag-and-drop/hooks";
+import { useDragAndDrop, useDropIndicator } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 import { CanvasEventsWatcher } from "./canvas-events-watcher";
 
 const StaticCanvas = () => {

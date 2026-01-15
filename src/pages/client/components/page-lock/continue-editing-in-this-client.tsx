@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTranslation } from "@/core/main";
 import { Check, CheckCircle } from "lucide-react";
-import { BlurContainer } from "../chai-loader";
+import { BlurContainer } from "@/pages/client/components/chai-loader";
 import { usePageLockMeta } from "./page-lock-hook";
 
 const ContinueEditingInThisClient = () => {

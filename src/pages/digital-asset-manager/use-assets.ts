@@ -1,7 +1,7 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { ACTIONS } from "../constants/ACTIONS";
-import { useApiUrl } from "../hooks/project/use-builder-prop";
-import { useFetch } from "../hooks/utils/use-fetch";
+import { ACTIONS } from "@/pages/constants/ACTIONS";
+import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
+import { useFetch } from "@/pages/hooks/utils/use-fetch";
 
 export interface Asset {
   id: string;

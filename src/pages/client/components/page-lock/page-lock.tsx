@@ -1,7 +1,7 @@
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { useQueryClient } from "@tanstack/react-query";
 import { lazy, Suspense, useEffect, useRef } from "react";
-import { BlurContainer } from "../chai-loader";
+import { BlurContainer } from "@/pages/client/components/chai-loader";
 import { useChaibuilderRealtime, usePageLockMeta, usePageLockStatus } from "./page-lock-hook";
 import { EVENT, PAGE_STATUS } from "./page-lock-utils";
 

@@ -1,7 +1,7 @@
 import type { ChaiBlock } from "@/core/main";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useMemo, useRef } from "react";
-import { ACTIONS } from "../constants/ACTIONS";
+import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { useActivePage, useChaiCurrentPage } from "./pages/use-current-page";
 import { useApiUrl } from "./project/use-builder-prop";
 import { useWebsiteSetting } from "./project/use-website-settings";

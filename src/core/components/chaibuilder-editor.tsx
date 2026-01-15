@@ -27,9 +27,9 @@ import { each, noop, omit } from "lodash-es";
 import React, { useEffect, useMemo } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Toaster } from "sonner";
-import { useCheckStructure } from "../hooks/use-check-structure";
-import { ExportCodeModal } from "../modals/export-code-modal";
-import { useAutoSave } from "./use-auto-save";
+import { useCheckStructure } from "@/core/hooks/use-check-structure";
+import { ExportCodeModal } from "@/core/modals/export-code-modal";
+import { useAutoSave } from "@/core/components/use-auto-save";
 
 const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
   const [, setAllBlocks] = useBlocksStore();

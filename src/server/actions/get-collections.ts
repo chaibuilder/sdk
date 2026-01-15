@@ -1,6 +1,6 @@
 import { omit } from "lodash-es";
 import { z } from "zod";
-import { getChaiCollections } from "../register/regsiter-collection";
+import { getChaiCollections } from "@/server/register/regsiter-collection";
 import { ChaiBaseAction } from "./base-action";
 
 type GetCollectionsActionData = Record<string, never>;

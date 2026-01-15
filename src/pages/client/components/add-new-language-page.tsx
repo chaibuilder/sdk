@@ -18,12 +18,12 @@ import { parseSlugForEdit, removeSlugExtension } from "@/pages/utils/slug-utils"
 import { filter, find, startsWith } from "lodash-es";
 import { Loader } from "lucide-react";
 import React, { FormEvent, useEffect, useMemo, useState } from "react";
-import { useCreatePage, useUpdatePage } from "../../hooks/pages/mutations";
-import { useLanguagePages } from "../../hooks/pages/use-language-pages";
-import { useWebsitePages } from "../../hooks/pages/use-project-pages";
-import { usePageTypes } from "../../hooks/project/use-page-types";
-import { useWebsiteSetting } from "../../hooks/project/use-website-settings";
-import { useFallbackLang } from "../../hooks/use-fallback-lang";
+import { useCreatePage, useUpdatePage } from "@/pages/hooks/pages/mutations";
+import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
+import { useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
+import { usePageTypes } from "@/pages/hooks/project/use-page-types";
+import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
+import { useFallbackLang } from "@/pages/hooks/use-fallback-lang";
 
 /**
  * Props for the AddNewLanguagePage component.

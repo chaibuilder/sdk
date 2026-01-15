@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { PAGE_TYPES, getChaiPageType, getChaiPageTypes, registerChaiPageType } from "../register/register-page-type";
-import { ChaiBuilderPageType } from "../types";
+import { PAGE_TYPES, getChaiPageType, getChaiPageTypes, registerChaiPageType } from "@/server/register/register-page-type";
+import { ChaiBuilderPageType } from "@/server/types";
 
 describe("Page Type Registration", () => {
   // Clear PAGE_TYPES before each test to ensure isolation

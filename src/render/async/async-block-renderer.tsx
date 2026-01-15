@@ -8,8 +8,8 @@ import { getRegisteredChaiBlock } from "@/runtime";
 import { ChaiBlock } from "@/types/chai-block";
 import { get, has, isArray, isFunction, isNull } from "lodash-es";
 import { createElement, Suspense } from "react";
-import { applyBindingToBlockProps } from "../apply-binding";
-import { getRuntimePropValues, RenderChaiBlocksProps } from "../render-chai-blocks";
+import { applyBindingToBlockProps } from "@/render/apply-binding";
+import { getRuntimePropValues, RenderChaiBlocksProps } from "@/render/render-chai-blocks";
 import AsyncDataProviderPropsBlock from "./async-props-block";
 
 const SuspenseFallback = () => <div></div>;

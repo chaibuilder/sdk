@@ -16,7 +16,7 @@
  */
 
 import { canAcceptChildBlock } from "@/core/functions/block-helpers";
-import { getOrientation } from "../getOrientation";
+import { getOrientation } from "@/core/components/canvas/dnd/getOrientation";
 
 // ============================================================================
 // CONSTANTS

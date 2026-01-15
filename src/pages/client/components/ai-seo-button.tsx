@@ -2,9 +2,9 @@ import { Button } from "@/components/ui/button";
 import { useLanguages } from "@/core/main";
 import { useMutation } from "@tanstack/react-query";
 import { Loader, Wand2Icon } from "lucide-react";
-import { ACTIONS } from "../../constants/ACTIONS";
-import { useApiUrl } from "../../hooks/project/use-builder-prop";
-import { useFetch } from "../../hooks/utils/use-fetch";
+import { ACTIONS } from "@/pages/constants/ACTIONS";
+import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
+import { useFetch } from "@/pages/hooks/utils/use-fetch";
 
 const getPageContent = () => {
   const iframe = document.getElementById("canvas-iframe") as HTMLIFrameElement;

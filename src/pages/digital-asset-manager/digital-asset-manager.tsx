@@ -33,7 +33,7 @@ import React, { Suspense, useCallback, useEffect, useMemo, useState } from "reac
 import { useDropzone } from "react-dropzone";
 import { ErrorBoundary } from "react-error-boundary";
 import { toast } from "sonner";
-import { compressImageIfNeeded, formatFileSize } from "../utils/image-compression";
+import { compressImageIfNeeded, formatFileSize } from "@/pages/utils/image-compression";
 import { useDeleteAsset, useUpdateAsset, useUploadAsset } from "./mutations";
 import { Pagination } from "./pagination";
 import { SingleAssetDetail } from "./single-asset-detail";

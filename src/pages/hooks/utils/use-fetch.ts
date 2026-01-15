@@ -1,7 +1,7 @@
 import { get } from "lodash-es";
 import { useCallback } from "react";
-import { fetchAPI } from "../../utils/fetch-api";
-import { useApiUrl, usePagesProp } from "../project/use-builder-prop";
+import { fetchAPI } from "@/pages/utils/fetch-api";
+import { useApiUrl, usePagesProp } from "@/pages/hooks/project/use-builder-prop";
 
 export const useBuilderFetch = () => {
   const fetch = useFetch();

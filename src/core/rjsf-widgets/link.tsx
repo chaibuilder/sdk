@@ -7,7 +7,7 @@ import { FieldProps } from "@rjsf/utils";
 import { get, isEmpty, map, split, startsWith } from "lodash-es";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { LANGUAGES } from "../constants/LANGUAGES";
+import { LANGUAGES } from "@/core/constants/LANGUAGES";
 import { DataBindingSelector } from "./data-binding-selector";
 
 const PageTypeField = ({

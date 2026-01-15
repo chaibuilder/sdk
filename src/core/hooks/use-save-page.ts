@@ -9,8 +9,8 @@ import { ChaiBlock, getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { useThrottledCallback } from "@react-hookz/web";
 import { atom, useAtom, useAtomValue } from "jotai";
 import { has, isEmpty, noop } from "lodash-es";
-import { chaiDesignTokensAtom } from "../atoms/builder";
-import { userActionsCountAtom } from "../components/use-auto-save";
+import { chaiDesignTokensAtom } from "@/core/atoms/builder";
+import { userActionsCountAtom } from "@/core/components/use-auto-save";
 export const builderSaveStateAtom = atom<"SAVED" | "SAVING" | "UNSAVED">("SAVED"); // SAVING
 builderSaveStateAtom.debugLabel = "builderSaveStateAtom";
 

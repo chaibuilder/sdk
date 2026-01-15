@@ -22,8 +22,8 @@ import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { useAtom } from "jotai";
 import { filter, find, get, has, isFunction } from "lodash-es";
 import { DragEvent, useCallback } from "react";
-import { canvasRenderKeyAtom, dragAndDropAtom, dropIndicatorAtom, setIsDragging } from "./use-drag-and-drop";
-import { useDragParentHighlight } from "./use-drag-parent-highlight";
+import { canvasRenderKeyAtom, dragAndDropAtom, dropIndicatorAtom, setIsDragging } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
+import { useDragParentHighlight } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-parent-highlight";
 
 /**
  * @HOOK useBlockDrop

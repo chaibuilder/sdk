@@ -7,10 +7,10 @@ import {
 import { useDebouncedCallback } from "@react-hookz/web";
 import { useSetAtom } from "jotai";
 import { useCallback } from "react";
-import { convertToBlocksTree } from "../functions/blocks-fn";
-import { ChaiBlock } from "../main";
+import { convertToBlocksTree } from "@/core/functions/blocks-fn";
+import { ChaiBlock } from "@/core/main";
 import { StructureError, StructureRule, defaultRuleRegistry } from "./structure-rules";
-import { useBuilderProp } from "./use-builder-prop";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 
 export interface UseCheckStructureOptions {
   enableAccessibilityRules?: boolean;

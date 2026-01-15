@@ -1,6 +1,6 @@
 import { get } from "lodash-es";
 import { useMemo } from "react";
-import { usePagesProps } from "../utils/use-pages-props";
+import { usePagesProps } from "@/pages/hooks/utils/use-pages-props";
 
 export const usePagesProp = <T>(key: string, defaultValue?: T) => {
   const [pagesProps] = usePagesProps();

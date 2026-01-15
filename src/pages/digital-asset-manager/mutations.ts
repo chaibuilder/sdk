@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { ACTIONS } from "../constants/ACTIONS";
-import { useApiUrl } from "../hooks/project/use-builder-prop";
-import { useFetch } from "../hooks/utils/use-fetch";
+import { ACTIONS } from "@/pages/constants/ACTIONS";
+import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
+import { useFetch } from "@/pages/hooks/utils/use-fetch";
 
 export const useUploadAsset = () => {
   const apiUrl = useApiUrl();

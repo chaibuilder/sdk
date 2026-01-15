@@ -6,14 +6,14 @@ import { get } from "lodash-es";
 import { AlertTriangle, Code, Eye, FileCode2, Plus, Share2 } from "lucide-react";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { usePagesProps } from "../../hooks/utils/use-pages-props";
+import { usePagesProps } from "@/pages/hooks/utils/use-pages-props";
 import {
   evaluatePlaceholders,
   JsonError,
   parseJSONWithPlaceholders,
   restorePlaceholders,
-} from "../../utils/json-utils";
-import Tooltip from "../../utils/tooltip";
+} from "@/pages/utils/json-utils";
+import Tooltip from "@/pages/utils/tooltip";
 import { NestedPathSelector } from "./nested-path-selector/nested-path-selector";
 const SharedJsonLD = lazy(() => import("./shared-json-ld/shared-json-ld"));
 

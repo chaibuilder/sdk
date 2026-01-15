@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { ACTIONS } from "../constants/ACTIONS";
+import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { useApiUrl } from "./project/use-builder-prop";
 import { useFetch } from "./utils/use-fetch";
 

@@ -10,8 +10,8 @@ import { isArray, isPlainObject, isString, map, mapValues, startsWith, trim } fr
 import { Check, Copy, FileJson, Loader } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Diff, Hunk, parseDiff } from "react-diff-view";
-import { useRevisionComparison } from "../../hooks/use-revision-comparison";
-import { useChaiUserInfo } from "../../hooks/utils/use-chai-user-info";
+import { useRevisionComparison } from "@/pages/hooks/use-revision-comparison";
+import { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
 
 const RevisionTag = ({ version }: { version: { uid: string; label: string; item: any } }) => {
   const item = version?.item;

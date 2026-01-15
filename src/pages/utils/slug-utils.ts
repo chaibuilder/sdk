@@ -2,7 +2,7 @@
  * Utility functions for handling page slugs
  */
 
-import { LANGUAGES } from "../constants/LANGUAGES";
+import { LANGUAGES } from "@/core/constants/LANGUAGES";
 
 /**
  * Extracts the file extension from a slug if present

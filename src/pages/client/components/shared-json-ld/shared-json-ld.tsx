@@ -20,9 +20,9 @@ import { useGlobalJsonLDItems } from "@/pages/hooks/use-global-json-ld";
 import { filter, find } from "lodash-es";
 import { Edit, Eye, Loader, Plus, Trash } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { useChaiCurrentPage } from "../../../hooks/pages/use-current-page";
-import { useLanguagePages } from "../../../hooks/pages/use-language-pages";
-import { useDeleteGlobalSchema, useTogglePageGlobalSchema } from "../../../hooks/project/mutations";
+import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
+import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
+import { useDeleteGlobalSchema, useTogglePageGlobalSchema } from "@/pages/hooks/project/mutations";
 import { AddSharedJsonLD } from "./add-shared-json-ld";
 import { EditSharedJsonLD } from "./edit-shared-json-ld";
 

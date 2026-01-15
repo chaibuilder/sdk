@@ -4,7 +4,7 @@ import { useFetch } from "@/pages/hooks/utils/use-fetch";
 import { ChaiPage } from "@/pages/utils/page-organization";
 import { useQuery } from "@tanstack/react-query";
 import { keyBy, map } from "lodash-es";
-import { useFallbackLang } from "../use-fallback-lang";
+import { useFallbackLang } from "@/pages/hooks/use-fallback-lang";
 
 export const useWebsitePages = () => {
   const fetchApi = useFetch();

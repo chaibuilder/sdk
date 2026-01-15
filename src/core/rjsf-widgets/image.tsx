@@ -5,7 +5,7 @@ import { WidgetProps } from "@rjsf/utils";
 import { first, get, has, isArray, isEmpty, set, startsWith } from "lodash-es";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useLanguages, useSelectedBlock, useUpdateBlocksProps } from "../hooks";
+import { useLanguages, useSelectedBlock, useUpdateBlocksProps } from "@/core/hooks";
 import { usePageExternalData } from "@/core/atoms/builder";
 import { applyBindingToBlockProps } from "@/render/apply-binding";
 

@@ -16,16 +16,16 @@ import { useCanvasIframe } from "@/core/hooks/use-canvas-iframe";
 import { useAtom } from "jotai";
 import { throttle } from "lodash-es";
 import { DragEvent, useCallback, useEffect, useRef } from "react";
-import { getOrientation } from "../../getOrientation";
-import { detectDropZone } from "../drag-and-drop-utils";
+import { getOrientation } from "@/core/components/canvas/dnd/getOrientation";
+import { detectDropZone } from "@/core/components/canvas/dnd/drag-and-drop/drag-and-drop-utils";
 import {
   canDropAsSiblingWithoutCircularReference,
   canDropWithoutCircularReference,
   isDescendantOf,
-} from "../prevent-circular-drop";
-import { isDraggingOnlyImageBlock } from "./use-block-drop";
-import { dragAndDropAtom, dropIndicatorAtom, isDragging } from "./use-drag-and-drop";
-import { useDragParentHighlight } from "./use-drag-parent-highlight";
+} from "@/core/components/canvas/dnd/drag-and-drop/prevent-circular-drop";
+import { isDraggingOnlyImageBlock } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-block-drop";
+import { dragAndDropAtom, dropIndicatorAtom, isDragging } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
+import { useDragParentHighlight } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-parent-highlight";
 
 // Leaf block types that cannot accept children
 const LEAF_BLOCK_TYPES = [

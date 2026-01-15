@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import { z } from "zod";
-import { db, safeQuery } from "../db";
-import { apps, libraries } from "../drizzle/schema";
+import { db, safeQuery } from "@/server/db";
+import { apps, libraries } from "@/server/drizzle/schema";
 import { ActionError } from "./action-error";
 import { ChaiBaseAction } from "./base-action";
 

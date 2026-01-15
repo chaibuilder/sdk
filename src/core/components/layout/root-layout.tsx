@@ -31,9 +31,9 @@ import React, {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import { AiIcon } from "../ai/ai-icon";
-import { useIsDragAndDropEnabled } from "../canvas/dnd/drag-and-drop/hooks";
-import { DesignTokensIcon } from "../sidepanels/panels/design-tokens/DesignTokensIcon";
+import { AiIcon } from "@/core/components/ai/ai-icon";
+import { useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
+import { DesignTokensIcon } from "@/core/components/sidepanels/panels/design-tokens/DesignTokensIcon";
 
 const ManageDesignTokens = React.lazy(() => import("../settings/new-panel/manage-design-token/manage-design-tokens"));
 

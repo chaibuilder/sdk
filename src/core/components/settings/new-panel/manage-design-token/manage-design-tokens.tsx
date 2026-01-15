@@ -21,8 +21,8 @@ import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } fro
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
-import { useIncrementActionsCount } from "../../../use-auto-save";
-import { ManualClasses } from "../manual-classes";
+import { useIncrementActionsCount } from "@/core/components/use-auto-save";
+import { ManualClasses } from "@/core/components/settings/new-panel/manual-classes";
 import { convertTokenNameInput, getTokenNameError, validateTokenName } from "./design-token-utils";
 
 const DeleteDesignToken = lazy(() => import("./delete-design-token"));

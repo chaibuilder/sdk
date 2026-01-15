@@ -8,7 +8,7 @@ import { useDuplicatePage } from "@/pages/hooks/pages/use-duplicate-page";
 import { initial, isEmpty } from "lodash-es";
 import { AlertCircle } from "lucide-react";
 import { useState } from "react";
-import { useChangePage } from "../../hooks/use-change-page";
+import { useChangePage } from "@/pages/hooks/use-change-page";
 import { SlugInput } from "./slug-input";
 
 const DuplicatePage = ({

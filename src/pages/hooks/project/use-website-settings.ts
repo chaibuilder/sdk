@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { ChaiWebsiteSetting } from "../../../server/types";
-import { ACTIONS } from "../../constants/ACTIONS";
-import { useFetch } from "../utils/use-fetch";
+import { ChaiWebsiteSetting } from "@/server/types";
+import { ACTIONS } from "@/pages/constants/ACTIONS";
+import { useFetch } from "@/pages/hooks/utils/use-fetch";
 import { useApiUrl } from "./use-builder-prop";
 
 export const useWebsiteSetting = () => {

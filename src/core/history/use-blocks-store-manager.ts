@@ -6,8 +6,8 @@ import { removeNestedBlocks } from "@/core/hooks/use-remove-blocks";
 import { useUpdateBlockAtom } from "@/core/hooks/use-update-block-atom";
 import { ChaiBlock } from "@/types/chai-block";
 import { each, find, omit } from "lodash-es";
-import { useIncrementActionsCount } from "../components/use-auto-save";
-import { useCheckStructure } from "../hooks/use-check-structure";
+import { useIncrementActionsCount } from "@/core/components/use-auto-save";
+import { useCheckStructure } from "@/core/hooks/use-check-structure";
 
 export const useBlocksStoreManager = () => {
   const [, setBlocks] = useBlocksStore();

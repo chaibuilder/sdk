@@ -6,7 +6,7 @@ import { useSidebarActivePanel } from "@/core/main";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useIsDragAndDropEnabled } from "../canvas/dnd/drag-and-drop/hooks";
+import { useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 
 export const AddBlocksDialog = () => {
   const { t } = useTranslation();

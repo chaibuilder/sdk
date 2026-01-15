@@ -6,7 +6,7 @@ import { useIsLanguagePageCreated } from "@/pages/hooks/pages/use-is-languagep-p
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { get } from "lodash-es";
 import { LockIcon } from "lucide-react";
-import { BlurContainer } from "../chai-loader";
+import { BlurContainer } from "@/pages/client/components/chai-loader";
 
 const NoLanguagePageContent = () => {
   const { t } = useTranslation();

@@ -53,7 +53,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea } from "../ui/input-group";
+import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea } from "@/pages/components/ui/input-group";
 
 // ============================================================================
 // Provider Context & Types

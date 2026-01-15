@@ -30,7 +30,7 @@ import { toast } from "sonner";
 import { adjustSpacingInContentBlocks } from "./adjust-spacing-in-blocks";
 import { MayBeAsyncPropsWrapper } from "./async-props-wrapper";
 import { ErrorFallback } from "./error-fallback";
-import { useBlockRuntimeProps } from "./use-block-runtime-props";
+import { useBlockRuntimeProps } from "@/core/components/canvas/static/use-block-runtime-props";
 import WithBlockTextEditor from "./with-block-text-editor";
 
 export const RepeaterContext = createContext<{

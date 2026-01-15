@@ -1,7 +1,7 @@
 import { get } from "lodash-es";
 import { ChaiAction } from "./chai-action-interface";
-import { registerChaiPageType } from "../register/register-page-type";
-import { registerChaiPartialType } from "../register/register-partial-type";
+import { registerChaiPageType } from "@/server/register/register-page-type";
+import { registerChaiPartialType } from "@/server/register/register-partial-type";
 import { AskAIAction } from "./ask-ai-action";
 import { CreatePageAction } from "./create-page";
 import { DeleteLibraryItemAction } from "./delete-library-item";
