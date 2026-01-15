@@ -14,8 +14,12 @@ export async function resolveLinks(
     return href;
   }
 
-  const pageTypeKey = href.split(":")[1];
-  const id = href.split(":")[2];
+  const parts = href.split(":");
+  if (parts.length !== 3 || !parts[1] || !parts[2]) {
+    return href;
+  }
+  const pageTypeKey = parts[1];
+  const id = parts[2];
   const pageType = getChaiPageType(pageTypeKey);
 
   if (!pageType) {
