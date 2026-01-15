@@ -27,7 +27,8 @@ function withDataBinding<T extends string | object>(template: T, externalData: u
     try {
       return JSON.parse(processedString) as T;
     } catch (error) {
-      return processedString as T;
+      // If parsing fails, return the original template to maintain type safety
+      return template;
     }
   }
 
