@@ -51,7 +51,7 @@ describe("showRemoveIcons logic", () => {
 
   it("should not show remove icon when value is empty string", () => {
     const assetId = "";
-    const resolvedValue = "";
+    const resolvedValue = "" as string;
     const showRemoveIcons = !!assetId || (resolvedValue !== PLACEHOLDER_IMAGE && resolvedValue !== "");
     expect(showRemoveIcons).toBe(false);
   });
