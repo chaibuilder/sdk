@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { useLanguages } from "@/core/main";
+import { useLanguages } from "@/core/hooks/use-languages";
+import { addNewLangAtom } from "@/pages/atom/add-new-lang";
 import { useActivePage } from "@/pages/hooks/pages/use-current-page";
+import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
 import { useSetAtom } from "jotai";
 import { get } from "lodash-es";
 import { File, Hash, Loader, MoreHorizontal } from "lucide-react";
 import { lazy, Suspense, useState } from "react";
-import { addNewLangAtom } from "@/pages/atom/add-new-lang";
-import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
 import { PageActionsDropdown } from "./page-action-dropdown";
 import { usePageLockStatus } from "./page-lock/page-lock-hook";
 import PagesManagerTrigger from "./page-manager/page-manager-trigger";

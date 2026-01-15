@@ -15,14 +15,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { useLanguages } from "@/core/main";
+import { useLanguages } from "@/core/hooks/use-languages";
+import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
+import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
+import { useDeleteGlobalSchema, useTogglePageGlobalSchema } from "@/pages/hooks/project/mutations";
 import { useGlobalJsonLDItems } from "@/pages/hooks/use-global-json-ld";
 import { filter, find } from "lodash-es";
 import { Edit, Eye, Loader, Plus, Trash } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
-import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
-import { useDeleteGlobalSchema, useTogglePageGlobalSchema } from "@/pages/hooks/project/mutations";
 import { AddSharedJsonLD } from "./add-shared-json-ld";
 import { EditSharedJsonLD } from "./edit-shared-json-ld";
 

@@ -504,7 +504,7 @@ const MyComponent = () => {
 Get available languages.
 
 ```typescript
-import { useLanguages } from "@/core/main";
+import { useLanguages } from "@/core/hooks/use-languages";
 
 const MyComponent = () => {
   const languages = useLanguages();

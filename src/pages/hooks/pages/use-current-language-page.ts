@@ -1,4 +1,4 @@
-import { useLanguages } from "@/core/main";
+import { useLanguages } from "@/core/hooks/use-languages";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
 import { find } from "lodash-es";
 import { useMemo } from "react";

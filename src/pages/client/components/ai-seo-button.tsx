@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { useLanguages } from "@/core/main";
-import { useMutation } from "@tanstack/react-query";
-import { Loader, Wand2Icon } from "lucide-react";
+import { useLanguages } from "@/core/hooks/use-languages";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
 import { useFetch } from "@/pages/hooks/utils/use-fetch";
+import { useMutation } from "@tanstack/react-query";
+import { Loader, Wand2Icon } from "lucide-react";
 
 const getPageContent = () => {
   const iframe = document.getElementById("canvas-iframe") as HTMLIFrameElement;
