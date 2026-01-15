@@ -1,7 +1,7 @@
 import { and, eq, or, like } from "drizzle-orm";
 import { get, isEmpty, keys, reverse, sortBy, take } from "lodash";
-import { ChaiBlock } from "runtime";
-import { db, safeQuery, schema } from "server";
+import { ChaiBlock } from "@chaibuilder/sdk/runtime";
+import { db, safeQuery, schema } from "@chaibuilder/sdk/server";
 import { getFullPage } from "./get-full-page";
 
 export type ChaiBuilderPage =

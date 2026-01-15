@@ -19,40 +19,45 @@ export async function getPageData(args: {
   );
 
   // Prepare collection data promises
-  const collectionPromises = collectionRepeaterBlocks.length > 0
-    ? collectionRepeaterBlocks.map((block) => {
-        const collectionId: string = block.repeaterItems.replace("{{#", "").replace("}}", "");
-        const chaiCollection = getChaiCollection(collectionId);
-        
-        return chaiCollection?.fetch({
-          lang,
-          draft: draftMode,
-          inBuilder: false,
-          pageProps,
-          block,
+  const collectionPromises =
+    collectionRepeaterBlocks.length > 0
+      ? collectionRepeaterBlocks.map((block) => {
+          const collectionId: string = block.repeaterItems.replace("{{#", "").replace("}}", "");
+          const chaiCollection = getChaiCollection(collectionId);
+
+          return chaiCollection
+            ?.fetch({
+              lang,
+              draft: draftMode,
+              inBuilder: false,
+              pageProps,
+              block,
+            })
+            .then((data: any) => ({
+              [`#${collectionId}/${block._id}`]: get(data, "items", []) ?? [],
+              [`#${collectionId}/${block._id}/totalItems`]: get(data, "totalItems", -1) ?? -1,
+            }))
+            .catch(() => ({
+              [`#${collectionId}/${block._id}`]: [],
+              [`#${collectionId}/${block._id}/totalItems`]: -1,
+            }));
         })
-          .then((data: any) => ({
-            [`#${collectionId}/${block._id}`]: get(data, "items", []) ?? [],
-            [`#${collectionId}/${block._id}/totalItems`]: get(data, "totalItems", -1) ?? -1,
-          }))
-          .catch(() => ({
-            [`#${collectionId}/${block._id}`]: [],
-            [`#${collectionId}/${block._id}/totalItems`]: -1,
-          }));
-      })
-    : [];
+      : [];
 
   // Execute all async operations in parallel
   const [globalData, pageData, ...collectionResults] = await Promise.all([
-    getChaiGlobalData(),
+    getChaiGlobalData({lang , draft: draftMode , inBuilder: false}),
     registeredPageType?.dataProvider?.({ lang, draft: draftMode, inBuilder: false, pageProps }) || Promise.resolve({}),
     ...collectionPromises,
   ]);
 
   // Combine collection data
-  const collectionData = collectionResults.reduce((acc: Record<string, unknown>, block: Record<string, unknown>) => {
-    return { ...acc, ...block };
-  }, {} as Record<string, unknown>);
+  const collectionData = collectionResults.reduce(
+    (acc: Record<string, unknown>, block: Record<string, unknown>) => {
+      return { ...acc, ...block };
+    },
+    {} as Record<string, unknown>,
+  );
 
   if (!registeredPageType) return { global: globalData, ...collectionData };
 

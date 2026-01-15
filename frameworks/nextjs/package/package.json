@@ -1,5 +1,5 @@
 {
-  "name": "@chaibuilder/nextjs",
+  "name": "chai-next",
   "description": "AI Enabled Open source website builder for ReactJS",
   "private": false,
   "author": "Suraj Air",
@@ -36,42 +36,38 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/core/index.d.ts",
-      "import": "./dist/core/index.js",
-      "require": "./dist/core/index.cjs"
+      "types": "./dist/core.d.ts",
+      "import": "./dist/core.js",
+      "require": "./dist/core.cjs"
     },
-    "./blocks": {
-      "types": "./dist/blocks/index.d.ts",
-      "import": "./dist/blocks/index.js",
-      "require": "./dist/blocks/index.cjs"
+    "./web-blocks": {
+      "types": "./dist/web-blocks.d.ts",
+      "import": "./dist/web-blocks.js",
+      "require": "./dist/web-blocks.cjs"
     },
-    "./blocks/rsc": {
-      "types": "./dist/blocks/rsc/index.d.ts",
-      "import": "./dist/blocks/rsc/index.js",
-      "require": "./dist/blocks/rsc/index.cjs"
-    },
-    "./utils": {
-      "types": "./dist/utils/index.d.ts",
-      "import": "./dist/utils/index.js",
-      "require": "./dist/utils/index.cjs"
+    "./web-blocks/rsc": {
+      "types": "./dist/rsc/index.d.ts",
+      "import": "./dist/rsc/index.js",
+      "require": "./dist/rsc/index.cjs"
     },
     "./server": {
-      "types": "./dist/server/index.d.ts",
-      "import": "./dist/server/index.js",
-      "require": "./dist/server/index.cjs"
+      "types": "./dist/server.d.ts",
+      "import": "./dist/server.js",
+      "require": "./dist/server.cjs"
     },
-    "./builder-styles": {
-      "import": "./dist/core/index.css",
-      "require": "./dist/core/index.css"
+    "./runtime": {
+      "types": "./dist/runtime.d.ts",
+      "import": "./dist/runtime.js",
+      "require": "./dist/runtime.cjs"
     },
-    "./config": {
-      "types": "./dist/config/index.d.ts",
-      "import": "./dist/config/index.js",
-      "require": "./dist/config/index.cjs"
+    "./supabase-actions": {
+      "types": "./dist/supabase-actions.d.ts",
+      "import": "./dist/supabase-actions.js",
+      "require": "./dist/supabase-actions.cjs"
     }
   },
   "dependencies": {
-    "@chaibuilder/sdk": "workspace:*"
+    "@chaibuilder/sdk": "3.3.0"
   },
   "devDependencies": {
     "tsup": "^8.0.0",

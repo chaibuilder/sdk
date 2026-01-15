@@ -1,1 +1,1 @@
-export * from "@chaibuilder/sdk/web-blocks";
+export *  from "@chaibuilder/sdk/web-blocks";
