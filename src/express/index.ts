@@ -25,7 +25,7 @@ app.use(
     responseOnLimit: "File size limit has been reached (max: 50MB)",
   }),
 );
-const apiKey = process.env["CHAIBUILDER_APP_ID"]!;
+const apiKey = process.env["CHAIBUILDER_APP_KEY"]!;
 
 export type DevGlobalData = {
   lang: string;
