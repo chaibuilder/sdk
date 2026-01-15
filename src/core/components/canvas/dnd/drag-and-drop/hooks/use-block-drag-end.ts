@@ -50,6 +50,7 @@ export const useBlockDragEnd = () => {
 
   return useCallback(() => {
     // Clear dragged block state
+    // @ts-ignore
     setDraggedBlock(null);
 
     // Hide drop indicator

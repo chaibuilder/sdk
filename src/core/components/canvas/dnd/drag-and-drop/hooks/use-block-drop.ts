@@ -127,6 +127,7 @@ export const useBlockDrop = () => {
       }
 
       // Immediately clear dragged block to prevent subsequent dragover events
+      // @ts-ignore
       setDraggedBlock(null);
 
       // Use targetBlockId and targetParentId from dropIndicator state
