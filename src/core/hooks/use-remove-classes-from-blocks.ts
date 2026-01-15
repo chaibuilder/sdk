@@ -18,7 +18,7 @@ export const removeClassFromBlocksAtom: any = atom(null, (get, _set, { blockIds,
   return map(blockAtoms, (blockAtom) => {
     const block: ChaiBlock = get(blockAtom as any);
     const nonDynamicClasses: string[] = fullClasses;
-    // eslint-disable-next-line prefer-const
+     
     let { classes, baseClasses } = getSplitChaiClasses(getProp(block, styleBlock.prop, `${STYLES_KEY},`));
 
     each(nonDynamicClasses, (fullCls: string) => {

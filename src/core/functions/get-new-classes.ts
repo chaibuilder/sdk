@@ -55,7 +55,7 @@ const IGNORED_BASES_CLASSES_PROPERTIES: string[] = [];
  */
 export function getNewClasses(existingClasses = "", baseClasses = "", newClasses: string[] = []): string {
   // sanitize the strings
-  // eslint-disable-next-line no-param-reassign
+   
   existingClasses = existingClasses.trim().replace(/  +/g, "");
 
   let existingClassesObjects: any = filter(
@@ -128,7 +128,7 @@ export function getNewClasses(existingClasses = "", baseClasses = "", newClasses
  */
 export function getNewDynamicClasses(dynamicClasses = "", newClasses: string[] = []): string {
   // sanitize the strings
-  // eslint-disable-next-line no-param-reassign
+   
   dynamicClasses = dynamicClasses.trim().replace(/  +/g, "");
 
   let existingClassesObjects: any = filter(

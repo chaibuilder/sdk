@@ -24,10 +24,10 @@ export const useAddBlock = (): AddBlocks => {
 
   const addPredefinedBlock = useCallback(
     (blocks: ChaiBlock[], parentId?: string, position?: number) => {
-      // eslint-disable-next-line no-param-reassign
+       
       for (let i = 0; i < blocks.length; i++) {
         const { _id } = blocks[i];
-        // eslint-disable-next-line no-param-reassign
+         
         blocks[i]._id = generateUUID();
         const children = filter(blocks, { _parent: _id });
         for (let j = 0; j < children.length; j++) {
