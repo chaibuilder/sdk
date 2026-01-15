@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { useTheme, useTranslation } from "@/core/main";
+import { useTheme } from "@/core/hooks/use-theme";
+import { useTranslation } from "@/core/main";
 import { usePublishPages } from "@/pages/hooks/pages/mutations";
 import { useUpdateWebsiteSettings } from "@/pages/hooks/project/mutations";
 import { throwConfetti } from "@/pages/utils/confetti";

@@ -1,6 +1,6 @@
 import { each, get, isEmpty } from "lodash-es";
 
-import { useLanguages } from "@/core/main";
+import { useLanguages } from "@/core/hooks/use-languages";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
 import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
 import { find } from "lodash-es";

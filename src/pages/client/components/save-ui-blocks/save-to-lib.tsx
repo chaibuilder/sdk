@@ -1,13 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  ChaiBlock,
-  useLibraryBlocks,
-  usePartailBlocksStore,
-  usePermissions,
-  useUpdateBlocksPropsRealtime,
-} from "@/core/main";
+import { usePartialBlocksStore } from "@/core/hooks/use-partial-blocks-store";
+import { useUpdateBlocksPropsRealtime } from "@/core/hooks/use-update-blocks-props";
+import { ChaiBlock, useLibraryBlocks, usePermissions } from "@/core/main";
 import { DeleteBlockButton } from "@/pages/client/components/save-ui-blocks/delete-block-confirmation";
 import { GroupSelector } from "@/pages/client/components/save-ui-blocks/group-selector";
 import { ImageUpload } from "@/pages/client/components/save-ui-blocks/image-upload";
@@ -27,7 +23,7 @@ interface SaveToLibraryProps {
 
 const SaveToLibrary = (args: SaveToLibraryProps) => {
   const { blocks, close, blockId } = args;
-  const { getPartailBlocks } = usePartailBlocksStore();
+  const { getPartailBlocks } = usePartialBlocksStore();
 
   // Find the current block
   const currentBlock = blocks.find((b) => b._id === blockId);

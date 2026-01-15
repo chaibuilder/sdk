@@ -6,7 +6,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useSavePage } from "@/core/hooks/use-save-page";
-import { useLanguages, useRightPanel, useTranslation } from "@/core/main";
+import { useRightPanel } from "@/core/hooks/use-theme";
+import { useLanguages, useTranslation } from "@/core/main";
 import PageRevisions from "@/pages/client/components/page-revisions/page-revisions-trigger";
 import PermissionChecker from "@/pages/client/components/permission-checker";
 import PublishPages from "@/pages/client/components/publish-pages/publish-pages";

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { useUpdateBlocksPropsRealtime } from "@/core/main";
+import { useUpdateBlocksPropsRealtime } from "@/core/hooks/use-update-blocks-props";
 import { useDeleteUIBlock } from "@/pages/hooks/project/use-block-library-mutations";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";

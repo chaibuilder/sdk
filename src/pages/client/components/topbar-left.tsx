@@ -6,7 +6,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
-import { mergeClasses, useLanguages, useTranslation } from "@/core/main";
+import { useLanguages } from "@/core/hooks/use-languages";
+import { mergeClasses, useTranslation } from "@/core/main";
+import { addNewLangAtom } from "@/pages/atom/add-new-lang";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
@@ -18,7 +20,6 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { compact, find, get, isEmpty, map } from "lodash-es";
 import { ChevronDown, Languages, Plus, Star } from "lucide-react";
 import React, { lazy, Suspense, useEffect, useMemo } from "react";
-import { addNewLangAtom } from "@/pages/atom/add-new-lang";
 import { usePageLockStatus } from "./page-lock/page-lock-hook";
 import PagesManagerTrigger from "./page-manager/page-manager-trigger";
 
