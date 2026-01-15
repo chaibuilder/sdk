@@ -1,5 +1,5 @@
 import { ChaiBlock } from "@chaibuilder/runtime";
-import { getChaiCollection, getChaiPageType } from "@chaibuilder/sdk/server";
+import { getChaiCollection, getChaiPageType, getChaiGlobalData } from "@chaibuilder/sdk/server";
 import { get } from "lodash";
 
 export async function getPageData(args: {
@@ -10,13 +10,6 @@ export async function getPageData(args: {
   draftMode: boolean;
 }): Promise<Record<string, unknown>> {
   const { blocks, pageProps, pageType, lang, draftMode } = args;
-  
-  // getChaiGlobalData is not exported from SDK, we'll need to implement it differently
-  const getChaiGlobalData = async () => {
-    // This would typically call a registered global data provider
-    // For now, return empty object as placeholder
-    return {};
-  };
 
   const registeredPageType = getChaiPageType(pageType);
 
@@ -25,46 +18,46 @@ export async function getPageData(args: {
     (block) => block._type === "Repeater" && block?.repeaterItems?.includes("{{#"),
   );
 
-  let collectionData: Record<string, unknown> = {};
-  if (collectionRepeaterBlocks.length > 0) {
-    const collectionKeys = collectionRepeaterBlocks.map((block) => {
-      const collectionId: string = block.repeaterItems.replace("{{#", "").replace("}}", "");
-      return { collectionId, block };
-    });
+  // Prepare collection data promises
+  const collectionPromises =
+    collectionRepeaterBlocks.length > 0
+      ? collectionRepeaterBlocks.map((block) => {
+          const collectionId: string = block.repeaterItems.replace("{{#", "").replace("}}", "");
+          const chaiCollection = getChaiCollection(collectionId);
 
-    const collectionBlocks = await Promise.all(
-      collectionKeys.map(async ({ collectionId, block }) => {
-        const chaiCollection = getChaiCollection(collectionId);
-        try {
-          const data = await chaiCollection?.fetch({
-            lang,
-            draft: draftMode,
-            inBuilder: false,
-            pageProps,
-            block,
-          });
-          return Promise.resolve({
-            [`#${collectionId}/${block._id}`]: get(data, "items", []) ?? [],
-            [`#${collectionId}/${block._id}/totalItems`]: get(data, "totalItems", -1) ?? -1,
-          });
-        } catch {
-          return Promise.resolve({
-            [`#${collectionId}/${block._id}`]: [],
-            [`#${collectionId}/${block._id}/totalItems`]: -1,
-          });
-        }
-      }),
-    );
-    collectionData = collectionBlocks.reduce((acc, block) => {
-      return { ...acc, ...block };
-    }, {});
-  }
+          return chaiCollection
+            ?.fetch({
+              lang,
+              draft: draftMode,
+              inBuilder: false,
+              pageProps,
+              block,
+            })
+            .then((data: any) => ({
+              [`#${collectionId}/${block._id}`]: get(data, "items", []) ?? [],
+              [`#${collectionId}/${block._id}/totalItems`]: get(data, "totalItems", -1) ?? -1,
+            }))
+            .catch(() => ({
+              [`#${collectionId}/${block._id}`]: [],
+              [`#${collectionId}/${block._id}/totalItems`]: -1,
+            }));
+        })
+      : [];
 
-  const [globalData, pageData] = await Promise.all([
-    getChaiGlobalData(),
-    registeredPageType?.dataProvider?.({ lang, draft: draftMode, inBuilder: false, pageProps }) ||
-      Promise.resolve({}),
+  // Execute all async operations in parallel
+  const [globalData, pageData, ...collectionResults] = await Promise.all([
+    getChaiGlobalData({lang , draft: draftMode , inBuilder: false}),
+    registeredPageType?.dataProvider?.({ lang, draft: draftMode, inBuilder: false, pageProps }) || Promise.resolve({}),
+    ...collectionPromises,
   ]);
+
+  // Combine collection data
+  const collectionData = collectionResults.reduce(
+    (acc: Record<string, unknown>, block: Record<string, unknown>) => {
+      return { ...acc, ...block };
+    },
+    {} as Record<string, unknown>,
+  );
 
   if (!registeredPageType) return { global: globalData, ...collectionData };
 

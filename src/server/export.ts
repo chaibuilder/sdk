@@ -7,6 +7,7 @@ import { registerChaiGlobalDataProvider } from "./register/register-global-data-
 import { getChaiPageType, getChaiPageTypes, registerChaiPageType } from "./register/register-page-type";
 import { registerChaiPartialType } from "./register/register-partial-type";
 import { getChaiCollection, getChaiCollections, registerChaiCollection } from "./register/regsiter-collection";
+import { getChaiGlobalData } from "./register/register-global-data-provider";
 
 export interface LoggedInUser {
   id: string;
@@ -68,6 +69,7 @@ export { LANGUAGES } from "./LANGUAGES";
 export * from "./types";
 export {
   ChaiActionsRegistry,
+  getChaiGlobalData,
   getAskAiSystemPrompt,
   getChaiCollection,
   getChaiCollections,

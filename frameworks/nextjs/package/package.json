@@ -1,12 +1,76 @@
 {
-  "name": "@chaibuilder/nextjs",
-  "version": "1.0.0",
-  "description": "Next.js package for ChaiBuilder",
-  "main": "index.js",
+  "name": "chai-next",
+  "description": "AI Enabled Open source website builder for ReactJS",
+  "private": false,
+  "author": "Suraj Air",
+  "license": "BSD-3-Clause",
+  "homepage": "https://chaibuilder.com",
+  "version": "0.0.0",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chaibuilder/sdk.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "dist/core.js",
+  "sideEffects": false,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "dev": "tsup  --watch --format esm,cjs",
+    "build": "tsup --format esm,cjs"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "peerDependencies": {
+    "ai": "^6.0.11",
+    "drizzle-orm": "^0.45.1",
+    "next": "16.1.1",
+    "postgres": "^3.4.8",
+    "react": "^18.0 || ^19.0 || ^19.1 || ^19.2",
+    "react-dom": "^18.0 || ^19.0 || ^19.1 || ^19.2",
+    "sharp": "^0.34.5",
+    "streamdown": "^1.6.10",
+    "tailwindcss": "^3 || ^4"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/core.d.ts",
+      "import": "./dist/core.js",
+      "require": "./dist/core.cjs"
+    },
+    "./web-blocks": {
+      "types": "./dist/web-blocks.d.ts",
+      "import": "./dist/web-blocks.js",
+      "require": "./dist/web-blocks.cjs"
+    },
+    "./web-blocks/rsc": {
+      "types": "./dist/rsc/index.d.ts",
+      "import": "./dist/rsc/index.js",
+      "require": "./dist/rsc/index.cjs"
+    },
+    "./server": {
+      "types": "./dist/server.d.ts",
+      "import": "./dist/server.js",
+      "require": "./dist/server.cjs"
+    },
+    "./runtime": {
+      "types": "./dist/runtime.d.ts",
+      "import": "./dist/runtime.js",
+      "require": "./dist/runtime.cjs"
+    },
+    "./supabase-actions": {
+      "types": "./dist/supabase-actions.d.ts",
+      "import": "./dist/supabase-actions.js",
+      "require": "./dist/supabase-actions.cjs"
+    }
+  },
+  "dependencies": {
+    "@chaibuilder/sdk": "3.3.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.9.3"
+  }
 }

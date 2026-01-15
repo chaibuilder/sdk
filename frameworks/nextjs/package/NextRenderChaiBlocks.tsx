@@ -1,13 +1,9 @@
-import { DesignTokens } from "@chaibuilder/pages/server";
 import { applyDesignTokens, RenderChaiBlocks as RenderChaiBlocksSdk } from "@chaibuilder/sdk/render";
 import { ChaiBlockComponentProps, ChaiPageProps, ChaiStyles, setChaiBlockComponent } from "@chaibuilder/sdk/runtime";
 import { isEmpty } from "lodash";
-import ChaiBuilder from "../../server";
-import { ChaiBuilderPage } from "../../types";
-import { ImageBlock } from "./image-block";
-import { JSONLD } from "./json-ld";
-import { LinkBlock } from "./link-block";
-
+import { ImageBlock, JSONLD, LinkBlock ,  } from "./rsc";
+import { ChaiBuilderPage, DesignTokens } from "./rsc/render-chai-blocks";
+import { ChaiBuilder } from "./ChaiBuilder";
 // TODO: Keep this NextJSRenderChaiBlocks implementation functionally aligned with the RSC
 // version in render-chai-blocks.tsx:
 // https://github.com/chaibuilder/frameworks/blob/main/packages/next/src/blocks/rsc/render-chai-blocks.tsx
