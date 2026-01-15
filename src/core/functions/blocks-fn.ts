@@ -5,11 +5,11 @@ import { filter, find, flatten } from "lodash-es";
 export const nestedToFlatArray = (nestedJson: Array<ChaiBlock>, parent: string | null = null): Array<ChaiBlock> =>
   flatten(
     nestedJson.map((block: any) => {
-      // eslint-disable-next-line no-param-reassign
+       
       block = parent !== null ? { ...block, _parent: parent } : block;
       if (block.children && block.children.length) {
         const children = [...block.children];
-        // eslint-disable-next-line no-param-reassign
+         
         delete block.children;
         return flatten([block, ...nestedToFlatArray(children, block._id)]);
       }

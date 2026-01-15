@@ -127,7 +127,6 @@ export const useBlockDrop = () => {
       }
 
       // Immediately clear dragged block to prevent subsequent dragover events
-      // @ts-expect-error - Jotai type inference issue with generic ChaiBlock type
       setDraggedBlock(null);
 
       // Use targetBlockId and targetParentId from dropIndicator state
@@ -303,7 +302,7 @@ function calculateInsertionIndex(
       parentId: isRootLevel ? null : targetParentId,
       index: calculatedIndex,
     };
-  } catch (error) {
+  } catch {
     // Fallback: insert at root level at the end
     const rootBlocks = filter(blocks, (b) => !b?._parent);
     return {

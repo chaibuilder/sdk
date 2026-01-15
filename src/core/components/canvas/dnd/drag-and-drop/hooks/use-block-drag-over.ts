@@ -250,6 +250,8 @@ export const useBlockDragOver = () => {
       // Handle auto-scrolling based on pointer position
       handleAutoScroll(pointerY);
 
+      if (!iframeDoc) return;
+
       const dropZone = detectDropZone(element, pointerX, pointerY, draggedBlockType, iframeDoc);
 
       // If no valid drop zone found, keep the last valid position
@@ -324,7 +326,7 @@ export const useBlockDragOver = () => {
 
       // Determine the final targetParentId to use
       // If dropZone has a targetParentId, use it; otherwise fall back to the one from getTargetDetail
-      const finalTargetParentId = dropZone.targetParentId || targetParentId;
+      const finalTargetParentId = dropZone.targetParentId || targetParentId || undefined;
 
       // Update drop indicator state with the intelligent drop zone
       setDropIndicator({
@@ -332,7 +334,7 @@ export const useBlockDragOver = () => {
         isValid: true,
         position: dropZone.position,
         placeholderOrientation: dropZone.placeholderOrientation,
-        isEmpty: dropZone.isEmpty,
+        isEmpty: dropZone.isEmpty ?? false,
         top: dropZone.rect.top,
         left: dropZone.rect.left,
         width: dropZone.rect.width,

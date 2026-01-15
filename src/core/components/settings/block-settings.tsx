@@ -88,7 +88,7 @@ export default function BlockSettings() {
         }
       }
       return { schema, uiSchema };
-    } catch (error) {
+    } catch {
       return { schema: {}, uiSchema: {} };
     }
   }, [selectedBlock]);

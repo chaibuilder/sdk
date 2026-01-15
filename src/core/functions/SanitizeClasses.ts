@@ -3,14 +3,14 @@ import { filter, find, isEmpty, map } from "lodash-es";
 
 const breakpoints: string[] = ["xs", "sm", "md", "lg", "xl", "2xl"];
 export const sanitizeClasses = (classes: string): string => {
-  // eslint-disable-next-line no-param-reassign
+   
   classes = classes.trim().replace(/ +(?= )/g, "");
   if (isEmpty(classes)) return "";
 
   const classesArray = map(classes.split(" "), constructClassObject) as ClassDerivedObject[];
   const toBeRemoved: string[] = [];
   // check for every class
-  // eslint-disable-next-line no-restricted-syntax
+   
   for (const classObj of classesArray) {
     const breakpoint = classObj.mq;
 
@@ -18,7 +18,7 @@ export const sanitizeClasses = (classes: string): string => {
      * If the class is already marked for removal, skip it
      */
     if (toBeRemoved.includes(classObj.fullCls)) {
-      // eslint-disable-next-line no-continue
+       
       continue;
     }
 

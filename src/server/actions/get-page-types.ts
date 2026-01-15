@@ -27,7 +27,7 @@ export class GetPageTypesAction extends ChaiBaseAction<GetPageTypesActionData, G
     return z.object({});
   }
 
-  async execute(_data: GetPageTypesActionData): Promise<GetPageTypesActionResponse> {
+  async execute(): Promise<GetPageTypesActionResponse> {
     try {
       const pageTypes = await Promise.all(
         getChaiPageTypes().map(async (pageType) => ({

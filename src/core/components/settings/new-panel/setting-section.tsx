@@ -72,7 +72,7 @@ export const StylingGroup = ({ section, showAccordian }: any) => {
         active[currentClasses[i].property] = currentClasses[i].cls;
       }
       let match = true;
-      // eslint-disable-next-line no-restricted-syntax
+       
       for (const property in conditions) {
         if (!has(active, property) || active[property] !== conditions[property]) {
           match = false;

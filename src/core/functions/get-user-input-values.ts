@@ -4,7 +4,7 @@ export const getUserInputValues = (
   input: string,
   allowedUnits: string[],
 ): { error: string } | { unit: string; value: string } => {
-  // eslint-disable-next-line no-param-reassign
+   
   input = input.toLowerCase();
   let sanitizedInput = input.trim().replace(/ |\+/g, "");
 

@@ -3,7 +3,7 @@ import { ChaiBlock } from "@/types/chai-block";
 import { cloneDeep, flattenDeep, get, isEmpty, last } from "lodash-es";
 
 export function getMergedPartialBlocks(blocks: ChaiBlock[], partials: Record<string, ChaiBlock[]>) {
-  const partialBlocksList = blocks.filter(({ _type }) => _type === "GlobalBlock" || _type === "PartialBlock");
+  const partialBlocksList = blocks.filter((block) => block._type === "GlobalBlock" || block._type === "PartialBlock");
 
   for (let i = 0; i < partialBlocksList.length; i++) {
     const partialBlock = partialBlocksList[i];
@@ -61,7 +61,8 @@ export const convertToBlocks = (chaiFormatContent: string): ChaiBlock[] => {
   try {
     const blocks = JSON.parse(removeAssetPrefix(chaiFormatContent));
     //remove the blocks whose _type starts with @chai
-    return blocks.filter((block) => !block._type.startsWith("@chai"));
+    return blocks.filter((block: ChaiBlock) => !block._type.startsWith("@chai"));
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return [{ _type: "Paragraph", _id: "error", content: "Invalid JSON. Please check the JSON string." }];
   }
