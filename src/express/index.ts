@@ -48,10 +48,16 @@ app.post("/chai/api", async (req, res) => {
   handleApi(req, res);
 });
 
+app.get(`/preview/*slug`, (req: express.Request<{ slug: string[] }>, res) => {
+  const slug = req.params.slug;
+  const fullSlug = `/${slug.join("/")}`;
+  res.send(`Preview for "${fullSlug}"`);
+});
+
 if (!process.env["VITE"]) {
   const frontendFiles = process.cwd() + "/dist";
   app.use(express.static(frontendFiles));
-  app.get("/*", (_, res) => {
+  app.get("/*path", (_, res) => {
     res.send(frontendFiles + "/index.html");
   });
   app.listen(process.env["PORT"]);
@@ -72,11 +78,11 @@ async function handleApi(req: express.Request, res: express.Response) {
   try {
     const actionHandler = initChaiBuilderActionHandler({ apiKey, userId: authTokenOrUserId });
     const response = await actionHandler(body);
-    
+
     // Handle streaming responses
     if (response?._streamingResponse && response?._streamResult) {
       const result = response._streamResult;
-      
+
       if (!result?.textStream) {
         return res.status(500).json({ error: "No streaming response available" });
       }
@@ -84,18 +90,18 @@ async function handleApi(req: express.Request, res: express.Response) {
       // Set headers for streaming
       res.setHeader("Content-Type", "text/plain; charset=utf-8");
       res.setHeader("Cache-Control", "no-cache");
-      
+
       // Stream the AI response chunks
       for await (const chunk of result.textStream) {
         if (chunk) {
           res.write(chunk);
         }
       }
-      
+
       res.end();
       return;
     }
-    
+
     res.json(response);
   } catch (error) {
     console.log(error);
