@@ -54,16 +54,6 @@
       "import": "./dist/render.js",
       "require": "./dist/render.cjs"
     },
-    "./ui": {
-      "types": "./dist/ui.d.ts",
-      "import": "./dist/ui.js",
-      "require": "./dist/ui.cjs"
-    },
-    "./tailwind": {
-      "types": "./dist/tailwind.d.ts",
-      "import": "./dist/tailwind.js",
-      "require": "./dist/tailwind.cjs"
-    },
     "./web-blocks": {
       "types": "./dist/web-blocks.d.ts",
       "import": "./dist/web-blocks.js",

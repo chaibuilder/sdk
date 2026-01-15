@@ -1,13 +1,10 @@
-"use server";
-
 import { StreamTextResult } from "ai";
 import ChaiActionsRegistry from "./actions/actions-registery";
 import { getAskAiSystemPrompt } from "./classes/system-prompt";
-import { registerChaiGlobalDataProvider } from "./register/register-global-data-provider";
+import { getChaiGlobalData, registerChaiGlobalDataProvider } from "./register/register-global-data-provider";
 import { getChaiPageType, getChaiPageTypes, registerChaiPageType } from "./register/register-page-type";
 import { registerChaiPartialType } from "./register/register-partial-type";
 import { getChaiCollection, getChaiCollections, registerChaiCollection } from "./register/regsiter-collection";
-import { getChaiGlobalData } from "./register/register-global-data-provider";
 
 export interface LoggedInUser {
   id: string;
@@ -69,10 +66,10 @@ export { LANGUAGES } from "./LANGUAGES";
 export * from "./types";
 export {
   ChaiActionsRegistry,
-  getChaiGlobalData,
   getAskAiSystemPrompt,
   getChaiCollection,
   getChaiCollections,
+  getChaiGlobalData,
   getChaiPageType,
   getChaiPageTypes,
   registerChaiCollection,
@@ -80,3 +77,5 @@ export {
   registerChaiPageType,
   registerChaiPartialType,
 };
+
+export * from "../tailwind";
