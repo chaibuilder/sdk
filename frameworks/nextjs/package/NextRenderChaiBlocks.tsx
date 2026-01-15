@@ -8,7 +8,10 @@ import { ImageBlock } from "./image-block";
 import { JSONLD } from "./json-ld";
 import { LinkBlock } from "./link-block";
 
-//TODO: https://github.com/chaibuilder/frameworks/blob/main/packages/next/src/blocks/rsc/render-chai-blocks.tsx
+// TODO: Keep this NextJSRenderChaiBlocks implementation functionally aligned with the RSC
+// version in render-chai-blocks.tsx:
+// https://github.com/chaibuilder/frameworks/blob/main/packages/next/src/blocks/rsc/render-chai-blocks.tsx
+// (e.g., sync new props, block registrations, and rendering behavior when that file changes).
 
 type ImageBlockProps = {
   height: string;
