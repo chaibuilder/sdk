@@ -4,18 +4,15 @@ import BlockController from "@/core/components/sidepanels/panels/add-blocks/bloc
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useFrame } from "@/core/frame/frame-context";
 import { canDeleteBlock, canDuplicateBlock } from "@/core/functions/block-helpers";
-import {
-  useBuilderProp,
-  useDuplicateBlocks,
-  useHighlightBlockId,
-  useInlineEditing,
-  usePermissions,
-  useRemoveBlocks,
-  useSelectedBlock,
-  useSelectedBlockIds,
-  useSelectedStylingBlocks,
-  useSidebarActivePanel,
-} from "@/core/hooks";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
+import { useDuplicateBlocks } from "@/core/hooks/use-duplicate-blocks";
+import { useHighlightBlockId } from "@/core/hooks/use-highlight-blockId";
+import { useInlineEditing } from "@/core/hooks/use-inline-editing";
+import { usePermissions } from "@/core/hooks/use-permissions";
+import { useRemoveBlocks } from "@/core/hooks/use-remove-blocks";
+import { useSelectedBlock, useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
+import { useSidebarActivePanel } from "@/core/hooks/use-sidebar-active-panel";
 import { PERMISSIONS } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
 import { ChaiBlock } from "@/types/common";

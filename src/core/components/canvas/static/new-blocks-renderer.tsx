@@ -11,9 +11,11 @@ import {
   getBlockTagAttributes,
 } from "@/core/components/canvas/static/new-blocks-render-helpers";
 import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
-import { useBuilderProp, useInlineEditing, usePartailBlocksStore } from "@/core/hooks";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { useEditorMode } from "@/core/hooks/use-editor-mode";
+import { useInlineEditing } from "@/core/hooks/use-inline-editing";
 import { useLanguages } from "@/core/hooks/use-languages";
+import { usePartialBlocksStore } from "@/core/hooks/use-partial-blocks-store";
 import { useSavePage } from "@/core/hooks/use-save-page";
 import { useGetBlockAtom } from "@/core/hooks/use-update-block-atom";
 import { applyBindingToBlockProps } from "@/render/apply-binding";
@@ -223,7 +225,7 @@ const PartialWrapper = ({ children, partialBlockId }: { children: React.ReactNod
 };
 
 const PartialBlocksRenderer = ({ partialBlockId }: { partialBlockId: string }) => {
-  const { getPartailBlocks } = usePartailBlocksStore();
+  const { getPartailBlocks } = usePartialBlocksStore();
   const partialBlocks = useMemo(() => getPartailBlocks(partialBlockId), [getPartailBlocks, partialBlockId]);
   const partialBlocksAtoms = useMemo(() => splitAtom(atom(partialBlocks)), [partialBlocks]);
   if (isEmpty(partialBlocks)) return null;

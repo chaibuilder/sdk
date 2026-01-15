@@ -11,14 +11,12 @@
  */
 
 import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
-import {
-  useAddBlock,
-  useBlockHighlight,
-  useSelectedBlockIds,
-  useSelectedStylingBlocks,
-  useUpdateBlocksProps,
-} from "@/core/hooks";
+import { useAddBlock } from "@/core/hooks/use-add-block";
+import { useBlockHighlight } from "@/core/hooks/use-block-highlight";
 import { useCanvasIframe } from "@/core/hooks/use-canvas-iframe";
+import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
+import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
 import { ChaiBlock } from "@/types/common";
 import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { useAtom } from "jotai";

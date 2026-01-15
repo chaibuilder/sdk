@@ -11,7 +11,9 @@
  */
 
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { useBlockHighlight, useSelectedBlockIds, useSelectedStylingBlocks } from "@/core/hooks";
+import { useBlockHighlight } from "@/core/hooks/use-block-highlight";
+import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
 import { pubsub } from "@/core/pubsub";
 import { ChaiBlock } from "@/types/common";
 import { useAtom } from "jotai";

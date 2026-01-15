@@ -1,4 +1,5 @@
-import { useSelectedBlockIds, useSelectedStylingBlocks } from "@/core/hooks";
+import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
 import { useDebouncedCallback, useResizeObserver } from "@react-hookz/web";
 import { useCallback, useEffect, useRef } from "react";
 

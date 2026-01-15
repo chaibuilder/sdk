@@ -1,7 +1,8 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import StaticCanvas from "@/core/components/canvas/static/static-canvas";
 import { FallbackError } from "@/core/components/fallback-error";
-import { useBuilderProp, useCodeEditor } from "@/core/hooks";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
+import { useCodeEditor } from "@/core/hooks/use-code-editor";
 import { noop } from "lodash-es";
 import React, { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";

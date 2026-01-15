@@ -13,7 +13,7 @@
  * const { onDragStart, onDragOver, onDrop, onDragEnd, isDragging } = useDragAndDrop();
  */
 
-import { useBuilderProp } from "@/core/hooks";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { useAtom } from "jotai";
 import { DragEvent } from "react";
 import { useBlockDragEnd } from "./use-block-drag-end";
@@ -30,7 +30,13 @@ export { useBlockDrop } from "./use-block-drop";
 export { useDragParentHighlight } from "./use-drag-parent-highlight";
 
 // Export atoms and state
-export { canvasRenderKeyAtom, dragAndDropAtom, dropIndicatorAtom, isDragging, setIsDragging } from "./use-drag-and-drop";
+export {
+  canvasRenderKeyAtom,
+  dragAndDropAtom,
+  dropIndicatorAtom,
+  isDragging,
+  setIsDragging,
+} from "./use-drag-and-drop";
 export type { DropIndicatorState } from "./use-drag-and-drop";
 
 /**

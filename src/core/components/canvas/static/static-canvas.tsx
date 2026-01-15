@@ -11,8 +11,10 @@ import { ResizableCanvasWrapper } from "@/core/components/canvas/static/resizabl
 import { StaticBlocksRenderer } from "@/core/components/canvas/static/static-blocks-renderer";
 import { useCanvasScale } from "@/core/components/canvas/static/use-canvas-scale";
 import { ChaiFrame } from "@/core/frame";
-import { useBuilderProp, useCanvasDisplayWidth, useHighlightBlockId } from "@/core/hooks";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { useCanvasIframe } from "@/core/hooks/use-canvas-iframe";
+import { useHighlightBlockId } from "@/core/hooks/use-highlight-blockId";
+import { useCanvasDisplayWidth } from "@/core/hooks/use-screen-size-width";
 import { isEmpty } from "lodash-es";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Provider } from "react-wrap-balancer";

@@ -5,7 +5,9 @@ import {
 } from "@/core/components/canvas/static/chai-theme-helpers";
 import { CssThemeVariables } from "@/core/components/css-theme-var";
 import { useFrame } from "@/core/frame";
-import { useDarkMode, useSelectedBlockIds, useSelectedStylingBlocks } from "@/core/hooks";
+import { useDarkMode } from "@/core/hooks/use-dark-mode";
+import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
 import { useTheme, useThemeOptions } from "@/core/hooks/use-theme";
 import { ChaiBuilderThemeValues } from "@/types/types";
 import { ChaiFontViaSrc, ChaiFontViaUrl, useRegisteredFonts } from "@chaibuilder/runtime";

@@ -1,6 +1,8 @@
 import { clickCountAtom } from "@/core/atoms/click-detection";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { useBlockHighlight, useInlineEditing, useSelectedStylingBlocks } from "@/core/hooks";
+import { useBlockHighlight } from "@/core/hooks/use-block-highlight";
+import { useInlineEditing } from "@/core/hooks/use-inline-editing";
+import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
 import { pubsub } from "@/core/pubsub";
 import { useThrottledCallback } from "@react-hookz/web";
 import { useAtom } from "jotai";
@@ -114,7 +116,7 @@ const useHandleCanvasClick = () => {
         pubsub.publish(CHAI_BUILDER_EVENTS.CANVAS_BLOCK_SELECTED, []);
         return;
       }
-      if (clickCount === 2) return;     
+      if (clickCount === 2) return;
       if (chaiBlock?.getAttribute("data-block-id") && chaiBlock?.getAttribute("data-block-id") === "container") {
         pubsub.publish(CHAI_BUILDER_EVENTS.CLEAR_CANVAS_SELECTION);
         return;
