@@ -14,12 +14,15 @@
   "files": [
     "dist"
   ],
+  "bin": {
+    "chai-tailwind": "scripts/chai-tailwind.cjs"
+  },
   "main": "dist/core.js",
   "sideEffects": false,
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
-    "dev": "tsup  --watch --format esm,cjs",
+    "dev": "tsup --watch --format esm,cjs",
     "build": "tsup --format esm,cjs"
   },
   "keywords": [],
@@ -67,7 +70,8 @@
     }
   },
   "dependencies": {
-    "@chaibuilder/sdk": "3.3.0"
+    "@chaibuilder/sdk": "3.3.0",
+    "concurrently": "^9.2.0"
   },
   "devDependencies": {
     "tsup": "^8.0.0",
