@@ -31,6 +31,8 @@
     "e2e": "playwright test",
     "e2e:report": "playwright show-report",
     "e2e:ui": "playwright test --ui",
+    "docs:api": "typedoc",
+    "docs:serve": "docsify serve docs",
     "prepare": "husky"
   },
   "exports": {
@@ -238,6 +240,7 @@
     "autoprefixer": "^10.4.23",
     "cheerio": "1.0.0-rc.12",
     "cors": "^2.8.5",
+    "docsify-cli": "^4.4.4",
     "dotenv": "^16.6.1",
     "drizzle-kit": "^0.31.8",
     "drizzle-orm": "^0.45.1",
@@ -265,6 +268,8 @@
     "tailwindcss-animate": "^1.0.7",
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
+    "typedoc": "^0.28.16",
+    "typedoc-plugin-markdown": "^4.9.0",
     "typescript": "^5.9.3",
     "vite": "^6.4.1",
     "vite-plugin-dts": "^4.5.4",
