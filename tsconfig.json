@@ -26,7 +26,7 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "lib", "e2e_tests", "frameworks/nextjs/package/ChaiBuilder.ts"],
-  "exclude": ["src/express/express-plugin.ts"],
+  "include": ["src", "lib", "e2e_tests"],
+  "exclude": ["src/express/express-plugin.ts", "frameworks"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
