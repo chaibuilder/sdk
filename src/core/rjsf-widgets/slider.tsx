@@ -14,12 +14,8 @@ const SliderField = ({ formData, onChange }: FieldProps) => {
   const { addCoreBlock } = useAddBlock();
   const [, setBlockIds] = useSelectedBlockIds();
 
-  if (!selectedBlock && !wrapperBlock) return null;
-
   const sliderBlock = selectedBlock?._type === "Slider" ? selectedBlock : wrapperBlock;
   const slidesBlock = find(allBlocks, { _parent: sliderBlock?._id, _type: "Slides" });
-  if (!slidesBlock) return null;
-
   const allSlideBlocks = filter(allBlocks, { _parent: slidesBlock?._id, _type: "Slide" });
   const currentSlide = formData?.currentSlide || get(allSlideBlocks, "0._id");
 
@@ -34,6 +30,9 @@ const SliderField = ({ formData, onChange }: FieldProps) => {
       onChange({ ...formData, currentSlide: get(allSlideBlocks, "0._id") });
     }
   }, [formData, allSlideBlocks]);
+
+  if (!selectedBlock && !wrapperBlock) return null;
+  if (!slidesBlock) return null;
 
   const handleNext = () => {
     const currentIndex = findIndex(allSlideBlocks, { _id: currentSlide });

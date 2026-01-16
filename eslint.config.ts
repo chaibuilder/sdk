@@ -8,6 +8,7 @@ export default [
     ignores: ["dist", "live", "src/core/ui/**", ".eslintrc.cjs", "frameworks"],
   },
   {
+    files: ["**/*.ts", "**/*.tsx"],
     languageOptions: {
       parser: typescriptParser,
       ecmaVersion: 2020,
