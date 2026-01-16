@@ -6,7 +6,6 @@ describe("createCacheKey logic", () => {
   // Test the cache key generation logic that matches the actual implementation
   const createCacheKey = (args: { block: any; lang: string }): string => {
     // This matches the actual implementation in the component
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { _id, _name, _parent, ...blockWithoutIds } = args.block;
     return JSON.stringify({
       blockType: blockWithoutIds,

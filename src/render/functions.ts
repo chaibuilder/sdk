@@ -62,8 +62,7 @@ export const convertToBlocks = (chaiFormatContent: string): ChaiBlock[] => {
     const blocks = JSON.parse(removeAssetPrefix(chaiFormatContent));
     //remove the blocks whose _type starts with @chai
     return blocks.filter((block: ChaiBlock) => !block._type.startsWith("@chai"));
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (error) {
+  } catch (_error) {
     return [{ _type: "Paragraph", _id: "error", content: "Invalid JSON. Please check the JSON string." }];
   }
 };

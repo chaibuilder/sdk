@@ -248,7 +248,6 @@ export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionDat
     }
 
     // Destructure to remove fields that shouldn't be copied or are auto-generated
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { changes: _changes, createdAt: _createdAt, ...pageData } = page;
 
     const { data, error } = await safeQuery(() =>
