@@ -35,13 +35,12 @@ export class AskAIAction extends ChaiBaseAction<AskAIActionData, any> {
     const { userId, appId } = this.context;
 
     const ai = new ChaiAIChatHandler({
-      // @ts-ignore
       onFinish: (arg: any) => {
         try {
           logAiRequest({
             arg,
             prompt: (data.messages?.[data.messages.length - 1]?.content as string) || "",
-            userId,
+            userId: userId!,
             model: data.model || "",
             startTime,
             appId,
@@ -54,7 +53,7 @@ export class AskAIAction extends ChaiBaseAction<AskAIActionData, any> {
         try {
           logAiRequestError({
             error,
-            userId,
+            userId: userId!,
             startTime: startTime,
             model: data.model || "",
             prompt: (data.messages?.[data.messages.length - 1]?.content as string) || "",
