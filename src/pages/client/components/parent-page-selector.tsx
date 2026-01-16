@@ -5,7 +5,7 @@ import { Command, CommandEmpty, CommandGroup, CommandItem } from "@/components/u
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { useChaiFeatureFlag } from "@/core/main";
+import { useChaiFeatureFlag } from "@/core/flags/register-chai-flag";
 import { removeSlugExtension } from "@/pages/utils/slug-utils";
 import { isEmpty } from "lodash-es";
 import { Check, ChevronDown, Search } from "lucide-react";

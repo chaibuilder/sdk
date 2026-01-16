@@ -1,13 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguages } from "@/core/hooks/use-languages";
-import { useTranslation } from "@/core/main";
 import { BlurContainer } from "@/pages/client/components/chai-loader";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { useIsLanguagePageCreated } from "@/pages/hooks/pages/use-is-languagep-page-created";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { get } from "lodash-es";
 import { LockIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const NoLanguagePageContent = () => {
   const { t } = useTranslation();

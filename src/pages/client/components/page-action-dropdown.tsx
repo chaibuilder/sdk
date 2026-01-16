@@ -4,12 +4,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { usePermissions, useTranslation } from "@/core/main";
+import { usePermissions } from "@/core/hooks/use-permissions";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
+import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { find } from "lodash-es";
 import { CopyPlusIcon, Pencil, Power, SquareLibrary, Trash } from "lucide-react";
 import { useMemo } from "react";
-import { usePageTypes } from "@/pages/hooks/project/use-page-types";
+import { useTranslation } from "react-i18next";
 
 interface PageActionsDropdownProps {
   page: any;

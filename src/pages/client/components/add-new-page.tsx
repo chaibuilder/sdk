@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { useTranslation } from "@/core/main";
 import { lazy, Suspense } from "react";
+import { useTranslation } from "react-i18next";
 
 const PageCreator = lazy(() => import("@/pages/client/components/page-creator"));
 

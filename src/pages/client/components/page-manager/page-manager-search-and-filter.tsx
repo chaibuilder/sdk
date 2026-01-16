@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { useTranslation } from "@/core/main";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
@@ -23,6 +22,7 @@ import {
   Star,
 } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 /**
  * Props for PageTypeSelector component

@@ -1,8 +1,8 @@
-import { ChaiBlock } from "@/core/main";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { toast } from "sonner";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { useFetch } from "@/pages/hooks/utils/use-fetch";
+import { ChaiBlock } from "@/types/common";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { useApiUrl } from "./use-builder-prop";
 
 // Hook for saving a UI block to the library

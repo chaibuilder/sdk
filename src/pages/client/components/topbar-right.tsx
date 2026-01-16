@@ -8,7 +8,6 @@ import {
 import { useLanguages } from "@/core/hooks/use-languages";
 import { useSavePage } from "@/core/hooks/use-save-page";
 import { useRightPanel } from "@/core/hooks/use-theme";
-import { useTranslation } from "@/core/main";
 import PageRevisions from "@/pages/client/components/page-revisions/page-revisions-trigger";
 import PermissionChecker from "@/pages/client/components/permission-checker";
 import PublishPages from "@/pages/client/components/publish-pages/publish-pages";
@@ -25,6 +24,7 @@ import Tooltip from "@/pages/utils/tooltip";
 import { compact, find, map, upperCase } from "lodash-es";
 import { CheckCircle, ChevronDown, Loader, Palette, Play, Rocket, Save, Send } from "lucide-react";
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { usePageLockStatus } from "./page-lock/page-lock-hook";
 
 const UnpublishPage = lazy(() => import("@/pages/client/components/unpublish-page"));

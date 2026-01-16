@@ -7,9 +7,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useTranslation } from "@/core/main";
 import { useUnmarkAsTemplate } from "@/pages/hooks/pages/mutations";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const UnmarkAsTemplate = ({ page, onClose }: { page: any; onClose: () => void }) => {
   const { t } = useTranslation();

@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSavePage } from "@/core/hooks/use-save-page";
-import { useTranslation } from "@/core/main";
+import { BlurContainer } from "@/pages/client/components/chai-loader";
 import { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
 import { AlertCircle, Check, UserIcon, X } from "lucide-react";
 import { useState } from "react";
-import { BlurContainer } from "@/pages/client/components/chai-loader";
+import { useTranslation } from "react-i18next";
 import { usePageLockMeta, usePageLockStatus, useSendRealtimeEvent } from "./page-lock-hook";
 import { EVENT, PAGE_STATUS } from "./page-lock-utils";
 

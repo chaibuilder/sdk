@@ -10,13 +10,13 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useTranslation } from "@/core/main";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { useChangeSlug } from "@/pages/hooks/pages/mutations";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { find, isEqual, startsWith } from "lodash-es";
 import { AlertCircle } from "lucide-react";
 import { FormEvent, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 export const ChangeSlug = ({ page, onClose }: { page: any; onClose: () => void }) => {

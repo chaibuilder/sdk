@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/core/hooks/use-theme";
-import { useTranslation } from "@/core/main";
 import { usePublishPages } from "@/pages/hooks/pages/mutations";
 import { useUpdateWebsiteSettings } from "@/pages/hooks/project/mutations";
 import { throwConfetti } from "@/pages/utils/confetti";
+import { useTranslation } from "react-i18next";
 
 const ThemePanelFooter = () => {
   const [theme] = useTheme();

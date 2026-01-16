@@ -12,7 +12,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { mergeClasses, useTranslation } from "@/core/main";
+import { mergeClasses } from "@/core/main";
+import { compressImageIfNeeded, formatFileSize } from "@/pages/utils/image-compression";
 import { UseMutateFunction } from "@tanstack/react-query";
 import { find, first, isEmpty, merge, pick } from "lodash-es";
 import {
@@ -32,8 +33,8 @@ import {
 import React, { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { ErrorBoundary } from "react-error-boundary";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { compressImageIfNeeded, formatFileSize } from "@/pages/utils/image-compression";
 import { useDeleteAsset, useUpdateAsset, useUploadAsset } from "./mutations";
 import { Pagination } from "./pagination";
 import { SingleAssetDetail } from "./single-asset-detail";

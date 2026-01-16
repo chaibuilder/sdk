@@ -3,12 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useTranslation } from "@/core/main";
 import { useDuplicatePage } from "@/pages/hooks/pages/use-duplicate-page";
+import { useChangePage } from "@/pages/hooks/use-change-page";
 import { initial, isEmpty } from "lodash-es";
 import { AlertCircle } from "lucide-react";
 import { useState } from "react";
-import { useChangePage } from "@/pages/hooks/use-change-page";
+import { useTranslation } from "react-i18next";
 import { SlugInput } from "./slug-input";
 
 const DuplicatePage = ({

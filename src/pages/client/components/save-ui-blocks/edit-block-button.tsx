@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { usePermissions } from "@/core/main";
+import { usePermissions } from "@/core/hooks/use-permissions";
 import { DeleteBlockConfirmation } from "@/pages/client/components/save-ui-blocks/delete-block-confirmation";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
 import { Edit, MoreVertical, Trash2 } from "lucide-react";

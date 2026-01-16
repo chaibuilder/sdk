@@ -1,5 +1,4 @@
 import { useLanguages } from "@/core/hooks/use-languages";
-import { useTranslation } from "@/core/main";
 import { addNewLangAtom } from "@/pages/atom/add-new-lang";
 import { useWebsiteLanguagePages, useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
@@ -12,6 +11,7 @@ import { useSetAtom } from "jotai";
 import { filter, find, isEmpty, map } from "lodash-es";
 import { File } from "lucide-react";
 import { Suspense, lazy, useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import RenderPageItems from "./render-page-items";
 const PageManagerSearchAndFilter = lazy(() => import("./page-manager-search-and-filter"));
 

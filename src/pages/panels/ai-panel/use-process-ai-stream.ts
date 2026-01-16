@@ -1,13 +1,10 @@
+import { useAddBlock } from "@/core/hooks/use-add-block";
 import { useRemoveBlocks } from "@/core/hooks/use-remove-blocks";
 import { useReplaceBlock } from "@/core/hooks/use-replace-block";
-import { getBlocksFromHTML } from "@/core/main";
+import { getBlocksFromHTML } from "@/core/import-html/html-to-json";
+import { useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 import { Message } from "./ai-panel-helper";
-
-// We need to check the actual SDK API for these functions
-// For now, commenting them out until we can verify the correct signatures
-import { useAddBlock } from "@/core/hooks/use-add-block";
-import { useQueryClient } from "@tanstack/react-query";
 
 interface ActionData {
   type: "ADD" | "REMOVE" | "EDIT";

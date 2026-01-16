@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useLanguages } from "@/core/hooks/use-languages";
-import { useSidebarActivePanel, useTranslation } from "@/core/main";
+import { useSidebarActivePanel } from "@/core/hooks/use-sidebar-active-panel";
 import { SlugInput } from "@/pages/client/components/slug-input";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { useCreatePage, useUpdatePage } from "@/pages/hooks/pages/mutations";
@@ -25,6 +25,7 @@ import { parseSlugForEdit, removeSlugExtension } from "@/pages/utils/slug-utils"
 import { filter, find, startsWith } from "lodash-es";
 import { Loader } from "lucide-react";
 import React, { FormEvent, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 /**
  * Props for the AddNewLanguagePage component.

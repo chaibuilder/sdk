@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useLanguages } from "@/core/hooks/use-languages";
-import { useSidebarActivePanel, useTranslation } from "@/core/main";
+import { useSidebarActivePanel } from "@/core/hooks/use-sidebar-active-panel";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { useDeletePage } from "@/pages/hooks/pages/mutations";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
@@ -19,6 +19,7 @@ import { ChaiPage } from "@/pages/utils/page-organization";
 import { ChaiBuilderPageType } from "@/server/types";
 import { get } from "lodash-es";
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 // Helper function to recursively count all child pages
 const countAllChildren = (pageId: string, allPages: ChaiPage[]): number => {

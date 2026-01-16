@@ -1,14 +1,14 @@
-import { mergeClasses, useChaiFeatureFlag } from "@/core/main";
+import { useChaiFeatureFlag } from "@/core/flags/register-chai-flag";
+import { mergeClasses } from "@/core/main";
+import { PageDropdownInHeader } from "@/pages/client/components/page-dropdown-in-header";
+import { ScreenOverlay } from "@/pages/client/components/screen-overlay";
 import TopbarLeft, { LanguageSwitcher } from "@/pages/client/components/topbar-left";
 import TopbarRight from "@/pages/client/components/topbar-right";
-import { useChaiCurrentPage, useGetPageFullSlug } from "@/pages/hooks/pages/use-current-page";
+import { useActivePage, useChaiCurrentPage, useGetPageFullSlug } from "@/pages/hooks/pages/use-current-page";
+import { useDynamicPageSelector, useDynamicPageSlug } from "@/pages/hooks/pages/use-dynamic-page-selector";
 import { get } from "lodash-es";
 import { ExternalLink } from "lucide-react";
 import { lazy, Suspense } from "react";
-import { PageDropdownInHeader } from "@/pages/client/components/page-dropdown-in-header";
-import { ScreenOverlay } from "@/pages/client/components/screen-overlay";
-import { useActivePage } from "@/pages/hooks/pages/use-current-page";
-import { useDynamicPageSelector, useDynamicPageSlug } from "@/pages/hooks/pages/use-dynamic-page-selector";
 const DynamicPageSelector = lazy(() => import("../client/components/dynamic-page-selector"));
 
 const DynamicPageSelectorSuspense = () => {

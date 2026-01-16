@@ -1,5 +1,5 @@
 import React from "react";
-import { useBuilderProp } from "./hooks";
+import { useBuilderProp } from "./hooks/use-builder-prop";
 
 export const ScreenTooSmall = () => {
   const smallScreenComponent = useBuilderProp("smallScreenComponent", null);

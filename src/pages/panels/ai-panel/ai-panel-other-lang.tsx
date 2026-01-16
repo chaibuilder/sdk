@@ -1,14 +1,16 @@
 "use client";
 
 import { useI18nBlocks } from "@/core/hooks/use-i18n-blocks";
+import { useSelectedBlock, useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import { useStreamMultipleBlocksProps } from "@/core/hooks/use-update-blocks-props";
-import { ChaiBlock, useSelectedBlock, useSelectedBlockIds, useTranslation } from "@/core/main";
 import { Conversation, ConversationContent, ConversationEmptyState } from "@/pages/components/ai-elements/conversation";
 import { Message as AiMessage, MessageContent, MessageResponse } from "@/pages/components/ai-elements/message";
 import { Reasoning, ReasoningContent, ReasoningTrigger } from "@/pages/components/ai-elements/reasoning";
 import { TaskMessage } from "@/pages/components/ai-elements/task-message";
+import { ChaiBlock } from "@/types/common";
 import { Bot } from "lucide-react";
 import { Fragment, lazy, Suspense, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { Message } from "./ai-panel-helper";
 import { getDefaultModel } from "./models";
 import { getTranslationUserPrompt } from "./prompt-helper";

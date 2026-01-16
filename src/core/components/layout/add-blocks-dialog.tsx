@@ -1,12 +1,12 @@
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 import AddBlocksPanel from "@/core/components/sidepanels/panels/add-blocks/add-blocks";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { usePubSub } from "@/core/hooks/use-pub-sub";
-import { useSidebarActivePanel } from "@/core/main";
+import { useSidebarActivePanel } from "@/core/hooks/use-sidebar-active-panel";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 
 export const AddBlocksDialog = () => {
   const { t } = useTranslation();

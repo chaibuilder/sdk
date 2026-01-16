@@ -22,7 +22,6 @@ export { SmartJsonInput as ChaiJsonInput } from "./client/components/smart-json-
 export { NestedPathSelector };
 
 /** Hooks */
-export * from "@/core/main";
 export { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
 export { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
 export { useWebsitePages } from "@/pages/hooks/pages/use-project-pages";

@@ -10,12 +10,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useTranslation } from "@/core/main";
 import { useMarkAsTemplate } from "@/pages/hooks/pages/mutations";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { startCase } from "lodash-es";
 import { File, ImageIcon, Tag, X } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 interface PageType {

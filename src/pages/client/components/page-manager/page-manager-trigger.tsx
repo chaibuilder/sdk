@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useSavePage } from "@/core/hooks/use-save-page";
-import { useTranslation } from "@/core/main";
+import { usePageLockStatus } from "@/pages/client/components/page-lock/page-lock-hook";
 import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
 import { useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
@@ -11,7 +11,7 @@ import { ChaiPage } from "@/pages/utils/page-organization";
 import { isEmpty } from "lodash-es";
 import { Folder, LogsIcon } from "lucide-react";
 import { lazy, Suspense, useEffect, useMemo, useState } from "react";
-import { usePageLockStatus } from "@/pages/client/components/page-lock/page-lock-hook";
+import { useTranslation } from "react-i18next";
 const PagesManagerNew = lazy(() => import("./page-manager-new"));
 
 const PagesManagerTrigger = ({ children }: { children?: React.ReactNode }) => {

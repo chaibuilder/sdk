@@ -1,10 +1,11 @@
-import { WidgetProps } from "@rjsf/utils";
-import React, { Suspense, useEffect, useRef, useState } from "react";
-import { useInlineEditing, useSelectedBlock } from "@/core/hooks";
-import RteMenubar from "./rte-menu-bar";
+import { useInlineEditing } from "@/core/hooks/use-inline-editing";
+import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
 import { ChaiBlock } from "@/core/main";
 import { useRTEditor } from "@/core/rjsf-widgets/rte-widget/use-rte-editor";
+import { WidgetProps } from "@rjsf/utils";
 import { EditorContent } from "@tiptap/react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
+import RteMenubar from "./rte-menu-bar";
 const RTEModal = React.lazy(() => import("./rte-widget-modal"));
 
 /**

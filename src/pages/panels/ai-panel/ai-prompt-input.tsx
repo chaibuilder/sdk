@@ -1,6 +1,5 @@
 "use client";
 
-import { ChaiBlock, useTranslation } from "@/core/main";
 import {
   PromptInput,
   PromptInputActionAddAttachments,
@@ -17,8 +16,10 @@ import {
   PromptInputTextarea,
   PromptInputTools,
 } from "@/pages/components/ai-elements/prompt-input";
+import { ChaiBlock } from "@/types/common";
 import { GlobeIcon, Paperclip, Send, Square } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ModelSelectorDropdown } from "./model-selector-dropdown";
 import { getDefaultModel } from "./models";
 

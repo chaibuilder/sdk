@@ -2,11 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import { useLanguages } from "@/core/hooks/use-languages";
-import { useTranslation } from "@/core/main";
 import { useBuilderFetch } from "@/pages/hooks/utils/use-fetch";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { Plus } from "lucide-react";
 import { lazy, Suspense, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Message } from "./ai-panel-helper";
 import { getDefaultModel } from "./models";

@@ -7,8 +7,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useTranslation } from "@/core/main";
 import { useUnpublishPage } from "@/pages/hooks/pages/mutations";
+import { useTranslation } from "react-i18next";
 
 const UnpublishPage = ({ page, onClose }: { page: any; onClose: () => void }) => {
   const { t } = useTranslation();

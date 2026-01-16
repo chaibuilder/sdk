@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { useTranslation } from "@/core/main";
-import { Edit, TableIcon } from "lucide-react";
 import { BlurContainer } from "@/pages/client/components/chai-loader";
+import { Edit, TableIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { usePageLockStatus, useSendRealtimeEvent } from "./page-lock-hook";
 import { EVENT, PAGE_STATUS } from "./page-lock-utils";
 

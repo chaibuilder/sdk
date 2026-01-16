@@ -11,11 +11,11 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-import { useTranslation } from "@/core/main";
-import { isFunction, noop } from "lodash-es";
-import { User } from "lucide-react";
 import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
 import { useChaiAuth } from "@/pages/hooks/use-chai-auth";
+import { isFunction, noop } from "lodash-es";
+import { User } from "lucide-react";
+import { useTranslation } from "react-i18next";
 export const userInfoPanelId = "user-info";
 
 export const UserInfoButton = () => {

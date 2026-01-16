@@ -5,7 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { BlockAttributesEditor } from "@/core/components/settings/new-panel/block-attributes-editor";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { usePubSub } from "@/core/hooks/use-pub-sub";
-import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { useSelectedBlock, useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import {
   ChaiBlockPropsEditor,
   ChaiBlockStyleEditor,
@@ -13,7 +13,6 @@ import {
   ChaiOutline,
   ChaiScreenSizes,
   ChaiUndoRedo,
-  useSelectedBlock,
 } from "@/core/main";
 import { ChevronDownIcon, GearIcon, ImageIcon, StackIcon, TextIcon } from "@radix-ui/react-icons";
 import { motion } from "framer-motion";

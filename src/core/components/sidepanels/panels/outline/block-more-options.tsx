@@ -16,9 +16,10 @@ import { useCopyBlocks } from "@/core/hooks/use-copy-blockIds";
 import { useCutBlockIds } from "@/core/hooks/use-cut-blockIds";
 import { useDuplicateBlocks } from "@/core/hooks/use-duplicate-blocks";
 import { usePasteBlocks } from "@/core/hooks/use-paste-blocks";
+import { usePermissions } from "@/core/hooks/use-permissions";
 import { useRemoveBlocks } from "@/core/hooks/use-remove-blocks";
 import { useSelectedBlock, useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
-import { PERMISSIONS, usePermissions } from "@/core/main";
+import { PERMISSIONS } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
 import {
   CardStackIcon,
