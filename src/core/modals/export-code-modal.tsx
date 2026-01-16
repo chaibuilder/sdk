@@ -185,7 +185,7 @@ export const ExportCodeModal = () => {
     setTab("js");
     setMode("view");
     setOpen(true);
-  }, [setMode]);
+  }, [setTab, setMode, setOpen]);
 
   usePubSub(CHAI_BUILDER_EVENTS.OPEN_EXPORT_CODE, handleOpenModal);
 
