@@ -42,7 +42,6 @@ export const checkMissingTranslations = (blocks: any[], lang: string): boolean =
 
 export const useSavePage = () => {
   const [saveState, setSaveState] = useAtom(builderSaveStateAtom);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSave = useBuilderProp("onSave", async (_) => {});
   const onSaveStateChange = useBuilderProp("onSaveStateChange", noop);
   const getPageData = useGetPageData();

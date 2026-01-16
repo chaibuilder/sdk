@@ -28,6 +28,14 @@ export default [
       ...reactHooks.configs.recommended.rules,
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/ban-ts-comment": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
       "react/prop-type": "off",
       "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
     },
