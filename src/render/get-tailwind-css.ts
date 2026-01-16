@@ -1,10 +1,10 @@
-import { chaiBuilderPlugin, getChaiBuilderTheme } from "@/tailwind";
-import { ChaiBlock } from "@/types/chai-block";
 import { createTailwindcss } from "@mhsdesign/jit-browser-tailwindcss";
 import twAspectRatio from "@tailwindcss/aspect-ratio";
 import twContainer from "@tailwindcss/container-queries";
 import twForms from "@tailwindcss/forms";
 import twTypography from "@tailwindcss/typography";
+import { ChaiBlock } from "../types/chai-block";
+import { chaiBuilderPlugin, getChaiBuilderTheme } from "../utils";
 
 async function getTailwindCSS(markupString: string[], safelist: string[] = [], includeBaseStyles: boolean = false) {
   const tailwind = createTailwindcss({

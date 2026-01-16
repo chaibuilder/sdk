@@ -61,5 +61,3 @@ export { db, safeQuery, schema } from "./db";
 export { LANGUAGES } from "./LANGUAGES";
 export * from "./types";
 export { ChaiActionsRegistry, getAskAiSystemPrompt };
-
-export * from "@/tailwind";

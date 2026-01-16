@@ -26,6 +26,7 @@ export default defineConfig({
         runtime: resolve(__dirname, "src/runtime.ts"),
         pages: resolve(__dirname, "src/pages/index.ts"),
         actions: resolve(__dirname, "src/server/export.ts"),
+        utils: resolve(__dirname, "src/utils/index.ts"),
         "supabase-actions": resolve(__dirname, "src/express/actions/storage/index.ts"),
       },
       formats: ["es", "cjs"],

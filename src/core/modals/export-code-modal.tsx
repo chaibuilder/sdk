@@ -2,16 +2,16 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useBlocksHtmlForAi } from "@/core/hooks/use-blocks-html-for-ai";
+import { useEditorMode } from "@/core/hooks/use-editor-mode";
 import { usePubSub } from "@/core/hooks/use-pub-sub";
 import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
-import { shadcnTheme } from "@/tailwind/get-chai-builder-tailwind-config";
+import { ChaiBlock } from "@/core/main";
+import { shadcnTheme } from "@/utils/get-chai-builder-tailwind-config";
 import { camelCase } from "lodash-es";
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { useEditorMode } from "@/core/hooks/use-editor-mode";
-import { ChaiBlock } from "@/core/main";
 import { domToJsx, formatHtml } from "./domToJsx";
 
 // Lazy load the CodeDisplay component
