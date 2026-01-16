@@ -53,17 +53,17 @@
       "import": "./dist/rsc/index.js",
       "require": "./dist/rsc/index.cjs"
     },
-    "./server": {
-      "types": "./dist/server.d.ts",
-      "import": "./dist/server.js",
-      "require": "./dist/server.cjs"
-    },
     "./runtime": {
       "types": "./dist/runtime.d.ts",
       "import": "./dist/runtime.js",
       "require": "./dist/runtime.cjs"
     },
-    "./supabase-actions": {
+    "./actions": {
+      "types": "./dist/actions.d.ts",
+      "import": "./dist/actions.js",
+      "require": "./dist/actions.cjs"
+    },
+    "./actions/supabase": {
       "types": "./dist/supabase-actions.d.ts",
       "import": "./dist/supabase-actions.js",
       "require": "./dist/supabase-actions.cjs"

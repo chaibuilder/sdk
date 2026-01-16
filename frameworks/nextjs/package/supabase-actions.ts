@@ -1,1 +1,1 @@
-export * from "@chaibuilder/sdk/supabase-actions";
+export * from "@chaibuilder/sdk/actions/supabase";
