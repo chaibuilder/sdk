@@ -1,4 +1,5 @@
-import { db, getChaiPageType, safeQuery, schema } from "@chaibuilder/sdk/server";
+import { db, safeQuery, schema } from "@chaibuilder/sdk/actions";
+import { getChaiPageType } from "@chaibuilder/sdk/runtime";
 import { and, eq } from "drizzle-orm";
 import { startsWith } from "lodash";
 
@@ -7,7 +8,7 @@ export async function resolveLinks(
   lang: string,
   appId: string,
   draftMode: boolean,
-  fallbackLang: string
+  fallbackLang: string,
 ): Promise<string> {
   // href is of format "pageType:${pageTypeKey}:${id}"
   if (!startsWith(href, "pageType:")) {

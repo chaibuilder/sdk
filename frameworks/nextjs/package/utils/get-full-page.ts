@@ -1,5 +1,5 @@
+import { db, safeQuery, schema } from "@chaibuilder/sdk/actions";
 import { ChaiBlock } from "@chaibuilder/sdk/runtime";
-import { db, safeQuery, schema } from "@chaibuilder/sdk/server";
 import { differenceInMinutes } from "date-fns";
 import { and, eq, inArray, sql } from "drizzle-orm";
 import { get, has, isEmpty } from "lodash";

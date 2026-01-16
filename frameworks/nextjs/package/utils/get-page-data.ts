@@ -1,5 +1,4 @@
-import { ChaiBlock } from "@chaibuilder/sdk/runtime";
-import { getChaiCollection, getChaiGlobalData, getChaiPageType } from "@chaibuilder/sdk/server";
+import { ChaiBlock, getChaiCollection, getChaiGlobalData, getChaiPageType } from "@chaibuilder/sdk/runtime";
 import { get } from "lodash";
 
 export async function getPageData(args: {

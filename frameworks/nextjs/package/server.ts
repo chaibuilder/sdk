@@ -1,2 +1,2 @@
-export * from "@chaibuilder/sdk/server";
-export {withChaiBuilder} from "./config";
+export * from "@chaibuilder/sdk/actions";
+export { withChaiBuilder } from "./config";

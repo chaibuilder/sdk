@@ -1,9 +1,9 @@
-import { db, safeQuery, schema } from "@chaibuilder/sdk/server";
+import { db, safeQuery, schema } from "@chaibuilder/sdk/actions";
 import { eq } from "drizzle-orm";
 
 export async function getSiteSettings(
   appId: string,
-  draftMode: boolean
+  draftMode: boolean,
 ): Promise<{ fallbackLang?: string; [key: string]: unknown }> {
   const table = draftMode ? db.query.apps : db.query.appsOnline;
   const { data: settings, error } = await safeQuery(() =>
@@ -16,7 +16,7 @@ export async function getSiteSettings(
         settings: true,
         designTokens: true,
       },
-    })
+    }),
   );
 
   if (error) {

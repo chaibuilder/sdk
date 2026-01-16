@@ -1,8 +1,4 @@
 import { StreamTextResult } from "ai";
-import { getChaiCollection, getChaiCollections, registerChaiCollection } from "../runtime/register-collection";
-import { getChaiGlobalData, registerChaiGlobalDataProvider } from "../runtime/register-global-data-provider";
-import { getChaiPageType, getChaiPageTypes, registerChaiPageType } from "../runtime/register-page-type";
-import { registerChaiPartialType } from "../runtime/register-partial-type";
 import ChaiActionsRegistry from "./actions/actions-registery";
 import { getAskAiSystemPrompt } from "./classes/system-prompt";
 
@@ -64,18 +60,6 @@ export { initChaiBuilderActionHandler } from "./actions/chai-builder-actions-han
 export { db, safeQuery, schema } from "./db";
 export { LANGUAGES } from "./LANGUAGES";
 export * from "./types";
-export {
-  ChaiActionsRegistry,
-  getAskAiSystemPrompt,
-  getChaiCollection,
-  getChaiCollections,
-  getChaiGlobalData,
-  getChaiPageType,
-  getChaiPageTypes,
-  registerChaiCollection,
-  registerChaiGlobalDataProvider,
-  registerChaiPageType,
-  registerChaiPartialType,
-};
+export { ChaiActionsRegistry, getAskAiSystemPrompt };
 
 export * from "@/tailwind";
