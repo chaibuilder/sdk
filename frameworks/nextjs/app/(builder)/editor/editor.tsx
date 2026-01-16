@@ -1,11 +1,11 @@
 "use client";
 
-import { getSupabaseClient } from "../../supabase";
+import { getSupabaseClient } from "../../supabase-client";
 
 import "@chaibuilder/sdk/styles";
+import dynamic from "next/dynamic";
 import { useCallback, useEffect, useState } from "react";
 import { LoginScreen } from "./login";
-import dynamic from "next/dynamic";
 const ChaiBuilderEditor = dynamic(() => import("@chaibuilder/sdk/pages"), {
   ssr: false,
 });
@@ -17,7 +17,6 @@ type LoggedInUser = {
   avatar?: string;
   metadata?: Record<string, unknown>;
 };
-
 
 export default function Editor() {
   const supabase = getSupabaseClient();

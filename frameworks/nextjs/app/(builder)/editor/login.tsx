@@ -1,7 +1,7 @@
 "use client";
 
-import { getSupabaseClient } from "../../supabase";
 import { useState } from "react";
+import { getSupabaseClient } from "../../supabase-client";
 
 const supabase = getSupabaseClient();
 

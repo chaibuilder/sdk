@@ -1,8 +1,8 @@
 import { ChaiActionsRegistry, initChaiBuilderActionHandler } from "@chaibuilder/sdk/actions";
 import { SupabaseAuthActions, SupabaseStorageActions } from "@chaibuilder/sdk/actions/supabase";
 import { NextRequest, NextResponse } from "next/server";
-import { getSupabaseClient } from "../supabase";
 import { getSupabaseAdmin } from "../supabase-admin";
+import { getSupabaseClient } from "../supabase-client";
 
 const supabase = getSupabaseAdmin();
 ChaiActionsRegistry.registerActions(SupabaseAuthActions(supabase));
