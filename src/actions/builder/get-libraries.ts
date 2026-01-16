@@ -48,26 +48,7 @@ export class GetLibrariesAction extends ChaiBaseAction<GetLibrariesActionData, G
 
     const siteLibrary = siteLibraryQuery.data[0] || null;
 
-    // Get the client id from the apps table
-    const { data: appQuery, error: appQueryError } = await safeQuery(() =>
-      db
-        .select({
-          client: apps.client,
-        })
-        .from(apps)
-        .where(eq(apps.id, appId))
-        .limit(1),
-    );
-
-    if (appQueryError) {
-      throw new ActionError("Failed to fetch app", "DB_ERROR");
-    }
-
-    if (!appQuery.length || !appQuery[0]) {
-      throw new ActionError("App not found", "APP_NOT_FOUND");
-    }
-
-    const clientId = appQuery[0].client;
+    const clientId = process?.env?.CHAIBUILDER_CLIENT_ID || null;
 
     // Only fetch libraries if clientId exists
     if (!clientId) {

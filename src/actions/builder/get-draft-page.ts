@@ -17,7 +17,6 @@ type GetDraftPageActionResponse = {
   seo: any;
   pageType?: string | null;
   lastSaved?: string | null;
-  tracking: any;
   dynamic: boolean | null;
   parent?: string | null;
   blocks: any[];
@@ -55,7 +54,6 @@ export class GetDraftPageAction extends ChaiBaseAction<GetDraftPageActionData, G
           currentEditor: targetTable.currentEditor,
           pageType: targetTable.pageType,
           lastSaved: targetTable.lastSaved,
-          tracking: targetTable.tracking,
           dynamic: targetTable.dynamic,
           parent: targetTable.parent,
           blocks: targetTable.blocks,

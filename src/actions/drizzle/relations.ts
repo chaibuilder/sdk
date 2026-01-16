@@ -1,99 +1,56 @@
 import { relations } from "drizzle-orm/relations";
 import {
-  appApiKeys,
+  apps,
   appAssets,
-  appDomains,
+  appPagesOnline,
+  libraries,
   appFormSubmissions,
   appPages,
-  appPagesOnline,
   appPagesRevisions,
-  apps,
-  appsOnline,
-  appUserPlans,
   appUsers,
-  clients,
-  libraries,
-  libraryItems,
   libraryTemplates,
-  webhookEvents,
+  libraryItems,
+  aiLogs,
 } from "./schema";
 
-export const libraryTemplatesRelations = relations(libraryTemplates, ({ one }) => ({
-  library: one(libraries, {
-    fields: [libraryTemplates.library],
-    references: [libraries.id],
+export const appAssetsRelations = relations(appAssets, ({ one }) => ({
+  app: one(apps, {
+    fields: [appAssets.app],
+    references: [apps.id],
+  }),
+}));
+
+export const appsRelations = relations(apps, ({ many }) => ({
+  appAssets: many(appAssets),
+  appPagesOnlines: many(appPagesOnline),
+  libraries: many(libraries),
+  appFormSubmissions: many(appFormSubmissions),
+  appPages: many(appPages),
+  appPagesRevisions: many(appPagesRevisions),
+  appUsers: many(appUsers),
+  aiLogs: many(aiLogs),
+}));
+
+export const appPagesOnlineRelations = relations(appPagesOnline, ({ one }) => ({
+  app: one(apps, {
+    fields: [appPagesOnline.app],
+    references: [apps.id],
   }),
 }));
 
 export const librariesRelations = relations(libraries, ({ one, many }) => ({
-  libraryTemplates: many(libraryTemplates),
   app: one(apps, {
     fields: [libraries.app],
     references: [apps.id],
   }),
-  client: one(clients, {
-    fields: [libraries.client],
-    references: [clients.id],
-  }),
+  libraryTemplates: many(libraryTemplates),
   libraryItems: many(libraryItems),
 }));
 
-export const webhookEventsRelations = relations(webhookEvents, ({ one }) => ({
-  client: one(clients, {
-    fields: [webhookEvents.clientId],
-    references: [clients.id],
-  }),
-}));
-
-export const clientsRelations = relations(clients, ({ many }) => ({
-  webhookEvents: many(webhookEvents),
-  appsOnlines: many(appsOnline),
-  libraries: many(libraries),
-  apps: many(apps),
-  appUserPlans: many(appUserPlans),
-}));
-
-export const appUsersRelations = relations(appUsers, ({ one }) => ({
+export const appFormSubmissionsRelations = relations(appFormSubmissions, ({ one }) => ({
   app: one(apps, {
-    fields: [appUsers.app],
+    fields: [appFormSubmissions.app],
     references: [apps.id],
-  }),
-}));
-
-export const appsRelations = relations(apps, ({ one, many }) => ({
-  appUsers: many(appUsers),
-  appDomains: many(appDomains),
-  appPagesRevisions: many(appPagesRevisions),
-  appApiKeys: many(appApiKeys),
-  libraries: many(libraries),
-  client: one(clients, {
-    fields: [apps.client],
-    references: [clients.id],
-  }),
-  appAssets: many(appAssets),
-  appFormSubmissions: many(appFormSubmissions),
-  appPagesOnlines: many(appPagesOnline),
-  appPages: many(appPages),
-}));
-
-export const appDomainsRelations = relations(appDomains, ({ one }) => ({
-  app: one(apps, {
-    fields: [appDomains.app],
-    references: [apps.id],
-  }),
-}));
-
-export const appPagesRevisionsRelations = relations(appPagesRevisions, ({ one }) => ({
-  app: one(apps, {
-    fields: [appPagesRevisions.app],
-    references: [apps.id],
-  }),
-}));
-
-export const appsOnlineRelations = relations(appsOnline, ({ one }) => ({
-  client: one(clients, {
-    fields: [appsOnline.client],
-    references: [clients.id],
   }),
 }));
 
@@ -112,10 +69,24 @@ export const appPagesRelations = relations(appPages, ({ one, many }) => ({
   }),
 }));
 
-export const appApiKeysRelations = relations(appApiKeys, ({ one }) => ({
+export const appPagesRevisionsRelations = relations(appPagesRevisions, ({ one }) => ({
   app: one(apps, {
-    fields: [appApiKeys.app],
+    fields: [appPagesRevisions.app],
     references: [apps.id],
+  }),
+}));
+
+export const appUsersRelations = relations(appUsers, ({ one }) => ({
+  app: one(apps, {
+    fields: [appUsers.app],
+    references: [apps.id],
+  }),
+}));
+
+export const libraryTemplatesRelations = relations(libraryTemplates, ({ one }) => ({
+  library: one(libraries, {
+    fields: [libraryTemplates.library],
+    references: [libraries.id],
   }),
 }));
 
@@ -126,30 +97,9 @@ export const libraryItemsRelations = relations(libraryItems, ({ one }) => ({
   }),
 }));
 
-export const appAssetsRelations = relations(appAssets, ({ one }) => ({
+export const aiLogsRelations = relations(aiLogs, ({ one }) => ({
   app: one(apps, {
-    fields: [appAssets.app],
+    fields: [aiLogs.app],
     references: [apps.id],
-  }),
-}));
-
-export const appFormSubmissionsRelations = relations(appFormSubmissions, ({ one }) => ({
-  app: one(apps, {
-    fields: [appFormSubmissions.app],
-    references: [apps.id],
-  }),
-}));
-
-export const appPagesOnlineRelations = relations(appPagesOnline, ({ one }) => ({
-  app: one(apps, {
-    fields: [appPagesOnline.app],
-    references: [apps.id],
-  }),
-}));
-
-export const appUserPlansRelations = relations(appUserPlans, ({ one }) => ({
-  client: one(clients, {
-    fields: [appUserPlans.client],
-    references: [clients.id],
   }),
 }));
