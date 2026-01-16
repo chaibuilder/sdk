@@ -1,4 +1,4 @@
-import ChaiBuilderPages from "@/pages";
+import { ChaiWebsiteBuilder } from "@/pages/chaibuilder-pages";
 import { LoggedInUser } from "@/pages/types/loggedin-user";
 import { LoginScreen } from "@/routes/login";
 import { useCallback, useEffect, useState } from "react";
@@ -84,7 +84,7 @@ const WebsiteBuilder = () => {
   }
 
   return (
-    <ChaiBuilderPages
+    <ChaiWebsiteBuilder
       locale="fr-CA"
       flags={{ exportCode: false, dragAndDrop: true, designTokens: true }}
       translations={{ "fr-CA": { Outline: "Contour" } }}
