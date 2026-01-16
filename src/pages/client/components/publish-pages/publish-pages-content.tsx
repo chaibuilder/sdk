@@ -119,7 +119,7 @@ const PublishPagesModalContent = ({
 
   useEffect(() => {
     const pageOwnedByOtherUsers = filter(keys(pageToUser), (pageId) => get(pageToUser, [pageId, "userId"]) !== userId);
-    setSelectedPages((prev) => filter(prev, (id) => !includes(pageOwnedByOtherUsers, id)));
+    startTransition(() => setSelectedPages((prev) => filter(prev, (id) => !includes(pageOwnedByOtherUsers, id))));
   }, [pageToUser, userId]);
 
   const isAllSelected = selectedPages.length === filteredPages?.length;
