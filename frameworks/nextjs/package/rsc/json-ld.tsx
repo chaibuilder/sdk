@@ -1,6 +1,6 @@
 "use server";
 
-import { withDataBinding } from "../utils/with-data-binding";
+import { withDataBinding } from "../lib/with-data-binding";
 
 /**
  * Checks if the given JSON-LD string is valid
