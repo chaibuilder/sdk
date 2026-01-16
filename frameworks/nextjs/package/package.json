@@ -3,6 +3,7 @@
   "description": "AI Enabled Open source website builder for ReactJS",
   "private": false,
   "author": "Suraj Air",
+  "email": "suraj@chaibuilder.com",
   "license": "BSD-3-Clause",
   "homepage": "https://chaibuilder.com",
   "version": "0.0.0",
@@ -14,6 +15,9 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "bin": {
     "chai-tailwind": "scripts/chai-tailwind.cjs"
   },
@@ -27,14 +31,9 @@
   },
   "keywords": [],
   "peerDependencies": {
-    "ai": "^6.0.11",
-    "drizzle-orm": "^0.45.1",
     "next": "16.1.1",
-    "postgres": "^3.4.8",
     "react": "^18.0 || ^19.0 || ^19.1 || ^19.2",
     "react-dom": "^18.0 || ^19.0 || ^19.1 || ^19.2",
-    "sharp": "^0.34.5",
-    "streamdown": "^1.6.10",
     "tailwindcss": "^3 || ^4"
   },
   "exports": {
