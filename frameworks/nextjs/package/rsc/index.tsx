@@ -1,3 +1,4 @@
+export { ChaiBuilder } from "../ChaiBuilder";
 export * from "./chai-page-styles";
 export { ImageBlock } from "./image-block";
 export * from "./json-ld";

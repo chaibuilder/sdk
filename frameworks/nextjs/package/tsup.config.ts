@@ -1,7 +1,16 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
-  entry: ["actions.ts", "web-blocks.ts", "rsc/index.tsx", "core.ts", "supabase-actions.ts", "runtime.ts", "render.ts"],
+  entry: [
+    "actions.ts",
+    "web-blocks.ts",
+    "rsc/index.tsx",
+    "core.ts",
+    "supabase-actions.ts",
+    "runtime.ts",
+    "render.ts",
+    "utils.ts",
+  ],
   target: "es2018",
   esbuildOptions(options) {
     options.loader = {
