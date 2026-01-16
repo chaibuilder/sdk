@@ -20,7 +20,6 @@ const PageTypeField = ({
   onChange: (href: string) => void;
 }) => {
   const { t } = useTranslation();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const searchPageTypeItems = useBuilderProp("searchPageTypeItems", (_: string, __: any) => []);
   const [loading, setLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);

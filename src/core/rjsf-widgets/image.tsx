@@ -99,7 +99,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur, uiSchema }: WidgetProps
       set(props, forMobile ? "mobileHeight" : "height", "");
       updateBlockProps([selectedBlock._id], props);
     }
-  }, [onChange, selectedBlock?._id, updateBlockProps, propIdKey, allowEmpty]);
+  }, [selectedBlock, onChange, updateBlockProps, propIdKey, allowEmpty]);
 
   const fileName = getFileName(resolvedValue);
   return (
