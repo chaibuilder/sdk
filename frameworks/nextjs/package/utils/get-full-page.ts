@@ -1,7 +1,7 @@
-import { ChaiBlock } from "@chaibuilder/runtime";
+import { ChaiBlock } from "@chaibuilder/sdk/runtime";
 import { db, safeQuery, schema } from "@chaibuilder/sdk/server";
-import { and, eq, inArray, sql } from "drizzle-orm";
 import { differenceInMinutes } from "date-fns";
+import { and, eq, inArray, sql } from "drizzle-orm";
 import { get, has, isEmpty } from "lodash";
 
 export type GetFullPageOptions = {

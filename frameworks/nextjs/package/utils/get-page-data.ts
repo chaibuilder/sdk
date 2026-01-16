@@ -1,5 +1,5 @@
-import { ChaiBlock } from "@chaibuilder/runtime";
-import { getChaiCollection, getChaiPageType, getChaiGlobalData } from "@chaibuilder/sdk/server";
+import { ChaiBlock } from "@chaibuilder/sdk/runtime";
+import { getChaiCollection, getChaiGlobalData, getChaiPageType } from "@chaibuilder/sdk/server";
 import { get } from "lodash";
 
 export async function getPageData(args: {
@@ -46,7 +46,7 @@ export async function getPageData(args: {
 
   // Execute all async operations in parallel
   const [globalData, pageData, ...collectionResults] = await Promise.all([
-    getChaiGlobalData({lang , draft: draftMode , inBuilder: false}),
+    getChaiGlobalData({ lang, draft: draftMode, inBuilder: false }),
     registeredPageType?.dataProvider?.({ lang, draft: draftMode, inBuilder: false, pageProps }) || Promise.resolve({}),
     ...collectionPromises,
   ]);
