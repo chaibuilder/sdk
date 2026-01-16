@@ -5,8 +5,8 @@ import { registerChaiPreImportHTMLHook, registerChaiSidebarPanel, registerChaiTo
 import { default as AIChatPanel } from "@/routes/demo/ai-chat-panel";
 import registerCustomBlocks from "@/routes/demo/blocks";
 import "@/routes/demo/panels/panel";
+import { ChaiFontViaSrc, ChaiFontViaUrl, registerChaiFont } from "@/runtime/index";
 import { ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
-import { ChaiFontViaSrc, ChaiFontViaUrl, registerChaiFont } from "@chaibuilder/runtime";
 import { lazy } from "react";
 const TopBar = lazy(() => import("@/routes/demo/top-bar"));
 

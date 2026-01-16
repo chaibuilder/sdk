@@ -1,4 +1,4 @@
-import { registerChaiBlock } from "@chaibuilder/runtime";
+import { registerChaiBlock } from "@/runtime/index";
 
 import { Component as Box, Config as BoxConfig, BoxProps } from "@/web-blocks/box";
 import { Component as Button, Config as ButtonConfig, ButtonProps } from "@/web-blocks/button";

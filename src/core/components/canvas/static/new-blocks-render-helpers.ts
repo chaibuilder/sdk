@@ -1,8 +1,8 @@
 import { DESIGN_TOKEN_PREFIX, STYLES_KEY } from "@/core/constants/STRINGS";
 import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
+import { getRegisteredChaiBlock } from "@/runtime/index";
 import { ChaiBlock } from "@/types/chai-block";
 import { DesignTokens } from "@/types/types";
-import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { cloneDeep, forEach, get, includes, isArray, isEmpty, isString, keys, memoize, startsWith } from "lodash-es";
 import { twMerge } from "tailwind-merge";
 

@@ -1,6 +1,6 @@
+import { getChaiPageTypes } from "@/runtime/register-page-type";
 import { isFunction } from "lodash-es";
 import { z } from "zod";
-import { getChaiPageTypes } from "@/server/register/register-page-type";
 import { ChaiBaseAction } from "./base-action";
 
 type GetPageTypesActionData = Record<string, never>;

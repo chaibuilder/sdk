@@ -10,6 +10,7 @@ import {
   getBlockRuntimeProps,
   getBlockTagAttributes,
 } from "@/core/components/canvas/static/new-blocks-render-helpers";
+import { useBlockRuntimeProps } from "@/core/components/canvas/static/use-block-runtime-props";
 import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
 import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { useEditorMode } from "@/core/hooks/use-editor-mode";
@@ -19,8 +20,8 @@ import { usePartialBlocksStore } from "@/core/hooks/use-partial-blocks-store";
 import { useSavePage } from "@/core/hooks/use-save-page";
 import { useGetBlockAtom } from "@/core/hooks/use-update-block-atom";
 import { applyBindingToBlockProps } from "@/render/apply-binding";
+import { getRegisteredChaiBlock } from "@/runtime/index";
 import { ChaiBlock } from "@/types/chai-block";
-import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { atom, Atom, Provider, useAtom, useAtomValue } from "jotai";
 import { splitAtom } from "jotai/utils";
 import { filter, get, has, isArray, isEmpty, isNull, map, noop } from "lodash-es";
@@ -30,7 +31,6 @@ import { toast } from "sonner";
 import { adjustSpacingInContentBlocks } from "./adjust-spacing-in-blocks";
 import { MayBeAsyncPropsWrapper } from "./async-props-wrapper";
 import { ErrorFallback } from "./error-fallback";
-import { useBlockRuntimeProps } from "@/core/components/canvas/static/use-block-runtime-props";
 import WithBlockTextEditor from "./with-block-text-editor";
 
 export const RepeaterContext = createContext<{

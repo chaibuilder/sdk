@@ -1,3 +1,5 @@
+import { chaiDesignTokensAtom } from "@/core/atoms/builder";
+import { userActionsCountAtom } from "@/core/components/use-auto-save";
 import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { useCheckStructure } from "@/core/hooks/use-check-structure";
 import { useGetPageData } from "@/core/hooks/use-get-page-data";
@@ -5,12 +7,11 @@ import { useIsPageLoaded } from "@/core/hooks/use-is-page-loaded";
 import { useLanguages } from "@/core/hooks/use-languages";
 import { usePermissions } from "@/core/hooks/use-permissions";
 import { useTheme } from "@/core/hooks/use-theme";
-import { ChaiBlock, getRegisteredChaiBlock } from "@chaibuilder/runtime";
+import { ChaiBlock, getRegisteredChaiBlock } from "@/runtime/index";
 import { useThrottledCallback } from "@react-hookz/web";
 import { atom, useAtom, useAtomValue } from "jotai";
 import { has, isEmpty, noop } from "lodash-es";
-import { chaiDesignTokensAtom } from "@/core/atoms/builder";
-import { userActionsCountAtom } from "@/core/components/use-auto-save";
+
 export const builderSaveStateAtom = atom<"SAVED" | "SAVING" | "UNSAVED">("SAVED"); // SAVING
 builderSaveStateAtom.debugLabel = "builderSaveStateAtom";
 

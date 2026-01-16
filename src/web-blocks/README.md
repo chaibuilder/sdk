@@ -48,7 +48,7 @@ The `Config` object defines essential properties for the block:
 ### Example Usage
 
 ```tsx
-import { registerChaiBlock, ChaiBlockComponentProps } from "@chaibuilder/runtime";
+import { registerChaiBlock, ChaiBlockComponentProps } from "@/runtime/index";
 
 // 1. Define component props
 export type ButtonProps = {

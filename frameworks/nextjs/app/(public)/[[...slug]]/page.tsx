@@ -1,6 +1,6 @@
 import { ChaiBuilder } from "@/package/ChaiBuilder";
 import { ChaiPageStyles, NextJSRenderChaiBlocks, PreviewBanner } from "@/package/rsc/index";
-import { ChaiPageProps } from "@chaibuilder/runtime";
+import { ChaiPageProps } from "@chaibuilder/sdk/runtime";
 import "@chaibuilder/sdk/styles";
 import { loadWebBlocks } from "@chaibuilder/sdk/web-blocks";
 import { draftMode } from "next/headers";

@@ -1,5 +1,5 @@
+import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@/runtime/index";
 import EmptySlot from "@/web-blocks/empty-slot";
-import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { FileTextIcon } from "@radix-ui/react-icons";
 
 export type FormProps = {

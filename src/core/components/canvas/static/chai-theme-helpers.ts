@@ -1,5 +1,5 @@
+import { ChaiFontViaSrc, ChaiFontViaUrl, getAllRegisteredFonts } from "@/runtime/index";
 import { ChaiBuilderThemeOptions, ChaiThemeValues } from "@/types/chaibuilder-editor-props";
-import { ChaiFontViaSrc, ChaiFontViaUrl, getAllRegisteredFonts } from "@chaibuilder/runtime";
 import { flatten, get, keys, uniqBy } from "lodash-es";
 
 export const getChaiThemeOptions = (chaiThemeOptions: ChaiBuilderThemeOptions) => {
@@ -36,7 +36,7 @@ export function hexToHSL(hex: string) {
   let g = parseInt(result[2], 16);
   let b = parseInt(result[3], 16);
   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-  (r /= 255), (g /= 255), (b /= 255);
+  ((r /= 255), (g /= 255), (b /= 255));
   const max = Math.max(r, g, b),
     min = Math.min(r, g, b);
   let h;

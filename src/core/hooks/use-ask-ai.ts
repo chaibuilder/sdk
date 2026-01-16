@@ -6,9 +6,9 @@ import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { useLanguages } from "@/core/hooks/use-languages";
 import { useRightPanel } from "@/core/hooks/use-theme";
 import { useStreamMultipleBlocksProps, useUpdateMultipleBlocksProps } from "@/core/hooks/use-update-blocks-props";
+import { getRegisteredChaiBlock } from "@/runtime/index";
 import { ChaiBlock } from "@/types/chai-block";
 import { AskAiResponse } from "@/types/chaibuilder-editor-props";
-import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { atom, useAtom } from "jotai";
 import {
   cloneDeep,

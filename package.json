@@ -75,7 +75,6 @@
     }
   },
   "peerDependencies": {
-    "@chaibuilder/runtime": "2.3.0",
     "@supabase/supabase-js": "^2.89.0",
     "@types/react": "*",
     "@types/react-dom": "*",
@@ -118,7 +117,6 @@
     }
   },
   "dependencies": {
-    "@chaibuilder/runtime": "2.3.0",
     "@floating-ui/dom": "1.7.4",
     "@floating-ui/react-dom": "2.1.6",
     "@iconify-json/lucide": "^1.2.82",

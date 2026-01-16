@@ -1,4 +1,4 @@
-import { ChaiPageProps } from "@chaibuilder/runtime";
+import { ChaiPageProps } from "@/runtime/index";
 
 export type PageTypeSearchResult = {
   id: string;

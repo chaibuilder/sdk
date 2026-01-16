@@ -1,5 +1,5 @@
+import { ChaiPageProps, getRegisteredChaiBlock } from "@/runtime/index";
 import { ChaiBlock } from "@/types/chai-block";
-import { ChaiPageProps, getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { cloneDeep, find, forEach, get, has, isEmpty, isFunction, isObject, isString, keys } from "lodash-es";
 import { AsyncRenderBlocks } from "./async-blocks-renderer";
 

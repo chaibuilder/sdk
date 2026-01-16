@@ -1,3 +1,4 @@
+import { ExternalDataType } from "@/routes/demo/EXTERNAL_DATA";
 import {
   builderProp,
   ChaiBlockComponentProps,
@@ -5,8 +6,7 @@ import {
   closestBlockProp,
   registerChaiBlockSchema,
   StylesProp,
-} from "@chaibuilder/runtime";
-import { ExternalDataType } from "@/routes/demo/EXTERNAL_DATA";
+} from "@/runtime/index";
 
 type Sort = {
   field: string;

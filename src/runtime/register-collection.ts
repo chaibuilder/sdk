@@ -1,6 +1,6 @@
 "use server";
 
-import { ChaiBlock } from "@chaibuilder/runtime";
+import { ChaiBlock } from "@/runtime/index";
 import { get, has } from "lodash-es";
 
 export type CollectionFetchParams = {

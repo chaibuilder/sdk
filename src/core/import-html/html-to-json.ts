@@ -2,8 +2,8 @@
 import { STYLES_KEY } from "@/core/constants/STRINGS";
 import { cn, generateUUID } from "@/core/functions/common-functions";
 import { getVideoURLFromHTML, hasVideoEmbed } from "@/core/import-html/import-video";
+import { syncBlocksWithDefaults } from "@/runtime/index";
 import { ChaiBlock } from "@/types/chai-block";
-import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { parse, stringify } from "himalaya";
 import {
   camelCase,

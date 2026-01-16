@@ -1,4 +1,4 @@
-import { ChaiBlock } from "@chaibuilder/runtime";
+import { ChaiBlock } from "@/runtime/index";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   COLLECTIONS,
@@ -6,7 +6,7 @@ import {
   getChaiCollection,
   getChaiCollections,
   registerChaiCollection,
-} from "./regsiter-collection";
+} from "./register-collection";
 
 describe("Collection Registration", () => {
   // Clear COLLECTIONS before each test to ensure isolation
@@ -79,18 +79,14 @@ describe("Collection Registration", () => {
       };
 
       // Mock console.warn
-      const consoleWarnSpy = vi
-        .spyOn(console, "warn")
-        .mockImplementation(() => {});
+      const consoleWarnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
 
       // Act
       registerChaiCollection(id, initialOptions);
       registerChaiCollection(id, updatedOptions);
 
       // Assert
-      expect(consoleWarnSpy).toHaveBeenCalledWith(
-        `Collection ${id} already registered`
-      );
+      expect(consoleWarnSpy).toHaveBeenCalledWith(`Collection ${id} already registered`);
       expect(COLLECTIONS[id].name).toBe(updatedOptions.name);
       expect(COLLECTIONS[id].fetch).toBe(updatedOptions.fetch);
 
@@ -181,11 +177,7 @@ describe("Collection Registration", () => {
 
       // Assert
       expect(result).toHaveLength(3);
-      expect(result.map((c) => c.id)).toEqual([
-        "collection1",
-        "collection2",
-        "collection3",
-      ]);
+      expect(result.map((c) => c.id)).toEqual(["collection1", "collection2", "collection3"]);
     });
 
     it("should return collections in the order they were registered", () => {

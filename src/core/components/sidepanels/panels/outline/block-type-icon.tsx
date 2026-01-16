@@ -1,6 +1,6 @@
-import { useRegisteredChaiBlocks } from "@chaibuilder/runtime";
-import { get } from "lodash-es";
+import { useRegisteredChaiBlocks } from "@/runtime/index";
 import { SquareIcon } from "@radix-ui/react-icons";
+import { get } from "lodash-es";
 import React from "react";
 
 type Props = {

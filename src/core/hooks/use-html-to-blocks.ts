@@ -1,9 +1,9 @@
-import { ChaiBlock } from "@/types/chai-block";
-import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
-import { each, filter, find, pick, startsWith } from "lodash-es";
-import { useCallback } from "react";
 import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
 import { getBlocksFromHTML, mergeBlocksWithExisting } from "@/core/import-html/html-to-json";
+import { getRegisteredChaiBlock } from "@/runtime/index";
+import { ChaiBlock } from "@/types/chai-block";
+import { each, filter, find, pick, startsWith } from "lodash-es";
+import { useCallback } from "react";
 
 export const handlei18N = (blocks: ChaiBlock[], currentBlocks: ChaiBlock[]) => {
   return blocks.map((block) => {

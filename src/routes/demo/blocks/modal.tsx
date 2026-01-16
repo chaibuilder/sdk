@@ -8,7 +8,7 @@ import {
   registerChaiBlock,
   registerChaiBlockSchema,
   StylesProp,
-} from "@chaibuilder/runtime";
+} from "@/runtime/index";
 import { StackIcon } from "@radix-ui/react-icons";
 
 export type ModalProps = {

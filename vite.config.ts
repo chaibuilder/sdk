@@ -46,7 +46,6 @@ export default defineConfig({
       external: [
         "react/jsx-runtime",
         "react/jsx-dev-runtime",
-        "@chaibuilder/runtime",
         "drizzle-orm",
         "drizzle-orm/pg-core",
         "drizzle-orm/postgres-js",

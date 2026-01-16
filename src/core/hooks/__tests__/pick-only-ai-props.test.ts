@@ -1,10 +1,10 @@
 import { pickOnlyAIProps } from "@/core/hooks/use-ask-ai";
+import { getRegisteredChaiBlock } from "@/runtime/index";
 import { ChaiBlock } from "@/types/chai-block";
-import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
-import { vi, describe, it, expect, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // Mock the runtime module
-vi.mock("@chaibuilder/runtime", () => ({
+vi.mock("@/runtime/index", () => ({
   getRegisteredChaiBlock: vi.fn(),
 }));
 
