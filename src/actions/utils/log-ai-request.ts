@@ -32,7 +32,7 @@ export async function logAiRequestError({
     cost: 0,
     prompt,
     user: authTokenOrUserId,
-    client: process?.env?.CHAIBUILDER_CLIENT_ID || "",
+    client: process?.env?.CHAIBUILDER_CLIENT_ID || null,
     app: appId,
   };
 
@@ -72,7 +72,7 @@ export async function logAiRequest({
     cost,
     prompt,
     user: userId,
-    client: process?.env?.CHAIBUILDER_CLIENT_ID || "",
+    client: process?.env?.CHAIBUILDER_CLIENT_ID || null,
     app: appId,
   };
   const { error: dbError } = await safeQuery(() => db!.insert(schema.aiLogs).values(payload));
