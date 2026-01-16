@@ -69,6 +69,11 @@
       "import": "./dist/supabase-actions.js",
       "require": "./dist/supabase-actions.cjs"
     },
+    "./utils": {
+      "types": "./dist/utils.d.ts",
+      "import": "./dist/utils.js",
+      "require": "./dist/utils.cjs"
+    },
     "./styles": {
       "import": "./dist/sdk.css",
       "require": "./dist/sdk.css"
