@@ -27,9 +27,9 @@ import { GotoSettingsIcon } from "./goto-settings-icon";
 import { getElementByDataBlockId } from "./static/chai-canvas";
 
 type BlockActionProps = {
-  block: ChaiBlock | null;
+  block: ChaiBlock;
   isDragging: boolean;
-  selectedBlockElement: HTMLElement | null;
+  selectedBlockElement: HTMLElement;
 };
 const getElementByStyleId = (doc: any, styleId: string): HTMLElement =>
   doc.querySelector(`[data-style-id="${styleId}"]`) as HTMLElement;
@@ -41,7 +41,7 @@ export const BlockSelectionHighlighter = () => {
   const [selectedElements, setSelectedElements] = useState<HTMLElement[]>([]);
   const [, setSelectedStyleElements] = useState<HTMLElement[] | null[]>([]);
   const { onDragStart, onDragEnd, isDragging } = useDragAndDrop();
-  const [dragging, setDragging] = useState(null);
+  const [dragging, setDragging] = useState<HTMLElement | null>(null);
   const isDragAndDropEnabled = useIsDragAndDropEnabled();
 
   const isInViewport = (element: HTMLElement, offset = 0) => {
@@ -87,11 +87,13 @@ export const BlockSelectionHighlighter = () => {
         setDragging(selectedElements?.[0]);
         onDragStart(e, selectedBlock, false);
       }}>
-      <BlockFloatingSelector
-        block={selectedBlock}
-        isDragging={isDragging && Boolean(dragging)}
-        selectedBlockElement={selectedElements[0] || (isDragging ? dragging : null)}
-      />
+      {selectedBlock && (
+        <BlockFloatingSelector
+          block={selectedBlock as ChaiBlock}
+          isDragging={isDragging && Boolean(dragging)}
+          selectedBlockElement={selectedElements[0] || (isDragging ? dragging : null)}
+        />
+      )}
     </div>
   );
 };
@@ -138,7 +140,7 @@ const BlockFloatingSelector = ({ block, isDragging, selectedBlockElement }: Bloc
   });
 
   useResizeObserver(selectedBlockElement as HTMLElement, () => update(), selectedBlockElement !== null);
-  useResizeObserver(document?.body, () => update(), document?.body !== null);
+  useResizeObserver(document?.body as HTMLElement, () => update(), document?.body !== null);
 
   const parentId: string | undefined | null = get(block, "_parent", null);
 
