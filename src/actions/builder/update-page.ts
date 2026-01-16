@@ -28,7 +28,6 @@ type UpdatePageActionData = {
   pageType?: string;
   dynamic?: boolean;
   dynamicSlugCustom?: string;
-  tracking?: Record<string, any>;
 
   links?: string;
   partialBlocks?: string;
@@ -66,7 +65,6 @@ export class UpdatePageAction extends ChaiBaseAction<UpdatePageActionData, Updat
       pageType: z.string().optional(),
       dynamic: z.boolean().optional(),
       dynamicSlugCustom: z.string().optional(),
-      tracking: z.record(z.string(), z.any()).optional(),
       needTranslations: z.boolean().optional(),
     });
   }
@@ -186,7 +184,6 @@ export class UpdatePageAction extends ChaiBaseAction<UpdatePageActionData, Updat
       "pageType",
       "dynamic",
       "dynamicSlugCustom",
-      "tracking",
     ]);
   }
 
@@ -282,7 +279,6 @@ export class UpdatePageAction extends ChaiBaseAction<UpdatePageActionData, Updat
           online: schema.appPages.online,
           parent: schema.appPages.parent,
           seo: schema.appPages.seo,
-          tracking: schema.appPages.tracking,
         })
         .from(schema.appPages)
         .where(eq(schema.appPages.id, pageId))

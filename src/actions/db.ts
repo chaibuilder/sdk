@@ -1,7 +1,7 @@
+import dotenv from "dotenv";
 import { drizzle, type PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import * as schema from "./drizzle/schema";
-import dotenv from "dotenv";
 dotenv.config();
 
 const connectionString = process.env.CHAIBUILDER_DATABASE_URL;

@@ -19,12 +19,10 @@ type GetCompareDataActionResponse = {
   version1: {
     blocks: ChaiBlock[];
     seo: object;
-    tracking: object;
   };
   version2: {
     blocks: ChaiBlock[];
     seo: object;
-    tracking: object;
   };
 };
 
@@ -66,12 +64,10 @@ export class GetCompareDataAction extends ChaiBaseAction<GetCompareDataActionDat
       version1: {
         blocks: version1Data.blocks,
         seo: version1Data.seo,
-        tracking: version1Data.tracking,
       },
       version2: {
         blocks: version2Data.blocks,
         seo: version2Data.seo,
-        tracking: version2Data.tracking,
       },
     };
   }
@@ -82,7 +78,7 @@ export class GetCompareDataAction extends ChaiBaseAction<GetCompareDataActionDat
   private async getBlocksForVersion(
     type: "draft" | "revision" | "live",
     id: string,
-  ): Promise<{ blocks: ChaiBlock[]; seo: any; tracking: any }> {
+  ): Promise<{ blocks: ChaiBlock[]; seo: any }> {
     let data;
     let error;
 
@@ -95,7 +91,6 @@ export class GetCompareDataAction extends ChaiBaseAction<GetCompareDataActionDat
             columns: {
               blocks: true,
               seo: true,
-              tracking: true,
             },
           }),
         ));
@@ -109,7 +104,6 @@ export class GetCompareDataAction extends ChaiBaseAction<GetCompareDataActionDat
             columns: {
               blocks: true,
               seo: true,
-              tracking: true,
             },
           }),
         ));
@@ -124,7 +118,6 @@ export class GetCompareDataAction extends ChaiBaseAction<GetCompareDataActionDat
             columns: {
               blocks: true,
               seo: true,
-              tracking: true,
             },
           }),
         ));
@@ -146,7 +139,6 @@ export class GetCompareDataAction extends ChaiBaseAction<GetCompareDataActionDat
     return {
       blocks: (data.blocks as ChaiBlock[]) || [],
       seo: data.seo || {},
-      tracking: data.tracking || {},
     };
   }
 

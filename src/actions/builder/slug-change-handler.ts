@@ -288,7 +288,6 @@ export class SlugChangeHandler {
           "pageType",
           "dynamic",
           "dynamicSlugCustom",
-          "tracking",
           "links",
           "partialBlocks",
           "designTokens",

@@ -21,7 +21,6 @@ type GetLanguagePagesActionResponse = Array<{
   online: boolean | null;
   parent?: string | null;
   metadata: any;
-  tracking: any;
   dynamic: boolean | null;
   dynamicSlugCustom: string | null;
 }>;
@@ -56,7 +55,6 @@ export class GetLanguagePagesAction extends ChaiBaseAction<GetLanguagePagesActio
           online: schema.appPages.online,
           parent: schema.appPages.parent,
           metadata: schema.appPages.metadata,
-          tracking: schema.appPages.tracking,
           dynamic: schema.appPages.dynamic,
           dynamicSlugCustom: schema.appPages.dynamicSlugCustom,
         })
