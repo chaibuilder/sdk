@@ -56,7 +56,7 @@ const VIMEO_REGEX =
  * @param {object} controls - The controls object containing autoplay, loop, and muted properties.
  * @returns {string|null} The embed URL for the video, or null if the video source is not supported.
  */
-const getEmbedURL = (url, controls) => {
+const getEmbedURL = (url: string, controls: Record<string, any>) => {
   const autoplay = get(controls, "autoplay", false);
   const _controls = get(controls, "controls", false);
   const loop = get(controls, "loop", false);
@@ -113,7 +113,7 @@ const SupportedVideoSource = (props: ChaiBlockComponentProps<VideoBlockProps>) =
             : `Provided ${videoSource} video link is invalid.`}
         </div>
       ) : (
-        <iframe width="100%" src={embedURL} title={title || "Video player"} {...pick(styles, "className")} />
+        <iframe width="100%" src={embedURL ?? ""} title={title || "Video player"} {...pick(styles, "className")} />
       )}
       {inBuilder && <div {...blockProps} className="absolute top-0 h-full w-full" />}
     </div>

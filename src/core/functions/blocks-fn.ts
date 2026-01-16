@@ -5,11 +5,10 @@ import { filter, find, flatten } from "lodash-es";
 export const nestedToFlatArray = (nestedJson: Array<ChaiBlock>, parent: string | null = null): Array<ChaiBlock> =>
   flatten(
     nestedJson.map((block: any) => {
-       
       block = parent !== null ? { ...block, _parent: parent } : block;
       if (block.children && block.children.length) {
         const children = [...block.children];
-         
+
         delete block.children;
         return flatten([block, ...nestedToFlatArray(children, block._id)]);
       }
@@ -28,7 +27,7 @@ export function duplicateBlocks(
     if (filter(blocks, { _parent: children[i]._id }).length > 0) {
       const newId = generateUUID();
       newBlocks.push({ ...children[i], oldId: children[i]._id, ...{ _id: newId, _parent } });
-      newBlocks.push(flatten(duplicateBlocks(blocks, children[i]._id, newId)));
+      newBlocks.push(flatten(duplicateBlocks(blocks, children[i]._id!, newId)));
     } else {
       newBlocks.push({
         ...children[i],
@@ -40,15 +39,15 @@ export function duplicateBlocks(
   return flatten(newBlocks);
 }
 
-export function convertToBlocksTree(blocks: Partial<ChaiBlock>[]) {
+export function convertToBlocksTree(blocks: (Partial<ChaiBlock> & { _id: string; _parent?: string })[]) {
   // Create a map to store nodes by their ids
-  const idMap = {};
+  const idMap: Record<string, any> = {};
   blocks.forEach((item) => {
     idMap[item._id] = { ...item, children: [] };
   });
 
   // Create the result array to store top level nodes
-  const result = [];
+  const result: any[] = [];
 
   blocks.forEach((item) => {
     if (item._parent) {

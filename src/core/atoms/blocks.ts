@@ -6,7 +6,7 @@ import { filter, has } from "lodash-es";
 
 // derived atoms
 // @ts-ignore
-export const presentBlocksAtom = atom([]);
+export const presentBlocksAtom = atom<ChaiBlock[]>([]);
 presentBlocksAtom.debugLabel = "presentBlocksAtom";
 
 //TODO: Need a better name for this atom. Also should be a custom hook

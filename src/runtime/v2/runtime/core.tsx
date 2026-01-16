@@ -39,7 +39,7 @@ export const useRegisteredChaiBlock = (type: keyof typeof REGISTERED_CHAI_BLOCKS
 };
 
 export const getRegisteredChaiBlock = (type: keyof typeof REGISTERED_CHAI_BLOCKS): ChaiBlockDefinition | null => {
-  return get(REGISTERED_CHAI_BLOCKS, type, null);
+  return get(REGISTERED_CHAI_BLOCKS, type, null) as ChaiBlockDefinition | null;
 };
 
 export const getDefaultBlockProps = (type: keyof typeof REGISTERED_CHAI_BLOCKS) => {
