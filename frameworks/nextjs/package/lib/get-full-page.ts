@@ -23,7 +23,6 @@ export type FullPageResponse = {
   currentEditor?: string | null;
   pageType?: string | null;
   lastSaved?: string | null;
-  tracking: any;
   dynamic: boolean | null;
   parent?: string | null;
   blocks: ChaiBlock[];
@@ -51,7 +50,6 @@ export async function getFullPage(
         currentEditor: table.currentEditor,
         pageType: table.pageType,
         lastSaved: table.lastSaved,
-        tracking: table.tracking,
         dynamic: table.dynamic,
         parent: table.parent,
       })
@@ -112,7 +110,6 @@ export async function getFullPage(
     currentEditor,
     pageType: page.pageType ?? null,
     lastSaved: page.lastSaved ?? null,
-    tracking: page.tracking,
     dynamic: page.dynamic ?? null,
     parent: page.parent ?? null,
     blocks,
