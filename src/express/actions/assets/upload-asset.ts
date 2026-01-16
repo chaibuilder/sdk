@@ -1,7 +1,7 @@
-import { ChaiBaseAction } from "@/server/actions/base-action";
+import { ChaiBaseAction } from "@/actions/builder/base-action";
+import { ChaiAssets } from "@/express/assets/class-chai-assets";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { z } from "zod";
-import { ChaiAssets } from "@/express/assets/class-chai-assets";
 
 const UploadAssetSchema = z.object({
   name: z.string(),

@@ -1,5 +1,5 @@
+import { ChaiBuilderPageType } from "@/actions/types";
 import { PAGE_TYPES, getChaiPageType, getChaiPageTypes, registerChaiPageType } from "@/runtime/register-page-type";
-import { ChaiBuilderPageType } from "@/server/types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 describe("Page Type Registration", () => {

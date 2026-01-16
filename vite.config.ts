@@ -25,7 +25,7 @@ export default defineConfig({
         "web-blocks": resolve(__dirname, "src/web-blocks/index.ts"),
         runtime: resolve(__dirname, "src/runtime.ts"),
         pages: resolve(__dirname, "src/pages/index.ts"),
-        actions: resolve(__dirname, "src/server/export.ts"),
+        actions: resolve(__dirname, "src/actions/export.ts"),
         utils: resolve(__dirname, "src/utils/index.ts"),
         "supabase-actions": resolve(__dirname, "src/express/actions/storage/index.ts"),
       },

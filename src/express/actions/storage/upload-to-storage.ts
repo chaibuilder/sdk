@@ -1,4 +1,4 @@
-import { ChaiBaseAction } from "@/server/actions/base-action";
+import { ChaiBaseAction } from "@/actions/builder/base-action";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { z } from "zod";
 

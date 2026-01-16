@@ -1,4 +1,4 @@
-import { ChaiBuilderPageType } from "@/server/types";
+import { ChaiBuilderPageType } from "@/actions/types";
 
 export const PAGE_TYPES: Record<string, ChaiBuilderPageType> = {};
 

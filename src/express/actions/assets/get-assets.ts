@@ -1,7 +1,7 @@
-import { z } from "zod";
-import { ChaiBaseAction } from "@/server/actions/base-action";
+import { ChaiBaseAction } from "@/actions/builder/base-action";
 import { ChaiAssets } from "@/express/assets/class-chai-assets";
 import { SupabaseClient } from "@supabase/supabase-js";
+import { z } from "zod";
 
 const GetAssetsSchema = z.object({
   search: z.string().optional(),
@@ -37,7 +37,7 @@ export class GetAssetsAction extends ChaiBaseAction<GetAssetsInput> {
         return { error: response.error, status: 400 };
       }
 
-      return response ;
+      return response;
     } catch (error) {
       console.error("GET_ASSETS error:", error);
       return { error: error instanceof Error ? error.message : "Unknown error", status: 500 };

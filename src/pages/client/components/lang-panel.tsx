@@ -1,3 +1,4 @@
+import { ChaiBuilderPageType } from "@/actions/types";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -15,7 +16,6 @@ import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
-import { ChaiBuilderPageType } from "@/server/types";
 import { useSetAtom } from "jotai";
 import { filter, find, get, isEmpty, map } from "lodash-es";
 import { MoreHorizontal, PencilIcon, Power, StarIcon, TrashIcon } from "lucide-react";

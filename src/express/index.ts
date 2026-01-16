@@ -1,6 +1,6 @@
+import ChaiActionsRegistry from "@/actions/builder/actions-registery";
+import { initChaiBuilderActionHandler } from "@/actions/builder/chai-builder-actions-handler";
 import { supabase } from "@/express/supabase-admin";
-import ChaiActionsRegistry from "@/server/actions/actions-registery";
-import { initChaiBuilderActionHandler } from "@/server/actions/chai-builder-actions-handler";
 import cors from "cors";
 import dotenv from "dotenv";
 import express, { Express } from "express";
