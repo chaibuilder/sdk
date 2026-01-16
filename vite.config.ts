@@ -8,7 +8,12 @@ import express from "./src/express/express-plugin";
 export default defineConfig({
   plugins: [
     react(),
-    dts({ include: ["src/**/*"], exclude: ["**/*.test.*", "**/*.spec.*"] }),
+    dts({
+      include: ["src/**/*"],
+      exclude: ["**/*.test.*", "**/*.spec.*"],
+      rollupTypes: true,
+      insertTypesEntry: true,
+    }),
     express("./src/express/index.ts"),
   ],
   resolve: {

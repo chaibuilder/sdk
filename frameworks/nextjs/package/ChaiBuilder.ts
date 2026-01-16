@@ -2,8 +2,8 @@ import { applyChaiDataBinding } from "@chaibuilder/sdk/render";
 import { ChaiBlock, ChaiPageProps } from "@chaibuilder/sdk/runtime";
 import { unstable_cache } from "next/cache";
 import { cache } from "react";
-import type { ChaiBuilderPage } from "./utils";
-import * as utils from "./utils";
+import type { ChaiBuilderPage } from "./lib";
+import * as utils from "./lib";
 
 class ChaiBuilder {
   private static appId?: string;
