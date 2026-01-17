@@ -13,7 +13,7 @@ import { useCallback } from "react";
  */
 const getBlockBuilderProps = memoize((type: string) => {
   const registeredBlock = getRegisteredChaiBlock(type);
-  const props = get(registeredBlock, "schema.properties", {});
+  const props = get(registeredBlock, "schema.properties", {}) as Record<string, unknown>;
   return compact(
     Object.keys(props).map((key) => {
       return get(props[key], "builderProp", false) || get(props[key], "runtime", false) ? key : null;
