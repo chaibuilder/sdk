@@ -110,7 +110,7 @@ const useHandleCanvasClick = () => {
     (e: any) => {
       if (editingBlockId) return;
       e.stopPropagation();
-      const chaiBlock: HTMLElement = getTargetedBlock(e.target);
+      const chaiBlock = getTargetedBlock(e.target) as HTMLElement | null;
       // If clicked on empty canvas area (no block found), deselect all blocks
       if (!chaiBlock) {
         clearHighlight();
@@ -146,7 +146,7 @@ const useHandleMouseMove = () => {
   return useThrottledCallback(
     (e: any) => {
       if (editingBlockId) return;
-      const chaiBlock = getTargetedBlock(e.target);
+      const chaiBlock = getTargetedBlock(e.target) as HTMLElement | null;
       if (chaiBlock) {
         highlightBlock(chaiBlock);
       }
