@@ -1,4 +1,4 @@
-export const PARTIALS = {
+export const PARTIALS: Record<string, any> = {
   partial: [
     {
       _type: "Box",

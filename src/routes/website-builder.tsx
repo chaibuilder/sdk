@@ -9,9 +9,11 @@ const WebsiteBuilder = () => {
   const [user, setUser] = useState<LoggedInUser | null>(null);
 
   useEffect(() => {
+    if (!supabaseClient) return;
     console.log("WebsiteBuilder");
     // Check initial session
     const checkInitialSession = async () => {
+      if (!supabaseClient) return;
       const {
         data: { session },
       } = await supabaseClient.auth.getSession();
@@ -60,10 +62,12 @@ const WebsiteBuilder = () => {
   }, [user?.id]);
 
   const handleLogout = useCallback(async () => {
+    if (!supabaseClient) return;
     await supabaseClient.auth.signOut();
   }, []);
 
   const getAccessToken = useCallback(async () => {
+    if (!supabaseClient) return "";
     const {
       data: { session },
     } = await supabaseClient.auth.getSession();

@@ -108,7 +108,7 @@ const Config = {
     ] as ChaiBlock[],
   category: "core",
   wrapper: true,
-  canAcceptBlock: (childType) => childType === "Column",
+  canAcceptBlock: (childType: string) => childType === "Column",
   ...registerChaiBlockSchema({
     properties: {
       styles: StylesProp(""),
