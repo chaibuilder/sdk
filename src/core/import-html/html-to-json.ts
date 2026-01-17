@@ -4,6 +4,7 @@ import { cn, generateUUID } from "@/core/functions/common-functions";
 import { getVideoURLFromHTML, hasVideoEmbed } from "@/core/import-html/import-video";
 import { syncBlocksWithDefaults } from "@/runtime/index";
 import { ChaiBlock } from "@/types/chai-block";
+import type { HimalayaAttribute, HimalayaNode } from "himalaya";
 import { parse, stringify } from "himalaya";
 import {
   camelCase,
@@ -26,13 +27,6 @@ import {
   trim,
   unset,
 } from "lodash-es";
-
-type Node = {
-  type: "element" | "text" | "comment";
-  tagName: string;
-  attributes: Array<Record<string, string>>;
-  children: Node[];
-};
 
 const NAME_ATTRIBUTES = ["chai-name", "data-chai-name"];
 
@@ -79,9 +73,9 @@ const ATTRIBUTE_MAP: Record<string, Record<string, string>> = {
  * @param block
  * @returns Condition add text as content
  */
-const shouldAddText = (node: Node, block: any) => {
+const shouldAddText = (node: HimalayaNode, block: any) => {
   return (
-    node.children.length === 1 &&
+    node.children?.length === 1 &&
     includes(
       ["Heading", "Paragraph", "Span", "ListItem", "Button", "Label", "TableCell", "Link", "RichText"],
       block._type,
@@ -94,11 +88,11 @@ const shouldAddText = (node: Node, block: any) => {
  * @param nodes
  * @returns from list of nested nodes extracting only text type content
  */
-const getTextContent = (nodes: Node[]): string => {
+const getTextContent = (nodes: HimalayaNode[]): string => {
   return nodes
     .map((node) => {
       if (node.type === "text") return get(node, "content", "");
-      else if (!isEmpty(node.children)) return getTextContent(node.children);
+      else if (!isEmpty(node.children)) return getTextContent(node.children || []);
       return "";
     })
     .join("");
@@ -149,12 +143,12 @@ const getHeightAndWidthFromClass = (classString: string): { width: string; heigh
  * @returns Mapping Attributes as per blocks need from @ATTRIBUTE_MAP and rest passing as it is
  * @param node
  */
-const getAttrs = (node: Node) => {
+const getAttrs = (node: HimalayaNode) => {
   if (node.tagName === "svg") return {};
 
   const attrs: Record<string, string | { id: string }> & { styles_attrs?: Record<string, string> } = {};
-  const replacers = ATTRIBUTE_MAP[node.tagName] || {};
-  const attributes: Array<{ key: string; value: string }> = node.attributes as any;
+  const replacers = ATTRIBUTE_MAP[node.tagName || ""] || {};
+  const attributes: HimalayaAttribute[] = node.attributes || [];
 
   forEach(attributes, ({ key, value }) => {
     if (includes(NAME_ATTRIBUTES, key)) return;
@@ -193,7 +187,7 @@ const getAttrs = (node: Node) => {
   return attrs;
 };
 
-const getStyles = (node: Node, propKey: string = "styles"): Record<string, string> => {
+const getStyles = (node: HimalayaNode, propKey: string = "styles"): Record<string, string> => {
   if (!node.attributes) return { [propKey]: `${STYLES_KEY},` };
   // @ts-ignore
   const classAttr = find(node.attributes, { key: "class" }) as { value: string } | undefined;
@@ -204,7 +198,7 @@ const getStyles = (node: Node, propKey: string = "styles"): Record<string, strin
   return { [propKey]: `${STYLES_KEY},` };
 };
 
-const getBlockProps = (node: Node): Record<string, any> => {
+const getBlockProps = (node: HimalayaNode): Record<string, any> => {
   const attributes = get(node, "attributes", []);
   const isRichText = attributes.find((attr) => attr.key === "data-chai-richtext" || attr.key === "chai-richtext");
   const isLightboxLink = attributes.find((attr) => attr.key === "data-chai-lightbox" || attr.key === "chai-lightbox");
@@ -339,8 +333,8 @@ const getBlockProps = (node: Node): Record<string, any> => {
  * @param parent { block, node }
  * @returns Traversing all nodes one by one and mapping there style, attribute and block type
  */
-const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
-  return flatMapDeep(nodes, (node: Node) => {
+const traverseNodes = (nodes: HimalayaNode[], parent: any = null): ChaiBlock[] => {
+  return flatMapDeep(nodes, (node: HimalayaNode) => {
     // * Ignoring code comment nodes
     if (node.type === "comment") return [];
 
@@ -369,12 +363,14 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
 
     // * Handle chai- prefixed custom blocks (web components)
     if (startsWith(node.tagName, "chai-")) {
-      // Process attributes and add to block props
-      const attributes: Array<{ key: string; value: string }> = node.attributes as any;
-
+      const attributes: HimalayaAttribute[] = node.attributes || [];
       // Check for chai-type attribute first, otherwise derive from tag name
       const chaiTypeAttr = find(attributes, { key: "chai-type" });
-      const blockType = chaiTypeAttr?.value || startCase(node.tagName.replace("chai-", "")).replace(/\s+/g, "");
+      const blockType =
+        chaiTypeAttr?.value ||
+        startCase(camelCase(node.tagName || ""))
+          .replace(/ /g, "")
+          .replace(/\s+/g, "");
       block._type = blockType;
       forEach(attributes, ({ key, value }) => {
         // Skip about-this-component, chai-type, can-move, and can-delete attributes
@@ -398,7 +394,7 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
       });
 
       // Process children if any
-      const children = traverseNodes(node.children, { block, node });
+      const children = traverseNodes(node.children || [], { block, node });
       return [block, ...children] as ChaiBlock[];
     }
 
@@ -564,18 +560,18 @@ const traverseNodes = (nodes: Node[], parent: any = null): ChaiBlock[] => {
        * for label extracting string from all option child and mapping all attributes
        */
       parent.block.options.push({
-        label: getTextContent(node.children),
+        label: getTextContent(node.children || []),
         ...getAttrs(node),
       });
       return [] as any;
     }
 
-    const children = traverseNodes(node.children, { block, node });
+    const children = traverseNodes(node.children || [], { block, node });
     return [block, ...children] as ChaiBlock[];
   });
 };
 
-const getSvgDimensions = (node: Node, defaultWidth: string, defaultHeight: string) => {
+const getSvgDimensions = (node: HimalayaNode, defaultWidth: string, defaultHeight: string) => {
   const attributes = get(node, "attributes", []);
 
   const { height: classHeight, width: classWidth } = getHeightAndWidthFromClass(
@@ -693,7 +689,7 @@ export const mergeBlocksWithExisting = (importedBlocks: ChaiBlock[], existingBlo
  * @returns Blocks JSON
  */
 export const getBlocksFromHTML = (html: string): ChaiBlock[] => {
-  const nodes: Node[] = parse(getSanitizedHTML(html));
+  const nodes: HimalayaNode[] = parse(getSanitizedHTML(html));
   if (isEmpty(html)) return [];
   const blocks = flatten(traverseNodes(nodes)) as ChaiBlock[];
   return syncBlocksWithDefaults(blocks);

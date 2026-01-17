@@ -1,12 +1,12 @@
 import { DESIGN_TOKEN_PREFIX, STYLES_KEY } from "@/core/constants/STRINGS";
 import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
-import { getRegisteredChaiBlock } from "@/runtime/index";
+import { ChaiBlockDefinition, getRegisteredChaiBlock } from "@/runtime/index";
 import { ChaiBlock } from "@/types/chai-block";
 import { DesignTokens } from "@/types/types";
 import { cloneDeep, forEach, get, includes, isArray, isEmpty, isString, keys, memoize, startsWith } from "lodash-es";
 import { twMerge } from "tailwind-merge";
 
-export function applyLanguage(_block: ChaiBlock, selectedLang: string, chaiBlock: ChaiBlock) {
+export function applyLanguage(_block: ChaiBlock, selectedLang: string, chaiBlock: ChaiBlockDefinition) {
   const i18nProps = get(chaiBlock, "i18nProps", []);
   if (isEmpty(selectedLang) || isEmpty(i18nProps)) return _block;
 
