@@ -143,7 +143,7 @@ export const useAskAi = () => {
           }
           if (onComplete) onComplete(askAiResponse);
         } catch (e) {
-          setError(e);
+          setError(e as AskAiResponse["error"]);
         } finally {
           setProcessing(false);
           if (onComplete) onComplete();
