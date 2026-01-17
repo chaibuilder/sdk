@@ -1,6 +1,6 @@
 import { adjustSpacingInContentBlocks } from "@/core/components/canvas/static/adjust-spacing-in-blocks";
-import { filter, get, has, isArray, isEmpty, map, uniqBy } from "lodash-es";
 import { RenderChaiBlocksProps } from "@/render/render-chai-blocks";
+import { filter, get, has, isArray, isEmpty, map, uniqBy } from "lodash-es";
 import { AsyncRenderBlock } from "./async-block-renderer";
 
 export const AsyncRenderBlocks = async (
@@ -15,14 +15,14 @@ export const AsyncRenderBlocks = async (
   );
   const hasChildren = (blockId: string) => filter(blocks, (b) => b._parent === blockId).length > 0;
 
-  if (hasChildren && (type === "Heading" || type === "Paragraph" || type === "Link")) {
+  if (type === "Heading" || type === "Paragraph" || type === "Link") {
     filteredBlocks = adjustSpacingInContentBlocks(filteredBlocks);
   }
 
   return map(filteredBlocks, (block) => {
     if (!block) return null;
     return (
-      <AsyncRenderBlock dataProviders={props.dataProviders} {...props} key={block._id} block={block}>
+      <AsyncRenderBlock {...props} dataProviders={props.dataProviders} key={block._id} block={block}>
         {({ _id, _type, repeaterItems, $repeaterItemsKey }) => {
           return _type === "Repeater" ? (
             isArray(repeaterItems) &&
@@ -31,7 +31,7 @@ export const AsyncRenderBlocks = async (
                   {...props}
                   parent={block._id}
                   key={`${get(block, "_parent", "root")}-${block._id}-${index}`}
-                  repeaterData={{ index, dataKey: $repeaterItemsKey }}
+                  repeaterData={{ index, dataKey: $repeaterItemsKey! }}
                 />
               ))
           ) : hasChildren(_id) ? (
