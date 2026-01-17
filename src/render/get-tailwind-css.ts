@@ -12,6 +12,7 @@ async function getTailwindCSS(markupString: string[], safelist: string[] = [], i
       darkMode: "class",
       safelist,
       theme: {
+        // @ts-ignore
         extend: {
           ...getChaiBuilderTheme(),
           keyframes: {
