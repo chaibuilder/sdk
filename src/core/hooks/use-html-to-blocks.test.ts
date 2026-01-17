@@ -17,7 +17,7 @@ describe("handlei18N", () => {
     const blocks: ChaiBlock[] = [{ _type: "Paragraph", _id: "1", content: "Hello" }];
     const currentBlocks: ChaiBlock[] = [];
 
-    vi.mocked(getRegisteredChaiBlock).mockReturnValue(undefined);
+    vi.mocked(getRegisteredChaiBlock).mockReturnValue(null);
 
     const result = handlei18N(blocks, currentBlocks);
 
