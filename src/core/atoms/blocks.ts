@@ -12,7 +12,7 @@ presentBlocksAtom.debugLabel = "presentBlocksAtom";
 //TODO: Need a better name for this atom. Also should be a custom hook
 export const treeDSBlocks = atom((get) => {
   const presentBlocks = get(presentBlocksAtom);
-  return convertToBlocksTree([...presentBlocks] as (Partial<ChaiBlock> & { _id: string; _parent?: string })[]);
+  return convertToBlocksTree([...presentBlocks] as ChaiBlock[]);
 });
 treeDSBlocks.debugLabel = "treeDSBlocks";
 

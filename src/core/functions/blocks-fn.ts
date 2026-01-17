@@ -39,7 +39,7 @@ export function duplicateBlocks(
   return flatten(newBlocks);
 }
 
-export function convertToBlocksTree(blocks: (Partial<ChaiBlock> & { _id: string; _parent?: string })[]) {
+export function convertToBlocksTree(blocks: ChaiBlock[]) {
   // Create a map to store nodes by their ids
   const idMap: Record<string, any> = {};
   blocks.forEach((item) => {

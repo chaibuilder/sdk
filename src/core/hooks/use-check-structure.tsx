@@ -29,7 +29,7 @@ export const useCheckStructure = (options: UseCheckStructureOptions = {}) => {
     (passedBlocks?: ChaiBlock[]) => {
       const finalBlocks = passedBlocks;
       if (!validateStructure || !finalBlocks || finalBlocks.length === 0) return;
-      const tree = convertToBlocksTree(finalBlocks as (Partial<ChaiBlock> & { _id: string; _parent?: string })[]);
+      const tree = convertToBlocksTree(finalBlocks);
       const allErrors: StructureError[] = [];
 
       // Get rules to apply

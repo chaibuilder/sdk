@@ -34,7 +34,7 @@ export function insertBlocksAtPosition(
         // Add content-related properties (language props)
         Object.keys(parentBlock).forEach((key) => {
           if (key.startsWith("content-")) {
-            textBlock[key] = parentBlock[key];
+            (textBlock as any)[key] = parentBlock[key];
           }
         });
 
@@ -50,7 +50,7 @@ export function insertBlocksAtPosition(
             // Also set content- properties to empty strings
             Object.keys(updatedBlock).forEach((key) => {
               if (key.startsWith("content-")) {
-                updatedBlock[key] = "";
+                (updatedBlock as any)[key] = "";
               }
             });
 
@@ -72,7 +72,9 @@ export function insertBlocksAtPosition(
 
   // Determine the position to insert the new blocks
   const insertPosition =
-    !isNaN(position) || position > -1 ? Math.min(position, parentBlocks.length) : parentBlocks.length;
+    position !== undefined && !isNaN(position) && position > -1
+      ? Math.min(position, parentBlocks.length)
+      : parentBlocks.length;
 
   // Find the correct index in the allBlocks array to insert the new blocks
   let insertIndex = modifiedAllBlocks.length;
