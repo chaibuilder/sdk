@@ -29,7 +29,7 @@ export const RenderBlocks = (
                   {...props}
                   parent={block._id}
                   key={`${get(block, "_parent", "root")}-${block._id}-${index}`}
-                  repeaterData={{ index, dataKey: $repeaterItemsKey }}
+                  repeaterData={{ index, dataKey: $repeaterItemsKey! }}
                 />
               ))
           ) : hasChildren(_id) ? (
