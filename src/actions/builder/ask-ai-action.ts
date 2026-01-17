@@ -35,6 +35,7 @@ export class AskAIAction extends ChaiBaseAction<AskAIActionData, any> {
     const { userId, appId } = this.context;
 
     const ai = new ChaiAIChatHandler({
+      //@ts-ignore
       onFinish: (arg: any) => {
         try {
           logAiRequest({
