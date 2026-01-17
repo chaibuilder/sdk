@@ -42,7 +42,7 @@ const LazyCssImportModal = lazy(() =>
 const PREV_THEME_KEY = "chai-builder-previous-theme";
 
 // Default theme preset
-const DEFAULT_THEME_PRESET = [
+const DEFAULT_THEME_PRESET: Record<string, ChaiThemeValues>[] = [
   { shadcn_default: defaultShadcnPreset },
   { twitter_theme: twitter },
   { solarized_theme: solarized },

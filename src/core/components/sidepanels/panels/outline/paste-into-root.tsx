@@ -11,8 +11,8 @@ export const PasteAtRootContextMenu = ({
   parentContext,
   setParentContext,
 }: {
-  parentContext: any;
-  setParentContext: any;
+  parentContext: { x: number; y: number } | null;
+  setParentContext: (value: { x: number; y: number } | null) => void;
 }) => {
   const { t } = useTranslation();
   const { canPaste, pasteBlocks } = usePasteBlocks();
