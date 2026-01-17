@@ -10,6 +10,7 @@ export const UnlinkLibraryBlock = () => {
   const updateBlocksProps = useUpdateBlocksProps();
 
   const handleUnlink = () => {
+    if (!selectedBlock) return;
     updateBlocksProps([selectedBlock._id], {
       _libBlockId: null,
     });
