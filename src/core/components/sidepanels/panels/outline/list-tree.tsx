@@ -260,7 +260,7 @@ const ListTree = () => {
           className="no-scrollbar h-full overflow-y-auto text-sm"
           onKeyDown={(e) => {
             if (treeRef.current && !treeRef.current.isEditing) {
-              handleKeyDown(e);
+              handleKeyDown(e as unknown as KeyboardEvent);
             }
           }}>
           <div className="mb-2 flex items-center justify-end gap-x-1 pb-2 text-sm text-muted-foreground">
