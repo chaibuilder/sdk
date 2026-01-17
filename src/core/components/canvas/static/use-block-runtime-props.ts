@@ -1,4 +1,5 @@
 import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { ChaiBlock } from "@/types/common";
 import { find, get, isEmpty } from "lodash-es";
 import { useCallback } from "react";
 
@@ -10,10 +11,10 @@ export const useBlockRuntimeProps = () => {
       return Object.entries(runtimeProps).reduce(
         (acc: Record<string, any>, [key, schema]) => {
           const hierarchy = [];
-          let block = find(allBlocks, { _id: blockId });
+          let block = find(allBlocks, { _id: blockId }) as ChaiBlock | undefined;
           while (block) {
             hierarchy.push(block);
-            block = find(allBlocks, { _id: block._parent });
+            block = find(allBlocks, { _id: block._parent }) as ChaiBlock | undefined;
           }
           const matchingBlock = find(hierarchy, { _type: schema.block });
           if (matchingBlock) {
