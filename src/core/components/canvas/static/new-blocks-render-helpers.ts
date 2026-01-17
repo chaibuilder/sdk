@@ -6,7 +6,7 @@ import { DesignTokens } from "@/types/types";
 import { cloneDeep, forEach, get, includes, isArray, isEmpty, isString, keys, memoize, startsWith } from "lodash-es";
 import { twMerge } from "tailwind-merge";
 
-export function applyLanguage(_block: ChaiBlock, selectedLang: string, chaiBlock) {
+export function applyLanguage(_block: ChaiBlock, selectedLang: string, chaiBlock: ChaiBlock) {
   const i18nProps = get(chaiBlock, "i18nProps", []);
   if (isEmpty(selectedLang) || isEmpty(i18nProps)) return _block;
 
@@ -26,7 +26,7 @@ export function applyLanguage(_block: ChaiBlock, selectedLang: string, chaiBlock
 }
 
 export const applyBinding = (
-  block: object,
+  block: ChaiBlock,
   pageExternalData: Record<string, any>,
   { index, key: repeaterKey }: { index: number; key: string },
 ) => {
@@ -41,7 +41,7 @@ export const applyBinding = (
       const bindingRegex = /\{\{(.*?)\}\}/g;
       const matches = value.match(bindingRegex);
       if (matches) {
-        matches.forEach((match) => {
+        matches.forEach((match: string) => {
           let binding = match.slice(2, -2);
           if (index !== -1 && repeaterKey !== "" && startsWith(binding, "$index.")) {
             binding = `${repeaterKey.replace(/\{\{(.*)\}\}/g, "$1")}.${binding.replace("$index", `${index}`)}`;

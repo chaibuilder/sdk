@@ -233,6 +233,7 @@
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^20.19.27",
     "@types/react": "^19.2.7",
+    "@types/react-autosuggest": "^10.1.11",
     "@types/react-dom": "^19.2.3",
     "@typescript-eslint/eslint-plugin": "^8.52.0",
     "@typescript-eslint/parser": "^8.52.0",

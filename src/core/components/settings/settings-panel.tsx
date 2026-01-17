@@ -110,7 +110,7 @@ const SettingsPanel: React.FC = () => {
     return (
       <ErrorBoundary fallback={<FallbackError />} onError={onErrorFn}>
         <div className="no-scrollbar h-full max-h-min w-full overflow-y-auto">
-          <BlockSettings />
+          {selectedBlock && <BlockSettings selectedBlock={selectedBlock} />}
           <br />
           <br />
         </div>

@@ -32,9 +32,9 @@ export const getChaiThemeOptions = (chaiThemeOptions: ChaiBuilderThemeOptions) =
 
 export function hexToHSL(hex: string) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  let r = parseInt(result[1], 16);
-  let g = parseInt(result[2], 16);
-  let b = parseInt(result[3], 16);
+  let r = parseInt(result![1], 16);
+  let g = parseInt(result![2], 16);
+  let b = parseInt(result![3], 16);
   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   ((r /= 255), (g /= 255), (b /= 255));
   const max = Math.max(r, g, b),

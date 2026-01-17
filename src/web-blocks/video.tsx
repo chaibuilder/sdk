@@ -9,7 +9,7 @@ export type VideoBlockProps = {
   poster: string;
   url: string;
   videoSource: "Custom" | "Youtube" | "Vimeo";
-  sources: { srcsets: Array<{ url: string; width: number }> };
+  sources: { srcsets: Array<{ url: string; width: number; type?: string }> };
   title: string;
 };
 

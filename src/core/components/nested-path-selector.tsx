@@ -44,7 +44,7 @@ const PathDropdown = ({ data, onSelect, dataType }: NestedPathSelectorProps) => 
         setCurrentPath((prev) => [...prev, option.key]);
         setCurrentData(option.value);
       } else if (isValueSelectable(option.type)) {
-        onSelect([...currentPath, option.key].join("."), dataType);
+        onSelect([...currentPath, option.key].join("."), dataType!);
       }
     },
     [currentPath, onSelect, dataType],
@@ -131,7 +131,7 @@ const PathDropdown = ({ data, onSelect, dataType }: NestedPathSelectorProps) => 
 
 export function NestedPathSelector({ data, onSelect, dataType = "value" }: NestedPathSelectorProps) {
   const [open, setOpen] = React.useState(false);
-  const collections = useBuilderProp("collections", []);
+  const collections = useBuilderProp("collections", []) as { id: string }[];
 
   const pageData = React.useMemo(() => {
     if (dataType === "array") {

@@ -4,14 +4,14 @@ import { get } from "lodash-es";
 import React from "react";
 
 type Props = {
-  type?: string;
+  type: string;
 };
 
 const ICON_CLASS = "h-3 w-3 flex-shrink-0";
 
 export const TypeIcon: React.FC<Props> = (props) => {
   const allChaiBlocks = useRegisteredChaiBlocks();
-  const blockIcon: any = get(allChaiBlocks, [props?.type, "icon"]);
+  const blockIcon: any = get(allChaiBlocks, [props.type, "icon"]);
 
   if (blockIcon) {
     return React.createElement(blockIcon, { className: ICON_CLASS });

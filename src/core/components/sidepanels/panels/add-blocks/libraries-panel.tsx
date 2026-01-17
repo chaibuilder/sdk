@@ -64,7 +64,7 @@ const BlockCard = ({
     [addCoreBlock, addPredefinedBlock, block, getUILibraryBlock, library, parentId, position],
   );
 
-  const handleDragStart = async (ev) => {
+  const handleDragStart = async (ev: any) => {
     if (!isDragAndDropEnabled) return;
     let uiBlocks = await getUILibraryBlock({ library, block });
     if (typeof uiBlocks === "string") {
