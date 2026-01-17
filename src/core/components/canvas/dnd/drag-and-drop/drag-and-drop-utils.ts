@@ -15,8 +15,8 @@
  * @author ChaiBuilder Team
  */
 
-import { canAcceptChildBlock } from "@/core/functions/block-helpers";
 import { getOrientation } from "@/core/components/canvas/dnd/getOrientation";
+import { canAcceptChildBlock } from "@/core/functions/block-helpers";
 
 // ============================================================================
 // CONSTANTS
@@ -822,7 +822,7 @@ export function detectDropZone(
     rect,
     targetElement,
     targetBlockId,
-    targetParentId: correctParentId,
+    targetParentId: correctParentId ?? "",
     isEmpty: zoneResult.position === "inside" && !hasChildBlocks(targetElement),
     confidence: zoneResult.confidence,
   };

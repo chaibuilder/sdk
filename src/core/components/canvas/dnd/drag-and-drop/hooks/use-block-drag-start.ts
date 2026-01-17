@@ -10,6 +10,13 @@
  * @module use-block-drag-start
  */
 
+import { cleanupDragImage, createCoreDragImage } from "@/core/components/canvas/dnd/drag-and-drop/create-drag-image";
+import {
+  dragAndDropAtom,
+  dropIndicatorAtom,
+  setIsDragging,
+} from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
+import { getOrientation } from "@/core/components/canvas/dnd/getOrientation";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useBlockHighlight } from "@/core/hooks/use-block-highlight";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
@@ -19,9 +26,6 @@ import { ChaiBlock } from "@/types/common";
 import { useAtom } from "jotai";
 import { pick } from "lodash-es";
 import { DragEvent, useCallback, useRef } from "react";
-import { getOrientation } from "@/core/components/canvas/dnd/getOrientation";
-import { cleanupDragImage, createCoreDragImage } from "@/core/components/canvas/dnd/drag-and-drop/create-drag-image";
-import { dragAndDropAtom, dropIndicatorAtom, setIsDragging } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
 
 /**
  * @HOOK useBlockDragStart
@@ -61,7 +65,6 @@ export const useBlockDragStart = () => {
       const block = (isAddNew ? pick(_block, ["type", "blocks", "partialBlockId"]) : _block) as ChaiBlock;
 
       // Store the dragged block in atom for access by other hooks
-      // @ts-expect-error - Jotai type inference issue with generic ChaiBlock type
       setDraggedBlock(block);
 
       // Set up drag data transfer (required for drag/drop API)
@@ -80,7 +83,7 @@ export const useBlockDragStart = () => {
                 const rect = draggingElement.getBoundingClientRect();
                 const currentHeight = rect.height;
                 // Check if parent has vertical orientation (flex-direction: column or default block flow)
-                const orientation = getOrientation(draggingElement?.parentElement);
+                const orientation = getOrientation(draggingElement?.parentElement!);
 
                 // If height > 200px and parent has vertical orientation, reduce height to 100px
                 if (orientation === "vertical" && currentHeight > 200) {
@@ -142,7 +145,7 @@ export const useBlockDragStart = () => {
         width: 0,
         height: 0,
         targetBlockId: "canvas",
-        targetParentId: null,
+        targetParentId: undefined,
       });
     },
     [setSelectedBlockIds, clearHighlight, setDraggedBlock, setDropIndicator],
