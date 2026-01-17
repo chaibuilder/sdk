@@ -123,7 +123,7 @@ const getHeightAndWidthFromClass = (classString: string): { width: string; heigh
 
   if (!heightClass || !widthClass) return { height: "", width: "" };
 
-  const extractValue = (cls) => {
+  const extractValue = (cls?: string) => {
     if (!cls) return undefined;
     const match = cls.match(/^[wh]-(?:\[(.*?)\]|(.+))$/);
     if (!match) return undefined;
@@ -139,8 +139,8 @@ const getHeightAndWidthFromClass = (classString: string): { width: string; heigh
   const _height = extractValue(heightClass);
 
   return {
-    width: includes(_width, "px") ? _width : "16px",
-    height: includes(_height, "px") ? _height : "16px",
+    width: includes(_width, "px") ? (_width as string) : "16px",
+    height: includes(_height, "px") ? (_height as string) : "16px",
   };
 };
 
@@ -152,7 +152,7 @@ const getHeightAndWidthFromClass = (classString: string): { width: string; heigh
 const getAttrs = (node: Node) => {
   if (node.tagName === "svg") return {};
 
-  const attrs: Record<string, string | { id: string }> = {};
+  const attrs: Record<string, string | { id: string }> & { styles_attrs?: Record<string, string> } = {};
   const replacers = ATTRIBUTE_MAP[node.tagName] || {};
   const attributes: Array<{ key: string; value: string }> = node.attributes as any;
 
@@ -181,10 +181,7 @@ const getAttrs = (node: Node) => {
       }
       set(attrs, replacers[key], getSanitizedValue(value));
     } else if (!includes(["style", "class", "srcset", "bid"], key)) {
-      if (!has(attrs, "styles_attrs")) {
-        // @ts-ignore
-        attrs.styles_attrs = {};
-      }
+      attrs.styles_attrs = attrs.styles_attrs || {};
       if (startsWith(key, "@")) {
         key = key.replace("@", "x-on:");
       }
@@ -613,7 +610,7 @@ export const getSanitizedHTML = (html: string) => {
     let cleanValue = value.replace(/\\"/g, '"');
 
     // Re-escape quotes that are part of JSON structure
-    cleanValue = cleanValue.replace(/{([^}]+)}/g, (jsonMatch) => {
+    cleanValue = cleanValue.replace(/{([^}]+)}/g, (jsonMatch: string) => {
       return jsonMatch.replace(/"/g, '\\"');
     });
 
