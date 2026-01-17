@@ -2,8 +2,8 @@ import { generateUUID } from "@/core/functions/common-functions";
 import { ChaiBlock } from "@/types/common";
 
 export function insertBlocksAtPosition(
-  allBlocks: { _id: string; _parent?: string; [key: string]: any }[],
-  newBlocks: { _id: string; _parent?: string; [key: string]: any }[],
+  allBlocks: ChaiBlock[],
+  newBlocks: ChaiBlock[],
   parentId?: string,
   position?: number,
 ): ChaiBlock[] {

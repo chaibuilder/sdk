@@ -165,11 +165,11 @@ function handleNewParentTextBlock(
 }
 
 function moveBlocksWithChildren(
-  _blocks: Partial<ChaiBlock>[],
+  _blocks: ChaiBlock[],
   idToMove: string,
   newParentId: string | undefined | null,
   newPosition: number,
-): Partial<ChaiBlock>[] {
+): ChaiBlock[] {
   if (!idToMove) return _blocks;
 
   // Get the block being moved
