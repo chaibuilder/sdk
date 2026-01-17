@@ -40,7 +40,7 @@ export const removeNestedBlocks = (blocks: ChaiBlock[], blockIds: Array<string>)
               // Copy any content- properties
               Object.keys(otherChild).forEach((key) => {
                 if (key.startsWith("content-")) {
-                  updatedBlock[key] = otherChild[key];
+                  (updatedBlock as any)[key] = otherChild[key];
                 }
               });
 
