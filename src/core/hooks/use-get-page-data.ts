@@ -29,7 +29,7 @@ export const useGetPageData = () => {
   return useCallback(() => {
     // omit the builder props from the blocks as they are not needed for the page data
     // and only used inside the builder
-    const blocks = map(presentBlocks, (block: ChaiBlock) => {
+    const blocks = map<ChaiBlock>(presentBlocks, (block: ChaiBlock) => {
       return omit(block, getBlockBuilderProps(block._type));
     });
     return {

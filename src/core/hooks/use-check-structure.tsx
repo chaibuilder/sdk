@@ -4,13 +4,13 @@ import {
   structureErrorsAtom,
   structureValidationValidAtom,
 } from "@/core/atoms/blocks";
+import { convertToBlocksTree } from "@/core/functions/blocks-fn";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
+import { ChaiBlock } from "@/core/main";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { useSetAtom } from "jotai";
 import { useCallback } from "react";
-import { convertToBlocksTree } from "@/core/functions/blocks-fn";
-import { ChaiBlock } from "@/core/main";
 import { StructureError, StructureRule, defaultRuleRegistry } from "./structure-rules";
-import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 
 export interface UseCheckStructureOptions {
   enableAccessibilityRules?: boolean;
@@ -29,7 +29,7 @@ export const useCheckStructure = (options: UseCheckStructureOptions = {}) => {
     (passedBlocks?: ChaiBlock[]) => {
       const finalBlocks = passedBlocks;
       if (!validateStructure || !finalBlocks || finalBlocks.length === 0) return;
-      const tree = convertToBlocksTree(finalBlocks);
+      const tree = convertToBlocksTree(finalBlocks as (Partial<ChaiBlock> & { _id: string; _parent?: string })[]);
       const allErrors: StructureError[] = [];
 
       // Get rules to apply
