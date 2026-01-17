@@ -28,7 +28,7 @@ import { memo, useEffect, useMemo } from "react";
 import { NodeRendererProps } from "react-arborist";
 import { useTranslation } from "react-i18next";
 
-const Input = ({ node }) => {
+const Input = ({ node }: { node: NodeRendererProps<any>["node"] }) => {
   return (
     <input
       autoFocus
@@ -70,7 +70,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
   const [iframe] = useAtom<HTMLIFrameElement>(canvasIframeAtom);
   const { hasPermission } = usePermissions();
   let previousState: boolean | null = null;
-  const hasChildren = node.children.length > 0;
+  const hasChildren = node.children && node.children.length > 0;
   const { highlightBlock, clearHighlight } = useBlockHighlight();
   const isDragAndDropEnabled = useIsDragAndDropEnabled();
   const { id, data, isSelected, willReceiveDrop, isDragging, isEditing, handleClick } = node;
@@ -107,7 +107,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
   const [addSelectParentHighlight, setAddSelectParentHighlight]: any = useAtom(currentAddSelection);
   const onMouseEnter = () => {
     onMouseLeave();
-    if (!node.parent.isSelected) {
+    if (!node.parent?.isSelected) {
       setAddSelectParentHighlight(node?.parent?.id as any);
     }
   };
@@ -147,8 +147,8 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
   }, [willReceiveDrop, node, isDragging]);
 
   const setDropAttribute = (id: string, value: string) => {
-    const innerDoc = iframe.contentDocument || iframe.contentWindow.document;
-    const dropTarget = innerDoc.querySelector(`[data-block-id=${id}]`) as HTMLElement;
+    const innerDoc = iframe.contentDocument || iframe.contentWindow?.document;
+    const dropTarget = innerDoc?.querySelector(`[data-block-id=${id}]`) as HTMLElement;
 
     if (dropTarget) {
       dropTarget.setAttribute("data-drop", value);
@@ -161,7 +161,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
       rect.left >= iframeRect.left &&
       rect.bottom <= iframeRect.bottom &&
       rect.right <= iframeRect.right;
-    if (!isInViewport) {
+    if (!isInViewport && innerDoc) {
       innerDoc.documentElement.scrollTop = dropTarget.offsetTop - iframeRect.top;
     }
   };
@@ -233,8 +233,10 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
         }}>
         {hasPermission(PERMISSIONS.ADD_BLOCK) &&
           !isDragAndDropEnabled &&
+          node?.rowIndex !== null &&
+          node?.rowIndex !== undefined &&
           node?.rowIndex > 0 &&
-          ((node.parent.isOpen && canAddChildBlock(get(node, "parent.data._type"))) ||
+          ((node.parent?.isOpen && canAddChildBlock(get(node, "parent.data._type"))) ||
             node?.parent?.id === "__REACT_ARBORIST_INTERNAL_ROOT__") && (
             <div className="group relative ml-5 h-full w-full cursor-pointer">
               <div
