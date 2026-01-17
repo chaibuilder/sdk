@@ -33,7 +33,7 @@ export const useAddBlock = (): AddBlocks => {
           children[j]._parent = blocks[i]._id;
         }
       }
-      const block = first(blocks);
+      const block = first(blocks)!;
       let parentBlock;
       let parentBlockId;
       if (parentId) {
@@ -52,8 +52,8 @@ export const useAddBlock = (): AddBlocks => {
       }
 
       addBlocks(blocks, parentBlockId, position);
-      setSelected([first(blocks)?._id]);
-      return first(blocks);
+      setSelected([block._id]);
+      return block;
     },
     [addBlocks, allBlocks, setSelected],
   );
