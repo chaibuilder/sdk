@@ -27,6 +27,7 @@ export default function CodeEditor() {
   const updateRealTime = useUpdateBlocksPropsRealtime();
   const saveCodeContentRealTime = useThrottledCallback(
     (value: string) => {
+      if (!codeEditor) return;
       const html = sanitizeHTML(value);
       updateRealTime([codeEditor.blockId], { [codeEditor.blockProp]: html });
     },
@@ -35,23 +36,21 @@ export default function CodeEditor() {
   );
 
   const saveCodeContent = useCallback(() => {
-    if (dirty) {
+    if (dirty && codeEditor) {
       const html = sanitizeHTML(code);
       updateBlockProps([codeEditor.blockId], { [codeEditor.blockProp]: html });
     }
-  }, [dirty, code]);
+  }, [dirty, code, codeEditor]);
 
   useEffect(() => {
-    if (!ids.includes(codeEditor?.blockId)) {
+    if (codeEditor && !ids.includes(codeEditor.blockId)) {
       saveCodeContent();
-      // @ts-ignore
       setCodeEditor(null);
     }
-  }, [ids]);
+  }, [ids, codeEditor]);
 
   const handleClose = () => {
     saveCodeContent();
-    // @ts-ignore
     setCodeEditor(null);
   };
 
@@ -71,7 +70,7 @@ export default function CodeEditor() {
         <div className="min-h-0 flex-1 overflow-hidden">
           <Textarea
             className="h-full w-full resize-none font-mono text-xs"
-            value={code || codeEditor.initialCode}
+            value={codeEditor ? code || codeEditor.initialCode : ""}
             onChange={(e) => {
               const value = e.target.value;
               setDirty(true);
