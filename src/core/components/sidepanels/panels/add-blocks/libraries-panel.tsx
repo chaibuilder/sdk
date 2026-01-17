@@ -129,7 +129,7 @@ const UILibrarySection = ({
   const fuse = useRef<Fuse<ChaiLibraryBlock> | null>(null);
 
   useEffect(() => {
-    if (libraryBlocks && libraryBlocks.length > 0) {
+    if (libraryBlocks && Array.isArray(libraryBlocks) && libraryBlocks.length > 0) {
       fuse.current = new Fuse(libraryBlocks, {
         keys: ["name", "label", "description", "group"],
         threshold: 0.4,
@@ -150,10 +150,10 @@ const UILibrarySection = ({
   }, [searchQuery]);
 
   // Filtering logic based on search
-  const filteredBlocks = searchQuery.trim() && !isEmpty(searchResults) ? searchResults : libraryBlocks;
+  const filteredBlocks = searchQuery.trim() && !isEmpty(searchResults) ? searchResults : libraryBlocks || [];
 
   const mergedGroups = groupBy(filteredBlocks, "group");
-  const [selectedGroup, setGroup] = useState(null);
+  const [selectedGroup, setGroup] = useState<string | null>(null);
 
   // Reset or update selected group when groups change
   useEffect(() => {
@@ -164,13 +164,13 @@ const UILibrarySection = ({
 
     // If current selected group isn't available anymore, select the first available one
     if (!selectedGroup || !mergedGroups[selectedGroup]) {
-      setGroup(first(keys(mergedGroups)));
+      setGroup(first(keys(mergedGroups)) || null);
       return;
     }
   }, [mergedGroups, selectedGroup]);
 
-  const blocks = get(mergedGroups, selectedGroup, []);
-  const timeoutRef = useRef(null);
+  const blocks = get(mergedGroups, selectedGroup || "", []);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { t } = useTranslation();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
@@ -238,7 +238,7 @@ const UILibrarySection = ({
                       )}
                     </div>
                   ) : fromSidebar ? (
-                    <Select value={selectedGroup} onValueChange={setGroup}>
+                    <Select value={selectedGroup ?? ""} onValueChange={setGroup}>
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder={t("Select a group")} />
                       </SelectTrigger>
@@ -254,7 +254,7 @@ const UILibrarySection = ({
                     map(mergedGroups, (_groupedBlocks, group) => (
                       <div
                         onMouseEnter={() => handleMouseEnter(group)}
-                        onMouseLeave={() => clearTimeout(timeoutRef.current)}
+                        onMouseLeave={() => timeoutRef.current && clearTimeout(timeoutRef.current)}
                         key={group}
                         role="button"
                         onClick={() => setGroup(group)}
@@ -273,7 +273,7 @@ const UILibrarySection = ({
             <div className={`flex h-full max-h-full w-full flex-col border-border ${fromSidebar ? "" : "border-l"}`}>
               <ScrollArea
                 ref={scrollAreaRef}
-                onMouseEnter={() => (timeoutRef.current ? clearTimeout(timeoutRef.current) : null)}
+                onMouseEnter={() => timeoutRef.current && clearTimeout(timeoutRef.current)}
                 className="z-10 flex h-full max-h-full w-full flex-col gap-2 transition-all ease-linear">
                 {isEmpty(blocks) && !isEmpty(mergedGroups) ? (
                   <div className="flex h-full flex-col items-center justify-center p-6 text-center">
@@ -288,7 +288,7 @@ const UILibrarySection = ({
                           parentId={parentId}
                           position={position}
                           block={block}
-                          library={library}
+                          library={library as ChaiLibrary}
                         />
                       ))}
                     </div>
@@ -299,7 +299,7 @@ const UILibrarySection = ({
                           parentId={parentId}
                           position={position}
                           block={block}
-                          library={library}
+                          library={library as ChaiLibrary}
                         />
                       ))}
                     </div>
