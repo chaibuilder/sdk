@@ -880,7 +880,7 @@ function findClosestSiblingInRow(
     let closestRow: HTMLElement[] | null = null;
     let minDistance = Infinity;
 
-    rowsMap.forEach((row, rowKey) => {
+    rowsMap.forEach((row: HTMLElement[], rowKey: number) => {
       const distance = orientation === "vertical" ? Math.abs(pointerY - rowKey) : Math.abs(pointerX - rowKey);
 
       if (distance < minDistance) {
@@ -889,8 +889,8 @@ function findClosestSiblingInRow(
       }
     });
 
-    if (closestRow && closestRow.length > 0) {
-      siblingsInSameRow.push(...closestRow);
+    if (closestRow) {
+      siblingsInSameRow.push(closestRow);
     }
   }
 
