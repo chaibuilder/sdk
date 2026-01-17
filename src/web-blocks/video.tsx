@@ -130,9 +130,9 @@ const CustomVideoSource = (props: ChaiBlockComponentProps<VideoBlockProps>) => {
   let _poster = poster;
 
   const srcsets = [...(get(sources, "srcsets", []) || [])];
-  if (url && typeof url === "string") srcsets.push({ url, width: "9999" });
+  if (url && typeof url === "string") srcsets.push({ url, width: 9999 });
   const sortedSources = srcsets
-    .sort((a, b) => parseInt(a.width) - parseInt(b.width))
+    .sort((a, b) => a.width - b.width)
     .filter((source) => !isEmpty(source.url) && !isEmpty(source.width));
 
   if (sortedSources.length === 0 && !_poster) {
