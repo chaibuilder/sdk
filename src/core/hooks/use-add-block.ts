@@ -51,7 +51,7 @@ export const useAddBlock = (): AddBlocks => {
         parentBlockId = parentBlock._parent;
       }
 
-      addBlocks(blocks, parentBlockId, position);
+      addBlocks(blocks, parentBlockId ?? undefined, position);
       setSelected([block._id]);
       return block;
     },
@@ -62,7 +62,7 @@ export const useAddBlock = (): AddBlocks => {
     (coreBlock: CoreBlock, parentId?: string | null, position?: number) => {
       if (has(coreBlock, "blocks")) {
         const blocks = coreBlock.blocks as ChaiBlock[];
-        return addPredefinedBlock(blocks, parentId, position);
+        return addPredefinedBlock(blocks, parentId ?? undefined, position);
       }
 
       const blockId = generateUUID();
@@ -83,14 +83,14 @@ export const useAddBlock = (): AddBlocks => {
         parentBlockId = parentId;
       }
 
-      const canAdd = canAcceptChildBlock(parentBlock?._type, newBlock._type);
+      const canAdd = canAcceptChildBlock(parentBlock?._type!, newBlock._type);
       if (!canAdd && parentBlock) {
         newBlock._parent = parentBlock._parent;
         parentBlockId = parentBlock._parent;
       }
       const newBlocks: ChaiBlock[] = [newBlock];
 
-      addBlocks(newBlocks, parentBlockId, position);
+      addBlocks(newBlocks, parentBlockId ?? undefined, position);
       setTimeout(() => setSelected([newBlock._id]), BLOCK_SELECTION_DELAY_MS);
       return newBlock;
     },
