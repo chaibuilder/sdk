@@ -89,7 +89,7 @@ const CopyPasteBlocks = ({ isFromBody = false }: { isFromBody?: boolean }) => {
     <>
       {enableCopyToClipboard && (
         <DropdownMenuItem
-          disabled={!canDuplicateBlock(selectedBlock?._type)}
+          disabled={!canDuplicateBlock(selectedBlock?._type!)}
           onClick={handleCopy}
           className="flex items-center gap-x-4 text-xs">
           <CopyIcon /> {t("Copy")}
@@ -211,14 +211,14 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
         <>
           {!isDragAndDropEnabled && (
             <DropdownMenuItem
-              disabled={!canAddChildBlock(selectedBlock?._type)}
+              disabled={!canAddChildBlock(selectedBlock?._type!)}
               className="flex items-center gap-x-4 text-xs"
               onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, selectedBlock)}>
               <PlusIcon className="h-3.5 w-3.5" /> {t("Add block")}
             </DropdownMenuItem>
           )}
           <DropdownMenuItem
-            disabled={!canDuplicateBlock(selectedBlock?._type)}
+            disabled={!canDuplicateBlock(selectedBlock?._type!)}
             className="flex items-center gap-x-4 text-xs"
             onClick={duplicate}>
             <CardStackPlusIcon /> {t("Duplicate")}
