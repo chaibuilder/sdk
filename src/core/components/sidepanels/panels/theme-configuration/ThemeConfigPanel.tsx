@@ -76,7 +76,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const [isDarkMode, setIsDarkMode] = useDarkMode();
   const [selectedPreset, setSelectedPreset] = React.useState<string>("");
   const [isImportModalOpen, setIsImportModalOpen] = React.useState(false);
-  const themePresets = useBuilderProp("themePresets", []);
+  const themePresets = useBuilderProp("themePresets", {}) as Record<string, ChaiThemeValues>[];
   const themePanelComponent = useBuilderProp("themePanelComponent", null);
   const { hasPermission } = usePermissions();
   const importThemeEnabled = useBuilderProp("flags.importTheme", true);
@@ -198,7 +198,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
 
   const renderColorGroup = (group: any) => (
     <div className="grid grid-cols-1">
-      {Object.entries(group.items).map(([key]: [string, [string, string]]) => {
+      {Object.entries(group.items).map(([key]) => {
         const themeColor = get(themeValues, `colors.${key}.${isDarkMode ? 1 : 0}`);
         if (!themeColor) return null;
         return (
@@ -303,7 +303,10 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
                 <FontSelector
                   key={key}
                   label={key}
-                  value={themeValues.fontFamily[key.replace(/font-/g, "")] || value[Object.keys(value)[0]]}
+                  value={
+                    themeValues.fontFamily[key.replace(/font-/g, "") as keyof typeof themeValues.fontFamily] ||
+                    value[Object.keys(value)[0]]
+                  }
                   onChange={(newValue: string) => handleFontChange(key, newValue)}
                 />
               ))}
