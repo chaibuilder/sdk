@@ -2,7 +2,7 @@ import {
   registerChaiSaveToLibrary,
   resetSaveToLibrary,
   useSaveToLibraryComponent,
-} from "@/core/extensions/save-to-library";
+} from "@/runtime/index";
 import { renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 

@@ -1,6 +1,6 @@
 import { AiButton, DEFAULT_PANEL_WIDTH } from "@/core/components/layout/root-layout";
-import { registerChaiLibrary } from "@/core/extensions/libraries";
-import { registerChaiSaveToLibrary } from "@/core/extensions/save-to-library";
+import { registerChaiLibrary } from "@/runtime/index";
+import { registerChaiSaveToLibrary } from "@/runtime/index";
 import { registerChaiPreImportHTMLHook, registerChaiSidebarPanel, registerChaiTopBar } from "@/core/main";
 import { default as AIChatPanel } from "@/routes/demo/ai-chat-panel";
 import registerCustomBlocks from "@/routes/demo/blocks";

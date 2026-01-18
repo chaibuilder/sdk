@@ -87,6 +87,15 @@ export const defaultChaiStyles = (classes: string) => `${STYLES_KEY},${classes}`
 type ChaiAsyncProp<T> = T | undefined;
 type ChaiClosestBlockProp<T> = T | undefined;
 
+export * from "./register-block-settings.tsx";
+export * from "./register-chai-add-block-tab.tsx";
+export * from "./register-chai-flag.tsx";
+export * from "./register-chai-library.ts";
+export * from "./register-chai-media-manager.tsx";
+export * from "./register-chai-pre-import-html-hook.ts";
+export * from "./register-chai-save-to-library.tsx";
+export * from "./register-chai-sidebar-panel.tsx";
+export * from "./register-chai-top-bar.tsx";
 export * from "./register-collection.ts";
 export * from "./register-global-data-provider";
 export * from "./register-page-type";

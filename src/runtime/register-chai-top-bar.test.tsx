@@ -1,4 +1,4 @@
-import { registerChaiTopBar, useTopBarComponent } from "@/core/extensions/top-bar";
+import { registerChaiTopBar, useTopBarComponent } from "@/runtime/index";
 import { renderHook } from "@testing-library/react";
 
 describe("top-bar", () => {
