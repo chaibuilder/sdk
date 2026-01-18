@@ -42,7 +42,6 @@ export default defineConfig({
     "raw-loader",
     "sharp",
     "tailwindcss",
-    "tailwindcss-animate",
     "zod",
   ],
   minify: true,

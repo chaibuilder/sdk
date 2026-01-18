@@ -1,7 +1,8 @@
 import tailwindAspectRatio from "@tailwindcss/aspect-ratio";
+import tailwindContainerQueries from "@tailwindcss/container-queries";
 import tailwindForms from "@tailwindcss/forms";
+import tailwindLineClamp from "@tailwindcss/line-clamp";
 import tailwindTypography from "@tailwindcss/typography";
-import tailwindAnimate from "tailwindcss-animate";
 
 function shadcnTheme() {
   return {
@@ -62,17 +63,17 @@ function shadcnTheme() {
   };
 }
 
-const getChaiBuilderTailwindConfig = ({ content, theme }: { content: string[]; theme?: Record<string, any> }) => {
+const getChaiBuilderTailwindConfig = ({ content, theme = {} }: { content: string[]; theme: Record<string, any> }) => {
   return {
     darkMode: "class",
-    content: [...content, "node_modules/@chaibuilder/sdk/dist/*.{js,cjs}"],
+    content: [...content],
     theme: {
       extend: {
         ...shadcnTheme(),
         ...theme,
       },
     },
-    plugins: [tailwindAnimate, tailwindTypography, tailwindForms, tailwindAspectRatio],
+    plugins: [tailwindLineClamp, tailwindTypography, tailwindForms, tailwindAspectRatio, tailwindContainerQueries],
   };
 };
 

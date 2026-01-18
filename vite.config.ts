@@ -148,7 +148,6 @@ export default defineConfig({
         "@tiptap/extension-highlight",
         "react-wrap-balancer",
         "tailwind-merge",
-        "tailwindcss-animate",
         "undo-manager",
         "zod",
         "nanoid",
