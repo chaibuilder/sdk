@@ -30,7 +30,6 @@ const DefaultMediaManager = ({ close, onSelect, mode = "image" }: MediaManagerPr
       setIsValidating(true);
       setError(null);
       setIsValid(true);
-      setError(null);
     } catch (err) {
       setIsValid(false);
       setError("Error validating URL");
