@@ -7,8 +7,8 @@ import ImportHTML from "@/core/components/sidepanels/panels/add-blocks/import-ht
 import UILibrariesPanel from "@/core/components/sidepanels/panels/add-blocks/libraries-panel";
 import { PartialBlocks } from "@/core/components/sidepanels/panels/add-blocks/partial-blocks";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { useChaiAddBlockTabs } from "@/core/extensions/add-block-tabs";
-import { useChaiLibraries } from "@/core/extensions/libraries";
+import { useChaiAddBlockTabs } from "@/runtime/index";
+import { useChaiLibraries } from "@/runtime/index";
 import { canAcceptChildBlock, canBeNestedInside } from "@/core/functions/block-helpers";
 import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
 import { useBuilderProp } from "@/core/hooks/use-builder-prop";

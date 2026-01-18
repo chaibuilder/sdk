@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { useSaveToLibraryComponent } from "@/core/extensions/save-to-library";
+import { useSaveToLibraryComponent } from "@/runtime/index";
 import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
 import { ChaiBlock } from "@/core/main";
 import { atom, useAtom } from "jotai";

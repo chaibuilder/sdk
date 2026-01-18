@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandItem } from "@/components/ui/command";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { useChaiFeatureFlag } from "@/core/flags/register-chai-flag";
+import { useChaiFeatureFlag } from "@/runtime/index";
 import { TemplateWithLibrary } from "@/pages/hooks/project/use-templates-with-libraries";
 import { startCase } from "lodash-es";
 import { Check, ChevronDown, Search } from "lucide-react";

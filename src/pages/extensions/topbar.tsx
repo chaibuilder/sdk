@@ -1,4 +1,4 @@
-import { useChaiFeatureFlag } from "@/core/flags/register-chai-flag";
+import { useChaiFeatureFlag } from "@/runtime/index";
 import { mergeClasses } from "@/core/main";
 import { PageDropdownInHeader } from "@/pages/client/components/page-dropdown-in-header";
 import { ScreenOverlay } from "@/pages/client/components/screen-overlay";

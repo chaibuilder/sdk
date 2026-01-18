@@ -4,9 +4,13 @@ import { ChaiBlock } from "@/types/chai-block";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // Mock the runtime module
-vi.mock("@/runtime/index", () => ({
-  getRegisteredChaiBlock: vi.fn(),
-}));
+vi.mock("@/runtime/index", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/runtime/index")>();
+  return {
+    ...actual,
+    getRegisteredChaiBlock: vi.fn(),
+  };
+});
 
 describe("handlei18N", () => {
   beforeEach(() => {

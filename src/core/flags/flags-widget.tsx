@@ -6,7 +6,7 @@ import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { useEffect, useMemo, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
-import { useChaiFeatureFlag, useChaiFeatureFlags, useToggleChaiFeatureFlag } from "./register-chai-flag";
+import { useChaiFeatureFlag, useChaiFeatureFlags, useToggleChaiFeatureFlag } from "@/runtime/index";
 
 const FeatureToggle = ({
   featureKey,

@@ -1,10 +1,5 @@
-import {
-  ChaiBuilderEditor,
-  ChaiBuilderEditorProps,
-  registerChaiMediaManager,
-  registerChaiSaveToLibrary,
-  registerChaiTopBar,
-} from "@/core/main";
+import { ChaiBuilderEditor, ChaiBuilderEditorProps } from "@/core/main";
+import { registerChaiMediaManager, registerChaiSaveToLibrary, registerChaiTopBar } from "@/runtime/index";
 import { Topbar } from "@/pages/extensions/topbar";
 import { useAskAi } from "@/pages/hooks/ai/use-ask-ai";
 import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
