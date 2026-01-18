@@ -4,13 +4,18 @@ import { useLanguages } from "@/core/hooks/use-languages";
 import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
 import { useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "@/core/hooks/use-update-blocks-props";
 import { useWrapperBlock } from "@/core/hooks/use-wrapper-block";
-import { getBlockFormSchemas, getRegisteredChaiBlock } from "@/runtime/index";
+import { ChaiBlockDefinition, getBlockFormSchemas, getRegisteredChaiBlock } from "@/runtime/index";
+import { ChaiBlock } from "@/types/chai-block";
 import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { IChangeEvent } from "@rjsf/core";
 import { cloneDeep, debounce, forEach, get, includes, isEmpty, keys, set, startCase, startsWith } from "lodash-es";
 import { useCallback, useMemo, useState } from "react";
 
-const formDataWithSelectedLang = (formData, selectedLang: string, coreBlock) => {
+const formDataWithSelectedLang = (
+  formData: Record<string, any>,
+  selectedLang: string,
+  coreBlock: ChaiBlockDefinition,
+) => {
   const updatedFormData = cloneDeep(formData);
   forEach(keys(formData), (key) => {
     if (includes(get(coreBlock, "i18nProps", []), key) && !isEmpty(selectedLang)) {
@@ -29,13 +34,13 @@ export default function BlockSettings() {
   const selectedBlock = useSelectedBlock() as any;
   const updateBlockPropsRealtime = useUpdateBlocksPropsRealtime();
   const updateBlockProps = useUpdateBlocksProps();
-  const registeredBlock = getRegisteredChaiBlock(selectedBlock?._type);
+  const registeredBlock = getRegisteredChaiBlock(selectedBlock?._type) as ChaiBlockDefinition;
   const formData = formDataWithSelectedLang(selectedBlock, selectedLang, registeredBlock);
   const [prevFormData, setPrevFormData] = useState(formData);
 
   const [showWrapperSetting, setShowWrapperSetting] = useState(false);
-  const wrapperBlock = useWrapperBlock();
-  const registeredWrapperBlock = getRegisteredChaiBlock(wrapperBlock?._type);
+  const wrapperBlock = useWrapperBlock() as ChaiBlock;
+  const registeredWrapperBlock = getRegisteredChaiBlock(wrapperBlock?._type) as ChaiBlockDefinition;
   const wrapperFormData = formDataWithSelectedLang(wrapperBlock, selectedLang, registeredWrapperBlock);
 
   const updateProps = ({ formData: newData }: IChangeEvent, prop?: string, oldState?: any) => {
@@ -72,7 +77,7 @@ export default function BlockSettings() {
       return { schema: {}, uiSchema: {} };
     }
     try {
-      const { schema, uiSchema } = getBlockFormSchemas(type);
+      const { schema, uiSchema } = getBlockFormSchemas(type) as { schema: any; uiSchema: any };
       //NOTE: This is special case for collection based repeater block
       if (type === "Repeater") {
         const repeaterItems = get(selectedBlock, "repeaterItems", "");
@@ -95,7 +100,10 @@ export default function BlockSettings() {
       return { wrapperSchema: {}, wrapperUiSchema: {} };
     }
     const type = wrapperBlock?._type;
-    const { schema: wrapperSchema = {}, uiSchema: wrapperUiSchema = {} } = getBlockFormSchemas(type);
+    const { schema: wrapperSchema = {}, uiSchema: wrapperUiSchema = {} } = getBlockFormSchemas(type) as {
+      schema: any;
+      uiSchema: any;
+    };
     return { wrapperSchema, wrapperUiSchema };
   }, [wrapperBlock]);
 

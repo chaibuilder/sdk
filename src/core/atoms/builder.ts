@@ -31,9 +31,9 @@ chaiDesignTokensAtom.debugLabel = "chaiDesignTokensAtom";
 export const usePageExternalData = () => {
   const [blockRepeaterData] = useBlockRepeaterDataAtom();
   const repeaterItems = useMemo(() => {
-    const result = {};
+    const result: Record<string, any> = {};
     Object.entries(blockRepeaterData).forEach(([key, value]) => {
-      if (value.status === "loaded")
+      if (value.status === "loaded" && value.repeaterItems)
         result[value.repeaterItems.replace("}}", `/${key}`).replace("{{", "")] = value.props;
     });
     return result;

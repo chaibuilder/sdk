@@ -18,7 +18,7 @@ export const removeClassFromBlocksAtom: any = atom(null, (get, _set, { blockIds,
   return map(blockAtoms, (blockAtom) => {
     const block: ChaiBlock = get(blockAtom as any);
     const nonDynamicClasses: string[] = fullClasses;
-     
+
     let { classes, baseClasses } = getSplitChaiClasses(getProp(block, styleBlock.prop, `${STYLES_KEY},`));
 
     each(nonDynamicClasses, (fullCls: string) => {
@@ -52,7 +52,7 @@ export const removeAllClassesForBlock = (block: ChaiBlock): { ids: string[]; pro
   );
 
   const updatedProps: Record<string, string> = {};
-  
+
   styleProps.forEach((prop) => {
     updatedProps[prop] = `${STYLES_KEY},`;
   });
@@ -65,15 +65,18 @@ export const removeAllClassesForBlock = (block: ChaiBlock): { ids: string[]; pro
 
 export const useRemoveAllClassesForBlock = () => {
   const { updateBlocks, updateBlocksRuntime } = useBlocksStoreUndoableActions();
-  
-  return useCallback((block: ChaiBlock, undo = false) => {
-    const { ids, props } = removeAllClassesForBlock(block);
-    if (undo) {
-      updateBlocks(ids, props);
-    } else {
-      updateBlocksRuntime(ids, props);
-    }
-  }, [updateBlocks, updateBlocksRuntime]);
+
+  return useCallback(
+    (block: ChaiBlock, undo = false) => {
+      const { ids, props } = removeAllClassesForBlock(block);
+      if (undo) {
+        updateBlocks(ids, props);
+      } else {
+        updateBlocksRuntime(ids, props);
+      }
+    },
+    [updateBlocks, updateBlocksRuntime],
+  );
 };
 
 export const useRemoveClassesFromBlocks = (): Function => {
@@ -81,7 +84,10 @@ export const useRemoveClassesFromBlocks = (): Function => {
   const removeClassesFromBlocks = useSetAtom(removeClassFromBlocksAtom);
   return useCallback(
     (blockIds: Array<string>, fullClasses: Array<string>, undo: boolean = false) => {
-      const blocks = removeClassesFromBlocks({ blockIds, fullClasses });
+      const blocks = removeClassesFromBlocks({ blockIds, fullClasses }) as {
+        ids: string[];
+        props: Record<string, string>;
+      }[];
       if (!undo) {
         updateBlocksRuntime(blockIds, blocks[0].props);
       } else {

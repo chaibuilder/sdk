@@ -9,7 +9,7 @@ import { useAtom } from "jotai";
 import { some } from "lodash-es";
 import React, { useCallback } from "react";
 
-function getTargetedBlock(target) {
+function getTargetedBlock(target: HTMLElement) {
   // First check if the target is the canvas itself
   if (target.getAttribute("data-block-id") === "canvas") {
     return null;
@@ -48,7 +48,7 @@ const hasDataBlockIdInChildren = (element: HTMLElement | null): boolean => {
  */
 export const isInlineEditable = (chaiBlock: HTMLElement | null, _blockType?: string): boolean => {
   // If the block type is set, and the block is not null, return
-  if (_blockType && chaiBlock) return;
+  if (_blockType && chaiBlock) return false;
 
   // If the block is a rich text parent, return false (CHANGE LATER)
   if (isRichTextParent(chaiBlock)) {
@@ -71,14 +71,16 @@ const useHandleCanvasDblClick = () => {
       e?.preventDefault();
       e?.stopPropagation();
       if (editingBlockId) return;
-      const chaiBlock: HTMLElement = getTargetedBlock(e.target);
-
+      const chaiBlock = getTargetedBlock(e.target) as HTMLElement | null;
+      if (!chaiBlock) {
+        return;
+      }
       if (!isInlineEditable(chaiBlock)) return;
 
       if (hasDataBlockIdInChildren(chaiBlock)) return;
 
       const blockId = chaiBlock.getAttribute("data-block-id");
-      if (!blockId || !chaiBlock) return;
+      if (!blockId) return;
 
       // * Checking for repeater items index
       const repeater = chaiBlock.closest('[data-block-type="Repeater"]');
@@ -108,7 +110,7 @@ const useHandleCanvasClick = () => {
     (e: any) => {
       if (editingBlockId) return;
       e.stopPropagation();
-      const chaiBlock: HTMLElement = getTargetedBlock(e.target);
+      const chaiBlock = getTargetedBlock(e.target) as HTMLElement | null;
       // If clicked on empty canvas area (no block found), deselect all blocks
       if (!chaiBlock) {
         clearHighlight();
@@ -144,7 +146,7 @@ const useHandleMouseMove = () => {
   return useThrottledCallback(
     (e: any) => {
       if (editingBlockId) return;
-      const chaiBlock = getTargetedBlock(e.target);
+      const chaiBlock = getTargetedBlock(e.target) as HTMLElement | null;
       if (chaiBlock) {
         highlightBlock(chaiBlock);
       }

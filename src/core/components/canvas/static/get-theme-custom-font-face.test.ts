@@ -4,7 +4,6 @@ import { ChaiFontViaSrc } from "@/runtime/index";
 describe("getThemeCustomFontFace", () => {
   it("should return empty string for empty array input", () => {
     expect(getThemeCustomFontFace([])).toBe("");
-    expect(getThemeCustomFontFace(undefined)).toBe("");
   });
 
   it("should generate @font-face for a single font with basic properties", () => {

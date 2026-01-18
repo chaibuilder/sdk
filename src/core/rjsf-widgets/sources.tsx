@@ -1,11 +1,11 @@
+import { Cross1Icon, PlusIcon } from "@radix-ui/react-icons";
 import { FieldProps } from "@rjsf/utils";
 import { get, map, reject } from "lodash-es";
-import { PlusIcon, Cross1Icon } from "@radix-ui/react-icons";
 
 const SourcesField = ({ formData, onChange }: FieldProps) => {
   const srcsets = get(formData, "srcsets", []) || [];
 
-  const onChangeSources = (e, index) => {
+  const onChangeSources = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const key = e.target.name;
     const value = e.target.value;
     onChange({
@@ -23,8 +23,8 @@ const SourcesField = ({ formData, onChange }: FieldProps) => {
     onChange({ srcsets: [...srcsets, {}] });
   };
 
-  const removeSource = (index) => {
-    onChange({ srcsets: reject(srcsets, (_, i) => i === index) });
+  const removeSource = (index: number) => {
+    onChange({ srcsets: reject(srcsets, (_, i) => parseInt(i) === index) });
   };
 
   return (

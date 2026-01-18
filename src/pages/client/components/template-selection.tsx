@@ -6,7 +6,7 @@ import { useChaiFeatureFlag } from "@/runtime/index";
 import { TemplateWithLibrary } from "@/pages/hooks/project/use-templates-with-libraries";
 import { startCase } from "lodash-es";
 import { Check, ChevronDown, Search } from "lucide-react";
-import { useEffect, useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 import ChaiCommandList from "./ui/chai-command-list";
 
 // Utility to conditionally join class names
@@ -34,9 +34,9 @@ export const TemplateSelection = ({
   useEffect(() => {
     if (selectedTemplateId) {
       const template = templates.find((t) => t.id === selectedTemplateId);
-      setPreview(template?.preview || "");
+      startTransition(() => setPreview(template?.preview || ""));
     } else {
-      setPreview("");
+      startTransition(() => setPreview(""));
     }
   }, [selectedTemplateId, templates]);
 

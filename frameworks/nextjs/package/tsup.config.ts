@@ -19,7 +19,7 @@ export default defineConfig({
     };
   },
   format: ["esm", "cjs"],
-  dts: false,
+  dts: true,
   clean: true,
   skipNodeModulesBundle: true,
   external: [

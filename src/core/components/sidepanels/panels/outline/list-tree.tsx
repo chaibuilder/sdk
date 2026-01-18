@@ -28,6 +28,7 @@ import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
 import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
 import { pubsub } from "@/core/pubsub";
+import { ChaiBlock } from "@/types/common";
 import {
   CardStackIcon,
   DotsVerticalIcon,
@@ -40,7 +41,7 @@ import { useDebouncedCallback } from "@react-hookz/web";
 import { useAtom } from "jotai";
 import { find, first, isEmpty } from "lodash-es";
 import { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
-import { MoveHandler, RenameHandler, Tree } from "react-arborist";
+import { MoveHandler, RenameHandler, Tree, TreeApi } from "react-arborist";
 import { useTranslation } from "react-i18next";
 import { BlockMoreOptions } from "./block-more-options";
 import { PasteAtRootContextMenu } from "./paste-into-root";
@@ -48,9 +49,11 @@ import { PasteAtRootContextMenu } from "./paste-into-root";
 const useCanMove = () => {
   const [blocks] = useBlocksStore();
   return (ids: string[], newParentId: string | null) => {
-    const newParentType = find(blocks, { _id: newParentId })?._type;
+    const newParentType = find(blocks, { _id: newParentId });
+    if (!newParentType) return false;
     const blockType = first(ids.map((id) => find(blocks, { _id: id })?._type));
-    return canAcceptChildBlock(newParentType, blockType);
+    if (!blockType) return false;
+    return canAcceptChildBlock((newParentType as ChaiBlock)._type, blockType);
   };
 };
 
@@ -62,17 +65,17 @@ const ListTree = () => {
   const [, setStyleBlocks] = useSelectedStylingBlocks();
   const { moveBlocks } = useBlocksStoreUndoableActions();
   const canMove = useCanMove();
-  const treeRef = useRef(null);
+  const treeRef = useRef<TreeApi<any>>(null);
   const [, setTreeRef] = useAtom(treeRefAtom);
   const { t } = useTranslation();
-  const [parentContext, setParentContext] = useState(null);
+  const [parentContext, setParentContext] = useState<{ x: number; y: number } | null>(null);
   const clearSelection = () => {
     setIds([]);
     setStyleBlocks([]);
   };
 
   const filteredTreeData = useMemo(() => {
-    const filterTreeData = (data, cutIds) => {
+    const filterTreeData = (data: any[], cutIds: string[]): any[] => {
       return data
         .filter((node) => !cutIds.includes(node._id))
         .map((node) => ({
@@ -88,7 +91,7 @@ const ListTree = () => {
     updateBlockProps([id], { _name: name }, node.data._name);
   };
   const onMove: MoveHandler<any> = ({ dragIds, parentId, index }) => {
-    if (canMove(dragIds, parentId)) moveBlocks(dragIds, parentId, index);
+    if (canMove(dragIds, parentId)) moveBlocks(dragIds, parentId!, index);
   };
 
   const onSelect = (nodes: any) => {
@@ -140,9 +143,9 @@ const ListTree = () => {
     try {
       // Replace variables with their actual values
       let evalCondition = condition;
-      Object.keys(context).forEach((key) => {
+      (Object.keys(context) as Array<keyof typeof context>).forEach((key) => {
         const regex = new RegExp(`\\b${key}\\b`, "g");
-        evalCondition = evalCondition.replace(regex, context[key]);
+        evalCondition = evalCondition.replace(regex, String(context[key]));
       });
 
       // Use Function constructor instead of eval for better security
@@ -153,14 +156,14 @@ const ListTree = () => {
     }
   };
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: KeyboardEvent) => {
     if (!treeRef.current) return;
 
     const tree = treeRef.current;
     const selectedNode = tree.selectedNodes[0];
     if (!selectedNode) return;
 
-    setIds[selectedNode.id];
+    setIds([selectedNode.id]);
     setStyleBlocks([]);
 
     const isLeaf = !selectedNode.isInternal;
@@ -256,8 +259,8 @@ const ListTree = () => {
           id="outline-view "
           className="no-scrollbar h-full overflow-y-auto text-sm"
           onKeyDown={(e) => {
-            if (!treeRef.current.isEditing) {
-              handleKeyDown(e);
+            if (treeRef.current && !treeRef.current.isEditing) {
+              handleKeyDown(e as unknown as KeyboardEvent);
             }
           }}>
           <div className="mb-2 flex items-center justify-end gap-x-1 pb-2 text-sm text-muted-foreground">

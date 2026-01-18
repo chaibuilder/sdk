@@ -5,7 +5,7 @@ import { EyeOpenIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
 
 export const Preview = function Preview() {
-  const preview = useBuilderProp("previewComponent");
+  const preview = useBuilderProp("previewComponent", false);
   const [, setPreviewMode] = usePreviewMode();
   const { t } = useTranslation();
   if (!preview) return null;

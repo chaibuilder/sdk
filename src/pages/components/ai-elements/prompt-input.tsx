@@ -19,6 +19,7 @@ import {
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea } from "@/pages/components/ui/input-group";
 import type { ChatStatus, FileUIPart } from "ai";
 import {
   CornerDownLeftIcon,
@@ -46,6 +47,7 @@ import {
   type PropsWithChildren,
   type ReactNode,
   type RefObject,
+  startTransition,
   useCallback,
   useContext,
   useEffect,
@@ -53,7 +55,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea } from "@/pages/components/ui/input-group";
 
 // ============================================================================
 // Provider Context & Types
@@ -975,7 +976,7 @@ export const PromptInputSpeechButton = ({
       };
 
       recognitionRef.current = speechRecognition;
-      setRecognition(speechRecognition);
+      startTransition(() => setRecognition(speechRecognition));
     }
 
     return () => {

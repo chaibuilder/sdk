@@ -103,7 +103,7 @@ export const AdvanceChoices = (props: RangeOptionsType) => {
     const { value: newValue, unit: newUnit } = getClassValueAndUnit(currentClass);
     if (newUnit === "") {
       setValue(newValue);
-      setUnit(cssProperty?.toLowerCase().includes("width") ? "%" : first(units));
+      setUnit(cssProperty?.toLowerCase().includes("width") ? "%" : first(units)!);
       return;
     }
     setUnit(newUnit);

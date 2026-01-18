@@ -35,7 +35,7 @@ export const SaveToLibraryModal = () => {
 
   const nestedBlocks = useMemo(() => {
     if (!modalState.blockId) return [];
-    const topBlock = find(blocks, { _id: modalState.blockId });
+    const topBlock = find(blocks, { _id: modalState.blockId }) as ChaiBlock;
     delete topBlock?._parent;
     return [topBlock, ...getBlocks(blocks, topBlock?._id)];
   }, [modalState.blockId, blocks]);
@@ -47,7 +47,7 @@ export const SaveToLibraryModal = () => {
           <DialogTitle>{t("Save to Library")}</DialogTitle>
         </DialogHeader>
         {SaveToLibraryComponent && !isEmpty(modalState.blockId) && (
-          <SaveToLibraryComponent blockId={modalState.blockId} blocks={nestedBlocks} close={close} />
+          <SaveToLibraryComponent blockId={modalState.blockId!} blocks={nestedBlocks} close={close} />
         )}
       </DialogContent>
     </Dialog>

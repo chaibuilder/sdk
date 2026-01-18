@@ -39,7 +39,7 @@ export const CanvasEventsWatcher = () => {
     return () => clearHighlight();
   }, [clearHighlight]);
 
-  usePubSub(CHAI_BUILDER_EVENTS.CANVAS_BLOCK_SELECTED, (blocks: string[]) => {
+  usePubSub(CHAI_BUILDER_EVENTS.CANVAS_BLOCK_SELECTED, (blocks?: string[]) => {
     if (!blocks) return;
     if (!isEmpty(blocks) && !includes(ids, first(blocks))) {
       treeRef?.closeAll();
@@ -47,16 +47,19 @@ export const CanvasEventsWatcher = () => {
     setIds(blocks);
   });
 
-  usePubSub(CHAI_BUILDER_EVENTS.CANVAS_BLOCK_STYLE_SELECTED, (data) => {
-    if (!data) return;
-    const { blockId, styleId, styleProp } = data as { blockId: string; styleId: string; styleProp: string };
-    if (!blockId) return;
-    if (!includes(ids, blockId)) {
-      treeRef?.closeAll();
-    }
-    setSelectedStylingBlocks([{ id: styleId, prop: styleProp, blockId }]);
-    setIds([blockId]);
-  });
+  usePubSub(
+    CHAI_BUILDER_EVENTS.CANVAS_BLOCK_STYLE_SELECTED,
+    (data?: { blockId: string; styleId: string; styleProp: string }) => {
+      if (!data) return;
+      const { blockId, styleId, styleProp } = data;
+      if (!blockId) return;
+      if (!includes(ids, blockId)) {
+        treeRef?.closeAll();
+      }
+      setSelectedStylingBlocks([{ id: styleId, prop: styleProp, blockId }]);
+      setIds([blockId]);
+    },
+  );
 
   usePubSub(CHAI_BUILDER_EVENTS.CLEAR_CANVAS_SELECTION, () => {
     clearHighlight();

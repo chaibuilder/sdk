@@ -244,7 +244,7 @@ const BlocksRenderer = ({
 }: {
   splitAtoms?: any;
   blocks: ChaiBlock[];
-  parent?: string;
+  parent?: string | null;
   type?: string;
 }) => {
   const getBlockAtom = useGetBlockAtom(splitAtoms);
@@ -258,7 +258,7 @@ const BlocksRenderer = ({
     [blocks],
   );
 
-  if (hasChildren && (type === "Heading" || type === "Paragraph" || type === "Link")) {
+  if (type === "Heading" || type === "Paragraph" || type === "Link") {
     filteredBlocks = adjustSpacingInContentBlocks(filteredBlocks);
   }
 
@@ -273,13 +273,13 @@ const BlocksRenderer = ({
               return _type === "Repeater" ? (
                 isArray(repeaterItems) &&
                   repeaterItems.map((_, index) => (
-                    <RepeaterContext.Provider key={`${_id}-${index}`} value={{ index, key: $repeaterItemsKey }}>
+                    <RepeaterContext.Provider key={`${_id}-${index}`} value={{ index, key: $repeaterItemsKey! }}>
                       <BlocksRenderer splitAtoms={splitAtoms} blocks={blocks} parent={block._id} type={_type} />
                     </RepeaterContext.Provider>
                   ))
               ) : _type === "GlobalBlock" || _type === "PartialBlock" ? (
                 <Provider store={builderStore}>
-                  <PartialBlocksRenderer partialBlockId={partialBlockId} />
+                  <PartialBlocksRenderer partialBlockId={partialBlockId!} />
                 </Provider>
               ) : hasChildren(_id) ? (
                 <BlocksRenderer splitAtoms={splitAtoms} blocks={blocks} parent={block._id} type={_type} />

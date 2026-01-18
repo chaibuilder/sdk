@@ -4,12 +4,12 @@ import {
   getBlockRuntimeProps,
   getBlockTagAttributes,
 } from "@/core/components/canvas/static/new-blocks-render-helpers";
-import { getRegisteredChaiBlock } from "@/runtime";
+import { applyBindingToBlockProps } from "@/render/apply-binding";
+import { getRuntimePropValues, RenderChaiBlocksProps } from "@/render/render-chai-blocks";
+import { ChaiBlockDefinition, getRegisteredChaiBlock } from "@/runtime";
 import { ChaiBlock } from "@/types/chai-block";
 import { get, has, isArray, isFunction, isNull } from "lodash-es";
 import { createElement, Suspense } from "react";
-import { applyBindingToBlockProps } from "@/render/apply-binding";
-import { getRuntimePropValues, RenderChaiBlocksProps } from "@/render/render-chai-blocks";
 import AsyncDataProviderPropsBlock from "./async-props-block";
 
 const SuspenseFallback = () => <div></div>;
@@ -45,15 +45,15 @@ export const AsyncRenderBlock = async (
     dataProviderMetadataCallback,
     dataProviders,
   } = props;
-  const registeredChaiBlock = getRegisteredChaiBlock(block._type);
+  const registeredChaiBlock = getRegisteredChaiBlock(block._type) as ChaiBlockDefinition;
   const Component = get(registeredChaiBlock, "component", null);
   const index = get(props.repeaterData, "index", -1);
   const dataKey = get(props.repeaterData, "dataKey", "");
 
-  const bindingLangSuffix = lang === fallbackLang ? "" : lang;
+  const bindingLangSuffix = lang === fallbackLang ? "" : (lang ?? "en");
   const blockWithBinding: ChaiBlock = applyBindingToBlockProps(
     applyLanguage(block, bindingLangSuffix, registeredChaiBlock),
-    externalData,
+    externalData ?? {},
     { index, key: dataKey },
   );
   const blockAttributesProps = getBlockTagAttributes(block, false);
@@ -69,8 +69,9 @@ export const AsyncRenderBlock = async (
   const blockProps = {
     blockProps: {},
     inBuilder: false,
-    lang: lang || fallbackLang,
-    pageData: externalData,
+    lang: lang || fallbackLang || "en",
+    draft: draft ?? false,
+    pageData: externalData ?? {},
     ...newBlock,
   };
   const isShown = get(newBlock, "_show", true);
@@ -82,16 +83,15 @@ export const AsyncRenderBlock = async (
     return (
       <Suspense fallback={createElement(suspenseFallback)}>
         <AsyncDataProviderPropsBlock
-          lang={lang}
-          pageProps={pageProps}
+          lang={lang ?? ""}
+          pageProps={pageProps!}
           block={newBlock}
           dataProvider={dataProviderPromise}
           {...(dataProviderMetadataCallback ? { dataProviderMetadataCallback } : {})}
-          draft={draft}>
+          draft={draft ?? false}>
           {(dataProviderProps) => {
             return createElement(Component, {
               ...blockProps,
-              draft,
               ...dataProviderProps,
               children: children({
                 _id: block._id,
@@ -113,7 +113,6 @@ export const AsyncRenderBlock = async (
 
   return createElement(Component, {
     ...blockProps,
-    draft,
     children: children({
       _id: block._id,
       _type: block._type,

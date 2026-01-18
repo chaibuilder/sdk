@@ -8,7 +8,7 @@ type ExcludedBuilderProps = "blocks" | "subPages" | "brandingOptions" | "dataPro
 
 export const useBuilderProp = <T>(
   propKey: keyof Omit<ChaiBuilderEditorProps, ExcludedBuilderProps> | "languages" | string,
-  defaultValue: T = undefined,
+  defaultValue: T,
 ): T => {
   const builderProps = useAtomValue(chaiBuilderPropsAtom);
   return useMemo(() => get(builderProps, propKey, defaultValue), [builderProps, propKey, defaultValue]);

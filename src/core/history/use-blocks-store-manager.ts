@@ -1,13 +1,13 @@
+import { useIncrementActionsCount } from "@/core/components/use-auto-save";
 import { insertBlocksAtPosition } from "@/core/history/insert-block-at-position";
 import { moveBlocksWithChildren } from "@/core/history/move-blocks-with-children";
 import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
 import { useBroadcastChannel } from "@/core/hooks/use-broadcast-channel";
+import { useCheckStructure } from "@/core/hooks/use-check-structure";
 import { removeNestedBlocks } from "@/core/hooks/use-remove-blocks";
 import { useUpdateBlockAtom } from "@/core/hooks/use-update-block-atom";
 import { ChaiBlock } from "@/types/chai-block";
 import { each, find, omit } from "lodash-es";
-import { useIncrementActionsCount } from "@/core/components/use-auto-save";
-import { useCheckStructure } from "@/core/hooks/use-check-structure";
 
 export const useBlocksStoreManager = () => {
   const [, setBlocks] = useBlocksStore();
@@ -56,7 +56,7 @@ export const useBlocksStoreManager = () => {
         return blocks;
       });
     },
-    updateBlocksProps: (blocks: Partial<ChaiBlock>[]) => {
+    updateBlocksProps: (blocks: (Partial<ChaiBlock> & { _id: string })[]) => {
       blocks.forEach((block) => {
         const updatedBlock = omit(block, "_id");
         updateBlockAtom({ id: block._id, props: updatedBlock });

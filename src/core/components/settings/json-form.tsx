@@ -29,7 +29,7 @@ type JSONFormType = {
   onChange: ({ formData }: any, key?: string) => void;
 };
 
-const CustomAddButton = (props) => (
+const CustomAddButton = (props: any) => (
   <button {...props} className="duration absolute right-2 top-2 cursor-pointer text-blue-400 hover:text-blue-500">
     <div className="flex items-center gap-x-0.5 text-[11px] leading-tight">
       <PlusIcon className="h-3 w-3" /> <span>Add</span>
@@ -46,8 +46,8 @@ export const JSONForm = memo(({ blockId, schema, uiSchema, formData, onChange }:
   const throttledChange = useThrottledCallback(
     async ({ formData }: any, id?: string) => {
       // * Sanitize undefined values
-      let updatedPropData = get(formData, id);
-      if (updatedPropData === undefined) set(formData, id, "");
+      let updatedPropData = get(formData, id!);
+      if (updatedPropData === undefined) set(formData, id!, "");
 
       onChange({ formData }, id);
     },
