@@ -1,4 +1,3 @@
-import "@/index.css";
 import { ArrowRight, Code, Globe } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 

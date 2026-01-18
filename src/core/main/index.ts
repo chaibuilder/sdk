@@ -56,8 +56,6 @@ export {
   registerBlockSettingField,
   registerBlockSettingTemplate,
   registerBlockSettingWidget,
-} from "@/core/extensions/blocks-settings";
-export {
   registerChaiAddBlockTab,
   registerChaiLibrary,
   registerChaiMediaManager,
