@@ -10,22 +10,25 @@
  * @module use-block-drop
  */
 
-import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 import {
-  useAddBlock,
-  useBlockHighlight,
-  useSelectedBlockIds,
-  useSelectedStylingBlocks,
-  useUpdateBlocksProps,
-} from "@/core/hooks";
+  canvasRenderKeyAtom,
+  dragAndDropAtom,
+  dropIndicatorAtom,
+  setIsDragging,
+} from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
+import { useDragParentHighlight } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-parent-highlight";
+import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
+import { useAddBlock } from "@/core/hooks/use-add-block";
+import { useBlockHighlight } from "@/core/hooks/use-block-highlight";
 import { useCanvasIframe } from "@/core/hooks/use-canvas-iframe";
+import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
+import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
+import { syncBlocksWithDefaults } from "@/runtime/index";
 import { ChaiBlock } from "@/types/common";
-import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { useAtom } from "jotai";
 import { filter, find, get, has, isFunction } from "lodash-es";
 import { DragEvent, useCallback } from "react";
-import { canvasRenderKeyAtom, dragAndDropAtom, dropIndicatorAtom, setIsDragging } from "./use-drag-and-drop";
-import { useDragParentHighlight } from "./use-drag-parent-highlight";
 
 /**
  * @HOOK useBlockDrop
@@ -127,7 +130,7 @@ export const useBlockDrop = () => {
       }
 
       // Immediately clear dragged block to prevent subsequent dragover events
-      // @ts-expect-error - Jotai type inference issue with generic ChaiBlock type
+      // @ts-ignore
       setDraggedBlock(null);
 
       // Use targetBlockId and targetParentId from dropIndicator state
@@ -303,7 +306,7 @@ function calculateInsertionIndex(
       parentId: isRootLevel ? null : targetParentId,
       index: calculatedIndex,
     };
-  } catch (error) {
+  } catch {
     // Fallback: insert at root level at the end
     const rootBlocks = filter(blocks, (b) => !b?._parent);
     return {

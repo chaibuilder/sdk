@@ -5,7 +5,7 @@ import { Provider, WritableAtom } from "jotai";
 import { useHydrateAtoms } from "jotai/utils";
 import React from "react";
 import { describe, expect, it } from "vitest";
-import { selectedBlockIdsAtom, useSelectedBlockHierarchy } from "./use-selected-blockIds";
+import { selectedBlockIdsAtom, useSelectedBlockHierarchy } from "@/core/hooks/use-selected-blockIds";
 
 type AtomTuple = [WritableAtom<any, any[], any>, any];
 

@@ -1,4 +1,4 @@
-import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
+import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@/runtime/index";
 import { TextIcon } from "@radix-ui/react-icons";
 import { isNull } from "lodash-es";
 import * as React from "react";
@@ -43,7 +43,7 @@ const Config = {
   }),
   i18nProps: ["content"],
   aiProps: ["content"],
-  canAcceptBlock: (type) => type === "Span" || type === "Link" || type === "Text",
+  canAcceptBlock: (type: string) => type === "Span" || type === "Link" || type === "Text",
 };
 
 export { ParagraphBlock as Component, Config };

@@ -116,7 +116,7 @@ describe("Class functions", () => {
   test("getPropertyForClass", () => {
     expect(getPropertyForClass("rounded-lg")).toBe("borderRadius");
     // check for all available classes
-    // eslint-disable-next-line guard-for-in,no-restricted-syntax
+     
     for (const key in CLASSES_LIST) {
       each(CLASSES_LIST[key].classes, (pureCls: string) => {
         expect(getPropertyForClass(pureCls)).toBe(key);

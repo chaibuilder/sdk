@@ -1,5 +1,6 @@
 // @ts-nochecks
 
+import { Skeleton } from "@/components/ui/skeleton";
 import { BlockSelectionHighlighter } from "@/core/components/canvas/block-floating-actions";
 import { IframeInitialContent } from "@/core/components/canvas/IframeInitialContent";
 import { KeyboardHandler } from "@/core/components/canvas/keyboar-handler";
@@ -10,13 +11,14 @@ import { ResizableCanvasWrapper } from "@/core/components/canvas/static/resizabl
 import { StaticBlocksRenderer } from "@/core/components/canvas/static/static-blocks-renderer";
 import { useCanvasScale } from "@/core/components/canvas/static/use-canvas-scale";
 import { ChaiFrame } from "@/core/frame";
-import { useBuilderProp, useCanvasDisplayWidth, useHighlightBlockId } from "@/core/hooks";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { useCanvasIframe } from "@/core/hooks/use-canvas-iframe";
-import { Skeleton } from "@/ui/shadcn/components/ui/skeleton";
+import { useHighlightBlockId } from "@/core/hooks/use-highlight-blockId";
+import { useCanvasDisplayWidth } from "@/core/hooks/use-screen-size-width";
 import { isEmpty } from "lodash-es";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Provider } from "react-wrap-balancer";
-import { useDragAndDrop, useDropIndicator } from "../dnd/drag-and-drop/hooks";
+import { useDragAndDrop, useDropIndicator } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 import { CanvasEventsWatcher } from "./canvas-events-watcher";
 
 const StaticCanvas = () => {

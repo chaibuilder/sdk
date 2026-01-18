@@ -1,13 +1,15 @@
 import { clickCountAtom } from "@/core/atoms/click-detection";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { useBlockHighlight, useInlineEditing, useSelectedStylingBlocks } from "@/core/hooks";
+import { useBlockHighlight } from "@/core/hooks/use-block-highlight";
+import { useInlineEditing } from "@/core/hooks/use-inline-editing";
+import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
 import { pubsub } from "@/core/pubsub";
 import { useThrottledCallback } from "@react-hookz/web";
 import { useAtom } from "jotai";
 import { some } from "lodash-es";
 import React, { useCallback } from "react";
 
-function getTargetedBlock(target) {
+function getTargetedBlock(target: HTMLElement) {
   // First check if the target is the canvas itself
   if (target.getAttribute("data-block-id") === "canvas") {
     return null;
@@ -46,7 +48,7 @@ const hasDataBlockIdInChildren = (element: HTMLElement | null): boolean => {
  */
 export const isInlineEditable = (chaiBlock: HTMLElement | null, _blockType?: string): boolean => {
   // If the block type is set, and the block is not null, return
-  if (_blockType && chaiBlock) return;
+  if (_blockType && chaiBlock) return false;
 
   // If the block is a rich text parent, return false (CHANGE LATER)
   if (isRichTextParent(chaiBlock)) {
@@ -69,14 +71,16 @@ const useHandleCanvasDblClick = () => {
       e?.preventDefault();
       e?.stopPropagation();
       if (editingBlockId) return;
-      const chaiBlock: HTMLElement = getTargetedBlock(e.target);
-
+      const chaiBlock = getTargetedBlock(e.target) as HTMLElement | null;
+      if (!chaiBlock) {
+        return;
+      }
       if (!isInlineEditable(chaiBlock)) return;
 
       if (hasDataBlockIdInChildren(chaiBlock)) return;
 
       const blockId = chaiBlock.getAttribute("data-block-id");
-      if (!blockId || !chaiBlock) return;
+      if (!blockId) return;
 
       // * Checking for repeater items index
       const repeater = chaiBlock.closest('[data-block-type="Repeater"]');
@@ -106,7 +110,7 @@ const useHandleCanvasClick = () => {
     (e: any) => {
       if (editingBlockId) return;
       e.stopPropagation();
-      const chaiBlock: HTMLElement = getTargetedBlock(e.target);
+      const chaiBlock = getTargetedBlock(e.target) as HTMLElement | null;
       // If clicked on empty canvas area (no block found), deselect all blocks
       if (!chaiBlock) {
         clearHighlight();
@@ -114,7 +118,7 @@ const useHandleCanvasClick = () => {
         pubsub.publish(CHAI_BUILDER_EVENTS.CANVAS_BLOCK_SELECTED, []);
         return;
       }
-      if (clickCount === 2) return;     
+      if (clickCount === 2) return;
       if (chaiBlock?.getAttribute("data-block-id") && chaiBlock?.getAttribute("data-block-id") === "container") {
         pubsub.publish(CHAI_BUILDER_EVENTS.CLEAR_CANVAS_SELECTION);
         return;
@@ -142,7 +146,7 @@ const useHandleMouseMove = () => {
   return useThrottledCallback(
     (e: any) => {
       if (editingBlockId) return;
-      const chaiBlock = getTargetedBlock(e.target);
+      const chaiBlock = getTargetedBlock(e.target) as HTMLElement | null;
       if (chaiBlock) {
         highlightBlock(chaiBlock);
       }

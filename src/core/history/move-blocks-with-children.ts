@@ -33,7 +33,7 @@ function moveNode(
     newParentNode.model.children = [];
   }
 
-  let currentPosition = newParentNode?.children?.findIndex((child) => child.model._id === nodeIdToMove);
+  let currentPosition = newParentNode?.children?.findIndex((child: any) => child.model._id === nodeIdToMove);
 
   nodeToMove.drop();
 
@@ -52,7 +52,7 @@ function moveNode(
 }
 
 // Process Text block logic for the old parent
-function handleOldParentTextBlock(blocks: Partial<ChaiBlock>[], blockToMove: Partial<ChaiBlock>): Partial<ChaiBlock>[] {
+function handleOldParentTextBlock(blocks: ChaiBlock[], blockToMove: ChaiBlock): ChaiBlock[] {
   if (!blockToMove || !blockToMove._parent) return blocks;
 
   const oldParentId = blockToMove._parent;
@@ -79,7 +79,7 @@ function handleOldParentTextBlock(blocks: Partial<ChaiBlock>[], blockToMove: Par
           // Copy any content- properties
           Object.keys(otherChild).forEach((key) => {
             if (key.startsWith("content-")) {
-              updatedBlock[key] = otherChild[key];
+              (updatedBlock as any)[key] = otherChild[key];
             }
           });
 
@@ -97,11 +97,7 @@ function handleOldParentTextBlock(blocks: Partial<ChaiBlock>[], blockToMove: Par
 }
 
 // Process Text block logic for the new parent
-function handleNewParentTextBlock(
-  blocks: Partial<ChaiBlock>[],
-  blockToMove: Partial<ChaiBlock>,
-  newParentId: string,
-): Partial<ChaiBlock>[] {
+function handleNewParentTextBlock(blocks: ChaiBlock[], blockToMove: ChaiBlock, newParentId: string): ChaiBlock[] {
   if (!newParentId || newParentId === "root") return blocks;
 
   const newParent = blocks.find((block) => block._id === newParentId);
@@ -126,7 +122,7 @@ function handleNewParentTextBlock(
       // Add content-related properties (language props)
       Object.keys(newParent).forEach((key) => {
         if (key.startsWith("content-")) {
-          textBlock[key] = newParent[key];
+          (textBlock as any)[key] = newParent[key];
         }
       });
 
@@ -139,7 +135,7 @@ function handleNewParentTextBlock(
           // Also set content- properties to empty strings
           Object.keys(updatedBlock).forEach((key) => {
             if (key.startsWith("content-")) {
-              updatedBlock[key] = "";
+              (updatedBlock as any)[key] = "";
             }
           });
 
@@ -165,11 +161,11 @@ function handleNewParentTextBlock(
 }
 
 function moveBlocksWithChildren(
-  _blocks: Partial<ChaiBlock>[],
+  _blocks: ChaiBlock[],
   idToMove: string,
   newParentId: string | undefined | null,
   newPosition: number,
-): Partial<ChaiBlock>[] {
+): ChaiBlock[] {
   if (!idToMove) return _blocks;
 
   // Get the block being moved
@@ -177,7 +173,7 @@ function moveBlocksWithChildren(
   if (!blockToMove) return _blocks;
 
   // Handle Text block logic for the old parent
-  let processedBlocks = handleOldParentTextBlock(_blocks, blockToMove);
+  let processedBlocks = handleOldParentTextBlock(_blocks, blockToMove) as ChaiBlock[];
 
   // Set newParentId to "root" for tree model if it's null or undefined
   const treeParentId = newParentId || "root";
@@ -186,7 +182,7 @@ function moveBlocksWithChildren(
   const root = tree.parse({ _id: "root", children: getBlocksTree(processedBlocks) });
 
   if (moveNode(root, idToMove, treeParentId, newPosition)) {
-    let newBlocks = flattenTree(root);
+    let newBlocks = flattenTree(root) as ChaiBlock[];
     const movedBlock = newBlocks.find((block) => block._id === idToMove);
 
     if (movedBlock) movedBlock._parent = treeParentId === "root" ? null : treeParentId;

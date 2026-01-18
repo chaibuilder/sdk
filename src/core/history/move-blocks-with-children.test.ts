@@ -2,12 +2,12 @@ import { moveBlocksWithChildren } from "@/core/history/move-blocks-with-children
 
 test("Move to top level", () => {
   const blocks = [
-    { _id: "1", _parent: undefined },
-    { _id: "2", _parent: "1" },
-    { _id: "3", _parent: "1" },
-    { _id: "4", _parent: "2" },
-    { _id: "5", _parent: "2" },
-    { _id: "6", _parent: "3" },
+    { _id: "1", _parent: undefined, _type: "Block" },
+    { _id: "2", _parent: "1", _type: "Block" },
+    { _id: "3", _parent: "1", _type: "Block" },
+    { _id: "4", _parent: "2", _type: "Block" },
+    { _id: "5", _parent: "2", _type: "Block" },
+    { _id: "6", _parent: "3", _type: "Block" },
   ];
 
   const idsToMove = ["2"];
@@ -20,12 +20,12 @@ test("Move to top level", () => {
 
 test("Move to another parent", () => {
   const blocks = [
-    { _id: "1", _parent: undefined },
-    { _id: "2", _parent: "1" },
-    { _id: "3", _parent: "1" },
-    { _id: "4", _parent: "2" },
-    { _id: "5", _parent: "2" },
-    { _id: "6", _parent: "3" },
+    { _id: "1", _parent: undefined, _type: "Block" },
+    { _id: "2", _parent: "1", _type: "Block" },
+    { _id: "3", _parent: "1", _type: "Block" },
+    { _id: "4", _parent: "2", _type: "Block" },
+    { _id: "5", _parent: "2", _type: "Block" },
+    { _id: "6", _parent: "3", _type: "Block" },
   ];
 
   const idsToMove = ["2"];
@@ -38,12 +38,12 @@ test("Move to another parent", () => {
 
 test("Move block with children", () => {
   const blocks = [
-    { _id: "1", _parent: undefined },
-    { _id: "2", _parent: "1" },
-    { _id: "4", _parent: "2" },
-    { _id: "5", _parent: "2" },
-    { _id: "3", _parent: "1" },
-    { _id: "6", _parent: "3" },
+    { _id: "1", _parent: undefined, _type: "Text" },
+    { _id: "2", _parent: "1", _type: "Text" },
+    { _id: "4", _parent: "2", _type: "Text" },
+    { _id: "5", _parent: "2", _type: "Text" },
+    { _id: "3", _parent: "1", _type: "Text" },
+    { _id: "6", _parent: "3", _type: "Text" },
   ];
 
   const idsToMove = ["2"];
@@ -58,13 +58,13 @@ test("Move block with children", () => {
 
 test("Move multiple blocks", () => {
   const blocks = [
-    { _id: "1", _parent: undefined },
-    { _id: "2", _parent: "1" },
-    { _id: "3", _parent: "1" },
-    { _id: "4", _parent: "2" },
-    { _id: "5", _parent: "2" },
-    { _id: "6", _parent: "3" },
-    { _id: "7", _parent: "6" },
+    { _id: "1", _parent: undefined, _type: "Text" },
+    { _id: "2", _parent: "1", _type: "Text" },
+    { _id: "3", _parent: "1", _type: "Text" },
+    { _id: "4", _parent: "2", _type: "Text" },
+    { _id: "5", _parent: "2", _type: "Text" },
+    { _id: "6", _parent: "3", _type: "Text" },
+    { _id: "7", _parent: "6", _type: "Text" },
   ];
 
   const idsToMove = ["2", "6"];
@@ -78,12 +78,12 @@ test("Move multiple blocks", () => {
 
 test("No blocks to move", () => {
   const blocks = [
-    { _id: "1", _parent: undefined },
-    { _id: "2", _parent: "1" },
-    { _id: "3", _parent: "1" },
-    { _id: "4", _parent: "2" },
-    { _id: "5", _parent: "2" },
-    { _id: "6", _parent: "3" },
+    { _id: "1", _parent: undefined, _type: "Text" },
+    { _id: "2", _parent: "1", _type: "Text" },
+    { _id: "3", _parent: "1", _type: "Text" },
+    { _id: "4", _parent: "2", _type: "Text" },
+    { _id: "5", _parent: "2", _type: "Text" },
+    { _id: "6", _parent: "3", _type: "Text" },
   ];
 
   const newParent = undefined;
@@ -92,11 +92,11 @@ test("No blocks to move", () => {
   const updatedBlocks = moveBlocksWithChildren(blocks, "", newParent, position);
 
   expect(updatedBlocks).toEqual([
-    { _id: "1", _parent: undefined },
-    { _id: "2", _parent: "1" },
-    { _id: "3", _parent: "1" },
-    { _id: "4", _parent: "2" },
-    { _id: "5", _parent: "2" },
-    { _id: "6", _parent: "3" },
+    { _id: "1", _parent: undefined, _type: "Text" },
+    { _id: "2", _parent: "1", _type: "Text" },
+    { _id: "3", _parent: "1", _type: "Text" },
+    { _id: "4", _parent: "2", _type: "Text" },
+    { _id: "5", _parent: "2", _type: "Text" },
+    { _id: "6", _parent: "3", _type: "Text" },
   ]);
 });

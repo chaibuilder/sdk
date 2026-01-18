@@ -1,9 +1,10 @@
+import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { usePageExternalData } from "@/core/atoms/builder";
 import { LANGUAGES } from "@/core/constants/LANGUAGES";
-import { useLanguages, useSelectedBlock } from "@/core/hooks";
-import { Badge } from "@/ui/shadcn/components/ui/badge";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
-import { useRegisteredChaiBlocks } from "@chaibuilder/runtime";
+import { useLanguages } from "@/core/hooks/use-languages";
+import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
+import { useRegisteredChaiBlocks } from "@/runtime/index";
 import { ChevronDownIcon, ChevronRightIcon, InfoCircledIcon, ListBulletIcon } from "@radix-ui/react-icons";
 import { FieldTemplateProps } from "@rjsf/utils";
 import { get, isEmpty } from "lodash-es";
@@ -23,7 +24,7 @@ const JSONFormFieldTemplate = (props: FieldTemplateProps) => {
   const selectedBlock = useSelectedBlock();
   const registeredBlocks = useRegisteredChaiBlocks();
   const i18nProps = useMemo(
-    () => get(registeredBlocks, [selectedBlock?._type, "i18nProps"], []),
+    () => get(registeredBlocks, [selectedBlock?._type!, "i18nProps"], []),
     [registeredBlocks, selectedBlock?._type],
   );
   const [openedList, setOpenedList] = useState<null | string>(null);

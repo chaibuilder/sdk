@@ -7,7 +7,7 @@ Control which features are enabled in the ChaiBuilder editor.
 Pass flags via the `flags` prop:
 
 ```tsx
-import { ChaiBuilderEditor } from "@chaibuilder/sdk";
+import { ChaiBuilderEditor } from "@/core/main";
 
 <ChaiBuilderEditor
   flags={{
@@ -46,7 +46,7 @@ import { ChaiBuilderEditor } from "@chaibuilder/sdk";
 ### Registering Custom Flags
 
 ```tsx
-import { registerChaiFeatureFlag } from "@chaibuilder/sdk";
+import { registerChaiFeatureFlag } from "@/core/main";
 
 // Register a single flag
 registerChaiFeatureFlag("myCustomFeature", {
@@ -55,7 +55,7 @@ registerChaiFeatureFlag("myCustomFeature", {
 });
 
 // Register multiple flags
-import { registerChaiFeatureFlags } from "@chaibuilder/sdk";
+import { registerChaiFeatureFlags } from "@/core/main";
 
 registerChaiFeatureFlags({
   featureA: { value: true, description: "Feature A" },
@@ -66,7 +66,7 @@ registerChaiFeatureFlags({
 ### Using Custom Flags
 
 ```tsx
-import { useChaiFeatureFlag } from "@chaibuilder/sdk";
+import { useChaiFeatureFlag } from "@/core/main";
 
 const MyComponent = () => {
   const isEnabled = useChaiFeatureFlag("myCustomFeature");
@@ -82,7 +82,7 @@ const MyComponent = () => {
 ### Conditional Rendering
 
 ```tsx
-import { IfChaiFeatureFlag } from "@chaibuilder/sdk";
+import { IfChaiFeatureFlag } from "@/core/main";
 
 const MyComponent = () => {
   return (
@@ -98,7 +98,7 @@ const MyComponent = () => {
 ### Toggling Flags
 
 ```tsx
-import { useToggleChaiFeatureFlag } from "@chaibuilder/sdk";
+import { useToggleChaiFeatureFlag } from "@/core/main";
 
 const FeatureToggle = () => {
   const toggleFeature = useToggleChaiFeatureFlag("myCustomFeature");
@@ -110,7 +110,7 @@ const FeatureToggle = () => {
 ### Getting All Flags
 
 ```tsx
-import { useChaiFeatureFlags } from "@chaibuilder/sdk";
+import { useChaiFeatureFlags } from "@/core/main";
 
 const FlagsPanel = () => {
   const flags = useChaiFeatureFlags();

@@ -1,7 +1,10 @@
-import { useAddBlock, useBlocksStore, useSelectedBlock, useSelectedBlockIds, useWrapperBlock } from "@/core/hooks";
+import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { useAddBlock } from "@/core/hooks/use-add-block";
+import { useSelectedBlock, useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { useWrapperBlock } from "@/core/hooks/use-wrapper-block";
+import { ChevronLeftIcon, ChevronRightIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 import { FieldProps } from "@rjsf/utils";
 import { filter, find, findIndex, get } from "lodash-es";
-import { ChevronLeftIcon, ChevronRightIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 import { useEffect } from "react";
 
 const SliderField = ({ formData, onChange }: FieldProps) => {
@@ -11,12 +14,8 @@ const SliderField = ({ formData, onChange }: FieldProps) => {
   const { addCoreBlock } = useAddBlock();
   const [, setBlockIds] = useSelectedBlockIds();
 
-  if (!selectedBlock && !wrapperBlock) return null;
-
   const sliderBlock = selectedBlock?._type === "Slider" ? selectedBlock : wrapperBlock;
   const slidesBlock = find(allBlocks, { _parent: sliderBlock?._id, _type: "Slides" });
-  if (!slidesBlock) return null;
-
   const allSlideBlocks = filter(allBlocks, { _parent: slidesBlock?._id, _type: "Slide" });
   const currentSlide = formData?.currentSlide || get(allSlideBlocks, "0._id");
 
@@ -31,6 +30,9 @@ const SliderField = ({ formData, onChange }: FieldProps) => {
       onChange({ ...formData, currentSlide: get(allSlideBlocks, "0._id") });
     }
   }, [formData, allSlideBlocks]);
+
+  if (!selectedBlock && !wrapperBlock) return null;
+  if (!slidesBlock) return null;
 
   const handleNext = () => {
     const currentIndex = findIndex(allSlideBlocks, { _id: currentSlide });

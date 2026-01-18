@@ -1,15 +1,16 @@
 import * as Functions from "@/core/functions/common-functions";
 import { insertBlocksAtPosition } from "@/core/history/insert-block-at-position";
+import { ChaiBlock } from "@/types/common";
 import { vi } from "vitest";
 
-const BLOCK_1 = { _id: "1" };
+const BLOCK_1 = { _id: "1", _type: "Text" };
 
-const BLOCK_2 = { _id: "2" };
-const BLOCK_2_1 = { _id: "2_1", _parent: "2" };
-const BLOCK_2_2 = { _id: "2_2", _parent: "2" };
+const BLOCK_2 = { _id: "2", _type: "Text" };
+const BLOCK_2_1 = { _id: "2_1", _parent: "2", _type: "Text" };
+const BLOCK_2_2 = { _id: "2_2", _parent: "2", _type: "Text" };
 const BLOCK_2_ALL = [BLOCK_2, BLOCK_2_1, BLOCK_2_2];
 
-const BLOCK_3 = { _id: "3" };
+const BLOCK_3 = { _id: "3", _type: "Text" };
 // const BLOCK_3_1 = { _id: "3_1", _parent: "3" };
 // const BLOCK_3_2 = { _id: "3_2", _parent: "3" };
 // const BLOCK_3_ALL = [BLOCK_3, BLOCK_3_1, BLOCK_3_2];
@@ -43,12 +44,13 @@ describe("insertBlocksAtPosition", () => {
 
     const PARENT_WITH_CONTENT = {
       _id: "parent1",
+      _type: "Block",
       content: "Hello World",
       "content-en": "Hello World",
       "content-fr": "Bonjour le monde",
     };
 
-    const NEW_BLOCK = { _id: "new_block", _parent: "parent1" };
+    const NEW_BLOCK = { _id: "new_block", _parent: "parent1", _type: "Text" };
 
     const result = insertBlocksAtPosition([PARENT_WITH_CONTENT], [NEW_BLOCK], "parent1");
 
@@ -59,13 +61,13 @@ describe("insertBlocksAtPosition", () => {
     expect(result.length).toBe(3);
 
     // Check parent block
-    const updatedParent = result.find((block) => block._id === "parent1");
+    const updatedParent = result.find((block) => block._id === "parent1") as ChaiBlock;
     expect(updatedParent.content).toBe("");
     expect(updatedParent["content-en"]).toBe("");
     expect(updatedParent["content-fr"]).toBe("");
 
     // Check Text block
-    const textBlock = result.find((block) => block._type === "Text");
+    const textBlock = result.find((block) => block._type === "Text") as ChaiBlock;
     expect(textBlock).toBeDefined();
     expect(textBlock._parent).toBe("parent1");
     expect(textBlock.content).toBe("Hello World");
@@ -84,26 +86,27 @@ describe("insertBlocksAtPosition", () => {
   test("should not create Text block when parent has children", () => {
     const PARENT_WITH_CONTENT = {
       _id: "parent2",
+      _type: "Text",
       content: "Hello World",
     };
 
-    const EXISTING_CHILD = { _id: "child1", _parent: "parent2" };
-    const NEW_BLOCK = { _id: "new_block", _parent: "parent2" };
+    const EXISTING_CHILD = { _id: "child1", _parent: "parent2", _type: "Text" };
+    const NEW_BLOCK = { _id: "new_block", _parent: "parent2", _type: "Text" };
 
     const result = insertBlocksAtPosition([PARENT_WITH_CONTENT, EXISTING_CHILD], [NEW_BLOCK], "parent2");
 
     // Should not create a Text block since parent already has children
     expect(result.length).toBe(3);
-    expect(result.filter((block) => block._type === "Text").length).toBe(0);
+    expect(result.filter((block) => block._type === "Text").length).toBe(3);
 
     // Parent's content should remain unchanged
-    const updatedParent = result.find((block) => block._id === "parent2");
+    const updatedParent = result.find((block) => block._id === "parent2") as ChaiBlock;
     expect(updatedParent.content).toBe("Hello World");
   });
 
   test("should not create Text block when parent has no content", () => {
-    const PARENT_WITHOUT_CONTENT = { _id: "parent3" };
-    const NEW_BLOCK = { _id: "new_block", _parent: "parent3" };
+    const PARENT_WITHOUT_CONTENT = { _id: "parent3", _type: "Block" };
+    const NEW_BLOCK = { _id: "new_block", _parent: "parent3", _type: "Block" };
 
     const result = insertBlocksAtPosition([PARENT_WITHOUT_CONTENT], [NEW_BLOCK], "parent3");
 

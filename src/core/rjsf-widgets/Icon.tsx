@@ -24,7 +24,7 @@ const sanitizeSvg = (svgString: string): string => {
     cleaned = cleaned.replace(/<!--[\s\S]*?-->/g, "");
 
     return cleaned.trim();
-  } catch (error) {
+  } catch {
     return svgString;
   }
 };

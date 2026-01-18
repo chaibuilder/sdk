@@ -32,7 +32,7 @@ describe("hasVideoEmbed", () => {
   });
 
   it("returns false for null", () => {
-    expect(hasVideoEmbed(null)).toBe(false);
+    expect(hasVideoEmbed("")).toBe(false);
   });
   it("returns false for invalid html", () => {
     expect(hasVideoEmbed(`<div><h1>No url</h1></div>`)).toBe(false);

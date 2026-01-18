@@ -1,17 +1,18 @@
+import { useInlineEditing } from "@/core/hooks/use-inline-editing";
+import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
+import { ChaiBlock } from "@/core/main";
+import { useRTEditor } from "@/core/rjsf-widgets/rte-widget/use-rte-editor";
 import { WidgetProps } from "@rjsf/utils";
-import React, { Suspense, useEffect, useRef, useState } from "react";
-import { useInlineEditing, useSelectedBlock } from "../../hooks";
-import RteMenubar from "./rte-menu-bar";
-import { ChaiBlock } from "../../main";
-import { useRTEditor } from "./use-rte-editor";
 import { EditorContent } from "@tiptap/react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
+import RteMenubar from "./rte-menu-bar";
 const RTEModal = React.lazy(() => import("./rte-widget-modal"));
 
 /**
  * Rich Text Editor Field Component
  */
 const RichTextEditorFieldComp = ({ blockId, id, placeholder, value, onChange, onBlur }: WidgetProps) => {
-  const rteRef = useRef(null);
+  const rteRef = useRef<HTMLDivElement & { __chaiRTE?: any }>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const editor = useRTEditor({
@@ -57,7 +58,7 @@ const RichTextEditorFieldComp = ({ blockId, id, placeholder, value, onChange, on
     <>
       {isModalOpen && (
         <Suspense fallback={<div>Loading...</div>}>
-          <RTEModal isOpen={isModalOpen} onClose={handleModalClose} editor={editor} rteElement={rteElement} />
+          <RTEModal isOpen={isModalOpen} onClose={handleModalClose} editor={editor!} rteElement={rteElement} />
         </Suspense>
       )}
       {!isModalOpen ? <div className="relative">{rteElement}</div> : <div>Open in modal</div>}

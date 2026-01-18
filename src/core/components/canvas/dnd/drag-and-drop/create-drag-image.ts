@@ -38,7 +38,7 @@ export function createCoreDragImage(block: any): HTMLElement {
         document.querySelector(`[data-add-core-block-icon="${type}"]`)?.outerHTML ||
         '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V4z"/></svg>';
     }
-  } catch (e) {
+  } catch {
     // Fallback to text if icon rendering fails
     iconContainer.textContent = "";
   }

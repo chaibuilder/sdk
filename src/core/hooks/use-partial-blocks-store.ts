@@ -30,7 +30,6 @@ export const useWatchPartailBlocks = () => {
   const [blocksStore] = useBlocksStore();
   const [partailBlocks, setPartailBlocks] = useAtom(partialBlocksStoreAtom);
   const [partailBlocksLoadingState, setPartailBlocksLoadingState] = useAtom(partialBlocksLoadingStateAtom);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getPartialBlockBlocks = useBuilderProp("getPartialBlockBlocks", async (_key: string) => []);
   const partialBlocksList = useMemo(() => {
     // Filter blocks of type "PartialBlock" and extract their partialBlockId

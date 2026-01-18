@@ -8,7 +8,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/ui/shadcn/components/ui/alert-dialog";
+} from "@/components/ui/alert-dialog";
 import { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 

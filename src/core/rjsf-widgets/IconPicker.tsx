@@ -1,6 +1,6 @@
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Input } from "@/ui/shadcn/components/ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import lucideIcons from "@iconify-json/lucide/icons.json";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import Fuse from "fuse.js";

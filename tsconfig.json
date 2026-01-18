@@ -16,7 +16,7 @@
     "jsx": "react-jsx",
 
     /* Linting */
-    "strict": false,
+    "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
@@ -26,6 +26,7 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "lib", "e2e_tests"],
+  "include": ["src", "lib", "e2e_tests", "declaration.d.ts"],
+  "exclude": ["src/express/express-plugin.ts", "frameworks"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

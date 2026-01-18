@@ -1,6 +1,6 @@
 import { getOrientation } from "@/core/components/canvas/dnd/getOrientation";
 import { useFrame } from "@/core/frame/frame-context";
-import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/hooks";
+import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 import { ChaiBlock } from "@/types/chai-block";
 import { PinBottomIcon, PinLeftIcon, PinRightIcon, PinTopIcon } from "@radix-ui/react-icons";
 import { filter, findIndex, get } from "lodash-es";
@@ -22,23 +22,23 @@ const CONTROLS = [
  * @returns Getting orientation of arrow VERTICAL OR HORIZONTAL
  */
 const getParentBlockOrientation = (
-  parentBlockId: string | null,
-  blockId: string | null,
-  canvasIframe: HTMLIFrameElement,
+  parentBlockId?: string | null,
+  blockId?: string | null,
+  canvasDocument?: Document,
 ) => {
   try {
-    if (!parentBlockId || !canvasIframe) return "VERTICAL";
+    if (!parentBlockId || !canvasDocument) return "VERTICAL";
 
     const selector = `[data-block-id='${parentBlockId}']`;
-    const parentBlock = canvasIframe?.querySelector(selector);
+    const parentBlock = canvasDocument?.querySelector(selector);
     if (parentBlock) {
-      const blockElement = canvasIframe?.querySelector(`[data-block-id='${blockId}']`);
+      const blockElement = canvasDocument?.querySelector(`[data-block-id='${blockId}']`);
       // * Reusing DND util to get orientation of block
       return getOrientation(parentBlock as HTMLElement, blockElement as HTMLElement).toUpperCase();
     }
 
     return "VERTICAL";
-  } catch (error) {
+  } catch {
     return "VERTICAL";
   }
 };
@@ -63,7 +63,7 @@ const isDisabledControl = (isFirstBlock: boolean, isLastBlock: boolean, dir: "UP
  */
 const useBlockController = (block: ChaiBlock, updateFloatingBar: any) => {
   const [blocks] = useBlocksStore();
-  const { document: canvasIframe } = useFrame();
+  const { document: canvasDocument } = useFrame();
   const { moveBlocks } = useBlocksStoreUndoableActions();
 
   // * Parent Block
@@ -83,7 +83,7 @@ const useBlockController = (block: ChaiBlock, updateFloatingBar: any) => {
   const isLastBlock = blockIndex + 1 === ancestorBlocks?.length;
 
   // * Block Orientations
-  const orientation = getParentBlockOrientation(parentBlockId, blockId, canvasIframe);
+  const orientation = getParentBlockOrientation(parentBlockId, blockId, canvasDocument);
 
   // * Move block wrapper functions for all sides
   const moveBlock = useCallback(
@@ -91,9 +91,9 @@ const useBlockController = (block: ChaiBlock, updateFloatingBar: any) => {
       if (isDisabledControl(isFirstBlock, isLastBlock, dir) || isOnlyChild) return;
 
       if (dir === "UP" || dir === "LEFT") {
-        moveBlocks([blockId], parentBlockId || null, blockIndex - 1);
+        moveBlocks([blockId], parentBlockId || undefined, blockIndex - 1);
       } else if (dir === "DOWN" || dir === "RIGHT") {
-        moveBlocks([blockId], parentBlockId || null, blockIndex + 2);
+        moveBlocks([blockId], parentBlockId || undefined, blockIndex + 2);
       }
       updateFloatingBar();
     },
@@ -107,7 +107,7 @@ const useBlockController = (block: ChaiBlock, updateFloatingBar: any) => {
       // * Logic to get direction of key : ArrowRight -> Arrow -> ARROW
       moveBlock(key?.replace("Arrow", "")?.toUpperCase() as any);
     },
-    { document: canvasIframe?.contentDocument },
+    { document: canvasDocument },
     [moveBlock],
   );
 

@@ -1,8 +1,8 @@
 import { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 import { useLanguages } from "@/core/hooks/use-languages";
 import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
+import { getRegisteredChaiBlock } from "@/runtime/index";
 import { ChaiBlock } from "@/types/chai-block";
-import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { chunk, forEach, get, includes, isEmpty, isString, keys, omit, set, unset } from "lodash-es";
 import { useCallback } from "react";
 
@@ -31,6 +31,7 @@ export const useUpdateBlocksProps = () => {
 
   return useCallback(
     (blockIds: Array<string>, props: Record<string, any>, prevPropsState?: Record<string, any>) => {
+      if (!selectedBlock) return;
       const updatedProps = updatePropsForLanguage(props, selectedLang, selectedBlock);
       updateBlocks(blockIds, updatedProps, prevPropsState);
     },
@@ -95,6 +96,7 @@ export const useUpdateBlocksPropsRealtime = () => {
 
   return useCallback(
     (blockIds: Array<string>, props: Record<string, any>) => {
+      if (!selectedBlock) return;
       const updatedProps = updatePropsForLanguage(props, selectedLang, selectedBlock);
       updateBlocksRuntime(blockIds, updatedProps);
     },

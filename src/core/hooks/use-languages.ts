@@ -5,7 +5,7 @@ const languageAtom = atom("");
 languageAtom.debugLabel = "selectedLanguageAtom";
 
 export const useLanguages = () => {
-  const languages = useBuilderProp("languages", []);
+  const languages = useBuilderProp("languages", [] as string[]);
   const fallbackLang = useBuilderProp("fallbackLang", "en");
   const [selectedLang, _setSelectedLang] = useAtom(languageAtom);
 

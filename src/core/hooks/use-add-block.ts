@@ -2,9 +2,9 @@ import { canAcceptChildBlock } from "@/core/functions/block-helpers";
 import { generateUUID } from "@/core/functions/common-functions";
 import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { getDefaultBlockProps } from "@/runtime/index";
 import { ChaiBlock } from "@/types/chai-block";
 import { CoreBlock } from "@/types/core-block";
-import { getDefaultBlockProps } from "@chaibuilder/runtime";
 import { filter, find, first, forEach, has } from "lodash-es";
 import { useCallback } from "react";
 
@@ -24,17 +24,16 @@ export const useAddBlock = (): AddBlocks => {
 
   const addPredefinedBlock = useCallback(
     (blocks: ChaiBlock[], parentId?: string, position?: number) => {
-      // eslint-disable-next-line no-param-reassign
       for (let i = 0; i < blocks.length; i++) {
         const { _id } = blocks[i];
-        // eslint-disable-next-line no-param-reassign
+
         blocks[i]._id = generateUUID();
         const children = filter(blocks, { _parent: _id });
         for (let j = 0; j < children.length; j++) {
           children[j]._parent = blocks[i]._id;
         }
       }
-      const block = first(blocks);
+      const block = first(blocks)!;
       let parentBlock;
       let parentBlockId;
       if (parentId) {
@@ -52,9 +51,9 @@ export const useAddBlock = (): AddBlocks => {
         parentBlockId = parentBlock._parent;
       }
 
-      addBlocks(blocks, parentBlockId, position);
-      setSelected([first(blocks)?._id]);
-      return first(blocks);
+      addBlocks(blocks, parentBlockId ?? undefined, position);
+      setSelected([block._id]);
+      return block;
     },
     [addBlocks, allBlocks, setSelected],
   );
@@ -63,7 +62,7 @@ export const useAddBlock = (): AddBlocks => {
     (coreBlock: CoreBlock, parentId?: string | null, position?: number) => {
       if (has(coreBlock, "blocks")) {
         const blocks = coreBlock.blocks as ChaiBlock[];
-        return addPredefinedBlock(blocks, parentId, position);
+        return addPredefinedBlock(blocks, parentId ?? undefined, position);
       }
 
       const blockId = generateUUID();
@@ -84,14 +83,14 @@ export const useAddBlock = (): AddBlocks => {
         parentBlockId = parentId;
       }
 
-      const canAdd = canAcceptChildBlock(parentBlock?._type, newBlock._type);
+      const canAdd = canAcceptChildBlock(parentBlock?._type!, newBlock._type);
       if (!canAdd && parentBlock) {
         newBlock._parent = parentBlock._parent;
         parentBlockId = parentBlock._parent;
       }
       const newBlocks: ChaiBlock[] = [newBlock];
 
-      addBlocks(newBlocks, parentBlockId, position);
+      addBlocks(newBlocks, parentBlockId ?? undefined, position);
       setTimeout(() => setSelected([newBlock._id]), BLOCK_SELECTION_DELAY_MS);
       return newBlock;
     },

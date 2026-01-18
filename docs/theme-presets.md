@@ -15,7 +15,7 @@ Theme presets are pre-defined theme configurations that include:
 Pass your custom presets to the `themePresets` prop on the `ChaiBuilder` component:
 
 ```tsx
-import { ChaiBuilderEditor } from "@chaibuilder/sdk";
+import { ChaiBuilderEditor } from "@/core/main";
 import { ChaiThemeValues } from "@chaibuilder/sdk/types";
 
 const myCustomPreset: ChaiThemeValues = {
@@ -138,7 +138,7 @@ Your custom presets will appear alongside these built-in presets in the theme pa
 Here's a complete example with multiple custom presets:
 
 ```tsx
-import { ChaiBuilderEditor } from "@chaibuilder/sdk";
+import { ChaiBuilderEditor } from "@/core/main";
 import { ChaiThemeValues } from "@chaibuilder/sdk/types";
 
 // Ocean Blue Theme

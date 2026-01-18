@@ -1,6 +1,4 @@
-import { cn, getBreakpointValue } from "@/core/functions/common-functions";
-import { useBuilderProp, useCanvasDisplayWidth, useScreenSizeWidth, useSelectedBreakpoints } from "@/core/hooks";
-import { Button } from "@/ui/shadcn/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -8,8 +6,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/ui/shadcn/components/ui/dropdown-menu";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/ui/shadcn/components/ui/hover-card";
+} from "@/components/ui/dropdown-menu";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { cn, getBreakpointValue } from "@/core/functions/common-functions";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
+import { useCanvasDisplayWidth, useScreenSizeWidth } from "@/core/hooks/use-screen-size-width";
+import { useSelectedBreakpoints } from "@/core/hooks/use-selected-breakpoints";
 import { ChevronDownIcon, DesktopIcon, LaptopIcon, MobileIcon } from "@radix-ui/react-icons";
 import { includes, map, toUpper } from "lodash-es";
 import { useTranslation } from "react-i18next";

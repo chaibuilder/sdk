@@ -1,6 +1,6 @@
 import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
 import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
-import { getDefaultBlockProps } from "@chaibuilder/runtime";
+import { getDefaultBlockProps } from "@/runtime/index";
 import { pick } from "lodash-es";
 import { useCallback } from "react";
 

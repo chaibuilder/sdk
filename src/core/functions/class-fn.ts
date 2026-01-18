@@ -54,7 +54,7 @@ export function getPropertyForClass(pureCls: string): string {
     return memoizedProps[pureCls];
   }
   let property: string = "";
-  // eslint-disable-next-line guard-for-in,no-restricted-syntax
+   
   for (const key in CLASSES_LIST) {
     const expression = get(CLASSES_LIST, `${key}.regExp`, "") as string;
     if (new RegExp(expression, "g").test(pureCls)) {

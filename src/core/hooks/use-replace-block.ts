@@ -1,8 +1,9 @@
 import { presentBlocksAtom } from "@/core/atoms/blocks";
 import { builderStore } from "@/core/atoms/store";
 import { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
+import { usePermissions } from "@/core/hooks/use-permissions";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
-import { PERMISSIONS, usePermissions } from "@/core/main";
+import { PERMISSIONS } from "@/core/main";
 import { ChaiBlock } from "@/types/chai-block";
 import { find } from "lodash-es";
 import { useCallback } from "react";

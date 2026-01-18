@@ -76,7 +76,7 @@ You can provide predefined theme presets for users to choose from. See [Theme Pr
 ## Accessing Theme in Code
 
 ```typescript
-import { useTheme } from "@chaibuilder/sdk";
+import { useTheme } from "@/core/main";
 
 const MyComponent = () => {
   const [theme, setTheme] = useTheme();

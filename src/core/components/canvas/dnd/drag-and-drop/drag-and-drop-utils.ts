@@ -15,8 +15,8 @@
  * @author ChaiBuilder Team
  */
 
+import { getOrientation } from "@/core/components/canvas/dnd/getOrientation";
 import { canAcceptChildBlock } from "@/core/functions/block-helpers";
-import { getOrientation } from "../getOrientation";
 
 // ============================================================================
 // CONSTANTS
@@ -60,7 +60,7 @@ const LEAF_BLOCK_TYPES = [
 function isLeafBlock(blockType: string): boolean {
   try {
     return LEAF_BLOCK_TYPES.includes(blockType as any);
-  } catch (error) {
+  } catch {
     return false;
   }
 }
@@ -146,7 +146,7 @@ function calculateEdgeZoneSize(elementSize: number): number {
 
     // Clamp between MIN and MAX to ensure consistent UX
     return Math.max(ZONE_CONFIG.MIN_EDGE_ZONE, Math.min(ZONE_CONFIG.MAX_EDGE_ZONE, dynamicSize));
-  } catch (error) {
+  } catch {
     return ZONE_CONFIG.MIN_EDGE_ZONE; // Fallback to minimum
   }
 }
@@ -174,7 +174,7 @@ function getChildBlocks(element: HTMLElement): HTMLElement[] {
     }
 
     return children;
-  } catch (error) {
+  } catch {
     return [];
   }
 }
@@ -192,7 +192,7 @@ function getChildBlocks(element: HTMLElement): HTMLElement[] {
 function hasChildBlocks(element: HTMLElement): boolean {
   try {
     return getChildBlocks(element).length > 0;
-  } catch (error) {
+  } catch {
     return false;
   }
 }
@@ -329,7 +329,7 @@ function detectGapZone(
     }
 
     return null;
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -382,7 +382,7 @@ function detectParentEdgeProximity(
     }
 
     return null;
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -822,7 +822,7 @@ export function detectDropZone(
     rect,
     targetElement,
     targetBlockId,
-    targetParentId: correctParentId,
+    targetParentId: correctParentId ?? "",
     isEmpty: zoneResult.position === "inside" && !hasChildBlocks(targetElement),
     confidence: zoneResult.confidence,
   };
@@ -880,7 +880,7 @@ function findClosestSiblingInRow(
     let closestRow: HTMLElement[] | null = null;
     let minDistance = Infinity;
 
-    rowsMap.forEach((row, rowKey) => {
+    rowsMap.forEach((row: HTMLElement[], rowKey: number) => {
       const distance = orientation === "vertical" ? Math.abs(pointerY - rowKey) : Math.abs(pointerX - rowKey);
 
       if (distance < minDistance) {
@@ -889,8 +889,8 @@ function findClosestSiblingInRow(
       }
     });
 
-    if (closestRow && closestRow.length > 0) {
-      siblingsInSameRow.push(...closestRow);
+    if (closestRow) {
+      siblingsInSameRow.push(closestRow);
     }
   }
 

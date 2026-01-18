@@ -1,4 +1,4 @@
-import { Input } from "@/ui";
+import { Input } from "@/components/ui/input";
 import { Cross1Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
 

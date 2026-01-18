@@ -31,7 +31,7 @@ export const ColorChoice = ({ property, onChange }: any) => {
   const shade = get(colors, "2", "");
 
   const onColorChange = useCallback(
-    // eslint-disable-next-line no-shadow
+     
     (color: string) => {
       if (["current", "inherit", "transparent", "black", "white"].includes(color)) {
         setShades([]);
@@ -44,7 +44,7 @@ export const ColorChoice = ({ property, onChange }: any) => {
     [setShades, setNewColor],
   );
 
-  // eslint-disable-next-line consistent-return
+   
   useEffect(() => {
     if (["current", "inherit", "transparent", "black", "white"].includes(color)) {
       return setShades([]);
@@ -53,7 +53,7 @@ export const ColorChoice = ({ property, onChange }: any) => {
   }, [color]);
 
   const onChangeShade = useCallback(
-    // eslint-disable-next-line no-shadow
+     
     (shade: string) => {
       setNewColor({ color, ...{ shade } });
     },

@@ -50,9 +50,9 @@ if (import.meta.vitest) {
           classes: "bg-[linear-gradient(-10deg,black,transparent_100%)]",
         },
       };
-      for (let key in classesMap) {
+      for (const [key, expectedValue] of Object.entries(classesMap)) {
         const result = getSplitChaiClasses(`${STYLES_KEY}${key}`);
-        expect(result).toEqual(classesMap[key]);
+        expect(result).toEqual(expectedValue);
       }
     });
   });

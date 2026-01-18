@@ -1,5 +1,5 @@
 import { Breakpoints, WEB_BREAKPOINTS } from "@/core/components/canvas/topbar/canvas-breakpoints";
-import { useScreenSizeWidth } from "@/core/hooks";
+import { useScreenSizeWidth } from "@/core/hooks/use-screen-size-width";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -9,7 +9,7 @@ export function BreakpointSelector() {
 
   const message = useMemo(() => {
     const currentBreakpoint = WEB_BREAKPOINTS.find((bp) => bp.breakpoint === breakpoint);
-    return currentBreakpoint?.content;
+    return currentBreakpoint?.content ?? "";
   }, [breakpoint, WEB_BREAKPOINTS]);
 
   return (

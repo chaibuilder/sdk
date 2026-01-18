@@ -1,13 +1,15 @@
-import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { canAddChildBlock } from "@/core/functions/block-helpers";
-import { ChaiBlock, PERMISSIONS, useBlocksStore, usePermissions } from "@/core/main";
-import { pubsub } from "@/core/pubsub";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/ui/shadcn/components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
+import { CHAI_BUILDER_EVENTS } from "@/core/events";
+import { canAddChildBlock } from "@/core/functions/block-helpers";
+import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { usePermissions } from "@/core/hooks/use-permissions";
+import { ChaiBlock, PERMISSIONS } from "@/core/main";
+import { pubsub } from "@/core/pubsub";
 import { filter, findIndex, get } from "lodash-es";
 import { useTranslation } from "react-i18next";
 /**

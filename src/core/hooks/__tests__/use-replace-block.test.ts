@@ -1,9 +1,9 @@
 import { presentBlocksAtom } from "@/core/atoms/blocks";
 import { builderStore } from "@/core/atoms/store";
+import { replaceBlock, useReplaceBlock } from "@/core/hooks/use-replace-block";
 import { ChaiBlock } from "@/types/chai-block";
 import { act, renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { replaceBlock, useReplaceBlock } from "../use-replace-block";
 
 // Mock dependencies
 vi.mock("@/core/history/use-blocks-store-undoable-actions", () => ({
@@ -19,12 +19,15 @@ vi.mock("@/core/main", () => ({
   PERMISSIONS: {
     EDIT_BLOCK: "EDIT_BLOCK",
   },
+}));
+
+vi.mock("@/core/hooks/use-permissions", () => ({
   usePermissions: vi.fn(),
 }));
 
 import { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
+import { usePermissions } from "@/core/hooks/use-permissions";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
-import { usePermissions } from "@/core/main";
 
 describe("replaceBlock", () => {
   it("should replace a block with replacement blocks", () => {

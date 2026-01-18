@@ -1,4 +1,6 @@
-import { Button, Input, Switch } from "@/ui";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { Cross1Icon, DragHandleDots2Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
@@ -185,8 +187,8 @@ export const ChaiFeatureFlagsWidget = () => {
   return (
     <ChaiFeatureFlagsWidgetComponent
       position={show}
-      close={() => setShow((prev) => ({ ...prev, show: false }))}
-      updatePosition={(x, y) => setShow((prev) => ({ ...prev, x, y }))}
+      close={() => setShow((prev) => (prev ? { ...prev, show: false } : null))}
+      updatePosition={(x, y) => setShow((prev) => (prev ? { ...prev, x, y, show: prev.show } : { x, y, show: true }))}
     />
   );
 };

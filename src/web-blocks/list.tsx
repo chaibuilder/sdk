@@ -1,5 +1,5 @@
+import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@/runtime/index";
 import EmptySlot from "@/web-blocks/empty-slot";
-import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@chaibuilder/runtime";
 import { RowsIcon } from "@radix-ui/react-icons";
 import { isEmpty } from "lodash-es";
 import * as React from "react";

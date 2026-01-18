@@ -1,19 +1,20 @@
 import { presentBlocksAtom } from "@/core/atoms/blocks";
 import { canAcceptChildBlock } from "@/core/functions/block-helpers";
 import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
+import { useAddBlock } from "@/core/hooks/use-add-block";
 import { useCutBlockIds } from "@/core/hooks/use-cut-blockIds";
+import { ChaiBlock } from "@/types/common";
 import { useAtomValue } from "jotai";
 import { find, first, has, isEmpty } from "lodash-es";
 import { useCallback } from "react";
 import { toast } from "sonner";
-import { useAddBlock } from "./use-add-block";
 
 const useCanPaste = () => {
   const [blocks] = useBlocksStore();
   return (ids: string[], newParentId: string | null) => {
-    const newParentType = find(blocks, { _id: newParentId })?._type || null;
-    const blockType = first(ids.map((id) => find(blocks, { _id: id })?._type));
-    return canAcceptChildBlock(newParentType, blockType);
+    const newParentType = (find(blocks, { _id: newParentId }) as ChaiBlock)?._type || null;
+    const blockType = first(ids.map((id) => (find(blocks, { _id: id }) as ChaiBlock)?._type));
+    return canAcceptChildBlock(newParentType!, blockType!);
   };
 };
 
@@ -26,7 +27,7 @@ const useMoveCutBlocks = () => {
       const parentId = Array.isArray(newParentId) ? newParentId[0] : newParentId;
       if (newParentId === "root") {
         const newParentBlock = presentBlocks?.filter((block) => !block._parent);
-        moveBlocks(blockIds, null, newParentBlock?.length || 0);
+        moveBlocks(blockIds, undefined, newParentBlock?.length || 0);
       } else {
         const newParentBlock = presentBlocks?.filter((block) => block._parent === parentId);
         moveBlocks(blockIds, parentId, newParentBlock?.length || 0);
@@ -56,7 +57,7 @@ export const usePasteBlocks = (): {
           const clipboardData = JSON.parse(clipboardContent);
           return has(clipboardData, "_chai_copied_blocks");
         }
-      } catch (error) {
+      } catch {
         return false;
       }
       return false;
@@ -81,7 +82,7 @@ export const usePasteBlocks = (): {
             toast.error("Clipboard paste permission denied. Please allow clipboard access.");
             return;
           }
-        } catch (err) {
+        } catch {
           toast.error("Failed to check clipboard permissions. Please allow clipboard access.");
           return;
         }

@@ -1,21 +1,16 @@
+import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 import AddBlocksPanel from "@/core/components/sidepanels/panels/add-blocks/add-blocks";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { usePubSub } from "@/core/hooks/use-pub-sub";
-import { useSidebarActivePanel } from "@/core/main";
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/ui/shadcn/components/ui/alert-dialog";
+import { useSidebarActivePanel } from "@/core/hooks/use-sidebar-active-panel";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useIsDragAndDropEnabled } from "../canvas/dnd/drag-and-drop/hooks";
 
 export const AddBlocksDialog = () => {
   const { t } = useTranslation();
-  const [parentId, setParentId] = useState<string>("");
+  const [parentId, setParentId] = useState<string | null>(null);
   const [position, setPosition] = useState<number>(-1);
   const [open, setOpen] = useState(false);
   const isDragAndDropEnabled = useIsDragAndDropEnabled();
@@ -26,13 +21,13 @@ export const AddBlocksDialog = () => {
       setActivePanel("add-block");
     } else {
       setParentId(data ? data._id : null);
-      setPosition(isNaN(data?.position) ? -1 : data?.position);
+      setPosition(data?.position ?? -1);
       setOpen(true);
     }
   });
 
   usePubSub(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK, () => {
-    setParentId("");
+    setParentId(null);
     setPosition(-1);
     setOpen(false);
   });
@@ -49,7 +44,7 @@ export const AddBlocksDialog = () => {
           </button>
         </AlertDialogHeader>
         <div className="no-scrollbar h-[500px] max-h-full overflow-hidden">
-          <AddBlocksPanel parentId={parentId} position={position} showHeading={false} />
+          <AddBlocksPanel parentId={parentId ?? ""} position={position} showHeading={false} />
         </div>
       </AlertDialogContent>
     </AlertDialog>

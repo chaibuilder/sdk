@@ -1,5 +1,5 @@
 import { ChaiBuilderBlocks } from "@/core/components/sidepanels/panels/add-blocks/add-blocks";
-import { useRegisteredChaiBlocks } from "@chaibuilder/runtime";
+import { useRegisteredChaiBlocks } from "@/runtime/index";
 import { groupBy, map, uniq } from "lodash-es";
 
 export const DefaultChaiBlocks = ({

@@ -1,11 +1,11 @@
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { chaiDesignTokensAtom } from "@/core/atoms/builder";
 import { DESIGN_TOKEN_PREFIX } from "@/core/constants/STRINGS";
 import { orderClassesByBreakpoint } from "@/core/functions/order-classes-by-breakpoint";
 import { removeDuplicateClasses } from "@/core/functions/remove-duplicate-classes";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Input } from "@/ui/shadcn/components/ui/input";
-import { Label } from "@/ui/shadcn/components/ui/label";
-import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
 import {
   ArrowLeftIcon,
   EyeOpenIcon,
@@ -21,8 +21,8 @@ import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } fro
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
-import { useIncrementActionsCount } from "../../../use-auto-save";
-import { ManualClasses } from "../manual-classes";
+import { useIncrementActionsCount } from "@/core/components/use-auto-save";
+import { ManualClasses } from "@/core/components/settings/new-panel/manual-classes";
 import { convertTokenNameInput, getTokenNameError, validateTokenName } from "./design-token-utils";
 
 const DeleteDesignToken = lazy(() => import("./delete-design-token"));

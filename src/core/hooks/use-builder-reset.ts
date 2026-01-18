@@ -7,7 +7,7 @@ import { useSavePage } from "@/core/hooks/use-save-page";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
 import { useAtom } from "jotai";
-import { userActionsCountAtom } from "../components/use-auto-save";
+import { userActionsCountAtom } from "@/core/components/use-auto-save";
 
 export const useBuilderReset = () => {
   const { clear } = useUndoManager();

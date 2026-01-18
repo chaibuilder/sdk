@@ -29,3 +29,14 @@
 - **Reference**
   - [Hooks Reference](hooks-reference.md)
   - [Types Reference](types-reference.md)
+
+- **API Reference**
+  - [API Documentation Guide](api-documentation.md)
+  - [Overview](api/README.md)
+  - [Core](api/core/README.md)
+  - [Pages](api/pages/README.md)
+  - [Render](api/render/README.md)
+  - [Runtime](api/runtime/README.md)
+  - [Web Blocks](api/web-blocks/README.md)
+  - [Utils](api/utils/README.md)
+  - [Express](api/express/README.md)

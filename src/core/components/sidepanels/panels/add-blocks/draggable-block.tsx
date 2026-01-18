@@ -1,6 +1,6 @@
 import { useDragAndDrop, useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
-import { useSelectedBlockIds } from "@/core/hooks";
 import { useBlockHighlight } from "@/core/hooks/use-block-highlight";
+import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import { getBlocksFromHTML } from "@/core/import-html/html-to-json";
 import { get, isEmpty, omit } from "lodash-es";
 import React, { DragEvent } from "react";

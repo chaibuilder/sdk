@@ -1,9 +1,9 @@
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { usePageExternalData } from "@/core/atoms/builder";
 import { dataBindingActiveAtom } from "@/core/atoms/ui";
-import { useBuilderProp } from "@/core/hooks";
 import { cn } from "@/core/functions/common-functions";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { LightningBoltIcon } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
 import { isEmpty } from "lodash-es";

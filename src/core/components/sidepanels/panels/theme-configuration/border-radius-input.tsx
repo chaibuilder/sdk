@@ -1,4 +1,4 @@
-import { Slider } from "@/ui/shadcn/components/ui/slider";
+import { Slider } from "@/components/ui/slider";
 import { useThrottledCallback } from "@react-hookz/web";
 import { useState } from "react";
 

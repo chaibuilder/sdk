@@ -1,5 +1,6 @@
 import { useBlocksStoreManager } from "@/core/history/use-blocks-store-manager";
-import { useBlocksStore, useBuilderProp } from "@/core/hooks";
+import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { useEffect } from "react";
 

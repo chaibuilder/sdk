@@ -1,21 +1,18 @@
-import {
-  useSelectedBlock,
-  useSelectedStylingBlocks,
-  useTranslation,
-  useRemoveClassesFromBlocks,
-  useSelectedBlockIds,
-} from "@/core/hooks";
-import { useResetBlockStyles } from "@/core/hooks/use-reset-block-styles";
-import { Badge } from "@/ui/shadcn/components/ui/badge";
+import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/ui/shadcn/components/ui/dropdown-menu";
-import { find, get, isEmpty, map, startCase } from "lodash-es";
-import { DotsVerticalIcon } from "@radix-ui/react-icons";
+} from "@/components/ui/dropdown-menu";
 import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
+import { useRemoveClassesFromBlocks } from "@/core/hooks/use-remove-classes-from-blocks";
+import { useResetBlockStyles } from "@/core/hooks/use-reset-block-styles";
+import { useSelectedBlock, useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
+import { DotsVerticalIcon } from "@radix-ui/react-icons";
+import { find, get, isEmpty, map, startCase } from "lodash-es";
+import { useTranslation } from "react-i18next";
 
 export const BlockStylingProps = () => {
   const selectedBlock = useSelectedBlock();

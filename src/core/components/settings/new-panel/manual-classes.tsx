@@ -1,19 +1,17 @@
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { chaiDesignTokensAtom } from "@/core/atoms/builder";
+import { DesignTokensIcon } from "@/core/components/sidepanels/panels/design-tokens/DesignTokensIcon";
 import { useFuseSearch } from "@/core/constants/CLASSES_LIST";
 import { DESIGN_TOKEN_PREFIX } from "@/core/constants/STRINGS";
-import {
-  useAddClassesToBlocks,
-  useBuilderProp,
-  useRemoveClassesFromBlocks,
-  useRightPanel,
-  useSelectedBlock,
-  useSelectedBlockIds,
-  useSelectedStylingBlocks,
-} from "@/core/hooks";
 import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Label } from "@/ui/shadcn/components/ui/label";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
+import { useAddClassesToBlocks } from "@/core/hooks/use-add-classes-to-blocks";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
+import { useRemoveClassesFromBlocks } from "@/core/hooks/use-remove-classes-from-blocks";
+import { useSelectedBlock, useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
+import { useRightPanel } from "@/core/hooks/use-theme";
 import { CheckIcon, CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { useAtomValue } from "jotai";
 import { first, get, isEmpty, isFunction, map } from "lodash-es";
@@ -21,7 +19,6 @@ import { useMemo, useRef, useState } from "react";
 import Autosuggest from "react-autosuggest";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { DesignTokensIcon } from "../../sidepanels/panels/design-tokens/DesignTokensIcon";
 
 export function ManualClasses({
   from = "default",
@@ -81,7 +78,7 @@ export function ManualClasses({
   // Helper function to convert design token names back to DESIGN_TOKEN_PREFIX-{id} format
   const convertToStorageFormat = (className: string) => {
     // Check if this className matches any design token name
-    const tokenEntry = Object.entries(designTokens).find(([_, token]) => token.name === className);
+    const tokenEntry = Object.entries(designTokens).find(([, token]) => token.name === className);
     if (tokenEntry) {
       return `${tokenEntry[0]}`; // Return DESIGN_TOKEN_PREFIX-{id} format
     }
@@ -111,7 +108,11 @@ export function ManualClasses({
     let classMatches = [];
 
     // Get design token suggestions
-    let designTokenSuggestions = [];
+    let designTokenSuggestions: {
+      name: string;
+      id: string;
+      isDesignToken: boolean;
+    }[] = [];
     if (designTokensEnabled) {
       if (search === "") {
         // Show all design tokens when no search term
@@ -123,7 +124,7 @@ export function ManualClasses({
       } else {
         // Filter design tokens by search term
         designTokenSuggestions = Object.entries(designTokens)
-          .filter(([_, token]) => token.name.toLowerCase().includes(search))
+          .filter(([, token]) => token.name.toLowerCase().includes(search))
           .map(([id, token]) => ({
             name: token.name,
             id: `${id}`,

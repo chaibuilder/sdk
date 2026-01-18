@@ -1,20 +1,13 @@
-import { Button } from "@/ui/shadcn/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/ui/shadcn/components/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/ui/popover";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { COLLECTION_PREFIX, REPEATER_PREFIX } from "@/core/constants/STRINGS";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { ChevronLeftIcon, ChevronRightIcon, IdCardIcon, LoopIcon } from "@radix-ui/react-icons";
 import { t } from "i18next";
 import { startsWith } from "lodash-es";
 import React from "react";
-import { COLLECTION_PREFIX, REPEATER_PREFIX } from "../constants/STRINGS";
-import { useBuilderProp } from "../hooks";
 
 type NestedPathSelectorProps = {
   data: Record<string, any>;
@@ -51,7 +44,7 @@ const PathDropdown = ({ data, onSelect, dataType }: NestedPathSelectorProps) => 
         setCurrentPath((prev) => [...prev, option.key]);
         setCurrentData(option.value);
       } else if (isValueSelectable(option.type)) {
-        onSelect([...currentPath, option.key].join("."), dataType);
+        onSelect([...currentPath, option.key].join("."), dataType!);
       }
     },
     [currentPath, onSelect, dataType],
@@ -138,7 +131,7 @@ const PathDropdown = ({ data, onSelect, dataType }: NestedPathSelectorProps) => 
 
 export function NestedPathSelector({ data, onSelect, dataType = "value" }: NestedPathSelectorProps) {
   const [open, setOpen] = React.useState(false);
-  const collections = useBuilderProp("collections", []);
+  const collections = useBuilderProp("collections", []) as { id: string }[];
 
   const pageData = React.useMemo(() => {
     if (dataType === "array") {

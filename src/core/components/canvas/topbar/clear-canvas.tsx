@@ -1,5 +1,3 @@
-import { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
-import { useSelectedBlockIds, useSelectedStylingBlocks } from "@/core/hooks";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,13 +8,16 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/ui/shadcn/components/ui/alert-dialog";
-import { Button } from "@/ui/shadcn/components/ui/button";
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
+import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
 import { EraserIcon } from "@radix-ui/react-icons";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
-export const ClearCanvas = ({ children }: { children?: React.ReactNode   }) => {
+export const ClearCanvas = ({ children }: { children?: React.ReactNode }) => {
   const { t } = useTranslation();
   const { setNewBlocks } = useBlocksStoreUndoableActions();
   const [, setIds] = useSelectedBlockIds();
@@ -31,9 +32,11 @@ export const ClearCanvas = ({ children }: { children?: React.ReactNode   }) => {
     <div className="flex items-center">
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          {children || <Button size="sm" variant="ghost" className="flex items-center">
-            <EraserIcon /> {t("Clear")}
-          </Button>}
+          {children || (
+            <Button size="sm" variant="ghost" className="flex items-center">
+              <EraserIcon /> {t("Clear")}
+            </Button>
+          )}
         </AlertDialogTrigger>
         <AlertDialogContent className={"border-border"}>
           <AlertDialogHeader>

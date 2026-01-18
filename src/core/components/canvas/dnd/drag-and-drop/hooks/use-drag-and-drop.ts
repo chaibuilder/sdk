@@ -2,10 +2,10 @@
  * ============================================================================
  * DRAG AND DROP STATE MANAGEMENT
  * ============================================================================
- * 
+ *
  * This file contains all the Jotai atoms used for managing drag and drop state
  * across the visual builder. These atoms are shared between all drag and drop hooks.
- * 
+ *
  * @module use-drag-and-drop
  */
 

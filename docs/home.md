@@ -28,7 +28,7 @@ pnpm add @chaibuilder/sdk
 ## Basic Usage
 
 ```tsx
-import { ChaiBuilderEditor } from "@chaibuilder/sdk";
+import { ChaiBuilderEditor } from "@/core/main";
 
 function App() {
   return (

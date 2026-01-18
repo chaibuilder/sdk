@@ -69,7 +69,7 @@ Blocks can be nested to create complex layouts. Child blocks reference their par
 Use hooks to manipulate blocks programmatically:
 
 ```typescript
-import { useAddBlock, useRemoveBlocks, useUpdateBlocksProps } from "@chaibuilder/sdk";
+import { useAddBlock, useRemoveBlocks, useUpdateBlocksProps } from "@/core/main";
 ```
 
 See [Hooks Reference](../hooks-reference.md) for the complete API.
