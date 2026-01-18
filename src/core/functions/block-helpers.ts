@@ -13,7 +13,7 @@ export const canAcceptChildBlock = (parentType: string, childType: string) => {
   if (!parentType) return true; // this is root
   const blockDefinition = getRegisteredChaiBlock(parentType) as BlockDefinition;
   if (!blockDefinition) return false;
-  return has(blockDefinition, "canAcceptBlock") ? blockDefinition.canAcceptBlock(childType) : false; //defaults to false
+  return blockDefinition.canAcceptBlock ? blockDefinition.canAcceptBlock(childType) : false; //defaults to false
 };
 
 export const canAddChildBlock = (parentType: string) => {
@@ -25,19 +25,19 @@ export const canAddChildBlock = (parentType: string) => {
 export const canBeNestedInside = (parentType: string, childType: string) => {
   const blockDefinition = getRegisteredChaiBlock(childType) as BlockDefinition;
   if (!blockDefinition) return true;
-  return has(blockDefinition, "canBeNested") ? blockDefinition.canBeNested(parentType) : true;
+  return blockDefinition.canBeNested ? blockDefinition.canBeNested(parentType) : true;
 };
 
 export const canDuplicateBlock = (type: string) => {
   const blockDefinition = getRegisteredChaiBlock(type) as BlockDefinition;
   if (!blockDefinition) return true;
-  return has(blockDefinition, "canDuplicate") ? blockDefinition.canDuplicate() : true;
+  return blockDefinition.canDuplicate ? blockDefinition.canDuplicate() : true;
 };
 
 export const canDeleteBlock = (type: string) => {
   const blockDefinition = getRegisteredChaiBlock(type) as BlockDefinition;
   if (!blockDefinition) return true;
-  return has(blockDefinition, "canDelete") ? blockDefinition.canDelete() : true;
+  return blockDefinition.canDelete ? blockDefinition.canDelete() : true;
 };
 
 export const canDropBlock = (_currentTree: any, { dragSource, dropTarget }: any) => {

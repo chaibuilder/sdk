@@ -65,7 +65,7 @@ export const NextJSRenderChaiBlocks = async ({
       <JSONLD jsonLD={page?.seo?.jsonLD} pageData={pageData} />
       <RenderChaiBlocksSdk
         externalData={pageData}
-        blocks={!isEmpty(tokens) ? applyDesignTokens(page.blocks, tokens) : page.blocks}
+        blocks={!isEmpty(tokens) ? applyDesignTokens(page.blocks, tokens as DesignTokens) : page.blocks}
         fallbackLang={page.fallbackLang}
         lang={page.lang}
         pageProps={pageProps}

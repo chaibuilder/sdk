@@ -1,3 +1,4 @@
+import { DesignTokens } from "@/actions/types";
 import { ChaiBlock, ChaiBuilderEditor, registerChaiTopBar } from "@/core/main";
 import "@/index.css";
 import { lsBlocksAtom, lsDesignTokensAtom, lsThemeAtom } from "@/routes/demo/atoms-dev";
@@ -5,7 +6,7 @@ import { EXTERNAL_DATA } from "@/routes/demo/EXTERNAL_DATA";
 import { PARTIALS } from "@/routes/demo/PARTIALS";
 import { defaultShadcnPreset } from "@/routes/demo/THEME_PRESETS";
 import Topbar from "@/routes/demo/top-bar";
-import { SavePageData } from "@/types/chaibuilder-editor-props";
+import { ChaiThemeValues, SavePageData } from "@/types/chaibuilder-editor-props";
 import { loadWebBlocks } from "@/web-blocks";
 import { useAtom } from "jotai";
 import { isArray } from "lodash-es";
@@ -49,8 +50,8 @@ function ChaiBuilderDefault() {
         localStorage.setItem("chai-builder-blocks", JSON.stringify(blocks));
         localStorage.setItem("chai-builder-theme", JSON.stringify(theme));
         localStorage.setItem("chai-builder-design-tokens", JSON.stringify(designTokens));
-        setTheme(theme);
-        setDesignTokensValue(designTokens);
+        setTheme(theme as ChaiThemeValues);
+        setDesignTokensValue(designTokens as DesignTokens);
         toast.success("Page saved successfully");
         await new Promise((resolve) => setTimeout(resolve, 100));
         return true;

@@ -1,9 +1,14 @@
+import { ChaiBlockDefinition } from "@/runtime";
 import { ChaiBlock } from "@/types/chai-block";
 import { applyLanguage } from "./new-blocks-render-helpers";
 
 describe("applyLanguage", () => {
-  const mockChaiBlock = {
+  const mockChaiBlock: ChaiBlockDefinition = {
     i18nProps: ["title", "content", "buttonText"],
+    component: () => null,
+    type: "mock",
+    label: "Mock Block",
+    group: "Mock",
   };
 
   const createMockBlock = (overrides: Partial<ChaiBlock> = {}): ChaiBlock => ({
@@ -43,7 +48,7 @@ describe("applyLanguage", () => {
   describe("when i18nProps is empty", () => {
     it("should return the original block when i18nProps is empty array", () => {
       const block = createMockBlock();
-      const chaiBlockWithEmptyI18n = { i18nProps: [] };
+      const chaiBlockWithEmptyI18n = { ...mockChaiBlock, i18nProps: [] };
       const result = applyLanguage(block, "en", chaiBlockWithEmptyI18n);
 
       expect(result).toBe(block);
@@ -51,7 +56,7 @@ describe("applyLanguage", () => {
 
     it("should return the original block when i18nProps is undefined", () => {
       const block = createMockBlock();
-      const chaiBlockWithoutI18n = {};
+      const chaiBlockWithoutI18n = { ...mockChaiBlock, i18nProps: undefined };
       const result = applyLanguage(block, "en", chaiBlockWithoutI18n);
 
       expect(result).toBe(block);
@@ -59,7 +64,7 @@ describe("applyLanguage", () => {
 
     it("should return the original block when i18nProps is null", () => {
       const block = createMockBlock();
-      const chaiBlockWithNullI18n = { i18nProps: null };
+      const chaiBlockWithNullI18n = { ...mockChaiBlock, i18nProps: undefined };
       const result = applyLanguage(block, "en", chaiBlockWithNullI18n);
 
       expect(result).toBe(block);
@@ -217,8 +222,7 @@ describe("applyLanguage", () => {
   describe("edge cases", () => {
     it("should handle empty i18nProps with valid selectedLang", () => {
       const block = createMockBlock();
-      const chaiBlockEmpty = { i18nProps: [] };
-
+      const chaiBlockEmpty = { ...mockChaiBlock, i18nProps: [] };
       const result = applyLanguage(block, "en", chaiBlockEmpty);
 
       expect(result).toBe(block);

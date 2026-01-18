@@ -211,7 +211,8 @@ export const ChaiBuilderBlocks = ({
                           block={block}
                           disabled={
                             !dnd &&
-                            (!canAcceptChildBlock(parentType, block.type) || !canBeNestedInside(parentType, block.type))
+                            (!canAcceptChildBlock(parentType!, block.type) ||
+                              !canBeNestedInside(parentType!, block.type))
                           }
                         />
                       ))}

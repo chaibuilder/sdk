@@ -2,10 +2,6 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import { get } from "lodash-es";
-import { AlertTriangle, Code, Eye, FileCode2, Plus, Share2 } from "lucide-react";
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
-import { ErrorBoundary } from "react-error-boundary";
 import { usePagesProps } from "@/pages/hooks/utils/use-pages-props";
 import {
   evaluatePlaceholders,
@@ -14,6 +10,10 @@ import {
   restorePlaceholders,
 } from "@/pages/utils/json-utils";
 import Tooltip from "@/pages/utils/tooltip";
+import { get } from "lodash-es";
+import { AlertTriangle, Code, Eye, FileCode2, Plus, Share2 } from "lucide-react";
+import { lazy, startTransition, Suspense, useEffect, useRef, useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { NestedPathSelector } from "./nested-path-selector/nested-path-selector";
 const SharedJsonLD = lazy(() => import("./shared-json-ld/shared-json-ld"));
 
@@ -123,18 +123,22 @@ export const SmartJsonInput: React.FC<SmartJsonInputProps> = ({
     const result = parseJSONWithPlaceholders(value);
 
     if (result.isValid) {
-      setJsonError(null);
+      startTransition(() => {
+        setJsonError(null);
 
-      if (result.parsed) {
-        // For preview with evaluated placeholders
-        const evaluated = evaluatePlaceholders(result.parsed, pageData);
-        setPreviewJson(evaluated);
-      } else {
-        setPreviewJson("");
-      }
+        if (result.parsed) {
+          // For preview with evaluated placeholders
+          const evaluated = evaluatePlaceholders(result.parsed, pageData);
+          setPreviewJson(evaluated);
+        } else {
+          setPreviewJson("");
+        }
+      });
     } else {
-      setJsonError(result.error);
-      setPreviewJson("");
+      startTransition(() => {
+        setJsonError(result.error);
+        setPreviewJson("");
+      });
     }
   }, [value, pageData]);
 

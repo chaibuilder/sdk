@@ -4,7 +4,7 @@ import {
   getBlockRuntimeProps,
   getBlockTagAttributes,
 } from "@/core/components/canvas/static/new-blocks-render-helpers";
-import { getRegisteredChaiBlock } from "@/runtime";
+import { ChaiBlockDefinition, ChaiPageProps, getRegisteredChaiBlock } from "@/runtime";
 import { ChaiBlock } from "@/types/chai-block";
 import { get, has, isArray, isFunction, isNull } from "lodash-es";
 import { createElement, Suspense } from "react";
@@ -34,15 +34,15 @@ export const RenderBlock = (
 ) => {
   const { block, lang, fallbackLang, children, externalData, blocks, draft, pageProps, dataProviderMetadataCallback } =
     props;
-  const registeredChaiBlock = getRegisteredChaiBlock(block._type);
+  const registeredChaiBlock = getRegisteredChaiBlock(block._type) as ChaiBlockDefinition;
   const Component = get(registeredChaiBlock, "component", null);
   const index = get(props.repeaterData, "index", -1);
   const dataKey = get(props.repeaterData, "dataKey", "");
 
-  const bindingLangSuffix = lang === fallbackLang ? "" : lang;
+  const bindingLangSuffix = lang === fallbackLang ? "" : (lang ?? "");
   const blockWithBinding: ChaiBlock = applyBindingToBlockProps(
     applyLanguage(block, bindingLangSuffix, registeredChaiBlock),
-    externalData,
+    externalData ?? {},
     { index, key: dataKey },
   );
   const blockAttributesProps = getBlockTagAttributes(block, false);
@@ -58,8 +58,9 @@ export const RenderBlock = (
   const blockProps = {
     blockProps: {},
     inBuilder: false,
-    lang: lang || fallbackLang,
-    pageData: externalData,
+    lang: lang || fallbackLang || "en",
+    draft: draft ?? false,
+    pageData: externalData ?? {},
     ...newBlock,
   };
   const isShown = get(newBlock, "_show", true);
@@ -69,14 +70,13 @@ export const RenderBlock = (
     const suspenseFallback = get(registeredChaiBlock, "suspenseFallback", SuspenseFallback) as React.ComponentType<any>;
     return (
       <Suspense fallback={createElement(suspenseFallback)}>
-        {/* @ts-ignore */}
         <DataProviderPropsBlock
-          lang={lang}
-          pageProps={pageProps}
+          lang={lang ?? ""}
+          pageProps={pageProps as ChaiPageProps}
           block={newBlock}
-          dataProvider={registeredChaiBlock.dataProvider}
+          dataProvider={registeredChaiBlock.dataProvider!}
           {...(dataProviderMetadataCallback ? { dataProviderMetadataCallback } : {})}
-          draft={draft}>
+          draft={draft ?? false}>
           {(dataProviderProps) => {
             return createElement(Component, {
               ...blockProps,

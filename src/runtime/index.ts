@@ -36,7 +36,7 @@ export const registerChaiBlockSchema = (blockSchema: ChaiBlockSchema): ChaiBlock
   }
 
   const schema = get(blockSchema, "properties", {}) as Record<string, ChaiBlockPropSchema>;
-  const uiSchema = {};
+  const uiSchema = {} as Record<string, ChaiBlockUiSchema>;
   each(schema, (prop, key) => {
     if (!isEmpty(prop.ui)) {
       uiSchema[key] = { ...prop.ui };

@@ -7,7 +7,13 @@ import { CardStackIcon } from "@radix-ui/react-icons";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-export const PasteAtRootContextMenu = ({ parentContext, setParentContext }) => {
+export const PasteAtRootContextMenu = ({
+  parentContext,
+  setParentContext,
+}: {
+  parentContext: { x: number; y: number } | null;
+  setParentContext: (value: { x: number; y: number } | null) => void;
+}) => {
   const { t } = useTranslation();
   const { canPaste, pasteBlocks } = usePasteBlocks();
   const enableCopyToClipboard = useBuilderProp("flags.copyPaste", true);

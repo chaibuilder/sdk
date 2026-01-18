@@ -1,7 +1,7 @@
 import { applyDesignTokens, getChaiThemeCssVariables } from "@chaibuilder/sdk/render";
 import { get } from "lodash";
 import { ChaiBuilder } from "../ChaiBuilder";
-import { ChaiBuilderPage } from "./render-chai-blocks";
+import { ChaiBuilderPage, DesignTokens } from "./render-chai-blocks";
 
 export const ChaiPageStyles = async (props: { page?: ChaiBuilderPage }) => {
   const { page } = props;
@@ -13,8 +13,8 @@ export const ChaiPageStyles = async (props: { page?: ChaiBuilderPage }) => {
 
   const theme = get(siteSettings, "theme", {});
   const designTokens = get(siteSettings, "designTokens", {});
-  const themeCssVariables = getChaiThemeCssVariables(theme);
-  const pageBlocks = applyDesignTokens(page?.blocks ?? [], designTokens);
+  const themeCssVariables = getChaiThemeCssVariables(theme as any);
+  const pageBlocks = applyDesignTokens(page?.blocks ?? [], designTokens as DesignTokens);
   const styles = page ? await ChaiBuilder.getBlocksStyles(pageBlocks) : null;
   return (
     <>

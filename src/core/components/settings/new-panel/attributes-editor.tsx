@@ -47,7 +47,7 @@ export default React.memo(function AttrsEditor({
     }
     if (newKey) {
       const newAttributes = [...attributes, { key: newKey, value: newValue }];
-      onAttributesChange(newAttributes);
+      onAttributesChange?.(newAttributes);
       setAttributes(attributes);
       setNewKey("");
       setNewValue("");
@@ -57,7 +57,7 @@ export default React.memo(function AttrsEditor({
 
   const removeAttribute = (index: number) => {
     const newAttributes = attributes.filter((_, i) => i !== index);
-    onAttributesChange(newAttributes);
+    onAttributesChange?.(newAttributes);
     setAttributes(newAttributes);
   };
 
@@ -75,7 +75,7 @@ export default React.memo(function AttrsEditor({
     if (editIndex !== null && newKey) {
       const newAttributes = [...attributes];
       newAttributes[editIndex] = { key: newKey, value: newValue };
-      onAttributesChange(newAttributes);
+      onAttributesChange?.(newAttributes);
       setAttributes(newAttributes);
       setEditIndex(null);
       setNewKey("");

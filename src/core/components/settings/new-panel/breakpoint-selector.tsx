@@ -9,7 +9,7 @@ export function BreakpointSelector() {
 
   const message = useMemo(() => {
     const currentBreakpoint = WEB_BREAKPOINTS.find((bp) => bp.breakpoint === breakpoint);
-    return currentBreakpoint?.content;
+    return currentBreakpoint?.content ?? "";
   }, [breakpoint, WEB_BREAKPOINTS]);
 
   return (

@@ -15,8 +15,8 @@
  * @author ChaiBuilder Team
  */
 
-import { canAcceptChildBlock } from "@/core/functions/block-helpers";
 import { getOrientation } from "@/core/components/canvas/dnd/getOrientation";
+import { canAcceptChildBlock } from "@/core/functions/block-helpers";
 
 // ============================================================================
 // CONSTANTS
@@ -822,7 +822,7 @@ export function detectDropZone(
     rect,
     targetElement,
     targetBlockId,
-    targetParentId: correctParentId,
+    targetParentId: correctParentId ?? "",
     isEmpty: zoneResult.position === "inside" && !hasChildBlocks(targetElement),
     confidence: zoneResult.confidence,
   };
@@ -880,7 +880,7 @@ function findClosestSiblingInRow(
     let closestRow: HTMLElement[] | null = null;
     let minDistance = Infinity;
 
-    rowsMap.forEach((row, rowKey) => {
+    rowsMap.forEach((row: HTMLElement[], rowKey: number) => {
       const distance = orientation === "vertical" ? Math.abs(pointerY - rowKey) : Math.abs(pointerX - rowKey);
 
       if (distance < minDistance) {
@@ -889,8 +889,8 @@ function findClosestSiblingInRow(
       }
     });
 
-    if (closestRow && closestRow.length > 0) {
-      siblingsInSameRow.push(...closestRow);
+    if (closestRow) {
+      siblingsInSameRow.push(closestRow);
     }
   }
 

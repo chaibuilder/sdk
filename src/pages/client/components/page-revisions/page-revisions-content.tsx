@@ -32,7 +32,7 @@ import { format, formatDistanceToNow } from "date-fns";
 import { isEmpty } from "lodash-es";
 import { CloudOff, FileJson, MoreHorizontal, Rocket, Save, Trash, Undo2, X } from "lucide-react";
 import * as React from "react";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, startTransition, Suspense, useEffect, useState } from "react";
 
 // Lazy load the JsonDiffViewer component
 const JsonDiffViewer = lazy(() => import("@/pages/client/components/json-diff-viewer"));
@@ -521,7 +521,9 @@ export default function PageRevisionsContent({ isOpen }: PageRevisionsContentPro
   const { selectedLang, fallbackLang } = useLanguages();
   const lang = selectedLang || fallbackLang;
 
-  useEffect(() => setCompare([]), [currentPage?.id]);
+  useEffect(() => {
+    startTransition(() => setCompare([]));
+  }, [currentPage?.id]);
 
   const handleRestore = (discardCurrent: boolean) => {
     if (!selectedRevision) return;

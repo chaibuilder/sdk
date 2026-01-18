@@ -20,12 +20,13 @@ import {
   has,
   isEmpty,
   isString,
+  noop,
   pick,
   startsWith,
 } from "lodash-es";
 import { useCallback, useState } from "react";
 
-function getChildBlocks(allBlocks: ChaiBlock[], blockId: string, blocks: any[]) {
+function getChildBlocks(allBlocks: ChaiBlock[], blockId: string, blocks: ChaiBlock[]) {
   blocks.push(find(allBlocks, { _id: blockId }) as ChaiBlock);
   const children = filter(allBlocks, { _parent: blockId });
   for (const child of children) {
@@ -35,7 +36,7 @@ function getChildBlocks(allBlocks: ChaiBlock[], blockId: string, blocks: any[]) 
 }
 
 const getBlockWithChildren = (blockId: string, allBlocks: ChaiBlock[]) => {
-  let blocks = [];
+  let blocks: ChaiBlock[] = [];
   blocks = flattenDeep([...blocks, ...getChildBlocks(allBlocks, blockId, blocks)]);
   return blocks;
 };
@@ -46,10 +47,10 @@ export const pickOnlyAIProps = (blocks: ChaiBlock[], lang: string, isTranslatePr
       const keys = ["_id", "_type", "_parent"];
       const newBlock = pick(block, keys);
       const registeredBlock = getRegisteredChaiBlock(block._type);
-      const aiProps = {};
-      const blockAiProps = get(registeredBlock, "aiProps", []);
+      const aiProps: Record<string, any> = {};
+      const blockAiProps = get(registeredBlock, "aiProps", []) as string[];
       for (const key in block) {
-        if (keys.includes(key)) continue;
+        if (keys.includes(key as keyof ChaiBlock)) continue;
         if (blockAiProps.includes(key)) {
           const value = get(block, `${key}-${lang}`, "");
           const fallbackValue = get(block, key, "");
@@ -77,7 +78,7 @@ export const askAiProcessingAtom = atom(false);
 export const useAskAi = () => {
   const [processing, setProcessing] = useAtom(askAiProcessingAtom);
   const [error, setError] = useState(null);
-  const callBack = useBuilderProp("askAiCallBack", null);
+  const callBack = useBuilderProp("askAiCallBack", noop);
   const updateBlocksWithStream = useStreamMultipleBlocksProps();
   const updateBlockPropsAll = useUpdateMultipleBlocksProps();
   const [blocks] = useBlocksStore();
@@ -87,10 +88,10 @@ export const useAskAi = () => {
   const getBlockForStyles = (blockId: string, blocks: ChaiBlock[]) => {
     const block = cloneDeep(blocks.find((block) => block._id === blockId));
     for (const key in block) {
-      const value = block[key];
+      const value = block[key as keyof ChaiBlock];
       if (typeof value === "string" && startsWith(value, STYLES_KEY)) {
         const { baseClasses, classes } = getSplitChaiClasses(value);
-        block[key] = compact(flattenDeep([baseClasses, classes])).join(" ");
+        block[key as keyof ChaiBlock] = compact(flattenDeep([baseClasses, classes])).join(" ");
       } else {
         if (key !== "_id") delete block[key];
       }
@@ -118,8 +119,11 @@ export const useAskAi = () => {
               : [getBlockForStyles(blockId, blocks)];
 
           const askAiResponse = await callBack(type, addLangToPrompt(prompt, currentLang, type), aiBlocks, lang);
-
-          const { blocks: updatedBlocks, error } = askAiResponse;
+          if (askAiResponse === void 0) return;
+          const { blocks: updatedBlocks, error } = askAiResponse as {
+            blocks: ChaiBlock[];
+            error: AskAiResponse["error"];
+          };
           if (error) {
             setError(error);
             return;
@@ -139,7 +143,7 @@ export const useAskAi = () => {
           }
           if (onComplete) onComplete(askAiResponse);
         } catch (e) {
-          setError(e);
+          setError(e as AskAiResponse["error"]);
         } finally {
           setProcessing(false);
           if (onComplete) onComplete();

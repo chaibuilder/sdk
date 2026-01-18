@@ -84,7 +84,7 @@ const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
   }, [props.locale]);
 
   useEffect(() => {
-    setDebugLogs(props.debugLogs);
+    setDebugLogs(props.debugLogs ?? false);
   }, [props.debugLogs]);
 
   useEffect(() => {

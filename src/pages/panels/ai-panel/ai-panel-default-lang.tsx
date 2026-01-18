@@ -70,7 +70,7 @@ const AiPanelForDefaultLang = ({
   const handleSend = async (prompt: string, content?: string, image?: string, model?: string) => {
     if (!prompt || isLoading) return;
 
-    setCurrentBlock(selectedBlock);
+    setCurrentBlock(selectedBlock as ChaiBlock);
     const html = selectedBlock
       ? blocksHtmlForAi({ blockId: selectedBlock._id, additionalCoreBlocks: ["Icon"] })
       : blocksHtmlForAi({ additionalCoreBlocks: ["Icon"] });
