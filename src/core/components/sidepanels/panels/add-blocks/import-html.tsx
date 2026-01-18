@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/co
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { getPreImportHTML } from "@/core/extensions/import-html-pre-hook";
+import { getPreImportHTML } from "@/runtime/index";
 import { useAddBlock } from "@/core/hooks/use-add-block";
 import { getBlocksFromHTML } from "@/core/import-html/html-to-json";
 import { pubsub } from "@/core/pubsub";

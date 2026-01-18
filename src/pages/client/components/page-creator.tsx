@@ -5,7 +5,7 @@ import { Command, CommandEmpty, CommandGroup, CommandItem } from "@/components/u
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { useChaiFeatureFlag } from "@/core/flags/register-chai-flag";
+import { useChaiFeatureFlag } from "@/runtime/index";
 import { useLanguages } from "@/core/hooks/use-languages";
 import { usePermissions } from "@/core/hooks/use-permissions";
 import { DynamicSlugInput } from "@/pages/client/components/dynamic-slug-input";
