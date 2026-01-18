@@ -61,8 +61,8 @@ export const useKeyEventWatcher = (doc?: Document) => {
   );
   useHotkeys(
     "ctrl+v,meta+v",
-    async () => {
-      if (await canPaste(ids[0])) {
+    () => {
+      if (canPaste(ids[0])) {
         pasteBlocks(ids);
       }
     },

@@ -1,3 +1,4 @@
+import { ExternalDataType } from "@/routes/demo/EXTERNAL_DATA";
 import {
   builderProp,
   ChaiBlockComponentProps,
@@ -30,12 +31,11 @@ type ServerProps = {
   items: any[];
 };
 
-const Component = (props: ChaiBlockComponentProps<CollectionListProps & ServerProps, Record<string, unknown>>) => {
+const Component = (props: ChaiBlockComponentProps<CollectionListProps & ServerProps, ExternalDataType>) => {
   const { title1, blockProps, newName, wrapperStyles, listStyles, itemStyles, items, showTitle } = props;
-  const pageData = props.pageData as any; // Type assertion for accessing nested properties
   return (
     <div {...blockProps} {...wrapperStyles}>
-      External Data: {pageData?.global?.siteName}
+      External Data: {props.pageData?.global?.siteName}
       {showTitle && <h1>{title1}</h1>}
       <p>new name:{newName}</p>
       <div {...listStyles}>

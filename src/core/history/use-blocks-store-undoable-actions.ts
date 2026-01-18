@@ -41,11 +41,11 @@ export const useBlocksStoreUndoableActions = () => {
     const latestBlocks = builderStore.get(presentBlocksAtom) as ChaiBlock[];
     const parentId = first(blocks)?._parent;
     const siblings = latestBlocks.filter((block) => (parentId ? block._parent === parentId : !block._parent));
-    const position = siblings.indexOf(first(blocks) as ChaiBlock);
+    const position = siblings.indexOf(first(blocks));
 
     removeExistingBlocks(map(blocks, "_id"));
     add({
-      undo: () => addNewBlocks(blocks, parentId ?? undefined, position),
+      undo: () => addNewBlocks(blocks, parentId, position),
       redo: () => removeExistingBlocks(map(blocks, "_id")),
     });
   };
@@ -69,13 +69,13 @@ export const useBlocksStoreUndoableActions = () => {
       return;
     }
 
-    moveExistingBlocks(blockIds, parent ?? null, position);
+    moveExistingBlocks(blockIds, parent, position);
     add({
       undo: () =>
         each(currentPositions, ({ _id, oldParent, oldPosition }) => {
-          moveExistingBlocks([_id], oldParent ?? null, oldPosition);
+          moveExistingBlocks([_id], oldParent, oldPosition);
         }),
-      redo: () => moveExistingBlocks(blockIds, parent ?? null, position),
+      redo: () => moveExistingBlocks(blockIds, parent, position),
     });
   };
 
@@ -89,8 +89,8 @@ export const useBlocksStoreUndoableActions = () => {
     } else {
       const propKeys = keys(props);
       previousPropsState = map(blockIds, (_id: string) => {
-        const block = latestBlocks.find((block) => block._id === _id) as ChaiBlock;
-        const prevProps: Record<string, any> = { _id };
+        const block = latestBlocks.find((block) => block._id === _id);
+        const prevProps = { _id };
         each(propKeys, (key: string) => (prevProps[key] = block[key]));
         return prevProps;
       });
@@ -98,7 +98,7 @@ export const useBlocksStoreUndoableActions = () => {
 
     updateBlocksProps(map(blockIds, (_id: string) => ({ _id, ...props })));
     add({
-      undo: () => updateBlocksProps(previousPropsState as Array<{ _id: string } & Partial<ChaiBlock>>),
+      undo: () => updateBlocksProps(previousPropsState),
       redo: () => updateBlocksProps(map(blockIds, (_id: string) => ({ _id, ...props }))),
     });
   };
@@ -109,14 +109,14 @@ export const useBlocksStoreUndoableActions = () => {
     previousPropsState = map(blocks, (block: Partial<ChaiBlock>) => {
       const propKeys = keys(block);
       const currentBlock = latestBlocks.find((currentBlock) => currentBlock._id === block._id);
-      const prevProps: Record<string, any> = {};
-      each(propKeys, (key: string) => (prevProps[key] = currentBlock?.[key]));
+      const prevProps = {};
+      each(propKeys, (key: string) => (prevProps[key] = currentBlock[key]));
       return prevProps;
     });
 
     updateBlocksProps(blocks);
     add({
-      undo: () => updateBlocksProps(previousPropsState as Array<{ _id: string } & Partial<ChaiBlock>>),
+      undo: () => updateBlocksProps(previousPropsState),
       redo: () => updateBlocksProps(blocks),
     });
   };

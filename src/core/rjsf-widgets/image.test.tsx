@@ -1,4 +1,3 @@
-import { RJSFSchema } from "@rjsf/utils";
 import { describe, expect, it } from "vitest";
 
 // Note: Since ImagePickerField is a React component with many dependencies and hooks,
@@ -66,7 +65,7 @@ describe("UI Schema allowEmpty option", () => {
   });
 
   it("should extract allowEmpty as false when not specified", () => {
-    const uiSchema: RJSFSchema = {};
+    const uiSchema = {};
     const allowEmpty = uiSchema?.["ui:allowEmpty"] === true;
     expect(allowEmpty).toBe(false);
   });

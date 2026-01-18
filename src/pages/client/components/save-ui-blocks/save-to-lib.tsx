@@ -45,7 +45,7 @@ const SaveToLibrary = (args: SaveToLibraryProps) => {
     for (const block of blocks) {
       if (block._type === "PartialBlock" || block._type === "GlobalBlock") {
         // Get the expanded content of the partial block
-        let partialBlocks = getPartailBlocks(block.partialBlockId!);
+        let partialBlocks = getPartailBlocks(block.partialBlockId);
         if (block._parent && partialBlocks?.length > 0) {
           partialBlocks = partialBlocks.map((b: ChaiBlock) => {
             if (isEmpty(b._parent)) {

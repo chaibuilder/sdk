@@ -187,8 +187,8 @@ export const ChaiFeatureFlagsWidget = () => {
   return (
     <ChaiFeatureFlagsWidgetComponent
       position={show}
-      close={() => setShow((prev) => (prev ? { ...prev, show: false } : null))}
-      updatePosition={(x, y) => setShow((prev) => (prev ? { ...prev, x, y, show: prev.show } : { x, y, show: true }))}
+      close={() => setShow((prev) => ({ ...prev, show: false }))}
+      updatePosition={(x, y) => setShow((prev) => ({ ...prev, x, y }))}
     />
   );
 };

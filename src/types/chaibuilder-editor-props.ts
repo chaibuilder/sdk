@@ -128,7 +128,7 @@ export interface ChaiBuilderEditorProps {
   /**
    * Permissions
    */
-  permissions?: string[] | null;
+  permissions?: string[];
 
   /**
    * Optional pageId. If not provided, a random pageId will be generated

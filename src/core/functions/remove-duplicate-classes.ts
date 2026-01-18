@@ -7,10 +7,7 @@ export function removeDuplicateClasses(classes: string): string {
   // breakpoint order
   const breakpointOrder = ["xs", "sm", "md", "lg", "xl", "2xl"];
 
-  const classesArray: ClassDerivedObject[] = classes
-    .split(" ")
-    .map(constructClassObject)
-    .filter((cls): cls is ClassDerivedObject => cls !== null);
+  const classesArray: ClassDerivedObject[] = classes.split(" ").map(constructClassObject);
   let filteredClasses: string = classes;
   if (classesArray.length === 1) return classesArray[0].fullCls;
 

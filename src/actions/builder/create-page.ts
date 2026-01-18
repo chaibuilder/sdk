@@ -279,7 +279,7 @@ export class CreatePageAction extends ChaiBaseAction<CreatePageActionData, Creat
       // Copy each partial block from the external library
       const newPages = await Promise.all(
         partialBlocks.map(({ partialBlockId }) =>
-          this.copyPartialBlockFromTemplate(partialBlockId!, libraryName, appId),
+          this.copyPartialBlockFromTemplate(partialBlockId, libraryName, appId),
         ),
       );
 

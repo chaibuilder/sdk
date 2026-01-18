@@ -21,11 +21,11 @@ const ExportModal: React.FC<ExportModalProps> = React.memo(({ content, handleCli
       try {
         await copy(text);
         toast.success(t("Email template copied!"));
-      } catch (_error) {
+      } catch (error) {
         toast.error(t("Failed to copy template"));
       }
     },
-    [copy, t],
+    [copy],
   );
 
   const downloadHTMLContent = (htmlContent: string) => {

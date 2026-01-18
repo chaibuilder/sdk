@@ -147,7 +147,6 @@ class ChaiBuilder {
       lang: pageData.lang,
     });
 
-    //@ts-ignore
     const seo = applyChaiDataBinding(pageData?.seo ?? {}, externalData);
 
     return {

@@ -3,10 +3,7 @@ import { constructClassObject } from "@/core/functions/class-fn";
 export function orderClassesByBreakpoint(classes: string): string {
   //sanitize the classes
   classes = classes.replace(/\s+/g, " ");
-  const classesArray = classes
-    .split(" ")
-    .map(constructClassObject)
-    .filter((cls) => cls !== null);
+  const classesArray = classes.split(" ").map(constructClassObject);
   const breakpointOrder = ["xs", "sm", "md", "lg", "xl", "2xl"];
   return classesArray
     .sort((a, b) => {

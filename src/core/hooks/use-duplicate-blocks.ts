@@ -17,10 +17,10 @@ export const useDuplicateBlocks = (): Function => {
     (blockIds: string[], parentId: string | null = null) => {
       const newBlockIds: string[] = [];
       each(blockIds, (blockId: string) => {
-        const block = presentBlocks.find((block) => block._id === blockId) as ChaiBlock;
+        const block = presentBlocks.find((block) => block._id === blockId);
         if (!parentId) {
           // use the parent of the same block. Can be a falsy value. null undefined etc.
-          parentId = block?._parent ?? null;
+          parentId = block._parent;
         } else if (parentId === "root") {
           parentId = null;
         }
@@ -31,7 +31,7 @@ export const useDuplicateBlocks = (): Function => {
         const blockPosition = siblingBlocks.indexOf(block);
         const newBlockPosition = blockPosition + 1;
         const newBlocks = getDuplicatedBlocks(presentBlocks, blockId, parentId);
-        addBlocks(newBlocks, parentId ?? undefined, newBlockPosition);
+        addBlocks(newBlocks, parentId, newBlockPosition);
         newBlockIds.push(get(newBlocks, "0._id", ""));
       });
       setSelected(newBlockIds);

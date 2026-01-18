@@ -1,4 +1,4 @@
-import { ChaiWebsiteBuilder } from "@/pages/chaibuilder-pages";
+import ChaiBuilderPages from "@/pages";
 import { LoggedInUser } from "@/pages/types/loggedin-user";
 import { LoginScreen } from "@/routes/login";
 import { useCallback, useEffect, useState } from "react";
@@ -9,11 +9,9 @@ const WebsiteBuilder = () => {
   const [user, setUser] = useState<LoggedInUser | null>(null);
 
   useEffect(() => {
-    if (!supabaseClient) return;
     console.log("WebsiteBuilder");
     // Check initial session
     const checkInitialSession = async () => {
-      if (!supabaseClient) return;
       const {
         data: { session },
       } = await supabaseClient.auth.getSession();
@@ -62,12 +60,10 @@ const WebsiteBuilder = () => {
   }, [user?.id]);
 
   const handleLogout = useCallback(async () => {
-    if (!supabaseClient) return;
     await supabaseClient.auth.signOut();
   }, []);
 
   const getAccessToken = useCallback(async () => {
-    if (!supabaseClient) return "";
     const {
       data: { session },
     } = await supabaseClient.auth.getSession();
@@ -88,7 +84,7 @@ const WebsiteBuilder = () => {
   }
 
   return (
-    <ChaiWebsiteBuilder
+    <ChaiBuilderPages
       locale="fr-CA"
       flags={{ exportCode: false, dragAndDrop: true, designTokens: true }}
       translations={{ "fr-CA": { Outline: "Contour" } }}

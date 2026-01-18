@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 
 export const AddBlocksDialog = () => {
   const { t } = useTranslation();
-  const [parentId, setParentId] = useState<string | null>(null);
+  const [parentId, setParentId] = useState<string>("");
   const [position, setPosition] = useState<number>(-1);
   const [open, setOpen] = useState(false);
   const isDragAndDropEnabled = useIsDragAndDropEnabled();
@@ -21,13 +21,13 @@ export const AddBlocksDialog = () => {
       setActivePanel("add-block");
     } else {
       setParentId(data ? data._id : null);
-      setPosition(data?.position ?? -1);
+      setPosition(isNaN(data?.position) ? -1 : data?.position);
       setOpen(true);
     }
   });
 
   usePubSub(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK, () => {
-    setParentId(null);
+    setParentId("");
     setPosition(-1);
     setOpen(false);
   });
@@ -44,7 +44,7 @@ export const AddBlocksDialog = () => {
           </button>
         </AlertDialogHeader>
         <div className="no-scrollbar h-[500px] max-h-full overflow-hidden">
-          <AddBlocksPanel parentId={parentId ?? ""} position={position} showHeading={false} />
+          <AddBlocksPanel parentId={parentId} position={position} showHeading={false} />
         </div>
       </AlertDialogContent>
     </AlertDialog>

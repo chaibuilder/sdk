@@ -14,7 +14,7 @@ import { cloneDeep, get, has } from "lodash-es";
 import { createElement, memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 function getInitialTextAlign(element: HTMLElement) {
-  let el = element as HTMLElement | null;
+  let el = element;
   while (el) {
     if (el.style && el.style.textAlign) {
       return el.style.textAlign;
@@ -23,7 +23,7 @@ function getInitialTextAlign(element: HTMLElement) {
     if (computed && computed !== "start" && computed !== "initial" && computed !== "inherit") {
       return computed;
     }
-    el = el.parentElement as HTMLElement | null;
+    el = el.parentElement;
   }
   return null;
 }
@@ -55,7 +55,6 @@ const RichTextEditor = memo(
       placeholder: "Enter text here",
       onUpdate: ({ editor }) => onChange(editor?.getHTML() || ""),
       onBlur: ({ editor, event }) => {
-        if (!document) return;
         // Only close if clicked outside both editor and bubble menu
         const target = event?.relatedTarget as HTMLElement;
         const editorElement = document.querySelector(".ProseMirror");
@@ -150,7 +149,6 @@ const MemoizedEditor = memo(
     const { document, window } = useFrame();
 
     useEffect(() => {
-      if (!document || !window) return;
       if (editorRef.current) {
         editorRef.current.innerHTML = blockContent;
         editorRef.current.focus();
@@ -180,7 +178,7 @@ const MemoizedEditor = memo(
     }, [editingElement]);
 
     const onKeyDown = useCallback(
-      (e: KeyboardEvent) => {
+      (e) => {
         if (e.key === "Enter" || e.key === "Escape") {
           onEscape(e);
         }
@@ -198,7 +196,7 @@ const MemoizedEditor = memo(
         contentEditable: true,
         className: `${editingElement?.className?.replace("sr-only", "") || ""} outline outline-[2px] outline-green-500 shadow-none empty:before:content-[attr(data-placeholder)] empty:before:text-gray-400 empty:before:absolute empty:before:pointer-events-none empty:before:select-none empty:before:inset-0 empty:before:z-0 relative min-h-[1em]`,
         style: (cloneDeep(editingElement?.style) || {}) as any,
-        onInput: (e: any) => {
+        onInput: (e) => {
           const element = e.target as HTMLElement;
           if (!element) return;
           if (element.innerText.trim() === "") {
@@ -212,7 +210,7 @@ const MemoizedEditor = memo(
 
           onChange(e.target.innerText);
         },
-        onClick: (e: MouseEvent) => {
+        onClick: (e) => {
           e.stopPropagation();
           e.preventDefault();
         },
@@ -247,7 +245,7 @@ const WithBlockTextEditor = memo(
     const updateContent = useUpdateBlocksProps();
     const { selectedLang } = useLanguages();
     const [, setIds] = useSelectedBlockIds();
-    const currentBlockId = useRef<string | null>(null);
+    const currentBlockId = useRef(null);
     const blockId = editingBlockId;
 
     // * Memoize the block content and type
@@ -269,7 +267,7 @@ const WithBlockTextEditor = memo(
         const content = updatedContent || editorRef.current?.innerText;
         updateContent([blockId], { [editingKey]: content });
         setEditingElement(null);
-        setEditingBlockId("");
+        setEditingBlockId(null);
         setEditingItemIndex(-1);
         setIds([]);
         if (blockId) setTimeout(() => setIds([blockId]), 100);
@@ -288,7 +286,7 @@ const WithBlockTextEditor = memo(
 
     // * Handle escape key
     const handleEscape = useCallback(
-      (e: KeyboardEvent) => {
+      (e) => {
         e.preventDefault();
         if (blockId) currentBlockId.current = blockId;
 
@@ -296,9 +294,7 @@ const WithBlockTextEditor = memo(
         setTimeout(() => {
           const _blockId = currentBlockId.current;
           currentBlockId.current = null;
-          if (_blockId) {
-            setIds([_blockId]);
-          }
+          setIds([_blockId]);
         }, 100);
       },
       [setIds, blockId, selectedLang],
@@ -306,7 +302,7 @@ const WithBlockTextEditor = memo(
 
     // * Set the editing element
     useEffect(() => {
-      if (!blockId || !document) return;
+      if (!blockId) return;
 
       // * Get the editing element
       const query1 = `[data-block-id="${blockId}"]`;
@@ -337,7 +333,7 @@ const WithBlockTextEditor = memo(
 
       return (
         <MemoizedEditor
-          editorRef={editorRef as any}
+          editorRef={editorRef}
           blockContent={blockContent}
           editingElement={editingElement}
           onClose={handleClose}

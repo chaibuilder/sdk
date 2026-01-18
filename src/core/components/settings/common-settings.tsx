@@ -1,17 +1,8 @@
 import { Switch } from "@/components/ui/switch";
-import { ChaiBlock } from "@/types/chai-block";
 import { debounce } from "lodash-es";
 import { useCallback, useEffect, useState } from "react";
 
-export const CommonSettings = ({
-  block,
-  updateBlockProps,
-  updateBlockPropsRealtime,
-}: {
-  block: ChaiBlock;
-  updateBlockProps: (ids: string[], props: any) => void;
-  updateBlockPropsRealtime: (ids: string[], props: any) => void;
-}) => {
+export const CommonSettings = ({ block, updateBlockProps, updateBlockPropsRealtime }) => {
   const [name, setName] = useState(block._name);
   const [show, setShow] = useState(block._show ?? true);
 

@@ -1,16 +1,16 @@
 {
   "name": "@chaibuilder/next",
-  "version": "4.0.0-beta.3",
   "description": "AI Enabled Open source website builder for ReactJS",
   "private": false,
   "author": "Suraj Air",
   "email": "suraj@chaibuilder.com",
   "license": "BSD-3-Clause",
   "homepage": "https://chaibuilder.com",
+  "version": "0.0.0",
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chaibuilder/sdk.git"
+    "url": "https://github.com/chaibuilder/sdk.git"
   },
   "files": [
     "dist"
@@ -74,7 +74,7 @@
     }
   },
   "dependencies": {
-    "@chaibuilder/sdk": "4.0.0-beta.3",
+    "@chaibuilder/sdk": "4.0.0-beta.1",
     "concurrently": "^9.2.0",
     "postgres": "^3.4.8",
     "ai": "^6.0.11",

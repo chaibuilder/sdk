@@ -1,18 +1,18 @@
 import { convertToBlocksTree } from "@/core/functions/blocks-fn";
 import { StructureError } from "@/core/hooks/structure-rules";
-import { ChaiBlock } from "@/types/common";
 import { atom } from "jotai";
 import { splitAtom } from "jotai/utils";
 import { filter, has } from "lodash-es";
 
 // derived atoms
-export const presentBlocksAtom = atom<ChaiBlock[]>([]);
+// @ts-ignore
+export const presentBlocksAtom = atom([]);
 presentBlocksAtom.debugLabel = "presentBlocksAtom";
 
 //TODO: Need a better name for this atom. Also should be a custom hook
 export const treeDSBlocks = atom((get) => {
   const presentBlocks = get(presentBlocksAtom);
-  return convertToBlocksTree([...presentBlocks] as ChaiBlock[]);
+  return convertToBlocksTree([...presentBlocks]);
 });
 treeDSBlocks.debugLabel = "treeDSBlocks";
 

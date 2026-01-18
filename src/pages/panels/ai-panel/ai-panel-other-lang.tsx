@@ -76,7 +76,7 @@ const AiPanelForOtherLang = ({
 
   const handleTranslationPrompt = async (prompt: string, content?: string, model?: string) => {
     if (selectedBlock) {
-      setCurrentBlock(selectedBlock as ChaiBlock);
+      setCurrentBlock(selectedBlock);
     }
     const isTranslate = prompt?.toLowerCase() === "translate";
     const userMessageObj: Message = {

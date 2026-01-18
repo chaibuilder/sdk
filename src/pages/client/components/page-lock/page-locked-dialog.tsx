@@ -4,16 +4,10 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { BlurContainer } from "@/pages/client/components/chai-loader";
 import { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
 import { AlertCircleIcon, Edit, LockKeyhole, ShieldAlert, UserIcon, X } from "lucide-react";
-import { startTransition, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useCurrentPageOwner, usePageLockMeta, usePageLockStatus, useSendRealtimeEvent } from "./page-lock-hook";
 import { EVENT, PAGE_STATUS } from "./page-lock-utils";
-
-interface PageLockMeta {
-  type?: string;
-  requestingUserId?: string;
-  requestingClientId?: string;
-}
 
 const PageLockedDialog = () => {
   const pageOwner = useCurrentPageOwner();
@@ -24,18 +18,16 @@ const PageLockedDialog = () => {
   const { t } = useTranslation();
 
   const [action, setAction] = useState<string>("");
-  const [localPageLockMeta, setLocalPageLockMeta] = useState<PageLockMeta>({});
+  const [localPageLockMeta, setLocalPageLockMeta] = useState<any>({});
   const [forceTakeOverConfirmed, setForceTakeOverConfirmed] = useState(false);
   const timerId = useRef<any>(null);
 
   useEffect(() => {
     if (pageLockMeta?.type) {
       if (timerId.current) clearTimeout(timerId.current);
-      startTransition(() => {
-        setLocalPageLockMeta(pageLockMeta);
-        setPageLockMeta({} as PageLockMeta);
-        setAction("");
-      });
+      setLocalPageLockMeta(pageLockMeta);
+      setPageLockMeta({});
+      setAction("");
     }
   }, [pageLockMeta, setPageLockMeta]);
 
@@ -55,7 +47,7 @@ const PageLockedDialog = () => {
   };
 
   const handleCloseAlert = () => {
-    setLocalPageLockMeta({} as PageLockMeta);
+    setLocalPageLockMeta({});
     if (timerId.current) clearTimeout(timerId.current);
     setAction("");
   };

@@ -14,9 +14,9 @@ import {
   UnderlineIcon,
   ValueIcon,
 } from "@radix-ui/react-icons";
-import { RefObject, useRef } from "react";
-import RteColorPicker from "./rte-color-picker";
 import RteDropdownMenu from "./rte-dropdown-menu";
+import RteColorPicker from "./rte-color-picker";
+import { useRef } from "react";
 
 const getActiveClasses = (editor: any, keys: string[] | boolean, from: string) => {
   const isFromSettings = from === "settings";
@@ -37,7 +37,7 @@ interface RteMenubarProps {
 }
 
 const RteMenubar = ({ editor, from = "settings", onExpand }: RteMenubarProps) => {
-  const menuRef = useRef<HTMLDivElement | null>(null);
+  const menuRef = useRef(null);
   if (!editor) return null;
 
   const addLink = () => {
@@ -98,7 +98,7 @@ const RteMenubar = ({ editor, from = "settings", onExpand }: RteMenubarProps) =>
       {/* LIST */}
       <RteDropdownMenu
         editor={editor}
-        menuRef={menuRef as RefObject<HTMLDivElement>}
+        menuRef={menuRef}
         from={from}
         trigger={
           <button
@@ -141,7 +141,7 @@ const RteMenubar = ({ editor, from = "settings", onExpand }: RteMenubarProps) =>
       {/* TEXT ALIGNMENT */}
       <RteDropdownMenu
         editor={editor}
-        menuRef={menuRef as RefObject<HTMLDivElement>}
+        menuRef={menuRef}
         from={from}
         trigger={
           <button

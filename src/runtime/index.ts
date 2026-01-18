@@ -36,7 +36,7 @@ export const registerChaiBlockSchema = (blockSchema: ChaiBlockSchema): ChaiBlock
   }
 
   const schema = get(blockSchema, "properties", {}) as Record<string, ChaiBlockPropSchema>;
-  const uiSchema = {} as Record<string, ChaiBlockUiSchema>;
+  const uiSchema = {};
   each(schema, (prop, key) => {
     if (!isEmpty(prop.ui)) {
       uiSchema[key] = { ...prop.ui };
@@ -99,6 +99,7 @@ export * from "./register-chai-media-manager.tsx";
 export * from "./register-chai-add-block-tab.tsx";
 export * from "./register-chai-sidebar-panel.tsx";
 export * from "./register-chai-pre-import-html-hook.ts";
+export * from "./register-chai-block-settings.tsx";
 export * from "./v2/runtime/index.tsx";
 export type {
   ChaiAsyncProp,

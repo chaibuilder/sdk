@@ -12,7 +12,7 @@ const RTEModal = React.lazy(() => import("./rte-widget-modal"));
  * Rich Text Editor Field Component
  */
 const RichTextEditorFieldComp = ({ blockId, id, placeholder, value, onChange, onBlur }: WidgetProps) => {
-  const rteRef = useRef<HTMLDivElement & { __chaiRTE?: any }>(null);
+  const rteRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const editor = useRTEditor({
@@ -58,7 +58,7 @@ const RichTextEditorFieldComp = ({ blockId, id, placeholder, value, onChange, on
     <>
       {isModalOpen && (
         <Suspense fallback={<div>Loading...</div>}>
-          <RTEModal isOpen={isModalOpen} onClose={handleModalClose} editor={editor!} rteElement={rteElement} />
+          <RTEModal isOpen={isModalOpen} onClose={handleModalClose} editor={editor} rteElement={rteElement} />
         </Suspense>
       )}
       {!isModalOpen ? <div className="relative">{rteElement}</div> : <div>Open in modal</div>}

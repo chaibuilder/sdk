@@ -247,7 +247,7 @@ export const useChaibuilderRealtime = () => {
 
     // Attach listeners
     BROADCAST_EVENTS.forEach((event: string) => {
-      newChannel.on("broadcast", { event }, (payload: any) => {
+      newChannel.on("broadcast", { event }, (payload) => {
         onReceiveEventRef.current(event)(payload);
       });
     });

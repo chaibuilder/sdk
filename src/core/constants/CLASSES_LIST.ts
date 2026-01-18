@@ -1042,7 +1042,7 @@ export const ALL_TW_CLASSES = map(
 export const useFuseSearch = () => {
   const themeOptions = useThemeOptions();
   const themeClasses = useMemo(() => {
-    let classes: string[] = [];
+    let classes = [];
     if (themeOptions.colors) {
       const colors = flattenDeep(map(themeOptions.colors, ({ items }) => keys(items)));
       classes = flattenDeep(map(colors, (color) => flatten(map(colorKeys, (key) => `${key}-${color}`))));

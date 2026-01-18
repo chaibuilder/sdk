@@ -49,7 +49,7 @@ registerChaiPanels();
 registerChaiMediaManager(DigitalAssetManager as any);
 registerChaiSaveToLibrary(SaveToLibrary);
 
-export type ChaiWebsiteBuilderProps = {
+export type ChaiBuilderPagesProps = {
   hasReactQueryProvider?: boolean;
   topLeftCorner?: React.FC;
   apiUrl?: string;
@@ -84,7 +84,7 @@ const DEFAULT_ROLES_AND_PERMISSIONS = {
  *
  * @returns CHAIBUILDER PAGES COMPONENT
  */
-const DefaultChaiBuilder = (props: ChaiWebsiteBuilderProps) => {
+const DefaultChaiBuilder = (props: ChaiBuilderPagesProps) => {
   // * WEBSITE DATA
   const { data: uiLibraries } = useUILibraries();
   const fallbackLang = useFallbackLang();
@@ -247,7 +247,7 @@ const queryClient = new QueryClient({
   },
 });
 
-const ChaiWebsiteBuilder = (props: ChaiWebsiteBuilderProps) => {
+const ChaiBuilderPages = (props: ChaiBuilderPagesProps) => {
   const [, setPagesProps] = usePagesProps();
   const [ready, setReady] = useState(false);
   useEffect(() => {
@@ -299,4 +299,4 @@ const ChaiWebsiteBuilder = (props: ChaiWebsiteBuilderProps) => {
   );
 };
 
-export { ChaiWebsiteBuilder };
+export default ChaiBuilderPages;

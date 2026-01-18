@@ -91,7 +91,6 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
   };
 
   const handleExportEvent = useCallback(async () => {
-    if (!selectedBlock) return;
     try {
       setShow(false);
       let html = blocksHtmlForAi({ blockId: selectedBlock?._id, additionalCoreBlocks: ["Icon"] });
@@ -107,7 +106,7 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
         html,
         isTypeScript,
       });
-      setExportContent({ html: htmlCode || "", jsx: jsxCode });
+      setExportContent({ html: htmlCode, jsx: jsxCode });
       setFileName(componentName);
       setShow(true);
     } catch {
@@ -138,7 +137,7 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement("a");
     anchor.href = url;
-    anchor.download = getFileName() ?? "";
+    anchor.download = getFileName();
     document.body.appendChild(anchor);
     anchor.click();
     URL.revokeObjectURL(url);
@@ -167,7 +166,7 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
       key={tab}
       onCopy={handleCopy}
       code={tab === "tailwind" ? tailwindConfig : tab === "html" ? exportContent.html : exportContent.jsx}
-      language={getLanguage() || ""}
+      language={getLanguage()}
       downloadText={downloadText}
       onDownload={downloadExportContent}
     />

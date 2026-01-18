@@ -24,7 +24,6 @@ export const BlockAttributesEditor = React.memo(() => {
 
   const updateAttributes = React.useCallback(
     (updatedAttributes: any = []) => {
-      if (!block) return;
       const _attrs = {};
       forEach(updatedAttributes, (item) => {
         if (!isEmpty(item.key)) {

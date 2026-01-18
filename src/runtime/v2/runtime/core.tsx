@@ -39,7 +39,7 @@ export const useRegisteredChaiBlock = (type: keyof typeof REGISTERED_CHAI_BLOCKS
 };
 
 export const getRegisteredChaiBlock = (type: keyof typeof REGISTERED_CHAI_BLOCKS): ChaiBlockDefinition | null => {
-  return get(REGISTERED_CHAI_BLOCKS, type, null) as ChaiBlockDefinition | null;
+  return get(REGISTERED_CHAI_BLOCKS, type, null);
 };
 
 export const getDefaultBlockProps = (type: keyof typeof REGISTERED_CHAI_BLOCKS) => {
@@ -69,9 +69,9 @@ export const getBlockFormSchemas = (
   if (!registeredBlock) {
     return null;
   }
-  const schema = cloneDeep(registeredBlock.schema) as RJSFSchema;
-  const properties = get(schema, "properties", {}) as Record<string, any>;
-  const nonStylesProperties = omitBy(properties, (prop) => prop?.styles === true);
+  const schema = cloneDeep(registeredBlock.schema);
+  const properties = get(schema, "properties", {});
+  const nonStylesProperties = omitBy(properties, (prop) => prop.styles === true);
   set(schema, "properties", nonStylesProperties);
   const uiSchema = get(REGISTERED_CHAI_BLOCKS, `${type}.uiSchema`, {});
   return { schema, uiSchema };

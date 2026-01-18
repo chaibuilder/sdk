@@ -11,7 +11,7 @@ interface TokenUsageSectionProps {
   title: string;
   items: TokenUsageSectionItem[];
   emptyLabel: string;
-  onSelect: (itemId: string) => void;
+  onSelect?: (itemId: string) => void;
   icon?: React.ReactNode;
 }
 

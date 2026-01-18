@@ -9,12 +9,11 @@ export const LoginScreen = () => {
   const [responseError, setResponseError] = useState("");
 
   const handleGoogleLogin = async () => {
-    if (!supabaseClient) return;
     setResponseError("");
     setIsLoading(true);
 
     try {
-      const { error } = await supabaseClient.auth.signInWithOAuth({
+      const { error } = await supabaseClient?.auth.signInWithOAuth({
         provider: "google",
         options: {
           redirectTo: `${window.location.origin}/website`,

@@ -4,7 +4,7 @@ import {
   registerBlockSettingTemplate,
   registerBlockSettingWidget,
   useBlockSettingComponents,
-} from "@/core/extensions/blocks-settings";
+} from "./register-chai-block-settings";
 import { beforeEach, describe, expect, it } from "vitest";
 
 describe("Block Settings Extensions", () => {

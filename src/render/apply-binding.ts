@@ -7,7 +7,7 @@ const applyBindingToValue = (
   pageExternalData: Record<string, any>,
   { index, key: repeaterKey }: { index: number; key: string },
   propertyKey?: string,
-): any => {
+) => {
   if (isString(value)) {
     let result: any = value;
 
@@ -48,14 +48,9 @@ const applyBindingToValue = (
     const result: Record<string, any> = {};
     forEach(keys(value), (key) => {
       if (!startsWith(key, "_") && key !== "$repeaterItemsKey") {
-        result[key] = applyBindingToValue(
-          (value as Record<string, any>)[key],
-          pageExternalData,
-          { index, key: repeaterKey },
-          key,
-        );
+        result[key] = applyBindingToValue(value[key], pageExternalData, { index, key: repeaterKey }, key);
       } else {
-        result[key] = (value as Record<string, any>)[key];
+        result[key] = value[key];
       }
     });
     return result;

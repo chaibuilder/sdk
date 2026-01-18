@@ -19,7 +19,7 @@ export const DefaultDragPreview = memo(({ id, isDragging, mouse }: Omit<DragPrev
 
   const style = useMemo(
     () => ({
-      transform: `translate(${mouse?.x! - 10}px, ${mouse?.y! - 10}px)`,
+      transform: `translate(${mouse?.x - 10}px, ${mouse?.y - 10}px)`,
     }),
     [mouse],
   );
@@ -36,7 +36,7 @@ export const DefaultDragPreview = memo(({ id, isDragging, mouse }: Omit<DragPrev
           style={style}>
           <button type="button" className="flex !cursor-grab items-center p-0.5" aria-label={`Type: ${block?._type}`}>
             <div className="-mt-0.5 h-3 w-3">
-              <TypeIcon type={block?._type!} />
+              <TypeIcon type={block?._type} />
             </div>
             <div className="ml-2 truncate text-[11px]">{block?._name || block?._type}</div>
           </button>

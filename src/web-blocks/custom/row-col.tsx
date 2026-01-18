@@ -80,8 +80,9 @@ const Component = (props: ChaiBlockComponentProps<RowProps>) => {
   const className = [get(styles, "className", ""), " grid grid-cols-12"];
   const _styles: any = { className: className.join() };
 
-  if (typeof styles?.style === "object" && styles.style !== null) {
-    _styles.style = { ...(styles.style as Record<string, any>), gap: `${gutter}px` };
+  if (typeof styles?.style === "object") {
+    // @ts-ignore
+    styles.style.gap = `${gutter}px`;
   } else {
     _styles.style = { gap: `${gutter}px` };
   }
@@ -108,7 +109,7 @@ const Config = {
     ] as ChaiBlock[],
   category: "core",
   wrapper: true,
-  canAcceptBlock: (childType: string) => childType === "Column",
+  canAcceptBlock: (childType) => childType === "Column",
   ...registerChaiBlockSchema({
     properties: {
       styles: StylesProp(""),

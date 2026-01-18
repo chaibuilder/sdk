@@ -27,7 +27,6 @@ const WhenEmptyCanvasButton = ({ isActive, show }: { isActive: boolean; show: ()
 };
 
 registerChaiSidebarPanel("when-empty-canvas", {
-  // @ts-ignore
   panel: ({ close }: { close: () => void }) => (
     <div>
       WhenEmptyCanvas

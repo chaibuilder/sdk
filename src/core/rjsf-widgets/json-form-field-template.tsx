@@ -24,7 +24,7 @@ const JSONFormFieldTemplate = (props: FieldTemplateProps) => {
   const selectedBlock = useSelectedBlock();
   const registeredBlocks = useRegisteredChaiBlocks();
   const i18nProps = useMemo(
-    () => get(registeredBlocks, [selectedBlock?._type!, "i18nProps"], []),
+    () => get(registeredBlocks, [selectedBlock?._type, "i18nProps"], []),
     [registeredBlocks, selectedBlock?._type],
   );
   const [openedList, setOpenedList] = useState<null | string>(null);

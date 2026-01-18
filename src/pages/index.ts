@@ -1,5 +1,5 @@
 import "@/index.css";
-import { ChaiWebsiteBuilder } from "@/pages/chaibuilder-pages";
+import ChaiBuilderPages from "@/pages/chaibuilder-pages";
 import { useActivePage } from "@/pages/hooks/pages/use-current-page";
 import { NestedPathSelector } from "./client/components/nested-path-selector/nested-path-selector.tsx";
 import { useBuilderPageData } from "./hooks/pages/use-page-draft-blocks";
@@ -13,11 +13,13 @@ if (typeof window === "undefined") {
   throw new Error("@chaibuilder/pages is not available on the server");
 }
 
+export default ChaiBuilderPages;
+
 export { PermissionChecker } from "@/pages/client/components/permission-checker";
 export { LanguageSwitcher } from "@/pages/client/components/topbar-left";
 export { ImagePicker } from "@/pages/digital-asset-manager/image-picker";
 export { SmartJsonInput as ChaiJsonInput } from "./client/components/smart-json-input.tsx";
-export { ChaiWebsiteBuilder, NestedPathSelector };
+export { NestedPathSelector };
 
 /** Hooks */
 export { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";

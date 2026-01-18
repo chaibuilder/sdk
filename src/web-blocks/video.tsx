@@ -9,7 +9,7 @@ export type VideoBlockProps = {
   poster: string;
   url: string;
   videoSource: "Custom" | "Youtube" | "Vimeo";
-  sources: { srcsets: Array<{ url: string; width: number; type?: string }> };
+  sources: { srcsets: Array<{ url: string; width: number }> };
   title: string;
 };
 
@@ -56,7 +56,7 @@ const VIMEO_REGEX =
  * @param {object} controls - The controls object containing autoplay, loop, and muted properties.
  * @returns {string|null} The embed URL for the video, or null if the video source is not supported.
  */
-const getEmbedURL = (url: string, controls: Record<string, any>) => {
+const getEmbedURL = (url, controls) => {
   const autoplay = get(controls, "autoplay", false);
   const _controls = get(controls, "controls", false);
   const loop = get(controls, "loop", false);
@@ -113,7 +113,7 @@ const SupportedVideoSource = (props: ChaiBlockComponentProps<VideoBlockProps>) =
             : `Provided ${videoSource} video link is invalid.`}
         </div>
       ) : (
-        <iframe width="100%" src={embedURL ?? ""} title={title || "Video player"} {...pick(styles, "className")} />
+        <iframe width="100%" src={embedURL} title={title || "Video player"} {...pick(styles, "className")} />
       )}
       {inBuilder && <div {...blockProps} className="absolute top-0 h-full w-full" />}
     </div>
@@ -130,9 +130,9 @@ const CustomVideoSource = (props: ChaiBlockComponentProps<VideoBlockProps>) => {
   let _poster = poster;
 
   const srcsets = [...(get(sources, "srcsets", []) || [])];
-  if (url && typeof url === "string") srcsets.push({ url, width: 9999 });
+  if (url && typeof url === "string") srcsets.push({ url, width: "9999" });
   const sortedSources = srcsets
-    .sort((a, b) => a.width - b.width)
+    .sort((a, b) => parseInt(a.width) - parseInt(b.width))
     .filter((source) => !isEmpty(source.url) && !isEmpty(source.width));
 
   if (sortedSources.length === 0 && !_poster) {

@@ -22,7 +22,7 @@ export const useI18nBlocks = () => {
             lang === "ALL"
               ? Object.keys(block).filter((key) => i18nProps.find((prop) => key.startsWith(prop)))
               : i18nProps.map((prop) => (lang ? `${prop}-${lang}` : prop));
-          const blockProps: Record<string, any> = pick(block, ["_id"]);
+          const blockProps = pick(block, ["_id"]);
           each(keys, (key) => {
             blockProps[key] = get(block, key, get(block, key.replace(`-${lang}`, "")));
           });

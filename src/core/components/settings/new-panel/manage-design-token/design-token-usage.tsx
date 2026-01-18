@@ -1,5 +1,4 @@
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { TokenUsageSection, TokenUsageSectionItem } from "@/core/components/settings/new-panel/token-usage-section";
 import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
 import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { useLanguages } from "@/core/hooks/use-languages";
@@ -10,6 +9,7 @@ import { ArrowRightIcon, FileIcon, GlobeIcon } from "@radix-ui/react-icons";
 import { noop } from "lodash-es";
 import { ReactNode, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { TokenUsageSection, TokenUsageSectionItem } from "@/core/components/settings/new-panel/token-usage-section";
 
 const STYLES_PREFIX = "#styles:";
 
@@ -59,8 +59,8 @@ const DesignTokenUsage = ({ tokenId, tokenName, children }: DesignTokenUsageProp
   const { t } = useTranslation();
   const [blocks] = useBlocksStore();
   const [selectedBlockIds, setSelectedBlockIds] = useSelectedBlockIds();
-  const currentPageId = useBuilderProp("pageId", "");
-  const siteWideUsage = useBuilderProp("siteWideUsage", {});
+  const currentPageId = useBuilderProp("pageId");
+  const siteWideUsage = useBuilderProp("siteWideUsage");
 
   const blocksOnThisPage = useMemo(() => collectTokenUsageOnPage(blocks, tokenId), [blocks, tokenId]);
   const currentPageItems: TokenUsageSectionItem[] = useMemo(
@@ -76,7 +76,7 @@ const DesignTokenUsage = ({ tokenId, tokenName, children }: DesignTokenUsageProp
   const pagesUsingToken = useMemo(() => {
     if (!siteWideUsage) return [];
     return Object.entries(siteWideUsage).reduce<Array<{ id: string; name: string; isPartial: boolean }>>(
-      (acc, [pageId, pageUsage]: [string, any]) => {
+      (acc, [pageId, pageUsage]) => {
         if (pageId === currentPageId || !pageUsage?.designTokens) return acc;
 
         const hasToken = Object.keys(pageUsage.designTokens).some((tokenKey) => {

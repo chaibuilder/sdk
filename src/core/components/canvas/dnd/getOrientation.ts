@@ -1,6 +1,6 @@
 export function getOrientation(
   parentElement: HTMLElement,
-  blockElement: HTMLElement | null = null,
+  blockElement: HTMLElement = null,
 ): "vertical" | "horizontal" {
   const computedStyle = window.getComputedStyle(parentElement);
   const blockComputedStyle = blockElement ? window.getComputedStyle(blockElement) : null;

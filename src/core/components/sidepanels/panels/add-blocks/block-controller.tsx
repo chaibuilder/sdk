@@ -22,17 +22,17 @@ const CONTROLS = [
  * @returns Getting orientation of arrow VERTICAL OR HORIZONTAL
  */
 const getParentBlockOrientation = (
-  parentBlockId?: string | null,
-  blockId?: string | null,
-  canvasDocument?: Document,
+  parentBlockId: string | null,
+  blockId: string | null,
+  canvasIframe: HTMLIFrameElement,
 ) => {
   try {
-    if (!parentBlockId || !canvasDocument) return "VERTICAL";
+    if (!parentBlockId || !canvasIframe) return "VERTICAL";
 
     const selector = `[data-block-id='${parentBlockId}']`;
-    const parentBlock = canvasDocument?.querySelector(selector);
+    const parentBlock = canvasIframe?.querySelector(selector);
     if (parentBlock) {
-      const blockElement = canvasDocument?.querySelector(`[data-block-id='${blockId}']`);
+      const blockElement = canvasIframe?.querySelector(`[data-block-id='${blockId}']`);
       // * Reusing DND util to get orientation of block
       return getOrientation(parentBlock as HTMLElement, blockElement as HTMLElement).toUpperCase();
     }
@@ -63,7 +63,7 @@ const isDisabledControl = (isFirstBlock: boolean, isLastBlock: boolean, dir: "UP
  */
 const useBlockController = (block: ChaiBlock, updateFloatingBar: any) => {
   const [blocks] = useBlocksStore();
-  const { document: canvasDocument } = useFrame();
+  const { document: canvasIframe } = useFrame();
   const { moveBlocks } = useBlocksStoreUndoableActions();
 
   // * Parent Block
@@ -83,7 +83,7 @@ const useBlockController = (block: ChaiBlock, updateFloatingBar: any) => {
   const isLastBlock = blockIndex + 1 === ancestorBlocks?.length;
 
   // * Block Orientations
-  const orientation = getParentBlockOrientation(parentBlockId, blockId, canvasDocument);
+  const orientation = getParentBlockOrientation(parentBlockId, blockId, canvasIframe);
 
   // * Move block wrapper functions for all sides
   const moveBlock = useCallback(
@@ -91,9 +91,9 @@ const useBlockController = (block: ChaiBlock, updateFloatingBar: any) => {
       if (isDisabledControl(isFirstBlock, isLastBlock, dir) || isOnlyChild) return;
 
       if (dir === "UP" || dir === "LEFT") {
-        moveBlocks([blockId], parentBlockId || undefined, blockIndex - 1);
+        moveBlocks([blockId], parentBlockId || null, blockIndex - 1);
       } else if (dir === "DOWN" || dir === "RIGHT") {
-        moveBlocks([blockId], parentBlockId || undefined, blockIndex + 2);
+        moveBlocks([blockId], parentBlockId || null, blockIndex + 2);
       }
       updateFloatingBar();
     },
@@ -107,7 +107,7 @@ const useBlockController = (block: ChaiBlock, updateFloatingBar: any) => {
       // * Logic to get direction of key : ArrowRight -> Arrow -> ARROW
       moveBlock(key?.replace("Arrow", "")?.toUpperCase() as any);
     },
-    { document: canvasDocument },
+    { document: canvasIframe?.contentDocument },
     [moveBlock],
   );
 

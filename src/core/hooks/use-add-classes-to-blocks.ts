@@ -48,7 +48,7 @@ export const useAddClassesToBlocks = () => {
   const { updateBlocks, updateBlocksRuntime } = useBlocksStoreUndoableActions();
   return useCallback(
     (blockIds: Array<string>, newClasses: Array<string>, undo: boolean = false) => {
-      const blocks = addClassesToBlocks({ blockIds, newClasses }) as Array<{ ids: Array<string>; props: any }>;
+      const blocks = addClassesToBlocks({ blockIds, newClasses });
       if (!undo) {
         updateBlocksRuntime(blockIds, blocks[0].props);
         return;

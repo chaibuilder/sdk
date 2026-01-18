@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { chaiDesignTokensAtom } from "@/core/atoms/builder";
-import { DesignTokensIcon } from "@/core/components/sidepanels/panels/design-tokens/DesignTokensIcon";
 import { useFuseSearch } from "@/core/constants/CLASSES_LIST";
 import { DESIGN_TOKEN_PREFIX } from "@/core/constants/STRINGS";
 import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
@@ -19,6 +18,7 @@ import { useMemo, useRef, useState } from "react";
 import Autosuggest from "react-autosuggest";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { DesignTokensIcon } from "@/core/components/sidepanels/panels/design-tokens/DesignTokensIcon";
 
 export function ManualClasses({
   from = "default",
@@ -108,11 +108,7 @@ export function ManualClasses({
     let classMatches = [];
 
     // Get design token suggestions
-    let designTokenSuggestions: {
-      name: string;
-      id: string;
-      isDesignToken: boolean;
-    }[] = [];
+    let designTokenSuggestions = [];
     if (designTokensEnabled) {
       if (search === "") {
         // Show all design tokens when no search term

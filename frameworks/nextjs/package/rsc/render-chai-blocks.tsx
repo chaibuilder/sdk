@@ -1,11 +1,6 @@
+import { ChaiBlock } from "@chaibuilder/sdk/runtime";
 import { applyDesignTokens, RenderChaiBlocks as RenderChaiBlocksSdk } from "@chaibuilder/sdk/render";
-import {
-  ChaiBlock,
-  ChaiBlockComponentProps,
-  ChaiPageProps,
-  ChaiStyles,
-  setChaiBlockComponent,
-} from "@chaibuilder/sdk/runtime";
+import { ChaiBlockComponentProps, ChaiPageProps, ChaiStyles, setChaiBlockComponent } from "@chaibuilder/sdk/runtime";
 import { isEmpty } from "lodash";
 import { ChaiBuilder } from "../ChaiBuilder";
 import { ImageBlock } from "./image-block";
@@ -90,7 +85,7 @@ export const RenderChaiBlocks = async ({
       <JSONLD jsonLD={page?.seo?.jsonLD} pageData={pageData} />
       <RenderChaiBlocksSdk
         externalData={pageData}
-        blocks={!isEmpty(tokens) ? applyDesignTokens(page.blocks, tokens as DesignTokens) : page.blocks}
+        blocks={!isEmpty(tokens) ? applyDesignTokens(page.blocks, tokens) : page.blocks}
         fallbackLang={page.fallbackLang}
         lang={page.lang}
         pageProps={pageProps}

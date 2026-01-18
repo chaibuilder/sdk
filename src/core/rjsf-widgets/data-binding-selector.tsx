@@ -1,10 +1,11 @@
 import { usePageExternalData } from "@/core/atoms/builder";
-import { NestedPathSelector } from "@/core/components/nested-path-selector";
-import { COLLECTION_PREFIX, REPEATER_PREFIX } from "@/core/constants/STRINGS";
 import { useBuilderProp } from "@/core/hooks/use-builder-prop";
-import { useSelectedBlock, useSelectedBlockHierarchy } from "@/core/hooks/use-selected-blockIds";
+import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
 import { first, get, isEmpty, startsWith } from "lodash-es";
 import { useCallback, useMemo } from "react";
+import { NestedPathSelector } from "@/core/components/nested-path-selector";
+import { COLLECTION_PREFIX, REPEATER_PREFIX } from "@/core/constants/STRINGS";
+import { useSelectedBlockHierarchy } from "@/core/hooks/use-selected-blockIds";
 
 export const DataBindingSelector = ({
   schema,
@@ -26,7 +27,7 @@ export const DataBindingSelector = ({
     const repeaterBlock = hierarchy.find((block) => block._type === "Repeater");
     const repeaterKey = get(repeaterBlock, "repeaterItems", "");
     const key = repeaterKey.replace(/\{\{(.*)\}\}/g, "$1");
-    return `${REPEATER_PREFIX}${startsWith(key, COLLECTION_PREFIX) ? `${key}/${repeaterBlock?._id}` : key}`;
+    return `${REPEATER_PREFIX}${startsWith(key, COLLECTION_PREFIX) ? `${key}/${repeaterBlock._id}` : key}`;
   }, [hierarchy]);
 
   const repeaterData = useMemo(() => {

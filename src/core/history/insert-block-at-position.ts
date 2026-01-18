@@ -2,8 +2,8 @@ import { generateUUID } from "@/core/functions/common-functions";
 import { ChaiBlock } from "@/types/common";
 
 export function insertBlocksAtPosition(
-  allBlocks: ChaiBlock[],
-  newBlocks: ChaiBlock[],
+  allBlocks: { _id: string; _parent?: string; [key: string]: any }[],
+  newBlocks: { _id: string; _parent?: string; [key: string]: any }[],
   parentId?: string,
   position?: number,
 ): ChaiBlock[] {
@@ -34,7 +34,7 @@ export function insertBlocksAtPosition(
         // Add content-related properties (language props)
         Object.keys(parentBlock).forEach((key) => {
           if (key.startsWith("content-")) {
-            (textBlock as any)[key] = parentBlock[key];
+            textBlock[key] = parentBlock[key];
           }
         });
 
@@ -50,7 +50,7 @@ export function insertBlocksAtPosition(
             // Also set content- properties to empty strings
             Object.keys(updatedBlock).forEach((key) => {
               if (key.startsWith("content-")) {
-                (updatedBlock as any)[key] = "";
+                updatedBlock[key] = "";
               }
             });
 
@@ -72,9 +72,7 @@ export function insertBlocksAtPosition(
 
   // Determine the position to insert the new blocks
   const insertPosition =
-    position !== undefined && !isNaN(position) && position > -1
-      ? Math.min(position, parentBlocks.length)
-      : parentBlocks.length;
+    !isNaN(position) || position > -1 ? Math.min(position, parentBlocks.length) : parentBlocks.length;
 
   // Find the correct index in the allBlocks array to insert the new blocks
   let insertIndex = modifiedAllBlocks.length;

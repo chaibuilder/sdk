@@ -14,7 +14,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
   const { t } = useTranslation();
   const { askAi, loading, error } = useAskAi();
   const [prompt, setPrompt] = useState("");
-  const promptRef = useRef<HTMLTextAreaElement>(null);
+  const promptRef = useRef(null);
   const timerRef = useRef(null);
   const selectedBlock = useSelectedBlock();
 
@@ -92,7 +92,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
           <div className="max-w-full pt-2">
             {error && (
               <p className="break-words rounded border border-red-500 bg-red-100 p-1 text-xs text-red-500">
-                {(error as Error).message}
+                {error.message}
               </p>
             )}
           </div>
