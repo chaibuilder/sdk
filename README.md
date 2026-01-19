@@ -33,103 +33,55 @@ Chai Builder is a **full open-source React website builder** that empowers devel
 
 Chai Builder is available in two packages:
 
-- **`@chaibuilder/sdk`** - Core builder for any React application
-- **`@chaibuilder/next`** - Next.js-specific implementation with SSG + ISR
+---
+
+### `@chaibuilder/sdk` - Core Builder
+
+**For any React application**
+
+The core builder package that can be integrated as a standard React component into any React application. Perfect for building custom page builders and visual editors.
+
+**Core Features:**
+
+- 🎨 **Drag & Drop React Builder** - Visual builder component for React
+- 🔧 **Extensible API** - Add custom layouts with ease
+- 🪝 **Inner Hooks** - Exposed hooks to create custom layouts
+- 📦 **Custom Blocks** - Register custom blocks and block settings
+- 🎛️ **Custom Panels** - Add your own custom panels
+- 🔗 **Data Binding** - Built-in data-binding support
+- 🌍 **i18n Support** - Internationalization ready
+- 🤖 **AI Panel** - AI integration (no backend required)
+- 🧩 **Partial Blocks** - Reusable header, footer components
+- 🎨 **Theme System** - Customizable theming
+- 🎯 **Design Tokens** - Design system integration
+- 📄 **Import HTML** - Import existing HTML content
+
+📚 **[View Documentation](https://docs.chaibuilder.com/)**
 
 ---
 
-## 🚀 Getting Started
+### `@chaibuilder/next` - Next.js Website Builder
 
-Chai Builder offers two modes to fit your needs:
+**For public content-heavy sites**
 
-### 1️⃣ Core Builder Mode
+A more powerful Next.js-specific implementation designed for blogs, marketing sites, documentation, and any public-facing content. Built with **SSG (Static Site Generation) + ISR (Incremental Static Regeneration)** for optimal performance.
 
-Integrate the builder as a standard React component into any React application using **`@chaibuilder/sdk`**.
+**All Core Features Plus:**
 
-### 2️⃣ Next.js Website Builder
+- 📄 **Page Types** - Define custom page types with specific layouts
+- 📚 **Collections** - Manage content collections (blogs, products, portfolios)
+- 🖼️ **Media Manager** - Built-in media manager with image editor
+- 🤖 **AI Assistant** - Create and edit UI components and content with AI
+- 🔍 **SEO & JSON-LD** - Advanced SEO features with structured data
+- 🌐 **Multilingual** - Full multilingual support
+- 👁️ **Preview Mode** - Live preview before publishing
+- 📝 **Revisions & Compare** - Version control with comparison tools
+- 📚 **Library Blocks** - Shared block library across projects
+- 👥 **Multi-User Support** - Collaborative editing with multiple users
+- 🔒 **Page Lock** - Prevent conflicts with page locking
+- 🔐 **BYO Stack** - Bring Your Own Auth, Database (Postgres), and Storage
 
-**Ideal for public content-heavy sites** - Perfect for blogs, marketing sites, documentation, and any public-facing content. Uses **`@chaibuilder/next`** with **SSG (Static Site Generation) + ISR (Incremental Static Regeneration)** for optimal performance and SEO.
-
-Get started quickly with our Next.js starter template (Work in Progress):
-
-👉 **[Next.js + Supabase Starter](https://github.com/chaibuilder/chaibuilder-next-supabase-starter)**
-
----
-
-## 📦 Installation
-
-### Core Builder Mode (`@chaibuilder/sdk`)
-
-#### Step 1: Install the package
-
-```bash
-npm install @chaibuilder/sdk@4.0.0-beta.8
-# or
-pnpm add @chaibuilder/sdk@4.0.0-beta.8
-# or
-yarn add @chaibuilder/sdk@4.0.0-beta.8
-```
-
-#### Step 2: Configure Tailwind CSS
-
-Create a custom Tailwind config file: `tailwind.chaibuilder.config.ts`
-
-```tsx
-import { getChaiBuilderTailwindConfig } from "@chaibuilder/sdk/utils";
-export default getChaiBuilderTailwindConfig({ content: ["./src/**/*.{js,ts,jsx,tsx}"] });
-```
-
-#### Step 3: Create Chai Builder CSS file
-
-Create `chaibuilder.tailwind.css`:
-
-```css
-@config "./tailwind.chaibuilder.config.ts";
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-```
-
-#### Step 4: Add the builder to your page
-
-```tsx
-import "./chaibuilder.tailwind.css";
-import "@chaibuilder/sdk/styles";
-import { loadWebBlocks } from "@chaibuilder/sdk/web-blocks";
-import { ChaiBuilderEditor } from "@chaibuilder/sdk";
-
-loadWebBlocks();
-
-const BuilderFullPage = () => {
-  return (
-    <ChaiBuilderEditor
-      blocks={[{ _type: "Heading", _id: "a", content: "This is a heading", styles: "#styles:,text-3xl font-bold" }]}
-      onSave={async ({ blocks, providers, brandingOptions }) => {
-        console.log(blocks, providers, brandingOptions);
-        return true;
-      }}
-    />
-  );
-};
-```
-
-#### Step 5: Render blocks on your page
-
-Once you've saved blocks, render them anywhere in your application:
-
-```tsx
-import { RenderChaiBlocks } from "@chaibuilder/sdk/render";
-
-export default function Page() {
-  // blocks from your database or state
-  const blocks = [
-    /* your saved blocks */
-  ];
-
-  return <RenderChaiBlocks blocks={blocks} />;
-}
-```
+🚀 **Get Started:** [Next.js + Supabase Starter](https://github.com/chaibuilder/chaibuilder-next-supabase-starter) (Work in Progress)
 
 ---
 
