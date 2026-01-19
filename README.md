@@ -75,8 +75,8 @@ yarn add @chaibuilder/sdk@4.0.0-beta.8
 Create a custom Tailwind config file: `tailwind.chaibuilder.config.ts`
 
 ```tsx
-import { getChaiBuilderTailwindConfig } from "@chaibuilder/sdk/tailwind";
-export default getChaiBuilderTailwindConfig(["./src/**/*.{js,ts,jsx,tsx}"]);
+import { getChaiBuilderTailwindConfig } from "@chaibuilder/sdk/utils";
+export default getChaiBuilderTailwindConfig({ content: ["./src/**/*.{js,ts,jsx,tsx}"] });
 ```
 
 #### Step 3: Create Chai Builder CSS file
@@ -97,7 +97,7 @@ Create `chaibuilder.tailwind.css`:
 import "./chaibuilder.tailwind.css";
 import "@chaibuilder/sdk/styles";
 import { loadWebBlocks } from "@chaibuilder/sdk/web-blocks";
-import { ChaiBuilderEditor } from "@/core/main";
+import { ChaiBuilderEditor } from "@chaibuilder/sdk";
 
 loadWebBlocks();
 
@@ -119,7 +119,7 @@ const BuilderFullPage = () => {
 Once you've saved blocks, render them anywhere in your application:
 
 ```tsx
-import { RenderChaiBlocks } from "@chaibuilder/sdk";
+import { RenderChaiBlocks } from "@chaibuilder/sdk/render";
 
 export default function Page() {
   // blocks from your database or state
