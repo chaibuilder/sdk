@@ -1,34 +1,87 @@
-# Chai Builder - Open Source Tailwind Builder
+# Chai Builder - Open Source React Website Builder
 
-Chai Builder is an Open Source Low Code React + Tailwind CSS Visual Builder.
-It allows you to create web pages visually by dragging and dropping elements onto the canvas.
-It is a simple React component that renders a full-fledged visual builder into any React application.
+[![npm version](https://img.shields.io/npm/v/@chaibuilder/sdk.svg)](https://www.npmjs.com/package/@chaibuilder/sdk)
+[![License](https://img.shields.io/npm/l/@chaibuilder/sdk.svg)](https://github.com/chaibuilder/chaibuilder-sdk/blob/main/LICENSE)
 
-Docs: https://docs.chaibuilder.com/
+Chai Builder is a **full open-source React website builder** that empowers developers to create stunning web pages visually using drag-and-drop functionality. Built with React and Tailwind CSS, it seamlessly integrates into your existing projects.
 
-Demo: https://chaibuilder-sdk.vercel.app/
+✨ **Latest Version:** `4.0.0-beta.8`
+
+🚀 **Out-of-the-box support for:**
+
+- **Next.js 16**
+- **Tailwind CSS v3+**
+
+📚 **[Documentation](https://docs.chaibuilder.com/)** | 🎨 **[Live Demo](https://chaibuilder-sdk.vercel.app/)**
 
 ![CHAI BUILDER](https://fldwljgzcktqnysdkxnn.supabase.co/storage/v1/object/public/dam-assets/assets/chai-builder.jpg)
 
+## ✨ Features
+
+- 🎨 **Visual Drag & Drop Builder** - Create pages visually without writing code
+- ⚛️ **React-First** - Built as a React component for seamless integration
+- 🎯 **Tailwind CSS Powered** - Leverage the full power of Tailwind CSS v3+
+- 🚀 **Next.js 16 Ready** - Full support for the latest Next.js features
+- 🔧 **Two Flexible Modes** - Use as a core builder component or as a complete Next.js website builder
+- 📦 **Extensible** - Add custom blocks and components
+- 💾 **Data Control** - Full control over how and where you save your data
+- 🎭 **Framework Agnostic Rendering** - Render blocks in any React application
+
 ---
 
-### Manual installation:
+## 📦 Packages
 
-Step 1: Install the packages
+Chai Builder is available in two packages:
+
+- **`@chaibuilder/sdk`** - Core builder for any React application
+- **`@chaibuilder/next`** - Next.js-specific implementation with SSG + ISR
+
+---
+
+## 🚀 Getting Started
+
+Chai Builder offers two modes to fit your needs:
+
+### 1️⃣ Core Builder Mode
+
+Integrate the builder as a standard React component into any React application using **`@chaibuilder/sdk`**.
+
+### 2️⃣ Next.js Website Builder
+
+**Ideal for public content-heavy sites** - Perfect for blogs, marketing sites, documentation, and any public-facing content. Uses **`@chaibuilder/next`** with **SSG (Static Site Generation) + ISR (Incremental Static Regeneration)** for optimal performance and SEO.
+
+Get started quickly with our Next.js starter template (Work in Progress):
+
+👉 **[Next.js + Supabase Starter](https://github.com/chaibuilder/chaibuilder-next-supabase-starter)**
+
+---
+
+## 📦 Installation
+
+### Core Builder Mode (`@chaibuilder/sdk`)
+
+#### Step 1: Install the package
 
 ```bash
-npm install @chaibuilder/sdk
+npm install @chaibuilder/sdk@4.0.0-beta.8
+# or
+pnpm add @chaibuilder/sdk@4.0.0-beta.8
+# or
+yarn add @chaibuilder/sdk@4.0.0-beta.8
 ```
 
-Step 2: Add a custom tailwind config.
-Create a new file: `tailwind.chaibuilder.config.ts`. <br /> Pass the path to your source files.
+#### Step 2: Configure Tailwind CSS
+
+Create a custom Tailwind config file: `tailwind.chaibuilder.config.ts`
 
 ```tsx
 import { getChaiBuilderTailwindConfig } from "@chaibuilder/sdk/tailwind";
 export default getChaiBuilderTailwindConfig(["./src/**/*.{js,ts,jsx,tsx}"]);
 ```
 
-Step 3: Create a new `chaibuilder.tailwind.css`
+#### Step 3: Create Chai Builder CSS file
+
+Create `chaibuilder.tailwind.css`:
 
 ```css
 @config "./tailwind.chaibuilder.config.ts";
@@ -38,7 +91,7 @@ Step 3: Create a new `chaibuilder.tailwind.css`
 @tailwind utilities;
 ```
 
-Step 4: Add the builder to your page.
+#### Step 4: Add the builder to your page
 
 ```tsx
 import "./chaibuilder.tailwind.css";
@@ -61,17 +114,36 @@ const BuilderFullPage = () => {
 };
 ```
 
-### Render the blocks on your page.
+#### Step 5: Render blocks on your page
+
+Once you've saved blocks, render them anywhere in your application:
 
 ```tsx
-export default () => {
+import { RenderChaiBlocks } from "@chaibuilder/sdk";
+
+export default function Page() {
+  // blocks from your database or state
+  const blocks = [
+    /* your saved blocks */
+  ];
+
   return <RenderChaiBlocks blocks={blocks} />;
-};
+}
 ```
 
 ---
 
-## Support
+## 🎯 Use Cases
+
+- **Landing Pages** - Build beautiful landing pages with ease
+- **Marketing Websites** - Create and update marketing content visually
+- **Content Management** - Empower non-technical users to create pages
+- **Rapid Prototyping** - Quickly prototype and iterate on designs
+- **White-Label Solutions** - Build page builders into your SaaS products
+
+---
+
+## 🤝 Support
 
 If you like the project, you can assist us in expanding. ChaiBuilder is a collaborative endeavor crafted by developers in their free time. We value every contribution, no matter how modest, as each one represents a significant step forward in various ways, particularly in fueling our drive to enhance this tool continually.
 
