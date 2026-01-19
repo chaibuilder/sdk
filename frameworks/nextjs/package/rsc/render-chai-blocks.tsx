@@ -1,11 +1,5 @@
 import { applyDesignTokens, RenderChaiBlocks as RenderChaiBlocksSdk } from "@chaibuilder/sdk/render";
-import {
-  ChaiBlock,
-  ChaiBlockComponentProps,
-  ChaiPageProps,
-  ChaiStyles,
-  setChaiBlockComponent,
-} from "@chaibuilder/sdk/runtime";
+import { ChaiBlock, ChaiBlockComponentProps, ChaiPageProps, ChaiStyles } from "@chaibuilder/sdk/runtime";
 import { isEmpty } from "lodash";
 import { ChaiBuilder } from "../ChaiBuilder";
 import { ImageBlock } from "./image-block";
@@ -73,8 +67,8 @@ export const RenderChaiBlocks = async ({
     | React.ComponentType<ChaiBlockComponentProps<ImageBlockProps>>
     | Promise<React.ComponentType<ChaiBlockComponentProps<ImageBlockProps>>>;
 }) => {
-  setChaiBlockComponent("Link", await linkComponent);
-  setChaiBlockComponent("Image", await imageComponent);
+  // setChaiBlockComponent("Link", await linkComponent);
+  // setChaiBlockComponent("Image", await imageComponent);
   const pageData = await ChaiBuilder.getPageExternalData({
     blocks: page.blocks,
     pageProps,

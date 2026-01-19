@@ -6,7 +6,7 @@ import "@chaibuilder/sdk/styles";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useState } from "react";
 import { LoginScreen } from "./login";
-const ChaiBuilderEditor = dynamic(() => import("@chaibuilder/sdk/pages"), {
+const ChaiBuilderEditor = dynamic(() => import("@chaibuilder/sdk/pages").then((mod) => mod.ChaiWebsiteBuilder), {
   ssr: false,
 });
 
