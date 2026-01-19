@@ -9,7 +9,7 @@ export default defineConfig({
   plugins: [
     react(),
     dts({
-      include: ["src/**/*"],
+      include: ["src/**/*", "declaration.d.ts"],
       exclude: ["**/*.test.*", "**/*.spec.*"],
       rollupTypes: true,
       insertTypesEntry: true,

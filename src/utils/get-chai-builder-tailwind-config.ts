@@ -1,7 +1,6 @@
 import tailwindAspectRatio from "@tailwindcss/aspect-ratio";
 import tailwindContainerQueries from "@tailwindcss/container-queries";
 import tailwindForms from "@tailwindcss/forms";
-import tailwindLineClamp from "@tailwindcss/line-clamp";
 import tailwindTypography from "@tailwindcss/typography";
 
 function shadcnTheme() {
@@ -73,7 +72,7 @@ const getChaiBuilderTailwindConfig = ({ content, theme = {} }: { content: string
         ...theme,
       },
     },
-    plugins: [tailwindLineClamp, tailwindTypography, tailwindForms, tailwindAspectRatio, tailwindContainerQueries],
+    plugins: [tailwindTypography, tailwindForms, tailwindAspectRatio, tailwindContainerQueries],
   };
 };
 

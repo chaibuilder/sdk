@@ -398,7 +398,7 @@ const traverseNodes = (nodes: HimalayaNode[], parent: any = null): ChaiBlock[] =
       return [block, ...children] as ChaiBlock[];
     }
 
-    const styleAttributes = get(node, "attributes", []);
+    const styleAttributes: HimalayaAttribute[] = get(node, "attributes", []);
     const isRichText =
       node.tagName === "p" ||
       styleAttributes.find((attr) => attr.key === "data-chai-richtext" || attr.key === "chai-richtext");

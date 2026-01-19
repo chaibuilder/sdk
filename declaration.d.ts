@@ -1,4 +1,22 @@
-declare module "undo-manager";
+declare module "undo-manager" {
+  export interface UndoManagerOptions {
+    limit?: number;
+  }
+
+  export default class UndoManager {
+    constructor(options?: UndoManagerOptions);
+    add(command: { undo: () => void; redo: () => void }): void;
+    undo(): void;
+    redo(): void;
+    clear(): void;
+    hasUndo(): boolean;
+    hasRedo(): boolean;
+    getCommands(): any[];
+    getIndex(): number;
+    setLimit(limit: number): void;
+    setCallback(callback: () => void): void;
+  }
+}
 
 declare module "himalaya" {
   export interface HimalayaAttribute {
