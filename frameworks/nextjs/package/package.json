@@ -47,10 +47,15 @@
       "import": "./dist/web-blocks.js",
       "require": "./dist/web-blocks.cjs"
     },
-    "./web-blocks/rsc": {
+    "./render/rsc": {
       "types": "./dist/rsc/index.d.ts",
       "import": "./dist/rsc/index.js",
       "require": "./dist/rsc/index.cjs"
+    },
+    "./render": {
+      "types": "./dist/render.d.ts",
+      "import": "./dist/render.js",
+      "require": "./dist/render.cjs"
     },
     "./runtime": {
       "types": "./dist/runtime.d.ts",
@@ -71,6 +76,10 @@
       "types": "./dist/utils.d.ts",
       "import": "./dist/utils.js",
       "require": "./dist/utils.cjs"
+    },
+    "./styles": {
+      "import": "./dist/styles.css",
+      "require": "./dist/styles.css"
     }
   },
   "dependencies": {

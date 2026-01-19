@@ -1,3 +1,5 @@
+import { copyFileSync } from "fs";
+import { resolve } from "path";
 import { defineConfig } from "tsup";
 
 export default defineConfig({
@@ -50,5 +52,11 @@ export default defineConfig({
     return {
       js: format === "cjs" ? ".cjs" : ".js",
     };
+  },
+  onSuccess: async () => {
+    const source = resolve("node_modules/@chaibuilder/sdk/dist/sdk.css");
+    const dest = resolve("dist/styles.css");
+    copyFileSync(source, dest);
+    console.log("✓ Copied sdk.css to dist/styles.css");
   },
 });

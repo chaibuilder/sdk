@@ -205,8 +205,8 @@ class ChaiBuilder {
     return await utils.getBlocksStyles(blocks);
   }
 
-  static async resolveLinks(href: string, lang: string): Promise<string> {
-    return await utils.resolveLinks(href, lang, this.appId!, this.draftMode, this.fallbackLang);
+  static async resolveLink(href: string, lang: string): Promise<string> {
+    return await utils.resolveLink(href, lang, this.appId!, this.draftMode, this.fallbackLang);
   }
 }
 

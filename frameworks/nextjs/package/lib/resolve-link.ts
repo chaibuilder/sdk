@@ -3,7 +3,7 @@ import { getChaiPageType } from "@chaibuilder/sdk/runtime";
 import { and, eq } from "drizzle-orm";
 import { startsWith } from "lodash";
 
-export async function resolveLinks(
+export async function resolveLink(
   href: string,
   lang: string,
   appId: string,
