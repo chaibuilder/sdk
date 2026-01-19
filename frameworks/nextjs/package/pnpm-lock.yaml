@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@chaibuilder/sdk':
-        specifier: 4.0.0-beta.4
-        version: 4.0.0-beta.4(@emotion/is-prop-valid@1.4.0)(@tiptap/core@2.27.2(@tiptap/pm@2.27.2))(@types/react-dom@19.2.3(@types/react@19.2.8))(@types/react@19.2.8)(ai@6.0.38(zod@4.3.5))(drizzle-orm@0.45.1(@opentelemetry/api@1.9.0)(postgres@3.4.8))(next@16.1.1(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(postgres@3.4.8)(react-dom@19.2.3(react@19.2.3))(react-konva@19.2.1(@types/react@19.2.8)(konva@9.3.6)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)(sharp@0.34.5)(streamdown@1.6.11(@types/mdast@4.0.4)(micromark-util-types@2.0.2)(micromark@4.0.2)(react@19.2.3))(styled-components@6.3.8(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(tailwindcss@4.1.18)(typescript@5.9.3)
+        specifier: 4.0.0-beta.6
+        version: 4.0.0-beta.6(@emotion/is-prop-valid@1.4.0)(@tiptap/core@2.27.2(@tiptap/pm@2.27.2))(@types/react-dom@19.2.3(@types/react@19.2.8))(@types/react@19.2.8)(ai@6.0.38(zod@4.3.5))(drizzle-orm@0.45.1(@opentelemetry/api@1.9.0)(postgres@3.4.8))(next@16.1.1(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(postgres@3.4.8)(react-dom@19.2.3(react@19.2.3))(react-konva@19.2.1(@types/react@19.2.8)(konva@9.3.6)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)(sharp@0.34.5)(streamdown@1.6.11(@types/mdast@4.0.4)(micromark-util-types@2.0.2)(micromark@4.0.2)(react@19.2.3))(styled-components@6.3.8(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(tailwindcss@4.1.18)(typescript@5.9.3)
       ai:
         specifier: ^6.0.11
         version: 6.0.38(zod@4.3.5)
@@ -81,8 +81,8 @@ packages:
   '@braintree/sanitize-url@7.1.1':
     resolution: {integrity: sha512-i1L7noDNxtFyL5DmZafWy1wRVhGehQmzZaz1HiN5e7iylJMSZR7ekOV7NsIqa5qBldlLrsKv4HbgFUVlQrz8Mw==}
 
-  '@chaibuilder/sdk@4.0.0-beta.4':
-    resolution: {integrity: sha512-sABj6900pdNiiRNSE9aeSaW5PkwjGBz4FrVWKMHmiL4xTMEgbFgWpVfQLrEFTw3lP+Zfp1QKmtGeonU5k5mouQ==}
+  '@chaibuilder/sdk@4.0.0-beta.6':
+    resolution: {integrity: sha512-hRVJywXfJJawNB8aFysPnx4Oq1VGoDHnfpR9FTwKeDXu0la/7iaRtC3XgGTdkRChuEtJxvQwQPVfTZFpkHxuog==}
     engines: {node: '>=21.0.0'}
     peerDependencies:
       '@supabase/supabase-js': ^2.89.0
@@ -3846,7 +3846,7 @@ snapshots:
 
   '@braintree/sanitize-url@7.1.1': {}
 
-  '@chaibuilder/sdk@4.0.0-beta.4(@emotion/is-prop-valid@1.4.0)(@tiptap/core@2.27.2(@tiptap/pm@2.27.2))(@types/react-dom@19.2.3(@types/react@19.2.8))(@types/react@19.2.8)(ai@6.0.38(zod@4.3.5))(drizzle-orm@0.45.1(@opentelemetry/api@1.9.0)(postgres@3.4.8))(next@16.1.1(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(postgres@3.4.8)(react-dom@19.2.3(react@19.2.3))(react-konva@19.2.1(@types/react@19.2.8)(konva@9.3.6)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)(sharp@0.34.5)(streamdown@1.6.11(@types/mdast@4.0.4)(micromark-util-types@2.0.2)(micromark@4.0.2)(react@19.2.3))(styled-components@6.3.8(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(tailwindcss@4.1.18)(typescript@5.9.3)':
+  '@chaibuilder/sdk@4.0.0-beta.6(@emotion/is-prop-valid@1.4.0)(@tiptap/core@2.27.2(@tiptap/pm@2.27.2))(@types/react-dom@19.2.3(@types/react@19.2.8))(@types/react@19.2.8)(ai@6.0.38(zod@4.3.5))(drizzle-orm@0.45.1(@opentelemetry/api@1.9.0)(postgres@3.4.8))(next@16.1.1(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(postgres@3.4.8)(react-dom@19.2.3(react@19.2.3))(react-konva@19.2.1(@types/react@19.2.8)(konva@9.3.6)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)(sharp@0.34.5)(streamdown@1.6.11(@types/mdast@4.0.4)(micromark-util-types@2.0.2)(micromark@4.0.2)(react@19.2.3))(styled-components@6.3.8(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(tailwindcss@4.1.18)(typescript@5.9.3)':
     dependencies:
       '@floating-ui/dom': 1.7.4
       '@floating-ui/react-dom': 2.1.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)

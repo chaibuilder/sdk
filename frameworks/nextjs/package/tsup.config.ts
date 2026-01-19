@@ -54,9 +54,23 @@ export default defineConfig({
     };
   },
   onSuccess: async () => {
-    const source = resolve("node_modules/@chaibuilder/sdk/dist/sdk.css");
-    const dest = resolve("dist/styles.css");
-    copyFileSync(source, dest);
+    const cssSource = resolve("node_modules/@chaibuilder/sdk/dist/sdk.css");
+    const cssDest = resolve("dist/styles.css");
+    copyFileSync(cssSource, cssDest);
     console.log("✓ Copied sdk.css to dist/styles.css");
+
+    const webBlocksJsSource = resolve("node_modules/@chaibuilder/sdk/dist/web-blocks.js");
+    const webBlocksJsDest = resolve("dist/web-blocks.js");
+    copyFileSync(webBlocksJsSource, webBlocksJsDest);
+    console.log(
+      "✓ Copied web-blocks.js to dist/web-blocks.js (overwrites generated file with SDK version for Tailwind extraction)",
+    );
+
+    const webBlocksCjsSource = resolve("node_modules/@chaibuilder/sdk/dist/web-blocks.cjs");
+    const webBlocksCjsDest = resolve("dist/web-blocks.cjs");
+    copyFileSync(webBlocksCjsSource, webBlocksCjsDest);
+    console.log(
+      "✓ Copied web-blocks.cjs to dist/web-blocks.cjs (overwrites generated file with SDK version for Tailwind extraction)",
+    );
   },
 });
