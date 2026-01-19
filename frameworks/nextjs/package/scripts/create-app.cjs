@@ -54,7 +54,7 @@ async function createApp({ ownerId, projectName, databaseUrl }) {
   }
 
   const sql = postgres(databaseUrl, { max: 1 });
-  const libraryName = `${projectName}`;
+  const libraryName = projectName;
   const normalizedOwnerId = ownerId && ownerId.length > 0 ? ownerId : null;
 
   try {
