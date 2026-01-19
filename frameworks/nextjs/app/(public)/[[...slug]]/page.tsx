@@ -1,5 +1,5 @@
 import { ChaiBuilder } from "@/package/ChaiBuilder";
-import { ChaiPageStyles, NextJSRenderChaiBlocks, PreviewBanner } from "@/package/rsc/index";
+import { ChaiPageStyles, RenderChaiBlocks, PreviewBanner } from "@/package/rsc/index";
 import { ChaiPageProps } from "@chaibuilder/sdk/runtime";
 import "@chaibuilder/sdk/styles";
 import { loadWebBlocks } from "@chaibuilder/sdk/web-blocks";
@@ -49,7 +49,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string[
       </head>
       <body className={`font-body antialiased`}>
         <PreviewBanner slug={slug} show={isEnabled} />
-        <NextJSRenderChaiBlocks page={page} pageProps={pageProps} />
+        <RenderChaiBlocks page={page} pageProps={pageProps} />
       </body>
     </>
   );
