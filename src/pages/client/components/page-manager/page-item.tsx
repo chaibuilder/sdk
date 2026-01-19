@@ -4,8 +4,8 @@ import { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
 import { usePageExpandManager } from "@/pages/hooks/utils/use-page-expand-manager";
 import { ChaiPage } from "@/pages/utils/page-organization";
 import Tooltip from "@/pages/utils/tooltip";
-import { find, get } from "lodash-es";
-import { ChevronRight, Edit, File, Hash, Lock, MoreHorizontal, NotepadText, Plus, StarsIcon } from "lucide-react";
+import { find, get, isEmpty } from "lodash-es";
+import { ChevronRight, Edit, File, Hash, Lock, MoreHorizontal, NotepadText, Pencil, Plus, StarsIcon } from "lucide-react";
 import { useMemo } from "react";
 import { PageActionsDropdown } from "@/pages/client/components/page-action-dropdown";
 import { usePageToUser } from "@/pages/client/components/page-lock/page-lock-hook";
@@ -139,6 +139,13 @@ const PageItem = ({
           className={containerClass}>
           <ExpandCollapse page={page} />
           {!page.isPartialGroup && <PageStatus isOnline={langPage ? langPage.online : page.online} />}
+          {!page.isPartialGroup && (langPage ? !isEmpty(langPage.changes) : !isEmpty(page.changes)) && (
+            <Tooltip content="Has unpublished changes" side="top">
+              <span className="text-amber-500">
+                <Pencil size={10} className="stroke-[3]" />
+              </span>
+            </Tooltip>
+          )}
           {!page.isPartialGroup && <PageIcon page={page} pageType={pageType} />}
 
           <Tooltip content={pageName} side="top" showTooltip={pageName.length > 35}>
