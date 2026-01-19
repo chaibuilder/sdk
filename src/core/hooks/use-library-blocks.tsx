@@ -15,6 +15,7 @@ export const useLibraryBlocks = (library?: Partial<ChaiLibrary> & { id: string }
 
   useEffect(() => {
     (async () => {
+      if (!library) return;
       if (state === "complete" || loadingRef.current === "loading") return;
       loadingRef.current = "loading";
       setLibraryBlocks((prev) => ({ ...prev, [library?.id]: { loading: "loading", blocks: [] } }));
@@ -22,7 +23,7 @@ export const useLibraryBlocks = (library?: Partial<ChaiLibrary> & { id: string }
         const libraryBlocks: ChaiLibraryBlock[] = await getBlocks(library);
         loadingRef.current = "idle";
         setLibraryBlocks((prev) => ({ ...prev, [library?.id]: { loading: "complete", blocks: libraryBlocks || [] } }));
-      } catch (error) {
+      } catch {
         loadingRef.current = "idle";
         setLibraryBlocks((prev) => ({ ...prev, [library?.id]: { loading: "complete", blocks: [] } }));
       }

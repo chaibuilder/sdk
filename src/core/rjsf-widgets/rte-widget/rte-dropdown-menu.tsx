@@ -1,5 +1,5 @@
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useFrame } from "@/core/frame";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/ui";
 import { Editor } from "@tiptap/react";
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -18,9 +18,14 @@ const RteDropdownMenu = ({
   menuRef: React.RefObject<HTMLDivElement>;
 }) => {
   const { document } = useFrame();
-  const [state, setState] = useState({ left: undefined, right: undefined, top: undefined, bottom: undefined });
+  const [state, setState] = useState<{
+    left: number | undefined;
+    right: number | undefined;
+    top: number | undefined;
+    bottom: number | undefined;
+  }>({ left: undefined, right: undefined, top: undefined, bottom: undefined });
   const [isOpen, setIsOpen] = useState(false);
-  const triggerRef = useRef(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!isOpen) {
@@ -29,18 +34,20 @@ const RteDropdownMenu = ({
     }
 
     const rect = triggerRef.current?.getBoundingClientRect();
+    if (!rect || !document) return;
     const menuRect = menuRef.current?.getBoundingClientRect();
-    let left = rect?.left;
-    let top = rect?.bottom + 4;
-    let right = undefined;
-    let bottom = undefined;
+    if (!menuRect) return;
+    let left: number | undefined = rect.left;
+    let top: number | undefined = rect.bottom + 4;
+    let right: number | undefined = undefined;
+    let bottom: number | undefined = undefined;
     if (menuRect?.left + menuRect?.width + 50 >= document.body.offsetWidth) {
       left = undefined;
       right = document.body.offsetWidth - rect?.right;
     }
     if (top + 202 >= document.body.clientHeight) {
-      top = null;
-      bottom = document.body.clientHeight - rect?.bottom + menuRect?.height;
+      top = undefined;
+      bottom = document.body.clientHeight - rect.bottom + menuRect.height;
     }
     setState({ left, top, right, bottom });
   }, [isOpen]);
@@ -78,7 +85,7 @@ const RteDropdownMenu = ({
                 {typeof content === "function" ? content(handleCanvasClose) : content}
               </div>
             </div>,
-            document.body,
+            document!.body,
             "chaibuilder-rte-dropdown-menu",
           )}
       </>

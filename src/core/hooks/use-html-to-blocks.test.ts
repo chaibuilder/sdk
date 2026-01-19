@@ -1,12 +1,16 @@
+import { handlei18N } from "@/core/hooks/use-html-to-blocks";
+import { getRegisteredChaiBlock } from "@/runtime/index";
 import { ChaiBlock } from "@/types/chai-block";
-import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { handlei18N } from "./use-html-to-blocks";
 
 // Mock the runtime module
-vi.mock("@chaibuilder/runtime", () => ({
-  getRegisteredChaiBlock: vi.fn(),
-}));
+vi.mock("@/runtime/index", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/runtime/index")>();
+  return {
+    ...actual,
+    getRegisteredChaiBlock: vi.fn(),
+  };
+});
 
 describe("handlei18N", () => {
   beforeEach(() => {
@@ -17,7 +21,7 @@ describe("handlei18N", () => {
     const blocks: ChaiBlock[] = [{ _type: "Paragraph", _id: "1", content: "Hello" }];
     const currentBlocks: ChaiBlock[] = [];
 
-    vi.mocked(getRegisteredChaiBlock).mockReturnValue(undefined);
+    vi.mocked(getRegisteredChaiBlock).mockReturnValue(null);
 
     const result = handlei18N(blocks, currentBlocks);
 

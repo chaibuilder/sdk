@@ -1,10 +1,10 @@
-import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
+import { getCurrentBlocks } from "@/core/atoms/store";
+import { useCanvasIframe } from "@/core/hooks/use-canvas-iframe";
+import { ChaiBlock } from "@/core/main";
+import { getRegisteredChaiBlock } from "@/runtime/index";
 import { parse, stringify } from "himalaya";
 import { kebabCase } from "lodash-es";
 import { useCallback } from "react";
-import { getCurrentBlocks } from "../atoms/store";
-import { ChaiBlock } from "../main";
-import { useCanvasIframe } from "./use-canvas-iframe";
 
 export type HimalayaNode = {
   type: "element" | "text" | "comment";

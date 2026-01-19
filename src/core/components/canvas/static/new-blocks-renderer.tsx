@@ -10,13 +10,18 @@ import {
   getBlockRuntimeProps,
   getBlockTagAttributes,
 } from "@/core/components/canvas/static/new-blocks-render-helpers";
-import { useBlocksStore, useBuilderProp, useInlineEditing, usePartailBlocksStore, useSavePage } from "@/core/hooks";
+import { useBlockRuntimeProps } from "@/core/components/canvas/static/use-block-runtime-props";
+import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { useEditorMode } from "@/core/hooks/use-editor-mode";
+import { useInlineEditing } from "@/core/hooks/use-inline-editing";
 import { useLanguages } from "@/core/hooks/use-languages";
+import { usePartialBlocksStore } from "@/core/hooks/use-partial-blocks-store";
+import { useSavePage } from "@/core/hooks/use-save-page";
 import { useGetBlockAtom } from "@/core/hooks/use-update-block-atom";
 import { applyBindingToBlockProps } from "@/render/apply-binding";
+import { getRegisteredChaiBlock } from "@/runtime/index";
 import { ChaiBlock } from "@/types/chai-block";
-import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
 import { atom, Atom, Provider, useAtom, useAtomValue } from "jotai";
 import { splitAtom } from "jotai/utils";
 import { filter, get, has, isArray, isEmpty, isNull, map, noop } from "lodash-es";
@@ -26,7 +31,6 @@ import { toast } from "sonner";
 import { adjustSpacingInContentBlocks } from "./adjust-spacing-in-blocks";
 import { MayBeAsyncPropsWrapper } from "./async-props-wrapper";
 import { ErrorFallback } from "./error-fallback";
-import { useBlockRuntimeProps } from "./use-block-runtime-props";
 import WithBlockTextEditor from "./with-block-text-editor";
 
 export const RepeaterContext = createContext<{
@@ -221,7 +225,7 @@ const PartialWrapper = ({ children, partialBlockId }: { children: React.ReactNod
 };
 
 const PartialBlocksRenderer = ({ partialBlockId }: { partialBlockId: string }) => {
-  const { getPartailBlocks } = usePartailBlocksStore();
+  const { getPartailBlocks } = usePartialBlocksStore();
   const partialBlocks = useMemo(() => getPartailBlocks(partialBlockId), [getPartailBlocks, partialBlockId]);
   const partialBlocksAtoms = useMemo(() => splitAtom(atom(partialBlocks)), [partialBlocks]);
   if (isEmpty(partialBlocks)) return null;
@@ -240,7 +244,7 @@ const BlocksRenderer = ({
 }: {
   splitAtoms?: any;
   blocks: ChaiBlock[];
-  parent?: string;
+  parent?: string | null;
   type?: string;
 }) => {
   const getBlockAtom = useGetBlockAtom(splitAtoms);
@@ -254,7 +258,7 @@ const BlocksRenderer = ({
     [blocks],
   );
 
-  if (hasChildren && (type === "Heading" || type === "Paragraph" || type === "Link")) {
+  if (type === "Heading" || type === "Paragraph" || type === "Link") {
     filteredBlocks = adjustSpacingInContentBlocks(filteredBlocks);
   }
 
@@ -269,13 +273,13 @@ const BlocksRenderer = ({
               return _type === "Repeater" ? (
                 isArray(repeaterItems) &&
                   repeaterItems.map((_, index) => (
-                    <RepeaterContext.Provider key={`${_id}-${index}`} value={{ index, key: $repeaterItemsKey }}>
+                    <RepeaterContext.Provider key={`${_id}-${index}`} value={{ index, key: $repeaterItemsKey! }}>
                       <BlocksRenderer splitAtoms={splitAtoms} blocks={blocks} parent={block._id} type={_type} />
                     </RepeaterContext.Provider>
                   ))
               ) : _type === "GlobalBlock" || _type === "PartialBlock" ? (
                 <Provider store={builderStore}>
-                  <PartialBlocksRenderer partialBlockId={partialBlockId} />
+                  <PartialBlocksRenderer partialBlockId={partialBlockId!} />
                 </Provider>
               ) : hasChildren(_id) ? (
                 <BlocksRenderer splitAtoms={splitAtoms} blocks={blocks} parent={block._id} type={_type} />

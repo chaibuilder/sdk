@@ -5,12 +5,15 @@ import { CssThemeVariables } from "@/core/components/css-theme-var";
 import { FallbackError } from "@/core/components/fallback-error";
 import { RootLayout } from "@/core/components/layout/root-layout";
 import { PreviewScreen } from "@/core/components/PreviewScreen";
+import { useAutoSave } from "@/core/components/use-auto-save";
 import { ChaiFeatureFlagsWidget } from "@/core/flags/flags-widget";
 import { setDebugLogs } from "@/core/functions/logging";
 import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
 import { defaultThemeValues } from "@/core/hooks/default-theme-options";
-import { useBuilderProp, useBuilderReset } from "@/core/hooks/index";
 import { useBroadcastChannel, useUnmountBroadcastChannel } from "@/core/hooks/use-broadcast-channel";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
+import { useBuilderReset } from "@/core/hooks/use-builder-reset";
+import { useCheckStructure } from "@/core/hooks/use-check-structure";
 import { useExpandTree } from "@/core/hooks/use-expand-tree";
 import { isPageLoadedAtom } from "@/core/hooks/use-is-page-loaded";
 import { useKeyEventWatcher } from "@/core/hooks/use-key-event-watcher";
@@ -18,18 +21,16 @@ import { useWatchPartailBlocks } from "@/core/hooks/use-partial-blocks-store";
 import { builderSaveStateAtom } from "@/core/hooks/use-save-page";
 import "@/core/index.css";
 import i18n from "@/core/locales/load";
+import { ExportCodeModal } from "@/core/modals/export-code-modal";
 import { ScreenTooSmall } from "@/core/screen-too-small";
+import { syncBlocksWithDefaults } from "@/runtime/index";
 import { ChaiBuilderEditorProps } from "@/types/index";
 import { ChaiBuilderThemeValues } from "@/types/types";
-import { syncBlocksWithDefaults } from "@chaibuilder/runtime";
 import { useAtom } from "jotai/index";
 import { each, noop, omit } from "lodash-es";
 import React, { useEffect, useMemo } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Toaster } from "sonner";
-import { useCheckStructure } from "../hooks/use-check-structure";
-import { ExportCodeModal } from "../modals/export-code-modal";
-import { useAutoSave } from "./use-auto-save";
 
 const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
   const [, setAllBlocks] = useBlocksStore();
@@ -83,7 +84,7 @@ const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
   }, [props.locale]);
 
   useEffect(() => {
-    setDebugLogs(props.debugLogs);
+    setDebugLogs(props.debugLogs ?? false);
   }, [props.debugLogs]);
 
   useEffect(() => {

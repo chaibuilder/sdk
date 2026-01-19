@@ -1,15 +1,17 @@
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { useBlocksHtmlForAi, useSelectedBlock } from "@/core/hooks";
+import { useBlocksHtmlForAi } from "@/core/hooks/use-blocks-html-for-ai";
+import { useEditorMode } from "@/core/hooks/use-editor-mode";
 import { usePubSub } from "@/core/hooks/use-pub-sub";
-import { shadcnTheme } from "@/tailwind/get-chai-builder-tailwind-config";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, Tabs, TabsList, TabsTrigger } from "@/ui";
+import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
+import { ChaiBlock } from "@/core/main";
+import { shadcnTheme } from "@/utils/get-chai-builder-tailwind-config";
 import { camelCase } from "lodash-es";
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { useEditorMode } from "../hooks/use-editor-mode";
-import { ChaiBlock } from "../main";
 import { domToJsx, formatHtml } from "./domToJsx";
 
 // Lazy load the CodeDisplay component
@@ -22,7 +24,7 @@ async function convertHtmlToJsx(html: string): Promise<{ jsx: string; html: stri
     const children = Array.from(tempDiv.children) as Element[];
     const jsx = domToJsx(children.length === 1 ? children[0] : children);
     return { jsx, html: tempDiv.innerHTML };
-  } catch (error) {
+  } catch {
     return { html, jsx: html };
   }
 }
@@ -89,11 +91,12 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
   };
 
   const handleExportEvent = useCallback(async () => {
+    if (!selectedBlock) return;
     try {
       setShow(false);
-      let html = blocksHtmlForAi({ blockId: selectedBlock?._id, additionalCoreBlocks: ["Icon"] })
+      let html = blocksHtmlForAi({ blockId: selectedBlock?._id, additionalCoreBlocks: ["Icon"] });
       html = html.replace(/\s*bid=["'][^"']*["']/g, "");
-      
+
       const isTypeScript = tab === "ts";
       const {
         jsx: jsxCode,
@@ -104,10 +107,10 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
         html,
         isTypeScript,
       });
-      setExportContent({ html: htmlCode, jsx: jsxCode });
+      setExportContent({ html: htmlCode || "", jsx: jsxCode });
       setFileName(componentName);
       setShow(true);
-    } catch (error) {
+    } catch {
       const fallbackContent = `<div>Export failed. Close the modal and try again.</div>`;
       setExportContent({ html: fallbackContent, jsx: fallbackContent });
       toast.error(t("Failed to generate export HTML"));
@@ -123,7 +126,7 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
       try {
         navigator.clipboard.writeText(text);
         toast.success(t("Export code copied!"));
-      } catch (error) {
+      } catch {
         toast.error(t("Failed to copy export code"));
       }
     },
@@ -135,7 +138,7 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement("a");
     anchor.href = url;
-    anchor.download = getFileName();
+    anchor.download = getFileName() ?? "";
     document.body.appendChild(anchor);
     anchor.click();
     URL.revokeObjectURL(url);
@@ -164,7 +167,7 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
       key={tab}
       onCopy={handleCopy}
       code={tab === "tailwind" ? tailwindConfig : tab === "html" ? exportContent.html : exportContent.jsx}
-      language={getLanguage()}
+      language={getLanguage() || ""}
       downloadText={downloadText}
       onDownload={downloadExportContent}
     />
@@ -183,7 +186,7 @@ export const ExportCodeModal = () => {
     setTab("js");
     setMode("view");
     setOpen(true);
-  }, [open]);
+  }, [setTab, setMode, setOpen]);
 
   usePubSub(CHAI_BUILDER_EVENTS.OPEN_EXPORT_CODE, handleOpenModal);
 

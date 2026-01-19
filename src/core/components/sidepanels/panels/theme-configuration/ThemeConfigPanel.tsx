@@ -1,19 +1,19 @@
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
 import {
   BorderRadiusInput,
   ColorPickerInput,
   FontSelector,
 } from "@/core/components/sidepanels/panels/theme-configuration";
 import { cn } from "@/core/functions/common-functions";
-import { useDarkMode } from "@/core/hooks";
-import { useBuilderProp } from "@/core/hooks/index";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
+import { useDarkMode } from "@/core/hooks/use-dark-mode";
 import { usePermissions } from "@/core/hooks/use-permissions";
 import { useTheme, useThemeOptions } from "@/core/hooks/use-theme";
 import { ChaiThemeValues } from "@/types/chaibuilder-editor-props";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Label } from "@/ui/shadcn/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/components/ui/select";
-import { Separator } from "@/ui/shadcn/components/ui/separator";
-import { Switch } from "@/ui/shadcn/components/ui/switch";
 import {
   CornerTopRightIcon,
   MixerHorizontalIcon,
@@ -29,9 +29,9 @@ import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
+import { Badge } from "@/components/ui/badge";
 import { useIncrementActionsCount } from "@/core/components/use-auto-save";
 import { claude, defaultShadcnPreset, solarized, supabase, twitter } from "@/core/constants/THEME_PRESETS";
-import { Badge } from "@/ui/shadcn/components/ui/badge";
 import { lazy, Suspense } from "react";
 
 const LazyCssImportModal = lazy(() =>
@@ -42,7 +42,7 @@ const LazyCssImportModal = lazy(() =>
 const PREV_THEME_KEY = "chai-builder-previous-theme";
 
 // Default theme preset
-const DEFAULT_THEME_PRESET = [
+const DEFAULT_THEME_PRESET: Record<string, ChaiThemeValues>[] = [
   { shadcn_default: defaultShadcnPreset },
   { twitter_theme: twitter },
   { solarized_theme: solarized },
@@ -76,7 +76,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const [isDarkMode, setIsDarkMode] = useDarkMode();
   const [selectedPreset, setSelectedPreset] = React.useState<string>("");
   const [isImportModalOpen, setIsImportModalOpen] = React.useState(false);
-  const themePresets = useBuilderProp("themePresets", []);
+  const themePresets = useBuilderProp("themePresets", {}) as Record<string, ChaiThemeValues>[];
   const themePanelComponent = useBuilderProp("themePanelComponent", null);
   const { hasPermission } = usePermissions();
   const importThemeEnabled = useBuilderProp("flags.importTheme", true);
@@ -198,7 +198,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
 
   const renderColorGroup = (group: any) => (
     <div className="grid grid-cols-1">
-      {Object.entries(group.items).map(([key]: [string, [string, string]]) => {
+      {Object.entries(group.items).map(([key]) => {
         const themeColor = get(themeValues, `colors.${key}.${isDarkMode ? 1 : 0}`);
         if (!themeColor) return null;
         return (
@@ -303,7 +303,10 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
                 <FontSelector
                   key={key}
                   label={key}
-                  value={themeValues.fontFamily[key.replace(/font-/g, "")] || value[Object.keys(value)[0]]}
+                  value={
+                    themeValues.fontFamily[key.replace(/font-/g, "") as keyof typeof themeValues.fontFamily] ||
+                    value[Object.keys(value)[0]]
+                  }
                   onChange={(newValue: string) => handleFontChange(key, newValue)}
                 />
               ))}

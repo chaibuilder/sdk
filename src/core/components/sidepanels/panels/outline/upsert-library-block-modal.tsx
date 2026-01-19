@@ -1,6 +1,7 @@
-import { useSaveToLibraryComponent } from "@/core/extensions/save-to-library";
-import { ChaiBlock, useBlocksStore } from "@/core/main";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useSaveToLibraryComponent } from "@/runtime/index";
+import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { ChaiBlock } from "@/core/main";
 import { atom, useAtom } from "jotai";
 import { filter, find, isEmpty } from "lodash-es";
 import { useMemo } from "react";
@@ -34,7 +35,7 @@ export const SaveToLibraryModal = () => {
 
   const nestedBlocks = useMemo(() => {
     if (!modalState.blockId) return [];
-    const topBlock = find(blocks, { _id: modalState.blockId });
+    const topBlock = find(blocks, { _id: modalState.blockId }) as ChaiBlock;
     delete topBlock?._parent;
     return [topBlock, ...getBlocks(blocks, topBlock?._id)];
   }, [modalState.blockId, blocks]);
@@ -46,7 +47,7 @@ export const SaveToLibraryModal = () => {
           <DialogTitle>{t("Save to Library")}</DialogTitle>
         </DialogHeader>
         {SaveToLibraryComponent && !isEmpty(modalState.blockId) && (
-          <SaveToLibraryComponent blockId={modalState.blockId} blocks={nestedBlocks} close={close} />
+          <SaveToLibraryComponent blockId={modalState.blockId!} blocks={nestedBlocks} close={close} />
         )}
       </DialogContent>
     </Dialog>

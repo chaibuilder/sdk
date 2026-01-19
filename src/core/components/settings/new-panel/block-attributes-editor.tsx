@@ -1,5 +1,7 @@
 import AttrsEditor from "@/core/components/settings/new-panel/attributes-editor";
-import { useSelectedBlock, useSelectedStylingBlocks, useUpdateBlocksProps } from "@/core/hooks";
+import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
+import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
 import { forEach, get, isEmpty, map, set } from "lodash-es";
 import * as React from "react";
 import { useState } from "react";
@@ -22,6 +24,7 @@ export const BlockAttributesEditor = React.memo(() => {
 
   const updateAttributes = React.useCallback(
     (updatedAttributes: any = []) => {
+      if (!block) return;
       const _attrs = {};
       forEach(updatedAttributes, (item) => {
         if (!isEmpty(item.key)) {

@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { treeDSBlocks } from "@/core/atoms/blocks";
 import { treeRefAtom } from "@/core/atoms/ui";
 import { DefaultCursor } from "@/core/components/sidepanels/panels/outline/default-cursor";
@@ -19,18 +21,14 @@ import { ROOT_TEMP_KEY } from "@/core/constants/STRINGS";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { canAcceptChildBlock } from "@/core/functions/block-helpers";
 import { cn } from "@/core/functions/common-functions";
-import { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
-import {
-  useBlocksStore,
-  useCutBlockIds,
-  usePermissions,
-  useSelectedBlockIds,
-  useSelectedStylingBlocks,
-  useUpdateBlocksProps,
-} from "@/core/hooks";
+import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
+import { useCutBlockIds } from "@/core/hooks/use-cut-blockIds";
+import { usePermissions } from "@/core/hooks/use-permissions";
+import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
+import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
 import { pubsub } from "@/core/pubsub";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
+import { ChaiBlock } from "@/types/common";
 import {
   CardStackIcon,
   DotsVerticalIcon,
@@ -43,7 +41,7 @@ import { useDebouncedCallback } from "@react-hookz/web";
 import { useAtom } from "jotai";
 import { find, first, isEmpty } from "lodash-es";
 import { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
-import { MoveHandler, RenameHandler, Tree } from "react-arborist";
+import { MoveHandler, RenameHandler, Tree, TreeApi } from "react-arborist";
 import { useTranslation } from "react-i18next";
 import { BlockMoreOptions } from "./block-more-options";
 import { PasteAtRootContextMenu } from "./paste-into-root";
@@ -51,9 +49,11 @@ import { PasteAtRootContextMenu } from "./paste-into-root";
 const useCanMove = () => {
   const [blocks] = useBlocksStore();
   return (ids: string[], newParentId: string | null) => {
-    const newParentType = find(blocks, { _id: newParentId })?._type;
+    const newParentType = find(blocks, { _id: newParentId });
+    if (!newParentType) return false;
     const blockType = first(ids.map((id) => find(blocks, { _id: id })?._type));
-    return canAcceptChildBlock(newParentType, blockType);
+    if (!blockType) return false;
+    return canAcceptChildBlock((newParentType as ChaiBlock)._type, blockType);
   };
 };
 
@@ -65,17 +65,17 @@ const ListTree = () => {
   const [, setStyleBlocks] = useSelectedStylingBlocks();
   const { moveBlocks } = useBlocksStoreUndoableActions();
   const canMove = useCanMove();
-  const treeRef = useRef(null);
+  const treeRef = useRef<TreeApi<any>>(null);
   const [, setTreeRef] = useAtom(treeRefAtom);
   const { t } = useTranslation();
-  const [parentContext, setParentContext] = useState(null);
+  const [parentContext, setParentContext] = useState<{ x: number; y: number } | null>(null);
   const clearSelection = () => {
     setIds([]);
     setStyleBlocks([]);
   };
 
   const filteredTreeData = useMemo(() => {
-    const filterTreeData = (data, cutIds) => {
+    const filterTreeData = (data: any[], cutIds: string[]): any[] => {
       return data
         .filter((node) => !cutIds.includes(node._id))
         .map((node) => ({
@@ -91,7 +91,7 @@ const ListTree = () => {
     updateBlockProps([id], { _name: name }, node.data._name);
   };
   const onMove: MoveHandler<any> = ({ dragIds, parentId, index }) => {
-    if (canMove(dragIds, parentId)) moveBlocks(dragIds, parentId, index);
+    if (canMove(dragIds, parentId)) moveBlocks(dragIds, parentId!, index);
   };
 
   const onSelect = (nodes: any) => {
@@ -129,21 +129,50 @@ const ListTree = () => {
     300,
   );
 
-  const handleKeyDown = (e) => {
+  const evaluateCondition = (condition: string, selectedNode: any): boolean => {
+    if (!condition) return true;
+
+    // Create a safe evaluation context with only the variables we need
+    const context = {
+      isLeaf: !selectedNode.isInternal,
+      isClosed: !selectedNode.isOpen,
+      isOpen: selectedNode.isOpen,
+    };
+
+    // Simple condition evaluator that supports basic boolean logic
+    try {
+      // Replace variables with their actual values
+      let evalCondition = condition;
+      (Object.keys(context) as Array<keyof typeof context>).forEach((key) => {
+        const regex = new RegExp(`\\b${key}\\b`, "g");
+        evalCondition = evalCondition.replace(regex, String(context[key]));
+      });
+
+      // Use Function constructor instead of eval for better security
+      return new Function(`return ${evalCondition}`)();
+    } catch {
+      console.warn("Invalid condition expression:", condition);
+      return false;
+    }
+  };
+
+  const handleKeyDown = (e: KeyboardEvent) => {
     if (!treeRef.current) return;
 
     const tree = treeRef.current;
     const selectedNode = tree.selectedNodes[0];
     if (!selectedNode) return;
 
-    setIds[selectedNode.id];
+    setIds([selectedNode.id]);
     setStyleBlocks([]);
 
     const isLeaf = !selectedNode.isInternal;
     const isClosed = !selectedNode.isOpen;
     const isOpen = selectedNode.isOpen;
 
-    const shortcut = defaultShortcuts.find((s) => s.key === e.key && (!s.when || eval(s.when)));
+    const shortcut = defaultShortcuts.find(
+      (s) => s.key === e.key && (!s.when || evaluateCondition(s.when, selectedNode)),
+    );
 
     if (shortcut) {
       e.preventDefault();
@@ -230,8 +259,8 @@ const ListTree = () => {
           id="outline-view "
           className="no-scrollbar h-full overflow-y-auto text-sm"
           onKeyDown={(e) => {
-            if (!treeRef.current.isEditing) {
-              handleKeyDown(e);
+            if (treeRef.current && !treeRef.current.isEditing) {
+              handleKeyDown(e as unknown as KeyboardEvent);
             }
           }}>
           <div className="mb-2 flex items-center justify-end gap-x-1 pb-2 text-sm text-muted-foreground">

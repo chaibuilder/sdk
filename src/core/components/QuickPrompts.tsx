@@ -1,7 +1,7 @@
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { LANGUAGES } from "@/core/constants/LANGUAGES";
 import { useAskAi } from "@/core/hooks/use-ask-ai";
 import { useLanguages } from "@/core/hooks/use-languages";
-import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/components/ui/popover";
 import {
   ArrowDownIcon,
   ArrowUpIcon,

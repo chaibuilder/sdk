@@ -10,5 +10,5 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["vite.config.ts"]
+  "include": ["vite.config.ts", "declaration.d.ts", "./src/express/express-plugin.ts"]
 }

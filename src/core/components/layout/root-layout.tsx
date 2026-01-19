@@ -1,3 +1,7 @@
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { AskAI } from "@/core/components/ask-ai-panel";
 import CanvasArea from "@/core/components/canvas/canvas-area";
 import { CanvasTopBar } from "@/core/components/canvas/topbar/canvas-top-bar";
@@ -6,15 +10,12 @@ import { AddBlocksDialog } from "@/core/components/layout/add-blocks-dialog";
 import { NoopComponent } from "@/core/components/noop-component";
 import SettingsPanel from "@/core/components/settings/settings-panel";
 import ThemeConfigPanel from "@/core/components/sidepanels/panels/theme-configuration/ThemeConfigPanel";
-import { registerChaiSidebarPanel, useChaiSidebarPanels } from "@/core/extensions/sidebar-panels";
-import { useTopBarComponent } from "@/core/extensions/top-bar";
-import { useBuilderProp, useSidebarActivePanel } from "@/core/hooks";
+import { registerChaiSidebarPanel, useChaiSidebarPanels } from "@/runtime/index";
+import { useTopBarComponent } from "@/runtime/index";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
+import { useSidebarActivePanel } from "@/core/hooks/use-sidebar-active-panel";
 import { useActiveSettingsTab, useRightPanel } from "@/core/hooks/use-theme";
 import { isDevelopment } from "@/core/import-html/general";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/ui/shadcn/components/ui/sheet";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { Cross1Icon, LightningBoltIcon, MixerHorizontalIcon, PlusCircledIcon, StackIcon } from "@radix-ui/react-icons";
 import { motion } from "framer-motion";
 import { find, first, get, reverse } from "lodash-es";
@@ -30,9 +31,9 @@ import React, {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import { AiIcon } from "../ai/ai-icon";
-import { useIsDragAndDropEnabled } from "../canvas/dnd/drag-and-drop/hooks";
-import { DesignTokensIcon } from "../sidepanels/panels/design-tokens/DesignTokensIcon";
+import { AiIcon } from "@/core/components/ai/ai-icon";
+import { useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
+import { DesignTokensIcon } from "@/core/components/sidepanels/panels/design-tokens/DesignTokensIcon";
 
 const ManageDesignTokens = React.lazy(() => import("../settings/new-panel/manage-design-token/manage-design-tokens"));
 

@@ -26,7 +26,7 @@ ChaiBuilder supports fine-grained permission control to restrict user actions.
 Pass permissions array to the editor:
 
 ```tsx
-import { ChaiBuilderEditor } from "@chaibuilder/sdk";
+import { ChaiBuilderEditor } from "@/core/main";
 
 <ChaiBuilderEditor
   permissions={["add_block", "delete_block", "edit_block", "move_block", "save_page"]}
@@ -39,7 +39,7 @@ import { ChaiBuilderEditor } from "@chaibuilder/sdk";
 Use the `usePermissions` hook in custom components:
 
 ```tsx
-import { usePermissions } from "@chaibuilder/sdk";
+import { usePermissions } from "@/core/main";
 
 const MyComponent = () => {
   const { hasPermission } = usePermissions();
@@ -57,7 +57,7 @@ const MyComponent = () => {
 Import permission constants for type safety:
 
 ```tsx
-import { PERMISSIONS } from "@chaibuilder/sdk";
+import { PERMISSIONS } from "@/core/main";
 
 const editorPermissions = [
   PERMISSIONS.ADD_BLOCK,
@@ -117,7 +117,7 @@ const viewerPermissions = []; // Empty array = read-only mode
 Render UI based on permissions:
 
 ```tsx
-import { usePermissions } from "@chaibuilder/sdk";
+import { usePermissions } from "@/core/main";
 
 const Toolbar = () => {
   const { hasPermission } = usePermissions();

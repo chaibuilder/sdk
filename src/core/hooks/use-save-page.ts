@@ -1,3 +1,5 @@
+import { chaiDesignTokensAtom } from "@/core/atoms/builder";
+import { userActionsCountAtom } from "@/core/components/use-auto-save";
 import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { useCheckStructure } from "@/core/hooks/use-check-structure";
 import { useGetPageData } from "@/core/hooks/use-get-page-data";
@@ -5,12 +7,11 @@ import { useIsPageLoaded } from "@/core/hooks/use-is-page-loaded";
 import { useLanguages } from "@/core/hooks/use-languages";
 import { usePermissions } from "@/core/hooks/use-permissions";
 import { useTheme } from "@/core/hooks/use-theme";
-import { ChaiBlock, getRegisteredChaiBlock } from "@chaibuilder/runtime";
+import { getRegisteredChaiBlock } from "@/runtime/index";
 import { useThrottledCallback } from "@react-hookz/web";
 import { atom, useAtom, useAtomValue } from "jotai";
 import { has, isEmpty, noop } from "lodash-es";
-import { chaiDesignTokensAtom } from "../atoms/builder";
-import { userActionsCountAtom } from "../components/use-auto-save";
+
 export const builderSaveStateAtom = atom<"SAVED" | "SAVING" | "UNSAVED">("SAVED"); // SAVING
 builderSaveStateAtom.debugLabel = "builderSaveStateAtom";
 
@@ -26,7 +27,7 @@ export const checkMissingTranslations = (blocks: any[], lang: string): boolean =
       const blockDef = getRegisteredChaiBlock(block._type);
       if (!blockDef) return false;
 
-      const i18nProps = has(blockDef, "i18nProps") ? blockDef.i18nProps : [];
+      const i18nProps = has(blockDef, "i18nProps") ? (blockDef.i18nProps ?? []) : [];
 
       return i18nProps.some((prop: string) => {
         const translatedProp = `${prop}-${lang}`;
@@ -41,7 +42,7 @@ export const checkMissingTranslations = (blocks: any[], lang: string): boolean =
 
 export const useSavePage = () => {
   const [saveState, setSaveState] = useAtom(builderSaveStateAtom);
-  const onSave = useBuilderProp("onSave", async (_args) => {});
+  const onSave = useBuilderProp("onSave", async (_error: any) => {});
   const onSaveStateChange = useBuilderProp("onSaveStateChange", noop);
   const getPageData = useGetPageData();
   const [theme] = useTheme();
@@ -67,7 +68,8 @@ export const useSavePage = () => {
       // Run structure validation before saving
       const pageData = getPageData();
       if (pageData?.blocks) {
-        checkStructure(pageData.blocks as ChaiBlock[]);
+        // @ts-ignore
+        checkStructure(pageData.blocks);
       }
       setSaveState("SAVING");
       onSaveStateChange("SAVING");

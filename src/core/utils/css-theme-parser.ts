@@ -1,6 +1,6 @@
+import { getAllRegisteredFonts } from "@/runtime/index";
 import { ChaiThemeValues } from "@/types/chaibuilder-editor-props";
 import { toHex } from "./color-formatter";
-import { getAllRegisteredFonts } from "@chaibuilder/runtime";
 
 /**
  * Parses CSS input and converts it to ChaiThemeValues format
@@ -151,7 +151,7 @@ const processAndFormatColor = (value: string): string => {
     // Handle space separated HSL values (e.g., "200 23.0769% 97.4510%")
     const hslSpaceMatch = cleanValue.match(/^(\d+\.?\d*)\s+(\d+\.?\d*)%\s+(\d+\.?\d*)%$/);
     if (hslSpaceMatch) {
-      const [_, h, s, l] = hslSpaceMatch;
+      const [, h, s, l] = hslSpaceMatch;
       const colorStr = `hsl(${h} ${s}% ${l}%)`;
       return toHex(colorStr) || "#000000";
     }

@@ -1,11 +1,12 @@
-import { useBuilderProp } from "@/core/hooks";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { AiIcon } from "@/core/components/ai/ai-icon";
 import { useAiAssistant } from "@/core/hooks/use-ask-ai";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
+import { usePermissions } from "@/core/hooks/use-permissions";
 import { useRightPanel } from "@/core/hooks/use-theme";
-import { PERMISSIONS, useChaiFeatureFlag, usePermissions } from "@/core/main";
-import { Label } from "@/ui/shadcn/components/ui/label";
-import { Switch } from "@/ui/shadcn/components/ui/switch";
+import { PERMISSIONS } from "@/core/main";
 import { useTranslation } from "react-i18next";
-import { AiIcon } from "../../ai/ai-icon";
 
 export const AiAssistant = () => {
   const setAiAssistantActive = useAiAssistant();
@@ -13,9 +14,8 @@ export const AiAssistant = () => {
   const askAiCallBack = useBuilderProp("askAiCallBack", null);
   const { t } = useTranslation();
   const { hasPermission } = usePermissions();
-  const aiChatLeft = useChaiFeatureFlag("enable-ai-chat-left");
 
-  if (aiChatLeft || !askAiCallBack || !hasPermission(PERMISSIONS.EDIT_BLOCK)) return null;
+  if (!askAiCallBack || !hasPermission(PERMISSIONS.EDIT_BLOCK)) return null;
   return (
     <div className="flex items-center space-x-2">
       <Label htmlFor="ai-assistant" className="flex items-center gap-x-1 text-sm text-yellow-600">

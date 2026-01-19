@@ -1,28 +1,26 @@
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 import { ClearCanvas } from "@/core/components/canvas/topbar/clear-canvas";
 import { SaveToLibrary } from "@/core/components/sidepanels/panels/outline/save-to-library";
 import { UnlinkLibraryBlock } from "@/core/components/sidepanels/panels/outline/unlink-library-block";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { canAddChildBlock, canDeleteBlock, canDuplicateBlock } from "@/core/functions/block-helpers";
-import {
-  useBlocksStore,
-  useBuilderProp,
-  useCutBlockIds,
-  useDuplicateBlocks,
-  usePasteBlocks,
-  useRemoveBlocks,
-  useSelectedBlock,
-  useSelectedBlockIds,
-} from "@/core/hooks";
+import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { useCopyBlocks } from "@/core/hooks/use-copy-blockIds";
-import { PERMISSIONS, usePermissions } from "@/core/main";
+import { useCutBlockIds } from "@/core/hooks/use-cut-blockIds";
+import { useDuplicateBlocks } from "@/core/hooks/use-duplicate-blocks";
+import { usePasteBlocks } from "@/core/hooks/use-paste-blocks";
+import { usePermissions } from "@/core/hooks/use-permissions";
+import { useRemoveBlocks } from "@/core/hooks/use-remove-blocks";
+import { useSelectedBlock, useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { PERMISSIONS } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/ui/shadcn/components/ui/dropdown-menu";
 import {
   CardStackIcon,
   CardStackPlusIcon,
@@ -91,7 +89,7 @@ const CopyPasteBlocks = ({ isFromBody = false }: { isFromBody?: boolean }) => {
     <>
       {enableCopyToClipboard && (
         <DropdownMenuItem
-          disabled={!canDuplicateBlock(selectedBlock?._type)}
+          disabled={!canDuplicateBlock(selectedBlock?._type!)}
           onClick={handleCopy}
           className="flex items-center gap-x-4 text-xs">
           <CopyIcon /> {t("Copy")}
@@ -213,14 +211,14 @@ const BlockContextMenuContent = ({ node }: { node: any }) => {
         <>
           {!isDragAndDropEnabled && (
             <DropdownMenuItem
-              disabled={!canAddChildBlock(selectedBlock?._type)}
+              disabled={!canAddChildBlock(selectedBlock?._type!)}
               className="flex items-center gap-x-4 text-xs"
               onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, selectedBlock)}>
               <PlusIcon className="h-3.5 w-3.5" /> {t("Add block")}
             </DropdownMenuItem>
           )}
           <DropdownMenuItem
-            disabled={!canDuplicateBlock(selectedBlock?._type)}
+            disabled={!canDuplicateBlock(selectedBlock?._type!)}
             className="flex items-center gap-x-4 text-xs"
             onClick={duplicate}>
             <CardStackPlusIcon /> {t("Duplicate")}

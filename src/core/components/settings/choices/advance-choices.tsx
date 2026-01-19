@@ -1,8 +1,8 @@
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { BlockSettingsContext } from "@/core/components/settings/settings-context";
 import { getUserInputValues } from "@/core/functions/get-user-input-values";
 import { getClassValueAndUnit } from "@/core/functions/helper-fn";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
 import { InfoCircledIcon, RowSpacingIcon, TriangleDownIcon } from "@radix-ui/react-icons";
 import { useThrottledCallback } from "@react-hookz/web";
 import { first, get, isEmpty, isNaN, parseInt } from "lodash-es";
@@ -103,7 +103,7 @@ export const AdvanceChoices = (props: RangeOptionsType) => {
     const { value: newValue, unit: newUnit } = getClassValueAndUnit(currentClass);
     if (newUnit === "") {
       setValue(newValue);
-      setUnit(cssProperty?.toLowerCase().includes("width") ? "%" : first(units));
+      setUnit(cssProperty?.toLowerCase().includes("width") ? "%" : first(units)!);
       return;
     }
     setUnit(newUnit);

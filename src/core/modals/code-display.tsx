@@ -1,4 +1,4 @@
-import { Button } from "@/ui/shadcn/components/ui/button";
+import { Button } from "@/components/ui/button";
 import Editor from "@monaco-editor/react";
 import { CheckIcon, CopyIcon, DownloadIcon } from "@radix-ui/react-icons";
 import { useState } from "react";

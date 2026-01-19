@@ -1,7 +1,7 @@
-import { lsThemeAtom } from "@/_demo/atoms-dev";
-import { useDarkMode } from "@/core/hooks";
+import { Input } from "@/components/ui/input";
+import { useDarkMode } from "@/core/hooks/use-dark-mode";
 import { cn } from "@/core/utils/cn";
-import { Input } from "@/ui";
+import { lsThemeAtom } from "@/routes/demo/atoms-dev";
 import { CaretDownIcon, Cross1Icon } from "@radix-ui/react-icons";
 import { useDebouncedState } from "@react-hookz/web";
 import { useAtom } from "jotai";
@@ -27,21 +27,21 @@ const Commons = ({ themeColors, onClose, color, onChange, onRemove }: any) => {
     <>
       <div className="flex w-[180px] flex-wrap gap-1 pb-2">
         {themeColors?.length > 0 &&
-          uniq(themeColors).map((hex: string) => (
+          uniq(themeColors).map((hex) => (
             <button
-              key={hex}
+              key={hex as string}
               className={cn(
                 "h-4 w-4 cursor-pointer rounded-full border border-gray-900 shadow duration-200 hover:scale-105 hover:shadow-xl",
                 {
                   "border-2": hex === color,
                 },
               )}
-              style={{ backgroundColor: hex }}
+              style={{ backgroundColor: hex as string }}
               onClick={() => {
-                onChange(hex);
+                onChange(hex as string);
                 onClose();
               }}
-              title={(hex || "#000000")?.toUpperCase()}
+              title={((hex as string) || "#000000")?.toUpperCase()}
             />
           ))}
       </div>
@@ -189,10 +189,10 @@ const RteColorPicker = ({ editor, from, menuRef }: { editor: any; from?: "settin
   return (
     <RteDropdownMenu
       editor={editor}
-      from={from}
+      from={from!}
       menuRef={menuRef}
       trigger={
-        <div className={cn("relative flex items-center", getActiveClasses(editor, isActive, from))} title="Text Color">
+        <div className={cn("relative flex items-center", getActiveClasses(editor, isActive, from!))} title="Text Color">
           <div
             className="h-4 w-4 rounded-full"
             style={{

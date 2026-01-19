@@ -2,10 +2,20 @@ import react from "@vitejs/plugin-react-swc";
 import path, { resolve } from "path";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
+import express from "./src/express/express-plugin";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), dts({ rollupTypes: true })],
+  plugins: [
+    react(),
+    dts({
+      include: ["src/**/*", "declaration.d.ts"],
+      exclude: ["**/*.test.*", "**/*.spec.*"],
+      rollupTypes: true,
+      insertTypesEntry: true,
+    }),
+    express("./src/express/index.ts"),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -17,16 +27,19 @@ export default defineConfig({
       entry: {
         core: resolve(__dirname, "src/core/main/index.ts"),
         render: resolve(__dirname, "src/render/index.ts"),
-        ui: resolve(__dirname, "src/ui/index.ts"),
         "web-blocks": resolve(__dirname, "src/web-blocks/index.ts"),
-        tailwind: resolve(__dirname, "src/tailwind/index.ts"),
         runtime: resolve(__dirname, "src/runtime.ts"),
+        pages: resolve(__dirname, "src/pages/index.ts"),
+        actions: resolve(__dirname, "src/actions/export.ts"),
+        utils: resolve(__dirname, "src/utils/index.ts"),
+        "supabase-actions": resolve(__dirname, "src/express/actions/storage/index.ts"),
       },
       formats: ["es", "cjs"],
     },
     rollupOptions: {
       treeshake: true,
       output: {
+        exports: "named",
         globals: {
           "react-dom": "ReactDom",
           react: "React",
@@ -39,7 +52,20 @@ export default defineConfig({
       external: [
         "react/jsx-runtime",
         "react/jsx-dev-runtime",
-        "@chaibuilder/runtime",
+        "drizzle-orm",
+        "drizzle-orm/pg-core",
+        "drizzle-orm/postgres-js",
+        "postgres",
+        "crypto",
+        "node:crypto",
+        "path",
+        "os",
+        "fs",
+        "net",
+        "tls",
+        "stream",
+        "perf_hooks",
+        "sharp",
         "@floating-ui/dom",
         "@floating-ui/react-dom",
         "react-error-boundary",
@@ -71,6 +97,7 @@ export default defineConfig({
         "react-arborist",
         "jotai/utils",
         "sonner",
+        "sharp",
         "@rjsf/core",
         "react-hook-form",
         "@hookform/resolvers",
@@ -121,12 +148,26 @@ export default defineConfig({
         "@tiptap/extension-highlight",
         "react-wrap-balancer",
         "tailwind-merge",
-        "tailwindcss-animate",
         "undo-manager",
         "zod",
         "nanoid",
         "monaco-editor",
         "@monaco-editor/react",
+        "use-stick-to-bottom",
+        "streamdown",
+        "lucide-react",
+        "motion",
+        "@tanstack/react-query",
+        "@radix-ui/react-use-controllable-state",
+        "compressorjs",
+        "canvas-confetti",
+        "react-filerobot-image-editor",
+        "react-dropzone",
+        "date-fns",
+        "react-diff-view",
+        "@radix-ui/react-collapsible",
+        "react-error-boundary",
+        "next",
       ],
     },
   },

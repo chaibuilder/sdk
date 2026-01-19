@@ -1,17 +1,16 @@
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FallbackError } from "@/core/components/fallback-error";
 import BlockSettings from "@/core/components/settings/block-settings";
 import BlockStyling from "@/core/components/settings/block-styling";
 import { BlockAttributesEditor } from "@/core/components/settings/new-panel/block-attributes-editor";
-import {
-  useActiveSettingsTab,
-  useBuilderProp,
-  useLanguages,
-  useSavePage,
-  useSelectedBlock,
-  useSelectedStylingBlocks,
-} from "@/core/hooks";
-import { PERMISSIONS, usePermissions } from "@/core/main";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/shadcn/components/ui/tabs";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
+import { useLanguages } from "@/core/hooks/use-languages";
+import { usePermissions } from "@/core/hooks/use-permissions";
+import { useSavePage } from "@/core/hooks/use-save-page";
+import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
+import { useActiveSettingsTab } from "@/core/hooks/use-theme";
+import { PERMISSIONS } from "@/core/main";
 import { ChevronDownIcon, MixerHorizontalIcon } from "@radix-ui/react-icons";
 import { isEmpty, isNull, noop } from "lodash-es";
 import React, { useCallback, useState } from "react";

@@ -1,3 +1,5 @@
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { showPredefinedBlockCategoryAtom } from "@/core/atoms/ui";
 import { CoreBlock } from "@/core/components/sidepanels/panels/add-blocks/core-block";
 import { DefaultChaiBlocks } from "@/core/components/sidepanels/panels/add-blocks/default-blocks";
@@ -5,15 +7,15 @@ import ImportHTML from "@/core/components/sidepanels/panels/add-blocks/import-ht
 import UILibrariesPanel from "@/core/components/sidepanels/panels/add-blocks/libraries-panel";
 import { PartialBlocks } from "@/core/components/sidepanels/panels/add-blocks/partial-blocks";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { useChaiAddBlockTabs } from "@/core/extensions/add-block-tabs";
-import { useChaiLibraries } from "@/core/extensions/libraries";
+import { useChaiAddBlockTabs } from "@/runtime/index";
+import { useChaiLibraries } from "@/runtime/index";
 import { canAcceptChildBlock, canBeNestedInside } from "@/core/functions/block-helpers";
-import { useBlocksStore, useBuilderProp, usePermissions } from "@/core/hooks";
+import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { usePartialBlocksList } from "@/core/hooks/use-partial-blocks-store";
+import { usePermissions } from "@/core/hooks/use-permissions";
 import { mergeClasses, PERMISSIONS } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
-import { ScrollArea } from "@/ui/shadcn/components/ui/scroll-area";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/shadcn/components/ui/tabs";
 import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { capitalize, debounce, filter, find, map, reject, sortBy, values } from "lodash-es";
@@ -209,7 +211,8 @@ export const ChaiBuilderBlocks = ({
                           block={block}
                           disabled={
                             !dnd &&
-                            (!canAcceptChildBlock(parentType, block.type) || !canBeNestedInside(parentType, block.type))
+                            (!canAcceptChildBlock(parentType!, block.type) ||
+                              !canBeNestedInside(parentType!, block.type))
                           }
                         />
                       ))}

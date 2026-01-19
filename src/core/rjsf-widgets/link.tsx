@@ -1,11 +1,13 @@
-import { useBuilderProp, useLanguages, useTranslation } from "@/core/hooks";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
+import { useLanguages } from "@/core/hooks/use-languages";
 import { PageTypeItem } from "@/types/chaibuilder-editor-props";
 import { Cross1Icon } from "@radix-ui/react-icons";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { FieldProps } from "@rjsf/utils";
 import { get, isEmpty, map, split, startsWith } from "lodash-es";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { LANGUAGES } from "../constants/LANGUAGES";
+import { useTranslation } from "react-i18next";
+import { LANGUAGES } from "@/core/constants/LANGUAGES";
 import { DataBindingSelector } from "./data-binding-selector";
 
 const PageTypeField = ({
@@ -18,7 +20,6 @@ const PageTypeField = ({
   onChange: (href: string) => void;
 }) => {
   const { t } = useTranslation();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const searchPageTypeItems = useBuilderProp("searchPageTypeItems", (_: string, __: any) => []);
   const [loading, setLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);

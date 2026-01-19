@@ -1,9 +1,9 @@
+import { Input } from "@/components/ui/input";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useCurrentClassByProperty } from "@/core/components/settings/choices/block-style";
 import { StyleContext } from "@/core/components/settings/choices/style-context";
 import { useTailwindClassList } from "@/core/constants/CLASSES_LIST";
-import { useUndoManager } from "@/core/hooks";
-import { Input } from "@/ui/shadcn/components/ui/input";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/components/ui/tooltip";
+import { useUndoManager } from "@/core/history/use-undo-manager";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { get } from "lodash-es";
 import { useContext, useMemo } from "react";

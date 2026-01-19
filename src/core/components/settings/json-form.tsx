@@ -1,5 +1,4 @@
-import { useBlockSettingComponents } from "@/core/extensions/blocks-settings";
-import { useLanguages } from "@/core/hooks";
+import { useLanguages } from "@/core/hooks/use-languages";
 import {
   IconPickerField,
   ImagePickerField,
@@ -13,12 +12,13 @@ import { CodeEditor } from "@/core/rjsf-widgets/code-widget";
 import { CollectionFilterSortField } from "@/core/rjsf-widgets/collection-select";
 import JSONFormFieldTemplate from "@/core/rjsf-widgets/json-form-field-template";
 import { RepeaterBindingWidget } from "@/core/rjsf-widgets/repeater-binding";
+import { useBlockSettingComponents } from "@/runtime/index";
+import { PlusIcon } from "@radix-ui/react-icons";
 import { useThrottledCallback } from "@react-hookz/web";
 import RjForm from "@rjsf/core";
 import { RJSFSchema, UiSchema } from "@rjsf/utils";
 import validator from "@rjsf/validator-ajv8";
-import { take, get, set } from "lodash-es";
-import { PlusIcon } from "@radix-ui/react-icons";
+import { get, set, take } from "lodash-es";
 import { memo } from "react";
 
 type JSONFormType = {
@@ -29,7 +29,7 @@ type JSONFormType = {
   onChange: ({ formData }: any, key?: string) => void;
 };
 
-const CustomAddButton = (props) => (
+const CustomAddButton = (props: any) => (
   <button {...props} className="duration absolute right-2 top-2 cursor-pointer text-blue-400 hover:text-blue-500">
     <div className="flex items-center gap-x-0.5 text-[11px] leading-tight">
       <PlusIcon className="h-3 w-3" /> <span>Add</span>
@@ -46,8 +46,8 @@ export const JSONForm = memo(({ blockId, schema, uiSchema, formData, onChange }:
   const throttledChange = useThrottledCallback(
     async ({ formData }: any, id?: string) => {
       // * Sanitize undefined values
-      let updatedPropData = get(formData, id);
-      if (updatedPropData === undefined) set(formData, id, "");
+      let updatedPropData = get(formData, id!);
+      if (updatedPropData === undefined) set(formData, id!, "");
 
       onChange({ formData }, id);
     },

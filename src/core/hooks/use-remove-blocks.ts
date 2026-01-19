@@ -1,6 +1,7 @@
 import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
+import { usePermissions } from "@/core/hooks/use-permissions";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
-import { PERMISSIONS, usePermissions } from "@/core/main";
+import { PERMISSIONS } from "@/core/main";
 import { ChaiBlock } from "@/types/chai-block";
 import { filter, find, includes, isEmpty } from "lodash-es";
 import { useCallback } from "react";
@@ -39,7 +40,7 @@ export const removeNestedBlocks = (blocks: ChaiBlock[], blockIds: Array<string>)
               // Copy any content- properties
               Object.keys(otherChild).forEach((key) => {
                 if (key.startsWith("content-")) {
-                  updatedBlock[key] = otherChild[key];
+                  (updatedBlock as any)[key] = otherChild[key];
                 }
               });
 

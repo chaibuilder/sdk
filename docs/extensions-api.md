@@ -25,7 +25,7 @@ ChaiBuilder provides several registration APIs to extend the editor functionalit
 Add custom panels to the editor sidebar.
 
 ```typescript
-import { registerChaiSidebarPanel } from "@chaibuilder/sdk";
+import { registerChaiSidebarPanel } from "@/core/main";
 
 registerChaiSidebarPanel("my-panel", {
   label: "My Panel",
@@ -73,7 +73,7 @@ interface ChaiSidebarPanel {
 Replace the default media picker with a custom implementation.
 
 ```typescript
-import { registerChaiMediaManager } from "@chaibuilder/sdk";
+import { registerChaiMediaManager } from "@/core/main";
 
 registerChaiMediaManager(({ close, onSelect, mode }) => {
   // mode: "image" | "video" | "audio"
@@ -129,7 +129,7 @@ type ChaiAsset = {
 Register external block libraries that users can browse and add blocks from.
 
 ```typescript
-import { registerChaiLibrary } from "@chaibuilder/sdk";
+import { registerChaiLibrary } from "@/core/main";
 
 registerChaiLibrary("my-library", {
   name: "My Block Library",
@@ -184,7 +184,7 @@ type ChaiLibraryBlock<T> = {
 Replace the default top toolbar with a custom component.
 
 ```typescript
-import { registerChaiTopBar } from "@chaibuilder/sdk";
+import { registerChaiTopBar } from "@/core/main";
 
 const CustomTopBar = () => {
   return (
@@ -212,7 +212,7 @@ registerChaiTopBar(CustomTopBar);
 Provide a custom UI for saving blocks to a library.
 
 ```typescript
-import { registerChaiSaveToLibrary } from "@chaibuilder/sdk";
+import { registerChaiSaveToLibrary } from "@/core/main";
 
 registerChaiSaveToLibrary(({ blockId, blocks, close }) => {
   const handleSave = async (name, category) => {
@@ -249,7 +249,7 @@ type SaveToLibraryProps = {
 Add custom tabs to the "Add Block" panel.
 
 ```typescript
-import { registerChaiAddBlockTab } from "@chaibuilder/sdk";
+import { registerChaiAddBlockTab } from "@/core/main";
 
 registerChaiAddBlockTab("ai-blocks", {
   tab: () => <span>AI Generate</span>,
@@ -304,7 +304,7 @@ registerChaiFont("CustomFont", {
 Pre-process HTML before it's imported into the builder.
 
 ```typescript
-import { registerChaiPreImportHTMLHook } from "@chaibuilder/sdk";
+import { registerChaiPreImportHTMLHook } from "@/core/main";
 
 registerChaiPreImportHTMLHook(async (html) => {
   // Transform HTML before import
@@ -321,7 +321,7 @@ Extend the block settings form with custom widgets, fields, or templates.
 ### registerBlockSettingWidget
 
 ```typescript
-import { registerBlockSettingWidget } from "@chaibuilder/sdk";
+import { registerBlockSettingWidget } from "@/core/main";
 
 registerBlockSettingWidget("colorGradient", ({ value, onChange }) => {
   return (
@@ -350,7 +350,7 @@ registerChaiBlockSchema({
 ### registerBlockSettingField
 
 ```typescript
-import { registerBlockSettingField } from "@chaibuilder/sdk";
+import { registerBlockSettingField } from "@/core/main";
 
 registerBlockSettingField("customField", (props) => {
   // Full control over field rendering
@@ -361,7 +361,7 @@ registerBlockSettingField("customField", (props) => {
 ### registerBlockSettingTemplate
 
 ```typescript
-import { registerBlockSettingTemplate } from "@chaibuilder/sdk";
+import { registerBlockSettingTemplate } from "@/core/main";
 
 registerBlockSettingTemplate("customTemplate", (props) => {
   // Custom form template
@@ -376,7 +376,7 @@ registerBlockSettingTemplate("customTemplate", (props) => {
 Register custom feature flags:
 
 ```typescript
-import { registerChaiFeatureFlag } from "@chaibuilder/sdk";
+import { registerChaiFeatureFlag } from "@/core/main";
 
 registerChaiFeatureFlag("myFeature", {
   value: false,
@@ -384,7 +384,7 @@ registerChaiFeatureFlag("myFeature", {
 });
 
 // Use in components
-import { useChaiFeatureFlag, IfChaiFeatureFlag } from "@chaibuilder/sdk";
+import { useChaiFeatureFlag, IfChaiFeatureFlag } from "@/core/main";
 
 const MyComponent = () => {
   const isEnabled = useChaiFeatureFlag("myFeature");

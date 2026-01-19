@@ -1,13 +1,13 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { usePageExternalData } from "@/core/atoms/builder";
 import { NestedPathSelector } from "@/core/components/nested-path-selector";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Input } from "@/ui/shadcn/components/ui/input";
-import { Label } from "@/ui/shadcn/components/ui/label";
-import { Textarea } from "@/ui/shadcn/components/ui/textarea";
+import { Cross1Icon, Pencil2Icon } from "@radix-ui/react-icons";
 import { isEmpty } from "lodash-es";
-import { Pencil2Icon, Cross1Icon } from "@radix-ui/react-icons";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -42,12 +42,12 @@ export default React.memo(function AttrsEditor({
 
   const addAttribute = () => {
     if (newKey.startsWith("@")) {
-      setError(t('Attribute keys cannot start with @'));
+      setError(t("Attribute keys cannot start with @"));
       return;
     }
     if (newKey) {
       const newAttributes = [...attributes, { key: newKey, value: newValue }];
-      onAttributesChange(newAttributes);
+      onAttributesChange?.(newAttributes);
       setAttributes(attributes);
       setNewKey("");
       setNewValue("");
@@ -57,7 +57,7 @@ export default React.memo(function AttrsEditor({
 
   const removeAttribute = (index: number) => {
     const newAttributes = attributes.filter((_, i) => i !== index);
-    onAttributesChange(newAttributes);
+    onAttributesChange?.(newAttributes);
     setAttributes(newAttributes);
   };
 
@@ -69,13 +69,13 @@ export default React.memo(function AttrsEditor({
 
   const saveEdit = () => {
     if (newKey.startsWith("@")) {
-      setError(t('Attribute keys cannot start with @'));
+      setError(t("Attribute keys cannot start with @"));
       return;
     }
     if (editIndex !== null && newKey) {
       const newAttributes = [...attributes];
       newAttributes[editIndex] = { key: newKey, value: newValue };
-      onAttributesChange(newAttributes);
+      onAttributesChange?.(newAttributes);
       setAttributes(newAttributes);
       setEditIndex(null);
       setNewKey("");
@@ -174,7 +174,7 @@ export default React.memo(function AttrsEditor({
         <div className="flex flex-col gap-y-1">
           <div className="w-full">
             <Label htmlFor="attrKey" className="text-[11px] font-normal leading-tight text-slate-600">
-              {t('Key')}
+              {t("Key")}
             </Label>
             <Input
               autoCapitalize={"off"}
@@ -184,14 +184,14 @@ export default React.memo(function AttrsEditor({
               ref={keyInputRef}
               value={newKey}
               onChange={(e) => setNewKey(e.target.value)}
-              placeholder={t('Enter key')}
+              placeholder={t("Enter key")}
               className="py-0 text-xs font-normal leading-tight placeholder:text-slate-400"
             />
           </div>
           <div className="w-full">
             <div className="flex items-center justify-between">
               <Label htmlFor="attrValue" className="text-[11px] font-normal text-slate-600">
-                {t('Value')}
+                {t("Value")}
               </Label>
               {!isEmpty(pageExternalData) && <NestedPathSelector data={pageExternalData} onSelect={handlePathSelect} />}
             </div>
@@ -204,14 +204,14 @@ export default React.memo(function AttrsEditor({
               value={newValue}
               onChange={(e) => setNewValue(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder={t('Enter value')}
+              placeholder={t("Enter value")}
               className="text-xs font-normal leading-tight placeholder:text-slate-400"
             />
           </div>
         </div>
         <div className="flex justify-end">
           <Button type="submit" disabled={!newKey.length} variant="default" size="sm" className="h-8 w-24 text-xs">
-            {editIndex !== null ? t('Save') : t('Add')}
+            {editIndex !== null ? t("Save") : t("Add")}
           </Button>
         </div>
         {error && <p className="text-xs text-red-500">{error}</p>}

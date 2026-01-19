@@ -1,4 +1,4 @@
-import { ChaiStyles, getRegisteredChaiBlock } from "@chaibuilder/runtime";
+import { ChaiStyles, getRegisteredChaiBlock } from "@/runtime/index";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { omit } from "lodash-es";
 import * as React from "react";

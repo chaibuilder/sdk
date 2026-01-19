@@ -1,6 +1,6 @@
+import { Button } from "@/components/ui/button";
 import { cn } from "@/core/functions/common-functions";
-import { useSavePage } from "@/core/hooks";
-import { Button } from "@/ui/shadcn/components/ui/button";
+import { useSavePage } from "@/core/hooks/use-save-page";
 import { CheckIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
 
@@ -27,7 +27,7 @@ export const SaveButton = () => {
       )}
       size="sm"
       variant="outline">
-      <CheckIcon className={"text-sm text-white h-4 w-4"} />
+      <CheckIcon className={"h-4 w-4 text-sm text-white"} />
       <span className={"text-sm"}>
         {saveState === "SAVING" ? t("Saving") : saveState === "SAVED" ? t("Saved") : t("Unsaved")}
       </span>

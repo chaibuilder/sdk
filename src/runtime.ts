@@ -1,1 +1,1 @@
-export * from "@chaibuilder/runtime";
+export * from "./runtime/index";

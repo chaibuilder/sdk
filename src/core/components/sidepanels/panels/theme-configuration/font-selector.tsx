@@ -1,6 +1,6 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/components/ui/select";
-import { Label } from "@/ui/shadcn/components/ui/label";
-import { useRegisteredFonts } from "@chaibuilder/runtime";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useRegisteredFonts } from "@/runtime/index";
 import { startCase } from "lodash-es";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -15,7 +15,7 @@ const FontSelector = ({
   onChange: (value: string) => void;
 }) => {
   const availableFonts = useRegisteredFonts();
-    const { t } = useTranslation() 
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!availableFonts.some((font) => font.family === value)) {

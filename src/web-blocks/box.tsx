@@ -1,11 +1,11 @@
-import EmptySlot from "@/web-blocks/empty-slot";
 import {
   ChaiBlockComponentProps,
   ChaiBlockDefinition,
   ChaiStyles,
   registerChaiBlockSchema,
   StylesProp,
-} from "@chaibuilder/runtime";
+} from "@/runtime/index";
+import EmptySlot from "@/web-blocks/empty-slot";
 import * as React from "react";
 
 export type BoxProps = {

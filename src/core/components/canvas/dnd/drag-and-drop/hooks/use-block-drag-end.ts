@@ -13,8 +13,8 @@
 import { useCanvasIframe } from "@/core/hooks/use-canvas-iframe";
 import { useAtom } from "jotai";
 import { useCallback } from "react";
-import { canvasRenderKeyAtom, dragAndDropAtom, dropIndicatorAtom, setIsDragging } from "./use-drag-and-drop";
-import { useDragParentHighlight } from "./use-drag-parent-highlight";
+import { canvasRenderKeyAtom, dragAndDropAtom, dropIndicatorAtom, setIsDragging } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
+import { useDragParentHighlight } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-parent-highlight";
 
 /**
  * @HOOK useBlockDragEnd
@@ -50,7 +50,7 @@ export const useBlockDragEnd = () => {
 
   return useCallback(() => {
     // Clear dragged block state
-    // @ts-expect-error - Jotai type inference issue with generic ChaiBlock type
+    // @ts-ignore
     setDraggedBlock(null);
 
     // Hide drop indicator

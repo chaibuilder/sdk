@@ -16,16 +16,16 @@ import { useCanvasIframe } from "@/core/hooks/use-canvas-iframe";
 import { useAtom } from "jotai";
 import { throttle } from "lodash-es";
 import { DragEvent, useCallback, useEffect, useRef } from "react";
-import { getOrientation } from "../../getOrientation";
-import { detectDropZone } from "../drag-and-drop-utils";
+import { getOrientation } from "@/core/components/canvas/dnd/getOrientation";
+import { detectDropZone } from "@/core/components/canvas/dnd/drag-and-drop/drag-and-drop-utils";
 import {
   canDropAsSiblingWithoutCircularReference,
   canDropWithoutCircularReference,
   isDescendantOf,
-} from "../prevent-circular-drop";
-import { isDraggingOnlyImageBlock } from "./use-block-drop";
-import { dragAndDropAtom, dropIndicatorAtom, isDragging } from "./use-drag-and-drop";
-import { useDragParentHighlight } from "./use-drag-parent-highlight";
+} from "@/core/components/canvas/dnd/drag-and-drop/prevent-circular-drop";
+import { isDraggingOnlyImageBlock } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-block-drop";
+import { dragAndDropAtom, dropIndicatorAtom, isDragging } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
+import { useDragParentHighlight } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-parent-highlight";
 
 // Leaf block types that cannot accept children
 const LEAF_BLOCK_TYPES = [
@@ -250,6 +250,8 @@ export const useBlockDragOver = () => {
       // Handle auto-scrolling based on pointer position
       handleAutoScroll(pointerY);
 
+      if (!iframeDoc) return;
+
       const dropZone = detectDropZone(element, pointerX, pointerY, draggedBlockType, iframeDoc);
 
       // If no valid drop zone found, keep the last valid position
@@ -324,7 +326,7 @@ export const useBlockDragOver = () => {
 
       // Determine the final targetParentId to use
       // If dropZone has a targetParentId, use it; otherwise fall back to the one from getTargetDetail
-      const finalTargetParentId = dropZone.targetParentId || targetParentId;
+      const finalTargetParentId = dropZone.targetParentId || targetParentId || undefined;
 
       // Update drop indicator state with the intelligent drop zone
       setDropIndicator({
@@ -332,7 +334,7 @@ export const useBlockDragOver = () => {
         isValid: true,
         position: dropZone.position,
         placeholderOrientation: dropZone.placeholderOrientation,
-        isEmpty: dropZone.isEmpty,
+        isEmpty: dropZone.isEmpty ?? false,
         top: dropZone.rect.top,
         left: dropZone.rect.left,
         width: dropZone.rect.width,

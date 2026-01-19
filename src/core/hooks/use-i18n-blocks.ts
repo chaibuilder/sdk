@@ -1,9 +1,9 @@
-import { getRegisteredChaiBlock } from "@chaibuilder/runtime";
+import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
+import { getRegisteredChaiBlock } from "@/runtime/index";
 import { compact, each, get, pick } from "lodash-es";
 import { useCallback } from "react";
 import { getBlockWithNestedChildren } from "./get-block-with-nested-children";
-import { useBlocksStore } from "./hooks";
-import { useSelectedBlock } from "./use-selected-blockIds";
 
 export const useI18nBlocks = () => {
   const selectedBlock = useSelectedBlock();
@@ -22,7 +22,7 @@ export const useI18nBlocks = () => {
             lang === "ALL"
               ? Object.keys(block).filter((key) => i18nProps.find((prop) => key.startsWith(prop)))
               : i18nProps.map((prop) => (lang ? `${prop}-${lang}` : prop));
-          const blockProps = pick(block, ["_id"]);
+          const blockProps: Record<string, any> = pick(block, ["_id"]);
           each(keys, (key) => {
             blockProps[key] = get(block, key, get(block, key.replace(`-${lang}`, "")));
           });

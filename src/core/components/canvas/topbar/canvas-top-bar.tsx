@@ -1,23 +1,23 @@
-import { dataBindingActiveAtom } from "@/core/atoms/ui";
-import { Breakpoints } from "@/core/components/canvas/topbar/canvas-breakpoints";
-import { ClearCanvas } from "@/core/components/canvas/topbar/clear-canvas";
-import { DarkMode } from "@/core/components/canvas/topbar/dark-mode";
-import { UndoRedo } from "@/core/components/canvas/topbar/undo-redo";
-import { useBuilderProp } from "@/core/hooks";
-import { Button } from "@/ui/shadcn/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/ui/shadcn/components/ui/dropdown-menu";
-import { Separator } from "@/ui/shadcn/components/ui/separator";
-import { Switch } from "@/ui/shadcn/components/ui/switch";
+} from "@/components/ui/dropdown-menu";
+import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
+import { dataBindingActiveAtom } from "@/core/atoms/ui";
+import { Breakpoints } from "@/core/components/canvas/topbar/canvas-breakpoints";
+import { ClearCanvas } from "@/core/components/canvas/topbar/clear-canvas";
+import { DarkMode } from "@/core/components/canvas/topbar/dark-mode";
+import { UndoRedo } from "@/core/components/canvas/topbar/undo-redo";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { DotsHorizontalIcon, LightningBoltIcon } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { ScalePercent } from "../scale-percent";
+import { ScalePercent } from "@/core/components/canvas/scale-percent";
 import { PageValidation } from "./page-validation";
 
 const CanvasTopBar: React.FC = () => {

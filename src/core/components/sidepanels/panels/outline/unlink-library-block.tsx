@@ -1,5 +1,6 @@
-import { useSelectedBlock, useUpdateBlocksProps } from "@/core/hooks";
-import { DropdownMenuItem } from "@/ui/shadcn/components/ui/dropdown-menu";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
+import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
 import { LinkBreak2Icon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
 
@@ -9,6 +10,7 @@ export const UnlinkLibraryBlock = () => {
   const updateBlocksProps = useUpdateBlocksProps();
 
   const handleUnlink = () => {
+    if (!selectedBlock) return;
     updateBlocksProps([selectedBlock._id], {
       _libBlockId: null,
     });

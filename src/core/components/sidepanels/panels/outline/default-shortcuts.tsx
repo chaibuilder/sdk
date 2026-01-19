@@ -30,7 +30,8 @@ export function selectPrev(tree: TreeApi<any>) {
 }
 
 export const selectParent = (tree: TreeApi<any>, when: boolean) => {
-  const parent = tree.selectedIds[0]?.parent || null;
+  const selectedNode = tree.selectedNodes[0];
+  const parent = selectedNode?.parent || null;
 
   if (parent && when) tree.select(parent.id);
 };

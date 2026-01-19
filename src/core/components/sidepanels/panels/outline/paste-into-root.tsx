@@ -1,13 +1,19 @@
-import { DropdownMenuItem } from "@/ui/shadcn/components/ui/dropdown-menu";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { usePasteBlocks } from "@/core/hooks/use-paste-blocks";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/ui/shadcn/components/ui/dropdown-menu";
 import { CardStackIcon } from "@radix-ui/react-icons";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useBuilderProp } from "@/core/hooks";
 
-export const PasteAtRootContextMenu = ({ parentContext, setParentContext }) => {
+export const PasteAtRootContextMenu = ({
+  parentContext,
+  setParentContext,
+}: {
+  parentContext: { x: number; y: number } | null;
+  setParentContext: (value: { x: number; y: number } | null) => void;
+}) => {
   const { t } = useTranslation();
   const { canPaste, pasteBlocks } = usePasteBlocks();
   const enableCopyToClipboard = useBuilderProp("flags.copyPaste", true);

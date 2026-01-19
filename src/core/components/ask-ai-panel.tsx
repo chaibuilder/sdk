@@ -1,7 +1,8 @@
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { QuickPrompts } from "@/core/components/QuickPrompts";
-import { useAskAi, useSelectedBlock, useSelectedBlockIds } from "@/core/hooks";
-import { Button } from "@/ui/shadcn/components/ui/button";
-import { Textarea } from "@/ui/shadcn/components/ui/textarea";
+import { useAskAi } from "@/core/hooks/use-ask-ai";
+import { useSelectedBlock, useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import { ArrowTopRightIcon, ReloadIcon, StopIcon } from "@radix-ui/react-icons";
 import { first } from "lodash-es";
 import { useEffect, useRef, useState } from "react";
@@ -13,7 +14,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
   const { t } = useTranslation();
   const { askAi, loading, error } = useAskAi();
   const [prompt, setPrompt] = useState("");
-  const promptRef = useRef(null);
+  const promptRef = useRef<HTMLTextAreaElement>(null);
   const timerRef = useRef(null);
   const selectedBlock = useSelectedBlock();
 
@@ -91,7 +92,7 @@ export const AIUserPrompt = ({ blockId }: { blockId: string | undefined }) => {
           <div className="max-w-full pt-2">
             {error && (
               <p className="break-words rounded border border-red-500 bg-red-100 p-1 text-xs text-red-500">
-                {error.message}
+                {(error as Error).message}
               </p>
             )}
           </div>

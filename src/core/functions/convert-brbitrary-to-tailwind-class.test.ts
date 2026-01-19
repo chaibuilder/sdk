@@ -62,7 +62,7 @@ describe("ConvertArbitraryToTw", () => {
   };
 
   it("should return the correct tw class value", () => {
-    // eslint-disable-next-line guard-for-in,no-restricted-syntax
+     
     for (const cls in MAPPER) {
       const expected: string = MAPPER[cls];
       expect(convertArbitraryToTailwindClass(cls)).toBe(expected);

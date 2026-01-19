@@ -1,22 +1,23 @@
-import { useSelectedBlockIds, useSelectedStylingBlocks } from "@/core/hooks";
+import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
 import { useDebouncedCallback, useResizeObserver } from "@react-hookz/web";
 import { useCallback, useEffect, useRef } from "react";
 
 export const ResizableCanvasWrapper = ({ children, onMount, onResize }: any) => {
   const [, setSelected] = useSelectedBlockIds();
   const [, setSelectedStyles] = useSelectedStylingBlocks();
-  const mainContentRef = useRef(null);
+  const mainContentRef = useRef<HTMLDivElement | null>(null);
   const db = useDebouncedCallback(
     () => {
-      const { clientWidth } = mainContentRef.current as HTMLDivElement;
+      const { clientWidth } = mainContentRef.current!;
       onResize(clientWidth);
     },
     [mainContentRef.current],
     100,
   );
-  useResizeObserver(mainContentRef.current as HTMLElement, db, mainContentRef.current !== null);
+  useResizeObserver(mainContentRef.current!, db, mainContentRef.current !== null);
   useEffect(() => {
-    const { clientWidth } = mainContentRef.current as HTMLDivElement;
+    const { clientWidth } = mainContentRef.current!;
     onMount(clientWidth);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

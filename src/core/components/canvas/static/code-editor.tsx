@@ -1,6 +1,8 @@
-import { useCodeEditor, useSelectedBlockIds, useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "@/core/hooks";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/ui/shadcn/components/ui/dialog";
-import { Textarea } from "@/ui/shadcn/components/ui/textarea";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { useCodeEditor } from "@/core/hooks/use-code-editor";
+import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "@/core/hooks/use-update-blocks-props";
 import { useThrottledCallback } from "@react-hookz/web";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -25,6 +27,7 @@ export default function CodeEditor() {
   const updateRealTime = useUpdateBlocksPropsRealtime();
   const saveCodeContentRealTime = useThrottledCallback(
     (value: string) => {
+      if (!codeEditor) return;
       const html = sanitizeHTML(value);
       updateRealTime([codeEditor.blockId], { [codeEditor.blockProp]: html });
     },
@@ -33,23 +36,21 @@ export default function CodeEditor() {
   );
 
   const saveCodeContent = useCallback(() => {
-    if (dirty) {
+    if (dirty && codeEditor) {
       const html = sanitizeHTML(code);
       updateBlockProps([codeEditor.blockId], { [codeEditor.blockProp]: html });
     }
-  }, [dirty, code]);
+  }, [dirty, code, codeEditor]);
 
   useEffect(() => {
-    if (!ids.includes(codeEditor?.blockId)) {
+    if (codeEditor && !ids.includes(codeEditor.blockId)) {
       saveCodeContent();
-      // @ts-ignore
       setCodeEditor(null);
     }
-  }, [ids]);
+  }, [ids, codeEditor]);
 
   const handleClose = () => {
     saveCodeContent();
-    // @ts-ignore
     setCodeEditor(null);
   };
 
@@ -69,7 +70,7 @@ export default function CodeEditor() {
         <div className="min-h-0 flex-1 overflow-hidden">
           <Textarea
             className="h-full w-full resize-none font-mono text-xs"
-            value={code || codeEditor.initialCode}
+            value={codeEditor ? code || codeEditor.initialCode : ""}
             onChange={(e) => {
               const value = e.target.value;
               setDirty(true);

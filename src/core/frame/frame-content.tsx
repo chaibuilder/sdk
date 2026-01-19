@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Children, Component } from "react"; // eslint-disable-line no-unused-vars
+import { Children, Component } from "react";  
 
 interface ContentProps {
   children: React.ReactElement;

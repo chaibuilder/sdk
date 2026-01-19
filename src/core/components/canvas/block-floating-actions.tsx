@@ -1,21 +1,19 @@
+import { AiIcon } from "@/core/components/ai/ai-icon";
 import AddBlockDropdown from "@/core/components/canvas/add-block-placements";
 import { useDragAndDrop, useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 import BlockController from "@/core/components/sidepanels/panels/add-blocks/block-controller";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useFrame } from "@/core/frame/frame-context";
 import { canDeleteBlock, canDuplicateBlock } from "@/core/functions/block-helpers";
-import {
-  useBuilderProp,
-  useDuplicateBlocks,
-  useHighlightBlockId,
-  useInlineEditing,
-  usePermissions,
-  useRemoveBlocks,
-  useSelectedBlock,
-  useSelectedBlockIds,
-  useSelectedStylingBlocks,
-  useSidebarActivePanel,
-} from "@/core/hooks";
+import { useBuilderProp } from "@/core/hooks/use-builder-prop";
+import { useDuplicateBlocks } from "@/core/hooks/use-duplicate-blocks";
+import { useHighlightBlockId } from "@/core/hooks/use-highlight-blockId";
+import { useInlineEditing } from "@/core/hooks/use-inline-editing";
+import { usePermissions } from "@/core/hooks/use-permissions";
+import { useRemoveBlocks } from "@/core/hooks/use-remove-blocks";
+import { useSelectedBlock, useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
+import { useSidebarActivePanel } from "@/core/hooks/use-sidebar-active-panel";
 import { PERMISSIONS } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
 import { ChaiBlock } from "@/types/common";
@@ -25,14 +23,13 @@ import { ArrowUpIcon, CopyIcon, DragHandleDots2Icon, PlusIcon, TrashIcon } from 
 import { useResizeObserver } from "@react-hookz/web";
 import { first, get, isEmpty } from "lodash-es";
 import { useEffect, useState } from "react";
-import { AiIcon } from "../ai/ai-icon";
 import { GotoSettingsIcon } from "./goto-settings-icon";
 import { getElementByDataBlockId } from "./static/chai-canvas";
 
 type BlockActionProps = {
-  block: ChaiBlock | null;
+  block: ChaiBlock;
   isDragging: boolean;
-  selectedBlockElement: HTMLElement | null;
+  selectedBlockElement: HTMLElement;
 };
 const getElementByStyleId = (doc: any, styleId: string): HTMLElement =>
   doc.querySelector(`[data-style-id="${styleId}"]`) as HTMLElement;
@@ -44,7 +41,7 @@ export const BlockSelectionHighlighter = () => {
   const [selectedElements, setSelectedElements] = useState<HTMLElement[]>([]);
   const [, setSelectedStyleElements] = useState<HTMLElement[] | null[]>([]);
   const { onDragStart, onDragEnd, isDragging } = useDragAndDrop();
-  const [dragging, setDragging] = useState(null);
+  const [dragging, setDragging] = useState<HTMLElement | null>(null);
   const isDragAndDropEnabled = useIsDragAndDropEnabled();
 
   const isInViewport = (element: HTMLElement, offset = 0) => {
@@ -90,11 +87,13 @@ export const BlockSelectionHighlighter = () => {
         setDragging(selectedElements?.[0]);
         onDragStart(e, selectedBlock, false);
       }}>
-      <BlockFloatingSelector
-        block={selectedBlock}
-        isDragging={isDragging && Boolean(dragging)}
-        selectedBlockElement={selectedElements[0] || (isDragging ? dragging : null)}
-      />
+      {selectedBlock && (
+        <BlockFloatingSelector
+          block={selectedBlock as ChaiBlock}
+          isDragging={isDragging && Boolean(dragging)}
+          selectedBlockElement={selectedElements[0] || (isDragging ? dragging : null)}
+        />
+      )}
     </div>
   );
 };
@@ -141,7 +140,7 @@ const BlockFloatingSelector = ({ block, isDragging, selectedBlockElement }: Bloc
   });
 
   useResizeObserver(selectedBlockElement as HTMLElement, () => update(), selectedBlockElement !== null);
-  useResizeObserver(document?.body, () => update(), document?.body !== null);
+  useResizeObserver(document?.body as HTMLElement, () => update(), document?.body !== null);
 
   const parentId: string | undefined | null = get(block, "_parent", null);
 

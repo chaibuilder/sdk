@@ -1,13 +1,15 @@
+import { usePageExternalData } from "@/core/atoms/builder";
 import MediaManagerModal from "@/core/components/sidepanels/panels/images/media-manager-modal";
+import { useLanguages } from "@/core/hooks/use-languages";
+import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
+import { applyBindingToBlockProps } from "@/render/apply-binding";
 import { ChaiAsset } from "@/types";
 import { Cross1Icon, Pencil2Icon } from "@radix-ui/react-icons";
 import { WidgetProps } from "@rjsf/utils";
 import { first, get, has, isArray, isEmpty, set, startsWith } from "lodash-es";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useLanguages, useSelectedBlock, useUpdateBlocksProps } from "../hooks";
-import { usePageExternalData } from "@/core/atoms/builder";
-import { applyBindingToBlockProps } from "@/render/apply-binding";
+import { useUpdateBlocksProps } from "../hooks/use-update-blocks-props";
 
 const PLACEHOLDER_IMAGE =
   "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZmlsbD0iI2Q1ZDdkYSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIFBsYWNlaG9sZGVyPC90ZXh0Pjwvc3ZnPg==";
@@ -97,7 +99,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur, uiSchema }: WidgetProps
       set(props, forMobile ? "mobileHeight" : "height", "");
       updateBlockProps([selectedBlock._id], props);
     }
-  }, [onChange, selectedBlock?._id, updateBlockProps, propIdKey, allowEmpty]);
+  }, [selectedBlock, onChange, updateBlockProps, propIdKey, allowEmpty]);
 
   const fileName = getFileName(resolvedValue);
   return (
@@ -140,7 +142,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur, uiSchema }: WidgetProps
           <>
             <p className="max-w-[250px] truncate pr-2 text-xs text-gray-400">{fileName}</p>
             <MediaManagerModal onSelect={handleSelect} assetId="">
-              <small className="h-6 mb-1 w-full cursor-pointer rounded-md bg-secondary px-1 py-1 text-center text-xs text-secondary-foreground hover:bg-secondary/80">
+              <small className="mb-1 h-6 w-full cursor-pointer rounded-md bg-secondary px-1 py-1 text-center text-xs text-secondary-foreground hover:bg-secondary/80">
                 {!isEmpty(resolvedValue) && resolvedValue !== PLACEHOLDER_IMAGE
                   ? t("Replace image")
                   : t("Choose image")}
@@ -155,7 +157,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur, uiSchema }: WidgetProps
           autoCorrect={"off"}
           spellCheck={"false"}
           type="url"
-          className="h-6  text-xs"
+          className="h-6 text-xs"
           placeholder={t("Enter image URL")}
           value={value === PLACEHOLDER_IMAGE ? "" : value}
           onBlur={({ target: { value: url } }) => onBlur(id, url)}

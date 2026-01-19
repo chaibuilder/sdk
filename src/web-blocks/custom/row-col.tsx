@@ -1,11 +1,5 @@
 import { NUMBER_TO_COL_SPAN } from "@/core/constants/TWCLASS_VALUES";
-import {
-  ChaiBlock,
-  ChaiBlockComponentProps,
-  ChaiStyles,
-  registerChaiBlockSchema,
-  StylesProp,
-} from "@chaibuilder/runtime";
+import { ChaiBlock, ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@/runtime/index";
 import { LayoutIcon, RowsIcon } from "@radix-ui/react-icons";
 import { get } from "lodash-es";
 
@@ -86,9 +80,8 @@ const Component = (props: ChaiBlockComponentProps<RowProps>) => {
   const className = [get(styles, "className", ""), " grid grid-cols-12"];
   const _styles: any = { className: className.join() };
 
-  if (typeof styles?.style === "object") {
-    // @ts-ignore
-    styles.style.gap = `${gutter}px`;
+  if (typeof styles?.style === "object" && styles.style !== null) {
+    _styles.style = { ...(styles.style as Record<string, any>), gap: `${gutter}px` };
   } else {
     _styles.style = { gap: `${gutter}px` };
   }
@@ -115,7 +108,7 @@ const Config = {
     ] as ChaiBlock[],
   category: "core",
   wrapper: true,
-  canAcceptBlock: (childType) => childType === "Column",
+  canAcceptBlock: (childType: string) => childType === "Column",
   ...registerChaiBlockSchema({
     properties: {
       styles: StylesProp(""),

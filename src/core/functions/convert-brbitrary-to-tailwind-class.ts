@@ -7,7 +7,7 @@ const PX_TO_TW_DIVIDER = 4;
 
 export function convertRemToPxIfNeeded(arbitraryValue: string) {
   if (arbitraryValue.indexOf("rem") !== -1) {
-    // eslint-disable-next-line no-param-reassign
+     
     arbitraryValue = `${parseFloat(arbitraryValue.replace("rem", "")) * REM_BASE}px`;
   }
   return arbitraryValue;
@@ -115,7 +115,7 @@ export const convertArbitraryToTailwindClass = (className: string) => {
         twClassName = "max-w-0";
       }
 
-      // eslint-disable-next-line no-case-declarations
+       
       const pxMapper: { [px: string]: string } = {
         "320px": "xs",
         "384px": "sm",
@@ -154,7 +154,7 @@ export const convertArbitraryToTailwindClass = (className: string) => {
       break;
 
     case "fontSize":
-      // eslint-disable-next-line no-case-declarations
+       
       const fontSizeMapper: any = {
         "12px": "xs",
         "14px": "sm",
@@ -175,7 +175,7 @@ export const convertArbitraryToTailwindClass = (className: string) => {
       }
       break;
     case "lineHeight":
-      // eslint-disable-next-line no-case-declarations
+       
       const lineHeightMapper: any = {
         "12px": "3",
         "16px": "4",
@@ -198,13 +198,13 @@ export const convertArbitraryToTailwindClass = (className: string) => {
       break;
 
     case "zIndex":
-      // eslint-disable-next-line no-case-declarations
+       
       const zIndexTw: string[] = ["0", "10", "20", "30", "40", "50"];
       twClassName = zIndexTw.indexOf(arbitraryValue) !== -1 ? `${classKey}${arbitraryValue}` : className;
       break;
 
     case "opacity":
-      // eslint-disable-next-line no-case-declarations
+       
       const values: string[] = [
         "0",
         "5",
@@ -222,7 +222,7 @@ export const convertArbitraryToTailwindClass = (className: string) => {
         "95",
         "100",
       ];
-      // eslint-disable-next-line no-case-declarations
+       
       const opacity: number = parseFloat(arbitraryValue) * 100;
       if (includes(values, opacity.toString())) {
         twClassName = `opacity-${opacity}`;
