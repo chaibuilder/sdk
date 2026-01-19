@@ -32,9 +32,7 @@ const QUESTIONS = [
 
 async function promptForMissingValues() {
   const responses = await prompts(
-    QUESTIONS.map((question) => ({
-      ...question,
-    })),
+    QUESTIONS,
     {
       onCancel: () => {
         console.log("⚠️ Operation cancelled.");
