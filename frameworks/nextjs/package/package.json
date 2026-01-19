@@ -1,6 +1,6 @@
 {
   "name": "@chaibuilder/next",
-  "version": "4.0.0-beta.6",
+  "version": "4.0.0-beta.7",
   "description": "AI Enabled Open source website builder for ReactJS",
   "private": false,
   "author": "Suraj Air",
@@ -47,11 +47,6 @@
       "types": "./dist/web-blocks.d.ts",
       "import": "./dist/web-blocks.js",
       "require": "./dist/web-blocks.cjs"
-    },
-    "./render/rsc": {
-      "types": "./dist/rsc/index.d.ts",
-      "import": "./dist/rsc/index.js",
-      "require": "./dist/rsc/index.cjs"
     },
     "./render": {
       "types": "./dist/render.d.ts",
