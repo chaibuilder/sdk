@@ -58,5 +58,16 @@ export default defineConfig({
     const cssDest = resolve("dist/styles.css");
     copyFileSync(cssSource, cssDest);
     console.log("✓ Copied sdk.css to dist/styles.css");
+
+    // copy webblocks for tailwind css extraction
+    const webBlocksJsSource = resolve("node_modules/@chaibuilder/sdk/dist/web-blocks.js");
+    const webBlocksJsDest = resolve("dist/web-blocks-tailwind.js");
+    copyFileSync(webBlocksJsSource, webBlocksJsDest);
+    console.log("✓ Copied web-blocks.js to dist/web-blocks-tailwind.js");
+
+    const webBlocksCjsSource = resolve("node_modules/@chaibuilder/sdk/dist/web-blocks.cjs");
+    const webBlocksCjsDest = resolve("dist/web-blocks-tailwind.cjs");
+    copyFileSync(webBlocksCjsSource, webBlocksCjsDest);
+    console.log("✓ Copied web-blocks.cjs to dist/web-blocks-tailwind.cjs");
   },
 });
