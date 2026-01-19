@@ -10,7 +10,6 @@ const WebsiteBuilder = () => {
 
   useEffect(() => {
     if (!supabaseClient) return;
-    console.log("WebsiteBuilder");
     // Check initial session
     const checkInitialSession = async () => {
       if (!supabaseClient) return;

@@ -1,12 +1,7 @@
+import { getSupabaseAdmin } from "@/app/supabase-admin";
 import { ChaiActionsRegistry, initChaiBuilderActionHandler } from "@chaibuilder/sdk/actions";
 import { SupabaseAuthActions, SupabaseStorageActions } from "@chaibuilder/sdk/actions/supabase";
 import { NextRequest, NextResponse } from "next/server";
-import { getSupabaseAdmin } from "../supabase-admin";
-import { getSupabaseClient } from "../supabase-client";
-
-const supabase = getSupabaseAdmin();
-ChaiActionsRegistry.registerActions(SupabaseAuthActions(supabase));
-ChaiActionsRegistry.registerActions(SupabaseStorageActions(supabase));
 
 export async function POST(req: NextRequest) {
   const apiKey = process.env.CHAIBUILDER_APP_KEY;
@@ -15,29 +10,26 @@ export async function POST(req: NextRequest) {
     console.error("CHAIBUILDER_APP_KEY environment variable is not set.");
     return NextResponse.json({ error: "Server misconfiguration: CHAIBUILDER_APP_KEY is not set" }, { status: 500 });
   }
+  const supabase = getSupabaseAdmin();
+  ChaiActionsRegistry.registerActions(SupabaseAuthActions(supabase));
+  ChaiActionsRegistry.registerActions(SupabaseStorageActions(supabase));
   try {
     // Get authorization header
-    const authorization = req.headers.get("authorization") || "";
-    let authTokenOrUserId: string = "";
-    authTokenOrUserId = authorization ? authorization.split(" ")[1] : "";
+    let authorization = req.headers.get("authorization") || "";
+    authorization = authorization ? authorization.split(" ")[1] : "";
 
     // Parse request body
     const body = await req.json();
 
     // Supabase authentication check
-    const supabase = getSupabaseClient();
-    const supabaseUser = await supabase.auth.getUser(authTokenOrUserId);
+    const supabaseUser = await supabase.auth.getUser(authorization);
     if (supabaseUser.error) {
       return NextResponse.json({ error: "Invalid or expired token" }, { status: 401 });
     }
-    authTokenOrUserId = supabaseUser.data.user?.id || "";
+    const userId = supabaseUser.data.user?.id || "";
 
-    const actionHandler = initChaiBuilderActionHandler({
-      apiKey,
-      userId: authTokenOrUserId,
-    });
+    const actionHandler = initChaiBuilderActionHandler({ apiKey, userId });
     const response = await actionHandler(body);
-
     // Handle streaming responses
     if (response?._streamingResponse && response?._streamResult) {
       const result = response._streamResult;
@@ -64,10 +56,7 @@ export async function POST(req: NextRequest) {
       });
 
       return new Response(stream, {
-        headers: {
-          "Content-Type": "text/plain; charset=utf-8",
-          "Cache-Control": "no-cache",
-        },
+        headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-cache" },
       });
     }
 

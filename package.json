@@ -82,7 +82,7 @@
     }
   },
   "peerDependencies": {
-    "@supabase/supabase-js": "^2.89.0",
+    "@supabase/supabase-js": "^2.90.1",
     "@types/react": "*",
     "@types/react-dom": "*",
     "ai": "^6.0.11",
@@ -220,7 +220,7 @@
     "@faker-js/faker": "^9.9.0",
     "@microsoft/clarity": "^1.0.2",
     "@playwright/test": "^1.57.0",
-    "@supabase/supabase-js": "^2.89.0",
+    "@supabase/supabase-js": "^2.90.1",
     "@tanstack/eslint-plugin-query": "^5.91.2",
     "@tanstack/react-query-devtools": "^5.91.2",
     "@testing-library/react": "^16.3.1",

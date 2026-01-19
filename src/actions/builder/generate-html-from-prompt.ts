@@ -129,7 +129,6 @@ ${data.context ? `Additional Context: ${data.context}` : ""}`;
 
       // Clean up the response to remove any markdown code blocks if present
       let html = response.text.trim();
-      console.log(response.usage);
 
       // Remove markdown code blocks if they exist
       html = html.replace(/^```html\n?/i, "");

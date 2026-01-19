@@ -117,8 +117,6 @@ export class UpdatePageAction extends ChaiBaseAction<UpdatePageActionData, Updat
     const links: string = this.getLinks(blocks);
     const partials: string = this.getPartialBlocks(blocks);
     const designTokens = this.getDesignTokens(blocks);
-    console.log({ links, partials, designTokens });
-
     await this.updatePageInDatabase(pageId, { blocks, links, partialBlocks: partials, designTokens });
   }
 

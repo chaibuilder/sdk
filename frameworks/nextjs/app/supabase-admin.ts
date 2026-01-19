@@ -9,7 +9,7 @@ const checkForEnv = (envVar: string | undefined, name: string) => {
   return envVar;
 };
 
-export const getSupabaseAdmin = () => {
+export const getSupabaseAdmin = (): SupabaseClient => {
   checkForEnv(process.env.SUPABASE_SERVICE_KEY, "SUPABASE_SERVICE_KEY");
   checkForEnv(process.env.NEXT_PUBLIC_SUPABASE_URL, "NEXT_PUBLIC_SUPABASE_URL");
   if (ADMIIN_INSTANCE) {
