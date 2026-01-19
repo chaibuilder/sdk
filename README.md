@@ -79,7 +79,8 @@ A more powerful Next.js-specific implementation designed for blogs, marketing si
 - 📚 **Library Blocks** - Shared block library across projects
 - 👥 **Multi-User Support** - Collaborative editing with multiple users
 - 🔒 **Page Lock** - Prevent conflicts with page locking
-- 🔐 **BYO Stack** - Bring Your Own Auth, Database (Postgres), and Storage
+- � **CMS Integration** - Connect to any headless CMS
+- �🔐 **BYO Stack** - Bring Your Own Auth, Database (Postgres), and Storage
 
 🚀 **Get Started:** [Next.js + Supabase Starter](https://github.com/chaibuilder/chaibuilder-next-supabase-starter) (Work in Progress)
 
