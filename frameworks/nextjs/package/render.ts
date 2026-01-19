@@ -1,3 +1,3 @@
-import { ChaiPageStyles, PreviewBanner, RenderChaiBlocks } from "./rsc/index";
+import { ChaiBuilder, ChaiPageStyles, PreviewBanner, RenderChaiBlocks } from "./rsc/index";
 export * from "@chaibuilder/sdk/render";
-export { ChaiPageStyles, PreviewBanner, RenderChaiBlocks };
+export { ChaiBuilder, ChaiPageStyles, PreviewBanner, RenderChaiBlocks };

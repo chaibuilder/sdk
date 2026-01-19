@@ -23,7 +23,7 @@ export const LinkBlock = async (props: ChaiBlockComponentProps<LinkProps>) => {
   const isPageTypeLink = link?.type === "pageType" && link?.href !== "";
   let href = link?.type === "telephone" ? `tel:${formatTelephoneLink(link?.href)}` : link?.href;
   if (isPageTypeLink) {
-    href = await ChaiBuilder.resolveLinks(href, lang);
+    href = await ChaiBuilder.resolvePageLink(href, lang);
   }
   if (children) {
     return (

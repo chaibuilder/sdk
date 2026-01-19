@@ -189,7 +189,7 @@ class ChaiBuilder {
 
   static resolvePageLink = cache(async (href: string, lang: string): Promise<string> => {
     ChaiBuilder.verifyInit();
-    return await ChaiBuilder.resolveLinks(href, lang);
+    return await ChaiBuilder.resolveLink(href, lang);
   });
 
   static async getPageData(args: {
