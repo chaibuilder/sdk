@@ -23,6 +23,7 @@ type UpdatePageActionData = {
   slug?: string;
   name?: string;
   seo?: Record<string, any>;
+  jsonLD?: Record<string, any>;
   buildTime?: boolean;
   parent?: string | null;
   pageType?: string;
@@ -60,6 +61,7 @@ export class UpdatePageAction extends ChaiBaseAction<UpdatePageActionData, Updat
       slug: z.string().optional(),
       name: z.string().optional(),
       seo: z.record(z.string(), z.any()).optional(),
+      jsonLD: z.record(z.string(), z.any()).optional(),
       buildTime: z.boolean().optional(),
       parent: z.union([z.string(), z.null()]).optional(),
       pageType: z.string().optional(),
@@ -175,6 +177,7 @@ export class UpdatePageAction extends ChaiBaseAction<UpdatePageActionData, Updat
       "slug",
       "name",
       "seo",
+      "jsonLD",
       "blocks",
       "currentEditor",
       "buildTime",

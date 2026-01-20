@@ -268,8 +268,8 @@
           "notNull": false,
           "default": "'{}'::jsonb"
         },
-        "jsonld": {
-          "name": "jsonld",
+        "jsonLD": {
+          "name": "jsonLD",
           "type": "jsonb",
           "primaryKey": false,
           "notNull": false,
@@ -774,8 +774,8 @@
           "notNull": false,
           "default": "'{}'::jsonb"
         },
-        "jsonld": {
-          "name": "jsonld",
+        "jsonLD": {
+          "name": "jsonLD",
           "type": "jsonb",
           "primaryKey": false,
           "notNull": false,
@@ -995,8 +995,8 @@
           "notNull": false,
           "default": "'{}'::jsonb"
         },
-        "jsonld": {
-          "name": "jsonld",
+        "jsonLD": {
+          "name": "jsonLD",
           "type": "jsonb",
           "primaryKey": false,
           "notNull": false,

@@ -52,7 +52,7 @@ export const appPagesOnline = pgTable("app_pages_online", {
 	libRefId: uuid(),
 	dynamicSlugCustom: text().default(''),
 	metadata: jsonb().default({}),
-	jsonld: jsonb().default({}),
+	jsonLD: jsonb().default({}),
 	globalJsonLds: jsonb().default([]),
 	designTokens: jsonb(),
 }, (table) => [
@@ -146,7 +146,7 @@ export const appPages = pgTable("app_pages", {
 	libRefId: uuid(),
 	dynamicSlugCustom: text().default(''),
 	metadata: jsonb().default({}),
-	jsonld: jsonb().default({}),
+	jsonLD: jsonb().default({}),
 	globalJsonLds: jsonb().default([]),
 	links: text(),
 	partialBlocks: text(),
@@ -188,7 +188,7 @@ export const appPagesRevisions = pgTable("app_pages_revisions", {
 	libRefId: uuid(),
 	dynamicSlugCustom: text().default(''),
 	metadata: jsonb().default({}),
-	jsonld: jsonb().default({}),
+	jsonLD: jsonb().default({}),
 	globalJsonLds: jsonb().default([]),
 	designTokens: jsonb(),
 }, (table) => [

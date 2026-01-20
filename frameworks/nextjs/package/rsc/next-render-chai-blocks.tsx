@@ -62,7 +62,7 @@ export const NextJSRenderChaiBlocks = async ({
   //Register Link and Image blocks with Chai Builder
   return (
     <>
-      <JSONLD jsonLD={page?.seo?.jsonLD} pageData={pageData} />
+      <JSONLD jsonLD={page?.jsonLD} pageData={pageData} />
       <RenderChaiBlocksSdk
         externalData={pageData}
         blocks={!isEmpty(tokens) ? applyDesignTokens(page.blocks, tokens as DesignTokens) : page.blocks}

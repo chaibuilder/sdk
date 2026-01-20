@@ -114,7 +114,6 @@ export class CreatePageAction extends ChaiBaseAction<CreatePageActionData, Creat
       blocks: blocks,
       seo: data.seo ?? {
         title: data.name,
-        jsonLD: "",
         noIndex: false,
         ogImage: "",
         ogTitle: "",
