@@ -1,49 +1,137 @@
-# Contribute
+# Contributing to Chai Builder SDK
 
-## Introduction
+Thank you for your interest in contributing to Chai Builder SDK! We welcome all types of contributions, including bug reports, feature suggestions, documentation improvements, and code contributions.
 
-First of all, thank you for considering contributing to Chai Builder!
+## Quick Start
 
-We welcome any type of contribution, not only code. Like for example:
-- **QA**: file bug reports, the more details you can give the better (e.g. screenshots with the console open)
-- **Marketing**: writing blog posts, howto's, tutorials, etc.
-- **Community**: presenting the project at meetups, organizing a dedicated meetup for the local community, etc.
+### Prerequisites
 
-[//]: # (- **Money**: we welcome financial contributions in full transparency on our [open collective]&#40;https://opencollective.com/grapesjs&#41;)
+- Node.js (version 21 or later)
+- pnpm (version 9.10.0 or later)
 
+### Setup
 
-## Your First Contribution
+1. Install Node.js 21+:
 
-Working on your first Pull Request? You can learn how from this **free** series, [How to Contribute to an Open Source Project on GitHub](https://app.egghead.io/playlists/how-to-contribute-to-an-open-source-project-on-github).
+   ```bash
+   nvm install 21
+   nvm use 21
+   ```
 
+2. Install pnpm globally:
 
-## Submitting code
+   ```bash
+   npm install -g pnpm@9.10.0
+   ```
 
-Any code change should be submitted as a pull request. Before start working on something make always a search in opened issues and pull requests, this might help you to avoid wasting time.
+3. Clone the repository:
 
-A pull request could be a bug fix, new feature and much more, but in all cases, **open a new issue** and talk about what you want to do. Often happens to work on something already fixed (ready to release) or in progress.
+   ```bash
+   git clone https://github.com/chaibuilder/sdk.git
+   cd sdk
+   ```
 
-The title should be brief but comprehensive, the description contains a link to the opened issue and the proposed solution. The pull request should contain tests whenever possible. Keep in mind that the bigger is the pull request, the longer it will take to review and merge. Try to break down large pull requests in smaller chunks that are easier to review and merge.
+4. Install dependencies:
 
+   ```bash
+   pnpm install
+   ```
 
-## Styleguide
+5. Run the build script:
 
-The code is auto formatted with [prettier](https://github.com/prettier/prettier) on any commit, therefore you can write in any style you prefer
+   ```bash
+   pnpm run build
+   ```
 
+6. Start the development server:
 
-[//]: # (## Expenses)
+   ```bash
+   pnpm dev
+   ```
 
-[//]: # ()
-[//]: # (Anyone can file an expense &#40;code, marketing, etc.&#41; via our [Open Collective]. If the expense makes sense for the development of the community, it will be "merged" in the ledger of our open collective by the core contributors and the person who filed the expense will be reimbursed.)
+7. Open `http://localhost:5173/` in your browser to see the builder in action.
 
-[//]: # ()
-[//]: # (Before submitting an expense contact core contributors via the current active chat room &#40;[Discord]&#40;https://discord.gg/QAbgGXq&#41;&#41; and explain your intents)
+## Development Workflow
 
-[//]: # ()
+### Available Scripts
 
-## Questions
+- **Development**: `pnpm dev` - Start the Vite development server
+- **Build**: `pnpm build` - Build the library for production
+- **Live Build**: `pnpm live` - Build for live demo
+- **Linting**: `pnpm lint` - Check for linting errors
+- **Linting (errors only)**: `pnpm lint:errors` - Show only errors
+- **Testing**: `pnpm test` - Run unit tests
+- **Test Watch**: `pnpm test:watch` - Run tests in watch mode
+- **Test Coverage**: `pnpm test:coverage` - Generate test coverage report
+- **E2E Tests**: `pnpm e2e` - Run Playwright end-to-end tests
+- **E2E UI**: `pnpm e2e:ui` - Run E2E tests in UI mode
+- **Preview**: `pnpm preview` - Preview production build locally
 
-If you have any questions, create an [issue](https://github.com/chaibuilder/sdk/issues) (protip: do a quick search first to see if someone else didn't ask the same question before!).
+### Code Style
 
+We use ESLint for linting and Prettier for code formatting. Code style is enforced via Husky pre-commit hooks:
 
-[//]: # ([Open Collective]: <https://opencollective.com/grapesjs>)
+- Run `pnpm lint` to check for linting errors
+- Prettier formatting is automatically applied on commit
+- We recommend using ESLint and Prettier extensions in your editor for real-time feedback
+
+Full documentation is available at [docs.chaibuilder.com](https://docs.chaibuilder.com/).
+
+## Project Structure
+
+- `src/core/` - Core builder components and logic
+- `src/components/` - UI components (shadcn/ui based)
+- `src/actions/` - Server actions and database operations
+- `src/express/` - Express.js integration for development
+- `frameworks/nextjs/` - Next.js specific implementation
+- `docs/` - Documentation source files
+- `e2e_tests/` - End-to-end tests
+
+## Testing
+
+We use Vitest for unit tests and Playwright for E2E tests:
+
+- Write unit tests for new features and bug fixes
+- Add E2E tests for critical user flows
+- Ensure all tests pass before submitting a PR
+
+## Pull Requests
+
+When submitting a pull request:
+
+- Target your PR to the `dev` branch
+- Clearly describe the problem and solution
+- Include the relevant issue number if applicable
+- Add tests for new features or bug fixes
+- Ensure all tests pass and linting is clean
+- Follow the existing code style and conventions
+
+If you're a first-time contributor, consider starting a discussion or opening an issue related to your changes before submitting a PR. This helps with collaboration and prevents duplicate work.
+
+## Commit Convention
+
+We use [Conventional Commits](https://www.conventionalcommits.org/) for commit messages. This is enforced via commitlint:
+
+- `feat:` - New features
+- `fix:` - Bug fixes
+- `docs:` - Documentation changes
+- `chore:` - Maintenance tasks
+- `refactor:` - Code refactoring
+- `test:` - Test updates
+- `style:` - Code style changes
+
+Example: `feat: add custom block registration API`
+
+## Questions?
+
+If you have any questions, please:
+
+- [Open an issue](https://github.com/chaibuilder/sdk/issues) for bugs or feature requests
+- [Start a discussion](https://github.com/chaibuilder/sdk/discussions) for general questions
+- Check the [documentation](https://docs.chaibuilder.com/) first
+
+Search existing issues and discussions to avoid duplicates.
+
+## Thank You
+
+Your contributions to open source, no matter how small, make projects like Chai Builder possible. Thank you for taking the time to contribute and help us build a better visual builder for the React community!
