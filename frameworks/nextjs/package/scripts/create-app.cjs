@@ -3,6 +3,8 @@
 const prompts = require("prompts");
 const postgres = require("postgres");
 const dotenv = require("dotenv");
+const { LANGUAGES } = require("@chaibuilder/sdk/actions");
+const defaultTheme = require("./constants/default-theme.json");
 dotenv.config();
 
 /**
@@ -28,29 +30,53 @@ const QUESTIONS = [
     type: "text",
     message: "Enter the user ID (Optional):",
   },
+  {
+    name: "fallbackLang",
+    type: "text",
+    message: "Enter the fallback language code (Optional, defaults to 'en'):",
+  },
 ];
 
 async function promptForMissingValues() {
-  const responses = await prompts(
-    QUESTIONS,
-    {
-      onCancel: () => {
-        console.log("⚠️ Operation cancelled.");
-        process.exit(EXIT_CODES.SUCCESS);
-      },
+  const responses = await prompts(QUESTIONS, {
+    onCancel: () => {
+      console.log("⚠️ Operation cancelled.");
+      process.exit(EXIT_CODES.SUCCESS);
     },
-  );
+  });
 
   return {
     ownerId: responses.ownerId?.trim() || null,
     projectName: responses.projectName?.trim() || null,
+    fallbackLang: responses.fallbackLang?.trim() || null,
   };
 }
 
-async function createApp({ ownerId, projectName, databaseUrl }) {
+async function createApp({ ownerId, projectName, fallbackLang, databaseUrl }) {
   if (!projectName) {
     console.error("Project name is required.");
     process.exit(EXIT_CODES.VALIDATION_ERROR);
+  }
+
+  // Validate and set fallback language
+  let validatedFallbackLang = "en";
+  if (fallbackLang && fallbackLang.length > 0) {
+    if (LANGUAGES[fallbackLang]) {
+      validatedFallbackLang = fallbackLang;
+      console.log(`Using fallback language: ${LANGUAGES[fallbackLang]} (${fallbackLang})`);
+    } else {
+      console.error(`\n❌ Error: Language code '${fallbackLang}' is not supported.\n`);
+      console.log("Supported languages:");
+      console.log("-------------------");
+
+      const sortedLanguages = Object.entries(LANGUAGES).sort((a, b) => a[1].localeCompare(b[1]));
+      sortedLanguages.forEach(([code, name]) => {
+        console.log(`  ${code.padEnd(10)} - ${name}`);
+      });
+
+      console.log("\nPlease use one of the language codes listed above.");
+      process.exit(EXIT_CODES.VALIDATION_ERROR);
+    }
   }
 
   const sql = postgres(databaseUrl, { max: 1 });
@@ -60,8 +86,8 @@ async function createApp({ ownerId, projectName, databaseUrl }) {
   try {
     const result = await sql.begin(async (tx) => {
       const [app] = await tx`
-        insert into apps (name, "user")
-        values (${projectName}, ${normalizedOwnerId})
+        insert into apps (name, "user", theme, "fallbackLang")
+        values (${projectName}, ${normalizedOwnerId}, ${sql.json(defaultTheme)}, ${validatedFallbackLang})
         returning id
       `;
 
@@ -105,7 +131,11 @@ async function createApp({ ownerId, projectName, databaseUrl }) {
     process.exit(EXIT_CODES.SUCCESS);
   } catch (error) {
     console.error("Failed to create app:");
-    console.error(error);
+    if (error.code) {
+      console.error(`Database Error (${error.code}): ${error.message}`);
+    } else {
+      console.error(error);
+    }
     process.exit(EXIT_CODES.DATABASE_ERROR);
   } finally {
     await sql.end({ timeout: 5 }).catch(() => null);
@@ -119,9 +149,9 @@ async function runCli() {
     console.error("Missing database connection string. Please set the CHAIBUILDER_DATABASE_URL environment variable");
     process.exit(EXIT_CODES.CONFIG_ERROR);
   }
-  const { ownerId, projectName } = await promptForMissingValues();
+  const { ownerId, projectName, fallbackLang } = await promptForMissingValues();
 
-  await createApp({ ownerId, projectName, databaseUrl });
+  await createApp({ ownerId, projectName, fallbackLang, databaseUrl });
 }
 
 if (require.main === module) {
