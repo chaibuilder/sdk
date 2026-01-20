@@ -1,7 +1,7 @@
-import { get } from "lodash-es";
-import { useCallback } from "react";
-import { fetchAPI } from "@/pages/utils/fetch-api";
 import { useApiUrl, usePagesProp } from "@/pages/hooks/project/use-builder-prop";
+import { fetchAPI } from "@/pages/utils/fetch-api";
+import { get, noop } from "lodash-es";
+import { useCallback } from "react";
 
 export const useBuilderFetch = () => {
   const fetch = useFetch();
@@ -25,7 +25,7 @@ export const useBuilderFetch = () => {
 };
 
 export const useFetch = () => {
-  const logout = usePagesProp("onLogout");
+  const logout = usePagesProp("onLogout", noop);
   const getAccessToken = usePagesProp("getAccessToken");
   const apiUrl = useApiUrl();
   return useCallback(
@@ -48,8 +48,7 @@ export const useFetch = () => {
 
         if (response.status === 401) {
           console.log("401 Response", response);
-          logout();
-          window.location.reload();
+          await logout();
           return null;
         }
 
