@@ -68,7 +68,7 @@
     }
   },
   "peerDependencies": {
-    "@chaibuilder/runtime": "2.2.0",
+    "@chaibuilder/runtime": "2.3.0",
     "@types/react": "*",
     "@types/react-dom": "*",
     "jotai": "2.14.0",
