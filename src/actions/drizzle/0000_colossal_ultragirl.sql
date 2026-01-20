@@ -59,7 +59,6 @@ CREATE TABLE "apps" (
 	"fallbackLang" text DEFAULT 'en',
 	"languages" jsonb DEFAULT '[]'::jsonb,
 	"changes" jsonb,
-	"configData" jsonb,
 	"deletedAt" timestamp with time zone,
 	"client" uuid,
 	"designTokens" jsonb DEFAULT '{}'::jsonb
@@ -76,7 +75,6 @@ CREATE TABLE "apps_online" (
 	"fallbackLang" text DEFAULT 'en',
 	"languages" jsonb DEFAULT '[]'::jsonb,
 	"changes" jsonb,
-	"configData" jsonb,
 	"apiKey" text,
 	"deletedAt" timestamp with time zone,
 	"client" uuid,
