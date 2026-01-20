@@ -6,7 +6,7 @@ export class CheckUserAccessAction extends ChaiBaseAction<any, { access: boolean
     return z.any();
   }
 
-  async execute(data: any): Promise<{ access: boolean }> {
+  async execute(): Promise<{ access: boolean }> {
     await this.verifyAccess();
     return { access: true };
   }

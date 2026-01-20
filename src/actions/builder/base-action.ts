@@ -1,6 +1,6 @@
-import { db, safeQuery, schema } from "../db";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
+import { db, safeQuery, schema } from "../db";
 import { ActionError } from "./action-error";
 import { ChaiAction, ChaiActionContext } from "./chai-action-interface";
 
@@ -84,12 +84,13 @@ export abstract class ChaiBaseAction<T = any, K = any> implements ChaiAction<T, 
       // But the context interface says userId?: string
       throw new ActionError("User ID not found in context", "UNAUTHORIZED", 401);
     }
-
     const { data: userAccess, error } = await safeQuery(() =>
       db
         .select()
         .from(schema.appUsers)
-        .where(and(eq(schema.appUsers.app, appId), eq(schema.appUsers.user, userId), eq(schema.appUsers.status, "active"))),
+        .where(
+          and(eq(schema.appUsers.app, appId), eq(schema.appUsers.user, userId), eq(schema.appUsers.status, "active")),
+        ),
     );
 
     if (error) {
