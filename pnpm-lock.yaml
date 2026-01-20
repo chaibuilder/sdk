@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@chaibuilder/runtime':
-        specifier: 2.2.0
-        version: 2.2.0(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+        specifier: 2.4.0
+        version: 2.4.0(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@floating-ui/dom':
         specifier: 1.7.4
         version: 1.7.4
@@ -695,8 +695,8 @@ packages:
   '@bundled-es-modules/tough-cookie@0.1.6':
     resolution: {integrity: sha512-dvMHbL464C0zI+Yqxbz6kZ5TOEp7GLW+pry/RWndAR8MJQAXZ2rPmIs8tziTZjeIyhSNZgZbCePtfSbdWqStJw==}
 
-  '@chaibuilder/runtime@2.2.0':
-    resolution: {integrity: sha512-BfeZ555coGiuu8Xu80yeH+rJiS+3tlSk8JtUs2fxu+W9zb6ze4y8eOCPhISACfk67h+d0f8Qj61YO+RKTs8eeA==}
+  '@chaibuilder/runtime@2.4.0':
+    resolution: {integrity: sha512-HYrFm/lUBFlXpwn2EFwanKEBKEoZsUPnGUTKoWAa6KCH4vqh5njKDxrZSEvMhfLmbTNRZ0SaMR5zrzoWCsXI9Q==}
     peerDependencies:
       '@types/react': '*'
       '@types/react-dom': '*'
@@ -6073,7 +6073,7 @@ snapshots:
       '@types/tough-cookie': 4.0.5
       tough-cookie: 4.1.4
 
-  '@chaibuilder/runtime@2.2.0(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
+  '@chaibuilder/runtime@2.4.0(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
     dependencies:
       '@rjsf/utils': 5.24.13(react@19.2.0)
       clsx: 2.1.1
