@@ -23,6 +23,7 @@ type GetWebsitePagesActionResponse = Array<{
   dynamicSlugCustom: string | null;
   primaryPage?: string | null;
   isTemplate: boolean;
+  changes?: any;
 }>;
 
 export class GetWebsitePagesAction extends ChaiBaseAction<GetWebsitePagesActionData, GetWebsitePagesActionResponse> {
@@ -57,6 +58,7 @@ export class GetWebsitePagesAction extends ChaiBaseAction<GetWebsitePagesActionD
           dynamic: schema.appPages.dynamic,
           dynamicSlugCustom: schema.appPages.dynamicSlugCustom,
           primaryPage: schema.appPages.primaryPage,
+          changes: schema.appPages.changes,
         })
         .from(schema.appPages)
         .where(and(eq(schema.appPages.app, appId), eq(schema.appPages.lang, lang))),

@@ -23,6 +23,7 @@ type GetLanguagePagesActionResponse = Array<{
   metadata: any;
   dynamic: boolean | null;
   dynamicSlugCustom: string | null;
+  changes?: any;
 }>;
 
 export class GetLanguagePagesAction extends ChaiBaseAction<GetLanguagePagesActionData, GetLanguagePagesActionResponse> {
@@ -57,6 +58,7 @@ export class GetLanguagePagesAction extends ChaiBaseAction<GetLanguagePagesActio
           metadata: schema.appPages.metadata,
           dynamic: schema.appPages.dynamic,
           dynamicSlugCustom: schema.appPages.dynamicSlugCustom,
+          changes: schema.appPages.changes,
         })
         .from(schema.appPages)
         .where(
