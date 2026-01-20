@@ -62,10 +62,6 @@ export const useBlocksStoreManager = () => {
         updateBlockAtom({ id: block._id, props: updatedBlock });
       });
       postMessage({ type: "blocks-props-updated", blocks });
-      setBlocks((prevBlocks) => {
-        runValidation(prevBlocks);
-        return prevBlocks;
-      });
       incrementActionsCount();
     },
   };
