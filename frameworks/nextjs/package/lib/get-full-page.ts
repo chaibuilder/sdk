@@ -20,7 +20,7 @@ export type FullPageResponse = {
   lang: string;
   primaryPage?: string | null;
   seo: any;
-  jsonLD?: any;
+  jsonld?: any;
   currentEditor?: string | null;
   pageType?: string | null;
   lastSaved?: string | null;
