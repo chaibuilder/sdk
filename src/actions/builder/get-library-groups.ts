@@ -46,7 +46,7 @@ export class GetLibraryGroupsAction extends ChaiBaseAction<GetLibraryGroupsActio
     );
 
     if (libraryError) {
-      throw new ActionError("Failed to fetch site library", "GET_SITE_LIBRARY_FAILED", libraryError);
+      throw new ActionError("Failed to fetch site library", "GET_SITE_LIBRARY_FAILED", 500, libraryError);
     }
 
     if (!library || library.length === 0) {
@@ -66,7 +66,7 @@ export class GetLibraryGroupsAction extends ChaiBaseAction<GetLibraryGroupsActio
     );
 
     if (error) {
-      throw new ActionError("Failed to fetch library groups", "GET_LIBRARY_GROUPS_FAILED", error);
+      throw new ActionError("Failed to fetch library groups", "GET_LIBRARY_GROUPS_FAILED", 500, error);
     }
 
     // Extract unique groups and map to response format

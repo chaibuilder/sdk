@@ -60,7 +60,7 @@ export class GetTemplatesByTypeAction extends ChaiBaseAction<
     );
 
     if (siteLibraryError) {
-      throw new ActionError("Failed to fetch site library", "GET_SITE_LIBRARY_FAILED", siteLibraryError);
+      throw new ActionError("Failed to fetch site library", "GET_SITE_LIBRARY_FAILED", 500, siteLibraryError);
     }
 
     // Fetch all shared libraries (type = "shared")
@@ -74,7 +74,7 @@ export class GetTemplatesByTypeAction extends ChaiBaseAction<
     );
 
     if (sharedLibrariesError) {
-      throw new ActionError("Failed to fetch shared libraries", "GET_SHARED_LIBRARIES_FAILED", sharedLibrariesError);
+      throw new ActionError("Failed to fetch shared libraries", "GET_SHARED_LIBRARIES_FAILED", 500, sharedLibrariesError);
     }
 
     // Build the list of library IDs to search in
@@ -106,7 +106,7 @@ export class GetTemplatesByTypeAction extends ChaiBaseAction<
     );
 
     if (templatesError) {
-      throw new ActionError("Failed to fetch templates", "GET_TEMPLATES_FAILED", templatesError);
+      throw new ActionError("Failed to fetch templates", "GET_TEMPLATES_FAILED", 500, templatesError);
     }
 
     return templates || [];

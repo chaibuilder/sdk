@@ -149,7 +149,7 @@ export class CreatePageAction extends ChaiBaseAction<CreatePageActionData, Creat
     );
 
     if (error) {
-      throw new ActionError("Failed to create page", "ERROR_CREATING_PAGE", error);
+      throw new ActionError("Failed to create page", "ERROR_CREATING_PAGE", 500, error);
     }
 
     if (!result || result.length === 0) {
