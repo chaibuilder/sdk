@@ -45,7 +45,7 @@ export class DeleteLibraryItemAction extends ChaiBaseAction<
     const { error } = await safeQuery(() => db.delete(schema.libraryItems).where(eq(schema.libraryItems.id, id)));
 
     if (error) {
-      throw new ActionError("Failed to delete library item", "DELETE_LIBRARY_ITEM_FAILED", error);
+      throw new ActionError("Failed to delete library item", "DELETE_LIBRARY_ITEM_FAILED", 500, error);
     }
 
     return { success: true };

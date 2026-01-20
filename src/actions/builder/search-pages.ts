@@ -82,7 +82,7 @@ export class SearchPagesAction extends ChaiBaseAction<SearchPagesActionData, Sea
     );
 
     if (error) {
-      throw new ActionError("Failed to search pages", "ERROR_SEARCHING_PAGES", error);
+      throw new ActionError("Failed to search pages", "ERROR_SEARCHING_PAGES", 500, error);
     }
 
     return pages || [];

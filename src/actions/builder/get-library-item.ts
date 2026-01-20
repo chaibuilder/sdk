@@ -70,7 +70,7 @@ export class GetLibraryItemAction extends ChaiBaseAction<GetLibraryItemActionDat
     );
 
     if (error) {
-      throw new ActionError("Failed to fetch library item", "GET_LIBRARY_ITEM_FAILED", error);
+      throw new ActionError("Failed to fetch library item", "GET_LIBRARY_ITEM_FAILED", 500, error);
     }
 
     if (!results || results.length === 0) {
