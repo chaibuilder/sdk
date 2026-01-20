@@ -53,6 +53,7 @@ export class GenerateSeoFieldAction extends ChaiBaseAction<GenerateSeoFieldActio
    * Execute the duplicate page action
    */
   async execute(data: GenerateSeoFieldActionData): Promise<GenerateSeoFieldActionResponse> {
+    await this.verifyAccess();
     if (!this.context) {
       throw new ActionError("Context not set", "CONTEXT_NOT_SET");
     }

@@ -36,6 +36,7 @@ export class DuplicatePageAction extends ChaiBaseAction<DuplicatePageActionData,
    * Execute the duplicate page action
    */
   async execute(data: DuplicatePageActionData): Promise<DuplicatePageActionResponse> {
+    await this.verifyAccess();
     if (!this.context) {
       throw new ActionError("Context not set", "CONTEXT_NOT_SET");
     }

@@ -77,6 +77,7 @@ export class CreatePageAction extends ChaiBaseAction<CreatePageActionData, Creat
    * Execute the create page action
    */
   async execute(data: CreatePageActionData): Promise<CreatePageActionResponse> {
+    await this.verifyAccess();
     if (!this.context) {
       throw new ActionError("Context not set", "CONTEXT_NOT_SET");
     }

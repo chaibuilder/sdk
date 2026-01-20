@@ -102,6 +102,10 @@ async function handleApi(req: express.Request, res: express.Response) {
       return;
     }
 
+    if (response.status && typeof response.status === "number") {
+      res.status(response.status);
+    }
+
     res.json(response);
   } catch (error) {
     console.log(error);

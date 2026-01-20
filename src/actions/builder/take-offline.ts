@@ -39,6 +39,7 @@ export class TakeOfflineAction extends ChaiBaseAction<TakeOfflineActionData, Tak
    * Execute the take offline action
    */
   async execute(data: TakeOfflineActionData): Promise<TakeOfflineActionResponse> {
+    await this.verifyAccess();
     if (!this.context) {
       throw new ActionError("Context not set", "CONTEXT_NOT_SET");
     }

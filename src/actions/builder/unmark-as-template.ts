@@ -32,6 +32,7 @@ export class UnmarkAsTemplateAction extends ChaiBaseAction<UnmarkAsTemplateActio
    * Execute the unmark as template action
    */
   async execute(data: UnmarkAsTemplateActionData): Promise<UnmarkAsTemplateActionResponse> {
+    await this.verifyAccess();
     if (!this.context) {
       throw new ActionError("Context not set", "CONTEXT_NOT_SET");
     }

@@ -61,6 +61,7 @@ export class UpsertLibraryItemAction extends ChaiBaseAction<
    * Execute the upsert library item action
    */
   async execute(data: UpsertLibraryItemActionData): Promise<UpsertLibraryItemActionResponse> {
+    await this.verifyAccess();
     if (!this.context) {
       throw new ActionError("Context not set", "CONTEXT_NOT_SET");
     }
