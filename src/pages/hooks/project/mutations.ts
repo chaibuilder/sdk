@@ -33,29 +33,6 @@ export const useUpdateWebsiteSettings = () => {
   });
 };
 
-// * Create Page and Global block
-export const useUpdateWebsiteData = () => {
-  const apiUrl = useApiUrl();
-  const queryClient = useQueryClient();
-  const fetchAPI = useFetch();
-  return useMutation({
-    mutationFn: async (data: any) => {
-      return fetchAPI(apiUrl, { action: ACTIONS.UPDATE_WEBSITE_DATA, data });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [ACTIONS.GET_WEBSITE_DATA],
-      });
-      toast.success(`Website data updated successfully.`);
-    },
-    onError: (response) => {
-      toast.error(`Failed to update website data`, {
-        description: response.message,
-      });
-    },
-  });
-};
-
 export const useUpdateAppSharedJsonLD = () => {
   const apiUrl = useApiUrl();
   const queryClient = useQueryClient();
