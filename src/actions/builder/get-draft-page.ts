@@ -51,6 +51,7 @@ export class GetDraftPageAction extends ChaiBaseAction<GetDraftPageActionData, G
           lang: targetTable.lang,
           primaryPage: targetTable.primaryPage,
           seo: targetTable.seo,
+          jsonld: targetTable.jsonld,
           currentEditor: targetTable.currentEditor,
           pageType: targetTable.pageType,
           lastSaved: targetTable.lastSaved,
@@ -97,8 +98,22 @@ export class GetDraftPageAction extends ChaiBaseAction<GetDraftPageActionData, G
       blocks = (primaryPageData?.[0]?.blocks as any[]) ?? [];
     }
 
+    let seoData: any = page.seo || {};
+    if (page.jsonld && Object.keys(page.jsonld as any).length > 0) {
+      seoData = {
+        ...seoData,
+        jsonLD: JSON.stringify(page.jsonld),
+      };
+    } else if (!seoData?.jsonLD) {
+      seoData = {
+        ...seoData,
+        jsonLD: "{}",
+      };
+    }
+
     return {
       ...page,
+      seo: seoData,
       blocks,
       id,
       languagePageId: page.id,

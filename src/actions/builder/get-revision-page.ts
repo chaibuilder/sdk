@@ -80,8 +80,17 @@ export class GetRevisionPageAction extends ChaiBaseAction<GetRevisionPageActionD
     let blocks = (blocksData?.blocks as ChaiBlock[]) ?? [];
     blocks = await this.getMergedBlocks(blocks, data.type === "draft", this.context.appId);
 
+    let seoData: any = blocksData.seo || {};
+    if (blocksData.jsonld && Object.keys(blocksData.jsonld as any).length > 0) {
+      seoData = {
+        ...seoData,
+        jsonLD: JSON.stringify(blocksData.jsonld),
+      };
+    }
+
     return {
       ...blocksData,
+      seo: seoData,
       blocks,
     };
   }

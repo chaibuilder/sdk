@@ -276,8 +276,17 @@ const SeoPanel = () => {
   };
 
   const onSubmit = async () => {
+    // Extract jsonLD from formValues and send it separately
+    const { jsonLD, ...seoWithoutJsonLD } = formValues;
+    const jsonLdData = jsonLD && jsonLD !== "{}" ? JSON.parse(jsonLD) : {};
+
     updatePage(
-      { id: languagePage?.id, seo: formValues, primaryPage: pageId },
+      {
+        id: languagePage?.id,
+        seo: seoWithoutJsonLD,
+        jsonld: jsonLdData,
+        primaryPage: pageId,
+      },
       {
         onSuccess: () => {
           console.log("SEO & JSON-LD updated successfully", formValues);

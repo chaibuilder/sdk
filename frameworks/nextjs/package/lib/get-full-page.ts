@@ -20,6 +20,7 @@ export type FullPageResponse = {
   lang: string;
   primaryPage?: string | null;
   seo: any;
+  jsonLD?: any;
   currentEditor?: string | null;
   pageType?: string | null;
   lastSaved?: string | null;
@@ -27,6 +28,21 @@ export type FullPageResponse = {
   parent?: string | null;
   blocks: ChaiBlock[];
   languagePageId: string;
+};
+
+type PageQueryResult = {
+  id: string;
+  name: string;
+  slug: string;
+  lang: string;
+  primaryPage: string | null;
+  seo: any;
+  jsonld: any;
+  currentEditor: string | null;
+  pageType: string | null;
+  lastSaved: string | null;
+  dynamic: boolean | null;
+  parent: string | null;
 };
 
 export async function getFullPage(
@@ -38,7 +54,7 @@ export async function getFullPage(
   const table = draftMode ? schema.appPages : schema.appPagesOnline;
 
   // Get page data with selected fields
-  const { data: pageResult, error } = await safeQuery(() =>
+  const { data: pageResult, error } = await safeQuery<PageQueryResult[]>(() =>
     db
       .select({
         id: table.id,
@@ -47,6 +63,7 @@ export async function getFullPage(
         lang: table.lang,
         primaryPage: table.primaryPage,
         seo: table.seo,
+        jsonld: table.jsonld,
         currentEditor: table.currentEditor,
         pageType: table.pageType,
         lastSaved: table.lastSaved,
@@ -67,6 +84,8 @@ export async function getFullPage(
     throw new Error("Page data is invalid");
   }
 
+  const jsonLDData =
+    page.jsonld && Object.keys(page.jsonld as any).length > 0 ? JSON.stringify(page.jsonld) : page?.seo?.jsonLD || {};
   const primaryPageId = page.primaryPage ?? page.id;
 
   // Get blocks from the primary page
@@ -107,6 +126,7 @@ export async function getFullPage(
     lang: page.lang,
     primaryPage: page.primaryPage ?? null,
     seo: page.seo,
+    jsonLD: jsonLDData,
     currentEditor,
     pageType: page.pageType ?? null,
     lastSaved: page.lastSaved ?? null,

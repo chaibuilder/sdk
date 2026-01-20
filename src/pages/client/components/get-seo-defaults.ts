@@ -11,10 +11,10 @@ export const getSeoDefaults = (pageTypeDetails: any, currentLang: string) => {
       canonicalUrl: "",
       ogTitle: "",
       ogDescription: "",
-      jsonLD: "",
+      jsonLD: "{}",
       metaOther: "",
     },
-    jsonLD: {},
+    jsonld: {},
     metaOther: {},
   };
   // Add SEO defaults with language support
@@ -54,7 +54,7 @@ export const getSeoDefaults = (pageTypeDetails: any, currentLang: string) => {
     }
   }
 
-  return { seo: result.seo, jsonLD: result.jsonLD, metaOther: META_OTHER };
+  return { seo: result.seo, jsonld: result.jsonld, metaOther: META_OTHER };
 };
 
 if (import.meta.vitest) {
@@ -91,7 +91,7 @@ if (import.meta.vitest) {
         jsonLD: "{}",
         metaOther: "",
       },
-      jsonLD: {},
+      jsonld: {},
       metaOther: {},
     });
   });

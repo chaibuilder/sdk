@@ -37,7 +37,7 @@ interface PageType {
   dynamicSlug?: string;
   hasSlug?: boolean;
   seoDefault?: Record<string, any>;
-  jsonLDDefault?: Record<string, any>;
+  jsonldDefault?: Record<string, any>;
   trackingDefault?: Record<string, any>;
 }
 
@@ -277,7 +277,7 @@ export default function PageCreator({ addEditPage, close, closePanel }: PageCrea
       dynamicSlugCustom?: string;
       tracking?: Record<string, any>;
       seo?: Record<string, any>;
-      jsonLD?: Record<string, any>;
+      jsonld?: Record<string, any>;
     } = {
       pageType,
       name,
@@ -288,7 +288,7 @@ export default function PageCreator({ addEditPage, close, closePanel }: PageCrea
       template: selectedTemplate || undefined,
       tracking: {},
       seo: {},
-      jsonLD: {},
+      jsonld: {},
     };
 
     // If using dynamic slug, add it as a separate property
@@ -313,9 +313,9 @@ export default function PageCreator({ addEditPage, close, closePanel }: PageCrea
       if (pageTypeDetails?.trackingDefault) {
         result.tracking = pageTypeDetails.trackingDefault;
       }
-      const { seo, jsonLD } = getSeoDefaults(pageTypeDetails, currentLang);
+      const { seo, jsonld } = getSeoDefaults(pageTypeDetails, currentLang);
       set(result, "seo", seo);
-      set(result, "jsonLD", jsonLD);
+      set(result, "jsonld", jsonld);
       createPage(result, {
         onSuccess: (response: any) => {
           close();
@@ -337,7 +337,7 @@ export default function PageCreator({ addEditPage, close, closePanel }: PageCrea
       parent: null;
       tracking?: Record<string, any>;
       seo?: Record<string, any>;
-      jsonLD?: Record<string, any>;
+      jsonld?: Record<string, any>;
     } = {
       pageType,
       name,
@@ -365,9 +365,9 @@ export default function PageCreator({ addEditPage, close, closePanel }: PageCrea
       if (pageTypeDetails?.trackingDefault) {
         result.tracking = pageTypeDetails.trackingDefault;
       }
-      const { seo, jsonLD } = getSeoDefaults(pageTypeDetails, currentLang);
+      const { seo, jsonld } = getSeoDefaults(pageTypeDetails, currentLang);
       set(result, "seo", seo);
-      set(result, "jsonLD", jsonLD);
+      set(result, "jsonld", jsonld);
       createPage(result, {
         onSuccess: (response: any) => {
           if (response?.page?.id) {

@@ -51,6 +51,7 @@ export class GetLanguagePagesAction extends ChaiBaseAction<GetLanguagePagesActio
           primaryPage: schema.appPages.primaryPage,
           pageType: schema.appPages.pageType,
           seo: schema.appPages.seo,
+          jsonld: schema.appPages.jsonld,
           currentEditor: schema.appPages.currentEditor,
           online: schema.appPages.online,
           parent: schema.appPages.parent,
@@ -68,7 +69,15 @@ export class GetLanguagePagesAction extends ChaiBaseAction<GetLanguagePagesActio
       throw apiError("LANGUAGE_PAGES_ERROR", error);
     }
 
-    // Remove the app field from each page (omit function from lodash)
-    return pages.map((page) => omit(page, ["app"]) as GetLanguagePagesActionResponse[0]);
+    return pages.map((page) => {
+      const cleanedPage: any = omit(page, ["app"]);
+      if (cleanedPage.jsonld && Object.keys(cleanedPage.jsonld).length > 0) {
+        cleanedPage.seo = {
+          ...cleanedPage.seo,
+          jsonLD: JSON.stringify(cleanedPage.jsonld),
+        };
+      }
+      return cleanedPage as GetLanguagePagesActionResponse[0];
+    });
   }
 }

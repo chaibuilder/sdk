@@ -28,6 +28,7 @@ export type ChaiBuilderPage = {
     jsonLD?: string;
     [key: string]: unknown;
   };
+  jsonLD?: string;
 };
 
 type ImageBlockProps = {

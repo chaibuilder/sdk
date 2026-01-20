@@ -21,7 +21,7 @@ type CreatePageActionData = {
   template?: string;
   dynamicSlugCustom?: string;
   seo?: Record<string, any>;
-  jsonLD?: Record<string, any>;
+  jsonld?: Record<string, any>;
 };
 
 type CreatePageActionResponse = {
@@ -56,7 +56,7 @@ export class CreatePageAction extends ChaiBaseAction<CreatePageActionData, Creat
         hasSlug: z.boolean().optional(),
         template: z.string().optional(),
         seo: z.record(z.string(), z.any()).optional(),
-        jsonLD: z.record(z.string(), z.any()).optional(),
+        jsonld: z.record(z.string(), z.any()).optional(),
         dynamicSlugCustom: z.string().optional(),
       })
       .refine(
@@ -114,7 +114,6 @@ export class CreatePageAction extends ChaiBaseAction<CreatePageActionData, Creat
       blocks: blocks,
       seo: data.seo ?? {
         title: data.name,
-        jsonLD: "",
         noIndex: false,
         ogImage: "",
         ogTitle: "",
@@ -125,7 +124,7 @@ export class CreatePageAction extends ChaiBaseAction<CreatePageActionData, Creat
         ogDescription: "",
         searchDescription: "",
       },
-      jsonLD: data.jsonLD ?? {},
+      jsonld: data.jsonld ?? {},
       online: false,
       currentEditor: null,
       changes: null,

@@ -91,6 +91,7 @@ export class GetCompareDataAction extends ChaiBaseAction<GetCompareDataActionDat
             columns: {
               blocks: true,
               seo: true,
+              jsonld: true,
             },
           }),
         ));
@@ -104,6 +105,7 @@ export class GetCompareDataAction extends ChaiBaseAction<GetCompareDataActionDat
             columns: {
               blocks: true,
               seo: true,
+              jsonld: true,
             },
           }),
         ));
@@ -118,6 +120,7 @@ export class GetCompareDataAction extends ChaiBaseAction<GetCompareDataActionDat
             columns: {
               blocks: true,
               seo: true,
+              jsonld: true,
             },
           }),
         ));
@@ -135,10 +138,23 @@ export class GetCompareDataAction extends ChaiBaseAction<GetCompareDataActionDat
       throw new ActionError(`No data found for ${type} version with id: ${id}`, "VERSION_NOT_FOUND");
     }
 
+    let seoData: any = data.seo || {};
+    if (data.jsonld && Object.keys(data.jsonld as any).length > 0) {
+      seoData = {
+        ...seoData,
+        jsonLD: JSON.stringify(data.jsonld),
+      };
+    } else if (!seoData?.jsonLD) {
+      seoData = {
+        ...seoData,
+        jsonLD: "{}",
+      };
+    }
+
     // Return blocks or empty array if blocks is null/undefined
     return {
       blocks: (data.blocks as ChaiBlock[]) || [],
-      seo: data.seo || {},
+      seo: seoData,
     };
   }
 

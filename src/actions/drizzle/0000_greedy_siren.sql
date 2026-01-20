@@ -1,6 +1,8 @@
 -- Current sql file was generated after introspecting the database
 -- If you want to run this migration please uncomment this code before executing migrations
-
+/*
+CREATE SEQUENCE "public"."app_pages_metadata_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 9223372036854775807 START WITH 1 CACHE 1;--> statement-breakpoint
+CREATE SEQUENCE "public"."webhook_events_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 9223372036854775807 START WITH 1 CACHE 1;--> statement-breakpoint
 CREATE TABLE "app_assets" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"app" uuid,
@@ -225,3 +227,4 @@ ALTER TABLE "app_users" ADD CONSTRAINT "app_users_app_fkey" FOREIGN KEY ("app") 
 ALTER TABLE "library_templates" ADD CONSTRAINT "library_templates_library_fkey" FOREIGN KEY ("library") REFERENCES "public"."libraries"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "library_items" ADD CONSTRAINT "library_items_library_fkey" FOREIGN KEY ("library") REFERENCES "public"."libraries"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "ai_logs" ADD CONSTRAINT "ai_logs_app_fkey" FOREIGN KEY ("app") REFERENCES "public"."apps"("id") ON DELETE no action ON UPDATE no action;
+*/
