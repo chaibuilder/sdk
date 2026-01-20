@@ -28,6 +28,7 @@ export class UpdateWebsiteSettingsAction extends ChaiBaseAction<
   }
 
   async execute(data: UpdateWebsiteSettingsActionData): Promise<UpdateWebsiteSettingsActionResponse> {
+    await this.verifyAccess();
     if (!this.context) {
       throw apiError("CONTEXT_NOT_SET", new Error("CONTEXT_NOT_SET"));
     }

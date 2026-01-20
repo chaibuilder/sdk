@@ -48,6 +48,7 @@ export class MarkAsTemplateAction extends ChaiBaseAction<MarkAsTemplateActionDat
    * Execute the mark as template action
    */
   async execute(data: MarkAsTemplateActionData): Promise<MarkAsTemplateActionResponse> {
+    await this.verifyAccess();
     if (!this.context) {
       throw new ActionError("Context not set", "CONTEXT_NOT_SET");
     }

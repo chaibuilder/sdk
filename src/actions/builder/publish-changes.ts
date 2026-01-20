@@ -59,6 +59,7 @@ export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionDat
    * Execute the publish changes action
    */
   async execute(data: PublishChangesActionData): Promise<PublishChangesActionResponse> {
+    await this.verifyAccess();
     this.validateContext();
     this.appId = this.context!.appId;
     this.userId = this.context!.userId ?? "";

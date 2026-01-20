@@ -3,6 +3,7 @@ import { registerChaiPartialType } from "@/runtime/register-partial-type";
 import { get } from "lodash-es";
 import { AskAIAction } from "./ask-ai-action";
 import { ChaiAction } from "./chai-action-interface";
+import { CheckUserAccessAction } from "./check-user-access";
 import { CreatePageAction } from "./create-page";
 import { DeleteLibraryItemAction } from "./delete-library-item";
 import { DeletePageAction } from "./delete-page";
@@ -63,6 +64,7 @@ class ChaiActionsRegistry {
 
     // Register all actions
     this.register("ASK_AI", new AskAIAction());
+    this.register("CHECK_USER_ACCESS", new CheckUserAccessAction());
     this.register("CREATE_PAGE", new CreatePageAction());
     this.register("DELETE_PAGE", new DeletePageAction());
     this.register("DUPLICATE_PAGE", new DuplicatePageAction());

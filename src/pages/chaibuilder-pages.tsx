@@ -9,6 +9,7 @@ import { useUpdateWebsiteSettings } from "@/pages/hooks/project/mutations";
 import { usePageTypes, useSearchPageTypePages } from "@/pages/hooks/project/use-page-types";
 import { useUILibraries } from "@/pages/hooks/project/use-ui-libraries";
 import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
+import { useCheckUserAccess } from "@/pages/hooks/user/use-check-access";
 import { useUserRoleAndPermissions } from "@/pages/hooks/user/use-user-permissions";
 import { usePagesSavePage } from "@/pages/hooks/utils/use-chai-api";
 import { usePagesProps } from "@/pages/hooks/utils/use-pages-props";
@@ -95,6 +96,8 @@ const DefaultChaiBuilder = (props: ChaiWebsiteBuilderProps) => {
   const { data: websiteConfig, isFetching: isWebsiteConfigFetching } = useWebsiteSetting();
   const isFetchingWebsiteData =
     isRoleAndPermissionsFetching || isPageTypesFetching || isCollectionsFetching || isWebsiteConfigFetching;
+
+  useCheckUserAccess();
 
   // * PAGE DATA
   const [searchParams] = useSearchParams();

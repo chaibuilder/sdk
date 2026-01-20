@@ -38,6 +38,7 @@ export class RestorePageAction extends ChaiBaseAction<RestorePageActionData, Res
    * Execute the restore page action
    */
   async execute(data: RestorePageActionData): Promise<RestorePageActionResponse> {
+    await this.verifyAccess();
     if (!this.context) {
       throw new ActionError("Context not set", "CONTEXT_NOT_SET");
     }

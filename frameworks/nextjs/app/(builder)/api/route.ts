@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    return NextResponse.json(response);
+    return NextResponse.json(response, { status: response.status || 200 });
   } catch (error) {
     console.error("Error handling POST request", {
       message: error instanceof Error ? error.message : String(error),

@@ -73,6 +73,7 @@ export class UpdatePageAction extends ChaiBaseAction<UpdatePageActionData, Updat
    * Execute the update page action
    */
   async execute(data: UpdatePageActionData): Promise<UpdatePageActionResponse> {
+    await this.verifyAccess();
     this.validateContext();
     this.appId = this.context!.appId;
 

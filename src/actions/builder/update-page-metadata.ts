@@ -37,6 +37,7 @@ export class UpdatePageMetadataAction extends ChaiBaseAction<
    * Execute the update page metadata action
    */
   async execute(data: UpdatePageMetadataActionData): Promise<UpdatePageMetadataActionResponse> {
+    await this.verifyAccess();
     if (!this.context) {
       throw new ActionError("Context not set", "CONTEXT_NOT_SET");
     }
