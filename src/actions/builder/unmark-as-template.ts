@@ -44,7 +44,7 @@ export class UnmarkAsTemplateAction extends ChaiBaseAction<UnmarkAsTemplateActio
     );
 
     if (error) {
-      throw new ActionError("Failed to unmark page as template", "DELETE_FAILED", error);
+      throw new ActionError("Failed to unmark page as template", "DELETE_FAILED", 500, error);
     }
 
     return { success: true };

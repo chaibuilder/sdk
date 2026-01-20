@@ -79,7 +79,7 @@ export class UpsertLibraryItemAction extends ChaiBaseAction<
     );
 
     if (libraryError) {
-      throw new ActionError("Failed to fetch site library", "GET_SITE_LIBRARY_FAILED", libraryError);
+      throw new ActionError("Failed to fetch site library", "GET_SITE_LIBRARY_FAILED", 500, libraryError);
     }
 
     if (!siteLibrary) {
@@ -103,7 +103,7 @@ export class UpsertLibraryItemAction extends ChaiBaseAction<
       });
 
       if (uploadResult?.error) {
-        throw new ActionError("Failed to upload preview image", "UPLOAD_PREVIEW_FAILED", uploadResult.error);
+        throw new ActionError("Failed to upload preview image", "UPLOAD_PREVIEW_FAILED", 500, uploadResult.error);
       }
 
       finalPreviewImageUrl = uploadResult?.data?.url || previewImageUrl;
@@ -130,7 +130,7 @@ export class UpsertLibraryItemAction extends ChaiBaseAction<
       );
 
       if (updateError || !updatedItem || updatedItem.length === 0) {
-        throw new ActionError("Failed to update library item", "UPDATE_LIBRARY_ITEM_FAILED", updateError);
+        throw new ActionError("Failed to update library item", "UPDATE_LIBRARY_ITEM_FAILED", 500, updateError);
       }
 
       return updatedItem[0]!;
@@ -158,7 +158,7 @@ export class UpsertLibraryItemAction extends ChaiBaseAction<
       );
 
       if (insertError || !newItem || newItem.length === 0) {
-        throw new ActionError("Failed to create library item", "CREATE_LIBRARY_ITEM_FAILED", insertError);
+        throw new ActionError("Failed to create library item", "CREATE_LIBRARY_ITEM_FAILED", 500, insertError);
       }
 
       return newItem[0]!;
