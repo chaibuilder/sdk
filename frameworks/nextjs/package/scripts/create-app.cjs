@@ -47,7 +47,7 @@ async function promptForMissingValues() {
   });
 
   return {
-    user: responses.user?.trim() || null,
+    user: responses.user?.trim(),
     projectName: responses.projectName?.trim() || null,
     fallbackLang: responses.fallbackLang?.trim() || null,
   };
