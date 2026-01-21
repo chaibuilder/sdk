@@ -95,7 +95,6 @@ export const useUpdateBlocksPropsRealtime = () => {
 
   return useCallback(
     (blockIds: Array<string>, props: Record<string, any>) => {
-      if (!selectedBlock) return;
       const updatedProps = updatePropsForLanguage(props, selectedLang, selectedBlock);
       updateBlocksRuntime(blockIds, updatedProps);
     },
