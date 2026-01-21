@@ -94,9 +94,8 @@ jobs:
               // Clean title by removing issue references for cleaner display
               const cleanTitle = p.title.replace(/(?:fix(?:es)?|close(?:s)?|resolve(?:s)?)\s*#\d+/gi, '').replace(/#\d+/g, '').trim();
               
-              // Plain text PR reference with title, date, and fixes on new line
-              const mergedDate = p.mergedAtISODate || 'N/A';
-              let prWithTitle = `#${p.num} ${cleanTitle} (${mergedDate})`;
+              // Plain text PR reference with title and fixes on new line
+              let prWithTitle = `#${p.num} ${cleanTitle}`;
               if (issues) {
                 prWithTitle += `<br/>**Fixes:** ${issues}`;
               }
@@ -115,19 +114,13 @@ jobs:
             // Main table sorted by merge date
             const tableRowsByDate = sortedByDate.map(formatPRRow).join('\n');
 
-            // Alternative table sorted by PR number (original order)
-            const tableRowsByNumber = enriched.map(formatPRRow).join('\n');
-
             const header = `### Included PRs (dev → ${pr.base.ref})`;
             const tableHeader = `| PR & Title | Opened By |\n|------------|-----------|` + '\n';
 
             // Main table (sorted by merge date)
             const mainTable = `${header}\n\n${tableHeader}${tableRowsByDate}`;
 
-            // Alternative table in collapsible details (sorted by PR number)
-            const altTable = `\n\n<details>\n<summary>View by PR number</summary>\n\n${tableHeader}${tableRowsByNumber}\n\n</details>`;
-
-            const section = `${startTag}\n${mainTable}${altTable}\n${endTag}`;
+            const section = `${startTag}\n${mainTable}${endTag}`;
 
             const body = pr.body || "";
             const newBody = (body.includes(startTag) && body.includes(endTag))
