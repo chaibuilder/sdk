@@ -221,6 +221,7 @@ export class CreatePageAction extends ChaiBaseAction<CreatePageActionData, Creat
       throw new ActionError(
         `Failed to fetch template: ${templateError.message || "Unknown database error"}`,
         "ERROR_GETTING_TEMPLATE_BLOCKS",
+        500,
         templateError,
       );
     }
@@ -246,6 +247,7 @@ export class CreatePageAction extends ChaiBaseAction<CreatePageActionData, Creat
       throw new ActionError(
         `Failed to fetch template blocks: ${templateBlocksError.message || "Unknown database error"}`,
         "ERROR_GETTING_TEMPLATE_BLOCKS",
+        500,
         templateBlocksError,
       );
     }
