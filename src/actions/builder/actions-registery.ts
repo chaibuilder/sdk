@@ -3,6 +3,7 @@ import { registerChaiPartialType } from "@/runtime/register-partial-type";
 import { get } from "lodash-es";
 import { AskAIAction } from "./ask-ai-action";
 import { ChaiAction } from "./chai-action-interface";
+import { CheckUserAccessAction } from "./check-user-access";
 import { CreatePageAction } from "./create-page";
 import { DeleteLibraryItemAction } from "./delete-library-item";
 import { DeletePageAction } from "./delete-page";
@@ -39,7 +40,6 @@ import { TakeOfflineAction } from "./take-offline";
 import { UnmarkAsTemplateAction } from "./unmark-as-template";
 import { UpdatePageAction } from "./update-page";
 import { UpdatePageMetadataAction } from "./update-page-metadata";
-import { UpdateWebsiteDataAction } from "./update-website-data";
 import { UpdateWebsiteSettingsAction } from "./update-website-settings";
 import { UpsertLibraryItemAction } from "./upsert-library-item";
 
@@ -64,6 +64,7 @@ class ChaiActionsRegistry {
 
     // Register all actions
     this.register("ASK_AI", new AskAIAction());
+    this.register("CHECK_USER_ACCESS", new CheckUserAccessAction());
     this.register("CREATE_PAGE", new CreatePageAction());
     this.register("DELETE_PAGE", new DeletePageAction());
     this.register("DUPLICATE_PAGE", new DuplicatePageAction());
@@ -93,7 +94,6 @@ class ChaiActionsRegistry {
     this.register("UPDATE_WEBSITE_SETTINGS", new UpdateWebsiteSettingsAction());
     this.register("TAKE_OFFLINE", new TakeOfflineAction());
     this.register("GET_CHANGES", new GetChangesAction());
-    this.register("UPDATE_WEBSITE_DATA", new UpdateWebsiteDataAction());
     this.register("GET_LIBRARY_GROUPS", new GetLibraryGroupsAction());
     this.register("DELETE_PAGE_REVISION", new DeletePageRevisionAction());
     this.register("GET_COLLECTIONS", new GetCollectionsAction());

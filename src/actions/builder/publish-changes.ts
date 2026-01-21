@@ -59,6 +59,7 @@ export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionDat
    * Execute the publish changes action
    */
   async execute(data: PublishChangesActionData): Promise<PublishChangesActionResponse> {
+    await this.verifyAccess();
     this.validateContext();
     this.appId = this.context!.appId;
     this.userId = this.context!.userId ?? "";
@@ -106,7 +107,7 @@ export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionDat
     );
 
     if (deleteError) {
-      throw new ActionError("Error deleting online theme", "ERROR_PUBLISHING_THEME", deleteError);
+      throw new ActionError("Error deleting online theme", "ERROR_PUBLISHING_THEME", 500, deleteError);
     }
 
     // Insert new online app
@@ -115,7 +116,7 @@ export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionDat
     );
 
     if (insertError) {
-      throw new ActionError("Error inserting online theme", "ERROR_PUBLISHING_THEME", insertError);
+      throw new ActionError("Error inserting online theme", "ERROR_PUBLISHING_THEME", 500, insertError);
     }
 
     // Update draft app to clear changes
@@ -124,7 +125,7 @@ export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionDat
     );
 
     if (updateError) {
-      throw new ActionError("Error updating theme", "ERROR_PUBLISHING_THEME", updateError);
+      throw new ActionError("Error updating theme", "ERROR_PUBLISHING_THEME", 500, updateError);
     }
 
     return [`website-settings-${this.appId}`];
@@ -141,7 +142,7 @@ export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionDat
     );
 
     if (error || !data) {
-      throw new ActionError("Site not found", "SITE_NOT_FOUND", error);
+      throw new ActionError("Site not found", "SITE_NOT_FOUND", 404, error);
     }
 
     return data;
@@ -166,7 +167,7 @@ export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionDat
     );
 
     if (error) {
-      throw new ActionError("Error clearing changes", "ERROR_CLEARING_CHANGES", error);
+      throw new ActionError("Error clearing changes", "ERROR_CLEARING_CHANGES", 500, error);
     }
   }
 
@@ -226,7 +227,7 @@ export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionDat
     );
 
     if (revisionError) {
-      throw new ActionError("Error creating revision", "ERROR_CREATING_REVISION", revisionError);
+      throw new ActionError("Error creating revision", "ERROR_CREATING_REVISION", 500, revisionError);
     }
 
     return true;
@@ -244,7 +245,7 @@ export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionDat
     );
 
     if (deleteError) {
-      throw new ActionError("Error deleting online page", "ERROR_PUBLISHING_PAGE", deleteError);
+      throw new ActionError("Error deleting online page", "ERROR_PUBLISHING_PAGE", 500, deleteError);
     }
 
     // Destructure to remove fields that shouldn't be copied or are auto-generated
@@ -264,7 +265,7 @@ export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionDat
     );
 
     if (error || !data || data.length === 0) {
-      throw new ActionError("Error publishing page", "ERROR_PUBLISHING_PAGE", error);
+      throw new ActionError("Error publishing page", "ERROR_PUBLISHING_PAGE", 500, error);
     }
 
     return data[0];
@@ -281,7 +282,7 @@ export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionDat
     );
 
     if (error || !data) {
-      throw new ActionError("Page not found", "PAGE_NOT_FOUND", error);
+      throw new ActionError("Page not found", "PAGE_NOT_FOUND", 404, error);
     }
 
     return data;

@@ -41,6 +41,7 @@ export class GenerateHtmlFromPromptAction extends ChaiBaseAction<
    * Execute the generate HTML action
    */
   async execute(data: GenerateHtmlFromPromptActionData): Promise<GenerateHtmlFromPromptActionResponse> {
+    await this.verifyAccess();
     if (!this.context) {
       throw new ActionError("Context not set", "CONTEXT_NOT_SET");
     }

@@ -6,8 +6,8 @@ import { ChaiBlock } from "@/types/chai-block";
 import { chunk, forEach, get, includes, isEmpty, isString, keys, omit, set, unset } from "lodash-es";
 import { useCallback } from "react";
 
-const updatePropsForLanguage = (props: Record<string, any>, selectedLang: string, selectedBlock: ChaiBlock) => {
-  const chaiBlock = getRegisteredChaiBlock(get(selectedBlock, "_type"));
+const updatePropsForLanguage = (props: Record<string, any>, selectedLang: string, selectedBlock?: ChaiBlock) => {
+  const chaiBlock = getRegisteredChaiBlock(get(selectedBlock, "_type", ""));
   if (!chaiBlock) return props;
 
   const updatedProps = { ...props };
@@ -31,7 +31,6 @@ export const useUpdateBlocksProps = () => {
 
   return useCallback(
     (blockIds: Array<string>, props: Record<string, any>, prevPropsState?: Record<string, any>) => {
-      if (!selectedBlock) return;
       const updatedProps = updatePropsForLanguage(props, selectedLang, selectedBlock);
       updateBlocks(blockIds, updatedProps, prevPropsState);
     },
@@ -96,7 +95,6 @@ export const useUpdateBlocksPropsRealtime = () => {
 
   return useCallback(
     (blockIds: Array<string>, props: Record<string, any>) => {
-      if (!selectedBlock) return;
       const updatedProps = updatePropsForLanguage(props, selectedLang, selectedBlock);
       updateBlocksRuntime(blockIds, updatedProps);
     },

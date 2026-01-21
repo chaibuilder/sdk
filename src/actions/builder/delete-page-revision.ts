@@ -35,6 +35,7 @@ export class DeletePageRevisionAction extends ChaiBaseAction<
    * Execute the delete page revision action
    */
   async execute(data: DeletePageRevisionActionData): Promise<DeletePageRevisionActionResponse> {
+    await this.verifyAccess();
     if (!this.context) {
       throw new ActionError("Context not set", "CONTEXT_NOT_SET");
     }

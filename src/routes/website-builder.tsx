@@ -7,7 +7,7 @@ import { supabaseClient } from "./supabase";
 const WebsiteBuilder = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<null | boolean>(null);
   const [user, setUser] = useState<LoggedInUser | null>(null);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     if (!supabaseClient) return;
     // Check initial session
@@ -28,6 +28,7 @@ const WebsiteBuilder = () => {
       } else {
         setIsLoggedIn(false);
       }
+      setLoading(false);
     };
 
     checkInitialSession();
@@ -52,6 +53,7 @@ const WebsiteBuilder = () => {
         setUser(null);
         setIsLoggedIn(false);
       }
+      setLoading(false);
     });
 
     // Cleanup subscription on unmount
@@ -62,7 +64,9 @@ const WebsiteBuilder = () => {
 
   const handleLogout = useCallback(async () => {
     if (!supabaseClient) return;
+    console.log("Logging out");
     await supabaseClient.auth.signOut();
+    window.location.reload();
   }, []);
 
   const getAccessToken = useCallback(async () => {
@@ -78,7 +82,7 @@ const WebsiteBuilder = () => {
   const getPreviewUrl = useCallback((slug: string) => `/pages${slug}`, []);
   const getLiveUrl = useCallback((slug: string) => `/pages${slug}`, []);
 
-  if (isLoggedIn === null) {
+  if (loading) {
     return null;
   }
 

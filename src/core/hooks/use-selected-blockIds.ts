@@ -30,7 +30,7 @@ selectedBlocksAtom.debugLabel = "selectedBlocksAtom";
 export const selectedBlockAtom = atom((get) => {
   const blocks = get(selectedBlocksAtom);
   if (blocks.length === 0) {
-    return null;
+    return undefined;
   }
   if (blocks.length === 1) {
     return blocks[0] as ChaiBlock;

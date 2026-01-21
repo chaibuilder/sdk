@@ -26,9 +26,10 @@ const QUESTIONS = [
     validate: (value) => (value && value.trim().length > 0 ? true : "Project name is required"),
   },
   {
-    name: "ownerId",
+    name: "user",
     type: "text",
-    message: "Enter the user ID (Optional):",
+    message: "Enter the user ID:",
+    validate: (value) => (value && value.trim().length > 0 ? true : "User ID is required"),
   },
   {
     name: "fallbackLang",
@@ -46,15 +47,22 @@ async function promptForMissingValues() {
   });
 
   return {
-    ownerId: responses.ownerId?.trim() || null,
+    user: responses.user?.trim(),
     projectName: responses.projectName?.trim() || null,
     fallbackLang: responses.fallbackLang?.trim() || null,
   };
 }
 
-async function createApp({ ownerId, projectName, fallbackLang, databaseUrl }) {
+async function createApp({ user, projectName, fallbackLang, databaseUrl }, dependencies = {}) {
+  const { postgresLib = postgres } = dependencies;
+
   if (!projectName) {
     console.error("Project name is required.");
+    process.exit(EXIT_CODES.VALIDATION_ERROR);
+  }
+
+  if (!user) {
+    console.error("User ID is required.");
     process.exit(EXIT_CODES.VALIDATION_ERROR);
   }
 
@@ -79,15 +87,15 @@ async function createApp({ ownerId, projectName, fallbackLang, databaseUrl }) {
     }
   }
 
-  const sql = postgres(databaseUrl, { max: 1 });
+  const sql = postgresLib(databaseUrl, { max: 1 });
   const libraryName = projectName;
-  const normalizedOwnerId = ownerId && ownerId.length > 0 ? ownerId : null;
+  const normalizedUser = user;
 
   try {
     const result = await sql.begin(async (tx) => {
       const [app] = await tx`
         insert into apps (name, "user", theme, "fallbackLang")
-        values (${projectName}, ${normalizedOwnerId}, ${sql.json(defaultTheme)}, ${validatedFallbackLang})
+        values (${projectName}, ${normalizedUser}, ${sql.json(defaultTheme)}, ${validatedFallbackLang})
         returning id
       `;
 
@@ -95,7 +103,7 @@ async function createApp({ ownerId, projectName, fallbackLang, databaseUrl }) {
 
       await tx`
         insert into apps_online (id, name, "user", "apiKey")
-        values (${appId}, ${projectName}, ${normalizedOwnerId}, ${appId})
+        values (${appId}, ${projectName}, ${normalizedUser}, ${appId})
       `;
 
       const [library] = await tx`
@@ -104,12 +112,11 @@ async function createApp({ ownerId, projectName, fallbackLang, databaseUrl }) {
         returning id
       `;
 
-      if (normalizedOwnerId) {
-        await tx`
-          insert into app_users ("user", app, role)
-          values (${normalizedOwnerId}, ${appId}, 'admin')
-        `;
-      }
+      // Always insert into app_users since user is mandatory now
+      await tx`
+        insert into app_users ("user", app, role)
+        values (${normalizedUser}, ${appId}, 'admin')
+      `;
 
       const [page] = await tx`
         insert into app_pages (app, slug, name, "pageType")
@@ -149,9 +156,9 @@ async function runCli() {
     console.error("Missing database connection string. Please set the CHAIBUILDER_DATABASE_URL environment variable");
     process.exit(EXIT_CODES.CONFIG_ERROR);
   }
-  const { ownerId, projectName, fallbackLang } = await promptForMissingValues();
+  const { user, projectName, fallbackLang } = await promptForMissingValues();
 
-  await createApp({ ownerId, projectName, fallbackLang, databaseUrl });
+  await createApp({ user, projectName, fallbackLang, databaseUrl });
 }
 
 if (require.main === module) {

@@ -32,6 +32,7 @@ export class UnmarkAsTemplateAction extends ChaiBaseAction<UnmarkAsTemplateActio
    * Execute the unmark as template action
    */
   async execute(data: UnmarkAsTemplateActionData): Promise<UnmarkAsTemplateActionResponse> {
+    await this.verifyAccess();
     if (!this.context) {
       throw new ActionError("Context not set", "CONTEXT_NOT_SET");
     }
@@ -43,7 +44,7 @@ export class UnmarkAsTemplateAction extends ChaiBaseAction<UnmarkAsTemplateActio
     );
 
     if (error) {
-      throw new ActionError("Failed to unmark page as template", "DELETE_FAILED", error);
+      throw new ActionError("Failed to unmark page as template", "DELETE_FAILED", 500, error);
     }
 
     return { success: true };

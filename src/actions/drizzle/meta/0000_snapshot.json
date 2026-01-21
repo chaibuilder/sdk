@@ -376,12 +376,6 @@
           "primaryKey": false,
           "notNull": false
         },
-        "configData": {
-          "name": "configData",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": false
-        },
         "deletedAt": {
           "name": "deletedAt",
           "type": "timestamp with time zone",
@@ -469,12 +463,6 @@
         },
         "changes": {
           "name": "changes",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "configData": {
-          "name": "configData",
           "type": "jsonb",
           "primaryKey": false,
           "notNull": false

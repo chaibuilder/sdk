@@ -37,7 +37,7 @@ export const initChaiBuilderActionHandler = (params: { apiKey: string; userId: s
       console.log("Error in builderApiHandler:", error);
       // Handle ActionError with specific error code and message
       if (error instanceof ActionError) {
-        return { error: error.message, code: error.code, status: 400 };
+        return { error: error.message, code: error.code, status: error.status || 400 };
       }
       // Generic error fallback
       return { error: "Something went wrong.", status: 500 };

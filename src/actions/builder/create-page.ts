@@ -77,6 +77,7 @@ export class CreatePageAction extends ChaiBaseAction<CreatePageActionData, Creat
    * Execute the create page action
    */
   async execute(data: CreatePageActionData): Promise<CreatePageActionResponse> {
+    await this.verifyAccess();
     if (!this.context) {
       throw new ActionError("Context not set", "CONTEXT_NOT_SET");
     }
@@ -148,7 +149,7 @@ export class CreatePageAction extends ChaiBaseAction<CreatePageActionData, Creat
     );
 
     if (error) {
-      throw new ActionError("Failed to create page", "ERROR_CREATING_PAGE", error);
+      throw new ActionError("Failed to create page", "ERROR_CREATING_PAGE", 500, error);
     }
 
     if (!result || result.length === 0) {
@@ -220,6 +221,7 @@ export class CreatePageAction extends ChaiBaseAction<CreatePageActionData, Creat
       throw new ActionError(
         `Failed to fetch template: ${templateError.message || "Unknown database error"}`,
         "ERROR_GETTING_TEMPLATE_BLOCKS",
+        500,
         templateError,
       );
     }
@@ -245,6 +247,7 @@ export class CreatePageAction extends ChaiBaseAction<CreatePageActionData, Creat
       throw new ActionError(
         `Failed to fetch template blocks: ${templateBlocksError.message || "Unknown database error"}`,
         "ERROR_GETTING_TEMPLATE_BLOCKS",
+        500,
         templateBlocksError,
       );
     }

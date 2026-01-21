@@ -48,6 +48,7 @@ export class MarkAsTemplateAction extends ChaiBaseAction<MarkAsTemplateActionDat
    * Execute the mark as template action
    */
   async execute(data: MarkAsTemplateActionData): Promise<MarkAsTemplateActionResponse> {
+    await this.verifyAccess();
     if (!this.context) {
       throw new ActionError("Context not set", "CONTEXT_NOT_SET");
     }
@@ -65,7 +66,7 @@ export class MarkAsTemplateAction extends ChaiBaseAction<MarkAsTemplateActionDat
     );
 
     if (libraryError) {
-      throw new ActionError("Failed to fetch site library", "GET_SITE_LIBRARY_FAILED", libraryError);
+      throw new ActionError("Failed to fetch site library", "GET_SITE_LIBRARY_FAILED", 500, libraryError);
     }
 
     if (!siteLibrary) {
@@ -89,7 +90,7 @@ export class MarkAsTemplateAction extends ChaiBaseAction<MarkAsTemplateActionDat
       });
 
       if (uploadResult?.error) {
-        throw new ActionError("Failed to upload preview image", "UPLOAD_PREVIEW_FAILED", uploadResult.error);
+        throw new ActionError("Failed to upload preview image", "UPLOAD_PREVIEW_FAILED", 500, uploadResult.error);
       }
 
       finalPreviewImageUrl = uploadResult?.data?.url || previewImageUrl;
@@ -119,7 +120,7 @@ export class MarkAsTemplateAction extends ChaiBaseAction<MarkAsTemplateActionDat
     );
 
     if (error || !template || template.length === 0) {
-      throw new ActionError("Failed to mark page as template", "UPDATE_FAILED", error);
+      throw new ActionError("Failed to mark page as template", "UPDATE_FAILED", 500, error);
     }
 
     return template[0]!;
