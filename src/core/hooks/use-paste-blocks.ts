@@ -9,6 +9,10 @@ import { find, first, has, isEmpty } from "lodash-es";
 import { useCallback } from "react";
 import { toast } from "sonner";
 
+const isFirefox = () => {
+  return navigator.userAgent.toLowerCase().includes("firefox");
+};
+
 const useCanPaste = () => {
   const [blocks] = useBlocksStore();
   return (ids: string[], newParentId: string | null) => {
@@ -51,6 +55,9 @@ export const usePasteBlocks = (): {
       if (cutBlockIds.length > 0) {
         return canPasteBlocks(cutBlockIds, newParentId);
       }
+      if (isFirefox()) {
+        return false;
+      }
       try {
         const clipboardContent = await navigator.clipboard.readText();
         if (clipboardContent) {
@@ -71,7 +78,20 @@ export const usePasteBlocks = (): {
       async (newParentId: string | string[]) => {
         const parentId = Array.isArray(newParentId) ? newParentId[0] : newParentId;
 
-        // Check for paste permissions before proceeding
+        if (!isEmpty(cutBlockIds)) {
+          moveCutBlocks(cutBlockIds, newParentId);
+          setCutBlockIds([]);
+          if (!isFirefox()) {
+            await navigator.clipboard.writeText("");
+          }
+          return;
+        }
+
+        if (isFirefox()) {
+          toast.error("Paste is not supported in Firefox");
+          return;
+        }
+
         if (!navigator?.permissions) {
           toast.error("Cannot check clipboard permissions.");
           return;
@@ -84,13 +104,6 @@ export const usePasteBlocks = (): {
           }
         } catch {
           toast.error("Failed to check clipboard permissions. Please allow clipboard access.");
-          return;
-        }
-
-        if (!isEmpty(cutBlockIds)) {
-          moveCutBlocks(cutBlockIds, newParentId);
-          setCutBlockIds([]);
-          await navigator.clipboard.writeText("");
           return;
         }
 
@@ -116,7 +129,7 @@ export const usePasteBlocks = (): {
           },
         );
       },
-      [cutBlockIds, moveCutBlocks, setCutBlockIds],
+      [cutBlockIds, moveCutBlocks, setCutBlockIds, addPredefinedBlock],
     ),
   };
 };
