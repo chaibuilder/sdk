@@ -20,7 +20,7 @@ import { usePartialBlocksStore } from "@/core/hooks/use-partial-blocks-store";
 import { useSavePage } from "@/core/hooks/use-save-page";
 import { useGetBlockAtom } from "@/core/hooks/use-update-block-atom";
 import { applyBindingToBlockProps } from "@/render/apply-binding";
-import { getRegisteredChaiBlock } from "@/runtime/index";
+import { getRegisteredChaiBlock } from "@/runtime";
 import { ChaiBlock } from "@/types/chai-block";
 import { atom, Atom, Provider, useAtom, useAtomValue } from "jotai";
 import { splitAtom } from "jotai/utils";

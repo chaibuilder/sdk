@@ -1,4 +1,4 @@
-import { registerChaiFeatureFlags } from "@/runtime/index";
+import { registerChaiFeatureFlags } from "@/runtime/client";
 
 /**
  * Register demo feature flags for testing purposes

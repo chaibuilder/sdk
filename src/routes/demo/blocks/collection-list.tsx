@@ -5,7 +5,7 @@ import {
   closestBlockProp,
   registerChaiBlockSchema,
   StylesProp,
-} from "@/runtime/index";
+} from "@/runtime";
 
 type Sort = {
   field: string;

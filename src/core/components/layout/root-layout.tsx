@@ -2,20 +2,22 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { AddBlocksPanel, Outline } from "@/core/components";
+import { AiIcon } from "@/core/components/ai/ai-icon";
 import { AskAI } from "@/core/components/ask-ai-panel";
 import CanvasArea from "@/core/components/canvas/canvas-area";
+import { useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 import { CanvasTopBar } from "@/core/components/canvas/topbar/canvas-top-bar";
-import { AddBlocksPanel, Outline } from "@/core/components/index";
 import { AddBlocksDialog } from "@/core/components/layout/add-blocks-dialog";
 import { NoopComponent } from "@/core/components/noop-component";
 import SettingsPanel from "@/core/components/settings/settings-panel";
+import { DesignTokensIcon } from "@/core/components/sidepanels/panels/design-tokens/DesignTokensIcon";
 import ThemeConfigPanel from "@/core/components/sidepanels/panels/theme-configuration/ThemeConfigPanel";
-import { registerChaiSidebarPanel, useChaiSidebarPanels } from "@/runtime/index";
-import { useTopBarComponent } from "@/runtime/index";
 import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { useSidebarActivePanel } from "@/core/hooks/use-sidebar-active-panel";
 import { useActiveSettingsTab, useRightPanel } from "@/core/hooks/use-theme";
 import { isDevelopment } from "@/core/import-html/general";
+import { registerChaiSidebarPanel, useChaiSidebarPanels, useTopBarComponent } from "@/runtime/client";
 import { Cross1Icon, LightningBoltIcon, MixerHorizontalIcon, PlusCircledIcon, StackIcon } from "@radix-ui/react-icons";
 import { motion } from "framer-motion";
 import { find, first, get, reverse } from "lodash-es";
@@ -31,9 +33,6 @@ import React, {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import { AiIcon } from "@/core/components/ai/ai-icon";
-import { useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
-import { DesignTokensIcon } from "@/core/components/sidepanels/panels/design-tokens/DesignTokensIcon";
 
 const ManageDesignTokens = React.lazy(() => import("../settings/new-panel/manage-design-token/manage-design-tokens"));
 

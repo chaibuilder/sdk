@@ -3,7 +3,7 @@ import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { useFetch } from "@/pages/hooks/utils/use-fetch";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { useApiUrl } from "./use-builder-prop.ts";
+import { useApiUrl } from "./use-builder-prop";
 
 export const useUpdateWebsiteSettings = () => {
   const apiUrl = useApiUrl();

@@ -1,5 +1,5 @@
 import { ChaiBuilder } from "@/package/ChaiBuilder";
-import { ChaiPageStyles, RenderChaiBlocks, PreviewBanner } from "@/package/rsc/index";
+import { ChaiPageStyles, PreviewBanner, RenderChaiBlocks } from "@/package/rsc";
 import { ChaiPageProps } from "@chaibuilder/sdk/runtime";
 import "@chaibuilder/sdk/styles";
 import { loadWebBlocks } from "@chaibuilder/sdk/web-blocks";

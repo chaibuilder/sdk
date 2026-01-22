@@ -5,7 +5,7 @@ import {
   closestBlockProp,
   registerChaiBlockSchema,
   stylesProp,
-} from "@/runtime/index";
+} from "@/runtime";
 import { LoopIcon } from "@radix-ui/react-icons";
 import { isEmpty, pick } from "lodash-es";
 import * as React from "react";

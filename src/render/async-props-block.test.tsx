@@ -1,4 +1,4 @@
-import { ChaiBlock, ChaiPageProps } from "@/runtime/index";
+import { ChaiBlock, ChaiPageProps } from "@/runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import DataProviderPropsBlock from "./async-props-block";
 

@@ -4,7 +4,7 @@ import { usePageExternalData } from "@/core/atoms/builder";
 import { LANGUAGES } from "@/core/constants/LANGUAGES";
 import { useLanguages } from "@/core/hooks/use-languages";
 import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
-import { useRegisteredChaiBlocks } from "@/runtime/index";
+import { useRegisteredChaiBlocks } from "@/runtime";
 import { ChevronDownIcon, ChevronRightIcon, InfoCircledIcon, ListBulletIcon } from "@radix-ui/react-icons";
 import { FieldTemplateProps } from "@rjsf/utils";
 import { get, isEmpty } from "lodash-es";
