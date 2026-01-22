@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useLanguages } from "@/core/hooks/use-languages";
+import { useLanguages } from "@/hooks/use-languages";
 import { addNewLangAtom } from "@/pages/atom/add-new-lang";
 import { useActivePage } from "@/pages/hooks/pages/use-current-page";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";

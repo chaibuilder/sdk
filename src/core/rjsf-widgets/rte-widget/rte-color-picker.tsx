@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
-import { useDarkMode } from "@/core/hooks/use-dark-mode";
 import { cn } from "@/core/utils/cn";
+import { useDarkMode } from "@/hooks/use-dark-mode";
 import { lsThemeAtom } from "@/routes/demo/atoms-dev";
 import { CaretDownIcon, Cross1Icon } from "@radix-ui/react-icons";
 import { useDebouncedState } from "@react-hookz/web";

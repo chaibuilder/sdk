@@ -9,9 +9,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { cn, getBreakpointValue } from "@/core/functions/common-functions";
-import { useBuilderProp } from "@/core/hooks/use-builder-prop";
-import { useCanvasDisplayWidth, useScreenSizeWidth } from "@/core/hooks/use-screen-size-width";
-import { useSelectedBreakpoints } from "@/core/hooks/use-selected-breakpoints";
+import { useBuilderProp } from "@/hooks/use-builder-prop";
+import { useCanvasDisplayWidth, useScreenSizeWidth } from "@/hooks/use-screen-size-width";
+import { useSelectedBreakpoints } from "@/hooks/use-selected-breakpoints";
 import { ChevronDownIcon, DesktopIcon, LaptopIcon, MobileIcon } from "@radix-ui/react-icons";
 import { includes, map, toUpper } from "lodash-es";
 import { useTranslation } from "react-i18next";

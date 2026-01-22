@@ -8,8 +8,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useLanguages } from "@/core/hooks/use-languages";
-import { useSidebarActivePanel } from "@/core/hooks/use-sidebar-active-panel";
+import { useLanguages } from "@/hooks/use-languages";
+import { useSidebarActivePanel } from "@/hooks/use-sidebar-active-panel";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { useDeletePage } from "@/pages/hooks/pages/mutations";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";

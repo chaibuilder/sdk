@@ -1,9 +1,9 @@
 import { JSONForm } from "@/core/components/settings/json-form";
 import { COLLECTION_PREFIX } from "@/core/constants/STRINGS";
-import { useLanguages } from "@/core/hooks/use-languages";
-import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
-import { useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "@/core/hooks/use-update-blocks-props";
-import { useWrapperBlock } from "@/core/hooks/use-wrapper-block";
+import { useLanguages } from "@/hooks/use-languages";
+import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
+import { useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "@/hooks/use-update-blocks-props";
+import { useWrapperBlock } from "@/hooks/use-wrapper-block";
 import { ChaiBlockDefinition, getBlockFormSchemas, getRegisteredChaiBlock } from "@/runtime";
 import { ChaiBlock } from "@/types/common";
 import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";

@@ -4,7 +4,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { usePermissions } from "@/core/hooks/use-permissions";
+import { usePermissions } from "@/hooks/use-permissions";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { find } from "lodash-es";

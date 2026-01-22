@@ -1,11 +1,11 @@
 import { useFrame } from "@/core/frame/frame-context";
-import { useBlockHighlight } from "@/core/hooks/use-block-highlight";
-import { useInlineEditing } from "@/core/hooks/use-inline-editing";
-import { useLanguages } from "@/core/hooks/use-languages";
-import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
-import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
 import RteMenubar from "@/core/rjsf-widgets/rte-widget/rte-menu-bar";
 import { useRTEditor } from "@/core/rjsf-widgets/rte-widget/use-rte-editor";
+import { useBlockHighlight } from "@/hooks/use-block-highlight";
+import { useInlineEditing } from "@/hooks/use-inline-editing";
+import { useLanguages } from "@/hooks/use-languages";
+import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
+import { useUpdateBlocksProps } from "@/hooks/use-update-blocks-props";
 import { getRegisteredChaiBlock } from "@/runtime";
 import { ChaiBlock } from "@/types/common";
 import { useDebouncedCallback } from "@react-hookz/web";

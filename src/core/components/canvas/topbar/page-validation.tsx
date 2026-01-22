@@ -1,6 +1,6 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
-import { useStructureValidation } from "@/core/hooks/use-structure-validation";
+import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
+import { useStructureValidation } from "@/hooks/use-structure-validation";
 import { ExclamationTriangleIcon, InfoCircledIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
 

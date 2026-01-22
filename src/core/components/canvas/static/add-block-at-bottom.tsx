@@ -1,10 +1,10 @@
+import { useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { usePermissions } from "@/core/hooks/use-permissions";
 import { PERMISSIONS } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
+import { usePermissions } from "@/hooks/use-permissions";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
-import { useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 
 export const AddBlockAtBottom = () => {
   const { t } = useTranslation();

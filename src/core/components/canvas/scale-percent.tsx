@@ -1,4 +1,4 @@
-import { useCanvasZoom } from "@/core/hooks/use-canvas-zoom";
+import { useCanvasZoom } from "@/hooks/use-canvas-zoom";
 import { ZoomInIcon } from "@radix-ui/react-icons";
 import { round } from "lodash-es";
 

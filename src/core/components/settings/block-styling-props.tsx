@@ -5,11 +5,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
-import { useRemoveClassesFromBlocks } from "@/core/hooks/use-remove-classes-from-blocks";
-import { useResetBlockStyles } from "@/core/hooks/use-reset-block-styles";
-import { useSelectedBlock, useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
-import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
+import { getSplitChaiClasses } from "@/hooks/get-split-classes";
+import { useRemoveClassesFromBlocks } from "@/hooks/use-remove-classes-from-blocks";
+import { useResetBlockStyles } from "@/hooks/use-reset-block-styles";
+import { useSelectedBlock, useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import { find, get, isEmpty, map, startCase } from "lodash-es";
 import { useTranslation } from "react-i18next";

@@ -6,8 +6,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
-import { useLanguages } from "@/core/hooks/use-languages";
 import { mergeClasses } from "@/core/main";
+import { useLanguages } from "@/hooks/use-languages";
 import { addNewLangAtom } from "@/pages/atom/add-new-lang";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";

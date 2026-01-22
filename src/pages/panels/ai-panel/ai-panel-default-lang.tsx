@@ -1,7 +1,7 @@
 "use client";
 
-import { useBlocksHtmlForAi } from "@/core/hooks/use-blocks-html-for-ai";
-import { useSelectedBlock, useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { useBlocksHtmlForAi } from "@/hooks/use-blocks-html-for-ai";
+import { useSelectedBlock, useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
 import {
   Conversation,
   ConversationContent,

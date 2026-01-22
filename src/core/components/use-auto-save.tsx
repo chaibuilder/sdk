@@ -1,9 +1,8 @@
-import { useBuilderProp } from "@/core/hooks/use-builder-prop";
-import { useSavePage } from "@/core/hooks/use-save-page";
-import { atom, useAtom } from "jotai";
+import { userActionsCountAtom } from "@/atoms/builder";
+import { useBuilderProp } from "@/hooks/use-builder-prop";
+import { useSavePage } from "@/hooks/use-save-page";
+import { useAtom } from "jotai";
 import { useCallback, useEffect } from "react";
-
-export const userActionsCountAtom = atom(0);
 
 export const useAutoSave = () => {
   const { savePage, saveState } = useSavePage();

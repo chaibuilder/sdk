@@ -1,4 +1,4 @@
-import { usePermissions } from "@/core/hooks/use-permissions";
+import { usePermissions } from "@/hooks/use-permissions";
 
 export const PermissionChecker = ({
   permission,

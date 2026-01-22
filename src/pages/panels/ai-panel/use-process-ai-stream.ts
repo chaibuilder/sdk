@@ -1,7 +1,7 @@
-import { useAddBlock } from "@/core/hooks/use-add-block";
-import { useRemoveBlocks } from "@/core/hooks/use-remove-blocks";
-import { useReplaceBlock } from "@/core/hooks/use-replace-block";
 import { getBlocksFromHTML } from "@/core/import-html/html-to-json";
+import { useAddBlock } from "@/hooks/use-add-block";
+import { useRemoveBlocks } from "@/hooks/use-remove-blocks";
+import { useReplaceBlock } from "@/hooks/use-replace-block";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 import { Message } from "./ai-panel-helper";
