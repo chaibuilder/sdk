@@ -2,7 +2,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { LanguageButton } from "@/routes/demo/lang-button";
 import RightTop from "@/routes/demo/right-top";
 import { Cross2Icon, InfoCircledIcon } from "@radix-ui/react-icons";
-import { useEffect, useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 
 const Logo = () => {
   return (
@@ -25,7 +25,7 @@ const DemoAlert = () => {
   useEffect(() => {
     const dismissed = localStorage.getItem("demo-alert-dismissed");
     if (dismissed === "true") {
-      setIsVisible(false);
+      startTransition(() => setIsVisible(false));
     }
   }, []);
 

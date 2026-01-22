@@ -15,7 +15,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { useLanguages } from "@/core/hooks/use-languages";
+import { useLanguages } from "@/hooks/use-languages";
 import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
 import { useDeleteGlobalSchema, useTogglePageGlobalSchema } from "@/pages/hooks/project/mutations";

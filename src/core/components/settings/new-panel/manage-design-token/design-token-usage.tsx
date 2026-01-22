@@ -1,11 +1,11 @@
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { TokenUsageSection, TokenUsageSectionItem } from "@/core/components/settings/new-panel/token-usage-section";
-import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
-import { useBuilderProp } from "@/core/hooks/use-builder-prop";
-import { useLanguages } from "@/core/hooks/use-languages";
-import { useSavePage } from "@/core/hooks/use-save-page";
-import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
-import { ChaiBlock } from "@/types/chai-block";
+import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
+import { useBuilderProp } from "@/hooks/use-builder-prop";
+import { useLanguages } from "@/hooks/use-languages";
+import { useSavePage } from "@/hooks/use-save-page";
+import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
+import { ChaiBlock } from "@/types/common";
 import { ArrowRightIcon, FileIcon, GlobeIcon } from "@radix-ui/react-icons";
 import { noop } from "lodash-es";
 import { ReactNode, useCallback, useMemo } from "react";

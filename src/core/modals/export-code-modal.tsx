@@ -1,11 +1,11 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { useBlocksHtmlForAi } from "@/core/hooks/use-blocks-html-for-ai";
-import { useEditorMode } from "@/core/hooks/use-editor-mode";
-import { usePubSub } from "@/core/hooks/use-pub-sub";
-import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
-import { ChaiBlock } from "@/core/main";
+import { useBlocksHtmlForAi } from "@/hooks/use-blocks-html-for-ai";
+import { useEditorMode } from "@/hooks/use-editor-mode";
+import { usePubSub } from "@/hooks/use-pub-sub";
+import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
+import { ChaiBlock } from "@/types/common";
 import { shadcnTheme } from "@/utils/get-chai-builder-tailwind-config";
 import { camelCase } from "lodash-es";
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";

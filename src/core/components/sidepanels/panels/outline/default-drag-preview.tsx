@@ -1,6 +1,6 @@
 import { TypeIcon } from "@/core/components/sidepanels/panels/outline/block-type-icon";
-import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
-import { ChaiBlock } from "@/types/types";
+import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
+import { ChaiBlock } from "@/types/common";
 import { memo, useMemo } from "react";
 import { DragPreviewProps } from "react-arborist";
 

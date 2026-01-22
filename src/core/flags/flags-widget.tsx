@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
+import { useChaiFeatureFlag, useChaiFeatureFlags, useToggleChaiFeatureFlag } from "@/runtime/client";
 import { Cross1Icon, DragHandleDots2Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { useEffect, useMemo, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
-import { useChaiFeatureFlag, useChaiFeatureFlags, useToggleChaiFeatureFlag } from "@/runtime/index";
 
 const FeatureToggle = ({
   featureKey,

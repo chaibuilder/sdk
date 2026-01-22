@@ -1,4 +1,4 @@
-import { getRegisteredChaiBlock } from "@/runtime/index";
+import { getRegisteredChaiBlock } from "@/runtime";
 import { get, has } from "lodash-es";
 
 type BlockDefinition = {

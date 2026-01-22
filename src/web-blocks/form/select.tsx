@@ -1,4 +1,4 @@
-import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@/runtime/index";
+import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@/runtime";
 import { DropdownMenuIcon } from "@radix-ui/react-icons";
 import { map } from "lodash-es";
 

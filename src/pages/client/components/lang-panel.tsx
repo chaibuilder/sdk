@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useLanguages } from "@/core/hooks/use-languages";
+import { useLanguages } from "@/hooks/use-languages";
 import { addNewLangAtom } from "@/pages/atom/add-new-lang";
 import { ChangeSlug } from "@/pages/client/components/change-slug";
 import PermissionChecker from "@/pages/client/components/permission-checker";

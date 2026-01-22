@@ -1,4 +1,4 @@
-import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@/runtime/index";
+import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@/runtime";
 import { VideoIcon } from "@radix-ui/react-icons";
 import { get, isEmpty, omit, pick } from "lodash-es";
 

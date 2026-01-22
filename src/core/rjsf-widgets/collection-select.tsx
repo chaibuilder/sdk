@@ -1,6 +1,6 @@
 import { COLLECTION_PREFIX } from "@/core/constants/STRINGS";
-import { useBuilderProp } from "@/core/hooks/use-builder-prop";
-import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
+import { useBuilderProp } from "@/hooks/use-builder-prop";
+import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
 import { WidgetProps } from "@rjsf/utils";
 import { find, get } from "lodash-es";
 

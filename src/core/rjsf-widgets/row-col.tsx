@@ -1,6 +1,6 @@
-import { useAddBlock } from "@/core/hooks/use-add-block";
-import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
-import { useWrapperBlock } from "@/core/hooks/use-wrapper-block";
+import { useAddBlock } from "@/hooks/use-add-block";
+import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
+import { useWrapperBlock } from "@/hooks/use-wrapper-block";
 import { PlusIcon } from "@radix-ui/react-icons";
 
 const RowColField = () => {

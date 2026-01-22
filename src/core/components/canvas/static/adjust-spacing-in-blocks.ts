@@ -1,4 +1,4 @@
-import { ChaiBlock } from "@/runtime/index";
+import { ChaiBlock } from "@/types/common";
 import { isString, last, startsWith } from "lodash-es";
 
 export const adjustSpacingInContentBlocks = (blocks: ChaiBlock[]) => {

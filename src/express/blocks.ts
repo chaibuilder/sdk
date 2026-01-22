@@ -1,4 +1,4 @@
-import { ChaiBlock } from "@/runtime/index";
+import { ChaiBlock } from "@/types/common";
 
 export const BLOCKS: ChaiBlock<any>[] = [
   {

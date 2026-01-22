@@ -1,8 +1,8 @@
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { useBuilderProp } from "@/core/hooks/use-builder-prop";
-import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import { pubsub } from "@/core/pubsub";
+import { useBuilderProp } from "@/hooks/use-builder-prop";
+import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
 import { DownloadIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
 

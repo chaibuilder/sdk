@@ -1,7 +1,7 @@
 import "@/index.css";
 import { ChaiWebsiteBuilder } from "@/pages/chaibuilder-pages";
 import { useActivePage } from "@/pages/hooks/pages/use-current-page";
-import { NestedPathSelector } from "./client/components/nested-path-selector/nested-path-selector.tsx";
+import { NestedPathSelector } from "./client/components/nested-path-selector/nested-path-selector";
 import { useBuilderPageData } from "./hooks/pages/use-page-draft-blocks";
 import { usePageTypes } from "./hooks/project/use-page-types";
 import { useFallbackLang } from "./hooks/use-fallback-lang";
@@ -16,7 +16,7 @@ if (typeof window === "undefined") {
 export { PermissionChecker } from "@/pages/client/components/permission-checker";
 export { LanguageSwitcher } from "@/pages/client/components/topbar-left";
 export { ImagePicker } from "@/pages/digital-asset-manager/image-picker";
-export { SmartJsonInput as ChaiJsonInput } from "./client/components/smart-json-input.tsx";
+export { SmartJsonInput as ChaiJsonInput } from "./client/components/smart-json-input";
 export { ChaiWebsiteBuilder, NestedPathSelector };
 
 /** Hooks */
@@ -27,7 +27,7 @@ export { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
 export { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
 export { useChaiAuth } from "@/pages/hooks/use-chai-auth";
 export { useUserRoleAndPermissions as useUserPermissions } from "@/pages/hooks/user/use-user-permissions";
-export { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info.ts";
+export { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
 export { useBuilderFetch, useFetch } from "@/pages/hooks/utils/use-fetch";
 export {
   useActivePage,

@@ -1,5 +1,5 @@
+import { canvasIframeAtom } from "@/atoms/ui";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { canvasIframeAtom } from "@/core/atoms/ui";
 import { useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 import { BlockMoreOptions } from "@/core/components/sidepanels/panels/outline/block-more-options";
 import { TypeIcon } from "@/core/components/sidepanels/panels/outline/block-type-icon";
@@ -7,13 +7,13 @@ import { PERMISSIONS } from "@/core/constants/PERMISSIONS";
 import { ROOT_TEMP_KEY } from "@/core/constants/STRINGS";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { canAcceptChildBlock, canAddChildBlock } from "@/core/functions/block-helpers";
-import { useBlockHighlight } from "@/core/hooks/use-block-highlight";
-import { useBuilderProp } from "@/core/hooks/use-builder-prop";
-import { usePermissions } from "@/core/hooks/use-permissions";
-import { useStructureValidation } from "@/core/hooks/use-structure-validation";
-import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
 import { pubsub } from "@/core/pubsub";
 import { cn } from "@/core/utils/cn";
+import { useBlockHighlight } from "@/hooks/use-block-highlight";
+import { useBuilderProp } from "@/hooks/use-builder-prop";
+import { usePermissions } from "@/hooks/use-permissions";
+import { useStructureValidation } from "@/hooks/use-structure-validation";
+import { useUpdateBlocksProps } from "@/hooks/use-update-blocks-props";
 import {
   ChevronRightIcon,
   DotsVerticalIcon,

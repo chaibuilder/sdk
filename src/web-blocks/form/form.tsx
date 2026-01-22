@@ -1,4 +1,4 @@
-import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@/runtime/index";
+import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@/runtime";
 import EmptySlot from "@/web-blocks/empty-slot";
 import { FileTextIcon } from "@radix-ui/react-icons";
 

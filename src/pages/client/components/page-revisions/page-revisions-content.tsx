@@ -19,8 +19,8 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useLanguages } from "@/core/hooks/use-languages";
-import { useSavePage } from "@/core/hooks/use-save-page";
+import { useLanguages } from "@/hooks/use-languages";
+import { useSavePage } from "@/hooks/use-save-page";
 import PermissionChecker from "@/pages/client/components/permission-checker";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
@@ -529,7 +529,11 @@ export default function PageRevisionsContent({ isOpen }: PageRevisionsContentPro
     if (!selectedRevision) return;
 
     restoreRevision(
-      { revisionId: selectedRevision.uid, discardCurrent },
+      {
+        revisionId: selectedRevision.uid,
+        discardCurrent,
+        ...(selectedRevision.uid === "current" && currentPage?.id && { pageId: currentPage.id }),
+      },
       {
         onSuccess: () => {
           setRestoreDialogOpen(false);

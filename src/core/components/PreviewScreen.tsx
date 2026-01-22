@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/core/functions/common-functions";
-import { useBuilderProp } from "@/core/hooks/use-builder-prop";
-import { usePreviewMode } from "@/core/hooks/use-preview-mode";
+import { useBuilderProp } from "@/hooks/use-builder-prop";
+import { usePreviewMode } from "@/hooks/use-preview-mode";
 import { EyeClosedIcon } from "@radix-ui/react-icons";
 import React, { Suspense } from "react";
 import { useTranslation } from "react-i18next";

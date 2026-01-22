@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { useCodeEditor } from "@/core/hooks/use-code-editor";
-import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
-import { ChaiBlock } from "@/types/chai-block";
+import { useCodeEditor } from "@/hooks/use-code-editor";
+import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
+import { ChaiBlock } from "@/types/common";
 import { WidgetProps } from "@rjsf/utils";
 import { get } from "lodash-es";
 import { useTranslation } from "react-i18next";

@@ -1,7 +1,7 @@
-import { pageBlocksAtomsAtom } from "@/core/atoms/blocks";
-import { chaiDesignTokensAtom, usePageExternalData } from "@/core/atoms/builder";
-import { builderStore } from "@/core/atoms/store";
-import { dataBindingActiveAtom } from "@/core/atoms/ui";
+import { pageBlocksAtomsAtom } from "@/atoms/blocks";
+import { chaiDesignTokensAtom, usePageExternalData } from "@/atoms/builder";
+import { builderStore } from "@/atoms/store";
+import { dataBindingActiveAtom } from "@/atoms/ui";
 import { useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 import { useDirectBlockDrag } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-direct-block-drag";
 import {
@@ -11,17 +11,17 @@ import {
   getBlockTagAttributes,
 } from "@/core/components/canvas/static/new-blocks-render-helpers";
 import { useBlockRuntimeProps } from "@/core/components/canvas/static/use-block-runtime-props";
-import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
-import { useBuilderProp } from "@/core/hooks/use-builder-prop";
-import { useEditorMode } from "@/core/hooks/use-editor-mode";
-import { useInlineEditing } from "@/core/hooks/use-inline-editing";
-import { useLanguages } from "@/core/hooks/use-languages";
-import { usePartialBlocksStore } from "@/core/hooks/use-partial-blocks-store";
-import { useSavePage } from "@/core/hooks/use-save-page";
-import { useGetBlockAtom } from "@/core/hooks/use-update-block-atom";
+import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
+import { useBuilderProp } from "@/hooks/use-builder-prop";
+import { useEditorMode } from "@/hooks/use-editor-mode";
+import { useInlineEditing } from "@/hooks/use-inline-editing";
+import { useLanguages } from "@/hooks/use-languages";
+import { usePartialBlocksStore } from "@/hooks/use-partial-blocks-store";
+import { useSavePage } from "@/hooks/use-save-page";
+import { useGetBlockAtom } from "@/hooks/use-update-block-atom";
 import { applyBindingToBlockProps } from "@/render/apply-binding";
-import { getRegisteredChaiBlock } from "@/runtime/index";
-import { ChaiBlock } from "@/types/chai-block";
+import { getRegisteredChaiBlock } from "@/runtime";
+import { ChaiBlock } from "@/types/common";
 import { atom, Atom, Provider, useAtom, useAtomValue } from "jotai";
 import { splitAtom } from "jotai/utils";
 import { filter, get, has, isArray, isEmpty, isNull, map, noop } from "lodash-es";

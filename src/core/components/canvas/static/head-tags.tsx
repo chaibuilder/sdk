@@ -5,11 +5,11 @@ import {
 } from "@/core/components/canvas/static/chai-theme-helpers";
 import { CssThemeVariables } from "@/core/components/css-theme-var";
 import { useFrame } from "@/core/frame";
-import { useDarkMode } from "@/core/hooks/use-dark-mode";
-import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
-import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
-import { useTheme, useThemeOptions } from "@/core/hooks/use-theme";
-import { ChaiFontViaSrc, ChaiFontViaUrl, useRegisteredFonts } from "@/runtime/index";
+import { useDarkMode } from "@/hooks/use-dark-mode";
+import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
+import { useTheme, useThemeOptions } from "@/hooks/use-theme";
+import { ChaiFontViaSrc, ChaiFontViaUrl, useRegisteredFonts } from "@/runtime";
 import { ChaiBuilderThemeValues } from "@/types/types";
 import aspectRatio from "@tailwindcss/aspect-ratio";
 import containerQueries from "@tailwindcss/container-queries";

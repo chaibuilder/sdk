@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { useSavePage } from "@/core/hooks/use-save-page";
+import { useSavePage } from "@/hooks/use-save-page";
 import { usePageLockStatus } from "@/pages/client/components/page-lock/page-lock-hook";
 import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
 import { useWebsitePages } from "@/pages/hooks/pages/use-project-pages";

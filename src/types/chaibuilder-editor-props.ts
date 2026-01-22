@@ -1,5 +1,5 @@
-import { StructureRule } from "@/core/hooks/structure-rules";
-import { ChaiBlock } from "@/types/chai-block";
+import { StructureRule } from "@/hooks/structure-rules";
+import { ChaiBlock } from "@/types/common";
 import React from "react";
 import { ChaiCollectoin } from "./collections";
 import { DesignTokens, SiteWideUsage } from "./types";

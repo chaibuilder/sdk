@@ -7,7 +7,7 @@ import {
 import { applyBindingToBlockProps } from "@/render/apply-binding";
 import { getRuntimePropValues, RenderChaiBlocksProps } from "@/render/render-chai-blocks";
 import { ChaiBlockDefinition, getRegisteredChaiBlock } from "@/runtime";
-import { ChaiBlock } from "@/types/chai-block";
+import { ChaiBlock } from "@/types/common";
 import { get, has, isArray, isFunction, isNull } from "lodash-es";
 import { createElement, Suspense } from "react";
 import AsyncDataProviderPropsBlock from "./async-props-block";

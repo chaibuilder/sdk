@@ -1,4 +1,4 @@
-import { useSavePage } from "@/core/hooks/use-save-page";
+import { useSavePage } from "@/hooks/use-save-page";
 import { useWebsocket } from "@/pages/hooks/project/use-builder-prop";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { useAtom } from "jotai";

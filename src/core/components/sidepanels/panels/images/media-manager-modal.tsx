@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { useMediaManagerComponent } from "@/runtime/index";
+import { useMediaManagerComponent } from "@/runtime/client";
 import { ChaiAsset } from "@/types";
 import React, { useState } from "react";
 

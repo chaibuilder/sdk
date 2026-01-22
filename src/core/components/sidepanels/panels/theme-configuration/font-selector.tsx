@@ -1,6 +1,6 @@
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useRegisteredFonts } from "@/runtime/index";
+import { useRegisteredFonts } from "@/runtime";
 import { startCase } from "lodash-es";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";

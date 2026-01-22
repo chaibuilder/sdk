@@ -3,7 +3,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { COLLECTION_PREFIX, REPEATER_PREFIX } from "@/core/constants/STRINGS";
-import { useBuilderProp } from "@/core/hooks/use-builder-prop";
+import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { ChevronLeftIcon, ChevronRightIcon, IdCardIcon, LoopIcon } from "@radix-ui/react-icons";
 import { t } from "i18next";
 import { startsWith } from "lodash-es";

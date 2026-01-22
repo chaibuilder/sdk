@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useUndoManager } from "@/core/history/use-undo-manager";
+import { useUndoManager } from "@/hooks/history/use-undo-manager";
 import { ResetIcon } from "@radix-ui/react-icons";
 
 export const UndoRedo = () => {

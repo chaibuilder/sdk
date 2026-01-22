@@ -1,4 +1,4 @@
-import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { ChaiBlock } from "@/types/common";
 import { find, get, isEmpty } from "lodash-es";
 import { useCallback } from "react";

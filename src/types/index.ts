@@ -1,4 +1,4 @@
-import { ChaiPageProps } from "@/runtime/index";
+import { ChaiPageProps } from "@/runtime";
 import type { ChaiBuilderEditorProps } from "@/types/chaibuilder-editor-props";
 
 export type { ChaiBuilderEditorProps };
