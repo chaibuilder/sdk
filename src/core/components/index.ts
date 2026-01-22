@@ -22,11 +22,11 @@ export {
   BlockPropsEditor,
   BlockStyleEditor,
   ChaiBuilderCanvas,
-  i18n,
   ImportHTML,
   Outline,
   ThemeOptions,
   UILibrariesPanel as UILibraries,
+  i18n,
 };
 
-export * from "@/types/index";
+export * from "@/types";

@@ -1,4 +1,4 @@
-import { ChaiFontViaSrc, ChaiFontViaUrl, getAllRegisteredFonts } from "@/runtime/index";
+import { ChaiFontViaSrc, ChaiFontViaUrl, getAllRegisteredFonts } from "@/runtime";
 import { ChaiBuilderThemeOptions, ChaiThemeValues } from "@/types/chaibuilder-editor-props";
 import { flatten, get, keys, uniqBy } from "lodash-es";
 

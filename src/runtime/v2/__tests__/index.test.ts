@@ -1,5 +1,5 @@
-import type { ChaiBlockSchema } from "../../index";
-import { registerChaiBlockSchema } from "../../index";
+import type { ChaiBlockSchema } from "../..";
+import { registerChaiBlockSchema } from "../..";
 
 describe("registerChaiBuilderBlockProps", () => {
   it("should handle empty props", () => {

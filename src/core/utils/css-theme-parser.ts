@@ -1,4 +1,4 @@
-import { getAllRegisteredFonts } from "@/runtime/index";
+import { getAllRegisteredFonts } from "@/runtime";
 import { ChaiThemeValues } from "@/types/chaibuilder-editor-props";
 import { toHex } from "./color-formatter";
 

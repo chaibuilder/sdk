@@ -1,4 +1,4 @@
-import { ChaiBlock } from "@/runtime/index";
+import { ChaiBlock } from "@/runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   COLLECTIONS,

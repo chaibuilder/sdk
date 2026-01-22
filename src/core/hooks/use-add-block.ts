@@ -2,7 +2,7 @@ import { canAcceptChildBlock } from "@/core/functions/block-helpers";
 import { generateUUID } from "@/core/functions/common-functions";
 import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
-import { getDefaultBlockProps } from "@/runtime/index";
+import { getDefaultBlockProps } from "@/runtime";
 import { ChaiBlock } from "@/types/chai-block";
 import { CoreBlock } from "@/types/core-block";
 import { filter, find, first, forEach, has } from "lodash-es";

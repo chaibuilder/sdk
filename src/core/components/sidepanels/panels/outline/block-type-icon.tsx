@@ -1,4 +1,4 @@
-import { useRegisteredChaiBlocks } from "@/runtime/index";
+import { useRegisteredChaiBlocks } from "@/runtime";
 import { SquareIcon } from "@radix-ui/react-icons";
 import { get } from "lodash-es";
 import React from "react";

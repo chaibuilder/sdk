@@ -8,8 +8,8 @@ import Outline from "@/core/components/sidepanels/panels/outline/list-tree";
 import ThemeConfigPanel from "@/core/components/sidepanels/panels/theme-configuration/ThemeConfigPanel";
 import i18n from "@/core/locales/load";
 import { registerFeatureFlags } from "@/core/utils/feature-flag";
+import type { ChaiBuilderEditorProps } from "@/types";
 import type { ChaiBlock } from "@/types/chai-block";
-import type { ChaiBuilderEditorProps } from "@/types/index";
 
 if (typeof window === "undefined") {
   throw new Error("@chaibuilder/sdk is only supported in the browser. Avoid using it in the server side.");

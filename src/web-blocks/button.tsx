@@ -1,4 +1,4 @@
-import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@/runtime/index";
+import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@/runtime";
 import { ButtonIcon } from "@radix-ui/react-icons";
 import { get, isEmpty } from "lodash-es";
 import { createElement } from "react";

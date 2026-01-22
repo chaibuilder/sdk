@@ -1,7 +1,7 @@
 import { getCurrentBlocks } from "@/core/atoms/store";
 import { useCanvasIframe } from "@/core/hooks/use-canvas-iframe";
 import { ChaiBlock } from "@/core/main";
-import { getRegisteredChaiBlock } from "@/runtime/index";
+import { getRegisteredChaiBlock } from "@/runtime";
 import { parse, stringify } from "himalaya";
 import { kebabCase } from "lodash-es";
 import { useCallback } from "react";

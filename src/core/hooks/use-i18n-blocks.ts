@@ -1,6 +1,6 @@
 import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
 import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
-import { getRegisteredChaiBlock } from "@/runtime/index";
+import { getRegisteredChaiBlock } from "@/runtime";
 import { compact, each, get, pick } from "lodash-es";
 import { useCallback } from "react";
 import { getBlockWithNestedChildren } from "./get-block-with-nested-children";

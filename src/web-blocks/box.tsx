@@ -4,7 +4,7 @@ import {
   ChaiStyles,
   registerChaiBlockSchema,
   StylesProp,
-} from "@/runtime/index";
+} from "@/runtime";
 import EmptySlot from "@/web-blocks/empty-slot";
 import * as React from "react";
 

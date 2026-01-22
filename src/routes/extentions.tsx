@@ -1,11 +1,15 @@
 import { AiButton, DEFAULT_PANEL_WIDTH } from "@/core/components/layout/root-layout";
-import { registerChaiLibrary } from "@/runtime/index";
-import { registerChaiSaveToLibrary } from "@/runtime/index";
-import { registerChaiPreImportHTMLHook, registerChaiSidebarPanel, registerChaiTopBar } from "@/core/main";
 import { default as AIChatPanel } from "@/routes/demo/ai-chat-panel";
 import registerCustomBlocks from "@/routes/demo/blocks";
 import "@/routes/demo/panels/panel";
-import { ChaiFontViaSrc, ChaiFontViaUrl, registerChaiFont } from "@/runtime/index";
+import { ChaiFontViaSrc, ChaiFontViaUrl, registerChaiFont } from "@/runtime";
+import {
+  registerChaiLibrary,
+  registerChaiPreImportHTMLHook,
+  registerChaiSaveToLibrary,
+  registerChaiSidebarPanel,
+  registerChaiTopBar,
+} from "@/runtime/client";
 import { ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 import { lazy } from "react";
 const TopBar = lazy(() => import("@/routes/demo/top-bar"));
@@ -29,8 +33,7 @@ export const extendChaiBuilder = () => {
     src: [{ url: "http://localhost:5173/fonts/Geist.woff", format: "woff" }],
   } as ChaiFontViaSrc);
 
-  registerChaiSaveToLibrary((props) => {
-    console.log(props);
+  registerChaiSaveToLibrary(() => {
     return <div className="h-96 w-96">Save to Lib</div>;
   });
 

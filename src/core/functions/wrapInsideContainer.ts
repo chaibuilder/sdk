@@ -1,4 +1,4 @@
-import { getDefaultBlockProps } from "@/runtime/index";
+import { getDefaultBlockProps } from "@/runtime";
 import { ChaiBlock } from "@/types/chai-block";
 
 export const wrapInsideContainer = (container: ChaiBlock | "Body" | "Html") => {

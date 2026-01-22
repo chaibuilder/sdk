@@ -3,7 +3,7 @@ import { useDragAndDrop, useIsDragAndDropEnabled } from "@/core/components/canva
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useAddBlock } from "@/core/hooks/use-add-block";
 import { pubsub } from "@/core/pubsub";
-import { syncBlocksWithDefaults } from "@/runtime/index";
+import { syncBlocksWithDefaults } from "@/runtime";
 import { BoxIcon } from "@radix-ui/react-icons";
 import { capitalize, has, isFunction, kebabCase } from "lodash-es";
 import { createElement } from "react";

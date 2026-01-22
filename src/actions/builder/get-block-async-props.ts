@@ -1,4 +1,4 @@
-import { ChaiBlock, getRegisteredChaiBlock } from "@/runtime/index";
+import { ChaiBlock, getRegisteredChaiBlock } from "@/runtime";
 import { getChaiCollection } from "@/runtime/register-collection";
 import { isFunction } from "lodash-es";
 import { z } from "zod";

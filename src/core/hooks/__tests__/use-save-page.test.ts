@@ -1,9 +1,9 @@
 import { checkMissingTranslations } from "@/core/hooks/use-save-page";
-import { getRegisteredChaiBlock } from "@/runtime/index";
+import { getRegisteredChaiBlock } from "@/runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("@/runtime/index", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("@/runtime/index")>();
+vi.mock("@/runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/runtime")>();
   return {
     ...actual,
     getRegisteredChaiBlock: vi.fn(),
