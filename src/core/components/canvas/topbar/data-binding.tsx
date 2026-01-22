@@ -3,7 +3,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { usePageExternalData } from "@/core/atoms/builder";
 import { dataBindingActiveAtom } from "@/core/atoms/ui";
 import { cn } from "@/core/functions/common-functions";
-import { useBuilderProp } from "@/core/hooks/use-builder-prop";
+import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { LightningBoltIcon } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
 import { isEmpty } from "lodash-es";

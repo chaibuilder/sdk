@@ -5,8 +5,8 @@ import { Command, CommandEmpty, CommandGroup, CommandItem } from "@/components/u
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { useLanguages } from "@/core/hooks/use-languages";
-import { usePermissions } from "@/core/hooks/use-permissions";
+import { useLanguages } from "@/hooks/use-languages";
+import { usePermissions } from "@/hooks/use-permissions";
 import { DynamicSlugInput } from "@/pages/client/components/dynamic-slug-input";
 import { ParentPageSelector } from "@/pages/client/components/parent-page-selector";
 import { SlugInput } from "@/pages/client/components/slug-input";

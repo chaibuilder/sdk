@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
+import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
 
 import { X } from "lucide-react";
 import { useTranslation } from "react-i18next";

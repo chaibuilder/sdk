@@ -1,5 +1,5 @@
-import { useBuilderProp } from "@/core/hooks/use-builder-prop";
-import { builderSaveStateAtom } from "@/core/hooks/use-save-page";
+import { useBuilderProp } from "@/hooks/use-builder-prop";
+import { builderSaveStateAtom } from "@/hooks/use-save-page";
 import { atom, useAtom } from "jotai";
 import { noop } from "lodash-es";
 import { useCallback, useEffect, useMemo } from "react";

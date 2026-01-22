@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import { useLanguages } from "@/core/hooks/use-languages";
+import { useLanguages } from "@/hooks/use-languages";
 import { useDynamicPageSelector } from "@/pages/hooks/pages/use-dynamic-page-selector";
 import { get } from "lodash-es";
 import { ChevronDown } from "lucide-react";

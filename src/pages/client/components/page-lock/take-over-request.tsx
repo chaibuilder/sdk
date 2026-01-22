@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { useSavePage } from "@/core/hooks/use-save-page";
+import { useSavePage } from "@/hooks/use-save-page";
 import { BlurContainer } from "@/pages/client/components/chai-loader";
 import { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
 import { AlertCircle, Check, UserIcon, X } from "lucide-react";

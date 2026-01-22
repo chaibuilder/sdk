@@ -1,4 +1,4 @@
-import { useSavePage } from "@/core/hooks/use-save-page";
+import { useSavePage } from "@/hooks/use-save-page";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { ERRORS } from "@/pages/constants/ERRORS";
 import { useActivePage, useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";

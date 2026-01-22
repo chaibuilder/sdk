@@ -1,5 +1,5 @@
 import { DESIGN_TOKEN_PREFIX, STYLES_KEY } from "@/core/constants/STRINGS";
-import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
+import { getSplitChaiClasses } from "@/hooks/get-split-classes";
 import { ChaiBlockDefinition, getRegisteredChaiBlock } from "@/runtime";
 import { ChaiBlock } from "@/types/common";
 import { DesignTokens } from "@/types/types";

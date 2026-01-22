@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useLanguages } from "@/core/hooks/use-languages";
+import { useLanguages } from "@/hooks/use-languages";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
 import { useFetch } from "@/pages/hooks/utils/use-fetch";

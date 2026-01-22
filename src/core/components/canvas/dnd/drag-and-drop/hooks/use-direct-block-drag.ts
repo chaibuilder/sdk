@@ -12,7 +12,7 @@
 
 import { clickCountAtom, lastClickTimeAtom } from "@/core/atoms/click-detection";
 import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
-import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
+import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
 import { useAtom } from "jotai";
 import { find } from "lodash-es";
 import { useCallback, useRef } from "react";

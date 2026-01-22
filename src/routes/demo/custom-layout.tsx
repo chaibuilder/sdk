@@ -4,8 +4,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { BlockAttributesEditor } from "@/core/components/settings/new-panel/block-attributes-editor";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { usePubSub } from "@/core/hooks/use-pub-sub";
-import { useSelectedBlock, useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import {
   ChaiBlockPropsEditor,
   ChaiBlockStyleEditor,
@@ -14,6 +12,8 @@ import {
   ChaiScreenSizes,
   ChaiUndoRedo,
 } from "@/core/main";
+import { usePubSub } from "@/hooks/use-pub-sub";
+import { useSelectedBlock, useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
 import { ChevronDownIcon, GearIcon, ImageIcon, StackIcon, TextIcon } from "@radix-ui/react-icons";
 import { motion } from "framer-motion";
 import React, { Suspense, useEffect, useState } from "react";

@@ -10,22 +10,26 @@
  * @module use-block-drag-over
  */
 
-import { canAcceptChildBlock } from "@/core/functions/block-helpers";
-import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
-import { useCanvasIframe } from "@/core/hooks/use-canvas-iframe";
-import { useAtom } from "jotai";
-import { throttle } from "lodash-es";
-import { DragEvent, useCallback, useEffect, useRef } from "react";
-import { getOrientation } from "@/core/components/canvas/dnd/getOrientation";
 import { detectDropZone } from "@/core/components/canvas/dnd/drag-and-drop/drag-and-drop-utils";
+import { isDraggingOnlyImageBlock } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-block-drop";
+import {
+  dragAndDropAtom,
+  dropIndicatorAtom,
+  isDragging,
+} from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
+import { useDragParentHighlight } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-parent-highlight";
 import {
   canDropAsSiblingWithoutCircularReference,
   canDropWithoutCircularReference,
   isDescendantOf,
 } from "@/core/components/canvas/dnd/drag-and-drop/prevent-circular-drop";
-import { isDraggingOnlyImageBlock } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-block-drop";
-import { dragAndDropAtom, dropIndicatorAtom, isDragging } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
-import { useDragParentHighlight } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-parent-highlight";
+import { getOrientation } from "@/core/components/canvas/dnd/getOrientation";
+import { canAcceptChildBlock } from "@/core/functions/block-helpers";
+import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { useCanvasIframe } from "@/hooks/use-canvas-iframe";
+import { useAtom } from "jotai";
+import { throttle } from "lodash-es";
+import { DragEvent, useCallback, useEffect, useRef } from "react";
 
 // Leaf block types that cannot accept children
 const LEAF_BLOCK_TYPES = [

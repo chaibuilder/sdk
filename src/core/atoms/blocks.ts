@@ -1,5 +1,5 @@
 import { convertToBlocksTree } from "@/core/functions/blocks-fn";
-import { StructureError } from "@/core/hooks/structure-rules";
+import { StructureError } from "@/hooks/structure-rules";
 import { ChaiBlock } from "@/types/common";
 import { atom } from "jotai";
 import { splitAtom } from "jotai/utils";

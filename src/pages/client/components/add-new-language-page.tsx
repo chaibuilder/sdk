@@ -10,8 +10,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useLanguages } from "@/core/hooks/use-languages";
-import { useSidebarActivePanel } from "@/core/hooks/use-sidebar-active-panel";
+import { useLanguages } from "@/hooks/use-languages";
+import { useSidebarActivePanel } from "@/hooks/use-sidebar-active-panel";
 import { SlugInput } from "@/pages/client/components/slug-input";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { useCreatePage, useUpdatePage } from "@/pages/hooks/pages/mutations";

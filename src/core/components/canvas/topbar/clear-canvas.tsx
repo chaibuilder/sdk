@@ -11,8 +11,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
-import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
-import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
+import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
 import { EraserIcon } from "@radix-ui/react-icons";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";

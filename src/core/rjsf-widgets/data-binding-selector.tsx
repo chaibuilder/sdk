@@ -1,8 +1,8 @@
 import { usePageExternalData } from "@/core/atoms/builder";
 import { NestedPathSelector } from "@/core/components/nested-path-selector";
 import { COLLECTION_PREFIX, REPEATER_PREFIX } from "@/core/constants/STRINGS";
-import { useBuilderProp } from "@/core/hooks/use-builder-prop";
-import { useSelectedBlock, useSelectedBlockHierarchy } from "@/core/hooks/use-selected-blockIds";
+import { useBuilderProp } from "@/hooks/use-builder-prop";
+import { useSelectedBlock, useSelectedBlockHierarchy } from "@/hooks/use-selected-blockIds";
 import { first, get, isEmpty, startsWith } from "lodash-es";
 import { useCallback, useMemo } from "react";
 

@@ -9,11 +9,11 @@ import { PartialBlocks } from "@/core/components/sidepanels/panels/add-blocks/pa
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { canAcceptChildBlock, canBeNestedInside } from "@/core/functions/block-helpers";
 import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
-import { useBuilderProp } from "@/core/hooks/use-builder-prop";
-import { usePartialBlocksList } from "@/core/hooks/use-partial-blocks-store";
-import { usePermissions } from "@/core/hooks/use-permissions";
 import { mergeClasses, PERMISSIONS } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
+import { useBuilderProp } from "@/hooks/use-builder-prop";
+import { usePartialBlocksList } from "@/hooks/use-partial-blocks-store";
+import { usePermissions } from "@/hooks/use-permissions";
 import { useChaiAddBlockTabs, useChaiLibraries } from "@/runtime/client";
 import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";

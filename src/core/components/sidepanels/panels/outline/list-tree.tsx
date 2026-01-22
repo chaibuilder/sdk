@@ -22,12 +22,12 @@ import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { canAcceptChildBlock } from "@/core/functions/block-helpers";
 import { cn } from "@/core/functions/common-functions";
 import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
-import { useCutBlockIds } from "@/core/hooks/use-cut-blockIds";
-import { usePermissions } from "@/core/hooks/use-permissions";
-import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
-import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
-import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
 import { pubsub } from "@/core/pubsub";
+import { useCutBlockIds } from "@/hooks/use-cut-blockIds";
+import { usePermissions } from "@/hooks/use-permissions";
+import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
+import { useUpdateBlocksProps } from "@/hooks/use-update-blocks-props";
 import { ChaiBlock } from "@/types/common";
 import {
   CardStackIcon,

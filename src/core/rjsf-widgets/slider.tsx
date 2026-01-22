@@ -1,7 +1,7 @@
 import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
-import { useAddBlock } from "@/core/hooks/use-add-block";
-import { useSelectedBlock, useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
-import { useWrapperBlock } from "@/core/hooks/use-wrapper-block";
+import { useAddBlock } from "@/hooks/use-add-block";
+import { useSelectedBlock, useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
+import { useWrapperBlock } from "@/hooks/use-wrapper-block";
 import { ChevronLeftIcon, ChevronRightIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 import { FieldProps } from "@rjsf/utils";
 import { filter, find, findIndex, get } from "lodash-es";

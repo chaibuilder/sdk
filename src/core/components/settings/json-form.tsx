@@ -1,4 +1,3 @@
-import { useLanguages } from "@/core/hooks/use-languages";
 import {
   IconPickerField,
   ImagePickerField,
@@ -12,6 +11,7 @@ import { CodeEditor } from "@/core/rjsf-widgets/code-widget";
 import { CollectionFilterSortField } from "@/core/rjsf-widgets/collection-select";
 import JSONFormFieldTemplate from "@/core/rjsf-widgets/json-form-field-template";
 import { RepeaterBindingWidget } from "@/core/rjsf-widgets/repeater-binding";
+import { useLanguages } from "@/hooks/use-languages";
 import { useBlockSettingComponents } from "@/runtime/client";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { useThrottledCallback } from "@react-hookz/web";

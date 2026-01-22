@@ -6,11 +6,11 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { useDragAndDrop, useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 import { UILibrariesSelect } from "@/core/components/sidepanels/panels/add-blocks/libraries-select";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { useAddBlock } from "@/core/hooks/use-add-block";
-import { useLibraryBlocks } from "@/core/hooks/use-library-blocks";
-import { useSelectedLibrary } from "@/core/hooks/use-selected-library";
 import { getBlocksFromHTML } from "@/core/import-html/html-to-json";
 import { pubsub } from "@/core/pubsub";
+import { useAddBlock } from "@/hooks/use-add-block";
+import { useLibraryBlocks } from "@/hooks/use-library-blocks";
+import { useSelectedLibrary } from "@/hooks/use-selected-library";
 import { cn } from "@/lib/utils";
 import { syncBlocksWithDefaults } from "@/runtime";
 import { useChaiLibraries } from "@/runtime/client";

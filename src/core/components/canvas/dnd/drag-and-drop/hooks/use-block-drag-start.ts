@@ -18,10 +18,10 @@ import {
 } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
 import { getOrientation } from "@/core/components/canvas/dnd/getOrientation";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { useBlockHighlight } from "@/core/hooks/use-block-highlight";
-import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
-import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
 import { pubsub } from "@/core/pubsub";
+import { useBlockHighlight } from "@/hooks/use-block-highlight";
+import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
 import { ChaiBlock } from "@/types/common";
 import { useAtom } from "jotai";
 import { pick } from "lodash-es";

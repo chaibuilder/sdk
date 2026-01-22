@@ -1,10 +1,10 @@
 import { treeRefAtom } from "@/core/atoms/ui";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useFrame } from "@/core/frame";
-import { useBlockHighlight } from "@/core/hooks/use-block-highlight";
-import { usePubSub } from "@/core/hooks/use-pub-sub";
-import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
-import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
+import { useBlockHighlight } from "@/hooks/use-block-highlight";
+import { usePubSub } from "@/hooks/use-pub-sub";
+import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
 import { useAtom } from "jotai";
 import { first, includes, isEmpty } from "lodash-es";
 import { useEffect } from "react";
