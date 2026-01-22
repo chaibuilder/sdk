@@ -529,7 +529,11 @@ export default function PageRevisionsContent({ isOpen }: PageRevisionsContentPro
     if (!selectedRevision) return;
 
     restoreRevision(
-      { revisionId: selectedRevision.uid, discardCurrent },
+      {
+        revisionId: selectedRevision.uid,
+        discardCurrent,
+        ...(selectedRevision.uid === "current" && currentPage?.id && { pageId: currentPage.id }),
+      },
       {
         onSuccess: () => {
           setRestoreDialogOpen(false);
