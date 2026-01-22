@@ -262,16 +262,16 @@ export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionDat
         }),
     );
 
+    if (error || !data || data.length === 0) {
+      throw new ActionError("Error publishing page", "ERROR_PUBLISHING_PAGE", 500, error);
+    }
+
     const { error: updateError } = await safeQuery(() =>
       db.update(schema.appPages).set({ changes: null }).where(eq(schema.appPages.id, page.id)),
     );
 
     if (updateError) {
       throw new ActionError("Error clearing page changes", "ERROR_PUBLISHING_PAGE", 500, updateError);
-    }
-
-    if (error || !data || data.length === 0) {
-      throw new ActionError("Error publishing page", "ERROR_PUBLISHING_PAGE", 500, error);
     }
 
     return data[0];

@@ -614,10 +614,10 @@ export default function PageRevisionsContent({ isOpen }: PageRevisionsContentPro
             ))}
           <ScrollArea className="min-h-0 flex-1">
             <div className="space-y-2">
-              {revisions
-                ?.filter((revision) => revision.uid !== "current")
-                ?.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-                ?.map((revision, index) => (
+              {[...(revisions ?? [])]
+                .filter((revision) => revision.uid !== "current")
+                .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                .map((revision, index) => (
                   <RevisionItem
                     key={revision.uid}
                     pageId={currentPage?.id}

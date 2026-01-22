@@ -174,12 +174,20 @@ const PublishButton = () => {
   const { needTranslations } = useSavePage();
   const needTranslation = needTranslations();
 
-  const { buttonText, buttonClassName, isPublished } = useMemo(() => {
+  const { buttonText, buttonClassName, isPublished, hasUnpublishedChanges } = useMemo(() => {
     const isPublished = currentPage && currentPage?.online;
     const buttonClassName = isPublished ? "hover:bg-green-600 bg-green-500" : "";
+    const hasUnpublishedChanges = currentPage
+      ? currentPage.isPartialGroup
+        ? false
+        : !currentPage?.online
+          ? false
+          : isEmpty(currentPage.changes)
+      : false;
     return {
       buttonClassName,
       isPublished,
+      hasUnpublishedChanges,
       buttonText: isPublished ? t("Published") : t("Publish"),
     };
   }, [currentPage, t]);
@@ -192,14 +200,6 @@ const PublishButton = () => {
 
     performPublishCurrentPage();
   };
-
-  const hasUnpublishedChanges = useMemo(() => {
-    if (currentPage.isPartialGroup) return false;
-    if (currentPage) {
-      if (!currentPage.online || isEmpty(currentPage.changes)) return false;
-    }
-    return Boolean(currentPage);
-  }, [currentPage]);
 
   const performPublishCurrentPage = () => {
     const pages = [activePage?.id, activePage?.primaryPage];
