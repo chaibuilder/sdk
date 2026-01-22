@@ -1,12 +1,15 @@
+import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { usePageEditInfo } from "@/pages/hooks/pages/use-current-page";
 import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
 import { ChaiBlock } from "@/types/common";
+import { useQueryClient } from "@tanstack/react-query";
 import { useFetch } from "./use-fetch";
 
 export const usePagesSavePage = () => {
   const apiUrl = useApiUrl();
   const fetchAPI = useFetch();
   const [, setPageEditInfo] = usePageEditInfo();
+  const queryClient = useQueryClient();
 
   const onSave = async ({
     page,
@@ -30,6 +33,11 @@ export const usePagesSavePage = () => {
         ...prev,
         lastSaved: new Date().toISOString(),
       }));
+      queryClient.setQueryData([ACTIONS.GET_LANGUAGE_PAGES, page], (oldData: any[] | undefined) => {
+        if (!oldData) return oldData;
+        return oldData?.map((item: any) => (item?.id === page ? { ...item, changes: ["Page"] } : item));
+      });
+
       return response;
     } catch (error) {
       console.error(error);

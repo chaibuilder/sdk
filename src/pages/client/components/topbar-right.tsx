@@ -21,11 +21,12 @@ import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { throwConfetti } from "@/pages/utils/confetti";
 import Tooltip from "@/pages/utils/tooltip";
-import { compact, find, map, upperCase } from "lodash-es";
+import { compact, find, isEmpty, map, upperCase } from "lodash-es";
 import { CheckCircle, ChevronDown, Loader, Palette, Play, Rocket, Save, Send } from "lucide-react";
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { usePageLockStatus } from "./page-lock/page-lock-hook";
+import JsonDiffViewer from "@/pages/client/components/json-diff-viewer";
 
 const UnpublishPage = lazy(() => import("@/pages/client/components/unpublish-page"));
 const TranslationWarningModal = lazy(
@@ -166,6 +167,7 @@ const PublishButton = () => {
   const [unpublishPage, setUnpublishPage] = useState(null);
   const { savePageAsync } = useSavePage();
   const [showTranslationWarning, setShowTranslationWarning] = useState(false);
+  const [showCompareModal, setShowCompareModal] = useState(false);
 
   const { data: currentPage } = useChaiCurrentPage();
   const { mutate: publishPage, isPending } = usePublishPages();
@@ -190,6 +192,14 @@ const PublishButton = () => {
 
     performPublishCurrentPage();
   };
+
+  const hasUnpublishedChanges = useMemo(() => {
+    if (currentPage.isPartialGroup) return false;
+    if (currentPage) {
+      if (!currentPage.online || isEmpty(currentPage.changes)) return false;
+    }
+    return Boolean(currentPage);
+  }, [currentPage]);
 
   const performPublishCurrentPage = () => {
     const pages = [activePage?.id, activePage?.primaryPage];
@@ -267,6 +277,11 @@ const PublishButton = () => {
                 {t("Unpublish")} page {selectedLang ? `(${upperCase(selectedLang)})` : ""}
               </DropdownMenuItem>
             )}
+            {hasUnpublishedChanges && (
+              <DropdownMenuItem onClick={() => setShowCompareModal(true)} className="cursor-pointer text-xs">
+                {t("View changes")}
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
@@ -284,6 +299,18 @@ const PublishButton = () => {
             onClose={handleCancelTranslation}
             onContinue={handleContinueAnyway}
             isPending={isPending}
+          />
+        </Suspense>
+      )}
+      {showCompareModal && (
+        <Suspense>
+          <JsonDiffViewer
+            open={showCompareModal}
+            onOpenChange={setShowCompareModal}
+            compare={[
+              { label: "draft", uid: `draft:${currentPage?.id}`, item: currentPage },
+              { label: "live", uid: `live:${currentPage?.id}`, item: {} },
+            ]}
           />
         </Suspense>
       )}

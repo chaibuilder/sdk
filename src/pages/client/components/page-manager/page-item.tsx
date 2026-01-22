@@ -4,8 +4,19 @@ import { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
 import { usePageExpandManager } from "@/pages/hooks/utils/use-page-expand-manager";
 import { ChaiPage } from "@/pages/utils/page-organization";
 import Tooltip from "@/pages/utils/tooltip";
-import { find, get } from "lodash-es";
-import { ChevronRight, Edit, File, Hash, Lock, MoreHorizontal, NotepadText, Plus, StarsIcon } from "lucide-react";
+import { find, get, isEmpty } from "lodash-es";
+import {
+  ChevronRight,
+  Edit,
+  File,
+  Hash,
+  Lock,
+  MoreHorizontal,
+  NotepadText,
+  Pencil,
+  Plus,
+  StarsIcon,
+} from "lucide-react";
 import { useMemo } from "react";
 import { PageActionsDropdown } from "@/pages/client/components/page-action-dropdown";
 import { usePageToUser } from "@/pages/client/components/page-lock/page-lock-hook";
@@ -131,6 +142,16 @@ const PageItem = ({
     return `${baseClass} ${activeClass} ${pageOwner ? "opacity-60" : ""}`;
   }, [hasLangPage, isSelected, pageOwner]);
 
+  const hasUnpublishedChanges = useMemo(() => {
+    if (page.isPartialGroup) return false;
+    if (langPage) {
+      if (!langPage.online || isEmpty(langPage.changes)) return false;
+    } else if (page) {
+      if (!page.online || isEmpty(page.changes)) return false;
+    }
+    return Boolean(langPage || page);
+  }, [langPage, page]);
+
   return (
     <div className="group relative">
       <PageLinkContextMenu pageId={page.id}>
@@ -154,6 +175,13 @@ const PageItem = ({
                     {page.dynamicSlugCustom}
                   </span>
                 )}
+              </span>
+            </Tooltip>
+          )}
+          {hasUnpublishedChanges && (
+            <Tooltip content="Has unpublished changes" side="top">
+              <span className="text-amber-500">
+                <Pencil size={12} className="stroke-[2]" />
               </span>
             </Tooltip>
           )}

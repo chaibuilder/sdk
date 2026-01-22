@@ -43,7 +43,7 @@ CREATE TABLE "app_pages_online" (
 	"libRefId" uuid,
 	"dynamicSlugCustom" text DEFAULT '',
 	"metadata" jsonb DEFAULT '{}'::jsonb,
-	"jsonld" jsonb DEFAULT '{}'::jsonb,
+	"jsonLD" jsonb DEFAULT '{}'::jsonb,
 	"globalJsonLds" jsonb DEFAULT '[]'::jsonb,
 	"designTokens" jsonb
 );
@@ -123,7 +123,7 @@ CREATE TABLE "app_pages" (
 	"libRefId" uuid,
 	"dynamicSlugCustom" text DEFAULT '',
 	"metadata" jsonb DEFAULT '{}'::jsonb,
-	"jsonld" jsonb DEFAULT '{}'::jsonb,
+	"jsonLD" jsonb DEFAULT '{}'::jsonb,
 	"globalJsonLds" jsonb DEFAULT '[]'::jsonb,
 	"links" text,
 	"partialBlocks" text,
@@ -155,7 +155,7 @@ CREATE TABLE "app_pages_revisions" (
 	"libRefId" uuid,
 	"dynamicSlugCustom" text DEFAULT '',
 	"metadata" jsonb DEFAULT '{}'::jsonb,
-	"jsonld" jsonb DEFAULT '{}'::jsonb,
+	"jsonLD" jsonb DEFAULT '{}'::jsonb,
 	"globalJsonLds" jsonb DEFAULT '[]'::jsonb,
 	"designTokens" jsonb
 );

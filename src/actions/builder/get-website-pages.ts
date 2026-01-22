@@ -57,6 +57,7 @@ export class GetWebsitePagesAction extends ChaiBaseAction<GetWebsitePagesActionD
           dynamic: schema.appPages.dynamic,
           dynamicSlugCustom: schema.appPages.dynamicSlugCustom,
           primaryPage: schema.appPages.primaryPage,
+          changes: schema.appPages.changes,
         })
         .from(schema.appPages)
         .where(and(eq(schema.appPages.app, appId), eq(schema.appPages.lang, lang))),
