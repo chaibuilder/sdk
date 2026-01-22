@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ChaiFrame } from "@/core/frame/Frame";
-import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { useBrandingOptions } from "@/hooks/use-branding-options";
 import { useLanguages } from "@/hooks/use-languages";
 import { RenderChaiBlocks } from "@/render";

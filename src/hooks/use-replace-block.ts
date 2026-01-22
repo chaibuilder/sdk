@@ -1,7 +1,7 @@
 import { presentBlocksAtom } from "@/atoms/blocks";
 import { builderStore } from "@/atoms/store";
-import { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 import { PERMISSIONS } from "@/core/main";
+import { useBlocksStoreUndoableActions } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { usePermissions } from "@/hooks/use-permissions";
 import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
 import { ChaiBlock } from "@/types/common";

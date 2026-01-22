@@ -1,4 +1,4 @@
-import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { ChaiBlock } from "@/types/common";
 import { atom, useAtom } from "jotai";

@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
-import { ChaiBlock } from "@/types/common";
+import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { useSaveToLibraryComponent } from "@/runtime/client";
+import { ChaiBlock } from "@/types/common";
 import { atom, useAtom } from "jotai";
 import { filter, find, isEmpty } from "lodash-es";
 import { useMemo } from "react";

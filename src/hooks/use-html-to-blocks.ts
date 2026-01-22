@@ -1,5 +1,5 @@
-import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
 import { getBlocksFromHTML, mergeBlocksWithExisting } from "@/core/import-html/html-to-json";
+import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { getRegisteredChaiBlock } from "@/runtime";
 import { ChaiBlock } from "@/types/common";
 import { each, filter, find, pick, startsWith } from "lodash-es";

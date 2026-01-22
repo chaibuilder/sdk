@@ -10,7 +10,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
+import { useBlocksStoreUndoableActions } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
 import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
 import { EraserIcon } from "@radix-ui/react-icons";

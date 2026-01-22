@@ -1,4 +1,4 @@
-import { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
+import { useBlocksStoreUndoableActions } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { useLanguages } from "@/hooks/use-languages";
 import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
 import { getRegisteredChaiBlock } from "@/runtime";

@@ -11,7 +11,7 @@
  */
 
 import { clickCountAtom, lastClickTimeAtom } from "@/atoms/click-detection";
-import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
 import { useAtom } from "jotai";
 import { find } from "lodash-es";

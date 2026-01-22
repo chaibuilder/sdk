@@ -1,7 +1,7 @@
 import { LANGUAGES } from "@/core/constants/LANGUAGES";
 import { STYLES_KEY } from "@/core/constants/STRINGS";
-import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
 import { getSplitChaiClasses } from "@/hooks/get-split-classes";
+import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { useLanguages } from "@/hooks/use-languages";
 import { useRightPanel } from "@/hooks/use-theme";

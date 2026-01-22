@@ -1,4 +1,4 @@
-import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { useAddBlock } from "@/hooks/use-add-block";
 import { useSelectedBlock, useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
 import { useWrapperBlock } from "@/hooks/use-wrapper-block";

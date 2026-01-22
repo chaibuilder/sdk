@@ -6,7 +6,7 @@ import { isObject } from "@rjsf/utils";
 import { atom, useAtom, useSetAtom } from "jotai";
 import { get, isFunction, pick, startsWith, values } from "lodash-es";
 import { useEffect, useState } from "react";
-import { useUpdateBlocksPropsRealtime } from "../../hooks/use-update-blocks-props";
+import { useUpdateBlocksPropsRealtime } from "../use-update-blocks-props";
 
 type BlockAsyncProps = {
   status: "idle" | "loading" | "loaded" | "error";

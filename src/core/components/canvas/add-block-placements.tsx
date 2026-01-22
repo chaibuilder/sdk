@@ -6,9 +6,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { canAddChildBlock } from "@/core/functions/block-helpers";
-import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
 import { PERMISSIONS } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
+import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { usePermissions } from "@/hooks/use-permissions";
 import { ChaiBlock } from "@/types/common";
 import { filter, findIndex, get } from "lodash-es";

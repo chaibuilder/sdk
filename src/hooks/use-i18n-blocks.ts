@@ -1,4 +1,4 @@
-import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
 import { getRegisteredChaiBlock } from "@/runtime";
 import { compact, each, get, pick } from "lodash-es";

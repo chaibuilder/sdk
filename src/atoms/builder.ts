@@ -1,4 +1,4 @@
-import { useBlockRepeaterDataAtom } from "@/core/async-props/use-async-props";
+import { useBlockRepeaterDataAtom } from "@/hooks/async-props/use-async-props";
 import { ChaiBuilderEditorProps } from "@/types";
 import { DesignTokens } from "@/types/types";
 import { atom, useAtomValue } from "jotai";

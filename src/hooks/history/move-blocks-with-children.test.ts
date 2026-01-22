@@ -1,4 +1,4 @@
-import { moveBlocksWithChildren } from "@/core/history/move-blocks-with-children";
+import { moveBlocksWithChildren } from "@/hooks/history/move-blocks-with-children";
 
 test("Move to top level", () => {
   const blocks = [

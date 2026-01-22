@@ -11,7 +11,7 @@ import {
   getBlockTagAttributes,
 } from "@/core/components/canvas/static/new-blocks-render-helpers";
 import { useBlockRuntimeProps } from "@/core/components/canvas/static/use-block-runtime-props";
-import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { useEditorMode } from "@/hooks/use-editor-mode";
 import { useInlineEditing } from "@/hooks/use-inline-editing";

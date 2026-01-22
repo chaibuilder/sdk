@@ -1,7 +1,7 @@
 import { aiAssistantActiveAtom } from "@/atoms/ui";
-import { useBlockRepeaterDataAtom } from "@/core/async-props/use-async-props";
 import { userActionsCountAtom } from "@/core/components/use-auto-save";
-import { useUndoManager } from "@/core/history/use-undo-manager";
+import { useBlockRepeaterDataAtom } from "@/hooks/async-props/use-async-props";
+import { useUndoManager } from "@/hooks/history/use-undo-manager";
 import { useBlockHighlight } from "@/hooks/use-block-highlight";
 import { usePartialBlocksStore } from "@/hooks/use-partial-blocks-store";
 import { useSavePage } from "@/hooks/use-save-page";

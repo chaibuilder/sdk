@@ -1,6 +1,6 @@
 import { presentBlocksAtom } from "@/atoms/blocks";
 import { canAcceptChildBlock } from "@/core/functions/block-helpers";
-import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
+import { useBlocksStore, useBlocksStoreUndoableActions } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { useAddBlock } from "@/hooks/use-add-block";
 import { useCutBlockIds } from "@/hooks/use-cut-blockIds";
 import { ChaiBlock } from "@/types/common";

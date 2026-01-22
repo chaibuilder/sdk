@@ -17,7 +17,7 @@ import {
   setIsDragging,
 } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
 import { useDragParentHighlight } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-parent-highlight";
-import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
+import { useBlocksStore, useBlocksStoreUndoableActions } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { useAddBlock } from "@/hooks/use-add-block";
 import { useBlockHighlight } from "@/hooks/use-block-highlight";
 import { useCanvasIframe } from "@/hooks/use-canvas-iframe";

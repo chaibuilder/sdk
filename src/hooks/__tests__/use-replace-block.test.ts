@@ -6,7 +6,7 @@ import { act, renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // Mock dependencies
-vi.mock("@/core/history/use-blocks-store-undoable-actions", () => ({
+vi.mock("@/hooks/history/use-blocks-store-undoable-actions", () => ({
   useBlocksStore: vi.fn(),
   useBlocksStoreUndoableActions: vi.fn(),
 }));
@@ -25,7 +25,7 @@ vi.mock("@/hooks/use-permissions", () => ({
   usePermissions: vi.fn(),
 }));
 
-import { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
+import { useBlocksStoreUndoableActions } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { usePermissions } from "@/hooks/use-permissions";
 import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
 

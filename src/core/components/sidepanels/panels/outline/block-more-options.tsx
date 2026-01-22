@@ -10,9 +10,9 @@ import { SaveToLibrary } from "@/core/components/sidepanels/panels/outline/save-
 import { UnlinkLibraryBlock } from "@/core/components/sidepanels/panels/outline/unlink-library-block";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { canAddChildBlock, canDeleteBlock, canDuplicateBlock } from "@/core/functions/block-helpers";
-import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
 import { PERMISSIONS } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
+import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { useCopyBlocks } from "@/hooks/use-copy-blockIds";
 import { useCutBlockIds } from "@/hooks/use-cut-blockIds";

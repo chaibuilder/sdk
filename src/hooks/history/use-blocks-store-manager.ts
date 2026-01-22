@@ -1,7 +1,7 @@
 import { useIncrementActionsCount } from "@/core/components/use-auto-save";
-import { insertBlocksAtPosition } from "@/core/history/insert-block-at-position";
-import { moveBlocksWithChildren } from "@/core/history/move-blocks-with-children";
-import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { insertBlocksAtPosition } from "@/hooks/history/insert-block-at-position";
+import { moveBlocksWithChildren } from "@/hooks/history/move-blocks-with-children";
+import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { useBroadcastChannel } from "@/hooks/use-broadcast-channel";
 import { useCheckStructure } from "@/hooks/use-check-structure";
 import { removeNestedBlocks } from "@/hooks/use-remove-blocks";

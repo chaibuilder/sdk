@@ -25,7 +25,7 @@ import {
 } from "@/core/components/canvas/dnd/drag-and-drop/prevent-circular-drop";
 import { getOrientation } from "@/core/components/canvas/dnd/getOrientation";
 import { canAcceptChildBlock } from "@/core/functions/block-helpers";
-import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { useCanvasIframe } from "@/hooks/use-canvas-iframe";
 import { useAtom } from "jotai";
 import { throttle } from "lodash-es";

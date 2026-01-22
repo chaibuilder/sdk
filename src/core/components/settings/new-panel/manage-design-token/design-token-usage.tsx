@@ -1,6 +1,6 @@
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { TokenUsageSection, TokenUsageSectionItem } from "@/core/components/settings/new-panel/token-usage-section";
-import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { useLanguages } from "@/hooks/use-languages";
 import { useSavePage } from "@/hooks/use-save-page";

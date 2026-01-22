@@ -1,5 +1,5 @@
 import { getDuplicatedBlocks } from "@/core/functions/blocks-fn";
-import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { cutBlockIdsAtom } from "@/hooks/use-cut-blockIds";
 import { usePartialBlocksStore as usePartailBlocksStore } from "@/hooks/use-partial-blocks-store";

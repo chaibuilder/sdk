@@ -8,9 +8,9 @@ import UILibrariesPanel from "@/core/components/sidepanels/panels/add-blocks/lib
 import { PartialBlocks } from "@/core/components/sidepanels/panels/add-blocks/partial-blocks";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { canAcceptChildBlock, canBeNestedInside } from "@/core/functions/block-helpers";
-import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
 import { mergeClasses, PERMISSIONS } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
+import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { usePartialBlocksList } from "@/hooks/use-partial-blocks-store";
 import { usePermissions } from "@/hooks/use-permissions";

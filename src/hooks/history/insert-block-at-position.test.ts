@@ -1,5 +1,5 @@
 import * as Functions from "@/core/functions/common-functions";
-import { insertBlocksAtPosition } from "@/core/history/insert-block-at-position";
+import { insertBlocksAtPosition } from "@/hooks/history/insert-block-at-position";
 import { ChaiBlock } from "@/types/common";
 import { vi } from "vitest";
 

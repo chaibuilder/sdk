@@ -1,4 +1,4 @@
-import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
+import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { useBrandingOptions } from "@/hooks/use-branding-options";
 import { useCurrentPage } from "@/hooks/use-current-page";
 import { getRegisteredChaiBlock } from "@/runtime";

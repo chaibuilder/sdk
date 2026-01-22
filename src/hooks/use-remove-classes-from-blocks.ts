@@ -1,7 +1,7 @@
 import { pageBlocksAtomsAtom } from "@/atoms/blocks";
 import { STYLES_KEY } from "@/core/constants/STRINGS";
-import { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 import { getSplitChaiClasses } from "@/hooks/get-split-classes";
+import { useBlocksStoreUndoableActions } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { selectedStylingBlocksAtom, TStyleBlock } from "@/hooks/use-selected-styling-blocks";
 import { ChaiBlock } from "@/types/common";
 import { atom, useSetAtom } from "jotai";
