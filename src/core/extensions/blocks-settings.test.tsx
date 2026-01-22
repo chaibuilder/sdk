@@ -4,7 +4,7 @@ import {
   registerBlockSettingTemplate,
   registerBlockSettingWidget,
   useBlockSettingComponents,
-} from "@/runtime/index";
+} from "@/runtime/client";
 import { beforeEach, describe, expect, it } from "vitest";
 
 describe("Block Settings Extensions", () => {
