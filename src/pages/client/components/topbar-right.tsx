@@ -22,16 +22,16 @@ import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { throwConfetti } from "@/pages/utils/confetti";
 import Tooltip from "@/pages/utils/tooltip";
 import { compact, find, isEmpty, map, upperCase } from "lodash-es";
-import { CheckCircle, ChevronDown, Loader, Palette, Play, Rocket, Save, Send } from "lucide-react";
+import { CheckCircle, ChevronDown, Loader, Palette, Pencil, Play, Rocket, Save, Send } from "lucide-react";
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { usePageLockStatus } from "./page-lock/page-lock-hook";
-import JsonDiffViewer from "@/pages/client/components/json-diff-viewer";
 
 const UnpublishPage = lazy(() => import("@/pages/client/components/unpublish-page"));
 const TranslationWarningModal = lazy(
   () => import("@/pages/client/components/save-ui-blocks/translation-warning-modal"),
 );
+const JsonDiffViewer = lazy(() => import("@/pages/client/components/json-diff-viewer"));
 
 const PreviewButton = () => {
   const { t } = useTranslation();
@@ -165,9 +165,9 @@ const PublishButton = () => {
   const [showModal, setShowModal] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [unpublishPage, setUnpublishPage] = useState(null);
+  const [showCompareModal, setShowCompareModal] = useState(false);
   const { savePageAsync } = useSavePage();
   const [showTranslationWarning, setShowTranslationWarning] = useState(false);
-  const [showCompareModal, setShowCompareModal] = useState(false);
 
   const { data: currentPage } = useChaiCurrentPage();
   const { mutate: publishPage, isPending } = usePublishPages();
@@ -176,19 +176,20 @@ const PublishButton = () => {
 
   const { buttonText, buttonClassName, isPublished, hasUnpublishedChanges } = useMemo(() => {
     const isPublished = currentPage && currentPage?.online;
-    const buttonClassName = isPublished ? "hover:bg-green-600 bg-green-500" : "";
-    const hasUnpublishedChanges = currentPage
-      ? currentPage.isPartialGroup
-        ? false
-        : !currentPage?.online
-          ? false
-          : isEmpty(currentPage.changes)
-      : false;
+    const hasUnpublishedChanges = !isEmpty(currentPage?.changes);
+    let buttonClassName = isPublished ? "hover:bg-green-600 bg-green-500" : "";
+    let buttonText = isPublished ? t("Published") : t("Publish");
+
+    if (isPublished && hasUnpublishedChanges) {
+      buttonClassName = "hover:bg-blue-600 bg-blue-500";
+      buttonText = t("Publish");
+    }
+
     return {
       buttonClassName,
       isPublished,
       hasUnpublishedChanges,
-      buttonText: isPublished ? t("Published") : t("Publish"),
+      buttonText,
     };
   }, [currentPage, t]);
 
@@ -234,7 +235,15 @@ const PublishButton = () => {
           onMouseLeave={() => setIsHovered(false)}>
           <span
             className={`flex items-center transition-transform duration-300 ease-in-out ${isHovered ? "-translate-y-10" : ""}`}>
-            {isPublished ? <Send className="h-4 w-4" /> : <Rocket className="h-4 w-4" />}
+            {isPublished ? (
+              hasUnpublishedChanges ? (
+                <Pencil className="h-4 w-4" />
+              ) : (
+                <Send className="h-4 w-4" />
+              )
+            ) : (
+              <Rocket className="h-4 w-4" />
+            )}
           </span>
           <span
             className={`absolute inset-0 left-3 flex items-center transition-transform duration-300 ease-in-out ${isHovered ? "" : "translate-y-10"}`}>
@@ -272,14 +281,14 @@ const PublishButton = () => {
             <DropdownMenuItem onClick={() => setShowModal(true)} className="cursor-pointer text-xs">
               {t("Open")} publish menu
             </DropdownMenuItem>
+            {isPublished && hasUnpublishedChanges && (
+              <DropdownMenuItem onClick={() => setShowCompareModal(true)} className="cursor-pointer text-xs">
+                {t("View Unpublished changes")}
+              </DropdownMenuItem>
+            )}
             {isPublished && (
               <DropdownMenuItem onClick={() => setUnpublishPage(activePage)} className="cursor-pointer text-xs">
                 {t("Unpublish")} page {selectedLang ? `(${upperCase(selectedLang)})` : ""}
-              </DropdownMenuItem>
-            )}
-            {hasUnpublishedChanges && (
-              <DropdownMenuItem onClick={() => setShowCompareModal(true)} className="cursor-pointer text-xs">
-                {t("View changes")}
               </DropdownMenuItem>
             )}
           </DropdownMenuContent>
@@ -291,17 +300,6 @@ const PublishButton = () => {
           <UnpublishPage page={unpublishPage} onClose={() => setUnpublishPage(null)} />
         </Suspense>
       )}
-
-      {showTranslationWarning && (
-        <Suspense>
-          <TranslationWarningModal
-            isOpen={showTranslationWarning}
-            onClose={handleCancelTranslation}
-            onContinue={handleContinueAnyway}
-            isPending={isPending}
-          />
-        </Suspense>
-      )}
       {showCompareModal && (
         <Suspense>
           <JsonDiffViewer
@@ -311,6 +309,17 @@ const PublishButton = () => {
               { label: "draft", uid: `draft:${currentPage?.id}`, item: currentPage },
               { label: "live", uid: `live:${currentPage?.id}`, item: {} },
             ]}
+          />
+        </Suspense>
+      )}
+
+      {showTranslationWarning && (
+        <Suspense>
+          <TranslationWarningModal
+            isOpen={showTranslationWarning}
+            onClose={handleCancelTranslation}
+            onContinue={handleContinueAnyway}
+            isPending={isPending}
           />
         </Suspense>
       )}
