@@ -28,7 +28,7 @@ export default defineConfig({
         core: resolve(__dirname, "src/core/main/index.ts"),
         render: resolve(__dirname, "src/render/index.ts"),
         "web-blocks": resolve(__dirname, "src/web-blocks/index.ts"),
-        runtime: resolve(__dirname, "src/runtime.ts"),
+        runtime: resolve(__dirname, "src/runtime/index.ts"),
         "runtime-client": resolve(__dirname, "src/runtime/client/index.ts"),
         pages: resolve(__dirname, "src/pages/index.ts"),
         actions: resolve(__dirname, "src/actions/export.ts"),
