@@ -1,7 +1,5 @@
 import * as React from "react";
 
-export * from "@/types/common";
-
 export type ChaiRenderBlockProps<T> = {
   blockProps: Record<string, string>;
   children?: React.ReactNode;
