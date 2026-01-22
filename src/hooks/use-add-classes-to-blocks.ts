@@ -1,4 +1,4 @@
-import { pageBlocksAtomsAtom } from "@/core/atoms/blocks";
+import { pageBlocksAtomsAtom } from "@/atoms/blocks";
 import { STYLES_KEY } from "@/core/constants/STRINGS";
 import { orderClassesByBreakpoint } from "@/core/functions/order-classes-by-breakpoint";
 import { removeDuplicateClasses } from "@/core/functions/remove-duplicate-classes";

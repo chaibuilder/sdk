@@ -1,6 +1,6 @@
+import { usePageExternalData } from "@/atoms/builder";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { usePageExternalData } from "@/core/atoms/builder";
 import { LANGUAGES } from "@/core/constants/LANGUAGES";
 import { useLanguages } from "@/hooks/use-languages";
 import { useSelectedBlock } from "@/hooks/use-selected-blockIds";

@@ -1,4 +1,4 @@
-import { pageBlocksAtomsAtom } from "@/core/atoms/blocks";
+import { pageBlocksAtomsAtom } from "@/atoms/blocks";
 import { STYLES_KEY } from "@/core/constants/STRINGS";
 import { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 import { getSplitChaiClasses } from "@/hooks/get-split-classes";

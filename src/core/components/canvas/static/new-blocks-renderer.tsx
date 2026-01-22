@@ -1,7 +1,7 @@
-import { pageBlocksAtomsAtom } from "@/core/atoms/blocks";
-import { chaiDesignTokensAtom, usePageExternalData } from "@/core/atoms/builder";
-import { builderStore } from "@/core/atoms/store";
-import { dataBindingActiveAtom } from "@/core/atoms/ui";
+import { pageBlocksAtomsAtom } from "@/atoms/blocks";
+import { chaiDesignTokensAtom, usePageExternalData } from "@/atoms/builder";
+import { builderStore } from "@/atoms/store";
+import { dataBindingActiveAtom } from "@/atoms/ui";
 import { useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 import { useDirectBlockDrag } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-direct-block-drag";
 import {

@@ -1,4 +1,4 @@
-import { presentBlocksAtom } from "@/core/atoms/blocks";
+import { presentBlocksAtom } from "@/atoms/blocks";
 import { selectedBlockIdsAtom } from "@/hooks/use-selected-blockIds";
 import { getRegisteredChaiBlock } from "@/runtime";
 import { ChaiBlock } from "@/types/common";

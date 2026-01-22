@@ -10,7 +10,7 @@
  * @module use-direct-block-drag
  */
 
-import { clickCountAtom, lastClickTimeAtom } from "@/core/atoms/click-detection";
+import { clickCountAtom, lastClickTimeAtom } from "@/atoms/click-detection";
 import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
 import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
 import { useAtom } from "jotai";

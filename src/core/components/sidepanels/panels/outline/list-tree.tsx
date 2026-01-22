@@ -1,7 +1,7 @@
+import { treeDSBlocks } from "@/atoms/blocks";
+import { treeRefAtom } from "@/atoms/ui";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { treeDSBlocks } from "@/core/atoms/blocks";
-import { treeRefAtom } from "@/core/atoms/ui";
 import { DefaultCursor } from "@/core/components/sidepanels/panels/outline/default-cursor";
 import { DefaultDragPreview } from "@/core/components/sidepanels/panels/outline/default-drag-preview";
 import {

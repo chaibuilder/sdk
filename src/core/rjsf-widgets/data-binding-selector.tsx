@@ -1,4 +1,4 @@
-import { usePageExternalData } from "@/core/atoms/builder";
+import { usePageExternalData } from "@/atoms/builder";
 import { NestedPathSelector } from "@/core/components/nested-path-selector";
 import { COLLECTION_PREFIX, REPEATER_PREFIX } from "@/core/constants/STRINGS";
 import { useBuilderProp } from "@/hooks/use-builder-prop";

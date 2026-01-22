@@ -1,5 +1,5 @@
+import { canvasIframeAtom } from "@/atoms/ui";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { canvasIframeAtom } from "@/core/atoms/ui";
 import { useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
 import { BlockMoreOptions } from "@/core/components/sidepanels/panels/outline/block-more-options";
 import { TypeIcon } from "@/core/components/sidepanels/panels/outline/block-type-icon";

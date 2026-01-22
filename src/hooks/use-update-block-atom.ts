@@ -1,5 +1,5 @@
-import { pageBlocksAtomsAtom } from "@/core/atoms/blocks";
-import { builderStore } from "@/core/atoms/store";
+import { pageBlocksAtomsAtom } from "@/atoms/blocks";
+import { builderStore } from "@/atoms/store";
 import { ChaiBlock } from "@/types/common";
 import { Atom, atom, useSetAtom } from "jotai";
 import { useAtomCallback } from "jotai/utils";

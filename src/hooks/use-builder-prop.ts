@@ -1,4 +1,4 @@
-import { chaiBuilderPropsAtom } from "@/core/atoms/builder";
+import { chaiBuilderPropsAtom } from "@/atoms/builder";
 import { ChaiBuilderEditorProps } from "@/types/chaibuilder-editor-props";
 import { useAtomValue } from "jotai";
 import { get } from "lodash-es";

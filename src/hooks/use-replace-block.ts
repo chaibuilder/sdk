@@ -1,5 +1,5 @@
-import { presentBlocksAtom } from "@/core/atoms/blocks";
-import { builderStore } from "@/core/atoms/store";
+import { presentBlocksAtom } from "@/atoms/blocks";
+import { builderStore } from "@/atoms/store";
 import { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 import { PERMISSIONS } from "@/core/main";
 import { usePermissions } from "@/hooks/use-permissions";

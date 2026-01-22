@@ -1,4 +1,4 @@
-import { clickCountAtom } from "@/core/atoms/click-detection";
+import { clickCountAtom } from "@/atoms/click-detection";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { pubsub } from "@/core/pubsub";
 import { useBlockHighlight } from "@/hooks/use-block-highlight";

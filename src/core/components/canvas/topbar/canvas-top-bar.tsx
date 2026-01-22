@@ -1,3 +1,4 @@
+import { dataBindingActiveAtom } from "@/atoms/ui";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -7,7 +8,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
-import { dataBindingActiveAtom } from "@/core/atoms/ui";
 import { ScalePercent } from "@/core/components/canvas/scale-percent";
 import { Breakpoints } from "@/core/components/canvas/topbar/canvas-breakpoints";
 import { ClearCanvas } from "@/core/components/canvas/topbar/clear-canvas";

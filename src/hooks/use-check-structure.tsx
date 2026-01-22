@@ -3,7 +3,7 @@ import {
   hasStructureWarningsAtom,
   structureErrorsAtom,
   structureValidationValidAtom,
-} from "@/core/atoms/blocks";
+} from "@/atoms/blocks";
 import { convertToBlocksTree } from "@/core/functions/blocks-fn";
 import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { ChaiBlock } from "@/types/common";

@@ -1,5 +1,5 @@
-import { presentBlocksAtom } from "@/core/atoms/blocks";
-import { builderStore } from "@/core/atoms/store";
+import { presentBlocksAtom } from "@/atoms/blocks";
+import { builderStore } from "@/atoms/store";
 import { replaceBlock, useReplaceBlock } from "@/hooks/use-replace-block";
 import { ChaiBlock } from "@/types/common";
 import { act, renderHook } from "@testing-library/react";

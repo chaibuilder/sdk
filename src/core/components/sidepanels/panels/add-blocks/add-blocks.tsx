@@ -1,6 +1,6 @@
+import { showPredefinedBlockCategoryAtom } from "@/atoms/ui";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { showPredefinedBlockCategoryAtom } from "@/core/atoms/ui";
 import { CoreBlock } from "@/core/components/sidepanels/panels/add-blocks/core-block";
 import { DefaultChaiBlocks } from "@/core/components/sidepanels/panels/add-blocks/default-blocks";
 import ImportHTML from "@/core/components/sidepanels/panels/add-blocks/import-html";

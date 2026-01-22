@@ -1,4 +1,4 @@
-import { presentBlocksAtom } from "@/core/atoms/blocks";
+import { presentBlocksAtom } from "@/atoms/blocks";
 import { selectedBlockIdsAtom, useSelectedBlockHierarchy } from "@/hooks/use-selected-blockIds";
 import { ChaiBlock } from "@/types/common";
 import { renderHook } from "@testing-library/react";

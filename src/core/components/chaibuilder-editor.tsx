@@ -1,6 +1,6 @@
-import { chaiBuilderPropsAtom, chaiDesignTokensAtom, chaiPageExternalDataAtom } from "@/core/atoms/builder";
-import { builderStore } from "@/core/atoms/store";
-import { selectedLibraryAtom } from "@/core/atoms/ui";
+import { chaiBuilderPropsAtom, chaiDesignTokensAtom, chaiPageExternalDataAtom } from "@/atoms/builder";
+import { builderStore } from "@/atoms/store";
+import { selectedLibraryAtom } from "@/atoms/ui";
 import { CssThemeVariables } from "@/core/components/css-theme-var";
 import { FallbackError } from "@/core/components/fallback-error";
 import { RootLayout } from "@/core/components/layout/root-layout";

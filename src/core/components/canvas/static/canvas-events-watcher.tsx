@@ -1,4 +1,4 @@
-import { treeRefAtom } from "@/core/atoms/ui";
+import { treeRefAtom } from "@/atoms/ui";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { useFrame } from "@/core/frame";
 import { useBlockHighlight } from "@/hooks/use-block-highlight";

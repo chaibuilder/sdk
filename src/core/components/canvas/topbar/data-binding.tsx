@@ -1,7 +1,7 @@
+import { usePageExternalData } from "@/atoms/builder";
+import { dataBindingActiveAtom } from "@/atoms/ui";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { usePageExternalData } from "@/core/atoms/builder";
-import { dataBindingActiveAtom } from "@/core/atoms/ui";
 import { cn } from "@/core/functions/common-functions";
 import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { LightningBoltIcon } from "@radix-ui/react-icons";

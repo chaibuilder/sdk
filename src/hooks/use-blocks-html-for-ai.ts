@@ -1,4 +1,4 @@
-import { getCurrentBlocks } from "@/core/atoms/store";
+import { getCurrentBlocks } from "@/atoms/store";
 import { useCanvasIframe } from "@/hooks/use-canvas-iframe";
 import { getRegisteredChaiBlock } from "@/runtime";
 import { ChaiBlock } from "@/types/common";

@@ -1,4 +1,4 @@
+import { canvasIframeAtom } from "@/atoms/ui";
 import { useAtom } from "jotai";
-import { canvasIframeAtom } from "@/core/atoms/ui";
 
 export const useCanvasIframe = () => useAtom(canvasIframeAtom);

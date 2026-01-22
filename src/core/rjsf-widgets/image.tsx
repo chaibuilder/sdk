@@ -1,4 +1,4 @@
-import { usePageExternalData } from "@/core/atoms/builder";
+import { usePageExternalData } from "@/atoms/builder";
 import MediaManagerModal from "@/core/components/sidepanels/panels/images/media-manager-modal";
 import { useLanguages } from "@/hooks/use-languages";
 import { useSelectedBlock } from "@/hooks/use-selected-blockIds";

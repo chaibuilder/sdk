@@ -1,4 +1,4 @@
-import { presentBlocksAtom } from "@/core/atoms/blocks";
+import { presentBlocksAtom } from "@/atoms/blocks";
 import { canAcceptChildBlock } from "@/core/functions/block-helpers";
 import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 import { useAddBlock } from "@/hooks/use-add-block";
