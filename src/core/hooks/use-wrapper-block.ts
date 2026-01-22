@@ -1,7 +1,7 @@
 import { presentBlocksAtom } from "@/core/atoms/blocks";
 import { selectedBlockIdsAtom } from "@/core/hooks/use-selected-blockIds";
 import { getRegisteredChaiBlock } from "@/runtime";
-import { ChaiBlock } from "@/types/chai-block";
+import { ChaiBlock } from "@/types/common";
 import { atom, useAtomValue } from "jotai";
 import { find } from "lodash-es";
 

@@ -1,6 +1,6 @@
 import { handlei18N } from "@/core/hooks/use-html-to-blocks";
 import { getRegisteredChaiBlock } from "@/runtime";
-import { ChaiBlock } from "@/types/chai-block";
+import { ChaiBlock } from "@/types/common";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // Mock the runtime module

@@ -1,5 +1,5 @@
 import { getDefaultStore } from "jotai";
-import { ChaiBlock } from "@/core/main";
+import { ChaiBlock } from "@/types/common";
 import { presentBlocksAtom } from "./blocks";
 
 /**

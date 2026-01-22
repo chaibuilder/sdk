@@ -7,7 +7,7 @@ import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
 import RteMenubar from "@/core/rjsf-widgets/rte-widget/rte-menu-bar";
 import { useRTEditor } from "@/core/rjsf-widgets/rte-widget/use-rte-editor";
 import { getRegisteredChaiBlock } from "@/runtime";
-import { ChaiBlock } from "@/types/chai-block";
+import { ChaiBlock } from "@/types/common";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { BubbleMenu, EditorContent } from "@tiptap/react";
 import { cloneDeep, get, has } from "lodash-es";

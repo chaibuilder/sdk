@@ -1,6 +1,6 @@
 import { generateClassNames } from "@/core/components/canvas/static/new-blocks-render-helpers";
 import { STYLES_KEY } from "@/core/constants/STRINGS";
-import { ChaiBlock } from "@/types/chai-block";
+import { ChaiBlock } from "@/types/common";
 import { DesignTokens } from "@/types/types";
 import { each, isString, keys } from "lodash-es";
 

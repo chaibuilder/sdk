@@ -1,6 +1,6 @@
 import { generateUUID } from "@/core/functions/common-functions";
 import { getBlocksTree } from "@/core/functions/split-blocks";
-import { ChaiBlock } from "@/types/chai-block";
+import { ChaiBlock } from "@/types/common";
 import TreeModel from "tree-model";
 
 // Convert the tree back to a flat array

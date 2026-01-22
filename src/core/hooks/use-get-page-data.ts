@@ -2,7 +2,7 @@ import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions
 import { useBrandingOptions } from "@/core/hooks/use-branding-options";
 import { useCurrentPage } from "@/core/hooks/use-current-page";
 import { getRegisteredChaiBlock } from "@/runtime";
-import { ChaiBlock } from "@/types/chai-block";
+import { ChaiBlock } from "@/types/common";
 import { compact, get, map, memoize, omit } from "lodash-es";
 import { useCallback } from "react";
 

@@ -2,7 +2,7 @@ import { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-u
 import { useLanguages } from "@/core/hooks/use-languages";
 import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
 import { getRegisteredChaiBlock } from "@/runtime";
-import { ChaiBlock } from "@/types/chai-block";
+import { ChaiBlock } from "@/types/common";
 import { chunk, forEach, get, includes, isEmpty, isString, keys, omit, set, unset } from "lodash-es";
 import { useCallback } from "react";
 

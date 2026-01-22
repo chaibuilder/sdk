@@ -2,7 +2,7 @@ import { presentBlocksAtom } from "@/core/atoms/blocks";
 import { builderStore } from "@/core/atoms/store";
 import { useBlocksStoreManager } from "@/core/history/use-blocks-store-manager";
 import { useUndoManager } from "@/core/history/use-undo-manager";
-import { ChaiBlock } from "@/types/chai-block";
+import { ChaiBlock } from "@/types/common";
 import { useAtom } from "jotai";
 import { each, first, keys, map } from "lodash-es";
 

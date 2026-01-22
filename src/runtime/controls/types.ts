@@ -1,5 +1,6 @@
+import { ChaiBlock } from "@/types/common";
 import React from "react";
-import { ChaiBlock, ChaiBlockComponentProps, ChaiBlockSchema, ChaiBlockUiSchema, ChaiPageProps } from "../index.ts";
+import { ChaiBlockComponentProps, ChaiBlockSchema, ChaiBlockUiSchema, ChaiPageProps } from "../index";
 
 export type ChaiDataProviderArgs<T = Record<string, any>, K = Record<string, any>> = {
   block: ChaiBlock<T>;

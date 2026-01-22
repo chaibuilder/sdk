@@ -4,7 +4,7 @@ import { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-u
 import { usePermissions } from "@/core/hooks/use-permissions";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import { PERMISSIONS } from "@/core/main";
-import { ChaiBlock } from "@/types/chai-block";
+import { ChaiBlock } from "@/types/common";
 import { find } from "lodash-es";
 import { useCallback } from "react";
 

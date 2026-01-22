@@ -1,6 +1,6 @@
 import { useInlineEditing } from "@/core/hooks/use-inline-editing";
 import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
-import { ChaiBlock } from "@/core/main";
+import { ChaiBlock } from "@/types/common";
 import { useRTEditor } from "@/core/rjsf-widgets/rte-widget/use-rte-editor";
 import { WidgetProps } from "@rjsf/utils";
 import { EditorContent } from "@tiptap/react";

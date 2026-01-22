@@ -1,7 +1,6 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import {
   builderProp,
-  ChaiBlock,
   ChaiBlockComponentProps,
   ChaiStyles,
   closestBlockProp,
@@ -9,6 +8,7 @@ import {
   registerChaiBlockSchema,
   StylesProp,
 } from "@/runtime";
+import { ChaiBlock } from "@/types/common";
 import { StackIcon } from "@radix-ui/react-icons";
 
 export type ModalProps = {

@@ -79,7 +79,7 @@ const SettingsPanel: React.FC = () => {
   const isPartialBlock = selectedBlock && selectedBlock._type === "PartialBlock";
 
   if (isPartialBlock) {
-    return <PartialWrapper partialBlockId={selectedBlock.partialBlockId} />;
+    return <PartialWrapper partialBlockId={selectedBlock.partialBlockId!} />;
   }
 
   if (isNull(selectedBlock)) {

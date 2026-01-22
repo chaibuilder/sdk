@@ -5,7 +5,7 @@ import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
 import { useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "@/core/hooks/use-update-blocks-props";
 import { useWrapperBlock } from "@/core/hooks/use-wrapper-block";
 import { ChaiBlockDefinition, getBlockFormSchemas, getRegisteredChaiBlock } from "@/runtime";
-import { ChaiBlock } from "@/types/chai-block";
+import { ChaiBlock } from "@/types/common";
 import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { IChangeEvent } from "@rjsf/core";
 import { cloneDeep, debounce, forEach, get, includes, isEmpty, keys, set, startCase, startsWith } from "lodash-es";

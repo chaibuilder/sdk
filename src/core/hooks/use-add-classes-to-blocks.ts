@@ -5,7 +5,7 @@ import { removeDuplicateClasses } from "@/core/functions/remove-duplicate-classe
 import { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
 import { selectedStylingBlocksAtom, TStyleBlock } from "@/core/hooks/use-selected-styling-blocks";
-import { ChaiBlock } from "@/types/chai-block";
+import { ChaiBlock } from "@/types/common";
 import { atom, useSetAtom } from "jotai";
 import { filter, first, get as getProp, map } from "lodash-es";
 import { useCallback } from "react";
