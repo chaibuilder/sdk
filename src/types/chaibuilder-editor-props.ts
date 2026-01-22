@@ -2,7 +2,7 @@ import { StructureRule } from "@/hooks/structure-rules";
 import { ChaiBlock } from "@/types/common";
 import React from "react";
 import { ChaiCollectoin } from "./collections";
-import { DesignTokens, SiteWideUsage } from "./types";
+import { ChaiDesignTokens, ChaiSiteWideUsageData } from "./types";
 
 export type ChaiLibraryBlock<T = Record<string, any>> = {
   id: string;
@@ -25,13 +25,13 @@ type ReactComponentType = React.ComponentType<any>;
 type CSSVariableName = string;
 type HSLColor = string;
 type HexColor = string;
-export type CssVariableNameWithDefault = Record<CSSVariableName, any>;
+export type ChaiCssVariableNameWithDefault = Record<CSSVariableName, any>;
 type VariableKey = string;
-export type BorderRadiusValue = false | string;
+export type ChaiBorderRadiusValue = false | string;
 
-export type ChaiBuilderThemeOptions = {
+export type ChaiThemeOptions = {
   fontFamily: false | Record<VariableKey, string>;
-  borderRadius: BorderRadiusValue;
+  borderRadius: ChaiBorderRadiusValue;
   colors:
     | false
     | {
@@ -40,7 +40,7 @@ export type ChaiBuilderThemeOptions = {
       }[];
 };
 
-export type Breakpoint = {
+export type ChaiBreakpoint = {
   title: string;
   content: string;
   breakpoint: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | string;
@@ -48,30 +48,26 @@ export type Breakpoint = {
   width: number;
 };
 
-export type SavePageData = {
+export type ChaiSavePageData = {
   autoSave: boolean;
   blocks: ChaiBlock[];
   theme?: ChaiThemeValues;
   needTranslations?: boolean;
-  designTokens: DesignTokens;
+  designTokens: ChaiDesignTokens;
 };
 
-export type AskAiResponse = {
+export type ChaiAskAiResponse = {
   blocks?: Array<{ _id: string } & Partial<ChaiBlock>>;
   usage?: Record<any, number>;
   error?: any;
 };
 
-export type ChaiBuilderInstance = {
-  setBlocks: (blocks: ChaiBlock[]) => void;
-};
-
-export type PageType = {
+export type ChaiPageType = {
   key: string;
   name: string;
 };
 
-export type PageTypeItem = {
+export type ChaiPageTypeItem = {
   id: string;
   name: string;
   slug?: string;
@@ -148,7 +144,7 @@ export interface ChaiBuilderEditorProps {
   /**
    * Theme options
    */
-  themeOptions?: (defaultThemeOptions: ChaiBuilderThemeOptions) => ChaiBuilderThemeOptions;
+  themeOptions?: (defaultThemeOptions: ChaiThemeOptions) => ChaiThemeOptions;
 
   /**
    * Theme
@@ -201,7 +197,7 @@ export interface ChaiBuilderEditorProps {
   /**
    * Breakpoints
    */
-  breakpoints?: Breakpoint[];
+  breakpoints?: ChaiBreakpoint[];
 
   /**
    * Loading state
@@ -221,7 +217,7 @@ export interface ChaiBuilderEditorProps {
     prompt: string,
     blocks: ChaiBlock[],
     lang: string,
-  ) => Promise<AskAiResponse>;
+  ) => Promise<ChaiAskAiResponse>;
 
   /**
    * Get partial blocks
@@ -243,7 +239,7 @@ export interface ChaiBuilderEditorProps {
    * onSave callback function
    * @param saveData
    */
-  onSave?: ({ blocks, theme, autoSave }: SavePageData) => Promise<boolean | Error>;
+  onSave?: ({ blocks, theme, autoSave }: ChaiSavePageData) => Promise<boolean | Error>;
 
   /**
    * onSaveStateChange callback function
@@ -270,12 +266,12 @@ export interface ChaiBuilderEditorProps {
   /**
    * Page Types props
    */
-  pageTypes?: PageType[];
+  pageTypes?: ChaiPageType[];
 
   /**
    * Search page type items
    */
-  searchPageTypeItems?: (pageTypeKey: string, query: string) => Promise<PageTypeItem[] | Error>;
+  searchPageTypeItems?: (pageTypeKey: string, query: string) => Promise<ChaiPageTypeItem[] | Error>;
 
   /**
    * Collections
@@ -306,9 +302,9 @@ export interface ChaiBuilderEditorProps {
 
   structureRules?: StructureRule[];
 
-  designTokens?: DesignTokens;
+  designTokens?: ChaiDesignTokens;
 
-  siteWideUsage?: SiteWideUsage;
+  siteWideUsage?: ChaiSiteWideUsageData;
 
   /**
    * Screen to small message component

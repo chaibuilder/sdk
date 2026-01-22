@@ -7,7 +7,7 @@ import { PARTIALS } from "@/routes/demo/PARTIALS";
 import { defaultShadcnPreset } from "@/routes/demo/THEME_PRESETS";
 import Topbar from "@/routes/demo/top-bar";
 import { registerChaiTopBar } from "@/runtime/client";
-import { ChaiThemeValues, SavePageData } from "@/types/chaibuilder-editor-props";
+import { ChaiSavePageData, ChaiThemeValues } from "@/types/chaibuilder-editor-props";
 import { ChaiBlock } from "@/types/common";
 import { loadWebBlocks } from "@/web-blocks";
 import { useAtom } from "jotai";
@@ -47,7 +47,7 @@ function ChaiBuilderDefault() {
       theme={theme}
       autoSave={true}
       blocks={blocks}
-      onSave={async ({ blocks, theme, needTranslations, designTokens }: SavePageData) => {
+      onSave={async ({ blocks, theme, needTranslations, designTokens }: ChaiSavePageData) => {
         console.log("onSave", blocks, theme, needTranslations, designTokens);
         localStorage.setItem("chai-builder-blocks", JSON.stringify(blocks));
         localStorage.setItem("chai-builder-theme", JSON.stringify(theme));

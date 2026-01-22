@@ -1,7 +1,7 @@
 import { LANGUAGES } from "@/core/constants/LANGUAGES";
 import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { useLanguages } from "@/hooks/use-languages";
-import { PageTypeItem } from "@/types/chaibuilder-editor-props";
+import { ChaiPageTypeItem } from "@/types/chaibuilder-editor-props";
 import { Cross1Icon } from "@radix-ui/react-icons";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { FieldProps } from "@rjsf/utils";
@@ -25,7 +25,7 @@ const PageTypeField = ({
   const [isSearching, setIsSearching] = useState(false);
   const [pageType, setPageType] = useState("page");
   const [searchQuery, setSearchQuery] = useState("");
-  const [pageTypeItems, setPageTypeItems] = useState<PageTypeItem[]>([]);
+  const [pageTypeItems, setPageTypeItems] = useState<ChaiPageTypeItem[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const listRef = useRef<HTMLUListElement>(null);
 
@@ -66,7 +66,7 @@ const PageTypeField = ({
     300,
   );
 
-  const handleSelect = (pageTypeItem: PageTypeItem) => {
+  const handleSelect = (pageTypeItem: ChaiPageTypeItem) => {
     const href = ["pageType", pageType, pageTypeItem.id];
     if (!href[1]) return;
     onChange(href.join(":"));

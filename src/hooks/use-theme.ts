@@ -1,11 +1,11 @@
 import { defaultThemeOptions, defaultThemeValues } from "@/hooks/default-theme-options";
 import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { BorderRadiusValue, ChaiBuilderThemeOptions, ChaiThemeValues } from "@/types/chaibuilder-editor-props";
+import { ChaiBorderRadiusValue, ChaiThemeOptions, ChaiThemeValues } from "@/types/chaibuilder-editor-props";
 import { atom, useAtom } from "jotai";
 import { isEmpty } from "lodash-es";
 import { useMemo } from "react";
 
-export const getDefaultThemeValues = (options: ChaiBuilderThemeOptions = defaultThemeOptions): ChaiThemeValues => {
+export const getDefaultThemeValues = (options: ChaiThemeOptions = defaultThemeOptions): ChaiThemeValues => {
   const themeValues: ChaiThemeValues = defaultThemeValues;
 
   if (options.fontFamily) {
@@ -19,7 +19,7 @@ export const getDefaultThemeValues = (options: ChaiBuilderThemeOptions = default
   }
 
   // @ts-ignore
-  themeValues.borderRadius = options.borderRadius as BorderRadiusValue;
+  themeValues.borderRadius = options.borderRadius as ChaiBorderRadiusValue;
 
   if (options.colors) {
     themeValues.colors = options.colors.reduce((acc, colorGroup) => {
@@ -50,9 +50,9 @@ export const useTheme = () => {
 };
 
 export const useThemeOptions = () => {
-  const getThemeOptions = useBuilderProp("themeOptions", (themeOptions: ChaiBuilderThemeOptions) => themeOptions);
+  const getThemeOptions = useBuilderProp("themeOptions", (themeOptions: ChaiThemeOptions) => themeOptions);
   const defaultOptions = useMemo(() => getThemeOptions(defaultThemeOptions), [getThemeOptions]);
-  return defaultOptions as ChaiBuilderThemeOptions;
+  return defaultOptions as ChaiThemeOptions;
 };
 
 const rightPanelAtom = atom<"block" | "theme" | "ai" | "settings" | "design-tokens">("block");

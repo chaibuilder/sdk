@@ -8,22 +8,25 @@ export type ChaiRenderBlockProps<T> = {
 
 export type ChaiBlockStyles = Record<string, string>;
 
-export type { ChaiThemeValues as ChaiBuilderThemeValues, SavePageData } from "@/types/chaibuilder-editor-props";
+export type {
+  ChaiThemeValues as ChaiBuilderThemeValues,
+  ChaiSavePageData as SavePageData,
+} from "@/types/chaibuilder-editor-props";
 
-export interface DesignTokens {
+export interface ChaiDesignTokens {
   [uniqueId: string]: {
     name: string;
     value: string;
   };
 }
 
-type BlocksWithDesignTokens = Record<string, string>;
-export interface SiteWideUsage {
+type ChaiBlocksWithDesignTokens = Record<string, string>;
+export interface ChaiSiteWideUsageData {
   [pageId: string]: {
     name: string;
     isPartial: boolean;
     partialBlocks: string[];
     links: string[];
-    designTokens: BlocksWithDesignTokens; // { blockId: Name, blockId: name 2}
+    designTokens: ChaiBlocksWithDesignTokens; // { blockId: Name, blockId: name 2}
   };
 }

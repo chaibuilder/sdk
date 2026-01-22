@@ -7,7 +7,7 @@ import { useLanguages } from "@/hooks/use-languages";
 import { useRightPanel } from "@/hooks/use-theme";
 import { useStreamMultipleBlocksProps, useUpdateMultipleBlocksProps } from "@/hooks/use-update-blocks-props";
 import { getRegisteredChaiBlock } from "@/runtime";
-import { AskAiResponse } from "@/types/chaibuilder-editor-props";
+import { ChaiAskAiResponse } from "@/types/chaibuilder-editor-props";
 import { ChaiBlock } from "@/types/common";
 import { atom, useAtom } from "jotai";
 import {
@@ -105,7 +105,7 @@ export const useAskAi = () => {
         type: "styles" | "content",
         blockId: string,
         prompt: string,
-        onComplete?: (response?: AskAiResponse) => void,
+        onComplete?: (response?: ChaiAskAiResponse) => void,
       ) => {
         if (!callBack) return;
         setProcessing(true);
@@ -122,7 +122,7 @@ export const useAskAi = () => {
           if (askAiResponse === void 0) return;
           const { blocks: updatedBlocks, error } = askAiResponse as {
             blocks: ChaiBlock[];
-            error: AskAiResponse["error"];
+            error: ChaiAskAiResponse["error"];
           };
           if (error) {
             setError(error);
@@ -143,7 +143,7 @@ export const useAskAi = () => {
           }
           if (onComplete) onComplete(askAiResponse);
         } catch (e) {
-          setError(e as AskAiResponse["error"]);
+          setError(e as ChaiAskAiResponse["error"]);
         } finally {
           setProcessing(false);
           if (onComplete) onComplete();
