@@ -1,4 +1,4 @@
-import { CHAI_BUILDER_PANELS, registerChaiSidebarPanel } from "@/runtime/index";
+import { CHAI_BUILDER_PANELS, registerChaiSidebarPanel } from "@/runtime/client/register-chai-sidebar-panel";
 import { ComponentType } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 

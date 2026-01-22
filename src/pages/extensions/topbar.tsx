@@ -1,4 +1,3 @@
-import { useChaiFeatureFlag } from "@/runtime/index";
 import { mergeClasses } from "@/core/main";
 import { PageDropdownInHeader } from "@/pages/client/components/page-dropdown-in-header";
 import { ScreenOverlay } from "@/pages/client/components/screen-overlay";
@@ -6,6 +5,7 @@ import TopbarLeft, { LanguageSwitcher } from "@/pages/client/components/topbar-l
 import TopbarRight from "@/pages/client/components/topbar-right";
 import { useActivePage, useChaiCurrentPage, useGetPageFullSlug } from "@/pages/hooks/pages/use-current-page";
 import { useDynamicPageSelector, useDynamicPageSlug } from "@/pages/hooks/pages/use-dynamic-page-selector";
+import { useChaiFeatureFlag } from "@/runtime/client";
 import { get } from "lodash-es";
 import { ExternalLink } from "lucide-react";
 import { lazy, Suspense } from "react";

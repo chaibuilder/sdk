@@ -1,7 +1,7 @@
 import { usePageEditInfo } from "@/pages/hooks/pages/use-current-page";
 import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
 import { ChaiBlock } from "@/types/common";
-import { useFetch } from "./use-fetch.ts";
+import { useFetch } from "./use-fetch";
 
 export const usePagesSavePage = () => {
   const apiUrl = useApiUrl();

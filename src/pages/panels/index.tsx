@@ -1,4 +1,4 @@
-import { registerChaiSidebarPanel } from "@/runtime/index";
+import { registerChaiSidebarPanel } from "@/runtime/client";
 import { aiPanel, aiPanelId } from "./ai-panel/ai-panel";
 import { langPanel, langPanelId } from "./lang-panel";
 import { seoPanel, seoPanelId } from "./seo-panel";

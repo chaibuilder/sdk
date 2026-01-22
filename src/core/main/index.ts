@@ -51,24 +51,8 @@ export { getBlocksFromHTML as convertHTMLToChaiBlocks, getBlocksFromHTML } from 
 // types
 export type { ChaiBlock, ChaiBuilderEditorProps };
 
-// registration apis
-export {
-  registerBlockSettingField,
-  registerBlockSettingTemplate,
-  registerBlockSettingWidget,
-  registerChaiAddBlockTab,
-  registerChaiLibrary,
-  registerChaiMediaManager,
-  registerChaiPreImportHTMLHook,
-  registerChaiSaveToLibrary,
-  registerChaiSidebarPanel,
-  registerChaiTopBar,
-  useMediaManagerComponent,
-} from "@/runtime/index";
 export type { ChaiLibrary, ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 
-// hooks
-export type { ChaiSidebarPanel } from "@/runtime/index";
 // export * from "@/core/hooks";
 
 // constants

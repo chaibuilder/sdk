@@ -3,7 +3,7 @@ import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
 import { ChaiBlock } from "@/runtime/index";
 import { filter, has, isEmpty, startCase } from "lodash-es";
 import { useCallback } from "react";
-import { useFetch } from "./use-fetch.ts";
+import { useFetch } from "./use-fetch";
 
 export const usePartialBlocksFn = (): {
   getPartialBlocks: () => Promise<Record<string, { name: string; description?: string; type: string }>>;
