@@ -28,7 +28,7 @@ import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
 import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
 import { pubsub } from "@/core/pubsub";
-import { ChaiBlock } from "@/types/common";
+import type { ChaiBlock } from "@/types/common";
 import {
   CardStackIcon,
   DotsVerticalIcon,

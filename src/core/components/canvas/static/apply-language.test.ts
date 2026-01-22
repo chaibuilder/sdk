@@ -1,5 +1,5 @@
 import { ChaiBlockDefinition } from "@/runtime";
-import { ChaiBlock } from "@/types/chai-block";
+import type { ChaiBlock } from "@/types/common";
 import { applyLanguage } from "./new-blocks-render-helpers";
 
 describe("applyLanguage", () => {

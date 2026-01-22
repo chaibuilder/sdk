@@ -1,4 +1,4 @@
-import { ChaiBlock } from "@/types/chai-block";
+import type { ChaiBlock } from "@/types/common";
 
 export interface CoreBlock {
   blocks?: ChaiBlock[];

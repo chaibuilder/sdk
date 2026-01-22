@@ -3,7 +3,7 @@ import { STYLES_KEY } from "@/core/constants/STRINGS";
 import { useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
 import { selectedStylingBlocksAtom, TStyleBlock } from "@/core/hooks/use-selected-styling-blocks";
-import { ChaiBlock } from "@/types/chai-block";
+import type { ChaiBlock } from "@/types/common";
 import { atom, useSetAtom } from "jotai";
 import { each, filter, first, get as getProp, includes, map } from "lodash-es";
 import { useCallback } from "react";

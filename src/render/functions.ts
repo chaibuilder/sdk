@@ -1,5 +1,5 @@
 import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
-import { ChaiBlock } from "@/types/chai-block";
+import type { ChaiBlock } from "@/types/common";
 import { cloneDeep, flattenDeep, get, isEmpty, last } from "lodash-es";
 
 export function getMergedPartialBlocks(blocks: ChaiBlock[], partials: Record<string, ChaiBlock[]>) {

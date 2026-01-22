@@ -1,5 +1,5 @@
 import { Switch } from "@/components/ui/switch";
-import { ChaiBlock } from "@/types/chai-block";
+import type { ChaiBlock } from "@/types/common";
 import { debounce } from "lodash-es";
 import { useCallback, useEffect, useState } from "react";
 

@@ -2,7 +2,7 @@ import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/history/us
 import { usePermissions } from "@/core/hooks/use-permissions";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import { PERMISSIONS } from "@/core/main";
-import { ChaiBlock } from "@/types/chai-block";
+import type { ChaiBlock } from "@/types/common";
 import { filter, find, includes, isEmpty } from "lodash-es";
 import { useCallback } from "react";
 export const removeNestedBlocks = (blocks: ChaiBlock[], blockIds: Array<string>): ChaiBlock[] => {

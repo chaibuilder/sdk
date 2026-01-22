@@ -1,5 +1,5 @@
 import { useInlineEditing } from "@/core/hooks/use-inline-editing";
-import { ChaiBlock } from "@/types/chai-block";
+import type { ChaiBlock } from "@/types/common";
 import { flip } from "@floating-ui/dom";
 import { shift, useFloating } from "@floating-ui/react-dom";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";

@@ -1,7 +1,7 @@
 import { COLLECTION_PREFIX } from "@/core/constants/STRINGS";
 import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 
-import { ChaiBlock } from "@/types/common";
+import type { ChaiBlock } from "@/types/common";
 import { isObject } from "@rjsf/utils";
 import { atom, useAtom, useSetAtom } from "jotai";
 import { get, isFunction, pick, startsWith, values } from "lodash-es";

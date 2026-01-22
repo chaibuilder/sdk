@@ -1,4 +1,4 @@
-import { ChaiBlock } from "@/types/chai-block";
+import type { ChaiBlock } from "@/types/common";
 import { describe, expect, it } from "vitest";
 import { getBlockWithNestedChildren } from "./get-block-with-nested-children";
 

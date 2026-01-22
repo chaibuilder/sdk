@@ -1,5 +1,5 @@
 import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
-import { ChaiBlock } from "@/types/common";
+import type { ChaiBlock } from "@/types/common";
 import { find, get, isEmpty } from "lodash-es";
 import { useCallback } from "react";
 

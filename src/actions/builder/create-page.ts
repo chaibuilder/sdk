@@ -1,5 +1,5 @@
 import { db, safeQuery, schema } from "@/actions/db";
-import { ChaiBlock } from "@/types/common";
+import type { ChaiBlock } from "@/types/common";
 import { and, eq } from "drizzle-orm";
 import { isEmpty, omit } from "lodash-es";
 import { z } from "zod";

@@ -1,5 +1,5 @@
 import { ChaiLibrary, ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
-import { ChaiBlock } from "@/types/common";
+import type { ChaiBlock } from "@/types/common";
 import { values } from "lodash-es";
 
 type HTMLString = string;

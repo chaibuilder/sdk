@@ -1,6 +1,6 @@
 import { presentBlocksAtom } from "@/core/atoms/blocks";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
-import { ChaiBlock } from "@/types/chai-block";
+import type { ChaiBlock } from "@/types/common";
 import { atom, useAtom, useAtomValue } from "jotai";
 import { find, first, flatten, get, isEmpty, isString } from "lodash-es";
 import { useEffect } from "react";

@@ -1,5 +1,5 @@
 import { presentBlocksAtom } from "@/core/atoms/blocks";
-import { ChaiBlock } from "@/types/chai-block";
+import type { ChaiBlock } from "@/types/common";
 import { renderHook } from "@testing-library/react";
 import { Provider, WritableAtom } from "jotai";
 import { useHydrateAtoms } from "jotai/utils";

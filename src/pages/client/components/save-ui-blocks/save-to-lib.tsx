@@ -10,7 +10,7 @@ import { GroupSelector } from "@/pages/client/components/save-ui-blocks/group-se
 import { ImageUpload } from "@/pages/client/components/save-ui-blocks/image-upload";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
 import { useGetUIBlockDetails, useSaveUIBlock } from "@/pages/hooks/project/use-block-library-mutations";
-import { ChaiBlock } from "@/types/common";
+import type { ChaiBlock } from "@/types/common";
 import { has, isEmpty, set } from "lodash-es";
 import { AlertCircle } from "lucide-react";
 import { FormEvent, useEffect, useMemo, useState } from "react";

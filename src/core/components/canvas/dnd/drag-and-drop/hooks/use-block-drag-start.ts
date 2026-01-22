@@ -22,7 +22,7 @@ import { useBlockHighlight } from "@/core/hooks/use-block-highlight";
 import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
 import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
 import { pubsub } from "@/core/pubsub";
-import { ChaiBlock } from "@/types/common";
+import type { ChaiBlock } from "@/types/common";
 import { useAtom } from "jotai";
 import { pick } from "lodash-es";
 import { DragEvent, useCallback, useRef } from "react";

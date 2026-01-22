@@ -6,7 +6,7 @@ import {
   registerChaiBlockSchema,
   StylesProp,
 } from "@/runtime/index";
-import { ChaiBlock } from "@/types/chai-block";
+import type { ChaiBlock } from "@/types/common";
 import EmptySlot from "@/web-blocks/empty-slot";
 import {
   BorderAllIcon,

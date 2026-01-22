@@ -1,6 +1,6 @@
 import { db, safeQuery, schema } from "@/actions/db";
 import { PageTreeBuilder } from "@/actions/utils/page-tree-builder";
-import { ChaiBlock } from "@/types/common";
+import type { ChaiBlock } from "@/types/common";
 import { and, eq, sql } from "drizzle-orm";
 import { compact, get, keys, pick } from "lodash-es";
 import { z } from "zod";

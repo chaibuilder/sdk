@@ -16,7 +16,7 @@ import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-bloc
 import { useSidebarActivePanel } from "@/core/hooks/use-sidebar-active-panel";
 import { PERMISSIONS } from "@/core/main";
 import { pubsub } from "@/core/pubsub";
-import { ChaiBlock } from "@/types/common";
+import type { ChaiBlock } from "@/types/common";
 import { flip, limitShift, size } from "@floating-ui/dom";
 import { shift, useFloating } from "@floating-ui/react-dom";
 import { ArrowUpIcon, CopyIcon, DragHandleDots2Icon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";

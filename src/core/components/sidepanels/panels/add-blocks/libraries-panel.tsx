@@ -14,7 +14,7 @@ import { getBlocksFromHTML } from "@/core/import-html/html-to-json";
 import { pubsub } from "@/core/pubsub";
 import { cn } from "@/lib/utils";
 import { syncBlocksWithDefaults } from "@/runtime/index";
-import { ChaiBlock } from "@/types/chai-block";
+import type { ChaiBlock } from "@/types/common";
 import { ChaiLibrary, ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 import { CaretRightIcon, ReloadIcon } from "@radix-ui/react-icons";
 import clsx from "clsx";

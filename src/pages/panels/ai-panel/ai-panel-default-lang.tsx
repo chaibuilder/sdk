@@ -11,7 +11,7 @@ import {
 import { Message as AiMessage, MessageContent, MessageResponse } from "@/pages/components/ai-elements/message";
 import { Reasoning, ReasoningContent, ReasoningTrigger } from "@/pages/components/ai-elements/reasoning";
 import { TaskMessage } from "@/pages/components/ai-elements/task-message";
-import { ChaiBlock } from "@/types/common";
+import type { ChaiBlock } from "@/types/common";
 import { Bot } from "lucide-react";
 import { Fragment, lazy, Suspense } from "react";
 import { toast } from "sonner";

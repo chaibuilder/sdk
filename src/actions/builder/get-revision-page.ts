@@ -1,6 +1,6 @@
 import { db, safeQuery, schema } from "@/actions/db";
 import { apiError } from "@/actions/lib";
-import { ChaiBlock } from "@/types/common";
+import type { ChaiBlock } from "@/types/common";
 import { and, eq, inArray } from "drizzle-orm";
 import { get, has, isEmpty } from "lodash-es";
 import { z } from "zod";

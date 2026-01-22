@@ -8,7 +8,7 @@ import Outline from "@/core/components/sidepanels/panels/outline/list-tree";
 import ThemeConfigPanel from "@/core/components/sidepanels/panels/theme-configuration/ThemeConfigPanel";
 import i18n from "@/core/locales/load";
 import { registerFeatureFlags } from "@/core/utils/feature-flag";
-import type { ChaiBlock } from "@/types/chai-block";
+import type { ChaiBlock } from "@/types/common";
 import type { ChaiBuilderEditorProps } from "@/types/index";
 
 if (typeof window === "undefined") {

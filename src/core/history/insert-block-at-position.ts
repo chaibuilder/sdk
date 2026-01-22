@@ -1,5 +1,5 @@
 import { generateUUID } from "@/core/functions/common-functions";
-import { ChaiBlock } from "@/types/common";
+import type { ChaiBlock } from "@/types/common";
 
 export function insertBlocksAtPosition(
   allBlocks: ChaiBlock[],

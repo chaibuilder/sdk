@@ -3,7 +3,7 @@ import { canAcceptChildBlock } from "@/core/functions/block-helpers";
 import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
 import { useAddBlock } from "@/core/hooks/use-add-block";
 import { useCutBlockIds } from "@/core/hooks/use-cut-blockIds";
-import { ChaiBlock } from "@/types/common";
+import type { ChaiBlock } from "@/types/common";
 import { useAtomValue } from "jotai";
 import { find, first, has, isEmpty } from "lodash-es";
 import { useCallback } from "react";

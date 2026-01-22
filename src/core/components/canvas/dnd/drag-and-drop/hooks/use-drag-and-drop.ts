@@ -9,7 +9,7 @@
  * @module use-drag-and-drop
  */
 
-import { ChaiBlock } from "@/types/common";
+import type { ChaiBlock } from "@/types/common";
 import { atom } from "jotai";
 
 /**

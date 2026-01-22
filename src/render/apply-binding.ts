@@ -1,5 +1,5 @@
 import { COLLECTION_PREFIX } from "@/core/constants/STRINGS";
-import { ChaiBlock } from "@/types/chai-block";
+import type { ChaiBlock } from "@/types/common";
 import { cloneDeep, forEach, get, isArray, isEmpty, isString, keys, startsWith } from "lodash-es";
 
 const applyBindingToValue = (

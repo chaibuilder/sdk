@@ -1,5 +1,5 @@
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
-import { ChaiBlock } from "@/types/common";
+import type { ChaiBlock } from "@/types/common";
 
 /**
  * Returns per-request user prompt for HTML creation/editing.

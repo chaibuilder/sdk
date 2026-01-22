@@ -1,5 +1,5 @@
 import { getDefaultBlockProps, useRegisteredChaiBlocks } from "@/runtime/index";
-import { ChaiBlock } from "@/types/common";
+import type { ChaiBlock } from "@/types/common";
 import { endsWith, filter, has, includes, isEmpty, keys, pick, pickBy } from "lodash-es";
 import { useMemo } from "react";
 

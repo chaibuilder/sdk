@@ -1,6 +1,6 @@
 import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
 import { useBuilderProp } from "@/core/hooks/use-builder-prop";
-import { ChaiBlock } from "@/types/chai-block";
+import type { ChaiBlock } from "@/types/common";
 import { atom, useAtom } from "jotai";
 import { forEach, get, has } from "lodash-es";
 import { useCallback, useEffect, useMemo, useState } from "react";
