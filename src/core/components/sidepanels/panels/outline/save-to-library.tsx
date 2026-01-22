@@ -1,5 +1,5 @@
+import { saveToLibraryModalAtom } from "@/atoms/builder";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { saveToLibraryModalAtom } from "@/core/components/sidepanels/panels/outline/upsert-library-block-modal";
 import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
 import { useSaveToLibraryComponent } from "@/runtime/client";
 import { CheckIcon } from "@radix-ui/react-icons";

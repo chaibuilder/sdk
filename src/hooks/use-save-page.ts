@@ -1,5 +1,4 @@
-import { chaiDesignTokensAtom } from "@/atoms/builder";
-import { userActionsCountAtom } from "@/core/components/use-auto-save";
+import { chaiDesignTokensAtom, userActionsCountAtom } from "@/atoms/builder";
 import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { useCheckStructure } from "@/hooks/use-check-structure";
 import { useGetPageData } from "@/hooks/use-get-page-data";

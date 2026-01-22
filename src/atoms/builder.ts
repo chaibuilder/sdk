@@ -41,3 +41,11 @@ export const usePageExternalData = () => {
   const pageExternalData = useAtomValue(chaiPageExternalDataAtom);
   return { ...pageExternalData, ...repeaterItems };
 };
+export const userActionsCountAtom = atom(0);
+export const saveToLibraryModalAtom = atom<{
+  isOpen: boolean;
+  blockId: string | null;
+}>({
+  isOpen: false,
+  blockId: null,
+});

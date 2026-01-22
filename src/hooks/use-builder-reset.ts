@@ -1,5 +1,5 @@
+import { userActionsCountAtom } from "@/atoms/builder";
 import { aiAssistantActiveAtom } from "@/atoms/ui";
-import { userActionsCountAtom } from "@/core/components/use-auto-save";
 import { useBlockRepeaterDataAtom } from "@/hooks/async-props/use-async-props";
 import { useUndoManager } from "@/hooks/history/use-undo-manager";
 import { useBlockHighlight } from "@/hooks/use-block-highlight";
