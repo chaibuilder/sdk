@@ -3,8 +3,7 @@ import { generateUUID } from "@/core/functions/common-functions";
 import { useBlocksStore, useBlocksStoreUndoableActions } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
 import { getDefaultBlockProps } from "@/runtime";
-import { ChaiBlock } from "@/types/common";
-import { CoreBlock } from "@/types/core-block";
+import { ChaiBlock, ChaiCoreBlock } from "@/types/common";
 import { filter, find, first, forEach, has } from "lodash-es";
 import { useCallback } from "react";
 
@@ -59,7 +58,7 @@ export const useAddBlock = (): AddBlocks => {
   );
 
   const addCoreBlock = useCallback(
-    (coreBlock: CoreBlock, parentId?: string | null, position?: number) => {
+    (coreBlock: ChaiCoreBlock, parentId?: string | null, position?: number) => {
       if (has(coreBlock, "blocks")) {
         const blocks = coreBlock.blocks as ChaiBlock[];
         return addPredefinedBlock(blocks, parentId ?? undefined, position);

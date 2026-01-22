@@ -18,4 +18,8 @@ export type ChaiAsset = {
   height?: number;
 };
 
+export * from "@/types/chaibuilder-editor-props";
+export * from "@/types/collections";
+export * from "@/types/common";
+export * from "@/types/types";
 export type { ChaiPageProps };

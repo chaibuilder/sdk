@@ -84,6 +84,11 @@
     "./styles": {
       "import": "./dist/sdk.css",
       "require": "./dist/sdk.css"
+    },
+    "./types": {
+      "types": "./dist/types.d.ts",
+      "import": "./dist/types.js",
+      "require": "./dist/types.cjs"
     }
   },
   "peerDependencies": {

@@ -9,8 +9,20 @@ importers:
   .:
     dependencies:
       '@chaibuilder/sdk':
-        specifier: 4.0.0-beta.6
-        version: 4.0.0-beta.6(@emotion/is-prop-valid@1.4.0)(@tiptap/core@2.27.2(@tiptap/pm@2.27.2))(@types/react-dom@19.2.3(@types/react@19.2.8))(@types/react@19.2.8)(ai@6.0.38(zod@4.3.5))(drizzle-orm@0.45.1(@opentelemetry/api@1.9.0)(postgres@3.4.8))(next@16.1.1(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(postgres@3.4.8)(react-dom@19.2.3(react@19.2.3))(react-konva@19.2.1(@types/react@19.2.8)(konva@9.3.6)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)(sharp@0.34.5)(streamdown@1.6.11(@types/mdast@4.0.4)(micromark-util-types@2.0.2)(micromark@4.0.2)(react@19.2.3))(styled-components@6.3.8(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(tailwindcss@4.1.18)(typescript@5.9.3)
+        specifier: 4.0.0-beta.8
+        version: 4.0.0-beta.8(@emotion/is-prop-valid@1.4.0)(@tiptap/core@2.27.2(@tiptap/pm@2.27.2))(@types/mdast@4.0.4)(@types/react-dom@19.2.3(@types/react@19.2.8))(@types/react@19.2.8)(ai@6.0.38(zod@4.3.5))(drizzle-orm@0.45.1(@opentelemetry/api@1.9.0)(postgres@3.4.8))(micromark-util-types@2.0.2)(micromark@4.0.2)(next@16.1.1(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(postgres@3.4.8)(react-dom@19.2.3(react@19.2.3))(react-konva@19.2.1(@types/react@19.2.8)(konva@9.3.6)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)(sharp@0.34.5)(styled-components@6.3.8(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(tailwindcss@4.1.18)(typescript@5.9.3)
+      '@tailwindcss/aspect-ratio':
+        specifier: ^0.4.2
+        version: 0.4.2(tailwindcss@4.1.18)
+      '@tailwindcss/container-queries':
+        specifier: ^0.1.1
+        version: 0.1.1(tailwindcss@4.1.18)
+      '@tailwindcss/forms':
+        specifier: ^0.5.9
+        version: 0.5.11(tailwindcss@4.1.18)
+      '@tailwindcss/typography':
+        specifier: ^0.5.15
+        version: 0.5.19(tailwindcss@4.1.18)
       ai:
         specifier: ^6.0.11
         version: 6.0.38(zod@4.3.5)
@@ -42,6 +54,12 @@ importers:
         specifier: ^3 || ^4
         version: 4.1.18
     devDependencies:
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.6.1
+      prompts:
+        specifier: ^2.4.2
+        version: 2.4.2
       tsup:
         specifier: ^8.0.0
         version: 8.5.1(jiti@1.21.7)(postcss@8.5.6)(typescript@5.9.3)
@@ -81,21 +99,20 @@ packages:
   '@braintree/sanitize-url@7.1.1':
     resolution: {integrity: sha512-i1L7noDNxtFyL5DmZafWy1wRVhGehQmzZaz1HiN5e7iylJMSZR7ekOV7NsIqa5qBldlLrsKv4HbgFUVlQrz8Mw==}
 
-  '@chaibuilder/sdk@4.0.0-beta.6':
-    resolution: {integrity: sha512-hRVJywXfJJawNB8aFysPnx4Oq1VGoDHnfpR9FTwKeDXu0la/7iaRtC3XgGTdkRChuEtJxvQwQPVfTZFpkHxuog==}
+  '@chaibuilder/sdk@4.0.0-beta.8':
+    resolution: {integrity: sha512-Bv4N73mp4Z1R+G+FGUL1VkCKp42+4yao5ra+ujlWzuSr1IGECdEXmWkdrCu9JrgjOuxSYXzVOfw+m3l5zb60FA==}
     engines: {node: '>=21.0.0'}
     peerDependencies:
-      '@supabase/supabase-js': ^2.89.0
+      '@supabase/supabase-js': ^2.90.1
       '@types/react': '*'
       '@types/react-dom': '*'
       ai: ^6.0.11
       drizzle-orm: ^0.45.1
-      next: 16.1.1
+      next: '*'
       postgres: ^3.4.8
       react: ^18.0 || ^19.0 || ^19.1 || ^19.2
       react-dom: ^18.0 || ^19.0 || ^19.1 || ^19.2
       sharp: ^0.34.5
-      streamdown: ^1.6.10
     peerDependenciesMeta:
       '@supabase/supabase-js':
         optional: true
@@ -112,8 +129,6 @@ packages:
       postgres:
         optional: true
       sharp:
-        optional: true
-      streamdown:
         optional: true
 
   '@chevrotain/cst-dts-gen@11.0.3':
@@ -2199,6 +2214,10 @@ packages:
   dompurify@3.3.1:
     resolution: {integrity: sha512-qkdCKzLNtrgPFP1Vo+98FRzJnBRGe4ffyCea9IwHB1fyxPOeNTHpLKYGd4Uk9xvNoH0ZoOjwZxNptyMwqrId1Q==}
 
+  dotenv@16.6.1:
+    resolution: {integrity: sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow==}
+    engines: {node: '>=12'}
+
   drizzle-orm@0.45.1:
     resolution: {integrity: sha512-Te0FOdKIistGNPMq2jscdqngBRfBpC8uMFVwqjf6gtTVJHIQ/dosgV/CLBU2N4ZJBsXL5savCba9b0YJskKdcA==}
     peerDependencies:
@@ -2632,6 +2651,10 @@ packages:
 
   khroma@2.1.0:
     resolution: {integrity: sha512-Ls993zuzfayK269Svk9hzpeGUKob/sIgZzyHYdjQoAdQetRKpOLj+k/QQQ/6Qi0Yz65mlROrfd+Ev+1+7dz9Kw==}
+
+  kleur@3.0.3:
+    resolution: {integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==}
+    engines: {node: '>=6'}
 
   konva@9.3.6:
     resolution: {integrity: sha512-dqR8EbcM0hjuilZCBP6xauQ5V3kH3m9kBcsDkqPypQuRgsXbcXUrxqYxhNbdvKZpYNW8Amq94jAD/C0NY3qfBQ==}
@@ -3112,6 +3135,10 @@ packages:
     resolution: {integrity: sha512-d+JFcLM17njZaOLkv6SCev7uoLaBtfK86vMUXhW1Z4glPWh4jozno9APvW/XKFJ3CCxVoC7OL38BqRydtu5nGg==}
     engines: {node: '>=12'}
 
+  prompts@2.4.2:
+    resolution: {integrity: sha512-NxNv/kLguCA7p3jE8oL2aEBsrJWgAakBpgmgK6lpPWV+WuOmY6r2/zbAVnP+T8bQlA0nzHXSJSJW0Hq7ylaD2Q==}
+    engines: {node: '>= 6'}
+
   prop-types@15.7.2:
     resolution: {integrity: sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==}
 
@@ -3498,6 +3525,9 @@ packages:
   shiki@3.21.0:
     resolution: {integrity: sha512-N65B/3bqL/TI2crrXr+4UivctrAGEjmsib5rPMMPpFp1xAx/w03v8WZ9RDDFYteXoEgY7qZ4HGgl5KBIu1153w==}
 
+  sisteransi@1.0.5:
+    resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
+
   sonner@2.0.7:
     resolution: {integrity: sha512-W6ZN4p58k8aDKA4XPcx2hpIQXBRAgyiWVkYhT7CvK6D3iAu7xjvVyhQHg2/iaKJZ1XVJ4r7XuwGL+WGEK37i9w==}
     peerDependencies:
@@ -3846,7 +3876,7 @@ snapshots:
 
   '@braintree/sanitize-url@7.1.1': {}
 
-  '@chaibuilder/sdk@4.0.0-beta.6(@emotion/is-prop-valid@1.4.0)(@tiptap/core@2.27.2(@tiptap/pm@2.27.2))(@types/react-dom@19.2.3(@types/react@19.2.8))(@types/react@19.2.8)(ai@6.0.38(zod@4.3.5))(drizzle-orm@0.45.1(@opentelemetry/api@1.9.0)(postgres@3.4.8))(next@16.1.1(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(postgres@3.4.8)(react-dom@19.2.3(react@19.2.3))(react-konva@19.2.1(@types/react@19.2.8)(konva@9.3.6)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)(sharp@0.34.5)(streamdown@1.6.11(@types/mdast@4.0.4)(micromark-util-types@2.0.2)(micromark@4.0.2)(react@19.2.3))(styled-components@6.3.8(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(tailwindcss@4.1.18)(typescript@5.9.3)':
+  '@chaibuilder/sdk@4.0.0-beta.8(@emotion/is-prop-valid@1.4.0)(@tiptap/core@2.27.2(@tiptap/pm@2.27.2))(@types/mdast@4.0.4)(@types/react-dom@19.2.3(@types/react@19.2.8))(@types/react@19.2.8)(ai@6.0.38(zod@4.3.5))(drizzle-orm@0.45.1(@opentelemetry/api@1.9.0)(postgres@3.4.8))(micromark-util-types@2.0.2)(micromark@4.0.2)(next@16.1.1(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(postgres@3.4.8)(react-dom@19.2.3(react@19.2.3))(react-konva@19.2.1(@types/react@19.2.8)(konva@9.3.6)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)(sharp@0.34.5)(styled-components@6.3.8(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(tailwindcss@4.1.18)(typescript@5.9.3)':
     dependencies:
       '@floating-ui/dom': 1.7.4
       '@floating-ui/react-dom': 2.1.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -3934,6 +3964,7 @@ snapshots:
       react-i18next: 16.0.0(i18next@25.5.2(typescript@5.9.3))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3)
       react-wrap-balancer: 1.1.1(react@19.2.3)
       sonner: 2.0.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      streamdown: 1.6.11(@types/mdast@4.0.4)(micromark-util-types@2.0.2)(micromark@4.0.2)(react@19.2.3)
       tailwind-merge: 3.4.0
       tree-model: 1.0.7
       undo-manager: 1.1.1
@@ -3947,18 +3978,21 @@ snapshots:
       next: 16.1.1(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       postgres: 3.4.8
       sharp: 0.34.5
-      streamdown: 1.6.11(@types/mdast@4.0.4)(micromark-util-types@2.0.2)(micromark@4.0.2)(react@19.2.3)
     transitivePeerDependencies:
       - '@babel/core'
       - '@babel/template'
       - '@emotion/is-prop-valid'
       - '@tiptap/core'
       - '@types/hoist-non-react-statics'
+      - '@types/mdast'
       - '@types/node'
       - js-cookie
+      - micromark
+      - micromark-util-types
       - react-konva
       - react-native
       - styled-components
+      - supports-color
       - tailwindcss
       - tsx
       - typescript
@@ -5961,6 +5995,8 @@ snapshots:
     optionalDependencies:
       '@types/trusted-types': 2.0.7
 
+  dotenv@16.6.1: {}
+
   drizzle-orm@0.45.1(@opentelemetry/api@1.9.0)(postgres@3.4.8):
     optionalDependencies:
       '@opentelemetry/api': 1.9.0
@@ -6336,6 +6372,8 @@ snapshots:
       commander: 8.3.0
 
   khroma@2.1.0: {}
+
+  kleur@3.0.3: {}
 
   konva@9.3.6: {}
 
@@ -7032,6 +7070,11 @@ snapshots:
 
   postgres@3.4.8: {}
 
+  prompts@2.4.2:
+    dependencies:
+      kleur: 3.0.3
+      sisteransi: 1.0.5
+
   prop-types@15.7.2:
     dependencies:
       loose-envify: 1.4.0
@@ -7558,6 +7601,8 @@ snapshots:
       '@shikijs/types': 3.21.0
       '@shikijs/vscode-textmate': 10.0.2
       '@types/hast': 3.0.4
+
+  sisteransi@1.0.5: {}
 
   sonner@2.0.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
     dependencies:

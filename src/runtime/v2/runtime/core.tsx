@@ -1,9 +1,10 @@
 import { ChaiBlock } from "@/types/common";
+import { ChaiBlockPropSchema } from "@/types/common.ts";
 import type { RJSFSchema, UiSchema } from "@rjsf/utils";
 import { cloneDeep, each, get, has, omitBy, set } from "lodash-es";
 import React, { useMemo } from "react";
 import type { ChaiBlockDefinition, ChaiServerBlockDefinition } from "../../controls/types.ts";
-import { ChaiBlockPropSchema, ChaiPageProps } from "../../index.ts";
+import { ChaiPageProps } from "../../index.ts";
 
 export type ChaiBlockComponentProps<BlockProps, PageData = Record<string, unknown>> = ChaiBlock<BlockProps> & {
   // Chai Block Props

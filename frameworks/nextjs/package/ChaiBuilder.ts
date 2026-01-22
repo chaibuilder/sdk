@@ -1,5 +1,6 @@
 import { applyChaiDataBinding } from "@chaibuilder/sdk/render";
-import { ChaiBlock, ChaiPageProps } from "@chaibuilder/sdk/runtime";
+import { ChaiPageProps } from "@chaibuilder/sdk/runtime";
+import type { ChaiBlock } from "@chaibuilder/sdk/types";
 import { unstable_cache } from "next/cache";
 import { cache } from "react";
 import type { ChaiBuilderPage } from "./lib";
