@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export * from "@/types/chai-block";
+export * from "@/types/common";
 
 export type ChaiRenderBlockProps<T> = {
   blockProps: Record<string, string>;

@@ -1,5 +1,6 @@
 import { useAsyncProps } from "@/core/async-props/use-async-props";
-import { ChaiBlock, getRegisteredChaiBlock } from "@/runtime";
+import { getRegisteredChaiBlock } from "@/runtime";
+import { ChaiBlock } from "@/types/common";
 import { get } from "lodash-es";
 import { useMemo } from "react";
 

@@ -9,7 +9,6 @@ import ThemeConfigPanel from "@/core/components/sidepanels/panels/theme-configur
 import i18n from "@/core/locales/load";
 import { registerFeatureFlags } from "@/core/utils/feature-flag";
 import type { ChaiBuilderEditorProps } from "@/types";
-import type { ChaiBlock } from "@/types/chai-block";
 
 if (typeof window === "undefined") {
   throw new Error("@chaibuilder/sdk is only supported in the browser. Avoid using it in the server side.");
@@ -49,7 +48,7 @@ export { getClassValueAndUnit } from "@/core/functions/helper-fn";
 export { getBlocksFromHTML as convertHTMLToChaiBlocks, getBlocksFromHTML } from "@/core/import-html/html-to-json";
 
 // types
-export type { ChaiBlock, ChaiBuilderEditorProps };
+export type { ChaiBuilderEditorProps };
 
 export type { ChaiLibrary, ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 

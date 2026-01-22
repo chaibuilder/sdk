@@ -5,7 +5,7 @@ import { useBlocksHtmlForAi } from "@/core/hooks/use-blocks-html-for-ai";
 import { useEditorMode } from "@/core/hooks/use-editor-mode";
 import { usePubSub } from "@/core/hooks/use-pub-sub";
 import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
-import { ChaiBlock } from "@/core/main";
+import { ChaiBlock } from "@/types/common";
 import { shadcnTheme } from "@/utils/get-chai-builder-tailwind-config";
 import { camelCase } from "lodash-es";
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";

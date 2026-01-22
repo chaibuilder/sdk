@@ -6,7 +6,7 @@ import { useBroadcastChannel } from "@/core/hooks/use-broadcast-channel";
 import { useCheckStructure } from "@/core/hooks/use-check-structure";
 import { removeNestedBlocks } from "@/core/hooks/use-remove-blocks";
 import { useUpdateBlockAtom } from "@/core/hooks/use-update-block-atom";
-import { ChaiBlock } from "@/types/chai-block";
+import { ChaiBlock } from "@/types/common";
 import { each, find, omit } from "lodash-es";
 
 export const useBlocksStoreManager = () => {

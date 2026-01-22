@@ -6,7 +6,7 @@ import {
 } from "@/core/atoms/blocks";
 import { convertToBlocksTree } from "@/core/functions/blocks-fn";
 import { useBuilderProp } from "@/core/hooks/use-builder-prop";
-import { ChaiBlock } from "@/core/main";
+import { ChaiBlock } from "@/types/common";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { useSetAtom } from "jotai";
 import { useCallback } from "react";

@@ -3,7 +3,7 @@ import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions
 import { useBuilderProp } from "@/core/hooks/use-builder-prop";
 import { cutBlockIdsAtom } from "@/core/hooks/use-cut-blockIds";
 import { usePartialBlocksStore as usePartailBlocksStore } from "@/core/hooks/use-partial-blocks-store";
-import { ChaiBlock } from "@/types/chai-block";
+import { ChaiBlock } from "@/types/common";
 import { atom, useAtom, useSetAtom } from "jotai";
 import { isEmpty, set } from "lodash-es";
 import { useCallback } from "react";
@@ -60,7 +60,7 @@ export const useCopyBlocks = (): [
             for (const block of duplicatedBlocks) {
               if (block._type === "PartialBlock" || block._type === "GlobalBlock") {
                 // Get the expanded content of the partial block
-                let partialBlocks = getPartailBlocks(block.partialBlockId);
+                let partialBlocks = getPartailBlocks(block.partialBlockId!);
                 if (block._parent && partialBlocks?.length > 0) {
                   partialBlocks = partialBlocks.map((b) => {
                     if (isEmpty(b._parent)) {

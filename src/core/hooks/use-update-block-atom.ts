@@ -1,6 +1,6 @@
 import { pageBlocksAtomsAtom } from "@/core/atoms/blocks";
 import { builderStore } from "@/core/atoms/store";
-import { ChaiBlock } from "@/types/chai-block";
+import { ChaiBlock } from "@/types/common";
 import { Atom, atom, useSetAtom } from "jotai";
 import { useAtomCallback } from "jotai/utils";
 import { find, isString } from "lodash-es";

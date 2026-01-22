@@ -1,7 +1,7 @@
 import { presentBlocksAtom } from "@/core/atoms/blocks";
 import { builderStore } from "@/core/atoms/store";
 import { replaceBlock, useReplaceBlock } from "@/core/hooks/use-replace-block";
-import { ChaiBlock } from "@/types/chai-block";
+import { ChaiBlock } from "@/types/common";
 import { act, renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 

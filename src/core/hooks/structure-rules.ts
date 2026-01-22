@@ -1,4 +1,4 @@
-import { ChaiBlock } from "@/types/chai-block";
+import { ChaiBlock } from "@/types/common";
 
 export type StructureError = {
   id: string;
