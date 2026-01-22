@@ -53,10 +53,18 @@ export const useRestoreRevision = () => {
   const fetchAPI = useFetch();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async ({ revisionId, discardCurrent }: { revisionId: string; discardCurrent: boolean }) => {
+    mutationFn: async ({
+      revisionId,
+      discardCurrent,
+      pageId,
+    }: {
+      revisionId: string;
+      discardCurrent: boolean;
+      pageId?: string;
+    }) => {
       const response = await fetchAPI(apiUrl, {
         action: ACTIONS.RESTORE_PAGE_REVISION,
-        data: { revisionId, discardCurrent },
+        data: { revisionId, discardCurrent, ...(pageId && { pageId }) },
       });
       return response;
     },
