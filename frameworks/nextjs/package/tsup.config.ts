@@ -13,6 +13,7 @@ export default defineConfig({
     "runtime-client.ts",
     "render.ts",
     "utils.ts",
+    "types.ts",
   ],
   target: "es2018",
   esbuildOptions(options) {
