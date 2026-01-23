@@ -1,4 +1,4 @@
-import { registerChaiBlockSchema, stylesProp } from "@/runtime";
+import { registerChaiBlockProps, stylesProp } from "@/runtime";
 import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { InputIcon } from "@radix-ui/react-icons";
 
@@ -173,7 +173,7 @@ const Config = {
   category: "core",
   icon: InputIcon,
   group: "form",
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       styles: stylesProp(""),
       inputStyles: stylesProp("w-full p-1"),

@@ -1,4 +1,4 @@
-import { registerChaiBlockSchema, stylesProp } from "@/runtime";
+import { registerChaiBlockProps, stylesProp } from "@/runtime";
 import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import * as React from "react";
 
@@ -26,7 +26,7 @@ const Config = {
   label: "Span",
   category: "core",
   group: "basic",
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       styles: stylesProp(""),
       content: {

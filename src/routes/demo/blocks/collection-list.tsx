@@ -1,4 +1,4 @@
-import { builderProp, closestBlockProp, registerChaiBlockSchema, StylesProp } from "@/runtime";
+import { builderProp, closestBlockProp, StylesProp } from "@/runtime";
 import { ChaiBlockComponentProps, ChaiBlockConfig, ChaiStyles } from "@/types/blocks";
 
 type Sort = {
@@ -50,7 +50,7 @@ const Config: ChaiBlockConfig = {
   },
   dataProviderMode: "live" as const,
   group: "basic",
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       tag: closestBlockProp("Box", "tag"),
       showTitle: builderProp({

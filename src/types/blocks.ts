@@ -52,7 +52,17 @@ export interface ChaiBlockConfig {
   }) => Record<string, unknown>;
 
   //props
+  props?: {
+    schema: ChaiBlockSchema;
+    uiSchema: ChaiBlockUiSchema;
+  };
+  /**
+   * @deprecated Use props.schema instead
+   */
   schema?: ChaiBlockSchema;
+  /**
+   * @deprecated Use props.uiSchema instead
+   */
   uiSchema?: ChaiBlockUiSchema;
 
   i18nProps?: string[];

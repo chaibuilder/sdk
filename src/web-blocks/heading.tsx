@@ -1,4 +1,4 @@
-import { registerChaiBlockSchema, stylesProp } from "@/runtime";
+import { registerChaiBlockProps, stylesProp } from "@/runtime";
 import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { HeadingIcon } from "@radix-ui/react-icons";
 import * as React from "react";
@@ -28,7 +28,7 @@ const Config = {
   category: "core",
   icon: HeadingIcon,
   group: "typography",
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       tag: {
         type: "string",

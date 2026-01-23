@@ -1,7 +1,7 @@
 import type { ChaiBlockConfig } from "@/types/blocks";
 import { ChaiBlockComponentProps } from "@/types/blocks.ts";
 import { ChaiBlock, ChaiPageProps } from "@/types/common";
-import { ChaiBlockPropSchema } from "@/types/common.ts";
+import { ChaiBlockPropsSchema } from "@/types/common.ts";
 import type { RJSFSchema, UiSchema } from "@rjsf/utils";
 import { cloneDeep, each, get, has, omitBy, set } from "lodash-es";
 import React, { useMemo } from "react";
@@ -31,9 +31,11 @@ export const getDefaultBlockProps = (type: keyof typeof REGISTERED_CHAI_BLOCKS) 
 };
 
 export const getBlockDefaultProps = (type: keyof typeof REGISTERED_CHAI_BLOCKS) => {
-  const properties = get(REGISTERED_CHAI_BLOCKS, `${type}.schema.properties`, {});
+  const registeredBlock = get(REGISTERED_CHAI_BLOCKS, type);
+  const schema = registeredBlock?.props?.schema || (registeredBlock?.schema ?? {});
+  const properties = get(schema, "properties", {});
   const defaultProps: Record<string, any> = {};
-  each(properties, (propSchema: ChaiBlockPropSchema, key) => {
+  each(properties, (propSchema: ChaiBlockPropsSchema, key) => {
     if (has(propSchema, "block")) {
       return;
     }
@@ -61,16 +63,18 @@ export const getBlockAIProps = (type: keyof typeof REGISTERED_CHAI_BLOCKS) => {
 
 export const getBlockFormSchemas = (
   type: keyof typeof REGISTERED_CHAI_BLOCKS,
-): { schema: RJSFSchema; uiSchema: UiSchema } | null => {
+): { schema: RJSFSchema; uiSchema: UiSchema } | undefined => {
   const registeredBlock = getRegisteredChaiBlock(type);
   if (!registeredBlock) {
-    return null;
+    return undefined;
   }
-  const schema = cloneDeep(registeredBlock.schema) as RJSFSchema;
+  const blockSchema = registeredBlock.props?.schema || (registeredBlock.schema ?? {});
+  const blockUiSchema = registeredBlock.props?.uiSchema || (registeredBlock.uiSchema ?? {});
+  const schema = cloneDeep(blockSchema) as RJSFSchema;
   const properties = get(schema, "properties", {}) as Record<string, any>;
   const nonStylesProperties = omitBy(properties, (prop) => prop?.styles === true);
   set(schema, "properties", nonStylesProperties);
-  const uiSchema = get(REGISTERED_CHAI_BLOCKS, `${type}.uiSchema`, {});
+  const uiSchema = blockUiSchema || {};
   return { schema, uiSchema };
 };
 
@@ -139,7 +143,10 @@ export const setChaiBlockComponent = (
   set(REGISTERED_CHAI_BLOCKS, type, { ...registeredBlock, component });
 };
 
-export const closestBlockProp = (blockType: keyof typeof REGISTERED_CHAI_BLOCKS, prop: string): ChaiBlockPropSchema => {
+export const closestBlockProp = (
+  blockType: keyof typeof REGISTERED_CHAI_BLOCKS,
+  prop: string,
+): ChaiBlockPropsSchema => {
   return {
     type: "null",
     block: blockType,

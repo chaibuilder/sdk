@@ -1,4 +1,4 @@
-import { closestBlockProp, registerChaiBlockSchema, stylesProp } from "@/runtime";
+import { closestBlockProp, registerChaiBlockProps, stylesProp } from "@/runtime";
 import { ChaiBlockComponentProps, ChaiBlockConfig, ChaiStyles } from "@/types/blocks";
 import { LoopIcon } from "@radix-ui/react-icons";
 import { isEmpty, pick } from "lodash-es";
@@ -82,7 +82,7 @@ export const RepeaterConfig: Omit<ChaiBlockConfig, "component"> = {
     { _id: "A", _type: "Repeater", tag: "ul" },
     { _id: "B", _name: "Repeater Item", _type: "RepeaterItem", parentTag: "ul", _parent: "A" },
   ],
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       styles: stylesProp("grid gap-4 md:grid-cols-2 xl:grid-cols-3"),
       paginationStyles: stylesProp("flex items-center justify-center gap-2 p-4"),
@@ -208,7 +208,7 @@ export const RepeaterItemConfig: Omit<ChaiBlockConfig, "component"> = {
   icon: LoopIcon,
   hidden: true,
   group: "basic",
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       styles: stylesProp(""),
       parentTag: closestBlockProp("Repeater", "tag"),
@@ -237,7 +237,7 @@ export const RepeaterEmptyStateConfig: Omit<ChaiBlockConfig, "component"> = {
   label: "Empty State",
   hidden: true,
   group: "basic",
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: { styles: stylesProp("p-5 flex items-center justify-center") },
   }),
   canAcceptBlock: () => true,

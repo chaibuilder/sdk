@@ -1,5 +1,5 @@
 import { generateUUID } from "@/core/functions/common-functions";
-import { registerChaiBlock, registerChaiBlockSchema, stylesProp } from "@/runtime";
+import { registerChaiBlock, registerChaiBlockProps, stylesProp } from "@/runtime";
 import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { ChaiBlock } from "@/types/common";
 import EmptySlot from "@/web-blocks/empty-slot";
@@ -95,7 +95,7 @@ registerChaiBlock<TableProps>(TableBlock, {
   group: "table",
   hidden: true,
   icon: TableIcon,
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       styles: stylesProp(""),
     },
@@ -110,7 +110,7 @@ registerChaiBlock<TableHeadProps>(TableHeadBlock, {
   group: "table",
   hidden: true,
   icon: BorderTopIcon,
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       styles: stylesProp(""),
     },
@@ -125,7 +125,7 @@ registerChaiBlock<TableBodyProps>(TableBodyBlock, {
   group: "table",
   hidden: true,
   icon: BorderAllIcon,
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       styles: stylesProp(""),
     },
@@ -140,7 +140,7 @@ registerChaiBlock<TableRowProps>(TableRowBlock, {
   group: "table",
   hidden: true,
   icon: ViewHorizontalIcon,
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       styles: stylesProp(""),
     },
@@ -155,7 +155,7 @@ registerChaiBlock<TableCellProps>(TableCellBlock, {
   group: "table",
   hidden: true,
   icon: DragHandleHorizontalIcon,
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       styles: stylesProp(""),
       content: {

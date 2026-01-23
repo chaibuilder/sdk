@@ -1,5 +1,5 @@
 import { NUMBER_TO_COL_SPAN } from "@/core/constants/TWCLASS_VALUES";
-import { registerChaiBlockSchema, stylesProp } from "@/runtime";
+import { registerChaiBlockProps, stylesProp } from "@/runtime";
 import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { ChaiBlock } from "@/types/common";
 import { LayoutIcon, RowsIcon } from "@radix-ui/react-icons";
@@ -49,7 +49,7 @@ const ColumnConfig = {
   canDelete: () => true,
   canAcceptBlock: () => true,
   canBeNested: (type: string) => type === "Row",
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       styles: stylesProp(""),
       colSpan: {
@@ -111,7 +111,7 @@ const Config = {
   category: "core",
   wrapper: true,
   canAcceptBlock: (childType: string) => childType === "Column",
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       styles: stylesProp(""),
       colCount: {
