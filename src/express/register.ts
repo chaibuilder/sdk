@@ -17,12 +17,6 @@ registerChaiPageType("blogue", {
       { id: "blogue3", slug: "/blogue3", name: "Nouvelles3 en", lang: "en", primaryPage: "blogue3" },
     ];
   },
-  defaultTrackingInfo: () => ({
-    gtm: {
-      name: "{{global.name}}",
-      description: "{{global.description}}",
-    },
-  }),
   defaultSeo: () => ({
     fr: {
       title: "{{global.name}}",

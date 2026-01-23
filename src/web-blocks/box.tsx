@@ -1,10 +1,5 @@
-import {
-  ChaiBlockComponentProps,
-  ChaiBlockDefinition,
-  ChaiStyles,
-  registerChaiBlockSchema,
-  StylesProp,
-} from "@/runtime";
+import { registerChaiBlockSchema, stylesProp } from "@/runtime";
+import { ChaiBlockComponentProps, ChaiBlockDefinition, ChaiStyles } from "@/types/blocks";
 import EmptySlot from "@/web-blocks/empty-slot";
 import * as React from "react";
 
@@ -37,7 +32,7 @@ const Config: Omit<ChaiBlockDefinition<BoxProps>, "component"> = {
   group: "basic",
   ...registerChaiBlockSchema({
     properties: {
-      styles: StylesProp(""),
+      styles: stylesProp(""),
       tag: {
         type: "string",
         default: "div",

@@ -1,5 +1,5 @@
 import { cn } from "@/core/functions/common-functions";
-import { ChaiStyles } from "../runtime";
+import { ChaiStyles } from "@/types/blocks";
 
 export const addForcedClasses = (styles: ChaiStyles, ...classes: string[]) => {
   // get all the classes from the blockStateClasses if the value is true

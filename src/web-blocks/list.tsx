@@ -1,4 +1,5 @@
-import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@/runtime";
+import { registerChaiBlockSchema, stylesProp } from "@/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import EmptySlot from "@/web-blocks/empty-slot";
 import { RowsIcon } from "@radix-ui/react-icons";
 import { isEmpty } from "lodash-es";
@@ -28,7 +29,7 @@ const Config = {
   group: "basic",
   ...registerChaiBlockSchema({
     properties: {
-      styles: StylesProp(""),
+      styles: stylesProp(""),
     },
   }),
   canAcceptBlock: (blockType: string) => blockType === "ListItem",

@@ -1,10 +1,10 @@
 import { generateClassNames } from "@/core/components/canvas/static/new-blocks-render-helpers";
 import { STYLES_KEY } from "@/core/constants/STRINGS";
 import { ChaiBlock } from "@/types/common";
-import { DesignTokens } from "@/types/types";
+import { ChaiDesignTokens } from "@/types/types";
 import { each, isString, keys } from "lodash-es";
 
-export const applyDesignTokens = (blocks: ChaiBlock[], designTokens: DesignTokens) => {
+export const applyDesignTokens = (blocks: ChaiBlock[], designTokens: ChaiDesignTokens) => {
   return blocks.map((block) => {
     const styleKeys = keys(block).filter((key) => isString(block[key]) && block[key].startsWith(STYLES_KEY));
     each(styleKeys, (styleKey) => {
@@ -16,7 +16,7 @@ export const applyDesignTokens = (blocks: ChaiBlock[], designTokens: DesignToken
 
 if (import.meta.vitest) {
   describe("applyDesignTokens", () => {
-    const mockDesignTokens: DesignTokens = {
+    const mockDesignTokens: ChaiDesignTokens = {
       "dt#token1": { name: "primary-color", value: "bg-blue-500" },
       "dt#token2": { name: "text-size", value: "text-lg" },
       "dt#token3": { name: "spacing", value: "p-4" },
@@ -166,7 +166,7 @@ if (import.meta.vitest) {
     });
 
     it("should handle complex design token values", () => {
-      const complexTokens: DesignTokens = {
+      const complexTokens: ChaiDesignTokens = {
         "dt#complex1": { name: "complex-token", value: "hover:bg-blue-600 focus:outline-none transition-colors" },
         "dt#complex2": { name: "spacing-token", value: "px-6 py-3 m-2" },
       };
@@ -185,7 +185,7 @@ if (import.meta.vitest) {
     });
 
     it("should handle tokens with empty values", () => {
-      const tokensWithEmptyValues: DesignTokens = {
+      const tokensWithEmptyValues: ChaiDesignTokens = {
         "dt#empty1": { name: "empty-token", value: "" },
         "dt#valid1": { name: "valid-token", value: "bg-green-500" },
       };

@@ -1,4 +1,5 @@
-import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@/runtime";
+import { registerChaiBlockSchema, stylesProp } from "@/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { VideoIcon } from "@radix-ui/react-icons";
 import { get, isEmpty, omit, pick } from "lodash-es";
 
@@ -188,7 +189,7 @@ const Config = {
   group: "media",
   ...registerChaiBlockSchema({
     properties: {
-      styles: StylesProp("absolute h-full w-full object-cover"),
+      styles: stylesProp("absolute h-full w-full object-cover"),
       videoSource: {
         type: "string",
         default: "Custom",

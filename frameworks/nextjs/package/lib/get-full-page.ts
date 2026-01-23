@@ -1,7 +1,6 @@
 import { db, safeQuery, schema } from "@chaibuilder/sdk/actions";
-import { ChaiBlock } from "@chaibuilder/sdk/runtime";
-import { differenceInMinutes } from "date-fns";
-import { and, eq, inArray, sql } from "drizzle-orm";
+import { ChaiBlock, ChaiPage } from "@chaibuilder/sdk/types";
+import { and, eq, inArray } from "drizzle-orm";
 import { get, has, isEmpty } from "lodash";
 
 export type GetFullPageOptions = {
@@ -13,28 +12,28 @@ export type GetFullPageOptions = {
   userId?: string;
 };
 
-export type FullPageResponse = {
-  id: string;
-  name: string;
-  slug: string;
-  lang: string;
-  primaryPage?: string | null;
-  seo: any;
-  currentEditor?: string | null;
-  pageType?: string | null;
-  lastSaved?: string | null;
-  dynamic: boolean | null;
-  parent?: string | null;
-  blocks: ChaiBlock[];
-  languagePageId: string;
-};
-
 export async function getFullPage(
   pageId: string,
   appId: string,
   draftMode: boolean,
   options: Partial<GetFullPageOptions> = {},
-): Promise<FullPageResponse> {
+): Promise<
+  Pick<
+    ChaiPage,
+    | "id"
+    | "name"
+    | "slug"
+    | "lang"
+    | "primaryPage"
+    | "seo"
+    | "currentEditor"
+    | "pageType"
+    | "lastSaved"
+    | "dynamic"
+    | "parent"
+    | "blocks"
+  >
+> {
   const table = draftMode ? schema.appPages : schema.appPagesOnline;
 
   // Get page data with selected fields
@@ -59,12 +58,12 @@ export async function getFullPage(
   );
 
   if (error || !pageResult || pageResult.length === 0) {
-    throw new Error("Page not found");
+    throw new Error("PAGE_NOT_FOUND");
   }
 
   const page = pageResult[0];
   if (!page) {
-    throw new Error("Page data is invalid");
+    throw new Error("PAGE_NOT_FOUND");
   }
 
   const primaryPageId = page.primaryPage ?? page.id;
@@ -81,7 +80,7 @@ export async function getFullPage(
   );
 
   if (blocksError) {
-    throw new Error("Failed to fetch page blocks");
+    throw new Error("FAILED_TO_FETCH_PAGE_BLOCKS");
   }
 
   let blocks = (blocksResult?.[0]?.blocks as ChaiBlock[]) ?? [];
@@ -95,74 +94,20 @@ export async function getFullPage(
   // Handle editor locking for draft pages
   let currentEditor = page.currentEditor;
 
-  if (draftMode && options.editor && options.userId) {
-    const lockResult = await handleEditorLock(page, primaryPageId, options.userId, appId);
-    currentEditor = lockResult.currentEditor;
-  }
-
   return {
     id: pageId,
     name: page.name,
     slug: page.slug,
     lang: page.lang,
-    primaryPage: page.primaryPage ?? null,
-    seo: page.seo,
+    primaryPage: page.primaryPage,
+    seo: page.seo ?? {},
     currentEditor,
-    pageType: page.pageType ?? null,
-    lastSaved: page.lastSaved ?? null,
-    dynamic: page.dynamic ?? null,
-    parent: page.parent ?? null,
+    pageType: page.pageType!,
+    lastSaved: page.lastSaved!,
+    dynamic: page.dynamic!,
+    parent: page.parent,
     blocks,
-    languagePageId: page.id,
   };
-}
-
-/**
- * Handle editor locking logic
- */
-async function handleEditorLock(
-  page: any,
-  primaryPageId: string,
-  userId: string,
-  appId: string,
-): Promise<{ currentEditor: string | null }> {
-  const now = new Date();
-  let canTakePage = false;
-
-  // Check if we can take over the page (no editor or last save > 5 minutes ago)
-  if (page.lastSaved) {
-    const lastSaved = new Date(page.lastSaved);
-    canTakePage = differenceInMinutes(now, lastSaved) > 5;
-  }
-
-  const isCurrentEditorNull = page.currentEditor === null;
-
-  if (isCurrentEditorNull || canTakePage) {
-    // Take over the page
-    await safeQuery(() =>
-      db
-        .update(schema.appPages)
-        .set({
-          currentEditor: userId,
-          lastSaved: sql`now()`,
-        })
-        .where(and(eq(schema.appPages.id, primaryPageId), eq(schema.appPages.app, appId))),
-    );
-    return { currentEditor: userId };
-  } else if (page.currentEditor === userId) {
-    // Update last saved time for current editor
-    await safeQuery(() =>
-      db
-        .update(schema.appPages)
-        .set({
-          lastSaved: sql`now()`,
-        })
-        .where(and(eq(schema.appPages.id, primaryPageId), eq(schema.appPages.app, appId))),
-    );
-    return { currentEditor: userId };
-  }
-
-  return { currentEditor: page.currentEditor };
 }
 
 /**

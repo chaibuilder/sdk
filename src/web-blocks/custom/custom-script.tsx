@@ -1,5 +1,7 @@
 import { cn } from "@/core/functions/common-functions";
-import { ChaiBlockComponentProps, registerChaiBlockSchema } from "@/runtime";
+import { registerChaiBlockSchema } from "@/runtime";
+import { ChaiBlockComponentProps } from "@/types/blocks";
+
 import { CodeIcon } from "@radix-ui/react-icons";
 
 export type CustomScriptBlockProps = {

@@ -1,4 +1,5 @@
-import { ChaiBlockComponentProps, registerChaiBlockSchema } from "@/runtime";
+import { registerChaiBlockSchema } from "@/runtime";
+import { ChaiBlockComponentProps } from "@/types/blocks";
 import { FrameIcon } from "@radix-ui/react-icons";
 import * as React from "react";
 

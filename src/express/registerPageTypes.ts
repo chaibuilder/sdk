@@ -89,12 +89,6 @@ export const registerPageTypes = () => {
         },
       ],
     }),
-    defaultTrackingInfo: () => ({
-      gtm: {
-        name: `{{global.name}}`,
-        description: `{{global.description}}`,
-      },
-    }),
   });
 
   registerChaiPageType("inventory_make_trim_listing", {
@@ -106,12 +100,6 @@ export const registerPageTypes = () => {
       inBuilder,
       lang,
     }),
-    defaultTrackingInfo: () => ({
-      gtm: {
-        name: `{{global.name}}`,
-        description: `{{global.description}}`,
-      },
-    }),
   });
   registerChaiPageType("vdp_page", {
     name: "Vdp Page",
@@ -121,12 +109,6 @@ export const registerPageTypes = () => {
       draft,
       inBuilder,
       lang,
-    }),
-    defaultTrackingInfo: () => ({
-      gtm: {
-        name: `{{global.name}}`,
-        description: `{{global.description}}`,
-      },
     }),
   });
 
@@ -148,12 +130,6 @@ export const registerPageTypes = () => {
           value: "Valeur 1",
         },
       ],
-    }),
-    defaultTrackingInfo: () => ({
-      gtm: {
-        name: `{{global.name}}`,
-        description: `{{global.description}}`,
-      },
     }),
   });
 

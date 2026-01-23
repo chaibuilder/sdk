@@ -38,9 +38,3 @@ export {
   useRegisteredChaiBlock,
   useRegisteredChaiBlocks,
 };
-
-export interface ChaiPageProps {
-  slug: string;
-  searchParams?: Record<string, string>;
-  [key: string]: any;
-}

@@ -81,7 +81,7 @@ const Config = {
         title: "Button Text",
         default: "Click me",
       },
-      styles: StylesProp(""),
+      styles: stylesProp(""),
       onClick: {
         type: "string",
         title: "OnClick Action",

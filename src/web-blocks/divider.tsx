@@ -1,4 +1,5 @@
-import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@/runtime";
+import { registerChaiBlockSchema, stylesProp } from "@/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { DividerHorizontalIcon } from "@radix-ui/react-icons";
 import { createElement } from "react";
 
@@ -20,7 +21,7 @@ const Config = {
   group: "basic",
   ...registerChaiBlockSchema({
     properties: {
-      styles: StylesProp("bg-gray-900 h-0.5 py-2 my-1"),
+      styles: stylesProp("bg-gray-900 h-0.5 py-2 my-1"),
     },
   }),
 };

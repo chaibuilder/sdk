@@ -1,4 +1,5 @@
-import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@/runtime";
+import { registerChaiBlockSchema, stylesProp } from "@/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { InputIcon } from "@radix-ui/react-icons";
 
 export type InputProps = {
@@ -174,8 +175,8 @@ const Config = {
   group: "form",
   ...registerChaiBlockSchema({
     properties: {
-      styles: StylesProp(""),
-      inputStyles: StylesProp("w-full p-1"),
+      styles: stylesProp(""),
+      inputStyles: stylesProp("w-full p-1"),
       fieldName: {
         type: "string",
         title: "Field Name",

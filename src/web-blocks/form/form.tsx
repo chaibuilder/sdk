@@ -1,4 +1,5 @@
-import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@/runtime";
+import { registerChaiBlockSchema, stylesProp } from "@/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import EmptySlot from "@/web-blocks/empty-slot";
 import { FileTextIcon } from "@radix-ui/react-icons";
 
@@ -60,7 +61,7 @@ const Config = {
   ],
   ...registerChaiBlockSchema({
     properties: {
-      styles: StylesProp(""),
+      styles: stylesProp(""),
       action: {
         type: "string",
         title: "Submit URL",

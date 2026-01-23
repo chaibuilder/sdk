@@ -15,12 +15,14 @@ export const useAutoSave = () => {
     if (actionsCount >= autoSaveActionsCount) {
       savePage(true);
     }
-  }, [autoSave, saveState, actionsCount, autoSaveActionsCount]);
+  }, [autoSave, savePage, saveState, actionsCount, autoSaveActionsCount]);
 };
 
 export const useIncrementActionsCount = () => {
   const [, setActionsCount] = useAtom(userActionsCountAtom);
+  const { setSaveState } = useSavePage();
   return useCallback(() => {
     setActionsCount((prev) => prev + 1);
-  }, [setActionsCount]);
+    setSaveState((prev) => (prev !== "UNSAVED" ? "UNSAVED" : prev));
+  }, [setActionsCount, setSaveState]);
 };
