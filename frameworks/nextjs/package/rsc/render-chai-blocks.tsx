@@ -1,34 +1,11 @@
 import { applyDesignTokens, RenderChaiBlocks as RenderChaiBlocksSdk } from "@chaibuilder/sdk/render";
-import { ChaiBlock, ChaiBlockComponentProps, ChaiPageProps, ChaiStyles } from "@chaibuilder/sdk/runtime";
+import { ChaiBlockComponentProps, ChaiPageProps, ChaiStyles } from "@chaibuilder/sdk/runtime";
+import { ChaiDesignTokens, ChaiPage } from "@chaibuilder/sdk/types";
 import { isEmpty } from "lodash";
 import { ChaiBuilder } from "../ChaiBuilder";
 import { ImageBlock } from "./image-block";
 import { JSONLD } from "./json-ld";
 import { LinkBlock } from "./link-block";
-
-export type DesignTokens = {
-  [token: string]: {
-    value: string;
-    name: string;
-  };
-};
-
-export type ChaiBuilderPage = {
-  id: string;
-  slug: string;
-  pageType: string;
-  fallbackLang: string;
-  lang: string;
-  blocks: ChaiBlock[];
-  blocksWithoutPartials?: ChaiBlock[];
-  createdAt: string;
-  lastSaved: string;
-  dynamic: boolean;
-  seo?: {
-    jsonLD?: string;
-    [key: string]: unknown;
-  };
-};
 
 type ImageBlockProps = {
   height: string;
@@ -57,9 +34,9 @@ export const RenderChaiBlocks = async ({
   imageComponent = ImageBlock,
   designTokens = {},
 }: {
-  page: ChaiBuilderPage;
+  page: ChaiPage & { fallbackLang: string };
   pageProps: ChaiPageProps;
-  designTokens?: DesignTokens;
+  designTokens?: ChaiDesignTokens;
   linkComponent?:
     | React.ComponentType<ChaiBlockComponentProps<LinkBlockProps>>
     | Promise<React.ComponentType<ChaiBlockComponentProps<LinkBlockProps>>>;
@@ -84,7 +61,7 @@ export const RenderChaiBlocks = async ({
       <JSONLD jsonLD={page?.seo?.jsonLD} pageData={pageData} />
       <RenderChaiBlocksSdk
         externalData={pageData}
-        blocks={!isEmpty(tokens) ? applyDesignTokens(page.blocks, tokens as DesignTokens) : page.blocks}
+        blocks={!isEmpty(tokens) ? applyDesignTokens(page.blocks, tokens as ChaiDesignTokens) : page.blocks}
         fallbackLang={page.fallbackLang}
         lang={page.lang}
         pageProps={pageProps}

@@ -1,10 +1,8 @@
 import { db, safeQuery, schema } from "@chaibuilder/sdk/actions";
+import type { ChaiWebsiteSetting } from "@chaibuilder/sdk/types";
 import { eq } from "drizzle-orm";
 
-export async function getSiteSettings(
-  appId: string,
-  draftMode: boolean,
-): Promise<{ fallbackLang?: string; [key: string]: unknown }> {
+export async function getSiteSettings(appId: string, draftMode: boolean): Promise<ChaiWebsiteSetting> {
   const table = draftMode ? db.query.apps : db.query.appsOnline;
   const { data: settings, error } = await safeQuery(() =>
     table.findFirst({
@@ -19,11 +17,9 @@ export async function getSiteSettings(
     }),
   );
 
-  if (error) {
-    throw error;
+  if (error || !settings) {
+    throw new Error("SITE_SETTINGS_NOT_FOUND");
   }
-  if (!settings) {
-    throw new Error("Site settings not found");
-  }
-  return settings as { fallbackLang?: string; [key: string]: unknown };
+
+  return { ...settings, appKey: "" } as ChaiWebsiteSetting;
 }

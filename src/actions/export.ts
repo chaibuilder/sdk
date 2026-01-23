@@ -2,14 +2,14 @@ import { StreamTextResult } from "ai";
 import ChaiActionsRegistry from "./builder/actions-registery";
 import { getAskAiSystemPrompt } from "./classes/system-prompt";
 
-export interface LoggedInUser {
+export interface ChaiLoggedInUser {
   id: string;
   email: string;
   name: string;
   avatar?: string;
 }
 
-export type ChaiBuilderUserInfo = {
+export type ChaiUserInfo = {
   id: string;
   email: string;
   name: string;
@@ -56,8 +56,8 @@ export interface ChaiBuilderPagesAIInterface {
   isConfigured(): boolean;
 }
 
+export * from "../types/actions";
 export { initChaiBuilderActionHandler } from "./builder/chai-builder-actions-handler";
 export { db, safeQuery, schema } from "./db";
 export { LANGUAGES } from "./LANGUAGES";
-export * from "./types";
 export { ChaiActionsRegistry, getAskAiSystemPrompt };

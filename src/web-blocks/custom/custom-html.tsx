@@ -1,4 +1,5 @@
-import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@/runtime";
+import { registerChaiBlockSchema, stylesProp } from "@/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { CodeIcon } from "@radix-ui/react-icons";
 import * as React from "react";
 
@@ -31,7 +32,7 @@ const Config = {
   group: "advanced",
   ...registerChaiBlockSchema({
     properties: {
-      styles: StylesProp(""),
+      styles: stylesProp(""),
       htmlCode: {
         type: "string",
         default: "<div><p>Enter your HTML code here...</p></div>",

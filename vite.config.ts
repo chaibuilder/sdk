@@ -34,6 +34,7 @@ export default defineConfig({
         actions: resolve(__dirname, "src/actions/export.ts"),
         utils: resolve(__dirname, "src/utils/index.ts"),
         "supabase-actions": resolve(__dirname, "src/express/actions/storage/index.ts"),
+        types: resolve(__dirname, "src/types/index.ts"),
       },
       formats: ["es", "cjs"],
     },

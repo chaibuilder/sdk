@@ -1,12 +1,12 @@
 import { getAllRegisteredFonts } from "@/runtime";
-import { ChaiThemeValues } from "@/types/chaibuilder-editor-props";
+import { ChaiTheme } from "@/types/chaibuilder-editor-props";
 import { toHex } from "./color-formatter";
 
 /**
  * Parses CSS input and converts it to ChaiThemeValues format
  */
-export const parseToChaiThemeValues = (cssInput: string): ChaiThemeValues => {
-  const result: ChaiThemeValues = {
+export const parseToChaiThemeValues = (cssInput: string): ChaiTheme => {
+  const result: ChaiTheme = {
     fontFamily: {
       heading: "",
       body: "",
@@ -252,7 +252,7 @@ const convertToPx = (value: string): string => {
 /**
  * Helper function to get default theme values
  */
-const getDefaultThemeValues = (): ChaiThemeValues => {
+const getDefaultThemeValues = (): ChaiTheme => {
   return {
     fontFamily: {
       heading: "ui-sans-serif, system-ui, sans-serif",
@@ -293,7 +293,7 @@ const escapeRegExp = (string: string): string => {
 /**
  * Additional utility function to validate the parsed result
  */
-export const validateChaiThemeValues = (theme: ChaiThemeValues): boolean => {
+export const validateChaiThemeValues = (theme: ChaiTheme): boolean => {
   const requiredColorKeys = ["background", "foreground", "primary", "primary-foreground"];
 
   const hasRequiredColors = requiredColorKeys.every(

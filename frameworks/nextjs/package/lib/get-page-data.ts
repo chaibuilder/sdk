@@ -1,14 +1,14 @@
-import { ChaiPageProps } from "@/actions";
-import { ChaiBlock, getChaiCollection, getChaiGlobalData, getChaiPageType } from "@chaibuilder/sdk/runtime";
+import { getChaiCollection, getChaiGlobalData, getChaiPageType } from "@chaibuilder/sdk/runtime";
+import type { ChaiBlock, ChaiPageProps } from "@chaibuilder/sdk/types";
 import { get } from "lodash";
 
-export async function getPageData(args: {
+export async function getPageData<T = Record<string, unknown>>(args: {
   blocks: ChaiBlock[];
-  pageProps: Record<string, unknown>;
+  pageProps: ChaiPageProps;
   pageType: string;
   lang: string;
   draftMode: boolean;
-}): Promise<Record<string, unknown>> {
+}): Promise<T> {
   const { blocks, pageProps, pageType, lang, draftMode } = args;
 
   const registeredPageType = getChaiPageType(pageType);
@@ -30,7 +30,7 @@ export async function getPageData(args: {
               lang,
               draft: draftMode,
               inBuilder: false,
-              pageProps: pageProps as ChaiPageProps,
+              pageProps,
               block,
             })
             .then((data: any) => ({
@@ -51,7 +51,7 @@ export async function getPageData(args: {
       lang,
       draft: draftMode,
       inBuilder: false,
-      pageProps: pageProps as ChaiPageProps,
+      pageProps,
     }) || Promise.resolve({}),
     ...collectionPromises,
   ]);
@@ -64,11 +64,9 @@ export async function getPageData(args: {
     {} as Record<string, unknown>,
   );
 
-  if (!registeredPageType) return { global: globalData, ...collectionData };
-
   return {
     ...pageData,
     global: globalData,
     ...collectionData,
-  };
+  } as T;
 }

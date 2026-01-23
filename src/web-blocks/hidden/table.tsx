@@ -1,5 +1,6 @@
 import { generateUUID } from "@/core/functions/common-functions";
-import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlock, registerChaiBlockSchema, StylesProp } from "@/runtime";
+import { registerChaiBlock, registerChaiBlockSchema, stylesProp } from "@/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { ChaiBlock } from "@/types/common";
 import EmptySlot from "@/web-blocks/empty-slot";
 import {
@@ -96,7 +97,7 @@ registerChaiBlock<TableProps>(TableBlock, {
   icon: TableIcon,
   ...registerChaiBlockSchema({
     properties: {
-      styles: StylesProp(""),
+      styles: stylesProp(""),
     },
   }),
   blocks: getDefaultBlocks("Table"),
@@ -111,7 +112,7 @@ registerChaiBlock<TableHeadProps>(TableHeadBlock, {
   icon: BorderTopIcon,
   ...registerChaiBlockSchema({
     properties: {
-      styles: StylesProp(""),
+      styles: stylesProp(""),
     },
   }),
   blocks: getDefaultBlocks("TableHead"),
@@ -126,7 +127,7 @@ registerChaiBlock<TableBodyProps>(TableBodyBlock, {
   icon: BorderAllIcon,
   ...registerChaiBlockSchema({
     properties: {
-      styles: StylesProp(""),
+      styles: stylesProp(""),
     },
   }),
   blocks: getDefaultBlocks("TableBody"),
@@ -141,7 +142,7 @@ registerChaiBlock<TableRowProps>(TableRowBlock, {
   icon: ViewHorizontalIcon,
   ...registerChaiBlockSchema({
     properties: {
-      styles: StylesProp(""),
+      styles: stylesProp(""),
     },
   }),
   blocks: getDefaultBlocks("TableRow"),
@@ -156,7 +157,7 @@ registerChaiBlock<TableCellProps>(TableCellBlock, {
   icon: DragHandleHorizontalIcon,
   ...registerChaiBlockSchema({
     properties: {
-      styles: StylesProp(""),
+      styles: stylesProp(""),
       content: {
         type: "string",
         default: "Heading goes here",

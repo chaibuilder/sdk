@@ -2,7 +2,7 @@ import { AiButton, DEFAULT_PANEL_WIDTH } from "@/core/components/layout/root-lay
 import { default as AIChatPanel } from "@/routes/demo/ai-chat-panel";
 import registerCustomBlocks from "@/routes/demo/blocks";
 import "@/routes/demo/panels/panel";
-import { ChaiFontViaSrc, ChaiFontViaUrl, registerChaiFont } from "@/runtime";
+import { registerChaiFont } from "@/runtime";
 import {
   registerChaiLibrary,
   registerChaiPreImportHTMLHook,
@@ -10,6 +10,7 @@ import {
   registerChaiSidebarPanel,
   registerChaiTopBar,
 } from "@/runtime/client";
+import type { ChaiFontViaSrc, ChaiFontViaUrl } from "@/types";
 import { ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 import { lazy } from "react";
 const TopBar = lazy(() => import("@/routes/demo/top-bar"));

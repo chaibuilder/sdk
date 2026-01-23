@@ -1,4 +1,5 @@
-import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@/runtime";
+import { registerChaiBlockSchema, stylesProp } from "@/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import EmptySlot from "@/web-blocks/empty-slot";
 import { ImageIcon } from "@radix-ui/react-icons";
 import { isEmpty } from "lodash-es";
@@ -51,7 +52,7 @@ const Config = {
   group: "media",
   ...registerChaiBlockSchema({
     properties: {
-      styles: StylesProp("w-full h-full object-cover"),
+      styles: stylesProp("w-full h-full object-cover"),
       image: {
         type: "string",
         title: "Image",

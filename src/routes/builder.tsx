@@ -1,4 +1,3 @@
-import { DesignTokens } from "@/actions/types";
 import { ChaiBuilderEditor } from "@/core/main";
 import "@/index.css";
 import { lsBlocksAtom, lsDesignTokensAtom, lsThemeAtom } from "@/routes/demo/atoms-dev";
@@ -7,7 +6,7 @@ import { PARTIALS } from "@/routes/demo/PARTIALS";
 import { defaultShadcnPreset } from "@/routes/demo/THEME_PRESETS";
 import Topbar from "@/routes/demo/top-bar";
 import { registerChaiTopBar } from "@/runtime/client";
-import { ChaiThemeValues, SavePageData } from "@/types/chaibuilder-editor-props";
+import { ChaiSavePageData, ChaiTheme } from "@/types/chaibuilder-editor-props";
 import { ChaiBlock } from "@/types/common";
 import { loadWebBlocks } from "@/web-blocks";
 import { useAtom } from "jotai";
@@ -47,13 +46,13 @@ function ChaiBuilderDefault() {
       theme={theme}
       autoSave={true}
       blocks={blocks}
-      onSave={async ({ blocks, theme, needTranslations, designTokens }: SavePageData) => {
+      onSave={async ({ blocks, theme, needTranslations, designTokens }: ChaiSavePageData) => {
         console.log("onSave", blocks, theme, needTranslations, designTokens);
         localStorage.setItem("chai-builder-blocks", JSON.stringify(blocks));
         localStorage.setItem("chai-builder-theme", JSON.stringify(theme));
         localStorage.setItem("chai-builder-design-tokens", JSON.stringify(designTokens));
-        setTheme(theme as ChaiThemeValues);
-        setDesignTokensValue(designTokens as DesignTokens);
+        setTheme(theme as ChaiTheme);
+        setDesignTokensValue(designTokens);
         toast.success("Page saved successfully");
         await new Promise((resolve) => setTimeout(resolve, 100));
         return true;
@@ -95,9 +94,9 @@ function ChaiBuilderDefault() {
         if (pageTypeKey === "page") {
           const items = [
             { id: "uuid-1", name: "Page 1", slug: "/page-1" },
-            { id: "uuid-2", name: "Page 2" },
+            { id: "uuid-2", name: "Page 2", slug: "/uuid1" },
             { id: "uuid-3", name: "About", slug: "/about" },
-            { id: "uuid-4", name: "Contact" },
+            { id: "uuid-4", name: "Contact", slug: "/sss" },
           ];
           await new Promise((r) => setTimeout(r, 500));
           return items.filter((item) => {

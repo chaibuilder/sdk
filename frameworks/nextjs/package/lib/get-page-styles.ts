@@ -1,5 +1,5 @@
 import { getStylesForBlocks } from "@chaibuilder/sdk/render";
-import { ChaiBlock } from "@chaibuilder/sdk/runtime";
+import type { ChaiBlock } from "@chaibuilder/sdk/types";
 import { filterDuplicateStyles } from "./styles-helper";
 
 export const getPageStyles = async (blocks: ChaiBlock[]) => {

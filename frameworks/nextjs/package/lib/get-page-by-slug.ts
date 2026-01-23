@@ -1,44 +1,14 @@
+import { ChaiPartialPage } from "@/types";
 import { db, safeQuery, schema } from "@chaibuilder/sdk/actions";
-import { ChaiBlock } from "@chaibuilder/sdk/runtime";
 import { and, eq, like, or } from "drizzle-orm";
 import { get, isEmpty, keys, reverse, sortBy, take } from "lodash";
-import { getFullPage } from "./get-full-page";
-
-export type ChaiBuilderPage =
-  | {
-      id: string;
-      slug: string;
-      lang: string;
-      name: string;
-      pageType: string;
-      languagePageId: string;
-      blocks: ChaiBlock[];
-      fallbackLang: string;
-      createdAt: string;
-      lastSaved: string;
-      dynamic: boolean;
-      seo?: {
-        title?: string;
-        description?: string;
-        ogTitle?: string;
-        ogDescription?: string;
-        ogImage?: string;
-        canonicalUrl?: string;
-        noIndex?: boolean;
-        noFollow?: boolean;
-        jsonLD?: string;
-        [key: string]: unknown;
-      };
-      [key: string]: unknown;
-    }
-  | { error: string };
 
 export async function getPageBySlug(
   slug: string,
   appId: string,
   draftMode: boolean,
   dynamicSegments: Record<string, string> = {},
-): Promise<ChaiBuilderPage> {
+): Promise<ChaiPartialPage> {
   const table = draftMode ? db.query.appPages : db.query.appPagesOnline;
   const schemaTable = draftMode ? schema.appPages : schema.appPagesOnline;
 
@@ -58,14 +28,11 @@ export async function getPageBySlug(
   );
 
   if (staticPage) {
-    const pageId = staticPage.primaryPage ?? staticPage.id;
-    const fullPage = await getFullPage(pageId, appId, draftMode);
     return {
-      ...fullPage,
-      fallbackLang: fullPage.lang, // Use lang as fallbackLang
-      createdAt: fullPage.lastSaved ?? new Date().toISOString(),
-      pageType: fullPage.pageType ?? "",
-    } as ChaiBuilderPage;
+      ...staticPage,
+      languagePageId: staticPage.id,
+      pageType: staticPage.pageType ?? "",
+    };
   }
 
   // Step 2: Handle dynamic routing
@@ -95,7 +62,7 @@ export async function getPageBySlug(
   );
 
   if (!dynamicPages || dynamicPages.length === 0) {
-    return { error: "Page not found" };
+    throw new Error("PAGE_NOT_FOUND");
   }
 
   // Step 3: Sort pages by slug complexity (more segments = higher priority)
@@ -130,17 +97,14 @@ export async function getPageBySlug(
     const match = slug.match(reg);
 
     if (match && match[0] === slug) {
-      const pageId = page.primaryPage ?? page.id;
-      const fullPage = await getFullPage(pageId, appId, draftMode);
       return {
-        ...fullPage,
-        slug, // Use the actual matched slug
-        fallbackLang: fullPage.lang, // Use lang as fallbackLang
-        createdAt: fullPage.lastSaved ?? new Date().toISOString(),
-        pageType: fullPage.pageType ?? "",
-      } as ChaiBuilderPage;
+        ...page,
+        slug,
+        pageType: page.pageType ?? "",
+        languagePageId: page.id,
+      };
     }
   }
 
-  return { error: "Page not found" };
+  throw new Error("PAGE_NOT_FOUND");
 }

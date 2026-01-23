@@ -1,6 +1,6 @@
 {
   "name": "@chaibuilder/next",
-  "version": "4.0.0-beta.8",
+  "version": "4.0.0-beta.9",
   "description": "AI Enabled Open source website builder for ReactJS",
   "private": false,
   "author": "Suraj Air",
@@ -28,7 +28,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "dev": "tsup --watch --format esm,cjs",
-    "build": "tsup --format esm,cjs"
+    "prebuild": "node scripts/prebuild.cjs",
+    "build": "npm run prebuild && tsup --format esm,cjs",
+    "postbuild": "node scripts/postbuild.cjs"
   },
   "keywords": [],
   "peerDependencies": {
@@ -58,6 +60,11 @@
       "import": "./dist/runtime.js",
       "require": "./dist/runtime.cjs"
     },
+    "./runtime-client": {
+      "types": "./dist/runtime-client.d.ts",
+      "import": "./dist/runtime-client.js",
+      "require": "./dist/runtime-client.cjs"
+    },
     "./actions": {
       "types": "./dist/actions.d.ts",
       "import": "./dist/actions.js",
@@ -79,7 +86,7 @@
     }
   },
   "dependencies": {
-    "@chaibuilder/sdk": "4.0.0-beta.6",
+    "@chaibuilder/sdk": "link:../../../",
     "concurrently": "^9.2.0",
     "postgres": "^3.4.8",
     "ai": "^6.0.11",
