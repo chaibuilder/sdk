@@ -1,9 +1,9 @@
 import { applyDesignTokens, RenderChaiBlocks as RenderChaiBlocksSdk } from "@chaibuilder/sdk/render";
 import { ChaiBlockComponentProps, ChaiPageProps, ChaiStyles, setChaiBlockComponent } from "@chaibuilder/sdk/runtime";
+import { ChaiDesignTokens, ChaiPage } from "@chaibuilder/sdk/types";
 import { isEmpty } from "lodash";
 import { ImageBlock, JSONLD, LinkBlock } from ".";
 import { ChaiBuilder } from "../ChaiBuilder";
-import { ChaiBuilderPage, DesignTokens } from "./render-chai-blocks";
 // TODO: Keep this NextJSRenderChaiBlocks implementation functionally aligned with the RSC
 // version in render-chai-blocks.tsx:
 // https://github.com/chaibuilder/frameworks/blob/main/packages/next/src/blocks/rsc/render-chai-blocks.tsx
@@ -36,9 +36,9 @@ export const NextJSRenderChaiBlocks = async ({
   imageComponent = ImageBlock,
   designTokens = {},
 }: {
-  page: ChaiBuilderPage;
+  page: ChaiPage & { fallbackLang: string };
   pageProps: ChaiPageProps;
-  designTokens?: DesignTokens;
+  designTokens?: ChaiDesignTokens;
   linkComponent?:
     | React.ComponentType<ChaiBlockComponentProps<LinkBlockProps>>
     | Promise<React.ComponentType<ChaiBlockComponentProps<LinkBlockProps>>>;
@@ -65,7 +65,7 @@ export const NextJSRenderChaiBlocks = async ({
       <JSONLD jsonLD={page?.seo?.jsonLD} pageData={pageData} />
       <RenderChaiBlocksSdk
         externalData={pageData}
-        blocks={!isEmpty(tokens) ? applyDesignTokens(page.blocks, tokens as DesignTokens) : page.blocks}
+        blocks={!isEmpty(tokens) ? applyDesignTokens(page.blocks, tokens as ChaiDesignTokens) : page.blocks}
         fallbackLang={page.fallbackLang}
         lang={page.lang}
         pageProps={pageProps}

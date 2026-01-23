@@ -1,9 +1,10 @@
 import { applyChaiDataBinding } from "@chaibuilder/sdk/render";
-import type { ChaiBlock, ChaiPageProps } from "@chaibuilder/sdk/types";
+import type { ChaiBlock, ChaiPage, ChaiPageProps, ChaiWebsiteSetting } from "@chaibuilder/sdk/types";
 import { unstable_cache } from "next/cache";
+import { notFound } from "next/navigation";
 import { cache } from "react";
-import type { ChaiBuilderPage } from "./lib";
 import * as utils from "./lib";
+import { ChaiPartialPage } from "./types";
 
 class ChaiBuilder {
   private static appId?: string;
@@ -51,66 +52,122 @@ class ChaiBuilder {
     return ChaiBuilder.fallbackLang;
   }
 
-  static async getSiteSettings(): Promise<{ fallbackLang?: string; [key: string]: unknown }> {
+  static async getSiteSettings(): Promise<ChaiWebsiteSetting> {
     ChaiBuilder.verifyInit();
     return await unstable_cache(
       async () => await utils.getSiteSettings(ChaiBuilder.appId!, ChaiBuilder.draftMode),
       [`website-settings-${ChaiBuilder.getAppId()}`],
-      {
-        tags: [`website-settings`, `website-settings-${ChaiBuilder.getAppId()}`],
-      },
+      { tags: [`website-settings`, `website-settings-${ChaiBuilder.getAppId()}`] },
     )();
   }
 
-  static async getPageBySlug(slug: string): Promise<ChaiBuilderPage | { error: string }> {
+  static async getPageBySlug(slug: string): Promise<ChaiPartialPage> {
     ChaiBuilder.verifyInit();
-    return await utils.getPageBySlug(slug, this.appId!, this.draftMode);
+    try {
+      return await utils.getPageBySlug(slug, this.appId!, this.draftMode);
+    } catch (error) {
+      if (error instanceof Error && error.message === "PAGE_NOT_FOUND") {
+        throw notFound();
+      }
+      throw error;
+    }
   }
 
-  static async getFullPage(pageId: string): Promise<Record<string, unknown>> {
+  static async getFullPage(
+    pageId: string,
+  ): Promise<
+    Pick<
+      ChaiPage,
+      | "id"
+      | "name"
+      | "slug"
+      | "lang"
+      | "primaryPage"
+      | "seo"
+      | "currentEditor"
+      | "pageType"
+      | "lastSaved"
+      | "dynamic"
+      | "parent"
+      | "blocks"
+    >
+  > {
     ChaiBuilder.verifyInit();
     return await utils.getFullPage(pageId, this.appId!, this.draftMode);
   }
 
-  static async getPartialPageBySlug(slug: string): Promise<Record<string, unknown>> {
+  static async getPartialPageBySlug(
+    slug: string,
+  ): Promise<
+    Pick<
+      ChaiPage,
+      | "id"
+      | "name"
+      | "slug"
+      | "lang"
+      | "primaryPage"
+      | "seo"
+      | "currentEditor"
+      | "pageType"
+      | "lastSaved"
+      | "dynamic"
+      | "parent"
+      | "blocks"
+    >
+  > {
     ChaiBuilder.verifyInit();
     // if the slug is of format /_partial/{langcode}/{uuid}, get the uuid. langcode is optional
     const uuid = slug.split("/").pop();
     if (!uuid) {
-      throw new Error("Invalid slug format for partial page");
+      throw new Error("PAGE_NOT_FOUND");
     }
 
     // Fetch the partial page data
     const siteSettings = await ChaiBuilder.getSiteSettings();
     const data = await ChaiBuilder.getFullPage(uuid);
-    const fallbackLang = siteSettings?.fallbackLang;
-    const lang = slug.split("/").length > 3 ? slug.split("/")[2] : fallbackLang;
-    return { ...data, fallbackLang, lang };
+    const lang = slug.split("/").length > 3 ? slug.split("/")[2] : siteSettings?.fallbackLang;
+    return { ...data, lang };
   }
 
-  static getPage = cache(async (slug: string): Promise<ChaiBuilderPage | Record<string, unknown>> => {
-    ChaiBuilder.verifyInit();
-    if (slug.startsWith("/_partial/")) {
-      return await ChaiBuilder.getPartialPageBySlug(slug);
-    }
-    const page: ChaiBuilderPage = await ChaiBuilder.getPageBySlug(slug);
-    if ("error" in page) {
-      return page;
-    }
-
-    const siteSettings = await ChaiBuilder.getSiteSettings();
-    const tagPageId = page.id;
-    const languagePageId = page.languagePageId || page.id;
-    return await unstable_cache(
-      async () => {
-        const data = await ChaiBuilder.getFullPage(languagePageId);
-        const fallbackLang = siteSettings?.fallbackLang;
-        return { ...data, fallbackLang, lang: page.lang || fallbackLang };
-      },
-      ["page-" + languagePageId, page.lang, page.id, slug],
-      { tags: ["page-" + tagPageId] },
-    )();
-  });
+  static getPage = cache(
+    async (
+      slug: string,
+    ): Promise<
+      Pick<
+        ChaiPage,
+        | "id"
+        | "name"
+        | "slug"
+        | "lang"
+        | "primaryPage"
+        | "seo"
+        | "currentEditor"
+        | "pageType"
+        | "lastSaved"
+        | "dynamic"
+        | "parent"
+        | "blocks"
+      >
+    > => {
+      ChaiBuilder.verifyInit();
+      if (slug.startsWith("/_partial/")) {
+        return await ChaiBuilder.getPartialPageBySlug(slug);
+      }
+      const page = await ChaiBuilder.getPageBySlug(slug);
+      const siteSettings = await ChaiBuilder.getSiteSettings();
+      const tagPageId = page.id;
+      const languagePageId = page.languagePageId || page.id;
+      return await unstable_cache(
+        async () => {
+          const data = await ChaiBuilder.getFullPage(languagePageId);
+          const fallbackLang = siteSettings?.fallbackLang;
+          return { ...data, fallbackLang, lang: page.lang || fallbackLang };
+        },
+        ["page-" + languagePageId, page.lang, page.id, slug],
+        { tags: ["page-" + tagPageId] },
+      )();
+    },
+  );
 
   static async getPageSeoData(slug: string) {
     ChaiBuilder.verifyInit();
@@ -138,7 +195,7 @@ class ChaiBuilder {
     }
 
     // Type assertion after error check
-    const pageData = page as Exclude<ChaiBuilderPage, { error: string }>;
+    const pageData = page as ChaiPage;
 
     const externalData = await ChaiBuilder.getPageExternalData({
       blocks: pageData.blocks,
@@ -194,7 +251,7 @@ class ChaiBuilder {
 
   static async getPageData(args: {
     blocks: ChaiBlock[];
-    pageProps: Record<string, unknown>;
+    pageProps: ChaiPageProps;
     pageType: string;
     lang: string;
   }): Promise<Record<string, unknown>> {

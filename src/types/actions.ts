@@ -35,12 +35,12 @@ export type ChaiPage = {
   online: boolean;
   seo: ChaiPageSeo;
   app: string;
-  primaryPage?: string;
-  currentEditor?: string;
+  primaryPage?: string | null;
+  currentEditor?: string | null;
   changes: object[];
-  parent?: string;
-  libRefId?: string;
-  dynamicSlugCustom?: string;
+  parent?: string | null;
+  libRefId?: string | null;
+  dynamicSlugCustom?: string | null;
   metadata?: object;
   jsonld?: object;
   globalJsonLds?: string[];
