@@ -134,7 +134,6 @@ export const RepeaterConfig: Omit<ChaiBlockConfig, "component"> = {
               title: "Pagination Strategy",
               default: "segment",
               enum: ["query", "segment"],
-              enumNames: ["Query(/items?page=1)", "Segment(/items/1)"],
             },
             limit: {
               type: "number",

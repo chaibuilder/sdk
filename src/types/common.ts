@@ -28,6 +28,7 @@ export type ChaiBlockPropsSchema = RJSFSchema & {
         [key: string]: RJSFSchema;
       }
     | undefined;
+  enumNames?: (string | number)[];
 };
 export type ChaiBlockSchema = {
   properties?: Record<string, ChaiBlockPropsSchema>;
