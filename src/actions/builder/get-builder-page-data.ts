@@ -1,6 +1,6 @@
-import { ChaiBuilderPageType } from "@/actions/types";
 import { getChaiGlobalData } from "@/runtime/register-global-data-provider";
 import { getChaiPageType } from "@/runtime/register-page-type";
+import { ChaiBuilderPageType } from "@/types/actions";
 import { z } from "zod";
 import { ChaiBaseAction } from "./base-action";
 

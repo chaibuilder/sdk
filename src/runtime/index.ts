@@ -1,8 +1,6 @@
 import { STYLES_KEY } from "@/core/constants/STRINGS.ts";
 import { ChaiBlockPropSchema, ChaiBlockSchema, ChaiBlockSchemas, ChaiBlockUiSchema } from "@/types/common.ts";
 import { each, get, intersection, isEmpty, keys, omit } from "lodash-es";
-import { ChaiBlockDefinition, ChaiDataProviderArgs, ChaiServerBlockDefinition } from "./controls/types.ts";
-import { ChaiBlockComponentProps, ChaiStyles } from "./v2/runtime/core";
 
 export const registerChaiBlockSchema = (blockSchema: ChaiBlockSchema): ChaiBlockSchemas => {
   const reservedProps = ["_type", "_id", "_parent", "_bindings", "_name"];
@@ -32,6 +30,7 @@ export const registerChaiBlockSchema = (blockSchema: ChaiBlockSchema): ChaiBlock
 };
 
 export const StylesProp = (defaultClasses: string = ""): ChaiBlockPropSchema => {
+  console.warn("StylesProp is deprecated, use stylesProp instead");
   return {
     type: "string",
     styles: true,
@@ -66,24 +65,8 @@ export const builderProp = (options: ChaiBlockPropSchema): ChaiBlockPropSchema =
 
 export const defaultChaiStyles = (classes: string) => `${STYLES_KEY},${classes}`;
 
-type ChaiAsyncProp<T> = T | undefined;
-type ChaiClosestBlockProp<T> = T | undefined;
-
 export * from "./register-collection.ts";
 export * from "./register-global-data-provider";
 export * from "./register-page-type";
 export * from "./register-partial-type";
 export * from "./v2/runtime/index.tsx";
-export type {
-  ChaiAsyncProp,
-  ChaiBlockComponentProps,
-  ChaiBlockDefinition,
-  ChaiBlockPropSchema,
-  ChaiBlockSchema,
-  ChaiBlockSchemas,
-  ChaiBlockUiSchema,
-  ChaiDataProviderArgs,
-  ChaiClosestBlockProp as ChaiRuntimeProp,
-  ChaiServerBlockDefinition,
-  ChaiStyles,
-};

@@ -3,7 +3,8 @@ import {
   Config as CollectionListConfig,
 } from "@/routes/demo/blocks/collection-list";
 import { Component as ModalComponent, Config as ModalConfig } from "@/routes/demo/blocks/modal";
-import { ChaiBlockComponentProps, registerChaiBlock } from "@/runtime";
+import { registerChaiBlock } from "@/runtime";
+import { ChaiBlockComponentProps } from "@/types/blocks";
 
 const PaginationComponent = (props: ChaiBlockComponentProps<any>) => {
   console.log(props);

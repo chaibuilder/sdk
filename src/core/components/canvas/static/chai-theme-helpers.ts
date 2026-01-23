@@ -1,5 +1,6 @@
-import { ChaiFontViaSrc, ChaiFontViaUrl, getAllRegisteredFonts } from "@/runtime";
-import { ChaiThemeOptions, ChaiThemeValues } from "@/types/chaibuilder-editor-props";
+import { getAllRegisteredFonts } from "@/runtime";
+import type { ChaiFontViaSrc, ChaiFontViaUrl } from "@/types";
+import type { ChaiThemeOptions, ChaiThemeValues } from "@/types/chaibuilder-editor-props";
 import { flatten, get, keys, uniqBy } from "lodash-es";
 
 export const getChaiThemeOptions = (chaiThemeOptions: ChaiThemeOptions) => {

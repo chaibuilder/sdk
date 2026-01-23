@@ -6,7 +6,8 @@ import {
 } from "@/core/components/canvas/static/new-blocks-render-helpers";
 import { applyBindingToBlockProps } from "@/render/apply-binding";
 import { getRuntimePropValues, RenderChaiBlocksProps } from "@/render/render-chai-blocks";
-import { ChaiBlockDefinition, getRegisteredChaiBlock } from "@/runtime";
+import { getRegisteredChaiBlock } from "@/runtime";
+import { ChaiBlockDefinition } from "@/types/blocks";
 import { ChaiBlock } from "@/types/common";
 import { get, has, isArray, isFunction, isNull } from "lodash-es";
 import { createElement, Suspense } from "react";

@@ -1,6 +1,7 @@
 import { DESIGN_TOKEN_PREFIX, STYLES_KEY } from "@/core/constants/STRINGS";
 import { getSplitChaiClasses } from "@/hooks/get-split-classes";
-import { ChaiBlockDefinition, getRegisteredChaiBlock } from "@/runtime";
+import { getRegisteredChaiBlock } from "@/runtime";
+import { ChaiBlockDefinition } from "@/types/blocks";
 import { ChaiBlock } from "@/types/common";
 import { ChaiDesignTokens } from "@/types/types";
 import { cloneDeep, forEach, get, includes, isArray, isEmpty, isString, keys, memoize, startsWith } from "lodash-es";

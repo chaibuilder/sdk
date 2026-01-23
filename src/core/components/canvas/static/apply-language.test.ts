@@ -1,4 +1,4 @@
-import { ChaiBlockDefinition } from "@/runtime";
+import { ChaiBlockDefinition } from "@/types/blocks";
 import { ChaiBlock } from "@/types/common";
 import { applyLanguage } from "./new-blocks-render-helpers";
 

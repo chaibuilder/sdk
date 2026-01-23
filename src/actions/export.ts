@@ -56,8 +56,8 @@ export interface ChaiBuilderPagesAIInterface {
   isConfigured(): boolean;
 }
 
+export * from "../types/actions";
 export { initChaiBuilderActionHandler } from "./builder/chai-builder-actions-handler";
 export { db, safeQuery, schema } from "./db";
 export { LANGUAGES } from "./LANGUAGES";
-export * from "./types";
 export { ChaiActionsRegistry, getAskAiSystemPrompt };

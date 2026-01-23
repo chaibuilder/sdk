@@ -1,10 +1,5 @@
-import {
-  ChaiBlockComponentProps,
-  ChaiBlockDefinition,
-  ChaiStyles,
-  registerChaiBlockSchema,
-  StylesProp,
-} from "@/runtime";
+import { registerChaiBlockSchema, StylesProp } from "@/runtime";
+import { ChaiBlockComponentProps, ChaiBlockDefinition, ChaiStyles } from "@/types/blocks";
 import EmptySlot from "@/web-blocks/empty-slot";
 import * as React from "react";
 

@@ -60,3 +60,28 @@ export type ChaiWebsiteBuilderProps = {
   | "flags"
   | "structureRules"
 >;
+export interface ChaiPageProps {
+  slug: string;
+  searchParams?: Record<string, string>;
+  [key: string]: any;
+}
+export type ChaiFontViaUrl = {
+  family: string;
+  url: string;
+  fallback: string;
+};
+
+export type ChaiFontViaSrc = {
+  family: string;
+  src: {
+    url: string;
+    format: string;
+    fontWeight?: string;
+    fontStyle?: string;
+    fontDisplay?: string;
+    fontStretch?: string;
+  }[];
+  fallback: string;
+};
+
+export type ChaiFont = ChaiFontViaUrl | ChaiFontViaSrc;

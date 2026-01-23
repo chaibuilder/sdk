@@ -1,4 +1,5 @@
-import { ChaiBlockComponentProps, ChaiStyles, StylesProp, registerChaiBlockSchema } from "@/runtime";
+import { StylesProp, registerChaiBlockSchema } from "@/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import * as React from "react";
 
 export type EmptyBoxProps = {

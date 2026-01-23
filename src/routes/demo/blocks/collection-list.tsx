@@ -1,11 +1,5 @@
-import {
-  builderProp,
-  ChaiBlockComponentProps,
-  ChaiStyles,
-  closestBlockProp,
-  registerChaiBlockSchema,
-  StylesProp,
-} from "@/runtime";
+import { builderProp, closestBlockProp, registerChaiBlockSchema, StylesProp } from "@/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 
 type Sort = {
   field: string;
@@ -27,19 +21,17 @@ export type CollectionListProps = {
 };
 
 type ServerProps = {
-  items: any[];
+  items: Record<string, unknown>[];
 };
 
 const Component = (props: ChaiBlockComponentProps<CollectionListProps & ServerProps, Record<string, unknown>>) => {
   const { title1, blockProps, newName, wrapperStyles, listStyles, itemStyles, items, showTitle } = props;
-  const pageData = props.pageData as any; // Type assertion for accessing nested properties
   return (
     <div {...blockProps} {...wrapperStyles}>
-      External Data: {pageData?.global?.siteName}
       {showTitle && <h1>{title1}</h1>}
       <p>new name:{newName}</p>
       <div {...listStyles}>
-        {items?.map((item) => (
+        {items?.map((item: Record<string, any>) => (
           <div key={item._id} {...itemStyles}>
             {JSON.stringify(item)}
           </div>

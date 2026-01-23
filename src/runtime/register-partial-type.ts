@@ -1,4 +1,4 @@
-import { ChaiBuilderPageType } from "@/actions/types";
+import { ChaiBuilderPageType } from "@/types/actions";
 import { PAGE_TYPES } from "./register-page-type";
 
 export const registerChaiPartialType = (key: string, pageTypeOptions: Omit<ChaiBuilderPageType, "key">) => {

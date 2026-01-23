@@ -1,4 +1,4 @@
-import { ChaiPageProps } from "@/runtime";
+import { ChaiPageProps } from "@/types/common";
 
 export type PageTypeSearchResult = {
   id: string;
@@ -66,5 +66,3 @@ export type ChaiBuilderPageType = {
   defaultJSONLD?: () => Record<string, any>;
   defaultMetaTags?: () => Record<string, string>;
 };
-
-export type { ChaiPageProps };

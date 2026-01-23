@@ -1,4 +1,3 @@
-import { ChaiBuilderPageType } from "@/actions/types";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -17,6 +16,7 @@ import { useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { ChaiPage } from "@/pages/utils/page-organization";
+import { ChaiBuilderPageType } from "@/types/actions";
 import { get } from "lodash-es";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";

@@ -1,4 +1,4 @@
-import { ChaiPageProps } from "@/runtime";
+import { ChaiPageProps } from "@/types";
 import { ChaiBlock } from "@/types/common";
 import { has, isFunction, omit } from "lodash-es";
 import React from "react";

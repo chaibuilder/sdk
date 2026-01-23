@@ -1,11 +1,5 @@
-import {
-  ChaiBlockComponentProps,
-  ChaiBlockDefinition,
-  ChaiStyles,
-  closestBlockProp,
-  registerChaiBlockSchema,
-  stylesProp,
-} from "@/runtime";
+import { closestBlockProp, registerChaiBlockSchema, stylesProp } from "@/runtime";
+import { ChaiBlockComponentProps, ChaiBlockDefinition, ChaiStyles } from "@/types/blocks";
 import { LoopIcon } from "@radix-ui/react-icons";
 import { isEmpty, pick } from "lodash-es";
 import * as React from "react";

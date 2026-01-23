@@ -1,5 +1,6 @@
 import { generateUUID } from "@/core/functions/common-functions";
-import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlock, registerChaiBlockSchema, StylesProp } from "@/runtime";
+import { registerChaiBlock, registerChaiBlockSchema, StylesProp } from "@/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { ChaiBlock } from "@/types/common";
 import EmptySlot from "@/web-blocks/empty-slot";
 import {

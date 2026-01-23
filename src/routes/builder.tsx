@@ -1,4 +1,3 @@
-import { DesignTokens } from "@/actions/types";
 import { ChaiBuilderEditor } from "@/core/main";
 import "@/index.css";
 import { lsBlocksAtom, lsDesignTokensAtom, lsThemeAtom } from "@/routes/demo/atoms-dev";
@@ -7,6 +6,7 @@ import { PARTIALS } from "@/routes/demo/PARTIALS";
 import { defaultShadcnPreset } from "@/routes/demo/THEME_PRESETS";
 import Topbar from "@/routes/demo/top-bar";
 import { registerChaiTopBar } from "@/runtime/client";
+import { DesignTokens } from "@/types/actions";
 import { ChaiSavePageData, ChaiThemeValues } from "@/types/chaibuilder-editor-props";
 import { ChaiBlock } from "@/types/common";
 import { loadWebBlocks } from "@/web-blocks";
