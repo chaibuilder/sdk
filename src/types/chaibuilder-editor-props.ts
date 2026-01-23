@@ -252,7 +252,10 @@ export interface ChaiBuilderEditorProps {
   /**
    * Search page type items
    */
-  searchPageTypeItems?: (pageTypeKey: string, query: string) => Promise<ChaiPage[] | Error>;
+  searchPageTypeItems?: (
+    pageTypeKey: string,
+    query: string,
+  ) => Promise<Pick<ChaiPage, "id" | "slug" | "name">[] | Error>;
 
   /**
    * Collections

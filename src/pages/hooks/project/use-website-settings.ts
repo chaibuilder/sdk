@@ -1,3 +1,4 @@
+import { defaultThemeValues } from "@/hooks/default-theme-options";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { useFetch } from "@/pages/hooks/utils/use-fetch";
 import { ChaiWebsiteSetting } from "@/types/actions";
@@ -12,7 +13,7 @@ export const useWebsiteSetting = () => {
     staleTime: 5 * 60 * 1000,
     placeholderData: {
       languages: [],
-      theme: { fontFamily: "", borderRadius: "", colors: {} },
+      theme: defaultThemeValues,
       appKey: "",
       fallbackLang: "",
       designTokens: {},

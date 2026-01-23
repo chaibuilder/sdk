@@ -2,12 +2,6 @@ import { ChaiBlock, ChaiPageProps } from "@/types/common";
 import { ChaiTheme } from "./chaibuilder-editor-props";
 import { ChaiDesignTokens } from "./types";
 
-export type PageTypeSearchResult = {
-  id: string;
-  name: string;
-  slug?: string;
-};
-
 export type ChaiWebsiteSetting = {
   appKey: string;
   fallbackLang: string;
@@ -34,13 +28,25 @@ export type ChaiPage = {
   lang: string;
   name: string;
   pageType: string;
-  languagePageId: string;
   blocks: ChaiBlock[];
-  fallbackLang: string;
   createdAt: string;
   lastSaved: string;
   dynamic: boolean;
-  seo?: ChaiPageSeo;
+  online: boolean;
+  seo: ChaiPageSeo;
+  app: string;
+  primaryPage?: string;
+  currentEditor?: string;
+  changes: object[];
+  parent?: string;
+  libRefId?: string;
+  dynamicSlugCustom?: string;
+  metadata?: object;
+  jsonld?: object;
+  globalJsonLds?: string[];
+  links?: string;
+  partialBlocks?: string;
+  designTokens?: ChaiDesignTokens;
 };
 
 export type ChaiPageType = {
@@ -57,11 +63,11 @@ export type ChaiPageType = {
   }: {
     query?: string;
     uuid?: string;
-  }) => Promise<Pick<ChaiPage, "id" | "name" | "slug">[]>;
-  search?: (query: string) => Promise<PageTypeSearchResult[] | Error>;
+  }) => Promise<Pick<ChaiPage, "id" | "name" | "slug" | "primaryPage">[]>;
+  search?: (query: string) => Promise<Pick<ChaiPage, "id" | "name" | "slug">[] | Error>;
   resolveLink?: (id: string, draft?: boolean, lang?: string) => Promise<string>;
-  onCreate?: (data: Omit<ChaiPage, "seo">) => Promise<void>;
-  onUpdate?: (data: ChaiPage) => Promise<void>;
+  onCreate?: (data: Partial<ChaiPage> & { id: string }) => Promise<void>;
+  onUpdate?: (data: Partial<ChaiPage> & { id: string }) => Promise<void>;
   onDelete?: (data: Pick<ChaiPage, "id">) => Promise<void>;
 
   // page data

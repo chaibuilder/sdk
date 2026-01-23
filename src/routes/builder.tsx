@@ -94,9 +94,9 @@ function ChaiBuilderDefault() {
         if (pageTypeKey === "page") {
           const items = [
             { id: "uuid-1", name: "Page 1", slug: "/page-1" },
-            { id: "uuid-2", name: "Page 2" },
+            { id: "uuid-2", name: "Page 2", slug: "/uuid1" },
             { id: "uuid-3", name: "About", slug: "/about" },
-            { id: "uuid-4", name: "Contact" },
+            { id: "uuid-4", name: "Contact", slug: "/sss" },
           ];
           await new Promise((r) => setTimeout(r, 500));
           return items.filter((item) => {
