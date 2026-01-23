@@ -28,9 +28,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "dev": "tsup --watch --format esm,cjs",
-    "prebuild": "node scripts/prebuild.js",
+    "prebuild": "node scripts/prebuild.cjs",
     "build": "npm run prebuild && tsup --format esm,cjs",
-    "postbuild": "node scripts/postbuild.js"
+    "postbuild": "node scripts/postbuild.cjs"
   },
   "keywords": [],
   "peerDependencies": {
