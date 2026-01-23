@@ -60,11 +60,12 @@ export type ChaiWebsiteBuilderProps = {
   | "flags"
   | "structureRules"
 >;
-export interface ChaiPageProps {
+
+export type ChaiPageProps<T = Record<string, any>> = {
   slug: string;
   searchParams?: Record<string, string>;
-  [key: string]: any;
-}
+} & T;
+
 export type ChaiFontViaUrl = {
   family: string;
   url: string;
