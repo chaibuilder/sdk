@@ -20,7 +20,7 @@ export const useAutoSave = () => {
 
 export const useIncrementActionsCount = () => {
   const [, setActionsCount] = useAtom(userActionsCountAtom);
-  const { saveState, setSaveState } = useSavePage();
+  const { setSaveState } = useSavePage();
   return useCallback(() => {
     setActionsCount((prev) => prev + 1);
     setSaveState((prev) => (prev !== "UNSAVED" ? "UNSAVED" : prev));
