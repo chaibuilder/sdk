@@ -1,4 +1,5 @@
-import { ChaiBlockComponentProps, ChaiStyles } from "@chaibuilder/sdk/runtime";
+import { ChaiBlockStyles } from "@/types";
+import { ChaiBlockComponentProps } from "@chaibuilder/sdk/types";
 import { first, isArray } from "lodash";
 import Image from "next/image";
 import * as React from "react";
@@ -8,7 +9,7 @@ export const ImageBlock = (
     height: string;
     width: string;
     alt: string;
-    styles: ChaiStyles;
+    styles: ChaiBlockStyles;
     lazyLoading: boolean;
     image: string;
   }>,

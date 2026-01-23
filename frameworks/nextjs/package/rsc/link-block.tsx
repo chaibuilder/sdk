@@ -1,4 +1,4 @@
-import { ChaiBlockComponentProps, ChaiStyles } from "@chaibuilder/sdk/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "@chaibuilder/sdk/types";
 import Link from "next/link";
 import * as React from "react";
 import { ChaiBuilder } from "../ChaiBuilder";

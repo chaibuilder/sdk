@@ -12,6 +12,7 @@ export type ChaiAsset = {
 };
 
 export * from "@/types/actions";
+export * from "@/types/blocks";
 export * from "@/types/chaibuilder-editor-props";
 export * from "@/types/collections";
 export * from "@/types/common";
