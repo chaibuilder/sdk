@@ -11,7 +11,7 @@ import { ChaiBlock } from "@/types/common";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { BubbleMenu, EditorContent } from "@tiptap/react";
 import { cloneDeep, get, has } from "lodash-es";
-import { createElement, memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createElement, memo, startTransition, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 function getInitialTextAlign(element: HTMLElement) {
   let el = element as HTMLElement | null;
@@ -87,7 +87,7 @@ const RichTextEditor = memo(
         event: new FocusEvent("focus"),
         transaction: [] as any,
       });
-    }, [editor]);
+    }, [editingElement, editor]);
 
     const editorClassName = useMemo(() => {
       const basicClassName = "max-w-none shadow-none outline outline-[2px] [&_*]:shadow-none";
@@ -172,7 +172,7 @@ const MemoizedEditor = memo(
       } else {
         onClose();
       }
-    }, [document, window]);
+    }, [blockContent, document, editorRef, onClose, window]);
 
     const elementTag = useMemo(() => {
       const tag = editingElement?.tagName?.toLowerCase() || "div";
@@ -217,7 +217,7 @@ const MemoizedEditor = memo(
           e.preventDefault();
         },
       };
-    }, [editingElement?.className, editingElement?.style]);
+    }, [editingElement?.className, editingElement?.style, onChange]);
 
     return (
       <>
@@ -274,7 +274,7 @@ const WithBlockTextEditor = memo(
         setIds([]);
         if (blockId) setTimeout(() => setIds([blockId]), 100);
       },
-      [blockId, updateContent, setEditingBlockId, setIds, selectedLang],
+      [updateContent, blockId, setEditingBlockId, setEditingItemIndex, setIds],
     );
 
     // * Handle change on 1000ms debounce
@@ -301,7 +301,7 @@ const WithBlockTextEditor = memo(
           }
         }, 100);
       },
-      [setIds, blockId, selectedLang],
+      [blockId, handleClose, setIds],
     );
 
     // * Set the editing element
@@ -316,7 +316,7 @@ const WithBlockTextEditor = memo(
 
       // * Add the sr-only class to the element
       element?.classList?.add("sr-only");
-      setEditingElement(element);
+      startTransition(() => setEditingElement(element));
     }, [blockId, blockType, document, editingItemIndex]);
 
     const memoizedEditor = useMemo(() => {
@@ -345,7 +345,7 @@ const WithBlockTextEditor = memo(
           onEscape={handleEscape}
         />
       );
-    }, [editingElement, blockId, blockType, blockContent, handleClose, selectedLang]);
+    }, [editingElement, clearHighlight, blockType, blockContent, handleClose, handleChange, handleEscape]);
 
     return (
       <>
