@@ -3,7 +3,7 @@ import { ChaiBlockPropsSchema, ChaiBlockRJSFSchemas, ChaiBlockUiSchema } from "@
 import { each, get, intersection, isEmpty, keys, omit } from "lodash-es";
 
 export const registerChaiBlockSchema = (blockSchema: ChaiBlockPropsSchema): ChaiBlockRJSFSchemas => {
-  console.warn("registerChaiBlockSchema is deprecated, use registerChaiBlock instead");
+  console.warn("registerChaiBlockSchema is deprecated, use registerChaiBlockProps instead");
   return registerChaiBlockProps(blockSchema);
 };
 
