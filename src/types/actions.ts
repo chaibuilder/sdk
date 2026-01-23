@@ -1,4 +1,6 @@
-import { ChaiPageProps } from "@/types/common";
+import { ChaiBlock, ChaiPageProps } from "@/types/common";
+import { ChaiTheme } from "./chaibuilder-editor-props";
+import { ChaiDesignTokens } from "./types";
 
 export type PageTypeSearchResult = {
   id: string;
@@ -6,38 +8,42 @@ export type PageTypeSearchResult = {
   slug?: string;
 };
 
-export type DesignTokens = {
-  [token: string]: {
-    value: string;
-    name: string;
-  };
-};
-
 export type ChaiWebsiteSetting = {
   appKey: string;
   fallbackLang: string;
   languages: string[];
-  theme: Record<"fontFamily" | "borderRadius" | "colors", any>;
-  designTokens: DesignTokens;
+  theme: ChaiTheme;
+  designTokens: ChaiDesignTokens;
 };
 
-export type ChaiBuilderPage = {
+type ChaiPageSeo = {
+  title?: string;
+  description?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+  noIndex?: boolean;
+  noFollow?: boolean;
+  jsonLD?: string;
+};
+
+export type ChaiPage = {
   id: string;
   slug: string;
-  name: string;
   lang: string;
-  online: boolean;
-  seo: Record<string, any>;
-};
-
-export type ChaiDynamicPage = {
-  id: string;
-  slug: string;
   name: string;
-  primaryPage?: string;
+  pageType: string;
+  languagePageId: string;
+  blocks: ChaiBlock[];
+  fallbackLang: string;
+  createdAt: string;
+  lastSaved: string;
+  dynamic: boolean;
+  seo?: ChaiPageSeo;
 };
 
-export type ChaiBuilderPageType = {
+export type ChaiPageType = {
   key: string;
   helpText?: string;
   icon?: string;
@@ -45,12 +51,18 @@ export type ChaiBuilderPageType = {
   name: string | (() => Promise<string>);
   dynamicSegments?: string;
   dynamicSlug?: string;
-  getDynamicPages?: ({ query, uuid }: { query?: string; uuid?: string }) => Promise<ChaiDynamicPage[]>;
+  getDynamicPages?: ({
+    query,
+    uuid,
+  }: {
+    query?: string;
+    uuid?: string;
+  }) => Promise<Pick<ChaiPage, "id" | "name" | "slug">[]>;
   search?: (query: string) => Promise<PageTypeSearchResult[] | Error>;
   resolveLink?: (id: string, draft?: boolean, lang?: string) => Promise<string>;
-  onCreate?: (data: Omit<ChaiBuilderPage, "seo">) => Promise<void>;
-  onUpdate?: (data: ChaiBuilderPage) => Promise<void>;
-  onDelete?: (data: Pick<ChaiBuilderPage, "id">) => Promise<void>;
+  onCreate?: (data: Omit<ChaiPage, "seo">) => Promise<void>;
+  onUpdate?: (data: ChaiPage) => Promise<void>;
+  onDelete?: (data: Pick<ChaiPage, "id">) => Promise<void>;
 
   // page data
   dataProvider?: (args: {
@@ -61,7 +73,6 @@ export type ChaiBuilderPageType = {
   }) => Promise<Record<string, any>>;
 
   //extra options
-  defaultTrackingInfo?: () => Record<string, any>;
   defaultSeo?: () => Record<string, any>;
   defaultJSONLD?: () => Record<string, any>;
   defaultMetaTags?: () => Record<string, string>;

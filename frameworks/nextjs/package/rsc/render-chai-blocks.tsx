@@ -1,4 +1,4 @@
-import { ChaiWebsitePage } from "@/lib/get-page-by-slug";
+import { ChaiPage } from "@/lib/get-page-by-slug";
 import { applyDesignTokens, RenderChaiBlocks as RenderChaiBlocksSdk } from "@chaibuilder/sdk/render";
 import { ChaiBlockComponentProps, ChaiPageProps, ChaiStyles } from "@chaibuilder/sdk/runtime";
 import { isEmpty } from "lodash";
@@ -41,7 +41,7 @@ export const RenderChaiBlocks = async ({
   imageComponent = ImageBlock,
   designTokens = {},
 }: {
-  page: ChaiWebsitePage;
+  page: ChaiPage;
   pageProps: ChaiPageProps;
   designTokens?: DesignTokens;
   linkComponent?:

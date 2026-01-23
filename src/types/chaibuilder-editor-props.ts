@@ -1,6 +1,9 @@
+import { ChaiUserInfo } from "@/actions/export";
 import { StructureRule } from "@/hooks/structure-rules";
+import { ChaiPage } from "@/pages/utils/page-organization";
 import { ChaiBlock } from "@/types/common";
 import React from "react";
+import { ChaiPageType } from "./actions";
 import { ChaiCollectoin } from "./collections";
 import { ChaiDesignTokens, ChaiSiteWideUsageData } from "./types";
 
@@ -32,12 +35,10 @@ export type ChaiBorderRadiusValue = false | string;
 export type ChaiThemeOptions = {
   fontFamily: false | Record<VariableKey, string>;
   borderRadius: ChaiBorderRadiusValue;
-  colors:
-    | false
-    | {
-        group: string;
-        items: Record<VariableKey, [HSLColor, HSLColor]>;
-      }[];
+  colors: {
+    group: string;
+    items: Record<VariableKey, [HSLColor, HSLColor]>;
+  }[];
 };
 
 export type ChaiBreakpoint = {
@@ -51,7 +52,7 @@ export type ChaiBreakpoint = {
 export type ChaiSavePageData = {
   autoSave: boolean;
   blocks: ChaiBlock[];
-  theme?: ChaiThemeValues;
+  theme?: ChaiTheme;
   needTranslations?: boolean;
   designTokens: ChaiDesignTokens;
 };
@@ -62,18 +63,7 @@ export type ChaiAskAiResponse = {
   error?: any;
 };
 
-export type ChaiPageType = {
-  key: string;
-  name: string;
-};
-
-export type ChaiPageTypeItem = {
-  id: string;
-  name: string;
-  slug?: string;
-};
-
-export type ChaiThemeValues = {
+export type ChaiTheme = {
   fontFamily: {
     heading: string;
     body: string;
@@ -99,7 +89,6 @@ export type ChaiThemeValues = {
     "card-foreground": [HexColor, HexColor];
     popover: [HexColor, HexColor];
     "popover-foreground": [HexColor, HexColor];
-    [key: string]: [HexColor, HexColor];
   };
 };
 
@@ -113,13 +102,7 @@ export interface ChaiBuilderEditorProps {
   /**
    * User
    */
-  user?: {
-    id: string;
-    name: string;
-    email: string;
-    avatar?: string;
-    role?: string;
-  };
+  user?: ChaiUserInfo;
 
   /**
    * Permissions
@@ -139,22 +122,17 @@ export interface ChaiBuilderEditorProps {
   /**
    * Theme presets
    */
-  themePresets?: Record<string, Partial<ChaiThemeValues>>[];
-
-  /**
-   * Theme options
-   */
-  themeOptions?: (defaultThemeOptions: ChaiThemeOptions) => ChaiThemeOptions;
+  themePresets?: Record<string, Partial<ChaiTheme>>[];
 
   /**
    * Theme
    */
-  theme?: Partial<ChaiThemeValues>;
+  theme?: ChaiTheme;
 
   /**
    * Builder theme
    */
-  builderTheme?: ChaiThemeValues;
+  builderTheme?: ChaiTheme;
 
   /**
    * Theme panel component
@@ -186,14 +164,17 @@ export interface ChaiBuilderEditorProps {
    * Show debug logs
    */
   debugLogs?: boolean;
+
   /**
    * Auto save support
    */
   autoSave?: boolean;
+
   /**
    * Auto save interval in seconds
    */
   autoSaveActionsCount?: number;
+
   /**
    * Breakpoints
    */
@@ -261,7 +242,7 @@ export interface ChaiBuilderEditorProps {
   /**
    * Languages
    */
-  languages?: Array<string>;
+  languages?: string[];
 
   /**
    * Page Types props
@@ -271,7 +252,7 @@ export interface ChaiBuilderEditorProps {
   /**
    * Search page type items
    */
-  searchPageTypeItems?: (pageTypeKey: string, query: string) => Promise<ChaiPageTypeItem[] | Error>;
+  searchPageTypeItems?: (pageTypeKey: string, query: string) => Promise<ChaiPage[] | Error>;
 
   /**
    * Collections
@@ -300,6 +281,7 @@ export interface ChaiBuilderEditorProps {
     designTokens?: boolean;
   };
 
+  //TODO: Move to registerChaiStructureRules()
   structureRules?: StructureRule[];
 
   designTokens?: ChaiDesignTokens;

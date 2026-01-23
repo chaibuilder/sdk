@@ -1,6 +1,6 @@
 import { getChaiGlobalData } from "@/runtime/register-global-data-provider";
 import { getChaiPageType } from "@/runtime/register-page-type";
-import { ChaiBuilderPageType } from "@/types/actions";
+import { ChaiPageType } from "@/types/actions";
 import { z } from "zod";
 import { ChaiBaseAction } from "./base-action";
 
@@ -47,7 +47,7 @@ export class GetBuilderPageDataAction extends ChaiBaseAction<
         return { global: globalData };
       }
 
-      const pageType: ChaiBuilderPageType | undefined = getChaiPageType(pageTypeKey);
+      const pageType: ChaiPageType | undefined = getChaiPageType(pageTypeKey);
       if (!pageType) {
         return { global: globalData };
       }

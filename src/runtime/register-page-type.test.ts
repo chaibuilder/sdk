@@ -1,5 +1,5 @@
 import { PAGE_TYPES, getChaiPageType, getChaiPageTypes, registerChaiPageType } from "@/runtime/register-page-type";
-import { ChaiBuilderPageType } from "@/types/actions";
+import { ChaiPageType } from "@/types/actions";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 describe("Page Type Registration", () => {
@@ -15,7 +15,7 @@ describe("Page Type Registration", () => {
     it("should register a basic page type", () => {
       // Arrange
       const key = "basic";
-      const pageTypeOptions: Omit<ChaiBuilderPageType, "key"> = {
+      const pageTypeOptions: Omit<ChaiPageType, "key"> = {
         name: "Basic Page",
       };
 
@@ -32,7 +32,7 @@ describe("Page Type Registration", () => {
     it("should register a page type with all optional properties", () => {
       // Arrange
       const key = "complex";
-      const pageTypeOptions: Omit<ChaiBuilderPageType, "key"> = {
+      const pageTypeOptions: Omit<ChaiPageType, "key"> = {
         name: "Complex Page",
         helpText: "This is a complex page type",
         icon: "page-icon",
@@ -69,10 +69,10 @@ describe("Page Type Registration", () => {
     it("should override existing page type with the same key", () => {
       // Arrange
       const key = "overridden";
-      const initialOptions: Omit<ChaiBuilderPageType, "key"> = {
+      const initialOptions: Omit<ChaiPageType, "key"> = {
         name: "Initial Page",
       };
-      const updatedOptions: Omit<ChaiBuilderPageType, "key"> = {
+      const updatedOptions: Omit<ChaiPageType, "key"> = {
         name: "Updated Page",
         helpText: "This page was updated",
       };
@@ -92,7 +92,7 @@ describe("Page Type Registration", () => {
       // Arrange
       const key = "async-name";
       const nameFunction = async () => "Async Page Name";
-      const pageTypeOptions: Omit<ChaiBuilderPageType, "key"> = {
+      const pageTypeOptions: Omit<ChaiPageType, "key"> = {
         name: nameFunction,
       };
 
@@ -111,7 +111,7 @@ describe("Page Type Registration", () => {
     it("should return the registered page type by key", () => {
       // Arrange
       const key = "get-test";
-      const pageTypeOptions: Omit<ChaiBuilderPageType, "key"> = {
+      const pageTypeOptions: Omit<ChaiPageType, "key"> = {
         name: "Get Test Page",
       };
       registerChaiPageType(key, pageTypeOptions);
@@ -154,7 +154,7 @@ describe("Page Type Registration", () => {
 
       // Assert
       expect(result).toHaveLength(3);
-      expect(result.map((p: ChaiBuilderPageType) => p.key)).toEqual(["page1", "page2", "page3"]);
+      expect(result.map((p: ChaiPageType) => p.key)).toEqual(["page1", "page2", "page3"]);
     });
 
     it("should return page types in the order they were registered", () => {

@@ -2,14 +2,14 @@ import { StreamTextResult } from "ai";
 import ChaiActionsRegistry from "./builder/actions-registery";
 import { getAskAiSystemPrompt } from "./classes/system-prompt";
 
-export interface LoggedInUser {
+export interface ChaiLoggedInUser {
   id: string;
   email: string;
   name: string;
   avatar?: string;
 }
 
-export type ChaiBuilderUserInfo = {
+export type ChaiUserInfo = {
   id: string;
   email: string;
   name: string;

@@ -1,12 +1,12 @@
 import { defaultThemeOptions, defaultThemeValues } from "@/hooks/default-theme-options";
 import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { ChaiBorderRadiusValue, ChaiThemeOptions, ChaiThemeValues } from "@/types/chaibuilder-editor-props";
+import { ChaiBorderRadiusValue, ChaiTheme, ChaiThemeOptions } from "@/types/chaibuilder-editor-props";
 import { atom, useAtom } from "jotai";
 import { isEmpty } from "lodash-es";
 import { useMemo } from "react";
 
-export const getDefaultThemeValues = (options: ChaiThemeOptions = defaultThemeOptions): ChaiThemeValues => {
-  const themeValues: ChaiThemeValues = defaultThemeValues;
+export const getDefaultThemeValues = (options: ChaiThemeOptions = defaultThemeOptions): ChaiTheme => {
+  const themeValues: ChaiTheme = defaultThemeValues;
 
   if (options.fontFamily) {
     themeValues.fontFamily = Object.entries(options.fontFamily).reduce(
@@ -24,17 +24,19 @@ export const getDefaultThemeValues = (options: ChaiThemeOptions = defaultThemeOp
   if (options.colors) {
     themeValues.colors = options.colors.reduce((acc, colorGroup) => {
       Object.entries(colorGroup.items).forEach(([key, values]) => {
-        acc[key] = values;
+        if (key in acc) {
+          acc[key as keyof typeof acc] = values;
+        }
       });
       return acc;
-    }, themeValues.colors);
+    }, themeValues.colors) as ChaiTheme["colors"];
   }
 
   return themeValues;
 };
 
 // Create a new atom for changeable theme values, initialized with default values
-const chaiThemeValuesAtom = atom<ChaiThemeValues | Partial<ChaiThemeValues>>({});
+const chaiThemeValuesAtom = atom<ChaiTheme | Partial<ChaiTheme>>({});
 
 export const useTheme = () => {
   const options = useThemeOptions();
@@ -43,7 +45,8 @@ export const useTheme = () => {
   const [chaiTheme, setChaiTheme] = useAtom(chaiThemeValuesAtom);
 
   const themeValues = useMemo(
-    () => ({ ...defaultThemeValues, ...(!isEmpty(theme) && theme), ...(!isEmpty(chaiTheme) && chaiTheme) }),
+    () =>
+      ({ ...defaultThemeValues, ...(!isEmpty(theme) && theme), ...(!isEmpty(chaiTheme) && chaiTheme) }) as ChaiTheme,
     [defaultThemeValues, theme, chaiTheme],
   );
   return [themeValues, setChaiTheme] as const;

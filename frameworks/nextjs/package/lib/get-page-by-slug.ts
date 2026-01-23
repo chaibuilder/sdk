@@ -4,7 +4,7 @@ import { and, eq, like, or } from "drizzle-orm";
 import { get, isEmpty, keys, reverse, sortBy, take } from "lodash";
 import { getFullPage } from "./get-full-page";
 
-type ChaiWebsitePageSeo = {
+type ChaiPageSeo = {
   title?: string;
   description?: string;
   ogTitle?: string;
@@ -16,7 +16,7 @@ type ChaiWebsitePageSeo = {
   jsonLD?: string;
 };
 
-export type ChaiWebsitePage = {
+export type ChaiPage = {
   id: string;
   slug: string;
   lang: string;
@@ -28,7 +28,7 @@ export type ChaiWebsitePage = {
   createdAt: string;
   lastSaved: string;
   dynamic: boolean;
-  seo?: ChaiWebsitePageSeo;
+  seo?: ChaiPageSeo;
 };
 
 export async function getPageBySlug(
@@ -36,7 +36,7 @@ export async function getPageBySlug(
   appId: string,
   draftMode: boolean,
   dynamicSegments: Record<string, string> = {},
-): Promise<ChaiWebsitePage> {
+): Promise<ChaiPage> {
   const table = draftMode ? db.query.appPages : db.query.appPagesOnline;
   const schemaTable = draftMode ? schema.appPages : schema.appPagesOnline;
 
@@ -63,7 +63,7 @@ export async function getPageBySlug(
       fallbackLang: fullPage.lang, // Use lang as fallbackLang
       createdAt: fullPage.lastSaved ?? new Date().toISOString(),
       pageType: fullPage.pageType ?? "",
-    } as ChaiWebsitePage;
+    } as ChaiPage;
   }
 
   // Step 2: Handle dynamic routing
@@ -136,7 +136,7 @@ export async function getPageBySlug(
         fallbackLang: fullPage.lang, // Use lang as fallbackLang
         createdAt: fullPage.lastSaved ?? new Date().toISOString(),
         pageType: fullPage.pageType ?? "",
-      } as ChaiWebsitePage;
+      } as ChaiPage;
     }
   }
 

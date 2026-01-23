@@ -1,6 +1,6 @@
-import { ChaiThemeValues } from "@/types/chaibuilder-editor-props";
+import { ChaiTheme } from "@/types/chaibuilder-editor-props";
 
-export const defaultShadcnPreset: ChaiThemeValues = {
+export const defaultShadcnPreset: ChaiTheme = {
   fontFamily: {
     heading: "Poppins",
     body: "Poppins",
@@ -29,7 +29,7 @@ export const defaultShadcnPreset: ChaiThemeValues = {
   },
 };
 
-export const twitter: ChaiThemeValues = {
+export const twitter: ChaiTheme = {
   fontFamily: {
     heading: "Poppins",
     body: "Poppins",
@@ -55,18 +55,10 @@ export const twitter: ChaiThemeValues = {
     "card-foreground": ["#0f1419", "#d9d9d9"],
     popover: ["#ffffff", "#000000"],
     "popover-foreground": ["#0f1419", "#e7e9ea"],
-    sidebar: ["#f7f8f8", "#17181c"],
-    "sidebar-foreground": ["#0f1419", "#d9d9d9"],
-    "sidebar-primary": ["#1e9df1", "#1da1f2"],
-    "sidebar-primary-foreground": ["#ffffff", "#ffffff"],
-    "sidebar-accent": ["#e3ecf6", "#061622"],
-    "sidebar-accent-foreground": ["#1e9df1", "#1c9cf0"],
-    "sidebar-border": ["#e1e8ed", "#38444d"],
-    "sidebar-ring": ["#1da1f2", "#1da1f2"],
   },
 };
 
-export const solarized: ChaiThemeValues = {
+export const solarized: ChaiTheme = {
   fontFamily: {
     heading: "Geist",
     body: "Geist",
@@ -95,7 +87,7 @@ export const solarized: ChaiThemeValues = {
   },
 };
 
-export const caffeine: ChaiThemeValues = {
+export const caffeine: ChaiTheme = {
   fontFamily: {
     heading: "Inter",
     body: "Inter",
@@ -124,7 +116,7 @@ export const caffeine: ChaiThemeValues = {
   },
 };
 
-export const claude: ChaiThemeValues = {
+export const claude: ChaiTheme = {
   fontFamily: {
     heading: "Poppins",
     body: "Poppins",
@@ -153,7 +145,7 @@ export const claude: ChaiThemeValues = {
   },
 };
 
-export const supabase: ChaiThemeValues = {
+export const supabase: ChaiTheme = {
   fontFamily: {
     heading: "Inter",
     body: "Inter",
