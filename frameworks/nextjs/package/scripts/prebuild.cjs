@@ -37,7 +37,7 @@ async function updatePackageJson() {
 async function installDependencies() {
   try {
     console.log("Installing dependencies...");
-    execSync("pnpm install", { stdio: "inherit", cwd: path.join(__dirname, "..") });
+    execSync("pnpm install --no-frozen-lockfile", { stdio: "inherit", cwd: path.join(__dirname, "..") });
     console.log("Dependencies installed successfully");
   } catch (error) {
     console.error("Failed to install dependencies:", error.message);

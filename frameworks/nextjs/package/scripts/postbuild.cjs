@@ -25,7 +25,7 @@ async function resetPackageJson() {
 async function installDependencies() {
   try {
     console.log("Installing dependencies after reset...");
-    execSync("pnpm install", { stdio: "inherit", cwd: path.join(__dirname, "..") });
+    execSync("pnpm install --no-frozen-lockfile", { stdio: "inherit", cwd: path.join(__dirname, "..") });
     console.log("Dependencies installed successfully after reset");
   } catch (error) {
     console.error("Failed to install dependencies after reset:", error.message);
