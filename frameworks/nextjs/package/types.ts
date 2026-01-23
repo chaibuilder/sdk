@@ -1,3 +1,4 @@
+import type { ChaiPage } from "@chaibuilder/sdk/types";
 export * from "@chaibuilder/sdk/types";
 
 export type ChaiPartialPage = {
@@ -7,3 +8,19 @@ export type ChaiPartialPage = {
   pageType: string;
   slug: string;
 };
+
+export type ChaiFullPage = Pick<
+  ChaiPage,
+  | "id"
+  | "name"
+  | "slug"
+  | "lang"
+  | "primaryPage"
+  | "seo"
+  | "currentEditor"
+  | "pageType"
+  | "lastSaved"
+  | "dynamic"
+  | "parent"
+  | "blocks"
+>;

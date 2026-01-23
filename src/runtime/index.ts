@@ -69,4 +69,4 @@ export * from "./register-collection.ts";
 export * from "./register-global-data-provider";
 export * from "./register-page-type";
 export * from "./register-partial-type";
-export * from "./v2/runtime/index.tsx";
+export * from "./v2/runtime";

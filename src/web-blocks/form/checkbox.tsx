@@ -1,4 +1,4 @@
-import { registerChaiBlockSchema, StylesProp } from "@/runtime";
+import { registerChaiBlockSchema, stylesProp } from "@/runtime";
 import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { CheckboxIcon } from "@radix-ui/react-icons";
 
@@ -44,8 +44,8 @@ const Config = {
   group: "form",
   ...registerChaiBlockSchema({
     properties: {
-      styles: StylesProp("flex items-center gap-x-2"),
-      inputStyles: StylesProp(""),
+      styles: stylesProp("flex items-center gap-x-2"),
+      inputStyles: stylesProp(""),
       fieldName: {
         type: "string",
         title: "Field Name",

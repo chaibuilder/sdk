@@ -1,4 +1,4 @@
-import { registerChaiBlockSchema, StylesProp } from "@/runtime";
+import { registerChaiBlockSchema, stylesProp } from "@/runtime";
 import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { DropdownMenuIcon } from "@radix-ui/react-icons";
 import { map } from "lodash-es";
@@ -86,8 +86,8 @@ const Config = {
   group: "form",
   ...registerChaiBlockSchema({
     properties: {
-      styles: StylesProp(""),
-      inputStyles: StylesProp("w-full p-1"),
+      styles: stylesProp(""),
+      inputStyles: stylesProp("w-full p-1"),
       fieldName: {
         type: "string",
         title: "Field Name",

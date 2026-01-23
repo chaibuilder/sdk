@@ -1,6 +1,6 @@
 import { SpaceBetweenVerticallyIcon } from "@radix-ui/react-icons";
 
-import { registerChaiBlockSchema, StylesProp } from "@/runtime";
+import { registerChaiBlockSchema, stylesProp } from "@/runtime";
 import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 
 export type TextBlockProps = {
@@ -26,7 +26,7 @@ const Config = {
   icon: SpaceBetweenVerticallyIcon,
   ...registerChaiBlockSchema({
     properties: {
-      styles: StylesProp("text-black"),
+      styles: stylesProp("text-black"),
       content: {
         title: "Content",
         type: "string",

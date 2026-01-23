@@ -1,5 +1,5 @@
 import { NUMBER_TO_COL_SPAN } from "@/core/constants/TWCLASS_VALUES";
-import { registerChaiBlockSchema, StylesProp } from "@/runtime";
+import { registerChaiBlockSchema, stylesProp } from "@/runtime";
 import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { ChaiBlock } from "@/types/common";
 import { LayoutIcon, RowsIcon } from "@radix-ui/react-icons";
@@ -51,7 +51,7 @@ const ColumnConfig = {
   canBeNested: (type: string) => type === "Row",
   ...registerChaiBlockSchema({
     properties: {
-      styles: StylesProp(""),
+      styles: stylesProp(""),
       colSpan: {
         type: "number",
         title: "Column Span",
@@ -113,7 +113,7 @@ const Config = {
   canAcceptBlock: (childType: string) => childType === "Column",
   ...registerChaiBlockSchema({
     properties: {
-      styles: StylesProp(""),
+      styles: stylesProp(""),
       colCount: {
         type: "number",
         default: 2,

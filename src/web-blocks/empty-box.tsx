@@ -1,4 +1,4 @@
-import { StylesProp, registerChaiBlockSchema } from "@/runtime";
+import { registerChaiBlockSchema, stylesProp } from "@/runtime";
 import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import * as React from "react";
 
@@ -24,7 +24,7 @@ const Config = {
   group: "basic",
   ...registerChaiBlockSchema({
     properties: {
-      styles: StylesProp(""),
+      styles: stylesProp(""),
       backgroundImage: {
         type: "string",
         title: "Background Image",

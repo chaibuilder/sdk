@@ -1,4 +1,4 @@
-import { registerChaiBlockSchema, StylesProp } from "@/runtime";
+import { registerChaiBlockSchema, stylesProp } from "@/runtime";
 import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { HeadingIcon } from "@radix-ui/react-icons";
 import * as React from "react";
@@ -36,7 +36,7 @@ const Config = {
         title: "Level",
         enum: ["h1", "h2", "h3", "h4", "h5", "h6"],
       },
-      styles: StylesProp("text-3xl"),
+      styles: stylesProp("text-3xl"),
       content: {
         type: "string",
         default: "Heading goes here",

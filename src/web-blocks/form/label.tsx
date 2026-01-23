@@ -1,4 +1,4 @@
-import { registerChaiBlockSchema, StylesProp } from "@/runtime";
+import { registerChaiBlockSchema, stylesProp } from "@/runtime";
 import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { LetterCaseToggleIcon } from "@radix-ui/react-icons";
 import * as React from "react";
@@ -26,7 +26,7 @@ const Config = {
   group: "form",
   ...registerChaiBlockSchema({
     properties: {
-      styles: StylesProp(),
+      styles: stylesProp(),
       content: {
         type: "string",
         title: "Content",

@@ -4,7 +4,7 @@ import { unstable_cache } from "next/cache";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import * as utils from "./lib";
-import { ChaiPartialPage } from "./types";
+import { ChaiFullPage, ChaiPartialPage } from "./types";
 
 class ChaiBuilder {
   private static appId?: string;
@@ -73,25 +73,7 @@ class ChaiBuilder {
     }
   }
 
-  static async getFullPage(
-    pageId: string,
-  ): Promise<
-    Pick<
-      ChaiPage,
-      | "id"
-      | "name"
-      | "slug"
-      | "lang"
-      | "primaryPage"
-      | "seo"
-      | "currentEditor"
-      | "pageType"
-      | "lastSaved"
-      | "dynamic"
-      | "parent"
-      | "blocks"
-    >
-  > {
+  static async getFullPage(pageId: string): Promise<ChaiFullPage> {
     ChaiBuilder.verifyInit();
     return await utils.getFullPage(pageId, this.appId!, this.draftMode);
   }
@@ -129,45 +111,25 @@ class ChaiBuilder {
     return { ...data, lang };
   }
 
-  static getPage = cache(
-    async (
-      slug: string,
-    ): Promise<
-      Pick<
-        ChaiPage,
-        | "id"
-        | "name"
-        | "slug"
-        | "lang"
-        | "primaryPage"
-        | "seo"
-        | "currentEditor"
-        | "pageType"
-        | "lastSaved"
-        | "dynamic"
-        | "parent"
-        | "blocks"
-      >
-    > => {
-      ChaiBuilder.verifyInit();
-      if (slug.startsWith("/_partial/")) {
-        return await ChaiBuilder.getPartialPageBySlug(slug);
-      }
-      const page = await ChaiBuilder.getPageBySlug(slug);
-      const siteSettings = await ChaiBuilder.getSiteSettings();
-      const tagPageId = page.id;
-      const languagePageId = page.languagePageId || page.id;
-      return await unstable_cache(
-        async () => {
-          const data = await ChaiBuilder.getFullPage(languagePageId);
-          const fallbackLang = siteSettings?.fallbackLang;
-          return { ...data, fallbackLang, lang: page.lang || fallbackLang };
-        },
-        ["page-" + languagePageId, page.lang, page.id, slug],
-        { tags: ["page-" + tagPageId] },
-      )();
-    },
-  );
+  static getPage = cache(async (slug: string): Promise<ChaiFullPage> => {
+    ChaiBuilder.verifyInit();
+    if (slug.startsWith("/_partial/")) {
+      return await ChaiBuilder.getPartialPageBySlug(slug);
+    }
+    const page = await ChaiBuilder.getPageBySlug(slug);
+    const siteSettings = await ChaiBuilder.getSiteSettings();
+    const tagPageId = page.id;
+    const languagePageId = page.languagePageId || page.id;
+    return await unstable_cache(
+      async () => {
+        const data = await ChaiBuilder.getFullPage(languagePageId);
+        const fallbackLang = siteSettings?.fallbackLang;
+        return { ...data, fallbackLang, lang: page.lang || fallbackLang };
+      },
+      ["page-" + languagePageId, page.lang, page.id, slug],
+      { tags: ["page-" + tagPageId] },
+    )();
+  });
 
   static async getPageSeoData(slug: string) {
     ChaiBuilder.verifyInit();
