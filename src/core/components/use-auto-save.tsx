@@ -23,8 +23,6 @@ export const useIncrementActionsCount = () => {
   const { saveState, setSaveState } = useSavePage();
   return useCallback(() => {
     setActionsCount((prev) => prev + 1);
-    if (saveState !== "UNSAVED") {
-      setSaveState("UNSAVED");
-    }
-  }, [setActionsCount, saveState, setSaveState]);
+    setSaveState((prev) => (prev !== "UNSAVED" ? "UNSAVED" : prev));
+  }, [setActionsCount, setSaveState]);
 };
