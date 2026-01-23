@@ -12,7 +12,7 @@ import { useAddBlock } from "@/hooks/use-add-block";
 import { useLibraryBlocks } from "@/hooks/use-library-blocks";
 import { useSelectedLibrary } from "@/hooks/use-selected-library";
 import { cn } from "@/lib/utils";
-import { syncBlocksWithDefaults } from "@/runtime";
+import { syncBlocksWithDefaultProps } from "@/runtime";
 import { useChaiLibraries } from "@/runtime/client";
 import { ChaiLibrary, ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 import { ChaiBlock } from "@/types/common";
@@ -57,7 +57,7 @@ const BlockCard = ({
       if (typeof uiBlocks === "string") {
         uiBlocks = getBlocksFromHTML(uiBlocks);
       }
-      if (!isEmpty(uiBlocks)) addPredefinedBlock(syncBlocksWithDefaults(uiBlocks), parentId, position);
+      if (!isEmpty(uiBlocks)) addPredefinedBlock(syncBlocksWithDefaultProps(uiBlocks), parentId, position);
       pubsub.publish(CHAI_BUILDER_EVENTS.CLOSE_ADD_BLOCK);
       setTimeout(() => setIsAdding(false), 1000);
     },
