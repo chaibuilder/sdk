@@ -1,44 +1,42 @@
 import { db, safeQuery, schema } from "@chaibuilder/sdk/actions";
-import { ChaiBlock } from "@chaibuilder/sdk/runtime";
+import type { ChaiBlock } from "@chaibuilder/sdk/types";
 import { and, eq, like, or } from "drizzle-orm";
 import { get, isEmpty, keys, reverse, sortBy, take } from "lodash";
 import { getFullPage } from "./get-full-page";
 
-export type ChaiBuilderPage =
-  | {
-      id: string;
-      slug: string;
-      lang: string;
-      name: string;
-      pageType: string;
-      languagePageId: string;
-      blocks: ChaiBlock[];
-      fallbackLang: string;
-      createdAt: string;
-      lastSaved: string;
-      dynamic: boolean;
-      seo?: {
-        title?: string;
-        description?: string;
-        ogTitle?: string;
-        ogDescription?: string;
-        ogImage?: string;
-        canonicalUrl?: string;
-        noIndex?: boolean;
-        noFollow?: boolean;
-        jsonLD?: string;
-        [key: string]: unknown;
-      };
-      [key: string]: unknown;
-    }
-  | { error: string };
+type ChaiWebsitePageSeo = {
+  title?: string;
+  description?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+  noIndex?: boolean;
+  noFollow?: boolean;
+  jsonLD?: string;
+};
+
+export type ChaiWebsitePage = {
+  id: string;
+  slug: string;
+  lang: string;
+  name: string;
+  pageType: string;
+  languagePageId: string;
+  blocks: ChaiBlock[];
+  fallbackLang: string;
+  createdAt: string;
+  lastSaved: string;
+  dynamic: boolean;
+  seo?: ChaiWebsitePageSeo;
+};
 
 export async function getPageBySlug(
   slug: string,
   appId: string,
   draftMode: boolean,
   dynamicSegments: Record<string, string> = {},
-): Promise<ChaiBuilderPage> {
+): Promise<ChaiWebsitePage> {
   const table = draftMode ? db.query.appPages : db.query.appPagesOnline;
   const schemaTable = draftMode ? schema.appPages : schema.appPagesOnline;
 
@@ -65,7 +63,7 @@ export async function getPageBySlug(
       fallbackLang: fullPage.lang, // Use lang as fallbackLang
       createdAt: fullPage.lastSaved ?? new Date().toISOString(),
       pageType: fullPage.pageType ?? "",
-    } as ChaiBuilderPage;
+    } as ChaiWebsitePage;
   }
 
   // Step 2: Handle dynamic routing
@@ -138,7 +136,7 @@ export async function getPageBySlug(
         fallbackLang: fullPage.lang, // Use lang as fallbackLang
         createdAt: fullPage.lastSaved ?? new Date().toISOString(),
         pageType: fullPage.pageType ?? "",
-      } as ChaiBuilderPage;
+      } as ChaiWebsitePage;
     }
   }
 

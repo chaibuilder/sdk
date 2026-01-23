@@ -1,5 +1,6 @@
+import { ChaiWebsitePage } from "@/lib/get-page-by-slug";
 import { applyDesignTokens, RenderChaiBlocks as RenderChaiBlocksSdk } from "@chaibuilder/sdk/render";
-import { ChaiBlock, ChaiBlockComponentProps, ChaiPageProps, ChaiStyles } from "@chaibuilder/sdk/runtime";
+import { ChaiBlockComponentProps, ChaiPageProps, ChaiStyles } from "@chaibuilder/sdk/runtime";
 import { isEmpty } from "lodash";
 import { ChaiBuilder } from "../ChaiBuilder";
 import { ImageBlock } from "./image-block";
@@ -10,23 +11,6 @@ export type DesignTokens = {
   [token: string]: {
     value: string;
     name: string;
-  };
-};
-
-export type ChaiBuilderPage = {
-  id: string;
-  slug: string;
-  pageType: string;
-  fallbackLang: string;
-  lang: string;
-  blocks: ChaiBlock[];
-  blocksWithoutPartials?: ChaiBlock[];
-  createdAt: string;
-  lastSaved: string;
-  dynamic: boolean;
-  seo?: {
-    jsonLD?: string;
-    [key: string]: unknown;
   };
 };
 
@@ -57,7 +41,7 @@ export const RenderChaiBlocks = async ({
   imageComponent = ImageBlock,
   designTokens = {},
 }: {
-  page: ChaiBuilderPage;
+  page: ChaiWebsitePage;
   pageProps: ChaiPageProps;
   designTokens?: DesignTokens;
   linkComponent?:
