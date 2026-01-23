@@ -1,4 +1,4 @@
-import { builderProp, closestBlockProp, StylesProp } from "@/runtime";
+import { builderProp, closestBlockProp, registerChaiBlockProps, StylesProp } from "@/runtime";
 import { ChaiBlockComponentProps, ChaiBlockConfig, ChaiStyles } from "@/types/blocks";
 
 type Sort = {

@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { builderProp, closestBlockProp, registerChaiBlock, StylesProp } from "@/runtime";
+import { builderProp, closestBlockProp, registerChaiBlock, registerChaiBlockProps, StylesProp } from "@/runtime";
 import { ChaiBlock } from "@/types";
 import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { StackIcon } from "@radix-ui/react-icons";

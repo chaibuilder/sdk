@@ -88,7 +88,7 @@ const TableCellBlock = (props: ChaiBlockComponentProps<TableCellProps>) => {
 
 // * REGISTERING TABLE BLOCKS
 
-registerChaiBlock<TableProps>(TableBlock, {
+registerChaiBlock(TableBlock, {
   type: "Table",
   label: "Table",
   category: "core",
@@ -103,7 +103,7 @@ registerChaiBlock<TableProps>(TableBlock, {
   blocks: getDefaultBlocks("Table"),
 });
 
-registerChaiBlock<TableHeadProps>(TableHeadBlock, {
+registerChaiBlock(TableHeadBlock, {
   type: "TableHead",
   label: "Table Head",
   category: "core",
@@ -118,7 +118,7 @@ registerChaiBlock<TableHeadProps>(TableHeadBlock, {
   blocks: getDefaultBlocks("TableHead"),
 });
 
-registerChaiBlock<TableBodyProps>(TableBodyBlock, {
+registerChaiBlock(TableBodyBlock, {
   type: "TableBody",
   label: "Table Body",
   category: "core",
@@ -133,7 +133,7 @@ registerChaiBlock<TableBodyProps>(TableBodyBlock, {
   blocks: getDefaultBlocks("TableBody"),
 });
 
-registerChaiBlock<TableRowProps>(TableRowBlock, {
+registerChaiBlock(TableRowBlock, {
   type: "TableRow",
   label: "Table Row",
   category: "core",
@@ -148,7 +148,7 @@ registerChaiBlock<TableRowProps>(TableRowBlock, {
   blocks: getDefaultBlocks("TableRow"),
 });
 
-registerChaiBlock<TableCellProps>(TableCellBlock, {
+registerChaiBlock(TableCellBlock, {
   type: "TableCell",
   label: "Table Cell",
   category: "core",
