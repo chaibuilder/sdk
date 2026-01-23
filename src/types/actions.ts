@@ -1,6 +1,7 @@
-import { ChaiBlock, ChaiPageProps } from "@/types/common";
-import { ChaiTheme } from "./chaibuilder-editor-props";
-import { ChaiDesignTokens } from "./types";
+import type { ChaiBlock, ChaiPageProps } from "@/types/common";
+import type { StreamTextResult } from "ai";
+import type { ChaiTheme } from "./chaibuilder-editor-props";
+import type { ChaiDesignTokens } from "./types";
 
 export type ChaiWebsiteSetting = {
   appKey: string;
@@ -83,3 +84,58 @@ export type ChaiPageType = {
   defaultJSONLD?: () => Record<string, any>;
   defaultMetaTags?: () => Record<string, string>;
 };
+
+export interface ChaiLoggedInUser {
+  id: string;
+  email: string;
+  name: string;
+  avatar?: string;
+  role: string;
+}
+
+export type ChaiUserInfo = {
+  id: string;
+  email: string;
+  name: string;
+  avatar?: string;
+};
+
+export type ChaiAsset = {
+  id: string;
+  name: string;
+  url: string;
+  type: string;
+  createdAt: string;
+  updatedAt?: string;
+  createdBy: string;
+  size?: number;
+  folderId: string | null;
+
+  // Optional
+  thumbnailUrl?: string;
+  description?: string;
+  duration?: number;
+  format?: string;
+
+  width?: number;
+  height?: number;
+};
+
+export type AssetsParams = {
+  search: string;
+  limit: number;
+  page: number;
+};
+
+export type AIChatOptions = {
+  messages: any[];
+  image?: string;
+  systemPrompt?: string;
+  initiator?: string | null;
+  model?: string;
+};
+
+export interface ChaiBuilderPagesAIInterface {
+  handleRequest(options: AIChatOptions, res: any): Promise<StreamTextResult<any, any>>;
+  isConfigured(): boolean;
+}

@@ -1,4 +1,4 @@
-import { AIChatOptions, ChaiBuilderPagesAIInterface } from "@/actions/export";
+import { AIChatOptions, ChaiBuilderPagesAIInterface } from "@/types/actions";
 import { streamText, StreamTextResult } from "ai";
 import { noop } from "lodash-es";
 import { getAskAiSystemPrompt } from "./system-prompt";

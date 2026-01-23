@@ -1,5 +1,5 @@
 import { closestBlockProp, registerChaiBlockSchema, stylesProp } from "@/runtime";
-import { ChaiBlockComponentProps, ChaiBlockDefinition, ChaiStyles } from "@/types/blocks";
+import { ChaiBlockComponentProps, ChaiBlockConfig, ChaiStyles } from "@/types/blocks";
 import { LoopIcon } from "@radix-ui/react-icons";
 import { isEmpty, pick } from "lodash-es";
 import * as React from "react";
@@ -70,7 +70,7 @@ export const Repeater = (props: ChaiBlockComponentProps<RepeaterProps>) => {
   );
 };
 
-export const RepeaterConfig: Omit<ChaiBlockDefinition, "component"> = {
+export const RepeaterConfig: Omit<ChaiBlockConfig, "component"> = {
   type: "Repeater",
   label: "Repeater",
   icon: LoopIcon,
@@ -202,7 +202,7 @@ export const RepeaterItem = ({
   return React.createElement(tag, { ...blockProps, ...styles }, children);
 };
 
-export const RepeaterItemConfig: Omit<ChaiBlockDefinition, "component"> = {
+export const RepeaterItemConfig: Omit<ChaiBlockConfig, "component"> = {
   type: "RepeaterItem",
   label: "Repeater Item",
   icon: LoopIcon,
@@ -232,7 +232,7 @@ export const RepeaterEmptyState = ({
   return React.createElement("div", { ...blockProps, ...styles }, children);
 };
 
-export const RepeaterEmptyStateConfig: Omit<ChaiBlockDefinition, "component"> = {
+export const RepeaterEmptyStateConfig: Omit<ChaiBlockConfig, "component"> = {
   type: "RepeaterEmptyState",
   label: "Empty State",
   hidden: true,

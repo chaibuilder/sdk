@@ -1,9 +1,8 @@
-import { ChaiUserInfo } from "@/actions/export";
 import { StructureRule } from "@/hooks/structure-rules";
 import { ChaiPage } from "@/pages/utils/page-organization";
 import { ChaiBlock } from "@/types/common";
 import React from "react";
-import { ChaiPageType } from "./actions";
+import { ChaiLoggedInUser, ChaiPageType } from "./actions";
 import { ChaiCollectoin } from "./collections";
 import { ChaiDesignTokens, ChaiSiteWideUsageData } from "./types";
 
@@ -102,7 +101,7 @@ export interface ChaiBuilderEditorProps {
   /**
    * User
    */
-  user?: ChaiUserInfo;
+  user?: ChaiLoggedInUser;
 
   /**
    * Permissions

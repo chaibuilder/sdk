@@ -1,4 +1,4 @@
-import type { ChaiBlockDefinition, ChaiServerBlockDefinition } from "@/types/blocks";
+import type { ChaiBlockConfig, ChaiServerBlockConfig } from "@/types/blocks";
 import { ChaiBlockComponentProps } from "@/types/blocks.ts";
 import { ChaiBlock, ChaiPageProps } from "@/types/common";
 import { ChaiBlockPropSchema } from "@/types/common.ts";
@@ -6,7 +6,10 @@ import type { RJSFSchema, UiSchema } from "@rjsf/utils";
 import { cloneDeep, each, get, has, omitBy, set } from "lodash-es";
 import React, { useMemo } from "react";
 
-const REGISTERED_CHAI_BLOCKS: Record<string, ChaiBlockDefinition | ChaiServerBlockDefinition> = {};
+const REGISTERED_CHAI_BLOCKS: Record<
+  string,
+  (ChaiBlockConfig | ChaiServerBlockConfig) & { component: React.ComponentType<ChaiBlockComponentProps> }
+> = {};
 
 export const useRegisteredChaiBlocks = () => {
   return REGISTERED_CHAI_BLOCKS;
@@ -16,8 +19,8 @@ export const useRegisteredChaiBlock = (type: keyof typeof REGISTERED_CHAI_BLOCKS
   return useMemo(() => get(REGISTERED_CHAI_BLOCKS, type, null), [type]);
 };
 
-export const getRegisteredChaiBlock = (type: keyof typeof REGISTERED_CHAI_BLOCKS): ChaiBlockDefinition | null => {
-  return get(REGISTERED_CHAI_BLOCKS, type, null) as ChaiBlockDefinition | null;
+export const getRegisteredChaiBlock = (type: keyof typeof REGISTERED_CHAI_BLOCKS): ChaiBlockConfig | null => {
+  return get(REGISTERED_CHAI_BLOCKS, type, null) as ChaiBlockConfig | null;
 };
 
 export const getDefaultBlockProps = (type: keyof typeof REGISTERED_CHAI_BLOCKS) => {
@@ -65,10 +68,7 @@ export const syncBlocksWithDefaults = (blocks: ChaiBlock[]): ChaiBlock[] => {
   });
 };
 
-const registerInternalBlock = <T, K>(
-  component: React.ComponentType<ChaiBlockComponentProps<T>>,
-  options: ChaiBlockDefinitionOptions<T, K>,
-) => {
+const registerInternalBlock = (component: React.ComponentType<ChaiBlockComponentProps>, options: ChaiBlockConfig) => {
   const existingBlock = get(REGISTERED_CHAI_BLOCKS, options.type);
   if (existingBlock) {
     set(REGISTERED_CHAI_BLOCKS, options.type, { ...existingBlock, component, ...options });
@@ -77,24 +77,16 @@ const registerInternalBlock = <T, K>(
   }
 };
 
-export type ChaiBlockDefinitionOptions<T, K> = Omit<ChaiBlockDefinition<T, K>, "component">;
-
-export const registerChaiBlock = <
-  T extends Record<string, any> = Record<string, any>,
-  K extends Record<string, any> = Record<string, any>,
->(
-  component: React.ComponentType<ChaiBlockComponentProps<T>>,
-  options: ChaiBlockDefinitionOptions<T, K>,
+export const registerChaiBlock = (
+  component: React.ComponentType<ChaiBlockComponentProps>,
+  options: ChaiBlockConfig,
 ) => {
-  registerInternalBlock<T, K>(component, { ...options, ...{ category: options.category || "core" } });
+  registerInternalBlock(component, { ...options, ...{ category: options.category || "core" } });
 };
 
-export const registerChaiServerBlock = <
-  T extends Record<string, any> = Record<string, any>,
-  K extends Record<string, any> = Record<string, any>,
->(
-  component: React.ComponentType<ChaiBlockComponentProps<T>>,
-  options: Pick<ChaiBlockDefinition<T, K>, "type" | "dataProvider" | "i18nProps" | "aiProps">,
+export const registerChaiServerBlock = (
+  component: React.ComponentType<ChaiBlockComponentProps>,
+  options: Pick<ChaiBlockConfig, "type" | "dataProvider" | "i18nProps" | "aiProps">,
 ) => {
   const existingBlock = get(REGISTERED_CHAI_BLOCKS, options.type);
   if (existingBlock) {
@@ -118,9 +110,9 @@ export const setChaiServerBlockDataProvider = <K extends Record<string, any> = R
   set(REGISTERED_CHAI_BLOCKS, type, { ...registeredBlock, dataProvider });
 };
 
-export const setChaiBlockComponent = <T extends Record<string, any> = Record<string, any>>(
+export const setChaiBlockComponent = (
   type: keyof typeof REGISTERED_CHAI_BLOCKS,
-  component: React.ComponentType<ChaiBlockComponentProps<T>>,
+  component: React.ComponentType<ChaiBlockComponentProps>,
 ) => {
   const registeredBlock = getRegisteredChaiBlock(type);
   set(REGISTERED_CHAI_BLOCKS, type, { ...registeredBlock, component });
