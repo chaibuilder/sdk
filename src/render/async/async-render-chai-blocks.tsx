@@ -94,7 +94,7 @@ export async function AsyncRenderChaiBlocks(props: RenderChaiBlocksProps) {
         draft: props.draft as boolean,
         inBuilder: false,
       };
-      acc[block._id] = registeredChaiBlock.dataProvider(dataProviderArgs) as Promise<Record<string, any>>;
+      acc[block._id] = Promise.resolve(registeredChaiBlock.dataProvider(dataProviderArgs));
       return acc;
     },
     {} as Record<string, Promise<Record<string, any>>>,
