@@ -27,7 +27,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string[
   ChaiBuilder.init(process.env.CHAIBUILDER_APP_KEY!, isEnabled);
   let page = null;
   try {
-    page = await ChaiBuilder.getPageBySlug(slug);
+    page = await ChaiBuilder.getPage(slug);
     if ("error" in page) {
       return notFound();
     }
@@ -36,10 +36,11 @@ export default async function Page({ params }: { params: Promise<{ slug: string[
   }
 
   //NOTE: pageProps are received in your dataProvider functions for block and page
+  const siteSettings = await ChaiBuilder.getSiteSettings();
   const pageProps: ChaiPageProps = {
     slug,
     pageType: page.pageType,
-    fallbackLang: page.fallbackLang,
+    fallbackLang: siteSettings.fallbackLang,
     pageLang: page.lang,
   };
   return (

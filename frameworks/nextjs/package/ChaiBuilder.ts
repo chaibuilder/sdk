@@ -148,12 +148,8 @@ class ChaiBuilder {
       };
     }
     const page = await ChaiBuilder.getPage(slug);
-    if ("error" in page) {
-      return {
-        title: "Page Not Found",
-        description: "The requested page could not be found.",
-        robots: { index: false, follow: false },
-      };
+    if ("error" in page && page.error === "PAGE_NOT_FOUND") {
+      throw notFound();
     }
 
     // Type assertion after error check

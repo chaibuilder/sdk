@@ -46,9 +46,7 @@ export const NextJSRenderChaiBlocks = async ({
     | React.ComponentType<ChaiBlockComponentProps<ImageBlockProps>>
     | Promise<React.ComponentType<ChaiBlockComponentProps<ImageBlockProps>>>;
 }) => {
-  //@ts-ignore
   setChaiBlockComponent("Link", await linkComponent);
-  //@ts-ignore
   setChaiBlockComponent("Image", await imageComponent);
   const pageData = await ChaiBuilder.getPageExternalData({
     blocks: page.blocks,
