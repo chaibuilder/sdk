@@ -5,7 +5,6 @@ import { applyLanguage } from "./new-blocks-render-helpers";
 describe("applyLanguage", () => {
   const mockChaiBlock: ChaiBlockConfig = {
     i18nProps: ["title", "content", "buttonText"],
-    component: () => null,
     type: "mock",
     label: "Mock Block",
     group: "Mock",

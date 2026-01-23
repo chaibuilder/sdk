@@ -24,7 +24,7 @@ const Component = (props: ChaiBlockComponentProps<BoxProps>) => {
   return React.createElement(tag, { ...blockProps, ...styles, style: cssStyles }, nestedChildren);
 };
 
-const Config: Omit<ChaiBlockConfig<BoxProps>, "component"> = {
+const Config: ChaiBlockConfig = {
   type: "Box",
   description: "Similar to a div or section elements in HTML",
   label: "Box",

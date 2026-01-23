@@ -1,4 +1,4 @@
-import type { ChaiBlockConfig, ChaiServerBlockConfig } from "@/types/blocks";
+import type { ChaiBlockConfig } from "@/types/blocks";
 import { ChaiBlockComponentProps } from "@/types/blocks.ts";
 import { ChaiBlock, ChaiPageProps } from "@/types/common";
 import { ChaiBlockPropSchema } from "@/types/common.ts";
@@ -8,7 +8,7 @@ import React, { useMemo } from "react";
 
 const REGISTERED_CHAI_BLOCKS: Record<
   string,
-  (ChaiBlockConfig | ChaiServerBlockConfig) & { component: React.ComponentType<ChaiBlockComponentProps> }
+  ChaiBlockConfig & { component: React.ComponentType<ChaiBlockComponentProps> }
 > = {};
 
 export const useRegisteredChaiBlocks = () => {
@@ -19,11 +19,18 @@ export const useRegisteredChaiBlock = (type: keyof typeof REGISTERED_CHAI_BLOCKS
   return useMemo(() => get(REGISTERED_CHAI_BLOCKS, type, null), [type]);
 };
 
-export const getRegisteredChaiBlock = (type: keyof typeof REGISTERED_CHAI_BLOCKS): ChaiBlockConfig | null => {
-  return get(REGISTERED_CHAI_BLOCKS, type, null) as ChaiBlockConfig | null;
+export const getRegisteredChaiBlock = (
+  type: keyof typeof REGISTERED_CHAI_BLOCKS,
+): (ChaiBlockConfig & { component: React.ComponentType<ChaiBlockComponentProps> }) | undefined => {
+  return get(REGISTERED_CHAI_BLOCKS, type);
 };
 
 export const getDefaultBlockProps = (type: keyof typeof REGISTERED_CHAI_BLOCKS) => {
+  console.warn("getDefaultBlockProps is deprecated. Use getBlockDefaultProps instead.");
+  return getBlockDefaultProps(type);
+};
+
+export const getBlockDefaultProps = (type: keyof typeof REGISTERED_CHAI_BLOCKS) => {
   const properties = get(REGISTERED_CHAI_BLOCKS, `${type}.schema.properties`, {});
   const defaultProps: Record<string, any> = {};
   each(properties, (propSchema: ChaiBlockPropSchema, key) => {
@@ -36,10 +43,19 @@ export const getDefaultBlockProps = (type: keyof typeof REGISTERED_CHAI_BLOCKS) 
 };
 
 export const getI18nBlockProps = (type: keyof typeof REGISTERED_CHAI_BLOCKS) => {
+  console.warn("getI18nBlockProps is deprecated. Use getBlockI18nProps instead.");
+  return get(REGISTERED_CHAI_BLOCKS, `${type}.i18nProps`, []);
+};
+
+export const getBlockI18nProps = (type: keyof typeof REGISTERED_CHAI_BLOCKS) => {
   return get(REGISTERED_CHAI_BLOCKS, `${type}.i18nProps`, []);
 };
 
 export const getAIBlockProps = (type: keyof typeof REGISTERED_CHAI_BLOCKS) => {
+  console.warn("getAIBlockProps is deprecated. Use getBlockAIProps instead.");
+  return get(REGISTERED_CHAI_BLOCKS, `${type}.aiProps`, []);
+};
+export const getBlockAIProps = (type: keyof typeof REGISTERED_CHAI_BLOCKS) => {
   return get(REGISTERED_CHAI_BLOCKS, `${type}.aiProps`, []);
 };
 
@@ -59,9 +75,14 @@ export const getBlockFormSchemas = (
 };
 
 export const syncBlocksWithDefaults = (blocks: ChaiBlock[]): ChaiBlock[] => {
+  console.warn("syncBlocksWithDefaults is deprecated. Use syncBlocksWithDefaultProps instead.");
+  return syncBlocksWithDefaultProps(blocks);
+};
+
+export const syncBlocksWithDefaultProps = (blocks: ChaiBlock[]): ChaiBlock[] => {
   return blocks.map((block) => {
     if (has(REGISTERED_CHAI_BLOCKS, block._type)) {
-      const defaults = getDefaultBlockProps(block._type);
+      const defaults = getBlockDefaultProps(block._type);
       return { ...defaults, ...block } as ChaiBlock;
     }
     return block;
@@ -78,14 +99,14 @@ const registerInternalBlock = (component: React.ComponentType<ChaiBlockComponent
 };
 
 export const registerChaiBlock = (
-  component: React.ComponentType<ChaiBlockComponentProps>,
+  component: React.ComponentType<ChaiBlockComponentProps<any>>,
   options: ChaiBlockConfig,
 ) => {
   registerInternalBlock(component, { ...options, ...{ category: options.category || "core" } });
 };
 
 export const registerChaiServerBlock = (
-  component: React.ComponentType<ChaiBlockComponentProps>,
+  component: React.ComponentType<ChaiBlockComponentProps<any>>,
   options: Pick<ChaiBlockConfig, "type" | "dataProvider" | "i18nProps" | "aiProps">,
 ) => {
   const existingBlock = get(REGISTERED_CHAI_BLOCKS, options.type);
@@ -112,7 +133,7 @@ export const setChaiServerBlockDataProvider = <K extends Record<string, any> = R
 
 export const setChaiBlockComponent = (
   type: keyof typeof REGISTERED_CHAI_BLOCKS,
-  component: React.ComponentType<ChaiBlockComponentProps>,
+  component: React.ComponentType<ChaiBlockComponentProps<any>>,
 ) => {
   const registeredBlock = getRegisteredChaiBlock(type);
   set(REGISTERED_CHAI_BLOCKS, type, { ...registeredBlock, component });

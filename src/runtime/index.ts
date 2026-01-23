@@ -1,8 +1,13 @@
 import { STYLES_KEY } from "@/core/constants/STRINGS.ts";
-import { ChaiBlockPropSchema, ChaiBlockSchema, ChaiBlockSchemas, ChaiBlockUiSchema } from "@/types/common.ts";
+import { ChaiBlockPropSchema, ChaiBlockPropsSchema, ChaiBlockRJSFSchemas, ChaiBlockUiSchema } from "@/types/common.ts";
 import { each, get, intersection, isEmpty, keys, omit } from "lodash-es";
 
-export const registerChaiBlockSchema = (blockSchema: ChaiBlockSchema): ChaiBlockSchemas => {
+export const registerChaiBlockSchema = (blockSchema: ChaiBlockPropsSchema): ChaiBlockRJSFSchemas => {
+  console.warn("registerChaiBlockSchema is deprecated, use registerChaiBlock instead");
+  return registerChaiBlockProps(blockSchema);
+};
+
+export const registerChaiBlockProps = (blockSchema: ChaiBlockPropsSchema): ChaiBlockRJSFSchemas => {
   const reservedProps = ["_type", "_id", "_parent", "_bindings", "_name"];
   const runtimeProps = ["$loading", "blockProps", "inBuilder", "lang", "draft", "pageProps", "pageData", "children"];
   const propsKeys = keys(blockSchema.properties);

@@ -4,14 +4,14 @@ import {
 } from "@/routes/demo/blocks/collection-list";
 import { Component as ModalComponent, Config as ModalConfig } from "@/routes/demo/blocks/modal";
 import { registerChaiBlock } from "@/runtime";
-import { ChaiBlockComponentProps } from "@/types/blocks";
+import { ChaiBlockComponentProps, ChaiBlockConfig } from "@/types/blocks";
 
 const PaginationComponent = (props: ChaiBlockComponentProps<any>) => {
   console.log(props);
   return <div>Pagination New </div>;
 };
 
-const PaginationConfig = {
+const PaginationConfig: ChaiBlockConfig = {
   type: "Pagination",
   label: "Pagination",
   icon: "",

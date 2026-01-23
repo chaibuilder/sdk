@@ -1,4 +1,4 @@
-import type { ChaiBlockSchema } from "@/types/common";
+import type { ChaiBlockPropsSchema } from "@/types/common";
 import { registerChaiBlockSchema } from "../..";
 
 describe("registerChaiBuilderBlockProps", () => {
@@ -16,7 +16,7 @@ describe("registerChaiBuilderBlockProps", () => {
   });
 
   it("should extract UI schemas from props", () => {
-    const input: ChaiBlockSchema = {
+    const input: ChaiBlockPropsSchema = {
       properties: {
         title: {
           type: "string",
@@ -58,7 +58,7 @@ describe("registerChaiBuilderBlockProps", () => {
   });
 
   it("should handle mixed props with and without UI schemas", () => {
-    const input: ChaiBlockSchema = {
+    const input: ChaiBlockPropsSchema = {
       properties: {
         title: {
           type: "string",
@@ -98,7 +98,7 @@ describe("registerChaiBuilderBlockProps", () => {
   });
 
   it("should handle root level UI schema", () => {
-    const input: ChaiBlockSchema = {
+    const input: ChaiBlockPropsSchema = {
       properties: {
         title: {
           type: "string",
@@ -128,7 +128,7 @@ describe("registerChaiBuilderBlockProps", () => {
   });
 
   it("should merge root and prop level UI schemas", () => {
-    const input: ChaiBlockSchema = {
+    const input: ChaiBlockPropsSchema = {
       properties: {
         title: {
           type: "string",

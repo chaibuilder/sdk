@@ -1,5 +1,5 @@
 import { builderProp, closestBlockProp, registerChaiBlockSchema, StylesProp } from "@/runtime";
-import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
+import { ChaiBlockComponentProps, ChaiBlockConfig, ChaiStyles } from "@/types/blocks";
 
 type Sort = {
   field: string;
@@ -41,7 +41,7 @@ const Component = (props: ChaiBlockComponentProps<CollectionListProps & ServerPr
   );
 };
 
-const Config = {
+const Config: ChaiBlockConfig = {
   type: "CollectionList",
   label: "Collection List",
   category: "core",
