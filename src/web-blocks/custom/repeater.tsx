@@ -1,5 +1,5 @@
-import { closestBlockProp, registerChaiBlockSchema, stylesProp } from "@/runtime";
-import { ChaiBlockComponentProps, ChaiBlockDefinition, ChaiStyles } from "@/types/blocks";
+import { closestBlockProp, registerChaiBlockProps, stylesProp } from "@/runtime";
+import { ChaiBlockComponentProps, ChaiBlockConfig, ChaiStyles } from "@/types/blocks";
 import { LoopIcon } from "@radix-ui/react-icons";
 import { isEmpty, pick } from "lodash-es";
 import * as React from "react";
@@ -70,7 +70,7 @@ export const Repeater = (props: ChaiBlockComponentProps<RepeaterProps>) => {
   );
 };
 
-export const RepeaterConfig: Omit<ChaiBlockDefinition, "component"> = {
+export const RepeaterConfig: Omit<ChaiBlockConfig, "component"> = {
   type: "Repeater",
   label: "Repeater",
   icon: LoopIcon,
@@ -82,7 +82,7 @@ export const RepeaterConfig: Omit<ChaiBlockDefinition, "component"> = {
     { _id: "A", _type: "Repeater", tag: "ul" },
     { _id: "B", _name: "Repeater Item", _type: "RepeaterItem", parentTag: "ul", _parent: "A" },
   ],
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       styles: stylesProp("grid gap-4 md:grid-cols-2 xl:grid-cols-3"),
       paginationStyles: stylesProp("flex items-center justify-center gap-2 p-4"),
@@ -134,7 +134,6 @@ export const RepeaterConfig: Omit<ChaiBlockDefinition, "component"> = {
               title: "Pagination Strategy",
               default: "segment",
               enum: ["query", "segment"],
-              enumNames: ["Query(/items?page=1)", "Segment(/items/1)"],
             },
             limit: {
               type: "number",
@@ -202,13 +201,13 @@ export const RepeaterItem = ({
   return React.createElement(tag, { ...blockProps, ...styles }, children);
 };
 
-export const RepeaterItemConfig: Omit<ChaiBlockDefinition, "component"> = {
+export const RepeaterItemConfig: Omit<ChaiBlockConfig, "component"> = {
   type: "RepeaterItem",
   label: "Repeater Item",
   icon: LoopIcon,
   hidden: true,
   group: "basic",
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       styles: stylesProp(""),
       parentTag: closestBlockProp("Repeater", "tag"),
@@ -232,12 +231,12 @@ export const RepeaterEmptyState = ({
   return React.createElement("div", { ...blockProps, ...styles }, children);
 };
 
-export const RepeaterEmptyStateConfig: Omit<ChaiBlockDefinition, "component"> = {
+export const RepeaterEmptyStateConfig: Omit<ChaiBlockConfig, "component"> = {
   type: "RepeaterEmptyState",
   label: "Empty State",
   hidden: true,
   group: "basic",
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: { styles: stylesProp("p-5 flex items-center justify-center") },
   }),
   canAcceptBlock: () => true,

@@ -1,26 +1,26 @@
 import { getBlocksFromHTML } from "@/core/import-html/html-to-json";
-import { syncBlocksWithDefaults } from "@/runtime";
+import { syncBlocksWithDefaultProps } from "@/runtime";
 import { describe, expect, it, vi } from "vitest";
 
 // Mock the runtime module
 vi.mock("@/runtime", () => ({
-  syncBlocksWithDefaults: vi.fn((blocks) => blocks),
+  syncBlocksWithDefaultProps: vi.fn((blocks) => blocks),
 }));
 
-describe("ImportHTML - syncBlocksWithDefaults integration", () => {
-  it("should call syncBlocksWithDefaults when importing HTML with empty heading", () => {
+describe("ImportHTML - syncBlocksWithDefaultProps integration", () => {
+  it("should call syncBlocksWithDefaultProps when importing HTML with empty heading", () => {
     // HTML snippet with an empty heading (common scenario that causes the crash)
     const html = '<h1 class="text-2xl"></h1>';
 
     const blocks = getBlocksFromHTML(html);
-    const syncedBlocks = syncBlocksWithDefaults(blocks);
+    const syncedBlocks = syncBlocksWithDefaultProps(blocks);
 
-    // Verify that syncBlocksWithDefaults was called
-    expect(vi.mocked(syncBlocksWithDefaults)).toHaveBeenCalledWith(blocks);
+    // Verify that syncBlocksWithDefaultProps was called
+    expect(vi.mocked(syncBlocksWithDefaultProps)).toHaveBeenCalledWith(blocks);
     expect(syncedBlocks).toBeDefined();
   });
 
-  it("should call syncBlocksWithDefaults when importing HTML with multiple blocks", () => {
+  it("should call syncBlocksWithDefaultProps when importing HTML with multiple blocks", () => {
     const html = `
       <div class="container">
         <h1></h1>
@@ -30,9 +30,9 @@ describe("ImportHTML - syncBlocksWithDefaults integration", () => {
     `;
 
     const blocks = getBlocksFromHTML(html);
-    const syncedBlocks = syncBlocksWithDefaults(blocks);
+    const syncedBlocks = syncBlocksWithDefaultProps(blocks);
 
-    expect(vi.mocked(syncBlocksWithDefaults)).toHaveBeenCalled();
+    expect(vi.mocked(syncBlocksWithDefaultProps)).toHaveBeenCalled();
     expect(syncedBlocks).toBeDefined();
   });
 
@@ -40,9 +40,9 @@ describe("ImportHTML - syncBlocksWithDefaults integration", () => {
     const html = '<p class="text-base"></p>';
 
     const blocks = getBlocksFromHTML(html);
-    const syncedBlocks = syncBlocksWithDefaults(blocks);
+    const syncedBlocks = syncBlocksWithDefaultProps(blocks);
 
-    expect(vi.mocked(syncBlocksWithDefaults)).toHaveBeenCalledWith(blocks);
+    expect(vi.mocked(syncBlocksWithDefaultProps)).toHaveBeenCalledWith(blocks);
     expect(syncedBlocks).toBeDefined();
   });
 
@@ -65,9 +65,9 @@ describe("ImportHTML - syncBlocksWithDefaults integration", () => {
     `;
 
     const blocks = getBlocksFromHTML(html);
-    const syncedBlocks = syncBlocksWithDefaults(blocks);
+    const syncedBlocks = syncBlocksWithDefaultProps(blocks);
 
-    expect(vi.mocked(syncBlocksWithDefaults)).toHaveBeenCalled();
+    expect(vi.mocked(syncBlocksWithDefaultProps)).toHaveBeenCalled();
     expect(syncedBlocks).toBeDefined();
   });
 });

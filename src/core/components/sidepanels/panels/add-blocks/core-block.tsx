@@ -3,7 +3,7 @@ import { useDragAndDrop, useIsDragAndDropEnabled } from "@/core/components/canva
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
 import { pubsub } from "@/core/pubsub";
 import { useAddBlock } from "@/hooks/use-add-block";
-import { syncBlocksWithDefaults } from "@/runtime";
+import { syncBlocksWithDefaultProps } from "@/runtime";
 import { BoxIcon } from "@radix-ui/react-icons";
 import { capitalize, has, isFunction, kebabCase } from "lodash-es";
 import { createElement } from "react";
@@ -25,7 +25,7 @@ export const CoreBlock = ({
   const addBlockToPage = () => {
     if (has(block, "blocks")) {
       const blocks = isFunction(block.blocks) ? block.blocks() : block.blocks;
-      addPredefinedBlock(syncBlocksWithDefaults(blocks), parentId || null, position);
+      addPredefinedBlock(syncBlocksWithDefaultProps(blocks), parentId || null, position);
     } else {
       addCoreBlock(block, parentId || null, position);
     }

@@ -23,7 +23,7 @@ import { isPageLoadedAtom } from "@/hooks/use-is-page-loaded";
 import { useKeyEventWatcher } from "@/hooks/use-key-event-watcher";
 import { useWatchPartailBlocks } from "@/hooks/use-partial-blocks-store";
 import { builderSaveStateAtom } from "@/hooks/use-save-page";
-import { syncBlocksWithDefaults } from "@/runtime";
+import { syncBlocksWithDefaultProps } from "@/runtime";
 import { ChaiBuilderEditorProps } from "@/types";
 import { ChaiBuilderThemeValues } from "@/types/types";
 import { useAtom } from "jotai";
@@ -66,7 +66,7 @@ const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
     setIsPageLoaded(false);
     // Added delay to allow the pageId to be set
     setTimeout(() => {
-      const withDefaults = syncBlocksWithDefaults(props.blocks || []);
+      const withDefaults = syncBlocksWithDefaultProps(props.blocks || []);
       // @ts-ignore
       setAllBlocks(withDefaults);
       if (withDefaults && withDefaults.length > 0) {

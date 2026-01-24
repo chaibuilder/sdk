@@ -24,7 +24,7 @@ import { useCanvasIframe } from "@/hooks/use-canvas-iframe";
 import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
 import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
 import { useUpdateBlocksProps } from "@/hooks/use-update-blocks-props";
-import { syncBlocksWithDefaults } from "@/runtime";
+import { syncBlocksWithDefaultProps } from "@/runtime";
 import { ChaiBlock } from "@/types/common";
 import { useAtom } from "jotai";
 import { filter, find, get, has, isFunction } from "lodash-es";
@@ -176,7 +176,7 @@ export const useBlockDrop = () => {
         const preBlocks = !draggedBlock?.blocks
           ? null
           : isFunction(draggedBlock?.blocks)
-            ? syncBlocksWithDefaults(draggedBlock?.blocks())
+            ? syncBlocksWithDefaultProps(draggedBlock?.blocks())
             : draggedBlock?.blocks;
 
         if (draggedBlockType === "PartialBlock") {

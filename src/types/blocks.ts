@@ -1,7 +1,10 @@
 import React from "react";
 import { ChaiBlock, ChaiBlockSchema, ChaiBlockUiSchema, ChaiPageProps } from "./common";
 
-export type ChaiBlockComponentProps<BlockProps, PageData = Record<string, unknown>> = ChaiBlock<BlockProps> & {
+export type ChaiBlockComponentProps<
+  BlockProps = unknown,
+  PageData = Record<string, unknown>,
+> = ChaiBlock<BlockProps> & {
   // Chai Block Props
   $loading?: boolean;
   blockProps: Record<string, string>;
@@ -24,9 +27,8 @@ export type ChaiDataProviderArgs<T = Record<string, any>, K = Record<string, any
   block: ChaiBlock<T>;
 } & K;
 
-export interface ChaiBlockDefinition<T = Record<string, any>, K = Record<string, any>> {
+export interface ChaiBlockConfig {
   // required
-  component: React.ComponentType<ChaiBlockComponentProps<T>>;
   type: string;
   label: string;
   group: string;
@@ -45,12 +47,22 @@ export interface ChaiBlockDefinition<T = Record<string, any>, K = Record<string,
     lang: string;
     draft: boolean;
     inBuilder: boolean;
-    block: ChaiBlock<T>;
+    block: ChaiBlock;
     pageProps: ChaiPageProps;
-  }) => K;
+  }) => Record<string, unknown>;
 
   //props
+  props?: {
+    schema: ChaiBlockSchema;
+    uiSchema: ChaiBlockUiSchema;
+  };
+  /**
+   * @deprecated Use props.schema instead
+   */
   schema?: ChaiBlockSchema;
+  /**
+   * @deprecated Use props.uiSchema instead
+   */
   uiSchema?: ChaiBlockUiSchema;
 
   i18nProps?: string[];
@@ -65,15 +77,15 @@ export interface ChaiBlockDefinition<T = Record<string, any>, K = Record<string,
   canBeNested?: (type: string) => boolean;
 }
 
-export interface ChaiServerBlockDefinition<T = Record<string, any>, K = Record<string, any>> {
-  component: React.ComponentType<ChaiBlockComponentProps<T>>;
+export interface ChaiServerBlockConfig {
+  component: React.ComponentType<ChaiBlockComponentProps>;
   type: string;
   dataProvider?: (args: {
     draft: boolean;
     inBuilder: boolean;
     lang: string;
-    block: ChaiBlock<T>;
+    block: ChaiBlock;
     pageProps: ChaiPageProps;
-  }) => Promise<K>;
+  }) => Promise<Record<string, unknown>>;
   suspenseFallback?: React.ComponentType<any>;
 }

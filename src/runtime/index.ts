@@ -1,8 +1,13 @@
 import { STYLES_KEY } from "@/core/constants/STRINGS.ts";
-import { ChaiBlockPropSchema, ChaiBlockSchema, ChaiBlockSchemas, ChaiBlockUiSchema } from "@/types/common.ts";
+import { ChaiBlockPropsSchema, ChaiBlockRJSFSchemas, ChaiBlockUiSchema } from "@/types/common.ts";
 import { each, get, intersection, isEmpty, keys, omit } from "lodash-es";
 
-export const registerChaiBlockSchema = (blockSchema: ChaiBlockSchema): ChaiBlockSchemas => {
+export const registerChaiBlockSchema = (blockSchema: ChaiBlockPropsSchema): ChaiBlockRJSFSchemas => {
+  console.warn("registerChaiBlockSchema is deprecated, use registerChaiBlockProps instead");
+  return registerChaiBlockProps(blockSchema);
+};
+
+export const registerChaiBlockProps = (blockSchema: ChaiBlockPropsSchema): ChaiBlockRJSFSchemas => {
   const reservedProps = ["_type", "_id", "_parent", "_bindings", "_name"];
   const runtimeProps = ["$loading", "blockProps", "inBuilder", "lang", "draft", "pageProps", "pageData", "children"];
   const propsKeys = keys(blockSchema.properties);
@@ -15,7 +20,7 @@ export const registerChaiBlockSchema = (blockSchema: ChaiBlockSchema): ChaiBlock
     throw new Error(`Runtime props are not allowed in schema: ${intersection(propsKeys, runtimeProps).join(", ")}`);
   }
 
-  const schema = get(blockSchema, "properties", {}) as Record<string, ChaiBlockPropSchema>;
+  const schema = get(blockSchema, "properties", {}) as Record<string, ChaiBlockPropsSchema>;
   const uiSchema = {} as Record<string, ChaiBlockUiSchema>;
   each(schema, (prop, key) => {
     if (!isEmpty(prop.ui)) {
@@ -29,7 +34,23 @@ export const registerChaiBlockSchema = (blockSchema: ChaiBlockSchema): ChaiBlock
   };
 };
 
-export const StylesProp = (defaultClasses: string = ""): ChaiBlockPropSchema => {
+/**
+ * Helper to get schema from block config, supporting both old and new formats
+ * @internal
+ */
+export const getBlockSchema = (config: { props?: { schema?: any }; schema?: any }) => {
+  return config.props?.schema || config.schema;
+};
+
+/**
+ * Helper to get uiSchema from block config, supporting both old and new formats
+ * @internal
+ */
+export const getBlockUiSchema = (config: { props?: { uiSchema?: any }; uiSchema?: any }) => {
+  return config.props?.uiSchema || config.uiSchema;
+};
+
+export const StylesProp = (defaultClasses: string = ""): ChaiBlockPropsSchema => {
   console.warn("StylesProp is deprecated, use stylesProp instead");
   return {
     type: "string",
@@ -39,7 +60,7 @@ export const StylesProp = (defaultClasses: string = ""): ChaiBlockPropSchema => 
   };
 };
 
-export const stylesProp = (defaultClasses: string = ""): ChaiBlockPropSchema => {
+export const stylesProp = (defaultClasses: string = ""): ChaiBlockPropsSchema => {
   return {
     type: "string",
     styles: true,
@@ -48,7 +69,7 @@ export const stylesProp = (defaultClasses: string = ""): ChaiBlockPropSchema => 
   };
 };
 
-export const runtimeProp = (options: ChaiBlockPropSchema): ChaiBlockPropSchema => {
+export const runtimeProp = (options: ChaiBlockPropsSchema): ChaiBlockPropsSchema => {
   console.warn("runtimeProp is deprecated, use builderProp instead");
   return {
     runtime: true,
@@ -56,7 +77,7 @@ export const runtimeProp = (options: ChaiBlockPropSchema): ChaiBlockPropSchema =
   };
 };
 
-export const builderProp = (options: ChaiBlockPropSchema): ChaiBlockPropSchema => {
+export const builderProp = (options: ChaiBlockPropsSchema): ChaiBlockPropsSchema => {
   return {
     builderProp: true,
     ...options,

@@ -9,6 +9,7 @@ import {
   registerChaiServerBlock,
   setChaiBlockComponent,
   setChaiServerBlockDataProvider,
+  syncBlocksWithDefaultProps,
   syncBlocksWithDefaults,
   useRegisteredChaiBlock,
   useRegisteredChaiBlocks,
@@ -33,6 +34,7 @@ export {
   setChaiBlockDataProvider,
   setChaiServerBlockDataProvider,
   // helpers
+  syncBlocksWithDefaultProps,
   syncBlocksWithDefaults,
   // hooks
   useRegisteredChaiBlock,

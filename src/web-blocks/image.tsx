@@ -1,4 +1,4 @@
-import { registerChaiBlockSchema, stylesProp } from "@/runtime";
+import { registerChaiBlockProps, stylesProp } from "@/runtime";
 import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import EmptySlot from "@/web-blocks/empty-slot";
 import { ImageIcon } from "@radix-ui/react-icons";
@@ -50,7 +50,7 @@ const Config = {
   category: "core",
   icon: ImageIcon,
   group: "media",
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       styles: stylesProp("w-full h-full object-cover"),
       image: {

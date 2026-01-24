@@ -5,7 +5,7 @@ import {
   getBlockTagAttributes,
 } from "@/core/components/canvas/static/new-blocks-render-helpers";
 import { getRegisteredChaiBlock } from "@/runtime";
-import { ChaiBlockDefinition } from "@/types/blocks";
+import { ChaiBlockConfig } from "@/types/blocks";
 import { ChaiBlock, ChaiPageProps } from "@/types/common";
 import { get, has, isArray, isFunction, isNull } from "lodash-es";
 import { createElement, Suspense } from "react";
@@ -35,7 +35,7 @@ export const RenderBlock = (
 ) => {
   const { block, lang, fallbackLang, children, externalData, blocks, draft, pageProps, dataProviderMetadataCallback } =
     props;
-  const registeredChaiBlock = getRegisteredChaiBlock(block._type) as ChaiBlockDefinition;
+  const registeredChaiBlock = getRegisteredChaiBlock(block._type) as ChaiBlockConfig;
   const Component = get(registeredChaiBlock, "component", null);
   const index = get(props.repeaterData, "index", -1);
   const dataKey = get(props.repeaterData, "dataKey", "");
