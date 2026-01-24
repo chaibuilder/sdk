@@ -90,7 +90,7 @@ export interface ChaiLoggedInUser {
   email: string;
   name: string;
   avatar?: string;
-  role: string;
+  role?: string;
 }
 
 export type ChaiUserInfo = {
