@@ -30,7 +30,7 @@ function ChaiBuilderDefault() {
         exportCode: true,
         // dataBinding: false,
         importHtml: true,
-        importTheme: false,
+        importTheme: true,
         dragAndDrop: true,
         designTokens: true,
       }}
