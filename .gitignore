@@ -32,3 +32,4 @@ live
 scratch/
 tasks/
 docs/api/
+package-lock.json

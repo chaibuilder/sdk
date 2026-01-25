@@ -207,7 +207,7 @@ export function ManualClasses({
       .replace(/ +(?= )/g, "")
       .split(" ")
       .map(convertToStorageFormat); // Convert design token names to DESIGN_TOKEN_PREFIX-{id} format
-    removeClassesFromBlocks(selectedIds, [clsToRemove]);
+    removeClassesFromBlocks(selectedIds, [clsToRemove], true);
     addClassesToBlocks(selectedIds, fullClsNames, true);
     setEditingClass("");
     setEditingClassIndex(-1);
@@ -331,7 +331,7 @@ export function ManualClasses({
                 onDoubleClick={() => {
                   setNewCls(getDisplayName(cls));
                   if (from === "default") {
-                    removeClassesFromBlocks(selectedIds, [cls]);
+                    removeClassesFromBlocks(selectedIds, [cls], true);
                   } else {
                     if (isFunction(onRemove)) onRemove(cls);
                     setNewCls(cls);
@@ -347,7 +347,7 @@ export function ManualClasses({
                   <Cross2Icon
                     onClick={() => {
                       if (from === "default") {
-                        removeClassesFromBlocks(selectedIds, [cls]);
+                        removeClassesFromBlocks(selectedIds, [cls], true);
                       } else if (isFunction(onRemove)) {
                         onRemove(cls);
                       }
