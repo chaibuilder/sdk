@@ -10,7 +10,7 @@ export const SaveButton = () => {
 
   const button = (
     <Button
-      disabled={saveState === "SAVING"}
+      disabled={saveState === "SAVING" || saveState === "SAVED"}
       onClick={(e) => {
         e.preventDefault();
         savePage();

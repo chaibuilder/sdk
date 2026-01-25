@@ -64,6 +64,10 @@ export const useSavePage = () => {
       if (!force && (!hasPermission("save_page") || !isPageLoaded)) {
         return;
       }
+      // Prevent save if there are no unsaved changes
+      if (!force && saveState === "SAVED") {
+        return;
+      }
       // Run structure validation before saving
       const pageData = getPageData();
       if (pageData?.blocks) {
@@ -102,6 +106,10 @@ export const useSavePage = () => {
 
   const savePageAsync = async (force: boolean = false) => {
     if (!force && (!hasPermission("save_page") || !isPageLoaded)) {
+      return;
+    }
+    // Prevent save if there are no unsaved changes
+    if (!force && saveState === "SAVED") {
       return;
     }
     setSaveState("SAVING");
