@@ -47,8 +47,9 @@ class SupabaseChannelAdapter implements RealtimeChannelAdapter {
 
   onPresence(event: string, callback: () => void): void {
     // Supabase expects presence events in the format { event: 'sync' | 'join' | 'leave' }
-    // TypeScript definitions for Supabase don't properly support presence events,
-    // so we need to use type assertion here
+    // TypeScript definitions for Supabase don't properly support presence events as of v2.90.1,
+    // requiring the use of type assertion to access the presence event handlers.
+    // This is a known limitation in Supabase's type definitions for RealtimeChannel.
     (this.channel as any).on("presence", { event: event as SupabasePresenceEvent }, callback);
   }
 

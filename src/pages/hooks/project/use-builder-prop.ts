@@ -15,8 +15,11 @@ export const useApiUrl = () => {
 
 /**
  * @deprecated Use useRealtimeAdapter instead. This will be removed in future versions.
+ * @returns Supabase RealtimeClient or null
  */
 export const useWebsocket = () => {
+  // Using any because this is a legacy API that accepts Supabase RealtimeClient
+  // which is not imported here to avoid hard dependency
   return usePagesProp("websocket", null) as any | null;
 };
 
@@ -30,6 +33,8 @@ export const useWebsocket = () => {
  */
 export const useRealtimeAdapter = (): RealtimeAdapter | null => {
   const realtimeAdapter = usePagesProp("realtimeAdapter", null) as RealtimeAdapter | null;
+  // Using any for legacy websocket because it's a Supabase RealtimeClient
+  // which is not imported here to keep this module independent of Supabase
   const legacyWebsocket = usePagesProp("websocket", null) as any | null;
 
   return useMemo(() => {
