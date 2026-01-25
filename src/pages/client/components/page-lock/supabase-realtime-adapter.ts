@@ -13,6 +13,11 @@ import type {
 } from "./realtime-adapter";
 
 /**
+ * Supabase presence event configuration
+ */
+type SupabasePresenceEvent = "sync" | "join" | "leave";
+
+/**
  * Wraps a Supabase RealtimeChannel to match the RealtimeChannelAdapter interface
  */
 class SupabaseChannelAdapter implements RealtimeChannelAdapter {
@@ -41,10 +46,14 @@ class SupabaseChannelAdapter implements RealtimeChannelAdapter {
   }
 
   onPresence(event: string, callback: () => void): void {
-    this.channel.on("presence" as any, { event }, callback);
+    // Supabase expects presence events in the format { event: 'sync' | 'join' | 'leave' }
+    // TypeScript definitions for Supabase don't properly support presence events,
+    // so we need to use type assertion here
+    (this.channel as any).on("presence", { event: event as SupabasePresenceEvent }, callback);
   }
 
   async send(event: string, payload: any): Promise<void> {
+    // Supabase expects the payload to be wrapped with event and type
     await this.channel.send({ event, payload, type: "broadcast" });
   }
 
