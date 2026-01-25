@@ -23,7 +23,7 @@ export { ChaiWebsiteBuilder, NestedPathSelector };
 export { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
 export { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
 export { useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
-export { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
+export { useApiUrl, useRealtimeAdapter } from "@/pages/hooks/project/use-builder-prop";
 export { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
 export { useChaiAuth } from "@/pages/hooks/use-chai-auth";
 export { useUserRoleAndPermissions as useUserPermissions } from "@/pages/hooks/user/use-user-permissions";
@@ -39,3 +39,13 @@ export {
   useReloadPage,
   useUpdateActivePageMetadata,
 };
+
+/** Realtime Adapters */
+export type {
+  ChannelStatus,
+  PresenceState,
+  RealtimeAdapter,
+  RealtimeChannelAdapter,
+  RealtimeEventPayload,
+} from "@/pages/client/components/page-lock/realtime-adapter";
+export { SupabaseRealtimeAdapter } from "@/pages/client/components/page-lock/supabase-realtime-adapter";
