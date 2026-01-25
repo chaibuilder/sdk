@@ -49,3 +49,4 @@ export type {
   RealtimeEventPayload,
 } from "@/pages/client/components/page-lock/realtime-adapter";
 export { SupabaseRealtimeAdapter } from "@/pages/client/components/page-lock/supabase-realtime-adapter";
+export { createRealtimeAdapter } from "@/pages/client/components/page-lock/create-realtime-adapter";
