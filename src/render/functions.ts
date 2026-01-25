@@ -2,13 +2,35 @@ import { getSplitChaiClasses } from "@/hooks/get-split-classes";
 import { ChaiBlock } from "@/types/common";
 import { cloneDeep, flattenDeep, get, isEmpty, last } from "lodash-es";
 
-export function getMergedPartialBlocks(blocks: ChaiBlock[], partials: Record<string, ChaiBlock[]>) {
+/**
+ * Recursively merges partial blocks into the main blocks array
+ * @param blocks - Array of blocks to process
+ * @param partials - Record of partial block definitions
+ * @param visitedStack - Stack tracking currently processing partials to detect circular dependencies
+ * @returns Merged blocks array with all partials resolved
+ * @throws Error if circular dependency is detected
+ */
+export function getMergedPartialBlocks(
+  blocks: ChaiBlock[],
+  partials: Record<string, ChaiBlock[]>,
+  visitedStack: string[] = [],
+): ChaiBlock[] {
   const partialBlocksList = blocks.filter((block) => block._type === "GlobalBlock" || block._type === "PartialBlock");
 
   for (let i = 0; i < partialBlocksList.length; i++) {
     const partialBlock = partialBlocksList[i];
     const partialBlockId = get(partialBlock, "partialBlockId", get(partialBlock, "globalBlock", ""));
     if (partialBlockId === "") continue;
+
+    // Check for circular dependency
+    if (visitedStack.includes(partialBlockId)) {
+      const circularChain = [...visitedStack, partialBlockId].join(" -> ");
+      throw new Error(
+        `Circular dependency detected in partial blocks: ${circularChain}. ` +
+          `Partial "${partialBlockId}" is already being processed in the dependency chain.`,
+      );
+    }
+
     let partialBlocks = cloneDeep(get(partials, partialBlockId, []));
     if (partialBlock._parent && partialBlocks?.length > 0) {
       partialBlocks = partialBlocks.map((block) => {
@@ -18,6 +40,12 @@ export function getMergedPartialBlocks(blocks: ChaiBlock[], partials: Record<str
         return block;
       });
     }
+
+    // Recursively process nested partials in the fetched partial blocks
+    if (partialBlocks.length > 0) {
+      partialBlocks = getMergedPartialBlocks(partialBlocks, partials, [...visitedStack, partialBlockId]);
+    }
+
     const index = blocks.indexOf(partialBlock);
     blocks.splice(index, 1, ...partialBlocks);
   }
