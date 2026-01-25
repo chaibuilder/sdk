@@ -37,7 +37,7 @@ import { ChaiBuilderEditor } from "@/core/main";
 | `dataBinding`       | `false` | Enable data binding features           |
 | `dragAndDrop`       | `true`  | Enable drag and drop                   |
 | `validateStructure` | `false` | Enable HTML structure validation       |
-| `designTokens`      | `false` | Enable design tokens feature           |
+| `designTokens`      | `true`  | Enable design tokens feature           |
 | `librarySite`       | `false` | Enable library site features           |
 | `gotoSettings`      | `false` | Enable settings navigation             |
 
