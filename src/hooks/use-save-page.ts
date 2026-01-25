@@ -59,13 +59,21 @@ export const useSavePage = () => {
       : checkMissingTranslations(pageData.blocks || [], selectedLang);
   };
 
+  const shouldSkipSave = (force: boolean) => {
+    // Skip save if no permission or page not loaded
+    if (!force && (!hasPermission("save_page") || !isPageLoaded)) {
+      return true;
+    }
+    // Skip save if there are no unsaved changes
+    if (!force && saveState === "SAVED") {
+      return true;
+    }
+    return false;
+  };
+
   const savePage = useThrottledCallback(
     async (autoSave: boolean = false, force: boolean = false) => {
-      if (!force && (!hasPermission("save_page") || !isPageLoaded)) {
-        return;
-      }
-      // Prevent save if there are no unsaved changes
-      if (!force && saveState === "SAVED") {
+      if (shouldSkipSave(force)) {
         return;
       }
       // Run structure validation before saving
@@ -105,11 +113,7 @@ export const useSavePage = () => {
   );
 
   const savePageAsync = async (force: boolean = false) => {
-    if (!force && (!hasPermission("save_page") || !isPageLoaded)) {
-      return;
-    }
-    // Prevent save if there are no unsaved changes
-    if (!force && saveState === "SAVED") {
+    if (shouldSkipSave(force)) {
       return;
     }
     setSaveState("SAVING");
