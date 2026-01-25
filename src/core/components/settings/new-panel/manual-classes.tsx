@@ -101,7 +101,7 @@ export function ManualClasses({
   };
 
   const [suggestions, setSuggestions] = useState<any[]>([]);
-  const designTokensEnabled = useBuilderProp("flags.designTokens", false);
+  const designTokensEnabled = useBuilderProp("flags.designTokens", true);
   const handleSuggestionsFetchRequested = ({ value }: any) => {
     const search = value.trim().toLowerCase();
     const matches = search.match(/.+:/g);
