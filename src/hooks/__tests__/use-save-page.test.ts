@@ -2,7 +2,7 @@ import { checkMissingTranslations, useSavePage, builderSaveStateAtom } from "@/h
 import { builderStore } from "@/atoms/store";
 import { userActionsCountAtom } from "@/atoms/builder";
 import { getRegisteredChaiBlock } from "@/runtime";
-import { act, renderHook, waitFor } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("@/runtime", async (importOriginal) => {
@@ -391,24 +391,22 @@ describe("useSavePage - prevent save when no unsaved changes", () => {
       expect.objectContaining({
         blocks: mockBlocks,
         theme: expect.any(Object),
+        designTokens: expect.any(Object),
       }),
     );
   });
 
-  it("should call checkStructure before saving", async () => {
+  it("should not call checkStructure when using savePageAsync", async () => {
     builderStore.set(builderSaveStateAtom, "UNSAVED");
     const mockBlocks = [{ _id: "1", _type: "Container" }];
     mockGetPageData.mockReturnValue({ blocks: mockBlocks });
 
     const { result } = renderHook(() => useSavePage());
 
-    // savePageAsync doesn't call checkStructure, so let's skip this test
-    // or modify to test that it doesn't call it
     await act(async () => {
       await result.current.savePageAsync(false);
     });
 
-    // savePageAsync doesn't call checkStructure, only savePage does
     expect(mockCheckStructure).not.toHaveBeenCalled();
   });
 });
