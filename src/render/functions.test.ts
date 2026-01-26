@@ -1,4 +1,4 @@
-import { addPrefixToClasses, convertToBlocks, getMergedPartialBlocks } from "@/render/functions";
+import { addPrefixToClasses, convertToBlocks, getMergedPartialBlocks, checkCircularDependency } from "@/render/functions";
 import { ChaiBlock } from "@/types/common";
 
 // Test getMergedPartialBlocks function
@@ -260,6 +260,83 @@ describe("getMergedPartialBlocks", () => {
       expect(result[0]._type).toBe("PartialBlock");
       expect(result[1]._type).toBe("Container");
     });
+  });
+});
+
+// Test checkCircularDependency function
+describe("checkCircularDependency", () => {
+  it("should return no circular dependency when no partialBlockId provided", () => {
+    const blocks: ChaiBlock[] = [
+      { _type: "PartialBlock", _id: "p1", partialBlockId: "header" },
+    ];
+    const result = checkCircularDependency(blocks, undefined, {});
+    expect(result.hasCircularDependency).toBe(false);
+  });
+
+  it("should detect direct self-reference", () => {
+    const blocks: ChaiBlock[] = [
+      { _type: "PartialBlock", _id: "p1", partialBlockId: "partial-a" },
+    ];
+    const result = checkCircularDependency(blocks, "partial-a", {});
+    expect(result.hasCircularDependency).toBe(true);
+    expect(result.error).toMatch(/cannot add partial.*to itself/i);
+  });
+
+  it("should detect indirect circular dependency (2 levels)", () => {
+    const blocks: ChaiBlock[] = [
+      { _type: "PartialBlock", _id: "p1", partialBlockId: "partial-b" },
+    ];
+    const partials: Record<string, ChaiBlock[]> = {
+      "partial-b": [
+        { _type: "Section", _id: "s1" },
+        { _type: "PartialBlock", _id: "p2", partialBlockId: "partial-a" },
+      ],
+    };
+    const result = checkCircularDependency(blocks, "partial-a", partials);
+    expect(result.hasCircularDependency).toBe(true);
+    expect(result.error).toMatch(/circular dependency/i);
+  });
+
+  it("should detect complex circular dependency (3 levels)", () => {
+    const blocks: ChaiBlock[] = [
+      { _type: "PartialBlock", _id: "p1", partialBlockId: "partial-b" },
+    ];
+    const partials: Record<string, ChaiBlock[]> = {
+      "partial-b": [{ _type: "PartialBlock", _id: "p2", partialBlockId: "partial-c" }],
+      "partial-c": [{ _type: "PartialBlock", _id: "p3", partialBlockId: "partial-a" }],
+    };
+    const result = checkCircularDependency(blocks, "partial-a", partials);
+    expect(result.hasCircularDependency).toBe(true);
+    expect(result.error).toMatch(/circular dependency/i);
+  });
+
+  it("should allow valid nested partial references", () => {
+    const blocks: ChaiBlock[] = [
+      { _type: "PartialBlock", _id: "p1", partialBlockId: "header" },
+    ];
+    const partials: Record<string, ChaiBlock[]> = {
+      header: [
+        { _type: "Nav", _id: "n1" },
+        { _type: "PartialBlock", _id: "p2", partialBlockId: "logo" },
+      ],
+      logo: [{ _type: "Image", _id: "img1" }],
+    };
+    const result = checkCircularDependency(blocks, "partial-a", partials);
+    expect(result.hasCircularDependency).toBe(false);
+  });
+
+  it("should handle multiple partial references in blocks", () => {
+    const blocks: ChaiBlock[] = [
+      { _type: "PartialBlock", _id: "p1", partialBlockId: "header" },
+      { _type: "Container", _id: "c1" },
+      { _type: "PartialBlock", _id: "p2", partialBlockId: "footer" },
+    ];
+    const partials: Record<string, ChaiBlock[]> = {
+      header: [{ _type: "Nav", _id: "n1" }],
+      footer: [{ _type: "Footer", _id: "f1" }],
+    };
+    const result = checkCircularDependency(blocks, "partial-a", partials);
+    expect(result.hasCircularDependency).toBe(false);
   });
 });
 

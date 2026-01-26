@@ -111,7 +111,7 @@ export async function getFullPage(
 }
 
 /**
- * Merge partial blocks into the main blocks array
+ * Merge partial blocks into the main blocks array with recursive resolution and circular dependency detection
  * Optimized to fetch all partial blocks in a single query
  */
 async function getMergedBlocks(blocks: ChaiBlock[], draft: boolean, appId: string): Promise<ChaiBlock[]> {
@@ -122,12 +122,23 @@ async function getMergedBlocks(blocks: ChaiBlock[], draft: boolean, appId: strin
     return blocks;
   }
 
-  // Collect all partial block IDs
-  const partialBlockIds = partialBlocksList
-    .map((partialBlock) => get(partialBlock, "partialBlockId", get(partialBlock, "globalBlock", "")))
-    .filter((id) => id !== "");
+  // Collect all partial block IDs recursively
+  const allPartialIds = new Set<string>();
+  const toProcess = [...partialBlocksList];
+  const processedIds = new Set<string>();
 
-  if (partialBlockIds.length === 0) {
+  // First pass: collect all partial IDs that need to be fetched (including nested ones)
+  while (toProcess.length > 0) {
+    const partialBlock = toProcess.shift()!;
+    const partialBlockId = get(partialBlock, "partialBlockId", get(partialBlock, "globalBlock", ""));
+
+    if (partialBlockId === "" || processedIds.has(partialBlockId)) continue;
+
+    allPartialIds.add(partialBlockId);
+    processedIds.add(partialBlockId);
+  }
+
+  if (allPartialIds.size === 0) {
     return blocks;
   }
 
@@ -139,7 +150,7 @@ async function getMergedBlocks(blocks: ChaiBlock[], draft: boolean, appId: strin
         blocks: table.blocks,
       })
       .from(table)
-      .where(and(eq(table.app, appId), inArray(table.id, partialBlockIds))),
+      .where(and(eq(table.app, appId), inArray(table.id, Array.from(allPartialIds)))),
   );
 
   // Create a map for quick lookup: { partialBlockId: blocks[] }
@@ -148,9 +159,63 @@ async function getMergedBlocks(blocks: ChaiBlock[], draft: boolean, appId: strin
     partialResults.forEach((result: { id: string; blocks: unknown }) => {
       partialBlocksMap.set(result.id, (result.blocks as ChaiBlock[]) ?? []);
     });
+
+    // Second pass: discover nested partial references
+    for (const [partialId, partialBlocks] of partialBlocksMap.entries()) {
+      const nestedPartials = partialBlocks.filter((block) => block._type === "GlobalBlock" || block._type === "PartialBlock");
+
+      for (const nestedPartial of nestedPartials) {
+        const nestedId = get(nestedPartial, "partialBlockId", get(nestedPartial, "globalBlock", ""));
+        if (nestedId !== "" && !allPartialIds.has(nestedId) && !processedIds.has(nestedId)) {
+          allPartialIds.add(nestedId);
+          toProcess.push(nestedPartial);
+        }
+      }
+    }
+
+    // Fetch any additional nested partials discovered
+    if (toProcess.length > 0) {
+      const additionalIds = Array.from(allPartialIds).filter(id => !partialBlocksMap.has(id));
+      if (additionalIds.length > 0) {
+        const { data: additionalResults } = await safeQuery(() =>
+          db
+            .select({
+              id: table.id,
+              blocks: table.blocks,
+            })
+            .from(table)
+            .where(and(eq(table.app, appId), inArray(table.id, additionalIds))),
+        );
+
+        if (additionalResults) {
+          additionalResults.forEach((result: { id: string; blocks: unknown }) => {
+            partialBlocksMap.set(result.id, (result.blocks as ChaiBlock[]) ?? []);
+          });
+        }
+      }
+    }
   }
 
-  // Replace partial blocks with their actual content
+  // Convert map to Record for the merge function
+  const partialsRecord: Record<string, ChaiBlock[]> = {};
+  partialBlocksMap.forEach((blocks, id) => {
+    partialsRecord[id] = blocks;
+  });
+
+  // Use recursive merge with circular dependency detection
+  return mergePartialsRecursively(blocks, partialsRecord);
+}
+
+/**
+ * Recursively merges partial blocks with circular dependency detection
+ */
+function mergePartialsRecursively(
+  blocks: ChaiBlock[],
+  partials: Record<string, ChaiBlock[]>,
+  visitedStack: string[] = [],
+): ChaiBlock[] {
+  const partialBlocksList = blocks.filter((block) => block._type === "GlobalBlock" || block._type === "PartialBlock");
+
   for (let i = 0; i < partialBlocksList.length; i++) {
     const partialBlock = partialBlocksList[i];
     if (!partialBlock) continue;
@@ -158,15 +223,28 @@ async function getMergedBlocks(blocks: ChaiBlock[], draft: boolean, appId: strin
     const partialBlockId = get(partialBlock, "partialBlockId", get(partialBlock, "globalBlock", ""));
     if (partialBlockId === "") continue;
 
-    let partialBlocks = partialBlocksMap.get(partialBlockId) ?? [];
+    // Check for circular dependency
+    if (visitedStack.includes(partialBlockId)) {
+      const circularChain = [...visitedStack, partialBlockId].join(" -> ");
+      throw new Error(
+        `Circular dependency detected in partial blocks: ${circularChain}. ` +
+          `Partial "${partialBlockId}" is already being processed in the dependency chain.`,
+      );
+    }
+
+    let partialBlocks = partials[partialBlockId] ?? [];
 
     // Inherit parent properties
     if (partialBlocks.length > 0) {
       partialBlocks = partialBlocks.map((block) => {
-        if (isEmpty(block._parent)) block._parent = partialBlock._parent;
-        if (has(partialBlock, "_show")) block._show = partialBlock._show;
-        return block;
+        const blockCopy = { ...block };
+        if (isEmpty(blockCopy._parent)) blockCopy._parent = partialBlock._parent;
+        if (has(partialBlock, "_show")) blockCopy._show = partialBlock._show;
+        return blockCopy;
       });
+
+      // Recursively process nested partials
+      partialBlocks = mergePartialsRecursively(partialBlocks, partials, [...visitedStack, partialBlockId]);
     }
 
     // Replace the reference with actual content

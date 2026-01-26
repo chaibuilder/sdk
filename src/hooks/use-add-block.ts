@@ -2,6 +2,8 @@ import { canAcceptChildBlock } from "@/core/functions/block-helpers";
 import { generateUUID } from "@/core/functions/common-functions";
 import { useBlocksStore, useBlocksStoreUndoableActions } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
+import { usePartialBlocksStore } from "@/hooks/use-partial-blocks-store";
+import { checkCircularDependency } from "@/render/functions";
 import { getDefaultBlockProps } from "@/runtime";
 import { ChaiBlock, ChaiCoreBlock } from "@/types/common";
 import { filter, find, first, forEach, has } from "lodash-es";
@@ -16,13 +18,67 @@ type AddBlocks = {
   addPredefinedBlock: any;
 };
 
+/**
+ * Get the partial block ID that contains the given block
+ * Returns undefined if the block is not inside a partial
+ */
+function getContainingPartialId(blockId: string | undefined | null, allBlocks: ChaiBlock[]): string | undefined {
+  if (!blockId) return undefined;
+
+  // Walk up the parent chain to find if we're inside a partial block
+  let currentId: string | undefined | null = blockId;
+  const visited = new Set<string>();
+
+  while (currentId && !visited.has(currentId)) {
+    visited.add(currentId);
+    const currentBlock: ChaiBlock | undefined = find(allBlocks, { _id: currentId });
+
+    if (!currentBlock) break;
+
+    // Check if this block is a partial block definition
+    // In the editor, we need to check the page context to determine if we're editing a partial
+    // For now, we'll check if the block has a partialBlockId property
+    // This is a heuristic and may need adjustment based on actual usage
+    if (currentBlock._type === "PartialBlock" || currentBlock._type === "GlobalBlock") {
+      // If we found a partial reference, we're not editing within a partial definition
+      break;
+    }
+
+    currentId = currentBlock._parent;
+  }
+
+  return undefined;
+}
+
 export const useAddBlock = (): AddBlocks => {
   const [allBlocks] = useBlocksStore();
   const [, setSelected] = useSelectedBlockIds();
   const { addBlocks } = useBlocksStoreUndoableActions();
+  const { getPartailBlocks } = usePartialBlocksStore();
 
   const addPredefinedBlock = useCallback(
     (blocks: ChaiBlock[], parentId?: string, position?: number) => {
+      // Build partials map from store for circular dependency checking
+      const partialsMap: Record<string, ChaiBlock[]> = {};
+      allBlocks.forEach((block) => {
+        const partialId = block.partialBlockId || (block as any).globalBlock;
+        if (partialId) {
+          const partialBlocks = getPartailBlocks(partialId);
+          if (partialBlocks.length > 0) {
+            partialsMap[partialId] = partialBlocks;
+          }
+        }
+      });
+
+      // Check if we're adding blocks inside a partial definition
+      const containingPartialId = getContainingPartialId(parentId, allBlocks);
+
+      // Check for circular dependencies
+      const circularCheck = checkCircularDependency(blocks, containingPartialId, partialsMap);
+      if (circularCheck.hasCircularDependency) {
+        throw new Error(circularCheck.error || "Circular dependency detected");
+      }
+
       for (let i = 0; i < blocks.length; i++) {
         const { _id } = blocks[i];
 
@@ -54,7 +110,7 @@ export const useAddBlock = (): AddBlocks => {
       setSelected([block._id]);
       return block;
     },
-    [addBlocks, allBlocks, setSelected],
+    [addBlocks, allBlocks, setSelected, getPartailBlocks],
   );
 
   const addCoreBlock = useCallback(
@@ -74,6 +130,27 @@ export const useAddBlock = (): AddBlocks => {
         ...(has(coreBlock, "_name") && { _name: coreBlock._name }),
         ...(has(coreBlock, "partialBlockId") && { partialBlockId: coreBlock.partialBlockId }),
       };
+
+      // Check for circular dependencies if this is a partial block
+      if (newBlock._type === "PartialBlock" || newBlock._type === "GlobalBlock") {
+        const partialsMap: Record<string, ChaiBlock[]> = {};
+        allBlocks.forEach((block) => {
+          const partialId = block.partialBlockId || (block as any).globalBlock;
+          if (partialId) {
+            const partialBlocks = getPartailBlocks(partialId);
+            if (partialBlocks.length > 0) {
+              partialsMap[partialId] = partialBlocks;
+            }
+          }
+        });
+
+        const containingPartialId = getContainingPartialId(parentId ?? undefined, allBlocks);
+        const circularCheck = checkCircularDependency([newBlock], containingPartialId, partialsMap);
+        if (circularCheck.hasCircularDependency) {
+          throw new Error(circularCheck.error || "Circular dependency detected");
+        }
+      }
+
       let parentBlock;
       let parentBlockId;
       if (parentId) {
@@ -93,7 +170,7 @@ export const useAddBlock = (): AddBlocks => {
       setTimeout(() => setSelected([newBlock._id]), BLOCK_SELECTION_DELAY_MS);
       return newBlock;
     },
-    [addBlocks, addPredefinedBlock, allBlocks, setSelected],
+    [addBlocks, addPredefinedBlock, allBlocks, setSelected, getPartailBlocks],
   );
 
   return { addCoreBlock, addPredefinedBlock };

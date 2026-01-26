@@ -54,6 +54,82 @@ export function getMergedPartialBlocks(
 }
 
 /**
+ * Checks if adding blocks with partial references would create a circular dependency
+ * @param blocksToAdd - Blocks being added that may contain partial references
+ * @param partialBlockId - The ID of the partial being edited (if applicable)
+ * @param partials - Record of partial block definitions
+ * @returns Object with hasCircularDependency flag and error message if circular dependency exists
+ */
+export function checkCircularDependency(
+  blocksToAdd: ChaiBlock[],
+  partialBlockId: string | undefined,
+  partials: Record<string, ChaiBlock[]>,
+): { hasCircularDependency: boolean; error?: string } {
+  if (!partialBlockId) {
+    return { hasCircularDependency: false };
+  }
+
+  // Find all partial references in the blocks being added
+  const partialRefs = blocksToAdd.filter((block) => block._type === "GlobalBlock" || block._type === "PartialBlock");
+
+  // Check each partial reference for circular dependencies
+  for (const partialRef of partialRefs) {
+    const refId = get(partialRef, "partialBlockId", get(partialRef, "globalBlock", ""));
+    if (refId === "") continue;
+
+    // Direct self-reference
+    if (refId === partialBlockId) {
+      return {
+        hasCircularDependency: true,
+        error: `Cannot add partial "${partialBlockId}" to itself. This would create a direct circular dependency.`,
+      };
+    }
+
+    // Check if this ref would create a circular dependency
+    // We need to trace the dependency chain from refId to see if it leads back to partialBlockId
+    try {
+      const visited = new Set<string>();
+      const queue = [refId];
+
+      while (queue.length > 0) {
+        const currentId = queue.shift()!;
+
+        // If we've already checked this one, skip it to avoid infinite loop
+        if (visited.has(currentId)) continue;
+        visited.add(currentId);
+
+        // If we reached back to the original partial, we have a cycle
+        if (currentId === partialBlockId) {
+          const chain = [partialBlockId, refId, ...(currentId !== refId ? [currentId] : [])].join(" -> ");
+          return {
+            hasCircularDependency: true,
+            error: `Circular dependency detected: ${chain}. Adding this block would create a circular reference.`,
+          };
+        }
+
+        // Get blocks for this partial and check for more partial references
+        const currentPartialBlocks = partials[currentId] || [];
+        const nestedRefs = currentPartialBlocks.filter(
+          (block) => block._type === "GlobalBlock" || block._type === "PartialBlock",
+        );
+
+        for (const nestedRef of nestedRefs) {
+          const nestedRefId = get(nestedRef, "partialBlockId", get(nestedRef, "globalBlock", ""));
+          if (nestedRefId !== "" && !visited.has(nestedRefId)) {
+            queue.push(nestedRefId);
+          }
+        }
+      }
+    } catch (error) {
+      // If we can't check, allow it (fail open)
+      continue;
+    }
+  }
+
+  return { hasCircularDependency: false };
+}
+
+/**
  * This function adds the prefix to the classes
  * @param classes
  * @param prefix
