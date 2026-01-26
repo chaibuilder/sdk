@@ -107,6 +107,6 @@ export const useDropIndicator = () => {
 };
 
 export const useIsDragAndDropEnabled = () => {
-  const { dragAndDrop } = useBuilderProp("flags", { dragAndDrop: false });
+  const { dragAndDrop } = useBuilderProp("flags", { dragAndDrop: true });
   return dragAndDrop;
 };

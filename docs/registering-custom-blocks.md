@@ -50,7 +50,7 @@ const Config = {
   category: "core",
   group: "basic",
   description: "A clickable button element",
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       styles: StylesProp(""),
       text: {
@@ -287,7 +287,7 @@ const Config = {
   category: "core",
   group: "layout",
   canAcceptBlock: () => true,
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       styles: StylesProp("p-4 border rounded-lg"),
     },

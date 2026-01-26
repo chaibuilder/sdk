@@ -89,7 +89,7 @@ const DefaultChaiBuilder = (props: ChaiWebsiteBuilderProps) => {
   const { getPartialBlocks, getPartialBlockBlocks } = usePartialBlocksFn();
   const { mutateAsync: searchPageTypePages } = useSearchPageTypePages();
   const { mutateAsync: updateSettings } = useUpdateWebsiteSettings();
-  const { data: siteWideUsage } = useSiteWideUsage(props.flags?.designTokens ?? false);
+  const { data: siteWideUsage } = useSiteWideUsage(props.flags?.designTokens ?? true);
   const gotoPage = useGotoPage();
 
   // * STATES

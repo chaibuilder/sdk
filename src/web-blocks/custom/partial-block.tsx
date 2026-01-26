@@ -1,4 +1,4 @@
-import { registerChaiBlockSchema } from "@/runtime";
+import { registerChaiBlockProps } from "@/runtime";
 import { ChaiBlockComponentProps } from "@/types/blocks";
 import { FrameIcon } from "@radix-ui/react-icons";
 import * as React from "react";
@@ -30,7 +30,7 @@ const Config = {
   category: "core",
   group: "basic",
   hidden: true,
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       partialBlockId: {
         type: "string",

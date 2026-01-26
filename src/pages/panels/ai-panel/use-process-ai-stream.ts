@@ -134,19 +134,20 @@ export const useProcessAiStream = () => {
     return canvasElement;
   };
 
+  const scrollElementIntoView = (element: HTMLElement) => {
+    const iframeDoc = document.getElementById("canvas-iframe") as HTMLIFrameElement;
+    const iframeWindow = iframeDoc?.contentWindow;
+    if (iframeWindow) {
+      // Always scroll to keep the bottom of the element in view as content streams
+      element.scrollIntoView({ behavior: "smooth", block: "end" });
+    }
+  };
+
   const streamHtmlToCanvasForAdd = (html: string, parentId?: string, position?: number) => {
     const element = getCanvasElement(parentId, position);
     if (element) {
       element.innerHTML = html;
-      const rect = element.getBoundingClientRect();
-      const iframeDoc = document.getElementById("canvas-iframe") as HTMLIFrameElement;
-      const iframeWindow = iframeDoc?.contentWindow;
-      if (iframeWindow) {
-        const isInViewport = rect.top >= 0 && rect.bottom <= iframeWindow.innerHeight;
-        if (!isInViewport) {
-          element.scrollIntoView({ behavior: "smooth", block: "nearest" });
-        }
-      }
+      scrollElementIntoView(element);
     }
   };
 
@@ -154,6 +155,7 @@ export const useProcessAiStream = () => {
     const element = getCanvasElementForEdit(blockId);
     if (element) {
       element.innerHTML = html;
+      scrollElementIntoView(element);
     }
   };
 

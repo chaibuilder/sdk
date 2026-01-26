@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { builderProp, closestBlockProp, registerChaiBlock, registerChaiBlockSchema, StylesProp } from "@/runtime";
+import { builderProp, closestBlockProp, registerChaiBlock, registerChaiBlockProps, StylesProp } from "@/runtime";
 import { ChaiBlock } from "@/types";
 import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { StackIcon } from "@radix-ui/react-icons";
@@ -44,7 +44,7 @@ registerChaiBlock(ModalTriggerComponent, {
   canDelete: () => false,
   canAcceptBlock: () => true,
   canDuplicate: () => false,
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       styles: StylesProp("w-max"),
       content: {
@@ -104,7 +104,7 @@ registerChaiBlock(ModalContentComponent, {
   canDelete: () => false,
   canAcceptBlock: () => true,
   canDuplicate: () => false,
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       styles: StylesProp("gap-4 border p-6 shadow-lg sm:rounded-lg"),
       show: closestBlockProp("Modal", "show"),
@@ -148,7 +148,7 @@ const Config = {
         _parent: "modal",
       },
     ] as ChaiBlock[],
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       styles: StylesProp(""),
       show: builderProp({

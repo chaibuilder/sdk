@@ -36,7 +36,7 @@ const JSONFormFieldTemplate = (props: FieldTemplateProps) => {
   const isCheckboxOrRadio = schema.type === "boolean";
   if (isCheckboxOrRadio) return <div className={classNames}>{children}</div>;
 
-  const showLangSuffix = i18nProps?.includes(id.replace("root.", ""));
+  const showLangSuffix = i18nProps?.includes(id.replace("root.", "") as never);
 
   if (schema.type === "array") {
     const isListOpen = openedList === id;
@@ -87,7 +87,7 @@ const JSONFormFieldTemplate = (props: FieldTemplateProps) => {
   }
 
   const field = id.replace("root.", "");
-  const showMissingWarning = i18nProps.includes(field) && !isEmpty(selectedLang) && isEmpty(formData);
+  const showMissingWarning = i18nProps.includes(field as never) && !isEmpty(selectedLang) && isEmpty(formData);
   return (
     <div className={classNames}>
       {schema.title && (

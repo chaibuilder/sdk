@@ -5,18 +5,14 @@ import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
 import { useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "@/hooks/use-update-blocks-props";
 import { useWrapperBlock } from "@/hooks/use-wrapper-block";
 import { getBlockFormSchemas, getRegisteredChaiBlock } from "@/runtime";
-import { ChaiBlockDefinition } from "@/types/blocks";
+import { ChaiBlockConfig } from "@/types/blocks";
 import { ChaiBlock } from "@/types/common";
 import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { IChangeEvent } from "@rjsf/core";
 import { cloneDeep, debounce, forEach, get, includes, isEmpty, keys, set, startCase, startsWith } from "lodash-es";
 import { useCallback, useMemo, useState } from "react";
 
-const formDataWithSelectedLang = (
-  formData: Record<string, any>,
-  selectedLang: string,
-  coreBlock: ChaiBlockDefinition,
-) => {
+const formDataWithSelectedLang = (formData: Record<string, any>, selectedLang: string, coreBlock: ChaiBlockConfig) => {
   const updatedFormData = cloneDeep(formData);
   forEach(keys(formData), (key) => {
     if (includes(get(coreBlock, "i18nProps", []), key) && !isEmpty(selectedLang)) {
@@ -35,13 +31,13 @@ export default function BlockSettings() {
   const selectedBlock = useSelectedBlock() as any;
   const updateBlockPropsRealtime = useUpdateBlocksPropsRealtime();
   const updateBlockProps = useUpdateBlocksProps();
-  const registeredBlock = getRegisteredChaiBlock(selectedBlock?._type) as ChaiBlockDefinition;
+  const registeredBlock = getRegisteredChaiBlock(selectedBlock?._type) as ChaiBlockConfig;
   const formData = formDataWithSelectedLang(selectedBlock, selectedLang, registeredBlock);
   const [prevFormData, setPrevFormData] = useState(formData);
 
   const [showWrapperSetting, setShowWrapperSetting] = useState(false);
   const wrapperBlock = useWrapperBlock() as ChaiBlock;
-  const registeredWrapperBlock = getRegisteredChaiBlock(wrapperBlock?._type) as ChaiBlockDefinition;
+  const registeredWrapperBlock = getRegisteredChaiBlock(wrapperBlock?._type) as ChaiBlockConfig;
   const wrapperFormData = formDataWithSelectedLang(wrapperBlock, selectedLang, registeredWrapperBlock);
 
   const updateProps = ({ formData: newData }: IChangeEvent, prop?: string, oldState?: any) => {

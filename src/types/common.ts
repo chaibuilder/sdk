@@ -22,18 +22,27 @@ export interface ChaiCoreBlock {
 
 export type { ChaiBlock };
 export type ChaiBlockUiSchema = UiSchema;
-export type ChaiBlockPropSchema = RJSFSchema & {
-  ui?: ChaiBlockUiSchema;
-  default: any;
+export type ChaiBlockPropsSchema = RJSFSchema & {
+  properties?:
+    | {
+        [key: string]: RJSFSchema;
+      }
+    | undefined;
+  enumNames?: (string | number)[];
 };
 export type ChaiBlockSchema = {
-  properties?: Record<string, ChaiBlockPropSchema>;
+  properties?: Record<string, ChaiBlockPropsSchema>;
   allOf?: any[];
   oneOf?: any[];
-} & Partial<Pick<ChaiBlockPropSchema, "required" | "dependencies" | "ui" | "title" | "description" | "default">>;
+} & Partial<Pick<ChaiBlockPropsSchema, "required" | "dependencies" | "ui" | "title" | "description" | "default">>;
+
 export type ChaiBlockSchemas = {
   schema: object | Omit<ChaiBlockSchema, "ui">;
   uiSchema?: ChaiBlockUiSchema;
+};
+export type ChaiBlockRJSFSchemas = {
+  schema: object | Omit<ChaiBlockSchema, "ui">;
+  uiSchema: ChaiBlockUiSchema;
 };
 export type ChaiWebsiteBuilderProps = {
   hasReactQueryProvider?: boolean;

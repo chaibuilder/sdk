@@ -1,4 +1,4 @@
-import { registerChaiBlockSchema, stylesProp } from "@/runtime";
+import { registerChaiBlockProps, stylesProp } from "@/runtime";
 import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { createElement } from "react";
 
@@ -18,7 +18,7 @@ const Config = {
   category: "core",
   group: "basic",
   hidden: true,
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       styles: stylesProp(""),
     },

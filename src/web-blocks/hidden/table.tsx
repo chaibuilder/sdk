@@ -1,5 +1,5 @@
 import { generateUUID } from "@/core/functions/common-functions";
-import { registerChaiBlock, registerChaiBlockSchema, stylesProp } from "@/runtime";
+import { registerChaiBlock, registerChaiBlockProps, stylesProp } from "@/runtime";
 import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { ChaiBlock } from "@/types/common";
 import EmptySlot from "@/web-blocks/empty-slot";
@@ -88,14 +88,14 @@ const TableCellBlock = (props: ChaiBlockComponentProps<TableCellProps>) => {
 
 // * REGISTERING TABLE BLOCKS
 
-registerChaiBlock<TableProps>(TableBlock, {
+registerChaiBlock(TableBlock, {
   type: "Table",
   label: "Table",
   category: "core",
   group: "table",
   hidden: true,
   icon: TableIcon,
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       styles: stylesProp(""),
     },
@@ -103,14 +103,14 @@ registerChaiBlock<TableProps>(TableBlock, {
   blocks: getDefaultBlocks("Table"),
 });
 
-registerChaiBlock<TableHeadProps>(TableHeadBlock, {
+registerChaiBlock(TableHeadBlock, {
   type: "TableHead",
   label: "Table Head",
   category: "core",
   group: "table",
   hidden: true,
   icon: BorderTopIcon,
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       styles: stylesProp(""),
     },
@@ -118,14 +118,14 @@ registerChaiBlock<TableHeadProps>(TableHeadBlock, {
   blocks: getDefaultBlocks("TableHead"),
 });
 
-registerChaiBlock<TableBodyProps>(TableBodyBlock, {
+registerChaiBlock(TableBodyBlock, {
   type: "TableBody",
   label: "Table Body",
   category: "core",
   group: "table",
   hidden: true,
   icon: BorderAllIcon,
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       styles: stylesProp(""),
     },
@@ -133,14 +133,14 @@ registerChaiBlock<TableBodyProps>(TableBodyBlock, {
   blocks: getDefaultBlocks("TableBody"),
 });
 
-registerChaiBlock<TableRowProps>(TableRowBlock, {
+registerChaiBlock(TableRowBlock, {
   type: "TableRow",
   label: "Table Row",
   category: "core",
   group: "table",
   hidden: true,
   icon: ViewHorizontalIcon,
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       styles: stylesProp(""),
     },
@@ -148,14 +148,14 @@ registerChaiBlock<TableRowProps>(TableRowBlock, {
   blocks: getDefaultBlocks("TableRow"),
 });
 
-registerChaiBlock<TableCellProps>(TableCellBlock, {
+registerChaiBlock(TableCellBlock, {
   type: "TableCell",
   label: "Table Cell",
   category: "core",
   group: "table",
   hidden: true,
   icon: DragHandleHorizontalIcon,
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       styles: stylesProp(""),
       content: {

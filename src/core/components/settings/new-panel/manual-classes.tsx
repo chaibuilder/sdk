@@ -35,6 +35,7 @@ export function ManualClasses({
   const [editingClass, setEditingClass] = useState("");
   const [isCopied, setIsCopied] = useState(false);
   const [editingClassIndex, setEditingClassIndex] = useState(-1);
+  const isSelectingSuggestion = useRef(false);
   const [, setRightPanel] = useRightPanel();
   const fuse = useFuseSearch();
   const { t } = useTranslation();
@@ -101,7 +102,7 @@ export function ManualClasses({
   };
 
   const [suggestions, setSuggestions] = useState<any[]>([]);
-  const designTokensEnabled = useBuilderProp("flags.designTokens", false);
+  const designTokensEnabled = useBuilderProp("flags.designTokens", true);
   const handleSuggestionsFetchRequested = ({ value }: any) => {
     const search = value.trim().toLowerCase();
     const matches = search.match(/.+:/g);
@@ -180,6 +181,10 @@ export function ManualClasses({
       },
       onKeyDown: (e: any) => {
         if (e.key === "Enter" && newCls.trim() !== "") {
+          if (isSelectingSuggestion.current) {
+            isSelectingSuggestion.current = false;
+            return;
+          }
           e.preventDefault();
           addNewClasses();
         }
@@ -207,7 +212,7 @@ export function ManualClasses({
       .replace(/ +(?= )/g, "")
       .split(" ")
       .map(convertToStorageFormat); // Convert design token names to DESIGN_TOKEN_PREFIX-{id} format
-    removeClassesFromBlocks(selectedIds, [clsToRemove]);
+    removeClassesFromBlocks(selectedIds, [clsToRemove], true);
     addClassesToBlocks(selectedIds, fullClsNames, true);
     setEditingClass("");
     setEditingClassIndex(-1);
@@ -273,6 +278,7 @@ export function ManualClasses({
             renderSuggestion={renderSuggestion}
             inputProps={inputProps}
             onSuggestionSelected={(_e, { suggestionValue }) => {
+              isSelectingSuggestion.current = true;
               const storageFormat = convertToStorageFormat(suggestionValue);
               const fullClsNames = [storageFormat];
               if (from === "designToken") {
@@ -331,7 +337,7 @@ export function ManualClasses({
                 onDoubleClick={() => {
                   setNewCls(getDisplayName(cls));
                   if (from === "default") {
-                    removeClassesFromBlocks(selectedIds, [cls]);
+                    removeClassesFromBlocks(selectedIds, [cls], true);
                   } else {
                     if (isFunction(onRemove)) onRemove(cls);
                     setNewCls(cls);
@@ -347,7 +353,7 @@ export function ManualClasses({
                   <Cross2Icon
                     onClick={() => {
                       if (from === "default") {
-                        removeClassesFromBlocks(selectedIds, [cls]);
+                        removeClassesFromBlocks(selectedIds, [cls], true);
                       } else if (isFunction(onRemove)) {
                         onRemove(cls);
                       }
