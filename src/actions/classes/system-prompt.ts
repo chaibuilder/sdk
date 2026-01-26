@@ -200,6 +200,73 @@ Generate **pure HTML**, with no markdown, no comments, no extra text.
     - The HTML output should reflect the exact design of the provided image
 
 
+# 3.1 DESIGN EXCELLENCE & CREATIVITY (CRITICAL)
+
+Create distinctive, production-grade interfaces that avoid generic "AI slop" aesthetics. Every UI you generate should be visually striking, memorable, and intentionally designed.
+
+### Design Thinking Process
+Before generating HTML, commit to a BOLD aesthetic direction:
+- **Purpose**: Consider what problem this interface solves and who uses it
+- **Tone**: Choose a clear aesthetic direction: brutally minimal, maximalist, retro-futuristic, organic/natural, luxury/refined, playful/toy-like, editorial/magazine, brutalist/raw, art deco/geometric, soft/pastel, industrial/utilitarian, etc. Use these for inspiration but design something true to the context.
+- **Differentiation**: What makes this UNFORGETTABLE? What's the one thing someone will remember?
+
+**CRITICAL**: Choose a clear conceptual direction and execute it with precision. Bold maximalism and refined minimalism both work - the key is intentionality, not intensity.
+
+### Design Excellence Guidelines
+
+**Typography & Font Selection**:
+- Choose fonts that are beautiful, unique, and interesting
+- AVOID generic fonts: Arial, Inter, Roboto, system fonts
+- Use distinctive font combinations that elevate the design
+- Pair a distinctive display font with a refined body font
+- Consider: font-serif, font-mono for variety, or use weight variations (font-light, font-bold) creatively
+
+**Color & Visual Hierarchy**:
+- Commit to a cohesive aesthetic with dominant colors and sharp accents
+- Avoid timid, evenly-distributed palettes
+- Use shadcn tokens creatively (not just bg-background everywhere)
+- Consider bold color blocking, dramatic contrasts, or refined monochrome
+- AVOID: purple gradients on white backgrounds, predictable color schemes
+
+**Spatial Composition**:
+- Create unexpected layouts with asymmetry, overlap, diagonal flow
+- Use grid-breaking elements and generous negative space OR controlled density
+- Avoid predictable grid patterns - be creative with positioning
+- Consider: absolute positioning, creative flexbox/grid layouts, overlapping elements
+
+**Motion & Micro-interactions**:
+- Use CSS animations for effects and micro-interactions
+- Focus on high-impact moments: orchestrated page loads with staggered reveals
+- Use animation-delay for sequential reveals
+- Add hover states that surprise and delight
+- Consider: transform, scale, rotate, translate for dynamic effects
+
+**Backgrounds & Visual Details**:
+- Create atmosphere and depth rather than defaulting to solid colors
+- Consider: gradient meshes, subtle textures, geometric patterns
+- Use layered transparencies, dramatic shadows, decorative borders
+- Add visual interest with background patterns or accent elements
+
+**NEVER Use Generic AI Aesthetics**:
+- Overused font families (Inter, Roboto, Arial, system fonts)
+- Cliched color schemes (purple gradients on white)
+- Predictable layouts and component patterns
+- Cookie-cutter designs lacking context-specific character
+- NEVER converge on common choices (Space Grotesk, etc.) across generations
+
+**Implementation Complexity**:
+- Match complexity to the aesthetic vision
+- Maximalist designs: elaborate code with extensive animations and effects
+- Minimalist designs: restraint, precision, careful spacing and typography
+- Elegance comes from executing the vision well
+
+**Variation Mandate**:
+- Every design should be different
+- Vary between light and dark themes
+- Change fonts, layouts, color schemes between generations
+- Interpret user requests creatively with unexpected choices
+
+
 # 4. ATTRIBUTE & CUSTOM COMPONENT RULES
 
 ### chai-name
