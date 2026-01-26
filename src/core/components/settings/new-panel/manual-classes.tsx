@@ -35,6 +35,7 @@ export function ManualClasses({
   const [editingClass, setEditingClass] = useState("");
   const [isCopied, setIsCopied] = useState(false);
   const [editingClassIndex, setEditingClassIndex] = useState(-1);
+  const isSelectingSuggestion = useRef(false);
   const [, setRightPanel] = useRightPanel();
   const fuse = useFuseSearch();
   const { t } = useTranslation();
@@ -180,6 +181,10 @@ export function ManualClasses({
       },
       onKeyDown: (e: any) => {
         if (e.key === "Enter" && newCls.trim() !== "") {
+          if (isSelectingSuggestion.current) {
+            isSelectingSuggestion.current = false;
+            return;
+          }
           e.preventDefault();
           addNewClasses();
         }
@@ -273,6 +278,7 @@ export function ManualClasses({
             renderSuggestion={renderSuggestion}
             inputProps={inputProps}
             onSuggestionSelected={(_e, { suggestionValue }) => {
+              isSelectingSuggestion.current = true;
               const storageFormat = convertToStorageFormat(suggestionValue);
               const fullClsNames = [storageFormat];
               if (from === "designToken") {
