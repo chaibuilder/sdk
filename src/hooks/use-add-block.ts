@@ -8,6 +8,7 @@ import { getDefaultBlockProps } from "@/runtime";
 import { ChaiBlock, ChaiCoreBlock } from "@/types/common";
 import { filter, find, first, forEach, has } from "lodash-es";
 import { useCallback } from "react";
+import { toast } from "sonner";
 
 // Delay before selecting a newly added block to ensure the block is rendered in the DOM
 // and the state has been updated before attempting to highlight it
@@ -76,7 +77,8 @@ export const useAddBlock = (): AddBlocks => {
       // Check for circular dependencies
       const circularCheck = checkCircularDependency(blocks, containingPartialId, partialsMap);
       if (circularCheck.hasCircularDependency) {
-        throw new Error(circularCheck.error || "Circular dependency detected");
+        toast.error(circularCheck.error || "Circular dependency detected");
+        return;
       }
 
       for (let i = 0; i < blocks.length; i++) {
@@ -147,7 +149,8 @@ export const useAddBlock = (): AddBlocks => {
         const containingPartialId = getContainingPartialId(parentId ?? undefined, allBlocks);
         const circularCheck = checkCircularDependency([newBlock], containingPartialId, partialsMap);
         if (circularCheck.hasCircularDependency) {
-          throw new Error(circularCheck.error || "Circular dependency detected");
+          toast.error(circularCheck.error || "Circular dependency detected");
+          return;
         }
       }
 
