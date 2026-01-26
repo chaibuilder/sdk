@@ -13,7 +13,7 @@ export const SaveButton = () => {
       disabled={saveState === "SAVING"}
       onClick={(e) => {
         e.preventDefault();
-        savePage();
+        savePage(false, true); // Force save from button click
       }}
       className={cn(
         "flex h-auto w-fit items-center gap-x-2 p-1 px-2",

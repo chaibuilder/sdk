@@ -10,6 +10,7 @@ import { getRegisteredChaiBlock } from "@/runtime";
 import { useThrottledCallback } from "@react-hookz/web";
 import { atom, useAtom, useAtomValue } from "jotai";
 import { has, isEmpty, noop } from "lodash-es";
+import { useCallback } from "react";
 
 export const builderSaveStateAtom = atom<"SAVED" | "SAVING" | "UNSAVED">("SAVED"); // SAVING
 builderSaveStateAtom.debugLabel = "builderSaveStateAtom";
@@ -59,9 +60,24 @@ export const useSavePage = () => {
       : checkMissingTranslations(pageData.blocks || [], selectedLang);
   };
 
+  const shouldSkipSave = useCallback(
+    (force: boolean) => {
+      // Skip save if no permission or page not loaded
+      if (!force && (!hasPermission("save_page") || !isPageLoaded)) {
+        return true;
+      }
+      // Skip save if there are no unsaved changes
+      if (!force && saveState === "SAVED") {
+        return true;
+      }
+      return false;
+    },
+    [hasPermission, isPageLoaded, saveState],
+  );
+
   const savePage = useThrottledCallback(
     async (autoSave: boolean = false, force: boolean = false) => {
-      if (!force && (!hasPermission("save_page") || !isPageLoaded)) {
+      if (shouldSkipSave(force)) {
         return;
       }
       // Run structure validation before saving
@@ -87,6 +103,7 @@ export const useSavePage = () => {
       return true;
     },
     [
+      shouldSkipSave,
       getPageData,
       setSaveState,
       designTokens,
@@ -101,7 +118,7 @@ export const useSavePage = () => {
   );
 
   const savePageAsync = async (force: boolean = false) => {
-    if (!force && (!hasPermission("save_page") || !isPageLoaded)) {
+    if (shouldSkipSave(force)) {
       return;
     }
     setSaveState("SAVING");
