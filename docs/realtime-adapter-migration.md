@@ -76,13 +76,23 @@ function MyApp() {
 
 ## Backward Compatibility
 
-The old `websocket` prop is still supported for backward compatibility, but it's **deprecated** and will be removed in a future version. When you use the `websocket` prop, it's automatically wrapped with a `SupabaseRealtimeAdapter` internally.
+The old `websocket` prop is **deprecated** and will be removed in a future version. You must migrate to using the `realtimeAdapter` prop.
 
+**Migration required:**
 ```tsx
-// This still works but is deprecated
+// Old (Deprecated - no longer supported)
 <ChaiWebsiteBuilder
   {...props}
   websocket={supabase.realtime}  // ⚠️ Deprecated
+/>
+
+// New (Required)
+import { SupabaseRealtimeAdapter } from '@chaibuilder/sdk/pages';
+
+const realtimeAdapter = new SupabaseRealtimeAdapter(supabase.realtime);
+<ChaiWebsiteBuilder
+  {...props}
+  realtimeAdapter={realtimeAdapter}
 />
 ```
 

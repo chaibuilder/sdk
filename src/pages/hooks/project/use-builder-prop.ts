@@ -2,7 +2,6 @@ import { get } from "lodash-es";
 import { useMemo } from "react";
 import { usePagesProps } from "@/pages/hooks/utils/use-pages-props";
 import type { RealtimeAdapter } from "@/pages/client/components/page-lock/realtime-adapter";
-import { SupabaseRealtimeAdapter } from "@/pages/client/components/page-lock/supabase-realtime-adapter";
 
 export const usePagesProp = <T>(key: string, defaultValue?: T) => {
   const [pagesProps] = usePagesProps();
@@ -26,26 +25,10 @@ export const useWebsocket = () => {
 /**
  * Get the realtime adapter for page lock functionality.
  * 
- * This hook automatically provides backward compatibility by wrapping
- * any legacy `websocket` prop with a SupabaseRealtimeAdapter.
+ * Users must create and pass their own adapter instance (e.g., SupabaseRealtimeAdapter).
  * 
  * @returns RealtimeAdapter instance or null
  */
 export const useRealtimeAdapter = (): RealtimeAdapter | null => {
-  const realtimeAdapter = usePagesProp("realtimeAdapter", null) as RealtimeAdapter | null;
-  // Using any for legacy websocket because it's a Supabase RealtimeClient
-  // which is not imported here to keep this module independent of Supabase
-  const legacyWebsocket = usePagesProp("websocket", null) as any | null;
-
-  return useMemo(() => {
-    // If realtimeAdapter is provided, use it
-    if (realtimeAdapter) return realtimeAdapter;
-
-    // For backward compatibility: wrap legacy websocket with SupabaseRealtimeAdapter
-    if (legacyWebsocket) {
-      return new SupabaseRealtimeAdapter(legacyWebsocket);
-    }
-
-    return null;
-  }, [realtimeAdapter, legacyWebsocket]);
+  return usePagesProp("realtimeAdapter", null) as RealtimeAdapter | null;
 };
