@@ -23,7 +23,7 @@ type GetWebsitePagesActionResponse = Array<{
   dynamicSlugCustom: string | null;
   primaryPage?: string | null;
   isTemplate: boolean;
-  changes: unknown;
+  changes: string[] | null;
 }>;
 
 export class GetWebsitePagesAction extends ChaiBaseAction<GetWebsitePagesActionData, GetWebsitePagesActionResponse> {
