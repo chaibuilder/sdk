@@ -15,7 +15,7 @@ import { useRightPanel } from "@/hooks/use-theme";
 import { CheckIcon, CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { useAtomValue } from "jotai";
 import { first, get, isEmpty, isFunction, map } from "lodash-es";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, useCallback } from "react";
 import Autosuggest from "react-autosuggest";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -67,25 +67,25 @@ export function ManualClasses({
   const enableCopyToClipboard = useBuilderProp("flags.copyPaste", true);
 
   // Helper function to get display name for classes
-  const getDisplayName = (cls: string) => {
+  const getDisplayName = useCallback((cls: string) => {
     if (cls.startsWith(DESIGN_TOKEN_PREFIX)) {
       const token = designTokens[cls];
       return token ? token.name : cls;
     }
     return cls;
-  };
+  }, [designTokens]);
 
   // Helper function to convert design token names back to DESIGN_TOKEN_PREFIX-{id} format
-  const convertToStorageFormat = (className: string) => {
+  const convertToStorageFormat = useCallback((className: string) => {
     // Check if this className matches any design token name
     const tokenEntry = Object.entries(designTokens).find(([, token]) => token.name === className);
     if (tokenEntry) {
       return `${tokenEntry[0]}`; // Return DESIGN_TOKEN_PREFIX-{id} format
     }
     return className; // Return as-is if not a design token
-  };
+  }, [designTokens]);
 
-  const addNewClasses = () => {
+  const addNewClasses = useCallback(() => {
     const fullClsNames: string[] = newCls
       .trim()
       .replace(/ +(?= )/g, "")
@@ -98,7 +98,7 @@ export function ManualClasses({
       addClassesToBlocks(selectedIds, fullClsNames, true);
     }
     setNewCls("");
-  };
+  }, [newCls, from, onAddNew, addClassesToBlocks, selectedIds, convertToStorageFormat]);
 
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const designTokensEnabled = useBuilderProp("flags.designTokens", true);
@@ -180,8 +180,15 @@ export function ManualClasses({
       },
       onKeyDown: (e: any) => {
         if (e.key === "Enter" && newCls.trim() !== "") {
-          e.preventDefault();
-          addNewClasses();
+          // Check if a suggestion is highlighted by looking at the DOM
+          const highlightedSuggestion = document.querySelector('.react-autosuggest__suggestion--highlighted');
+          
+          // Only add classes if no suggestion is highlighted
+          // When a suggestion is highlighted, onSuggestionSelected will handle it
+          if (!highlightedSuggestion) {
+            e.preventDefault();
+            addNewClasses();
+          }
         }
         if (e.key === "Tab" && suggestions.length > 0) {
           e.preventDefault();
@@ -198,7 +205,7 @@ export function ManualClasses({
       onChange: (_e: any, { newValue }: any) => setNewCls(newValue),
       className: `w-full rounded-md text-xs px-2 hover:outline-0 bg-background border-border ${from === "default" ? "py-1" : "py-1.5"}`,
     }),
-    [newCls, t, inputRef, suggestions.length],
+    [newCls, t, inputRef, suggestions.length, addNewClasses, from],
   );
 
   const handleEditClass = (clsToRemove: string) => {
