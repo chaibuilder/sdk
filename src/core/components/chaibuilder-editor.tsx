@@ -1,6 +1,6 @@
-import { chaiBuilderPropsAtom, chaiDesignTokensAtom, chaiPageExternalDataAtom } from "@/core/atoms/builder";
-import { builderStore } from "@/core/atoms/store";
-import { selectedLibraryAtom } from "@/core/atoms/ui";
+import { chaiBuilderPropsAtom, chaiDesignTokensAtom, chaiPageExternalDataAtom } from "@/atoms/builder";
+import { builderStore } from "@/atoms/store";
+import { selectedLibraryAtom } from "@/atoms/ui";
 import { CssThemeVariables } from "@/core/components/css-theme-var";
 import { FallbackError } from "@/core/components/fallback-error";
 import { RootLayout } from "@/core/components/layout/root-layout";
@@ -8,22 +8,22 @@ import { PreviewScreen } from "@/core/components/PreviewScreen";
 import { useAutoSave } from "@/core/components/use-auto-save";
 import { ChaiFeatureFlagsWidget } from "@/core/flags/flags-widget";
 import { setDebugLogs } from "@/core/functions/logging";
-import { useBlocksStore } from "@/core/history/use-blocks-store-undoable-actions";
-import { defaultThemeValues } from "@/core/hooks/default-theme-options";
-import { useBroadcastChannel, useUnmountBroadcastChannel } from "@/core/hooks/use-broadcast-channel";
-import { useBuilderProp } from "@/core/hooks/use-builder-prop";
-import { useBuilderReset } from "@/core/hooks/use-builder-reset";
-import { useCheckStructure } from "@/core/hooks/use-check-structure";
-import { useExpandTree } from "@/core/hooks/use-expand-tree";
-import { isPageLoadedAtom } from "@/core/hooks/use-is-page-loaded";
-import { useKeyEventWatcher } from "@/core/hooks/use-key-event-watcher";
-import { useWatchPartailBlocks } from "@/core/hooks/use-partial-blocks-store";
-import { builderSaveStateAtom } from "@/core/hooks/use-save-page";
 import "@/core/index.css";
 import i18n from "@/core/locales/load";
 import { ExportCodeModal } from "@/core/modals/export-code-modal";
 import { ScreenTooSmall } from "@/core/screen-too-small";
-import { syncBlocksWithDefaults } from "@/runtime";
+import { defaultThemeValues } from "@/hooks/default-theme-options";
+import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
+import { useBroadcastChannel, useUnmountBroadcastChannel } from "@/hooks/use-broadcast-channel";
+import { useBuilderProp } from "@/hooks/use-builder-prop";
+import { useBuilderReset } from "@/hooks/use-builder-reset";
+import { useCheckStructure } from "@/hooks/use-check-structure";
+import { useExpandTree } from "@/hooks/use-expand-tree";
+import { isPageLoadedAtom } from "@/hooks/use-is-page-loaded";
+import { useKeyEventWatcher } from "@/hooks/use-key-event-watcher";
+import { useWatchPartailBlocks } from "@/hooks/use-partial-blocks-store";
+import { builderSaveStateAtom } from "@/hooks/use-save-page";
+import { syncBlocksWithDefaultProps } from "@/runtime";
 import { ChaiBuilderEditorProps } from "@/types";
 import { ChaiBuilderThemeValues } from "@/types/types";
 import { useAtom } from "jotai";
@@ -66,7 +66,7 @@ const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
     setIsPageLoaded(false);
     // Added delay to allow the pageId to be set
     setTimeout(() => {
-      const withDefaults = syncBlocksWithDefaults(props.blocks || []);
+      const withDefaults = syncBlocksWithDefaultProps(props.blocks || []);
       // @ts-ignore
       setAllBlocks(withDefaults);
       if (withDefaults && withDefaults.length > 0) {

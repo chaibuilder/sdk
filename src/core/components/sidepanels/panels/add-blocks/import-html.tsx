@@ -3,9 +3,9 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/co
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { useAddBlock } from "@/core/hooks/use-add-block";
 import { getBlocksFromHTML } from "@/core/import-html/html-to-json";
 import { pubsub } from "@/core/pubsub";
+import { useAddBlock } from "@/hooks/use-add-block";
 import { getPreImportHTML } from "@/runtime/client";
 import { CircleIcon } from "@radix-ui/react-icons";
 import { useState } from "react";

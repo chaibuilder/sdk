@@ -1,13 +1,6 @@
-import { ChaiPageProps } from "@/runtime";
 import type { ChaiBuilderEditorProps } from "@/types/chaibuilder-editor-props";
 
 export type { ChaiBuilderEditorProps };
-
-export type ChaiPage = {
-  slug: string;
-  uuid?: string;
-  name?: string;
-};
 
 export type ChaiAsset = {
   url: string;
@@ -18,4 +11,9 @@ export type ChaiAsset = {
   height?: number;
 };
 
-export type { ChaiPageProps };
+export * from "@/types/actions";
+export * from "@/types/blocks";
+export * from "@/types/chaibuilder-editor-props";
+export * from "@/types/collections";
+export * from "@/types/common";
+export * from "@/types/types";

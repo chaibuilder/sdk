@@ -17,14 +17,14 @@ import {
   setIsDragging,
 } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
 import { useDragParentHighlight } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-parent-highlight";
-import { useBlocksStore, useBlocksStoreUndoableActions } from "@/core/history/use-blocks-store-undoable-actions";
-import { useAddBlock } from "@/core/hooks/use-add-block";
-import { useBlockHighlight } from "@/core/hooks/use-block-highlight";
-import { useCanvasIframe } from "@/core/hooks/use-canvas-iframe";
-import { useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
-import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
-import { useUpdateBlocksProps } from "@/core/hooks/use-update-blocks-props";
-import { syncBlocksWithDefaults } from "@/runtime";
+import { useBlocksStore, useBlocksStoreUndoableActions } from "@/hooks/history/use-blocks-store-undoable-actions";
+import { useAddBlock } from "@/hooks/use-add-block";
+import { useBlockHighlight } from "@/hooks/use-block-highlight";
+import { useCanvasIframe } from "@/hooks/use-canvas-iframe";
+import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
+import { useUpdateBlocksProps } from "@/hooks/use-update-blocks-props";
+import { syncBlocksWithDefaultProps } from "@/runtime";
 import { ChaiBlock } from "@/types/common";
 import { useAtom } from "jotai";
 import { filter, find, get, has, isFunction } from "lodash-es";
@@ -176,7 +176,7 @@ export const useBlockDrop = () => {
         const preBlocks = !draggedBlock?.blocks
           ? null
           : isFunction(draggedBlock?.blocks)
-            ? syncBlocksWithDefaults(draggedBlock?.blocks())
+            ? syncBlocksWithDefaultProps(draggedBlock?.blocks())
             : draggedBlock?.blocks;
 
         if (draggedBlockType === "PartialBlock") {

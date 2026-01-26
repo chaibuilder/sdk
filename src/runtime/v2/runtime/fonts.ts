@@ -1,23 +1,4 @@
-export type ChaiFontViaUrl = {
-  family: string;
-  url: string;
-  fallback: string;
-};
-
-export type ChaiFontViaSrc = {
-  family: string;
-  src: {
-    url: string;
-    format: string;
-    fontWeight?: string;
-    fontStyle?: string;
-    fontDisplay?: string;
-    fontStretch?: string;
-  }[];
-  fallback: string;
-};
-
-export type ChaiFont = ChaiFontViaUrl | ChaiFontViaSrc;
+import { ChaiFont } from "@/types/common";
 
 const REGISTERED_FONTS: ChaiFont[] = [
   {

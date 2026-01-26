@@ -16,7 +16,7 @@
  * @module use-drag-parent-highlight
  */
 
-import { useCanvasIframe } from "@/core/hooks/use-canvas-iframe";
+import { useCanvasIframe } from "@/hooks/use-canvas-iframe";
 import { useCallback, useMemo } from "react";
 
 // Module-level variables to track the last highlighted parent and its label during drag

@@ -38,7 +38,6 @@ export class GetPageTypesAction extends ChaiBaseAction<GetPageTypesActionData, G
           dynamicSlug: pageType.dynamicSlug ?? "",
           hasSlug: pageType.hasSlug ?? true,
           name: typeof pageType.name === "function" ? await pageType.name() : pageType.name,
-          ...(isFunction(pageType.defaultTrackingInfo) ? { trackingDefault: pageType.defaultTrackingInfo() } : {}),
           ...(isFunction(pageType.defaultSeo) ? { defaultSeo: pageType.defaultSeo() } : {}),
           ...(isFunction(pageType.defaultJSONLD) ? { defaultJSONLD: pageType.defaultJSONLD() } : {}),
         })),

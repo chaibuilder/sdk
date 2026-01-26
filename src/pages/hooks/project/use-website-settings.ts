@@ -1,6 +1,7 @@
-import { ChaiWebsiteSetting } from "@/actions/types";
+import { defaultThemeValues } from "@/hooks/default-theme-options";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { useFetch } from "@/pages/hooks/utils/use-fetch";
+import { ChaiWebsiteSetting } from "@/types/actions";
 import { useQuery } from "@tanstack/react-query";
 import { useApiUrl } from "./use-builder-prop";
 
@@ -12,7 +13,7 @@ export const useWebsiteSetting = () => {
     staleTime: 5 * 60 * 1000,
     placeholderData: {
       languages: [],
-      theme: { fontFamily: "", borderRadius: "", colors: {} },
+      theme: defaultThemeValues,
       appKey: "",
       fallbackLang: "",
       designTokens: {},

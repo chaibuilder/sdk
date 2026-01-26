@@ -18,7 +18,7 @@ import { useBlockDragOver } from "@/core/components/canvas/dnd/drag-and-drop/hoo
 import { useBlockDragStart } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-block-drag-start";
 import { useBlockDrop } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-block-drop";
 import { dropIndicatorAtom, isDragging } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
-import { useBuilderProp } from "@/core/hooks/use-builder-prop";
+import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { useAtom } from "jotai";
 import { DragEvent } from "react";
 
@@ -107,6 +107,6 @@ export const useDropIndicator = () => {
 };
 
 export const useIsDragAndDropEnabled = () => {
-  const { dragAndDrop } = useBuilderProp("flags", { dragAndDrop: false });
+  const { dragAndDrop } = useBuilderProp("flags", { dragAndDrop: true });
   return dragAndDrop;
 };

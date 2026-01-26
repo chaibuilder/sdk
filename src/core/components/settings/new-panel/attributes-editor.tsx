@@ -1,10 +1,10 @@
 "use client";
 
+import { usePageExternalData } from "@/atoms/builder";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { usePageExternalData } from "@/core/atoms/builder";
 import { NestedPathSelector } from "@/core/components/nested-path-selector";
 import { Cross1Icon, Pencil2Icon } from "@radix-ui/react-icons";
 import { isEmpty } from "lodash-es";

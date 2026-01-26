@@ -1,6 +1,6 @@
 {
   "name": "@chaibuilder/next",
-  "version": "4.0.0-beta.8",
+  "version": "0.0.0",
   "description": "AI Enabled Open source website builder for ReactJS",
   "private": false,
   "author": "Suraj Air",
@@ -28,7 +28,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "dev": "tsup --watch --format esm,cjs",
-    "build": "tsup --format esm,cjs"
+    "prebuild": "node scripts/prebuild.cjs",
+    "build": "npm run prebuild && tsup --format esm,cjs"
   },
   "keywords": [],
   "peerDependencies": {
@@ -58,6 +59,11 @@
       "import": "./dist/runtime.js",
       "require": "./dist/runtime.cjs"
     },
+    "./runtime-client": {
+      "types": "./dist/runtime-client.d.ts",
+      "import": "./dist/runtime-client.js",
+      "require": "./dist/runtime-client.cjs"
+    },
     "./actions": {
       "types": "./dist/actions.d.ts",
       "import": "./dist/actions.js",
@@ -73,14 +79,21 @@
       "import": "./dist/utils.js",
       "require": "./dist/utils.cjs"
     },
+    "./types": {
+      "types": "./dist/types.d.ts",
+      "import": "./dist/types.js",
+      "require": "./dist/types.cjs"
+    },
     "./styles": {
       "import": "./dist/styles.css",
       "require": "./dist/styles.css"
     }
   },
   "dependencies": {
-    "@chaibuilder/sdk": "4.0.0-beta.6",
+    "@chaibuilder/sdk": "link:../../../",
     "concurrently": "^9.2.0",
+    "dotenv": "^16.4.5",
+    "prompts": "^2.4.2",
     "postgres": "^3.4.8",
     "ai": "^6.0.11",
     "drizzle-orm": "^0.45.1",
@@ -92,8 +105,6 @@
     "@tailwindcss/typography": "^0.5.15"
   },
   "devDependencies": {
-    "dotenv": "^16.4.5",
-    "prompts": "^2.4.2",
     "tsup": "^8.0.0",
     "typescript": "^5.9.3"
   }

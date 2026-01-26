@@ -1,4 +1,5 @@
-import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@/runtime";
+import { registerChaiBlockProps, stylesProp } from "@/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { CursorTextIcon } from "@radix-ui/react-icons";
 import { addForcedClasses } from "./helper";
 
@@ -23,9 +24,9 @@ const Config = {
   category: "core",
   icon: CursorTextIcon,
   group: "typography",
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
-      styles: StylesProp(""),
+      styles: stylesProp(""),
       content: {
         type: "string",
         title: "Content",

@@ -1,6 +1,6 @@
-import { ChaiBuilderPageType } from "@/actions/types";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { useFetch } from "@/pages/hooks/utils/use-fetch";
+import { ChaiPageType } from "@/types/actions";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { useApiUrl } from "./use-builder-prop";
@@ -20,7 +20,7 @@ export const usePageTypes = () => {
 
 export const usePageType = (pageType: string) => {
   const { data: pageTypes } = usePageTypes();
-  return useMemo(() => pageTypes?.find((type: ChaiBuilderPageType) => type.key === pageType), [pageTypes, pageType]);
+  return useMemo(() => pageTypes?.find((type: ChaiPageType) => type.key === pageType), [pageTypes, pageType]);
 };
 
 export const useSearchPageTypePages = () => {

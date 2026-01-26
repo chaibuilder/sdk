@@ -1,4 +1,5 @@
-import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@/runtime";
+import { registerChaiBlockProps, stylesProp } from "@/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { RadiobuttonIcon } from "@radix-ui/react-icons";
 
 export type RadioProps = {
@@ -41,10 +42,10 @@ const Config = {
   category: "core",
   icon: RadiobuttonIcon,
   group: "form",
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
-      styles: StylesProp("flex items-center gap-x-2"),
-      inputStyles: StylesProp(""),
+      styles: stylesProp("flex items-center gap-x-2"),
+      inputStyles: stylesProp(""),
       fieldName: {
         type: "string",
         title: "Field Name",

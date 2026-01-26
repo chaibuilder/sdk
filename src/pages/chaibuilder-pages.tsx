@@ -1,4 +1,4 @@
-import { ChaiBuilderEditor, ChaiBuilderEditorProps } from "@/core/main";
+import { ChaiBuilderEditor } from "@/core/main";
 import { Topbar } from "@/pages/extensions/topbar";
 import { useAskAi } from "@/pages/hooks/ai/use-ask-ai";
 import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
@@ -15,10 +15,10 @@ import { usePagesProps } from "@/pages/hooks/utils/use-pages-props";
 import { usePartialBlocksFn } from "@/pages/hooks/utils/use-partial-blocks";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { registerChaiPanels } from "@/pages/panels";
-import { LoggedInUser } from "@/pages/types/loggedin-user";
 import { registerChaiMediaManager } from "@/runtime/client/register-chai-media-manager";
 import { registerChaiSaveToLibrary } from "@/runtime/client/register-chai-save-to-library";
 import { registerChaiTopBar } from "@/runtime/client/register-chai-top-bar";
+import { ChaiWebsiteBuilderProps } from "@/types/common";
 import { loadWebBlocks } from "@/web-blocks";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -49,32 +49,6 @@ registerChaiTopBar(Topbar);
 registerChaiPanels();
 registerChaiMediaManager(DigitalAssetManager as any);
 registerChaiSaveToLibrary(SaveToLibrary);
-
-export type ChaiWebsiteBuilderProps = {
-  hasReactQueryProvider?: boolean;
-  topLeftCorner?: React.FC;
-  apiUrl?: string;
-  getPreviewUrl?: (slug: string) => string;
-  getLiveUrl?: (slug: string) => string;
-  onLogout?: () => void;
-  getAccessToken?: () => Promise<string>;
-  currentUser: LoggedInUser | null;
-  websocket?: any;
-  features?: { sharedJsonLD?: boolean; canResetSeoToDefault?: boolean } & Record<string, boolean>;
-} & Pick<
-  ChaiBuilderEditorProps,
-  | "onError"
-  | "translations"
-  | "locale"
-  | "htmlDir"
-  | "autoSave"
-  | "autoSaveActionsCount"
-  | "fallbackLang"
-  | "languages"
-  | "themePresets"
-  | "flags"
-  | "structureRules"
->;
 
 const DEFAULT_ROLES_AND_PERMISSIONS = {
   role: "",
@@ -115,7 +89,7 @@ const DefaultChaiBuilder = (props: ChaiWebsiteBuilderProps) => {
   const { getPartialBlocks, getPartialBlockBlocks } = usePartialBlocksFn();
   const { mutateAsync: searchPageTypePages } = useSearchPageTypePages();
   const { mutateAsync: updateSettings } = useUpdateWebsiteSettings();
-  const { data: siteWideUsage } = useSiteWideUsage(props.flags?.designTokens ?? false);
+  const { data: siteWideUsage } = useSiteWideUsage(props.flags?.designTokens ?? true);
   const gotoPage = useGotoPage();
 
   // * STATES

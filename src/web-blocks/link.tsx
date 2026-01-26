@@ -1,4 +1,5 @@
-import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@/runtime";
+import { registerChaiBlockProps, stylesProp } from "@/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { Link1Icon } from "@radix-ui/react-icons";
 import { isEmpty } from "lodash-es";
 import { createElement } from "react";
@@ -70,9 +71,9 @@ const Config = {
   category: "core",
   icon: Link1Icon,
   group: "basic",
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
-      styles: StylesProp("block"),
+      styles: stylesProp("block"),
       content: {
         type: "string",
         default: "Link text goes here",

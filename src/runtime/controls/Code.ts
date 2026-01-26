@@ -1,5 +1,5 @@
-import { ControlDefinition, ControlProps } from "./index.ts";
 import { get, omit } from "lodash-es";
+import { ControlDefinition, ControlProps } from "./index";
 
 export const Code = (props: ControlProps) =>
   ({

@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useLibraryBlocks } from "@/core/hooks/use-library-blocks";
-import { usePartialBlocksStore } from "@/core/hooks/use-partial-blocks-store";
-import { usePermissions } from "@/core/hooks/use-permissions";
-import { useUpdateBlocksPropsRealtime } from "@/core/hooks/use-update-blocks-props";
+import { useLibraryBlocks } from "@/hooks/use-library-blocks";
+import { usePartialBlocksStore } from "@/hooks/use-partial-blocks-store";
+import { usePermissions } from "@/hooks/use-permissions";
+import { useUpdateBlocksPropsRealtime } from "@/hooks/use-update-blocks-props";
 import { DeleteBlockButton } from "@/pages/client/components/save-ui-blocks/delete-block-confirmation";
 import { GroupSelector } from "@/pages/client/components/save-ui-blocks/group-selector";
 import { ImageUpload } from "@/pages/client/components/save-ui-blocks/image-upload";

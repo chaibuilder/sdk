@@ -1,4 +1,5 @@
-import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@/runtime";
+import { registerChaiBlockProps, stylesProp } from "@/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { createElement } from "react";
 
 export type LineBreakProps = {
@@ -17,9 +18,9 @@ const Config = {
   category: "core",
   group: "basic",
   hidden: true,
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
-      styles: StylesProp(""),
+      styles: stylesProp(""),
     },
   }),
   canAcceptBlock: () => true,

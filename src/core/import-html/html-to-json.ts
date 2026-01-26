@@ -2,7 +2,7 @@
 import { STYLES_KEY } from "@/core/constants/STRINGS";
 import { cn, generateUUID } from "@/core/functions/common-functions";
 import { getVideoURLFromHTML, hasVideoEmbed } from "@/core/import-html/import-video";
-import { syncBlocksWithDefaults } from "@/runtime";
+import { syncBlocksWithDefaultProps } from "@/runtime";
 import { ChaiBlock } from "@/types/common";
 import type { HimalayaAttribute, HimalayaNode } from "himalaya";
 import { parse, stringify } from "himalaya";
@@ -692,5 +692,5 @@ export const getBlocksFromHTML = (html: string): ChaiBlock[] => {
   const nodes: HimalayaNode[] = parse(getSanitizedHTML(html));
   if (isEmpty(html)) return [];
   const blocks = flatten(traverseNodes(nodes)) as ChaiBlock[];
-  return syncBlocksWithDefaults(blocks);
+  return syncBlocksWithDefaultProps(blocks);
 };

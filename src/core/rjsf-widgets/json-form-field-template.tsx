@@ -1,9 +1,9 @@
+import { usePageExternalData } from "@/atoms/builder";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { usePageExternalData } from "@/core/atoms/builder";
 import { LANGUAGES } from "@/core/constants/LANGUAGES";
-import { useLanguages } from "@/core/hooks/use-languages";
-import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
+import { useLanguages } from "@/hooks/use-languages";
+import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
 import { useRegisteredChaiBlocks } from "@/runtime";
 import { ChevronDownIcon, ChevronRightIcon, InfoCircledIcon, ListBulletIcon } from "@radix-ui/react-icons";
 import { FieldTemplateProps } from "@rjsf/utils";
@@ -36,7 +36,7 @@ const JSONFormFieldTemplate = (props: FieldTemplateProps) => {
   const isCheckboxOrRadio = schema.type === "boolean";
   if (isCheckboxOrRadio) return <div className={classNames}>{children}</div>;
 
-  const showLangSuffix = i18nProps?.includes(id.replace("root.", ""));
+  const showLangSuffix = i18nProps?.includes(id.replace("root.", "") as never);
 
   if (schema.type === "array") {
     const isListOpen = openedList === id;
@@ -87,7 +87,7 @@ const JSONFormFieldTemplate = (props: FieldTemplateProps) => {
   }
 
   const field = id.replace("root.", "");
-  const showMissingWarning = i18nProps.includes(field) && !isEmpty(selectedLang) && isEmpty(formData);
+  const showMissingWarning = i18nProps.includes(field as never) && !isEmpty(selectedLang) && isEmpty(formData);
   return (
     <div className={classNames}>
       {schema.title && (

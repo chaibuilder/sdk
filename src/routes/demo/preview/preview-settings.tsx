@@ -1,5 +1,5 @@
 import { useFrame } from "@/core/frame";
-import { useBrandingOptions } from "@/core/hooks/use-branding-options";
+import { useBrandingOptions } from "@/hooks/use-branding-options";
 import { get } from "lodash-es";
 import { useEffect, useState } from "react";
 

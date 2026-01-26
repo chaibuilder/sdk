@@ -10,14 +10,14 @@ import {
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { parseToChaiThemeValues, validateChaiThemeValues, validateCssInput } from "@/core/utils/css-theme-parser";
-import { ChaiThemeValues } from "@/types/chaibuilder-editor-props";
+import { ChaiTheme } from "@/types/chaibuilder-editor-props";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 
 interface CssImportModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onImport: (themeValues: ChaiThemeValues) => void;
+  onImport: (themeValues: ChaiTheme) => void;
 }
 
 const CSS_PLACEHOLDER = `:root {

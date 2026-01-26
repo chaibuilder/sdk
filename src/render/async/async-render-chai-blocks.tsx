@@ -1,5 +1,5 @@
-import { ChaiPageProps, getRegisteredChaiBlock } from "@/runtime";
-import { ChaiBlock } from "@/types/common";
+import { getRegisteredChaiBlock } from "@/runtime";
+import { ChaiBlock, ChaiPageProps } from "@/types/common";
 import { cloneDeep, find, forEach, get, has, isEmpty, isFunction, isObject, isString, keys } from "lodash-es";
 import { AsyncRenderBlocks } from "./async-blocks-renderer";
 
@@ -94,7 +94,7 @@ export async function AsyncRenderChaiBlocks(props: RenderChaiBlocksProps) {
         draft: props.draft as boolean,
         inBuilder: false,
       };
-      acc[block._id] = registeredChaiBlock.dataProvider(dataProviderArgs) as Promise<Record<string, any>>;
+      acc[block._id] = Promise.resolve(registeredChaiBlock.dataProvider(dataProviderArgs));
       return acc;
     },
     {} as Record<string, Promise<Record<string, any>>>,

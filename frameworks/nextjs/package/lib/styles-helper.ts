@@ -1,6 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
 import postcss from "postcss";
+
 async function findTailwindCssFile(): Promise<string> {
   // Use absolute path for production to work on Vercel
   return path.resolve("./public/chaistyles.css");

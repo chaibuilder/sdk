@@ -9,11 +9,11 @@ import {
   FontSelector,
 } from "@/core/components/sidepanels/panels/theme-configuration";
 import { cn } from "@/core/functions/common-functions";
-import { useBuilderProp } from "@/core/hooks/use-builder-prop";
-import { useDarkMode } from "@/core/hooks/use-dark-mode";
-import { usePermissions } from "@/core/hooks/use-permissions";
-import { useTheme, useThemeOptions } from "@/core/hooks/use-theme";
-import { ChaiThemeValues } from "@/types/chaibuilder-editor-props";
+import { useBuilderProp } from "@/hooks/use-builder-prop";
+import { useDarkMode } from "@/hooks/use-dark-mode";
+import { usePermissions } from "@/hooks/use-permissions";
+import { useTheme, useThemeOptions } from "@/hooks/use-theme";
+import { ChaiTheme } from "@/types/chaibuilder-editor-props";
 import {
   CornerTopRightIcon,
   MixerHorizontalIcon,
@@ -42,7 +42,7 @@ const LazyCssImportModal = lazy(() =>
 const PREV_THEME_KEY = "chai-builder-previous-theme";
 
 // Default theme preset
-const DEFAULT_THEME_PRESET: Record<string, ChaiThemeValues>[] = [
+const DEFAULT_THEME_PRESET: Record<string, ChaiTheme>[] = [
   { shadcn_default: defaultShadcnPreset },
   { twitter_theme: twitter },
   { solarized_theme: solarized },
@@ -50,7 +50,7 @@ const DEFAULT_THEME_PRESET: Record<string, ChaiThemeValues>[] = [
   { supabase_theme: supabase },
 ];
 
-const setPreviousTheme = (theme: ChaiThemeValues) => {
+const setPreviousTheme = (theme: ChaiTheme) => {
   if (typeof window === "undefined") return;
   try {
     localStorage.setItem(PREV_THEME_KEY, JSON.stringify(theme));
@@ -76,7 +76,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const [isDarkMode, setIsDarkMode] = useDarkMode();
   const [selectedPreset, setSelectedPreset] = React.useState<string>("");
   const [isImportModalOpen, setIsImportModalOpen] = React.useState(false);
-  const themePresets = useBuilderProp("themePresets", {}) as Record<string, ChaiThemeValues>[];
+  const themePresets = useBuilderProp("themePresets", {}) as Record<string, ChaiTheme>[];
   const themePanelComponent = useBuilderProp("themePanelComponent", null);
   const { hasPermission } = usePermissions();
   const importThemeEnabled = useBuilderProp("flags.importTheme", true);
@@ -93,7 +93,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const chaiThemeOptions = useThemeOptions();
   const { t } = useTranslation();
   const setThemeWithHistory = React.useCallback(
-    (newTheme: ChaiThemeValues) => {
+    (newTheme: ChaiTheme) => {
       const previousTheme = { ...themeValues };
       setPreviousTheme(previousTheme);
       setThemeValues(newTheme);
@@ -121,7 +121,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const applyPreset = () => {
     const preset = (themePresets as any[]).find((p) => Object.keys(p)[0] === selectedPreset);
     if (preset) {
-      const newThemeValues = Object.values(preset)[0] as ChaiThemeValues;
+      const newThemeValues = Object.values(preset)[0] as ChaiTheme;
       if (
         newThemeValues &&
         typeof newThemeValues === "object" &&
@@ -140,7 +140,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
     }
   };
 
-  const handleCssImport = (importedTheme: ChaiThemeValues) => {
+  const handleCssImport = (importedTheme: ChaiTheme) => {
     // Apply the imported theme values directly to the current theme
     setThemeWithHistory(importedTheme);
     setSelectedPreset("");
@@ -176,7 +176,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const handleColorChange = useDebouncedCallback(
     (key: string, newValue: string) => {
       setThemeValues(() => {
-        const prevColor = get(themeValues, `colors.${key}`);
+        const prevColor = get(themeValues, `colors.${key}`)! as [string, string];
         if (!isDarkMode) {
           set(prevColor, 0, newValue);
         } else {

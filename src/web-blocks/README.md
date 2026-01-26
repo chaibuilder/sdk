@@ -41,7 +41,7 @@ The `Config` object defines essential properties for the block:
   blocks?: () => ChaiBlock[];    // Default children blocks when added
   canAcceptBlock?: (target: string) => boolean; // Controls which blocks can be nested
   // Schema definition (using registerChaiBlockSchema)
-  ...registerChaiBlockSchema({ properties: {...} })
+  props: registerChaiBlockProps({ properties: {...} })
 }
 ```
 
@@ -74,14 +74,14 @@ const Config = {
   label: "Button",
   category: "core",
   group: "basic",
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       text: {
         type: "string",
         title: "Button Text",
         default: "Click me",
       },
-      styles: StylesProp(""),
+      styles: stylesProp(""),
       onClick: {
         type: "string",
         title: "OnClick Action",

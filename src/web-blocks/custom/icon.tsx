@@ -1,4 +1,5 @@
-import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@/runtime";
+import { registerChaiBlockProps, stylesProp } from "@/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import EmptySlot from "@/web-blocks/empty-slot";
 import { addForcedClasses } from "@/web-blocks/helper";
 import { SketchLogoIcon } from "@radix-ui/react-icons";
@@ -39,9 +40,9 @@ const Config = {
   description: "Icon block is used to display an icon/svg.",
   icon: SketchLogoIcon,
   group: "media",
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
-      styles: StylesProp(""),
+      styles: stylesProp(""),
       icon: {
         type: "string",
         title: "Icon",

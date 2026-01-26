@@ -1,13 +1,12 @@
-import { useBuilderProp } from "@/core/hooks/use-builder-prop";
-import { useLanguages } from "@/core/hooks/use-languages";
-import { PageTypeItem } from "@/types/chaibuilder-editor-props";
+import { LANGUAGES } from "@/core/constants/LANGUAGES";
+import { useBuilderProp } from "@/hooks/use-builder-prop";
+import { useLanguages } from "@/hooks/use-languages";
 import { Cross1Icon } from "@radix-ui/react-icons";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { FieldProps } from "@rjsf/utils";
 import { get, isEmpty, map, split, startsWith } from "lodash-es";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { LANGUAGES } from "@/core/constants/LANGUAGES";
 import { DataBindingSelector } from "./data-binding-selector";
 
 const PageTypeField = ({
@@ -25,7 +24,7 @@ const PageTypeField = ({
   const [isSearching, setIsSearching] = useState(false);
   const [pageType, setPageType] = useState("page");
   const [searchQuery, setSearchQuery] = useState("");
-  const [pageTypeItems, setPageTypeItems] = useState<PageTypeItem[]>([]);
+  const [pageTypeItems, setPageTypeItems] = useState<any[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const listRef = useRef<HTMLUListElement>(null);
 
@@ -66,7 +65,7 @@ const PageTypeField = ({
     300,
   );
 
-  const handleSelect = (pageTypeItem: PageTypeItem) => {
+  const handleSelect = (pageTypeItem: any) => {
     const href = ["pageType", pageType, pageTypeItem.id];
     if (!href[1]) return;
     onChange(href.join(":"));

@@ -1,4 +1,4 @@
-import { useIsPageLoaded } from "@/core/hooks/use-is-page-loaded";
+import { useIsPageLoaded } from "@/hooks/use-is-page-loaded";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { useAiContext } from "@/pages/hooks/ai/use-ai-context";
 import {

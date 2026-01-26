@@ -1,4 +1,5 @@
-import { ChaiBlockComponentProps, ChaiStyles, StylesProp, registerChaiBlockSchema } from "@/runtime";
+import { registerChaiBlockProps, stylesProp } from "@/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import * as React from "react";
 
 export type EmptyBoxProps = {
@@ -21,9 +22,9 @@ const Config = {
   label: "Empty Box",
   category: "core",
   group: "basic",
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
-      styles: StylesProp(""),
+      styles: stylesProp(""),
       backgroundImage: {
         type: "string",
         title: "Background Image",

@@ -1,9 +1,9 @@
-import { clickCountAtom } from "@/core/atoms/click-detection";
+import { clickCountAtom } from "@/atoms/click-detection";
 import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { useBlockHighlight } from "@/core/hooks/use-block-highlight";
-import { useInlineEditing } from "@/core/hooks/use-inline-editing";
-import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
 import { pubsub } from "@/core/pubsub";
+import { useBlockHighlight } from "@/hooks/use-block-highlight";
+import { useInlineEditing } from "@/hooks/use-inline-editing";
+import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
 import { useThrottledCallback } from "@react-hookz/web";
 import { useAtom } from "jotai";
 import { some } from "lodash-es";

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/core/functions/common-functions";
-import { useSavePage } from "@/core/hooks/use-save-page";
+import { useSavePage } from "@/hooks/use-save-page";
 import { CheckIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
 
@@ -13,7 +13,7 @@ export const SaveButton = () => {
       disabled={saveState === "SAVING"}
       onClick={(e) => {
         e.preventDefault();
-        savePage();
+        savePage(false, true); // Force save from button click
       }}
       className={cn(
         "flex h-auto w-fit items-center gap-x-2 p-1 px-2",

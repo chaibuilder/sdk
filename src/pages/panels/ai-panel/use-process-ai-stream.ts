@@ -1,7 +1,7 @@
-import { useAddBlock } from "@/core/hooks/use-add-block";
-import { useRemoveBlocks } from "@/core/hooks/use-remove-blocks";
-import { useReplaceBlock } from "@/core/hooks/use-replace-block";
 import { getBlocksFromHTML } from "@/core/import-html/html-to-json";
+import { useAddBlock } from "@/hooks/use-add-block";
+import { useRemoveBlocks } from "@/hooks/use-remove-blocks";
+import { useReplaceBlock } from "@/hooks/use-replace-block";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 import { Message } from "./ai-panel-helper";
@@ -134,19 +134,20 @@ export const useProcessAiStream = () => {
     return canvasElement;
   };
 
+  const scrollElementIntoView = (element: HTMLElement) => {
+    const iframeDoc = document.getElementById("canvas-iframe") as HTMLIFrameElement;
+    const iframeWindow = iframeDoc?.contentWindow;
+    if (iframeWindow) {
+      // Always scroll to keep the bottom of the element in view as content streams
+      element.scrollIntoView({ behavior: "smooth", block: "end" });
+    }
+  };
+
   const streamHtmlToCanvasForAdd = (html: string, parentId?: string, position?: number) => {
     const element = getCanvasElement(parentId, position);
     if (element) {
       element.innerHTML = html;
-      const rect = element.getBoundingClientRect();
-      const iframeDoc = document.getElementById("canvas-iframe") as HTMLIFrameElement;
-      const iframeWindow = iframeDoc?.contentWindow;
-      if (iframeWindow) {
-        const isInViewport = rect.top >= 0 && rect.bottom <= iframeWindow.innerHeight;
-        if (!isInViewport) {
-          element.scrollIntoView({ behavior: "smooth", block: "nearest" });
-        }
-      }
+      scrollElementIntoView(element);
     }
   };
 
@@ -154,6 +155,7 @@ export const useProcessAiStream = () => {
     const element = getCanvasElementForEdit(blockId);
     if (element) {
       element.innerHTML = html;
+      scrollElementIntoView(element);
     }
   };
 

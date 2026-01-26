@@ -10,8 +10,10 @@ export default defineConfig({
     "core.ts",
     "supabase-actions.ts",
     "runtime.ts",
+    "runtime-client.ts",
     "render.ts",
     "utils.ts",
+    "types.ts",
   ],
   target: "es2018",
   esbuildOptions(options) {

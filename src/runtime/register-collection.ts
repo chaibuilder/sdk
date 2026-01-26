@@ -1,5 +1,3 @@
-"use server";
-
 import { ChaiBlock } from "@/types/common";
 import { get, has } from "lodash-es";
 

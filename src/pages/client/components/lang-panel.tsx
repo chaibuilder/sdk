@@ -1,4 +1,3 @@
-import { ChaiBuilderPageType } from "@/actions/types";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -6,7 +5,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useLanguages } from "@/core/hooks/use-languages";
+import { useLanguages } from "@/hooks/use-languages";
 import { addNewLangAtom } from "@/pages/atom/add-new-lang";
 import { ChangeSlug } from "@/pages/client/components/change-slug";
 import PermissionChecker from "@/pages/client/components/permission-checker";
@@ -16,6 +15,7 @@ import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
+import { ChaiPageType } from "@/types/actions";
 import { useSetAtom } from "jotai";
 import { filter, find, get, isEmpty, map } from "lodash-es";
 import { MoreHorizontal, PencilIcon, Power, StarIcon, TrashIcon } from "lucide-react";
@@ -34,7 +34,7 @@ const LangPanel = () => {
   const { data: pageTypes } = usePageTypes();
 
   const dynamicSlug = useMemo(() => {
-    const pageType = pageTypes?.find((type: ChaiBuilderPageType) => type.key === currentPage?.pageType);
+    const pageType = pageTypes?.find((type: ChaiPageType) => type.key === currentPage?.pageType);
     return currentPage?.dynamic ? pageType?.dynamicSlug : "";
   }, [pageTypes, currentPage?.pageType, currentPage?.dynamic]);
 

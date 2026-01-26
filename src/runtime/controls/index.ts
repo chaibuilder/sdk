@@ -1,7 +1,6 @@
+import { STYLES_KEY } from "@/core/constants/STRINGS.ts";
 import { get, omit } from "lodash-es";
-import { Code } from "./Code.ts";
-
-const STYLES_KEY = "#styles:";
+import { Code } from "./Code";
 
 export { Code, STYLES_KEY };
 

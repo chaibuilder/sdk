@@ -4,12 +4,39 @@ const prompts = require("prompts");
 const postgres = require("postgres");
 const dotenv = require("dotenv");
 const { LANGUAGES } = require("@chaibuilder/sdk/actions");
-const defaultTheme = require("./constants/default-theme.json");
 dotenv.config();
 
 /**
  * ChaiBuilder Create App CLI
  */
+const defaultTheme = {
+  fontFamily: {
+    heading: "Inter",
+    body: "Inter",
+  },
+  borderRadius: "6px",
+  colors: {
+    background: ["#FFFFFF", "#09090B"],
+    foreground: ["#09090B", "#FFFFFF"],
+    primary: ["#2563EB", "#3B82F6"],
+    "primary-foreground": ["#FFFFFF", "#FFFFFF"],
+    secondary: ["#F4F4F5", "#27272A"],
+    "secondary-foreground": ["#09090B", "#FFFFFF"],
+    muted: ["#F4F4F5", "#27272A"],
+    "muted-foreground": ["#71717A", "#A1A1AA"],
+    accent: ["#F4F4F5", "#27272A"],
+    "accent-foreground": ["#09090B", "#FFFFFF"],
+    destructive: ["#EF4444", "#7F1D1D"],
+    "destructive-foreground": ["#FFFFFF", "#FFFFFF"],
+    border: ["#E4E4E7", "#27272A"],
+    input: ["#E4E4E7", "#27272A"],
+    ring: ["#2563EB", "#3B82F6"],
+    card: ["#FFFFFF", "#09090B"],
+    "card-foreground": ["#09090B", "#FFFFFF"],
+    popover: ["#FFFFFF", "#09090B"],
+    "popover-foreground": ["#09090B", "#FFFFFF"],
+  },
+};
 
 const EXIT_CODES = {
   SUCCESS: 0,

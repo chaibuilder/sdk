@@ -1,11 +1,10 @@
-import { ChaiBlockDefinition } from "@/runtime";
+import { ChaiBlockConfig } from "@/types/blocks";
 import { ChaiBlock } from "@/types/common";
 import { applyLanguage } from "./new-blocks-render-helpers";
 
 describe("applyLanguage", () => {
-  const mockChaiBlock: ChaiBlockDefinition = {
+  const mockChaiBlock: ChaiBlockConfig = {
     i18nProps: ["title", "content", "buttonText"],
-    component: () => null,
     type: "mock",
     label: "Mock Block",
     group: "Mock",

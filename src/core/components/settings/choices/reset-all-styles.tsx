@@ -4,10 +4,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useRemoveAllClassesForBlock } from "@/core/hooks/use-remove-classes-from-blocks";
-import { useResetBlockStyles } from "@/core/hooks/use-reset-block-styles";
-import { useSelectedBlock } from "@/core/hooks/use-selected-blockIds";
-import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
+import { useRemoveAllClassesForBlock } from "@/hooks/use-remove-classes-from-blocks";
+import { useResetBlockStyles } from "@/hooks/use-reset-block-styles";
+import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
 import { Cross2Icon, DotsVerticalIcon, ResetIcon } from "@radix-ui/react-icons";
 import { isEmpty } from "lodash-es";
 import { useTranslation } from "react-i18next";

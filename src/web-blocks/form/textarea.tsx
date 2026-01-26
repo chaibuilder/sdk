@@ -1,4 +1,5 @@
-import { ChaiBlockComponentProps, ChaiStyles, registerChaiBlockSchema, StylesProp } from "@/runtime";
+import { registerChaiBlockProps, stylesProp } from "@/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { InputIcon } from "@radix-ui/react-icons";
 
 export type TextAreaProps = {
@@ -53,15 +54,15 @@ const Config = {
   category: "core",
   icon: InputIcon,
   group: "form",
-  ...registerChaiBlockSchema({
+  props: registerChaiBlockProps({
     properties: {
       fieldName: {
         type: "string",
         title: "Field Name",
         default: "fieldName",
       },
-      styles: StylesProp(""),
-      inputStyles: StylesProp("w-full p-1"),
+      styles: stylesProp(""),
+      inputStyles: stylesProp("w-full p-1"),
       showLabel: {
         type: "boolean",
         title: "Show Label",

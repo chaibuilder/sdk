@@ -1,4 +1,4 @@
-import { useLanguages } from "@/core/hooks/use-languages";
+import { useLanguages } from "@/hooks/use-languages";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { useFetch } from "@/pages/hooks/utils/use-fetch";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

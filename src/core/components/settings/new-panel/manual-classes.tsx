@@ -1,17 +1,17 @@
+import { chaiDesignTokensAtom } from "@/atoms/builder";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { chaiDesignTokensAtom } from "@/core/atoms/builder";
 import { DesignTokensIcon } from "@/core/components/sidepanels/panels/design-tokens/DesignTokensIcon";
 import { useFuseSearch } from "@/core/constants/CLASSES_LIST";
 import { DESIGN_TOKEN_PREFIX } from "@/core/constants/STRINGS";
-import { getSplitChaiClasses } from "@/core/hooks/get-split-classes";
-import { useAddClassesToBlocks } from "@/core/hooks/use-add-classes-to-blocks";
-import { useBuilderProp } from "@/core/hooks/use-builder-prop";
-import { useRemoveClassesFromBlocks } from "@/core/hooks/use-remove-classes-from-blocks";
-import { useSelectedBlock, useSelectedBlockIds } from "@/core/hooks/use-selected-blockIds";
-import { useSelectedStylingBlocks } from "@/core/hooks/use-selected-styling-blocks";
-import { useRightPanel } from "@/core/hooks/use-theme";
+import { getSplitChaiClasses } from "@/hooks/get-split-classes";
+import { useAddClassesToBlocks } from "@/hooks/use-add-classes-to-blocks";
+import { useBuilderProp } from "@/hooks/use-builder-prop";
+import { useRemoveClassesFromBlocks } from "@/hooks/use-remove-classes-from-blocks";
+import { useSelectedBlock, useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
+import { useRightPanel } from "@/hooks/use-theme";
 import { CheckIcon, CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { useAtomValue } from "jotai";
 import { first, get, isEmpty, isFunction, map } from "lodash-es";
@@ -101,7 +101,7 @@ export function ManualClasses({
   };
 
   const [suggestions, setSuggestions] = useState<any[]>([]);
-  const designTokensEnabled = useBuilderProp("flags.designTokens", false);
+  const designTokensEnabled = useBuilderProp("flags.designTokens", true);
   const handleSuggestionsFetchRequested = ({ value }: any) => {
     const search = value.trim().toLowerCase();
     const matches = search.match(/.+:/g);
@@ -207,7 +207,7 @@ export function ManualClasses({
       .replace(/ +(?= )/g, "")
       .split(" ")
       .map(convertToStorageFormat); // Convert design token names to DESIGN_TOKEN_PREFIX-{id} format
-    removeClassesFromBlocks(selectedIds, [clsToRemove]);
+    removeClassesFromBlocks(selectedIds, [clsToRemove], true);
     addClassesToBlocks(selectedIds, fullClsNames, true);
     setEditingClass("");
     setEditingClassIndex(-1);
@@ -331,7 +331,7 @@ export function ManualClasses({
                 onDoubleClick={() => {
                   setNewCls(getDisplayName(cls));
                   if (from === "default") {
-                    removeClassesFromBlocks(selectedIds, [cls]);
+                    removeClassesFromBlocks(selectedIds, [cls], true);
                   } else {
                     if (isFunction(onRemove)) onRemove(cls);
                     setNewCls(cls);
@@ -347,7 +347,7 @@ export function ManualClasses({
                   <Cross2Icon
                     onClick={() => {
                       if (from === "default") {
-                        removeClassesFromBlocks(selectedIds, [cls]);
+                        removeClassesFromBlocks(selectedIds, [cls], true);
                       } else if (isFunction(onRemove)) {
                         onRemove(cls);
                       }
