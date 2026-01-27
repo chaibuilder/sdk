@@ -53,7 +53,7 @@ const PreviewButton = () => {
       if (typeof getPreviewUrl === "function") {
         const isPartial = !hasSlug(currentPage?.pageType);
         const url: string = await getPreviewUrl(
-          isPartial ? `${pageLang !== "" ? pageLang + "/" : ""}${currentPage?.id}` : slug || "",
+          isPartial ? `/_partial/${pageLang !== "" ? pageLang + "/" : ""}${currentPage?.id}` : slug || "",
         );
         setPreviewUrl(url);
       } else {

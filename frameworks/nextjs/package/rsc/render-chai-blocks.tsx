@@ -1,6 +1,5 @@
 import { applyDesignTokens, RenderChaiBlocks as RenderChaiBlocksSdk } from "@chaibuilder/sdk/render";
-import { ChaiBlockComponentProps, ChaiPageProps, ChaiStyles } from "@chaibuilder/sdk/runtime";
-import { ChaiDesignTokens, ChaiPage } from "@chaibuilder/sdk/types";
+import { ChaiBlockComponentProps, ChaiDesignTokens, ChaiPage, ChaiPageProps, ChaiStyles } from "@chaibuilder/sdk/types";
 import { isEmpty } from "lodash";
 import { ChaiBuilder } from "../ChaiBuilder";
 import { ImageBlock } from "./image-block";
