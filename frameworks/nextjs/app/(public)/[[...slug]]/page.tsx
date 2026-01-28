@@ -44,7 +44,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string[
     pageLang: page.lang,
   };
   return (
-    <>
+    <html className={`smooth-scroll`} lang={page.lang}>
       <head>
         <ChaiPageStyles page={page} />
       </head>
@@ -52,6 +52,6 @@ export default async function Page({ params }: { params: Promise<{ slug: string[
         <PreviewBanner slug={slug} show={isEnabled} />
         <RenderChaiBlocks page={page} pageProps={pageProps} />
       </body>
-    </>
+    </html>
   );
 }
