@@ -185,6 +185,7 @@ export class UpdatePageAction extends ChaiBaseAction<UpdatePageActionData, Updat
       "pageType",
       "dynamic",
       "dynamicSlugCustom",
+      "lang",
     ]);
   }
 
