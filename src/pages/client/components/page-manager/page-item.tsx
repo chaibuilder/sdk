@@ -149,7 +149,7 @@ const PageItem = ({
     } else if (page) {
       if (!page.online || isEmpty(page.changes)) return false;
     }
-    return Boolean(langPage || page);
+    return true;
   }, [langPage, page]);
 
   return (
