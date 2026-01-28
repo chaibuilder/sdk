@@ -1,8 +1,8 @@
 import { useSavePage } from "@/hooks/use-save-page";
-import { useWebsocket } from "@/pages/hooks/project/use-builder-prop";
-import { RealtimeChannel } from "@supabase/supabase-js";
+import { useRealtimeAdapter } from "@/pages/hooks/project/use-builder-prop";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useRef } from "react";
+import type { RealtimeChannelAdapter } from "./realtime-adapter";
 import {
   BROADCAST_EVENTS,
   EVENT,
@@ -59,22 +59,22 @@ export const useCurrentPageOwner = () => {
 
 /**
  * @returns
- * null | RealtimeChannel
+ * null | RealtimeChannelAdapter
  */
-const useRealtimeChannel = (): null | RealtimeChannel => {
-  const websocket = useWebsocket();
+const useRealtimeChannel = (): null | RealtimeChannelAdapter => {
+  const realtimeAdapter = useRealtimeAdapter();
   const { setPageStatus } = usePageLockStatus();
   const [channel] = useAtom(realtimeChannel);
 
-  // * Checking if `websocket` instance is not provided
+  // * Checking if `realtimeAdapter` instance is not provided
   useEffect(() => {
     clearTimeout(websocketTimeout);
-    if (websocket) return;
+    if (realtimeAdapter) return;
     websocketTimeout = setTimeout(() => {
-      if (!websocket) setPageStatus(PAGE_STATUS.EDITING);
+      if (!realtimeAdapter) setPageStatus(PAGE_STATUS.EDITING);
     }, 500);
     return () => clearTimeout(websocketTimeout);
-  }, [websocket, setPageStatus]);
+  }, [realtimeAdapter, setPageStatus]);
 
   return channel;
 };
@@ -94,7 +94,7 @@ export const useUpdateOnlineUsers = () => {
   pageRef.current = pageId;
 
   return useCallback(
-    (channelOverride?: RealtimeChannel) => {
+    (channelOverride?: RealtimeChannelAdapter) => {
       const targetChannel = channelOverride || channel;
       if (!targetChannel) return [];
       const stateOfPresence = targetChannel?.presenceState();
@@ -142,7 +142,7 @@ export const useSendRealtimeEvent = () => {
       payload.pageId = pageRef.current;
       payload.senderClientId = clientId;
       payload.receiverClientId = _payload?.requestingClientId || pageOwner?.clientId;
-      await channel.send({ event, payload, type: "broadcast" });
+      await channel.send(event, payload);
       setPageLockMeta({});
     },
     [channel, userId, pageOwner, setPageLockMeta],
@@ -215,13 +215,13 @@ export const useReceiveRealtimeEvent = () => {
  * Subscribe to realtime events
  */
 export const useChaibuilderRealtime = () => {
-  const websocket = useWebsocket();
+  const realtimeAdapter = useRealtimeAdapter();
   const userId = useUserId();
   const pageId = usePageId();
   const channelId = useChannelId();
   const [channel, setChannel] = useAtom(realtimeChannel) as [
-    RealtimeChannel | null,
-    (value: RealtimeChannel | null) => void,
+    RealtimeChannelAdapter | null,
+    (value: RealtimeChannelAdapter | null) => void,
   ];
 
   const onReceiveEvent = useReceiveRealtimeEvent();
@@ -238,22 +238,22 @@ export const useChaibuilderRealtime = () => {
 
   // Connection Effect
   useEffect(() => {
-    if (!websocket || !userId || !channelId) return;
+    if (!realtimeAdapter || !userId || !channelId) return;
     if (channel && channel.topic === channelId) return;
 
-    const newChannel = websocket.channel(channelId, {
+    const newChannel = realtimeAdapter.channel(channelId, {
       config: { presence: { key: clientId } },
     });
 
     // Attach listeners
     BROADCAST_EVENTS.forEach((event: string) => {
-      newChannel.on("broadcast", { event }, (payload: any) => {
+      newChannel.onBroadcast(event, (payload: any) => {
         onReceiveEventRef.current(event)(payload);
       });
     });
 
     PRESENCE_EVENTS.forEach((event: string) => {
-      newChannel.on("presence" as any, { event }, () => {
+      newChannel.onPresence(event, () => {
         updateOnlineUsersRef.current(newChannel);
       });
     });
@@ -269,7 +269,7 @@ export const useChaibuilderRealtime = () => {
     return () => {
       newChannel.unsubscribe();
     };
-  }, [websocket, userId, channelId, setChannel]);
+  }, [realtimeAdapter, userId, channelId, setChannel]);
 
   // Tracking Effect
   useEffect(() => {

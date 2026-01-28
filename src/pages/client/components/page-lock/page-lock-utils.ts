@@ -1,9 +1,9 @@
 import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
 import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
 import { useChaiAuth } from "@/pages/hooks/use-chai-auth";
-import { RealtimeChannel } from "@supabase/supabase-js";
 import { atom } from "jotai";
 import { first, groupBy, minBy, values } from "lodash-es";
+import type { RealtimeChannelAdapter } from "./realtime-adapter";
 
 export type ChaiOnlineUser = { pageId: string; userId: string; clientId: string; onlineAt: number };
 
@@ -39,7 +39,7 @@ export const BROADCAST_EVENTS = [
 ];
 
 export const pageUserMapAtom = atom<Record<string, ChaiOnlineUser>>({});
-export const realtimeChannel = atom<RealtimeChannel | null>(null);
+export const realtimeChannel = atom<RealtimeChannelAdapter | null>(null);
 export const pageStatusAtom = atom<string>(PAGE_STATUS.CHECKING);
 export const pageLockMetaAtom = atom<any>({});
 
