@@ -46,7 +46,10 @@ const PagesManagerNew = ({ close }: PageManagerNewProps) => {
   const [selectedPageType, setSelectedPageType] = useState("");
   const [duplicatePage, setDuplicatePage] = useState<any>(null);
   const [unmarkAsTemplate, setUnmarkAsTemplate] = useState(null);
-  const [selectedLanguage, setSelectedLanguage] = useState(fallbackLang);
+  const [selectedLanguage, setSelectedLanguage] = useState(() => {
+    const langParam = queryParams.get("lang");
+    return langParam || fallbackLang;
+  });
   const [_showUntranslatedPages, setShowUntranslatedPages] = useState(false);
   const setAddNewLang = useSetAtom(addNewLangAtom);
   const showUntranslatedPages = _showUntranslatedPages && selectedLanguage !== fallbackLang;
