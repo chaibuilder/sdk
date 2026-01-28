@@ -2,6 +2,7 @@ import { db, safeQuery, schema } from "@chaibuilder/sdk/actions";
 import { ChaiBlock, ChaiPage } from "@chaibuilder/sdk/types";
 import { and, eq, inArray } from "drizzle-orm";
 import { get, has, isEmpty } from "lodash";
+import { nanoid } from "nanoid";
 
 export type GetFullPageOptions = {
   id: string;
@@ -11,6 +12,22 @@ export type GetFullPageOptions = {
   editor?: boolean;
   userId?: string;
 };
+
+export function duplicateBlocks(blocks: ChaiBlock[]): ChaiBlock[] {
+  const idMap = new Map<string, string>();
+
+  // Generate new IDs for all blocks
+  blocks.forEach((block) => {
+    idMap.set(block._id, nanoid());
+  });
+
+  // Create new blocks with updated _id and _parent references
+  return blocks.map((block) => ({
+    ...block,
+    _id: idMap.get(block._id)!,
+    _parent: block._parent ? (idMap.get(block._parent) ?? block._parent) : block._parent,
+  }));
+}
 
 export async function getFullPage(
   pageId: string,
@@ -159,6 +176,8 @@ async function getMergedBlocks(blocks: ChaiBlock[], draft: boolean, appId: strin
     if (partialBlockId === "") continue;
 
     let partialBlocks = partialBlocksMap.get(partialBlockId) ?? [];
+    //Generate new ids for blocks
+    partialBlocks = duplicateBlocks(partialBlocks);
 
     // Inherit parent properties
     if (partialBlocks.length > 0) {
