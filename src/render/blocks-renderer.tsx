@@ -1,5 +1,5 @@
 import { adjustSpacingInContentBlocks } from "@/core/components/canvas/static/adjust-spacing-in-blocks";
-import { filter, get, has, isArray, isEmpty, map } from "lodash-es";
+import { filter, get, has, isArray, isEmpty, map, uniqBy } from "lodash-es";
 import { RenderBlock } from "./block-renderer";
 import { RenderChaiBlocksProps } from "./render-chai-blocks";
 
@@ -7,9 +7,9 @@ export const RenderBlocks = (
   props: RenderChaiBlocksProps & { repeaterData?: { index: number; dataKey: string }; type?: string },
 ) => {
   const { blocks, parent, repeaterData, type } = props;
-  let filteredBlocks = filter(
-    blocks,
-    (block) => has(block, "_id") && (!isEmpty(parent) ? block._parent === parent : !block._parent),
+  let filteredBlocks = uniqBy(
+    filter(blocks, (block) => has(block, "_id") && (!isEmpty(parent) ? block._parent === parent : !block._parent)),
+    "_id",
   );
   const hasChildren = (blockId: string) => filter(blocks, (b) => b._parent === blockId).length > 0;
 
