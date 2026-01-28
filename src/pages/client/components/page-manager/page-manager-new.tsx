@@ -10,7 +10,7 @@ import { organizePages } from "@/pages/utils/page-organization";
 import { useSetAtom } from "jotai";
 import { filter, find, isEmpty, map } from "lodash-es";
 import { File } from "lucide-react";
-import { Suspense, lazy, useCallback, useEffect, useMemo, useState } from "react";
+import { Suspense, lazy, startTransition, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import RenderPageItems from "./render-page-items";
 const PageManagerSearchAndFilter = lazy(() => import("./page-manager-search-and-filter"));
@@ -78,11 +78,13 @@ const PagesManagerNew = ({ close }: PageManagerNewProps) => {
     if (langParam) {
       const validLanguages = [fallbackLang, ...languages];
       const isValidLang = validLanguages.includes(langParam);
-      if (isValidLang && selectedLanguage !== langParam) {
-        setSelectedLanguage(langParam);
-      } else if (!isValidLang && selectedLanguage !== fallbackLang) {
-        setSelectedLanguage(fallbackLang);
-      }
+      startTransition(() => {
+        if (isValidLang && selectedLanguage !== langParam) {
+          setSelectedLanguage(langParam);
+        } else if (!isValidLang && selectedLanguage !== fallbackLang) {
+          setSelectedLanguage(fallbackLang);
+        }
+      });
     }
   }, [queryParams, languages, fallbackLang, selectedLanguage]);
 
