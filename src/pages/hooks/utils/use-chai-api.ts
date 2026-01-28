@@ -37,6 +37,10 @@ export const usePagesSavePage = () => {
         if (!oldData) return oldData;
         return oldData?.map((item: any) => (item?.id === page ? { ...item, changes: ["Page"] } : item));
       });
+      queryClient.setQueryData([ACTIONS.GET_WEBSITE_PAGES], (oldData: any[] | undefined) => {
+        if (!oldData) return oldData;
+        return oldData?.map((item: any) => (item?.id === page ? { ...item, changes: ["Page"] } : item));
+      });
 
       return response;
     } catch (error) {
