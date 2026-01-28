@@ -44,7 +44,6 @@ type PartialPageIdOnly = Pick<InferSelectModel<typeof schema.appPagesOnline>, "i
  */
 export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionData, PublishChangesActionResponse> {
   private appId: string = "";
-  private userId: string = "";
 
   /**
    * Define the validation schema for publish changes action
@@ -62,7 +61,6 @@ export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionDat
     await this.verifyAccess();
     this.validateContext();
     this.appId = this.context!.appId;
-    this.userId = this.context!.userId ?? "";
 
     try {
       const ids = data.ids ?? [];
@@ -256,7 +254,7 @@ export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionDat
         .insert(schema.appPagesOnline)
         .values({
           ...pageData,
-          currentEditor: this.userId,
+          currentEditor: this.context?.userId,
         })
         .returning({
           id: schema.appPagesOnline.id,
@@ -266,6 +264,14 @@ export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionDat
 
     if (error || !data || data.length === 0) {
       throw new ActionError("Error publishing page", "ERROR_PUBLISHING_PAGE", 500, error);
+    }
+
+    const { error: updateError } = await safeQuery(() =>
+      db.update(schema.appPages).set({ changes: null }).where(eq(schema.appPages.id, page.id)),
+    );
+
+    if (updateError) {
+      throw new ActionError("Error clearing page changes", "ERROR_PUBLISHING_PAGE", 500, updateError);
     }
 
     return data[0];
