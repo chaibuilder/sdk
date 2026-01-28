@@ -84,14 +84,10 @@ const PagesManagerNew = ({ close }: PageManagerNewProps) => {
           setSelectedLanguage(langParam);
         } else if (!isValidLang && selectedLanguage !== fallbackLanguageForUrl) {
           setSelectedLanguage(fallbackLanguageForUrl);
-          // Keep the URL in sync with the fallback language
-          if (typeof setQueryParams === "function") {
-            setQueryParams({ lang: fallbackLang });
-          }
         }
       });
     }
-  }, [queryParams, languages, fallbackLang, selectedLanguage, setQueryParams]);
+  }, []);
 
   /**
    * Handles selected page type
