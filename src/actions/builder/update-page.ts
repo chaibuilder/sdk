@@ -28,6 +28,7 @@ type UpdatePageActionData = {
   pageType?: string;
   dynamic?: boolean;
   dynamicSlugCustom?: string;
+  lang?: string;
 
   links?: string;
   partialBlocks?: string;
@@ -65,6 +66,7 @@ export class UpdatePageAction extends ChaiBaseAction<UpdatePageActionData, Updat
       pageType: z.string().optional(),
       dynamic: z.boolean().optional(),
       dynamicSlugCustom: z.string().optional(),
+      lang: z.string().optional(),
       needTranslations: z.boolean().optional(),
     });
   }

@@ -277,7 +277,7 @@ const SeoPanel = () => {
 
   const onSubmit = async () => {
     updatePage(
-      { id: languagePage?.id, seo: formValues, primaryPage: pageId },
+      { id: languagePage?.id, seo: formValues, primaryPage: pageId, lang: selectedLanguage },
       {
         onSuccess: () => {
           console.log("SEO & JSON-LD updated successfully", formValues);
