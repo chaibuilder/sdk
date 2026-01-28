@@ -46,10 +46,7 @@ const PagesManagerNew = ({ close }: PageManagerNewProps) => {
   const [selectedPageType, setSelectedPageType] = useState("");
   const [duplicatePage, setDuplicatePage] = useState<any>(null);
   const [unmarkAsTemplate, setUnmarkAsTemplate] = useState(null);
-  const [selectedLanguage, setSelectedLanguage] = useState(() => {
-    const langParam = queryParams.get("lang");
-    return langParam || fallbackLang;
-  });
+  const [selectedLanguage, setSelectedLanguage] = useState(fallbackLang);
   const [_showUntranslatedPages, setShowUntranslatedPages] = useState(false);
   const setAddNewLang = useSetAtom(addNewLangAtom);
   const showUntranslatedPages = _showUntranslatedPages && selectedLanguage !== fallbackLang;
@@ -72,6 +69,22 @@ const PagesManagerNew = ({ close }: PageManagerNewProps) => {
   useEffect(() => {
     setSelectedLang(fallbackLang);
   }, [fallbackLang, setSelectedLang]);
+
+  /**
+   * Validate selectedLanguage against available languages
+   */
+  useEffect(() => {
+    const langParam = queryParams.get("lang");
+    if (langParam) {
+      const validLanguages = [fallbackLang, ...languages];
+      const isValidLang = validLanguages.includes(langParam);
+      if (isValidLang && selectedLanguage !== langParam) {
+        setSelectedLanguage(langParam);
+      } else if (!isValidLang && selectedLanguage !== fallbackLang) {
+        setSelectedLanguage(fallbackLang);
+      }
+    }
+  }, [queryParams, languages, fallbackLang, selectedLanguage]);
 
   /**
    * Handles selected page type
