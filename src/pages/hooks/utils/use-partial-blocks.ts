@@ -32,7 +32,7 @@ export const usePartialBlocksFn = (): {
         try {
           const data = await fetchAPI(apiUrl, {
             action: "GET_DRAFT_PAGE",
-            data: { id: partialBlockKey, draft: true, editor: false },
+            data: { id: partialBlockKey, draft: true, editor: false, mergePartials: true },
           });
           return filter(data.blocks, (block: ChaiBlock) => has(block, "_id"));
         } catch (error) {

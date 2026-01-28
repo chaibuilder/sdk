@@ -10,7 +10,7 @@ Chai Builder is a **full open-source React website builder** that empowers devel
 - **Next.js 16**
 - **Tailwind CSS v3+**
 
-📚 **[CodeWiki](https://codewiki.google/github.com/chaibuilder/sdk)** | **[Documentation](https://docs.chaibuilder.com/)** | 🎨 **[Live Demo](https://chaibuilder-sdk.vercel.app/)** 
+📚 **[CodeWiki](https://codewiki.google/github.com/chaibuilder/sdk)**  | 🎨 **[Live Demo](https://chaibuilder-sdk.vercel.app/)** 
 
 ![CHAI BUILDER](https://fldwljgzcktqnysdkxnn.supabase.co/storage/v1/object/public/dam-assets/assets/chai-builder.jpg)
 

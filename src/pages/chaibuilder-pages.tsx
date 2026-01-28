@@ -102,7 +102,9 @@ const DefaultChaiBuilder = (props: ChaiWebsiteBuilderProps) => {
   const isCheckingPageLock = pageStatus === PAGE_STATUS.CHECKING;
   const isFetchingPageData = isDraftBlocksFetching || isCheckingPageLock || isBuilderPageDataFetching;
 
-  blocksDataRef.current = blocks;
+  useEffect(() => {
+    blocksDataRef.current = blocks;
+  }, [blocks]);
 
   //Show Preview
   const [previewUrl] = useAtom(previewUrlAtom);

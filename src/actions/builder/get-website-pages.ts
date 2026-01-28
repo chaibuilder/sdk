@@ -23,6 +23,7 @@ type GetWebsitePagesActionResponse = Array<{
   dynamicSlugCustom: string | null;
   primaryPage?: string | null;
   isTemplate: boolean;
+  changes: string[] | null;
 }>;
 
 export class GetWebsitePagesAction extends ChaiBaseAction<GetWebsitePagesActionData, GetWebsitePagesActionResponse> {
@@ -57,6 +58,7 @@ export class GetWebsitePagesAction extends ChaiBaseAction<GetWebsitePagesActionD
           dynamic: schema.appPages.dynamic,
           dynamicSlugCustom: schema.appPages.dynamicSlugCustom,
           primaryPage: schema.appPages.primaryPage,
+          changes: schema.appPages.changes,
         })
         .from(schema.appPages)
         .where(and(eq(schema.appPages.app, appId), eq(schema.appPages.lang, lang))),
@@ -94,6 +96,7 @@ export class GetWebsitePagesAction extends ChaiBaseAction<GetWebsitePagesActionD
       ...page,
       pageType: page.pageType ?? "page",
       isTemplate: templatePageIds.has(page.id),
+      changes: page.changes as string[] | null,
     }));
   }
 }

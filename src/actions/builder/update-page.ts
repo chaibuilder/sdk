@@ -249,6 +249,18 @@ export class UpdatePageAction extends ChaiBaseAction<UpdatePageActionData, Updat
         })
         .where(and(eq(schema.appPages.id, pageId), eq(schema.appPages.app, this.appId))),
     );
+    if (changes.includes("Page")) {
+      const { error: error2 } = await safeQuery(() =>
+        db
+          .update(schema.appPages)
+          .set({ changes })
+          .where(and(eq(schema.appPages.primaryPage, pageId), eq(schema.appPages.app, this.appId))),
+      );
+
+      if (error2) {
+        throw new ActionError("Error updating page", "ERROR_UPDATING_PAGE");
+      }
+    }
 
     if (error) {
       throw new ActionError("Error updating page", "ERROR_UPDATING_PAGE");

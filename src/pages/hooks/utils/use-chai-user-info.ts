@@ -14,7 +14,7 @@ export const useChaiUserInfo = (currentEditor: string) => {
         action: ACTIONS.GET_CHAI_USER,
         data: { userId: currentEditor },
       });
-      const userInfo = data as {
+      const userInfo = (data?.data || {}) as {
         id: string;
         name: string;
         email: string;

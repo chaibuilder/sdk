@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 import * as utils from "./lib";
 import { ChaiFullPage, ChaiPartialPage } from "./types";
+import { GetFullPageOptions } from "./lib/get-full-page";
 
 class ChaiBuilder {
   private static appId?: string;
@@ -73,9 +74,9 @@ class ChaiBuilder {
     }
   }
 
-  static async getFullPage(pageId: string): Promise<ChaiFullPage> {
+  static async getFullPage(pageId: string, options?: Partial<GetFullPageOptions>): Promise<ChaiFullPage> {
     ChaiBuilder.verifyInit();
-    return await utils.getFullPage(pageId, this.appId!, this.draftMode);
+    return await utils.getFullPage(pageId, this.appId!, this.draftMode, options);
   }
 
   static async getPartialPageBySlug(
@@ -122,7 +123,7 @@ class ChaiBuilder {
     const languagePageId = page.languagePageId || page.id;
     return await unstable_cache(
       async () => {
-        const data = await ChaiBuilder.getFullPage(languagePageId);
+        const data = await ChaiBuilder.getFullPage(languagePageId, { mergePartials: true });
         const fallbackLang = siteSettings?.fallbackLang;
         return { ...data, fallbackLang, lang: page.lang || fallbackLang };
       },

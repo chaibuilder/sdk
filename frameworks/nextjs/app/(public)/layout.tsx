@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "@chaibuilder/sdk/styles";
+import "./public.css";
 
 export const metadata: Metadata = {
   title: "Chai Builder",
@@ -11,5 +11,5 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <html className={`smooth-scroll`}>{children}</html>;
+  return children;
 }

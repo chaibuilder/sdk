@@ -21,7 +21,7 @@ const RevisionTag = ({ version }: { version: { uid: string; label: string; item:
 
   return (
     <span
-      className={`flex items-center gap-x-2 rounded border bg-white px-2 text-xs shadow-lg ${isLive ? "border-green-500/30" : isDraft ? "border-amber-500/30" : "border-purple-500/30"}`}>
+      className={`flex min-h-8 items-center gap-x-2 rounded border bg-white px-2 text-xs shadow-lg ${isLive ? "border-green-500/30" : isDraft ? "border-amber-500/30" : "border-purple-500/30"}`}>
       <div
         className={
           "h-full items-center rounded px-1.5 py-0.5 font-medium capitalize" +
@@ -38,7 +38,9 @@ const RevisionTag = ({ version }: { version: { uid: string; label: string; item:
           <span className="font-light opacity-90">{isDraft ? "Currently editing" : "Published by"}</span>
           {!isDraft && <span className="pl-1 font-medium">{user?.name || "Unknown"}</span>}
         </div>
-        <div className="text-[10px] leading-tight">{formatDate(item.createdAt, "dd MMM yyyy, h:mm a")}</div>
+        {item?.createdAt && (
+          <div className="pt-0.5 text-[10px] leading-tight">{formatDate(item.createdAt, "dd MMM yyyy, h:mm a")}</div>
+        )}
       </div>
     </span>
   );

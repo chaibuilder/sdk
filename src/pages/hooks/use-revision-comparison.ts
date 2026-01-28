@@ -21,7 +21,7 @@ export function useRevisionComparison(
   const apiUrl = useApiUrl();
   const fetchAPI = useFetch();
 
-  const needRefetch = startsWith(version1.uid, "draft:") || startsWith(version2.uid, "live:");
+  const shouldRefetch = startsWith(version1.uid, "draft:") || startsWith(version2.uid, "live:");
 
   return useQuery({
     queryKey: ["revision-comparison", version1.uid, version2.uid],
@@ -52,7 +52,9 @@ export function useRevisionComparison(
       return response;
     },
     enabled: !!version1.uid && !!version2.uid,
-    staleTime: needRefetch ? 0 : Infinity,
+    staleTime: shouldRefetch ? 0 : Infinity,
+    refetchOnMount: shouldRefetch ? "always" : false,
+    gcTime: shouldRefetch ? 0 : undefined,
   });
 }
 
