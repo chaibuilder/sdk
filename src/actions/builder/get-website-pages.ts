@@ -96,6 +96,7 @@ export class GetWebsitePagesAction extends ChaiBaseAction<GetWebsitePagesActionD
       ...page,
       pageType: page.pageType ?? "page",
       isTemplate: templatePageIds.has(page.id),
+      changes: page.changes as string[] | null,
     }));
   }
 }
