@@ -1,7 +1,6 @@
 import { ChaiBuilder } from "@/package/ChaiBuilder";
 import { ChaiPageStyles, PreviewBanner, RenderChaiBlocks } from "@/package/rsc";
 import { ChaiPageProps } from "@/package/types";
-import "@chaibuilder/sdk/styles";
 import { loadWebBlocks } from "@chaibuilder/sdk/web-blocks";
 import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
@@ -44,7 +43,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string[
     pageLang: page.lang,
   };
   return (
-    <>
+    <html className={`smooth-scroll`} lang={page.lang}>
       <head>
         <ChaiPageStyles page={page} />
       </head>
@@ -52,6 +51,6 @@ export default async function Page({ params }: { params: Promise<{ slug: string[
         <PreviewBanner slug={slug} show={isEnabled} />
         <RenderChaiBlocks page={page} pageProps={pageProps} />
       </body>
-    </>
+    </html>
   );
 }
