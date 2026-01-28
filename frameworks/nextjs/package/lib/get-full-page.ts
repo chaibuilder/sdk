@@ -13,7 +13,7 @@ export type GetFullPageOptions = {
   userId?: string;
 };
 
-export function duplicateBlocks(blocks: ChaiBlock[]): ChaiBlock[] {
+export function assignNewIds(blocks: ChaiBlock[]): ChaiBlock[] {
   const idMap = new Map<string, string>();
 
   // Generate new IDs for all blocks
@@ -177,7 +177,7 @@ async function getMergedBlocks(blocks: ChaiBlock[], draft: boolean, appId: strin
 
     let partialBlocks = partialBlocksMap.get(partialBlockId) ?? [];
     //Generate new ids for blocks
-    partialBlocks = duplicateBlocks(partialBlocks);
+    partialBlocks = assignNewIds(partialBlocks);
 
     // Inherit parent properties
     if (partialBlocks.length > 0) {
