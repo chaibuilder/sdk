@@ -13,7 +13,6 @@ const pageEditInfoAtom = atom<{
 export const usePageEditInfo = () => {
   return useAtom(pageEditInfoAtom);
 };
-``;
 
 export const useChaiCurrentPage = () => {
   const [searchParams] = useSearchParams();
