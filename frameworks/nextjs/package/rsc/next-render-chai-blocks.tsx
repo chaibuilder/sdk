@@ -1,10 +1,12 @@
+import { ChaiFullPage } from "@/types";
 import { applyDesignTokens, RenderChaiBlocks as RenderChaiBlocksSdk } from "@chaibuilder/sdk/render";
 import { setChaiBlockComponent } from "@chaibuilder/sdk/runtime";
-import { ChaiBlockComponentProps, ChaiDesignTokens, ChaiPage, ChaiPageProps, ChaiStyles } from "@chaibuilder/sdk/types";
+import { ChaiBlockComponentProps, ChaiDesignTokens, ChaiPageProps, ChaiStyles } from "@chaibuilder/sdk/types";
 import { isEmpty } from "lodash";
-import { ImageBlock, JSONLD, LinkBlock } from ".";
 import { ChaiBuilder } from "../ChaiBuilder";
-
+import { ImageBlock } from "./image-block";
+import { JSONLD } from "./json-ld";
+import { LinkBlock } from "./link-block";
 // TODO: Keep this NextJSRenderChaiBlocks implementation functionally aligned with the RSC
 // version in render-chai-blocks.tsx:
 // https://github.com/chaibuilder/frameworks/blob/main/packages/next/src/blocks/rsc/render-chai-blocks.tsx
@@ -37,7 +39,7 @@ export const NextJSRenderChaiBlocks = async ({
   imageComponent = ImageBlock,
   designTokens = {},
 }: {
-  page: ChaiPage & { fallbackLang: string };
+  page: ChaiFullPage & { fallbackLang: string };
   pageProps: ChaiPageProps;
   designTokens?: ChaiDesignTokens;
   linkComponent?:
