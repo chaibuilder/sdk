@@ -76,13 +76,14 @@ const PagesManagerNew = ({ close }: PageManagerNewProps) => {
   useEffect(() => {
     const langParam = queryParams.get("lang");
     if (langParam) {
-      const validLanguages = [fallbackLang, ...languages];
+      const validLanguages = languages;
+      const fallbackLanguageForUrl = languages[0] ?? fallbackLang;
       const isValidLang = validLanguages.includes(langParam);
       startTransition(() => {
         if (isValidLang && selectedLanguage !== langParam) {
           setSelectedLanguage(langParam);
-        } else if (!isValidLang && selectedLanguage !== fallbackLang) {
-          setSelectedLanguage(fallbackLang);
+        } else if (!isValidLang && selectedLanguage !== fallbackLanguageForUrl) {
+          setSelectedLanguage(fallbackLanguageForUrl);
         }
       });
     }
