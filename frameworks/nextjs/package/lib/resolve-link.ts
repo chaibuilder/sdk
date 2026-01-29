@@ -42,7 +42,5 @@ export async function resolveLink(
     return "/not-found";
   }
 
-  // Handle language prefix
-  const langPrefix = lang === fallbackLang || !lang ? "" : `/${lang}`;
-  return `${langPrefix}/${page.slug}`;
+  return page.slug;
 }
