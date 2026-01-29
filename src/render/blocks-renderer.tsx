@@ -17,10 +17,10 @@ export const RenderBlocks = (
     filteredBlocks = adjustSpacingInContentBlocks(filteredBlocks);
   }
 
-  return map(filteredBlocks, (block) => {
+  return map(filteredBlocks, (block, blockIndex) => {
     if (!block) return null;
     return (
-      <RenderBlock {...props} key={block._id} block={block}>
+      <RenderBlock {...props} key={block._id ? `${block._id}-${blockIndex}` : `block-${blockIndex}`} block={block}>
         {({ _id, _type, repeaterItems, $repeaterItemsKey }) => {
           return _type === "Repeater" ? (
             isArray(repeaterItems) &&
@@ -28,7 +28,7 @@ export const RenderBlocks = (
                 <RenderBlocks
                   {...props}
                   parent={block._id}
-                  key={`${get(block, "_parent", "root")}-${block._id}-${index}`}
+                  key={`${get(block, "_parent", "root")}-${block._id}-${blockIndex}-${index}`}
                   repeaterData={{ index, dataKey: $repeaterItemsKey! }}
                 />
               ))
@@ -36,7 +36,7 @@ export const RenderBlocks = (
             <RenderBlocks
               {...props}
               parent={block._id}
-              key={`${get(block, "_parent", "root")}-${block._id}`}
+              key={`${get(block, "_parent", "root")}-${block._id}-${blockIndex}`}
               repeaterData={repeaterData}
               type={block._type}
             />

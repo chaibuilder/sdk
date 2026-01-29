@@ -15,9 +15,9 @@ export type InputProps = {
 };
 
 // Extract autocomplete value and determine input type from combined inputType value
-export const getInputTypeAndAutocomplete = (inputTypeValue: string): { type: string; autocomplete: string } => {
+export const getInputTypeAndAutocomplete = (inputTypeValue: string): { type: string; autoComplete: string } => {
   // Default values
-  const defaults = { type: "text", autocomplete: "on" };
+  const defaults = { type: "text", autoComplete: "on" };
 
   // If no input type, return defaults
   if (!inputTypeValue) return defaults;
@@ -25,94 +25,94 @@ export const getInputTypeAndAutocomplete = (inputTypeValue: string): { type: str
   // Handle basic HTML input types with their corresponding autocomplete values
   const basicTypes = ["text", "password", "number", "hidden", "range", "color", "date", "time"];
   if (basicTypes.includes(inputTypeValue)) {
-    return { type: inputTypeValue, autocomplete: "on" };
+    return { type: inputTypeValue, autoComplete: "on" };
   }
 
   // Special cases for email, tel, and url which should have matching autocomplete values
   if (inputTypeValue === "email") {
-    return { type: "email", autocomplete: "email" };
+    return { type: "email", autoComplete: "email" };
   }
   if (inputTypeValue === "tel") {
-    return { type: "tel", autocomplete: "tel" };
+    return { type: "tel", autoComplete: "tel" };
   }
   if (inputTypeValue === "url") {
-    return { type: "url", autocomplete: "url" };
+    return { type: "url", autoComplete: "url" };
   }
 
   // Map combined values to input type and autocomplete
-  const typeMap: Record<string, { type: string; autocomplete: string }> = {
+  const typeMap: Record<string, { type: string; autoComplete: string }> = {
     // Special cases
-    off: { type: "text", autocomplete: "off" },
-    on: { type: "text", autocomplete: "on" },
+    off: { type: "text", autoComplete: "off" },
+    on: { type: "text", autoComplete: "on" },
 
     // Name related
-    name: { type: "text", autocomplete: "name" },
-    "honorific-prefix": { type: "text", autocomplete: "honorific-prefix" },
-    "given-name": { type: "text", autocomplete: "given-name" },
-    "additional-name": { type: "text", autocomplete: "additional-name" },
-    "family-name": { type: "text", autocomplete: "family-name" },
-    "honorific-suffix": { type: "text", autocomplete: "honorific-suffix" },
-    nickname: { type: "text", autocomplete: "nickname" },
-    firstName: { type: "text", autocomplete: "given-name" },
-    lastName: { type: "text", autocomplete: "family-name" },
+    name: { type: "text", autoComplete: "name" },
+    "honorific-prefix": { type: "text", autoComplete: "honorific-prefix" },
+    "given-name": { type: "text", autoComplete: "given-name" },
+    "additional-name": { type: "text", autoComplete: "additional-name" },
+    "family-name": { type: "text", autoComplete: "family-name" },
+    "honorific-suffix": { type: "text", autoComplete: "honorific-suffix" },
+    nickname: { type: "text", autoComplete: "nickname" },
+    firstName: { type: "text", autoComplete: "given-name" },
+    lastName: { type: "text", autoComplete: "family-name" },
 
     // Contact related
-    email: { type: "email", autocomplete: "email" },
-    tel: { type: "tel", autocomplete: "tel" },
-    "tel-country-code": { type: "tel", autocomplete: "tel-country-code" },
-    "tel-national": { type: "tel", autocomplete: "tel-national" },
-    "tel-area-code": { type: "tel", autocomplete: "tel-area-code" },
-    "tel-local": { type: "tel", autocomplete: "tel-local" },
-    "tel-extension": { type: "tel", autocomplete: "tel-extension" },
+    email: { type: "email", autoComplete: "email" },
+    tel: { type: "tel", autoComplete: "tel" },
+    "tel-country-code": { type: "tel", autoComplete: "tel-country-code" },
+    "tel-national": { type: "tel", autoComplete: "tel-national" },
+    "tel-area-code": { type: "tel", autoComplete: "tel-area-code" },
+    "tel-local": { type: "tel", autoComplete: "tel-local" },
+    "tel-extension": { type: "tel", autoComplete: "tel-extension" },
 
     // Address related
-    "street-address": { type: "text", autocomplete: "street-address" },
-    "address-line1": { type: "text", autocomplete: "address-line1" },
-    "address-line2": { type: "text", autocomplete: "address-line2" },
-    "address-line3": { type: "text", autocomplete: "address-line3" },
-    "address-level1": { type: "text", autocomplete: "address-level1" },
-    "address-level2": { type: "text", autocomplete: "address-level2" },
-    "address-level3": { type: "text", autocomplete: "address-level3" },
-    "address-level4": { type: "text", autocomplete: "address-level4" },
-    country: { type: "text", autocomplete: "country" },
-    "country-name": { type: "text", autocomplete: "country-name" },
-    "postal-code": { type: "text", autocomplete: "postal-code" },
+    "street-address": { type: "text", autoComplete: "street-address" },
+    "address-line1": { type: "text", autoComplete: "address-line1" },
+    "address-line2": { type: "text", autoComplete: "address-line2" },
+    "address-line3": { type: "text", autoComplete: "address-line3" },
+    "address-level1": { type: "text", autoComplete: "address-level1" },
+    "address-level2": { type: "text", autoComplete: "address-level2" },
+    "address-level3": { type: "text", autoComplete: "address-level3" },
+    "address-level4": { type: "text", autoComplete: "address-level4" },
+    country: { type: "text", autoComplete: "country" },
+    "country-name": { type: "text", autoComplete: "country-name" },
+    "postal-code": { type: "text", autoComplete: "postal-code" },
 
     // Credit card related
-    "cc-name": { type: "text", autocomplete: "cc-name" },
-    "cc-given-name": { type: "text", autocomplete: "cc-given-name" },
-    "cc-additional-name": { type: "text", autocomplete: "cc-additional-name" },
-    "cc-family-name": { type: "text", autocomplete: "cc-family-name" },
-    "cc-number": { type: "text", autocomplete: "cc-number" },
-    "cc-exp": { type: "text", autocomplete: "cc-exp" },
-    "cc-exp-month": { type: "number", autocomplete: "cc-exp-month" },
-    "cc-exp-year": { type: "number", autocomplete: "cc-exp-year" },
-    "cc-csc": { type: "text", autocomplete: "cc-csc" },
-    "cc-type": { type: "text", autocomplete: "cc-type" },
+    "cc-name": { type: "text", autoComplete: "cc-name" },
+    "cc-given-name": { type: "text", autoComplete: "cc-given-name" },
+    "cc-additional-name": { type: "text", autoComplete: "cc-additional-name" },
+    "cc-family-name": { type: "text", autoComplete: "cc-family-name" },
+    "cc-number": { type: "text", autoComplete: "cc-number" },
+    "cc-exp": { type: "text", autoComplete: "cc-exp" },
+    "cc-exp-month": { type: "number", autoComplete: "cc-exp-month" },
+    "cc-exp-year": { type: "number", autoComplete: "cc-exp-year" },
+    "cc-csc": { type: "text", autoComplete: "cc-csc" },
+    "cc-type": { type: "text", autoComplete: "cc-type" },
 
     // Date related
-    bday: { type: "date", autocomplete: "bday" },
-    "bday-day": { type: "number", autocomplete: "bday-day" },
-    "bday-month": { type: "number", autocomplete: "bday-month" },
-    "bday-year": { type: "number", autocomplete: "bday-year" },
+    bday: { type: "date", autoComplete: "bday" },
+    "bday-day": { type: "number", autoComplete: "bday-day" },
+    "bday-month": { type: "number", autoComplete: "bday-month" },
+    "bday-year": { type: "number", autoComplete: "bday-year" },
 
     // Login related
-    username: { type: "text", autocomplete: "username" },
-    "new-password": { type: "password", autocomplete: "new-password" },
-    "current-password": { type: "password", autocomplete: "current-password" },
-    "one-time-code": { type: "text", autocomplete: "one-time-code" },
+    username: { type: "text", autoComplete: "username" },
+    "new-password": { type: "password", autoComplete: "new-password" },
+    "current-password": { type: "password", autoComplete: "current-password" },
+    "one-time-code": { type: "text", autoComplete: "one-time-code" },
 
     // Transaction related
-    "transaction-currency": { type: "text", autocomplete: "transaction-currency" },
-    "transaction-amount": { type: "number", autocomplete: "transaction-amount" },
+    "transaction-currency": { type: "text", autoComplete: "transaction-currency" },
+    "transaction-amount": { type: "number", autoComplete: "transaction-amount" },
 
     // Other
-    url: { type: "url", autocomplete: "url" },
-    photo: { type: "url", autocomplete: "photo" },
-    sex: { type: "text", autocomplete: "sex" },
-    "organization-title": { type: "text", autocomplete: "organization-title" },
-    organization: { type: "text", autocomplete: "organization" },
-    language: { type: "text", autocomplete: "language" },
+    url: { type: "url", autoComplete: "url" },
+    photo: { type: "url", autoComplete: "photo" },
+    sex: { type: "text", autoComplete: "sex" },
+    "organization-title": { type: "text", autoComplete: "organization-title" },
+    organization: { type: "text", autoComplete: "organization" },
+    language: { type: "text", autoComplete: "language" },
   };
 
   return typeMap[inputTypeValue] || defaults;
@@ -133,7 +133,7 @@ const InputBlock = (props: ChaiBlockComponentProps<InputProps>) => {
   } = props;
 
   // Determine the actual input type and autocomplete value
-  const { type: smartInputType, autocomplete } = getInputTypeAndAutocomplete(inputType);
+  const { type: smartInputType, autoComplete: autocomplete } = getInputTypeAndAutocomplete(inputType);
 
   if (!showLabel) {
     return (
@@ -147,6 +147,7 @@ const InputBlock = (props: ChaiBlockComponentProps<InputProps>) => {
         required={required}
         autoComplete={autocomplete}
         defaultValue={defaultValue}
+        {...(smartInputType === "hidden" && defaultValue ? { value: defaultValue } : {})}
       />
     );
   }
@@ -162,6 +163,7 @@ const InputBlock = (props: ChaiBlockComponentProps<InputProps>) => {
         placeholder={placeholder}
         required={required}
         autoComplete={autocomplete}
+        {...(smartInputType === "hidden" && defaultValue ? { value: defaultValue } : {})}
       />
     </div>
   );

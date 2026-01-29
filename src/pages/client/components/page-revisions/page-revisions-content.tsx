@@ -194,7 +194,7 @@ function RevisionItem({
             {revision.type === "published" ? <Tags tag="published" /> : <Tags tag="draft" />}
           </div>
           <div className="flex items-center text-[10px] text-muted-foreground">
-            <span className="leading-tight">{format(revision.createdAt, "MMM d, h:mm a")}</span>
+            <span className="leading-tight">{format(revision.createdAt, "MMM d, yyyy, h:mm a")}</span>
           </div>
         </div>
       </div>
@@ -229,6 +229,22 @@ function RevisionItem({
   );
 }
 
+// SelectedItem: displays a selected revision tab with remove button
+function SelectedItem({ tab, onRemove }: { tab: { uid: string; label: string }; onRemove: (uid: string) => void }) {
+  return (
+    <span className="flex items-center justify-between rounded border border-blue-100 p-1 font-medium">
+      <Tags tag={tab.label} />
+      <button
+        className="z-0 flex h-4 w-4 items-center justify-center rounded-full text-gray-400 hover:text-red-500"
+        style={{ lineHeight: 1 }}
+        onClick={() => onRemove(tab.uid)}
+        aria-label="Remove selection">
+        <X className="h-3 w-3" />
+      </button>
+    </span>
+  );
+}
+
 // CompareCard: shows selected items, allows removal, clear all, and compare
 interface CompareCardProps {
   compare: { uid: string; label: string; item: Revision }[];
@@ -243,29 +259,16 @@ function CompareCard({ compare, setCompare, pageId }: CompareCardProps) {
 
   if (compare.length === 0) return null;
 
-  const SelectedItem = ({ tab }: { tab: { uid: string; label: string } }) => {
-    return (
-      <span className="flex items-center justify-between rounded border border-blue-100 p-1 font-medium">
-        <Tags tag={tab.label} />
-        <button
-          className="z-0 flex h-4 w-4 items-center justify-center rounded-full text-gray-400 hover:text-red-500"
-          style={{ lineHeight: 1 }}
-          onClick={() => setCompare(compare.filter((item) => item.uid !== tab.uid))}
-          aria-label="Remove selection 1">
-          <X className="h-3 w-3" />
-        </button>
-      </span>
-    );
-  };
+  const handleRemove = (uid: string) => setCompare(compare.filter((item) => item.uid !== uid));
 
   return (
     <div className="mb-2 flex w-full max-w-md flex-col gap-1 rounded border bg-accent/60 p-2 shadow-sm">
       <div className="flex items-center gap-x-2 text-xs">
         <span className="font-medium leading-tight text-gray-600">Compare</span>
-        {tab1 && <SelectedItem tab={tab1} />}
+        {tab1 && <SelectedItem tab={tab1} onRemove={handleRemove} />}
         <span className="font-medium leading-tight text-gray-600">with</span>
         {tab2 ? (
-          <SelectedItem tab={tab2} />
+          <SelectedItem tab={tab2} onRemove={handleRemove} />
         ) : (
           <span className="rounded border px-1 text-xs text-muted-foreground">Choose another</span>
         )}
@@ -611,9 +614,10 @@ export default function PageRevisionsContent({ isOpen }: PageRevisionsContentPro
             ))}
           <ScrollArea className="min-h-0 flex-1">
             <div className="space-y-2">
-              {revisions
-                ?.filter((revision) => revision.uid !== "current")
-                ?.map((revision, index) => (
+              {[...(revisions ?? [])]
+                .filter((revision) => revision.uid !== "current")
+                .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                .map((revision, index) => (
                   <RevisionItem
                     key={revision.uid}
                     pageId={currentPage?.id}
