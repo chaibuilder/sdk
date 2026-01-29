@@ -80,7 +80,7 @@ CREATE TABLE "apps_online" (
 	"client" uuid,
 	"designTokens" jsonb DEFAULT '{}'::jsonb
 );
---> statement-breakpoint
+ALTER TABLE "apps_online" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
 CREATE TABLE "libraries" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"createdAt" timestamp with time zone DEFAULT now() NOT NULL,
@@ -159,7 +159,7 @@ CREATE TABLE "app_pages_revisions" (
 	"globalJsonLds" jsonb DEFAULT '[]'::jsonb,
 	"designTokens" jsonb
 );
---> statement-breakpoint
+ALTER TABLE "app_pages_revisions" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
 CREATE TABLE "app_users" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"createdAt" timestamp with time zone DEFAULT now() NOT NULL,
