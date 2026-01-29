@@ -1,11 +1,14 @@
 -- ChaiBuilder Create App SQL Script
--- Replace 'YOUR_USER_ID' with your actual user UUID before running this script
+-- Replace the following placeholders before running this script:
+-- - 'YOUR_USER_ID' (line 8): Your actual user UUID
+-- - 'en' (line 9): Your preferred fallback language code (optional)
+-- - 'My ChaiBuilder App' (line 10): Your desired project name
 
 -- Generate a new app key (UUID) and set your user ID
 WITH data_values AS (
     SELECT 
         gen_random_uuid() AS new_row_id,        -- The app key
-        'YOUR_USER_ID'::text AS app_creator_id, -- Your hardcoded user UUID
+        'YOUR_USER_ID'::text AS app_creator_id, -- Your user UUID (replace before running)
         'en'::text AS fallback_lang,            -- Change to your preferred language code
         'My ChaiBuilder App'::text AS project_name -- Change to your project name
 ),
