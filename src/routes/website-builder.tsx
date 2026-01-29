@@ -1,7 +1,8 @@
 import { ChaiWebsiteBuilder } from "@/pages/chaibuilder-pages";
+import { createRealtimeAdapter } from "@/pages/client/components/page-lock/create-realtime-adapter";
 import { LoggedInUser } from "@/pages/types/loggedin-user";
 import { LoginScreen } from "@/routes/login";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabaseClient } from "./supabase";
 
 const WebsiteBuilder = () => {
@@ -82,6 +83,12 @@ const WebsiteBuilder = () => {
   const getPreviewUrl = useCallback((slug: string) => `/pages${slug}`, []);
   const getLiveUrl = useCallback((slug: string) => `/pages${slug}`, []);
 
+  // Create realtime adapter for page lock functionality
+  const realtimeAdapter = useMemo(
+    () => (supabaseClient ? createRealtimeAdapter(supabaseClient.realtime) : undefined),
+    [],
+  );
+
   if (loading) {
     return null;
   }
@@ -101,7 +108,7 @@ const WebsiteBuilder = () => {
       onLogout={handleLogout}
       getAccessToken={getAccessToken}
       currentUser={user}
-      websocket={supabaseClient}
+      realtimeAdapter={realtimeAdapter}
       autoSaveActionsCount={10}
       autoSave={true}
     />
