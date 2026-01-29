@@ -86,7 +86,7 @@ const WebsiteBuilder = () => {
   // Create realtime adapter for page lock functionality
   const realtimeAdapter = useMemo(
     () => (supabaseClient ? createRealtimeAdapter(supabaseClient.realtime) : undefined),
-    [],
+    [supabaseClient],
   );
 
   if (loading) {
