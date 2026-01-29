@@ -45,6 +45,7 @@ library_insert AS (
         ai.id,
         'default'
     FROM app_insert ai
+    CROSS JOIN data_values dv
     RETURNING id, app
 ),
 -- Insert into app_users table
