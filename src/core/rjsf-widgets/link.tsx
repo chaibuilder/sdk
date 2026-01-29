@@ -66,7 +66,7 @@ const PageTypeField = ({
   );
 
   const handleSelect = (pageTypeItem: any) => {
-    const href = ["pageType", pageType, pageTypeItem.id];
+    const href = ["pageType", pageType, pageTypeItem.primaryPage ?? pageTypeItem.id];
     if (!href[1]) return;
     onChange(href.join(":"));
     setSearchQuery(pageTypeItem.name);
@@ -176,6 +176,11 @@ const PageTypeField = ({
                         : "hover:bg-gray-100"
                   }`}>
                   {item.name} {item.slug && <small className="font-light text-gray-500">( {item.slug} )</small>}
+                  {item.lang && (
+                    <small className="ml-1 rounded bg-gray-200 px-1 py-0.5 text-[10px] font-medium text-gray-600">
+                      {item.lang}
+                    </small>
+                  )}
                 </li>
               ))}
             </ul>

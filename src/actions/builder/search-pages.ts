@@ -1,5 +1,5 @@
 import { db, safeQuery, schema } from "@/actions/db";
-import { and, eq, ilike, isNull, or } from "drizzle-orm";
+import { and, eq, ilike, or } from "drizzle-orm";
 import { z } from "zod";
 import { ActionError } from "./action-error";
 import { ChaiBaseAction } from "./base-action";
@@ -16,6 +16,8 @@ type SearchPagesActionResponse = Array<{
   id: string;
   slug: string;
   name: string;
+  lang: string;
+  primaryPage?: string | null;
 }>;
 
 /**
@@ -46,11 +48,8 @@ export class SearchPagesAction extends ChaiBaseAction<SearchPagesActionData, Sea
     const isUuid = this.isUUID(query);
 
     // Build the where conditions
-    const baseConditions = [
-      eq(schema.appPages.app, appId),
-      isNull(schema.appPages.primaryPage),
-      eq(schema.appPages.pageType, pageType),
-    ];
+    // Note: Removed isNull(primaryPage) to include language variants
+    const baseConditions = [eq(schema.appPages.app, appId), eq(schema.appPages.pageType, pageType)];
 
     // Add query conditions if provided
     let whereCondition;
@@ -76,6 +75,8 @@ export class SearchPagesAction extends ChaiBaseAction<SearchPagesActionData, Sea
           id: schema.appPages.id,
           slug: schema.appPages.slug,
           name: schema.appPages.name,
+          lang: schema.appPages.lang,
+          primaryPage: schema.appPages.primaryPage,
         })
         .from(schema.appPages)
         .where(whereCondition),
