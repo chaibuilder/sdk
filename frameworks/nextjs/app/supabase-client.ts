@@ -11,13 +11,13 @@ const checkForEnv = (envVar: string | undefined, name: string) => {
 
 export const getSupabaseClient = () => {
   checkForEnv(process.env.NEXT_PUBLIC_SUPABASE_URL, "NEXT_PUBLIC_SUPABASE_URL");
-  checkForEnv(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY, "NEXT_PUBLIC_SUPABASE_ANON_KEY");
+  checkForEnv(process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY, "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY");
   if (CLIENT_INSTANCE) {
     return CLIENT_INSTANCE;
   }
   // Use the same URL and key as the admin instance, but you can customize this if needed
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY || "";
   CLIENT_INSTANCE = createClient(supabaseUrl, supabaseKey);
   return CLIENT_INSTANCE;
 };
