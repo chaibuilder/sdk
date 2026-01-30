@@ -22,6 +22,12 @@ import {
 const clientId: string = crypto.randomUUID();
 let websocketTimeout: any = null;
 
+// Reconnection configuration constants
+const MAX_RECONNECT_ATTEMPTS = 10;
+const INITIAL_RECONNECT_DELAY_MS = 1000;
+const BACKOFF_MULTIPLIER = 2;
+const MAX_RECONNECT_DELAY_MS = 16000;
+
 /**
  * @returns
  * { pageId: { pageId: string; userId: string; clientId: string; onlineAt: number }}
@@ -233,12 +239,13 @@ export const useChaibuilderRealtime = () => {
   const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isReconnectingRef = useRef(false);
   const reconnectAttemptsRef = useRef(0);
-  const maxReconnectAttempts = 10; // Maximum number of reconnection attempts
+  const channelRef = useRef(channel);
 
   useEffect(() => {
     onReceiveEventRef.current = onReceiveEvent;
     updateOnlineUsersRef.current = updateOnlineUsers;
-  }, [onReceiveEvent, updateOnlineUsers]);
+    channelRef.current = channel;
+  }, [onReceiveEvent, updateOnlineUsers, channel]);
 
   // Common function to setup channel with event listeners
   const setupChannelListeners = useCallback((newChannel: RealtimeChannel) => {
@@ -262,15 +269,15 @@ export const useChaibuilderRealtime = () => {
     if (isReconnectingRef.current || !websocket || !userId || !channelId) return;
 
     // Check if we've exceeded max attempts
-    if (reconnectAttemptsRef.current >= maxReconnectAttempts) {
-      console.error(`Maximum reconnection attempts (${maxReconnectAttempts}) reached. Stopping reconnection attempts.`);
+    if (reconnectAttemptsRef.current >= MAX_RECONNECT_ATTEMPTS) {
+      console.error(`Maximum reconnection attempts (${MAX_RECONNECT_ATTEMPTS}) reached. Stopping reconnection attempts.`);
       return;
     }
 
     isReconnectingRef.current = true;
     reconnectAttemptsRef.current += 1;
 
-    console.log(`Attempting to reconnect realtime channel (attempt ${reconnectAttemptsRef.current}/${maxReconnectAttempts})`);
+    console.log(`Attempting to reconnect realtime channel (attempt ${reconnectAttemptsRef.current}/${MAX_RECONNECT_ATTEMPTS})`);
 
     // Clear existing timeout
     if (reconnectTimeoutRef.current) {
@@ -279,13 +286,17 @@ export const useChaibuilderRealtime = () => {
     }
 
     // Remove old channel if it exists
-    if (channel) {
-      websocket.removeChannel(channel);
+    if (channelRef.current) {
+      websocket.removeChannel(channelRef.current);
       setChannel(null);
+      channelRef.current = null;
     }
 
-    // Exponential backoff: 1s, 2s, 4s, 8s, max 16s
-    const delay = Math.min(1000 * Math.pow(2, reconnectAttemptsRef.current - 1), 16000);
+    // Exponential backoff delay calculation
+    const delay = Math.min(
+      INITIAL_RECONNECT_DELAY_MS * Math.pow(BACKOFF_MULTIPLIER, reconnectAttemptsRef.current - 1),
+      MAX_RECONNECT_DELAY_MS
+    );
 
     reconnectTimeoutRef.current = setTimeout(() => {
       const newChannel = websocket.channel(channelId, {
@@ -299,15 +310,18 @@ export const useChaibuilderRealtime = () => {
         if (status === "SUBSCRIBED") {
           console.log("Realtime connection established successfully");
           setChannel(newChannel);
+          channelRef.current = newChannel;
           reconnectAttemptsRef.current = 0; // Reset attempts on successful connection
           isReconnectingRef.current = false;
         } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
-          console.log(`Realtime connection failed: ${status}. Attempt ${reconnectAttemptsRef.current}/${maxReconnectAttempts}`);
+          console.log(`Realtime connection failed: ${status}. Attempt ${reconnectAttemptsRef.current}/${MAX_RECONNECT_ATTEMPTS}`);
           // Only trigger another reconnection attempt if we haven't exceeded max attempts
-          if (reconnectAttemptsRef.current < maxReconnectAttempts) {
-            isReconnectingRef.current = false;
-            // Attempt to reconnect after error
-            reconnectChannel();
+          if (reconnectAttemptsRef.current < MAX_RECONNECT_ATTEMPTS) {
+            // Keep isReconnectingRef true and schedule next attempt with delay
+            setTimeout(() => {
+              isReconnectingRef.current = false;
+              reconnectChannel();
+            }, 500); // Small delay before triggering next attempt
           } else {
             console.error("Maximum reconnection attempts reached");
             isReconnectingRef.current = false;
@@ -318,12 +332,16 @@ export const useChaibuilderRealtime = () => {
         }
       });
     }, delay);
-  }, [websocket, userId, channelId, channel, setChannel, setupChannelListeners]);
+  }, [websocket, userId, channelId, setChannel, setupChannelListeners]);
 
   // Connection Effect
   useEffect(() => {
     if (!websocket || !userId || !channelId) return;
     if (channel && channel.topic === channelId) return;
+
+    // Reset reconnection attempts when starting a new connection
+    reconnectAttemptsRef.current = 0;
+    isReconnectingRef.current = false;
 
     const newChannel = websocket.channel(channelId, {
       config: { presence: { key: clientId } },
@@ -336,6 +354,7 @@ export const useChaibuilderRealtime = () => {
       if (status === "SUBSCRIBED") {
         console.log("Realtime connection established successfully");
         setChannel(newChannel);
+        channelRef.current = newChannel;
         reconnectAttemptsRef.current = 0;
       } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
         console.log(`Realtime connection failed: ${status}. Will attempt to reconnect...`);
@@ -349,9 +368,13 @@ export const useChaibuilderRealtime = () => {
     });
 
     return () => {
+      // Cleanup: clear timeouts and reset state
       if (reconnectTimeoutRef.current) {
         clearTimeout(reconnectTimeoutRef.current);
+        reconnectTimeoutRef.current = null;
       }
+      isReconnectingRef.current = false;
+      reconnectAttemptsRef.current = 0;
       websocket.removeChannel(newChannel);
     };
   }, [websocket, userId, channelId, setChannel, reconnectChannel, setupChannelListeners]);
@@ -362,6 +385,12 @@ export const useChaibuilderRealtime = () => {
       if (document.visibilityState === "visible") {
         console.log("Tab became visible, checking realtime connection...");
         
+        // Check if required dependencies are available
+        if (!websocket || !userId || !channelId) {
+          console.log("Required dependencies not available, skipping reconnection");
+          return;
+        }
+        
         // Don't attempt reconnection if already reconnecting
         if (isReconnectingRef.current) {
           console.log("Reconnection already in progress, skipping visibility change reconnect");
@@ -369,8 +398,8 @@ export const useChaibuilderRealtime = () => {
         }
         
         // Check if channel exists and is subscribed
-        if (channel) {
-          const channelState = (channel as any).state;
+        if (channelRef.current) {
+          const channelState = (channelRef.current as any).state;
           
           // If channel is not in a good state, reconnect
           if (channelState !== "joined") {
@@ -390,7 +419,7 @@ export const useChaibuilderRealtime = () => {
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [channel, reconnectChannel]);
+  }, [websocket, userId, channelId, reconnectChannel]);
 
   // Tracking Effect
   useEffect(() => {
