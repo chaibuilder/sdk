@@ -4,6 +4,19 @@
 
 The page lock feature has been updated to support multiple realtime service providers, not just Supabase. This guide will help you migrate your code from the old API to the new adapter-based API.
 
+## Important Note for Non-Supabase Users
+
+If you're using a realtime provider other than Supabase, you only need to import the adapter interfaces, not the Supabase-specific implementations:
+
+```tsx
+// Import only the interfaces you need
+import type { RealtimeAdapter, RealtimeChannelAdapter } from '@chaibuilder/sdk/pages';
+
+// Do NOT import SupabaseRealtimeAdapter or createRealtimeAdapter if you're not using Supabase
+```
+
+The `SupabaseRealtimeAdapter` and `createRealtimeAdapter` are only needed if you're using Supabase as your realtime provider.
+
 ## What Changed?
 
 Previously, the page lock feature was tightly coupled to Supabase Realtime. You would pass a Supabase `RealtimeClient` directly via the `websocket` prop:
@@ -149,7 +162,13 @@ class PusherChannelAdapter implements RealtimeChannelAdapter {
   }
 
   onBroadcast(event: string, callback: (payload: any) => void): void {
-    this.channel.bind(event, callback);
+    // Note: The callback receives the provider-specific payload structure
+    // Supabase provides: { payload: {...} }
+    // Ensure your adapter matches this structure
+    this.channel.bind(event, (providerPayload: any) => {
+      // Wrap in Supabase-style envelope if your provider doesn't already
+      callback(providerPayload);
+    });
   }
 
   // Implement other methods...
