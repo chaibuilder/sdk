@@ -41,6 +41,8 @@ import { UnmarkAsTemplateAction } from "./unmark-as-template";
 import { UpdatePageAction } from "./update-page";
 import { UpdatePageMetadataAction } from "./update-page-metadata";
 import { UpdateWebsiteFieldsAction } from "./update-website-fields";
+import { UpdateWebsiteSettingAction } from "./update-website-setting";
+import { PublishWebsiteSettingsAction } from "./publish-website-settings-action";
 import { UpsertLibraryItemAction } from "./upsert-library-item";
 
 /**
@@ -103,6 +105,8 @@ class ChaiActionsRegistry {
     this.register("SEARCH_PAGE_TYPE_ITEMS", new SearchPageTypeItemsAction());
     this.register("GET_DYNAMIC_PAGES", new GetDynamicPagesAction());
     this.register("GET_ROLE_AND_PERMISSIONS", new GetRoleAndPermissionsAction());
+    this.register("UPDATE_WEBSITE_SETTING", new UpdateWebsiteSettingAction());
+    this.register("PUBLISH_WEBSITE_SETTINGS", new PublishWebsiteSettingsAction());
     // Add more actions here as they are created
   }
 

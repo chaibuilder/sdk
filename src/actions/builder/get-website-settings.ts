@@ -11,10 +11,12 @@ type GetWebsiteSettingsActionData = {
 };
 
 type GetWebsiteSettingsActionResponse = {
+  name?: string;
   fallbackLang: string;
   languages: string[]; // Making it more flexible to match database schema
   theme: any; // Making it more flexible to match database schema
   appKey: string;
+  settings: any;
   designTokens?: any;
 };
 
@@ -47,6 +49,7 @@ export class GetWebsiteSettingsAction extends ChaiBaseAction<
           languages: targetTable.languages,
           settings: targetTable.settings,
           designTokens: targetTable.designTokens,
+          name: targetTable.name,
         })
         .from(targetTable)
         .where(eq(targetTable.id, appId))
@@ -72,6 +75,8 @@ export class GetWebsiteSettingsAction extends ChaiBaseAction<
       theme: settings?.theme || this.getDefaultSettings().theme,
       // Generate deterministic app key like the original implementation
       appKey: this.generateDeterministicUuid(appId),
+      settings: settings?.settings || this.getDefaultSettings().settings,
+      name: settings?.name || "My ChaiBuilder Website",
     };
   }
 

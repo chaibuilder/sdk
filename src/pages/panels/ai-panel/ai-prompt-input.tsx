@@ -15,7 +15,7 @@ import {
   PromptInputSubmit,
   PromptInputTextarea,
   PromptInputTools,
-} from "@/pages/components/ai-elements/prompt-input";
+} from "@/components/ai-elements/prompt-input";
 import { ChaiBlock } from "@/types/common";
 import { GlobeIcon, Paperclip, Send, Square } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -93,7 +93,7 @@ const AiPromptInput = ({
           <PromptInputTextarea
             ref={textareaRef}
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e:any) => setInput(e.target.value)}
             placeholder={selectedLang ? t("Ask to update content") : t("Ask me anything...")}
             disabled={isLoading}
             className="max-h-[200px] min-h-[60px] w-full"

@@ -3,6 +3,7 @@ import { LoggedInUser } from "@/pages/types/loggedin-user";
 import { LoginScreen } from "@/routes/login";
 import { useCallback, useEffect, useState } from "react";
 import { supabaseClient } from "./supabase";
+import { WebsiteSettings } from "@/pages";
 
 const WebsiteBuilder = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<null | boolean>(null);
@@ -99,6 +100,7 @@ const WebsiteBuilder = () => {
       getLiveUrl={getLiveUrl}
       apiUrl="/chai/api"
       onLogout={handleLogout}
+      topLeftCorner={()=> <WebsiteSettings/>}
       getAccessToken={getAccessToken}
       currentUser={user}
       websocket={supabaseClient}

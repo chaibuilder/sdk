@@ -19,7 +19,7 @@ import {
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea } from "@/pages/components/ui/input-group";
+import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea } from "@/components/ui/input-group";
 import type { ChatStatus, FileUIPart } from "ai";
 import {
   CornerDownLeftIcon,

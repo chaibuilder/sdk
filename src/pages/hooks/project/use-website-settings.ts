@@ -17,6 +17,7 @@ export const useWebsiteSetting = () => {
       appKey: "",
       fallbackLang: "",
       designTokens: {},
+      settings: {},
     },
     queryFn: async () => {
       return fetchAPI(apiUrl, {

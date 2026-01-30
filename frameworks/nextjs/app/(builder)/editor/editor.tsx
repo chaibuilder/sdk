@@ -4,8 +4,9 @@ import { getSupabaseClient } from "../../supabase-client";
 
 import "@chaibuilder/sdk/styles";
 import dynamic from "next/dynamic";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import { LoginScreen } from "./login";
+import { WebsiteSettings } from "@chaibuilder/sdk/pages";
 const ChaiBuilderEditor = dynamic(() => import("@chaibuilder/sdk/pages").then((mod) => mod.ChaiWebsiteBuilder), {
   ssr: false,
 });
@@ -95,6 +96,11 @@ export default function Editor() {
   const getPreviewUrl = useCallback((slug: string) => `/api/preview?slug=${slug}`, []);
   const getLiveUrl = useCallback((slug: string) => `/api/preview?disable=true&slug=${slug}`, []);
 
+  // Memoize the WebsiteSettings component to prevent re-renders
+  const websiteSettingsComponent = useMemo(() => {
+    return <WebsiteSettings />;
+  }, []);
+
   if (isLoggedIn === null) {
     return null;
   }
@@ -112,6 +118,7 @@ export default function Editor() {
       getAccessToken={getAccessToken}
       apiUrl="api"
       getPreviewUrl={getPreviewUrl}
+      topLeftCorner={() => websiteSettingsComponent}
       getLiveUrl={getLiveUrl}
       websocket={supabase}
       onLogout={handleLogout}

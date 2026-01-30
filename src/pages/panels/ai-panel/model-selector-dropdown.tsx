@@ -11,7 +11,7 @@ import {
   ModelSelectorLogo,
   ModelSelectorName,
   ModelSelectorTrigger,
-} from "@/pages/components/ai-elements/model-selector";
+} from "@/components/ai-elements/model-selector";
 import { Cpu } from "lucide-react";
 import { useState } from "react";
 import { AI_MODELS, getDefaultModel, getModelById } from "./models";

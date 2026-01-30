@@ -3,10 +3,10 @@
 import { useI18nBlocks } from "@/hooks/use-i18n-blocks";
 import { useSelectedBlock, useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
 import { useStreamMultipleBlocksProps } from "@/hooks/use-update-blocks-props";
-import { Conversation, ConversationContent, ConversationEmptyState } from "@/pages/components/ai-elements/conversation";
-import { Message as AiMessage, MessageContent, MessageResponse } from "@/pages/components/ai-elements/message";
-import { Reasoning, ReasoningContent, ReasoningTrigger } from "@/pages/components/ai-elements/reasoning";
-import { TaskMessage } from "@/pages/components/ai-elements/task-message";
+import { Conversation, ConversationContent, ConversationEmptyState } from "@/components/ai-elements/conversation";
+import { Message as AiMessage, MessageContent, MessageResponse } from "@/components/ai-elements/message";
+import { Reasoning, ReasoningContent, ReasoningTrigger } from "@/components/ai-elements/reasoning";
+import { TaskMessage } from "@/components/ai-elements/task-message";
 import { ChaiBlock } from "@/types/common";
 import { Bot } from "lucide-react";
 import { Fragment, lazy, Suspense, useEffect, useRef } from "react";
