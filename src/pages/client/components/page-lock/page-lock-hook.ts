@@ -2,7 +2,7 @@ import { useSavePage } from "@/hooks/use-save-page";
 import { useWebsocket } from "@/pages/hooks/project/use-builder-prop";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { useAtom } from "jotai";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   BROADCAST_EVENTS,
   EVENT,
@@ -219,6 +219,8 @@ export const useChaibuilderRealtime = () => {
   const userId = useUserId();
   const pageId = usePageId();
   const channelId = useChannelId();
+  const { setPageStatus } = usePageLockStatus();
+  const [retry, setRetry] = useState(0);
   const [channel, setChannel] = useAtom(realtimeChannel) as [
     RealtimeChannel | null,
     (value: RealtimeChannel | null) => void,
@@ -260,16 +262,20 @@ export const useChaibuilderRealtime = () => {
 
     newChannel.subscribe(async (status: string) => {
       if (status === "SUBSCRIBED") {
+        setPageStatus(PAGE_STATUS.CHECKING);
         setChannel(newChannel);
       } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
         console.log("Realtime connection failed", status);
+        setPageStatus(PAGE_STATUS.CONNECTION_LOST);
+        setChannel(null);
+        setTimeout(() => setRetry((prev) => prev + 1), 2000);
       }
     });
 
     return () => {
       newChannel.unsubscribe();
     };
-  }, [websocket, userId, channelId, setChannel]);
+  }, [websocket, userId, channelId, setChannel, retry, setPageStatus]);
 
   // Tracking Effect
   useEffect(() => {
