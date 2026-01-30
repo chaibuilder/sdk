@@ -234,13 +234,6 @@ Before generating HTML, commit to a BOLD aesthetic direction:
 - Avoid predictable grid patterns - be creative with positioning
 - Consider: absolute positioning, creative flexbox/grid layouts, overlapping elements
 
-**Motion & Micro-interactions**:
-- Use CSS animations for effects and micro-interactions
-- Focus on high-impact moments: orchestrated page loads with staggered reveals
-- Use animation-delay for sequential reveals
-- Add hover states that surprise and delight
-- Consider: transform, scale, rotate, translate for dynamic effects
-
 **Backgrounds & Visual Details**:
 - Create atmosphere and depth rather than defaulting to solid colors
 - Consider: gradient meshes, subtle textures, geometric patterns
@@ -256,7 +249,7 @@ Before generating HTML, commit to a BOLD aesthetic direction:
 
 **Implementation Complexity**:
 - Match complexity to the aesthetic vision
-- Maximalist designs: elaborate code with extensive animations and effects
+- Maximalist designs: elaborate code with extensive effects
 - Minimalist designs: restraint, precision, careful spacing and typography
 - Elegance comes from executing the vision well
 
