@@ -230,23 +230,47 @@ export const useChaibuilderRealtime = () => {
   // Refs for stable callbacks and reconnection state
   const onReceiveEventRef = useRef(onReceiveEvent);
   const updateOnlineUsersRef = useRef(updateOnlineUsers);
-  const reconnectTimeoutRef = useRef<any>(null);
+  const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isReconnectingRef = useRef(false);
   const reconnectAttemptsRef = useRef(0);
+  const maxReconnectAttempts = 10; // Maximum number of reconnection attempts
 
   useEffect(() => {
     onReceiveEventRef.current = onReceiveEvent;
     updateOnlineUsersRef.current = updateOnlineUsers;
   }, [onReceiveEvent, updateOnlineUsers]);
 
+  // Common function to setup channel with event listeners
+  const setupChannelListeners = useCallback((newChannel: RealtimeChannel) => {
+    // Attach broadcast listeners
+    BROADCAST_EVENTS.forEach((event: string) => {
+      newChannel.on("broadcast", { event }, (payload: any) => {
+        onReceiveEventRef.current(event)(payload);
+      });
+    });
+
+    // Attach presence listeners
+    PRESENCE_EVENTS.forEach((event: string) => {
+      newChannel.on("presence" as any, { event }, () => {
+        updateOnlineUsersRef.current(newChannel);
+      });
+    });
+  }, []);
+
   // Function to cleanup and reconnect the channel
   const reconnectChannel = useCallback(() => {
     if (isReconnectingRef.current || !websocket || !userId || !channelId) return;
 
+    // Check if we've exceeded max attempts
+    if (reconnectAttemptsRef.current >= maxReconnectAttempts) {
+      console.error(`Maximum reconnection attempts (${maxReconnectAttempts}) reached. Stopping reconnection attempts.`);
+      return;
+    }
+
     isReconnectingRef.current = true;
     reconnectAttemptsRef.current += 1;
 
-    console.log(`Attempting to reconnect realtime channel (attempt ${reconnectAttemptsRef.current})`);
+    console.log(`Attempting to reconnect realtime channel (attempt ${reconnectAttemptsRef.current}/${maxReconnectAttempts})`);
 
     // Clear existing timeout
     if (reconnectTimeoutRef.current) {
@@ -268,18 +292,8 @@ export const useChaibuilderRealtime = () => {
         config: { presence: { key: clientId } },
       });
 
-      // Attach listeners
-      BROADCAST_EVENTS.forEach((event: string) => {
-        newChannel.on("broadcast", { event }, (payload: any) => {
-          onReceiveEventRef.current(event)(payload);
-        });
-      });
-
-      PRESENCE_EVENTS.forEach((event: string) => {
-        newChannel.on("presence" as any, { event }, () => {
-          updateOnlineUsersRef.current(newChannel);
-        });
-      });
+      // Setup event listeners
+      setupChannelListeners(newChannel);
 
       newChannel.subscribe(async (status: string) => {
         if (status === "SUBSCRIBED") {
@@ -288,17 +302,23 @@ export const useChaibuilderRealtime = () => {
           reconnectAttemptsRef.current = 0; // Reset attempts on successful connection
           isReconnectingRef.current = false;
         } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
-          console.log(`Realtime connection failed: ${status}. Will retry...`);
-          isReconnectingRef.current = false;
-          // Attempt to reconnect after error
-          reconnectChannel();
+          console.log(`Realtime connection failed: ${status}. Attempt ${reconnectAttemptsRef.current}/${maxReconnectAttempts}`);
+          // Only trigger another reconnection attempt if we haven't exceeded max attempts
+          if (reconnectAttemptsRef.current < maxReconnectAttempts) {
+            isReconnectingRef.current = false;
+            // Attempt to reconnect after error
+            reconnectChannel();
+          } else {
+            console.error("Maximum reconnection attempts reached");
+            isReconnectingRef.current = false;
+          }
         } else if (status === "CLOSED") {
           console.log("Realtime connection closed");
           isReconnectingRef.current = false;
         }
       });
     }, delay);
-  }, [websocket, userId, channelId, channel, setChannel]);
+  }, [websocket, userId, channelId, channel, setChannel, setupChannelListeners]);
 
   // Connection Effect
   useEffect(() => {
@@ -309,18 +329,8 @@ export const useChaibuilderRealtime = () => {
       config: { presence: { key: clientId } },
     });
 
-    // Attach listeners
-    BROADCAST_EVENTS.forEach((event: string) => {
-      newChannel.on("broadcast", { event }, (payload: any) => {
-        onReceiveEventRef.current(event)(payload);
-      });
-    });
-
-    PRESENCE_EVENTS.forEach((event: string) => {
-      newChannel.on("presence" as any, { event }, () => {
-        updateOnlineUsersRef.current(newChannel);
-      });
-    });
+    // Setup event listeners using shared function
+    setupChannelListeners(newChannel);
 
     newChannel.subscribe(async (status: string) => {
       if (status === "SUBSCRIBED") {
@@ -328,9 +338,11 @@ export const useChaibuilderRealtime = () => {
         setChannel(newChannel);
         reconnectAttemptsRef.current = 0;
       } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
-        console.log(`Realtime connection failed: ${status}. Will retry...`);
-        // Attempt to reconnect after error
-        reconnectChannel();
+        console.log(`Realtime connection failed: ${status}. Will attempt to reconnect...`);
+        // Only trigger reconnection if not already reconnecting
+        if (!isReconnectingRef.current) {
+          reconnectChannel();
+        }
       } else if (status === "CLOSED") {
         console.log("Realtime connection closed");
       }
@@ -342,13 +354,19 @@ export const useChaibuilderRealtime = () => {
       }
       websocket.removeChannel(newChannel);
     };
-  }, [websocket, userId, channelId, setChannel, reconnectChannel]);
+  }, [websocket, userId, channelId, setChannel, reconnectChannel, setupChannelListeners]);
 
   // Handle browser tab visibility changes
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
         console.log("Tab became visible, checking realtime connection...");
+        
+        // Don't attempt reconnection if already reconnecting
+        if (isReconnectingRef.current) {
+          console.log("Reconnection already in progress, skipping visibility change reconnect");
+          return;
+        }
         
         // Check if channel exists and is subscribed
         if (channel) {
