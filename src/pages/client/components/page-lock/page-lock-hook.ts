@@ -22,6 +22,12 @@ import {
 const clientId: string = crypto.randomUUID();
 let websocketTimeout: any = null;
 
+// Reconnection configuration constants
+const MAX_RECONNECT_ATTEMPTS = 10;
+const INITIAL_RECONNECT_DELAY_MS = 1000;
+const BACKOFF_MULTIPLIER = 2;
+const MAX_RECONNECT_DELAY_MS = 16000;
+
 /**
  * @returns
  * { pageId: { pageId: string; userId: string; clientId: string; onlineAt: number }}
@@ -227,49 +233,200 @@ export const useChaibuilderRealtime = () => {
   const onReceiveEvent = useReceiveRealtimeEvent();
   const updateOnlineUsers = useUpdateOnlineUsers();
 
-  // Refs for stable callbacks
+  // Refs for stable callbacks and reconnection state
   const onReceiveEventRef = useRef(onReceiveEvent);
   const updateOnlineUsersRef = useRef(updateOnlineUsers);
+  const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isReconnectingRef = useRef(false);
+  const reconnectAttemptsRef = useRef(0);
+  const channelRef = useRef(channel);
 
   useEffect(() => {
     onReceiveEventRef.current = onReceiveEvent;
     updateOnlineUsersRef.current = updateOnlineUsers;
-  }, [onReceiveEvent, updateOnlineUsers]);
+    channelRef.current = channel;
+  }, [onReceiveEvent, updateOnlineUsers, channel]);
 
-  // Connection Effect
-  useEffect(() => {
-    if (!realtimeAdapter || !userId || !channelId) return;
-    if (channel && channel.topic === channelId) return;
-
-    const newChannel = realtimeAdapter.channel(channelId, {
-      config: { presence: { key: clientId } },
-    });
-
-    // Attach listeners
+  // Common function to setup channel with event listeners
+  const setupChannelListeners = useCallback((newChannel: RealtimeChannelAdapter) => {
+    // Attach broadcast listeners
     BROADCAST_EVENTS.forEach((event: string) => {
       newChannel.onBroadcast(event, (payload: any) => {
         onReceiveEventRef.current(event)(payload);
       });
     });
 
+    // Attach presence listeners
     PRESENCE_EVENTS.forEach((event: string) => {
       newChannel.onPresence(event, () => {
         updateOnlineUsersRef.current(newChannel);
       });
     });
+  }, []);
+
+  // Function to cleanup and reconnect the channel
+  const reconnectChannel = useCallback(() => {
+    if (isReconnectingRef.current || !realtimeAdapter || !userId || !channelId) return;
+
+    // Check if we've exceeded max attempts
+    if (reconnectAttemptsRef.current >= MAX_RECONNECT_ATTEMPTS) {
+      console.error(`Maximum reconnection attempts (${MAX_RECONNECT_ATTEMPTS}) reached. Stopping reconnection attempts.`);
+      return;
+    }
+
+    isReconnectingRef.current = true;
+    reconnectAttemptsRef.current += 1;
+
+    console.log(`Attempting to reconnect realtime channel (attempt ${reconnectAttemptsRef.current}/${MAX_RECONNECT_ATTEMPTS})`);
+
+    // Clear existing timeout
+    if (reconnectTimeoutRef.current) {
+      clearTimeout(reconnectTimeoutRef.current);
+      reconnectTimeoutRef.current = null;
+    }
+
+    // Remove old channel if it exists
+    if (channelRef.current) {
+      channelRef.current.unsubscribe();
+      setChannel(null);
+      channelRef.current = null;
+    }
+
+    // Exponential backoff delay calculation
+    const delay = Math.min(
+      INITIAL_RECONNECT_DELAY_MS * Math.pow(BACKOFF_MULTIPLIER, reconnectAttemptsRef.current - 1),
+      MAX_RECONNECT_DELAY_MS
+    );
+
+    reconnectTimeoutRef.current = setTimeout(() => {
+      const newChannel = realtimeAdapter.channel(channelId, {
+        config: { presence: { key: clientId } },
+      });
+
+      // Setup event listeners
+      setupChannelListeners(newChannel);
+
+      newChannel.subscribe(async (status: string) => {
+        if (status === "SUBSCRIBED") {
+          console.log("Realtime connection established successfully");
+          setChannel(newChannel);
+          channelRef.current = newChannel;
+          reconnectAttemptsRef.current = 0; // Reset attempts on successful connection
+          isReconnectingRef.current = false;
+        } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
+          console.log(`Realtime connection failed: ${status}. Attempt ${reconnectAttemptsRef.current}/${MAX_RECONNECT_ATTEMPTS}`);
+          // Only trigger another reconnection attempt if we haven't exceeded max attempts
+          if (reconnectAttemptsRef.current < MAX_RECONNECT_ATTEMPTS) {
+            // Keep isReconnectingRef true and schedule next attempt with delay
+            setTimeout(() => {
+              isReconnectingRef.current = false;
+              reconnectChannel();
+            }, 500); // Small delay before triggering next attempt
+          } else {
+            console.error("Maximum reconnection attempts reached");
+            isReconnectingRef.current = false;
+          }
+        } else if (status === "CLOSED") {
+          console.log("Realtime connection closed");
+          isReconnectingRef.current = false;
+        }
+      });
+    }, delay);
+  }, [realtimeAdapter, userId, channelId, setChannel, setupChannelListeners]);
+
+  // Connection Effect
+  useEffect(() => {
+    if (!realtimeAdapter || !userId || !channelId) return;
+    if (channel && channel.topic === channelId) return;
+
+    // Reset reconnection attempts when starting a new connection
+    reconnectAttemptsRef.current = 0;
+    isReconnectingRef.current = false;
+
+    const newChannel = realtimeAdapter.channel(channelId, {
+      config: { presence: { key: clientId } },
+    });
+
+    // Setup event listeners using shared function
+    setupChannelListeners(newChannel);
 
     newChannel.subscribe(async (status: string) => {
       if (status === "SUBSCRIBED") {
+        console.log("Realtime connection established successfully");
         setChannel(newChannel);
+        channelRef.current = newChannel;
+        reconnectAttemptsRef.current = 0;
       } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
-        console.log("Realtime connection failed", status);
+        console.log(`Realtime connection failed: ${status}. Will attempt to reconnect...`);
+        // Only trigger reconnection if not already reconnecting
+        if (!isReconnectingRef.current) {
+          reconnectChannel();
+        }
+      } else if (status === "CLOSED") {
+        console.log("Realtime connection closed");
       }
     });
 
     return () => {
+      // Cleanup: clear timeouts and reset state
+      if (reconnectTimeoutRef.current) {
+        clearTimeout(reconnectTimeoutRef.current);
+        reconnectTimeoutRef.current = null;
+      }
+      isReconnectingRef.current = false;
+      reconnectAttemptsRef.current = 0;
+      // Clear shared channel references if they point to this channel
+      if (channelRef.current === newChannel) {
+        channelRef.current = null;
+      }
+      setChannel(null);
       newChannel.unsubscribe();
     };
-  }, [realtimeAdapter, userId, channelId, setChannel]);
+  }, [realtimeAdapter, userId, channelId, setChannel, reconnectChannel, setupChannelListeners]);
+
+  // Handle browser tab visibility changes
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        console.log("Tab became visible, checking realtime connection...");
+        
+        // Check if required dependencies are available
+        if (!realtimeAdapter || !userId || !channelId) {
+          console.log("Required dependencies not available, skipping reconnection");
+          return;
+        }
+        
+        // Don't attempt reconnection if already reconnecting
+        if (isReconnectingRef.current) {
+          console.log("Reconnection already in progress, skipping visibility change reconnect");
+          return;
+        }
+        
+        // Check if channel exists and get its state
+        if (channelRef.current) {
+          // For adapters, we check if the channel is properly subscribed by checking its topic
+          // If topic exists, the channel should be active
+          const isActive = channelRef.current.topic === channelId;
+          
+          // If channel is not active or doesn't match current channelId, reconnect
+          if (!isActive) {
+            console.log("Channel is not active, reconnecting...");
+            reconnectChannel();
+          }
+        } else {
+          // No channel exists, trigger reconnection
+          console.log("No active channel found, reconnecting...");
+          reconnectChannel();
+        }
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [realtimeAdapter, userId, channelId, reconnectChannel]);
 
   // Tracking Effect
   useEffect(() => {
