@@ -375,6 +375,11 @@ export const useChaibuilderRealtime = () => {
       }
       isReconnectingRef.current = false;
       reconnectAttemptsRef.current = 0;
+      // Clear shared channel references if they point to this channel
+      if (channelRef.current === newChannel) {
+        channelRef.current = null;
+      }
+      setChannel(null);
       websocket.removeChannel(newChannel);
     };
   }, [websocket, userId, channelId, setChannel, reconnectChannel, setupChannelListeners]);
