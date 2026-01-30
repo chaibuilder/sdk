@@ -51,10 +51,10 @@ function WebsiteSettingsContent({
   const { data, isLoading } = useWebsiteSetting();
 
   useEffect(() => {
-    if (data?.settings) {
-      setinitialData(data?.settings);
+    if (data) {
+      setinitialData(data);
     }
-  }, [data?.settings, setinitialData]);
+  }, []);
 
   const updateSiteDataLocally = (updates: Partial<SiteData>) => {
     queryClient.setQueryData(["GET_WEBSITE_DRAFT_SETTINGS"], (prevData: SiteData) => {
@@ -69,11 +69,10 @@ function WebsiteSettingsContent({
   };
 
   useEffect(() => {
-    console.log("Data change check:", data?.settings, initialData);
     if (!data?.settings || !initialData) return;
-    const isDataChanged = JSON.stringify(data?.settings) !== JSON.stringify(initialData);
+    const isDataChanged = JSON.stringify(data) !== JSON.stringify(initialData);
     setIsDataChange(isDataChanged);
-  }, [data?.settings, initialData, setIsDataChange]);
+  }, [data, initialData, setIsDataChange]);
 
   const handleTabChange = (newTab: string) => {
     if (isDataChange && newTab !== activeTab) {
@@ -164,7 +163,12 @@ function WebsiteSettingsContent({
 
             {Component && (
               <div className="flex items-center gap-x-4 border-t px-6 pt-4">
-                <SaveButton data={data as unknown as SiteData} hasChanges={isDataChange} showSave={true} />
+                <SaveButton
+                  data={data as unknown as SiteData}
+                  hasChanges={isDataChange}
+                  showSave={true}
+                  onSaveSuccess={(newData) => setinitialData(newData)}
+                />
               </div>
             )}
           </div>
@@ -264,13 +268,12 @@ function WebsiteSettings() {
       </div>
     );
   }
-  const initialData = data?.settings;
   const websiteName = data?.name;
   return (
     <div className="flex items-center gap-x-2">
       <div className="flex h-9 items-center rounded-md border p-0 px-px">
         <p className="px-2 font-mono text-xs font-bold">{websiteName}</p>
-        <WebsiteSettingsModal initialData={initialData} />
+        <WebsiteSettingsModal initialData={data} />
       </div>
     </div>
   );

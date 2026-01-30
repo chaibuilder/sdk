@@ -11,9 +11,10 @@ interface SaveButtonProps {
   hasChanges: boolean;
   data: SiteData;
   showSave: boolean;
+  onSaveSuccess?: (data: SiteData) => void;
 }
 
-export default function SaveButton({ hasChanges, data, showSave = true }: SaveButtonProps) {
+export default function SaveButton({ hasChanges, data, showSave = true, onSaveSuccess }: SaveButtonProps) {
   const { t } = useTranslation();
   const reloadPage = useReloadPage();
   const { mutateAsync: updateWebsiteSettings } = useUpdateWebsiteSettings();
@@ -45,9 +46,11 @@ export default function SaveButton({ hasChanges, data, showSave = true }: SaveBu
       });
 
       if (result?.success) {
+        if (onSaveSuccess) {
+          onSaveSuccess({ ...data } as SiteData);
+        }
         reloadPage();
       }
-
       return result;
     } catch (error: any) {
       return { success: false, error: error?.message };
