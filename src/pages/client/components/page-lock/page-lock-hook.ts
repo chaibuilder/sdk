@@ -91,7 +91,10 @@ export const useUpdateOnlineUsers = () => {
   const { setPageToUser } = usePageToUser();
   const { setPageStatus, pageStatus } = usePageLockStatus();
   const pageRef = useRef<any>(pageId);
-  pageRef.current = pageId;
+
+  useEffect(() => {
+    pageRef.current = pageId;
+  }, [pageId]);
 
   return useCallback(
     (channelOverride?: RealtimeChannel) => {
@@ -133,7 +136,11 @@ export const useSendRealtimeEvent = () => {
   const pageOwner = useCurrentPageOwner();
   const { setPageLockMeta } = usePageLockMeta();
   const pageRef = useRef<any>(pageId);
-  pageRef.current = pageId;
+
+  useEffect(() => {
+    pageRef.current = pageId;
+  }, [pageId]);
+
   return useCallback(
     async (event: string, _payload?: any) => {
       if (!channel) return;
@@ -164,7 +171,9 @@ export const useReceiveRealtimeEvent = () => {
   const pageRef = useRef<any>(pageId);
   const { savePageAsync } = useSavePage();
 
-  pageRef.current = pageId;
+  useEffect(() => {
+    pageRef.current = pageId;
+  }, [pageId]);
 
   return useCallback(
     (event: string) =>
@@ -241,7 +250,6 @@ export const useChaibuilderRealtime = () => {
   // Connection Effect
   useEffect(() => {
     if (!websocket || !userId || !channelId) return;
-    if (channel && channel.topic === channelId) return;
 
     const newChannel = websocket.channel(channelId, {
       config: { presence: { key: clientId } },
