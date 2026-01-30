@@ -85,10 +85,16 @@ const AddressBar = () => {
 
 export const Topbar = () => {
   return (
-    <div className="flex h-full w-full items-center justify-between px-2">
-      <TopbarLeft />
-      <AddressBar />
-      <TopbarRight />
+    <div className="grid h-full w-full grid-cols-3 items-center px-2">
+      <div className="flex justify-start">
+        <TopbarLeft />
+      </div>
+      <div className="flex justify-center">
+        <AddressBar />
+      </div>
+      <div className="flex justify-end">
+        <TopbarRight />
+      </div>
     </div>
   );
 };
