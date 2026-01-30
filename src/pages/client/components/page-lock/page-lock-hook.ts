@@ -227,14 +227,78 @@ export const useChaibuilderRealtime = () => {
   const onReceiveEvent = useReceiveRealtimeEvent();
   const updateOnlineUsers = useUpdateOnlineUsers();
 
-  // Refs for stable callbacks
+  // Refs for stable callbacks and reconnection state
   const onReceiveEventRef = useRef(onReceiveEvent);
   const updateOnlineUsersRef = useRef(updateOnlineUsers);
+  const reconnectTimeoutRef = useRef<any>(null);
+  const isReconnectingRef = useRef(false);
+  const reconnectAttemptsRef = useRef(0);
 
   useEffect(() => {
     onReceiveEventRef.current = onReceiveEvent;
     updateOnlineUsersRef.current = updateOnlineUsers;
   }, [onReceiveEvent, updateOnlineUsers]);
+
+  // Function to cleanup and reconnect the channel
+  const reconnectChannel = useCallback(() => {
+    if (isReconnectingRef.current || !websocket || !userId || !channelId) return;
+
+    isReconnectingRef.current = true;
+    reconnectAttemptsRef.current += 1;
+
+    console.log(`Attempting to reconnect realtime channel (attempt ${reconnectAttemptsRef.current})`);
+
+    // Clear existing timeout
+    if (reconnectTimeoutRef.current) {
+      clearTimeout(reconnectTimeoutRef.current);
+      reconnectTimeoutRef.current = null;
+    }
+
+    // Remove old channel if it exists
+    if (channel) {
+      websocket.removeChannel(channel);
+      setChannel(null);
+    }
+
+    // Exponential backoff: 1s, 2s, 4s, 8s, max 16s
+    const delay = Math.min(1000 * Math.pow(2, reconnectAttemptsRef.current - 1), 16000);
+
+    reconnectTimeoutRef.current = setTimeout(() => {
+      const newChannel = websocket.channel(channelId, {
+        config: { presence: { key: clientId } },
+      });
+
+      // Attach listeners
+      BROADCAST_EVENTS.forEach((event: string) => {
+        newChannel.on("broadcast", { event }, (payload: any) => {
+          onReceiveEventRef.current(event)(payload);
+        });
+      });
+
+      PRESENCE_EVENTS.forEach((event: string) => {
+        newChannel.on("presence" as any, { event }, () => {
+          updateOnlineUsersRef.current(newChannel);
+        });
+      });
+
+      newChannel.subscribe(async (status: string) => {
+        if (status === "SUBSCRIBED") {
+          console.log("Realtime connection established successfully");
+          setChannel(newChannel);
+          reconnectAttemptsRef.current = 0; // Reset attempts on successful connection
+          isReconnectingRef.current = false;
+        } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
+          console.log(`Realtime connection failed: ${status}. Will retry...`);
+          isReconnectingRef.current = false;
+          // Attempt to reconnect after error
+          reconnectChannel();
+        } else if (status === "CLOSED") {
+          console.log("Realtime connection closed");
+          isReconnectingRef.current = false;
+        }
+      });
+    }, delay);
+  }, [websocket, userId, channelId, channel, setChannel]);
 
   // Connection Effect
   useEffect(() => {
@@ -260,16 +324,55 @@ export const useChaibuilderRealtime = () => {
 
     newChannel.subscribe(async (status: string) => {
       if (status === "SUBSCRIBED") {
+        console.log("Realtime connection established successfully");
         setChannel(newChannel);
+        reconnectAttemptsRef.current = 0;
       } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
-        console.log("Realtime connection failed", status);
+        console.log(`Realtime connection failed: ${status}. Will retry...`);
+        // Attempt to reconnect after error
+        reconnectChannel();
+      } else if (status === "CLOSED") {
+        console.log("Realtime connection closed");
       }
     });
 
     return () => {
-      newChannel.unsubscribe();
+      if (reconnectTimeoutRef.current) {
+        clearTimeout(reconnectTimeoutRef.current);
+      }
+      websocket.removeChannel(newChannel);
     };
-  }, [websocket, userId, channelId, setChannel]);
+  }, [websocket, userId, channelId, setChannel, reconnectChannel]);
+
+  // Handle browser tab visibility changes
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        console.log("Tab became visible, checking realtime connection...");
+        
+        // Check if channel exists and is subscribed
+        if (channel) {
+          const channelState = (channel as any).state;
+          
+          // If channel is not in a good state, reconnect
+          if (channelState !== "joined") {
+            console.log(`Channel state is ${channelState}, reconnecting...`);
+            reconnectChannel();
+          }
+        } else {
+          // No channel exists, trigger reconnection
+          console.log("No active channel found, reconnecting...");
+          reconnectChannel();
+        }
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [channel, reconnectChannel]);
 
   // Tracking Effect
   useEffect(() => {
