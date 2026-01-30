@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useApiUrl } from "./use-builder-prop";
 
-export const useUpdateWebsiteSettings = () => {
+export const useUpdateWebsiteFields = () => {
   const apiUrl = useApiUrl();
   const queryClient = useQueryClient();
   const fetchAPI = useFetch();
@@ -13,7 +13,7 @@ export const useUpdateWebsiteSettings = () => {
   return useMutation({
     mutationFn: async (data: any) => {
       return fetchAPI(apiUrl, {
-        action: ACTIONS.UPDATE_WEBSITE_SETTINGS,
+        action: ACTIONS.UPDATE_WEBSITE_FIELDS,
         data,
       });
     },
