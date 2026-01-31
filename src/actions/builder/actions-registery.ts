@@ -40,7 +40,7 @@ import { TakeOfflineAction } from "./take-offline";
 import { UnmarkAsTemplateAction } from "./unmark-as-template";
 import { UpdatePageAction } from "./update-page";
 import { UpdatePageMetadataAction } from "./update-page-metadata";
-import { UpdateWebsiteSettingsAction } from "./update-website-settings";
+import { UpdateWebsiteFieldsAction } from "./update-website-fields";
 import { UpsertLibraryItemAction } from "./upsert-library-item";
 
 /**
@@ -91,7 +91,7 @@ class ChaiActionsRegistry {
     this.register("SEARCH_PAGES", new SearchPagesAction());
     this.register("GET_PAGE_REVISIONS", new GetPageRevisionsAction());
     this.register("PUBLISH_CHANGES", new PublishChangesAction());
-    this.register("UPDATE_WEBSITE_SETTINGS", new UpdateWebsiteSettingsAction());
+    this.register("UPDATE_WEBSITE_FIELDS", new UpdateWebsiteFieldsAction());
     this.register("TAKE_OFFLINE", new TakeOfflineAction());
     this.register("GET_CHANGES", new GetChangesAction());
     this.register("GET_LIBRARY_GROUPS", new GetLibraryGroupsAction());

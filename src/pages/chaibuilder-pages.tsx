@@ -4,7 +4,7 @@ import { useAskAi } from "@/pages/hooks/ai/use-ask-ai";
 import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
 import { useExtractPageBlocks } from "@/pages/hooks/pages/use-extract-page-blocks";
 import { useBuilderPageData, usePageDraftBlocks } from "@/pages/hooks/pages/use-page-draft-blocks";
-import { useUpdateWebsiteSettings } from "@/pages/hooks/project/mutations";
+import { useUpdateWebsiteFields } from "@/pages/hooks/project/mutations";
 import { usePageTypes, useSearchPageTypePages } from "@/pages/hooks/project/use-page-types";
 import { useUILibraries } from "@/pages/hooks/project/use-ui-libraries";
 import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
@@ -88,7 +88,7 @@ const DefaultChaiBuilder = (props: ChaiWebsiteBuilderProps) => {
   const { mutateAsync: getBlockAsyncProps } = useGetBlockAysncProps();
   const { getPartialBlocks, getPartialBlockBlocks } = usePartialBlocksFn();
   const { mutateAsync: searchPageTypePages } = useSearchPageTypePages();
-  const { mutateAsync: updateSettings } = useUpdateWebsiteSettings();
+  const { mutateAsync: updateSettings } = useUpdateWebsiteFields();
   const { data: siteWideUsage } = useSiteWideUsage(props.flags?.designTokens ?? true);
   const gotoPage = useGotoPage();
 
