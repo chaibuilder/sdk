@@ -27,14 +27,15 @@ app_insert AS (
 ),
 -- Insert into apps_online table
 apps_online_insert AS (
-    INSERT INTO apps_online (id, name, "user", "apiKey")
+    INSERT INTO apps_online (id, name, "user", theme, "fallbackLang", "apiKey")
     SELECT 
-        ai.id,
-        dv.project_name,
-        dv.app_creator_id,
-        ai.id
-    FROM app_insert ai
-    CROSS JOIN data_values dv
+        new_row_id,
+        project_name,
+        app_creator_id,
+        '{"fontFamily":{"heading":"Inter","body":"Inter"},"borderRadius":"6px","colors":{"background":["#FFFFFF","#09090B"],"foreground":["#09090B","#FFFFFF"],"primary":["#2563EB","#3B82F6"],"primary-foreground":["#FFFFFF","#FFFFFF"],"secondary":["#F4F4F5","#27272A"],"secondary-foreground":["#09090B","#FFFFFF"],"muted":["#F4F4F5","#27272A"],"muted-foreground":["#71717A","#A1A1AA"],"accent":["#F4F4F5","#27272A"],"accent-foreground":["#09090B","#FFFFFF"],"destructive":["#EF4444","#7F1D1D"],"destructive-foreground":["#FFFFFF","#FFFFFF"],"border":["#E4E4E7","#27272A"],"input":["#E4E4E7","#27272A"],"ring":["#2563EB","#3B82F6"],"card":["#FFFFFF","#09090B"],"card-foreground":["#09090B","#FFFFFF"],"popover":["#FFFFFF","#09090B"],"popover-foreground":["#09090B","#FFFFFF"]}}'::jsonb,
+        fallback_lang,
+        new_row_id
+    FROM data_values
     RETURNING id
 ),
 -- Insert into libraries table
