@@ -9,7 +9,7 @@ import { useApiUrl, usePagesProp } from "../project/use-builder-prop";
  * @param checkInterval Interval in seconds (default 300 = 5 mins)
  * @returns Object with isChecking state - true until initial check completes
  */
-export const useCheckUserAccess = (checkInterval: number = 30) => {
+export const useCheckUserAccess = (checkInterval: number = 300) => {
   const logout = usePagesProp("onLogout", noop);
   const getAccessToken = usePagesProp("getAccessToken");
   const apiUrl = useApiUrl();
