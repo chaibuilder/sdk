@@ -59,6 +59,20 @@ const DEFAULT_ROLES_AND_PERMISSIONS = {
  *
  * @returns CHAIBUILDER PAGES COMPONENT
  */
+const BuilderWithAccessCheck = (props: ChaiWebsiteBuilderProps) => {
+  const { isLoading } = useCheckUserAccess();
+
+  if (isLoading) {
+    return (
+      <BlurContainer className="fixed inset-0 bg-white">
+        <Loader className="h-6 w-6 animate-spin text-primary" />
+      </BlurContainer>
+    );
+  }
+
+  return <DefaultChaiBuilder {...props} />;
+};
+
 const DefaultChaiBuilder = (props: ChaiWebsiteBuilderProps) => {
   // * WEBSITE DATA
   const { data: uiLibraries } = useUILibraries();
@@ -70,8 +84,6 @@ const DefaultChaiBuilder = (props: ChaiWebsiteBuilderProps) => {
   const { data: websiteConfig, isFetching: isWebsiteConfigFetching } = useWebsiteSetting();
   const isFetchingWebsiteData =
     isRoleAndPermissionsFetching || isPageTypesFetching || isCollectionsFetching || isWebsiteConfigFetching;
-
-  useCheckUserAccess();
 
   // * PAGE DATA
   const [searchParams] = useSearchParams();
@@ -265,14 +277,14 @@ const ChaiWebsiteBuilder = (props: ChaiWebsiteBuilderProps) => {
   if (get(props, "hasReactQueryProvider", false) === true)
     return (
       <>
-        <DefaultChaiBuilder {...props} />
+        <BuilderWithAccessCheck {...props} />
         <ReactQueryDevtools />
       </>
     );
 
   return (
     <QueryClientProvider client={queryClient}>
-      <DefaultChaiBuilder {...props} />
+      <BuilderWithAccessCheck {...props} />
       <ReactQueryDevtools />
     </QueryClientProvider>
   );
