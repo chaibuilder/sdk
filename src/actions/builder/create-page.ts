@@ -126,7 +126,7 @@ export class CreatePageAction extends ChaiBaseAction<CreatePageActionData, Creat
         ogDescription: "",
         searchDescription: "",
       },
-      jsonLD: data.jsonLD ?? {},
+      jsonld: {},
       online: false,
       currentEditor: null,
       changes: null,
