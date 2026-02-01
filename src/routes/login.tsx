@@ -201,7 +201,7 @@ export const LoginScreen = () => {
           </form>
         )}
 
-        {/* <div className="relative">
+        <div className="relative hidden">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-300" />
           </div>
@@ -210,7 +210,7 @@ export const LoginScreen = () => {
           </div>
         </div>
 
-        <div>
+        <div className="hidden">
           <button
             type="button"
             onClick={handleGoogleLogin}
@@ -236,7 +236,7 @@ export const LoginScreen = () => {
             </svg>
             {isLoading ? "Signing in..." : "Sign in with Google"}
           </button>
-        </div> */}
+        </div>
       </div>
     </div>
   );
