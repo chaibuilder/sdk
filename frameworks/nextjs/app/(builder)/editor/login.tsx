@@ -1,6 +1,7 @@
 "use client";
 
 import { getSupabaseClient } from "@/app/supabase-client";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 const supabase = getSupabaseClient();
@@ -14,7 +15,10 @@ export const LoginScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const searchParams = useSearchParams();
 
+  const unauthorized = searchParams.get("unauthorized");
+  const sessionExpired = searchParams.get("session_expired");
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setResponseError("");
@@ -96,6 +100,17 @@ export const LoginScreen = () => {
         {responseError && <div className="rounded-md bg-red-50 p-3 text-sm text-red-800">{responseError}</div>}
 
         {responseSuccess && <div className="rounded-md bg-green-50 p-3 text-sm text-green-800">{responseSuccess}</div>}
+
+        {unauthorized && (
+          <div className="rounded-md bg-red-50 p-3 text-sm text-red-800">
+            You do not have access to edit this website. Please contact administrator
+          </div>
+        )}
+        {sessionExpired && (
+          <div className="rounded-md bg-red-50 p-3 text-sm text-red-800">
+            Your session has expired. Please sign in again.
+          </div>
+        )}
 
         {view === "login" ? (
           <form className="space-y-6" onSubmit={handleEmailLogin}>
@@ -201,7 +216,7 @@ export const LoginScreen = () => {
           </form>
         )}
 
-        {/* <div className="relative">
+        <div className="relative hidden">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-300" />
           </div>
@@ -210,7 +225,7 @@ export const LoginScreen = () => {
           </div>
         </div>
 
-        <div>
+        <div className="hidden">
           <button
             type="button"
             onClick={handleGoogleLogin}
@@ -236,7 +251,7 @@ export const LoginScreen = () => {
             </svg>
             {isLoading ? "Signing in..." : "Sign in with Google"}
           </button>
-        </div> */}
+        </div>
       </div>
     </div>
   );
