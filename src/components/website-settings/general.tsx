@@ -3,12 +3,12 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { SiteData } from "@/types/types";
+import { WebsiteSettings } from "@/types/types";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 
 interface GeneralProps {
-  data: SiteData;
+  data: WebsiteSettings;
   onChange: (updates: any) => void;
 }
 

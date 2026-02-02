@@ -4,14 +4,13 @@ import type { ChaiTheme } from "./chaibuilder-editor-props";
 import type { ChaiDesignTokens } from "./types";
 
 export type ChaiWebsiteSetting = {
-  id?: string;
   name?: string;
-  appKey: string;
+  appKey?: string;
   fallbackLang: string;
   languages: string[];
   theme: ChaiTheme;
   designTokens: ChaiDesignTokens;
-  settings: any;
+  settings: Record<string, unknown>;
 };
 
 type ChaiPageSeo = {

@@ -2,11 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { SiteData } from "@/types/types";
+import type { WebsiteSettings as WebsiteSettingsType } from "@/types/types";
 import { useQueryClient } from "@tanstack/react-query";
 import { omit } from "lodash";
 import { Activity, Code, ImageIcon, Loader, Settings, Settings2, Share2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import AnalyticsTracking from "./analytics-tracking";
 import BrandingConfiguration from "./branding-configuration";
@@ -33,12 +33,12 @@ const getSidebarItems = (t: any) => [
  */
 function WebsiteSettingsContent({
   initialData,
-  setinitialData,
+  setInitialData,
   isDataChange,
   setIsDataChange,
 }: {
   initialData: any;
-  setinitialData: (value: any) => void;
+  setInitialData: (value: any) => void;
   isDataChange: boolean;
   setIsDataChange: (value: boolean) => void;
 }) {
@@ -47,26 +47,29 @@ function WebsiteSettingsContent({
   const [showTabChangeDialog, setShowTabChangeDialog] = useState(false);
   const [pendingTabChange, setPendingTabChange] = useState<string | null>(null);
   const queryClient = useQueryClient();
-  const SIDEBAR_ITEMS = getSidebarItems(t);
+  const SIDEBAR_ITEMS = useMemo(() => getSidebarItems(t), [t]);
   const { data, isLoading } = useWebsiteSetting();
 
   useEffect(() => {
     if (data) {
-      setinitialData(data);
+      setInitialData(data);
     }
   }, []);
 
-  const updateSiteDataLocally = (updates: Partial<SiteData>) => {
-    queryClient.setQueryData(["GET_WEBSITE_DRAFT_SETTINGS"], (prevData: SiteData) => {
-      return prevData
-        ? {
-            ...prevData,
-            ...omit(updates, "settings"),
-            ...{ settings: { ...(prevData.settings || {}), ...(updates?.settings || {}) } },
-          }
-        : prevData;
-    });
-  };
+  const updateSiteDataLocally = useCallback(
+    (updates: Partial<WebsiteSettingsType>) => {
+      queryClient.setQueryData(["GET_WEBSITE_DRAFT_SETTINGS"], (prevData: WebsiteSettingsType) => {
+        return prevData
+          ? {
+              ...prevData,
+              ...omit(updates, "settings"),
+              ...{ settings: { ...(prevData.settings || {}), ...(updates?.settings || {}) } },
+            }
+          : prevData;
+      });
+    },
+    [queryClient],
+  );
 
   useEffect(() => {
     if (!data?.settings || !initialData) return;
@@ -74,18 +77,21 @@ function WebsiteSettingsContent({
     setIsDataChange(isDataChanged);
   }, [data, initialData, setIsDataChange]);
 
-  const handleTabChange = (newTab: string) => {
-    if (isDataChange && newTab !== activeTab) {
-      // If there are unsaved changes, show confirmation dialog
-      setPendingTabChange(newTab);
-      setShowTabChangeDialog(true);
-    } else {
-      // No unsaved changes, switch immediately
-      setActiveTab(newTab);
-    }
-  };
+  const handleTabChange = useCallback(
+    (newTab: string) => {
+      if (isDataChange && newTab !== activeTab) {
+        // If there are unsaved changes, show confirmation dialog
+        setPendingTabChange(newTab);
+        setShowTabChangeDialog(true);
+      } else {
+        // No unsaved changes, switch immediately
+        setActiveTab(newTab);
+      }
+    },
+    [isDataChange, activeTab],
+  );
 
-  const handleConfirmTabChange = () => {
+  const handleConfirmTabChange = useCallback(() => {
     if (pendingTabChange) {
       setActiveTab(pendingTabChange);
     }
@@ -93,16 +99,17 @@ function WebsiteSettingsContent({
     setShowTabChangeDialog(false);
     setPendingTabChange(null);
     setIsDataChange(false);
-  };
+  }, [pendingTabChange, updateSiteDataLocally, initialData, setIsDataChange]);
 
-  const handleCancelTabChange = () => {
+  const handleCancelTabChange = useCallback(() => {
     setShowTabChangeDialog(false);
     setPendingTabChange(null);
-  };
+  }, []);
 
-  const activeItem = SIDEBAR_ITEMS.find((item) => item.id === activeTab);
-  const Icon = activeItem?.icon;
-  const Component = activeItem?.component;
+  const { activeItem, Icon, Component } = useMemo(() => {
+    const item = SIDEBAR_ITEMS.find((item) => item.id === activeTab);
+    return { activeItem: item, Icon: item?.icon, Component: item?.component };
+  }, [SIDEBAR_ITEMS, activeTab]);
 
   if (isLoading || !data) {
     return (
@@ -137,42 +144,36 @@ function WebsiteSettingsContent({
             })}
           </nav>
         </div>
-        {isLoading ? (
-          <div className="flex flex-1 flex-col items-center justify-center">
-            <Loader className="animate-spin text-primary" />
+        <div className="flex flex-1 flex-col">
+          <div className="flex items-center justify-between gap-x-2 px-6 pb-4">
+            <div className="flex items-center gap-x-2">
+              {Icon && <Icon className="h-5 w-5" />}
+              <h2 className="font-semibold">{activeItem?.label}</h2>
+            </div>
           </div>
-        ) : (
-          <div className="flex flex-1 flex-col">
-            <div className="flex items-center justify-between gap-x-2 px-6 pb-4">
-              <div className="flex items-center gap-x-2">
-                {Icon && <Icon className="h-5 w-5" />}
-                <h2 className="font-semibold">{activeItem?.label}</h2>
-              </div>
-            </div>
-            <div
-              className="no-scrollbar h-full overflow-y-auto scroll-smooth px-6"
-              style={{ scrollBehavior: "smooth" }}>
-              <ErrorBoundary
-                fallback={
-                  <div className="p-10 text-center text-red-500">{t("Something went wrong, Please try again")}</div>
-                }>
-                {Component && <Component data={data as unknown as SiteData} onChange={updateSiteDataLocally} />}
-              </ErrorBoundary>
-              <div className="h-16" />
-            </div>
+          <div className="no-scrollbar h-full overflow-y-auto scroll-smooth px-6" style={{ scrollBehavior: "smooth" }}>
+            <ErrorBoundary
+              fallback={
+                <div className="p-10 text-center text-red-500">{t("Something went wrong, Please try again")}</div>
+              }>
+              {Component && (
+                <Component data={data as unknown as WebsiteSettingsType} onChange={updateSiteDataLocally} />
+              )}
+            </ErrorBoundary>
+            <div className="h-16" />
+          </div>
 
-            {Component && (
-              <div className="flex items-center gap-x-4 border-t px-6 pt-4">
-                <SaveButton
-                  data={data as unknown as SiteData}
-                  hasChanges={isDataChange}
-                  showSave={true}
-                  onSaveSuccess={(newData) => setinitialData(newData)}
-                />
-              </div>
-            )}
-          </div>
-        )}
+          {Component && (
+            <div className="flex items-center gap-x-4 border-t px-6 pt-4">
+              <SaveButton
+                data={data as unknown as WebsiteSettingsType}
+                hasChanges={isDataChange}
+                showSave={true}
+                onSaveSuccess={(newData) => setInitialData(newData)}
+              />
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Tab Change Confirmation Dialog */}
@@ -198,23 +199,30 @@ const WebsiteSettingsModal = ({ initialData }: { initialData: any }) => {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const { savePageAsync } = useSavePage();
   const [isDataChange, setIsDataChange] = useState(false);
-  const [initialDataModal, setinitialDataModal] = useState<any>(initialData);
-  const handleOpenChange = async (newOpen: boolean) => {
-    if (newOpen) savePageAsync();
-    if (!newOpen && isDataChange) setShowConfirmDialog(true);
-    else setShowModal(newOpen);
-  };
+  const [initialDataModal, setInitialDataModal] = useState<any>(initialData);
+  const queryClient = useQueryClient();
 
-  const handleConfirmClose = () => {
+  const handleOpenChange = useCallback(
+    async (newOpen: boolean) => {
+      if (newOpen) savePageAsync();
+      if (!newOpen && isDataChange) setShowConfirmDialog(true);
+      else setShowModal(newOpen);
+    },
+    [savePageAsync, isDataChange],
+  );
+
+  const handleConfirmClose = useCallback(() => {
     setShowConfirmDialog(false);
     setShowModal(false);
     setIsDataChange(false);
-    if (!initialDataModal) return;
-  };
+    if (initialDataModal) {
+      queryClient.setQueryData(["GET_WEBSITE_DRAFT_SETTINGS"], initialDataModal);
+    }
+  }, [initialDataModal, queryClient]);
 
-  const handleCancelClose = () => {
+  const handleCancelClose = useCallback(() => {
     setShowConfirmDialog(false);
-  };
+  }, []);
 
   return (
     <>
@@ -234,7 +242,7 @@ const WebsiteSettingsModal = ({ initialData }: { initialData: any }) => {
           {showModal && (
             <WebsiteSettingsContent
               initialData={initialDataModal}
-              setinitialData={setinitialDataModal}
+              setInitialData={setInitialDataModal}
               isDataChange={isDataChange}
               setIsDataChange={setIsDataChange}
             />
@@ -278,4 +286,4 @@ function WebsiteSettings() {
     </div>
   );
 }
-export default WebsiteSettings;
+export { WebsiteSettings };

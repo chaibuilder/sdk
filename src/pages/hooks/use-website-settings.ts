@@ -47,11 +47,8 @@ export const useUpdateWebsiteSettings = () => {
 
       return response;
     },
-    onSuccess: (_response, variables) => {
+    onSuccess: (_response) => {
       queryClient.invalidateQueries({ queryKey: [ACTIONS.GET_WEBSITE_DRAFT_SETTINGS] });
-      if (variables?.isLanguageUpdate) {
-        queryClient.invalidateQueries({ queryKey: [ACTIONS.GET_WEBSITE_DRAFT_SETTINGS] });
-      }
       toast.success("Website settings updated successfully.");
     },
     onError: (error) => {

@@ -19,7 +19,7 @@ export { ImagePicker } from "@/pages/digital-asset-manager/image-picker";
 export { SmartJsonInput as ChaiJsonInput } from "./client/components/smart-json-input";
 export { ChaiWebsiteBuilder, NestedPathSelector };
 
-export { default as WebsiteSettings } from "@/components/website-settings";
+export { WebsiteSettings } from "@/components/website-settings";
 
 /** Hooks */
 export { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";

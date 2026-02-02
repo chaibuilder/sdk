@@ -31,34 +31,27 @@ export interface ChaiSiteWideUsageData {
   };
 }
 
-export interface Site {
-  id: string;
+export interface Website {
   name: string;
   createdAt: string;
   fallbackLang?: string;
   languages?: string[];
-  apiKey?: string;
-  domain?: string;
-  subdomain?: string;
-  hosting?: string;
-  domainConfigured: boolean;
   settings: any;
 }
 
-export type SiteData = {
-  id: string;
+export type WebsiteSettings = {
   name: string;
   createdAt: string;
-  settings: {
+  settings: Partial<{
     email: string;
     phone: string;
     address: string;
-    logoURL: string;
+    logo: { url: string; id: string };
     language: string;
     siteName: string;
     termsURL: string;
     timezone: string;
-    faviconURL: string;
+    favicon: { url: string; id: string };
     metaPixelId: string;
     tiktokPixelId: string;
     linkedinInsightId: string;
@@ -74,41 +67,10 @@ export type SiteData = {
     googleAnalyticsId: string;
     googleTagManagerId: string;
     recaptchaSecretKey: string;
-    cookieConsentEnabled: boolean;
-    darkMode?: boolean;
-    cookieConsentSettings?: {
-      consentModal: {
-        layout: "box" | "box wide" | "box inline" | "cloud" | "cloud inline" | "bar" | "bar inline";
-        position:
-          | "top"
-          | "bottom"
-          | "top left"
-          | "top center"
-          | "top right"
-          | "middle left"
-          | "middle center"
-          | "middle right"
-          | "bottom left"
-          | "bottom center"
-          | "bottom right";
-        equalWeightButtons: boolean;
-        flipButtons: boolean;
-      };
-      preferencesModal: {
-        layout: "box" | "bar";
-        position: "left" | "right";
-        equalWeightButtons: boolean;
-        flipButtons: boolean;
-      };
-    };
-    customTrackingScripts: string[];
-    headHTML?: string;
-    footerHTML?: string;
-  };
+    darkMode: boolean;
+    headHTML: string;
+    footerHTML: string;
+  }>;
   languages: string[];
   fallbackLang: string;
-  domainConfigured: boolean;
-  domain: string;
-  subdomain: string;
-  hosting: string;
 };

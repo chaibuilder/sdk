@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { SiteData } from "@/types/types";
+import { WebsiteSettings } from "@/types/types";
 import { useTranslation } from "react-i18next";
 import { Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -21,7 +21,7 @@ const SOCIAL_PLATFORMS = [
 ];
 
 interface SocialLinksProps {
-  data: SiteData;
+  data: WebsiteSettings;
   onChange: (links: any) => void;
 }
 
@@ -149,13 +149,13 @@ function SocialLinks({ data, onChange }: SocialLinksProps) {
 }
 
 interface ContactSocialProps {
-  data: SiteData;
+  data: WebsiteSettings;
   onChange?: (updates: any) => void;
 }
 
 export default function ContactSocial({ data, onChange }: ContactSocialProps) {
   const { t } = useTranslation();
-  const [baseline, setBaseline] = useState<SiteData>(data);
+  const [baseline, setBaseline] = useState<WebsiteSettings>(data);
 
   const handleInputChange = (field: "email" | "phone" | "address", value: string) => {
     if (!onChange) return;

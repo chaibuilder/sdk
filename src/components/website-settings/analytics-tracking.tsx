@@ -2,12 +2,12 @@
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { SiteData } from "@/types/types";
+import { WebsiteSettings } from "@/types/types";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 
 interface AnalyticsTrackingProps {
-  data: SiteData;
+  data: WebsiteSettings;
   onChange: (updates: any) => void;
 }
 

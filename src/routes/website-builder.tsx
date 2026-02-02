@@ -100,7 +100,7 @@ const WebsiteBuilder = () => {
       getLiveUrl={getLiveUrl}
       apiUrl="/chai/api"
       onLogout={handleLogout}
-      topLeftCorner={()=> <WebsiteSettings/>}
+      topLeftCorner={WebsiteSettings}
       getAccessToken={getAccessToken}
       currentUser={user}
       websocket={supabaseClient}

@@ -1,17 +1,17 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { SiteData } from "@/types/types";
+import type { WebsiteSettings } from "@/types/types";
 import { Loader, Save } from "lucide-react";
 import { useActionState } from "react";
 import { useTranslation } from "react-i18next";
-import { useReloadPage } from "@chaibuilder/sdk/pages";
+import { useReloadPage } from "@/pages/hooks/use-reload-page";
 import { useUpdateWebsiteSettings } from "@/pages/hooks/use-website-settings";
 
 interface SaveButtonProps {
   hasChanges: boolean;
-  data: SiteData;
+  data: WebsiteSettings;
   showSave: boolean;
-  onSaveSuccess?: (data: SiteData) => void;
+  onSaveSuccess?: (data: WebsiteSettings) => void;
 }
 
 export default function SaveButton({ hasChanges, data, showSave = true, onSaveSuccess }: SaveButtonProps) {
@@ -20,7 +20,7 @@ export default function SaveButton({ hasChanges, data, showSave = true, onSaveSu
   const { mutateAsync: updateWebsiteSettings } = useUpdateWebsiteSettings();
 
   // * Save action
-  const [, handleSave, isSaving] = useActionState(async () => {
+  const [, handleSave, isSaving] = useActionState(async (_prevState: unknown, _formData: FormData) => {
     try {
       if (typeof data?.settings !== "object") return { success: false };
       const socialLinks = data?.settings?.socialLinks || {};
@@ -30,7 +30,7 @@ export default function SaveButton({ hasChanges, data, showSave = true, onSaveSu
         }
       });
 
-      const updates: Partial<SiteData> = {
+      const updates: Partial<WebsiteSettings> = {
         name: data?.name,
         languages: data?.languages,
         settings: {
@@ -47,7 +47,7 @@ export default function SaveButton({ hasChanges, data, showSave = true, onSaveSu
 
       if (result?.success) {
         if (onSaveSuccess) {
-          onSaveSuccess({ ...data } as SiteData);
+          onSaveSuccess({ ...data } as WebsiteSettings);
         }
         reloadPage();
       }

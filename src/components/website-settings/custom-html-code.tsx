@@ -2,12 +2,12 @@
 
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { SiteData } from "@/types/types";
+import { WebsiteSettings } from "@/types/types";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 interface CustomHtmlProps {
-  data: SiteData;
+  data: WebsiteSettings;
   onChange: (updates: any) => void;
 }
 

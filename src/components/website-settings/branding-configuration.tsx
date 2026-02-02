@@ -1,13 +1,13 @@
 "use client";
 
 import { Label } from "@/components/ui/label";
-import { SiteData } from "@/types/types";
+import type { WebsiteSettings } from "@/types/types";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { ImagePicker } from "@/pages/digital-asset-manager/image-picker";
 
 interface BrandingProps {
-  data: SiteData;
+  data: WebsiteSettings;
   onChange: (updates: any) => void;
 }
 
@@ -21,8 +21,7 @@ export default function BrandingConfiguration({ data, onChange }: BrandingProps)
       ...(baseline || {}),
       settings: {
         ...(baseline?.settings || {}),
-        logoURL: asset.url,
-        logoId: asset.id,
+        logo: { url: asset.url, id: asset.id },
       },
     };
 
@@ -35,8 +34,7 @@ export default function BrandingConfiguration({ data, onChange }: BrandingProps)
       ...(baseline || {}),
       settings: {
         ...(baseline?.settings || {}),
-        faviconURL: asset.url,
-        faviconId: asset.id,
+        favicon: { url: asset.url, id: asset.id },
       },
     };
 
@@ -50,8 +48,8 @@ export default function BrandingConfiguration({ data, onChange }: BrandingProps)
         <div className="space-y-1">
           <Label className="text-xs">{t("Logo")}</Label>
           <ImagePicker
-            assetId={(baseline?.settings as any)?.logoId}
-            assetUrl={baseline?.settings?.logoURL}
+            assetId={baseline?.settings?.logo?.id}
+            assetUrl={baseline?.settings?.logo?.url}
             onChange={handleLogoChange}
             placeholder={t("Select a logo")}
           />
@@ -60,8 +58,8 @@ export default function BrandingConfiguration({ data, onChange }: BrandingProps)
         <div className="space-y-1">
           <Label className="text-xs">{t("Favicon")}</Label>
           <ImagePicker
-            assetId={(baseline?.settings as any)?.faviconId}
-            assetUrl={baseline?.settings?.faviconURL}
+            assetId={baseline?.settings?.favicon?.id}
+            assetUrl={baseline?.settings?.favicon?.url}
             onChange={handleFaviconChange}
             placeholder={t("Select a favicon")}
           />
