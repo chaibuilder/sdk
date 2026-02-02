@@ -15,6 +15,7 @@ type AskAIActionData = {
   blocks?: any[];
   context?: string;
   lang?: string;
+  initiator?: string;
 };
 
 /**
@@ -71,7 +72,7 @@ export class AskAIAction extends ChaiBaseAction<AskAIActionData, any> {
       messages: data.messages || [],
       image: data.image,
       model: data.model,
-      initiator: data.type || null,
+      initiator: data.initiator || null,
     };
 
     const result = await ai.handleRequest(requestOptions);
