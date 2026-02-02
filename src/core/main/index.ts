@@ -57,5 +57,3 @@ export type { ChaiLibrary, ChaiLibraryBlock } from "@/types/chaibuilder-editor-p
 // constants
 export { PERMISSIONS } from "@/core/constants/PERMISSIONS";
 export type { ChaiTheme as ChaiThemeValues } from "@/types/chaibuilder-editor-props";
-
-export const ChaiLibraryConfig = {};
