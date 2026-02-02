@@ -1,14 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/hooks/use-theme";
 import { usePublishPages } from "@/pages/hooks/pages/mutations";
-import { useUpdateWebsiteSettings } from "@/pages/hooks/project/mutations";
+import { useUpdateWebsiteFields } from "@/pages/hooks/project/mutations";
 import { throwConfetti } from "@/pages/utils/confetti";
 import { useTranslation } from "react-i18next";
 
 const ThemePanelFooter = () => {
   const [theme] = useTheme();
   const { mutate: publishPage, isPending: isPublishing } = usePublishPages();
-  const { mutateAsync: updateTheme, isPending } = useUpdateWebsiteSettings();
+  const { mutateAsync: updateTheme, isPending } = useUpdateWebsiteFields();
   const { t } = useTranslation();
 
   const handleThemeSave = () => {

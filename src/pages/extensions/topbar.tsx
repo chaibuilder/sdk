@@ -43,17 +43,17 @@ const AddressBar = () => {
 
   const visibleSlug = visible.replace(window.location.host, "");
   return (
-    <div className={`relative flex items-center gap-x-1`}>
+    <div className={`relative flex items-center`}>
       <div
         className={mergeClasses(
-          "flex h-8 w-auto max-w-[600px] items-center rounded-md border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800",
+          "flex h-8 w-auto max-w-[600px] items-center rounded-l-md border border-r-0 border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800",
           isFetching && "max-w-0 overflow-hidden opacity-0",
         )}>
         <PageDropdownInHeader />
       </div>
       <div
         className={mergeClasses(
-          "flex h-8 w-auto max-w-[600px] items-center rounded-md border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800" +
+          "flex h-8 w-auto max-w-[600px] items-center rounded-r-md border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800" +
             (isPartialPage ? " pr-2" : ""),
           isFetching && "max-w-0 overflow-hidden opacity-0",
         )}>
@@ -85,10 +85,16 @@ const AddressBar = () => {
 
 export const Topbar = () => {
   return (
-    <div className="flex h-full w-full items-center justify-between px-2">
-      <TopbarLeft />
-      <AddressBar />
-      <TopbarRight />
+    <div className="grid h-full w-full grid-cols-3 items-center px-2">
+      <div className="flex justify-start">
+        <TopbarLeft />
+      </div>
+      <div className="flex justify-center">
+        <AddressBar />
+      </div>
+      <div className="flex justify-end">
+        <TopbarRight />
+      </div>
     </div>
   );
 };

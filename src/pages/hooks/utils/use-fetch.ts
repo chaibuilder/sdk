@@ -48,7 +48,7 @@ export const useFetch = () => {
 
         if (response.status === 401) {
           console.log("401 Response", response);
-          await logout();
+          await logout("SESSION_EXPIRED");
           return null;
         }
 
