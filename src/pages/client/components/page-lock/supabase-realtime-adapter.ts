@@ -1,11 +1,12 @@
 /**
  * Supabase Realtime Adapter
- * 
+ *
  * Implementation of RealtimeAdapter for Supabase Realtime
  */
 
 import type { RealtimeChannel, RealtimeClient } from "@supabase/supabase-js";
 import type {
+  CHANNEL_STATES,
   ChannelStatus,
   PresenceState,
   RealtimeAdapter,
@@ -29,6 +30,18 @@ class SupabaseChannelAdapter implements RealtimeChannelAdapter {
 
   get topic(): string {
     return this.channel.topic;
+  }
+
+  getState() {
+    const channelState = this.channel.state;
+    const SUPABASE_STATE_MAPPING = {
+      closed: "CLOSED",
+      errored: "ERROR",
+      joined: "JOINED",
+      joining: "JOINING",
+      leaving: "LEAVING",
+    };
+    return (SUPABASE_STATE_MAPPING[channelState] || "CLOSED") as CHANNEL_STATES;
   }
 
   async subscribe(callback: (status: ChannelStatus) => void): Promise<void> {

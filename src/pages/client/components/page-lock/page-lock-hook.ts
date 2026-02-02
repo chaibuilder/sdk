@@ -429,10 +429,11 @@ export const useChaibuilderRealtime = () => {
         if (channelRef.current) {
           // For adapters, we check if the channel is properly subscribed by checking its topic
           // If topic exists, the channel should be active
-          const isActive = channelRef.current.topic === channelId;
+          const channelState = channelRef.current.getState();
+          const isNotJoined = channelState !== "JOINED";
 
           // If channel is not active or doesn't match current channelId, reconnect
-          if (!isActive) {
+          if (isNotJoined) {
             console.log("Channel is not active, reconnecting...");
             reconnectChannel();
           }

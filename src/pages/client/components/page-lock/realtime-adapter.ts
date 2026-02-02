@@ -1,6 +1,6 @@
 /**
  * Realtime Adapter Interface
- * 
+ *
  * This interface abstracts the realtime functionality to support multiple
  * realtime service providers (Supabase, Pusher, Ably, etc.)
  */
@@ -9,6 +9,8 @@
  * Represents the status of a channel subscription
  */
 export type ChannelStatus = "SUBSCRIBED" | "CHANNEL_ERROR" | "TIMED_OUT" | "CLOSED";
+
+export type CHANNEL_STATES = "JOINED" | "LEFT" | "ERROR" | "CLOSED" | "JOINING" | "LEAVING";
 
 /**
  * Generic event payload structure
@@ -34,6 +36,11 @@ export interface RealtimeChannelAdapter {
    * The topic/name of the channel
    */
   topic: string;
+
+  /**
+   * The state of the channel
+   */
+  getState(): CHANNEL_STATES;
 
   /**
    * Subscribe to the channel
