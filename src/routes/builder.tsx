@@ -23,6 +23,7 @@ function ChaiBuilderDefault() {
   const [designTokensValue, setDesignTokensValue] = useAtom(lsDesignTokensAtom);
   return (
     <ChaiBuilderEditor
+      pageId="header"
       designTokens={designTokensValue}
       flags={{
         librarySite: false,
