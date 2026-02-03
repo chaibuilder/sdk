@@ -105,7 +105,11 @@ export default function Editor() {
 
   return (
     <ChaiBuilderEditor
-      flags={{ dragAndDrop: true, designTokens: true }}
+      flags={{
+        dragAndDrop: true,
+        designTokens: true,
+        ai: true,
+      }}
       currentUser={user}
       autoSave
       autoSaveActionsCount={5}

@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { lazy } from "react";
 const AiPanelContent = lazy(() => import("./ai-panel-content"));
 
@@ -20,6 +21,12 @@ const AiIcon = ({ className = "h-full w-full" }: { className?: string }) => {
 };
 
 const AiPanelButton = ({ isActive, show }: { isActive: boolean; show: () => void }) => {
+  const isAiEnabled = useBuilderProp("flags.ai", false);
+
+  if (!isAiEnabled) {
+    return null;
+  }
+
   return (
     <Button size="icon" className="p-0 [&_svg]:size-6" onClick={show} variant={isActive ? "default" : "ghost"}>
       <AiIcon className={isActive ? "h-5 w-5 text-white" : "h-5 w-5 text-primary"} />
