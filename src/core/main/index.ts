@@ -46,6 +46,7 @@ export { i18n };
 export { generateUUID as generateBlockId, cn as mergeClasses } from "@/core/functions/common-functions";
 export { getClassValueAndUnit } from "@/core/functions/helper-fn";
 export { getBlocksFromHTML as convertHTMLToChaiBlocks, getBlocksFromHTML } from "@/core/import-html/html-to-json";
+export { defaultChaiLibrary } from "@/core/library-blocks/default-chai-library";
 
 // types
 export type { ChaiBuilderEditorProps };
