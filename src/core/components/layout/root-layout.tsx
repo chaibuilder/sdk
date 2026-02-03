@@ -65,6 +65,12 @@ export const AiButton = ({ isActive, show }: { isActive: boolean; show: () => vo
   );
 };
 const AskAiButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
+  const isAiEnabled = useBuilderProp("flags.enableAI", false);
+
+  if (!isAiEnabled) {
+    return null;
+  }
+
   return (
     <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
       <AiIcon />

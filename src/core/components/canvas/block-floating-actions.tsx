@@ -109,6 +109,7 @@ const BlockFloatingSelector = ({ block, isDragging, selectedBlockElement }: Bloc
   const { document } = useFrame();
   const isDragAndDropEnabled = useIsDragAndDropEnabled();
   const gotoSettingsEnabled = useBuilderProp("flags.gotoSettings", false);
+  const isAiEnabled = useBuilderProp("flags.enableAI", false);
 
   // * Floating element position and size
   const { floatingStyles, refs, update } = useFloating({
@@ -202,7 +203,7 @@ const BlockFloatingSelector = ({ block, isDragging, selectedBlockElement }: Bloc
             <div className="mr-10 w-full items-center space-x-1 px-1 leading-tight">{label}</div>
           </div>
           <div className="flex items-center gap-1 pl-1 pr-1.5">
-            {hasPermission(PERMISSIONS.ADD_BLOCK) && (
+            {hasPermission(PERMISSIONS.ADD_BLOCK) && isAiEnabled && (
               <AiIcon
                 className="h-4 w-4 rounded hover:bg-white hover:text-blue-500"
                 onClick={() => {
