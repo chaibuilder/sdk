@@ -1,18 +1,14 @@
 import { ChaiBlock } from "@/types/common";
+import { createTailwindcss } from "@mhsdesign/jit-browser-tailwindcss";
 import twAspectRatio from "@tailwindcss/aspect-ratio";
 import twContainer from "@tailwindcss/container-queries";
 import twForms from "@tailwindcss/forms";
 import twTypography from "@tailwindcss/typography";
-import autoprefixer from 'autoprefixer';
-import postcss from 'postcss';
-import tailwindcss from 'tailwindcss';
 import { chaiBuilderPlugin, getChaiBuilderTheme } from "../utils";
-import { filterDuplicateStyles } from "./styles-helper";
-
 
 async function getTailwindCSS(markupString: string[], safelist: string[] = [], includeBaseStyles: boolean = false) {
-  const result = await postcss([
-    tailwindcss({
+  const tailwind = createTailwindcss({
+    tailwindConfig: {
       darkMode: "class",
       safelist,
       theme: {
@@ -44,17 +40,16 @@ async function getTailwindCSS(markupString: string[], safelist: string[] = [], i
         },
       },
       plugins: [twForms, twTypography, twAspectRatio, twContainer, chaiBuilderPlugin],
-      corePlugins: { preflight: false },
-      content: [{ raw: `<div>${markupString}</div>`, extension: 'html' }],
-    }),
-    autoprefixer(),
-  ]).process(includeBaseStyles ? `@tailwind base; @tailwind components; @tailwind utilities;` : `@tailwind components; @tailwind utilities;`, {
-    from: undefined,
-  })
+      corePlugins: { preflight: includeBaseStyles },
+    },
+  });
 
-  const styles = result.css
-  const filteredStyles = await filterDuplicateStyles(styles)
-  return filteredStyles;
+  return await tailwind.generateStylesFromContent(
+    ` ${includeBaseStyles ? "@tailwind base;" : ""}
+      @tailwind components;
+      @tailwind utilities;`,
+    markupString,
+  );
 }
 
 /**
@@ -64,15 +59,9 @@ async function getTailwindCSS(markupString: string[], safelist: string[] = [], i
  * @returns The tailwind css for the blocks
  */
 const getBlocksTailwindCSS = (blocks: ChaiBlock[], includeBaseStyles: boolean) => {
-  const blocksString = JSON.stringify(blocks, null, 2).replace(
-    /#styles:([^"]*)/g,
-    (_match, content) => {
-      return content
-        .replace(/#styles:,/g, '')
-        .replace(/#styles:/g, '')
-        .replace(/^,/g, '')
-    }
-  )
+  const blocksString = JSON.stringify(blocks).replace(/#styles:([^"]*)/g, (_match, content) => {
+    return `#styles:${content.replace(/,/g, " ")}`.replace(/#styles:/g, "");
+  });
   return getTailwindCSS([blocksString], [], includeBaseStyles);
 };
 
