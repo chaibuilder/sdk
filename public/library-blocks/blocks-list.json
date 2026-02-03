@@ -4,13 +4,13 @@
     "name": "Feature Section Component",
     "description": "Feature Section Component",
     "group": "Home",
-    "preview": "https://chaibuilder-sdk.vercel.app/library-blocks/hero-1/hero-1.webp"
+    "preview": "/library-blocks/hero-1/hero-1.webp"
   },
   {
     "id": "library-blocks/hero-2/hero-2",
     "name": "Journey Card",
     "description": "Product Journey Card",
     "group": "Home",
-    "preview": "https://chaibuilder-sdk.vercel.app/library-blocks/hero-2/hero-2.webp"
+    "preview": "/library-blocks/hero-2/hero-2.webp"
   }
 ]
