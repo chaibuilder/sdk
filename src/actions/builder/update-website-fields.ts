@@ -5,11 +5,11 @@ import { pick } from "lodash-es";
 import { z } from "zod";
 import { ChaiBaseAction } from "./base-action";
 
-type UpdateWebsiteSettingsActionData = {
+type UpdateWebsiteFieldsActionData = {
   settings: any;
 };
 
-type UpdateWebsiteSettingsActionResponse = {
+type UpdateWebsiteFieldsActionResponse = {
   success: boolean;
 };
 
@@ -17,9 +17,9 @@ type UpdateWebsiteSettingsActionResponse = {
  * Action to update website settings (theme, designTokens, etc.)
  * Matches the behavior of the old ChaiBuilderWebsite.updateWebsiteSettings method
  */
-export class UpdateWebsiteSettingsAction extends ChaiBaseAction<
-  UpdateWebsiteSettingsActionData,
-  UpdateWebsiteSettingsActionResponse
+export class UpdateWebsiteFieldsAction extends ChaiBaseAction<
+  UpdateWebsiteFieldsActionData,
+  UpdateWebsiteFieldsActionResponse
 > {
   protected getValidationSchema() {
     return z.object({
@@ -27,7 +27,7 @@ export class UpdateWebsiteSettingsAction extends ChaiBaseAction<
     });
   }
 
-  async execute(data: UpdateWebsiteSettingsActionData): Promise<UpdateWebsiteSettingsActionResponse> {
+  async execute(data: UpdateWebsiteFieldsActionData): Promise<UpdateWebsiteFieldsActionResponse> {
     await this.verifyAccess();
     if (!this.context) {
       throw apiError("CONTEXT_NOT_SET", new Error("CONTEXT_NOT_SET"));
@@ -48,7 +48,7 @@ export class UpdateWebsiteSettingsAction extends ChaiBaseAction<
     const { error } = await safeQuery(() => db.update(schema.apps).set(updateData).where(eq(schema.apps.id, appId)));
 
     if (error) {
-      throw apiError("ERROR_UPDATE_WEBSITE_SETTINGS", error);
+      throw apiError("ERROR_UPDATE_WEBSITE_FIELDS", error);
     }
 
     return { success: true };

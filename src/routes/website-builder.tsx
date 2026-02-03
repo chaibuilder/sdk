@@ -67,7 +67,7 @@ const WebsiteBuilder = () => {
     if (!supabaseClient) return;
     console.log("Logging out");
     await supabaseClient.auth.signOut();
-    window.location.reload();
+    window.location.href = "/website?unauthorized=true";
   }, []);
 
   const getAccessToken = useCallback(async () => {

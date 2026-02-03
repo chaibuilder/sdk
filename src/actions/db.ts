@@ -4,10 +4,25 @@ import postgres from "postgres";
 import * as schema from "./drizzle/schema";
 dotenv.config();
 
-const connectionString = process.env.CHAIBUILDER_DATABASE_URL;
+let connectionString = process.env.CHAIBUILDER_DATABASE_URL;
 
 if (!connectionString) {
   throw new Error("Database not configured. Please set CHAIBUILDER_DATABASE_URL environment variable.");
+}
+
+const sanitizeConnectionString = (connectionString: string) => {
+  return connectionString.trim().replace(/^"|"$/g, "");
+};
+
+connectionString = sanitizeConnectionString(connectionString);
+const validateConnectionString = (connectionString: string) => {
+  return connectionString.startsWith("postgresql://") || connectionString.startsWith("postgres://");
+};
+
+if (!validateConnectionString(connectionString)) {
+  throw new Error(
+    "Database connection string is invalid. Please check your CHAIBUILDER_DATABASE_URL environment variable.",
+  );
 }
 
 const client = postgres(connectionString, { max: 10 });

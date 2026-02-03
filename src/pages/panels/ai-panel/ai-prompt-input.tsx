@@ -143,7 +143,7 @@ const AiPromptInput = ({
                 onClick={onStop}
                 className="z-50 flex items-center gap-x-1 rounded-md bg-red-500 p-1.5 text-white transition-colors hover:bg-red-600"
                 title={t("Stop generation")}>
-                <Square size={16} /> <span className="text-xs">{t("Stop")}</span>
+                <Square size={16} />
               </button>
             ) : (
               <PromptInputSubmit disabled={!input.trim() || disabled}>

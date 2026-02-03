@@ -2,7 +2,6 @@ import { useSavePage } from "@/hooks/use-save-page";
 import { useRealtimeAdapter } from "@/pages/hooks/project/use-builder-prop";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import type { RealtimeChannelAdapter } from "./realtime-adapter";
 import {
   BROADCAST_EVENTS,
   EVENT,
@@ -18,6 +17,7 @@ import {
   usePageId,
   useUserId,
 } from "./page-lock-utils";
+import type { RealtimeChannelAdapter } from "./realtime-adapter";
 
 const clientId: string = crypto.randomUUID();
 let websocketTimeout: any = null;
@@ -97,7 +97,10 @@ export const useUpdateOnlineUsers = () => {
   const { setPageToUser } = usePageToUser();
   const { setPageStatus, pageStatus } = usePageLockStatus();
   const pageRef = useRef<any>(pageId);
-  pageRef.current = pageId;
+
+  useEffect(() => {
+    pageRef.current = pageId;
+  }, [pageId]);
 
   return useCallback(
     (channelOverride?: RealtimeChannelAdapter) => {
@@ -139,7 +142,11 @@ export const useSendRealtimeEvent = () => {
   const pageOwner = useCurrentPageOwner();
   const { setPageLockMeta } = usePageLockMeta();
   const pageRef = useRef<any>(pageId);
-  pageRef.current = pageId;
+
+  useEffect(() => {
+    pageRef.current = pageId;
+  }, [pageId]);
+
   return useCallback(
     async (event: string, _payload?: any) => {
       if (!channel) return;
@@ -170,7 +177,9 @@ export const useReceiveRealtimeEvent = () => {
   const pageRef = useRef<any>(pageId);
   const { savePageAsync } = useSavePage();
 
-  pageRef.current = pageId;
+  useEffect(() => {
+    pageRef.current = pageId;
+  }, [pageId]);
 
   return useCallback(
     (event: string) =>
@@ -240,6 +249,7 @@ export const useChaibuilderRealtime = () => {
   const isReconnectingRef = useRef(false);
   const reconnectAttemptsRef = useRef(0);
   const channelRef = useRef(channel);
+  const reconnectChannelRef = useRef<() => void>(() => {});
 
   useEffect(() => {
     onReceiveEventRef.current = onReceiveEvent;
@@ -270,14 +280,18 @@ export const useChaibuilderRealtime = () => {
 
     // Check if we've exceeded max attempts
     if (reconnectAttemptsRef.current >= MAX_RECONNECT_ATTEMPTS) {
-      console.error(`Maximum reconnection attempts (${MAX_RECONNECT_ATTEMPTS}) reached. Stopping reconnection attempts.`);
+      console.error(
+        `Maximum reconnection attempts (${MAX_RECONNECT_ATTEMPTS}) reached. Stopping reconnection attempts.`,
+      );
       return;
     }
 
     isReconnectingRef.current = true;
     reconnectAttemptsRef.current += 1;
 
-    console.log(`Attempting to reconnect realtime channel (attempt ${reconnectAttemptsRef.current}/${MAX_RECONNECT_ATTEMPTS})`);
+    console.log(
+      `Attempting to reconnect realtime channel (attempt ${reconnectAttemptsRef.current}/${MAX_RECONNECT_ATTEMPTS})`,
+    );
 
     // Clear existing timeout
     if (reconnectTimeoutRef.current) {
@@ -295,7 +309,7 @@ export const useChaibuilderRealtime = () => {
     // Exponential backoff delay calculation
     const delay = Math.min(
       INITIAL_RECONNECT_DELAY_MS * Math.pow(BACKOFF_MULTIPLIER, reconnectAttemptsRef.current - 1),
-      MAX_RECONNECT_DELAY_MS
+      MAX_RECONNECT_DELAY_MS,
     );
 
     reconnectTimeoutRef.current = setTimeout(() => {
@@ -314,13 +328,15 @@ export const useChaibuilderRealtime = () => {
           reconnectAttemptsRef.current = 0; // Reset attempts on successful connection
           isReconnectingRef.current = false;
         } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
-          console.log(`Realtime connection failed: ${status}. Attempt ${reconnectAttemptsRef.current}/${MAX_RECONNECT_ATTEMPTS}`);
+          console.log(
+            `Realtime connection failed: ${status}. Attempt ${reconnectAttemptsRef.current}/${MAX_RECONNECT_ATTEMPTS}`,
+          );
           // Only trigger another reconnection attempt if we haven't exceeded max attempts
           if (reconnectAttemptsRef.current < MAX_RECONNECT_ATTEMPTS) {
             // Keep isReconnectingRef true and schedule next attempt with delay
             setTimeout(() => {
               isReconnectingRef.current = false;
-              reconnectChannel();
+              reconnectChannelRef.current();
             }, 500); // Small delay before triggering next attempt
           } else {
             console.error("Maximum reconnection attempts reached");
@@ -333,6 +349,11 @@ export const useChaibuilderRealtime = () => {
       });
     }, delay);
   }, [realtimeAdapter, userId, channelId, setChannel, setupChannelListeners]);
+
+  // Keep the ref updated with the latest reconnectChannel function
+  useEffect(() => {
+    reconnectChannelRef.current = reconnectChannel;
+  }, [reconnectChannel]);
 
   // Connection Effect
   useEffect(() => {
@@ -382,6 +403,8 @@ export const useChaibuilderRealtime = () => {
       setChannel(null);
       newChannel.unsubscribe();
     };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [realtimeAdapter, userId, channelId, setChannel, reconnectChannel, setupChannelListeners]);
 
   // Handle browser tab visibility changes
@@ -389,27 +412,28 @@ export const useChaibuilderRealtime = () => {
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
         console.log("Tab became visible, checking realtime connection...");
-        
+
         // Check if required dependencies are available
         if (!realtimeAdapter || !userId || !channelId) {
           console.log("Required dependencies not available, skipping reconnection");
           return;
         }
-        
+
         // Don't attempt reconnection if already reconnecting
         if (isReconnectingRef.current) {
           console.log("Reconnection already in progress, skipping visibility change reconnect");
           return;
         }
-        
+
         // Check if channel exists and get its state
         if (channelRef.current) {
           // For adapters, we check if the channel is properly subscribed by checking its topic
           // If topic exists, the channel should be active
-          const isActive = channelRef.current.topic === channelId;
-          
+          const channelState = channelRef.current.getState();
+          const isNotJoined = channelState !== "JOINED";
+
           // If channel is not active or doesn't match current channelId, reconnect
-          if (!isActive) {
+          if (isNotJoined) {
             console.log("Channel is not active, reconnecting...");
             reconnectChannel();
           }
