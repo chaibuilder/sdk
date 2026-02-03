@@ -1,7 +1,9 @@
+import { libraryBlocksAtom } from "@/hooks/use-library-blocks";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { useFetch } from "@/pages/hooks/utils/use-fetch";
 import { ChaiBlock } from "@/types/common";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useSetAtom } from "jotai";
 import { toast } from "sonner";
 import { useApiUrl } from "./use-builder-prop";
 
@@ -102,6 +104,7 @@ export const useUploadBlockPreview = (onSuccess?: () => void) => {
 export const useDeleteUIBlock = (onSuccess?: () => void) => {
   const apiUrl = useApiUrl();
   const fetchAPI = useFetch();
+  const setLibraryBlocks = useSetAtom(libraryBlocksAtom);
 
   return useMutation({
     mutationFn: async (blockId: string) => {
@@ -111,6 +114,15 @@ export const useDeleteUIBlock = (onSuccess?: () => void) => {
       });
     },
     onSuccess: () => {
+      // Reset all library caches to force refetch
+      setLibraryBlocks((prev) => {
+        const updated = { ...prev };
+        Object.keys(updated).forEach((libraryId) => {
+          updated[libraryId] = { loading: "idle", blocks: [], error: false };
+        });
+        return updated;
+      });
+
       if (onSuccess) {
         onSuccess();
       } else {

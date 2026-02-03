@@ -18,18 +18,13 @@ const uiLibrariesChaiApi = {
   },
 
   async getUILibraryBlocks(uiLibrary: ChaiLibrary, fetchAPI: any, apiUrl: string) {
-    try {
-      const response = await fetchAPI(apiUrl, {
-        action: "GET_LIBRARY_ITEMS",
-        data: { id: uiLibrary.id },
-      });
-      return response.map((b: { preview: string }) => ({
-        ...b,
-      }));
-    } catch (_e: unknown) {
-      console.error(_e);
-      return [];
-    }
+    const response = await fetchAPI(apiUrl, {
+      action: "GET_LIBRARY_ITEMS",
+      data: { id: uiLibrary.id },
+    });
+    return response.map((b: { preview: string }) => ({
+      ...b,
+    }));
   },
 };
 

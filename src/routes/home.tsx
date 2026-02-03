@@ -1,30 +1,23 @@
 import { ArrowRight, Code, Globe } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 export default function Home() {
-  const navigate = useNavigate();
-
   const navigationItems = [
     {
-      title: "Page Builder",
+      title: "Demo Page Builder",
       description: "Default page builder. A simple React component. No backend.",
       icon: Code,
       path: "/builder",
       color: "from-blue-500 to-cyan-500",
+      buttonText: "Launch Builder",
     },
-    // {
-    //   title: "Page Builder - Custom Layout",
-    //   description: "Custom layout builder with advanced configuration options",
-    //   icon: Layout,
-    //   path: "/builder/custom",
-    //   color: "from-green-500 to-emerald-500",
-    // },
     {
-      title: "Website Builder",
-      description: "Full-featured website builder with authentication and pages & more with database and backend apis.",
+      title: "NextJS + Supabase Starter",
+      description:
+        "An opinionated starter kit for building ChaiBuilder websites with Next.js (App Router) and Supabase.",
       icon: Globe,
-      path: "/website",
+      path: "https://github.com/chaibuilder/chaibuilder-next-supabase-starter",
       color: "from-purple-500 to-pink-500",
+      buttonText: "Get Started",
     },
   ];
 
@@ -45,7 +38,6 @@ export default function Home() {
             return (
               <div
                 key={item.path}
-                onClick={() => navigate(item.path)}
                 className="group relative transform cursor-pointer overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-2xl">
                 <div
                   className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-0 transition-opacity duration-300 group-hover:opacity-10`}
@@ -62,11 +54,13 @@ export default function Home() {
 
                   <p className="mb-8 text-lg leading-relaxed text-slate-600">{item.description}</p>
 
-                  <button
-                    className={`w-full bg-gradient-to-r px-6 py-4 ${item.color} group/btn flex transform items-center justify-center rounded-xl font-semibold text-white transition-all duration-200 hover:scale-105 hover:shadow-lg`}>
-                    <span>Launch Builder</span>
-                    <ArrowRight className="ml-2 h-5 w-5 transform transition-transform duration-200 group-hover/btn:translate-x-1" />
-                  </button>
+                  <a href={item.path} target={item.path.startsWith("http") ? "_blank" : "_self"}>
+                    <button
+                      className={`w-full bg-gradient-to-r px-6 py-4 ${item.color} group/btn flex transform items-center justify-center rounded-xl font-semibold text-white transition-all duration-200 hover:scale-105 hover:shadow-lg`}>
+                      <span>{item.buttonText ?? "Launch Builder"}</span>
+                      <ArrowRight className="ml-2 h-5 w-5 transform transition-transform duration-200 group-hover/btn:translate-x-1" />
+                    </button>
+                  </a>
                 </div>
               </div>
             );
