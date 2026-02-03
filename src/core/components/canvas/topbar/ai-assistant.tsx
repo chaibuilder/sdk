@@ -12,10 +12,11 @@ export const AiAssistant = () => {
   const setAiAssistantActive = useAiAssistant();
   const [panel] = useRightPanel();
   const askAiCallBack = useBuilderProp("askAiCallBack", null);
+  const isAiEnabled = useBuilderProp("flags.ai", false);
   const { t } = useTranslation();
   const { hasPermission } = usePermissions();
 
-  if (!askAiCallBack || !hasPermission(PERMISSIONS.EDIT_BLOCK)) return null;
+  if (!askAiCallBack || !hasPermission(PERMISSIONS.EDIT_BLOCK) || !isAiEnabled) return null;
   return (
     <div className="flex items-center space-x-2">
       <Label htmlFor="ai-assistant" className="flex items-center gap-x-1 text-sm text-yellow-600">
