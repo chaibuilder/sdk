@@ -12,7 +12,7 @@ export const AiAssistant = () => {
   const setAiAssistantActive = useAiAssistant();
   const [panel] = useRightPanel();
   const askAiCallBack = useBuilderProp("askAiCallBack", null);
-  const isAiEnabled = useBuilderProp("flags.enableAI", false);
+  const isAiEnabled = useBuilderProp("flags.ai", false);
   const { t } = useTranslation();
   const { hasPermission } = usePermissions();
 

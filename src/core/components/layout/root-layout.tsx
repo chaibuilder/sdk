@@ -65,7 +65,7 @@ export const AiButton = ({ isActive, show }: { isActive: boolean; show: () => vo
   );
 };
 const AskAiButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
-  const isAiEnabled = useBuilderProp("flags.enableAI", false);
+  const isAiEnabled = useBuilderProp("flags.ai", false);
 
   if (!isAiEnabled) {
     return null;

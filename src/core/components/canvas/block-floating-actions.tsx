@@ -109,7 +109,7 @@ const BlockFloatingSelector = ({ block, isDragging, selectedBlockElement }: Bloc
   const { document } = useFrame();
   const isDragAndDropEnabled = useIsDragAndDropEnabled();
   const gotoSettingsEnabled = useBuilderProp("flags.gotoSettings", false);
-  const isAiEnabled = useBuilderProp("flags.enableAI", false);
+  const isAiEnabled = useBuilderProp("flags.ai", false);
 
   // * Floating element position and size
   const { floatingStyles, refs, update } = useFloating({

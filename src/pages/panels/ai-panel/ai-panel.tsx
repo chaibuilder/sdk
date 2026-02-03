@@ -21,7 +21,7 @@ const AiIcon = ({ className = "h-full w-full" }: { className?: string }) => {
 };
 
 const AiPanelButton = ({ isActive, show }: { isActive: boolean; show: () => void }) => {
-  const isAiEnabled = useBuilderProp("flags.enableAI", false);
+  const isAiEnabled = useBuilderProp("flags.ai", false);
 
   if (!isAiEnabled) {
     return null;

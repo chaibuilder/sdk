@@ -108,7 +108,7 @@ export default function Editor() {
       flags={{
         dragAndDrop: true,
         designTokens: true,
-        enableAI: true,
+        ai: true,
       }}
       currentUser={user}
       autoSave
