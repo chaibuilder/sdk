@@ -121,7 +121,7 @@ const UILibrarySection = ({
   const [selectedLibrary, setLibrary] = useSelectedLibrary();
   const uiLibraries = useChaiLibraries();
   const library = uiLibraries.find((library) => library.id === selectedLibrary) || first(uiLibraries);
-  const { data: libraryBlocks, isLoading, resetLibrary } = useLibraryBlocks(library);
+  const { data: libraryBlocks, isLoading, isError, resetLibrary } = useLibraryBlocks(library);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<ChaiLibraryBlock[]>([]);
 
@@ -227,7 +227,7 @@ const UILibrarySection = ({
                     <div className="mt-4 flex flex-col items-center justify-center gap-3 p-4 text-center">
                       {searchQuery ? (
                         <p className="text-sm">{t("No matching blocks found")}</p>
-                      ) : (
+                      ) : isError ? (
                         <>
                           <p className="text-sm">{t("Failed to load the UI library. Try again")}</p>
                           <Button onClick={handleRetry} variant="outline" size="sm" className="gap-2">
@@ -235,6 +235,8 @@ const UILibrarySection = ({
                             {t("Retry")}
                           </Button>
                         </>
+                      ) : (
+                        <p className="text-sm">{t("This library is empty")}</p>
                       )}
                     </div>
                   ) : fromSidebar ? (

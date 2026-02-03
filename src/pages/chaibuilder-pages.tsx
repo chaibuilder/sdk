@@ -4,7 +4,7 @@ import { useAskAi } from "@/pages/hooks/ai/use-ask-ai";
 import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
 import { useExtractPageBlocks } from "@/pages/hooks/pages/use-extract-page-blocks";
 import { useBuilderPageData, usePageDraftBlocks } from "@/pages/hooks/pages/use-page-draft-blocks";
-import { useUpdateWebsiteSettings } from "@/pages/hooks/project/mutations";
+import { useUpdateWebsiteFields } from "@/pages/hooks/project/mutations";
 import { usePageTypes, useSearchPageTypePages } from "@/pages/hooks/project/use-page-types";
 import { useUILibraries } from "@/pages/hooks/project/use-ui-libraries";
 import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
@@ -59,6 +59,20 @@ const DEFAULT_ROLES_AND_PERMISSIONS = {
  *
  * @returns CHAIBUILDER PAGES COMPONENT
  */
+const BuilderWithAccessCheck = (props: ChaiWebsiteBuilderProps) => {
+  const { isLoading } = useCheckUserAccess();
+
+  if (isLoading) {
+    return (
+      <BlurContainer className="fixed inset-0 bg-white">
+        <Loader className="h-6 w-6 animate-spin text-primary" />
+      </BlurContainer>
+    );
+  }
+
+  return <DefaultChaiBuilder {...props} />;
+};
+
 const DefaultChaiBuilder = (props: ChaiWebsiteBuilderProps) => {
   // * WEBSITE DATA
   const { data: uiLibraries } = useUILibraries();
@@ -70,8 +84,6 @@ const DefaultChaiBuilder = (props: ChaiWebsiteBuilderProps) => {
   const { data: websiteConfig, isFetching: isWebsiteConfigFetching } = useWebsiteSetting();
   const isFetchingWebsiteData =
     isRoleAndPermissionsFetching || isPageTypesFetching || isCollectionsFetching || isWebsiteConfigFetching;
-
-  useCheckUserAccess();
 
   // * PAGE DATA
   const [searchParams] = useSearchParams();
@@ -88,7 +100,7 @@ const DefaultChaiBuilder = (props: ChaiWebsiteBuilderProps) => {
   const { mutateAsync: getBlockAsyncProps } = useGetBlockAysncProps();
   const { getPartialBlocks, getPartialBlockBlocks } = usePartialBlocksFn();
   const { mutateAsync: searchPageTypePages } = useSearchPageTypePages();
-  const { mutateAsync: updateSettings } = useUpdateWebsiteSettings();
+  const { mutateAsync: updateSettings } = useUpdateWebsiteFields();
   const { data: siteWideUsage } = useSiteWideUsage(props.flags?.designTokens ?? true);
   const gotoPage = useGotoPage();
 
@@ -265,14 +277,14 @@ const ChaiWebsiteBuilder = (props: ChaiWebsiteBuilderProps) => {
   if (get(props, "hasReactQueryProvider", false) === true)
     return (
       <>
-        <DefaultChaiBuilder {...props} />
+        <BuilderWithAccessCheck {...props} />
         <ReactQueryDevtools />
       </>
     );
 
   return (
     <QueryClientProvider client={queryClient}>
-      <DefaultChaiBuilder {...props} />
+      <BuilderWithAccessCheck {...props} />
       <ReactQueryDevtools />
     </QueryClientProvider>
   );

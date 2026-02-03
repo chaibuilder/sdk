@@ -1,13 +1,66 @@
 "use client";
 
+import { getSupabaseClient } from "@/app/supabase-client";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { getSupabaseClient } from "../../supabase-client";
 
 const supabase = getSupabaseClient();
 
+type LoginView = "login" | "forgot_password";
+
 export const LoginScreen = () => {
+  const [view, setView] = useState<LoginView>("login");
   const [responseError, setResponseError] = useState("");
+  const [responseSuccess, setResponseSuccess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const searchParams = useSearchParams();
+
+  const unauthorized = searchParams.get("unauthorized");
+  const sessionExpired = searchParams.get("session_expired");
+  const handleEmailLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setResponseError("");
+    setResponseSuccess("");
+    setIsLoading(true);
+
+    try {
+      const { error } = await supabase?.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        throw new Error(error.message);
+      }
+    } catch (error) {
+      setResponseError(error instanceof Error && error.message ? error.message : "Something went wrong");
+      setIsLoading(false);
+    }
+  };
+
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setResponseError("");
+    setResponseSuccess("");
+    setIsLoading(true);
+
+    try {
+      const { error } = await supabase?.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/editor/reset-password`,
+      });
+
+      if (error) {
+        throw new Error(error.message);
+      }
+      setResponseSuccess("Check your email for the password reset link");
+      setIsLoading(false);
+    } catch (error) {
+      setResponseError(error instanceof Error && error.message ? error.message : "Something went wrong");
+      setIsLoading(false);
+    }
+  };
 
   const handleGoogleLogin = async () => {
     setResponseError("");
@@ -17,7 +70,7 @@ export const LoginScreen = () => {
       const { error } = await supabase?.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: `${window.location.origin}/api/auth/callback`,
         },
       });
 
@@ -34,13 +87,145 @@ export const LoginScreen = () => {
     <div className="flex min-h-screen items-center justify-center bg-slate-50">
       <div className="w-full max-w-md space-y-6 rounded-lg bg-white p-8 shadow-lg">
         <div className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900">Sign in to your account</h2>
-          <p className="mt-2 text-sm text-gray-600">Use your Google account to continue</p>
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900">
+            {view === "login" ? "Sign in to your account" : "Reset password"}
+          </h2>
+          <p className="mt-2 text-sm text-gray-600">
+            {view === "login"
+              ? "Enter your email and password to sign in"
+              : "Enter your email to receive reset instructions"}
+          </p>
         </div>
 
         {responseError && <div className="rounded-md bg-red-50 p-3 text-sm text-red-800">{responseError}</div>}
 
-        <div>
+        {responseSuccess && <div className="rounded-md bg-green-50 p-3 text-sm text-green-800">{responseSuccess}</div>}
+
+        {unauthorized && (
+          <div className="rounded-md bg-red-50 p-3 text-sm text-red-800">
+            You do not have access to edit this website. Please contact administrator
+          </div>
+        )}
+        {sessionExpired && (
+          <div className="rounded-md bg-red-50 p-3 text-sm text-red-800">
+            Your session has expired. Please sign in again.
+          </div>
+        )}
+
+        {view === "login" ? (
+          <form className="space-y-6" onSubmit={handleEmailLogin}>
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                Email address
+              </label>
+              <div className="mt-2">
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="block w-full rounded-md border-gray-300 py-1.5 text-gray-900"
+                />
+              </div>
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between">
+                <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                  Password
+                </label>
+                <div className="text-sm">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setView("forgot_password");
+                      setResponseError("");
+                      setResponseSuccess("");
+                    }}
+                    className="font-semibold text-blue-600 hover:text-blue-500">
+                    Forgot password?
+                  </button>
+                </div>
+              </div>
+              <div className="mt-2">
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="block w-full rounded-md border-gray-300 py-1.5 text-gray-900"
+                />
+              </div>
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="flex w-full justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50">
+                {isLoading ? "Signing in..." : "Sign in"}
+              </button>
+            </div>
+          </form>
+        ) : (
+          <form className="space-y-6" onSubmit={handleResetPassword}>
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                Email address
+              </label>
+              <div className="mt-2">
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="block w-full rounded-md border-gray-300 py-1.5 text-gray-900"
+                />
+              </div>
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="flex w-full justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50">
+                {isLoading ? "Sending..." : "Send reset instructions"}
+              </button>
+            </div>
+            <div className="text-center text-sm">
+              <button
+                type="button"
+                onClick={() => {
+                  setView("login");
+                  setResponseError("");
+                  setResponseSuccess("");
+                }}
+                className="font-semibold text-blue-600 hover:text-blue-500">
+                Back to sign in
+              </button>
+            </div>
+          </form>
+        )}
+
+        <div className="relative hidden">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-300" />
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="bg-white px-2 text-gray-500">Or continue with</span>
+          </div>
+        </div>
+
+        <div className="hidden">
           <button
             type="button"
             onClick={handleGoogleLogin}

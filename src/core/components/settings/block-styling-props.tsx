@@ -20,12 +20,13 @@ export const BlockStylingProps = () => {
   const removeClassesFromBlocks = useRemoveClassesFromBlocks();
   const [selectedIds] = useSelectedBlockIds();
   const { t } = useTranslation();
+  const { reset } = useResetBlockStyles();
+
   if (!selectedBlock) return null;
   // find all styles props of selected block by checking for value of each prop as string and starts with #styles:
   const stylesProps = Object.keys(selectedBlock).filter(
     (prop) => typeof selectedBlock[prop] === "string" && selectedBlock[prop].startsWith("#styles:"),
   );
-  const { reset } = useResetBlockStyles();
   const hasStyles = !isEmpty(stylesProps) && stylesProps.length > 1;
   const prop = get(selectedBlock, stylingBlocks[0]?.prop, "");
   const { classes: classesString = "" } = getSplitChaiClasses(prop) || {};
