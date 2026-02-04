@@ -1,7 +1,7 @@
-import { getRegisteredFont } from "../runtime";
 import { ChaiFont, ChaiFontViaSrc } from "@chaibuilder/sdk/types";
 import { compact, filter, has, map, uniqBy } from "lodash";
 import { fontsMap } from "./fonts-map";
+import { getRegisteredFont } from "@chaibuilder/sdk/runtime";
 
 export const getThemeCustomFontFace = (fonts: string[]) => {
   const fontdefintions = filter(compact(map(fonts, getRegisteredFont)), (font: ChaiFont) => has(font, "src"));
