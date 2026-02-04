@@ -2,7 +2,7 @@ import { registerChaiBlockProps, stylesProp } from "@chaibuilder/sdk/runtime";
 import { FileTextIcon } from "@radix-ui/react-icons";
 import * as React from "react";
 import FormComponent from "./form-component";
-import { ChaiBlockComponentProps } from "@chaibuilder/sdk/types";
+import { ChaiBlockComponentProps, ChaiBlockConfig } from "@chaibuilder/sdk/types";
 
 type ChaiStyles = Record<string, string>;
 
@@ -19,7 +19,7 @@ const ChaiForm = (props: ChaiBlockComponentProps<ChaiFormProps>) => {
   return <FormComponent {...props} blockProps={props.blockProps as React.HTMLAttributes<HTMLFormElement>} />;
 };
 
-const FormConfig = {
+const FormConfig: ChaiBlockConfig = {
   type: "Form",
   label: "Form",
   category: "core",
