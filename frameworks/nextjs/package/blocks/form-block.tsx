@@ -2,14 +2,9 @@ import { registerChaiBlockProps, stylesProp } from "@chaibuilder/sdk/runtime";
 import { FileTextIcon } from "@radix-ui/react-icons";
 import * as React from "react";
 import FormComponent from "./form-component";
+import { ChaiBlockComponentProps } from "@chaibuilder/sdk/types";
 
 type ChaiStyles = Record<string, string>;
-
-type ChaiBlockComponentProps<T = Record<string, unknown>> = T & {
-  children?: React.ReactNode;
-  blockProps?: Record<string, unknown>;
-  inBuilder?: boolean;
-};
 
 type ChaiFormProps = {
   successMessage: string;

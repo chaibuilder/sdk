@@ -2,28 +2,38 @@
 
 import { db, safeQuery, schema } from "@chaibuilder/sdk/actions";
 
+type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
+
 interface FormSubmissionData {
-  formData: Record<string, string | boolean | number | null>;
-  additionalData: Record<string, string | boolean | number | null>;
+  formData: Record<string, JsonValue>;
+  additionalData: Record<string, JsonValue>;
 }
 
 export async function formSubmit(data: FormSubmissionData) {
   try {
-    const apiKey = process.env.CHAIBUILDER_APP_KEY;
+    const appKey = process.env.CHAIBUILDER_APP_KEY;
 
-    if (!apiKey) {
+    if (!appKey) {
       console.error("CHAIBUILDER_APP_KEY not set");
       return { success: false };
     }
 
     const { formData, additionalData = {} } = data;
 
+    const formName = (additionalData.formName as string) || "contact";
+    const pageUrl = (additionalData.pageUrl as string) || "";
+
+    if (typeof formName !== "string" || formName.length > 255) {
+      console.error("Invalid formName");
+      return { success: false };
+    }
+
     const formSubmission = {
-      app: apiKey,
-      formName: (formData.formName as string) || "contact",
-      formData: formData as unknown,
-      additionalData: additionalData as unknown,
-      pageUrl: (additionalData.pageUrl as string) || "",
+      app: appKey,
+      formName,
+      formData: formData as Record<string, unknown>,
+      additionalData: additionalData as Record<string, unknown>,
+      pageUrl,
     };
 
     const { error } = await safeQuery(() => db.insert(schema.appFormSubmissions).values(formSubmission));

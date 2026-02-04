@@ -102,7 +102,8 @@ const FormComponent = ({
       if (result.success) {
         form.reset();
       }
-    } catch {
+    } catch (error) {
+      console.error("Form submission error:", error);
       setState("error");
     }
   };
