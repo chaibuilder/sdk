@@ -24,8 +24,7 @@ import { useKeyEventWatcher } from "@/hooks/use-key-event-watcher";
 import { useWatchPartailBlocks } from "@/hooks/use-partial-blocks-store";
 import { builderSaveStateAtom } from "@/hooks/use-save-page";
 import { syncBlocksWithDefaultProps } from "@/runtime";
-import { ChaiBuilderEditorProps } from "@/types";
-import { ChaiBuilderThemeValues } from "@/types/types";
+import { ChaiBuilderEditorProps, ChaiTheme } from "@/types";
 import { useAtom } from "jotai";
 import { each, noop, omit } from "lodash-es";
 import React, { useEffect, useMemo } from "react";
@@ -115,7 +114,7 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   return (
     <>
       {props.children}
-      <CssThemeVariables theme={builderTheme as ChaiBuilderThemeValues} />
+      <CssThemeVariables theme={builderTheme as ChaiTheme} />
       <RootLayoutComponent />
       {exportCodeEnabled && <ExportCodeModal />}
     </>

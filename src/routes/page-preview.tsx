@@ -6,7 +6,7 @@ import { lsBlocksAtom, lsDesignTokensAtom, lsThemeAtom } from "@/routes/demo/ato
 import registerCustomBlocks from "@/routes/demo/blocks";
 import { EXTERNAL_DATA } from "@/routes/demo/EXTERNAL_DATA";
 import { PARTIALS } from "@/routes/demo/PARTIALS";
-import { ChaiBuilderThemeValues } from "@/types/types";
+import { ChaiTheme } from "@/types";
 import { loadWebBlocks } from "@/web-blocks";
 import { useAtom } from "jotai";
 import { useEffect, useMemo, useState } from "react";
@@ -27,7 +27,10 @@ function Preview() {
       setStyles(styles);
     })();
   }, [blocks]);
-  const themeVars = useMemo(() => getChaiThemeCssVariables(theme as ChaiBuilderThemeValues), [theme]);
+  const themeVars = useMemo(
+    () => getChaiThemeCssVariables({ theme: theme as ChaiTheme, fontVariables: true }),
+    [theme],
+  );
   return (
     <>
       <style>{themeVars}</style>
