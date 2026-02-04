@@ -86,7 +86,7 @@ export const getChaiThemeCssVariables = ({
             .join("\n    ")
         : ""
     }
-    ${chaiTheme.borderRadius && `--radius: ${chaiTheme.borderRadius};`}
+    ${chaiTheme.borderRadius ? `--radius: ${chaiTheme.borderRadius};` : ""}
     ${
       chaiTheme.colors
         ? Object.entries(chaiTheme.colors)
