@@ -336,7 +336,7 @@ registerBlockSettingWidget("colorGradient", ({ value, onChange }) => {
 Usage in block schema:
 
 ```typescript
-registerChaiBlockSchema({
+registerChaiBlockProps({
   properties: {
     gradient: {
       type: "string",
