@@ -253,6 +253,7 @@ const ChaiWebsiteBuilder = (props: ChaiWebsiteBuilderProps) => {
         "onLogout",
         "getAccessToken",
         "websocket",
+        "realtimeAdapter",
         "getLoggedInUser",
         "features",
         "currentUser",

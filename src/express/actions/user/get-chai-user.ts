@@ -56,7 +56,7 @@ export class GetChaiUserAction extends ChaiBaseAction<GetChaiUserInput> {
           id: userData.user?.id || "unknown",
           email: userData.user?.email || "unknown@chaibuilder.com",
           name: userData.user?.user_metadata?.name || "Unknown",
-          avatar: userData.user?.user_metadata?.avatar || "",
+          avatar: userData.user?.user_metadata?.avatar_url || "",
         },
         status: 200,
       };
