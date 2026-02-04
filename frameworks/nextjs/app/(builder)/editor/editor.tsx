@@ -3,6 +3,8 @@
 import { getSupabaseClient } from "../../supabase-client";
 
 import "@chaibuilder/sdk/styles";
+import { defaultChaiLibrary } from "@chaibuilder/sdk";
+import { registerChaiLibrary } from "@chaibuilder/sdk/runtime/client";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useState } from "react";
 import { LoginScreen } from "./login";
@@ -17,6 +19,8 @@ type LoggedInUser = {
   avatar?: string;
   metadata?: Record<string, unknown>;
 };
+
+registerChaiLibrary("chai-library", defaultChaiLibrary());
 
 export default function Editor() {
   const supabase = getSupabaseClient();
@@ -105,7 +109,11 @@ export default function Editor() {
 
   return (
     <ChaiBuilderEditor
-      flags={{ dragAndDrop: true, designTokens: true }}
+      flags={{
+        dragAndDrop: true,
+        designTokens: true,
+        ai: true,
+      }}
       currentUser={user}
       autoSave
       autoSaveActionsCount={5}
