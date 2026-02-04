@@ -81,11 +81,11 @@ const PageLockedDialog = () => {
               Current Editor
             </div>
             <div className="flex items-center space-x-4 p-1">
-              {data?.avatar ? (
+                  {data?.avatar ? (
                 <img
                   src={data.avatar}
                   alt={data.name}
-                  className="h-12 w-12 flex-shrink-0 rounded-full bg-black p-3 text-white"
+                  className="h-12 w-12 flex-shrink-0 rounded-full bg-black text-white"
                 />
               ) : (
                 <UserIcon className="h-12 w-12 flex-shrink-0 rounded-full bg-black p-3 text-white" />

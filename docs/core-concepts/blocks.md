@@ -6,12 +6,12 @@ Blocks are the fundamental building units in ChaiBuilder. Every element on a pag
 
 Each block is a JSON object with the following core properties:
 
-| Property  | Type             | Description                                   |
-| --------- | ---------------- | --------------------------------------------- |
-| `_id`     | `string`         | Unique identifier for the block               |
-| `_type`   | `string`         | Block type (e.g., `Box`, `Text`, `Image`)     |
-| `_parent` | `string \| null` | ID of the parent block (null for root blocks) |
-| `styles`  | `string`         | Tailwind CSS classes for styling              |
+| Property  | Type                          | Description                                   |
+| --------- | ----------------------------- | --------------------------------------------- |
+| `_id`     | `string`                      | Unique identifier for the block               |
+| `_type`   | `string`                      | Block type (e.g., `Box`, `Text`, `Image`)     |
+| `_parent` | `string \| null \| undefined` | ID of the parent block (null for root blocks) |
+| `_name`   | `string \| null \| undefined` | Optional display name of the block            |
 
 Additional properties vary by block type.
 
@@ -22,8 +22,8 @@ Additional properties vary by block type.
   "_id": "abc123",
   "_type": "Box",
   "_parent": null,
-  "styles": "p-4 bg-white rounded-lg shadow",
-  "children": []
+  "_name": "Box",
+  "styles": "#styles:,p-4 bg-white rounded-lg shadow"
 }
 ```
 
@@ -51,13 +51,14 @@ Blocks can be nested to create complex layouts. Child blocks reference their par
     "_id": "container-1",
     "_type": "Box",
     "_parent": null,
-    "styles": "flex gap-4"
+    "styles": "#styles:,flex gap-4"
   },
   {
     "_id": "text-1",
     "_type": "Text",
     "_parent": "container-1",
-    "content": "Hello World"
+    "content": "Hello World",
+    "styles": "#styles:,text-red-500"
   }
 ]
 ```
@@ -69,7 +70,7 @@ Blocks can be nested to create complex layouts. Child blocks reference their par
 Use hooks to manipulate blocks programmatically:
 
 ```typescript
-import { useAddBlock, useRemoveBlocks, useUpdateBlocksProps } from "@/core/main";
+import { useAddBlock, useRemoveBlocks, useUpdateBlocksProps } from "@chaibuilder/sdk";
 ```
 
 See [Hooks Reference](../hooks-reference.md) for the complete API.

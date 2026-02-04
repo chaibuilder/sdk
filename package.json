@@ -31,7 +31,6 @@
     "e2e": "playwright test",
     "e2e:report": "playwright show-report",
     "e2e:ui": "playwright test --ui",
-    "docs:api": "typedoc",
     "docs:serve": "docsify serve docs",
     "prepare": "husky"
   },
