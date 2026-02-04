@@ -11,7 +11,7 @@ The `registerChaiBlock` function enables you to register custom React components
 ```typescript
 import { registerChaiBlock } from "@chaibuilder/sdk/runtime";
 
-registerChaiBlock<PropsType>(Component, Config);
+registerChaiBlock(Component, Config);
 ```
 
 ## Complete Example
@@ -19,10 +19,10 @@ registerChaiBlock<PropsType>(Component, Config);
 ```tsx
 import {
   registerChaiBlock,
-  registerChaiBlockSchema,
+  registerChaiBlockProps,
   ChaiBlockComponentProps,
   ChaiStyles,
-  StylesProp,
+  stylesProp,
 } from "@chaibuilder/sdk/runtime";
 
 // 1. Define component props
@@ -52,7 +52,7 @@ const Config = {
   description: "A clickable button element",
   props: registerChaiBlockProps({
     properties: {
-      styles: StylesProp(""),
+      styles: stylesProp(""),
       text: {
         type: "string",
         title: "Button Text",
@@ -73,7 +73,7 @@ const Config = {
 };
 
 // 4. Register the block
-registerChaiBlock<ButtonProps>(Button, Config);
+registerChaiBlock(Button, Config);
 ```
 
 ## Config Object Reference
@@ -98,6 +98,8 @@ type ChaiBlockComponentProps<T> = {
   blockProps: Record<string, string>; // Required props for the block element
   children?: React.ReactNode; // Nested blocks
   inBuilder: boolean; // True when in editor, false in preview
+  draft: boolean; // True when in draft mode
+  lang: string; // Current language
 } & T; // Your custom props
 ```
 
@@ -111,12 +113,12 @@ const MyBlock = ({ blockProps, children }) => {
 
 ## Schema Properties
 
-Use `registerChaiBlockSchema` to define editable properties:
+Use `registerChaiBlockProps` to define editable properties. The schema follows [React JSON Schema Form (RJSF) v5](https://rjsf-team.github.io/react-jsonschema-form/docs/version-5.24.10/) format:
 
 ### Basic Types
 
 ```typescript
-registerChaiBlockSchema({
+registerChaiBlockProps({
   properties: {
     // String
     title: {
@@ -161,7 +163,7 @@ Always include styles for visual customization:
 ```typescript
 import { StylesProp } from "@chaibuilder/sdk/runtime";
 
-registerChaiBlockSchema({
+registerChaiBlockProps({
   properties: {
     styles: StylesProp(""), // Empty string or default Tailwind classes
   },
@@ -173,7 +175,7 @@ registerChaiBlockSchema({
 Special input types for the editor:
 
 ```typescript
-registerChaiBlockSchema({
+registerChaiBlockProps({
   properties: {
     // Image picker
     image: {
@@ -207,7 +209,7 @@ registerChaiBlockSchema({
 Props processed during page rendering (not in editor):
 
 ```typescript
-registerChaiBlockSchema({
+registerChaiBlockProps({
   properties: {
     dataSource: {
       type: "string",
@@ -300,7 +302,7 @@ const Config = {
 Allow users to choose the HTML tag:
 
 ```typescript
-registerChaiBlockSchema({
+registerChaiBlockProps({
   properties: {
     tag: {
       type: "string",

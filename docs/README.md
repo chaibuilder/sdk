@@ -2,10 +2,9 @@
 
 Welcome to the ChaiBuilder SDK documentation. ChaiBuilder is a powerful visual page builder SDK for React applications.
 
-[![npm version](https://img.shields.io/npm/v/@chaibuilder/sdk.svg)](https://www.npmjs.com/package/@chaibuilder/sdk)
-[![GitHub release](https://img.shields.io/github/v/release/chaibuilder/sdk)](https://github.com/chaibuilder/sdk/releases)
+`@chaibuilder/sdk` [![npm version](https://img.shields.io/npm/v/@chaibuilder/sdk.svg)](https://www.npmjs.com/package/@chaibuilder/sdk)
 
-> **Latest Version: v3.1.31** — [View Release Notes](https://github.com/chaibuilder/sdk/releases)
+`@chaibuilder/next` [![npm version](https://img.shields.io/npm/v/@chaibuilder/next.svg)](https://www.npmjs.com/package/@chaibuilder/next)
 
 ## Quick Links
 
@@ -33,7 +32,7 @@ pnpm add @chaibuilder/sdk
 ## Basic Usage
 
 ```tsx
-import { ChaiBuilderEditor } from "@/core/main";
+import { ChaiBuilderEditor } from "@chaibuilder/sdk";
 
 function App() {
   return (

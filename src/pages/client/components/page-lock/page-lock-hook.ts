@@ -1,6 +1,5 @@
 import { useSavePage } from "@/hooks/use-save-page";
-import { useWebsocket } from "@/pages/hooks/project/use-builder-prop";
-import { RealtimeChannel } from "@supabase/supabase-js";
+import { useRealtimeAdapter } from "@/pages/hooks/project/use-builder-prop";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import {
@@ -18,6 +17,7 @@ import {
   usePageId,
   useUserId,
 } from "./page-lock-utils";
+import type { RealtimeChannelAdapter } from "./realtime-adapter";
 
 const clientId: string = crypto.randomUUID();
 let websocketTimeout: any = null;
@@ -65,22 +65,22 @@ export const useCurrentPageOwner = () => {
 
 /**
  * @returns
- * null | RealtimeChannel
+ * null | RealtimeChannelAdapter
  */
-const useRealtimeChannel = (): null | RealtimeChannel => {
-  const websocket = useWebsocket();
+const useRealtimeChannel = (): null | RealtimeChannelAdapter => {
+  const realtimeAdapter = useRealtimeAdapter();
   const { setPageStatus } = usePageLockStatus();
   const [channel] = useAtom(realtimeChannel);
 
-  // * Checking if `websocket` instance is not provided
+  // * Checking if `realtimeAdapter` instance is not provided
   useEffect(() => {
     clearTimeout(websocketTimeout);
-    if (websocket) return;
+    if (realtimeAdapter) return;
     websocketTimeout = setTimeout(() => {
-      if (!websocket) setPageStatus(PAGE_STATUS.EDITING);
+      if (!realtimeAdapter) setPageStatus(PAGE_STATUS.EDITING);
     }, 500);
     return () => clearTimeout(websocketTimeout);
-  }, [websocket, setPageStatus]);
+  }, [realtimeAdapter, setPageStatus]);
 
   return channel;
 };
@@ -97,10 +97,13 @@ export const useUpdateOnlineUsers = () => {
   const { setPageToUser } = usePageToUser();
   const { setPageStatus, pageStatus } = usePageLockStatus();
   const pageRef = useRef<any>(pageId);
-  pageRef.current = pageId;
+
+  useEffect(() => {
+    pageRef.current = pageId;
+  }, [pageId]);
 
   return useCallback(
-    (channelOverride?: RealtimeChannel) => {
+    (channelOverride?: RealtimeChannelAdapter) => {
       const targetChannel = channelOverride || channel;
       if (!targetChannel) return [];
       const stateOfPresence = targetChannel?.presenceState();
@@ -139,7 +142,11 @@ export const useSendRealtimeEvent = () => {
   const pageOwner = useCurrentPageOwner();
   const { setPageLockMeta } = usePageLockMeta();
   const pageRef = useRef<any>(pageId);
-  pageRef.current = pageId;
+
+  useEffect(() => {
+    pageRef.current = pageId;
+  }, [pageId]);
+
   return useCallback(
     async (event: string, _payload?: any) => {
       if (!channel) return;
@@ -148,7 +155,7 @@ export const useSendRealtimeEvent = () => {
       payload.pageId = pageRef.current;
       payload.senderClientId = clientId;
       payload.receiverClientId = _payload?.requestingClientId || pageOwner?.clientId;
-      await channel.send({ event, payload, type: "broadcast" });
+      await channel.send(event, payload);
       setPageLockMeta({});
     },
     [channel, userId, pageOwner, setPageLockMeta],
@@ -170,7 +177,9 @@ export const useReceiveRealtimeEvent = () => {
   const pageRef = useRef<any>(pageId);
   const { savePageAsync } = useSavePage();
 
-  pageRef.current = pageId;
+  useEffect(() => {
+    pageRef.current = pageId;
+  }, [pageId]);
 
   return useCallback(
     (event: string) =>
@@ -221,13 +230,13 @@ export const useReceiveRealtimeEvent = () => {
  * Subscribe to realtime events
  */
 export const useChaibuilderRealtime = () => {
-  const websocket = useWebsocket();
+  const realtimeAdapter = useRealtimeAdapter();
   const userId = useUserId();
   const pageId = usePageId();
   const channelId = useChannelId();
   const [channel, setChannel] = useAtom(realtimeChannel) as [
-    RealtimeChannel | null,
-    (value: RealtimeChannel | null) => void,
+    RealtimeChannelAdapter | null,
+    (value: RealtimeChannelAdapter | null) => void,
   ];
 
   const onReceiveEvent = useReceiveRealtimeEvent();
@@ -240,6 +249,7 @@ export const useChaibuilderRealtime = () => {
   const isReconnectingRef = useRef(false);
   const reconnectAttemptsRef = useRef(0);
   const channelRef = useRef(channel);
+  const reconnectChannelRef = useRef<() => void>(() => {});
 
   useEffect(() => {
     onReceiveEventRef.current = onReceiveEvent;
@@ -248,17 +258,17 @@ export const useChaibuilderRealtime = () => {
   }, [onReceiveEvent, updateOnlineUsers, channel]);
 
   // Common function to setup channel with event listeners
-  const setupChannelListeners = useCallback((newChannel: RealtimeChannel) => {
+  const setupChannelListeners = useCallback((newChannel: RealtimeChannelAdapter) => {
     // Attach broadcast listeners
     BROADCAST_EVENTS.forEach((event: string) => {
-      newChannel.on("broadcast", { event }, (payload: any) => {
+      newChannel.onBroadcast(event, (payload: any) => {
         onReceiveEventRef.current(event)(payload);
       });
     });
 
     // Attach presence listeners
     PRESENCE_EVENTS.forEach((event: string) => {
-      newChannel.on("presence" as any, { event }, () => {
+      newChannel.onPresence(event, () => {
         updateOnlineUsersRef.current(newChannel);
       });
     });
@@ -266,18 +276,22 @@ export const useChaibuilderRealtime = () => {
 
   // Function to cleanup and reconnect the channel
   const reconnectChannel = useCallback(() => {
-    if (isReconnectingRef.current || !websocket || !userId || !channelId) return;
+    if (isReconnectingRef.current || !realtimeAdapter || !userId || !channelId) return;
 
     // Check if we've exceeded max attempts
     if (reconnectAttemptsRef.current >= MAX_RECONNECT_ATTEMPTS) {
-      console.error(`Maximum reconnection attempts (${MAX_RECONNECT_ATTEMPTS}) reached. Stopping reconnection attempts.`);
+      console.error(
+        `Maximum reconnection attempts (${MAX_RECONNECT_ATTEMPTS}) reached. Stopping reconnection attempts.`,
+      );
       return;
     }
 
     isReconnectingRef.current = true;
     reconnectAttemptsRef.current += 1;
 
-    console.log(`Attempting to reconnect realtime channel (attempt ${reconnectAttemptsRef.current}/${MAX_RECONNECT_ATTEMPTS})`);
+    console.log(
+      `Attempting to reconnect realtime channel (attempt ${reconnectAttemptsRef.current}/${MAX_RECONNECT_ATTEMPTS})`,
+    );
 
     // Clear existing timeout
     if (reconnectTimeoutRef.current) {
@@ -287,7 +301,7 @@ export const useChaibuilderRealtime = () => {
 
     // Remove old channel if it exists
     if (channelRef.current) {
-      websocket.removeChannel(channelRef.current);
+      channelRef.current.unsubscribe();
       setChannel(null);
       channelRef.current = null;
     }
@@ -295,11 +309,11 @@ export const useChaibuilderRealtime = () => {
     // Exponential backoff delay calculation
     const delay = Math.min(
       INITIAL_RECONNECT_DELAY_MS * Math.pow(BACKOFF_MULTIPLIER, reconnectAttemptsRef.current - 1),
-      MAX_RECONNECT_DELAY_MS
+      MAX_RECONNECT_DELAY_MS,
     );
 
     reconnectTimeoutRef.current = setTimeout(() => {
-      const newChannel = websocket.channel(channelId, {
+      const newChannel = realtimeAdapter.channel(channelId, {
         config: { presence: { key: clientId } },
       });
 
@@ -314,13 +328,15 @@ export const useChaibuilderRealtime = () => {
           reconnectAttemptsRef.current = 0; // Reset attempts on successful connection
           isReconnectingRef.current = false;
         } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
-          console.log(`Realtime connection failed: ${status}. Attempt ${reconnectAttemptsRef.current}/${MAX_RECONNECT_ATTEMPTS}`);
+          console.log(
+            `Realtime connection failed: ${status}. Attempt ${reconnectAttemptsRef.current}/${MAX_RECONNECT_ATTEMPTS}`,
+          );
           // Only trigger another reconnection attempt if we haven't exceeded max attempts
           if (reconnectAttemptsRef.current < MAX_RECONNECT_ATTEMPTS) {
             // Keep isReconnectingRef true and schedule next attempt with delay
             setTimeout(() => {
               isReconnectingRef.current = false;
-              reconnectChannel();
+              reconnectChannelRef.current();
             }, 500); // Small delay before triggering next attempt
           } else {
             console.error("Maximum reconnection attempts reached");
@@ -332,18 +348,23 @@ export const useChaibuilderRealtime = () => {
         }
       });
     }, delay);
-  }, [websocket, userId, channelId, setChannel, setupChannelListeners]);
+  }, [realtimeAdapter, userId, channelId, setChannel, setupChannelListeners]);
+
+  // Keep the ref updated with the latest reconnectChannel function
+  useEffect(() => {
+    reconnectChannelRef.current = reconnectChannel;
+  }, [reconnectChannel]);
 
   // Connection Effect
   useEffect(() => {
-    if (!websocket || !userId || !channelId) return;
+    if (!realtimeAdapter || !userId || !channelId) return;
     if (channel && channel.topic === channelId) return;
 
     // Reset reconnection attempts when starting a new connection
     reconnectAttemptsRef.current = 0;
     isReconnectingRef.current = false;
 
-    const newChannel = websocket.channel(channelId, {
+    const newChannel = realtimeAdapter.channel(channelId, {
       config: { presence: { key: clientId } },
     });
 
@@ -380,35 +401,40 @@ export const useChaibuilderRealtime = () => {
         channelRef.current = null;
       }
       setChannel(null);
-      websocket.removeChannel(newChannel);
+      newChannel.unsubscribe();
     };
-  }, [websocket, userId, channelId, setChannel, reconnectChannel, setupChannelListeners]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [realtimeAdapter, userId, channelId, setChannel, reconnectChannel, setupChannelListeners]);
 
   // Handle browser tab visibility changes
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
         console.log("Tab became visible, checking realtime connection...");
-        
+
         // Check if required dependencies are available
-        if (!websocket || !userId || !channelId) {
+        if (!realtimeAdapter || !userId || !channelId) {
           console.log("Required dependencies not available, skipping reconnection");
           return;
         }
-        
+
         // Don't attempt reconnection if already reconnecting
         if (isReconnectingRef.current) {
           console.log("Reconnection already in progress, skipping visibility change reconnect");
           return;
         }
-        
-        // Check if channel exists and is subscribed
+
+        // Check if channel exists and get its state
         if (channelRef.current) {
-          const channelState = (channelRef.current as any).state;
-          
-          // If channel is not in a good state, reconnect
-          if (channelState !== "joined") {
-            console.log(`Channel state is ${channelState}, reconnecting...`);
+          // For adapters, we check if the channel is properly subscribed by checking its topic
+          // If topic exists, the channel should be active
+          const channelState = channelRef.current.getState();
+          const isNotJoined = channelState !== "JOINED";
+
+          // If channel is not active or doesn't match current channelId, reconnect
+          if (isNotJoined) {
+            console.log("Channel is not active, reconnecting...");
             reconnectChannel();
           }
         } else {
@@ -424,7 +450,7 @@ export const useChaibuilderRealtime = () => {
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [websocket, userId, channelId, reconnectChannel]);
+  }, [realtimeAdapter, userId, channelId, reconnectChannel]);
 
   // Tracking Effect
   useEffect(() => {

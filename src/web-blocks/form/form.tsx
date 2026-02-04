@@ -6,12 +6,12 @@ import { FileTextIcon } from "@radix-ui/react-icons";
 export type FormProps = {
   errorMessage: string;
   successMessage: string;
-  action: string;
   styles: ChaiStyles;
+  formName: string;
 };
 
 const FormBlock = (props: ChaiBlockComponentProps<FormProps>) => {
-  const { children, blockProps, errorMessage, successMessage, action, styles, inBuilder } = props;
+  const { children, blockProps, errorMessage, successMessage, styles, inBuilder } = props;
   let nestedChildren = children;
 
   if (!children) {
@@ -34,7 +34,6 @@ const FormBlock = (props: ChaiBlockComponentProps<FormProps>) => {
       data-error={errorMessage}
       data-success={successMessage}
       method={"post"}
-      action={action}
       {...blockProps}
       {...styles}>
       <div {...formResponseAttr}></div>
@@ -62,10 +61,10 @@ const Config = {
   props: registerChaiBlockProps({
     properties: {
       styles: stylesProp(""),
-      action: {
+      formName: {
         type: "string",
-        title: "Submit URL",
-        default: "/api/form",
+        title: "Form Name",
+        default: "contact",
       },
       errorMessage: {
         type: "string",

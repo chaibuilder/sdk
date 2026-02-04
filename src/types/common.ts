@@ -1,3 +1,4 @@
+import { RealtimeAdapter } from "@/pages";
 import { LoggedInUser } from "@/pages/types/loggedin-user";
 import type { RJSFSchema, UiSchema } from "@rjsf/utils";
 import { ChaiBuilderEditorProps } from "./chaibuilder-editor-props";
@@ -55,6 +56,7 @@ export type ChaiWebsiteBuilderProps = {
   currentUser: LoggedInUser | null;
   websocket?: any;
   features?: { sharedJsonLD?: boolean; canResetSeoToDefault?: boolean } & Record<string, boolean>;
+  realtimeAdapter?: RealtimeAdapter;
 } & Pick<
   ChaiBuilderEditorProps,
   | "onError"

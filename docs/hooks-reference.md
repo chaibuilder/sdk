@@ -9,7 +9,7 @@ ChaiBuilder exports numerous hooks for building custom UI and extensions.
 Access the blocks state store.
 
 ```typescript
-import { useBlocksStore } from "@/core/main";
+import { useBlocksStore } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const [blocks, setBlocks] = useBlocksStore();
@@ -22,7 +22,7 @@ const MyComponent = () => {
 Add new blocks to the canvas.
 
 ```typescript
-import { useAddBlock } from "@/core/main";
+import { useAddBlock } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const addBlock = useAddBlock();
@@ -42,7 +42,7 @@ const MyComponent = () => {
 Remove blocks from the canvas.
 
 ```typescript
-import { useRemoveBlocks } from "@/core/main";
+import { useRemoveBlocks } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const removeBlocks = useRemoveBlocks();
@@ -58,7 +58,7 @@ const MyComponent = () => {
 Duplicate selected blocks.
 
 ```typescript
-import { useDuplicateBlocks } from "@/core/main";
+import { useDuplicateBlocks } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const duplicateBlocks = useDuplicateBlocks();
@@ -74,7 +74,7 @@ const MyComponent = () => {
 Update properties of blocks.
 
 ```typescript
-import { useUpdateBlocksProps } from "@/core/main";
+import { useUpdateBlocksProps } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const updateBlocksProps = useUpdateBlocksProps();
@@ -93,7 +93,7 @@ const MyComponent = () => {
 Replace a block with another.
 
 ```typescript
-import { useReplaceBlock } from "@/core/main";
+import { useReplaceBlock } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const replaceBlock = useReplaceBlock();
@@ -116,7 +116,7 @@ const MyComponent = () => {
 Get the currently selected block.
 
 ```typescript
-import { useSelectedBlock } from "@/core/main";
+import { useSelectedBlock } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const selectedBlock = useSelectedBlock();
@@ -129,7 +129,7 @@ const MyComponent = () => {
 Get/set selected block IDs.
 
 ```typescript
-import { useSelectedBlockIds } from "@/core/main";
+import { useSelectedBlockIds } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const [selectedIds, setSelectedIds] = useSelectedBlockIds();
@@ -146,7 +146,7 @@ const MyComponent = () => {
 Highlight a block (hover effect).
 
 ```typescript
-import { useHighlightBlockId } from "@/core/main";
+import { useHighlightBlockId } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const [highlightId, setHighlightId] = useHighlightBlockId();
@@ -162,7 +162,7 @@ const MyComponent = () => {
 Control block highlighting.
 
 ```typescript
-import { useBlockHighlight } from "@/core/main";
+import { useBlockHighlight } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const { highlight, clearHighlight } = useBlockHighlight();
@@ -181,7 +181,7 @@ const MyComponent = () => {
 Add CSS classes to blocks.
 
 ```typescript
-import { useAddClassesToBlocks } from "@/core/main";
+import { useAddClassesToBlocks } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const addClasses = useAddClassesToBlocks();
@@ -197,7 +197,7 @@ const MyComponent = () => {
 Remove CSS classes from blocks.
 
 ```typescript
-import { useRemoveClassesFromBlocks } from "@/core/main";
+import { useRemoveClassesFromBlocks } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const removeClasses = useRemoveClassesFromBlocks();
@@ -213,7 +213,7 @@ const MyComponent = () => {
 Get classes for the selected block at current breakpoint.
 
 ```typescript
-import { useSelectedBlockCurrentClasses } from "@/core/main";
+import { useSelectedBlockCurrentClasses } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const classes = useSelectedBlockCurrentClasses();
@@ -226,7 +226,7 @@ const MyComponent = () => {
 Get all classes for the selected block across all breakpoints.
 
 ```typescript
-import { useSelectedBlockAllClasses } from "@/core/main";
+import { useSelectedBlockAllClasses } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const allClasses = useSelectedBlockAllClasses();
@@ -239,7 +239,7 @@ const MyComponent = () => {
 Get/set the current styling breakpoint.
 
 ```typescript
-import { useStylingBreakpoint } from "@/core/main";
+import { useStylingBreakpoint } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const [breakpoint, setBreakpoint] = useStylingBreakpoint();
@@ -252,7 +252,7 @@ const MyComponent = () => {
 Get/set the current styling state (hover, focus, etc.).
 
 ```typescript
-import { useStylingState } from "@/core/main";
+import { useStylingState } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const [state, setState] = useStylingState();
@@ -269,7 +269,7 @@ const MyComponent = () => {
 Get/set theme values.
 
 ```typescript
-import { useTheme } from "@/core/main";
+import { useTheme } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const [theme, setTheme] = useTheme();
@@ -291,7 +291,7 @@ const MyComponent = () => {
 Get available theme options.
 
 ```typescript
-import { useThemeOptions } from "@/core/main";
+import { useThemeOptions } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const options = useThemeOptions();
@@ -304,7 +304,7 @@ const MyComponent = () => {
 Toggle dark mode.
 
 ```typescript
-import { useDarkMode } from "@/core/main";
+import { useDarkMode } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const [isDark, setIsDark] = useDarkMode();
@@ -324,7 +324,7 @@ const MyComponent = () => {
 Toggle preview mode.
 
 ```typescript
-import { usePreviewMode } from "@/core/main";
+import { usePreviewMode } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const [isPreview, setIsPreview] = usePreviewMode();
@@ -340,7 +340,7 @@ const MyComponent = () => {
 Control canvas zoom level.
 
 ```typescript
-import { useCanvasZoom } from "@/core/main";
+import { useCanvasZoom } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const [zoom, setZoom] = useCanvasZoom();
@@ -353,7 +353,7 @@ const MyComponent = () => {
 Get/set canvas width.
 
 ```typescript
-import { useCanvasWidth } from "@/core/main";
+import { useCanvasWidth } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const [width, setWidth] = useCanvasWidth();
@@ -365,7 +365,7 @@ const MyComponent = () => {
 Get selected breakpoints.
 
 ```typescript
-import { useSelectedBreakpoints } from "@/core/main";
+import { useSelectedBreakpoints } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const breakpoints = useSelectedBreakpoints();
@@ -381,7 +381,7 @@ const MyComponent = () => {
 Copy blocks to clipboard.
 
 ```typescript
-import { useCopyBlockIds } from "@/core/main";
+import { useCopyBlockIds } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const copyBlocks = useCopyBlockIds();
@@ -397,7 +397,7 @@ const MyComponent = () => {
 Cut blocks to clipboard.
 
 ```typescript
-import { useCutBlockIds } from "@/core/main";
+import { useCutBlockIds } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const cutBlocks = useCutBlockIds();
@@ -413,7 +413,7 @@ const MyComponent = () => {
 Paste blocks from clipboard.
 
 ```typescript
-import { usePasteBlocks } from "@/core/main";
+import { usePasteBlocks } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const pasteBlocks = usePasteBlocks();
@@ -433,7 +433,7 @@ const MyComponent = () => {
 Trigger page save.
 
 ```typescript
-import { useSavePage } from "@/core/main";
+import { useSavePage } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const savePage = useSavePage();
@@ -449,7 +449,7 @@ const MyComponent = () => {
 Access undo/redo functionality.
 
 ```typescript
-import { useUndoManager } from "@/core/main";
+import { useUndoManager } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const { undo, redo, canUndo, canRedo } = useUndoManager();
@@ -461,7 +461,7 @@ const MyComponent = () => {
 Check user permissions.
 
 ```typescript
-import { usePermissions } from "@/core/main";
+import { usePermissions } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const { hasPermission } = usePermissions();
@@ -477,7 +477,7 @@ const MyComponent = () => {
 Access builder props.
 
 ```typescript
-import { useBuilderProp } from "@/core/main";
+import { useBuilderProp } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const user = useBuilderProp("user");
@@ -490,7 +490,7 @@ const MyComponent = () => {
 Access i18n translations.
 
 ```typescript
-import { useTranslation } from "@/core/main";
+import { useTranslation } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const { t } = useTranslation();
@@ -517,7 +517,7 @@ const MyComponent = () => {
 Get current page info.
 
 ```typescript
-import { useCurrentPage } from "@/core/main";
+import { useCurrentPage } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const page = useCurrentPage();
@@ -529,7 +529,7 @@ const MyComponent = () => {
 Convert HTML to blocks.
 
 ```typescript
-import { useHtmlToBlocks } from "@/core/main";
+import { useHtmlToBlocks } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const htmlToBlocks = useHtmlToBlocks();
@@ -545,7 +545,7 @@ const MyComponent = () => {
 Publish/subscribe to events.
 
 ```typescript
-import { usePubSub } from "@/core/main";
+import { usePubSub } from "@chaibuilder/sdk";
 
 const MyComponent = () => {
   const { publish, subscribe } = usePubSub();
