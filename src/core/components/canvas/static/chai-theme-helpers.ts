@@ -75,7 +75,7 @@ export const getChaiThemeCssVariables = ({
   fontVariables = false,
 }: {
   theme: ChaiTheme;
-  fontVariables: boolean;
+  fontVariables?: boolean;
 }) => {
   const chaiTheme = theme;
   return `:root {
