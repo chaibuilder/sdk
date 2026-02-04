@@ -46,7 +46,7 @@ export default async function Page() {
 When you register custom blocks, you define their render component. This component is used both in the editor preview and when rendering with `RenderBlocks`.
 
 ```typescript
-import { registerChaiBlock } from "@/core/main";
+import { registerChaiBlock } from "@chaibuilder/sdk/runtime";
 
 registerChaiBlock({
   type: "MyCustomBlock",
