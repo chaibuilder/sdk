@@ -1,4 +1,4 @@
-import { getRegisteredFont } from "@/runtime";
+import { getRegisteredFont } from "@chaibuilder/sdk/runtime";
 import { ChaiFont, ChaiFontViaSrc } from "@chaibuilder/sdk/types";
 import { compact, filter, has, map, uniqBy } from "lodash";
 import { fontsMap } from "./fonts-map";

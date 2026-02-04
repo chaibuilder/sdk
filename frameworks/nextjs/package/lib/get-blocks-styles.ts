@@ -1,12 +1,12 @@
-import postcss from "postcss";
-import tailwindcss from "tailwindcss";
-import autoprefixer from "autoprefixer";
+import type { ChaiBlock } from "@chaibuilder/sdk/types";
 import { getChaiBuilderTheme } from "@chaibuilder/sdk/utils";
 import twAspectRatio from "@tailwindcss/aspect-ratio";
 import twContainer from "@tailwindcss/container-queries";
 import twForms from "@tailwindcss/forms";
 import twTypography from "@tailwindcss/typography";
-import type { ChaiBlock } from "@chaibuilder/sdk/types";
+import autoprefixer from "autoprefixer";
+import postcss from "postcss";
+import tailwindcss from "tailwindcss";
 
 export const getBlocksStyles = async (blocks: ChaiBlock[]) => {
   const blocksStr = JSON.stringify(blocks, null, 2).replace(/#styles:([^"]*)/g, (_match, content) => {
@@ -17,7 +17,7 @@ export const getBlocksStyles = async (blocks: ChaiBlock[]) => {
   });
 
   const result = await postcss([
-    tailwindcss({
+    (tailwindcss as any)({
       darkMode: "class",
       safelist: [],
       theme: {
