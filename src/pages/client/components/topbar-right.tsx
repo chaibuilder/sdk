@@ -175,7 +175,7 @@ const PublishButton = () => {
   const [showTranslationWarning, setShowTranslationWarning] = useState(false);
   const [showUnpublishedPartialsWarning, setShowUnpublishedPartialsWarning] = useState(false);
   const [unpublishedPartialBlockIds, setUnpublishedPartialBlockIds] = useState<string[]>([]);
-  const [unpublishedPartialBlockNames, setUnpublishedPartialBlockNames] = useState<string[]>([]);
+  const [unpublishedPartialBlocksInfo, setUnpublishedPartialBlocksInfo] = useState<any[]>([]);
 
   const { data: currentPage } = useChaiCurrentPage();
   const { mutate: publishPage, isPending } = usePublishPages();
@@ -220,10 +220,10 @@ const PublishButton = () => {
   };
 
   const checkAndPublish = useCallback((pages: string[]) => {
-    const { ids: unpublishedIds, names: unpublishedNames } = getUnpublishedPartialBlocks();
+    const { ids: unpublishedIds, partialBlocksInfo } = getUnpublishedPartialBlocks();
     if (unpublishedIds.length > 0) {
       setUnpublishedPartialBlockIds(unpublishedIds);
-      setUnpublishedPartialBlockNames(unpublishedNames);
+      setUnpublishedPartialBlocksInfo(partialBlocksInfo);
       setShowUnpublishedPartialsWarning(true);
     } else {
       publishPage(
@@ -237,13 +237,13 @@ const PublishButton = () => {
     setShowUnpublishedPartialsWarning(false);
     performPublishCurrentPage(unpublishedPartialBlockIds);
     setUnpublishedPartialBlockIds([]);
-    setUnpublishedPartialBlockNames([]);
+    setUnpublishedPartialBlocksInfo([]);
   };
 
   const handleCancelPartials = () => {
     setShowUnpublishedPartialsWarning(false);
     setUnpublishedPartialBlockIds([]);
-    setUnpublishedPartialBlockNames([]);
+    setUnpublishedPartialBlocksInfo([]);
   };
 
   const handleContinueAnyway = () => {
@@ -366,7 +366,7 @@ const PublishButton = () => {
             onClose={handleCancelPartials}
             onContinue={handleContinueWithPartials}
             isPending={isPending}
-            partialBlockNames={unpublishedPartialBlockNames}
+            partialBlocksInfo={unpublishedPartialBlocksInfo}
           />
         </Suspense>
       )}

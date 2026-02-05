@@ -3,6 +3,14 @@ import { useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
 import { compact, filter, find, get, isEmpty } from "lodash-es";
 import { useCallback } from "react";
 
+export type PartialBlockStatus = "unpublished" | "unpublished_changes";
+
+export interface PartialBlockInfo {
+  id: string;
+  name: string;
+  status: PartialBlockStatus;
+}
+
 export const useGetUnpublishedPartialBlocks = () => {
   const [blocksStore] = useBlocksStore();
   const { data: websitePages } = useWebsitePages();
@@ -11,23 +19,34 @@ export const useGetUnpublishedPartialBlocks = () => {
     // Get all blocks with _type === 'PartialBlock'
     const partialBlocks = filter(blocksStore, (block) => block._type === "PartialBlock");
     // Extract unique partialBlockId values
-    const partialBlockIds = compact(
-      partialBlocks.map((block) => get(block, "partialBlockId", ""))
-    );
+    const partialBlockIds = compact(partialBlocks.map((block) => get(block, "partialBlockId", "")));
     // Check which ones are unpublished or have unpublished changes
-    const unpublishedPages = compact(
+    const partialBlocksInfo: PartialBlockInfo[] = compact(
       partialBlockIds.map((id) => {
-        const page = find(websitePages, { id });
-        // Partial block needs publishing if: not online OR has unpublished changes
-        if (page && (!page.online || !isEmpty(page.changes))) {
-          return page;
+        const page = find(websitePages, { id }) as any;
+        if (!page) return null;
+
+        // Determine status
+        if (!page.online) {
+          return {
+            id: page.id,
+            name: page.name || page.slug || page.id,
+            status: "unpublished" as PartialBlockStatus,
+          };
+        } else if (!isEmpty(page.changes)) {
+          return {
+            id: page.id,
+            name: page.name || page.slug || page.id,
+            status: "unpublished_changes" as PartialBlockStatus,
+          };
         }
         return null;
-      })
+      }),
     );
-    const ids = unpublishedPages.map((page: any) => page.id);
-    const names = unpublishedPages.map((page: any) => page.name || page.slug || page.id);
-    return { ids, names };
+
+    const ids = partialBlocksInfo.map((info) => info.id);
+    const names = partialBlocksInfo.map((info) => info.name);
+    return { ids, names, partialBlocksInfo };
   }, [blocksStore, websitePages]);
 
   return getUnpublishedPartialBlocks;

@@ -7,13 +7,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { PartialBlockInfo } from "@/pages/hooks/pages/use-get-unpublished-partial-blocks";
 
 interface UnpublishedPartialsModalProps {
   isOpen: boolean;
   onClose: () => void;
   onContinue: () => void;
   isPending?: boolean;
-  partialBlockNames?: string[];
+  partialBlocksInfo?: PartialBlockInfo[];
 }
 
 const UnpublishedPartialsModal = ({
@@ -21,7 +22,7 @@ const UnpublishedPartialsModal = ({
   onClose,
   onContinue,
   isPending = false,
-  partialBlockNames = [],
+  partialBlocksInfo = [],
 }: UnpublishedPartialsModalProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -30,16 +31,22 @@ const UnpublishedPartialsModal = ({
           <DialogHeader>
             <DialogTitle>Unpublished Partial Blocks</DialogTitle>
             <DialogDescription>
-              The page contains unpublished partial blocks. Do you want to continue publishing anyway
-              or cancel to publish the blocks first?
+              The page contains unpublished partial blocks. You can continue to publish them along with the current page or cancel.
             </DialogDescription>
           </DialogHeader>
-          {partialBlockNames?.length > 0 && (
+          {partialBlocksInfo?.length > 0 && (
             <div className="max-h-32 overflow-y-auto rounded-md border bg-muted/50 p-2">
               <ul className="space-y-1 text-sm">
-                {partialBlockNames.map((name, index) => (
-                  <li key={index} className="text-muted-foreground">
-                    • {name}
+                {partialBlocksInfo.map((info, index) => (
+                  <li key={index} className="flex items-center justify-between text-muted-foreground">
+                    <span>• {info.name}</span>
+                    <span className={`ml-2 text-[10px] px-1.5 pb-0.5 rounded ${
+                      info.status === "unpublished" 
+                        ? "text-orange-700" 
+                        : "text-blue-700"
+                    }`}>
+                      {info.status === "unpublished" ? "Unpublished page" : "Unpublished changes"}
+                    </span>
                   </li>
                 ))}
               </ul>
