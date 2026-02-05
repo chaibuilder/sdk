@@ -1,5 +1,5 @@
 import { getThemeCustomFontFace } from "@/core/components/canvas/static/chai-theme-helpers";
-import { ChaiLocalFont } from "@/types";
+import { ChaiFontBySrc } from "@/types";
 
 describe("getThemeCustomFontFace", () => {
   it("should return empty string for empty array input", () => {
@@ -7,7 +7,7 @@ describe("getThemeCustomFontFace", () => {
   });
 
   it("should generate @font-face for a single font with basic properties", () => {
-    const fonts: ChaiLocalFont[] = [
+    const fonts: ChaiFontBySrc[] = [
       {
         family: "TestFont",
         src: [{ url: "/fonts/test.woff2", format: "woff2" }],
@@ -22,7 +22,7 @@ describe("getThemeCustomFontFace", () => {
   });
 
   it("should handle multiple font sources", () => {
-    const fonts: ChaiLocalFont[] = [
+    const fonts: ChaiFontBySrc[] = [
       {
         family: "TestFont",
         src: [
@@ -39,7 +39,7 @@ describe("getThemeCustomFontFace", () => {
   });
 
   it("should include optional font properties when provided", () => {
-    const fonts: ChaiLocalFont[] = [
+    const fonts: ChaiFontBySrc[] = [
       {
         family: "TestFont",
         src: [
@@ -56,7 +56,7 @@ describe("getThemeCustomFontFace", () => {
   });
 
   it("should handle multiple fonts", () => {
-    const fonts: ChaiLocalFont[] = [
+    const fonts: ChaiFontBySrc[] = [
       {
         family: "FirstFont",
         src: [{ url: "/fonts/first.woff2", format: "woff2" }],

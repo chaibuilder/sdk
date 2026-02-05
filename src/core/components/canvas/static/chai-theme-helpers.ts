@@ -1,5 +1,5 @@
 import { getAllRegisteredFonts } from "@/runtime";
-import type { ChaiFontViaUrl, ChaiLocalFont } from "@/types";
+import type { ChaiFontBySrc, ChaiFontByUrl } from "@/types";
 import type { ChaiTheme, ChaiThemeOptions } from "@/types/chaibuilder-editor-props";
 import { flatten, get, keys, uniqBy } from "lodash-es";
 
@@ -106,33 +106,33 @@ export const getChaiThemeCssVariables = ({
   }`;
 };
 
-export const getThemeFontsLinkMarkup = (fonts: ChaiFontViaUrl[]) => {
+export const getThemeFontsLinkMarkup = (fonts: ChaiFontByUrl[]) => {
   if (!fonts || fonts.length === 0) return "";
 
   return uniqBy(fonts, "family")
-    .map((font: ChaiFontViaUrl) => `<link rel="stylesheet" href="${font.url}" />`)
+    .map((font: ChaiFontByUrl) => `<link rel="stylesheet" href="${font.url}" />`)
     .join("\n");
 };
 
-export const getThemeFontsUrls = (fonts: ChaiFontViaUrl[]) => {
+export const getThemeFontsUrls = (fonts: ChaiFontByUrl[]) => {
   if (!fonts || fonts.length === 0) return [];
 
-  return uniqBy(fonts, "family").map((font: ChaiFontViaUrl) => font.url);
+  return uniqBy(fonts, "family").map((font: ChaiFontByUrl) => font.url);
 };
 
-export const getThemeFontsCSSImport = (fonts: ChaiFontViaUrl[]) => {
+export const getThemeFontsCSSImport = (fonts: ChaiFontByUrl[]) => {
   if (!fonts || fonts.length === 0) return "";
 
   return uniqBy(fonts, "family")
-    .map((font: ChaiFontViaUrl) => `@import url("${font.url}");`)
+    .map((font: ChaiFontByUrl) => `@import url("${font.url}");`)
     .join("\n");
 };
 
-export const getThemeCustomFontFace = (fonts: ChaiLocalFont[]) => {
+export const getThemeCustomFontFace = (fonts: ChaiFontBySrc[]) => {
   if (!fonts || fonts.length === 0) return "";
 
   return uniqBy(fonts, "family")
-    .map((font: ChaiLocalFont) =>
+    .map((font: ChaiFontBySrc) =>
       font.src
         .map(
           (source) => `@font-face {

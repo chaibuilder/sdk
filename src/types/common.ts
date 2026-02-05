@@ -77,13 +77,13 @@ export type ChaiPageProps<T = Record<string, any>> = {
   searchParams?: Record<string, string>;
 } & T;
 
-export type ChaiFontViaUrl = {
+export type ChaiFontByUrl = {
   family: string;
   url: string;
   fallback: string;
 };
 
-export type ChaiLocalFont = {
+export type ChaiFontBySrc = {
   family: string;
   src: {
     url: string;
@@ -101,4 +101,4 @@ export type ChaiSystemFont = {
   fallback: string;
 };
 
-export type ChaiFont = ChaiFontViaUrl | ChaiLocalFont | ChaiSystemFont;
+export type ChaiFont = ChaiFontByUrl | ChaiFontBySrc | ChaiSystemFont;
