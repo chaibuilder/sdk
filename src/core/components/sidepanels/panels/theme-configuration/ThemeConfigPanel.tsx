@@ -81,6 +81,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const { hasPermission } = usePermissions();
   const importThemeEnabled = useBuilderProp("flags.importTheme", true);
   const darkModeEnabled = useBuilderProp("flags.darkMode", true);
+  const fontsInTheme = useBuilderProp("flags.fontsInTheme", false);
   const incrementActionsCount = useIncrementActionsCount();
 
   if (!themePresets || themePresets.length === 0) {
@@ -292,28 +293,31 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
         <Separator />
 
         <div className={cn("my-2 space-y-3", className)}>
-          {/* Fonts Section */}
-          <div className="flex items-center gap-2">
-            <TextIcon className="h-3 w-3 text-gray-600" />
-            <span className="text-xs font-medium text-gray-700">{t("Typography")}</span>
-          </div>
-          {chaiThemeOptions?.fontFamily && (
-            <div className="space-y-2">
-              {Object.entries(chaiThemeOptions.fontFamily).map(([key, value]: [string, any]) => (
-                <FontSelector
-                  key={key}
-                  label={key}
-                  value={
-                    themeValues.fontFamily[key.replace(/font-/g, "") as keyof typeof themeValues.fontFamily] ||
-                    value[Object.keys(value)[0]]
-                  }
-                  onChange={(newValue: string) => handleFontChange(key, newValue)}
-                />
-              ))}
-            </div>
+          {fontsInTheme && (
+            <>
+              {/* Fonts Section */}
+              <div className="flex items-center gap-2">
+                <TextIcon className="h-3 w-3 text-gray-600" />
+                <span className="text-xs font-medium text-gray-700">{t("Typography")}</span>
+              </div>
+              {chaiThemeOptions?.fontFamily && (
+                <div className="space-y-2">
+                  {Object.entries(chaiThemeOptions.fontFamily).map(([key, value]: [string, any]) => (
+                    <FontSelector
+                      key={key}
+                      label={key}
+                      value={
+                        themeValues.fontFamily[key.replace(/font-/g, "") as keyof typeof themeValues.fontFamily] ||
+                        value[Object.keys(value)[0]]
+                      }
+                      onChange={(newValue: string) => handleFontChange(key, newValue)}
+                    />
+                  ))}
+                </div>
+              )}
+              <Separator />
+            </>
           )}
-
-          <Separator />
 
           {/* Border Radius Section */}
           {chaiThemeOptions?.borderRadius && (

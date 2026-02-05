@@ -20,7 +20,7 @@ pnpm add @chaibuilder/sdk
 ## Basic Setup
 
 ```tsx
-import { ChaiBuilderEditor } from "@/core/main";
+import { ChaiBuilderEditor } from "@chaibuilder/sdk";
 import "@chaibuilder/sdk/styles"; // Import styles
 
 function PageEditor() {
@@ -39,7 +39,7 @@ function PageEditor() {
 ## With Theme Configuration
 
 ```tsx
-import { ChaiBuilderEditor } from "@/core/main";
+import { ChaiBuilderEditor } from "@chaibuilder/sdk";
 
 const myTheme = {
   fontFamily: {
