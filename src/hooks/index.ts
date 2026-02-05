@@ -84,7 +84,7 @@
 //   useIsPageLoaded,
 //   useLanguages,
 //   useLibraryBlocks,
-//   usePartialBlocksStore as usePartailBlocksStore,
+//   usePartialBlocksStore,
 //   usePartialBlocksList,
 //   usePasteBlocks,
 //   usePermissions,

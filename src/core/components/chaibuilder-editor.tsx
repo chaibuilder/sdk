@@ -21,7 +21,7 @@ import { useCheckStructure } from "@/hooks/use-check-structure";
 import { useExpandTree } from "@/hooks/use-expand-tree";
 import { isPageLoadedAtom } from "@/hooks/use-is-page-loaded";
 import { useKeyEventWatcher } from "@/hooks/use-key-event-watcher";
-import { useWatchPartailBlocks } from "@/hooks/use-partial-blocks-store";
+import { useWatchPartialBlocks } from "@/hooks/use-partial-blocks-store";
 import { builderSaveStateAtom } from "@/hooks/use-save-page";
 import { syncBlocksWithDefaultProps } from "@/runtime";
 import { ChaiBuilderEditorProps, ChaiTheme } from "@/types";
@@ -39,7 +39,7 @@ const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
   useKeyEventWatcher();
   useExpandTree();
   useAutoSave();
-  useWatchPartailBlocks();
+  useWatchPartialBlocks();
   useUnmountBroadcastChannel();
   const { postMessage } = useBroadcastChannel();
   const [, setIsPageLoaded] = useAtom(isPageLoadedAtom);
