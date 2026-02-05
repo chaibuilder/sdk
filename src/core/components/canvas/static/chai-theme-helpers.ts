@@ -70,17 +70,11 @@ export const getFontFamily = (font: string) => {
   return `"${font}", ${get(chaiFont, "fallback", "")}`;
 };
 
-export const getChaiThemeCssVariables = ({
-  theme,
-  fontVariables = false,
-}: {
-  theme: ChaiTheme;
-  fontVariables?: boolean;
-}) => {
+export const getChaiThemeCssVariables = ({ theme }: { theme: ChaiTheme }) => {
   const chaiTheme = theme;
   return `:root {
     ${
-      fontVariables && theme.fontFamily
+      theme.fontFamily
         ? Object.entries(theme.fontFamily)
             .map(([key, value]) => `--font-${key}: ${getFontFamily(value)};`)
             .join("\n    ")

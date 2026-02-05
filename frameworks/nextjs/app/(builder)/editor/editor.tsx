@@ -2,9 +2,10 @@
 
 import { getSupabaseClient } from "../../supabase-client";
 
-import "@chaibuilder/sdk/styles";
+import { registerFonts } from "@/fonts";
 import { defaultChaiLibrary } from "@chaibuilder/sdk";
 import { registerChaiLibrary } from "@chaibuilder/sdk/runtime/client";
+import "@chaibuilder/sdk/styles";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useState } from "react";
 import { LoginScreen } from "./login";
@@ -21,6 +22,7 @@ type LoggedInUser = {
 };
 
 registerChaiLibrary("chai-library", defaultChaiLibrary());
+registerFonts();
 
 export default function Editor() {
   const supabase = getSupabaseClient();

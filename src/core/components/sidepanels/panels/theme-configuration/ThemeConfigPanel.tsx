@@ -363,7 +363,11 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
                   </div>
                 )}
               </div>
-              <div className="space-y-2">{chaiThemeOptions.colors.map((group) => renderColorGroup(group))}</div>
+              <div className="space-y-2">
+                {chaiThemeOptions.colors.map((group) => (
+                  <div key={group.group}>{renderColorGroup(group)}</div>
+                ))}
+              </div>
             </div>
           )}
           <Suspense fallback={<div>{t("Loading...")}</div>}>

@@ -27,10 +27,7 @@ function Preview() {
       setStyles(styles);
     })();
   }, [blocks]);
-  const themeVars = useMemo(
-    () => getChaiThemeCssVariables({ theme: theme as ChaiTheme, fontVariables: true }),
-    [theme],
-  );
+  const themeVars = useMemo(() => getChaiThemeCssVariables({ theme: theme as ChaiTheme }), [theme]);
   return (
     <>
       <style>{themeVars}</style>

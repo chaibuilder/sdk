@@ -1,18 +1,17 @@
-import { getAllRegisteredFonts, getRegisteredFont } from "@chaibuilder/sdk/runtime";
-import { ChaiFont, ChaiFontViaSrc } from "@chaibuilder/sdk/types";
+import { getRegisteredFont } from "@chaibuilder/sdk/runtime";
+import { ChaiFont, ChaiFontBySrc } from "@chaibuilder/sdk/types";
 import { compact, filter, has, map, uniqBy } from "lodash";
-import { fontsMap, fontUrls } from "./fonts-map-variable";
 
-export const getThemeCustomFontFace = (fonts: string[]) => {
+const getThemeFontFaceCSS = (fonts: string[]) => {
   const fontdefintions = filter(compact(map(fonts, getRegisteredFont)), (font: ChaiFont) => has(font, "src"));
-  return getThemeCustomFontFaceStyle(fontdefintions as ChaiFontViaSrc[]);
+  return getThemeCustomFontFaceStyle(fontdefintions as ChaiFontBySrc[]);
 };
 
-export const getThemeCustomFontFaceStyle = (fonts: ChaiFontViaSrc[]) => {
+const getThemeCustomFontFaceStyle = (fonts: ChaiFontBySrc[]) => {
   if (!fonts || fonts.length === 0) return "";
 
   return uniqBy(fonts, "family")
-    .map((font: ChaiFontViaSrc) =>
+    .map((font: ChaiFontBySrc) =>
       font.src
         .map(
           (source) => `@font-face {
@@ -29,33 +28,21 @@ export const getThemeCustomFontFaceStyle = (fonts: ChaiFontViaSrc[]) => {
     .join("\n");
 };
 
-/**
- * Extracts font URLs directly from font family names
- * For variable fonts, we preload the single font file per family
- */
-function getFontUrlsForPreload(headingFont: string, bodyFont: string): string[] {
-  const fonts = new Set<string>();
-
-  if (fontUrls[headingFont]) {
-    fonts.add(fontUrls[headingFont]);
-  }
-
-  if (headingFont !== bodyFont && fontUrls[bodyFont]) {
-    fonts.add(fontUrls[bodyFont]);
-  }
-
-  return Array.from(fonts);
-}
-
 export const getFontStyles = async (
   headingFont: string,
   bodyFont: string,
 ): Promise<{ fontStyles: string; preloads: string[] }> => {
-  const registeredFonts = getAllRegisteredFonts();
-  let fonts = "";
-  if (headingFont !== bodyFont) {
-    fonts += fontsMap[bodyFont] ?? "";
-  }
-  const preloads = getFontUrlsForPreload(headingFont, bodyFont);
-  return { fontStyles: fonts, preloads };
+  const fontStyles = getThemeFontFaceCSS([headingFont, bodyFont]);
+
+  const preloads: string[] = [];
+  const fonts = [headingFont, ...(headingFont !== bodyFont ? [bodyFont] : [])];
+
+  fonts.forEach((fontName) => {
+    const font = getRegisteredFont(fontName) as ChaiFontBySrc | undefined;
+    if (font && has(font, "src") && font.src && font.src.length > 0) {
+      preloads.push(font.src[0].url);
+    }
+  });
+
+  return { fontStyles, preloads: uniqBy(preloads, (url) => url) };
 };
