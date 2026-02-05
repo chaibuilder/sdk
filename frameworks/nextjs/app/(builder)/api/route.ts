@@ -1,7 +1,10 @@
 import { getSupabaseAdmin } from "@/app/supabase-admin";
+import { registerPageTypes } from "@/page-types";
 import { ChaiActionsRegistry, initChaiBuilderActionHandler } from "@chaibuilder/sdk/actions";
 import { SupabaseAuthActions, SupabaseStorageActions } from "@chaibuilder/sdk/actions/supabase";
 import { NextRequest, NextResponse } from "next/server";
+
+registerPageTypes();
 
 export async function POST(req: NextRequest) {
   const apiKey = process.env.CHAIBUILDER_APP_KEY;
