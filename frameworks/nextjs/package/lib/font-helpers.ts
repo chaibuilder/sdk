@@ -18,6 +18,7 @@ const getThemeCustomFontFaceStyle = (fonts: ChaiFontBySrc[]) => {
         font-family: "${font.family}";
         src: url("${source.url}") format("${source.format}");
         font-display: swap;
+        font-optical-sizing: auto;
         ${source.fontWeight ? `font-weight: ${source.fontWeight};` : ""}
         ${source.fontStyle ? `font-style: ${source.fontStyle};` : ""}
         ${source.fontStretch ? `font-stretch: ${source.fontStretch};` : ""}
