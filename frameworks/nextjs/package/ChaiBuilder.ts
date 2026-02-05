@@ -1,11 +1,11 @@
 import { applyChaiDataBinding } from "@chaibuilder/sdk/render";
+import { getChaiPageTypes } from "@chaibuilder/sdk/runtime";
 import type { ChaiBlock, ChaiPage, ChaiPageProps, ChaiPageType, ChaiWebsiteSetting } from "@chaibuilder/sdk/types";
 import { unstable_cache } from "next/cache";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import * as utils from "./lib";
 import { GetFullPageOptions } from "./lib/get-full-page";
-import { getChaiPageTypes } from "./runtime";
 import { ChaiFullPage, ChaiPartialPage } from "./types";
 
 class ChaiBuilder {
