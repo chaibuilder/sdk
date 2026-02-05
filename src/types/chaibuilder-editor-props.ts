@@ -54,6 +54,8 @@ export type ChaiSavePageData = {
   theme?: ChaiTheme;
   needTranslations?: boolean;
   designTokens: ChaiDesignTokens;
+  partialIds?: string[];
+  linkPageIds?: string[];
 };
 
 export type ChaiAskAiResponse = {

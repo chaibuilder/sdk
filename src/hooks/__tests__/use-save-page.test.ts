@@ -677,3 +677,358 @@ describe("useSavePage - getAllPartialIds", () => {
     );
   });
 });
+
+describe("useSavePage - getLinkPageIds", () => {
+  let mockOnSave: ReturnType<typeof vi.fn>;
+  let mockOnSaveStateChange: ReturnType<typeof vi.fn>;
+  let mockGetPageData: ReturnType<typeof vi.fn>;
+  let mockHasPermission: ReturnType<typeof vi.fn>;
+  let mockCheckStructure: ReturnType<typeof vi.fn>;
+
+  beforeEach(async () => {
+    vi.clearAllMocks();
+
+    mockOnSave = vi.fn(async () => {});
+    mockOnSaveStateChange = vi.fn();
+    mockGetPageData = vi.fn(() => ({ blocks: [] }));
+    mockHasPermission = vi.fn(() => true);
+    mockCheckStructure = vi.fn();
+
+    const { useBuilderProp } = await import("@/hooks/use-builder-prop");
+    const { useGetPageData } = await import("@/hooks/use-get-page-data");
+    const { useTheme } = await import("@/hooks/use-theme");
+    const { usePermissions } = await import("@/hooks/use-permissions");
+    const { useLanguages } = await import("@/hooks/use-languages");
+    const { useIsPageLoaded } = await import("@/hooks/use-is-page-loaded");
+    const { useCheckStructure } = await import("@/hooks/use-check-structure");
+
+    (useBuilderProp as any).mockImplementation((key: string, defaultValue: any) => {
+      if (key === "onSave") return mockOnSave;
+      if (key === "onSaveStateChange") return mockOnSaveStateChange;
+      return defaultValue;
+    });
+
+    (useGetPageData as any).mockReturnValue(mockGetPageData);
+    (useTheme as any).mockReturnValue([{}]);
+    (usePermissions as any).mockReturnValue({ hasPermission: mockHasPermission });
+    (useLanguages as any).mockReturnValue({ selectedLang: "en", fallbackLang: "en" });
+    (useIsPageLoaded as any).mockReturnValue([true]);
+    (useCheckStructure as any).mockReturnValue(mockCheckStructure);
+
+    // Reset atoms
+    builderStore.set(builderSaveStateAtom, "UNSAVED");
+    builderStore.set(userActionsCountAtom, 0);
+    builderStore.set(partialBlocksAtom, {});
+  });
+
+  it("should return empty array when no blocks have pageType links", async () => {
+    const mockBlocks = [
+      { _id: "1", _type: "Container" },
+      { _id: "2", _type: "Link", link: { href: "/about", target: "_self" } },
+    ];
+    mockGetPageData.mockReturnValue({ blocks: mockBlocks });
+
+    const { result } = renderHook(() => useSavePage());
+
+    await act(async () => {
+      await result.current.savePageAsync(false);
+    });
+
+    expect(mockOnSave).toHaveBeenCalledWith(
+      expect.objectContaining({
+        linkPageIds: [],
+      }),
+    );
+  });
+
+  it("should extract UUID from Link block with pageType href", async () => {
+    const mockBlocks = [
+      {
+        _id: "1",
+        _type: "Link",
+        link: { href: "pageType:blog:550e8400-e29b-41d4-a716-446655440000", target: "_self" },
+      },
+    ];
+    mockGetPageData.mockReturnValue({ blocks: mockBlocks });
+
+    const { result } = renderHook(() => useSavePage());
+
+    await act(async () => {
+      await result.current.savePageAsync(false);
+    });
+
+    expect(mockOnSave).toHaveBeenCalledWith(
+      expect.objectContaining({
+        linkPageIds: ["550e8400-e29b-41d4-a716-446655440000"],
+      }),
+    );
+  });
+
+  it("should extract UUID from Button block with link prop", async () => {
+    const mockBlocks = [
+      {
+        _id: "1",
+        _type: "Button",
+        link: { href: "pageType:page:a1b2c3d4-e5f6-7890-abcd-ef1234567890", target: "_blank" },
+      },
+    ];
+    mockGetPageData.mockReturnValue({ blocks: mockBlocks });
+
+    const { result } = renderHook(() => useSavePage());
+
+    await act(async () => {
+      await result.current.savePageAsync(false);
+    });
+
+    expect(mockOnSave).toHaveBeenCalledWith(
+      expect.objectContaining({
+        linkPageIds: ["a1b2c3d4-e5f6-7890-abcd-ef1234567890"],
+      }),
+    );
+  });
+
+  it("should extract UUID from any block with link prop", async () => {
+    const mockBlocks = [
+      {
+        _id: "1",
+        _type: "Image",
+        link: { href: "pageType:product:12345678-1234-1234-1234-123456789abc", target: "_self" },
+      },
+    ];
+    mockGetPageData.mockReturnValue({ blocks: mockBlocks });
+
+    const { result } = renderHook(() => useSavePage());
+
+    await act(async () => {
+      await result.current.savePageAsync(false);
+    });
+
+    expect(mockOnSave).toHaveBeenCalledWith(
+      expect.objectContaining({
+        linkPageIds: ["12345678-1234-1234-1234-123456789abc"],
+      }),
+    );
+  });
+
+  it("should extract UUID from custom prop keys with link object", async () => {
+    const mockBlocks = [
+      {
+        _id: "1",
+        _type: "Card",
+        cardLink: { href: "pageType:blog:11111111-1111-1111-1111-111111111111", target: "_self" },
+        ctaButton: { href: "pageType:page:22222222-2222-2222-2222-222222222222", target: "_blank" },
+      },
+    ];
+    mockGetPageData.mockReturnValue({ blocks: mockBlocks });
+
+    const { result } = renderHook(() => useSavePage());
+
+    await act(async () => {
+      await result.current.savePageAsync(false);
+    });
+
+    expect(mockOnSave).toHaveBeenCalledWith(
+      expect.objectContaining({
+        linkPageIds: expect.arrayContaining([
+          "11111111-1111-1111-1111-111111111111",
+          "22222222-2222-2222-2222-222222222222",
+        ]),
+      }),
+    );
+  });
+
+  it("should extract UUIDs from multiple blocks", async () => {
+    const mockBlocks = [
+      {
+        _id: "1",
+        _type: "Link",
+        link: { href: "pageType:blog:11111111-1111-1111-1111-111111111111", target: "_self" },
+      },
+      {
+        _id: "2",
+        _type: "Button",
+        link: { href: "pageType:page:22222222-2222-2222-2222-222222222222", target: "_blank" },
+      },
+      {
+        _id: "3",
+        _type: "Image",
+        link: { href: "pageType:product:33333333-3333-3333-3333-333333333333", target: "_self" },
+      },
+    ];
+    mockGetPageData.mockReturnValue({ blocks: mockBlocks });
+
+    const { result } = renderHook(() => useSavePage());
+
+    await act(async () => {
+      await result.current.savePageAsync(false);
+    });
+
+    expect(mockOnSave).toHaveBeenCalledWith(
+      expect.objectContaining({
+        linkPageIds: expect.arrayContaining([
+          "11111111-1111-1111-1111-111111111111",
+          "22222222-2222-2222-2222-222222222222",
+          "33333333-3333-3333-3333-333333333333",
+        ]),
+      }),
+    );
+  });
+
+  it("should return unique UUIDs when same page is linked multiple times", async () => {
+    const mockBlocks = [
+      {
+        _id: "1",
+        _type: "Link",
+        link: { href: "pageType:blog:11111111-1111-1111-1111-111111111111", target: "_self" },
+      },
+      {
+        _id: "2",
+        _type: "Button",
+        link: { href: "pageType:blog:11111111-1111-1111-1111-111111111111", target: "_blank" },
+      },
+    ];
+    mockGetPageData.mockReturnValue({ blocks: mockBlocks });
+
+    const { result } = renderHook(() => useSavePage());
+
+    await act(async () => {
+      await result.current.savePageAsync(false);
+    });
+
+    const call = mockOnSave.mock.calls[0][0];
+    expect(call.linkPageIds).toHaveLength(1);
+    expect(call.linkPageIds).toContain("11111111-1111-1111-1111-111111111111");
+  });
+
+  it("should ignore blocks with regular URL hrefs", async () => {
+    const mockBlocks = [
+      { _id: "1", _type: "Link", link: { href: "https://example.com", target: "_blank" } },
+      { _id: "2", _type: "Button", link: { href: "/about", target: "_self" } },
+      { _id: "3", _type: "Link", link: { href: "#section", target: "_self" } },
+    ];
+    mockGetPageData.mockReturnValue({ blocks: mockBlocks });
+
+    const { result } = renderHook(() => useSavePage());
+
+    await act(async () => {
+      await result.current.savePageAsync(false);
+    });
+
+    expect(mockOnSave).toHaveBeenCalledWith(
+      expect.objectContaining({
+        linkPageIds: [],
+      }),
+    );
+  });
+
+  it("should extract UUIDs from all props including internal ones via JSON stringify", async () => {
+    const mockBlocks = [
+      {
+        _id: "1",
+        _type: "Container",
+        _internalLink: { href: "pageType:blog:11111111-1111-1111-1111-111111111111" },
+        link: { href: "pageType:page:22222222-2222-2222-2222-222222222222", target: "_self" },
+      },
+    ];
+    mockGetPageData.mockReturnValue({ blocks: mockBlocks });
+
+    const { result } = renderHook(() => useSavePage());
+
+    await act(async () => {
+      await result.current.savePageAsync(false);
+    });
+
+    const call = mockOnSave.mock.calls[0][0];
+    expect(call.linkPageIds).toHaveLength(2);
+    expect(call.linkPageIds).toContain("22222222-2222-2222-2222-222222222222");
+    expect(call.linkPageIds).toContain("11111111-1111-1111-1111-111111111111");
+  });
+
+  it("should handle blocks with missing link prop", async () => {
+    const mockBlocks = [
+      { _id: "1", _type: "Container" },
+      { _id: "2", _type: "Paragraph", content: "Hello" },
+    ];
+    mockGetPageData.mockReturnValue({ blocks: mockBlocks });
+
+    const { result } = renderHook(() => useSavePage());
+
+    await act(async () => {
+      await result.current.savePageAsync(false);
+    });
+
+    expect(mockOnSave).toHaveBeenCalledWith(
+      expect.objectContaining({
+        linkPageIds: [],
+      }),
+    );
+  });
+
+  it("should handle blocks with null or undefined link href", async () => {
+    const mockBlocks = [
+      { _id: "1", _type: "Link", link: { href: null, target: "_self" } },
+      { _id: "2", _type: "Button", link: { href: undefined, target: "_blank" } },
+      { _id: "3", _type: "Image", link: {} },
+    ];
+    mockGetPageData.mockReturnValue({ blocks: mockBlocks });
+
+    const { result } = renderHook(() => useSavePage());
+
+    await act(async () => {
+      await result.current.savePageAsync(false);
+    });
+
+    expect(mockOnSave).toHaveBeenCalledWith(
+      expect.objectContaining({
+        linkPageIds: [],
+      }),
+    );
+  });
+
+  it("should handle different pageType values", async () => {
+    const mockBlocks = [
+      {
+        _id: "1",
+        _type: "Link",
+        link: { href: "pageType:blog-post:11111111-1111-1111-1111-111111111111", target: "_self" },
+      },
+      {
+        _id: "2",
+        _type: "Link",
+        link: { href: "pageType:product_page:22222222-2222-2222-2222-222222222222", target: "_self" },
+      },
+    ];
+    mockGetPageData.mockReturnValue({ blocks: mockBlocks });
+
+    const { result } = renderHook(() => useSavePage());
+
+    await act(async () => {
+      await result.current.savePageAsync(false);
+    });
+
+    expect(mockOnSave).toHaveBeenCalledWith(
+      expect.objectContaining({
+        linkPageIds: expect.arrayContaining([
+          "11111111-1111-1111-1111-111111111111",
+          "22222222-2222-2222-2222-222222222222",
+        ]),
+      }),
+    );
+  });
+
+  it("should handle empty blocks array", async () => {
+    mockGetPageData.mockReturnValue({ blocks: [] });
+
+    const { result } = renderHook(() => useSavePage());
+
+    await act(async () => {
+      await result.current.savePageAsync(false);
+    });
+
+    expect(mockOnSave).toHaveBeenCalledWith(
+      expect.objectContaining({
+        linkPageIds: [],
+      }),
+    );
+  });
+});

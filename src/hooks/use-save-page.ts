@@ -12,7 +12,7 @@ import { getRegisteredChaiBlock } from "@/runtime";
 import { ChaiBlock } from "@/types/common";
 import { useThrottledCallback } from "@react-hookz/web";
 import { atom, useAtom, useAtomValue } from "jotai";
-import { has, isEmpty, noop } from "lodash-es";
+import { compact, has, isEmpty, noop } from "lodash-es";
 import { useCallback } from "react";
 
 export const builderSaveStateAtom = atom<"SAVED" | "SAVING" | "UNSAVED">("SAVED"); // SAVING
@@ -85,6 +85,17 @@ export const useSavePage = () => {
     [partialBlocksStore],
   );
 
+  const getLinkPageIds = useCallback((blocks: ChaiBlock[]): string[] => {
+    const blocksStr = JSON.stringify(blocks);
+    const regex = /pageType:[^:]+:([a-f0-9-]{36})/gi;
+    const uuids: string[] = [];
+    let match;
+    while ((match = regex.exec(blocksStr)) !== null) {
+      if (match[1]) uuids.push(match[1]);
+    }
+    return compact([...new Set(uuids)]);
+  }, []);
+
   const shouldSkipSave = useCallback(
     (force: boolean) => {
       // Skip save if no permission or page not loaded
@@ -121,6 +132,7 @@ export const useSavePage = () => {
         needTranslations: needTranslations(),
         designTokens,
         partialIds: getAllPartialIds((pageData.blocks as unknown as ChaiBlock[]) || []),
+        linkPageIds: getLinkPageIds((pageData.blocks as unknown as ChaiBlock[]) || []),
       });
       setTimeout(() => {
         setSaveState("SAVED");
@@ -159,6 +171,7 @@ export const useSavePage = () => {
       needTranslations: needTranslations(),
       designTokens,
       partialIds: getAllPartialIds((pageData.blocks as unknown as ChaiBlock[]) || []),
+      linkPageIds: getLinkPageIds((pageData.blocks as unknown as ChaiBlock[]) || []),
     });
     setTimeout(() => {
       setSaveState("SAVED");
