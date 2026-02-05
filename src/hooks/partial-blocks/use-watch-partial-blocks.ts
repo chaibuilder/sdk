@@ -7,7 +7,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { partialBlocksAtom } from "./atoms";
 import { extractPartialIds } from "./utils";
 
-export const useWatchPartailBlocks = () => {
+export const useWatchPartialBlocks = () => {
   const [blocksStore] = useBlocksStore();
   const [partialBlocks, setPartialBlocks] = useAtom(partialBlocksAtom);
   const getPartialBlockBlocks = useBuilderProp("getPartialBlockBlocks", async (_key: string) => []);

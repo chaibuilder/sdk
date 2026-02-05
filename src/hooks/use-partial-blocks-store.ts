@@ -17,7 +17,7 @@ export {
   usePartialBlocksList,
   usePartialBlocksStore,
   usePartialDependencies,
-  useWatchPartailBlocks,
+  useWatchPartialBlocks,
   wouldCreateCycle,
 } from "./partial-blocks";
 

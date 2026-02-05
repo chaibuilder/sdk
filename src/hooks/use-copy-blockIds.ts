@@ -2,7 +2,7 @@ import { getDuplicatedBlocks } from "@/core/functions/blocks-fn";
 import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { cutBlockIdsAtom } from "@/hooks/use-cut-blockIds";
-import { usePartialBlocksStore as usePartailBlocksStore } from "@/hooks/use-partial-blocks-store";
+import { usePartialBlocksStore } from "@/hooks/use-partial-blocks-store";
 import { ChaiBlock } from "@/types/common";
 import { atom, useAtom, useSetAtom } from "jotai";
 import { isEmpty, set } from "lodash-es";
@@ -28,7 +28,7 @@ export const useCopyBlocks = (): [
   const [presentBlocks] = useBlocksStore();
   const [ids, setIds] = useAtom(copiedBlockIdsAtom);
   const resetCutBlockIds = useSetAtom(cutBlockIdsAtom);
-  const { getPartailBlocks } = usePartailBlocksStore();
+  const { getPartialBlocks } = usePartialBlocksStore();
   const enableCopyToClipboard = useBuilderProp("flags.copyPaste", true);
 
   const hasPartialBlocks = useCallback(
@@ -60,7 +60,7 @@ export const useCopyBlocks = (): [
             for (const block of duplicatedBlocks) {
               if (block._type === "PartialBlock" || block._type === "GlobalBlock") {
                 // Get the expanded content of the partial block
-                let partialBlocks = getPartailBlocks(block.partialBlockId!);
+                let partialBlocks = getPartialBlocks(block.partialBlockId!);
                 if (block._parent && partialBlocks?.length > 0) {
                   partialBlocks = partialBlocks.map((b) => {
                     if (isEmpty(b._parent)) {

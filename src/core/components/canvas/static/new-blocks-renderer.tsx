@@ -234,9 +234,9 @@ const PartialDepthExceededPlaceholder = () => (
 );
 
 const PartialBlocksRenderer = ({ partialBlockId }: { partialBlockId: string }) => {
-  const { getPartailBlocks } = usePartialBlocksStore();
+  const { getPartialBlocks } = usePartialBlocksStore();
   const currentDepth = useContext(PartialDepthContext);
-  const partialBlocks = useMemo(() => getPartailBlocks(partialBlockId), [getPartailBlocks, partialBlockId]);
+  const partialBlocks = useMemo(() => getPartialBlocks(partialBlockId), [getPartialBlocks, partialBlockId]);
   const partialBlocksAtoms = useMemo(() => splitAtom(atom(partialBlocks)), [partialBlocks]);
 
   // Check if max depth exceeded
