@@ -3,9 +3,7 @@ import { ChaiBlock, ChaiPage } from "@chaibuilder/sdk/types";
 import { and, eq, inArray } from "drizzle-orm";
 import { get, has, isEmpty } from "lodash";
 import { nanoid } from "nanoid";
-
-const MAX_PARTIAL_DEPTH = 4;
-
+import { MAX_PARTIAL_DEPTH } from "@/core/constants/partial-blocks";
 export type GetFullPageOptions = {
   id: string;
   draft: boolean;
