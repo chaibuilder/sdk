@@ -6,10 +6,10 @@ import { partialBlocksAtom } from "./atoms";
 
 export const usePartialBlocksStore = () => {
   const [partialBlocks, setPartialBlocks] = useAtom(partialBlocksAtom);
-  const getPartailBlocks = useCallback(
+  const getPartialBlocks = useCallback(
     (partialBlockId: string) => get(partialBlocks, `${partialBlockId}.blocks`, []) as ChaiBlock[],
     [partialBlocks],
   );
   const reset = useCallback(() => setPartialBlocks({}), [setPartialBlocks]);
-  return { getPartailBlocks, reset };
+  return { getPartialBlocks, reset };
 };
