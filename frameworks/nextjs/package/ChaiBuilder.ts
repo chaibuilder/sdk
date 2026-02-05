@@ -1,11 +1,12 @@
 import { applyChaiDataBinding } from "@chaibuilder/sdk/render";
-import type { ChaiBlock, ChaiPage, ChaiPageProps, ChaiWebsiteSetting } from "@chaibuilder/sdk/types";
+import { getChaiPageTypes } from "@chaibuilder/sdk/runtime";
+import type { ChaiBlock, ChaiPage, ChaiPageProps, ChaiPageType, ChaiWebsiteSetting } from "@chaibuilder/sdk/types";
 import { unstable_cache } from "next/cache";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import * as utils from "./lib";
-import { ChaiFullPage, ChaiPartialPage } from "./types";
 import { GetFullPageOptions } from "./lib/get-full-page";
+import { ChaiFullPage, ChaiPartialPage } from "./types";
 
 class ChaiBuilder {
   private static appId?: string;
@@ -19,6 +20,7 @@ class ChaiBuilder {
       throw new Error("Please initialize ChaiBuilder with an API key");
     }
     ChaiBuilder.appId = appId;
+    ChaiBuilder.setDraftMode(draftMode);
     await ChaiBuilder.loadSiteSettings(draftMode);
   };
 
@@ -35,7 +37,6 @@ class ChaiBuilder {
     const siteSettings = await ChaiBuilder.getSiteSettings();
 
     ChaiBuilder.setFallbackLang(siteSettings?.fallbackLang || "en");
-    ChaiBuilder.setDraftMode(draftMode);
   }
 
   static setDraftMode(draftMode: boolean) {
@@ -65,7 +66,17 @@ class ChaiBuilder {
   static async getPageBySlug(slug: string): Promise<ChaiPartialPage> {
     ChaiBuilder.verifyInit();
     try {
-      return await utils.getPageBySlug(slug, this.appId!, this.draftMode);
+      const pageTypes = getChaiPageTypes();
+      const dynamicSegments = pageTypes.reduce(
+        (acc: Record<string, string>, pageType: ChaiPageType) => {
+          if (pageType.dynamicSegments) {
+            acc[pageType.key] = pageType.dynamicSegments;
+          }
+          return acc;
+        },
+        {} as Record<string, string>,
+      );
+      return await utils.getPageBySlug(slug, this.appId!, this.draftMode, dynamicSegments);
     } catch (error) {
       if (error instanceof Error && error.message === "PAGE_NOT_FOUND") {
         throw notFound();
