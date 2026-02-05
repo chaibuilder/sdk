@@ -1,6 +1,12 @@
 import { SupabaseClient } from "@supabase/supabase-js";
-import { DeleteAssetAction, GetAssetAction, GetAssetsAction, UpdateAssetAction, UploadAssetAction } from "@/express/actions/assets";
-import { GetChaiUserAction } from "@/express/actions/user";
+import {
+  DeleteAssetAction,
+  GetAssetAction,
+  GetAssetsAction,
+  UpdateAssetAction,
+  UploadAssetAction,
+} from "@/express/actions/assets";
+import { GetChaiUserAction, ChangePasswordAction } from "@/express/actions/user";
 import { DeleteFromStorageAction } from "./delete-from-storage";
 import { UploadToStorageAction } from "./upload-to-storage";
 
@@ -9,6 +15,7 @@ export { UploadToStorageAction } from "./upload-to-storage";
 
 export const SupabaseAuthActions = (supabase: SupabaseClient) => ({
   GET_CHAI_USER: new GetChaiUserAction(supabase),
+  CHANGE_PASSWORD: new ChangePasswordAction(supabase),
 });
 
 export const SupabaseStorageActions = (supabase: SupabaseClient) => ({
