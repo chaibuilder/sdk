@@ -1,4 +1,6 @@
 import { chaiDesignTokensAtom, userActionsCountAtom } from "@/atoms/builder";
+import { partialBlocksAtom } from "@/hooks/partial-blocks/atoms";
+import { extractPartialIds } from "@/hooks/partial-blocks/utils";
 import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { useCheckStructure } from "@/hooks/use-check-structure";
 import { useGetPageData } from "@/hooks/use-get-page-data";
@@ -7,6 +9,7 @@ import { useLanguages } from "@/hooks/use-languages";
 import { usePermissions } from "@/hooks/use-permissions";
 import { useTheme } from "@/hooks/use-theme";
 import { getRegisteredChaiBlock } from "@/runtime";
+import { ChaiBlock } from "@/types/common";
 import { useThrottledCallback } from "@react-hookz/web";
 import { atom, useAtom, useAtomValue } from "jotai";
 import { has, isEmpty, noop } from "lodash-es";
@@ -50,6 +53,7 @@ export const useSavePage = () => {
   const { selectedLang, fallbackLang } = useLanguages();
   const [isPageLoaded] = useIsPageLoaded();
   const designTokens = useAtomValue(chaiDesignTokensAtom);
+  const partialBlocksStore = useAtomValue(partialBlocksAtom);
   const checkStructure = useCheckStructure();
   const [, setActionsCount] = useAtom(userActionsCountAtom);
 
@@ -59,6 +63,27 @@ export const useSavePage = () => {
       ? false
       : checkMissingTranslations(pageData.blocks || [], selectedLang);
   };
+
+  const getAllPartialIds = useCallback(
+    (blocks: ChaiBlock[]): string[] => {
+      const collected = new Set<string>();
+      const queue = extractPartialIds(blocks);
+
+      while (queue.length > 0) {
+        const id = queue.shift()!;
+        if (collected.has(id)) continue;
+        collected.add(id);
+
+        const entry = partialBlocksStore[id];
+        if (entry?.status === "loaded" && entry.dependencies.length > 0) {
+          queue.push(...entry.dependencies);
+        }
+      }
+
+      return [...collected];
+    },
+    [partialBlocksStore],
+  );
 
   const shouldSkipSave = useCallback(
     (force: boolean) => {
@@ -95,6 +120,7 @@ export const useSavePage = () => {
         theme,
         needTranslations: needTranslations(),
         designTokens,
+        partialIds: getAllPartialIds((pageData.blocks as unknown as ChaiBlock[]) || []),
       });
       setTimeout(() => {
         setSaveState("SAVED");
@@ -113,6 +139,7 @@ export const useSavePage = () => {
       onSaveStateChange,
       isPageLoaded,
       checkStructure,
+      getAllPartialIds,
     ],
     3000, // save only every 5 seconds
   );
@@ -131,6 +158,7 @@ export const useSavePage = () => {
       theme,
       needTranslations: needTranslations(),
       designTokens,
+      partialIds: getAllPartialIds((pageData.blocks as unknown as ChaiBlock[]) || []),
     });
     setTimeout(() => {
       setSaveState("SAVED");

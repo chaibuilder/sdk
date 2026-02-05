@@ -1,6 +1,7 @@
-import { checkMissingTranslations, useSavePage, builderSaveStateAtom } from "@/hooks/use-save-page";
-import { builderStore } from "@/atoms/store";
 import { userActionsCountAtom } from "@/atoms/builder";
+import { builderStore } from "@/atoms/store";
+import { partialBlocksAtom } from "@/hooks/partial-blocks/atoms";
+import { builderSaveStateAtom, checkMissingTranslations, useSavePage } from "@/hooks/use-save-page";
 import { getRegisteredChaiBlock } from "@/runtime";
 import { act, renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -408,5 +409,271 @@ describe("useSavePage - prevent save when no unsaved changes", () => {
     });
 
     expect(mockCheckStructure).not.toHaveBeenCalled();
+  });
+});
+
+describe("useSavePage - getAllPartialIds", () => {
+  let mockOnSave: ReturnType<typeof vi.fn>;
+  let mockOnSaveStateChange: ReturnType<typeof vi.fn>;
+  let mockGetPageData: ReturnType<typeof vi.fn>;
+  let mockHasPermission: ReturnType<typeof vi.fn>;
+  let mockCheckStructure: ReturnType<typeof vi.fn>;
+
+  beforeEach(async () => {
+    vi.clearAllMocks();
+
+    mockOnSave = vi.fn(async () => {});
+    mockOnSaveStateChange = vi.fn();
+    mockGetPageData = vi.fn(() => ({ blocks: [] }));
+    mockHasPermission = vi.fn(() => true);
+    mockCheckStructure = vi.fn();
+
+    const { useBuilderProp } = await import("@/hooks/use-builder-prop");
+    const { useGetPageData } = await import("@/hooks/use-get-page-data");
+    const { useTheme } = await import("@/hooks/use-theme");
+    const { usePermissions } = await import("@/hooks/use-permissions");
+    const { useLanguages } = await import("@/hooks/use-languages");
+    const { useIsPageLoaded } = await import("@/hooks/use-is-page-loaded");
+    const { useCheckStructure } = await import("@/hooks/use-check-structure");
+
+    (useBuilderProp as any).mockImplementation((key: string, defaultValue: any) => {
+      if (key === "onSave") return mockOnSave;
+      if (key === "onSaveStateChange") return mockOnSaveStateChange;
+      return defaultValue;
+    });
+
+    (useGetPageData as any).mockReturnValue(mockGetPageData);
+    (useTheme as any).mockReturnValue([{}]);
+    (usePermissions as any).mockReturnValue({ hasPermission: mockHasPermission });
+    (useLanguages as any).mockReturnValue({ selectedLang: "en", fallbackLang: "en" });
+    (useIsPageLoaded as any).mockReturnValue([true]);
+    (useCheckStructure as any).mockReturnValue(mockCheckStructure);
+
+    // Reset atoms
+    builderStore.set(builderSaveStateAtom, "UNSAVED");
+    builderStore.set(userActionsCountAtom, 0);
+    builderStore.set(partialBlocksAtom, {});
+  });
+
+  it("should return empty array when no partial blocks exist", async () => {
+    const mockBlocks = [{ _id: "1", _type: "Container" }];
+    mockGetPageData.mockReturnValue({ blocks: mockBlocks });
+
+    const { result } = renderHook(() => useSavePage());
+
+    await act(async () => {
+      await result.current.savePageAsync(false);
+    });
+
+    expect(mockOnSave).toHaveBeenCalledWith(
+      expect.objectContaining({
+        partialIds: [],
+      }),
+    );
+  });
+
+  it("should return partial IDs from top-level PartialBlock", async () => {
+    const mockBlocks = [
+      { _id: "1", _type: "Container" },
+      { _id: "2", _type: "PartialBlock", partialBlockId: "partial-1" },
+    ];
+    mockGetPageData.mockReturnValue({ blocks: mockBlocks });
+
+    builderStore.set(partialBlocksAtom, {
+      "partial-1": { blocks: [], dependencies: [], status: "loaded" },
+    });
+
+    const { result } = renderHook(() => useSavePage());
+
+    await act(async () => {
+      await result.current.savePageAsync(false);
+    });
+
+    expect(mockOnSave).toHaveBeenCalledWith(
+      expect.objectContaining({
+        partialIds: ["partial-1"],
+      }),
+    );
+  });
+
+  it("should return partial IDs from GlobalBlock type", async () => {
+    const mockBlocks = [{ _id: "1", _type: "GlobalBlock", partialBlockId: "global-1" }];
+    mockGetPageData.mockReturnValue({ blocks: mockBlocks });
+
+    builderStore.set(partialBlocksAtom, {
+      "global-1": { blocks: [], dependencies: [], status: "loaded" },
+    });
+
+    const { result } = renderHook(() => useSavePage());
+
+    await act(async () => {
+      await result.current.savePageAsync(false);
+    });
+
+    expect(mockOnSave).toHaveBeenCalledWith(
+      expect.objectContaining({
+        partialIds: ["global-1"],
+      }),
+    );
+  });
+
+  it("should collect nested partial IDs from dependencies", async () => {
+    const mockBlocks = [{ _id: "1", _type: "PartialBlock", partialBlockId: "partial-1" }];
+    mockGetPageData.mockReturnValue({ blocks: mockBlocks });
+
+    builderStore.set(partialBlocksAtom, {
+      "partial-1": {
+        blocks: [{ _id: "nested", _type: "PartialBlock", partialBlockId: "partial-2" }],
+        dependencies: ["partial-2"],
+        status: "loaded",
+      },
+      "partial-2": { blocks: [], dependencies: [], status: "loaded" },
+    });
+
+    const { result } = renderHook(() => useSavePage());
+
+    await act(async () => {
+      await result.current.savePageAsync(false);
+    });
+
+    expect(mockOnSave).toHaveBeenCalledWith(
+      expect.objectContaining({
+        partialIds: expect.arrayContaining(["partial-1", "partial-2"]),
+      }),
+    );
+  });
+
+  it("should collect deeply nested partial IDs", async () => {
+    const mockBlocks = [{ _id: "1", _type: "PartialBlock", partialBlockId: "partial-1" }];
+    mockGetPageData.mockReturnValue({ blocks: mockBlocks });
+
+    builderStore.set(partialBlocksAtom, {
+      "partial-1": {
+        blocks: [],
+        dependencies: ["partial-2"],
+        status: "loaded",
+      },
+      "partial-2": {
+        blocks: [],
+        dependencies: ["partial-3"],
+        status: "loaded",
+      },
+      "partial-3": { blocks: [], dependencies: [], status: "loaded" },
+    });
+
+    const { result } = renderHook(() => useSavePage());
+
+    await act(async () => {
+      await result.current.savePageAsync(false);
+    });
+
+    expect(mockOnSave).toHaveBeenCalledWith(
+      expect.objectContaining({
+        partialIds: expect.arrayContaining(["partial-1", "partial-2", "partial-3"]),
+      }),
+    );
+  });
+
+  it("should return unique partial IDs when same partial is used multiple times", async () => {
+    const mockBlocks = [
+      { _id: "1", _type: "PartialBlock", partialBlockId: "partial-1" },
+      { _id: "2", _type: "PartialBlock", partialBlockId: "partial-1" },
+      { _id: "3", _type: "PartialBlock", partialBlockId: "partial-2" },
+    ];
+    mockGetPageData.mockReturnValue({ blocks: mockBlocks });
+
+    builderStore.set(partialBlocksAtom, {
+      "partial-1": { blocks: [], dependencies: [], status: "loaded" },
+      "partial-2": { blocks: [], dependencies: [], status: "loaded" },
+    });
+
+    const { result } = renderHook(() => useSavePage());
+
+    await act(async () => {
+      await result.current.savePageAsync(false);
+    });
+
+    const call = mockOnSave.mock.calls[0][0];
+    expect(call.partialIds).toHaveLength(2);
+    expect(call.partialIds).toContain("partial-1");
+    expect(call.partialIds).toContain("partial-2");
+  });
+
+  it("should handle circular dependencies without infinite loop", async () => {
+    const mockBlocks = [{ _id: "1", _type: "PartialBlock", partialBlockId: "partial-1" }];
+    mockGetPageData.mockReturnValue({ blocks: mockBlocks });
+
+    builderStore.set(partialBlocksAtom, {
+      "partial-1": {
+        blocks: [],
+        dependencies: ["partial-2"],
+        status: "loaded",
+      },
+      "partial-2": {
+        blocks: [],
+        dependencies: ["partial-1"], // circular reference
+        status: "loaded",
+      },
+    });
+
+    const { result } = renderHook(() => useSavePage());
+
+    await act(async () => {
+      await result.current.savePageAsync(false);
+    });
+
+    expect(mockOnSave).toHaveBeenCalledWith(
+      expect.objectContaining({
+        partialIds: expect.arrayContaining(["partial-1", "partial-2"]),
+      }),
+    );
+  });
+
+  it("should skip partials that are not loaded", async () => {
+    const mockBlocks = [{ _id: "1", _type: "PartialBlock", partialBlockId: "partial-1" }];
+    mockGetPageData.mockReturnValue({ blocks: mockBlocks });
+
+    builderStore.set(partialBlocksAtom, {
+      "partial-1": {
+        blocks: [],
+        dependencies: ["partial-2"],
+        status: "loading", // not loaded yet
+      },
+    });
+
+    const { result } = renderHook(() => useSavePage());
+
+    await act(async () => {
+      await result.current.savePageAsync(false);
+    });
+
+    const call = mockOnSave.mock.calls[0][0];
+    expect(call.partialIds).toContain("partial-1");
+    expect(call.partialIds).not.toContain("partial-2");
+  });
+
+  it("should handle mixed PartialBlock and GlobalBlock types", async () => {
+    const mockBlocks = [
+      { _id: "1", _type: "PartialBlock", partialBlockId: "partial-1" },
+      { _id: "2", _type: "GlobalBlock", partialBlockId: "global-1" },
+    ];
+    mockGetPageData.mockReturnValue({ blocks: mockBlocks });
+
+    builderStore.set(partialBlocksAtom, {
+      "partial-1": { blocks: [], dependencies: [], status: "loaded" },
+      "global-1": { blocks: [], dependencies: [], status: "loaded" },
+    });
+
+    const { result } = renderHook(() => useSavePage());
+
+    await act(async () => {
+      await result.current.savePageAsync(false);
+    });
+
+    expect(mockOnSave).toHaveBeenCalledWith(
+      expect.objectContaining({
+        partialIds: expect.arrayContaining(["partial-1", "global-1"]),
+      }),
+    );
   });
 });
