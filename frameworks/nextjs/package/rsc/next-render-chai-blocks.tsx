@@ -7,7 +7,6 @@ import { ChaiBuilder } from "../ChaiBuilder";
 import { ImageBlock } from "./image-block";
 import { JSONLD } from "./json-ld";
 import { LinkBlock } from "./link-block";
-import { registerBlocks } from "../blocks";
 // TODO: Keep this NextJSRenderChaiBlocks implementation functionally aligned with the RSC
 // version in render-chai-blocks.tsx:
 // https://github.com/chaibuilder/frameworks/blob/main/packages/next/src/blocks/rsc/render-chai-blocks.tsx
@@ -50,7 +49,6 @@ export const NextJSRenderChaiBlocks = async ({
     | React.ComponentType<ChaiBlockComponentProps<ImageBlockProps>>
     | Promise<React.ComponentType<ChaiBlockComponentProps<ImageBlockProps>>>;
 }) => {
-  registerBlocks();
   setChaiBlockComponent("Link", await linkComponent);
   setChaiBlockComponent("Image", await imageComponent);
   const pageData = await ChaiBuilder.getPageExternalData({
