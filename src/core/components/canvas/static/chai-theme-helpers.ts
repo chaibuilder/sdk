@@ -1,5 +1,5 @@
 import { getAllRegisteredFonts } from "@/runtime";
-import type { ChaiFontViaSrc, ChaiFontViaUrl } from "@/types";
+import type { ChaiFontViaUrl, ChaiLocalFont } from "@/types";
 import type { ChaiTheme, ChaiThemeOptions } from "@/types/chaibuilder-editor-props";
 import { flatten, get, keys, uniqBy } from "lodash-es";
 
@@ -128,11 +128,11 @@ export const getThemeFontsCSSImport = (fonts: ChaiFontViaUrl[]) => {
     .join("\n");
 };
 
-export const getThemeCustomFontFace = (fonts: ChaiFontViaSrc[]) => {
+export const getThemeCustomFontFace = (fonts: ChaiLocalFont[]) => {
   if (!fonts || fonts.length === 0) return "";
 
   return uniqBy(fonts, "family")
-    .map((font: ChaiFontViaSrc) =>
+    .map((font: ChaiLocalFont) =>
       font.src
         .map(
           (source) => `@font-face {

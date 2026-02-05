@@ -1,4 +1,4 @@
-import { getRegisteredFont } from "@chaibuilder/sdk/runtime";
+import { getAllRegisteredFonts, getRegisteredFont } from "@chaibuilder/sdk/runtime";
 import { ChaiFont, ChaiFontViaSrc } from "@chaibuilder/sdk/types";
 import { compact, filter, has, map, uniqBy } from "lodash";
 import { fontsMap, fontUrls } from "./fonts-map-variable";
@@ -51,7 +51,8 @@ export const getFontStyles = async (
   headingFont: string,
   bodyFont: string,
 ): Promise<{ fontStyles: string; preloads: string[] }> => {
-  let fonts = fontsMap[headingFont] ?? "";
+  const registeredFonts = getAllRegisteredFonts();
+  let fonts = "";
   if (headingFont !== bodyFont) {
     fonts += fontsMap[bodyFont] ?? "";
   }

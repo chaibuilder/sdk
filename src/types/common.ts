@@ -83,7 +83,7 @@ export type ChaiFontViaUrl = {
   fallback: string;
 };
 
-export type ChaiFontViaSrc = {
+export type ChaiLocalFont = {
   family: string;
   src: {
     url: string;
@@ -96,4 +96,9 @@ export type ChaiFontViaSrc = {
   fallback: string;
 };
 
-export type ChaiFont = ChaiFontViaUrl | ChaiFontViaSrc;
+export type ChaiSystemFont = {
+  family: string;
+  fallback: string;
+};
+
+export type ChaiFont = ChaiFontViaUrl | ChaiLocalFont | ChaiSystemFont;

@@ -10,8 +10,7 @@ import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
 import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
 import { useTheme, useThemeOptions } from "@/hooks/use-theme";
 import { useRegisteredFonts } from "@/runtime";
-import { ChaiFontViaSrc, ChaiFontViaUrl } from "@/types";
-import { ChaiBuilderThemeValues } from "@/types/types";
+import { ChaiFontViaUrl, ChaiLocalFont, ChaiTheme } from "@/types";
 import aspectRatio from "@tailwindcss/aspect-ratio";
 import containerQueries from "@tailwindcss/container-queries";
 import forms from "@tailwindcss/forms";
@@ -73,7 +72,7 @@ export const HeadTags = () => {
 
   return (
     <>
-      <CssThemeVariables theme={chaiTheme as ChaiBuilderThemeValues} />
+      <CssThemeVariables theme={chaiTheme as ChaiTheme} />
       <Fonts />
       <SelectedBlocks />
       <SelectedStylingBlocks />
@@ -118,7 +117,7 @@ const Fonts = () => {
     [pickedFonts],
   );
   const customFonts = useMemo(
-    () => getThemeCustomFontFace(filter(pickedFonts, (font) => has(font, "src")) as ChaiFontViaSrc[]),
+    () => getThemeCustomFontFace(filter(pickedFonts, (font) => has(font, "src")) as ChaiLocalFont[]),
     [pickedFonts],
   );
   return (
