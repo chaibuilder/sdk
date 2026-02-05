@@ -45,18 +45,39 @@ export const useKeyEventWatcher = (doc?: Document) => {
   useHotkeys(
     "ctrl+x,meta+x",
     (e) => {
+      // Check if there's selected text in the document
+      const selection = window.getSelection();
+      if (selection && selection.toString().length > 0) {
+        // Text is selected - allow browser default cut behavior
+        // Do not preventDefault, let the browser handle the cut
+        return;
+      }
+
+      // No text selected - cut blocks
       e.preventDefault();
       if (!isEmpty(ids)) {
         setCutBlockIds(ids);
       }
     },
-    { ...options, enabled: !isEmpty(ids), preventDefault: true },
+    { ...options, enabled: !isEmpty(ids) },
     [ids, setCutBlockIds],
   );
   useHotkeys(
     "ctrl+c,meta+c",
-    () => setCopyBlockIds(ids),
-    { ...options, enabled: !isEmpty(ids), preventDefault: true },
+    (e) => {
+      // Check if there's selected text in the document
+      const selection = window.getSelection();
+      if (selection && selection.toString().length > 0) {
+        // Text is selected - allow browser default copy behavior
+        // Do not preventDefault, let the browser handle the copy
+        return;
+      }
+
+      // No text selected - copy block JSON
+      e.preventDefault();
+      setCopyBlockIds(ids);
+    },
+    { ...options, enabled: !isEmpty(ids) },
     [ids, setCopyBlockIds],
   );
   useHotkeys(

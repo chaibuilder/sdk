@@ -70,28 +70,38 @@ export const getFontFamily = (font: string) => {
   return `"${font}", ${get(chaiFont, "fallback", "")}`;
 };
 
-export const getChaiThemeCssVariables = (chaiTheme: ChaiTheme) => {
+export const getChaiThemeCssVariables = ({
+  theme,
+  fontVariables = false,
+}: {
+  theme: ChaiTheme;
+  fontVariables?: boolean;
+}) => {
+  const chaiTheme = theme;
   return `:root {
     ${
-      chaiTheme.fontFamily &&
-      Object.entries(chaiTheme.fontFamily)
-        .map(([key, value]) => `--font-${key}: ${getFontFamily(value)};`)
-        .join("\n    ")
+      fontVariables && theme.fontFamily
+        ? Object.entries(theme.fontFamily)
+            .map(([key, value]) => `--font-${key}: ${getFontFamily(value)};`)
+            .join("\n    ")
+        : ""
     }
-    ${chaiTheme.borderRadius && `--radius: ${chaiTheme.borderRadius};`}
+    ${chaiTheme.borderRadius ? `--radius: ${chaiTheme.borderRadius};` : ""}
     ${
-      chaiTheme.colors &&
-      Object.entries(chaiTheme.colors)
-        .map(([key, value]) => `--${key}: ${hexToHSL(value[0])};`)
-        .join("\n    ")
+      chaiTheme.colors
+        ? Object.entries(chaiTheme.colors)
+            .map(([key, value]) => `--${key}: ${hexToHSL(value[0])};`)
+            .join("\n    ")
+        : ""
     }
   }
   .dark {
     ${
-      chaiTheme.colors &&
-      Object.entries(chaiTheme.colors)
-        .map(([key, value]) => `--${key}: ${hexToHSL(value[1])};`)
-        .join("\n    ")
+      chaiTheme.colors
+        ? Object.entries(chaiTheme.colors)
+            .map(([key, value]) => `--${key}: ${hexToHSL(value[1])};`)
+            .join("\n    ")
+        : ""
     }
   }`;
 };

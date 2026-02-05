@@ -1,10 +1,10 @@
 import { getChaiThemeCssVariables } from "@/render";
-import { ChaiBuilderThemeValues } from "@/types/types";
+import { ChaiTheme } from "@/types";
 import { useMemo } from "react";
 
-export const CssThemeVariables = ({ theme }: { theme: ChaiBuilderThemeValues }) => {
+export const CssThemeVariables = ({ theme }: { theme: ChaiTheme }) => {
   const themeVariables = useMemo(() => {
-    return getChaiThemeCssVariables(theme);
+    return getChaiThemeCssVariables({ theme, fontVariables: true });
   }, [theme]);
-  return <style id="chai-theme">{themeVariables}</style>;
+  return <style id="chai-theme" dangerouslySetInnerHTML={{ __html: themeVariables }} />;
 };
