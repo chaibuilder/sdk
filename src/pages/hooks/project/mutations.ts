@@ -21,6 +21,9 @@ export const useUpdateWebsiteFields = () => {
       queryClient.invalidateQueries({
         queryKey: [ACTIONS.GET_WEBSITE_DRAFT_SETTINGS],
       });
+      queryClient.invalidateQueries({
+        queryKey: [ACTIONS.GET_CHANGES],
+      });
       if (!args?.settings?.theme) {
         toast.success(`Website settings updated successfully.`);
       }

@@ -18,6 +18,7 @@ import { useIsLanguagePageCreated } from "@/pages/hooks/pages/use-is-languagep-p
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
 import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
+import { useUnpublishedWebsiteSettings } from "@/pages/hooks/project/use-unpublished-website-settings";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { throwConfetti } from "@/pages/utils/confetti";
 import Tooltip from "@/pages/utils/tooltip";
@@ -168,6 +169,7 @@ const PublishButton = () => {
   const [showCompareModal, setShowCompareModal] = useState(false);
   const { savePageAsync } = useSavePage();
   const [showTranslationWarning, setShowTranslationWarning] = useState(false);
+  const { hasUnpublishedSettings } = useUnpublishedWebsiteSettings();
 
   const { data: currentPage } = useChaiCurrentPage();
   const { mutate: publishPage, isPending } = usePublishPages();
@@ -257,8 +259,14 @@ const PublishButton = () => {
             <Button
               size="sm"
               disabled={isPending || !currentPage?.id}
-              className={`rounded-l-none border-l border-white/50 px-2 text-white ${buttonClassName}`}>
+              className={`relative rounded-l-none border-l border-white/50 px-2 text-white ${hasUnpublishedSettings ? "bg-gray-500 hover:bg-gray-600" : buttonClassName}`}>
               <ChevronDown className="h-4 w-4" />
+              {hasUnpublishedSettings && (
+                <>
+                  <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-orange-500" />
+                  <span className="absolute -right-0.5 -top-0.5 h-2 w-2 animate-ping rounded-full bg-orange-500" />
+                </>
+              )}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-52">
@@ -281,6 +289,17 @@ const PublishButton = () => {
             <DropdownMenuItem onClick={() => setShowModal(true)} className="cursor-pointer text-xs">
               {t("Open")} publish menu
             </DropdownMenuItem>
+            {hasUnpublishedSettings && (
+              <DropdownMenuItem
+                disabled={isPending}
+                className="cursor-pointer text-xs"
+                onClick={() => publishPage({ ids: ["THEME"] }, { onSuccess: () => throwConfetti("TOP_RIGHT") })}>
+                <span className="flex h-full w-full items-center gap-2">
+                  {t("Publish")} theme
+                  <span className="h-1 w-1 animate-ping rounded-full bg-orange-500" />
+                </span>
+              </DropdownMenuItem>
+            )}
             {isPublished && hasUnpublishedChanges && (
               <DropdownMenuItem onClick={() => setShowCompareModal(true)} className="cursor-pointer text-xs">
                 {t("View Unpublished changes")}

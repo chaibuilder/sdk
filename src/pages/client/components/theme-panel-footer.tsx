@@ -1,13 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/hooks/use-theme";
-import { usePublishPages } from "@/pages/hooks/pages/mutations";
 import { useUpdateWebsiteFields } from "@/pages/hooks/project/mutations";
-import { throwConfetti } from "@/pages/utils/confetti";
 import { useTranslation } from "react-i18next";
 
 const ThemePanelFooter = () => {
   const [theme] = useTheme();
-  const { mutate: publishPage, isPending: isPublishing } = usePublishPages();
   const { mutateAsync: updateTheme, isPending } = useUpdateWebsiteFields();
   const { t } = useTranslation();
 
@@ -15,25 +12,10 @@ const ThemePanelFooter = () => {
     updateTheme({ settings: { theme } });
   };
 
-  const handleThemePublish = async () => {
-    await updateTheme({ settings: { theme } });
-    publishPage(
-      { ids: ["THEME"] },
-      {
-        onSuccess: () => {
-          throwConfetti("BOTTOM_RIGHT");
-        },
-      },
-    );
-  };
-
   return (
     <div className="flex items-center justify-center gap-x-3 border-t bg-white py-3">
-      <Button size="sm" variant="outline" disabled={isPublishing || isPending} onClick={handleThemeSave}>
-        {t("Save draft")}
-      </Button>
-      <Button size="sm" disabled={isPublishing || isPending} onClick={handleThemePublish}>
-        {t("Publish")}
+      <Button className="min-w-28" size="sm" disabled={isPending} onClick={handleThemeSave}>
+        {t("Save")}
       </Button>
     </div>
   );
