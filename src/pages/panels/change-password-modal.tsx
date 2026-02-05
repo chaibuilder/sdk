@@ -16,12 +16,6 @@ import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
-export type ChangePasswordPayload = {
-  oldPassword: string;
-  newPassword: string;
-  confirmPassword: string;
-};
-
 type ChangePasswordModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;

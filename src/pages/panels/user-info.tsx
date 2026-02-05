@@ -22,8 +22,6 @@ import { useTranslation } from "react-i18next";
 const ChangePasswordModal = lazy(() =>
   import("./change-password-modal").then((mod) => ({ default: mod.ChangePasswordModal })),
 );
-
-export type { ChangePasswordPayload } from "./change-password-modal";
 export const userInfoPanelId = "user-info";
 
 export const UserInfoButton = () => {
