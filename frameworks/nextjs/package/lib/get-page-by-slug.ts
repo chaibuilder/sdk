@@ -1,13 +1,13 @@
 import { ChaiPartialPage } from "@/types";
 import { db, safeQuery, schema } from "@chaibuilder/sdk/actions";
-import { and, eq, like, or } from "drizzle-orm";
+import { and, eq, or } from "drizzle-orm";
 import { get, isEmpty, keys, reverse, sortBy, take } from "lodash";
 
 export async function getPageBySlug(
   slug: string,
   appId: string,
   draftMode: boolean,
-  dynamicSegments: Record<string, string> = {},
+  dynamicSegments: Record<string, string>,
 ): Promise<ChaiPartialPage> {
   const table = draftMode ? db.query.appPages : db.query.appPagesOnline;
   const schemaTable = draftMode ? schema.appPages : schema.appPagesOnline;
@@ -36,7 +36,7 @@ export async function getPageBySlug(
   }
 
   // Step 2: Handle dynamic routing
-  // Extract segments from slug: /blog/post-1 -> segment1: /blog/, segment2: /blog/post-1/
+  // Extract segments from slug: /blog/post-1 -> segment1: /blog, segment2: /blog/post-1
   const strippedSlug = slug.slice(1);
   const segment1 = `/${take(strippedSlug.split("/"), 1).join("/")}`;
   const segment2 = `/${take(strippedSlug.split("/"), 2).join("/")}`;
