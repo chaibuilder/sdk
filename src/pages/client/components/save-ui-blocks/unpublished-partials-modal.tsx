@@ -31,21 +31,20 @@ const UnpublishedPartialsModal = ({
           <DialogHeader>
             <DialogTitle>Unpublished Partial Blocks</DialogTitle>
             <DialogDescription>
-              The page contains unpublished partial blocks. You can continue to publish them along with the current page or cancel.
+              These partial blocks will be published along with the page. Do you want to continue?
             </DialogDescription>
           </DialogHeader>
           {partialBlocksInfo?.length > 0 && (
             <div className="max-h-32 overflow-y-auto rounded-md border bg-muted/50 p-2">
               <ul className="space-y-1 text-sm">
-                {partialBlocksInfo.map((info, index) => (
-                  <li key={index} className="flex items-center justify-between text-muted-foreground">
-                    <span>• {info.name}</span>
-                    <span className={`ml-2 text-[10px] px-1.5 pb-0.5 rounded ${
-                      info.status === "unpublished" 
-                        ? "text-orange-700" 
-                        : "text-blue-700"
-                    }`}>
-                      {info.status === "unpublished" ? "Unpublished page" : "Unpublished changes"}
+                {partialBlocksInfo.map((info) => (
+                  <li key={info?.id} className="flex items-center justify-between text-muted-foreground">
+                    <span>• {info?.name}</span>
+                    <span
+                      className={`ml-2 rounded px-1.5 pb-0.5 text-[10px] ${
+                        info?.status === "unpublished" ? "text-orange-700" : "text-blue-700"
+                      }`}>
+                      {info?.status === "unpublished" ? "Unpublished page" : "Unpublished changes"}
                     </span>
                   </li>
                 ))}
@@ -57,7 +56,7 @@ const UnpublishedPartialsModal = ({
               Cancel
             </Button>
             <Button onClick={onContinue} disabled={isPending}>
-              {isPending ? "Publishing..." : "Publish with Partial Blocks"}
+              {isPending ? "Publishing..." : "Publish page & Partial blocks"}
             </Button>
           </DialogFooter>
         </DialogContent>

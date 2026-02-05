@@ -1,6 +1,6 @@
 import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
-import { compact, filter, find, get, isEmpty } from "lodash-es";
+import { compact, filter, find, get, isEmpty, uniq } from "lodash-es";
 import { useCallback } from "react";
 
 export type PartialBlockStatus = "unpublished" | "unpublished_changes";
@@ -16,10 +16,15 @@ export const useGetUnpublishedPartialBlocks = () => {
   const { data: websitePages } = useWebsitePages();
 
   const getUnpublishedPartialBlocks = useCallback(() => {
+    // Guard: return empty if websitePages is not loaded yet
+    if (!websitePages) {
+      return { ids: [], names: [], partialBlocksInfo: [] };
+    }
+
     // Get all blocks with _type === 'PartialBlock'
     const partialBlocks = filter(blocksStore, (block) => block._type === "PartialBlock");
     // Extract unique partialBlockId values
-    const partialBlockIds = compact(partialBlocks.map((block) => get(block, "partialBlockId", "")));
+    const partialBlockIds = uniq(compact(partialBlocks.map((block) => get(block, "partialBlockId", ""))));
     // Check which ones are unpublished or have unpublished changes
     const partialBlocksInfo: PartialBlockInfo[] = compact(
       partialBlockIds.map((id) => {
