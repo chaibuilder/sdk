@@ -20,6 +20,7 @@ class ChaiBuilder {
       throw new Error("Please initialize ChaiBuilder with an API key");
     }
     ChaiBuilder.appId = appId;
+    ChaiBuilder.setDraftMode(draftMode);
     await ChaiBuilder.loadSiteSettings(draftMode);
   };
 
@@ -36,7 +37,6 @@ class ChaiBuilder {
     const siteSettings = await ChaiBuilder.getSiteSettings();
 
     ChaiBuilder.setFallbackLang(siteSettings?.fallbackLang || "en");
-    ChaiBuilder.setDraftMode(draftMode);
   }
 
   static setDraftMode(draftMode: boolean) {
