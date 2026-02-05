@@ -36,8 +36,9 @@ export const useCanAddPartial = (targetPartialId: string): CanAddPartialResult =
     }
 
     // Depth check - calculate what the new depth would be
+    const currentDepth = getPartialDepth(currentPageId, dependencies);
     const targetDepth = getPartialDepth(targetPartialId, dependencies);
-    if (targetDepth >= MAX_PARTIAL_DEPTH) {
+    if (currentDepth + targetDepth > MAX_PARTIAL_DEPTH) {
       return { canAdd: false, reason: `Maximum nesting depth (${MAX_PARTIAL_DEPTH} levels) would be exceeded` };
     }
 
@@ -65,8 +66,9 @@ export const useCheckPartialCanAdd = () => {
       }
 
       // Depth check
+      const currentDepth = getPartialDepth(currentPageId, dependencies);
       const targetDepth = getPartialDepth(targetPartialId, dependencies);
-      if (targetDepth >= MAX_PARTIAL_DEPTH) {
+      if (currentDepth + targetDepth > MAX_PARTIAL_DEPTH) {
         return { canAdd: false, reason: `Maximum nesting depth (${MAX_PARTIAL_DEPTH} levels) would be exceeded` };
       }
 
