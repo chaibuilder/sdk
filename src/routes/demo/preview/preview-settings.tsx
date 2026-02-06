@@ -4,8 +4,8 @@ import { get } from "lodash-es";
 import { useEffect, useState } from "react";
 
 const getTailwindConfig = (options: any, w: Window) => {
-  const headingFont = get(options, "headingFont", "Inter");
-  const bodyFont = get(options, "bodyFont", "Inter");
+  const headingFont = get(options, "headingFont", "Arial");
+  const bodyFont = get(options, "bodyFont", "Arial");
   const borderRadius = get(options, "roundedCorners", "0");
 
   const BG_LIGHT_MODE = get(options, "bodyBgLightColor", "#fff");

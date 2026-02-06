@@ -76,8 +76,8 @@ export const defaultThemeOptions: ChaiThemeOptions = {
 
 export const defaultThemeValues: ChaiTheme = {
   fontFamily: {
-    heading: "Inter",
-    body: "Inter",
+    heading: "Arial",
+    body: "Arial",
   },
   borderRadius: "6px",
   colors: {

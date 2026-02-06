@@ -18,8 +18,8 @@ export const ChaiPageStyles = async (props: { page: ChaiFullPage }) => {
   const themeCssVariables = getChaiThemeCssVariables({ theme });
   const pageBlocks = applyDesignTokens(page.blocks ?? [], designTokens);
   const styles = page ? await ChaiBuilder.getBlocksStyles(pageBlocks) : null;
-  const bodyFont = get(theme, "fontFamily.body", "Inter");
-  const headingFont = get(theme, "fontFamily.heading", "Inter");
+  const bodyFont = get(theme, "fontFamily.body", "Arial");
+  const headingFont = get(theme, "fontFamily.heading", "Arial");
   const { fontStyles, preloads } = await getFontStyles(headingFont, bodyFont);
   return (
     <>
