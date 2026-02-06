@@ -1,11 +1,13 @@
 import { ChaiBuilder } from "@/package/ChaiBuilder";
 import { ChaiPageStyles, PreviewBanner, RenderChaiBlocks } from "@/package/rsc";
 import { ChaiPageProps } from "@/package/types";
+import { registerPageTypes } from "@/page-types";
 import { loadWebBlocks } from "@chaibuilder/sdk/web-blocks";
 import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
 
 loadWebBlocks();
+registerPageTypes();
 
 export const dynamic = "force-static";
 
