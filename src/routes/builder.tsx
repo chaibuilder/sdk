@@ -6,7 +6,7 @@ import { PARTIALS } from "@/routes/demo/PARTIALS";
 import { defaultShadcnPreset } from "@/routes/demo/THEME_PRESETS";
 import Topbar from "@/routes/demo/top-bar";
 import { registerChaiLibrary, registerChaiTopBar } from "@/runtime/client";
-import { ChaiSavePageData, ChaiTheme } from "@/types/chaibuilder-editor-props";
+import { ChaiSavePageData, ChaiSaveWebsiteData, ChaiTheme } from "@/types/chaibuilder-editor-props";
 import { ChaiBlock } from "@/types/common";
 import { loadWebBlocks } from "@/web-blocks";
 import { useAtom } from "jotai";
@@ -48,15 +48,22 @@ function ChaiBuilderDefault() {
       theme={theme}
       autoSave={true}
       blocks={blocks}
-      onSave={async ({ blocks, theme, needTranslations, designTokens }: ChaiSavePageData) => {
-        console.log("onSave", blocks, theme, needTranslations, designTokens);
+      onSave={async ({ blocks, needTranslations }: ChaiSavePageData) => {
+        console.log("onSave", blocks, needTranslations);
         localStorage.setItem("chai-builder-blocks", JSON.stringify(blocks));
-        localStorage.setItem("chai-builder-theme", JSON.stringify(theme));
-        localStorage.setItem("chai-builder-design-tokens", JSON.stringify(designTokens));
-        setTheme(theme as ChaiTheme);
-        setDesignTokensValue(designTokens);
         toast.success("Page saved successfully");
         await new Promise((resolve) => setTimeout(resolve, 100));
+        return true;
+      }}
+      onSaveWebsiteData={async ({ type, data }: ChaiSaveWebsiteData) => {
+        console.log("onSaveWebsiteData", type, data);
+        if (type === "THEME") {
+          localStorage.setItem("chai-builder-theme", JSON.stringify(data));
+          setTheme(data as ChaiTheme);
+        } else if (type === "DESIGN_TOKENS") {
+          localStorage.setItem("chai-builder-design-tokens", JSON.stringify(data));
+          setDesignTokensValue(data);
+        }
         return true;
       }}
       getPartialBlockBlocks={async (partialBlockKey: string) => {

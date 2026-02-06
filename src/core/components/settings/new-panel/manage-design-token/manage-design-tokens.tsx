@@ -8,6 +8,7 @@ import { useIncrementActionsCount } from "@/core/components/use-auto-save";
 import { DESIGN_TOKEN_PREFIX } from "@/core/constants/STRINGS";
 import { orderClassesByBreakpoint } from "@/core/functions/order-classes-by-breakpoint";
 import { removeDuplicateClasses } from "@/core/functions/remove-duplicate-classes";
+import { useSaveWebsiteData } from "@/hooks/use-save-website-data";
 import {
   ArrowLeftIcon,
   EyeOpenIcon,
@@ -86,6 +87,7 @@ const ManageDesignTokens = ({}: ManageDesignTokensProps) => {
   const { t } = useTranslation();
   const [designTokens, setDesignTokens] = useAtom(chaiDesignTokensAtom);
   const incrementActionsCount = useIncrementActionsCount();
+  const { saveDesignTokens, debouncedSaveDesignTokens } = useSaveWebsiteData();
 
   // Unified view state
   const [viewMode, setViewMode] = useState<ViewMode>("view");
@@ -149,10 +151,11 @@ const ManageDesignTokens = ({}: ManageDesignTokensProps) => {
         };
         setDesignTokens(newTokens);
         incrementActionsCount();
+        debouncedSaveDesignTokens();
         setIsSaving(false);
       }, 250);
     },
-    [editingTokenId, viewMode, designTokens, setDesignTokens, incrementActionsCount],
+    [editingTokenId, viewMode, designTokens, setDesignTokens, incrementActionsCount, debouncedSaveDesignTokens],
   );
 
   const handleAddToken = () => {
@@ -182,6 +185,7 @@ const ManageDesignTokens = ({}: ManageDesignTokensProps) => {
     };
     setDesignTokens(newTokens);
     incrementActionsCount();
+    saveDesignTokens();
     toast.success(t("Token added successfully"));
     resetAndGoToView();
   };
@@ -191,6 +195,7 @@ const ManageDesignTokens = ({}: ManageDesignTokensProps) => {
     delete newTokens[tokenId];
     setDesignTokens(newTokens);
     incrementActionsCount();
+    saveDesignTokens();
     toast.success(t("Token deleted successfully"));
   };
 

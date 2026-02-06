@@ -23,7 +23,7 @@ import { loadWebBlocks } from "@/web-blocks";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useAtom } from "jotai";
-import { cloneDeep, get, isEmpty, isEqual, pick } from "lodash-es";
+import { cloneDeep, get, pick } from "lodash-es";
 import { Loader } from "lucide-react";
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { previewUrlAtom } from "./atom/preview-url";
@@ -40,7 +40,6 @@ const PageLock = lazy(() => import("./client/components/page-lock/page-lock"));
 const NoLanguagePageDialog = lazy(() => import("@/pages/client/components/no-language-page/no-language-page-dialog"));
 const DigitalAssetManager = lazy(() => import("@/pages/digital-asset-manager/digital-asset-manager"));
 const SaveToLibrary = lazy(() => import("@/pages/client/components/save-ui-blocks/save-to-lib"));
-const ThemePanelFooter = lazy(() => import("@/pages/client/components/theme-panel-footer"));
 const PreviewWeb = lazy(() => import("./client/components/web-preview"));
 
 registerPagesFeatureFlags();
@@ -200,24 +199,22 @@ const DefaultChaiBuilder = (props: ChaiWebsiteBuilderProps) => {
         pageTypes={pageTypes}
         searchPageTypeItems={searchPageTypeItems}
         askAiCallBack={askAiCallBack}
-        onSave={async ({ blocks: _blocks, theme, needTranslations, designTokens }) => {
+        onSave={async ({ blocks: _blocks, needTranslations }) => {
           if (!page) return true;
           blocksDataRef.current = _blocks;
           const updatedBlocks = [..._blocks];
           await onSave({ page: page as string, blocks: updatedBlocks, needTranslations });
           blocksDataRef.current = updatedBlocks;
-          const settings: { theme?: any; designTokens?: any } = {};
-          if (!isEqual(theme, currentTheme)) {
-            settings.theme = theme;
-          }
-          if (!isEqual(designTokens, websiteConfig?.designTokens)) {
-            settings.designTokens = designTokens;
-          }
-          if (isEmpty(settings)) return true;
-          await updateSettings({ settings });
           return true;
         }}
-        themePanelComponent={ThemePanelFooter}
+        onSaveWebsiteData={async ({ type, data }) => {
+          if (type === "THEME") {
+            await updateSettings({ settings: { theme: data } });
+          } else if (type === "DESIGN_TOKENS") {
+            await updateSettings({ settings: { designTokens: data } });
+          }
+          return true;
+        }}
         {...forwardedProps}>
         <PageLock isFetchingPageData={isFetchingPageData} />
       </ChaiBuilderEditor>

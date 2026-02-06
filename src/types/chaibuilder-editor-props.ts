@@ -56,6 +56,10 @@ export type ChaiSavePageData = {
   designTokens: ChaiDesignTokens;
 };
 
+export type ChaiSaveWebsiteData =
+  | { type: "THEME"; data: ChaiTheme }
+  | { type: "DESIGN_TOKENS"; data: ChaiDesignTokens };
+
 export type ChaiAskAiResponse = {
   blocks?: Array<{ _id: string } & Partial<ChaiBlock>>;
   usage?: Record<any, number>;
@@ -219,7 +223,13 @@ export interface ChaiBuilderEditorProps {
    * onSave callback function
    * @param saveData
    */
-  onSave?: ({ blocks, theme, autoSave }: ChaiSavePageData) => Promise<boolean | Error>;
+  onSave?: ({ blocks, autoSave }: ChaiSavePageData) => Promise<boolean | Error>;
+
+  /**
+   * onSaveWebsiteData callback function for theme and design tokens
+   * @param saveData
+   */
+  onSaveWebsiteData?: (data: ChaiSaveWebsiteData) => Promise<boolean | Error>;
 
   /**
    * onSaveStateChange callback function

@@ -1,6 +1,6 @@
-import { checkMissingTranslations, useSavePage, builderSaveStateAtom } from "@/hooks/use-save-page";
-import { builderStore } from "@/atoms/store";
 import { userActionsCountAtom } from "@/atoms/builder";
+import { builderStore } from "@/atoms/store";
+import { builderSaveStateAtom, checkMissingTranslations, useSavePage } from "@/hooks/use-save-page";
 import { getRegisteredChaiBlock } from "@/runtime";
 import { act, renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -19,10 +19,6 @@ vi.mock("@/hooks/use-builder-prop", () => ({
 
 vi.mock("@/hooks/use-get-page-data", () => ({
   useGetPageData: vi.fn(),
-}));
-
-vi.mock("@/hooks/use-theme", () => ({
-  useTheme: vi.fn(),
 }));
 
 vi.mock("@/hooks/use-permissions", () => ({
@@ -246,7 +242,6 @@ describe("useSavePage - prevent save when no unsaved changes", () => {
 
     const { useBuilderProp } = await import("@/hooks/use-builder-prop");
     const { useGetPageData } = await import("@/hooks/use-get-page-data");
-    const { useTheme } = await import("@/hooks/use-theme");
     const { usePermissions } = await import("@/hooks/use-permissions");
     const { useLanguages } = await import("@/hooks/use-languages");
     const { useIsPageLoaded } = await import("@/hooks/use-is-page-loaded");
@@ -259,7 +254,6 @@ describe("useSavePage - prevent save when no unsaved changes", () => {
     });
 
     (useGetPageData as any).mockReturnValue(mockGetPageData);
-    (useTheme as any).mockReturnValue([{}]);
     (usePermissions as any).mockReturnValue({ hasPermission: mockHasPermission });
     (useLanguages as any).mockReturnValue({ selectedLang: "en", fallbackLang: "en" });
     (useIsPageLoaded as any).mockReturnValue([true]);
@@ -376,7 +370,7 @@ describe("useSavePage - prevent save when no unsaved changes", () => {
     );
   });
 
-  it("should pass blocks, theme, and designTokens to onSave callback", async () => {
+  it("should pass blocks to onSave callback", async () => {
     builderStore.set(builderSaveStateAtom, "UNSAVED");
     const mockBlocks = [{ _id: "1", _type: "Container" }];
     mockGetPageData.mockReturnValue({ blocks: mockBlocks });
@@ -390,8 +384,6 @@ describe("useSavePage - prevent save when no unsaved changes", () => {
     expect(mockOnSave).toHaveBeenCalledWith(
       expect.objectContaining({
         blocks: mockBlocks,
-        theme: expect.any(Object),
-        designTokens: expect.any(Object),
       }),
     );
   });
