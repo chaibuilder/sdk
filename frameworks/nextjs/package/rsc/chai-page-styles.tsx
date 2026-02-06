@@ -1,9 +1,9 @@
-import { getFontStyles } from "@/package/lib/font-helpers";
-import { ChaiFullPage } from "@/package/types";
 import { applyDesignTokens, getChaiThemeCssVariables } from "@chaibuilder/sdk/render";
+import { getFontStyles } from "@chaibuilder/sdk/runtime";
 import { ChaiDesignTokens, ChaiTheme } from "@chaibuilder/sdk/types";
 import { get } from "lodash";
 import { ChaiBuilder } from "../ChaiBuilder";
+import { ChaiFullPage } from "../types";
 
 export const ChaiPageStyles = async (props: { page: ChaiFullPage }) => {
   const { page } = props;
