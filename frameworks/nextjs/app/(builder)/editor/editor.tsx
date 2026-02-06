@@ -9,7 +9,7 @@ import "@chaibuilder/sdk/styles";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useState } from "react";
 import { LoginScreen } from "./login";
-const ChaiBuilderEditor = dynamic(() => import("@chaibuilder/sdk/pages").then((mod) => mod.ChaiWebsiteBuilder), {
+const ChaiWebsiteBuilder = dynamic(() => import("@chaibuilder/sdk/pages").then((mod) => mod.ChaiWebsiteBuilder), {
   ssr: false,
 });
 
@@ -110,7 +110,7 @@ export default function Editor() {
   }
 
   return (
-    <ChaiBuilderEditor
+    <ChaiWebsiteBuilder
       flags={{
         dragAndDrop: true,
         designTokens: true,

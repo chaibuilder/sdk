@@ -21,6 +21,7 @@ export const ChaiPageStyles = async (props: { page: ChaiFullPage }) => {
   const bodyFont = get(theme, "fontFamily.body", "Arial");
   const headingFont = get(theme, "fontFamily.heading", "Arial");
   const { fontStyles, preloads } = await getFontStyles(headingFont, bodyFont);
+
   return (
     <>
       {preloads.map((preload) => (

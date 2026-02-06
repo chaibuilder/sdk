@@ -1,5 +1,5 @@
-import { getRegisteredFont } from "@chaibuilder/sdk/runtime";
-import { ChaiFont, ChaiFontBySrc } from "@chaibuilder/sdk/types";
+import { getRegisteredFont } from "@/runtime";
+import { ChaiFont, ChaiFontBySrc } from "@/types";
 import { compact, filter, has, map, uniqBy } from "lodash";
 
 const getThemeFontFaceCSS = (fonts: string[]) => {

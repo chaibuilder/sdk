@@ -39,7 +39,7 @@ export const NextJSRenderChaiBlocks = async ({
   imageComponent = ImageBlock,
   designTokens = {},
 }: {
-  page: ChaiFullPage & { fallbackLang: string };
+  page: ChaiFullPage;
   pageProps: ChaiPageProps;
   designTokens?: ChaiDesignTokens;
   linkComponent?:
@@ -67,7 +67,7 @@ export const NextJSRenderChaiBlocks = async ({
       <RenderChaiBlocksSdk
         externalData={pageData}
         blocks={!isEmpty(tokens) ? applyDesignTokens(page.blocks, tokens as ChaiDesignTokens) : page.blocks}
-        fallbackLang={page.fallbackLang}
+        fallbackLang={settings?.fallbackLang}
         lang={page.lang}
         pageProps={pageProps}
       />
