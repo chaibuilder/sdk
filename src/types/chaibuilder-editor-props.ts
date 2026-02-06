@@ -51,9 +51,7 @@ export type ChaiBreakpoint = {
 export type ChaiSavePageData = {
   autoSave: boolean;
   blocks: ChaiBlock[];
-  theme?: ChaiTheme;
   needTranslations?: boolean;
-  designTokens: ChaiDesignTokens;
 };
 
 export type ChaiSaveWebsiteData =
