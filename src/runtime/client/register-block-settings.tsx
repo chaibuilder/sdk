@@ -1,6 +1,6 @@
 export const RJSF_EXTENSIONS: Record<string, { id: string; component: React.ComponentType<any>; type: string }> = {};
 
-export const registerBlockSettingWidget = (id: string, component: React.ComponentType<any>) => {
+export const registerChaiBlockSettingWidget = (id: string, component: React.ComponentType<any>) => {
   RJSF_EXTENSIONS[id] = {
     id,
     component,
@@ -8,7 +8,7 @@ export const registerBlockSettingWidget = (id: string, component: React.Componen
   };
 };
 
-export const registerBlockSettingField = (id: string, component: React.ComponentType<any>) => {
+export const registerChaiBlockSettingField = (id: string, component: React.ComponentType<any>) => {
   RJSF_EXTENSIONS[id] = {
     id,
     component,
@@ -16,7 +16,7 @@ export const registerBlockSettingField = (id: string, component: React.Component
   };
 };
 
-export const registerBlockSettingTemplate = (id: string, component: React.ComponentType<any>) => {
+export const registerChaiBlockSettingTemplate = (id: string, component: React.ComponentType<any>) => {
   RJSF_EXTENSIONS[id] = {
     id,
     component,
@@ -24,7 +24,7 @@ export const registerBlockSettingTemplate = (id: string, component: React.Compon
   };
 };
 
-export const useBlockSettingComponents = (
+export const useChaiBlockSettingComponents = (
   type: "widget" | "field" | "template",
 ): Record<string, React.ComponentType<any>> => {
   return Object.values(RJSF_EXTENSIONS)

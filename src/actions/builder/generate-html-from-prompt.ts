@@ -94,7 +94,8 @@ IMAGE USAGE RULES:
 - Choose images that are relevant to the content context
 - Always include descriptive alt text for accessibility
 - Use appropriate image dimensions (e.g., w=1200 for hero images, w=800 for cards, w=400 for thumbnails)
-
+- Always include explicit width and height HTML attributes on every <img> tag matching the image dimensions
+  Example: \`<img src="https://domain/hero/1200/600" alt="Hero image" width="1200" height="600">\`
 The final output should be clean, semantic HTML that works across all devices and screen sizes.
 
 ${data.context ? `Additional Context: ${data.context}` : ""}`;

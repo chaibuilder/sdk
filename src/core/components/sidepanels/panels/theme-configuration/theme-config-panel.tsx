@@ -32,6 +32,7 @@ import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
 import { claude, defaultShadcnPreset, solarized, supabase, twitter } from "@/core/constants/THEME_PRESETS";
+import { useRegisteredFonts } from "@/runtime";
 import { lazy, Suspense } from "react";
 
 const LazyCssImportModal = lazy(() =>
@@ -81,7 +82,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const { debouncedSaveTheme } = useSaveWebsiteData();
   const importThemeEnabled = useBuilderProp("flags.importTheme", true);
   const darkModeEnabled = useBuilderProp("flags.darkMode", true);
-  const fontsInTheme = useBuilderProp("flags.fontsInTheme", false);
+  const availableFonts = useRegisteredFonts();
 
   if (!themePresets || themePresets.length === 0) {
     DEFAULT_THEME_PRESET.map((preset) => {
@@ -290,7 +291,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
         <Separator />
 
         <div className={cn("my-2 space-y-3", className)}>
-          {fontsInTheme && (
+          {availableFonts.length > 0 ? (
             <>
               {/* Fonts Section */}
               <div className="flex items-center gap-2">
@@ -314,6 +315,8 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
               )}
               <Separator />
             </>
+          ) : (
+            ""
           )}
 
           {/* Border Radius Section */}
@@ -357,7 +360,11 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
                   </div>
                 )}
               </div>
-              <div className="space-y-2">{chaiThemeOptions.colors.map((group) => renderColorGroup(group))}</div>
+              <div className="space-y-2">
+                {chaiThemeOptions.colors.map((group) => (
+                  <div key={group.group}>{renderColorGroup(group)}</div>
+                ))}
+              </div>
             </div>
           )}
           <Suspense fallback={<div>{t("Loading...")}</div>}>

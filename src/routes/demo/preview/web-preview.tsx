@@ -52,8 +52,8 @@ const WEB_BREAKPOINTS: BreakpointItemType[] = [
 ];
 
 const getFonts = (options: any) => {
-  const headingFont = get(options, "headingFont", "Inter");
-  const bodyFont = get(options, "bodyFont", "Inter");
+  const headingFont = get(options, "headingFont", "Arial");
+  const bodyFont = get(options, "bodyFont", "Arial");
   if (headingFont === bodyFont)
     return `<link href="https://fonts.googleapis.com/css2?family=${headingFont.replace(" ", "+")}:wght@400;500;600;700&display=swap" rel="stylesheet">`;
 
