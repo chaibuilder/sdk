@@ -83,16 +83,18 @@ export type ChaiFontByUrl = {
   fallback: string;
 };
 
+export type ChaiFontSource = {
+  url: string;
+  format: string;
+  fontWeight?: string;
+  fontStyle?: string;
+  fontDisplay?: string;
+  fontStretch?: string;
+};
+
 export type ChaiFontBySrc = {
   family: string;
-  src: {
-    url: string;
-    format: string;
-    fontWeight?: string;
-    fontStyle?: string;
-    fontDisplay?: string;
-    fontStretch?: string;
-  }[];
+  src: ChaiFontSource[];
   fallback: string;
 };
 

@@ -10,7 +10,6 @@ import {
   registerChaiSidebarPanel,
   registerChaiTopBar,
 } from "@/runtime/client";
-import type { ChaiFontBySrc, ChaiFontByUrl } from "@/types";
 import { ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 import { lazy } from "react";
 const TopBar = lazy(() => import("@/routes/demo/top-bar"));
@@ -25,15 +24,10 @@ export const extendChaiBuilder = () => {
     });
   });
 
-  registerChaiFont("Ubuntu", {
-    url: "https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap",
-    fallback: `sans-serif`,
-  } as ChaiFontByUrl);
-
   registerChaiFont("Geist", {
     fallback: `"Geist Fallback", Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol`,
     src: [{ url: "/fonts/Geist.woff", format: "woff" }],
-  } as ChaiFontBySrc);
+  });
 
   registerChaiSaveToLibrary(() => {
     return <div className="h-96 w-96">Save to Lib</div>;

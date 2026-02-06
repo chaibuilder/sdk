@@ -1,4 +1,4 @@
-import { ChaiFont, ChaiFontBySrc, ChaiFontByUrl } from "@/types/common";
+import { ChaiFont, ChaiFontBySrc } from "@/types/common";
 
 const REGISTERED_FONTS: ChaiFont[] = [
   {
@@ -15,11 +15,11 @@ const REGISTERED_FONTS: ChaiFont[] = [
   },
 ];
 
-export const registerChaiFont = <T = ChaiFontBySrc | ChaiFontByUrl>(family: string, font: Omit<T, "family">) => {
+export const registerChaiFont = (family: string, font: Omit<ChaiFontBySrc, "family">) => {
   REGISTERED_FONTS.unshift({
     family,
     ...font,
-  } as T as ChaiFont);
+  } as ChaiFont);
 };
 
 export const useRegisteredFonts = () => {
@@ -33,3 +33,5 @@ export const getRegisteredFont = (family: string) => {
 export const getAllRegisteredFonts = () => {
   return REGISTERED_FONTS;
 };
+
+export { getFontStyles } from "./font-helpers";
