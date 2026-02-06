@@ -5,7 +5,7 @@ import AddBlocksPanel from "@/core/components/sidepanels/panels/add-blocks/add-b
 import ImportHTML from "@/core/components/sidepanels/panels/add-blocks/import-html";
 import UILibrariesPanel from "@/core/components/sidepanels/panels/add-blocks/libraries-panel";
 import Outline from "@/core/components/sidepanels/panels/outline/list-tree";
-import ThemeConfigPanel from "@/core/components/sidepanels/panels/theme-configuration/ThemeConfigPanel";
+import ThemeConfigPanel from "@/core/components/sidepanels/panels/theme-configuration/theme-config-panel";
 import i18n from "@/core/locales/load";
 import { registerFeatureFlags } from "@/core/utils/feature-flag";
 import type { ChaiBuilderEditorProps } from "@/types";

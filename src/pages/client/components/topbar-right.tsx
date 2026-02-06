@@ -3,6 +3,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useLanguages } from "@/hooks/use-languages";
@@ -195,7 +196,7 @@ const PublishButton = () => {
     };
   }, [currentPage, t]);
 
-  const handlePublishCurrentage = async () => {
+  const handlePublishCurrentPage = async () => {
     if (needTranslation) {
       setShowTranslationWarning(true);
       return;
@@ -230,7 +231,7 @@ const PublishButton = () => {
       <div className="flex">
         <Button
           size="sm"
-          onClick={handlePublishCurrentage}
+          onClick={handlePublishCurrentPage}
           disabled={isPending || !currentPage?.id}
           className={`relative flex items-center gap-1 overflow-hidden rounded-r-none text-white transition-all duration-300 ease-in-out ${buttonClassName}`}
           onMouseEnter={() => setIsHovered(true)}
@@ -270,6 +271,11 @@ const PublishButton = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-52">
+            {isPublished && hasUnpublishedChanges && (
+              <DropdownMenuItem onClick={() => setShowCompareModal(true)} className="cursor-pointer text-xs">
+                {t("View Unpublished changes")}
+              </DropdownMenuItem>
+            )}
             <DropdownMenuItem
               disabled={isPending}
               className="cursor-pointer text-xs"
@@ -286,28 +292,26 @@ const PublishButton = () => {
                 {t("Publish")} page
               </DropdownMenuItem>
             )}
-            <DropdownMenuItem onClick={() => setShowModal(true)} className="cursor-pointer text-xs">
+            {/* <DropdownMenuItem onClick={() => setShowModal(true)} className="cursor-pointer text-xs">
               {t("Open")} publish menu
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
+
+            {isPublished && (
+              <DropdownMenuItem onClick={() => setUnpublishPage(activePage)} className="cursor-pointer text-xs">
+                {t("Unpublish")} page {selectedLang ? `(${upperCase(selectedLang)})` : ""}
+              </DropdownMenuItem>
+            )}
+
+            {hasUnpublishedSettings && <DropdownMenuSeparator className="bg-gray-200" />}
             {hasUnpublishedSettings && (
               <DropdownMenuItem
                 disabled={isPending}
                 className="cursor-pointer text-xs"
                 onClick={() => publishPage({ ids: ["THEME"] }, { onSuccess: () => throwConfetti("TOP_RIGHT") })}>
                 <span className="flex h-full w-full items-center gap-2">
+                  <span className="mt-0.5 h-1 w-1 animate-pulse rounded-full bg-orange-500" />
                   {t("Publish")} theme
-                  <span className="h-1 w-1 animate-ping rounded-full bg-orange-500" />
                 </span>
-              </DropdownMenuItem>
-            )}
-            {isPublished && hasUnpublishedChanges && (
-              <DropdownMenuItem onClick={() => setShowCompareModal(true)} className="cursor-pointer text-xs">
-                {t("View Unpublished changes")}
-              </DropdownMenuItem>
-            )}
-            {isPublished && (
-              <DropdownMenuItem onClick={() => setUnpublishPage(activePage)} className="cursor-pointer text-xs">
-                {t("Unpublish")} page {selectedLang ? `(${upperCase(selectedLang)})` : ""}
               </DropdownMenuItem>
             )}
           </DropdownMenuContent>

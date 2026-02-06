@@ -31,7 +31,6 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
-import { useIncrementActionsCount } from "@/core/components/use-auto-save";
 import { claude, defaultShadcnPreset, solarized, supabase, twitter } from "@/core/constants/THEME_PRESETS";
 import { lazy, Suspense } from "react";
 
@@ -83,7 +82,6 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const importThemeEnabled = useBuilderProp("flags.importTheme", true);
   const darkModeEnabled = useBuilderProp("flags.darkMode", true);
   const fontsInTheme = useBuilderProp("flags.fontsInTheme", false);
-  const incrementActionsCount = useIncrementActionsCount();
 
   if (!themePresets || themePresets.length === 0) {
     DEFAULT_THEME_PRESET.map((preset) => {
@@ -99,7 +97,6 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
       const previousTheme = { ...themeValues };
       setPreviousTheme(previousTheme);
       setThemeValues(newTheme);
-      incrementActionsCount();
       debouncedSaveTheme();
       toast.success("Theme updated", {
         action: {
@@ -118,7 +115,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
         duration: 15000,
       });
     },
-    [themeValues, setThemeValues, incrementActionsCount, debouncedSaveTheme],
+    [themeValues, setThemeValues, debouncedSaveTheme],
   );
 
   const applyPreset = () => {
@@ -134,7 +131,6 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
       ) {
         setThemeWithHistory(newThemeValues);
         setSelectedPreset("");
-        incrementActionsCount();
       } else {
         console.error("Invalid preset structure:", newThemeValues);
       }
@@ -147,7 +143,6 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
     // Apply the imported theme values directly to the current theme
     setThemeWithHistory(importedTheme);
     setSelectedPreset("");
-    incrementActionsCount();
   };
 
   const handleFontChange = useDebouncedCallback(
@@ -159,10 +154,9 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
           [key.replace(/font-/g, "")]: newValue,
         },
       }));
-      incrementActionsCount();
       debouncedSaveTheme();
     },
-    [themeValues, incrementActionsCount, debouncedSaveTheme],
+    [themeValues, debouncedSaveTheme],
     200,
   );
 
@@ -172,10 +166,9 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
         ...themeValues,
         borderRadius: `${value}px`,
       }));
-      incrementActionsCount();
       debouncedSaveTheme();
     },
-    [themeValues, setThemeValues, incrementActionsCount, debouncedSaveTheme],
+    [themeValues, setThemeValues, debouncedSaveTheme],
   );
 
   const handleColorChange = useDebouncedCallback(
@@ -187,7 +180,6 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
         } else {
           set(prevColor, 1, newValue);
         }
-        incrementActionsCount();
         return {
           ...themeValues,
           colors: {
@@ -198,7 +190,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
       });
       debouncedSaveTheme();
     },
-    [themeValues, incrementActionsCount, debouncedSaveTheme],
+    [themeValues, debouncedSaveTheme],
     200,
   );
 

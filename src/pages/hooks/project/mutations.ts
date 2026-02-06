@@ -17,16 +17,13 @@ export const useUpdateWebsiteFields = () => {
         data,
       });
     },
-    onSuccess: (_, args) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [ACTIONS.GET_WEBSITE_DRAFT_SETTINGS],
       });
       queryClient.invalidateQueries({
         queryKey: [ACTIONS.GET_CHANGES],
       });
-      if (!args?.settings?.theme) {
-        toast.success(`Website settings updated successfully.`);
-      }
     },
     onError: (response) => {
       toast.error(`Failed to update website settings`, {
