@@ -24,9 +24,10 @@ export const ChaiPageStyles = async (props: { page: ChaiFullPage }) => {
 
   return (
     <>
-      {preloads.map((preload) => (
-        <link key={preload} rel="preload" href={preload} as="font" type="font/woff2" crossOrigin="anonymous" />
-      ))}
+      {preloads.length > 0 &&
+        preloads.map((preload) => (
+          <link key={preload} rel="preload" href={preload} as="font" type="font/woff2" crossOrigin="anonymous" />
+        ))}
       <style id="theme-variables" dangerouslySetInnerHTML={{ __html: themeCssVariables }} />
       {styles ? <style id="page-styles" dangerouslySetInnerHTML={{ __html: styles }} /> : null}
       {fontStyles ? <style id="fonts-styles" dangerouslySetInnerHTML={{ __html: fontStyles }} /> : null}
