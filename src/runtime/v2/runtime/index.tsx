@@ -15,7 +15,7 @@ import {
   useRegisteredChaiBlocks,
 } from "./core";
 
-export * from "./fonts";
+export * from "../../fonts";
 
 const setChaiBlockDataProvider = setChaiServerBlockDataProvider;
 

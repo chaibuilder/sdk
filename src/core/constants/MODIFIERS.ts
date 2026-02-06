@@ -42,8 +42,8 @@ export const MODIFIERS: Array<string> = [
 ];
 
 export const BRANDING_OPTIONS_DEFAULTS = {
-  bodyFont: "Inter",
-  headingFont: "Inter",
+  bodyFont: "Arial",
+  headingFont: "Arial",
   roundedCorners: 5,
   primaryColor: "#570df8",
   secondaryColor: "#f002b8",

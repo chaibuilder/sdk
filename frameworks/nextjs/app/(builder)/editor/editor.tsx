@@ -2,13 +2,14 @@
 
 import { getSupabaseClient } from "../../supabase-client";
 
-import "@chaibuilder/sdk/styles";
+import { registerFonts } from "@/fonts";
 import { defaultChaiLibrary } from "@chaibuilder/sdk";
 import { registerChaiLibrary } from "@chaibuilder/sdk/runtime/client";
+import "@chaibuilder/sdk/styles";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useState } from "react";
 import { LoginScreen } from "./login";
-const ChaiBuilderEditor = dynamic(() => import("@chaibuilder/sdk/pages").then((mod) => mod.ChaiWebsiteBuilder), {
+const ChaiWebsiteBuilder = dynamic(() => import("@chaibuilder/sdk/pages").then((mod) => mod.ChaiWebsiteBuilder), {
   ssr: false,
 });
 
@@ -21,6 +22,7 @@ type LoggedInUser = {
 };
 
 registerChaiLibrary("chai-library", defaultChaiLibrary());
+registerFonts();
 
 export default function Editor() {
   const supabase = getSupabaseClient();
@@ -108,7 +110,7 @@ export default function Editor() {
   }
 
   return (
-    <ChaiBuilderEditor
+    <ChaiWebsiteBuilder
       flags={{
         dragAndDrop: true,
         designTokens: true,

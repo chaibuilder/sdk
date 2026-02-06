@@ -346,6 +346,8 @@ Format:
   * Team: 300x300
 
 - Always include descriptive alt text.
+- Always include explicit \`width\` and \`height\` HTML attributes on every \`<img>\` tag** matching the image dimensions.
+  Example: \`<img src="https://domain/hero/1200/600" alt="Hero image" width="1200" height="600">\`
 
 
 # 9. OUTPUT RESTRICTIONS

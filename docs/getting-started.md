@@ -43,8 +43,8 @@ import { ChaiBuilderEditor } from "@chaibuilder/sdk";
 
 const myTheme = {
   fontFamily: {
-    heading: "Inter",
-    body: "Inter",
+    heading: "Arial",
+    body: "Arial",
   },
   borderRadius: "8px",
   colors: {
