@@ -33,7 +33,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string[
       return notFound();
     }
   } catch (err) {
-    return notFound();
+    throw err;
   }
 
   //NOTE: pageProps are received in your dataProvider functions for block and page
@@ -51,7 +51,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string[
       </head>
       <body className={`font-body antialiased`}>
         <PreviewBanner slug={slug} show={isEnabled} />
-        <RenderChaiBlocks page={page} pageProps={pageProps} />
+        <RenderChaiBlocks page={{ ...page, fallbackLang: siteSettings.fallbackLang }} pageProps={pageProps} />
       </body>
     </html>
   );

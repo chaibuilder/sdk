@@ -2,8 +2,8 @@ import { ChaiTheme, ChaiThemeOptions } from "@/types/chaibuilder-editor-props";
 
 export const defaultThemeOptions: ChaiThemeOptions = {
   fontFamily: {
-    "font-heading": "Inter",
-    "font-body": "Inter",
+    "font-heading": "Arial",
+    "font-body": "Arial",
   },
   borderRadius: "10px",
   colors: [
@@ -76,8 +76,8 @@ export const defaultThemeOptions: ChaiThemeOptions = {
 
 export const defaultThemeValues: ChaiTheme = {
   fontFamily: {
-    heading: "Inter",
-    body: "Inter",
+    heading: "Arial",
+    body: "Arial",
   },
   borderRadius: "6px",
   colors: {

@@ -1,9 +1,9 @@
-import { ChaiFullPage } from "@/types";
 import { applyDesignTokens, RenderChaiBlocks as RenderChaiBlocksSdk } from "@chaibuilder/sdk/render";
 import { setChaiBlockComponent } from "@chaibuilder/sdk/runtime";
 import { ChaiBlockComponentProps, ChaiDesignTokens, ChaiPageProps, ChaiStyles } from "@chaibuilder/sdk/types";
 import { isEmpty } from "lodash";
 import { ChaiBuilder } from "../ChaiBuilder";
+import { ChaiFullPage } from "../types";
 import { ImageBlock } from "./image-block";
 import { JSONLD } from "./json-ld";
 import { LinkBlock } from "./link-block";
@@ -39,7 +39,7 @@ export const NextJSRenderChaiBlocks = async ({
   imageComponent = ImageBlock,
   designTokens = {},
 }: {
-  page: ChaiFullPage & { fallbackLang: string };
+  page: ChaiFullPage;
   pageProps: ChaiPageProps;
   designTokens?: ChaiDesignTokens;
   linkComponent?:
@@ -67,7 +67,7 @@ export const NextJSRenderChaiBlocks = async ({
       <RenderChaiBlocksSdk
         externalData={pageData}
         blocks={!isEmpty(tokens) ? applyDesignTokens(page.blocks, tokens as ChaiDesignTokens) : page.blocks}
-        fallbackLang={page.fallbackLang}
+        fallbackLang={settings?.fallbackLang}
         lang={page.lang}
         pageProps={pageProps}
       />

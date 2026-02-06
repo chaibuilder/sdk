@@ -49,6 +49,11 @@ import { PasteAtRootContextMenu } from "./paste-into-root";
 const useCanMove = () => {
   const [blocks] = useBlocksStore();
   return (ids: string[], newParentId: string | null) => {
+    if (!newParentId) {
+      // Root level drop — any block can be dropped here
+      const blockType = first(ids.map((id) => find(blocks, { _id: id })?._type));
+      return !!blockType;
+    }
     const newParentType = find(blocks, { _id: newParentId });
     if (!newParentType) return false;
     const blockType = first(ids.map((id) => find(blocks, { _id: id })?._type));
@@ -91,7 +96,7 @@ const ListTree = () => {
     updateBlockProps([id], { _name: name }, node.data._name);
   };
   const onMove: MoveHandler<any> = ({ dragIds, parentId, index }) => {
-    if (canMove(dragIds, parentId)) moveBlocks(dragIds, parentId!, index);
+    if (canMove(dragIds, parentId)) moveBlocks(dragIds, parentId ?? undefined, index);
   };
 
   const onSelect = (nodes: any) => {

@@ -10,7 +10,7 @@ import { RTEField } from "@/core/rjsf-widgets/rte-widget/rte-widget";
 import { SliderField } from "@/core/rjsf-widgets/slider";
 import { SourcesField } from "@/core/rjsf-widgets/sources";
 import { useLanguages } from "@/hooks/use-languages";
-import { useBlockSettingComponents } from "@/runtime/client";
+import { useChaiBlockSettingComponents } from "@/runtime/client";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { useThrottledCallback } from "@react-hookz/web";
 import RjForm from "@rjsf/core";
@@ -37,9 +37,9 @@ const CustomAddButton = (props: any) => (
 
 export const JSONForm = memo(({ blockId, schema, uiSchema, formData, onChange }: JSONFormType) => {
   const { selectedLang } = useLanguages();
-  const widgets = useBlockSettingComponents("widget");
-  const fields = useBlockSettingComponents("field");
-  const templates = useBlockSettingComponents("template");
+  const widgets = useChaiBlockSettingComponents("widget");
+  const fields = useChaiBlockSettingComponents("field");
+  const templates = useChaiBlockSettingComponents("template");
 
   const throttledChange = useThrottledCallback(
     async ({ formData }: any, id?: string) => {
