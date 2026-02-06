@@ -6,11 +6,11 @@ export const registerFonts = () => {
     fallback: "serif",
   });
   registerChaiFont("Nunito Sans", {
-    src: [{ url: "nunito_sans/nunito-sans-variable.woff2", format: "woff2" }],
+    src: [{ url: "/nunito_sans/nunito-sans-variable.woff2", format: "woff2" }],
     fallback: "sans-serif",
   });
-  registerChaiFont("Oswald", {
-    src: [{ url: "oswald/oswald-variable.woff2", format: "woff2" }],
+  registerChaiFont<ChaiFontBySrc>("Oswald", {
+    src: [{ url: "/oswald/oswald-variable.woff2", format: "woff2" }],
     fallback: "sans-serif",
   });
   registerChaiFont("DM Sans", {
