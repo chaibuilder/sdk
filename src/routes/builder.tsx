@@ -5,6 +5,7 @@ import { EXTERNAL_DATA } from "@/routes/demo/EXTERNAL_DATA";
 import { PARTIALS } from "@/routes/demo/PARTIALS";
 import { defaultShadcnPreset } from "@/routes/demo/THEME_PRESETS";
 import Topbar from "@/routes/demo/top-bar";
+import { registerChaiFont } from "@/runtime";
 import { registerChaiLibrary, registerChaiTopBar } from "@/runtime/client";
 import { ChaiSavePageData, ChaiTheme } from "@/types/chaibuilder-editor-props";
 import { ChaiBlock } from "@/types/common";
@@ -16,6 +17,10 @@ import { toast } from "sonner";
 loadWebBlocks();
 registerChaiTopBar(Topbar);
 registerChaiLibrary("chai", defaultChaiLibrary(import.meta.env.DEV ? { baseUrl: "http://localhost:5173" } : {}));
+registerChaiFont("Bungee", {
+  src: [{ url: "/fonts/bungee/Bungee-Regular.woff2", format: "woff2" }],
+  fallback: "serif",
+});
 
 function ChaiBuilderDefault() {
   const [blocks] = useAtom(lsBlocksAtom);
@@ -34,7 +39,6 @@ function ChaiBuilderDefault() {
         importTheme: true,
         dragAndDrop: true,
         designTokens: true,
-        fontsInTheme: true,
       }}
       gotoPage={(args) => {
         console.log("gotoPage", args);
