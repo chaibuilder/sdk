@@ -204,12 +204,12 @@ export const usePublishPages = () => {
   const { savePageAsync } = useSavePage();
 
   return useMutation({
-    mutationFn: async ({ ids }: { ids: string[] }) => {
+    mutationFn: async ({ ids, revisions }: { ids: string[]; revisions?: boolean }) => {
       await savePageAsync();
 
       return fetchAPI(apiUrl, {
         action: ACTIONS.PUBLISH_CHANGES,
-        data: { ids },
+        data: { ids, revisions },
       });
     },
     onSuccess: () => {

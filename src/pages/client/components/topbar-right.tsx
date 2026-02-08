@@ -17,6 +17,7 @@ import { useActivePage, useChaiCurrentPage } from "@/pages/hooks/pages/use-curre
 import { useIsLanguagePageCreated } from "@/pages/hooks/pages/use-is-languagep-page-created";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
 import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
+import { usePagesProps } from "@/pages/hooks/utils/use-pages-props";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { throwConfetti } from "@/pages/utils/confetti";
@@ -168,6 +169,8 @@ const PublishButton = () => {
   const [showCompareModal, setShowCompareModal] = useState(false);
   const { savePageAsync } = useSavePage();
   const [showTranslationWarning, setShowTranslationWarning] = useState(false);
+  const [pagesProps] = usePagesProps();
+  const revisionsEnabled = pagesProps?.features?.revisions ?? false;
 
   const { data: currentPage } = useChaiCurrentPage();
   const { mutate: publishPage, isPending } = usePublishPages();
@@ -206,7 +209,7 @@ const PublishButton = () => {
     const pages = [activePage?.id, activePage?.primaryPage];
     //TODO: Check if the partial blocks are not live and send them
     // * Publishing current page and consumed global blocks
-    publishPage({ ids: compact(pages) }, { onSuccess: () => throwConfetti("TOP_RIGHT") });
+    publishPage({ ids: compact(pages), revisions: revisionsEnabled }, { onSuccess: () => throwConfetti("TOP_RIGHT") });
   };
 
   const handleContinueAnyway = () => {
@@ -265,7 +268,7 @@ const PublishButton = () => {
             <DropdownMenuItem
               disabled={isPending}
               className="cursor-pointer text-xs"
-              onClick={() => publishPage({ ids: allPages }, { onSuccess: () => throwConfetti("TOP_RIGHT") })}>
+              onClick={() => publishPage({ ids: allPages, revisions: revisionsEnabled }, { onSuccess: () => throwConfetti("TOP_RIGHT") })}>
               {t("Publish")} with translation pages
             </DropdownMenuItem>
             {!isPublished && (
@@ -273,7 +276,7 @@ const PublishButton = () => {
                 disabled={isPending}
                 className="cursor-pointer text-xs"
                 onClick={() =>
-                  publishPage({ ids: [currentPage?.id] }, { onSuccess: () => throwConfetti("TOP_RIGHT") })
+                  publishPage({ ids: [currentPage?.id], revisions: revisionsEnabled }, { onSuccess: () => throwConfetti("TOP_RIGHT") })
                 }>
                 {t("Publish")} page
               </DropdownMenuItem>
@@ -332,10 +335,13 @@ export default function TopbarRight() {
   const [searchParams] = useSearchParams();
   const lang = searchParams.get("lang");
   const isLanguagePageCreated = useIsLanguagePageCreated(lang as string);
+  const [pagesProps] = usePagesProps();
+  const revisionsEnabled = pagesProps?.features?.revisions ?? false;
+  
   if (isLocked || !isLanguagePageCreated) return <div />;
   return (
     <div className="flex items-center justify-end gap-1">
-      <PageRevisions />
+      {revisionsEnabled && <PageRevisions />}
       <PermissionChecker permission={PAGES_PERMISSIONS.EDIT_THEME}>
         <ThemeButton />
       </PermissionChecker>
