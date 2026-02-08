@@ -10,6 +10,7 @@ import { ChaiBaseAction } from "./base-action";
  */
 type PublishChangesActionData = {
   ids?: string[];
+  revisions?: boolean;
 };
 
 type PublishChangesActionResponse = {
@@ -44,6 +45,7 @@ type PartialPageIdOnly = Pick<InferSelectModel<typeof schema.appPagesOnline>, "i
  */
 export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionData, PublishChangesActionResponse> {
   private appId: string = "";
+  private revisionsEnabled: boolean = false;
 
   /**
    * Define the validation schema for publish changes action
@@ -51,6 +53,7 @@ export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionDat
   protected getValidationSchema() {
     return z.object({
       ids: z.array(z.string()).optional(),
+      revisions: z.boolean().optional(),
     });
   }
 
@@ -61,6 +64,7 @@ export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionDat
     await this.verifyAccess();
     this.validateContext();
     this.appId = this.context!.appId;
+    this.revisionsEnabled = data.revisions ?? false;
 
     try {
       const ids = data.ids ?? [];
@@ -205,6 +209,11 @@ export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionDat
    * Create a revision before publishing
    */
   private async createRevision(pageId: string): Promise<boolean> {
+    // Skip revision creation if revisions are disabled
+    if (!this.revisionsEnabled) {
+      return false;
+    }
+
     const { data: page, error } = await safeQuery(() =>
       db.query.appPagesOnline.findFirst({
         where: eq(schema.appPagesOnline.id, pageId),
