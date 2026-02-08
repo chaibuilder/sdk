@@ -55,7 +55,7 @@ export type ChaiWebsiteBuilderProps = {
   getAccessToken?: () => Promise<string>;
   currentUser: LoggedInUser | null;
   websocket?: any;
-  features?: { sharedJsonLD?: boolean; canResetSeoToDefault?: boolean; revisions?: boolean } & Record<string, boolean>;
+  features?: { sharedJsonLD?: boolean; canResetSeoToDefault?: boolean } & Record<string, boolean>;
   realtimeAdapter?: RealtimeAdapter;
 } & Pick<
   ChaiBuilderEditorProps,

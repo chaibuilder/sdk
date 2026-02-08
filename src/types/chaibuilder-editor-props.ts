@@ -282,6 +282,7 @@ export interface ChaiBuilderEditorProps {
     validateStructure?: boolean;
     designTokens?: boolean;
     ai?: boolean;
+    revisions?: boolean;
   };
 
   //TODO: Move to registerChaiStructureRules()

@@ -6,5 +6,5 @@ import { usePagesProps } from "@/pages/hooks/utils/use-pages-props";
  */
 export const useRevisionsEnabled = (): boolean => {
   const [pagesProps] = usePagesProps();
-  return pagesProps?.features?.revisions ?? false;
+  return pagesProps?.flags?.revisions ?? false;
 };
