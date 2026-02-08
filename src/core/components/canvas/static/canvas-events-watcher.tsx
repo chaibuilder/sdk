@@ -41,8 +41,15 @@ export const CanvasEventsWatcher = () => {
 
   usePubSub(CHAI_BUILDER_EVENTS.CANVAS_BLOCK_SELECTED, (blocks?: string[]) => {
     if (!blocks) return;
-    if (!isEmpty(blocks) && !includes(ids, first(blocks))) {
+    const selectedBlockId = first(blocks);
+    // Only collapse and expand if selecting a different block from canvas
+    if (!isEmpty(blocks) && !includes(ids, selectedBlockId)) {
+      // First, collapse all nodes
       treeRef?.closeAll();
+      // Then, open only the parent path to the newly selected block
+      if (selectedBlockId) {
+        treeRef?.openParents(selectedBlockId);
+      }
     }
     setIds(blocks);
   });
@@ -53,8 +60,12 @@ export const CanvasEventsWatcher = () => {
       if (!data) return;
       const { blockId, styleId, styleProp } = data;
       if (!blockId) return;
+      // Only collapse and expand if selecting a different block from canvas
       if (!includes(ids, blockId)) {
+        // First, collapse all nodes
         treeRef?.closeAll();
+        // Then, open only the parent path to the newly selected block
+        treeRef?.openParents(blockId);
       }
       setSelectedStylingBlocks([{ id: styleId, prop: styleProp, blockId }]);
       setIds([blockId]);
