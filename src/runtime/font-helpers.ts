@@ -1,6 +1,6 @@
 import { getRegisteredFont } from "@/runtime";
 import { ChaiFont, ChaiFontBySrc } from "@/types";
-import { compact, filter, has, map, uniqBy } from "lodash";
+import { compact, filter, has, map, uniqBy } from "lodash-es";
 
 const getThemeFontFaceCSS = (fonts: string[]) => {
   const fontdefintions = filter(compact(map(fonts, getRegisteredFont)), (font: ChaiFont) => has(font, "src"));
