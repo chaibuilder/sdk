@@ -9,7 +9,7 @@ import { useGetPageChanges } from "@/pages/hooks/pages/use-get-page-changes";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useFallbackLang } from "@/pages/hooks/use-fallback-lang";
 import { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
-import { usePagesProps } from "@/pages/hooks/utils/use-pages-props";
+import { useRevisionsEnabled } from "@/pages/hooks/use-revisions-enabled";
 import { throwConfetti } from "@/pages/utils/confetti";
 import Tooltip from "@/pages/utils/tooltip";
 import { concat, filter, find, first, get, includes, isEmpty, keys, map, orderBy, uniq } from "lodash-es";
@@ -80,8 +80,7 @@ const PublishPagesModalContent = ({
   const [selectedPages, setSelectedPages] = useState<string[]>([]);
   const fallbackLang = useFallbackLang();
   const [selectedLanguage, setSelectedLanguage] = useState(fallbackLang);
-  const [pagesProps] = usePagesProps();
-  const revisionsEnabled = pagesProps?.features?.revisions ?? false;
+  const revisionsEnabled = useRevisionsEnabled();
 
   const { data: pages, isFetching } = useGetPageChanges();
   const { data: pageTypes } = usePageTypes();

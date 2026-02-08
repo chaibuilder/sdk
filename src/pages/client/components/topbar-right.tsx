@@ -17,9 +17,9 @@ import { useActivePage, useChaiCurrentPage } from "@/pages/hooks/pages/use-curre
 import { useIsLanguagePageCreated } from "@/pages/hooks/pages/use-is-languagep-page-created";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
 import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
-import { usePagesProps } from "@/pages/hooks/utils/use-pages-props";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
+import { useRevisionsEnabled } from "@/pages/hooks/use-revisions-enabled";
 import { throwConfetti } from "@/pages/utils/confetti";
 import Tooltip from "@/pages/utils/tooltip";
 import { compact, find, isEmpty, map, upperCase } from "lodash-es";
@@ -169,8 +169,7 @@ const PublishButton = () => {
   const [showCompareModal, setShowCompareModal] = useState(false);
   const { savePageAsync } = useSavePage();
   const [showTranslationWarning, setShowTranslationWarning] = useState(false);
-  const [pagesProps] = usePagesProps();
-  const revisionsEnabled = pagesProps?.features?.revisions ?? false;
+  const revisionsEnabled = useRevisionsEnabled();
 
   const { data: currentPage } = useChaiCurrentPage();
   const { mutate: publishPage, isPending } = usePublishPages();
@@ -335,9 +334,8 @@ export default function TopbarRight() {
   const [searchParams] = useSearchParams();
   const lang = searchParams.get("lang");
   const isLanguagePageCreated = useIsLanguagePageCreated(lang as string);
-  const [pagesProps] = usePagesProps();
-  const revisionsEnabled = pagesProps?.features?.revisions ?? false;
-  
+  const revisionsEnabled = useRevisionsEnabled();
+
   if (isLocked || !isLanguagePageCreated) return <div />;
   return (
     <div className="flex items-center justify-end gap-1">
