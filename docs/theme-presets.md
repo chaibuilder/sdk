@@ -20,8 +20,8 @@ import { ChaiThemeValues } from "@chaibuilder/sdk/types";
 
 const myCustomPreset: ChaiThemeValues = {
   fontFamily: {
-    heading: "Inter",
-    body: "Inter",
+    heading: "Arial",
+    body: "Arial",
   },
   borderRadius: "8px",
   colors: {

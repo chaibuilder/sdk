@@ -11,8 +11,8 @@ dotenv.config();
  */
 const defaultTheme = {
   fontFamily: {
-    heading: "Inter",
-    body: "Inter",
+    heading: "Arial",
+    body: "Arial",
   },
   borderRadius: "6px",
   colors: {

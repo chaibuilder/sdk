@@ -77,23 +77,30 @@ export type ChaiPageProps<T = Record<string, any>> = {
   searchParams?: Record<string, string>;
 } & T;
 
-export type ChaiFontViaUrl = {
+export type ChaiFontByUrl = {
   family: string;
   url: string;
   fallback: string;
 };
 
-export type ChaiFontViaSrc = {
+export type ChaiFontSource = {
+  url: string;
+  format: string;
+  fontWeight?: string;
+  fontStyle?: string;
+  fontDisplay?: string;
+  fontStretch?: string;
+};
+
+export type ChaiFontBySrc = {
   family: string;
-  src: {
-    url: string;
-    format: string;
-    fontWeight?: string;
-    fontStyle?: string;
-    fontDisplay?: string;
-    fontStretch?: string;
-  }[];
+  src: ChaiFontSource[];
   fallback: string;
 };
 
-export type ChaiFont = ChaiFontViaUrl | ChaiFontViaSrc;
+export type ChaiSystemFont = {
+  family: string;
+  fallback: string;
+};
+
+export type ChaiFont = ChaiFontByUrl | ChaiFontBySrc | ChaiSystemFont;
