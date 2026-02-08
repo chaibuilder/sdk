@@ -169,7 +169,6 @@ const PublishButton = () => {
   const [showCompareModal, setShowCompareModal] = useState(false);
   const { savePageAsync } = useSavePage();
   const [showTranslationWarning, setShowTranslationWarning] = useState(false);
-  const revisionsEnabled = useRevisionsEnabled();
 
   const { data: currentPage } = useChaiCurrentPage();
   const { mutate: publishPage, isPending } = usePublishPages();
@@ -208,7 +207,7 @@ const PublishButton = () => {
     const pages = [activePage?.id, activePage?.primaryPage];
     //TODO: Check if the partial blocks are not live and send them
     // * Publishing current page and consumed global blocks
-    publishPage({ ids: compact(pages), revisions: revisionsEnabled }, { onSuccess: () => throwConfetti("TOP_RIGHT") });
+    publishPage({ ids: compact(pages) }, { onSuccess: () => throwConfetti("TOP_RIGHT") });
   };
 
   const handleContinueAnyway = () => {
@@ -267,7 +266,7 @@ const PublishButton = () => {
             <DropdownMenuItem
               disabled={isPending}
               className="cursor-pointer text-xs"
-              onClick={() => publishPage({ ids: allPages, revisions: revisionsEnabled }, { onSuccess: () => throwConfetti("TOP_RIGHT") })}>
+              onClick={() => publishPage({ ids: allPages }, { onSuccess: () => throwConfetti("TOP_RIGHT") })}>
               {t("Publish")} with translation pages
             </DropdownMenuItem>
             {!isPublished && (
@@ -275,7 +274,7 @@ const PublishButton = () => {
                 disabled={isPending}
                 className="cursor-pointer text-xs"
                 onClick={() =>
-                  publishPage({ ids: [currentPage?.id], revisions: revisionsEnabled }, { onSuccess: () => throwConfetti("TOP_RIGHT") })
+                  publishPage({ ids: [currentPage?.id] }, { onSuccess: () => throwConfetti("TOP_RIGHT") })
                 }>
                 {t("Publish")} page
               </DropdownMenuItem>

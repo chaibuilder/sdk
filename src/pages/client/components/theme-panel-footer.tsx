@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "@/hooks/use-theme";
 import { usePublishPages } from "@/pages/hooks/pages/mutations";
 import { useUpdateWebsiteFields } from "@/pages/hooks/project/mutations";
-import { useRevisionsEnabled } from "@/pages/hooks/use-revisions-enabled";
 import { throwConfetti } from "@/pages/utils/confetti";
 import { useTranslation } from "react-i18next";
 
@@ -11,7 +10,6 @@ const ThemePanelFooter = () => {
   const { mutate: publishPage, isPending: isPublishing } = usePublishPages();
   const { mutateAsync: updateTheme, isPending } = useUpdateWebsiteFields();
   const { t } = useTranslation();
-  const revisionsEnabled = useRevisionsEnabled();
 
   const handleThemeSave = () => {
     updateTheme({ settings: { theme } });
@@ -20,7 +18,7 @@ const ThemePanelFooter = () => {
   const handleThemePublish = async () => {
     await updateTheme({ settings: { theme } });
     publishPage(
-      { ids: ["THEME"], revisions: revisionsEnabled },
+      { ids: ["THEME"] },
       {
         onSuccess: () => {
           throwConfetti("BOTTOM_RIGHT");
