@@ -135,7 +135,7 @@ const SeoPanel = () => {
   const { hasPermission } = usePermissions();
   const editSeo = hasPermission(PAGES_PERMISSIONS.EDIT_SEO);
   const [pagesProps] = usePagesProps();
-  const canResetSeoToDefault = get(pagesProps, "features.canResetSeoToDefault", false);
+  const resetSeoToDefault = get(pagesProps, "flags.resetSeoToDefault", false);
 
   const hasJsonLdForSelectedLang = !selectedLang || formValues.jsonLD !== "{}";
 
@@ -769,7 +769,7 @@ const SeoPanel = () => {
 
       {editSeo && (
         <div className="fixed bottom-0 left-0 right-0 flex w-full flex-shrink-0 items-center justify-between border-t bg-background p-4">
-          {canResetSeoToDefault ? (
+          {resetSeoToDefault ? (
             <Button
               type="button"
               variant="ghost"

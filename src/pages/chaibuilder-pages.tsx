@@ -255,7 +255,7 @@ const ChaiWebsiteBuilder = (props: ChaiWebsiteBuilderProps) => {
         "websocket",
         "realtimeAdapter",
         "getLoggedInUser",
-        "features",
+        "flags",
         "currentUser",
         "flags",
       ]),

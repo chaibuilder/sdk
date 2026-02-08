@@ -283,6 +283,8 @@ export interface ChaiBuilderEditorProps {
     designTokens?: boolean;
     ai?: boolean;
     revisions?: boolean;
+    sharedJsonLD?: boolean;
+    resetSeoToDefault?: boolean;
   };
 
   //TODO: Move to registerChaiStructureRules()
