@@ -49,7 +49,7 @@ export const SmartJsonInput: React.FC<SmartJsonInputProps> = ({
   const [previewJson, setPreviewJson] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [pagesProps] = usePagesProps();
-  const isShareJsonLdEnabled = id === "jsonLD" && get(pagesProps, "features.sharedJsonLD", false);
+  const isShareJsonLdEnabled = id === "jsonLD" && get(pagesProps, "flags.sharedJsonLD", false);
   const showOptionToCopyJsonLd = id === "jsonLD" && !hasJsonLdForSelectedLang && !!copyJsonLDFromDefaultPage;
 
   useEffect(() => {
