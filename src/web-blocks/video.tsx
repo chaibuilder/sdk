@@ -67,12 +67,13 @@ const getEmbedURL = (url: string, controls: Record<string, any>) => {
     const match = url.match(YOUTUBE_REGEX);
     if (match) {
       const videoId = match[4];
-      let embedURL = `https://www.youtube.com/embed/${videoId}`;
-      let ytControls = autoplay ? `autoplay=1` : "";
-      ytControls += loop ? `&loop=1&playlist=${videoId}` : "";
-      ytControls += shouldMute ? `&mute=1&muted=1` : "";
-      ytControls += _controls ? `&controls=1` : "&controls=0";
-      return `${embedURL}?${ytControls}`;
+      const embedURL = `https://www.youtube.com/embed/${videoId}`;
+      const params = [];
+      if (autoplay) params.push("autoplay=1");
+      if (loop) params.push(`loop=1`, `playlist=${videoId}`);
+      if (shouldMute) params.push("mute=1", "muted=1");
+      params.push(_controls ? "controls=1" : "controls=0");
+      return `${embedURL}?${params.join("&")}`;
     }
   }
 
@@ -80,12 +81,12 @@ const getEmbedURL = (url: string, controls: Record<string, any>) => {
     const match = url.match(VIMEO_REGEX);
     if (match) {
       const videoId = match[1];
-      let vimeoControls = "";
-      vimeoControls += autoplay ? "autoplay=1" : "";
-      vimeoControls += _controls ? "&controls=1" : "&controls=0";
-      vimeoControls += shouldMute ? "&muted=1" : "";
-      vimeoControls += loop ? "&loop=1" : "";
-      return `https://player.vimeo.com/video/${videoId}?${vimeoControls}`;
+      const params = [];
+      if (autoplay) params.push("autoplay=1");
+      params.push(_controls ? "controls=1" : "controls=0");
+      if (shouldMute) params.push("muted=1");
+      if (loop) params.push("loop=1");
+      return `https://player.vimeo.com/video/${videoId}?${params.join("&")}`;
     }
   }
 
@@ -114,7 +115,13 @@ const SupportedVideoSource = (props: ChaiBlockComponentProps<VideoBlockProps>) =
             : `Provided ${videoSource} video link is invalid.`}
         </div>
       ) : (
-        <iframe width="100%" src={embedURL ?? ""} title={title || "Video player"} {...pick(styles, "className")} />
+        <iframe
+          className={`absolute left-0 top-0 h-full w-full ${pick(styles, "className").className || ""}`}
+          src={embedURL ?? ""}
+          title={title || "Video player"}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
       )}
       {inBuilder && <div {...blockProps} className="absolute top-0 h-full w-full" />}
     </div>
