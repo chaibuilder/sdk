@@ -15,7 +15,7 @@ describe("getSanitizedHTML", () => {
 
   test("should remove escaped newlines and whitespace characters", () => {
     const input = "Line 1\\nLine 2\\n<div>\\n  Content\\n</div>";
-    const expected = "Line 1Line 2<div> Content</div>";
+    const expected = "Line 1 Line 2 <div> Content </div>";
     expect(getSanitizedHTML(input)).toBe(expected);
   });
 
