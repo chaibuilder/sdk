@@ -119,6 +119,7 @@ const SupportedVideoSource = (props: ChaiBlockComponentProps<VideoBlockProps>) =
           className={`absolute left-0 top-0 h-full w-full ${pick(styles, "className").className || ""}`}
           src={embedURL ?? ""}
           title={title || "Video player"}
+          loading="lazy"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
         />
@@ -161,6 +162,7 @@ const CustomVideoSource = (props: ChaiBlockComponentProps<VideoBlockProps>) => {
           autoPlay={get(controls, "autoplay", false)}
           loop={get(controls, "loop", false)}
           poster={_poster}
+          loading="lazy"
           {...(shouldMute ? { muted: true } : {})}>
           {sortedSources.map((source) => {
             if (!source.url || source.url.length < 4 || isNaN(source.width)) return null;
