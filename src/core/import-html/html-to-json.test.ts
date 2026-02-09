@@ -13,7 +13,7 @@ describe("getSanitizedHTML", () => {
     expect(getSanitizedHTML(input)).toBe(expected);
   });
 
-  test("should remove escaped newlines and whitespace characters", () => {
+  test("should replace escaped newlines and whitespace characters with spaces", () => {
     const input = "Line 1\\nLine 2\\n<div>\\n  Content\\n</div>";
     const expected = "Line 1 Line 2 <div> Content </div>";
     expect(getSanitizedHTML(input)).toBe(expected);
