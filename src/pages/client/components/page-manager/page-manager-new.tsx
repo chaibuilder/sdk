@@ -106,19 +106,15 @@ const PagesManagerNew = ({ close }: PageManagerNewProps) => {
   }, [pageTypes, selectedPageType]);
 
   /**
-   * Handles change page action
+   * Handles validation of current page
+   * If page doesn't exist, clear the page param to show the Pages Manager
    */
   useEffect(() => {
     if (currentPage && !isFetching) {
       const page = find(data, { id: currentPage });
       if (!page) {
-        const homePage = find(data, { slug: "/" });
-        if (homePage) {
-          const newParams = new URLSearchParams({ page: homePage.id });
-          navigateToPage(newParams, setQueryParams);
-        } else {
-          navigateToPage(new URLSearchParams({}), setQueryParams, true);
-        }
+        // Clear the page param to show the Pages Manager
+        navigateToPage(new URLSearchParams({}), setQueryParams, true);
       }
     }
   }, [data, currentPage, isFetching, setQueryParams]);
