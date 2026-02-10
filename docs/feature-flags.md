@@ -29,7 +29,7 @@ import { ChaiBuilderEditor } from "@chaibuilder/sdk";
 
 | Flag                | Default | Description                            |
 | ------------------- | ------- | -------------------------------------- |
-| `darkMode`          | `true`  | Enable dark mode toggle in theme panel |
+| `darkMode`          | `false` | Enable dark mode toggle in theme panel |
 | `copyPaste`         | `true`  | Enable copy/paste functionality        |
 | `exportCode`        | `true`  | Enable code export feature             |
 | `importHtml`        | `true`  | Enable HTML import feature             |
