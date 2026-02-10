@@ -153,7 +153,7 @@ export const useSavePage = () => {
       checkStructure,
       getAllPartialIds,
     ],
-    3000, // save only every 5 seconds
+    3000, // save only every 3 seconds
   );
 
   const savePageAsync = async (force: boolean = false) => {
