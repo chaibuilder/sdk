@@ -1,16 +1,37 @@
 [
   {
-    "id": "library-blocks/hero-1/hero-1",
-    "name": "Feature Section Component",
-    "description": "Feature Section Component",
-    "group": "Home",
-    "preview": "/library-blocks/hero-1/hero-1.webp"
+    "id": "library-blocks/hero/minimal-saas/minimal-saas",
+    "name": "Minimal SaaS Hero",
+    "description": "A clean and minimal hero section for SaaS products with a focus on simplicity and clarity.",
+    "group": "Hero",
+    "preview": "/library-blocks/hero/minimal-saas/minimal-saas.webp"
   },
   {
-    "id": "library-blocks/hero-2/hero-2",
-    "name": "Journey Card",
-    "description": "Product Journey Card",
-    "group": "Home",
-    "preview": "/library-blocks/hero-2/hero-2.webp"
+    "id": "library-blocks/hero/developer-focused/developer-focused",
+    "name": "Developer Focused Hero",
+    "description": "A hero section designed for developers with a focus on technical features and capabilities.",
+    "group": "Hero",
+    "preview": "/library-blocks/hero/developer-focused/developer-focused.webp"
+  },
+  {
+    "id": "library-blocks/hero/creative-agency/creative-agency",
+    "name": "Creative Agency Hero",
+    "description": "An editorial-style asymmetric hero with overlapping imagery and bold typography for creative studios and agencies.",
+    "group": "Hero",
+    "preview": "/library-blocks/hero/creative-agency/creative-agency.webp"
+  },
+  {
+    "id": "library-blocks/hero/startup-landing/startup-landing",
+    "name": "Startup Landing Hero",
+    "description": "A vibrant centered hero with product screenshot, announcement badge, and stats row for modern startups.",
+    "group": "Hero",
+    "preview": "/library-blocks/hero/startup-landing/startup-landing.webp"
+  },
+  {
+    "id": "library-blocks/hero/portfolio-showcase/portfolio-showcase",
+    "name": "Portfolio Showcase Hero",
+    "description": "A refined split-layout hero with an image mosaic grid for portfolios and design showcases.",
+    "group": "Hero",
+    "preview": "/library-blocks/hero/portfolio-showcase/portfolio-showcase.webp"
   }
 ]
