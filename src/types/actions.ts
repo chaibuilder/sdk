@@ -8,6 +8,7 @@ export type ChaiWebsiteSetting = {
   fallbackLang: string;
   languages: string[];
   theme: ChaiTheme;
+  settings: Record<string, any>;
   designTokens: ChaiDesignTokens;
 };
 

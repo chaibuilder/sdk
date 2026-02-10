@@ -53,8 +53,17 @@ export type { ChaiBuilderEditorProps };
 
 export type { ChaiLibrary, ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 
-// export * from "@/core/hooks";
-
 // constants
 export { PERMISSIONS } from "@/core/constants/PERMISSIONS";
-export type { ChaiTheme as ChaiThemeValues } from "@/types/chaibuilder-editor-props";
+export { useAddBlock } from "@/hooks/use-add-block";
+export { useBlocksHtmlForAi } from "@/hooks/use-blocks-html-for-ai";
+export { useHtmlToBlocks } from "@/hooks/use-html-to-blocks";
+export { useI18nBlocks } from "@/hooks/use-i18n-blocks";
+export { useLanguages } from "@/hooks/use-languages";
+export { useReplaceBlock } from "@/hooks/use-replace-block";
+export { useSavePage } from "@/hooks/use-save-page";
+export { useSelectedBlock } from "@/hooks/use-selected-blockIds";
+export { useStreamMultipleBlocksProps } from "@/hooks/use-update-blocks-props";
+export * from "@/runtime/client";
+export type { ChaiTheme } from "@/types/chaibuilder-editor-props";
+export { useTranslation } from "react-i18next";

@@ -4,6 +4,7 @@ import { ERRORS } from "@/pages/constants/ERRORS";
 import { useActivePage, useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
 import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
+import { useRevisionsEnabled } from "@/pages/hooks/use-revisions-enabled";
 import { useFetch } from "@/pages/hooks/utils/use-fetch";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { find, get } from "lodash-es";
@@ -202,6 +203,7 @@ export const usePublishPages = () => {
   const queryClient = useQueryClient();
   const { data: currentPage } = useChaiCurrentPage();
   const { savePageAsync } = useSavePage();
+  const revisionsEnabled = useRevisionsEnabled();
 
   return useMutation({
     mutationFn: async ({ ids }: { ids: string[] }) => {
@@ -209,7 +211,7 @@ export const usePublishPages = () => {
 
       return fetchAPI(apiUrl, {
         action: ACTIONS.PUBLISH_CHANGES,
-        data: { ids },
+        data: { ids, revisions: revisionsEnabled },
       });
     },
     onSuccess: () => {
