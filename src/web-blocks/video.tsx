@@ -162,7 +162,6 @@ const CustomVideoSource = (props: ChaiBlockComponentProps<VideoBlockProps>) => {
           autoPlay={get(controls, "autoplay", false)}
           loop={get(controls, "loop", false)}
           poster={_poster}
-          loading="lazy"
           {...(shouldMute ? { muted: true } : {})}>
           {sortedSources.map((source) => {
             if (!source.url || source.url.length < 4 || isNaN(source.width)) return null;
