@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { TokensIcon } from "@radix-ui/react-icons";
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import ManageDesignTokens from "./manage-design-tokens";
 import { DesignTokenPreview } from "./design-token-preview";

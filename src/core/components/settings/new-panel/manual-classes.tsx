@@ -11,7 +11,6 @@ import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { useRemoveClassesFromBlocks } from "@/hooks/use-remove-classes-from-blocks";
 import { useSelectedBlock, useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
 import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
-import { useRightPanel } from "@/hooks/use-theme";
 import { CheckIcon, CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { useAtomValue } from "jotai";
 import { first, get, isEmpty, isFunction, map } from "lodash-es";
@@ -37,7 +36,6 @@ export function ManualClasses({
   const [isCopied, setIsCopied] = useState(false);
   const [editingClassIndex, setEditingClassIndex] = useState(-1);
   const isSelectingSuggestion = useRef(false);
-  const [, setRightPanel] = useRightPanel();
   const [isDesignTokenModalOpen, setIsDesignTokenModalOpen] = useState(false);
   const fuse = useFuseSearch();
   const { t } = useTranslation();
