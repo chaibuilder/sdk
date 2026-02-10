@@ -4,6 +4,11 @@ import { and, eq, inArray } from "drizzle-orm";
 import { get, has, isEmpty } from "lodash";
 import { nanoid } from "nanoid";
 
+/**
+ * Maximum nesting depth for partial blocks.
+ * Prevents infinite recursion when partials contain other partials.
+ * Set to 4 to balance flexibility with performance and safety.
+ */
 const MAX_PARTIAL_DEPTH = 4;
 
 export type GetFullPageOptions = {
