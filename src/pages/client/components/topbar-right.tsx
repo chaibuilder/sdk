@@ -16,6 +16,7 @@ import { usePublishPages } from "@/pages/hooks/pages/mutations";
 import { useActivePage, useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
 import { useIsLanguagePageCreated } from "@/pages/hooks/pages/use-is-languagep-page-created";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
+import { useGetUnpublishedPartialBlocks } from "@/pages/hooks/pages/use-get-unpublished-partial-blocks";
 import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
@@ -31,6 +32,9 @@ import { usePageLockStatus } from "./page-lock/page-lock-hook";
 const UnpublishPage = lazy(() => import("@/pages/client/components/unpublish-page"));
 const TranslationWarningModal = lazy(
   () => import("@/pages/client/components/save-ui-blocks/translation-warning-modal"),
+);
+const UnpublishedPartialsModal = lazy(
+  () => import("@/pages/client/components/save-ui-blocks/unpublished-partials-modal"),
 );
 const JsonDiffViewer = lazy(() => import("@/pages/client/components/json-diff-viewer"));
 
@@ -163,12 +167,16 @@ const PublishButton = () => {
   const { selectedLang } = useLanguages();
   const { data: activePage } = useActivePage();
   const { data: languagePages } = useLanguagePages();
+  const getUnpublishedPartialBlocks = useGetUnpublishedPartialBlocks();
   const [showModal, setShowModal] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [unpublishPage, setUnpublishPage] = useState(null);
   const [showCompareModal, setShowCompareModal] = useState(false);
   const { savePageAsync } = useSavePage();
   const [showTranslationWarning, setShowTranslationWarning] = useState(false);
+  const [showUnpublishedPartialsWarning, setShowUnpublishedPartialsWarning] = useState(false);
+  const [unpublishedPartialBlockIds, setUnpublishedPartialBlockIds] = useState<string[]>([]);
+  const [unpublishedPartialBlocksInfo, setUnpublishedPartialBlocksInfo] = useState<any[]>([]);
 
   const { data: currentPage } = useChaiCurrentPage();
   const { mutate: publishPage, isPending } = usePublishPages();
@@ -200,19 +208,48 @@ const PublishButton = () => {
       return;
     }
 
-    performPublishCurrentPage();
+    checkAndPublish([activePage?.id, activePage?.primaryPage]);
   };
 
-  const performPublishCurrentPage = () => {
-    const pages = [activePage?.id, activePage?.primaryPage];
-    //TODO: Check if the partial blocks are not live and send them
+  const performPublishCurrentPage = (partialBlockIds?: string[]) => {
+    const pages = [activePage?.id, activePage?.primaryPage, ...(Array.isArray(partialBlockIds) ? partialBlockIds : [])];
     // * Publishing current page and consumed global blocks
-    publishPage({ ids: compact(pages) }, { onSuccess: () => throwConfetti("TOP_RIGHT") });
+    publishPage(
+      { ids: compact(pages) },
+      { onSuccess: () => throwConfetti("TOP_RIGHT") }
+    );
+  };
+
+  const checkAndPublish = useCallback((pages: string[]) => {
+    const { ids: unpublishedIds, partialBlocksInfo } = getUnpublishedPartialBlocks();
+    if (unpublishedIds.length > 0) {
+      setUnpublishedPartialBlockIds(unpublishedIds);
+      setUnpublishedPartialBlocksInfo(partialBlocksInfo);
+      setShowUnpublishedPartialsWarning(true);
+    } else {
+      publishPage(
+        { ids: compact(pages) },
+        { onSuccess: () => throwConfetti("TOP_RIGHT") }
+      );
+    }
+  }, [getUnpublishedPartialBlocks, publishPage]);
+
+  const handleContinueWithPartials = () => {
+    setShowUnpublishedPartialsWarning(false);
+    performPublishCurrentPage(unpublishedPartialBlockIds);
+    setUnpublishedPartialBlockIds([]);
+    setUnpublishedPartialBlocksInfo([]);
+  };
+
+  const handleCancelPartials = () => {
+    setShowUnpublishedPartialsWarning(false);
+    setUnpublishedPartialBlockIds([]);
+    setUnpublishedPartialBlocksInfo([]);
   };
 
   const handleContinueAnyway = () => {
     setShowTranslationWarning(false);
-    performPublishCurrentPage();
+    checkAndPublish([activePage?.id, activePage?.primaryPage]);
   };
 
   const handleCancelTranslation = async () => {
@@ -266,16 +303,14 @@ const PublishButton = () => {
             <DropdownMenuItem
               disabled={isPending}
               className="cursor-pointer text-xs"
-              onClick={() => publishPage({ ids: allPages }, { onSuccess: () => throwConfetti("TOP_RIGHT") })}>
+              onClick={() => checkAndPublish(allPages)}>
               {t("Publish")} with translation pages
             </DropdownMenuItem>
             {!isPublished && (
               <DropdownMenuItem
                 disabled={isPending}
                 className="cursor-pointer text-xs"
-                onClick={() =>
-                  publishPage({ ids: [currentPage?.id] }, { onSuccess: () => throwConfetti("TOP_RIGHT") })
-                }>
+                onClick={() => checkAndPublish([currentPage?.id])}>
                 {t("Publish")} page
               </DropdownMenuItem>
             )}
@@ -321,6 +356,18 @@ const PublishButton = () => {
             onClose={handleCancelTranslation}
             onContinue={handleContinueAnyway}
             isPending={isPending}
+          />
+        </Suspense>
+      )}
+
+      {showUnpublishedPartialsWarning && (
+        <Suspense>
+          <UnpublishedPartialsModal
+            isOpen={showUnpublishedPartialsWarning}
+            onClose={handleCancelPartials}
+            onContinue={handleContinueWithPartials}
+            isPending={isPending}
+            partialBlocksInfo={unpublishedPartialBlocksInfo}
           />
         </Suspense>
       )}

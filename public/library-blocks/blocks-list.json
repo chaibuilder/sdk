@@ -33,5 +33,75 @@
     "description": "A refined split-layout hero with an image mosaic grid for portfolios and design showcases.",
     "group": "Hero",
     "preview": "/library-blocks/hero/portfolio-showcase/portfolio-showcase.webp"
+  },
+  {
+    "id": "library-blocks/feature/agency-services/agency-services",
+    "name": "Agency Services",
+    "description": "Bento-style asymmetric grid showcasing agency services with brand strategy, web design, product design, growth marketing, and creative content.",
+    "group": "Feature",
+    "preview": "/library-blocks/feature/agency-services/agency-services.webp"
+  },
+  {
+    "id": "library-blocks/feature/freelancer-toolkit/freelancer-toolkit",
+    "name": "Freelancer Toolkit",
+    "description": "Feature cards for freelancer tools including smart proposals, instant invoicing, time tracking, and client portal.",
+    "group": "Feature",
+    "preview": "/library-blocks/feature/freelancer-toolkit/freelancer-toolkit.webp"
+  },
+  {
+    "id": "library-blocks/feature/design-studio/design-studio",
+    "name": "Design Studio",
+    "description": "Split layout with stacked feature cards on the left and a visual showcase grid on the right for design studios.",
+    "group": "Feature",
+    "preview": "/library-blocks/feature/design-studio/design-studio.webp"
+  },
+  {
+    "id": "library-blocks/feature/marketing-agency/marketing-agency",
+    "name": "Marketing Agency",
+    "description": "Three-column numbered feature section for full-funnel marketing agencies with SEO, paid acquisition, and social community.",
+    "group": "Feature",
+    "preview": "/library-blocks/feature/marketing-agency/marketing-agency.webp"
+  },
+  {
+    "id": "library-blocks/feature/consulting-firm/consulting-firm",
+    "name": "Consulting Firm",
+    "description": "Mixed grid layout for consulting firms featuring digital transformation, revenue strategy, organizational design, risk compliance, and innovation lab.",
+    "group": "Feature",
+    "preview": "/library-blocks/feature/consulting-firm/consulting-firm.webp"
+  },
+  {
+    "id": "library-blocks/bento/saas-dashboard/saas-dashboard",
+    "name": "SaaS Dashboard",
+    "description": "Asymmetric bento grid with a wide analytics card, stat highlight, security badge, team collaboration image card, and integrations card for SaaS products.",
+    "group": "Bento",
+    "preview": "/library-blocks/bento/saas-dashboard/saas-dashboard.webp"
+  },
+  {
+    "id": "library-blocks/bento/creative-portfolio/creative-portfolio",
+    "name": "Creative Portfolio",
+    "description": "Image-heavy mosaic bento with a large featured project, hover-reveal smaller projects, and a stats accent card for creative portfolios.",
+    "group": "Bento",
+    "preview": "/library-blocks/bento/creative-portfolio/creative-portfolio.webp"
+  },
+  {
+    "id": "library-blocks/bento/product-features/product-features",
+    "name": "Product Features",
+    "description": "Symmetric 6-column bento grid with a tall center card featuring an image, icon-led feature cards, and an inverted accent card.",
+    "group": "Bento",
+    "preview": "/library-blocks/bento/product-features/product-features.webp"
+  },
+  {
+    "id": "library-blocks/bento/startup-metrics/startup-metrics",
+    "name": "Startup Metrics",
+    "description": "Stats-focused bento grid with large numbers, a live dashboard image card, star ratings, avatar stacks, and progress bars for startups.",
+    "group": "Bento",
+    "preview": "/library-blocks/bento/startup-metrics/startup-metrics.webp"
+  },
+  {
+    "id": "library-blocks/bento/agency-showcase/agency-showcase",
+    "name": "Agency Showcase",
+    "description": "Featured layout bento with a large case study hero image spanning 2 columns, award card, team model stats, and global reach accent card.",
+    "group": "Bento",
+    "preview": "/library-blocks/bento/agency-showcase/agency-showcase.webp"
   }
 ]

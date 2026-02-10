@@ -36,7 +36,7 @@
       <div chai-name="CTA Buttons" class="flex flex-col gap-4 sm:flex-row sm:items-center">
         <a
           href="#"
-          class="group inline-flex h-14 items-center gap-3 rounded-none bg-foreground px-10 font-mono text-sm font-bold uppercase tracking-wider text-background transition-all hover:bg-primary hover:text-primary-foreground">
+          class="group inline-flex h-14 items-center gap-3 rounded-md bg-foreground px-10 font-mono text-sm font-bold uppercase tracking-wider text-background transition-all hover:bg-primary hover:text-primary-foreground">
           View Our Work
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -76,7 +76,7 @@
     <div chai-name="Hero Visual" class="relative hidden lg:col-span-5 lg:block">
       <div class="absolute inset-0 flex items-center justify-center p-12">
         <div class="relative h-full w-full">
-          <div class="absolute right-0 top-0 h-3/4 w-4/5 overflow-hidden border border-border">
+          <div class="absolute right-0 top-0 h-3/4 w-4/5 overflow-hidden rounded-md border border-border">
             <img
               src="https://picsum.photos/seed/creative-work1/600/800"
               alt="Creative design project showcase"
@@ -84,7 +84,7 @@
               width="600"
               height="800" />
           </div>
-          <div class="absolute bottom-8 left-0 h-2/5 w-3/5 overflow-hidden border border-border shadow-2xl">
+          <div class="absolute bottom-8 left-0 h-2/5 w-3/5 overflow-hidden rounded-md border border-border shadow-2xl">
             <img
               src="https://picsum.photos/seed/creative-work2/400/300"
               alt="Brand identity design detail"
@@ -92,7 +92,8 @@
               width="400"
               height="300" />
           </div>
-          <div class="absolute bottom-0 right-12 flex items-center gap-2 bg-card px-4 py-3 shadow-lg">
+          <div
+            class="absolute bottom-0 right-12 flex items-center gap-2 rounded-md border border-border bg-card px-4 py-3 shadow-lg">
             <div class="h-2 w-2 animate-pulse rounded-full bg-primary"></div>
             <span class="font-mono text-[10px] font-bold uppercase tracking-widest text-muted-foreground"
               >12 Projects Live</span
