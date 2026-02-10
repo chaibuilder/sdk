@@ -15,10 +15,11 @@ import { useRightPanel } from "@/hooks/use-theme";
 import { CheckIcon, CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { useAtomValue } from "jotai";
 import { first, get, isEmpty, isFunction, map } from "lodash-es";
-import { useMemo, useRef, useState } from "react";
+import { Suspense, useMemo, useRef, useState } from "react";
 import Autosuggest from "react-autosuggest";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { ManageDesignTokensModal } from "./manage-design-token/manage-design-tokens-modal";
 
 export function ManualClasses({
   from = "default",
@@ -37,6 +38,7 @@ export function ManualClasses({
   const [editingClassIndex, setEditingClassIndex] = useState(-1);
   const isSelectingSuggestion = useRef(false);
   const [, setRightPanel] = useRightPanel();
+  const [isDesignTokenModalOpen, setIsDesignTokenModalOpen] = useState(false);
   const fuse = useFuseSearch();
   const { t } = useTranslation();
   const [styleBlock] = useSelectedStylingBlocks();
@@ -262,7 +264,7 @@ export function ManualClasses({
             )}
           </span>
           {designTokensEnabled && from === "default" && (
-            <Button variant="link" className="underline" onClick={() => setRightPanel("design-tokens")}>
+            <Button variant="link" className="underline" onClick={() => setIsDesignTokenModalOpen(true)}>
               {t("Design Tokens")}
             </Button>
           )}
@@ -386,6 +388,11 @@ export function ManualClasses({
           ),
         )}
       </div>
+
+      {/* Design Token Management Modal */}
+      <Suspense fallback={null}>
+        <ManageDesignTokensModal open={isDesignTokenModalOpen} onOpenChange={setIsDesignTokenModalOpen} />
+      </Suspense>
     </div>
   );
 }
