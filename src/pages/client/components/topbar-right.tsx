@@ -19,6 +19,7 @@ import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
 import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
+import { useRevisionsEnabled } from "@/pages/hooks/use-revisions-enabled";
 import { throwConfetti } from "@/pages/utils/confetti";
 import Tooltip from "@/pages/utils/tooltip";
 import { compact, find, isEmpty, map, upperCase } from "lodash-es";
@@ -332,10 +333,12 @@ export default function TopbarRight() {
   const [searchParams] = useSearchParams();
   const lang = searchParams.get("lang");
   const isLanguagePageCreated = useIsLanguagePageCreated(lang as string);
+  const revisionsEnabled = useRevisionsEnabled();
+
   if (isLocked || !isLanguagePageCreated) return <div />;
   return (
     <div className="flex items-center justify-end gap-1">
-      <PageRevisions />
+      {revisionsEnabled && <PageRevisions />}
       <PermissionChecker permission={PAGES_PERMISSIONS.EDIT_THEME}>
         <ThemeButton />
       </PermissionChecker>

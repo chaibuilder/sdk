@@ -16,6 +16,7 @@ export const useWebsiteSetting = () => {
       theme: defaultThemeValues,
       appKey: "",
       fallbackLang: "",
+      settings: {},
       designTokens: {},
     },
     queryFn: async () => {
