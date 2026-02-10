@@ -196,14 +196,35 @@ async function getMergedBlocks(blocks: ChaiBlock[], draft: boolean, appId: strin
 
 /**
  * Recursively replace partial blocks with their content
+ * @param blocks - The blocks to process
+ * @param partialBlocksMap - Map of partial block IDs to their content blocks
+ * @param visited - Set of partial IDs currently being expanded (for cycle detection)
+ * @param depth - Current recursion depth (for depth limiting)
  */
-function replacePartialBlocks(blocks: ChaiBlock[], partialBlocksMap: Map<string, ChaiBlock[]>): ChaiBlock[] {
+function replacePartialBlocks(
+  blocks: ChaiBlock[],
+  partialBlocksMap: Map<string, ChaiBlock[]>,
+  visited: Set<string> = new Set(),
+  depth: number = 0,
+): ChaiBlock[] {
+  // Guard against excessive recursion depth
+  if (depth >= MAX_PARTIAL_DEPTH) {
+    return blocks;
+  }
+
   const result: ChaiBlock[] = [];
 
   for (const block of blocks) {
     if (block._type === "GlobalBlock" || block._type === "PartialBlock") {
       const partialBlockId = get(block, "partialBlockId", get(block, "globalBlock", ""));
       if (partialBlockId === "") {
+        result.push(block);
+        continue;
+      }
+
+      // Guard against circular references
+      if (visited.has(partialBlockId)) {
+        // Circular reference detected - skip expansion and keep the original block
         result.push(block);
         continue;
       }
@@ -224,8 +245,12 @@ function replacePartialBlocks(blocks: ChaiBlock[], partialBlocksMap: Map<string,
         return b;
       });
 
+      // Add current partial to visited set for cycle detection
+      const newVisited = new Set(visited);
+      newVisited.add(partialBlockId);
+
       // Recursively replace nested partials within this partial's blocks
-      const expandedBlocks = replacePartialBlocks(partialBlocks, partialBlocksMap);
+      const expandedBlocks = replacePartialBlocks(partialBlocks, partialBlocksMap, newVisited, depth + 1);
       result.push(...expandedBlocks);
     } else {
       result.push(block);
