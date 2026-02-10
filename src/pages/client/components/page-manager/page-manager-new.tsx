@@ -107,13 +107,13 @@ const PagesManagerNew = ({ close }: PageManagerNewProps) => {
 
   /**
    * Handles validation of current page
-   * If page doesn't exist, clear the page param to show the Pages Manager
+   * If page doesn't exist, clear the page query parameter to show the Pages Manager
    */
   useEffect(() => {
     if (currentPage && !isFetching) {
       const page = find(data, { id: currentPage });
       if (!page) {
-        // Clear the page param to show the Pages Manager
+        // Clear the page query parameter to show the Pages Manager
         navigateToPage(new URLSearchParams({}), setQueryParams, true);
       }
     }
