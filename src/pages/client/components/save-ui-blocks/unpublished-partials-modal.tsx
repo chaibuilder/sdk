@@ -8,6 +8,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { PartialBlockInfo } from "@/pages/hooks/pages/use-get-unpublished-partial-blocks";
+import { useTranslation } from "react-i18next";
 
 interface UnpublishedPartialsModalProps {
   isOpen: boolean;
@@ -24,14 +25,17 @@ const UnpublishedPartialsModal = ({
   isPending = false,
   partialBlocksInfo = [],
 }: UnpublishedPartialsModalProps) => {
+  const { t } = useTranslation();
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       {isOpen && (
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Unpublished Partial Blocks</DialogTitle>
+            <DialogTitle>{t("Publish Page with Unpublished Blocks?")}</DialogTitle>
             <DialogDescription>
-              These partial blocks will be published along with the page. Do you want to continue?
+              {t(
+                "You have unpublished changes in the following blocks. They will be published together with the page.",
+              )}
             </DialogDescription>
           </DialogHeader>
           {partialBlocksInfo?.length > 0 && (
@@ -44,7 +48,7 @@ const UnpublishedPartialsModal = ({
                       className={`ml-2 rounded px-1.5 pb-0.5 text-[10px] ${
                         info?.status === "unpublished" ? "text-orange-700" : "text-blue-700"
                       }`}>
-                      {info?.status === "unpublished" ? "Unpublished page" : "Unpublished changes"}
+                      {info?.status === "unpublished" ? t("Unpublished page") : t("Unpublished changes")}
                     </span>
                   </li>
                 ))}
@@ -53,10 +57,10 @@ const UnpublishedPartialsModal = ({
           )}
           <DialogFooter className="flex gap-2">
             <Button variant="outline" onClick={onClose} disabled={isPending}>
-              Cancel
+              {t("Cancel")}
             </Button>
             <Button onClick={onContinue} disabled={isPending}>
-              {isPending ? "Publishing..." : "Publish page & Partial blocks"}
+              {isPending ? t("Publishing...") : t("Publish Page & Blocks")}
             </Button>
           </DialogFooter>
         </DialogContent>
