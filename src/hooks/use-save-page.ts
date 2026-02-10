@@ -152,6 +152,7 @@ export const useSavePage = () => {
       isPageLoaded,
       checkStructure,
       getAllPartialIds,
+      getLinkPageIds,
     ],
     3000, // save only every 3 seconds
   );
