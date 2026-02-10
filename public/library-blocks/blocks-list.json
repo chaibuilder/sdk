@@ -33,5 +33,40 @@
     "description": "A refined split-layout hero with an image mosaic grid for portfolios and design showcases.",
     "group": "Hero",
     "preview": "/library-blocks/hero/portfolio-showcase/portfolio-showcase.webp"
+  },
+  {
+    "id": "library-blocks/feature/agency-services/agency-services",
+    "name": "Agency Services",
+    "description": "Bento-style asymmetric grid showcasing agency services with brand strategy, web design, product design, growth marketing, and creative content.",
+    "group": "Feature",
+    "preview": "/library-blocks/feature/agency-services/agency-services.webp"
+  },
+  {
+    "id": "library-blocks/feature/freelancer-toolkit/freelancer-toolkit",
+    "name": "Freelancer Toolkit",
+    "description": "Feature cards for freelancer tools including smart proposals, instant invoicing, time tracking, and client portal.",
+    "group": "Feature",
+    "preview": "/library-blocks/feature/freelancer-toolkit/freelancer-toolkit.webp"
+  },
+  {
+    "id": "library-blocks/feature/design-studio/design-studio",
+    "name": "Design Studio",
+    "description": "Split layout with stacked feature cards on the left and a visual showcase grid on the right for design studios.",
+    "group": "Feature",
+    "preview": "/library-blocks/feature/design-studio/design-studio.webp"
+  },
+  {
+    "id": "library-blocks/feature/marketing-agency/marketing-agency",
+    "name": "Marketing Agency",
+    "description": "Three-column numbered feature section for full-funnel marketing agencies with SEO, paid acquisition, and social community.",
+    "group": "Feature",
+    "preview": "/library-blocks/feature/marketing-agency/marketing-agency.webp"
+  },
+  {
+    "id": "library-blocks/feature/consulting-firm/consulting-firm",
+    "name": "Consulting Firm",
+    "description": "Mixed grid layout for consulting firms featuring digital transformation, revenue strategy, organizational design, risk compliance, and innovation lab.",
+    "group": "Feature",
+    "preview": "/library-blocks/feature/consulting-firm/consulting-firm.webp"
   }
 ]
