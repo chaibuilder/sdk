@@ -616,11 +616,11 @@ export const getSanitizedHTML = (html: string) => {
 
   // Rest of the function remains the same
   html = html
-    .replace(/\\n/g, "")
+    .replace(/\\n/g, " ")
     .replace(/\\\\/g, "")
     .replace(/\\([/<>])/g, "$1")
     .replace(/\\./g, "")
-    .replace(/[\n\r\t\f\v]/g, "");
+    .replace(/[\n\r\t\f\v]/g, " ");
 
   // Remove $name attributes
   html = html.replace(/\$name="[^"]*"/g, "");
