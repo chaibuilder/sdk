@@ -1,5 +1,4 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { TokensIcon } from "@radix-ui/react-icons";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -42,21 +41,5 @@ export const ManageDesignTokensModal: React.FC<ManageDesignTokensModalProps> = (
         </div>
       </DialogContent>
     </Dialog>
-  );
-};
-
-// Export a trigger button component
-interface ManageDesignTokensButtonProps {
-  onClick: () => void;
-}
-
-export const ManageDesignTokensButton: React.FC<ManageDesignTokensButtonProps> = ({ onClick }) => {
-  const { t } = useTranslation();
-  
-  return (
-    <Button onClick={onClick} variant="default" size="sm" className="gap-2">
-      <TokensIcon className="h-4 w-4" />
-      {t("Manage Tokens")}
-    </Button>
   );
 };
