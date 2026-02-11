@@ -55,7 +55,7 @@ export const DesignTokenPreview = ({ activeToken }: DesignTokenPreviewProps) => 
 
             <div>
               <div className="text-[10px] font-medium text-muted-foreground mb-2">{t("Preview:")}</div>
-              <div className={`${safeTokenValue} rounded-lg border p-6 text-sm`}>
+              <div className={safeTokenValue}>
                 {t("Sample text with token styles applied")}
               </div>
             </div>
