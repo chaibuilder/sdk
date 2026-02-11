@@ -12,15 +12,15 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { TokensIcon } from "@radix-ui/react-icons";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import ManageDesignTokens from "./manage-design-tokens";
 import { DesignTokenPreview } from "./design-token-preview";
+import ManageDesignTokens from "./manage-design-tokens";
 
 interface ManageDesignTokensModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export const ManageDesignTokensModal: React.FC<ManageDesignTokensModalProps> = ({ open, onOpenChange }) => {
+const ManageDesignTokensModal: React.FC<ManageDesignTokensModalProps> = ({ open, onOpenChange }) => {
   const { t } = useTranslation();
   const [activeToken, setActiveToken] = useState<{ name: string; value: string; id?: string } | null>(null);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
@@ -90,3 +90,5 @@ export const ManageDesignTokensModal: React.FC<ManageDesignTokensModalProps> = (
     </>
   );
 };
+
+export default ManageDesignTokensModal;

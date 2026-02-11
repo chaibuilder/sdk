@@ -20,6 +20,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 const ManageDesignTokensModal = lazy(() => import("./manage-design-token/manage-design-tokens-modal"));
+
 export function ManualClasses({
   from = "default",
   classFromProps,

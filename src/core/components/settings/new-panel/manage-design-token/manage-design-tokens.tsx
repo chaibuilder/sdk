@@ -148,12 +148,11 @@ const ManageDesignTokens = ({ onActiveTokenChange, onDirtyStateChange }: ManageD
     // Consider the modal "dirty" only when there are actual unsaved add-form changes.
     // Edits are auto-saved, so merely being in "edit" mode should not mark the modal as dirty.
     const hasAddFormChanges =
-      viewMode === "add" &&
-      ((tokenName && tokenName.trim().length > 0) ||
-        (classes && classes.trim().length > 0));
+      viewMode === "add" && ((tokenName && tokenName.trim().length > 0) || (classes && classes.trim().length > 0));
 
-    onDirtyStateChange(hasAddFormChanges);
+    onDirtyStateChange(hasAddFormChanges as boolean);
   }, [viewMode, tokenName, classes, onDirtyStateChange]);
+
   // Notify parent of active token changes
   useEffect(() => {
     if (onActiveTokenChange) {
