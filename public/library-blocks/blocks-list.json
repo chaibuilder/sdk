@@ -103,5 +103,47 @@
     "description": "Featured layout bento with a large case study hero image spanning 2 columns, award card, team model stats, and global reach accent card.",
     "group": "Bento",
     "preview": "/library-blocks/bento/agency-showcase/agency-showcase.webp"
+  },
+  {
+    "id": "library-blocks/navbar/saas-startup/saas-startup",
+    "name": "SaaS Startup Navbar",
+    "description": "A clean sticky navbar with logo, centered navigation links, sign-in and CTA buttons, and a mobile hamburger menu for SaaS products and startups.",
+    "group": "Navbar",
+    "preview": "/library-blocks/navbar/saas-startup/saas-startup.webp"
+  },
+  {
+    "id": "library-blocks/navbar/creative-agency/creative-agency",
+    "name": "Creative Agency Navbar",
+    "description": "An editorial-style navbar with serif logo, uppercase mono navigation, availability indicator, and a bold dark CTA button for creative studios and agencies.",
+    "group": "Navbar",
+    "preview": "/library-blocks/navbar/creative-agency/creative-agency.webp"
+  },
+  {
+    "id": "library-blocks/navbar/minimal-portfolio/minimal-portfolio",
+    "name": "Minimal Portfolio Navbar",
+    "description": "A lightweight minimal navbar with personal branding, sparse navigation, social icons, and a contact CTA for portfolios and freelancers.",
+    "group": "Navbar",
+    "preview": "/library-blocks/navbar/minimal-portfolio/minimal-portfolio.webp"
+  },
+  {
+    "id": "library-blocks/footer/saas-startup/saas-startup",
+    "name": "SaaS Startup Footer",
+    "description": "A multi-column footer with brand section, newsletter signup, product/company/legal link columns, social icons, and a bottom copyright bar for SaaS products.",
+    "group": "Footer",
+    "preview": "/library-blocks/footer/saas-startup/saas-startup.webp"
+  },
+  {
+    "id": "library-blocks/footer/creative-agency/creative-agency",
+    "name": "Creative Agency Footer",
+    "description": "A bold agency footer with a large CTA headline section, four-column layout with services, company links, contact details, availability indicator, and social links.",
+    "group": "Footer",
+    "preview": "/library-blocks/footer/creative-agency/creative-agency.webp"
+  },
+  {
+    "id": "library-blocks/footer/minimal-portfolio/minimal-portfolio",
+    "name": "Minimal Portfolio Footer",
+    "description": "A centered minimal footer with personal branding, contact and resume CTAs, navigation links, social icons, and copyright for portfolios and freelancers.",
+    "group": "Footer",
+    "preview": "/library-blocks/footer/minimal-portfolio/minimal-portfolio.webp"
   }
 ]
