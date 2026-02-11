@@ -5,18 +5,7 @@ import { usePageExpandManager } from "@/pages/hooks/utils/use-page-expand-manage
 import { ChaiPage } from "@/pages/utils/page-organization";
 import Tooltip from "@/pages/utils/tooltip";
 import { find, get, isEmpty } from "lodash-es";
-import {
-  ChevronRight,
-  Edit,
-  File,
-  Hash,
-  Lock,
-  MoreHorizontal,
-  NotepadText,
-  Pencil,
-  Plus,
-  StarsIcon,
-} from "lucide-react";
+import { ChevronRight, File, Hash, Lock, MoreHorizontal, NotepadText, Pencil, Plus, StarsIcon } from "lucide-react";
 import { useMemo } from "react";
 import { PageActionsDropdown } from "@/pages/client/components/page-action-dropdown";
 import { usePageToUser } from "@/pages/client/components/page-lock/page-lock-hook";
@@ -210,22 +199,15 @@ const PageItem = ({
               </PageActionsDropdown>
             </div>
           ) : pageOwner ? (
-            <span className="duration absolute right-1.5 top-1/2 -translate-y-1/2 text-xs text-gray-500">
-              <Lock className="h-3.5 w-3.5 fill-red-200 text-red-500" />
+            <span className="duration absolute right-1.5 top-1/2 flex -translate-y-1/2 items-center gap-x-1 text-xs text-red-500">
+              <Lock className="h-3 w-3 fill-red-200 text-red-500" />
+              <Tooltip content={`${pageOwner} is editing this page`}>
+                <span className="max-w-[100px] truncate font-bold">{pageOwner}</span>
+              </Tooltip>
             </span>
           ) : null}
         </div>
       </PageLinkContextMenu>
-
-      <>
-        {pageOwner && (
-          <button className="absolute right-px top-1/2 flex h-6 -translate-y-1/2 items-center gap-x-1 rounded bg-red-50 px-2 py-0.5 text-xs font-light text-red-500 opacity-0 group-hover:opacity-100">
-            <Edit size={12} className="stroke-[3]" /> <span className="font-medium">{pageOwner}</span> is editing this
-            page
-          </button>
-        )}
-      </>
-
       <>
         {!hasLangPage && !page.isPartialGroup && !pageOwner && (
           <button
