@@ -17,6 +17,7 @@ export interface ChaiDesignTokens {
   [uniqueId: string]: {
     name: string;
     value: string;
+    archived?: boolean;
   };
 }
 
