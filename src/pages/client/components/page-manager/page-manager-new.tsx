@@ -113,11 +113,27 @@ const PagesManagerNew = ({ close }: PageManagerNewProps) => {
     if (currentPage && !isFetching) {
       const page = find(data, { id: currentPage });
       if (!page) {
-        // Clear the page query parameter to show the Pages Manager
-        navigateToPage(new URLSearchParams({}), setQueryParams, true);
+        // Clear the page query parameter to show the Pages Manager while preserving the current pathname
+        const newParams = new URLSearchParams(queryParams.toString());
+        newParams.delete("page");
+
+        // Only call navigateToPage if there are remaining query parameters;
+        // otherwise, preserve the current pathname and clear the search string.
+        if ([...newParams.keys()].length > 0) {
+          navigateToPage(newParams, setQueryParams, true);
+        } else {
+          if (typeof window !== "undefined" && window.history && window.location) {
+            window.history.replaceState(
+              window.history.state,
+              "",
+              window.location.pathname + window.location.hash
+            );
+          }
+          setQueryParams(newParams);
+        }
       }
     }
-  }, [data, currentPage, isFetching, setQueryParams]);
+  }, [data, currentPage, isFetching, queryParams, setQueryParams]);
 
   /**
    * Separate useEffect to expand parent pages after pages are computed
