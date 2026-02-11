@@ -19,7 +19,7 @@ import {
 } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
 import { nanoid } from "nanoid";
-import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
@@ -119,9 +119,6 @@ const ManageDesignTokens = ({ onActiveTokenChange, onDirtyStateChange }: ManageD
   const [searchQuery, setSearchQuery] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
-  // Debounce timer ref for real-time editing
-  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
-
   const filteredTokens = useMemo(() => {
     return Object.entries(designTokens).filter(
       ([, token]) =>
@@ -129,15 +126,6 @@ const ManageDesignTokens = ({ onActiveTokenChange, onDirtyStateChange }: ManageD
         token.value.toLowerCase().includes(searchQuery.toLowerCase()),
     );
   }, [designTokens, searchQuery]);
-
-  // Cleanup debounce timer on unmount
-  useEffect(() => {
-    return () => {
-      if (debounceTimerRef.current) {
-        clearTimeout(debounceTimerRef.current);
-      }
-    };
-  }, []);
 
   // Notify parent of dirty state changes
   useEffect(() => {
@@ -184,42 +172,40 @@ const ManageDesignTokens = ({ onActiveTokenChange, onDirtyStateChange }: ManageD
     }
   }, [viewMode, tokenName, classes, editingTokenId, selectedTokenId, designTokens, onActiveTokenChange]);
 
-  // Real-time update for editing (debounced)
-  const debouncedUpdateToken = useCallback(
-    (name: string, value: string) => {
-      if (!editingTokenId || viewMode !== "edit") return;
+  const handleSaveToken = () => {
+    if (!tokenName.trim() || !classes.trim()) {
+      toast.error(t("Please fill in both token name and classes"));
+      return;
+    }
 
-      // Validate before updating
-      if (!name.trim() || !value.trim()) return;
-      if (!validateTokenName(name)) return;
+    if (!validateTokenName(tokenName)) {
+      toast.error(t("Invalid design token name format"));
+      return;
+    }
 
-      // Check for duplicate names (excluding current token)
-      const existingToken = Object.entries(designTokens).find(
-        ([id, token]) => token.name === name.trim() && id !== editingTokenId,
-      );
-      if (existingToken) return;
+    // Check for duplicate names (excluding current token)
+    const existingToken = Object.entries(designTokens).find(
+      ([id, token]) => token.name === tokenName.trim() && id !== editingTokenId,
+    );
+    if (existingToken) {
+      toast.error(t("Token already exists"));
+      return;
+    }
 
-      setIsSaving(true);
+    if (!editingTokenId) return;
 
-      if (debounceTimerRef.current) {
-        clearTimeout(debounceTimerRef.current);
-      }
-
-      debounceTimerRef.current = setTimeout(() => {
-        const newTokens = {
-          ...designTokens,
-          [editingTokenId]: {
-            name: name.trim(),
-            value: value.trim(),
-          },
-        };
-        setDesignTokens(newTokens);
-        incrementActionsCount();
-        setIsSaving(false);
-      }, 250);
-    },
-    [editingTokenId, viewMode, designTokens, setDesignTokens, incrementActionsCount],
-  );
+    const newTokens = {
+      ...designTokens,
+      [editingTokenId]: {
+        name: tokenName.trim(),
+        value: classes.trim(),
+      },
+    };
+    setDesignTokens(newTokens);
+    incrementActionsCount();
+    toast.success(t("Token updated successfully"));
+    resetAndGoToView();
+  };
 
   const handleAddToken = () => {
     if (!tokenName.trim() || !classes.trim()) {
@@ -280,10 +266,6 @@ const ManageDesignTokens = ({ onActiveTokenChange, onDirtyStateChange }: ManageD
   };
 
   const resetAndGoToView = () => {
-    // Clear any pending debounce
-    if (debounceTimerRef.current) {
-      clearTimeout(debounceTimerRef.current);
-    }
     setEditingTokenId(null);
     setTokenName("");
     setClasses("");
@@ -297,20 +279,10 @@ const ManageDesignTokens = ({ onActiveTokenChange, onDirtyStateChange }: ManageD
     setTokenName(convertedValue);
     const error = getTokenNameError(convertedValue, designTokens, t, viewMode === "edit", editingTokenId || undefined);
     setTokenNameError(error);
-
-    // Real-time update for edit mode
-    if (viewMode === "edit" && !error) {
-      debouncedUpdateToken(convertedValue, classes);
-    }
   };
 
   const handleClassesChange = (newClasses: string) => {
     setClasses(newClasses);
-
-    // Real-time update for edit mode
-    if (viewMode === "edit" && !tokenNameError && tokenName.trim()) {
-      debouncedUpdateToken(tokenName, newClasses);
-    }
   };
 
   const handleAddClass = (cls: string) => {
@@ -330,7 +302,7 @@ const ManageDesignTokens = ({ onActiveTokenChange, onDirtyStateChange }: ManageD
   const renderForm = () => {
     const isEditMode = viewMode === "edit";
     const title = isEditMode ? t("Edit Design Token") : t("Add Design Token");
-    const description = isEditMode ? t("Update design token. Auto-saved.") : t("Create a reusable design token");
+    const description = isEditMode ? t("Update design token") : t("Create a reusable design token");
 
     return (
       <div className="flex h-full flex-col">
@@ -383,20 +355,27 @@ const ManageDesignTokens = ({ onActiveTokenChange, onDirtyStateChange }: ManageD
             onRemove={handleRemoveClass}
           />
 
-          {/* Footer - only show Add button for add mode */}
-          {!isEditMode && (
-            <div className="mt-3 flex items-center justify-end gap-2 pt-3">
-              <Button variant="outline" onClick={resetAndGoToView} className="h-7 text-xs">
-                {t("Cancel")}
+          {/* Footer - show Add button for add mode, Save button for edit mode */}
+          <div className="mt-3 flex items-center justify-end gap-2 pt-3">
+            <Button variant="outline" onClick={resetAndGoToView} className="h-7 text-xs">
+              {t("Cancel")}
+            </Button>
+            {isEditMode ? (
+              <Button
+                onClick={handleSaveToken}
+                disabled={!tokenName.trim() || !classes.trim() || !!tokenNameError}
+                className="h-7 text-xs">
+                {t("Save Token")}
               </Button>
+            ) : (
               <Button
                 onClick={handleAddToken}
                 disabled={!tokenName.trim() || !classes.trim() || !!tokenNameError}
                 className="h-7 text-xs">
                 {t("Add Token")}
               </Button>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     );

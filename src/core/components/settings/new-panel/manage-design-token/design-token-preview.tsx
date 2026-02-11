@@ -37,13 +37,6 @@ export const DesignTokenPreview = ({ activeToken }: DesignTokenPreviewProps) => 
                   </span>
                 )}
               </div>
-
-              <div className="space-y-3">
-                <div>
-                  <div className="mb-1 text-[10px] font-medium text-muted-foreground">{t("Classes:")}</div>
-                  <code className="block rounded bg-muted/50 px-2 py-1 text-[10px]">{activeToken.value}</code>
-                </div>
-              </div>
             </>
           )}
 

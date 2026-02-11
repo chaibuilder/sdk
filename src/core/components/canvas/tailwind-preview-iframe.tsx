@@ -118,7 +118,9 @@ export const TailwindPreviewIframe = ({
     // @ts-ignore
     <ChaiFrame className={className} style={style} title={title} initialContent={initialContent}>
       <PreviewHeadTags />
-      <div className={classes || undefined} dangerouslySetInnerHTML={{ __html: content }} />
+      <div className="h-full p-4">
+        <div className={classes || undefined} dangerouslySetInnerHTML={{ __html: content }} />
+      </div>
     </ChaiFrame>
   );
 };
