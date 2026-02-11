@@ -14,12 +14,12 @@ import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
 import { CheckIcon, CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { useAtomValue } from "jotai";
 import { first, get, isEmpty, isFunction, map } from "lodash-es";
-import { Suspense, useMemo, useRef, useState } from "react";
+import { Suspense, lazy, useMemo, useRef, useState } from "react";
 import Autosuggest from "react-autosuggest";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { ManageDesignTokensModal } from "./manage-design-token/manage-design-tokens-modal";
 
+const ManageDesignTokensModal = lazy(() => import("./manage-design-token/manage-design-tokens-modal"));
 export function ManualClasses({
   from = "default",
   classFromProps,
