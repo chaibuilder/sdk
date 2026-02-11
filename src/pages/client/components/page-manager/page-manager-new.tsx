@@ -136,6 +136,9 @@ const PagesManagerNew = ({ close }: PageManagerNewProps) => {
               "",
               window.location.pathname + window.location.hash
             );
+            // Manually dispatch a popstate event to keep behavior consistent
+            // with navigateToPage, which also triggers a popstate.
+            window.dispatchEvent(new PopStateEvent("popstate", { state: window.history.state }));
           }
           setQueryParams(newParams);
         }
