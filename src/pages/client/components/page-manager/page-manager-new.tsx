@@ -144,7 +144,7 @@ const PagesManagerNew = ({ close }: PageManagerNewProps) => {
         }
       }
     }
-  }, [data, currentPage, isFetching, queryParams, setQueryParams]);
+  }, [data, currentPage, isFetching, setQueryParams]);
 
   /**
    * Separate useEffect to expand parent pages after pages are computed
