@@ -16,7 +16,7 @@ import { toast } from "sonner";
 
 loadWebBlocks();
 registerChaiTopBar(Topbar);
-registerChaiLibrary("chai", defaultChaiLibrary(import.meta.env.DEV ? { baseUrl: "http://localhost:5173" } : {}));
+registerChaiLibrary("chai", defaultChaiLibrary({ baseUrl: import.meta.env.DEV ? "http://localhost:5173" : "/" }));
 registerChaiFont("Bungee", {
   src: [{ url: "/fonts/bungee/Bungee-Regular.woff2", format: "woff2" }],
   fallback: "serif",
