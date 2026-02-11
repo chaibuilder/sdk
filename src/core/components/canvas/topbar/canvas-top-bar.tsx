@@ -21,7 +21,7 @@ import { useTranslation } from "react-i18next";
 import { PageValidation } from "./page-validation";
 
 const CanvasTopBar: React.FC = () => {
-  const darkModeEnabled = useBuilderProp("flags.darkMode", true);
+  const darkModeEnabled = useBuilderProp("flags.darkMode", false);
   const dataBindingEnabled = useBuilderProp("flags.dataBinding", true);
   const [dataBindingActive, setDataBindingActive] = useAtom(dataBindingActiveAtom);
   const { t } = useTranslation();
