@@ -40,14 +40,21 @@ interface SingleDesignTokenProps {
   onDelete: (tokenId: string) => void;
 }
 
-const SingleDesignToken = ({ tokenId, token, isDisabled, isSelected, onSelect, onEdit, onDelete }: SingleDesignTokenProps) => {
+const SingleDesignToken = ({
+  tokenId,
+  token,
+  isDisabled,
+  isSelected,
+  onSelect,
+  onEdit,
+  onDelete,
+}: SingleDesignTokenProps) => {
   return (
-    <div 
+    <div
       onClick={() => onSelect(tokenId)}
-      className={`group relative flex items-center justify-between overflow-hidden rounded border p-2 transition-all duration-150 cursor-pointer ${
-        isSelected ? 'bg-primary/10 border-primary' : 'hover:bg-muted/90'
-      }`}
-    >
+      className={`group relative flex cursor-pointer items-center justify-between overflow-hidden rounded border p-2 transition-all duration-150 ${
+        isSelected ? "border-primary bg-primary/10" : "hover:bg-muted/90"
+      }`}>
       <div className="min-w-0 flex-1 overflow-hidden">
         <div className="text-xs font-semibold">{token.name}</div>
         <div className="w-full max-w-52 truncate text-[10px] font-light">{token.value}</div>
@@ -92,9 +99,10 @@ const SingleDesignToken = ({ tokenId, token, isDisabled, isSelected, onSelect, o
 
 interface ManageDesignTokensProps {
   onActiveTokenChange?: (token: { name: string; value: string; id?: string } | null) => void;
+  onDirtyStateChange?: (isDirty: boolean) => void;
 }
 
-const ManageDesignTokens = ({ onActiveTokenChange }: ManageDesignTokensProps) => {
+const ManageDesignTokens = ({ onActiveTokenChange, onDirtyStateChange }: ManageDesignTokensProps) => {
   const { t } = useTranslation();
   const [designTokens, setDesignTokens] = useAtom(chaiDesignTokensAtom);
   const incrementActionsCount = useIncrementActionsCount();
@@ -131,6 +139,13 @@ const ManageDesignTokens = ({ onActiveTokenChange }: ManageDesignTokensProps) =>
     };
   }, []);
 
+  // Notify parent of dirty state changes
+  useEffect(() => {
+    if (onDirtyStateChange) {
+      onDirtyStateChange(viewMode === "add" || viewMode === "edit");
+    }
+  }, [viewMode, onDirtyStateChange]);
+
   // Notify parent of active token changes
   useEffect(() => {
     if (onActiveTokenChange) {
@@ -145,7 +160,7 @@ const ManageDesignTokens = ({ onActiveTokenChange }: ManageDesignTokensProps) =>
         } else {
           onActiveTokenChange(null);
         }
-      } 
+      }
       // If viewing and a token is selected, show that token
       else if (viewMode === "view" && selectedTokenId && designTokens[selectedTokenId]) {
         const token = designTokens[selectedTokenId];
@@ -154,7 +169,7 @@ const ManageDesignTokens = ({ onActiveTokenChange }: ManageDesignTokensProps) =>
           value: token.value,
           id: selectedTokenId,
         });
-      } 
+      }
       // Otherwise clear the preview
       else {
         onActiveTokenChange(null);
@@ -409,7 +424,7 @@ const ManageDesignTokens = ({ onActiveTokenChange }: ManageDesignTokensProps) =>
 
         {/* Content */}
         <div className="no-scrollbar flex flex-1 flex-col overflow-hidden pt-2">
-          <ScrollArea className="h-full flex-1">
+          <ScrollArea className="flex h-full flex-1 items-center justify-center">
             <div className="space-y-1">
               {Object.entries(designTokens).length === 0 ? (
                 <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-muted bg-muted/20 py-8">
