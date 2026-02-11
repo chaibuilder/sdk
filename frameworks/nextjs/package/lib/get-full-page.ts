@@ -4,6 +4,13 @@ import { and, eq, inArray } from "drizzle-orm";
 import { get, has, isEmpty } from "lodash";
 import { nanoid } from "nanoid";
 
+/**
+ * Maximum nesting depth for partial blocks.
+ * Prevents infinite recursion when partials contain other partials.
+ * Set to 4 to balance flexibility with performance and safety.
+ */
+const MAX_PARTIAL_DEPTH = 4;
+
 export type GetFullPageOptions = {
   id: string;
   draft: boolean;
@@ -128,72 +135,132 @@ export async function getFullPage(
 }
 
 /**
+ * Extract partial block IDs from a list of blocks
+ */
+function extractPartialBlockIds(blocks: ChaiBlock[]): string[] {
+  return blocks
+    .filter(({ _type }) => _type === "GlobalBlock" || _type === "PartialBlock")
+    .map((block) => get(block, "partialBlockId", get(block, "globalBlock", "")))
+    .filter((id) => id !== "");
+}
+
+/**
  * Merge partial blocks into the main blocks array
- * Optimized to fetch all partial blocks in a single query
+ * Fetches nested partials up to MAX_PARTIAL_DEPTH levels
+ * Optimized to batch fetch all partials at each depth level in a single query
  */
 async function getMergedBlocks(blocks: ChaiBlock[], draft: boolean, appId: string): Promise<ChaiBlock[]> {
   const table = draft ? schema.appPages : schema.appPagesOnline;
-  const partialBlocksList = blocks.filter(({ _type }) => _type === "GlobalBlock" || _type === "PartialBlock");
 
-  if (partialBlocksList.length === 0) {
-    return blocks;
-  }
-
-  // Collect all partial block IDs
-  const partialBlockIds = partialBlocksList
-    .map((partialBlock) => get(partialBlock, "partialBlockId", get(partialBlock, "globalBlock", "")))
-    .filter((id) => id !== "");
-
-  if (partialBlockIds.length === 0) {
-    return blocks;
-  }
-
-  // Fetch all partial blocks in ONE query
-  const { data: partialResults } = await safeQuery(() =>
-    db
-      .select({
-        id: table.id,
-        blocks: table.blocks,
-      })
-      .from(table)
-      .where(and(eq(table.app, appId), inArray(table.id, partialBlockIds))),
-  );
-
-  // Create a map for quick lookup: { partialBlockId: blocks[] }
+  // Map to store all fetched partial blocks: { partialBlockId: blocks[] }
   const partialBlocksMap = new Map<string, ChaiBlock[]>();
-  if (partialResults) {
-    partialResults.forEach((result: { id: string; blocks: unknown }) => {
-      partialBlocksMap.set(result.id, (result.blocks as ChaiBlock[]) ?? []);
-    });
-  }
+  const fetchedIds = new Set<string>();
 
-  // Replace partial blocks with their actual content
-  for (let i = 0; i < partialBlocksList.length; i++) {
-    const partialBlock = partialBlocksList[i];
-    if (!partialBlock) continue;
+  // Collect initial partial IDs from page blocks
+  let idsToFetch = extractPartialBlockIds(blocks).filter((id) => !fetchedIds.has(id));
 
-    const partialBlockId = get(partialBlock, "partialBlockId", get(partialBlock, "globalBlock", ""));
-    if (partialBlockId === "") continue;
+  // Fetch partials level by level up to MAX_PARTIAL_DEPTH
+  for (let depth = 0; depth < MAX_PARTIAL_DEPTH && idsToFetch.length > 0; depth++) {
+    // Batch fetch all partials at this depth in ONE query
+    const { data: partialResults } = await safeQuery(() =>
+      db
+        .select({
+          id: table.id,
+          blocks: table.blocks,
+        })
+        .from(table)
+        .where(and(eq(table.app, appId), inArray(table.id, idsToFetch))),
+    );
 
-    let partialBlocks = partialBlocksMap.get(partialBlockId) ?? [];
-    //Generate new ids for blocks
-    partialBlocks = assignNewIds(partialBlocks);
+    // Store results and collect nested partial IDs for next iteration
+    const nextLevelIds: string[] = [];
+    if (partialResults) {
+      partialResults.forEach((result: { id: string; blocks: unknown }) => {
+        const partialBlocks = (result.blocks as ChaiBlock[]) ?? [];
+        partialBlocksMap.set(result.id, partialBlocks);
+        fetchedIds.add(result.id);
 
-    // Inherit parent properties
-    if (partialBlocks.length > 0) {
-      partialBlocks = partialBlocks.map((block) => {
-        if (isEmpty(block._parent)) block._parent = partialBlock._parent;
-        if (has(partialBlock, "_show")) block._show = partialBlock._show;
-        return block;
+        // Extract nested partial IDs for next depth level
+        const nestedIds = extractPartialBlockIds(partialBlocks);
+        nestedIds.forEach((id) => {
+          if (!fetchedIds.has(id) && !nextLevelIds.includes(id)) {
+            nextLevelIds.push(id);
+          }
+        });
       });
     }
 
-    // Replace the reference with actual content
-    const index = blocks.indexOf(partialBlock);
-    if (index !== -1) {
-      blocks.splice(index, 1, ...partialBlocks);
+    // Mark requested IDs as fetched even if not found (to avoid re-fetching)
+    idsToFetch.forEach((id) => fetchedIds.add(id));
+    idsToFetch = nextLevelIds;
+  }
+
+  // Now replace all partial blocks with their content (recursive replacement)
+  return replacePartialBlocks(blocks, partialBlocksMap);
+}
+
+/**
+ * Recursively replace partial blocks with their content
+ * @param blocks - The blocks to process
+ * @param partialBlocksMap - Map of partial block IDs to their content blocks
+ * @param visited - Set of partial IDs currently being expanded (for cycle detection)
+ * @param depth - Current recursion depth (for depth limiting)
+ */
+function replacePartialBlocks(
+  blocks: ChaiBlock[],
+  partialBlocksMap: Map<string, ChaiBlock[]>,
+  visited: Set<string> = new Set(),
+  depth: number = 0,
+): ChaiBlock[] {
+  // Guard against excessive recursion depth
+  if (depth >= MAX_PARTIAL_DEPTH) {
+    return blocks;
+  }
+
+  const result: ChaiBlock[] = [];
+
+  for (const block of blocks) {
+    if (block._type === "GlobalBlock" || block._type === "PartialBlock") {
+      const partialBlockId = get(block, "partialBlockId", get(block, "globalBlock", ""));
+      if (partialBlockId === "") {
+        result.push(block);
+        continue;
+      }
+
+      // Guard against circular references
+      if (visited.has(partialBlockId)) {
+        // Circular reference detected - skip expansion and keep the original block
+        result.push(block);
+        continue;
+      }
+
+      let partialBlocks = partialBlocksMap.get(partialBlockId) ?? [];
+      if (partialBlocks.length === 0) {
+        result.push(block);
+        continue;
+      }
+
+      // Generate new IDs for blocks
+      partialBlocks = assignNewIds(partialBlocks);
+
+      // Inherit parent properties
+      partialBlocks = partialBlocks.map((b) => {
+        if (isEmpty(b._parent)) b._parent = block._parent;
+        if (has(block, "_show")) b._show = block._show;
+        return b;
+      });
+
+      // Add current partial to visited set for cycle detection
+      const newVisited = new Set(visited);
+      newVisited.add(partialBlockId);
+
+      // Recursively replace nested partials within this partial's blocks
+      const expandedBlocks = replacePartialBlocks(partialBlocks, partialBlocksMap, newVisited, depth + 1);
+      result.push(...expandedBlocks);
+    } else {
+      result.push(block);
     }
   }
 
-  return blocks;
+  return result;
 }

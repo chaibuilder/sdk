@@ -11,6 +11,7 @@ import {
   getBlockTagAttributes,
 } from "@/core/components/canvas/static/new-blocks-render-helpers";
 import { useBlockRuntimeProps } from "@/core/components/canvas/static/use-block-runtime-props";
+import { MAX_PARTIAL_DEPTH } from "@/core/constants/partial-blocks";
 import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { useEditorMode } from "@/hooks/use-editor-mode";
@@ -40,6 +41,8 @@ export const RepeaterContext = createContext<{
   index: -1,
   key: "",
 });
+
+export const PartialDepthContext = createContext<number>(0);
 
 const CORE_BLOCKS = [
   "Box",
@@ -224,15 +227,30 @@ const PartialWrapper = ({ children, partialBlockId }: { children: React.ReactNod
   );
 };
 
+const PartialDepthExceededPlaceholder = () => (
+  <div className="flex items-center justify-center rounded-md border border-destructive bg-destructive/10 p-4 text-center text-sm text-destructive">
+    <p>Maximum partial nesting depth ({MAX_PARTIAL_DEPTH} levels) exceeded</p>
+  </div>
+);
+
 const PartialBlocksRenderer = ({ partialBlockId }: { partialBlockId: string }) => {
-  const { getPartailBlocks } = usePartialBlocksStore();
-  const partialBlocks = useMemo(() => getPartailBlocks(partialBlockId), [getPartailBlocks, partialBlockId]);
+  const { getPartialBlocks } = usePartialBlocksStore();
+  const currentDepth = useContext(PartialDepthContext);
+  const partialBlocks = useMemo(() => getPartialBlocks(partialBlockId), [getPartialBlocks, partialBlockId]);
   const partialBlocksAtoms = useMemo(() => splitAtom(atom(partialBlocks)), [partialBlocks]);
+
+  // Check if max depth exceeded
+  if (currentDepth >= MAX_PARTIAL_DEPTH) {
+    return <PartialDepthExceededPlaceholder />;
+  }
+
   if (isEmpty(partialBlocks)) return null;
   return (
-    <PartialWrapper partialBlockId={partialBlockId}>
-      <BlocksRenderer splitAtoms={partialBlocksAtoms} blocks={partialBlocks} type="PartialBlock" />
-    </PartialWrapper>
+    <PartialDepthContext.Provider value={currentDepth + 1}>
+      <PartialWrapper partialBlockId={partialBlockId}>
+        <BlocksRenderer splitAtoms={partialBlocksAtoms} blocks={partialBlocks} type="PartialBlock" />
+      </PartialWrapper>
+    </PartialDepthContext.Provider>
   );
 };
 

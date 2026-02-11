@@ -25,7 +25,7 @@ interface SaveToLibraryProps {
 
 const SaveToLibrary = (args: SaveToLibraryProps) => {
   const { blocks, close, blockId } = args;
-  const { getPartailBlocks } = usePartialBlocksStore();
+  const { getPartialBlocks } = usePartialBlocksStore();
 
   // Find the current block
   const currentBlock = blocks.find((b) => b._id === blockId);
@@ -45,7 +45,7 @@ const SaveToLibrary = (args: SaveToLibraryProps) => {
     for (const block of blocks) {
       if (block._type === "PartialBlock" || block._type === "GlobalBlock") {
         // Get the expanded content of the partial block
-        let partialBlocks = getPartailBlocks(block.partialBlockId!);
+        let partialBlocks = getPartialBlocks(block.partialBlockId!);
         if (block._parent && partialBlocks?.length > 0) {
           partialBlocks = partialBlocks.map((b: ChaiBlock) => {
             if (isEmpty(b._parent)) {
@@ -62,7 +62,7 @@ const SaveToLibrary = (args: SaveToLibraryProps) => {
       }
     }
     return result;
-  }, [blocks, getPartailBlocks]);
+  }, [blocks, getPartialBlocks]);
 
   const [name, setName] = useState("");
   const [group, setGroup] = useState("");

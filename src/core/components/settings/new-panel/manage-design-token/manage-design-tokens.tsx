@@ -57,7 +57,6 @@ const SingleDesignToken = ({
   isArchived = false,
   onSelect,
   onEdit,
-  onArchive,
   onUnarchive,
 }: SingleDesignTokenProps) => {
   return (
