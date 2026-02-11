@@ -38,10 +38,19 @@ export class UpdateWebsiteFieldsAction extends ChaiBaseAction<
     // Pick only the allowed columns from settings (matching old implementation)
     const columns = pick(data.settings, ["theme", "designTokens"]);
 
+    // Build the changes array based on which fields are being updated
+    const changes: string[] = [];
+    if (columns.theme !== undefined) {
+      changes.push("THEME");
+    }
+    if (columns.designTokens !== undefined) {
+      changes.push("DESIGN_TOKEN");
+    }
+
     // Build the update object with changes flag
     const updateData = {
       ...columns,
-      changes: ["Updated"],
+      changes,
     };
 
     // Execute the update query
