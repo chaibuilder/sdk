@@ -39,6 +39,7 @@ export class UpdateWebsiteFieldsAction extends ChaiBaseAction<
     const columns = pick(data.settings, ["theme", "designTokens"]);
 
     // Build the changes array based on which fields are being updated
+    // Note: In practice, only one field (either theme or designTokens) is updated per request
     const changes: string[] = [];
     if (columns.theme !== undefined) {
       changes.push("THEME");

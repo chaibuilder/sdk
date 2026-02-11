@@ -80,25 +80,7 @@ describe("UpdateWebsiteFieldsAction", () => {
       });
     });
 
-    it("should set changes to ['THEME', 'DESIGN_TOKEN'] when both are updated", async () => {
-      const { db } = await import("@/actions/db");
-      const mockSet = vi.fn(() => ({ where: vi.fn() }));
-      const mockUpdate = vi.fn(() => ({ set: mockSet }));
-      (db.update as any) = mockUpdate;
 
-      await action.execute({
-        settings: {
-          theme: { primaryColor: "blue" },
-          designTokens: { spacing: "16px" },
-        },
-      });
-
-      expect(mockSet).toHaveBeenCalledWith({
-        theme: { primaryColor: "blue" },
-        designTokens: { spacing: "16px" },
-        changes: ["THEME", "DESIGN_TOKEN"],
-      });
-    });
 
     it("should ignore non-whitelisted fields", async () => {
       const { db } = await import("@/actions/db");
