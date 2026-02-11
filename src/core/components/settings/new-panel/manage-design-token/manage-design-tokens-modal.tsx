@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { TokensIcon } from "@radix-ui/react-icons";
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ManageDesignTokens from "./manage-design-tokens";
 import { DesignTokenPreview } from "./design-token-preview";
@@ -12,6 +12,7 @@ interface ManageDesignTokensModalProps {
 
 export const ManageDesignTokensModal: React.FC<ManageDesignTokensModalProps> = ({ open, onOpenChange }) => {
   const { t } = useTranslation();
+  const [activeToken, setActiveToken] = useState<{ name: string; value: string; id?: string } | null>(null);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -26,7 +27,7 @@ export const ManageDesignTokensModal: React.FC<ManageDesignTokensModalProps> = (
         <div className="flex flex-1 overflow-hidden">
           {/* Left side - Token Management */}
           <div className="flex w-1/2 flex-col border-r border-border p-4">
-            <ManageDesignTokens />
+            <ManageDesignTokens onActiveTokenChange={setActiveToken} />
           </div>
 
           {/* Right side - Live Preview */}
@@ -35,7 +36,7 @@ export const ManageDesignTokensModal: React.FC<ManageDesignTokensModalProps> = (
               <h3 className="text-sm font-semibold">{t("Live Preview")}</h3>
             </div>
             <div className="flex-1 overflow-y-auto">
-              <DesignTokenPreview />
+              <DesignTokenPreview activeToken={activeToken} />
             </div>
           </div>
         </div>

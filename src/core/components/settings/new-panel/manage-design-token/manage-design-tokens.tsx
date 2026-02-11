@@ -34,13 +34,20 @@ interface SingleDesignTokenProps {
   tokenId: string;
   token: { name: string; value: string };
   isDisabled: boolean;
+  isSelected: boolean;
+  onSelect: (tokenId: string) => void;
   onEdit: (tokenId: string) => void;
   onDelete: (tokenId: string) => void;
 }
 
-const SingleDesignToken = ({ tokenId, token, isDisabled, onEdit, onDelete }: SingleDesignTokenProps) => {
+const SingleDesignToken = ({ tokenId, token, isDisabled, isSelected, onSelect, onEdit, onDelete }: SingleDesignTokenProps) => {
   return (
-    <div className="group relative flex items-center justify-between overflow-hidden rounded border p-2 transition-all duration-150 hover:bg-muted/90">
+    <div 
+      onClick={() => onSelect(tokenId)}
+      className={`group relative flex items-center justify-between overflow-hidden rounded border p-2 transition-all duration-150 cursor-pointer ${
+        isSelected ? 'bg-primary/10 border-primary' : 'hover:bg-muted/90'
+      }`}
+    >
       <div className="min-w-0 flex-1 overflow-hidden">
         <div className="text-xs font-semibold">{token.name}</div>
         <div className="w-full max-w-52 truncate text-[10px] font-light">{token.value}</div>
@@ -59,7 +66,10 @@ const SingleDesignToken = ({ tokenId, token, isDisabled, onEdit, onDelete }: Sin
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => onEdit(tokenId)}
+          onClick={(e) => {
+            e.stopPropagation();
+            onEdit(tokenId);
+          }}
           disabled={isDisabled}
           className="h-6 w-6 rounded-full p-0 hover:bg-primary/10 hover:text-primary">
           <Pencil1Icon className="h-3 w-3" />
@@ -80,9 +90,11 @@ const SingleDesignToken = ({ tokenId, token, isDisabled, onEdit, onDelete }: Sin
   );
 };
 
-interface ManageDesignTokensProps {}
+interface ManageDesignTokensProps {
+  onActiveTokenChange?: (token: { name: string; value: string; id?: string } | null) => void;
+}
 
-const ManageDesignTokens = ({}: ManageDesignTokensProps) => {
+const ManageDesignTokens = ({ onActiveTokenChange }: ManageDesignTokensProps) => {
   const { t } = useTranslation();
   const [designTokens, setDesignTokens] = useAtom(chaiDesignTokensAtom);
   const incrementActionsCount = useIncrementActionsCount();
@@ -90,6 +102,7 @@ const ManageDesignTokens = ({}: ManageDesignTokensProps) => {
   // Unified view state
   const [viewMode, setViewMode] = useState<ViewMode>("view");
   const [editingTokenId, setEditingTokenId] = useState<string | null>(null);
+  const [selectedTokenId, setSelectedTokenId] = useState<string | null>(null);
 
   // Form state
   const [tokenName, setTokenName] = useState("");
@@ -117,6 +130,37 @@ const ManageDesignTokens = ({}: ManageDesignTokensProps) => {
       }
     };
   }, []);
+
+  // Notify parent of active token changes
+  useEffect(() => {
+    if (onActiveTokenChange) {
+      // If editing or adding, show the current form state
+      if (viewMode === "edit" || viewMode === "add") {
+        if (tokenName && classes) {
+          onActiveTokenChange({
+            name: tokenName,
+            value: classes,
+            id: editingTokenId || undefined,
+          });
+        } else {
+          onActiveTokenChange(null);
+        }
+      } 
+      // If viewing and a token is selected, show that token
+      else if (viewMode === "view" && selectedTokenId && designTokens[selectedTokenId]) {
+        const token = designTokens[selectedTokenId];
+        onActiveTokenChange({
+          name: token.name,
+          value: token.value,
+          id: selectedTokenId,
+        });
+      } 
+      // Otherwise clear the preview
+      else {
+        onActiveTokenChange(null);
+      }
+    }
+  }, [viewMode, tokenName, classes, editingTokenId, selectedTokenId, designTokens, onActiveTokenChange]);
 
   // Real-time update for editing (debounced)
   const debouncedUpdateToken = useCallback(
@@ -395,6 +439,8 @@ const ManageDesignTokens = ({}: ManageDesignTokensProps) => {
                     key={tokenId}
                     token={token}
                     tokenId={tokenId}
+                    isSelected={selectedTokenId === tokenId}
+                    onSelect={setSelectedTokenId}
                     onEdit={startEdit}
                     onDelete={handleDeleteToken}
                     isDisabled={false}
