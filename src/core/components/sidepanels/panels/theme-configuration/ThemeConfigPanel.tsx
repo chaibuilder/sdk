@@ -81,7 +81,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const themePanelComponent = useBuilderProp("themePanelComponent", null);
   const { hasPermission } = usePermissions();
   const importThemeEnabled = useBuilderProp("flags.importTheme", true);
-  const darkModeEnabled = useBuilderProp("flags.darkMode", true);
+  const darkModeEnabled = useBuilderProp("flags.darkMode", false);
   const incrementActionsCount = useIncrementActionsCount();
   const availableFonts = useRegisteredFonts();
 
