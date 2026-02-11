@@ -1,4 +1,12 @@
 import { chaiDesignTokensAtom } from "@/atoms/builder";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,6 +16,7 @@ import { useIncrementActionsCount } from "@/core/components/use-auto-save";
 import { DESIGN_TOKEN_PREFIX } from "@/core/constants/STRINGS";
 import { orderClassesByBreakpoint } from "@/core/functions/order-classes-by-breakpoint";
 import { removeDuplicateClasses } from "@/core/functions/remove-duplicate-classes";
+import { useBuilderProp } from "@/hooks/use-builder-prop";
 import {
   ArrowLeftIcon,
   EyeOpenIcon,
@@ -15,29 +24,29 @@ import {
   Pencil1Icon,
   PlusIcon,
   TokensIcon,
-  TrashIcon,
 } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
 import { nanoid } from "nanoid";
-import { lazy, Suspense, useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
 import { convertTokenNameInput, getTokenNameError, validateTokenName } from "./design-token-utils";
 
-const DeleteDesignToken = lazy(() => import("./delete-design-token"));
 const DesignTokenUsage = lazy(() => import("./design-token-usage"));
 
 type ViewMode = "view" | "add" | "edit";
 
 interface SingleDesignTokenProps {
   tokenId: string;
-  token: { name: string; value: string };
+  token: { name: string; value: string; archived?: boolean };
   isDisabled: boolean;
   isSelected: boolean;
+  isArchived?: boolean;
   onSelect: (tokenId: string) => void;
   onEdit: (tokenId: string) => void;
-  onDelete: (tokenId: string) => void;
+  onArchive: (tokenId: string) => void;
+  onUnarchive?: (tokenId: string) => void;
 }
 
 const SingleDesignToken = ({
@@ -45,53 +54,67 @@ const SingleDesignToken = ({
   token,
   isDisabled,
   isSelected,
+  isArchived = false,
   onSelect,
   onEdit,
-  onDelete,
+  onArchive,
+  onUnarchive,
 }: SingleDesignTokenProps) => {
   return (
     <div
       onClick={() => onSelect(tokenId)}
       className={`group relative flex cursor-pointer items-center justify-between overflow-hidden rounded border p-2 transition-all duration-150 ${
-        isSelected ? "border-primary bg-primary/10" : "hover:bg-muted/90"
+        isArchived
+          ? "border-muted bg-muted/30 opacity-60"
+          : isSelected
+            ? "border-primary bg-primary/10"
+            : "hover:bg-muted/90"
       }`}>
       <div className="min-w-0 flex-1 overflow-hidden">
-        <div className="text-xs font-semibold">{token.name}</div>
-        <div className="w-full max-w-52 truncate text-[10px] font-light">{token.value}</div>
+        <div className={`text-xs font-semibold ${isArchived ? "text-muted-foreground" : ""}`}>{token.name}</div>
+        <div className={`w-full max-w-52 truncate text-[10px] font-light ${isArchived ? "text-muted-foreground" : ""}`}>
+          {token.value}
+        </div>
       </div>
       <div className="absolute right-1 top-1 flex flex-shrink-0 items-center opacity-0 transition-opacity duration-150 group-hover:opacity-100">
-        <Suspense fallback={null}>
-          <DesignTokenUsage tokenId={tokenId} tokenName={token.name}>
+        {!isArchived && (
+          <>
+            <Suspense fallback={null}>
+              <DesignTokenUsage tokenId={tokenId} tokenName={token.name}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-6 w-6 rounded-full p-0 hover:bg-primary/10 hover:text-primary">
+                  <EyeOpenIcon className="h-3 w-3" />
+                </Button>
+              </DesignTokenUsage>
+            </Suspense>
             <Button
               variant="ghost"
               size="sm"
-              className="h-6 w-6 rounded-full p-0 hover:bg-primary/10 hover:text-primary">
-              <EyeOpenIcon className="h-3 w-3" />
-            </Button>
-          </DesignTokenUsage>
-        </Suspense>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={(e) => {
-            e.stopPropagation();
-            onEdit(tokenId);
-          }}
-          disabled={isDisabled}
-          className="h-6 w-6 rounded-full p-0 hover:bg-primary/10 hover:text-primary">
-          <Pencil1Icon className="h-3 w-3" />
-        </Button>
-        <Suspense fallback={null}>
-          <DeleteDesignToken tokenName={token.name} tokenValue={token.value} onDelete={() => onDelete(tokenId)}>
-            <Button
-              variant="ghost"
-              size="sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit(tokenId);
+              }}
               disabled={isDisabled}
-              className="h-6 w-6 rounded-full p-0 hover:bg-destructive/10">
-              <TrashIcon className="h-3 w-3 text-destructive" />
+              className="h-6 w-6 rounded-full p-0 hover:bg-primary/10 hover:text-primary">
+              <Pencil1Icon className="h-3 w-3" />
             </Button>
-          </DeleteDesignToken>
-        </Suspense>
+          </>
+        )}
+        {isArchived && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={(e) => {
+              e.stopPropagation();
+              onUnarchive?.(tokenId);
+            }}
+            disabled={isDisabled}
+            className="h-6 w-6 rounded-full p-0 hover:bg-primary/10 hover:text-primary">
+            <EyeOpenIcon className="h-3 w-3" />
+          </Button>
+        )}
       </div>
     </div>
   );
@@ -106,6 +129,8 @@ const ManageDesignTokens = ({ onActiveTokenChange, onDirtyStateChange }: ManageD
   const { t } = useTranslation();
   const [designTokens, setDesignTokens] = useAtom(chaiDesignTokensAtom);
   const incrementActionsCount = useIncrementActionsCount();
+  const currentPageId = useBuilderProp("pageId", "");
+  const siteWideUsage = useBuilderProp("siteWideUsage", {});
 
   // Unified view state
   const [viewMode, setViewMode] = useState<ViewMode>("view");
@@ -118,6 +143,48 @@ const ManageDesignTokens = ({ onActiveTokenChange, onDirtyStateChange }: ManageD
   const [tokenNameError, setTokenNameError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+
+  // Archive confirmation state
+  const [archiveConfirmation, setArchiveConfirmation] = useState<{
+    isOpen: boolean;
+    tokenId: string | null;
+    tokenName: string;
+    pageCount: number;
+    partialCount: number;
+  }>({
+    isOpen: false,
+    tokenId: null,
+    tokenName: "",
+    pageCount: 0,
+    partialCount: 0,
+  });
+  const pendingArchiveTokenIdRef = useRef<string | null>(null);
+
+  const getTokenUsageCount = useCallback(
+    (tokenId: string) => {
+      if (!siteWideUsage) return { pageCount: 0, partialCount: 0 };
+
+      let pageCount = 0;
+      let partialCount = 0;
+
+      Object.entries(siteWideUsage).forEach(([pageId, pageUsage]: [string, any]) => {
+        if (pageId === currentPageId || !pageUsage?.designTokens) return;
+
+        const hasToken = Object.keys(pageUsage.designTokens).some((tokenKey) => tokenKey === tokenId);
+
+        if (hasToken) {
+          if (pageUsage.isPartial) {
+            partialCount++;
+          } else {
+            pageCount++;
+          }
+        }
+      });
+
+      return { pageCount, partialCount };
+    },
+    [siteWideUsage, currentPageId],
+  );
 
   const filteredTokens = useMemo(() => {
     return Object.entries(designTokens).filter(
@@ -238,12 +305,58 @@ const ManageDesignTokens = ({ onActiveTokenChange, onDirtyStateChange }: ManageD
     resetAndGoToView();
   };
 
-  const handleDeleteToken = (tokenId: string) => {
-    const newTokens = { ...designTokens };
-    delete newTokens[tokenId];
+  const handleArchiveToken = (tokenId: string) => {
+    const token = designTokens[tokenId];
+    if (!token) return;
+
+    const { pageCount, partialCount } = getTokenUsageCount(tokenId);
+
+    // Always show confirmation dialog
+    setArchiveConfirmation({
+      isOpen: true,
+      tokenId,
+      tokenName: token.name,
+      pageCount,
+      partialCount,
+    });
+    pendingArchiveTokenIdRef.current = tokenId;
+  };
+
+  const confirmArchiveToken = () => {
+    const tokenId = pendingArchiveTokenIdRef.current;
+    if (!tokenId) return;
+
+    const newTokens = {
+      ...designTokens,
+      [tokenId]: {
+        ...designTokens[tokenId],
+        archived: true,
+      },
+    };
     setDesignTokens(newTokens);
     incrementActionsCount();
-    toast.success(t("Token deleted successfully"));
+    toast.success(t("Token archived successfully"));
+    setArchiveConfirmation({
+      isOpen: false,
+      tokenId: null,
+      tokenName: "",
+      pageCount: 0,
+      partialCount: 0,
+    });
+    pendingArchiveTokenIdRef.current = null;
+  };
+
+  const handleUnarchiveToken = (tokenId: string) => {
+    const newTokens = {
+      ...designTokens,
+      [tokenId]: {
+        name: designTokens[tokenId].name,
+        value: designTokens[tokenId].value,
+      },
+    };
+    setDesignTokens(newTokens);
+    incrementActionsCount();
+    toast.success(t("Token unarchived successfully"));
   };
 
   const startEdit = (tokenId: string) => {
@@ -383,6 +496,9 @@ const ManageDesignTokens = ({ onActiveTokenChange, onDirtyStateChange }: ManageD
 
   // Render Token List View
   const renderTokenList = () => {
+    const activeTokens = filteredTokens.filter(([, token]) => !token.archived);
+    const archivedTokens = filteredTokens.filter(([, token]) => token.archived);
+
     return (
       <>
         {/* Header */}
@@ -435,18 +551,48 @@ const ManageDesignTokens = ({ onActiveTokenChange, onDirtyStateChange }: ManageD
                   <p className="text-center text-xs text-muted-foreground">{t("No design tokens match your search")}</p>
                 </div>
               ) : (
-                filteredTokens.map(([tokenId, token]) => (
-                  <SingleDesignToken
-                    key={tokenId}
-                    token={token}
-                    tokenId={tokenId}
-                    isSelected={selectedTokenId === tokenId}
-                    onSelect={setSelectedTokenId}
-                    onEdit={startEdit}
-                    onDelete={handleDeleteToken}
-                    isDisabled={false}
-                  />
-                ))
+                <>
+                  {/* Active Tokens */}
+                  {activeTokens.length > 0 && (
+                    <div className="space-y-1">
+                      {activeTokens.map(([tokenId, token]) => (
+                        <SingleDesignToken
+                          key={tokenId}
+                          token={token}
+                          tokenId={tokenId}
+                          isSelected={selectedTokenId === tokenId}
+                          isArchived={false}
+                          onSelect={setSelectedTokenId}
+                          onEdit={startEdit}
+                          onArchive={handleArchiveToken}
+                          onUnarchive={handleUnarchiveToken}
+                          isDisabled={false}
+                        />
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Archived Tokens */}
+                  {archivedTokens.length > 0 && (
+                    <div className="mt-4 space-y-1">
+                      <div className="px-2 py-1 text-[10px] font-semibold text-muted-foreground">{t("Archived")}</div>
+                      {archivedTokens.map(([tokenId, token]) => (
+                        <SingleDesignToken
+                          key={tokenId}
+                          token={token}
+                          tokenId={tokenId}
+                          isSelected={selectedTokenId === tokenId}
+                          isArchived={true}
+                          onSelect={setSelectedTokenId}
+                          onEdit={startEdit}
+                          onArchive={handleArchiveToken}
+                          onUnarchive={handleUnarchiveToken}
+                          isDisabled={false}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </>
               )}
               <div className="h-44" />
             </div>
@@ -456,7 +602,55 @@ const ManageDesignTokens = ({ onActiveTokenChange, onDirtyStateChange }: ManageD
     );
   };
 
-  return <div className="flex h-full w-full flex-col">{viewMode === "view" ? renderTokenList() : renderForm()}</div>;
+  return (
+    <>
+      <div className="flex h-full w-full flex-col">{viewMode === "view" ? renderTokenList() : renderForm()}</div>
+
+      <AlertDialog
+        open={archiveConfirmation.isOpen}
+        onOpenChange={(open) => {
+          if (!open) {
+            setArchiveConfirmation({
+              isOpen: false,
+              tokenId: null,
+              tokenName: "",
+              pageCount: 0,
+              partialCount: 0,
+            });
+            pendingArchiveTokenIdRef.current = null;
+          }
+        }}>
+        <AlertDialogContent>
+          <AlertDialogTitle>{t("Archive Design Token")}</AlertDialogTitle>
+          <AlertDialogDescription className="space-y-3">
+            <p>
+              {t("This token is used on")} <span className="font-semibold">{archiveConfirmation.pageCount}</span>{" "}
+              {t("pages")}
+              {archiveConfirmation.partialCount > 0 && (
+                <>
+                  {" "}
+                  {t("and")} <span className="font-semibold">{archiveConfirmation.partialCount}</span> {t("partials")}
+                </>
+              )}
+              .
+            </p>
+            <p className="text-sm text-destructive">
+              {t("Archiving this token will remove the styling for those blocks.")}
+            </p>
+            <p>{t("Do you wish to continue?")}</p>
+          </AlertDialogDescription>
+          <div className="flex justify-end gap-2">
+            <AlertDialogCancel>{t("Cancel")}</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmArchiveToken}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              {t("Archive")}
+            </AlertDialogAction>
+          </div>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
+  );
 };
 
 export default ManageDesignTokens;

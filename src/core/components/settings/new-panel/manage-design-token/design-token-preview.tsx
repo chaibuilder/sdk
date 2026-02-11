@@ -21,11 +21,6 @@ export const DesignTokenPreview = ({ activeToken }: DesignTokenPreviewProps) => 
   return (
     <ScrollArea className="h-full">
       <div className="space-y-4 pr-4">
-        <div className="space-y-2">
-          <h4 className="text-xs font-medium text-muted-foreground">{t("Token Preview")}</h4>
-          <p className="text-[10px] text-muted-foreground">{t("Live preview of the selected token")}</p>
-        </div>
-
         <div className="space-y-2 rounded-lg border bg-card p-4">
           {hasToken && (
             <>
