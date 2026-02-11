@@ -117,10 +117,18 @@ const PagesManagerNew = ({ close }: PageManagerNewProps) => {
         const newParams = new URLSearchParams(queryParams.toString());
         newParams.delete("page");
 
-        // Only call navigateToPage if there are remaining query parameters;
-        // otherwise, preserve the current pathname and clear the search string.
+        // If there are remaining query parameters, update the URL while preserving the hash;
+        // otherwise, preserve the current pathname and hash and clear the search string.
         if ([...newParams.keys()].length > 0) {
-          navigateToPage(newParams, setQueryParams, true);
+          if (typeof window !== "undefined" && window.history && window.location) {
+            const search = newParams.toString();
+            const hash = window.location.hash || "";
+            const pathname = window.location.pathname;
+            const newUrl = search ? `${pathname}?${search}${hash}` : `${pathname}${hash}`;
+
+            window.history.replaceState(window.history.state, "", newUrl);
+          }
+          setQueryParams(newParams);
         } else {
           if (typeof window !== "undefined" && window.history && window.location) {
             window.history.replaceState(
