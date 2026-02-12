@@ -48,8 +48,8 @@ const PagesManagerTrigger = ({ children }: { children?: React.ReactNode }) => {
                 <Button
                   variant="outline"
                   key={"template-viewer"}
-                  className="flex w-full items-center justify-center p-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                  className="flex w-full items-center justify-center p-2 pl-0 rounded-lg">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                     <Folder className="h-4 w-4" />
                   </div>
                   <div className="flex flex-col items-start">
