@@ -8,9 +8,9 @@ export class ChaiAssets {
   // Minimum buffer length checks per image format for dimension extraction
   private static readonly MIN_PNG_LENGTH = 24; // PNG signature (8) + IHDR chunk header (8) + width (4) + height (4)
   private static readonly MIN_GIF_LENGTH = 10; // GIF signature (6) + width (2) + height (2)
-  private static readonly MIN_WEBP_VP8L_LENGTH = 25; // RIFF header (12) + VP8L chunk header (4) + signature flag (1) + dimension bits (4) = offset 21 + 4 bytes
-  private static readonly MIN_WEBP_VP8X_LENGTH = 30; // RIFF header (12) + VP8X chunk header (4) + flags (4) + canvas width (3) + canvas height (3) = offset 24 + 6 bytes
-  private static readonly MIN_WEBP_VP8_LENGTH = 30; // RIFF header (12) + VP8 chunk header (4) + frame tag (3) + start code (3) + width/height (4) = offset 26 + 4 bytes
+  private static readonly MIN_WEBP_VP8L_LENGTH = 25; // Reads 4 bytes at offset 21: RIFF (12) + VP8L header (4) + flag (1) + 4 bytes read = 21 + 4
+  private static readonly MIN_WEBP_VP8X_LENGTH = 30; // Reads 6 bytes at offset 24: RIFF (12) + VP8X header (4) + flags (4) + width/height (3+3) = 24 + 6
+  private static readonly MIN_WEBP_VP8_LENGTH = 30; // Reads 4 bytes at offset 26: RIFF (12) + VP8 header (4) + frame tag (3) + start (3) + 4 bytes read = 26 + 4
   private static readonly MIN_JPEG_SOF_BYTES_FROM_MARKER = 9; // SOF marker (2) + segment length (2) + precision (1) + height (2) + width (2) = 9 bytes from marker
 
   constructor(
