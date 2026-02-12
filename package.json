@@ -98,8 +98,7 @@
     "drizzle-orm": "^0.45.1",
     "postgres": "^3.4.8",
     "react": "^18.0 || ^19.0 || ^19.1 || ^19.2",
-    "react-dom": "^18.0 || ^19.0 || ^19.1 || ^19.2",
-    "sharp": "^0.34.5"
+    "react-dom": "^18.0 || ^19.0 || ^19.1 || ^19.2"
   },
   "peerDependenciesMeta": {
     "@types/react": {
@@ -115,9 +114,6 @@
       "optional": true
     },
     "ai": {
-      "optional": true
-    },
-    "sharp": {
       "optional": true
     },
     "next": {
@@ -270,7 +266,6 @@
     "react-dom": "19.2.0",
     "react-router-dom": "^7.11.0",
     "shadcn": "2.3.0",
-    "sharp": "^0.34.5",
     "tailwindcss": "^3.4.19",
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",

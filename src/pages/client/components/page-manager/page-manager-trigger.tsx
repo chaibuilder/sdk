@@ -7,7 +7,7 @@ import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
 import { useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { isEmpty } from "lodash-es";
-import { Folder, LogsIcon } from "lucide-react";
+import { Folder } from "lucide-react";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 const PagesManagerNew = lazy(() => import("./page-manager-new"));
@@ -45,8 +45,14 @@ const PagesManagerTrigger = ({ children }: { children?: React.ReactNode }) => {
                 setPageManager(true);
               }}>
               {children || (
-                <Button variant="outline" key={"template-viewer"} className="flex w-full items-center space-x-2 py-1">
-                  <LogsIcon className="h-4 w-4" />
+                <Button
+                  variant="secondary"
+                  key={"template-viewer"}
+                  className="flex w-full items-center justify-center rounded-md p-2 pl-0">
+                  <Folder className="ml-2 h-10 w-10 fill-primary text-primary" />
+                  <div className="flex flex-col items-start">
+                    <span className="text-sm font-semibold">{t("Pages")}</span>
+                  </div>
                 </Button>
               )}
             </TooltipTrigger>
