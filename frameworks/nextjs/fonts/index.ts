@@ -9,7 +9,7 @@ export const registerFonts = () => {
     src: [{ url: "/nunito_sans/nunito-sans-variable.woff2", format: "woff2" }],
     fallback: "sans-serif",
   });
-  registerChaiFont<ChaiFontBySrc>("Oswald", {
+  registerChaiFont("Oswald", {
     src: [{ url: "/oswald/oswald-variable.woff2", format: "woff2" }],
     fallback: "sans-serif",
   });

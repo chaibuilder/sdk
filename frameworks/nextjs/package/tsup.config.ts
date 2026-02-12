@@ -44,7 +44,6 @@ export default defineConfig({
     "lodash",
     "postcss",
     "raw-loader",
-    "sharp",
     "tailwindcss",
     "zod",
   ],

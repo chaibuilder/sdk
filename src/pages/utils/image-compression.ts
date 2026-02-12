@@ -2,7 +2,7 @@ import Compressor from "compressorjs";
 import { toast } from "sonner";
 
 // Maximum size before compression (3MB)
-const MAX_COMPRESS_SIZE = 3 * 1024 * 1024;
+const MAX_COMPRESS_SIZE = 0.5 * 1024 * 1024;
 const MAX_AFTER_COMPRESS_SIZE = 10 * 1024 * 1024;
 
 export function formatFileSize(_bytes: number): string {
@@ -32,7 +32,7 @@ export function compressImageIfNeeded(file: File): Promise<File | Blob> {
     }
 
     new Compressor(file, {
-      quality: 0.8, // 80% quality
+      quality: 0.9, // 80% quality
       maxWidth: 2048, // Limit max width
       maxHeight: 2048, // Limit max height
       convertSize: MAX_COMPRESS_SIZE, // Try to keep under 3MB
