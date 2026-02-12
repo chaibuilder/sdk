@@ -106,18 +106,41 @@ const PagesManagerNew = ({ close }: PageManagerNewProps) => {
   }, [pageTypes, selectedPageType]);
 
   /**
-   * Handles change page action
+   * Handles validation of current page
+   * If page doesn't exist, clear the page query parameter to show the Pages Manager
    */
   useEffect(() => {
     if (currentPage && !isFetching) {
       const page = find(data, { id: currentPage });
       if (!page) {
-        const homePage = find(data, { slug: "/" });
-        if (homePage) {
-          const newParams = new URLSearchParams({ page: homePage.id });
-          navigateToPage(newParams, setQueryParams);
+        // Clear the page query parameter to show the Pages Manager while preserving the current pathname
+        const newParams = new URLSearchParams(queryParams.toString());
+        newParams.delete("page");
+
+        // If there are remaining query parameters, update the URL while preserving the hash;
+        // otherwise, preserve the current pathname and hash and clear the search string.
+        if ([...newParams.keys()].length > 0) {
+          if (typeof window !== "undefined" && window.history && window.location) {
+            const search = newParams.toString();
+            const hash = window.location.hash || "";
+            const pathname = window.location.pathname;
+            const newUrl = search ? `${pathname}?${search}${hash}` : `${pathname}${hash}`;
+
+            window.history.replaceState(window.history.state, "", newUrl);
+          }
+          setQueryParams(newParams);
         } else {
-          navigateToPage(new URLSearchParams({}), setQueryParams, true);
+          if (typeof window !== "undefined" && window.history && window.location) {
+            window.history.replaceState(
+              window.history.state,
+              "",
+              window.location.pathname + window.location.hash
+            );
+            // Manually dispatch a popstate event to keep behavior consistent
+            // with navigateToPage, which also triggers a popstate.
+            window.dispatchEvent(new PopStateEvent("popstate", { state: window.history.state }));
+          }
+          setQueryParams(newParams);
         }
       }
     }

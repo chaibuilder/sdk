@@ -54,5 +54,10 @@ export const PARTIALS: Record<string, any> = {
       _parent: "footer_1",
       styles: "#styles:,text-center text-3xl font-bold p-4 bg-gray-100",
     },
+    {
+      _type: "PartialBlock",
+      _id: "partial_1",
+      partialBlockId: "partial",
+    },
   ],
 };

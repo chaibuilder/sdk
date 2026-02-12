@@ -21,6 +21,7 @@ import { useBlocksStore, useBlocksStoreUndoableActions } from "@/hooks/history/u
 import { useAddBlock } from "@/hooks/use-add-block";
 import { useBlockHighlight } from "@/hooks/use-block-highlight";
 import { useCanvasIframe } from "@/hooks/use-canvas-iframe";
+import { useCheckPartialCanAdd } from "@/hooks/use-partial-blocks-store";
 import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
 import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
 import { useUpdateBlocksProps } from "@/hooks/use-update-blocks-props";
@@ -29,6 +30,7 @@ import { ChaiBlock } from "@/types/common";
 import { useAtom } from "jotai";
 import { filter, find, get, has, isFunction } from "lodash-es";
 import { DragEvent, useCallback } from "react";
+import { toast } from "sonner";
 
 /**
  * @HOOK useBlockDrop
@@ -69,6 +71,7 @@ export const useBlockDrop = () => {
   const { clearParentHighlight } = useDragParentHighlight();
   const [renderKey, setRenderKey] = useAtom(canvasRenderKeyAtom);
   const updateContent = useUpdateBlocksProps();
+  const checkPartialCanAdd = useCheckPartialCanAdd();
 
   // Get the document from the iframe element
   const iframeDoc = (iframe as HTMLIFrameElement)?.contentDocument;
@@ -180,6 +183,13 @@ export const useBlockDrop = () => {
             : draggedBlock?.blocks;
 
         if (draggedBlockType === "PartialBlock") {
+          // Check for circular dependency before adding
+          const partialBlockId = draggedBlock.partialBlockId || "";
+          const { canAdd, reason } = checkPartialCanAdd(partialBlockId);
+          if (!canAdd) {
+            toast.error(reason || "Cannot add this partial block");
+            return;
+          }
           addCoreBlock(
             {
               blocks: [{ _type: draggedBlockType, _id: "partial-block", partialBlockId: draggedBlock.partialBlockId }],
@@ -217,6 +227,7 @@ export const useBlockDrop = () => {
       renderKey,
       setRenderKey,
       updateContent,
+      checkPartialCanAdd,
     ],
   );
 };

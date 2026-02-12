@@ -6,17 +6,15 @@ import { usePageLockStatus } from "@/pages/client/components/page-lock/page-lock
 import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
 import { useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
-import { navigateToPage } from "@/pages/utils/navigation";
-import { ChaiPage } from "@/pages/utils/page-organization";
 import { isEmpty } from "lodash-es";
-import { Folder, LogsIcon } from "lucide-react";
-import { lazy, Suspense, useEffect, useMemo, useState } from "react";
+import { Folder } from "lucide-react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 const PagesManagerNew = lazy(() => import("./page-manager-new"));
 
 const PagesManagerTrigger = ({ children }: { children?: React.ReactNode }) => {
   const { t } = useTranslation();
-  const [searchParams, setQueryParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const page = searchParams.get("page");
   const { data: currentPage, isFetching } = useChaiCurrentPage();
   const { data: allPages, isFetching: isPagesLoading } = useWebsitePages();
@@ -26,22 +24,9 @@ const PagesManagerTrigger = ({ children }: { children?: React.ReactNode }) => {
   const canClose = !!page && !isEmpty(currentPage);
   const { isLocked } = usePageLockStatus();
 
-  const homepageId = useMemo(() => {
-    if (!allPages || isPagesLoading) return false;
-    const homepage = allPages.find((pageItem: ChaiPage) => pageItem.slug === "/");
-    return homepage?.id;
-  }, [allPages, isPagesLoading]);
-
   useEffect(() => {
-    if (isPagesLoading || !homepageId) return;
-
-    const isPageExists = allPages.some((pageItem: ChaiPage) => pageItem.id === page);
-    if (isPageExists) return;
-
-    const newParams = new URLSearchParams({ page: homepageId });
-    navigateToPage(newParams, setQueryParams);
     if (!isPagesLoading && allPages) setIsInitialLoad(false);
-  }, [page, isPagesLoading, allPages, homepageId, setQueryParams]);
+  }, [isPagesLoading, allPages]);
 
   // Open the page manager
   const shouldOpenForMissingPage = !isInitialLoad && !page;
@@ -60,8 +45,16 @@ const PagesManagerTrigger = ({ children }: { children?: React.ReactNode }) => {
                 setPageManager(true);
               }}>
               {children || (
-                <Button variant="outline" key={"template-viewer"} className="flex w-full items-center space-x-2 py-1">
-                  <LogsIcon className="h-4 w-4" />
+                <Button
+                  variant="outline"
+                  key={"template-viewer"}
+                  className="flex w-full items-center justify-center p-2 pl-0 rounded-lg">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                    <Folder className="h-4 w-4" />
+                  </div>
+                  <div className="flex flex-col items-start">
+                    <span className="text-sm font-semibold">{t("Pages")}</span>
+                  </div>
                 </Button>
               )}
             </TooltipTrigger>

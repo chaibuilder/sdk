@@ -52,6 +52,9 @@ export type ChaiSavePageData = {
   autoSave: boolean;
   blocks: ChaiBlock[];
   needTranslations?: boolean;
+  designTokens: ChaiDesignTokens;
+  partialIds?: string[];
+  linkPageIds?: string[];
 };
 
 export type ChaiSaveWebsiteData =
@@ -290,6 +293,9 @@ export interface ChaiBuilderEditorProps {
     validateStructure?: boolean;
     designTokens?: boolean;
     ai?: boolean;
+    revisions?: boolean;
+    sharedJsonLD?: boolean;
+    resetSeoToDefault?: boolean;
   };
 
   //TODO: Move to registerChaiStructureRules()
