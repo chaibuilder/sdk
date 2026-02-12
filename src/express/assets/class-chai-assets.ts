@@ -49,87 +49,130 @@ export class ChaiAssets {
    * Supports PNG, JPEG, GIF, and WebP without external dependencies.
    */
   private getImageDimensions(buffer: Buffer): { width: number; height: number } {
-    try {
-      // PNG: bytes 0-7 are signature, IHDR chunk starts at byte 8, width at 16, height at 20
-      if (buffer[0] === 0x89 && buffer[1] === 0x50 && buffer[2] === 0x4e && buffer[3] === 0x47) {
-        return {
-          width: buffer.readUInt32BE(16),
-          height: buffer.readUInt32BE(20),
-        };
-      }
+    // Minimum buffer length checks per format
+    const MIN_PNG_LENGTH = 24; // PNG signature (8) + IHDR chunk header (8) + width (4) + height (4)
+    const MIN_GIF_LENGTH = 10; // GIF signature (6) + width (2) + height (2)
+    const MIN_WEBP_VP8L_LENGTH = 25; // RIFF header (12) + VP8L chunk header (4) + VP8L data (5+)
+    const MIN_WEBP_VP8X_LENGTH = 30; // RIFF header (12) + VP8X chunk header (4) + VP8X data (10+)
+    const MIN_WEBP_VP8_LENGTH = 30; // RIFF header (12) + VP8 chunk header (4) + VP8 frame data (10+)
+    const MIN_JPEG_SOF_LENGTH = 11; // SOI (2) + marker (2) + length (2) + precision (1) + height (2) + width (2)
 
-      // GIF: "GIF" signature, width at byte 6 (LE 16-bit), height at byte 8
-      if (buffer[0] === 0x47 && buffer[1] === 0x49 && buffer[2] === 0x46) {
-        return {
-          width: buffer.readUInt16LE(6),
-          height: buffer.readUInt16LE(8),
-        };
-      }
+    // PNG: bytes 0-7 are signature, IHDR chunk starts at byte 8, width at 16, height at 20
+    if (
+      buffer.length >= MIN_PNG_LENGTH &&
+      buffer[0] === 0x89 &&
+      buffer[1] === 0x50 &&
+      buffer[2] === 0x4e &&
+      buffer[3] === 0x47
+    ) {
+      return {
+        width: buffer.readUInt32BE(16),
+        height: buffer.readUInt32BE(20),
+      };
+    }
 
-      // WebP: "RIFF" + size + "WEBP", then VP8 chunk
+    // GIF: "GIF" signature, width at byte 6 (LE 16-bit), height at byte 8
+    if (
+      buffer.length >= MIN_GIF_LENGTH &&
+      buffer[0] === 0x47 &&
+      buffer[1] === 0x49 &&
+      buffer[2] === 0x46
+    ) {
+      return {
+        width: buffer.readUInt16LE(6),
+        height: buffer.readUInt16LE(8),
+      };
+    }
+
+    // WebP: "RIFF" + size + "WEBP", then VP8 chunk
+    if (
+      buffer.length >= 12 &&
+      buffer[0] === 0x52 &&
+      buffer[1] === 0x49 &&
+      buffer[2] === 0x46 &&
+      buffer[3] === 0x46 &&
+      buffer[8] === 0x57 &&
+      buffer[9] === 0x45 &&
+      buffer[10] === 0x42 &&
+      buffer[11] === 0x50
+    ) {
+      // VP8L (lossless)
       if (
-        buffer[0] === 0x52 &&
-        buffer[1] === 0x49 &&
-        buffer[2] === 0x46 &&
-        buffer[3] === 0x46 &&
-        buffer[8] === 0x57 &&
-        buffer[9] === 0x45 &&
-        buffer[10] === 0x42 &&
-        buffer[11] === 0x50
+        buffer.length >= MIN_WEBP_VP8L_LENGTH &&
+        buffer[12] === 0x56 &&
+        buffer[13] === 0x50 &&
+        buffer[14] === 0x38 &&
+        buffer[15] === 0x4c
       ) {
-        // VP8L (lossless)
-        if (buffer[12] === 0x56 && buffer[13] === 0x50 && buffer[14] === 0x38 && buffer[15] === 0x4c) {
-          const bits = buffer.readUInt32LE(21);
-          return {
-            width: (bits & 0x3fff) + 1,
-            height: ((bits >> 14) & 0x3fff) + 1,
-          };
-        }
-        // VP8X (extended)
-        if (buffer[12] === 0x56 && buffer[13] === 0x50 && buffer[14] === 0x38 && buffer[15] === 0x58) {
-          return {
-            width: 1 + (buffer[24] | (buffer[25] << 8) | (buffer[26] << 16)),
-            height: 1 + (buffer[27] | (buffer[28] << 8) | (buffer[29] << 16)),
-          };
-        }
-        // VP8 (lossy): chunk header at 12, frame header at 20
-        if (buffer[12] === 0x56 && buffer[13] === 0x50 && buffer[14] === 0x38 && buffer[15] === 0x20) {
-          return {
-            width: buffer.readUInt16LE(26) & 0x3fff,
-            height: buffer.readUInt16LE(28) & 0x3fff,
-          };
-        }
+        const bits = buffer.readUInt32LE(21);
+        return {
+          width: (bits & 0x3fff) + 1,
+          height: ((bits >> 14) & 0x3fff) + 1,
+        };
       }
+      // VP8X (extended)
+      if (
+        buffer.length >= MIN_WEBP_VP8X_LENGTH &&
+        buffer[12] === 0x56 &&
+        buffer[13] === 0x50 &&
+        buffer[14] === 0x38 &&
+        buffer[15] === 0x58
+      ) {
+        return {
+          width: 1 + (buffer[24] | (buffer[25] << 8) | (buffer[26] << 16)),
+          height: 1 + (buffer[27] | (buffer[28] << 8) | (buffer[29] << 16)),
+        };
+      }
+      // VP8 (lossy): chunk header at 12, frame header at 20
+      if (
+        buffer.length >= MIN_WEBP_VP8_LENGTH &&
+        buffer[12] === 0x56 &&
+        buffer[13] === 0x50 &&
+        buffer[14] === 0x38 &&
+        buffer[15] === 0x20
+      ) {
+        return {
+          width: buffer.readUInt16LE(26) & 0x3fff,
+          height: buffer.readUInt16LE(28) & 0x3fff,
+        };
+      }
+    }
 
-      // JPEG: SOI marker 0xFFD8, scan for SOFn frames
-      if (buffer[0] === 0xff && buffer[1] === 0xd8) {
-        let offset = 2;
-        while (offset < buffer.length - 1) {
-          if (buffer[offset] !== 0xff) {
-            offset++;
-            continue;
-          }
-          const marker = buffer[offset + 1];
-          // SOF0-SOF3, SOF5-SOF7, SOF9-SOF11, SOF13-SOF15
-          if (
-            (marker >= 0xc0 && marker <= 0xc3) ||
-            (marker >= 0xc5 && marker <= 0xc7) ||
-            (marker >= 0xc9 && marker <= 0xcb) ||
-            (marker >= 0xcd && marker <= 0xcf)
-          ) {
+    // JPEG: SOI marker 0xFFD8, scan for SOFn frames
+    if (buffer.length >= 2 && buffer[0] === 0xff && buffer[1] === 0xd8) {
+      let offset = 2;
+      while (offset < buffer.length - 1) {
+        if (buffer[offset] !== 0xff) {
+          offset++;
+          continue;
+        }
+        const marker = buffer[offset + 1];
+        // SOF0-SOF3, SOF5-SOF7, SOF9-SOF11, SOF13-SOF15
+        if (
+          (marker >= 0xc0 && marker <= 0xc3) ||
+          (marker >= 0xc5 && marker <= 0xc7) ||
+          (marker >= 0xc9 && marker <= 0xcb) ||
+          (marker >= 0xcd && marker <= 0xcf)
+        ) {
+          // Ensure we have enough bytes to read the SOF segment
+          if (offset + MIN_JPEG_SOF_LENGTH <= buffer.length) {
             return {
               width: buffer.readUInt16BE(offset + 7),
               height: buffer.readUInt16BE(offset + 5),
             };
           }
-          // Skip to next marker
-          const segmentLength = buffer.readUInt16BE(offset + 2);
-          offset += 2 + segmentLength;
+          // If buffer is truncated at SOF marker, return early
+          break;
         }
+        // Skip to next marker - check if we have enough bytes for segment length
+        if (offset + 4 > buffer.length) {
+          break;
+        }
+        const segmentLength = buffer.readUInt16BE(offset + 2);
+        offset += 2 + segmentLength;
       }
-    } catch {
-      // If parsing fails, fall through to return 0,0
     }
+
     return { width: 0, height: 0 };
   }
 
