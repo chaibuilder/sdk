@@ -96,7 +96,7 @@ const Uploader = ({ isUpdatingAsset, allowedTypes, uploadAssets, isUploadingAsse
         }
         const promises = files.map(async (file) => {
           let processedFile: File | Blob = file;
-          if (file.type.startsWith("image/")) {
+          if (file.type.startsWith("image/") && optimizeImages) {
             processedFile = await compressImageIfNeeded(file);
           }
 
