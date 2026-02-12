@@ -161,6 +161,7 @@ const SearchInput = ({ search, setSearch }: SearchInputProps) => {
         onChange={(e) => setSearch(e.target.value)}
         className="border-none px-1.5 shadow-none outline-none ring-0 transition-none focus:outline-none focus:ring-0 focus-visible:ring-0"
         autoComplete="off"
+        autoFocus
       />
     </div>
   );

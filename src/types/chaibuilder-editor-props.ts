@@ -51,10 +51,15 @@ export type ChaiBreakpoint = {
 export type ChaiSavePageData = {
   autoSave: boolean;
   blocks: ChaiBlock[];
-  theme?: ChaiTheme;
   needTranslations?: boolean;
   designTokens: ChaiDesignTokens;
+  partialIds?: string[];
+  linkPageIds?: string[];
 };
+
+export type ChaiSaveWebsiteData =
+  | { type: "THEME"; data: ChaiTheme }
+  | { type: "DESIGN_TOKENS"; data: ChaiDesignTokens };
 
 export type ChaiAskAiResponse = {
   blocks?: Array<{ _id: string } & Partial<ChaiBlock>>;
@@ -219,7 +224,13 @@ export interface ChaiBuilderEditorProps {
    * onSave callback function
    * @param saveData
    */
-  onSave?: ({ blocks, theme, autoSave }: ChaiSavePageData) => Promise<boolean | Error>;
+  onSave?: ({ blocks, autoSave }: ChaiSavePageData) => Promise<boolean | Error>;
+
+  /**
+   * onSaveWebsiteData callback function for theme and design tokens
+   * @param saveData
+   */
+  onSaveWebsiteData?: (data: ChaiSaveWebsiteData) => Promise<boolean | Error>;
 
   /**
    * onSaveStateChange callback function

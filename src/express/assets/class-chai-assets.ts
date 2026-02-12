@@ -1,11 +1,18 @@
 import { getChaiAction } from "@/actions/builder/actions-registery";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { isEmpty, kebabCase, set } from "lodash-es";
-import sharp from "sharp";
 
 type ChaiAsset = any;
 
 export class ChaiAssets {
+  // Minimum buffer length checks per image format for dimension extraction
+  private static readonly MIN_PNG_LENGTH = 24; // PNG signature (8) + IHDR chunk header (8) + width (4) + height (4)
+  private static readonly MIN_GIF_LENGTH = 10; // GIF signature (6) + width (2) + height (2)
+  private static readonly MIN_WEBP_VP8L_LENGTH = 25; // Reads 4 bytes at offset 21: RIFF (12) + VP8L header (4) + flag (1) + 4 bytes read = 21 + 4
+  private static readonly MIN_WEBP_VP8X_LENGTH = 30; // Reads 6 bytes at offset 24: RIFF (12) + VP8X header (4) + flags (4) + width/height (3+3) = 24 + 6
+  private static readonly MIN_WEBP_VP8_LENGTH = 30; // Reads 4 bytes at offset 26: RIFF (12) + VP8 header (4) + frame tag (3) + start (3) + 4 bytes read = 26 + 4
+  private static readonly MIN_JPEG_SOF_BYTES_FROM_MARKER = 9; // SOF marker (2) + segment length (2) + precision (1) + height (2) + width (2) = 9 bytes from marker
+
   constructor(
     private appId: string,
     private userId: string,
@@ -31,57 +38,173 @@ export class ChaiAssets {
     }
   }
 
+  private getMimeType(name: string): string {
+    const ext = name.split(".").pop()?.toLowerCase() || "";
+    const mimeTypes: Record<string, string> = {
+      jpg: "image/jpeg",
+      jpeg: "image/jpeg",
+      png: "image/png",
+      webp: "image/webp",
+      gif: "image/gif",
+      tiff: "image/tiff",
+      svg: "image/svg+xml",
+    };
+    return mimeTypes[ext] || "application/octet-stream";
+  }
+
+  /**
+   * Extract image dimensions from buffer by reading binary headers.
+   * Supports PNG, JPEG, GIF, and WebP without external dependencies.
+   */
+  private getImageDimensions(buffer: Buffer): { width: number; height: number } {
+    // PNG: bytes 0-7 are signature, IHDR chunk starts at byte 8, width at 16, height at 20
+    if (
+      buffer.length >= ChaiAssets.MIN_PNG_LENGTH &&
+      buffer[0] === 0x89 &&
+      buffer[1] === 0x50 &&
+      buffer[2] === 0x4e &&
+      buffer[3] === 0x47
+    ) {
+      return {
+        width: buffer.readUInt32BE(16),
+        height: buffer.readUInt32BE(20),
+      };
+    }
+
+    // GIF: "GIF" signature, width at byte 6 (LE 16-bit), height at byte 8
+    if (
+      buffer.length >= ChaiAssets.MIN_GIF_LENGTH &&
+      buffer[0] === 0x47 &&
+      buffer[1] === 0x49 &&
+      buffer[2] === 0x46
+    ) {
+      return {
+        width: buffer.readUInt16LE(6),
+        height: buffer.readUInt16LE(8),
+      };
+    }
+
+    // WebP: "RIFF" + size + "WEBP", then VP8 chunk
+    if (
+      buffer.length >= 12 &&
+      buffer[0] === 0x52 &&
+      buffer[1] === 0x49 &&
+      buffer[2] === 0x46 &&
+      buffer[3] === 0x46 &&
+      buffer[8] === 0x57 &&
+      buffer[9] === 0x45 &&
+      buffer[10] === 0x42 &&
+      buffer[11] === 0x50
+    ) {
+      // VP8L (lossless)
+      if (
+        buffer.length >= ChaiAssets.MIN_WEBP_VP8L_LENGTH &&
+        buffer[12] === 0x56 &&
+        buffer[13] === 0x50 &&
+        buffer[14] === 0x38 &&
+        buffer[15] === 0x4c
+      ) {
+        const bits = buffer.readUInt32LE(21);
+        return {
+          width: (bits & 0x3fff) + 1,
+          height: ((bits >> 14) & 0x3fff) + 1,
+        };
+      }
+      // VP8X (extended)
+      if (
+        buffer.length >= ChaiAssets.MIN_WEBP_VP8X_LENGTH &&
+        buffer[12] === 0x56 &&
+        buffer[13] === 0x50 &&
+        buffer[14] === 0x38 &&
+        buffer[15] === 0x58
+      ) {
+        return {
+          width: 1 + (buffer[24] | (buffer[25] << 8) | (buffer[26] << 16)),
+          height: 1 + (buffer[27] | (buffer[28] << 8) | (buffer[29] << 16)),
+        };
+      }
+      // VP8 (lossy): chunk header at 12, frame header at 20
+      if (
+        buffer.length >= ChaiAssets.MIN_WEBP_VP8_LENGTH &&
+        buffer[12] === 0x56 &&
+        buffer[13] === 0x50 &&
+        buffer[14] === 0x38 &&
+        buffer[15] === 0x20
+      ) {
+        return {
+          width: buffer.readUInt16LE(26) & 0x3fff,
+          height: buffer.readUInt16LE(28) & 0x3fff,
+        };
+      }
+    }
+
+    // JPEG: SOI marker 0xFFD8, scan for SOFn frames
+    if (buffer.length >= 2 && buffer[0] === 0xff && buffer[1] === 0xd8) {
+      let offset = 2;
+      while (offset < buffer.length - 1) {
+        if (buffer[offset] !== 0xff) {
+          offset++;
+          continue;
+        }
+        const marker = buffer[offset + 1];
+        // SOF0-SOF3, SOF5-SOF7, SOF9-SOF11, SOF13-SOF15
+        if (
+          (marker >= 0xc0 && marker <= 0xc3) ||
+          (marker >= 0xc5 && marker <= 0xc7) ||
+          (marker >= 0xc9 && marker <= 0xcb) ||
+          (marker >= 0xcd && marker <= 0xcf)
+        ) {
+          // Ensure we have enough bytes to read width at offset+7 and height at offset+5
+          // Need offset + MIN_JPEG_SOF_BYTES_FROM_MARKER bytes total
+          if (offset + ChaiAssets.MIN_JPEG_SOF_BYTES_FROM_MARKER <= buffer.length) {
+            return {
+              width: buffer.readUInt16BE(offset + 7),
+              height: buffer.readUInt16BE(offset + 5),
+            };
+          }
+          // If buffer is truncated at SOF marker, return early
+          break;
+        }
+        // Skip to next marker - check if we have enough bytes for segment length
+        if (offset + 4 > buffer.length) {
+          break;
+        }
+        const segmentLength = buffer.readUInt16BE(offset + 2);
+        offset += 2 + segmentLength;
+      }
+    }
+
+    return { width: 0, height: 0 };
+  }
+
   /**
    * Upload an image file using UPLOAD_TO_STORAGE action
-   * Processes, optimizes, and creates thumbnails
+   * Uploads the image as-is without server-side processing for cross-platform compatibility
    */
   private async uploadImageFile(
     file: string,
     folderId: string | null | undefined,
     name: string,
-    optimize: boolean,
+    _optimize: boolean,
   ): Promise<
     | { url: string; thumbnailUrl: string; size: number; width: number; height: number; mimeType: string }
     | { error: string }
   > {
     try {
       const buffer = this.getBufferFromBase64(file);
+      const mimeType = this.getMimeType(name);
 
       // Validate file is an image
-      const metadata = await sharp(buffer).metadata();
-      const validImageFormats = ["jpeg", "jpg", "png", "webp", "gif", "svg", "tiff"];
-      if (!metadata.format || !validImageFormats.includes(metadata.format.toLowerCase())) {
-        throw new Error(`Invalid image format: ${metadata.format || "unknown"}`);
+      const validMimeTypes = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/tiff"];
+      if (!validMimeTypes.includes(mimeType)) {
+        throw new Error(`Invalid image format: ${mimeType}`);
       }
-
-      // Optimize image
-      const optimizedBuffer = optimize
-        ? await sharp(buffer)
-            .webp({ quality: 100 })
-            .resize({ width: Math.min(metadata.width || 2000, 2000) })
-            .toBuffer()
-        : await sharp(buffer).webp({ quality: 100 }).toBuffer();
-
-      // Further optimize if too large
-      let finalBuffer = optimizedBuffer;
-      if (optimize && optimizedBuffer.length > 120 * 1024) {
-        const compressionLevel = Math.floor(90 * ((120 * 1024) / optimizedBuffer.length));
-        finalBuffer = await sharp(buffer)
-          .webp({ quality: compressionLevel })
-          .resize({ width: Math.min(metadata.width || 2000, 2000) })
-          .toBuffer();
-      }
-
-      const optimizedInfo = await sharp(finalBuffer).metadata();
-
-      // Create thumbnail
-      const thumbnailBuffer = await sharp(buffer).webp({ quality: 70 }).resize({ width: 300 }).toBuffer();
 
       // Prepare file names and paths
       const parts = name.split(".");
       const originalFileName = parts.length > 1 ? parts.slice(0, -1).join(".") : name;
-      const fileName = `${kebabCase(originalFileName)}.webp`;
-      const thumbnailName = `${fileName}_thumbnail.webp`;
+      const ext = parts.length > 1 ? parts[parts.length - 1].toLowerCase() : "png";
+      const fileName = `${kebabCase(originalFileName)}.${ext}`;
 
       const baseFolder = this.appId;
       const folderPath = folderId ? `${baseFolder}/${folderId}` : baseFolder;
@@ -95,9 +218,9 @@ export class ChaiAssets {
       uploadAction.setContext({ appId: this.appId, userId: this.userId });
 
       const mainImageResult = await uploadAction.execute({
-        file: finalBuffer.toString("base64"),
+        file: buffer.toString("base64"),
         fileName,
-        contentType: "image/webp",
+        contentType: mimeType,
         folder: folderPath,
       });
 
@@ -105,25 +228,15 @@ export class ChaiAssets {
         throw new Error(mainImageResult.error);
       }
 
-      // Upload thumbnail
-      const thumbnailResult = await uploadAction.execute({
-        file: thumbnailBuffer.toString("base64"),
-        fileName: thumbnailName,
-        contentType: "image/webp",
-        folder: folderPath,
-      });
-
-      if (thumbnailResult.error) {
-        throw new Error(thumbnailResult.error);
-      }
+      const { width, height } = this.getImageDimensions(buffer);
 
       return {
         url: mainImageResult.data.url,
-        thumbnailUrl: thumbnailResult.data.url,
-        size: optimizedInfo.size || finalBuffer.length,
-        width: optimizedInfo.width || 0,
-        height: optimizedInfo.height || 0,
-        mimeType: "image/webp",
+        thumbnailUrl: mainImageResult.data.url,
+        size: buffer.length,
+        width,
+        height,
+        mimeType,
       };
     } catch (error) {
       console.error("Upload image error:", error);
@@ -145,15 +258,17 @@ export class ChaiAssets {
     try {
       const buffer = this.getBufferFromBase64(file);
 
-      // Get SVG dimensions if possible
+      // Get SVG dimensions if possible using regex
       let width: number | undefined;
       let height: number | undefined;
       try {
-        const metadata = await sharp(buffer).metadata();
-        width = metadata.width;
-        height = metadata.height;
+        const svgString = buffer.toString("utf-8");
+        const widthMatch = svgString.match(/\bwidth=["'](\d+)/);
+        const heightMatch = svgString.match(/\bheight=["'](\d+)/);
+        if (widthMatch) width = parseInt(widthMatch[1], 10);
+        if (heightMatch) height = parseInt(heightMatch[1], 10);
       } catch {
-        // If sharp can't read SVG metadata, continue without dimensions
+        // If we can't parse SVG dimensions, continue without them
       }
 
       // Prepare file name and path

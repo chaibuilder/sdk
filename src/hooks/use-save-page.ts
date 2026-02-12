@@ -1,16 +1,17 @@
-import { chaiDesignTokensAtom, userActionsCountAtom } from "@/atoms/builder";
+import {  userActionsCountAtom } from "@/atoms/builder";
 import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { useCheckStructure } from "@/hooks/use-check-structure";
 import { useGetPageData } from "@/hooks/use-get-page-data";
 import { useIsPageLoaded } from "@/hooks/use-is-page-loaded";
 import { useLanguages } from "@/hooks/use-languages";
 import { usePermissions } from "@/hooks/use-permissions";
-import { useTheme } from "@/hooks/use-theme";
 import { getRegisteredChaiBlock } from "@/runtime";
+import { ChaiBlock } from "@/types/common";
 import { useThrottledCallback } from "@react-hookz/web";
 import { atom, useAtom, useAtomValue } from "jotai";
-import { has, isEmpty, noop } from "lodash-es";
+import { compact, has, isEmpty, noop } from "lodash-es";
 import { useCallback } from "react";
+import { extractPartialIds, partialBlocksAtom } from "./partial-blocks";
 
 export const builderSaveStateAtom = atom<"SAVED" | "SAVING" | "UNSAVED">("SAVED"); // SAVING
 builderSaveStateAtom.debugLabel = "builderSaveStateAtom";
@@ -45,11 +46,10 @@ export const useSavePage = () => {
   const onSave = useBuilderProp("onSave", async (_error: any) => {});
   const onSaveStateChange = useBuilderProp("onSaveStateChange", noop);
   const getPageData = useGetPageData();
-  const [theme] = useTheme();
   const { hasPermission } = usePermissions();
   const { selectedLang, fallbackLang } = useLanguages();
   const [isPageLoaded] = useIsPageLoaded();
-  const designTokens = useAtomValue(chaiDesignTokensAtom);
+  const partialBlocksStore = useAtomValue(partialBlocksAtom);
   const checkStructure = useCheckStructure();
   const [, setActionsCount] = useAtom(userActionsCountAtom);
 
@@ -59,6 +59,38 @@ export const useSavePage = () => {
       ? false
       : checkMissingTranslations(pageData.blocks || [], selectedLang);
   };
+
+  const getAllPartialIds = useCallback(
+    (blocks: ChaiBlock[]): string[] => {
+      const collected = new Set<string>();
+      const queue = extractPartialIds(blocks);
+
+      while (queue.length > 0) {
+        const id = queue.shift()!;
+        if (collected.has(id)) continue;
+        collected.add(id);
+
+        const entry = partialBlocksStore[id];
+        if (entry?.status === "loaded" && entry.dependencies.length > 0) {
+          queue.push(...entry.dependencies);
+        }
+      }
+
+      return [...collected];
+    },
+    [partialBlocksStore],
+  );
+
+  const getLinkPageIds = useCallback((blocks: ChaiBlock[]): string[] => {
+    const blocksStr = JSON.stringify(blocks);
+    const regex = /pageType:[^:]+:([a-f0-9-]{36})/gi;
+    const uuids: string[] = [];
+    let match;
+    while ((match = regex.exec(blocksStr)) !== null) {
+      if (match[1]) uuids.push(match[1]);
+    }
+    return compact([...new Set(uuids)]);
+  }, []);
 
   const shouldSkipSave = useCallback(
     (force: boolean) => {
@@ -92,9 +124,9 @@ export const useSavePage = () => {
       await onSave({
         autoSave,
         blocks: pageData.blocks,
-        theme,
         needTranslations: needTranslations(),
-        designTokens,
+        partialIds: getAllPartialIds((pageData.blocks as unknown as ChaiBlock[]) || []),
+        linkPageIds: getLinkPageIds((pageData.blocks as unknown as ChaiBlock[]) || []),
       });
       setTimeout(() => {
         setSaveState("SAVED");
@@ -106,15 +138,15 @@ export const useSavePage = () => {
       shouldSkipSave,
       getPageData,
       setSaveState,
-      designTokens,
-      theme,
       setActionsCount,
       onSave,
       onSaveStateChange,
       isPageLoaded,
       checkStructure,
+      getAllPartialIds,
+      getLinkPageIds,
     ],
-    3000, // save only every 5 seconds
+    3000, // save only every 3 seconds
   );
 
   const savePageAsync = async (force: boolean = false) => {
@@ -128,9 +160,9 @@ export const useSavePage = () => {
     await onSave({
       autoSave: true,
       blocks: pageData.blocks,
-      theme,
       needTranslations: needTranslations(),
-      designTokens,
+      partialIds: getAllPartialIds((pageData.blocks as unknown as ChaiBlock[]) || []),
+      linkPageIds: getLinkPageIds((pageData.blocks as unknown as ChaiBlock[]) || []),
     });
     setTimeout(() => {
       setSaveState("SAVED");

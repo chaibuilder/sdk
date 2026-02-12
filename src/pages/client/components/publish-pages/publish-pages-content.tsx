@@ -95,7 +95,7 @@ const PublishPagesModalContent = ({
   const filteredPages = useMemo(
     () =>
       filter(pages, (page) => {
-        if (page.pageType === "theme") return false;
+        if (page.pageType === "theme" || page.pageType === "design_tokens") return false;
         if (selectedLanguage === fallbackLang) return page.lang === selectedLanguage || page.lang === "";
         return page.lang === selectedLanguage;
       }),
@@ -157,7 +157,7 @@ const PublishPagesModalContent = ({
       { label: "Updated", top: "pt-2" },
       ...orderBy(filter(allPages, { online: true }), "pageType"),
       ...orderBy(filter(allGlobalBlocks, { online: true }), "pageType"),
-    ].filter((page) => page.pageType !== "theme");
+    ].filter((page) => page.pageType !== "theme" && page.pageType !== "design_tokens");
 
     const offlinePages = [
       { label: "Offline", top: "pt-6" },

@@ -12,6 +12,7 @@ import { cn } from "@/core/functions/common-functions";
 import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { useDarkMode } from "@/hooks/use-dark-mode";
 import { usePermissions } from "@/hooks/use-permissions";
+import { useSaveWebsiteData } from "@/hooks/use-save-website-data";
 import { useTheme, useThemeOptions } from "@/hooks/use-theme";
 import { ChaiTheme } from "@/types/chaibuilder-editor-props";
 import {
@@ -30,7 +31,6 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
-import { useIncrementActionsCount } from "@/core/components/use-auto-save";
 import { claude, defaultShadcnPreset, solarized, supabase, twitter } from "@/core/constants/THEME_PRESETS";
 import { useRegisteredFonts } from "@/runtime";
 import { lazy, Suspense } from "react";
@@ -78,11 +78,10 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const [selectedPreset, setSelectedPreset] = React.useState<string>("");
   const [isImportModalOpen, setIsImportModalOpen] = React.useState(false);
   const themePresets = useBuilderProp("themePresets", {}) as Record<string, ChaiTheme>[];
-  const themePanelComponent = useBuilderProp("themePanelComponent", null);
   const { hasPermission } = usePermissions();
+  const { debouncedSaveTheme } = useSaveWebsiteData();
   const importThemeEnabled = useBuilderProp("flags.importTheme", true);
-  const darkModeEnabled = useBuilderProp("flags.darkMode", false);
-  const incrementActionsCount = useIncrementActionsCount();
+  const darkModeEnabled = useBuilderProp("flags.darkMode", true);
   const availableFonts = useRegisteredFonts();
 
   if (!themePresets || themePresets.length === 0) {
@@ -99,7 +98,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
       const previousTheme = { ...themeValues };
       setPreviousTheme(previousTheme);
       setThemeValues(newTheme);
-      incrementActionsCount();
+      debouncedSaveTheme();
       toast.success("Theme updated", {
         action: {
           label: (
@@ -117,7 +116,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
         duration: 15000,
       });
     },
-    [themeValues, setThemeValues, incrementActionsCount],
+    [themeValues, setThemeValues, debouncedSaveTheme],
   );
 
   const applyPreset = () => {
@@ -133,7 +132,6 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
       ) {
         setThemeWithHistory(newThemeValues);
         setSelectedPreset("");
-        incrementActionsCount();
       } else {
         console.error("Invalid preset structure:", newThemeValues);
       }
@@ -146,7 +144,6 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
     // Apply the imported theme values directly to the current theme
     setThemeWithHistory(importedTheme);
     setSelectedPreset("");
-    incrementActionsCount();
   };
 
   const handleFontChange = useDebouncedCallback(
@@ -158,9 +155,9 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
           [key.replace(/font-/g, "")]: newValue,
         },
       }));
-      incrementActionsCount();
+      debouncedSaveTheme();
     },
-    [themeValues, incrementActionsCount],
+    [themeValues, debouncedSaveTheme],
     200,
   );
 
@@ -170,9 +167,9 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
         ...themeValues,
         borderRadius: `${value}px`,
       }));
-      incrementActionsCount();
+      debouncedSaveTheme();
     },
-    [themeValues, incrementActionsCount],
+    [themeValues, setThemeValues, debouncedSaveTheme],
   );
 
   const handleColorChange = useDebouncedCallback(
@@ -184,7 +181,6 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
         } else {
           set(prevColor, 1, newValue);
         }
-        incrementActionsCount();
         return {
           ...themeValues,
           colors: {
@@ -193,8 +189,9 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
           },
         };
       });
+      debouncedSaveTheme();
     },
-    [themeValues, incrementActionsCount],
+    [themeValues, debouncedSaveTheme],
     200,
   );
 
@@ -385,10 +382,6 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
         <br />
         <br />
       </div>
-
-      {themePanelComponent && (
-        <div className="absolute bottom-4 w-full">{React.createElement(themePanelComponent)}</div>
-      )}
     </div>
   );
 });

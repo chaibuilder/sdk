@@ -1,9 +1,9 @@
 import { ChaiBuilderBlocks } from "@/core/components/sidepanels/panels/add-blocks/add-blocks";
-import { usePartialBlocksList } from "@/hooks/use-partial-blocks-store";
+import { useCheckPartialCanAdd, usePartialBlocksList } from "@/hooks/use-partial-blocks-store";
 import { FrameIcon } from "@radix-ui/react-icons";
 import { atom, useAtom } from "jotai";
 import { map, uniq } from "lodash-es";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 // Create an atom to store the fetched partial blocks
 const partialBlocksDataAtom = atom<{
@@ -65,6 +65,7 @@ export const PartialBlocks = ({
   const { data: partialBlocksList, isLoading, refetch, error: apiError } = usePartialBlocksList();
   const [partialBlocksData, setPartialBlocksData] = useAtom(partialBlocksDataAtom);
   const [hasInitialized, setHasInitialized] = useAtom(hasInitializedPartialBlocksAtom);
+  const checkPartialCanAdd = useCheckPartialCanAdd();
 
   // Only fetch and process data if it hasn't been initialized yet
   useEffect(() => {
@@ -142,6 +143,19 @@ export const PartialBlocks = ({
     refetch();
   };
 
+  // Add disabled state to blocks based on circular dependency check
+  // Must be called before early returns to maintain hooks order
+  const blocksWithDisabledState = useMemo(() => {
+    return partialBlocksData.blocks.map((block) => {
+      const { canAdd, reason } = checkPartialCanAdd(block.partialBlockId);
+      return {
+        ...block,
+        disabled: !canAdd,
+        disabledReason: reason,
+      };
+    });
+  }, [partialBlocksData.blocks, checkPartialCanAdd]);
+
   if (partialBlocksData.isLoading) {
     return (
       <div className="flex items-center justify-center p-8 text-center text-muted-foreground">
@@ -169,7 +183,7 @@ export const PartialBlocks = ({
       parentId={parentId}
       position={position}
       groups={partialBlocksData.groups}
-      blocks={partialBlocksData.blocks}
+      blocks={blocksWithDisabledState}
       disableBlockGroupsSidebar={disableBlockGroupsSidebar}
     />
   );
