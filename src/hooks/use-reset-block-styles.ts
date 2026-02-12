@@ -1,6 +1,6 @@
 import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
 import { useUpdateBlocksProps } from "@/hooks/use-update-blocks-props";
-import { getDefaultBlockProps } from "@/runtime";
+import { getBlockDefaultProps } from "@/runtime";
 import { pick } from "lodash-es";
 import { useCallback } from "react";
 
@@ -17,7 +17,7 @@ export const useResetBlockStyles = () => {
   const updateBlocksProps = useUpdateBlocksProps();
 
   const getDefaultStyles = useCallback((blockType: string) => {
-    const defaults = getDefaultBlockProps(blockType) as Record<string, any>;
+    const defaults = getBlockDefaultProps(blockType) as Record<string, any>;
     return defaults || {};
   }, []);
 
