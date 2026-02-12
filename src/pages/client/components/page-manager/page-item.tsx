@@ -202,7 +202,7 @@ const PageItem = ({
             <span className="duration absolute right-1.5 top-1/2 flex -translate-y-1/2 items-center gap-x-1 text-xs text-red-500">
               <Lock className="h-3 w-3 fill-red-200 text-red-500" />
               <Tooltip content={`${pageOwner} is editing this page`}>
-                <span className="max-w-[100px] truncate font-bold">{pageOwner}</span>
+                <span className="font-bold">{pageOwner}</span>
               </Tooltip>
             </span>
           ) : null}
