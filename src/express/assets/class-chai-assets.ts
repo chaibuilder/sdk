@@ -5,6 +5,14 @@ import { isEmpty, kebabCase, set } from "lodash-es";
 type ChaiAsset = any;
 
 export class ChaiAssets {
+  // Minimum buffer length checks per image format for dimension extraction
+  private static readonly MIN_PNG_LENGTH = 24; // PNG signature (8) + IHDR chunk header (8) + width (4) + height (4)
+  private static readonly MIN_GIF_LENGTH = 10; // GIF signature (6) + width (2) + height (2)
+  private static readonly MIN_WEBP_VP8L_LENGTH = 25; // RIFF header (12) + VP8L chunk header (4) + VP8L data (5+)
+  private static readonly MIN_WEBP_VP8X_LENGTH = 30; // RIFF header (12) + VP8X chunk header (4) + VP8X data (10+)
+  private static readonly MIN_WEBP_VP8_LENGTH = 30; // RIFF header (12) + VP8 chunk header (4) + VP8 frame data (10+)
+  private static readonly MIN_JPEG_SOF_LENGTH = 11; // SOI (2) + marker (2) + length (2) + precision (1) + height (2) + width (2)
+
   constructor(
     private appId: string,
     private userId: string,
@@ -49,17 +57,9 @@ export class ChaiAssets {
    * Supports PNG, JPEG, GIF, and WebP without external dependencies.
    */
   private getImageDimensions(buffer: Buffer): { width: number; height: number } {
-    // Minimum buffer length checks per format
-    const MIN_PNG_LENGTH = 24; // PNG signature (8) + IHDR chunk header (8) + width (4) + height (4)
-    const MIN_GIF_LENGTH = 10; // GIF signature (6) + width (2) + height (2)
-    const MIN_WEBP_VP8L_LENGTH = 25; // RIFF header (12) + VP8L chunk header (4) + VP8L data (5+)
-    const MIN_WEBP_VP8X_LENGTH = 30; // RIFF header (12) + VP8X chunk header (4) + VP8X data (10+)
-    const MIN_WEBP_VP8_LENGTH = 30; // RIFF header (12) + VP8 chunk header (4) + VP8 frame data (10+)
-    const MIN_JPEG_SOF_LENGTH = 11; // SOI (2) + marker (2) + length (2) + precision (1) + height (2) + width (2)
-
     // PNG: bytes 0-7 are signature, IHDR chunk starts at byte 8, width at 16, height at 20
     if (
-      buffer.length >= MIN_PNG_LENGTH &&
+      buffer.length >= ChaiAssets.MIN_PNG_LENGTH &&
       buffer[0] === 0x89 &&
       buffer[1] === 0x50 &&
       buffer[2] === 0x4e &&
@@ -73,7 +73,7 @@ export class ChaiAssets {
 
     // GIF: "GIF" signature, width at byte 6 (LE 16-bit), height at byte 8
     if (
-      buffer.length >= MIN_GIF_LENGTH &&
+      buffer.length >= ChaiAssets.MIN_GIF_LENGTH &&
       buffer[0] === 0x47 &&
       buffer[1] === 0x49 &&
       buffer[2] === 0x46
@@ -98,7 +98,7 @@ export class ChaiAssets {
     ) {
       // VP8L (lossless)
       if (
-        buffer.length >= MIN_WEBP_VP8L_LENGTH &&
+        buffer.length >= ChaiAssets.MIN_WEBP_VP8L_LENGTH &&
         buffer[12] === 0x56 &&
         buffer[13] === 0x50 &&
         buffer[14] === 0x38 &&
@@ -112,7 +112,7 @@ export class ChaiAssets {
       }
       // VP8X (extended)
       if (
-        buffer.length >= MIN_WEBP_VP8X_LENGTH &&
+        buffer.length >= ChaiAssets.MIN_WEBP_VP8X_LENGTH &&
         buffer[12] === 0x56 &&
         buffer[13] === 0x50 &&
         buffer[14] === 0x38 &&
@@ -125,7 +125,7 @@ export class ChaiAssets {
       }
       // VP8 (lossy): chunk header at 12, frame header at 20
       if (
-        buffer.length >= MIN_WEBP_VP8_LENGTH &&
+        buffer.length >= ChaiAssets.MIN_WEBP_VP8_LENGTH &&
         buffer[12] === 0x56 &&
         buffer[13] === 0x50 &&
         buffer[14] === 0x38 &&
@@ -155,7 +155,7 @@ export class ChaiAssets {
           (marker >= 0xcd && marker <= 0xcf)
         ) {
           // Ensure we have enough bytes to read the SOF segment
-          if (offset + MIN_JPEG_SOF_LENGTH <= buffer.length) {
+          if (offset + ChaiAssets.MIN_JPEG_SOF_LENGTH <= buffer.length) {
             return {
               width: buffer.readUInt16BE(offset + 7),
               height: buffer.readUInt16BE(offset + 5),
