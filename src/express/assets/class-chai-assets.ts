@@ -11,7 +11,7 @@ export class ChaiAssets {
   private static readonly MIN_WEBP_VP8L_LENGTH = 25; // RIFF header (12) + VP8L chunk header (4) + signature flag (1) + dimension bits (4) = offset 21 + 4 bytes
   private static readonly MIN_WEBP_VP8X_LENGTH = 30; // RIFF header (12) + VP8X chunk header (4) + flags (4) + canvas width (3) + canvas height (3) = offset 24 + 6 bytes
   private static readonly MIN_WEBP_VP8_LENGTH = 30; // RIFF header (12) + VP8 chunk header (4) + frame tag (3) + start code (3) + width/height (4) = offset 26 + 4 bytes
-  private static readonly MIN_JPEG_SOF_BYTES_FROM_MARKER = 9; // marker (2) + length (2) + precision (1) + height (2) + width (2)
+  private static readonly MIN_JPEG_SOF_BYTES_FROM_MARKER = 9; // SOF marker (2) + segment length (2) + precision (1) + height (2) + width (2) = 9 bytes from marker
 
   constructor(
     private appId: string,
@@ -155,8 +155,8 @@ export class ChaiAssets {
           (marker >= 0xcd && marker <= 0xcf)
         ) {
           // Ensure we have enough bytes to read width at offset+7 and height at offset+5
-          // Need offset + 7 + 2 bytes for the width read (offset + 9 total)
-          if (offset + 9 <= buffer.length) {
+          // Need offset + MIN_JPEG_SOF_BYTES_FROM_MARKER bytes total
+          if (offset + ChaiAssets.MIN_JPEG_SOF_BYTES_FROM_MARKER <= buffer.length) {
             return {
               width: buffer.readUInt16BE(offset + 7),
               height: buffer.readUInt16BE(offset + 5),
