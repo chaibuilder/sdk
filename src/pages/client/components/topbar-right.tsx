@@ -3,6 +3,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useLanguages } from "@/hooks/use-languages";
@@ -14,13 +15,14 @@ import PublishPages from "@/pages/client/components/publish-pages/publish-pages"
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
 import { usePublishPages } from "@/pages/hooks/pages/mutations";
 import { useActivePage, useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
+import { useGetUnpublishedPartialBlocks } from "@/pages/hooks/pages/use-get-unpublished-partial-blocks";
 import { useIsLanguagePageCreated } from "@/pages/hooks/pages/use-is-languagep-page-created";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
-import { useGetUnpublishedPartialBlocks } from "@/pages/hooks/pages/use-get-unpublished-partial-blocks";
 import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
-import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
+import { useUnpublishedWebsiteSettings } from "@/pages/hooks/project/use-unpublished-website-settings";
 import { useRevisionsEnabled } from "@/pages/hooks/use-revisions-enabled";
+import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { throwConfetti } from "@/pages/utils/confetti";
 import Tooltip from "@/pages/utils/tooltip";
 import { compact, find, isEmpty, map, upperCase } from "lodash-es";
@@ -174,6 +176,7 @@ const PublishButton = () => {
   const [showCompareModal, setShowCompareModal] = useState(false);
   const { savePageAsync } = useSavePage();
   const [showTranslationWarning, setShowTranslationWarning] = useState(false);
+  const { hasUnpublishedSettings, hasUnpublishedTheme, hasUnpublishedDesignToken } = useUnpublishedWebsiteSettings();
   const [showUnpublishedPartialsWarning, setShowUnpublishedPartialsWarning] = useState(false);
   const [unpublishedPartialBlockIds, setUnpublishedPartialBlockIds] = useState<string[]>([]);
   const [unpublishedPartialBlocksInfo, setUnpublishedPartialBlocksInfo] = useState<any[]>([]);
@@ -202,7 +205,7 @@ const PublishButton = () => {
     };
   }, [currentPage, t]);
 
-  const handlePublishCurrentage = async () => {
+  const handlePublishCurrentPage = async () => {
     if (needTranslation) {
       setShowTranslationWarning(true);
       return;
@@ -214,25 +217,22 @@ const PublishButton = () => {
   const performPublishCurrentPage = (partialBlockIds?: string[]) => {
     const pages = [activePage?.id, activePage?.primaryPage, ...(Array.isArray(partialBlockIds) ? partialBlockIds : [])];
     // * Publishing current page and consumed global blocks
-    publishPage(
-      { ids: compact(pages) },
-      { onSuccess: () => throwConfetti("TOP_RIGHT") }
-    );
+    publishPage({ ids: compact(pages) }, { onSuccess: () => throwConfetti("TOP_RIGHT") });
   };
 
-  const checkAndPublish = useCallback((pages: string[]) => {
-    const { ids: unpublishedIds, partialBlocksInfo } = getUnpublishedPartialBlocks();
-    if (unpublishedIds.length > 0) {
-      setUnpublishedPartialBlockIds(unpublishedIds);
-      setUnpublishedPartialBlocksInfo(partialBlocksInfo);
-      setShowUnpublishedPartialsWarning(true);
-    } else {
-      publishPage(
-        { ids: compact(pages) },
-        { onSuccess: () => throwConfetti("TOP_RIGHT") }
-      );
-    }
-  }, [getUnpublishedPartialBlocks, publishPage]);
+  const checkAndPublish = useCallback(
+    (pages: string[]) => {
+      const { ids: unpublishedIds, partialBlocksInfo } = getUnpublishedPartialBlocks();
+      if (unpublishedIds.length > 0) {
+        setUnpublishedPartialBlockIds(unpublishedIds);
+        setUnpublishedPartialBlocksInfo(partialBlocksInfo);
+        setShowUnpublishedPartialsWarning(true);
+      } else {
+        publishPage({ ids: compact(pages) }, { onSuccess: () => throwConfetti("TOP_RIGHT") });
+      }
+    },
+    [getUnpublishedPartialBlocks, publishPage],
+  );
 
   const handleContinueWithPartials = () => {
     setShowUnpublishedPartialsWarning(false);
@@ -266,7 +266,7 @@ const PublishButton = () => {
       <div className="flex">
         <Button
           size="sm"
-          onClick={handlePublishCurrentage}
+          onClick={handlePublishCurrentPage}
           disabled={isPending || !currentPage?.id}
           className={`relative flex items-center gap-1 overflow-hidden rounded-r-none text-white transition-all duration-300 ease-in-out ${buttonClassName}`}
           onMouseEnter={() => setIsHovered(true)}
@@ -295,11 +295,22 @@ const PublishButton = () => {
             <Button
               size="sm"
               disabled={isPending || !currentPage?.id}
-              className={`rounded-l-none border-l border-white/50 px-2 text-white ${buttonClassName}`}>
+              className={`relative rounded-l-none border-l border-white/50 px-2 text-white ${hasUnpublishedSettings ? "bg-gray-500 hover:bg-gray-600" : buttonClassName}`}>
               <ChevronDown className="h-4 w-4" />
+              {hasUnpublishedSettings && (
+                <>
+                  <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-orange-500" />
+                  <span className="absolute -right-0.5 -top-0.5 h-2 w-2 animate-ping rounded-full bg-orange-500" />
+                </>
+              )}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-52">
+            {isPublished && hasUnpublishedChanges && (
+              <DropdownMenuItem onClick={() => setShowCompareModal(true)} className="cursor-pointer text-xs">
+                {t("View Unpublished changes")}
+              </DropdownMenuItem>
+            )}
             <DropdownMenuItem
               disabled={isPending}
               className="cursor-pointer text-xs"
@@ -314,17 +325,39 @@ const PublishButton = () => {
                 {t("Publish")} page
               </DropdownMenuItem>
             )}
-            <DropdownMenuItem onClick={() => setShowModal(true)} className="cursor-pointer text-xs">
+            {/* <DropdownMenuItem onClick={() => setShowModal(true)} className="cursor-pointer text-xs">
               {t("Open")} publish menu
-            </DropdownMenuItem>
-            {isPublished && hasUnpublishedChanges && (
-              <DropdownMenuItem onClick={() => setShowCompareModal(true)} className="cursor-pointer text-xs">
-                {t("View Unpublished changes")}
-              </DropdownMenuItem>
-            )}
+            </DropdownMenuItem> */}
+
             {isPublished && (
               <DropdownMenuItem onClick={() => setUnpublishPage(activePage)} className="cursor-pointer text-xs">
                 {t("Unpublish")} page {selectedLang ? `(${upperCase(selectedLang)})` : ""}
+              </DropdownMenuItem>
+            )}
+
+            {hasUnpublishedSettings && <DropdownMenuSeparator className="bg-gray-200" />}
+            {hasUnpublishedTheme && (
+              <DropdownMenuItem
+                disabled={isPending}
+                className="cursor-pointer text-xs"
+                onClick={() => publishPage({ ids: ["THEME"] }, { onSuccess: () => throwConfetti("TOP_RIGHT") })}>
+                <span className="flex h-full w-full items-center gap-2">
+                  <span className="mt-0.5 h-1 w-1 animate-pulse rounded-full bg-orange-500" />
+                  {t("Publish")} theme
+                </span>
+              </DropdownMenuItem>
+            )}
+            {hasUnpublishedDesignToken && (
+              <DropdownMenuItem
+                disabled={isPending}
+                className="cursor-pointer text-xs"
+                onClick={() =>
+                  publishPage({ ids: ["DESIGN_TOKENS"] }, { onSuccess: () => throwConfetti("TOP_RIGHT") })
+                }>
+                <span className="flex h-full w-full items-center gap-2">
+                  <span className="mt-0.5 h-1 w-1 animate-pulse rounded-full bg-orange-500" />
+                  {t("Publish")} design token
+                </span>
               </DropdownMenuItem>
             )}
           </DropdownMenuContent>
