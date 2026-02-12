@@ -46,12 +46,10 @@ const PagesManagerTrigger = ({ children }: { children?: React.ReactNode }) => {
               }}>
               {children || (
                 <Button
-                  variant="outline"
+                  variant="secondary"
                   key={"template-viewer"}
-                  className="flex w-full items-center justify-center p-2 pl-0 rounded-lg">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                    <Folder className="h-4 w-4" />
-                  </div>
+                  className="flex w-full items-center justify-center rounded-md p-2 pl-0">
+                  <Folder className="ml-2 h-10 w-10 fill-primary text-primary" />
                   <div className="flex flex-col items-start">
                     <span className="text-sm font-semibold">{t("Pages")}</span>
                   </div>
