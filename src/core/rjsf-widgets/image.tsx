@@ -1,7 +1,5 @@
 import { usePageExternalData } from "@/atoms/builder";
 import MediaManagerModal from "@/core/components/sidepanels/panels/images/media-manager-modal";
-import { STYLES_KEY } from "@/core/constants/STRINGS";
-import { getSplitChaiClasses } from "@/hooks/get-split-classes";
 import { useLanguages } from "@/hooks/use-languages";
 import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
 import { getDefaultBlockProps } from "@/runtime";
@@ -13,6 +11,7 @@ import { first, get, has, isArray, isEmpty, set, startsWith } from "lodash-es";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useUpdateBlocksProps } from "../../hooks/use-update-blocks-props";
+import { removeSizeClasses } from "@/core/utils/remove-size-classes";
 
 const PLACEHOLDER_IMAGE =
   "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZmlsbD0iI2Q1ZDdkYSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIFBsYWNlaG9sZGVyPC90ZXh0Pjwvc3ZnPg==";
@@ -89,15 +88,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur, uiSchema }: WidgetProps
           const defaultProps = getDefaultBlockProps(selectedBlock._type);
           const defaultStyles = get(defaultProps, "styles", "");
           if (selectedBlock.styles === defaultStyles) {
-            const { baseClasses, classes } = getSplitChaiClasses(selectedBlock.styles as string);
-            const removeClasses = (str: string) =>
-              str
-                .split(" ")
-                .filter((cls: string) => !(width && cls === "w-full") && !(height && cls === "h-full"))
-                .join(" ");
-            const newBaseClasses = removeClasses(baseClasses);
-            const newClasses = removeClasses(classes);
-            props.styles = `${STYLES_KEY}${newBaseClasses},${newClasses}`;
+            props.styles = removeSizeClasses(selectedBlock.styles as string, width, height);
           }
         }
 
