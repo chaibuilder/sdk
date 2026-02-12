@@ -4,7 +4,7 @@ import { STYLES_KEY } from "@/core/constants/STRINGS";
 import { getSplitChaiClasses } from "@/hooks/get-split-classes";
 import { useLanguages } from "@/hooks/use-languages";
 import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
-import { getDefaultBlockProps } from "@/runtime";
+import { getBlockDefaultProps } from "@/runtime";
 import { applyBindingToBlockProps } from "@/render/apply-binding";
 import { ChaiAsset } from "@/types";
 import { Cross1Icon, Pencil2Icon } from "@radix-ui/react-icons";
@@ -86,7 +86,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur, uiSchema }: WidgetProps
         // Remove w-full and h-full from styles only when they are still at default (initial load)
         // If the user has customized styles, preserve them as-is
         if ((width || height) && selectedBlock?._type && selectedBlock?.styles) {
-          const defaultProps = getDefaultBlockProps(selectedBlock._type);
+          const defaultProps = getBlockDefaultProps(selectedBlock._type);
           const defaultStyles = get(defaultProps, "styles", "");
           if (selectedBlock.styles === defaultStyles) {
             const { baseClasses, classes } = getSplitChaiClasses(selectedBlock.styles as string);

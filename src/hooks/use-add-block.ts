@@ -2,7 +2,7 @@ import { canAcceptChildBlock } from "@/core/functions/block-helpers";
 import { generateUUID } from "@/core/functions/common-functions";
 import { useBlocksStore, useBlocksStoreUndoableActions } from "@/hooks/history/use-blocks-store-undoable-actions";
 import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
-import { getDefaultBlockProps } from "@/runtime";
+import { getBlockDefaultProps } from "@/runtime";
 import { ChaiBlock, ChaiCoreBlock } from "@/types/common";
 import { filter, find, first, forEach, has } from "lodash-es";
 import { useCallback } from "react";
@@ -65,7 +65,7 @@ export const useAddBlock = (): AddBlocks => {
       }
 
       const blockId = generateUUID();
-      const props: { [key: string]: any } = getDefaultBlockProps(coreBlock.type);
+      const props: { [key: string]: any } = getBlockDefaultProps(coreBlock.type);
 
       const newBlock: ChaiBlock = {
         _type: coreBlock.type,

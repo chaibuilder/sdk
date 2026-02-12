@@ -1,6 +1,7 @@
 import {
   closestBlockProp,
   getAIBlockProps,
+  getBlockDefaultProps,
   getBlockFormSchemas,
   getDefaultBlockProps,
   getI18nBlockProps,
@@ -22,6 +23,7 @@ const setChaiBlockDataProvider = setChaiServerBlockDataProvider;
 export {
   closestBlockProp,
   getAIBlockProps,
+  getBlockDefaultProps,
   getBlockFormSchemas,
   getDefaultBlockProps,
   getI18nBlockProps,
