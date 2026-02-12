@@ -45,6 +45,95 @@ export class ChaiAssets {
   }
 
   /**
+   * Extract image dimensions from buffer by reading binary headers.
+   * Supports PNG, JPEG, GIF, and WebP without external dependencies.
+   */
+  private getImageDimensions(buffer: Buffer): { width: number; height: number } {
+    try {
+      // PNG: bytes 0-7 are signature, IHDR chunk starts at byte 8, width at 16, height at 20
+      if (buffer[0] === 0x89 && buffer[1] === 0x50 && buffer[2] === 0x4e && buffer[3] === 0x47) {
+        return {
+          width: buffer.readUInt32BE(16),
+          height: buffer.readUInt32BE(20),
+        };
+      }
+
+      // GIF: "GIF" signature, width at byte 6 (LE 16-bit), height at byte 8
+      if (buffer[0] === 0x47 && buffer[1] === 0x49 && buffer[2] === 0x46) {
+        return {
+          width: buffer.readUInt16LE(6),
+          height: buffer.readUInt16LE(8),
+        };
+      }
+
+      // WebP: "RIFF" + size + "WEBP", then VP8 chunk
+      if (
+        buffer[0] === 0x52 &&
+        buffer[1] === 0x49 &&
+        buffer[2] === 0x46 &&
+        buffer[3] === 0x46 &&
+        buffer[8] === 0x57 &&
+        buffer[9] === 0x45 &&
+        buffer[10] === 0x42 &&
+        buffer[11] === 0x50
+      ) {
+        // VP8L (lossless)
+        if (buffer[12] === 0x56 && buffer[13] === 0x50 && buffer[14] === 0x38 && buffer[15] === 0x4c) {
+          const bits = buffer.readUInt32LE(21);
+          return {
+            width: (bits & 0x3fff) + 1,
+            height: ((bits >> 14) & 0x3fff) + 1,
+          };
+        }
+        // VP8X (extended)
+        if (buffer[12] === 0x56 && buffer[13] === 0x50 && buffer[14] === 0x38 && buffer[15] === 0x58) {
+          return {
+            width: 1 + (buffer[24] | (buffer[25] << 8) | (buffer[26] << 16)),
+            height: 1 + (buffer[27] | (buffer[28] << 8) | (buffer[29] << 16)),
+          };
+        }
+        // VP8 (lossy): chunk header at 12, frame header at 20
+        if (buffer[12] === 0x56 && buffer[13] === 0x50 && buffer[14] === 0x38 && buffer[15] === 0x20) {
+          return {
+            width: buffer.readUInt16LE(26) & 0x3fff,
+            height: buffer.readUInt16LE(28) & 0x3fff,
+          };
+        }
+      }
+
+      // JPEG: SOI marker 0xFFD8, scan for SOFn frames
+      if (buffer[0] === 0xff && buffer[1] === 0xd8) {
+        let offset = 2;
+        while (offset < buffer.length - 1) {
+          if (buffer[offset] !== 0xff) {
+            offset++;
+            continue;
+          }
+          const marker = buffer[offset + 1];
+          // SOF0-SOF3, SOF5-SOF7, SOF9-SOF11, SOF13-SOF15
+          if (
+            (marker >= 0xc0 && marker <= 0xc3) ||
+            (marker >= 0xc5 && marker <= 0xc7) ||
+            (marker >= 0xc9 && marker <= 0xcb) ||
+            (marker >= 0xcd && marker <= 0xcf)
+          ) {
+            return {
+              width: buffer.readUInt16BE(offset + 7),
+              height: buffer.readUInt16BE(offset + 5),
+            };
+          }
+          // Skip to next marker
+          const segmentLength = buffer.readUInt16BE(offset + 2);
+          offset += 2 + segmentLength;
+        }
+      }
+    } catch {
+      // If parsing fails, fall through to return 0,0
+    }
+    return { width: 0, height: 0 };
+  }
+
+  /**
    * Upload an image file using UPLOAD_TO_STORAGE action
    * Uploads the image as-is without server-side processing for cross-platform compatibility
    */
@@ -95,12 +184,14 @@ export class ChaiAssets {
         throw new Error(mainImageResult.error);
       }
 
+      const { width, height } = this.getImageDimensions(buffer);
+
       return {
         url: mainImageResult.data.url,
         thumbnailUrl: mainImageResult.data.url,
         size: buffer.length,
-        width: 0,
-        height: 0,
+        width,
+        height,
         mimeType,
       };
     } catch (error) {
