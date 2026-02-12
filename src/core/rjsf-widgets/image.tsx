@@ -1,5 +1,7 @@
 import { usePageExternalData } from "@/atoms/builder";
 import MediaManagerModal from "@/core/components/sidepanels/panels/images/media-manager-modal";
+import { STYLES_KEY } from "@/core/constants/STRINGS";
+import { getSplitChaiClasses } from "@/hooks/get-split-classes";
 import { useLanguages } from "@/hooks/use-languages";
 import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
 import { applyBindingToBlockProps } from "@/render/apply-binding";
@@ -72,13 +74,27 @@ const ImagePickerField = ({ value, onChange, id, onBlur, uiSchema }: WidgetProps
       const height = asset?.height;
       const forMobile = propIdKey.includes("mobile");
       if (selectedBlock?._id) {
-        const props = {
+        const props: Record<string, any> = {
           ...(width && { [forMobile ? "mobileWidth" : "width"]: width }),
           ...(height && { [forMobile ? "mobileHeight" : "height"]: height }),
           ...(asset.description && { alt: asset.description }),
         };
         // handling asset id based on prop
         set(props, propIdKey, asset.id);
+        
+        // Remove w-full and h-full from styles when width/height are set
+        if ((width || height) && selectedBlock?.styles) {
+          const { baseClasses, classes } = getSplitChaiClasses(selectedBlock.styles as string);
+          const removeClasses = (str: string) =>
+            str
+              .split(" ")
+              .filter((cls: string) => !(width && cls === "w-full") && !(height && cls === "h-full"))
+              .join(" ");
+          const newBaseClasses = removeClasses(baseClasses);
+          const newClasses = removeClasses(classes);
+          props.styles = `${STYLES_KEY}${newBaseClasses},${newClasses}`;
+        }
+
         // Only update if props are not empty
         if (isEmpty(props)) return;
         updateBlockProps([selectedBlock._id], props);
