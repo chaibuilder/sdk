@@ -176,7 +176,7 @@ const PublishButton = () => {
   const [showCompareModal, setShowCompareModal] = useState(false);
   const { savePageAsync } = useSavePage();
   const [showTranslationWarning, setShowTranslationWarning] = useState(false);
-  const { hasUnpublishedSettings } = useUnpublishedWebsiteSettings();
+  const { hasUnpublishedSettings, hasUnpublishedTheme, hasUnpublishedDesignToken } = useUnpublishedWebsiteSettings();
   const [showUnpublishedPartialsWarning, setShowUnpublishedPartialsWarning] = useState(false);
   const [unpublishedPartialBlockIds, setUnpublishedPartialBlockIds] = useState<string[]>([]);
   const [unpublishedPartialBlocksInfo, setUnpublishedPartialBlocksInfo] = useState<any[]>([]);
@@ -217,25 +217,22 @@ const PublishButton = () => {
   const performPublishCurrentPage = (partialBlockIds?: string[]) => {
     const pages = [activePage?.id, activePage?.primaryPage, ...(Array.isArray(partialBlockIds) ? partialBlockIds : [])];
     // * Publishing current page and consumed global blocks
-    publishPage(
-      { ids: compact(pages) },
-      { onSuccess: () => throwConfetti("TOP_RIGHT") }
-    );
+    publishPage({ ids: compact(pages) }, { onSuccess: () => throwConfetti("TOP_RIGHT") });
   };
 
-  const checkAndPublish = useCallback((pages: string[]) => {
-    const { ids: unpublishedIds, partialBlocksInfo } = getUnpublishedPartialBlocks();
-    if (unpublishedIds.length > 0) {
-      setUnpublishedPartialBlockIds(unpublishedIds);
-      setUnpublishedPartialBlocksInfo(partialBlocksInfo);
-      setShowUnpublishedPartialsWarning(true);
-    } else {
-      publishPage(
-        { ids: compact(pages) },
-        { onSuccess: () => throwConfetti("TOP_RIGHT") }
-      );
-    }
-  }, [getUnpublishedPartialBlocks, publishPage]);
+  const checkAndPublish = useCallback(
+    (pages: string[]) => {
+      const { ids: unpublishedIds, partialBlocksInfo } = getUnpublishedPartialBlocks();
+      if (unpublishedIds.length > 0) {
+        setUnpublishedPartialBlockIds(unpublishedIds);
+        setUnpublishedPartialBlocksInfo(partialBlocksInfo);
+        setShowUnpublishedPartialsWarning(true);
+      } else {
+        publishPage({ ids: compact(pages) }, { onSuccess: () => throwConfetti("TOP_RIGHT") });
+      }
+    },
+    [getUnpublishedPartialBlocks, publishPage],
+  );
 
   const handleContinueWithPartials = () => {
     setShowUnpublishedPartialsWarning(false);
@@ -339,7 +336,7 @@ const PublishButton = () => {
             )}
 
             {hasUnpublishedSettings && <DropdownMenuSeparator className="bg-gray-200" />}
-            {hasUnpublishedSettings && (
+            {hasUnpublishedTheme && (
               <DropdownMenuItem
                 disabled={isPending}
                 className="cursor-pointer text-xs"
@@ -347,6 +344,19 @@ const PublishButton = () => {
                 <span className="flex h-full w-full items-center gap-2">
                   <span className="mt-0.5 h-1 w-1 animate-pulse rounded-full bg-orange-500" />
                   {t("Publish")} theme
+                </span>
+              </DropdownMenuItem>
+            )}
+            {hasUnpublishedDesignToken && (
+              <DropdownMenuItem
+                disabled={isPending}
+                className="cursor-pointer text-xs"
+                onClick={() =>
+                  publishPage({ ids: ["DESIGN_TOKENS"] }, { onSuccess: () => throwConfetti("TOP_RIGHT") })
+                }>
+                <span className="flex h-full w-full items-center gap-2">
+                  <span className="mt-0.5 h-1 w-1 animate-pulse rounded-full bg-orange-500" />
+                  {t("Publish")} design token
                 </span>
               </DropdownMenuItem>
             )}

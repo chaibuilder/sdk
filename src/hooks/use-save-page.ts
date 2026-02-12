@@ -1,4 +1,4 @@
-import { chaiDesignTokensAtom, userActionsCountAtom } from "@/atoms/builder";
+import {  userActionsCountAtom } from "@/atoms/builder";
 import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { useCheckStructure } from "@/hooks/use-check-structure";
 import { useGetPageData } from "@/hooks/use-get-page-data";
@@ -49,7 +49,6 @@ export const useSavePage = () => {
   const { hasPermission } = usePermissions();
   const { selectedLang, fallbackLang } = useLanguages();
   const [isPageLoaded] = useIsPageLoaded();
-  const designTokens = useAtomValue(chaiDesignTokensAtom);
   const partialBlocksStore = useAtomValue(partialBlocksAtom);
   const checkStructure = useCheckStructure();
   const [, setActionsCount] = useAtom(userActionsCountAtom);
@@ -126,7 +125,6 @@ export const useSavePage = () => {
         autoSave,
         blocks: pageData.blocks,
         needTranslations: needTranslations(),
-        designTokens,
         partialIds: getAllPartialIds((pageData.blocks as unknown as ChaiBlock[]) || []),
         linkPageIds: getLinkPageIds((pageData.blocks as unknown as ChaiBlock[]) || []),
       });
@@ -163,7 +161,6 @@ export const useSavePage = () => {
       autoSave: true,
       blocks: pageData.blocks,
       needTranslations: needTranslations(),
-      designTokens,
       partialIds: getAllPartialIds((pageData.blocks as unknown as ChaiBlock[]) || []),
       linkPageIds: getLinkPageIds((pageData.blocks as unknown as ChaiBlock[]) || []),
     });

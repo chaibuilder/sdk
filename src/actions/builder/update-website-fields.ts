@@ -37,11 +37,24 @@ export class UpdateWebsiteFieldsAction extends ChaiBaseAction<
 
     // Pick only the allowed columns from settings (matching old implementation)
     const columns = pick(data.settings, ["theme", "designTokens"]);
-
+    // Fetch existing changes array from the database
+    const { data: existingApp, error: fetchError } = await safeQuery(() =>
+      db.select({ changes: schema.apps.changes }).from(schema.apps).where(eq(schema.apps.id, appId)),
+    );
+    if (fetchError) {
+      throw apiError("ERROR_UPDATE_WEBSITE_FIELDS", fetchError);
+    }
+    const existingChanges = (existingApp[0].changes ?? []) as string[];
+    // Map column names to their corresponding changes array keys
+    const keyMap: Record<string, string> = { theme: "THEME", designTokens: "DESIGN_TOKENS" };
+    const changedKeys = Object.keys(columns)
+      .map((key) => keyMap[key])
+      .filter(Boolean);
+    const mergedChanges = [...new Set([...existingChanges, ...changedKeys])];
     // Build the update object with changes flag
     const updateData = {
       ...columns,
-      changes: ["Updated"],
+      changes: mergedChanges,
     };
 
     // Execute the update query

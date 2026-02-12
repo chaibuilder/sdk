@@ -15,13 +15,22 @@ type PageChange = {
 export const useUnpublishedWebsiteSettings = () => {
   const { data: changes, isLoading } = useGetPageChanges();
 
-  const hasUnpublishedSettings = useMemo(() => {
+  const hasUnpublishedTheme = useMemo(() => {
     if (!changes || !Array.isArray(changes)) return false;
     return changes.some((change: PageChange) => change.id === "THEME");
   }, [changes]);
 
+  const hasUnpublishedDesignToken = useMemo(() => {
+    if (!changes || !Array.isArray(changes)) return false;
+    return changes.some((change: PageChange) => change.id === "DESIGN_TOKENS");
+  }, [changes]);
+
+  const hasUnpublishedSettings = hasUnpublishedTheme || hasUnpublishedDesignToken;
+
   return {
     hasUnpublishedSettings,
+    hasUnpublishedTheme,
+    hasUnpublishedDesignToken,
     isLoading,
   };
 };
