@@ -46,7 +46,7 @@ const ManageDesignTokensModal: React.FC<ManageDesignTokensModalProps> = ({ open,
   return (
     <>
       <Dialog open={open} onOpenChange={handleOpenChange}>
-        <DialogContent className="flex h-[53vh] max-w-6xl flex-col gap-0 p-0">
+        <DialogContent className="flex h-[540px] max-w-6xl flex-col gap-0 p-0">
           <DialogHeader className="border-b border-border px-6 py-4">
             <DialogTitle className="flex items-center gap-2">
               <TokensIcon className="h-5 w-5 text-primary" />

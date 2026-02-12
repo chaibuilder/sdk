@@ -77,6 +77,9 @@ export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionDat
           if (id === "THEME") {
             return this.publishTheme();
           }
+          if (id === "DESIGN_TOKENS") {
+            return this.publishDesignToken();
+          }
           return this.publishPage(id);
         }),
       );
@@ -121,16 +124,69 @@ export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionDat
       throw new ActionError("Error inserting online theme", "ERROR_PUBLISHING_THEME", 500, insertError);
     }
 
-    // Update draft app to clear changes
+    // Remove 'THEME' from changes array, set null only if no other changes remain
+    await this.removeFromChangesArray("THEME", "ERROR_PUBLISHING_THEME");
+
+    return [`website-settings-${this.appId}`];
+  }
+
+  /**
+   * Publish design token changes
+   */
+  private async publishDesignToken(): Promise<string[]> {
+    const app = await this.cloneApp();
+
+    // Delete existing online app
+    const { error: deleteError } = await safeQuery(() =>
+      db.delete(schema.appsOnline).where(eq(schema.appsOnline.id, this.appId)),
+    );
+
+    if (deleteError) {
+      throw new ActionError("Error deleting online app", "ERROR_PUBLISHING_DESIGN_TOKEN", 500, deleteError);
+    }
+
+    // Insert new online app
+    const { error: insertError } = await safeQuery(() =>
+      db.insert(schema.appsOnline).values({ ...app, changes: null }),
+    );
+
+    if (insertError) {
+      throw new ActionError("Error inserting online app", "ERROR_PUBLISHING_DESIGN_TOKEN", 500, insertError);
+    }
+
+    // Remove 'DESIGN_TOKENS' from changes array, set null only if no other changes remain
+    await this.removeFromChangesArray("DESIGN_TOKENS", "ERROR_PUBLISHING_DESIGN_TOKEN");
+
+    return [`website-settings-${this.appId}`];
+  }
+
+  /**
+   * Remove a specific key from the app's changes array.
+   * Sets changes to null only if the array becomes empty after removal.
+   */
+  private async removeFromChangesArray(key: string, errorCode: string): Promise<void> {
+    // Fetch existing changes array
+    const { data: existingApp, error: fetchError } = await safeQuery(() =>
+      db.select({ changes: schema.apps.changes }).from(schema.apps).where(eq(schema.apps.id, this.appId)),
+    );
+
+    if (fetchError) {
+      throw new ActionError("Error fetching changes", errorCode, 500, fetchError);
+    }
+
+    const existingChanges = (existingApp?.[0]?.changes ?? []) as string[];
+    const updatedChanges = existingChanges.filter((c) => c !== key);
+
     const { error: updateError } = await safeQuery(() =>
-      db.update(schema.apps).set({ changes: null }).where(eq(schema.apps.id, this.appId)),
+      db
+        .update(schema.apps)
+        .set({ changes: updatedChanges.length > 0 ? updatedChanges : null })
+        .where(eq(schema.apps.id, this.appId)),
     );
 
     if (updateError) {
-      throw new ActionError("Error updating theme", "ERROR_PUBLISHING_THEME", 500, updateError);
+      throw new ActionError("Error updating changes", errorCode, 500, updateError);
     }
-
-    return [`website-settings-${this.appId}`];
   }
 
   /**
@@ -154,8 +210,8 @@ export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionDat
    * Clear changes flag after publishing
    */
   private async clearChanges(ids: string[]): Promise<void> {
-    // remove THEME from ids
-    const pageIds = ids.filter((id) => id !== "THEME");
+    // remove THEME and DESIGN_TOKENS from ids
+    const pageIds = ids.filter((id) => id !== "THEME" && id !== "DESIGN_TOKENS");
 
     if (pageIds.length === 0) {
       return;

@@ -22,10 +22,6 @@ vi.mock("@/hooks/use-get-page-data", () => ({
   useGetPageData: vi.fn(),
 }));
 
-vi.mock("@/hooks/use-theme", () => ({
-  useTheme: vi.fn(),
-}));
-
 vi.mock("@/hooks/use-permissions", () => ({
   usePermissions: vi.fn(),
 }));
@@ -40,6 +36,11 @@ vi.mock("@/hooks/use-is-page-loaded", () => ({
 
 vi.mock("@/hooks/use-check-structure", () => ({
   useCheckStructure: vi.fn(),
+}));
+
+vi.mock("@/hooks/use-theme", () => ({
+  useTheme: vi.fn(),
+  useThemeOptions: vi.fn(),
 }));
 
 const mockGetRegisteredChaiBlock = getRegisteredChaiBlock as any;
@@ -247,7 +248,6 @@ describe("useSavePage - prevent save when no unsaved changes", () => {
 
     const { useBuilderProp } = await import("@/hooks/use-builder-prop");
     const { useGetPageData } = await import("@/hooks/use-get-page-data");
-    const { useTheme } = await import("@/hooks/use-theme");
     const { usePermissions } = await import("@/hooks/use-permissions");
     const { useLanguages } = await import("@/hooks/use-languages");
     const { useIsPageLoaded } = await import("@/hooks/use-is-page-loaded");
@@ -260,7 +260,6 @@ describe("useSavePage - prevent save when no unsaved changes", () => {
     });
 
     (useGetPageData as any).mockReturnValue(mockGetPageData);
-    (useTheme as any).mockReturnValue([{}]);
     (usePermissions as any).mockReturnValue({ hasPermission: mockHasPermission });
     (useLanguages as any).mockReturnValue({ selectedLang: "en", fallbackLang: "en" });
     (useIsPageLoaded as any).mockReturnValue([true]);
@@ -377,7 +376,7 @@ describe("useSavePage - prevent save when no unsaved changes", () => {
     );
   });
 
-  it("should pass blocks, theme, and designTokens to onSave callback", async () => {
+  it("should pass blocks to onSave callback", async () => {
     builderStore.set(builderSaveStateAtom, "UNSAVED");
     const mockBlocks = [{ _id: "1", _type: "Container" }];
     mockGetPageData.mockReturnValue({ blocks: mockBlocks });
@@ -391,8 +390,6 @@ describe("useSavePage - prevent save when no unsaved changes", () => {
     expect(mockOnSave).toHaveBeenCalledWith(
       expect.objectContaining({
         blocks: mockBlocks,
-        theme: expect.any(Object),
-        designTokens: expect.any(Object),
       }),
     );
   });
@@ -430,7 +427,7 @@ describe("useSavePage - getAllPartialIds", () => {
 
     const { useBuilderProp } = await import("@/hooks/use-builder-prop");
     const { useGetPageData } = await import("@/hooks/use-get-page-data");
-    const { useTheme } = await import("@/hooks/use-theme");
+    const { useTheme, useThemeOptions } = await import("@/hooks/use-theme");
     const { usePermissions } = await import("@/hooks/use-permissions");
     const { useLanguages } = await import("@/hooks/use-languages");
     const { useIsPageLoaded } = await import("@/hooks/use-is-page-loaded");
@@ -444,6 +441,7 @@ describe("useSavePage - getAllPartialIds", () => {
 
     (useGetPageData as any).mockReturnValue(mockGetPageData);
     (useTheme as any).mockReturnValue([{}]);
+    (useThemeOptions as any).mockReturnValue({});
     (usePermissions as any).mockReturnValue({ hasPermission: mockHasPermission });
     (useLanguages as any).mockReturnValue({ selectedLang: "en", fallbackLang: "en" });
     (useIsPageLoaded as any).mockReturnValue([true]);
@@ -696,7 +694,7 @@ describe("useSavePage - getLinkPageIds", () => {
 
     const { useBuilderProp } = await import("@/hooks/use-builder-prop");
     const { useGetPageData } = await import("@/hooks/use-get-page-data");
-    const { useTheme } = await import("@/hooks/use-theme");
+    const { useTheme, useThemeOptions } = await import("@/hooks/use-theme");
     const { usePermissions } = await import("@/hooks/use-permissions");
     const { useLanguages } = await import("@/hooks/use-languages");
     const { useIsPageLoaded } = await import("@/hooks/use-is-page-loaded");
@@ -710,6 +708,7 @@ describe("useSavePage - getLinkPageIds", () => {
 
     (useGetPageData as any).mockReturnValue(mockGetPageData);
     (useTheme as any).mockReturnValue([{}]);
+    (useThemeOptions as any).mockReturnValue({});
     (usePermissions as any).mockReturnValue({ hasPermission: mockHasPermission });
     (useLanguages as any).mockReturnValue({ selectedLang: "en", fallbackLang: "en" });
     (useIsPageLoaded as any).mockReturnValue([true]);

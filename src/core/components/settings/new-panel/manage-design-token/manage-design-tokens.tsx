@@ -17,6 +17,7 @@ import { DESIGN_TOKEN_PREFIX } from "@/core/constants/STRINGS";
 import { orderClassesByBreakpoint } from "@/core/functions/order-classes-by-breakpoint";
 import { removeDuplicateClasses } from "@/core/functions/remove-duplicate-classes";
 import { useBuilderProp } from "@/hooks/use-builder-prop";
+import { useSaveWebsiteData } from "@/hooks/use-save-website-data";
 import {
   ArrowLeftIcon,
   EyeOpenIcon,
@@ -128,6 +129,7 @@ const ManageDesignTokens = ({ onActiveTokenChange, onDirtyStateChange }: ManageD
   const { t } = useTranslation();
   const [designTokens, setDesignTokens] = useAtom(chaiDesignTokensAtom);
   const incrementActionsCount = useIncrementActionsCount();
+  const { saveDesignTokens, debouncedSaveDesignTokens } = useSaveWebsiteData();
   const currentPageId = useBuilderProp("pageId", "");
   const siteWideUsage = useBuilderProp("siteWideUsage", {});
 
@@ -144,6 +146,7 @@ const ManageDesignTokens = ({ onActiveTokenChange, onDirtyStateChange }: ManageD
   const [isSaving, setIsSaving] = useState(false);
 
   // Archive confirmation state
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const [archiveConfirmation, setArchiveConfirmation] = useState<{
     isOpen: boolean;
     tokenId: string | null;
@@ -260,18 +263,66 @@ const ManageDesignTokens = ({ onActiveTokenChange, onDirtyStateChange }: ManageD
 
     if (!editingTokenId) return;
 
-    const newTokens = {
-      ...designTokens,
-      [editingTokenId]: {
-        name: tokenName.trim(),
-        value: classes.trim(),
-      },
-    };
-    setDesignTokens(newTokens);
-    incrementActionsCount();
-    toast.success(t("Token updated successfully"));
-    resetAndGoToView();
+    debouncedUpdateToken(tokenName, classes);
   };
+
+  const resetAndGoToView = useCallback(() => {
+    setEditingTokenId(null);
+    setTokenName("");
+    setClasses("");
+    setTokenNameError("");
+    setIsSaving(false);
+    setViewMode("view");
+  }, []);
+
+  // Real-time update for editing (debounced)
+  const debouncedUpdateToken = useCallback(
+    (name: string, value: string) => {
+      if (!editingTokenId || viewMode !== "edit") return;
+
+      // Validate before updating
+      if (!name.trim() || !value.trim()) return;
+      if (!validateTokenName(name)) return;
+
+      // Check for duplicate names (excluding current token)
+      const existingToken = Object.entries(designTokens).find(
+        ([id, token]) => token.name === name.trim() && id !== editingTokenId,
+      );
+      if (existingToken) return;
+
+      setIsSaving(true);
+
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+
+      debounceTimerRef.current = setTimeout(() => {
+        const newTokens = {
+          ...designTokens,
+          [editingTokenId]: {
+            name: name.trim(),
+            value: value.trim(),
+          },
+        };
+        setDesignTokens(newTokens);
+        incrementActionsCount();
+        debouncedSaveDesignTokens();
+        setIsSaving(false);
+        toast.success(t("Token updated successfully"));
+        resetAndGoToView();
+      }, 10);
+    },
+    [
+      editingTokenId,
+      viewMode,
+      designTokens,
+      setDesignTokens,
+      incrementActionsCount,
+      debouncedSaveDesignTokens,
+      t,
+      resetAndGoToView,
+    ],
+  );
 
   const handleAddToken = () => {
     if (!tokenName.trim() || !classes.trim()) {
@@ -300,6 +351,7 @@ const ManageDesignTokens = ({ onActiveTokenChange, onDirtyStateChange }: ManageD
     };
     setDesignTokens(newTokens);
     incrementActionsCount();
+    saveDesignTokens();
     toast.success(t("Token added successfully"));
     resetAndGoToView();
   };
@@ -334,6 +386,7 @@ const ManageDesignTokens = ({ onActiveTokenChange, onDirtyStateChange }: ManageD
     };
     setDesignTokens(newTokens);
     incrementActionsCount();
+    saveDesignTokens();
     toast.success(t("Token archived successfully"));
     setArchiveConfirmation({
       isOpen: false,
@@ -375,15 +428,6 @@ const ManageDesignTokens = ({ onActiveTokenChange, onDirtyStateChange }: ManageD
     setClasses("");
     setTokenNameError("");
     setViewMode("add");
-  };
-
-  const resetAndGoToView = () => {
-    setEditingTokenId(null);
-    setTokenName("");
-    setClasses("");
-    setTokenNameError("");
-    setIsSaving(false);
-    setViewMode("view");
   };
 
   const handleTokenNameChange = (value: string) => {
