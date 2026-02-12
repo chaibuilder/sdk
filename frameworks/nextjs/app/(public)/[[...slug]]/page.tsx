@@ -51,7 +51,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string[
       </head>
       <body className={`font-body antialiased`}>
         <PreviewBanner slug={slug} show={isEnabled} />
-        <RenderChaiBlocks page={{ ...page, fallbackLang: siteSettings.fallbackLang }} pageProps={pageProps} />
+        <RenderChaiBlocks page={page} pageProps={pageProps} />
       </body>
     </html>
   );

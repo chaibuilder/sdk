@@ -1,8 +1,8 @@
-import { ChaiBlockStyles } from "@/types";
 import { ChaiBlockComponentProps } from "@chaibuilder/sdk/types";
 import { first, isArray } from "lodash";
 import Image from "next/image";
 import * as React from "react";
+import { ChaiBlockStyles } from "../types";
 
 export const ImageBlock = (
   props: ChaiBlockComponentProps<{

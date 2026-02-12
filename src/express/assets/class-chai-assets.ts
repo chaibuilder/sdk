@@ -1,7 +1,6 @@
 import { getChaiAction } from "@/actions/builder/actions-registery";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { isEmpty, kebabCase, set } from "lodash-es";
-import sharp from "sharp";
 
 type ChaiAsset = any;
 
@@ -31,57 +30,48 @@ export class ChaiAssets {
     }
   }
 
+  private getMimeType(name: string): string {
+    const ext = name.split(".").pop()?.toLowerCase() || "";
+    const mimeTypes: Record<string, string> = {
+      jpg: "image/jpeg",
+      jpeg: "image/jpeg",
+      png: "image/png",
+      webp: "image/webp",
+      gif: "image/gif",
+      tiff: "image/tiff",
+      svg: "image/svg+xml",
+    };
+    return mimeTypes[ext] || "application/octet-stream";
+  }
+
   /**
    * Upload an image file using UPLOAD_TO_STORAGE action
-   * Processes, optimizes, and creates thumbnails
+   * Uploads the image as-is without server-side processing for cross-platform compatibility
    */
   private async uploadImageFile(
     file: string,
     folderId: string | null | undefined,
     name: string,
-    optimize: boolean,
+    _optimize: boolean,
   ): Promise<
     | { url: string; thumbnailUrl: string; size: number; width: number; height: number; mimeType: string }
     | { error: string }
   > {
     try {
       const buffer = this.getBufferFromBase64(file);
+      const mimeType = this.getMimeType(name);
 
       // Validate file is an image
-      const metadata = await sharp(buffer).metadata();
-      const validImageFormats = ["jpeg", "jpg", "png", "webp", "gif", "svg", "tiff"];
-      if (!metadata.format || !validImageFormats.includes(metadata.format.toLowerCase())) {
-        throw new Error(`Invalid image format: ${metadata.format || "unknown"}`);
+      const validMimeTypes = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/tiff"];
+      if (!validMimeTypes.includes(mimeType)) {
+        throw new Error(`Invalid image format: ${mimeType}`);
       }
-
-      // Optimize image
-      const optimizedBuffer = optimize
-        ? await sharp(buffer)
-            .webp({ quality: 100 })
-            .resize({ width: Math.min(metadata.width || 2000, 2000) })
-            .toBuffer()
-        : await sharp(buffer).webp({ quality: 100 }).toBuffer();
-
-      // Further optimize if too large
-      let finalBuffer = optimizedBuffer;
-      if (optimize && optimizedBuffer.length > 120 * 1024) {
-        const compressionLevel = Math.floor(90 * ((120 * 1024) / optimizedBuffer.length));
-        finalBuffer = await sharp(buffer)
-          .webp({ quality: compressionLevel })
-          .resize({ width: Math.min(metadata.width || 2000, 2000) })
-          .toBuffer();
-      }
-
-      const optimizedInfo = await sharp(finalBuffer).metadata();
-
-      // Create thumbnail
-      const thumbnailBuffer = await sharp(buffer).webp({ quality: 70 }).resize({ width: 300 }).toBuffer();
 
       // Prepare file names and paths
       const parts = name.split(".");
       const originalFileName = parts.length > 1 ? parts.slice(0, -1).join(".") : name;
-      const fileName = `${kebabCase(originalFileName)}.webp`;
-      const thumbnailName = `${fileName}_thumbnail.webp`;
+      const ext = parts.length > 1 ? parts[parts.length - 1].toLowerCase() : "png";
+      const fileName = `${kebabCase(originalFileName)}.${ext}`;
 
       const baseFolder = this.appId;
       const folderPath = folderId ? `${baseFolder}/${folderId}` : baseFolder;
@@ -95,9 +85,9 @@ export class ChaiAssets {
       uploadAction.setContext({ appId: this.appId, userId: this.userId });
 
       const mainImageResult = await uploadAction.execute({
-        file: finalBuffer.toString("base64"),
+        file: buffer.toString("base64"),
         fileName,
-        contentType: "image/webp",
+        contentType: mimeType,
         folder: folderPath,
       });
 
@@ -105,25 +95,13 @@ export class ChaiAssets {
         throw new Error(mainImageResult.error);
       }
 
-      // Upload thumbnail
-      const thumbnailResult = await uploadAction.execute({
-        file: thumbnailBuffer.toString("base64"),
-        fileName: thumbnailName,
-        contentType: "image/webp",
-        folder: folderPath,
-      });
-
-      if (thumbnailResult.error) {
-        throw new Error(thumbnailResult.error);
-      }
-
       return {
         url: mainImageResult.data.url,
-        thumbnailUrl: thumbnailResult.data.url,
-        size: optimizedInfo.size || finalBuffer.length,
-        width: optimizedInfo.width || 0,
-        height: optimizedInfo.height || 0,
-        mimeType: "image/webp",
+        thumbnailUrl: mainImageResult.data.url,
+        size: buffer.length,
+        width: 0,
+        height: 0,
+        mimeType,
       };
     } catch (error) {
       console.error("Upload image error:", error);
@@ -145,15 +123,17 @@ export class ChaiAssets {
     try {
       const buffer = this.getBufferFromBase64(file);
 
-      // Get SVG dimensions if possible
+      // Get SVG dimensions if possible using regex
       let width: number | undefined;
       let height: number | undefined;
       try {
-        const metadata = await sharp(buffer).metadata();
-        width = metadata.width;
-        height = metadata.height;
+        const svgString = buffer.toString("utf-8");
+        const widthMatch = svgString.match(/\bwidth=["'](\d+)/);
+        const heightMatch = svgString.match(/\bheight=["'](\d+)/);
+        if (widthMatch) width = parseInt(widthMatch[1], 10);
+        if (heightMatch) height = parseInt(heightMatch[1], 10);
       } catch {
-        // If sharp can't read SVG metadata, continue without dimensions
+        // If we can't parse SVG dimensions, continue without them
       }
 
       // Prepare file name and path
