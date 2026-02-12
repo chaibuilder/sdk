@@ -266,6 +266,15 @@ const ManageDesignTokens = ({ onActiveTokenChange, onDirtyStateChange }: ManageD
     debouncedUpdateToken(tokenName, classes);
   };
 
+  const resetAndGoToView = useCallback(() => {
+    setEditingTokenId(null);
+    setTokenName("");
+    setClasses("");
+    setTokenNameError("");
+    setIsSaving(false);
+    setViewMode("view");
+  }, []);
+
   // Real-time update for editing (debounced)
   const debouncedUpdateToken = useCallback(
     (name: string, value: string) => {
@@ -299,9 +308,20 @@ const ManageDesignTokens = ({ onActiveTokenChange, onDirtyStateChange }: ManageD
         incrementActionsCount();
         debouncedSaveDesignTokens();
         setIsSaving(false);
+        toast.success(t("Token updated successfully"));
+        resetAndGoToView();
       }, 10);
     },
-    [editingTokenId, viewMode, designTokens, setDesignTokens, incrementActionsCount, debouncedSaveDesignTokens],
+    [
+      editingTokenId,
+      viewMode,
+      designTokens,
+      setDesignTokens,
+      incrementActionsCount,
+      debouncedSaveDesignTokens,
+      t,
+      resetAndGoToView,
+    ],
   );
 
   const handleAddToken = () => {
@@ -408,15 +428,6 @@ const ManageDesignTokens = ({ onActiveTokenChange, onDirtyStateChange }: ManageD
     setClasses("");
     setTokenNameError("");
     setViewMode("add");
-  };
-
-  const resetAndGoToView = () => {
-    setEditingTokenId(null);
-    setTokenName("");
-    setClasses("");
-    setTokenNameError("");
-    setIsSaving(false);
-    setViewMode("view");
   };
 
   const handleTokenNameChange = (value: string) => {
