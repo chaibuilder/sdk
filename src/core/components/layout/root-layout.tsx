@@ -12,7 +12,7 @@ import { AddBlocksDialog } from "@/core/components/layout/add-blocks-dialog";
 import { NoopComponent } from "@/core/components/noop-component";
 import SettingsPanel from "@/core/components/settings/settings-panel";
 import { DesignTokensIcon } from "@/core/components/sidepanels/panels/design-tokens/DesignTokensIcon";
-import ThemeConfigPanel from "@/core/components/sidepanels/panels/theme-configuration/ThemeConfigPanel";
+import ThemeConfigPanel from "@/core/components/sidepanels/panels/theme-configuration/theme-config-panel";
 import { isDevelopment } from "@/core/import-html/general";
 import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { useSidebarActivePanel } from "@/hooks/use-sidebar-active-panel";

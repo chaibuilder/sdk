@@ -147,17 +147,31 @@ export class GetChangesAction extends ChaiBaseAction<GetChangesActionData, GetCh
     );
 
     if (!appsError && apps && apps.length > 0) {
-      // Add theme change entry
-      mergedPages.push({
-        id: "THEME",
-        slug: "",
-        name: "Theme",
-        pageType: "theme",
-        lang: "",
-        changes: ["Updated"],
-        primaryPage: null,
-        online: true,
-      });
+      const appChanges = (apps[0].changes ?? []) as string[];
+      if (appChanges.includes("THEME")) {
+        mergedPages.push({
+          id: "THEME",
+          slug: "",
+          name: "Theme",
+          pageType: "theme",
+          lang: "",
+          changes: ["Updated"],
+          primaryPage: null,
+          online: true,
+        });
+      }
+      if (appChanges.includes("DESIGN_TOKENS")) {
+        mergedPages.push({
+          id: "DESIGN_TOKENS",
+          slug: "",
+          name: "Design Tokens",
+          pageType: "design_tokens",
+          lang: "",
+          changes: ["Updated"],
+          primaryPage: null,
+          online: true,
+        });
+      }
     }
 
     return mergedPages;

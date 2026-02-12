@@ -5,7 +5,7 @@ import AddBlocksPanel from "@/core/components/sidepanels/panels/add-blocks/add-b
 import ImportHTML from "@/core/components/sidepanels/panels/add-blocks/import-html";
 import UILibrariesPanel from "@/core/components/sidepanels/panels/add-blocks/libraries-panel";
 import Outline from "@/core/components/sidepanels/panels/outline/list-tree";
-import ThemeOptions from "@/core/components/sidepanels/panels/theme-configuration/ThemeConfigPanel";
+import ThemeOptions from "@/core/components/sidepanels/panels/theme-configuration/theme-config-panel";
 import i18n from "@/core/locales/load";
 
 export { AIUserPrompt } from "@/core/components/ask-ai-panel";
@@ -22,11 +22,11 @@ export {
   BlockPropsEditor,
   BlockStyleEditor,
   ChaiBuilderCanvas,
+  i18n,
   ImportHTML,
   Outline,
   ThemeOptions,
   UILibrariesPanel as UILibraries,
-  i18n,
 };
 
 export * from "@/types";
