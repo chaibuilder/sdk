@@ -49,16 +49,20 @@ export const useCheckUserAccess = (checkInterval: number = 300) => {
 
 /**
  * Hook to get the user's role and permissions
- * This is an alias for useCheckUserAccess that returns the same data
+ * This wraps useCheckUserAccess and returns only role and permissions data
  * Maintained for backward compatibility
+ * 
+ * Note: Unlike the original implementation, this hook benefits from periodic
+ * access checks (every 5 minutes) performed by useCheckUserAccess. This ensures
+ * role and permission data stays fresh and helps detect if user access is revoked.
  */
 export const useUserRoleAndPermissions = () => {
-  const { data, isLoading, isFetching, error } = useCheckUserAccess();
+  const { data, isLoading, error } = useCheckUserAccess();
   
   return {
     data: data ? { role: data.role, permissions: data.permissions } : undefined,
     isLoading,
-    isFetching,
+    isFetching: false, // For backward compatibility, don't expose background refetching
     error,
   };
 };
