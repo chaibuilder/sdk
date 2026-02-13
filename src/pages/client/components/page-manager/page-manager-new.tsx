@@ -19,8 +19,6 @@ const PageManagerSearchAndFilter = lazy(() => import("./page-manager-search-and-
 const AddNewPage = lazy(() => import("../add-new-page"));
 const DeletePage = lazy(() => import("../delete-page"));
 const DuplicatePage = lazy(() => import("../duplicate-page"));
-const MarkAsTemplate = lazy(() => import("../mark-as-template"));
-const UnmarkAsTemplate = lazy(() => import("../unmark-as-template"));
 const UnpublishPage = lazy(() => import("../unpublish-page"));
 
 interface PageManagerNewProps {
@@ -42,10 +40,8 @@ const PagesManagerNew = ({ close }: PageManagerNewProps) => {
   const [deletePage, setDeletePage] = useState(null);
   const [addEditPage, setAddEditPage] = useState(null);
   const [unpublishPage, setUnpublishPage] = useState(null);
-  const [markAsTemplate, setMarkAsTemplate] = useState(null);
   const [selectedPageType, setSelectedPageType] = useState("");
   const [duplicatePage, setDuplicatePage] = useState<any>(null);
-  const [unmarkAsTemplate, setUnmarkAsTemplate] = useState(null);
   const [selectedLanguage, setSelectedLanguage] = useState(fallbackLang);
   const [_showUntranslatedPages, setShowUntranslatedPages] = useState(false);
   const setAddNewLang = useSetAtom(addNewLangAtom);
@@ -212,12 +208,6 @@ const PagesManagerNew = ({ close }: PageManagerNewProps) => {
       case "unpublish":
         setUnpublishPage(arg);
         break;
-      case "markAsTemplate":
-        setMarkAsTemplate(arg);
-        break;
-      case "unmarkAsTemplate":
-        setUnmarkAsTemplate(arg);
-        break;
       case "duplicate":
         setDuplicatePage(arg);
         break;
@@ -297,18 +287,6 @@ const PagesManagerNew = ({ close }: PageManagerNewProps) => {
       {unpublishPage && (
         <Suspense>
           <UnpublishPage page={unpublishPage} onClose={() => setUnpublishPage(null)} />
-        </Suspense>
-      )}
-
-      {markAsTemplate && (
-        <Suspense>
-          <MarkAsTemplate page={markAsTemplate} onClose={() => setMarkAsTemplate(null)} />
-        </Suspense>
-      )}
-
-      {unmarkAsTemplate && (
-        <Suspense>
-          <UnmarkAsTemplate page={unmarkAsTemplate} onClose={() => setUnmarkAsTemplate(null)} />
         </Suspense>
       )}
 

@@ -232,66 +232,6 @@ export const usePublishPages = () => {
   });
 };
 
-export const useMarkAsTemplate = () => {
-  const apiUrl = useApiUrl();
-  const fetchAPI = useFetch();
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async (data: {
-      page: any;
-      name: string;
-      description?: string;
-      pageType: string;
-      previewImage?: string;
-    }) => {
-      return fetchAPI(apiUrl, {
-        action: ACTIONS.MARK_AS_TEMPLATE,
-        data: {
-          id: data.page?.id,
-          name: data.name,
-          description: data.description,
-          pageType: data.pageType,
-          previewImage: data.previewImage,
-        },
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [ACTIONS.GET_WEBSITE_PAGES],
-      });
-      toast.success("Page marked as template successfully.");
-    },
-    onError: () => {
-      toast.error("Failed to mark page as template.");
-    },
-  });
-};
-
-export const useUnmarkAsTemplate = () => {
-  const apiUrl = useApiUrl();
-  const fetchAPI = useFetch();
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async (page: any) => {
-      return fetchAPI(apiUrl, {
-        action: ACTIONS.UNMARK_AS_TEMPLATE,
-        data: { id: page?.id },
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [ACTIONS.GET_WEBSITE_PAGES],
-      });
-      toast.success("Page unmarked as template successfully.");
-    },
-    onError: () => {
-      toast.error("Failed to unmark page as template.");
-    },
-  });
-};
-
 export const useChangeSlug = () => {
   const apiUrl = useApiUrl();
   const fetchAPI = useFetch();

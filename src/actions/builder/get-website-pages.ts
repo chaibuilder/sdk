@@ -1,7 +1,6 @@
 import { db, safeQuery, schema } from "@/actions/db";
 import { apiError } from "@/actions/lib";
-import { and, eq, inArray } from "drizzle-orm";
-import { isEmpty } from "lodash-es";
+import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 import { ChaiBaseAction } from "./base-action";
 
@@ -22,7 +21,6 @@ type GetWebsitePagesActionResponse = Array<{
   dynamic: boolean | null;
   dynamicSlugCustom: string | null;
   primaryPage?: string | null;
-  isTemplate: boolean;
   changes: string[] | null;
   lang: string;
   designTokens: unknown;
@@ -80,30 +78,10 @@ export class GetWebsitePagesAction extends ChaiBaseAction<GetWebsitePagesActionD
       return [];
     }
 
-    // Get template information for all pages with slugs in a single query
-    const pageIdsWithSlugs = pages.filter((page) => !isEmpty(page.slug)).map((page) => page.id);
-
-    const { data: templates, error: templatesError } = await safeQuery(() =>
-      db
-        .select({
-          pageId: schema.libraryTemplates.pageId,
-        })
-        .from(schema.libraryTemplates)
-        .where(inArray(schema.libraryTemplates.pageId, pageIdsWithSlugs)),
-    );
-
-    if (templatesError) {
-      throw apiError("ERROR_GETTING_TEMPLATE_INFO", templatesError);
-    }
-
-    // Create a set of pageIds that are templates for O(1) lookup
-    const templatePageIds = new Set((templates || []).map((t) => t.pageId));
-
-    // Map the pages with template information
+    // Map the pages with type information
     return pages.map((page) => ({
       ...page,
       pageType: page.pageType ?? "page",
-      isTemplate: templatePageIds.has(page.id),
       changes: page.changes as string[] | null,
       lang: page.lang,
       designTokens: page.designTokens,

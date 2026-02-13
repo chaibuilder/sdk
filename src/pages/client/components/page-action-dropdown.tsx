@@ -8,7 +8,7 @@ import { usePermissions } from "@/hooks/use-permissions";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { find } from "lodash-es";
-import { CopyPlusIcon, Pencil, Power, SquareLibrary, Trash } from "lucide-react";
+import { CopyPlusIcon, Pencil, Power, Trash } from "lucide-react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -18,8 +18,6 @@ interface PageActionsDropdownProps {
   setAddEditPage: (page: any) => void;
   setUnpublishPage: (page: any) => void;
   setDeletePage: (page: any) => void;
-  setMarkAsTemplate: (page: any) => void;
-  setUnmarkAsTemplate: (page: any) => void;
   children: React.ReactNode;
   isLanguagePage?: boolean;
 }
@@ -30,8 +28,6 @@ export const PageActionsDropdown = ({
   setAddEditPage,
   setUnpublishPage,
   setDeletePage,
-  setMarkAsTemplate,
-  setUnmarkAsTemplate,
   children,
   isLanguagePage,
 }: PageActionsDropdownProps) => {
@@ -40,9 +36,6 @@ export const PageActionsDropdown = ({
 
   const { data: pageTypes } = usePageTypes();
   const pageType = useMemo(() => find(pageTypes, { key: page.pageType }), [pageTypes, page.pageType]);
-
-  const isTemplate = useMemo(() => Boolean(page.isTemplate), [page.isTemplate]);
-  const hasSlug = useMemo(() => Boolean(pageType?.hasSlug), [pageType?.hasSlug]);
 
   const noMoreActions =
     !hasPermission(PAGES_PERMISSIONS.EDIT_PAGE) &&
@@ -103,31 +96,6 @@ export const PageActionsDropdown = ({
             <Trash className="size-3" />
             {t("Delete")}
           </DropdownMenuItem>
-        )}
-        {hasPermission(PAGES_PERMISSIONS.MARK_AS_TEMPLATE) && hasSlug && !isLanguagePage && (
-          <>
-            {isTemplate ? (
-              <DropdownMenuItem
-                className="flex cursor-pointer items-center gap-2"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setUnmarkAsTemplate(page);
-                }}>
-                <SquareLibrary className="size-3" />
-                {t("Unmark as template")}
-              </DropdownMenuItem>
-            ) : (
-              <DropdownMenuItem
-                className="flex cursor-pointer items-center gap-2"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setMarkAsTemplate(page);
-                }}>
-                <SquareLibrary className="size-3" />
-                {t("Mark as template")}
-              </DropdownMenuItem>
-            )}
-          </>
         )}
       </DropdownMenuContent>
     </DropdownMenu>

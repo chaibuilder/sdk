@@ -14,16 +14,12 @@ import PagesManagerTrigger from "./page-manager/page-manager-trigger";
 const AddNewPage = lazy(() => import("./add-new-page"));
 const DeletePage = lazy(() => import("./delete-page"));
 const DuplicatePage = lazy(() => import("./duplicate-page"));
-const MarkAsTemplate = lazy(() => import("./mark-as-template"));
-const UnmarkAsTemplate = lazy(() => import("./unmark-as-template"));
 const UnpublishPage = lazy(() => import("./unpublish-page"));
 
 export const PageDropdownInHeader = () => {
   // Modal states
   const [deletePageModal, setDeletePageModal] = useState<any>(null);
   const [unpublishPageModal, setUnpublishPageModal] = useState<any>(null);
-  const [markAsTemplateModal, setMarkAsTemplateModal] = useState<any>(null);
-  const [unmarkAsTemplateModal, setUnmarkAsTemplateModal] = useState<any>(null);
   const [duplicatePageModal, setDuplicatePageModal] = useState<any>(null);
   const [addEditPageModal, setAddEditPageModal] = useState<any>(null);
 
@@ -80,8 +76,6 @@ export const PageDropdownInHeader = () => {
             setAddEditPage={(page) => handleAddEditPage(page)}
             setUnpublishPage={(page) => setUnpublishPageModal(page)}
             setDeletePage={(page) => setDeletePageModal(page)}
-            setMarkAsTemplate={(page) => setMarkAsTemplateModal(page)}
-            setUnmarkAsTemplate={(page) => setUnmarkAsTemplateModal(page)}
             isLanguagePage={selectedLang.length > 0 && selectedLang !== fallbackLang}>
             <Button variant="ghost" size="icon" className="h-7 w-7 rounded">
               <MoreHorizontal className="h-4 w-4" />
@@ -111,18 +105,6 @@ export const PageDropdownInHeader = () => {
       {unpublishPageModal && (
         <Suspense>
           <UnpublishPage page={unpublishPageModal} onClose={() => setUnpublishPageModal(null)} />
-        </Suspense>
-      )}
-
-      {markAsTemplateModal && (
-        <Suspense>
-          <MarkAsTemplate page={markAsTemplateModal} onClose={() => setMarkAsTemplateModal(null)} />
-        </Suspense>
-      )}
-
-      {unmarkAsTemplateModal && (
-        <Suspense>
-          <UnmarkAsTemplate page={unmarkAsTemplateModal} onClose={() => setUnmarkAsTemplateModal(null)} />
         </Suspense>
       )}
 
