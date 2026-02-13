@@ -1,4 +1,4 @@
-import { Eta } from "eta";
+import { Eta } from "eta/core";
 import { get, isArray, startsWith } from "lodash-es";
 
 const BINDING_REGEX = /\{\{(.*?)\}\}/g;
@@ -52,7 +52,12 @@ export const toEtaTemplate = (template: string, index: number, repeaterKey: stri
   });
 };
 
-export const renderBinding = (template: string, data: Record<string, any>, index: number, repeaterKey: string): string => {
+export const renderBinding = (
+  template: string,
+  data: Record<string, any>,
+  index: number,
+  repeaterKey: string,
+): string => {
   try {
     return eta.renderString(toEtaTemplate(template, index, repeaterKey), data);
   } catch {
