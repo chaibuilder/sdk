@@ -2,7 +2,7 @@ import { ACTIONS } from "@/pages/constants/ACTIONS";
 import type { ChaiBlock } from "@/types/common";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useMemo, useRef } from "react";
-import { useActivePage, usePrimaryPage } from "./pages/use-current-page";
+import { useCurrentActivePage, usePrimaryPage } from "./pages/use-current-page";
 import { useApiUrl } from "./project/use-builder-prop";
 import { useWebsiteSetting } from "./project/use-website-settings";
 import { useFetch } from "./utils/use-fetch";
@@ -21,7 +21,7 @@ export const useChaiCollections = () => {
 
 export const useGetBlockAysncProps = () => {
   const { data: currentPage } = usePrimaryPage();
-  const { data: activePage } = useActivePage();
+  const { data: activePage } = useCurrentActivePage();
   const { data: websiteConfig } = useWebsiteSetting();
   const apiUrl = useApiUrl();
   const fetchAPI = useFetch();

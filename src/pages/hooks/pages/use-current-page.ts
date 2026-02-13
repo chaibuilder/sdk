@@ -22,7 +22,7 @@ export const usePrimaryPage = () => {
   return { data: currentPage as any, isFetching };
 };
 
-export const useActivePage = () => {
+export const useCurrentActivePage = () => {
   const [searchParams] = useSearchParams();
   const lang = searchParams.get("lang") ?? "";
   const page = searchParams.get("page");
@@ -45,7 +45,7 @@ export const usePageMetaData = () => {
  * @returns full url of the current page
  */
 export const useGetPageFullSlug = () => {
-  const { data: activePage } = useActivePage();
+  const { data: activePage } = useCurrentActivePage();
   const dynamicPageSlug = useDynamicPageSlug();
   const getLiveUrl = usePagesProp("getLiveUrl", noop);
 

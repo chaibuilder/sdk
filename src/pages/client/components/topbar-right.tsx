@@ -15,7 +15,7 @@ import PermissionChecker from "@/pages/client/components/permission-checker";
 import PublishPages from "@/pages/client/components/publish-pages/publish-pages";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
 import { usePublishPages } from "@/pages/hooks/pages/mutations";
-import { useActivePage, usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
+import { useCurrentActivePage, usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
 import { useGetUnpublishedPartialBlocks } from "@/pages/hooks/pages/use-get-unpublished-partial-blocks";
 import { useIsLanguagePageCreated } from "@/pages/hooks/pages/use-is-languagep-page-created";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
@@ -180,7 +180,7 @@ const SaveButton = () => {
 const PublishButton = () => {
   const { t } = useTranslation();
   const { selectedLang } = useLanguages();
-  const { data: activePage } = useActivePage();
+  const { data: activePage } = useCurrentActivePage();
   const getUnpublishedPartialBlocks = useGetUnpublishedPartialBlocks();
   const [showModal, setShowModal] = useState(false);
   const [isHovered, setIsHovered] = useState(false);

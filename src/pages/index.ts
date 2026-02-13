@@ -1,6 +1,6 @@
 import "@/index.css";
 import { ChaiWebsiteBuilder } from "@/pages/chaibuilder-pages";
-import { useActivePage } from "@/pages/hooks/pages/use-current-page";
+import { useCurrentActivePage } from "@/pages/hooks/pages/use-current-page";
 import { NestedPathSelector } from "./client/components/nested-path-selector/nested-path-selector";
 import { usePageAllData } from "./hooks/pages/use-page-all-data";
 import { useBuilderPageData } from "./hooks/pages/use-page-draft-blocks";
@@ -31,7 +31,7 @@ export { useCheckUserAccess as useUserPermissions } from "@/pages/hooks/user/use
 export { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
 export { useBuilderFetch, useFetch } from "@/pages/hooks/utils/use-fetch";
 export {
-  useActivePage,
+  useCurrentActivePage as useActivePage,
   useBuilderPageData,
   useClearAll,
   useFallbackLang,

@@ -1,5 +1,5 @@
 import { ACTIONS } from "@/pages/constants/ACTIONS";
-import { useActivePage, usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
+import { useCurrentActivePage, usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
 import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
 import { useFallbackLang } from "@/pages/hooks/use-fallback-lang";
 import { useFetch } from "@/pages/hooks/utils/use-fetch";
@@ -19,7 +19,7 @@ export const usePageAllData = () => {
   const fetchAPI = useFetch();
   const queryClient = useQueryClient();
   const { data: currentPage } = usePrimaryPage();
-  const { data: activePage } = useActivePage();
+  const { data: activePage } = useCurrentActivePage();
   const fallbackLang = useFallbackLang();
   const dynamicPageSlug = useDynamicPageSlug();
 
