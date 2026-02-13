@@ -6,7 +6,7 @@ const SIMPLE_PATH_REGEX = /^[\w$][\w$.]*$/;
 
 const eta = new Eta({
   tags: ["{{", "}}"],
-  autoEscape: false,
+  autoEscape: true,
   autoTrim: false,
   useWith: true,
   parse: { interpolate: "", exec: "~", raw: "~" },
