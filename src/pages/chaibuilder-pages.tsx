@@ -101,7 +101,7 @@ const ChaiBuilderInner = ({ websiteData, ...props }: ChaiBuilderInnerProps) => {
   const { libraries: uiLibraries, collections, pageTypes, websiteSettings: websiteConfig, siteWideUsage } = websiteData;
 
   const fallbackLang = useMemo(() => websiteConfig?.fallbackLang || "en", [websiteConfig]);
-  const { data: accessData, isFetching: isFetchingWebsiteData } = useCheckUserAccess();
+  const { data: accessData, isFetching: isFetchingAccessData } = useCheckUserAccess();
   const roleAndPermissions = accessData || DEFAULT_ROLES_AND_PERMISSIONS;
   // * PAGE DATA
   const [searchParams] = useSearchParams();
@@ -178,8 +178,8 @@ const ChaiBuilderInner = ({ websiteData, ...props }: ChaiBuilderInnerProps) => {
   return (
     <>
       {isFetchingPageData && (
-        <BlurContainer className={isFetchingWebsiteData ? "fixed inset-0 bg-white" : "bg-white/75"}>
-          <Loader className={`animate-spin text-primary ${isFetchingWebsiteData ? "h-6 w-6" : "h-5 w-5"}`} />
+        <BlurContainer className={isFetchingAccessData ? "fixed inset-0 bg-white" : "bg-white/75"}>
+          <Loader className={`animate-spin text-primary ${isFetchingAccessData ? "h-6 w-6" : "h-5 w-5"}`} />
         </BlurContainer>
       )}
       {previewUrl && (

@@ -7,7 +7,6 @@ import { ChaiBaseAction } from "./base-action";
 
 type GetWebsitePagesActionData = {
   lang?: string;
-  allLangs?: boolean;
 };
 
 type GetWebsitePagesActionResponse = Array<{
@@ -35,7 +34,6 @@ export class GetWebsitePagesAction extends ChaiBaseAction<GetWebsitePagesActionD
   protected getValidationSchema() {
     return z.object({
       lang: z.string().optional(),
-      allLangs: z.boolean().optional(),
     });
   }
 
@@ -47,7 +45,6 @@ export class GetWebsitePagesAction extends ChaiBaseAction<GetWebsitePagesActionD
     const { appId } = this.context;
     const requestData = data ?? { lang: "" };
     const lang = requestData.lang ?? "";
-    const allLangs = requestData.allLangs ?? false;
 
     // First, get all pages for the app and language
     const { data: pages, error } = await safeQuery(() =>
@@ -72,11 +69,7 @@ export class GetWebsitePagesAction extends ChaiBaseAction<GetWebsitePagesActionD
           partialBlocks: schema.appPages.partialBlocks,
         })
         .from(schema.appPages)
-        .where(
-          allLangs
-            ? eq(schema.appPages.app, appId)
-            : and(eq(schema.appPages.app, appId), eq(schema.appPages.lang, lang)),
-        ),
+        .where(and(eq(schema.appPages.app, appId), eq(schema.appPages.lang, lang))),
     );
 
     if (error) {

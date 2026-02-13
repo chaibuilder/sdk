@@ -41,21 +41,17 @@ export class GetWebsiteDataAction extends ChaiBaseAction<GetWebsiteDataActionDat
     }
 
     // Execute remaining actions in parallel
-    // NOTE: websitePagesAction fetches ALL langs (allLangs: true) so we can
-    //       derive changes and siteWideUsage from the same data — no extra DB calls.
-    const [websiteSettings, allPages, pageTypes, libraries, collections] = await Promise.all([
+    // NOTE: websitePagesAction fetches only primary pages (lang = "")
+    const [websiteSettings, websitePages, pageTypes, libraries, collections] = await Promise.all([
       websiteSettingsAction.execute({ draft: true }),
-      websitePagesAction.execute({ allLangs: true }),
+      websitePagesAction.execute({ lang: "" }),
       pageTypesAction.execute(),
       librariesAction.execute(),
       collectionsAction.execute(),
     ]);
 
-    // Derive websitePages: only default language pages (lang = "")
-    const websitePages = allPages.filter((page) => page.lang === "");
-
-    // Derive changes from allPages
-    const changes = this.deriveChanges(allPages, websiteSettings);
+    // Derive changes from primary pages
+    const changes = this.deriveChanges(websitePages, websiteSettings);
 
     // Derive siteWideUsage from default language pages
     const siteWideUsage = this.deriveSiteWideUsage(websitePages);
@@ -72,17 +68,17 @@ export class GetWebsiteDataAction extends ChaiBaseAction<GetWebsiteDataActionDat
   }
 
   /**
-   * Derive changes from all pages (all languages).
+   * Derive changes from primary pages (lang = "").
    * Replicates the logic from GetChangesAction:
    *  1. Pages with changes (changes column is not null)
    *  2. Offline pages (online=false, no currentEditor) → changes: ["Take Online"]
    *  3. Theme / Design Token changes from the apps table (via websiteSettings)
    */
-  private deriveChanges(allPages: any[], websiteSettings: any): any[] {
+  private deriveChanges(primaryPages: any[], websiteSettings: any): any[] {
     // 1. Pages with non-null changes
-    const changedPages = allPages
-      .filter((p) => p.changes !== null && p.changes !== undefined)
-      .map((p) => ({
+    const changedPages = primaryPages
+      .filter((p: any) => p.changes !== null && p.changes !== undefined)
+      .map((p: any) => ({
         id: p.id,
         slug: p.slug,
         name: p.name,
@@ -95,9 +91,9 @@ export class GetWebsiteDataAction extends ChaiBaseAction<GetWebsiteDataActionDat
       }));
 
     // 2. Offline pages (no currentEditor AND online === false)
-    const offlinePages = allPages
-      .filter((p) => !p.currentEditor && p.online === false)
-      .map((p) => ({
+    const offlinePages = primaryPages
+      .filter((p) => p.currentEditor === null && p.online === false)
+      .map((p: any) => ({
         id: p.id,
         slug: p.slug,
         name: p.name,
