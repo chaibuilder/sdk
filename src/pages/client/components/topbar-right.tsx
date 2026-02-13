@@ -31,7 +31,6 @@ import {
   CheckCircle,
   ChevronDown,
   Eye,
-
   Loader,
   Palette,
   Pencil,
@@ -269,8 +268,6 @@ const PublishButton = () => {
     await savePageAsync();
   };
 
-
-
   return (
     <>
       <div className="flex">
@@ -323,7 +320,6 @@ const PublishButton = () => {
                 {t("View Unpublished changes")}
               </DropdownMenuItem>
             )}
-
             {!isPublished && (
               <DropdownMenuItem
                 disabled={isPending}
