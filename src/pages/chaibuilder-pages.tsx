@@ -68,12 +68,16 @@ const BuilderWithAccessCheck = (props: ChaiWebsiteBuilderProps) => {
     );
   }
 
-  return <DefaultChaiBuilder {...props} roleAndPermissions={accessData} />;
+  const roleAndPermissions = accessData
+    ? { role: accessData.role, permissions: accessData.permissions }
+    : undefined;
+
+  return <DefaultChaiBuilder {...props} roleAndPermissions={roleAndPermissions} />;
 };
 
 const DefaultChaiBuilder = (
   props: ChaiWebsiteBuilderProps & {
-    roleAndPermissions?: { access: boolean; role: string; permissions: string[] | null };
+    roleAndPermissions?: { role: string; permissions: string[] | null };
   },
 ) => {
   // * WEBSITE DATA
