@@ -26,12 +26,12 @@ import { useRevisionsEnabled } from "@/pages/hooks/use-revisions-enabled";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { throwConfetti } from "@/pages/utils/confetti";
 import Tooltip from "@/pages/utils/tooltip";
-import { compact, find, isEmpty, map, upperCase } from "lodash-es";
+import { compact, find, isEmpty, upperCase } from "lodash-es";
 import {
   CheckCircle,
   ChevronDown,
   Eye,
-  LanguagesIcon,
+
   Loader,
   Palette,
   Pencil,
@@ -182,7 +182,6 @@ const PublishButton = () => {
   const { t } = useTranslation();
   const { selectedLang } = useLanguages();
   const { data: activePage } = useActivePage();
-  const { data: languagePages } = useLanguagePages();
   const getUnpublishedPartialBlocks = useGetUnpublishedPartialBlocks();
   const [showModal, setShowModal] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -199,10 +198,9 @@ const PublishButton = () => {
   const { mutate: publishPage, isPending } = usePublishPages();
   const { needTranslations } = useSavePage();
   const needTranslation = needTranslations();
-  const { buttonText, buttonClassName, isPublished, hasUnpublishedChanges, hasLanguagePages } = useMemo(() => {
+  const { buttonText, buttonClassName, isPublished, hasUnpublishedChanges } = useMemo(() => {
     const isPublished = currentPage && currentPage?.online;
     const hasUnpublishedChanges = !isEmpty(currentPage?.changes);
-    const hasLanguagePages = (languagePages ?? []).some((page) => page.primaryPage !== null);
     let buttonClassName = isPublished ? "hover:bg-green-600 bg-green-500" : "";
     let buttonText = isPublished ? t("Published") : t("Publish");
 
@@ -215,10 +213,9 @@ const PublishButton = () => {
       buttonClassName,
       isPublished,
       hasUnpublishedChanges,
-      hasLanguagePages,
       buttonText,
     };
-  }, [currentPage, t, languagePages]);
+  }, [currentPage, t]);
 
   const handlePublishCurrentPage = async () => {
     if (needTranslation) {
@@ -272,9 +269,7 @@ const PublishButton = () => {
     await savePageAsync();
   };
 
-  const allPages = useMemo(() => {
-    return map(languagePages ?? [], "id");
-  }, [languagePages]);
+
 
   return (
     <>
@@ -328,15 +323,7 @@ const PublishButton = () => {
                 {t("View Unpublished changes")}
               </DropdownMenuItem>
             )}
-            {hasLanguagePages && (
-              <DropdownMenuItem
-                disabled={isPending}
-                className="cursor-pointer text-xs"
-                onClick={() => checkAndPublish(allPages)}>
-                <LanguagesIcon className="mr-0.5 h-3 w-3" />
-                {t("Publish")} with translation pages
-              </DropdownMenuItem>
-            )}
+
             {!isPublished && (
               <DropdownMenuItem
                 disabled={isPending}
