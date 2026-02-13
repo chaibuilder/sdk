@@ -1,9 +1,9 @@
+import { Button } from "@/components/ui/button";
 import { ChaiBuilderEditor } from "@/core/main";
 import { Topbar } from "@/pages/extensions/topbar";
 import { useAskAi } from "@/pages/hooks/ai/use-ask-ai";
 import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
 import { useExtractPageBlocks } from "@/pages/hooks/pages/use-extract-page-blocks";
-import { useBuilderPageData, usePageDraftBlocks } from "@/pages/hooks/pages/use-page-draft-blocks";
 import { usePageAllData } from "@/pages/hooks/pages/use-page-all-data";
 import { useUpdateWebsiteFields } from "@/pages/hooks/project/mutations";
 import { useSearchPageTypePages } from "@/pages/hooks/project/use-page-types";
@@ -32,7 +32,6 @@ import { registerPagesFeatureFlags } from "./feature-flags";
 import { useGetBlockAysncProps } from "./hooks/use-chai-collections";
 import { useGotoPage } from "./hooks/use-goto-page";
 import { useWebsiteData } from "./hooks/use-website-data";
-import { Button } from "@/components/ui/button";
 
 const PageLock = lazy(() => import("./client/components/page-lock/page-lock"));
 const NoLanguagePageDialog = lazy(() => import("@/pages/client/components/no-language-page/no-language-page-dialog"));
@@ -100,19 +99,15 @@ type ChaiBuilderInnerProps = ChaiWebsiteBuilderProps & {
 
 const ChaiBuilderInner = ({ websiteData, ...props }: ChaiBuilderInnerProps) => {
   const { libraries: uiLibraries, collections, pageTypes, websiteSettings: websiteConfig, siteWideUsage } = websiteData;
-
   const fallbackLang = useMemo(() => websiteConfig?.fallbackLang || "en", [websiteConfig]);
   const { data: accessData, isFetching: isFetchingAccessData } = useCheckUserAccess();
   const roleAndPermissions = accessData || DEFAULT_ROLES_AND_PERMISSIONS;
   // * PAGE DATA
-  // Trigger consolidated page data fetch that populates individual caches
-  usePageAllData();
   const [searchParams] = useSearchParams();
   const page = searchParams.get("page");
   const { data: currentPage } = useChaiCurrentPage();
-  const { data: draftBlocks, isFetching: isDraftBlocksFetching } = usePageDraftBlocks();
-  const { blocks } = useExtractPageBlocks(draftBlocks);
-  const { data: builderPageData, isFetching: isBuilderPageDataFetching } = useBuilderPageData();
+  const { data: pageData, isFetching: isFetchingPageAllData } = usePageAllData();
+  const { blocks } = useExtractPageBlocks(pageData?.draftPage?.blocks ?? []);
   const { pageStatus } = usePageLockStatus();
 
   // * ACTIONS
@@ -134,7 +129,7 @@ const ChaiBuilderInner = ({ websiteData, ...props }: ChaiBuilderInnerProps) => {
   const websiteDesignTokens = useMemo(() => get(websiteConfig, "designTokens", {}) || {}, [websiteConfig]);
   const isEditing = pageStatus === PAGE_STATUS.EDITING;
   const isCheckingPageLock = pageStatus === PAGE_STATUS.CHECKING;
-  const isFetchingPageData = isDraftBlocksFetching || isCheckingPageLock || isBuilderPageDataFetching;
+  const isFetchingPageData = isFetchingPageAllData || isCheckingPageLock;
 
   useEffect(() => {
     blocksDataRef.current = blocks;
@@ -163,8 +158,9 @@ const ChaiBuilderInner = ({ websiteData, ...props }: ChaiBuilderInnerProps) => {
       editorProps.permissions = get(roleAndPermissions, "permissions", null);
       editorProps.role = get(roleAndPermissions, "role", "user");
     }
+    editorProps.pageExternalData = pageData?.builderPageData ?? {};
     return editorProps;
-  }, [roleAndPermissions]);
+  }, [roleAndPermissions, pageData]);
 
   const isLibrarySite = useMemo(() => {
     return uiLibraries?.some((library: any) => library.isSiteLibrary);
@@ -180,7 +176,7 @@ const ChaiBuilderInner = ({ websiteData, ...props }: ChaiBuilderInnerProps) => {
 
   return (
     <>
-      {isFetchingPageData && (
+      {isFetchingPageAllData && (
         <BlurContainer className={isFetchingAccessData ? "fixed inset-0 bg-white" : "bg-white/75"}>
           <Loader className={`animate-spin text-primary ${isFetchingAccessData ? "h-6 w-6" : "h-5 w-5"}`} />
         </BlurContainer>
@@ -201,10 +197,9 @@ const ChaiBuilderInner = ({ websiteData, ...props }: ChaiBuilderInnerProps) => {
         gotoPage={gotoPage}
         collections={collections ?? []}
         getBlockAsyncProps={getBlockAsyncProps}
-        pageExternalData={builderPageData}
         themePresets={props.themePresets ?? []}
         pageId={currentPage?.id}
-        loading={isDraftBlocksFetching}
+        loading={isFetchingPageData}
         fallbackLang={fallbackLang}
         languages={websiteLanguages}
         brandingOptions={currentTheme}
@@ -217,7 +212,7 @@ const ChaiBuilderInner = ({ websiteData, ...props }: ChaiBuilderInnerProps) => {
         onError={props.onError || console.error}
         getPartialBlockBlocks={getPartialBlockBlocks}
         getPartialBlocks={getPartialBlocks}
-        blocks={isDraftBlocksFetching ? [] : blocks}
+        blocks={isFetchingPageAllData ? [] : blocks}
         theme={cloneDeep(currentTheme)}
         pageTypes={pageTypes}
         searchPageTypeItems={searchPageTypeItems}
@@ -239,7 +234,7 @@ const ChaiBuilderInner = ({ websiteData, ...props }: ChaiBuilderInnerProps) => {
           return true;
         }}
         {...forwardedProps}>
-        <PageLock isFetchingPageData={isFetchingPageData} />
+        <PageLock isFetchingPageData={isFetchingPageAllData} />
       </ChaiBuilderEditor>
       <div>
         <NoLanguagePageDialog />

@@ -1,10 +1,11 @@
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
+import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { atom, useAtom } from "jotai";
 import { find, noop } from "lodash-es";
 import { useMemo } from "react";
-import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
 import { useDynamicPageSlug } from "./use-dynamic-page-selector";
+import { useWebsitePages } from "./use-project-pages";
 
 const pageEditInfoAtom = atom<{
   lastSaved?: string;
@@ -17,9 +18,8 @@ export const usePageEditInfo = () => {
 export const useChaiCurrentPage = () => {
   const [searchParams] = useSearchParams();
   const page = searchParams.get("page");
-  const { data: pages, isFetching } = useLanguagePages();
+  const { data: pages, isFetching } = useWebsitePages();
   const currentPage = useMemo(() => ({ ...(find(pages, { id: page }) || {}) }), [pages, page]);
-
   return { data: currentPage as any, isFetching };
 };
 
