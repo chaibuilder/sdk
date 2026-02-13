@@ -1,4 +1,4 @@
-import { useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
+import { useWebsitePrimaryPages } from "@/pages/hooks/pages/use-project-pages";
 import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
 import { ChaiBlock } from "@/types/common";
 import { filter, has, isEmpty, startCase } from "lodash-es";
@@ -9,7 +9,7 @@ export const usePartialBlocksFn = (): {
   getPartialBlocks: () => Promise<Record<string, { name: string; description?: string; type: string }>>;
   getPartialBlockBlocks: (partialBlockKey: string) => Promise<ChaiBlock[]>;
 } => {
-  const { data: projectPages } = useWebsitePages();
+  const { data: projectPages } = useWebsitePrimaryPages();
   const apiUrl = useApiUrl();
   const fetchAPI = useFetch();
   return {

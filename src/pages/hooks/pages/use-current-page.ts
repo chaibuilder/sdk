@@ -1,10 +1,10 @@
 import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { atom, useAtom } from "jotai";
-import { find, noop } from "lodash-es";
+import { find, noop, values } from "lodash-es";
 import { useMemo } from "react";
 import { useDynamicPageSlug } from "./use-dynamic-page-selector";
-import { useWebsitePages } from "./use-project-pages";
+import { useWebsiteLanguagePages, useWebsitePrimaryPages } from "./use-project-pages";
 
 const pageEditInfoAtom = atom<{
   lastSaved?: string;
@@ -17,7 +17,7 @@ export const usePageEditInfo = () => {
 export const usePrimaryPage = () => {
   const [searchParams] = useSearchParams();
   const page = searchParams.get("page");
-  const { data: pages, isFetching } = useWebsitePages();
+  const { data: pages, isFetching } = useWebsitePrimaryPages();
   const currentPage = useMemo(() => ({ ...(find(pages, { id: page }) || {}) }), [pages, page]);
   return { data: currentPage as any, isFetching };
 };
@@ -26,8 +26,12 @@ export const useActivePage = () => {
   const [searchParams] = useSearchParams();
   const lang = searchParams.get("lang") ?? "";
   const page = searchParams.get("page");
-  const { data: languagePages, isFetching } = useWebsitePages();
-  const currentPage = useMemo(() => find(languagePages, { lang, id: page }) || {}, [languagePages, lang, page]);
+  const { data: languagePages, isFetching } = useWebsiteLanguagePages(lang);
+  const { data: primaryPages } = useWebsitePrimaryPages();
+  const currentPage = useMemo(
+    () => find([...values(languagePages), ...primaryPages], { lang, id: page }) || {},
+    [languagePages, lang, page],
+  );
   return { data: currentPage as any, isFetching };
 };
 
