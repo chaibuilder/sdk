@@ -199,27 +199,26 @@ const PublishButton = () => {
   const { mutate: publishPage, isPending } = usePublishPages();
   const { needTranslations } = useSavePage();
   const needTranslation = needTranslations();
-  const { buttonText, buttonClassName, isPublished, hasUnpublishedChanges, hasUnpublishedTranslationsPages } =
-    useMemo(() => {
-      const isPublished = currentPage && currentPage?.online;
-      const hasUnpublishedChanges = !isEmpty(currentPage?.changes);
-      const hasUnpublishedTranslationsPages = (languagePages ?? []).some((page) => page.primaryPage !== null);
-      let buttonClassName = isPublished ? "hover:bg-green-600 bg-green-500" : "";
-      let buttonText = isPublished ? t("Published") : t("Publish");
+  const { buttonText, buttonClassName, isPublished, hasUnpublishedChanges, hasLanguagePages } = useMemo(() => {
+    const isPublished = currentPage && currentPage?.online;
+    const hasUnpublishedChanges = !isEmpty(currentPage?.changes);
+    const hasLanguagePages = (languagePages ?? []).some((page) => page.primaryPage !== null);
+    let buttonClassName = isPublished ? "hover:bg-green-600 bg-green-500" : "";
+    let buttonText = isPublished ? t("Published") : t("Publish");
 
-      if (isPublished && hasUnpublishedChanges) {
-        buttonClassName = "hover:bg-blue-600 bg-blue-500";
-        buttonText = t("Publish");
-      }
+    if (isPublished && hasUnpublishedChanges) {
+      buttonClassName = "hover:bg-blue-600 bg-blue-500";
+      buttonText = t("Publish");
+    }
 
-      return {
-        buttonClassName,
-        isPublished,
-        hasUnpublishedChanges,
-        hasUnpublishedTranslationsPages,
-        buttonText,
-      };
-    }, [currentPage, t, languagePages]);
+    return {
+      buttonClassName,
+      isPublished,
+      hasUnpublishedChanges,
+      hasLanguagePages,
+      buttonText,
+    };
+  }, [currentPage, t, languagePages]);
 
   const handlePublishCurrentPage = async () => {
     if (needTranslation) {
@@ -329,7 +328,7 @@ const PublishButton = () => {
                 {t("View Unpublished changes")}
               </DropdownMenuItem>
             )}
-            {hasUnpublishedTranslationsPages && (
+            {hasLanguagePages && (
               <DropdownMenuItem
                 disabled={isPending}
                 className="cursor-pointer text-xs"
