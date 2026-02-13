@@ -42,6 +42,7 @@ import { UpdatePageMetadataAction } from "./update-page-metadata";
 import { UpdateWebsiteFieldsAction } from "./update-website-fields";
 import { UpsertLibraryItemAction } from "./upsert-library-item";
 import { GetWebsiteDataAction } from "./get-website-data";
+import { GetPageAllDataAction } from "./get-page-all-data";
 
 /**
  * Registry of all available actions
@@ -103,6 +104,7 @@ class ChaiActionsRegistry {
     this.register("SEARCH_PAGE_TYPE_ITEMS", new SearchPageTypeItemsAction());
     this.register("GET_DYNAMIC_PAGES", new GetDynamicPagesAction());
     this.register("GET_WEBSITE_DATA", new GetWebsiteDataAction());
+    this.register("GET_PAGE_ALL_DATA", new GetPageAllDataAction());
     // Add more actions here as they are created
   }
 

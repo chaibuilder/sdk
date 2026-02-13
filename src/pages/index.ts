@@ -3,6 +3,7 @@ import { ChaiWebsiteBuilder } from "@/pages/chaibuilder-pages";
 import { useActivePage } from "@/pages/hooks/pages/use-current-page";
 import { NestedPathSelector } from "./client/components/nested-path-selector/nested-path-selector";
 import { useBuilderPageData } from "./hooks/pages/use-page-draft-blocks";
+import { usePageAllData } from "./hooks/pages/use-page-all-data";
 import { usePageTypes } from "./hooks/project/use-page-types";
 import { useFallbackLang } from "./hooks/use-fallback-lang";
 import { useGotoPage } from "./hooks/use-goto-page";
@@ -32,6 +33,7 @@ export { useBuilderFetch, useFetch } from "@/pages/hooks/utils/use-fetch";
 export {
   useActivePage,
   useBuilderPageData,
+  usePageAllData,
   useClearAll,
   useFallbackLang,
   useGotoPage,
