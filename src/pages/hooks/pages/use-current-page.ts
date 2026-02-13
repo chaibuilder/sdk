@@ -14,7 +14,7 @@ export const usePageEditInfo = () => {
   return useAtom(pageEditInfoAtom);
 };
 
-export const useChaiCurrentPage = () => {
+export const usePrimaryPage = () => {
   const [searchParams] = useSearchParams();
   const page = searchParams.get("page");
   const { data: pages, isFetching } = useWebsitePages();
@@ -25,8 +25,9 @@ export const useChaiCurrentPage = () => {
 export const useActivePage = () => {
   const [searchParams] = useSearchParams();
   const lang = searchParams.get("lang") ?? "";
+  const page = searchParams.get("page");
   const { data: languagePages, isFetching } = useWebsitePages();
-  const currentPage = useMemo(() => find(languagePages, { lang }) || {}, [languagePages, lang]);
+  const currentPage = useMemo(() => find(languagePages, { lang, id: page }) || {}, [languagePages, lang, page]);
   return { data: currentPage as any, isFetching };
 };
 

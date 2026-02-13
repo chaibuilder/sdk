@@ -1,7 +1,7 @@
 import { useSavePage } from "@/hooks/use-save-page";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { ERRORS } from "@/pages/constants/ERRORS";
-import { useActivePage, useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
+import { useActivePage, usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
 import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useRevisionsEnabled } from "@/pages/hooks/use-revisions-enabled";
@@ -182,7 +182,7 @@ export const usePublishPages = () => {
   const apiUrl = useApiUrl();
   const fetchAPI = useFetch();
   const queryClient = useQueryClient();
-  const { data: currentPage } = useChaiCurrentPage();
+  const { data: currentPage } = usePrimaryPage();
   const { savePageAsync } = useSavePage();
   const revisionsEnabled = useRevisionsEnabled();
 

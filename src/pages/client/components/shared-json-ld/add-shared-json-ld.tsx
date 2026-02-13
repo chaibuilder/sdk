@@ -3,15 +3,15 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { SmartJsonInput } from "@/pages/client/components/smart-json-input";
+import { ACTIONS } from "@/pages/constants/ACTIONS";
+import { usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
+import { useAddGlobalSchema, useTogglePageGlobalSchema } from "@/pages/hooks/project/mutations";
+import { parseJSONWithPlaceholders } from "@/pages/utils/json-utils";
 import { useQueryClient } from "@tanstack/react-query";
 import { Info, Loader } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ACTIONS } from "@/pages/constants/ACTIONS";
-import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
-import { useAddGlobalSchema, useTogglePageGlobalSchema } from "@/pages/hooks/project/mutations";
-import { parseJSONWithPlaceholders } from "@/pages/utils/json-utils";
-import { SmartJsonInput } from "@/pages/client/components/smart-json-input";
 
 export const AddSharedJsonLD = ({
   show,
@@ -45,7 +45,7 @@ const AddSharedJsonLDDialogContent = ({
     enabledByDefaultForNewPages: false,
   });
   const [addToAllExistingPages, setAddToAllExistingPages] = useState(false);
-  const { data: currentPage } = useChaiCurrentPage();
+  const { data: currentPage } = usePrimaryPage();
   const { mutateAsync: addGlobalSchema, isPending } = useAddGlobalSchema();
   const { mutateAsync: togglePageGlobalSchema } = useTogglePageGlobalSchema();
   const queryClient = useQueryClient();

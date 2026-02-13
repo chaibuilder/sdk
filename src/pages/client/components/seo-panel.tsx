@@ -15,7 +15,7 @@ import { useLanguages } from "@/hooks/use-languages";
 import { usePermissions } from "@/hooks/use-permissions";
 import { useSidebarActivePanel } from "@/hooks/use-sidebar-active-panel";
 import { ImagePicker } from "@/pages/digital-asset-manager";
-import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
+import { usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
 import { usePagesProps } from "@/pages/hooks/utils/use-pages-props";
 import { get, isEmpty, isEqual } from "lodash-es";
 import { useEffect, useRef, useState } from "react";
@@ -82,7 +82,7 @@ const insertFieldAtCursor = (inputElement: HTMLInputElement | HTMLTextAreaElemen
 const SeoPanel = () => {
   const { t } = useTranslation();
   const [, setActivePanel] = useSidebarActivePanel();
-  const { data: currentPage } = useChaiCurrentPage();
+  const { data: currentPage } = usePrimaryPage();
   const { data: pageData } = useBuilderPageData();
   const { data: languagePage, isFetching } = useCurrentLanguagePage();
   const seoSetting = languagePage?.seo;

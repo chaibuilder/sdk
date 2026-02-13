@@ -15,7 +15,7 @@ import PermissionChecker from "@/pages/client/components/permission-checker";
 import PublishPages from "@/pages/client/components/publish-pages/publish-pages";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
 import { usePublishPages } from "@/pages/hooks/pages/mutations";
-import { useActivePage, useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
+import { useActivePage, usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
 import { useGetUnpublishedPartialBlocks } from "@/pages/hooks/pages/use-get-unpublished-partial-blocks";
 import { useIsLanguagePageCreated } from "@/pages/hooks/pages/use-is-languagep-page-created";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
@@ -59,7 +59,7 @@ const PreviewButton = () => {
   const getPreviewUrl = usePagesProp("getPreviewUrl", async (_slug: string) => _slug);
 
   const [previewUrl, setPreviewUrl] = useState("");
-  const { data: currentPage } = useChaiCurrentPage();
+  const { data: currentPage } = usePrimaryPage();
   const { data: languagePages } = useLanguagePages();
   const { data: pageTypes } = usePageTypes();
   const slug = useMemo(
@@ -193,7 +193,7 @@ const PublishButton = () => {
   const [unpublishedPartialBlockIds, setUnpublishedPartialBlockIds] = useState<string[]>([]);
   const [unpublishedPartialBlocksInfo, setUnpublishedPartialBlocksInfo] = useState<any[]>([]);
 
-  const { data: currentPage } = useChaiCurrentPage();
+  const { data: currentPage } = usePrimaryPage();
   const { mutate: publishPage, isPending } = usePublishPages();
   const { needTranslations } = useSavePage();
   const needTranslation = needTranslations();

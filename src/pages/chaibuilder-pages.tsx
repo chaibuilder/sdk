@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ChaiBuilderEditor } from "@/core/main";
 import { Topbar } from "@/pages/extensions/topbar";
 import { useAskAi } from "@/pages/hooks/ai/use-ask-ai";
-import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
+import { usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
 import { useExtractPageBlocks } from "@/pages/hooks/pages/use-extract-page-blocks";
 import { usePageAllData } from "@/pages/hooks/pages/use-page-all-data";
 import { useUpdateWebsiteFields } from "@/pages/hooks/project/mutations";
@@ -104,7 +104,7 @@ const ChaiBuilderInner = ({ ...props }: ChaiBuilderInnerProps) => {
   // * PAGE DATA
   const [searchParams] = useSearchParams();
   const page = searchParams.get("page");
-  const { data: currentPage } = useChaiCurrentPage();
+  const { data: currentPage } = usePrimaryPage();
   const { data: pageData, isFetching: isFetchingPageAllData } = usePageAllData();
   const { blocks } = useExtractPageBlocks(pageData?.draftPage?.blocks ?? []);
   const { pageStatus } = usePageLockStatus();

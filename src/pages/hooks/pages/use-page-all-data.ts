@@ -1,8 +1,5 @@
 import { ACTIONS } from "@/pages/constants/ACTIONS";
-import {
-  useActivePage,
-  useChaiCurrentPage,
-} from "@/pages/hooks/pages/use-current-page";
+import { useActivePage, usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
 import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
 import { useFallbackLang } from "@/pages/hooks/use-fallback-lang";
 import { useFetch } from "@/pages/hooks/utils/use-fetch";
@@ -21,7 +18,7 @@ export const usePageAllData = () => {
   const apiUrl = useApiUrl();
   const fetchAPI = useFetch();
   const queryClient = useQueryClient();
-  const { data: currentPage } = useChaiCurrentPage();
+  const { data: currentPage } = usePrimaryPage();
   const { data: activePage } = useActivePage();
   const fallbackLang = useFallbackLang();
   const dynamicPageSlug = useDynamicPageSlug();
@@ -56,10 +53,7 @@ export const usePageAllData = () => {
       // Populate individual query caches for backward compatibility
       // This allows usePageDraftBlocks() and useBuilderPageData() to work without changes
       queryClient.setQueryData([ACTIONS.GET_DRAFT_PAGE, page], data.draftPage);
-      queryClient.setQueryData(
-        [ACTIONS.GET_BUILDER_PAGE_DATA, activePage?.id, dynamicPageSlug],
-        data.builderPageData
-      );
+      queryClient.setQueryData([ACTIONS.GET_BUILDER_PAGE_DATA, activePage?.id, dynamicPageSlug], data.builderPageData);
       queryClient.setQueryData([ACTIONS.GET_LANGUAGE_PAGES, page], data.languagePages);
 
       return data;

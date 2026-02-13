@@ -1,12 +1,7 @@
 import { useIsPageLoaded } from "@/hooks/use-is-page-loaded";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { useAiContext } from "@/pages/hooks/ai/use-ai-context";
-import {
-  useActivePage,
-  useChaiCurrentPage,
-  usePageEditInfo,
-  usePageMetaData,
-} from "@/pages/hooks/pages/use-current-page";
+import { useActivePage, usePageEditInfo, usePageMetaData, usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
 import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
 import { useFallbackLang } from "@/pages/hooks/use-fallback-lang";
 import { useFetch } from "@/pages/hooks/utils/use-fetch";
@@ -24,7 +19,7 @@ export const usePageDraftBlocks = () => {
   const [, setPageMetaData] = usePageMetaData();
   const [, setPageLoaded] = useIsPageLoaded();
   const fetchAPI = useFetch();
-  
+
   return useQuery({
     queryKey: [ACTIONS.GET_DRAFT_PAGE, page],
     staleTime: Infinity,
@@ -49,7 +44,7 @@ export const usePageDraftBlocks = () => {
 };
 
 export const useBuilderPageData = () => {
-  const { data: currentPage } = useChaiCurrentPage();
+  const { data: currentPage } = usePrimaryPage();
   const { data: activePage } = useActivePage();
   const apiUrl = useApiUrl();
   const fetchAPI = useFetch();
