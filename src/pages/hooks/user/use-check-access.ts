@@ -1,8 +1,8 @@
-import { fetchAPI } from "@/pages/utils/fetch-api";
 import { useQuery } from "@tanstack/react-query";
 import { noop } from "lodash-es";
 import { toast } from "sonner";
-import { useApiUrl, usePagesProp } from "../project/use-builder-prop";
+import { usePagesProp } from "../project/use-builder-prop";
+import { useFetch } from "../utils/use-fetch";
 
 type CheckUserAccessResponse = {
   access: boolean;
@@ -18,28 +18,28 @@ type CheckUserAccessResponse = {
  */
 export const useCheckUserAccess = (checkInterval: number = 300) => {
   const logout = usePagesProp("onLogout", noop);
-  const getAccessToken = usePagesProp("getAccessToken");
-  const apiUrl = useApiUrl();
+  const fetchAPI = useFetch();
 
   return useQuery<CheckUserAccessResponse>({
     queryKey: ["check-user-access"],
     queryFn: async () => {
-      const authToken = await getAccessToken();
-      const action = "check_user_access";
-      const response = await fetchAPI(
-        apiUrl + (action ? `?action=${action}` : ""),
-        { action: "CHECK_USER_ACCESS" },
-        { Authorization: `Bearer ${authToken}` },
-      );
+      try {
+        const response = await fetchAPI(undefined, {
+          action: "CHECK_USER_ACCESS",
+          data: {},
+        });
 
-      if (response.status === 401) {
-        console.log("401 Response", response);
+        if (!response) {
+          throw new Error("No response from server");
+        }
+
+        return response;
+      } catch (error) {
+        console.log("Error checking user access", error);
         toast.error("You do not have access to edit this website. Please contact administrator");
         await logout("UNAUTHORIZED");
-        throw new Error("Unauthorized");
+        throw error;
       }
-
-      return response;
     },
     refetchInterval: checkInterval * 1000,
     refetchIntervalInBackground: true,
