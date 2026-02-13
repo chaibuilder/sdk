@@ -9,7 +9,6 @@ import { usePageTypes, useSearchPageTypePages } from "@/pages/hooks/project/use-
 import { useUILibraries } from "@/pages/hooks/project/use-ui-libraries";
 import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
 import { useCheckUserAccess } from "@/pages/hooks/user/use-check-access";
-import { useUserRoleAndPermissions } from "@/pages/hooks/user/use-user-permissions";
 import { usePagesSavePage } from "@/pages/hooks/utils/use-chai-api";
 import { usePagesProps } from "@/pages/hooks/utils/use-pages-props";
 import { usePartialBlocksFn } from "@/pages/hooks/utils/use-partial-blocks";
@@ -76,13 +75,12 @@ const DefaultChaiBuilder = (props: ChaiWebsiteBuilderProps) => {
   // * WEBSITE DATA
   const { data: uiLibraries } = useUILibraries();
   const fallbackLang = useFallbackLang();
-  const { data: roleAndPermissions = DEFAULT_ROLES_AND_PERMISSIONS, isFetching: isRoleAndPermissionsFetching } =
-    useUserRoleAndPermissions();
+  const { data: accessData } = useCheckUserAccess();
+  const roleAndPermissions = accessData || DEFAULT_ROLES_AND_PERMISSIONS;
   const { data: pageTypes, isFetching: isPageTypesFetching } = usePageTypes();
   const { data: collections, isFetching: isCollectionsFetching } = useChaiCollections();
   const { data: websiteConfig, isFetching: isWebsiteConfigFetching } = useWebsiteSetting();
-  const isFetchingWebsiteData =
-    isRoleAndPermissionsFetching || isPageTypesFetching || isCollectionsFetching || isWebsiteConfigFetching;
+  const isFetchingWebsiteData = isPageTypesFetching || isCollectionsFetching || isWebsiteConfigFetching;
 
   // * PAGE DATA
   const [searchParams] = useSearchParams();
