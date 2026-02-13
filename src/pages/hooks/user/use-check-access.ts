@@ -1,8 +1,8 @@
+import { fetchAPI } from "@/pages/utils/fetch-api";
 import { useQuery } from "@tanstack/react-query";
 import { noop } from "lodash-es";
 import { toast } from "sonner";
-import { usePagesProp } from "../project/use-builder-prop";
-import { useFetch } from "../utils/use-fetch";
+import { useApiUrl, usePagesProp } from "../project/use-builder-prop";
 
 type CheckUserAccessResponse = {
   access: boolean;
@@ -18,54 +18,31 @@ type CheckUserAccessResponse = {
  */
 export const useCheckUserAccess = (checkInterval: number = 300) => {
   const logout = usePagesProp("onLogout", noop);
-  const fetchAPI = useFetch();
+  const getAccessToken = usePagesProp("getAccessToken");
+  const apiUrl = useApiUrl();
 
   return useQuery<CheckUserAccessResponse>({
     queryKey: ["check-user-access"],
     queryFn: async () => {
-      try {
-        const response = await fetchAPI(undefined, {
-          action: "CHECK_USER_ACCESS",
-          data: {},
-        });
+      const authToken = await getAccessToken();
+      const action = "check_user_access";
+      const response = await fetchAPI(
+        apiUrl + (action ? `?action=${action}` : ""),
+        { action: "CHECK_USER_ACCESS" },
+        { Authorization: `Bearer ${authToken}` },
+      );
 
-        if (!response) {
-          throw new Error("No response from server");
-        }
-
-        return response;
-      } catch (error) {
-        console.log("Error checking user access", error);
+      if (response.status === 401) {
+        console.log("401 Response", response);
         toast.error("You do not have access to edit this website. Please contact administrator");
         await logout("UNAUTHORIZED");
-        throw error;
+        throw new Error("Unauthorized");
       }
+
+      return await response.json();
     },
     refetchInterval: checkInterval * 1000,
     refetchIntervalInBackground: true,
     retry: false,
   });
-};
-
-/**
- * Hook to get the user's role and permissions
- * This wraps useCheckUserAccess and returns only role and permissions data
- * Maintained for backward compatibility
- * 
- * Note: Unlike the original implementation, this hook benefits from periodic
- * access checks (every 5 minutes) performed by useCheckUserAccess. This ensures
- * role and permission data stays fresh and helps detect if user access is revoked.
- * 
- * The isFetching property is always false for backward compatibility, as the
- * original hook used staleTime: Infinity and never refetched after initial load.
- */
-export const useUserRoleAndPermissions = () => {
-  const { data, isLoading, error } = useCheckUserAccess();
-  
-  return {
-    data: data ? { role: data.role, permissions: data.permissions } : undefined,
-    isLoading,
-    isFetching: false, // Always false to match original behavior (staleTime: Infinity)
-    error,
-  };
 };

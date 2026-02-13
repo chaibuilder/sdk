@@ -58,7 +58,7 @@ const DEFAULT_ROLES_AND_PERMISSIONS = {
  * @returns CHAIBUILDER PAGES COMPONENT
  */
 const BuilderWithAccessCheck = (props: ChaiWebsiteBuilderProps) => {
-  const { isLoading, data: accessData } = useCheckUserAccess();
+  const { isLoading } = useCheckUserAccess();
 
   if (isLoading) {
     return (
@@ -68,22 +68,15 @@ const BuilderWithAccessCheck = (props: ChaiWebsiteBuilderProps) => {
     );
   }
 
-  const roleAndPermissions = accessData
-    ? { role: accessData.role, permissions: accessData.permissions }
-    : undefined;
-
-  return <DefaultChaiBuilder {...props} roleAndPermissions={roleAndPermissions} />;
+  return <DefaultChaiBuilder {...props} />;
 };
 
-const DefaultChaiBuilder = (
-  props: ChaiWebsiteBuilderProps & {
-    roleAndPermissions?: { role: string; permissions: string[] | null };
-  },
-) => {
+const DefaultChaiBuilder = (props: ChaiWebsiteBuilderProps) => {
   // * WEBSITE DATA
   const { data: uiLibraries } = useUILibraries();
   const fallbackLang = useFallbackLang();
-  const roleAndPermissions = props.roleAndPermissions || DEFAULT_ROLES_AND_PERMISSIONS;
+  const { data: accessData } = useCheckUserAccess();
+  const roleAndPermissions = accessData || DEFAULT_ROLES_AND_PERMISSIONS;
   const { data: pageTypes, isFetching: isPageTypesFetching } = usePageTypes();
   const { data: collections, isFetching: isCollectionsFetching } = useChaiCollections();
   const { data: websiteConfig, isFetching: isWebsiteConfigFetching } = useWebsiteSetting();

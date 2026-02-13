@@ -26,7 +26,7 @@ export { useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
 export { useApiUrl, useRealtimeAdapter } from "@/pages/hooks/project/use-builder-prop";
 export { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
 export { useChaiAuth } from "@/pages/hooks/use-chai-auth";
-export { useUserRoleAndPermissions as useUserPermissions } from "@/pages/hooks/user/use-check-access";
+export { useCheckUserAccess as useUserPermissions } from "@/pages/hooks/user/use-check-access";
 export { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
 export { useBuilderFetch, useFetch } from "@/pages/hooks/utils/use-fetch";
 export {
