@@ -4,17 +4,24 @@ import { noop } from "lodash-es";
 import { toast } from "sonner";
 import { useApiUrl, usePagesProp } from "../project/use-builder-prop";
 
+type CheckUserAccessResponse = {
+  access: boolean;
+  role: string;
+  permissions: string[] | null;
+};
+
 /**
  * Hook to periodically check if the user has access to the app
+ * Also returns the user's role and permissions
  * @param checkInterval Interval in seconds (default 300 = 5 mins)
- * @returns Object with isChecking state - true until initial check completes
+ * @returns Object with access, role, permissions, and loading states
  */
 export const useCheckUserAccess = (checkInterval: number = 300) => {
   const logout = usePagesProp("onLogout", noop);
   const getAccessToken = usePagesProp("getAccessToken");
   const apiUrl = useApiUrl();
 
-  return useQuery({
+  return useQuery<CheckUserAccessResponse>({
     queryKey: ["check-user-access"],
     queryFn: async () => {
       const authToken = await getAccessToken();
@@ -38,4 +45,20 @@ export const useCheckUserAccess = (checkInterval: number = 300) => {
     refetchIntervalInBackground: true,
     retry: false,
   });
+};
+
+/**
+ * Hook to get the user's role and permissions
+ * This is an alias for useCheckUserAccess that returns the same data
+ * Maintained for backward compatibility
+ */
+export const useUserRoleAndPermissions = () => {
+  const { data, isLoading, isFetching, error } = useCheckUserAccess();
+  
+  return {
+    data: data ? { role: data.role, permissions: data.permissions } : undefined,
+    isLoading,
+    isFetching,
+    error,
+  };
 };
