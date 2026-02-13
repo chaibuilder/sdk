@@ -11,6 +11,7 @@ import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { IChangeEvent } from "@rjsf/core";
 import { cloneDeep, debounce, forEach, get, includes, isEmpty, keys, set, startCase, startsWith } from "lodash-es";
 import { useCallback, useMemo, useState } from "react";
+import { ShowSetting } from "./show-setting";
 
 const formDataWithSelectedLang = (formData: Record<string, any>, selectedLang: string, coreBlock: ChaiBlockConfig) => {
   const updatedFormData = cloneDeep(formData);
@@ -106,6 +107,7 @@ export default function BlockSettings() {
 
   return (
     <div className="no-scrollbar overflow-x-hidden px-px">
+      <ShowSetting />
       {!isEmpty(wrapperBlock) && (
         <div className="mb-4 rounded border bg-zinc-100 px-1">
           <div
