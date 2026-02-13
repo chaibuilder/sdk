@@ -185,6 +185,7 @@
     "compressorjs": "^1.2.1",
     "culori": "^4.0.2",
     "date-fns": "^4.1.0",
+    "eta": "^4.5.1",
     "flagged": "3.0.0",
     "framer-motion": "12.23.20",
     "fuse.js": "7.1.0",
