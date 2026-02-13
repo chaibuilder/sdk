@@ -47,17 +47,23 @@ export class GetPageAllDataAction extends ChaiBaseAction<GetPageAllDataActionDat
       languagePagesAction.setContext(this.context);
     }
 
-    // Execute all actions in parallel for optimal performance
-    const [draftPage, builderPageData, languagePages] = await Promise.all([
-      draftPageAction.execute({ id }),
-      builderPageDataAction.execute({ lang, pageType, pageProps }),
-      languagePagesAction.execute({ id }),
-    ]);
+    try {
+      // Execute all actions in parallel for optimal performance
+      const [draftPage, builderPageData, languagePages] = await Promise.all([
+        draftPageAction.execute({ id }),
+        builderPageDataAction.execute({ lang, pageType, pageProps }),
+        languagePagesAction.execute({ id }),
+      ]);
 
-    return {
-      draftPage,
-      builderPageData,
-      languagePages,
-    };
+      return {
+        draftPage,
+        builderPageData,
+        languagePages,
+      };
+    } catch (error) {
+      // Re-throw with more context about which action failed
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new Error(`Failed to fetch page data: ${errorMessage}`);
+    }
   }
 }

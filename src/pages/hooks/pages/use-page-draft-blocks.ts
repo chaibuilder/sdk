@@ -11,7 +11,7 @@ import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
 import { useFallbackLang } from "@/pages/hooks/use-fallback-lang";
 import { useFetch } from "@/pages/hooks/utils/use-fetch";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { find, get } from "lodash-es";
 import { useDynamicPageSlug } from "./use-dynamic-page-selector";
 
@@ -24,7 +24,6 @@ export const usePageDraftBlocks = () => {
   const [, setPageMetaData] = usePageMetaData();
   const [, setPageLoaded] = useIsPageLoaded();
   const fetchAPI = useFetch();
-  const queryClient = useQueryClient();
   
   return useQuery({
     queryKey: [ACTIONS.GET_DRAFT_PAGE, page],
@@ -32,22 +31,10 @@ export const usePageDraftBlocks = () => {
     gcTime: 0,
     queryFn: async () => {
       setPageLoaded(false);
-      
-      // First check if data is already in cache (populated by usePageAllData)
-      const cachedData = queryClient.getQueryData([ACTIONS.GET_DRAFT_PAGE, page]);
-      
-      let data: any;
-      if (cachedData) {
-        // Use cached data
-        data = cachedData;
-      } else {
-        // Fallback to direct API call if cache is empty
-        data = await fetchAPI(apiUrl, {
-          action: ACTIONS.GET_DRAFT_PAGE,
-          data: { id: page, draft: true },
-        });
-      }
-      
+      const data: any = await fetchAPI(apiUrl, {
+        action: ACTIONS.GET_DRAFT_PAGE,
+        data: { id: page, draft: true },
+      });
       // if page is locked, return empty array
       const blocks = data.blocks ?? [];
       const aiContextBlock = find(blocks, { _type: "@chai/ai-context" });
@@ -68,22 +55,12 @@ export const useBuilderPageData = () => {
   const fetchAPI = useFetch();
   const fallbackLang = useFallbackLang();
   const dynamicPageSlug = useDynamicPageSlug();
-  const queryClient = useQueryClient();
 
   return useQuery({
     queryKey: [ACTIONS.GET_BUILDER_PAGE_DATA, activePage?.id, dynamicPageSlug],
     staleTime: Infinity,
     gcTime: 0,
     queryFn: async () => {
-      // First check if data is already in cache (populated by usePageAllData)
-      const cachedData = queryClient.getQueryData([ACTIONS.GET_BUILDER_PAGE_DATA, activePage?.id, dynamicPageSlug]);
-      
-      if (cachedData) {
-        // Use cached data
-        return cachedData;
-      }
-      
-      // Fallback to direct API call if cache is empty
       return fetchAPI(apiUrl, {
         action: ACTIONS.GET_BUILDER_PAGE_DATA,
         data: {
