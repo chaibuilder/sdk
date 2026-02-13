@@ -245,7 +245,7 @@ export function ManualClasses({
       autoCorrect: "off",
       autoCapitalize: "off",
       spellCheck: false,
-      placeholder: t("Enter classes separated by space"),
+      placeholder: `${showDesignTokenSuggestions ? t("Enter classes separated by space or design tokens") : t("Enter classes separated by space")}`,
       value: newCls,
       onFocus: (e: any) => {
         setTimeout(() => {
