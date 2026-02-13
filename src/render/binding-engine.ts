@@ -43,6 +43,7 @@ export const resolveExpressionIndex = (expression: string, index: number, repeat
 export const toEtaTemplate = (template: string, index: number, repeaterKey: string): string => {
   return template.replace(BINDING_REGEX, (_, rawPath) => {
     const trimmed = rawPath.trim();
+    if (!trimmed) return `{{""}}`;
     if (SIMPLE_PATH_REGEX.test(trimmed)) {
       const resolved = resolveBindingPath(trimmed, index, repeaterKey);
       return `{{safeGet(it, "${resolved}") ?? ""}}`;
