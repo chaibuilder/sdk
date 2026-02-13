@@ -10,8 +10,6 @@ export const PAGES_PERMISSIONS = {
   CHANGE_PAGE_TYPE: "change_page_type",
   PUBLISH_PAGE: "publish_page",
   UNPUBLISH_PAGE: "unpublish_page",
-  MARK_AS_TEMPLATE: "mark_as_template",
-  UNMARK_AS_TEMPLATE: "unmark_as_template",
 
   //PARTIALS
   ADD_PARTIAL: "add_partial",

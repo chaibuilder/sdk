@@ -5,7 +5,7 @@ import { usePageExpandManager } from "@/pages/hooks/utils/use-page-expand-manage
 import { ChaiPage } from "@/pages/utils/page-organization";
 import Tooltip from "@/pages/utils/tooltip";
 import { find, get, isEmpty } from "lodash-es";
-import { ChevronRight, File, Hash, Lock, MoreHorizontal, NotepadText, Pencil, Plus, StarsIcon } from "lucide-react";
+import { ChevronRight, File, Hash, Lock, MoreHorizontal, Pencil, Plus, StarsIcon } from "lucide-react";
 import { useMemo } from "react";
 import { PageActionsDropdown } from "@/pages/client/components/page-action-dropdown";
 import { usePageToUser } from "@/pages/client/components/page-lock/page-lock-hook";
@@ -100,7 +100,6 @@ const PageItem = ({
 
   const fallbackLang = useFallbackLang();
   const isSelected = currentPage === page.id;
-  const isTemplate = Boolean(page.isTemplate);
   const pageType = useMemo(() => find(pageTypes, { key: page.pageType }), [pageTypes, page.pageType]);
 
   // * Check
@@ -174,13 +173,6 @@ const PageItem = ({
               </span>
             </Tooltip>
           )}
-          {isTemplate && (
-            <Tooltip content="Template" side="top">
-              <span className="text-blue-500">
-                <NotepadText size={16} />
-              </span>
-            </Tooltip>
-          )}
 
           {!page.isPartialGroup && hasLangPage && !pageOwner ? (
             <div className="duration absolute right-0.5 top-[3px]">
@@ -190,9 +182,7 @@ const PageItem = ({
                 setDuplicatePage={(arg) => onClickAction("duplicate", arg)}
                 setAddEditPage={(arg) => onClickAction("edit", langPage || arg)}
                 setUnpublishPage={(arg) => onClickAction("unpublish", arg)}
-                setDeletePage={(arg) => onClickAction("delete", langPage || arg)}
-                setMarkAsTemplate={(arg) => onClickAction("markAsTemplate", arg)}
-                setUnmarkAsTemplate={(arg) => onClickAction("unmarkAsTemplate", arg)}>
+                setDeletePage={(arg) => onClickAction("delete", langPage || arg)}>
                 <div className="m-0 cursor-pointer rounded border border-transparent p-0.5 duration-100 hover:border-gray-400 hover:bg-white">
                   <MoreHorizontal className="h-4 w-4" onClick={(e) => e.stopPropagation()} />
                 </div>
