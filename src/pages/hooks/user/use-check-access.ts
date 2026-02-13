@@ -55,6 +55,9 @@ export const useCheckUserAccess = (checkInterval: number = 300) => {
  * Note: Unlike the original implementation, this hook benefits from periodic
  * access checks (every 5 minutes) performed by useCheckUserAccess. This ensures
  * role and permission data stays fresh and helps detect if user access is revoked.
+ * 
+ * The isFetching property is always false for backward compatibility, as the
+ * original hook used staleTime: Infinity and never refetched after initial load.
  */
 export const useUserRoleAndPermissions = () => {
   const { data, isLoading, error } = useCheckUserAccess();
@@ -62,7 +65,7 @@ export const useUserRoleAndPermissions = () => {
   return {
     data: data ? { role: data.role, permissions: data.permissions } : undefined,
     isLoading,
-    isFetching: false, // For backward compatibility, don't expose background refetching
+    isFetching: false, // Always false to match original behavior (staleTime: Infinity)
     error,
   };
 };
