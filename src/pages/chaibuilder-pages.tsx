@@ -4,6 +4,7 @@ import { useAskAi } from "@/pages/hooks/ai/use-ask-ai";
 import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
 import { useExtractPageBlocks } from "@/pages/hooks/pages/use-extract-page-blocks";
 import { useBuilderPageData, usePageDraftBlocks } from "@/pages/hooks/pages/use-page-draft-blocks";
+import { usePageAllData } from "@/pages/hooks/pages/use-page-all-data";
 import { useUpdateWebsiteFields } from "@/pages/hooks/project/mutations";
 import { useSearchPageTypePages } from "@/pages/hooks/project/use-page-types";
 import { useCheckUserAccess } from "@/pages/hooks/user/use-check-access";
@@ -104,6 +105,8 @@ const ChaiBuilderInner = ({ websiteData, ...props }: ChaiBuilderInnerProps) => {
   const { data: accessData, isFetching: isFetchingAccessData } = useCheckUserAccess();
   const roleAndPermissions = accessData || DEFAULT_ROLES_AND_PERMISSIONS;
   // * PAGE DATA
+  // Trigger consolidated page data fetch that populates individual caches
+  usePageAllData();
   const [searchParams] = useSearchParams();
   const page = searchParams.get("page");
   const { data: currentPage } = useChaiCurrentPage();

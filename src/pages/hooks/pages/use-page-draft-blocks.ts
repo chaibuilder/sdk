@@ -14,7 +14,6 @@ import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { find, get } from "lodash-es";
 import { useDynamicPageSlug } from "./use-dynamic-page-selector";
-import { usePageAllData } from "./use-page-all-data";
 
 export const usePageDraftBlocks = () => {
   const [searchParams] = useSearchParams();
@@ -27,14 +26,13 @@ export const usePageDraftBlocks = () => {
   const fetchAPI = useFetch();
   const queryClient = useQueryClient();
   
-  // Trigger the consolidated fetch
-  usePageAllData();
-  
   return useQuery({
     queryKey: [ACTIONS.GET_DRAFT_PAGE, page],
     staleTime: Infinity,
     gcTime: 0,
     queryFn: async () => {
+      setPageLoaded(false);
+      
       // First check if data is already in cache (populated by usePageAllData)
       const cachedData = queryClient.getQueryData([ACTIONS.GET_DRAFT_PAGE, page]);
       
@@ -44,7 +42,6 @@ export const usePageDraftBlocks = () => {
         data = cachedData;
       } else {
         // Fallback to direct API call if cache is empty
-        setPageLoaded(false);
         data = await fetchAPI(apiUrl, {
           action: ACTIONS.GET_DRAFT_PAGE,
           data: { id: page, draft: true },
@@ -72,9 +69,6 @@ export const useBuilderPageData = () => {
   const fallbackLang = useFallbackLang();
   const dynamicPageSlug = useDynamicPageSlug();
   const queryClient = useQueryClient();
-  
-  // Trigger the consolidated fetch
-  usePageAllData();
 
   return useQuery({
     queryKey: [ACTIONS.GET_BUILDER_PAGE_DATA, activePage?.id, dynamicPageSlug],
