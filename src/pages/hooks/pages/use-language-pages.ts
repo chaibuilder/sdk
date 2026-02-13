@@ -12,6 +12,7 @@ export const useLanguagePages = (pageId?: string | undefined) => {
   const page = pageId ?? searchParams.get("page");
   const fetchAPI = useFetch();
   const { languages } = useLanguages();
+
   return useQuery({
     queryKey: [ACTIONS.GET_LANGUAGE_PAGES, page],
     staleTime: Infinity,

@@ -178,25 +178,6 @@ export const useUnpublishPage = () => {
   });
 };
 
-export const usePublishPage = () => {
-  const apiUrl = useApiUrl();
-  const fetchAPI = useFetch();
-  return useMutation({
-    mutationFn: async (id: string) => {
-      return fetchAPI(apiUrl, {
-        action: ACTIONS.PUBLISH_PAGE,
-        data: { id },
-      });
-    },
-    onSuccess: () => {
-      toast.success("Page published successfully.");
-    },
-    onError: () => {
-      toast.error("Failed to publish page");
-    },
-  });
-};
-
 export const usePublishPages = () => {
   const apiUrl = useApiUrl();
   const fetchAPI = useFetch();

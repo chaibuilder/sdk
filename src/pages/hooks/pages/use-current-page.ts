@@ -1,4 +1,3 @@
-import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
 import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { atom, useAtom } from "jotai";
@@ -26,7 +25,7 @@ export const useChaiCurrentPage = () => {
 export const useActivePage = () => {
   const [searchParams] = useSearchParams();
   const lang = searchParams.get("lang") ?? "";
-  const { data: languagePages, isFetching } = useLanguagePages();
+  const { data: languagePages, isFetching } = useWebsitePages();
   const currentPage = useMemo(() => find(languagePages, { lang }) || {}, [languagePages, lang]);
   return { data: currentPage as any, isFetching };
 };

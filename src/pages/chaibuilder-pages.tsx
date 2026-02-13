@@ -47,7 +47,7 @@ registerChaiMediaManager(DigitalAssetManager as any);
 registerChaiSaveToLibrary(SaveToLibrary);
 
 const DEFAULT_ROLES_AND_PERMISSIONS = {
-  role: "",
+  role: "admin",
   permissions: null,
 };
 
@@ -90,14 +90,13 @@ const DefaultChaiBuilder = (props: ChaiWebsiteBuilderProps) => {
   }
 
   // Once resolved, render the editor — all child hooks will find data in cache
-  return <ChaiBuilderInner {...props} websiteData={websiteData} />;
+  return <ChaiBuilderInner {...props} />;
 };
 
-type ChaiBuilderInnerProps = ChaiWebsiteBuilderProps & {
-  websiteData: any;
-};
+type ChaiBuilderInnerProps = ChaiWebsiteBuilderProps;
 
-const ChaiBuilderInner = ({ websiteData, ...props }: ChaiBuilderInnerProps) => {
+const ChaiBuilderInner = ({ ...props }: ChaiBuilderInnerProps) => {
+  const { data: websiteData } = useWebsiteData();
   const { libraries: uiLibraries, collections, pageTypes, websiteSettings: websiteConfig, siteWideUsage } = websiteData;
   const fallbackLang = useMemo(() => websiteConfig?.fallbackLang || "en", [websiteConfig]);
   const { data: accessData, isFetching: isFetchingAccessData } = useCheckUserAccess();

@@ -50,7 +50,6 @@ const PagesManagerNew = ({ close }: PageManagerNewProps) => {
   const [_showUntranslatedPages, setShowUntranslatedPages] = useState(false);
   const setAddNewLang = useSetAtom(addNewLangAtom);
   const showUntranslatedPages = _showUntranslatedPages && selectedLanguage !== fallbackLang;
-
   const { data: languagePages, isFetching: isFetchingLangPages } = useWebsiteLanguagePages(selectedLanguage);
 
   const hasSlug = useCallback(
@@ -131,11 +130,7 @@ const PagesManagerNew = ({ close }: PageManagerNewProps) => {
           setQueryParams(newParams);
         } else {
           if (typeof window !== "undefined" && window.history && window.location) {
-            window.history.replaceState(
-              window.history.state,
-              "",
-              window.location.pathname + window.location.hash
-            );
+            window.history.replaceState(window.history.state, "", window.location.pathname + window.location.hash);
             // Manually dispatch a popstate event to keep behavior consistent
             // with navigateToPage, which also triggers a popstate.
             window.dispatchEvent(new PopStateEvent("popstate", { state: window.history.state }));
