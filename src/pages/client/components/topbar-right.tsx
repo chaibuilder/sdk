@@ -3,6 +3,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -25,8 +26,20 @@ import { useRevisionsEnabled } from "@/pages/hooks/use-revisions-enabled";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { throwConfetti } from "@/pages/utils/confetti";
 import Tooltip from "@/pages/utils/tooltip";
-import { compact, find, isEmpty, map, upperCase } from "lodash-es";
-import { CheckCircle, ChevronDown, Loader, Palette, Pencil, Play, Rocket, Save, Send } from "lucide-react";
+import { compact, find, isEmpty, upperCase } from "lodash-es";
+import {
+  CheckCircle,
+  ChevronDown,
+  Eye,
+  Loader,
+  Palette,
+  Pencil,
+  Play,
+  Rocket,
+  Save,
+  Send,
+  TriangleAlert,
+} from "lucide-react";
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { usePageLockStatus } from "./page-lock/page-lock-hook";
@@ -168,7 +181,6 @@ const PublishButton = () => {
   const { t } = useTranslation();
   const { selectedLang } = useLanguages();
   const { data: activePage } = useActivePage();
-  const { data: languagePages } = useLanguagePages();
   const getUnpublishedPartialBlocks = useGetUnpublishedPartialBlocks();
   const [showModal, setShowModal] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -185,7 +197,6 @@ const PublishButton = () => {
   const { mutate: publishPage, isPending } = usePublishPages();
   const { needTranslations } = useSavePage();
   const needTranslation = needTranslations();
-
   const { buttonText, buttonClassName, isPublished, hasUnpublishedChanges } = useMemo(() => {
     const isPublished = currentPage && currentPage?.online;
     const hasUnpublishedChanges = !isEmpty(currentPage?.changes);
@@ -257,10 +268,6 @@ const PublishButton = () => {
     await savePageAsync();
   };
 
-  const allPages = useMemo(() => {
-    return map(languagePages ?? [], "id");
-  }, [languagePages]);
-
   return (
     <>
       <div className="flex">
@@ -305,18 +312,14 @@ const PublishButton = () => {
               )}
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-52">
+          <DropdownMenuContent align="end" className="w-60">
+            <DropdownMenuLabel className="-mt-1 text-xs font-light text-gray-600">{t("Page")}</DropdownMenuLabel>
             {isPublished && hasUnpublishedChanges && (
               <DropdownMenuItem onClick={() => setShowCompareModal(true)} className="cursor-pointer text-xs">
+                <Eye className="mr-0.5 h-3 w-3" />
                 {t("View Unpublished changes")}
               </DropdownMenuItem>
             )}
-            <DropdownMenuItem
-              disabled={isPending}
-              className="cursor-pointer text-xs"
-              onClick={() => checkAndPublish(allPages)}>
-              {t("Publish")} with translation pages
-            </DropdownMenuItem>
             {!isPublished && (
               <DropdownMenuItem
                 disabled={isPending}
@@ -331,11 +334,19 @@ const PublishButton = () => {
 
             {isPublished && (
               <DropdownMenuItem onClick={() => setUnpublishPage(activePage)} className="cursor-pointer text-xs">
+                <TriangleAlert className="mr-0.5 h-3 w-3" />
                 {t("Unpublish")} page {selectedLang ? `(${upperCase(selectedLang)})` : ""}
               </DropdownMenuItem>
             )}
 
-            {hasUnpublishedSettings && <DropdownMenuSeparator className="bg-gray-200" />}
+            {hasUnpublishedSettings && (
+              <>
+                <DropdownMenuSeparator className="bg-gray-200" />
+                <DropdownMenuLabel className="-mt-1 text-xs font-light text-gray-600">
+                  {t("Unpublished website settings")}
+                </DropdownMenuLabel>
+              </>
+            )}
             {hasUnpublishedTheme && (
               <DropdownMenuItem
                 disabled={isPending}
@@ -375,8 +386,8 @@ const PublishButton = () => {
             open={showCompareModal}
             onOpenChange={setShowCompareModal}
             compare={[
-              { label: "draft", uid: `draft:${currentPage?.id}`, item: currentPage },
               { label: "live", uid: `live:${currentPage?.id}`, item: {} },
+              { label: "draft", uid: `draft:${currentPage?.id}`, item: currentPage },
             ]}
           />
         </Suspense>

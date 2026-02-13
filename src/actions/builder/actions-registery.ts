@@ -26,7 +26,6 @@ import { GetLibraryItemsAction } from "./get-library-items";
 import { GetPageRevisionsAction } from "./get-page-revisions";
 import { GetPageTypesAction } from "./get-page-types";
 import { GetRevisionPageAction } from "./get-revision-page";
-import { GetRoleAndPermissionsAction } from "./get-role-and-permissions";
 import { GetSiteWideDataAction } from "./get-site-wide-data";
 import { GetTemplatesByTypeAction } from "./get-templates-by-type";
 import { GetWebsitePagesAction } from "./get-website-pages";
@@ -42,6 +41,7 @@ import { UpdatePageAction } from "./update-page";
 import { UpdatePageMetadataAction } from "./update-page-metadata";
 import { UpdateWebsiteFieldsAction } from "./update-website-fields";
 import { UpsertLibraryItemAction } from "./upsert-library-item";
+import { GetWebsiteDataAction } from "./get-website-data";
 
 /**
  * Registry of all available actions
@@ -102,7 +102,7 @@ class ChaiActionsRegistry {
     this.register("GET_PAGE_TYPES", new GetPageTypesAction());
     this.register("SEARCH_PAGE_TYPE_ITEMS", new SearchPageTypeItemsAction());
     this.register("GET_DYNAMIC_PAGES", new GetDynamicPagesAction());
-    this.register("GET_ROLE_AND_PERMISSIONS", new GetRoleAndPermissionsAction());
+    this.register("GET_WEBSITE_DATA", new GetWebsiteDataAction());
     // Add more actions here as they are created
   }
 

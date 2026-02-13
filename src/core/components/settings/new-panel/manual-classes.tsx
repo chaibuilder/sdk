@@ -26,11 +26,13 @@ export function ManualClasses({
   classFromProps,
   onAddNew,
   onRemove,
+  showDesignTokenSuggestions = true,
 }: {
   from?: "default" | "designToken";
   classFromProps?: string;
   onAddNew?: any;
   onRemove?: any;
+  showDesignTokenSuggestions?: boolean;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [editingClass, setEditingClass] = useState("");
@@ -67,6 +69,76 @@ export function ManualClasses({
     });
   }, [classes]);
   const enableCopyToClipboard = useBuilderProp("flags.copyPaste", true);
+
+  const renderClassBadge = (cls: string) => {
+    const isDesignToken = cls.startsWith(DESIGN_TOKEN_PREFIX);
+    const badge = (
+      <div key={cls} className="group relative flex max-w-[260px] items-center">
+        <button
+          onDoubleClick={() => {
+            setNewCls(getDisplayName(cls));
+            if (from === "default") {
+              removeClassesFromBlocks(selectedIds, [cls], true);
+            } else {
+              if (isFunction(onRemove)) onRemove(cls);
+              setNewCls(cls);
+            }
+            setTimeout(() => {
+              if (inputRef.current) {
+                inputRef.current.focus();
+              }
+            }, 10);
+          }}
+          className="flex h-max cursor-default items-center gap-x-1 truncate break-words rounded bg-gray-200 py-px pl-0.5 pr-1 text-[11px] text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+          <div className="z-10 flex h-full w-max items-center justify-center">
+            <Cross2Icon
+              onClick={() => {
+                if (from === "default") {
+                  removeClassesFromBlocks(selectedIds, [cls], true);
+                } else if (isFunction(onRemove)) {
+                  onRemove(cls);
+                }
+              }}
+              className="hidden h-max w-3.5 cursor-pointer rounded bg-gray-100 p-0.5 text-red-500 hover:bg-gray-50 group-hover:block"
+            />
+            {cls.startsWith(DESIGN_TOKEN_PREFIX) ? (
+              <DesignTokensIcon className="text-[rgba(55, 65, 81, 0.4)] h-3.5 w-3.5 group-hover:hidden" />
+            ) : (
+              <svg
+                className="h-3.5 w-3.5 group-hover:hidden"
+                fill="rgba(55, 65, 81, 0.4)"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlSpace="preserve">
+                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M12 6.036c-2.667 0-4.333 1.325-5 3.976 1-1.325 2.167-1.822 3.5-1.491.761.189 1.305.738 1.906 1.345C13.387 10.855 14.522 12 17 12c2.667 0 4.333-1.325 5-3.976-1 1.325-2.166 1.822-3.5 1.491-.761-.189-1.305-.738-1.907-1.345-.98-.99-2.114-2.134-4.593-2.134zM7 12c-2.667 0-4.333 1.325-5 3.976 1-1.326 2.167-1.822 3.5-1.491.761.189 1.305.738 1.907 1.345.98.989 2.115 2.134 4.594 2.134 2.667 0 4.333-1.325 5-3.976-1 1.325-2.167 1.822-3.5 1.491-.761-.189-1.305-.738-1.906-1.345C10.613 13.145 9.478 12 7 12z"></path>
+                </g>
+              </svg>
+            )}
+          </div>
+          <div>{getDisplayName(cls)}</div>
+        </button>
+      </div>
+    );
+
+    if (isDesignToken && designTokens[cls]) {
+      return (
+        <Tooltip key={cls} delayDuration={200}>
+          <TooltipTrigger asChild>{badge}</TooltipTrigger>
+          <TooltipContent side="bottom" className="max-w-[300px]">
+            <p className="font-light">{designTokens[cls].value}</p>
+          </TooltipContent>
+        </Tooltip>
+      );
+    }
+
+    return badge;
+  };
 
   // Helper function to get display name for classes
   const getDisplayName = (cls: string) => {
@@ -115,7 +187,7 @@ export function ManualClasses({
       id: string;
       isDesignToken: boolean;
     }[] = [];
-    if (designTokensEnabled) {
+    if (designTokensEnabled && showDesignTokenSuggestions) {
       if (search === "") {
         // Show all design tokens when no search term
         designTokenSuggestions = Object.entries(designTokens).map(([id, token]) => ({
@@ -173,7 +245,7 @@ export function ManualClasses({
       autoCorrect: "off",
       autoCapitalize: "off",
       spellCheck: false,
-      placeholder: t("Enter classes separated by space"),
+      placeholder: `${showDesignTokenSuggestions ? t("Enter classes separated by space or design tokens") : t("Enter classes separated by space")}`,
       value: newCls,
       onFocus: (e: any) => {
         setTimeout(() => {
@@ -333,57 +405,7 @@ export function ManualClasses({
               className="group relative flex max-w-[260px] cursor-default items-center gap-x-1 truncate break-words rounded border border-border bg-gray-200 p-px px-1.5 pr-2 text-[11px] text-gray-600 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
             />
           ) : (
-            <div key={cls} className="group relative flex max-w-[260px] items-center">
-              <button
-                onDoubleClick={() => {
-                  setNewCls(getDisplayName(cls));
-                  if (from === "default") {
-                    removeClassesFromBlocks(selectedIds, [cls], true);
-                  } else {
-                    if (isFunction(onRemove)) onRemove(cls);
-                    setNewCls(cls);
-                  }
-                  setTimeout(() => {
-                    if (inputRef.current) {
-                      inputRef.current.focus();
-                    }
-                  }, 10);
-                }}
-                className="flex h-max cursor-default items-center gap-x-1 truncate break-words rounded bg-gray-200 py-px pl-0.5 pr-1 text-[11px] text-gray-600 dark:bg-gray-800 dark:text-gray-300">
-                <div className="z-10 flex h-full w-max items-center justify-center">
-                  <Cross2Icon
-                    onClick={() => {
-                      if (from === "default") {
-                        removeClassesFromBlocks(selectedIds, [cls], true);
-                      } else if (isFunction(onRemove)) {
-                        onRemove(cls);
-                      }
-                    }}
-                    className="hidden h-max w-3.5 cursor-pointer rounded bg-gray-100 p-0.5 text-red-500 hover:bg-gray-50 group-hover:block"
-                  />
-                  {cls.startsWith(DESIGN_TOKEN_PREFIX) ? (
-                    <DesignTokensIcon className="text-[rgba(55, 65, 81, 0.4)] h-3.5 w-3.5 group-hover:hidden" />
-                  ) : (
-                    <svg
-                      className="h-3.5 w-3.5 group-hover:hidden"
-                      fill="rgba(55, 65, 81, 0.4)"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                      xmlSpace="preserve">
-                      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                      <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
-                      <g id="SVGRepo_iconCarrier">
-                        <path
-                          fillRule="evenodd"
-                          clipRule="evenodd"
-                          d="M12 6.036c-2.667 0-4.333 1.325-5 3.976 1-1.325 2.167-1.822 3.5-1.491.761.189 1.305.738 1.906 1.345C13.387 10.855 14.522 12 17 12c2.667 0 4.333-1.325 5-3.976-1 1.325-2.166 1.822-3.5 1.491-.761-.189-1.305-.738-1.907-1.345-.98-.99-2.114-2.134-4.593-2.134zM7 12c-2.667 0-4.333 1.325-5 3.976 1-1.326 2.167-1.822 3.5-1.491.761.189 1.305.738 1.907 1.345.98.989 2.115 2.134 4.594 2.134 2.667 0 4.333-1.325 5-3.976-1 1.325-2.167 1.822-3.5 1.491-.761-.189-1.305-.738-1.906-1.345C10.613 13.145 9.478 12 7 12z"></path>
-                      </g>
-                    </svg>
-                  )}
-                </div>
-                <div>{getDisplayName(cls)}</div>
-              </button>
-            </div>
+            renderClassBadge(cls)
           ),
         )}
       </div>
