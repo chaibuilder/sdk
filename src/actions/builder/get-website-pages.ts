@@ -7,6 +7,7 @@ import { ChaiBaseAction } from "./base-action";
 
 type GetWebsitePagesActionData = {
   lang?: string;
+  allLangs?: boolean;
 };
 
 type GetWebsitePagesActionResponse = Array<{
@@ -24,12 +25,17 @@ type GetWebsitePagesActionResponse = Array<{
   primaryPage?: string | null;
   isTemplate: boolean;
   changes: string[] | null;
+  lang: string;
+  designTokens: unknown;
+  links: string | null;
+  partialBlocks: string | null;
 }>;
 
 export class GetWebsitePagesAction extends ChaiBaseAction<GetWebsitePagesActionData, GetWebsitePagesActionResponse> {
   protected getValidationSchema() {
     return z.object({
       lang: z.string().optional(),
+      allLangs: z.boolean().optional(),
     });
   }
 
@@ -41,6 +47,7 @@ export class GetWebsitePagesAction extends ChaiBaseAction<GetWebsitePagesActionD
     const { appId } = this.context;
     const requestData = data ?? { lang: "" };
     const lang = requestData.lang ?? "";
+    const allLangs = requestData.allLangs ?? false;
 
     // First, get all pages for the app and language
     const { data: pages, error } = await safeQuery(() =>
@@ -59,9 +66,17 @@ export class GetWebsitePagesAction extends ChaiBaseAction<GetWebsitePagesActionD
           dynamicSlugCustom: schema.appPages.dynamicSlugCustom,
           primaryPage: schema.appPages.primaryPage,
           changes: schema.appPages.changes,
+          lang: schema.appPages.lang,
+          designTokens: schema.appPages.designTokens,
+          links: schema.appPages.links,
+          partialBlocks: schema.appPages.partialBlocks,
         })
         .from(schema.appPages)
-        .where(and(eq(schema.appPages.app, appId), eq(schema.appPages.lang, lang))),
+        .where(
+          allLangs
+            ? eq(schema.appPages.app, appId)
+            : and(eq(schema.appPages.app, appId), eq(schema.appPages.lang, lang)),
+        ),
     );
 
     if (error) {
@@ -97,6 +112,10 @@ export class GetWebsitePagesAction extends ChaiBaseAction<GetWebsitePagesActionD
       pageType: page.pageType ?? "page",
       isTemplate: templatePageIds.has(page.id),
       changes: page.changes as string[] | null,
+      lang: page.lang,
+      designTokens: page.designTokens,
+      links: page.links,
+      partialBlocks: page.partialBlocks,
     }));
   }
 }
