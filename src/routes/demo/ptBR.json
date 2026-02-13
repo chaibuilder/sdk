@@ -413,6 +413,7 @@
   "Classes": "Classes",
   "All": "Todos",
   "Enter classes separated by space": "Digite as classes separadas por espaço",
+  "Enter classes separated by space or design tokens": "Digite as classes separadas por espaço ou tokens de design",
   "Show hidden blocks": "Mostrar blocos ocultos",
   "Expand all": "Expandir tudo",
   "Collapse all": "Recolher tudo",
