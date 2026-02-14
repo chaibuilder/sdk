@@ -1,7 +1,8 @@
 import "@/index.css";
 import { ChaiWebsiteBuilder } from "@/pages/chaibuilder-pages";
-import { useActivePage } from "@/pages/hooks/pages/use-current-page";
+import { useCurrentActivePage } from "@/pages/hooks/pages/use-current-page";
 import { NestedPathSelector } from "./client/components/nested-path-selector/nested-path-selector";
+import { usePageAllData } from "./hooks/pages/use-page-all-data";
 import { useBuilderPageData } from "./hooks/pages/use-page-draft-blocks";
 import { usePageTypes } from "./hooks/project/use-page-types";
 import { useFallbackLang } from "./hooks/use-fallback-lang";
@@ -20,9 +21,9 @@ export { SmartJsonInput as ChaiJsonInput } from "./client/components/smart-json-
 export { ChaiWebsiteBuilder, NestedPathSelector };
 
 /** Hooks */
-export { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
+export { usePrimaryPage as useChaiPrimaryPage } from "@/pages/hooks/pages/use-current-page";
 export { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
-export { useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
+export { useWebsitePrimaryPages as useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
 export { useApiUrl, useRealtimeAdapter } from "@/pages/hooks/project/use-builder-prop";
 export { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
 export { useChaiAuth } from "@/pages/hooks/use-chai-auth";
@@ -30,17 +31,19 @@ export { useCheckUserAccess as useUserPermissions } from "@/pages/hooks/user/use
 export { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
 export { useBuilderFetch, useFetch } from "@/pages/hooks/utils/use-fetch";
 export {
-  useActivePage,
+  useCurrentActivePage as useActivePage,
   useBuilderPageData,
   useClearAll,
   useFallbackLang,
   useGotoPage,
+  usePageAllData,
   usePageTypes,
   useReloadPage,
   useUpdateActivePageMetadata,
 };
 
 /** Realtime Adapters */
+export { createRealtimeAdapter } from "@/pages/client/components/page-lock/create-realtime-adapter";
 export type {
   ChannelStatus,
   PresenceState,
@@ -49,4 +52,3 @@ export type {
   RealtimeEventPayload,
 } from "@/pages/client/components/page-lock/realtime-adapter";
 export { SupabaseRealtimeAdapter } from "@/pages/client/components/page-lock/supabase-realtime-adapter";
-export { createRealtimeAdapter } from "@/pages/client/components/page-lock/create-realtime-adapter";

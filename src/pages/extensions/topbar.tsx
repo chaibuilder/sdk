@@ -3,7 +3,7 @@ import { PageDropdownInHeader } from "@/pages/client/components/page-dropdown-in
 import { ScreenOverlay } from "@/pages/client/components/screen-overlay";
 import TopbarLeft, { LanguageSwitcher } from "@/pages/client/components/topbar-left";
 import TopbarRight from "@/pages/client/components/topbar-right";
-import { useActivePage, useChaiCurrentPage, useGetPageFullSlug } from "@/pages/hooks/pages/use-current-page";
+import { useCurrentActivePage, useGetPageFullSlug, usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
 import { useDynamicPageSelector, useDynamicPageSlug } from "@/pages/hooks/pages/use-dynamic-page-selector";
 import { useChaiFeatureFlag } from "@/runtime/client";
 import { get } from "lodash-es";
@@ -27,8 +27,8 @@ const DynamicPageSelectorSuspense = () => {
 };
 
 const AddressBar = () => {
-  const { data: activePage, isFetching: isFetchingActivePage } = useActivePage();
-  const { data: page, isFetching: isFetchingCurrentPage } = useChaiCurrentPage();
+  const { data: activePage, isFetching: isFetchingActivePage } = useCurrentActivePage();
+  const { data: page, isFetching: isFetchingCurrentPage } = usePrimaryPage();
   const dynamic = get(page, "dynamic", false);
   const dynamicPageSlug = useDynamicPageSlug();
   const isDynamicPageSelectorEnabled = useChaiFeatureFlag("dynamic-page-selector");

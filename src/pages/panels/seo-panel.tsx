@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
+import { usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
 import { usePageType } from "@/pages/hooks/project/use-page-types";
 import { has } from "lodash-es";
 import { lazy } from "react";
@@ -8,7 +8,7 @@ const SeoPanel = lazy(() => import("../client/components/seo-panel"));
 export const seoPanelId = "seo";
 
 export const SeoButton = ({ isActive, show }: { isActive: boolean; show: () => void }) => {
-  const { data: currentPage } = useChaiCurrentPage();
+  const { data: currentPage } = usePrimaryPage();
   const pageType = usePageType(currentPage?.pageType);
 
   if (!has(pageType, "hasSlug") || !pageType.hasSlug) return null;

@@ -1,7 +1,7 @@
 import { useSavePage } from "@/hooks/use-save-page";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { ERRORS } from "@/pages/constants/ERRORS";
-import { useActivePage, useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
+import { useCurrentActivePage, usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
 import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useRevisionsEnabled } from "@/pages/hooks/use-revisions-enabled";
@@ -58,7 +58,7 @@ export const useUpdatePage = () => {
   const apiUrl = useApiUrl();
   const queryClient = useQueryClient();
   const fetchAPI = useFetch();
-  const { data: activePage } = useActivePage();
+  const { data: activePage } = useCurrentActivePage();
   const { data: pageTypes } = usePageTypes();
   return useMutation({
     mutationFn: async (updatedPage: Partial<any>) => {
@@ -178,30 +178,11 @@ export const useUnpublishPage = () => {
   });
 };
 
-export const usePublishPage = () => {
-  const apiUrl = useApiUrl();
-  const fetchAPI = useFetch();
-  return useMutation({
-    mutationFn: async (id: string) => {
-      return fetchAPI(apiUrl, {
-        action: ACTIONS.PUBLISH_PAGE,
-        data: { id },
-      });
-    },
-    onSuccess: () => {
-      toast.success("Page published successfully.");
-    },
-    onError: () => {
-      toast.error("Failed to publish page");
-    },
-  });
-};
-
 export const usePublishPages = () => {
   const apiUrl = useApiUrl();
   const fetchAPI = useFetch();
   const queryClient = useQueryClient();
-  const { data: currentPage } = useChaiCurrentPage();
+  const { data: currentPage } = usePrimaryPage();
   const { savePageAsync } = useSavePage();
   const revisionsEnabled = useRevisionsEnabled();
 

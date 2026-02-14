@@ -1,6 +1,6 @@
 import { useLanguages } from "@/hooks/use-languages";
 import { addNewLangAtom } from "@/pages/atom/add-new-lang";
-import { useWebsiteLanguagePages, useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
+import { useWebsiteLanguagePages, useWebsitePrimaryPages } from "@/pages/hooks/pages/use-project-pages";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useFallbackLang } from "@/pages/hooks/use-fallback-lang";
 import { usePageExpandManager } from "@/pages/hooks/utils/use-page-expand-manager";
@@ -31,7 +31,7 @@ const PagesManagerNew = ({ close }: PageManagerNewProps) => {
   const { t } = useTranslation();
   const { languages, setSelectedLang } = useLanguages();
   const { data: pageTypes } = usePageTypes();
-  const { data, isFetching } = useWebsitePages();
+  const { data, isFetching } = useWebsitePrimaryPages();
   const [queryParams, setQueryParams] = useSearchParams();
   const { updateForSelectedPage, expandPagesOnSearch } = usePageExpandManager(null);
   const fallbackLang = useFallbackLang();
@@ -50,7 +50,6 @@ const PagesManagerNew = ({ close }: PageManagerNewProps) => {
   const [_showUntranslatedPages, setShowUntranslatedPages] = useState(false);
   const setAddNewLang = useSetAtom(addNewLangAtom);
   const showUntranslatedPages = _showUntranslatedPages && selectedLanguage !== fallbackLang;
-
   const { data: languagePages, isFetching: isFetchingLangPages } = useWebsiteLanguagePages(selectedLanguage);
 
   const hasSlug = useCallback(
@@ -131,11 +130,7 @@ const PagesManagerNew = ({ close }: PageManagerNewProps) => {
           setQueryParams(newParams);
         } else {
           if (typeof window !== "undefined" && window.history && window.location) {
-            window.history.replaceState(
-              window.history.state,
-              "",
-              window.location.pathname + window.location.hash
-            );
+            window.history.replaceState(window.history.state, "", window.location.pathname + window.location.hash);
             // Manually dispatch a popstate event to keep behavior consistent
             // with navigateToPage, which also triggers a popstate.
             window.dispatchEvent(new PopStateEvent("popstate", { state: window.history.state }));

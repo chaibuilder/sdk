@@ -1,10 +1,10 @@
-import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
+import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { atom, useAtom } from "jotai";
-import { find, noop } from "lodash-es";
+import { find, noop, values } from "lodash-es";
 import { useMemo } from "react";
-import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
 import { useDynamicPageSlug } from "./use-dynamic-page-selector";
+import { useWebsiteLanguagePages, useWebsitePrimaryPages } from "./use-project-pages";
 
 const pageEditInfoAtom = atom<{
   lastSaved?: string;
@@ -14,20 +14,24 @@ export const usePageEditInfo = () => {
   return useAtom(pageEditInfoAtom);
 };
 
-export const useChaiCurrentPage = () => {
+export const usePrimaryPage = () => {
   const [searchParams] = useSearchParams();
   const page = searchParams.get("page");
-  const { data: pages, isFetching } = useLanguagePages();
+  const { data: pages, isFetching } = useWebsitePrimaryPages();
   const currentPage = useMemo(() => ({ ...(find(pages, { id: page }) || {}) }), [pages, page]);
-
   return { data: currentPage as any, isFetching };
 };
 
-export const useActivePage = () => {
+export const useCurrentActivePage = () => {
   const [searchParams] = useSearchParams();
   const lang = searchParams.get("lang") ?? "";
-  const { data: languagePages, isFetching } = useLanguagePages();
-  const currentPage = useMemo(() => find(languagePages, { lang }) || {}, [languagePages, lang]);
+  const page = searchParams.get("page");
+  const { data: languagePages, isFetching } = useWebsiteLanguagePages(lang);
+  const { data: primaryPages } = useWebsitePrimaryPages();
+  const currentPage = useMemo(
+    () => find([...values(languagePages), ...primaryPages], { lang, id: page }) || {},
+    [languagePages, lang, page],
+  );
   return { data: currentPage as any, isFetching };
 };
 
@@ -41,7 +45,7 @@ export const usePageMetaData = () => {
  * @returns full url of the current page
  */
 export const useGetPageFullSlug = () => {
-  const { data: activePage } = useActivePage();
+  const { data: activePage } = useCurrentActivePage();
   const dynamicPageSlug = useDynamicPageSlug();
   const getLiveUrl = usePagesProp("getLiveUrl", noop);
 

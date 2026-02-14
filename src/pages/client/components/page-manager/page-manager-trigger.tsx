@@ -3,8 +3,8 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useSavePage } from "@/hooks/use-save-page";
 import { usePageLockStatus } from "@/pages/client/components/page-lock/page-lock-hook";
-import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
-import { useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
+import { usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
+import { useWebsitePrimaryPages } from "@/pages/hooks/pages/use-project-pages";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { isEmpty } from "lodash-es";
 import { Folder } from "lucide-react";
@@ -16,8 +16,8 @@ const PagesManagerTrigger = ({ children }: { children?: React.ReactNode }) => {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const page = searchParams.get("page");
-  const { data: currentPage, isFetching } = useChaiCurrentPage();
-  const { data: allPages, isFetching: isPagesLoading } = useWebsitePages();
+  const { data: currentPage, isFetching } = usePrimaryPage();
+  const { data: allPages, isFetching: isPagesLoading } = useWebsitePrimaryPages();
   const [pageManager, setPageManager] = useState(false);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const { savePage } = useSavePage();

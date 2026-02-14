@@ -5,7 +5,7 @@ import { useFetch } from "@/pages/hooks/utils/use-fetch";
 import { useQuery } from "@tanstack/react-query";
 import { atom, PrimitiveAtom, useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useChaiCurrentPage } from "./use-current-page";
+import { usePrimaryPage } from "./use-current-page";
 
 type DynamicPage = { id: string; name: string; slug: string; lang: string; primaryPage?: string };
 
@@ -31,7 +31,7 @@ function useDebouncedValue<T>(value: T, delay: number) {
 
 const useGetDynamicPages = ({ query, uuid }: { query: string; uuid?: string }) => {
   const { selectedLang, fallbackLang } = useLanguages();
-  const { data: currentPage } = useChaiCurrentPage();
+  const { data: currentPage } = usePrimaryPage();
   const pageType = currentPage?.pageType;
   const apiUrl = useApiUrl();
   const fetchAPI = useFetch();

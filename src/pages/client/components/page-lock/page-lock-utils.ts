@@ -1,4 +1,4 @@
-import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
+import { usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
 import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
 import { useChaiAuth } from "@/pages/hooks/use-chai-auth";
 import { atom } from "jotai";
@@ -69,6 +69,6 @@ export const useChannelId = () => {
 };
 
 export const usePageId = () => {
-  const { data: currentPage } = useChaiCurrentPage();
+  const { data: currentPage } = usePrimaryPage();
   return currentPage?.id;
 };

@@ -1,3 +1,4 @@
+import { useLanguages } from "@/hooks/use-languages";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
 import { useFetch } from "@/pages/hooks/utils/use-fetch";
@@ -10,6 +11,8 @@ export const useLanguagePages = (pageId?: string | undefined) => {
   const [searchParams] = useSearchParams();
   const page = pageId ?? searchParams.get("page");
   const fetchAPI = useFetch();
+  const { languages } = useLanguages();
+
   return useQuery({
     queryKey: [ACTIONS.GET_LANGUAGE_PAGES, page],
     staleTime: Infinity,
@@ -23,6 +26,6 @@ export const useLanguagePages = (pageId?: string | undefined) => {
       });
       return reverse(sortBy(data, "primaryPage"));
     },
-    enabled: !!page,
+    enabled: !!page && !!languages?.length,
   });
 };

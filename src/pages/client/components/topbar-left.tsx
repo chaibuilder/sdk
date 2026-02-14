@@ -10,7 +10,7 @@ import { mergeClasses } from "@/core/main";
 import { useLanguages } from "@/hooks/use-languages";
 import { addNewLangAtom } from "@/pages/atom/add-new-lang";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
-import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
+import { usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
 import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
 import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
@@ -67,7 +67,7 @@ export const LanguageSwitcher = ({
 
   const setAddNewLang = useSetAtom(addNewLangAtom);
 
-  const { data: currentPage } = useChaiCurrentPage();
+  const { data: currentPage } = usePrimaryPage();
   const { data: websiteSettings } = useWebsiteSetting();
   const { data: languagePages } = useLanguagePages();
 

@@ -24,7 +24,7 @@ import { useSavePage } from "@/hooks/use-save-page";
 import PermissionChecker from "@/pages/client/components/permission-checker";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
-import { useChaiCurrentPage, usePageEditInfo } from "@/pages/hooks/pages/use-current-page";
+import { usePageEditInfo, usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
 import { type Revision, useDeleteRevision, useRestoreRevision, useRevisions } from "@/pages/hooks/use-revisions";
 import { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
 import { useQueryClient } from "@tanstack/react-query";
@@ -85,7 +85,7 @@ interface CurrentlyEditingCardProps {
 }
 
 function CurrentlyEditingCard({ compare, setCompare }: CurrentlyEditingCardProps) {
-  const { data: currentPage } = useChaiCurrentPage();
+  const { data: currentPage } = usePrimaryPage();
   const { saveState } = useSavePage();
   const [pageEditInfo] = usePageEditInfo();
   if (!currentPage) return null;
@@ -516,7 +516,7 @@ export default function PageRevisionsContent({ isOpen }: PageRevisionsContentPro
   const [selectedRevision, setSelectedRevision] = React.useState<Revision | null>(null);
   const [restoreDialogOpen, setRestoreDialogOpen] = React.useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
-  const { data: currentPage } = useChaiCurrentPage();
+  const { data: currentPage } = usePrimaryPage();
   const { data: revisions, isFetching: isFetchingRevisions, error, refetch } = useRevisions(currentPage?.id);
   const { mutate: deleteRevision, isPending: isDeleting } = useDeleteRevision();
   const { mutate: restoreRevision, isPending: isRestoring } = useRestoreRevision();

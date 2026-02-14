@@ -1,5 +1,5 @@
 import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
-import { useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
+import { useWebsitePrimaryPages } from "@/pages/hooks/pages/use-project-pages";
 import { compact, filter, find, get, isEmpty, uniq } from "lodash-es";
 import { useCallback } from "react";
 
@@ -13,7 +13,7 @@ export interface PartialBlockInfo {
 
 export const useGetUnpublishedPartialBlocks = () => {
   const [blocksStore] = useBlocksStore();
-  const { data: websitePages } = useWebsitePages();
+  const { data: websitePages } = useWebsitePrimaryPages();
 
   const getUnpublishedPartialBlocks = useCallback(() => {
     // Guard: return empty if websitePages is not loaded yet
