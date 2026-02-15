@@ -7,7 +7,6 @@ import { AiIcon } from "@/core/components/ai/ai-icon";
 import { AskAI } from "@/core/components/ask-ai-panel";
 import CanvasArea from "@/core/components/canvas/canvas-area";
 import { useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
-import { CanvasTopBar } from "@/core/components/canvas/topbar/canvas-top-bar";
 import { AddBlocksDialog } from "@/core/components/layout/add-blocks-dialog";
 import { NoopComponent } from "@/core/components/noop-component";
 import SettingsPanel from "@/core/components/settings/settings-panel";
@@ -204,16 +203,16 @@ const RootLayout: ComponentType = () => {
   return (
     <div dir={htmlDir} className="h-screen max-h-full w-screen overflow-x-hidden bg-background text-foreground">
       <TooltipProvider>
-        <div
-          onContextMenu={preventContextMenu}
-          className="flex h-full max-h-full flex-col bg-background text-foreground">
-          <div className="flex h-[50px] w-screen items-center border-b border-border">
+        <div onContextMenu={preventContextMenu} className="flex h-full max-h-full flex-col">
+          <div className="flex h-[50px] w-screen items-center bg-black text-white">
             <Suspense>
               <TopBar />
             </Suspense>
           </div>
           <main className="relative flex h-[calc(100vh-56px)] max-w-full flex-1 flex-row">
-            <div id="sidebar" className="flex w-12 flex-col items-center justify-between border-r border-border py-2">
+            <div
+              id="sidebar"
+              className="flex w-12 flex-col items-center justify-between border-r border-border bg-gray-900 py-2 text-white">
               <div className="flex flex-col gap-y-1">
                 {totalTopPanels.map((item, index) => (
                   <Tooltip key={"button-top-" + index}>
@@ -274,7 +273,7 @@ const RootLayout: ComponentType = () => {
               )}
             </motion.div>
             <div id="canvas-container" className="flex h-full max-h-full flex-1 flex-col bg-slate-800/20">
-              <CanvasTopBar />
+              {/* <CanvasTopBar /> */}
               <Suspense>
                 <CanvasArea />
               </Suspense>

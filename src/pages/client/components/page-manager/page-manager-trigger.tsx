@@ -46,7 +46,7 @@ const PagesManagerTrigger = ({ children }: { children?: React.ReactNode }) => {
               }}>
               {children || (
                 <Button
-                  variant="secondary"
+                  variant="ghost"
                   key={"template-viewer"}
                   className="flex w-full items-center justify-center rounded-md p-2 pl-0">
                   <Folder className="ml-2 h-10 w-10 fill-primary text-primary" />
