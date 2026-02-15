@@ -16,7 +16,7 @@ import { SlugInput } from "@/pages/client/components/slug-input";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { useCreatePage, useUpdatePage } from "@/pages/hooks/pages/mutations";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
-import { useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
+import { useWebsitePrimaryPages } from "@/pages/hooks/pages/use-project-pages";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
 import { useFallbackLang } from "@/pages/hooks/use-fallback-lang";
@@ -532,7 +532,7 @@ const AddNewLanguagePage = ({
   preselectedLang,
 }: AddNewLanguagePageProps) => {
   // Fetch all pages and find the primary page object
-  const { data: pages = [] } = useWebsitePages();
+  const { data: pages = [] } = useWebsitePrimaryPages();
   const primaryPageObject = useMemo(() => pages.find((p: any) => p.id === primaryPage), [pages, primaryPage]);
 
   // State for form fields

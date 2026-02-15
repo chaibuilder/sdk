@@ -11,7 +11,6 @@ export const useExtractPageBlocks = (pageBlocks: ChaiBlock[]): ExtractedTemplate
   return useMemo(() => {
     if (!pageBlocks || isEmpty(pageBlocks)) return { blocks: [] };
     const blocks = filter(pageBlocks, (block: ChaiBlock) => !includes(block?._type, "@chai/")) as ChaiBlock[];
-
     return { blocks: syncBlocksWithDefaultProps(blocks) };
   }, [pageBlocks]);
 };
