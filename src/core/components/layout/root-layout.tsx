@@ -204,7 +204,7 @@ const RootLayout: ComponentType = () => {
     <div dir={htmlDir} className="h-screen max-h-full w-screen overflow-x-hidden bg-background text-foreground">
       <TooltipProvider>
         <div onContextMenu={preventContextMenu} className="flex h-full max-h-full flex-col">
-          <div className="flex h-[50px] w-screen items-center bg-black text-white">
+          <div className="flex h-[50px] w-screen items-center border-b border-[#454545] bg-[#373c3f] text-[#fafafa]">
             <Suspense>
               <TopBar />
             </Suspense>
@@ -212,7 +212,7 @@ const RootLayout: ComponentType = () => {
           <main className="relative flex h-[calc(100vh-56px)] max-w-full flex-1 flex-row">
             <div
               id="sidebar"
-              className="flex w-12 flex-col items-center justify-between border-r border-border bg-gray-900 py-2 text-white">
+              className="flex w-12 flex-col items-center justify-between border-r border-[#454545] bg-[#292929] py-2 text-[#fafafa]">
               <div className="flex flex-col gap-y-1">
                 {totalTopPanels.map((item, index) => (
                   <Tooltip key={"button-top-" + index}>
@@ -254,7 +254,7 @@ const RootLayout: ComponentType = () => {
             {/* Side Panel */}
             <motion.div
               id="left-panel"
-              className="h-full max-h-full border-r border-border"
+              className="h-full max-h-full border-r border-[#454545] bg-[#353535] text-[#fafafa]"
               initial={{ width: leftPanelWidth }}
               animate={{ width: leftPanelWidth }}
               transition={{ duration: 0.3, ease: "easeInOut" }}>
@@ -280,7 +280,7 @@ const RootLayout: ComponentType = () => {
             </div>
             <motion.div
               id="right-panel"
-              className="h-full max-h-full border-l border-border"
+              className="h-full max-h-full border-l border-[#454545] bg-[#353535] text-[#fafafa]"
               initial={{ width: activePanel === "ai" ? 0 : DEFAULT_PANEL_WIDTH }}
               animate={{ width: activePanel === "ai" ? 0 : DEFAULT_PANEL_WIDTH }}
               transition={{ duration: 0.3, ease: "easeInOut" }}>
