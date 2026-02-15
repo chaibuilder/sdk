@@ -8,6 +8,7 @@ export interface ChaiPage {
   pageType: string;
   parent: string | null;
   children?: ChaiPage[];
+  isTemplate?: boolean;
   dynamic?: boolean;
   [key: string]: any;
 }
