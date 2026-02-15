@@ -80,8 +80,6 @@ export const PageDropdownInHeader = () => {
             setAddEditPage={(page) => handleAddEditPage(page)}
             setUnpublishPage={(page) => setUnpublishPageModal(page)}
             setDeletePage={(page) => setDeletePageModal(page)}
-            setMarkAsTemplate={(page) => setMarkAsTemplateModal(page)}
-            setUnmarkAsTemplate={(page) => setUnmarkAsTemplateModal(page)}
             isLanguagePage={selectedLang.length > 0 && selectedLang !== fallbackLang}>
             <Button variant="ghost" size="icon" className="h-7 w-7 rounded">
               <MoreHorizontal className="h-4 w-4" />
