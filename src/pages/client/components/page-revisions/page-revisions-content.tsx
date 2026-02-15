@@ -85,10 +85,10 @@ interface CurrentlyEditingCardProps {
 }
 
 function CurrentlyEditingCard({ compare, setCompare }: CurrentlyEditingCardProps) {
-  const { data: currentPage } = usePrimaryPage();
+  const { data: primaryPage } = usePrimaryPage();
   const { saveState } = useSavePage();
   const [pageEditInfo] = usePageEditInfo();
-  if (!currentPage) return null;
+  if (!primaryPage) return null;
 
   const checked = !!compare.find((item) => item?.uid?.startsWith("draft:"));
   const disabled = compare.length >= 2 && !checked;
@@ -122,11 +122,11 @@ function CurrentlyEditingCard({ compare, setCompare }: CurrentlyEditingCardProps
         disabled={disabled}
         onChange={() => {
           if (checked) {
-            setCompare(compare.filter((item) => item.uid !== `draft:${currentPage?.id}`));
+            setCompare(compare.filter((item) => item.uid !== `draft:${primaryPage?.id}`));
           } else {
             setCompare([
               ...compare,
-              { uid: `draft:${currentPage?.id}`, label: "draft", item: { createdAt: Date.now() } as any },
+              { uid: `draft:${primaryPage?.id}`, label: "draft", item: { createdAt: Date.now() } as any },
             ]);
           }
         }}

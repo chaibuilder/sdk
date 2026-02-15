@@ -18,7 +18,7 @@ export const usePageAllData = () => {
   const apiUrl = useApiUrl();
   const fetchAPI = useFetch();
   const queryClient = useQueryClient();
-  const { data: currentPage } = usePrimaryPage();
+  const { data: primaryPage } = usePrimaryPage();
   const { data: activePage } = useCurrentActivePage();
   const fallbackLang = useFallbackLang();
   const dynamicPageSlug = useDynamicPageSlug();
@@ -33,19 +33,19 @@ export const usePageAllData = () => {
         data: {
           id: page,
           lang: activePage?.lang || fallbackLang,
-          pageType: currentPage?.pageType,
+          pageType: primaryPage?.pageType,
           pageProps: {
             slug: activePage?.slug + dynamicPageSlug,
             searchParams: {},
             pageType: activePage?.pageType,
             fallbackLang,
             lastSaved: activePage?.lastSaved,
-            pageId: currentPage?.id,
-            primaryPageId: activePage?.primaryPage || currentPage?.id,
+            pageId: primaryPage?.id,
+            primaryPageId: activePage?.primaryPage || primaryPage?.id,
             pageBaseSlug: activePage?.slug,
-            dynamic: currentPage?.dynamic,
+            dynamic: primaryPage?.dynamic,
             languagePageId: activePage?.id,
-            metadata: currentPage?.metadata || {},
+            metadata: primaryPage?.metadata || {},
           },
         },
       });
@@ -58,6 +58,6 @@ export const usePageAllData = () => {
 
       return data;
     },
-    enabled: !!page && !!currentPage?.pageType && !!activePage?.id,
+    enabled: !!page && !!primaryPage?.pageType && !!activePage?.id,
   });
 };

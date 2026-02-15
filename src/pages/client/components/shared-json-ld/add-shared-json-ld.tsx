@@ -45,7 +45,7 @@ const AddSharedJsonLDDialogContent = ({
     enabledByDefaultForNewPages: false,
   });
   const [addToAllExistingPages, setAddToAllExistingPages] = useState(false);
-  const { data: currentPage } = usePrimaryPage();
+  const { data: primaryPage } = usePrimaryPage();
   const { mutateAsync: addGlobalSchema, isPending } = useAddGlobalSchema();
   const { mutateAsync: togglePageGlobalSchema } = useTogglePageGlobalSchema();
   const queryClient = useQueryClient();
@@ -92,16 +92,16 @@ const AddSharedJsonLDDialogContent = ({
     const result = await addGlobalSchema(payload);
 
     // Automatically enable the schema on the current page (only for default language schemas)
-    if (currentPage?.id && result?.id && !initialData?.primaryPageId) {
+    if (primaryPage?.id && result?.id && !initialData?.primaryPageId) {
       await togglePageGlobalSchema({
         schemaId: result.id,
-        pageId: currentPage.id,
+        pageId: primaryPage.id,
         enabled: true,
       });
 
       // Invalidate language pages to refresh the current page data immediately
       queryClient.invalidateQueries({
-        queryKey: [ACTIONS.GET_LANGUAGE_PAGES, currentPage.id],
+        queryKey: [ACTIONS.GET_LANGUAGE_PAGES, primaryPage.id],
       });
     }
 

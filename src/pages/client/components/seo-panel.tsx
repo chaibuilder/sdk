@@ -82,7 +82,7 @@ const insertFieldAtCursor = (inputElement: HTMLInputElement | HTMLTextAreaElemen
 const SeoPanel = () => {
   const { t } = useTranslation();
   const [, setActivePanel] = useSidebarActivePanel();
-  const { data: currentPage } = usePrimaryPage();
+  const { data: primaryPage } = usePrimaryPage();
   const { data: pageData } = useBuilderPageData();
   const { data: languagePage, isFetching } = useCurrentLanguagePage();
   const seoSetting = languagePage?.seo;
@@ -91,8 +91,8 @@ const SeoPanel = () => {
   const [tab, setTab] = useState("seo");
 
   // Get the page type for default SEO and JSON-LD values
-  const pageId = currentPage?.id;
-  const pageType = currentPage?.pageType;
+  const pageId = primaryPage?.id;
+  const pageType = primaryPage?.pageType;
   const pageTypeDetails = usePageType(pageType);
   const { selectedLang, fallbackLang } = useLanguages();
   const selectedLanguage = selectedLang || fallbackLang;
@@ -405,7 +405,7 @@ const SeoPanel = () => {
   };
 
   const copyJsonLDFromDefaultPage = () => {
-    const defaultPageJsonLd = get(currentPage, "seo.jsonLD", "{}");
+    const defaultPageJsonLd = get(primaryPage, "seo.jsonLD", "{}");
     if (defaultPageJsonLd?.trim() === "{}") {
       toast.error("Default page JSON-LD is empty");
       return;

@@ -16,12 +16,12 @@ const PagesManagerTrigger = ({ children }: { children?: React.ReactNode }) => {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const page = searchParams.get("page");
-  const { data: currentPage, isFetching } = usePrimaryPage();
+  const { data: primaryPage, isFetching } = usePrimaryPage();
   const { data: allPages, isFetching: isPagesLoading } = useWebsitePrimaryPages();
   const [pageManager, setPageManager] = useState(false);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const { savePage } = useSavePage();
-  const canClose = !!page && !isEmpty(currentPage);
+  const canClose = !!page && !isEmpty(primaryPage);
   const { isLocked } = usePageLockStatus();
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const PagesManagerTrigger = ({ children }: { children?: React.ReactNode }) => {
 
   // Open the page manager
   const shouldOpenForMissingPage = !isInitialLoad && !page;
-  const shouldOpenForEmptyPage = !isInitialLoad && !isFetching && isEmpty(currentPage);
+  const shouldOpenForEmptyPage = !isInitialLoad && !isFetching && isEmpty(primaryPage);
   const isOpen = pageManager || shouldOpenForMissingPage || shouldOpenForEmptyPage;
 
   return (

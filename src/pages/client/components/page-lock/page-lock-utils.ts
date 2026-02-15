@@ -69,6 +69,6 @@ export const useChannelId = () => {
 };
 
 export const usePageId = () => {
-  const { data: currentPage } = usePrimaryPage();
-  return currentPage?.id;
+  const { data: primaryPage } = usePrimaryPage();
+  return primaryPage?.id;
 };
