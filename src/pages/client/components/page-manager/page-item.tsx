@@ -174,6 +174,7 @@ const PageItem = ({
               </span>
             </Tooltip>
           )}
+          {/* HIDDEN: Template icon indicator
           {isTemplate && (
             <Tooltip content="Template" side="top">
               <span className="text-blue-500">
@@ -181,6 +182,7 @@ const PageItem = ({
               </span>
             </Tooltip>
           )}
+          */}
 
           {!page.isPartialGroup && hasLangPage && !pageOwner ? (
             <div className="duration absolute right-0.5 top-[3px]">
