@@ -14,7 +14,7 @@ import { TemplateSelection } from "@/pages/client/components/template-selection"
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
 import { useCreatePage, useUpdatePage } from "@/pages/hooks/pages/mutations";
-import { useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
+import { useWebsitePrimaryPages } from "@/pages/hooks/pages/use-project-pages";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useTemplatesWithLibraries } from "@/pages/hooks/project/use-templates-with-libraries";
 import { useChangePage } from "@/pages/hooks/use-change-page";
@@ -63,7 +63,7 @@ export default function PageCreator({ addEditPage, close, closePanel }: PageCrea
   const additionalPageTypes: any[] = useMemo(() => _additionalPageTypes ?? [], [_additionalPageTypes]);
   const changePage = useChangePage();
   const isEdit = addEditPage?.id ? true : false;
-  const { data: pages } = useWebsitePages();
+  const { data: pages } = useWebsitePrimaryPages();
   const { mutate: createPage, isPending: isCreating } = useCreatePage();
   const { mutate: updatePage, isPending: isUpdating } = useUpdatePage();
   const [submitError, setSubmitError] = useState<string | null>(null);

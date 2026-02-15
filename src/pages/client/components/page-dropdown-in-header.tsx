@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useLanguages } from "@/hooks/use-languages";
 import { addNewLangAtom } from "@/pages/atom/add-new-lang";
-import { useActivePage } from "@/pages/hooks/pages/use-current-page";
+import { useCurrentActivePage } from "@/pages/hooks/pages/use-current-page";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
 import { useSetAtom } from "jotai";
 import { get } from "lodash-es";
@@ -27,7 +27,7 @@ export const PageDropdownInHeader = () => {
   const [duplicatePageModal, setDuplicatePageModal] = useState<any>(null);
   const [addEditPageModal, setAddEditPageModal] = useState<any>(null);
 
-  const { data: page, isFetching } = useActivePage();
+  const { data: page, isFetching } = useCurrentActivePage();
   const { selectedLang, fallbackLang } = useLanguages();
   const { data: languagePages } = useLanguagePages();
   const currentLangPage = languagePages?.find((langPage) => langPage.lang === selectedLang);
@@ -80,8 +80,6 @@ export const PageDropdownInHeader = () => {
             setAddEditPage={(page) => handleAddEditPage(page)}
             setUnpublishPage={(page) => setUnpublishPageModal(page)}
             setDeletePage={(page) => setDeletePageModal(page)}
-            setMarkAsTemplate={(page) => setMarkAsTemplateModal(page)}
-            setUnmarkAsTemplate={(page) => setUnmarkAsTemplateModal(page)}
             isLanguagePage={selectedLang.length > 0 && selectedLang !== fallbackLang}>
             <Button variant="ghost" size="icon" className="h-7 w-7 rounded">
               <MoreHorizontal className="h-4 w-4" />

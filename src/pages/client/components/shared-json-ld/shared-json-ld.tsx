@@ -16,7 +16,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useLanguages } from "@/hooks/use-languages";
-import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
+import { usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
 import { useDeleteGlobalSchema, useTogglePageGlobalSchema } from "@/pages/hooks/project/mutations";
 import { useGlobalJsonLDItems } from "@/pages/hooks/use-global-json-ld";
@@ -36,7 +36,7 @@ export default function SharedJsonLD() {
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const { data: globalJsonLDItems, isLoading } = useGlobalJsonLDItems();
   const { selectedLang } = useLanguages();
-  const { data: currentPage } = useChaiCurrentPage();
+  const { data: currentPage } = usePrimaryPage();
   const { data: languagePages } = useLanguagePages();
   const { mutateAsync: deleteGlobalSchema } = useDeleteGlobalSchema();
   const { mutateAsync: togglePageGlobalSchema } = useTogglePageGlobalSchema();

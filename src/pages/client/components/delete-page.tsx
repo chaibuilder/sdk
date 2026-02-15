@@ -12,7 +12,7 @@ import { useSidebarActivePanel } from "@/hooks/use-sidebar-active-panel";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { useDeletePage } from "@/pages/hooks/pages/mutations";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
-import { useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
+import { useWebsitePrimaryPages } from "@/pages/hooks/pages/use-project-pages";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { ChaiPage } from "@/pages/utils/page-organization";
@@ -39,7 +39,7 @@ function DeletePage({ page, onClose }: { page: any; onClose: () => void }) {
   const [, setQueryParams] = useSearchParams();
   const { mutate: deletePage, isPending: isDeleting } = useDeletePage();
   const { data: pageTypes } = usePageTypes();
-  const { data: allPages = [] } = useWebsitePages();
+  const { data: allPages = [] } = useWebsitePrimaryPages();
   const { setSelectedLang, fallbackLang } = useLanguages();
   const [, setActivePanel] = useSidebarActivePanel();
   const isPrimaryPage = !page?.primaryPage;

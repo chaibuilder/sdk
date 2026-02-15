@@ -1,9 +1,9 @@
-import { useWebsitePages } from "@/pages/hooks/pages/use-project-pages";
+import { useWebsitePrimaryPages } from "@/pages/hooks/pages/use-project-pages";
 import { filter } from "lodash-es";
 import { useMemo } from "react";
 
 export const useTemplates = (pageType?: string) => {
-  const { data: pages, isFetching } = useWebsitePages();
+  const { data: pages, isFetching } = useWebsitePrimaryPages();
 
   const templates = useMemo(() => {
     if (!pages) return [];
