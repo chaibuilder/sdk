@@ -1,52 +1,10 @@
-import { useIsPageLoaded } from "@/hooks/use-is-page-loaded";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
-import { useAiContext } from "@/pages/hooks/ai/use-ai-context";
-import {
-  useCurrentActivePage,
-  usePageEditInfo,
-  usePageMetaData,
-  usePrimaryPage,
-} from "@/pages/hooks/pages/use-current-page";
+import { useCurrentActivePage, usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
 import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
 import { useFallbackLang } from "@/pages/hooks/use-fallback-lang";
 import { useFetch } from "@/pages/hooks/utils/use-fetch";
-import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { useQuery } from "@tanstack/react-query";
-import { find, get } from "lodash-es";
 import { useDynamicPageSlug } from "./use-dynamic-page-selector";
-
-export const usePageDraftBlocks = () => {
-  const [searchParams] = useSearchParams();
-  const page = searchParams.get("page");
-  const apiUrl = useApiUrl();
-  const { setAiContext } = useAiContext();
-  const [, setPageEditInfo] = usePageEditInfo();
-  const [, setPageMetaData] = usePageMetaData();
-  const [, setPageLoaded] = useIsPageLoaded();
-  const fetchAPI = useFetch();
-
-  return useQuery({
-    queryKey: [ACTIONS.GET_DRAFT_PAGE, page],
-    staleTime: Infinity,
-    gcTime: 0,
-    queryFn: async () => {
-      setPageLoaded(false);
-      const data: any = await fetchAPI(apiUrl, {
-        action: ACTIONS.GET_DRAFT_PAGE,
-        data: { id: page, draft: true },
-      });
-      // if page is locked, return empty array
-      const blocks = data.blocks ?? [];
-      const aiContextBlock = find(blocks, { _type: "@chai/ai-context" });
-      setAiContext(get(aiContextBlock, "_value", "") || "");
-      setPageEditInfo((prev) => ({ ...prev, lastSaved: data.lastSaved }));
-      setPageMetaData(get(data, "metadata", {}));
-      setTimeout(() => setPageLoaded(true), 500);
-      return blocks;
-    },
-    enabled: !!page,
-  });
-};
 
 export const useBuilderPageData = () => {
   const { data: currentPage } = usePrimaryPage();

@@ -51,8 +51,7 @@ export const usePageAllData = () => {
       });
 
       // Populate individual query caches for backward compatibility
-      // This allows usePageDraftBlocks() and useBuilderPageData() to work without changes
-      queryClient.setQueryData([ACTIONS.GET_DRAFT_PAGE, page], data.draftPage);
+      // This allows useBuilderPageData() to work without changes
       queryClient.setQueryData([ACTIONS.GET_BUILDER_PAGE_DATA, activePage?.id, dynamicPageSlug], data.builderPageData);
       queryClient.setQueryData([ACTIONS.GET_LANGUAGE_PAGES, page], data.languagePages);
 
