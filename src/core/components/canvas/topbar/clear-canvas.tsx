@@ -34,7 +34,7 @@ export const ClearCanvas = ({ children }: { children?: React.ReactNode }) => {
         <AlertDialogTrigger asChild>
           {children || (
             <Button size="sm" variant="ghost" className="flex items-center">
-              <EraserIcon /> {t("Clear")}
+              <EraserIcon />
             </Button>
           )}
         </AlertDialogTrigger>
