@@ -1,7 +1,7 @@
 import { useSavePage } from "@/hooks/use-save-page";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { ERRORS } from "@/pages/constants/ERRORS";
-import { useCurrentActivePage, usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
+import { useCurrentActivePage } from "@/pages/hooks/pages/use-current-page";
 import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useRevisionsEnabled } from "@/pages/hooks/use-revisions-enabled";
@@ -181,8 +181,6 @@ export const useUnpublishPage = () => {
 export const usePublishPages = () => {
   const apiUrl = useApiUrl();
   const fetchAPI = useFetch();
-  const queryClient = useQueryClient();
-  const { data: currentPage } = usePrimaryPage();
   const { savePageAsync } = useSavePage();
   const revisionsEnabled = useRevisionsEnabled();
 
@@ -196,15 +194,8 @@ export const usePublishPages = () => {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [ACTIONS.GET_CHANGES],
-      });
-      queryClient.invalidateQueries({
-        queryKey: [ACTIONS.GET_WEBSITE_PAGES],
-      });
-      queryClient.invalidateQueries({
-        queryKey: [ACTIONS.GET_LANGUAGE_PAGES, currentPage?.id],
-      });
+      //TODO: Update the pages online status via queryClient.setQueryData()
+      //TODO: Update the changes via queryClient.setQueryData()
     },
     onError: (error) => {
       console.log("##", error);

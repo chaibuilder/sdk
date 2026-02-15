@@ -5,7 +5,7 @@ import { useCurrentActivePage } from "@/pages/hooks/pages/use-current-page";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
 import { useSetAtom } from "jotai";
 import { get } from "lodash-es";
-import { File, Hash, Loader, MoreHorizontal } from "lucide-react";
+import { File, Hash, Loader, MoreHorizontal, MoreVertical } from "lucide-react";
 import { lazy, Suspense, useState } from "react";
 import { PageActionsDropdown } from "./page-action-dropdown";
 import { usePageLockStatus } from "./page-lock/page-lock-hook";
@@ -82,7 +82,7 @@ export const PageDropdownInHeader = () => {
             setDeletePage={(page) => setDeletePageModal(page)}
             isLanguagePage={selectedLang.length > 0 && selectedLang !== fallbackLang}>
             <Button variant="ghost" size="icon" className="h-7 w-7 rounded">
-              <MoreHorizontal className="h-4 w-4" />
+              <MoreVertical className="h-4 w-4" />
             </Button>
           </PageActionsDropdown>
         )}
