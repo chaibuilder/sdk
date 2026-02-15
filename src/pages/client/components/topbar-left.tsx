@@ -22,7 +22,6 @@ import { ChevronDown, Languages, Plus, Star } from "lucide-react";
 import React, { lazy, Suspense, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { usePageLockStatus } from "./page-lock/page-lock-hook";
-import PagesManagerTrigger from "./page-manager/page-manager-trigger";
 
 const AddNewLanguagePage = lazy(() => import("./add-new-language-page"));
 
@@ -214,7 +213,6 @@ export default function TopbarLeft() {
   return (
     <div className="relative z-10 flex items-center justify-end gap-1">
       <TopLeftCorner />
-      <PagesManagerTrigger />
       {addNewLang && (
         <Suspense>
           <AddNewLanguagePage

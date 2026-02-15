@@ -10,6 +10,7 @@ import { useChaiFeatureFlag } from "@/runtime/client";
 import { get } from "lodash-es";
 import { ExternalLink } from "lucide-react";
 import { lazy, Suspense } from "react";
+import PagesManagerTrigger from "../client/components/page-manager/page-manager-trigger";
 const DynamicPageSelector = lazy(() => import("../client/components/dynamic-page-selector"));
 
 const DynamicPageSelectorSuspense = () => {
@@ -45,6 +46,7 @@ const AddressBar = () => {
   const visibleSlug = visible.replace(window.location.host, "");
   return (
     <div className={`relative flex items-center`}>
+      <PagesManagerTrigger />
       <div
         className={mergeClasses(
           "flex h-8 w-auto max-w-[600px] items-center",
