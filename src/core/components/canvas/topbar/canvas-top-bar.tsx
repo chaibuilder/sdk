@@ -28,7 +28,7 @@ const CanvasTopBar: React.FC = () => {
   const showDataBindingToggle = dataBindingEnabled;
 
   return (
-    <div className="flex h-10 items-center justify-between px-2 shadow-xl">
+    <div className="flex h-10 items-center justify-between px-2">
       <div className="flex h-full space-x-2">{showDarkModeToggle ? <DarkMode /> : null}</div>
       <div className="flex h-full items-center space-x-2">
         <Breakpoints canvas openDelay={400} />

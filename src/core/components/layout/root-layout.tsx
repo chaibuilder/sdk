@@ -17,9 +17,10 @@ import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { useSidebarActivePanel } from "@/hooks/use-sidebar-active-panel";
 import { useActiveSettingsTab, useRightPanel } from "@/hooks/use-theme";
 import { registerChaiSidebarPanel, useChaiSidebarPanels, useTopBarComponent } from "@/runtime/client";
-import { Cross1Icon, LightningBoltIcon, MixerHorizontalIcon, PlusCircledIcon, StackIcon } from "@radix-ui/react-icons";
+import { Cross1Icon, LightningBoltIcon, MixerHorizontalIcon } from "@radix-ui/react-icons";
 import { motion } from "framer-motion";
 import { find, first, get, reverse } from "lodash-es";
+import { ListTree, PlusIcon } from "lucide-react";
 import React, {
   ComponentType,
   createElement,
@@ -40,7 +41,7 @@ export const DEFAULT_PANEL_WIDTH = 280;
 const OutlineButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
   return (
     <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
-      <StackIcon className="h-5 w-5" />
+      <ListTree className="h-5 w-5" />
     </Button>
   );
 };
@@ -50,7 +51,7 @@ const AddBlocksButton = ({ isActive, show }: { isActive: boolean; show: () => vo
   return (
     isDragAndDropEnabled && (
       <Button variant={isActive ? "default" : "ghost"} size="icon" onClick={show}>
-        <PlusCircledIcon className="h-5 w-5" />
+        <PlusIcon className="h-5 w-5" />
       </Button>
     )
   );
@@ -204,7 +205,7 @@ const RootLayout: ComponentType = () => {
     <div dir={htmlDir} className="h-screen max-h-full w-screen overflow-x-hidden bg-background text-foreground">
       <TooltipProvider>
         <div onContextMenu={preventContextMenu} className="flex h-full max-h-full flex-col">
-          <div className="flex h-[50px] w-screen items-center border-b border-[#454545] bg-[#373c3f] text-[#fafafa]">
+          <div className="flex h-[50px] w-screen items-center border-b border-gray-200 bg-white text-gray-900">
             <Suspense>
               <TopBar />
             </Suspense>
@@ -212,7 +213,7 @@ const RootLayout: ComponentType = () => {
           <main className="relative flex h-[calc(100vh-56px)] max-w-full flex-1 flex-row">
             <div
               id="sidebar"
-              className="flex w-12 flex-col items-center justify-between border-r border-[#454545] bg-[#292929] py-2 text-[#fafafa]">
+              className="flex w-12 flex-col items-center justify-between border-r border-gray-200 bg-gray-50 py-2 text-gray-900">
               <div className="flex flex-col gap-y-1">
                 {totalTopPanels.map((item, index) => (
                   <Tooltip key={"button-top-" + index}>
@@ -254,7 +255,7 @@ const RootLayout: ComponentType = () => {
             {/* Side Panel */}
             <motion.div
               id="left-panel"
-              className="h-full max-h-full border-r border-[#454545] bg-[#353535] text-[#fafafa]"
+              className="h-full max-h-full border-r border-gray-200 bg-white text-gray-900"
               initial={{ width: leftPanelWidth }}
               animate={{ width: leftPanelWidth }}
               transition={{ duration: 0.3, ease: "easeInOut" }}>
@@ -280,7 +281,7 @@ const RootLayout: ComponentType = () => {
             </div>
             <motion.div
               id="right-panel"
-              className="h-full max-h-full border-l border-[#454545] bg-[#353535] text-[#fafafa]"
+              className="h-full max-h-full border-l border-gray-200 bg-white text-gray-900"
               initial={{ width: activePanel === "ai" ? 0 : DEFAULT_PANEL_WIDTH }}
               animate={{ width: activePanel === "ai" ? 0 : DEFAULT_PANEL_WIDTH }}
               transition={{ duration: 0.3, ease: "easeInOut" }}>
