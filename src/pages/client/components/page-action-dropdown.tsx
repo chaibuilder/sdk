@@ -104,6 +104,7 @@ export const PageActionsDropdown = ({
             {t("Delete")}
           </DropdownMenuItem>
         )}
+        {/* HIDDEN: Mark as template feature 
         {hasPermission(PAGES_PERMISSIONS.MARK_AS_TEMPLATE) && hasSlug && !isLanguagePage && (
           <>
             {isTemplate ? (
@@ -129,6 +130,7 @@ export const PageActionsDropdown = ({
             )}
           </>
         )}
+        */}
       </DropdownMenuContent>
     </DropdownMenu>
   );
