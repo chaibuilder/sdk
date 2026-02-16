@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { useApiUrl } from "./project/use-builder-prop";
+import { isEmpty } from "lodash-es";
 import { QUERY_KEYS } from "./QUERY_KEYS";
-import { useFetch } from "./utils/use-fetch";
+import { useWebsitePages } from "..";
 
 type BlocksWithDesignTokens = Record<string, string>;
 export interface SiteWideUsage {
@@ -14,17 +14,28 @@ export interface SiteWideUsage {
   };
 }
 
-export const useSiteWideUsage = (designTokens: boolean) => {
-  const fetch = useFetch();
-  const apiUrl = useApiUrl();
+function deriveSiteWideUsage(defaultLangPages: any[]): SiteWideUsage {
+  const siteWideUsage: SiteWideUsage = {};
+  for (const page of defaultLangPages) {
+    siteWideUsage[page.id] = {
+      name: page.name,
+      isPartial: isEmpty(page.slug),
+      partialBlocks: !page.partialBlocks ? [] : (page.partialBlocks as string).split("|").filter(Boolean),
+      links: !page.links ? [] : (page.links as string).split("|").filter(Boolean),
+      designTokens: (page.designTokens ?? {}) as BlocksWithDesignTokens,
+    };
+  }
+  return siteWideUsage;
+}
+
+export const useSiteWideUsage = () => {
+  const { data: websitePages } = useWebsitePages();
   return useQuery({
     queryKey: [QUERY_KEYS.SITE_WIDE_USAGE],
-    queryFn: async () => {
-      if (!designTokens) {
-        return {};
-      }
-      return fetch(apiUrl, { action: `GET_SITE_WIDE_USAGE` });
+    queryFn: () => {
+      return deriveSiteWideUsage(websitePages ?? []);
     },
+    enabled: !!websitePages,
     retry: false,
   });
 };

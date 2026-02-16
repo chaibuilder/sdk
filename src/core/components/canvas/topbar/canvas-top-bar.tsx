@@ -31,7 +31,7 @@ const CanvasTopBar: React.FC = () => {
     <div className="flex h-10 items-center justify-between px-2">
       <div className="flex h-full space-x-2">{showDarkModeToggle ? <DarkMode /> : null}</div>
       <div className="flex h-full items-center space-x-2">
-        <Breakpoints canvas openDelay={400} />
+        <Breakpoints canvas openDelay={400} activeButtonClass="bg-gray-200" />
         <ScalePercent />
         <UndoRedo />
       </div>

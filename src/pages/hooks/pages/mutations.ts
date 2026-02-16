@@ -181,6 +181,7 @@ export const useUnpublishPage = () => {
 export const usePublishPages = () => {
   const apiUrl = useApiUrl();
   const fetchAPI = useFetch();
+  const queryClient = useQueryClient();
   const { savePageAsync } = useSavePage();
   const revisionsEnabled = useRevisionsEnabled();
 
@@ -193,9 +194,18 @@ export const usePublishPages = () => {
         data: { ids, revisions: revisionsEnabled },
       });
     },
-    onSuccess: () => {
-      //TODO: Update the pages online status via queryClient.setQueryData()
-      //TODO: Update the changes via queryClient.setQueryData()
+    onSuccess: (_data, { ids }) => {
+      // Invalidate pages query to reflect cleared changes and updated online status
+      queryClient.invalidateQueries({
+        queryKey: [ACTIONS.GET_WEBSITE_PAGES],
+      });
+
+      // If THEME or DESIGN_TOKENS were published, invalidate settings to reflect cleared appChanges
+      if (ids.includes("THEME") || ids.includes("DESIGN_TOKENS")) {
+        queryClient.invalidateQueries({
+          queryKey: [ACTIONS.GET_WEBSITE_DRAFT_SETTINGS],
+        });
+      }
     },
     onError: (error) => {
       console.log("##", error);

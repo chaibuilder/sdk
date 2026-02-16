@@ -10,6 +10,7 @@ export type ChaiWebsiteSetting = {
   theme: ChaiTheme;
   settings: Record<string, any>;
   designTokens: ChaiDesignTokens;
+  appChanges?: string[];
 };
 
 type ChaiPageSeo = {
