@@ -33,11 +33,9 @@ const TopLeftCorner = () => {
 
 export const LanguageSwitcher = ({
   showAdd = true,
-  variant = "ghost",
   goToDefaultLang = false,
 }: {
   showAdd?: boolean;
-  variant?: "ghost" | "outline";
   goToDefaultLang?: boolean;
 }) => {
   const { fallbackLang, languages, selectedLang, setSelectedLang } = useLanguages();
