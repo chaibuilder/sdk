@@ -98,7 +98,7 @@ type ChaiBuilderInnerProps = ChaiWebsiteBuilderProps;
 
 const ChaiBuilderInner = ({ ...props }: ChaiBuilderInnerProps) => {
   const { data: websiteData } = useWebsiteData();
-  const siteWideUsage = useSiteWideUsage();
+  const { data: siteWideUsage } = useSiteWideUsage();
   const { libraries: uiLibraries, collections, pageTypes, websiteSettings: websiteConfig } = websiteData;
   const fallbackLang = useMemo(() => websiteConfig?.fallbackLang || "en", [websiteConfig]);
   const { data: accessData, isFetching: isFetchingAccessData } = useCheckUserAccess();
