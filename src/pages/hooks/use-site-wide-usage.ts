@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { isEmpty } from "lodash-es";
 import { QUERY_KEYS } from "./QUERY_KEYS";
-import { useWebsiteData } from "./use-website-data";
+import { useWebsitePages } from "..";
 
 type BlocksWithDesignTokens = Record<string, string>;
 export interface SiteWideUsage {
@@ -29,8 +29,7 @@ function deriveSiteWideUsage(defaultLangPages: any[]): SiteWideUsage {
 }
 
 export const useSiteWideUsage = () => {
-  const { data: websitePages } = useWebsiteData();
-
+  const { data: websitePages } = useWebsitePages();
   return useQuery({
     queryKey: [QUERY_KEYS.SITE_WIDE_USAGE],
     queryFn: () => {
