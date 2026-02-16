@@ -9,7 +9,6 @@ import { File, Hash, Loader, MoreHorizontal, MoreVertical } from "lucide-react";
 import { lazy, Suspense, useState } from "react";
 import { PageActionsDropdown } from "./page-action-dropdown";
 import { usePageLockStatus } from "./page-lock/page-lock-hook";
-import PagesManagerTrigger from "./page-manager/page-manager-trigger";
 
 const AddNewPage = lazy(() => import("./add-new-page"));
 const DeletePage = lazy(() => import("./delete-page"));
@@ -52,20 +51,16 @@ export const PageDropdownInHeader = () => {
   return (
     <>
       <div className="flex items-center justify-between rounded px-[2px] transition-colors duration-200">
-        <PagesManagerTrigger>
-          <Button
-            className="flex h-7 max-w-[200px] cursor-pointer items-center truncate rounded px-1 text-xs font-medium"
-            variant="ghost">
-            {isFetching ? (
-              <Loader className="h-4 w-4 animate-spin text-slate-400" />
-            ) : (
-              <span className="flex w-full cursor-pointer items-end overflow-hidden text-ellipsis whitespace-nowrap rounded-sm text-xs font-medium">
-                {isPartial ? <Hash className="mr-1 h-4 w-4" /> : <File className="mr-1 h-4 w-4" />}
-                {get(currentLangPage || page, "name") ?? ""}
-              </span>
-            )}
-          </Button>
-        </PagesManagerTrigger>
+        <p className="flex h-7 max-w-[200px] items-center truncate rounded px-1 text-xs font-medium">
+          {isFetching ? (
+            <Loader className="h-4 w-4 animate-spin text-slate-400" />
+          ) : (
+            <span className="flex items-end overflow-hidden text-ellipsis whitespace-nowrap rounded-sm text-xs font-medium">
+              {isPartial ? <Hash className="mr-1 h-4 w-4" /> : <File className="mr-1 h-4 w-4" />}
+              {get(currentLangPage || page, "name") ?? ""}
+            </span>
+          )}
+        </p>
         {isLocked ? (
           <Button
             variant="ghost"
