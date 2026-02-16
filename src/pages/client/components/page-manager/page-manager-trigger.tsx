@@ -35,33 +35,29 @@ const PagesManagerTrigger = ({ children }: { children?: React.ReactNode }) => {
 
   return (
     <>
-      <div className="flex items-center gap-x-1">
-        <div className="relative">
-          <Tooltip>
-            <TooltipTrigger
-              asChild
-              onClick={() => {
-                if (!isLocked) savePage();
-                setPageManager(true);
-              }}>
-              {children || (
-                <Button
-                  variant="secondary"
-                  key={"template-viewer"}
-                  className="flex w-full items-center justify-center rounded-md p-2 pl-0">
-                  <Folder className="ml-2 h-10 w-10 fill-primary text-primary" />
-                  <div className="flex flex-col items-start">
-                    <span className="text-sm font-semibold">{t("Pages")}</span>
-                  </div>
-                </Button>
-              )}
-            </TooltipTrigger>
-            <TooltipContent side="right">
-              <p>{t("Open pages manager")}</p>
-            </TooltipContent>
-          </Tooltip>
-        </div>
-      </div>
+      <Tooltip>
+        <TooltipTrigger
+          asChild
+          onClick={() => {
+            if (!isLocked) savePage();
+            setPageManager(true);
+          }}>
+          {children || (
+            <Button
+              variant="ghost"
+              key={"template-viewer"}
+              className="flex w-full items-center justify-center rounded-md p-2 pl-0">
+              <Folder className="ml-2 h-10 w-10 fill-primary text-primary" />
+              <div className="flex flex-col items-start">
+                <span className="text-sm font-semibold">{t("Pages")}</span>
+              </div>
+            </Button>
+          )}
+        </TooltipTrigger>
+        <TooltipContent side="right">
+          <p>{t("Open pages manager")}</p>
+        </TooltipContent>
+      </Tooltip>
       <Sheet open={isOpen} onOpenChange={(open) => !open && canClose && setPageManager(false)}>
         <SheetContent
           side={"left"}

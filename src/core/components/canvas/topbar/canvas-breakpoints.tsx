@@ -12,7 +12,7 @@ import { cn, getBreakpointValue } from "@/core/functions/common-functions";
 import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { useCanvasDisplayWidth, useScreenSizeWidth } from "@/hooks/use-screen-size-width";
 import { useSelectedBreakpoints } from "@/hooks/use-selected-breakpoints";
-import { ChevronDownIcon, DesktopIcon, LaptopIcon, MobileIcon } from "@radix-ui/react-icons";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { includes, map, toUpper } from "lodash-es";
 import { useTranslation } from "react-i18next";
 
@@ -34,15 +34,57 @@ export interface BreakpointCardProps extends BreakpointItemType {
   activeButtonClass?: string;
 }
 
+const MobileIcon = ({ className = "" }) => (
+  <svg
+    className={cn("h-4 w-4", className)}
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg">
+    <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+    <line x1="12" y1="18" x2="12.01" y2="18"></line>
+  </svg>
+);
+
+const LaptopIcon = ({ className = "" }) => (
+  <svg
+    className={cn("h-4 w-4", className)}
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg">
+    <rect x="2" y="4" width="20" height="12" rx="2" ry="2"></rect>
+    <line x1="6" y1="20" x2="18" y2="20"></line>
+    <line x1="12" y1="16" x2="12" y2="20"></line>
+  </svg>
+);
+
+const DesktopIcon = ({ className = "" }) => (
+  <svg
+    className={cn("h-4 w-4", className)}
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg">
+    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+    <line x1="8" y1="21" x2="16" y2="21"></line>
+    <line x1="12" y1="17" x2="12" y2="21"></line>
+  </svg>
+);
+
 const TabletIcon = ({ landscape = false, className = "" }) => (
   <svg
-    className={cn("h-3 w-3", landscape ? "rotate-90" : "", className)}
+    className={cn("h-4 w-4", landscape ? "rotate-90" : "", className)}
+    fill="none"
     stroke="currentColor"
-    fill="currentColor"
-    strokeWidth="0"
-    viewBox="0 0 448 512"
+    strokeWidth="2"
+    viewBox="0 0 24 24"
     xmlns="http://www.w3.org/2000/svg">
-    <path d="M400 0H48C21.5 0 0 21.5 0 48v416c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48zM224 480c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm176-108c0 6.6-5.4 12-12 12H60c-6.6 0-12-5.4-12-12V60c0-6.6 5.4-12 12-12h328c6.6 0 12 5.4 12 12v312z"></path>
+    <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+    <line x1="12" y1="18" x2="12.01" y2="18"></line>
   </svg>
 );
 
@@ -126,7 +168,7 @@ const BreakpointCard = ({
           onClick={() => onClick(width)}
           size="sm"
           className={cn("h-7 w-7 rounded-md p-1", breakpoint === currentBreakpoint ? activeButtonClass : buttonClass)}
-          variant={breakpoint === currentBreakpoint ? "outline" : "ghost"}>
+          variant={breakpoint === currentBreakpoint ? "ghost" : "ghost"}>
           {icon}
         </Button>
       </HoverCardTrigger>
@@ -195,6 +237,7 @@ export const Breakpoints = ({
             onClick={handleCanvasWidthChange}
             key={bp.breakpoint}
             currentBreakpoint={breakpoint}
+            activeButtonClass="bg-gray-700"
           />
         ))}
       </div>

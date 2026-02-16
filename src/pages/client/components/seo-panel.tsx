@@ -431,7 +431,7 @@ const SeoPanel = () => {
             <div className="font-medium">{languagePage?.name}</div>
             <span className="font-mono text-xs leading-tight text-gray-500">{languagePage?.slug}</span>
           </span>
-          <LanguageSwitcher variant="outline" showAdd={false} />
+          <LanguageSwitcher showAdd={false} />
         </div>
         <form className="space-y-8">
           <Tabs value={tab} onValueChange={setTab} className="w-full">

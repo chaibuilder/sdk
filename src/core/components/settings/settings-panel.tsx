@@ -12,7 +12,7 @@ import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
 import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
 import { useActiveSettingsTab } from "@/hooks/use-theme";
 import { ChevronDownIcon, MixerHorizontalIcon } from "@radix-ui/react-icons";
-import { isEmpty, isNull, noop } from "lodash-es";
+import { isEmpty, noop } from "lodash-es";
 import React, { useCallback, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
@@ -82,7 +82,7 @@ const SettingsPanel: React.FC = () => {
     return <PartialWrapper partialBlockId={selectedBlock.partialBlockId!} />;
   }
 
-  if (isNull(selectedBlock)) {
+  if (!selectedBlock) {
     return (
       <div className="p-4 text-center">
         <div className="space-y-4 rounded-xl p-4 text-muted-foreground">

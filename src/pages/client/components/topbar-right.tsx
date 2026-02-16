@@ -92,6 +92,7 @@ const PreviewButton = () => {
           </Button>
         </a>
       </Tooltip>
+      <div className="h-4 w-px bg-gray-200" />
     </>
   );
 };
@@ -110,7 +111,7 @@ const ThemeButton = () => {
           <Palette className="h-4 w-4" />
         </Button>
       </Tooltip>
-      <div className="h-4 w-px bg-gray-200 dark:bg-gray-700" />
+      <div className="h-4 w-px bg-gray-200" />
     </>
   );
 };
@@ -171,9 +172,11 @@ const SaveButton = () => {
   if (isLocked) return null;
 
   return (
-    <Button size="sm" variant="ghost" onClick={handleSave} className={`${buttonClass} w-24 max-w-24`}>
-      {buttonIcon} {tooltipContent}
-    </Button>
+    <Tooltip content={tooltipContent}>
+      <Button size="sm" variant="ghost" onClick={handleSave} className={`${buttonClass}`}>
+        {buttonIcon}
+      </Button>
+    </Tooltip>
   );
 };
 
