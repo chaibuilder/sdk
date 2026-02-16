@@ -13,8 +13,9 @@ import { ClearCanvas } from "@/core/components/canvas/topbar/clear-canvas";
 import { DarkMode } from "@/core/components/canvas/topbar/dark-mode";
 import { UndoRedo } from "@/core/components/canvas/topbar/undo-redo";
 import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { DotsVerticalIcon, LightningBoltIcon } from "@radix-ui/react-icons";
+import { LightningBoltIcon } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
+import { MoreVertical } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
@@ -35,11 +36,13 @@ const CanvasTopBar: React.FC = () => {
         <UndoRedo />
       </div>
       <div className="flex h-full items-center">
+        {/* <PageValidation /> */}
+        <ClearCanvas />
         {showDataBindingToggle ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button size="sm" variant="ghost" className="h-7 w-7 rounded-md p-1">
-                <DotsVerticalIcon className="h-4 w-4" />
+              <Button size="sm" variant="ghost" className="size-2 h-7 w-7 rounded-md p-1">
+                <MoreVertical className="h-2 w-2" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56 border-border text-xs">
@@ -51,8 +54,6 @@ const CanvasTopBar: React.FC = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         ) : null}
-        {/* <PageValidation /> */}
-        <ClearCanvas />
       </div>
     </div>
   );
