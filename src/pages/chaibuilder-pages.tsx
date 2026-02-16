@@ -32,6 +32,7 @@ import { registerPagesFeatureFlags } from "./feature-flags";
 import { useGetBlockAysncProps } from "./hooks/use-chai-collections";
 import { useGotoPage } from "./hooks/use-goto-page";
 import { useWebsiteData } from "./hooks/use-website-data";
+import { useSiteWideUsage } from "./hooks/use-site-wide-usage";
 
 const PageLock = lazy(() => import("./client/components/page-lock/page-lock"));
 const NoLanguagePageDialog = lazy(() => import("@/pages/client/components/no-language-page/no-language-page-dialog"));
@@ -97,7 +98,8 @@ type ChaiBuilderInnerProps = ChaiWebsiteBuilderProps;
 
 const ChaiBuilderInner = ({ ...props }: ChaiBuilderInnerProps) => {
   const { data: websiteData } = useWebsiteData();
-  const { libraries: uiLibraries, collections, pageTypes, websiteSettings: websiteConfig, siteWideUsage } = websiteData;
+  const siteWideUsage = useSiteWideUsage();
+  const { libraries: uiLibraries, collections, pageTypes, websiteSettings: websiteConfig } = websiteData;
   const fallbackLang = useMemo(() => websiteConfig?.fallbackLang || "en", [websiteConfig]);
   const { data: accessData, isFetching: isFetchingAccessData } = useCheckUserAccess();
   const roleAndPermissions = accessData || DEFAULT_ROLES_AND_PERMISSIONS;
