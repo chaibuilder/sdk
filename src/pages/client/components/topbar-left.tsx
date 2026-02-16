@@ -151,11 +151,7 @@ export const LanguageSwitcher = ({
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild className="focus:outline-none">
-          <Button
-            disabled={Boolean(isLocked)}
-            variant={variant as "ghost" | "outline"}
-            size="sm"
-            className="ml-px h-max gap-2 py-1.5">
+          <Button disabled={Boolean(isLocked)} variant={"outline"} size="sm" className="ml-px h-max gap-2 py-1.5">
             <Languages className="h-4 w-4" />
             {get(LANGUAGES, currentLang, currentLang)}
             <ChevronDown className="h-4 w-4" />

@@ -10,7 +10,9 @@ import { useChaiFeatureFlag } from "@/runtime/client";
 import { get } from "lodash-es";
 import { ChevronRight, ExternalLink } from "lucide-react";
 import { lazy, Suspense } from "react";
+import { useTranslation } from "react-i18next";
 import PagesManagerTrigger from "../client/components/page-manager/page-manager-trigger";
+import Tooltip from "../utils/tooltip";
 const DynamicPageSelector = lazy(() => import("../client/components/dynamic-page-selector"));
 
 const DynamicPageSelectorSuspense = () => {
@@ -34,7 +36,7 @@ const AddressBar = () => {
   const dynamic = get(page, "dynamic", false);
   const dynamicPageSlug = useDynamicPageSlug();
   const isDynamicPageSelectorEnabled = useChaiFeatureFlag("dynamic-page-selector");
-
+  const { t } = useTranslation();
   const slug = activePage?.slug;
   const isPartialPage = !slug;
   const fullUrl = useGetPageFullSlug();
@@ -88,11 +90,13 @@ const AddressBar = () => {
             )}
           </div>
           {!isPartialPage && (
-            <a href={fullUrl} target="_blank" rel="noopener noreferrer" className="">
-              <div className="ml-2 mr-px flex-shrink-0 rounded-sm p-1.5 opacity-0 transition-opacity group-hover:opacity-100">
-                <ExternalLink className="h-4 w-4" strokeWidth={1} />
-              </div>
-            </a>
+            <Tooltip content={t("Open page")}>
+              <a href={fullUrl} target="_blank" rel="noopener noreferrer" className="">
+                <div className="ml-2 mr-px flex-shrink-0 rounded-sm p-1.5 opacity-0 transition-opacity group-hover:opacity-100">
+                  <ExternalLink className="h-4 w-4" strokeWidth={1} />
+                </div>
+              </a>
+            </Tooltip>
           )}
         </div>
       </div>

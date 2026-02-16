@@ -172,11 +172,11 @@ const SaveButton = () => {
   if (isLocked) return null;
 
   return (
-    <>
+    <Tooltip content={tooltipContent}>
       <Button size="sm" variant="ghost" onClick={handleSave} className={`${buttonClass}`}>
         {buttonIcon}
       </Button>
-    </>
+    </Tooltip>
   );
 };
 
