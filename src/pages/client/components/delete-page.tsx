@@ -14,10 +14,11 @@ import { useDeletePage } from "@/pages/hooks/pages/mutations";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
 import { useWebsitePrimaryPages } from "@/pages/hooks/pages/use-project-pages";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
+import { useSiteWideUsage } from "@/pages/hooks/use-site-wide-usage";
 import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { ChaiPage } from "@/pages/utils/page-organization";
 import { ChaiPageType } from "@/types/actions";
-import { get } from "lodash-es";
+import { get, isEmpty } from "lodash-es";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -44,6 +45,23 @@ function DeletePage({ page, onClose }: { page: any; onClose: () => void }) {
   const [, setActivePanel] = useSidebarActivePanel();
   const isPrimaryPage = !page?.primaryPage;
   const { data: languagePages = [] } = useLanguagePages(isPrimaryPage ? page?.id : undefined);
+  const { data: siteWideUsage } = useSiteWideUsage();
+  
+  const isPartial = useMemo(() => isEmpty(page?.slug), [page?.slug]);
+  
+  const pagesUsingPartial = useMemo(() => {
+    if (!isPartial || !page?.id || !siteWideUsage) return [];
+    
+    const affectedPages: { id: string; name: string }[] = [];
+    Object.entries(siteWideUsage).forEach(([pageId, usage]) => {
+      if (usage.partialBlocks.includes(page.id) && !usage.isPartial) {
+        affectedPages.push({ id: pageId, name: usage.name });
+      }
+    });
+    
+    return affectedPages;
+  }, [isPartial, page.id, siteWideUsage]);
+  
   const languagePagesCount = useMemo(() => {
     if (!isPrimaryPage || !languagePages) return 0;
     return languagePages.filter((lp: any) => lp.id !== page?.id).length;
@@ -111,6 +129,22 @@ function DeletePage({ page, onClose }: { page: any; onClose: () => void }) {
                     </li>
                   )}
                   {languagePagesCount > 0 && <li>{t("All associated language pages")}</li>}
+                </ul>
+              </div>
+            )}
+            
+            {/* Warning for partial being used in pages */}
+            {isPartial && pagesUsingPartial.length > 0 && (
+              <div className="mt-3 rounded-md bg-red-50 p-3 text-sm">
+                <div className="font-semibold text-red-800">
+                  {t("Warning: This partial is currently used in the following pages")}:
+                </div>
+                <ul className="mt-2 list-inside list-disc space-y-1 text-red-700">
+                  {pagesUsingPartial.map(({ id, name }) => (
+                    <li key={id}>
+                      <span className="font-medium">{name}</span>
+                    </li>
+                  ))}
                 </ul>
               </div>
             )}
