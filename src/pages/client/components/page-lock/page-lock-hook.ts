@@ -1,4 +1,5 @@
 import { useSavePage } from "@/hooks/use-save-page";
+import { useQuerySync } from "@/hooks/use-query-sync";
 import { useRealtimeAdapter } from "@/pages/hooks/project/use-builder-prop";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useRef } from "react";
@@ -176,6 +177,7 @@ export const useReceiveRealtimeEvent = () => {
   const sendEvent = useSendRealtimeEvent();
   const pageRef = useRef<any>(pageId);
   const { savePageAsync } = useSavePage();
+  const { handleQuerySync } = useQuerySync();
 
   useEffect(() => {
     pageRef.current = pageId;
@@ -185,6 +187,20 @@ export const useReceiveRealtimeEvent = () => {
     (event: string) =>
       async ({ payload: _payload }: any) => {
         const payload = _payload || {};
+        // Handle query sync events (these don't need pageId/clientId validation)
+        if (
+          event === EVENT.UPDATE_WEBSITE_DATA ||
+          event === EVENT.UPDATE_PAGE_DATA ||
+          event === EVENT.PUBLISH_CHANGES ||
+          event === EVENT.UNPUBLISH_PAGE
+        ) {
+          handleQuerySync({
+            type: event,
+            data: payload?.data,
+            sync: false,
+          });
+          return;
+        }
         if (!payload?.pageId || payload?.pageId !== pageRef.current || payload?.receiverClientId !== clientId) return;
         setPageLockMeta({});
 
@@ -219,7 +235,7 @@ export const useReceiveRealtimeEvent = () => {
             break;
         }
       },
-    [sendEvent, setPageLockMeta, setPageStatus, channel, userId, savePageAsync],
+    [sendEvent, setPageLockMeta, setPageStatus, channel, userId, savePageAsync, handleQuerySync],
   );
 };
 
