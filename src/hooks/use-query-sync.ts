@@ -8,6 +8,7 @@ import { ChaiTheme } from "@/types/chaibuilder-editor-props";
 import { ChaiDesignTokens } from "@/types/types";
 import { ChaiPage, ChaiWebsiteSetting } from "@/types/actions";
 import { chaiDesignTokensAtom } from "@/atoms/builder";
+import { toast } from "sonner";
 
 type SyncPayload = {
   type: string;
@@ -46,6 +47,7 @@ type UpdatePageDataParams = {
 type PublishChangesParams = {
   queryClient: QueryClient;
   ids: string[];
+  sync: boolean;
 };
 
 type UnpublishPageParams = {
@@ -162,6 +164,7 @@ const updatePageData = ({ queryClient, pageId, designTokens, linkPageIds, partia
 const handleWebsiteDataSync = (
   queryClient: QueryClient,
   data: SyncData,
+  sync: boolean,
   setChaiTheme?: (theme: SetStateAction<ChaiTheme | Partial<ChaiTheme>>) => void,
   setDesignTokens?: (tokens: ChaiDesignTokens) => void,
 ): void => {
@@ -173,6 +176,15 @@ const handleWebsiteDataSync = (
       setTheme: setChaiTheme,
       setDesignTokens,
     });
+
+    if (!sync) {
+      if (data.settings.theme !== undefined) {
+        toast.success("Theme Updated Successfully", { position: "bottom-left" });
+      }
+      if (data.settings.designTokens !== undefined) {
+        toast.success("Design Tokens Updated Successfully", { position: "bottom-left" });
+      }
+    }
   }
 };
 
@@ -226,7 +238,7 @@ const clearAppChanges = (
 /**
  * Handle publish changes - clear changes arrays for published items
  */
-const handlePublishChanges = ({ queryClient, ids }: PublishChangesParams): void => {
+const handlePublishChanges = ({ queryClient, ids, sync }: PublishChangesParams): void => {
   queryClient.setQueryData([ACTIONS.GET_WEBSITE_PAGES], (oldData: ChaiPage[] | undefined) => {
     if (!oldData || !Array.isArray(oldData)) return oldData;
     return oldData.map((page) => clearPageChanges(page, ids));
@@ -241,6 +253,10 @@ const handlePublishChanges = ({ queryClient, ids }: PublishChangesParams): void 
     queryClient.setQueryData([ACTIONS.GET_WEBSITE_DRAFT_SETTINGS], (oldData: ChaiWebsiteSetting | undefined) =>
       clearAppChanges(oldData, ids),
     );
+  }
+
+  if (!sync) {
+    toast.success("Changes Published Successfully", { position: "bottom-left" });
   }
 };
 
@@ -301,7 +317,7 @@ const processSyncPayload = (
 
   switch (type) {
     case "UPDATE_WEBSITE_DATA":
-      handleWebsiteDataSync(queryClient, data, setChaiTheme, setDesignTokens);
+      handleWebsiteDataSync(queryClient, data, sync, setChaiTheme, setDesignTokens);
       break;
 
     case "UPDATE_PAGE_DATA":
@@ -310,7 +326,7 @@ const processSyncPayload = (
 
     case "PUBLISH_CHANGES":
       if (data.ids) {
-        handlePublishChanges({ queryClient, ids: data.ids });
+        handlePublishChanges({ queryClient, ids: data.ids, sync });
       }
       break;
 
