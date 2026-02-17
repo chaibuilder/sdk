@@ -9,6 +9,7 @@ import { ChaiDesignTokens } from "@/types/types";
 import { ChaiPage, ChaiWebsiteSetting } from "@/types/actions";
 import { chaiDesignTokensAtom } from "@/atoms/builder";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 type SyncPayload = {
   type: string;
@@ -168,6 +169,7 @@ const handleWebsiteDataSync = (
   data: SyncData,
   sync: boolean,
   userName: string | undefined,
+  t: (key: string, options?: any) => string,
   setChaiTheme?: (theme: SetStateAction<ChaiTheme | Partial<ChaiTheme>>) => void,
   setDesignTokens?: (tokens: ChaiDesignTokens) => void,
 ): void => {
@@ -182,14 +184,14 @@ const handleWebsiteDataSync = (
 
     if (!sync && userName) {
       if (data.settings.theme !== undefined) {
-        toast.success("Theme Updated", {
-          description: `${userName} updated the theme`,
+        toast.success(t("Theme Updated"), {
+          description: t("{{userName}} updated the theme", { userName }),
           position: "bottom-left",
         });
       }
       if (data.settings.designTokens !== undefined) {
-        toast.success("Design Tokens Updated", {
-          description: `${userName} updated the design tokens`,
+        toast.success(t("Design Tokens Updated"), {
+          description: t("{{userName}} updated the design tokens", { userName }),
           position: "bottom-left",
         });
       }
@@ -252,7 +254,8 @@ const handlePublishChanges = ({
   ids,
   sync,
   userName,
-}: PublishChangesParams & { userName?: string }): void => {
+  t,
+}: PublishChangesParams & { userName?: string; t: (key: string, options?: any) => string }): void => {
   queryClient.setQueryData([ACTIONS.GET_WEBSITE_PAGES], (oldData: ChaiPage[] | undefined) => {
     if (!oldData || !Array.isArray(oldData)) return oldData;
     return oldData.map((page) => clearPageChanges(page, ids));
@@ -270,8 +273,8 @@ const handlePublishChanges = ({
   }
 
   if (!sync && userName) {
-    toast.success("Changes Published Successfully", {
-      description: `${userName} published changes`,
+    toast.success(t("Changes Published Successfully"), {
+      description: t("{{userName}} published changes", { userName }),
       position: "bottom-left",
     });
   }
@@ -329,12 +332,13 @@ const processSyncPayload = (
   queryClient: QueryClient,
   setChaiTheme: (theme: SetStateAction<ChaiTheme | Partial<ChaiTheme>>) => void,
   setDesignTokens: (tokens: ChaiDesignTokens) => void,
+  t: (key: string, options?: any) => string,
 ): boolean => {
   const { type, data, sync = false, userName } = payload;
 
   switch (type) {
     case "UPDATE_WEBSITE_DATA":
-      handleWebsiteDataSync(queryClient, data, sync, userName, setChaiTheme, setDesignTokens);
+      handleWebsiteDataSync(queryClient, data, sync, userName, t, setChaiTheme, setDesignTokens);
       break;
 
     case "UPDATE_PAGE_DATA":
@@ -343,7 +347,7 @@ const processSyncPayload = (
 
     case "PUBLISH_CHANGES":
       if (data.ids) {
-        handlePublishChanges({ queryClient, ids: data.ids, sync, userName });
+        handlePublishChanges({ queryClient, ids: data.ids, sync, userName, t });
       }
       break;
 
@@ -354,7 +358,7 @@ const processSyncPayload = (
       break;
 
     default:
-      console.log("Unknown sync type", type);
+      console.log(t("Unknown sync type"), type);
   }
 
   return sync;
@@ -365,6 +369,7 @@ export const useQuerySync = () => {
   const sendEvent = useSendRealtimeEvent();
   const [_, setChaiTheme] = useAtom(chaiThemeValuesAtom);
   const [, setDesignTokensAtom] = useAtom(chaiDesignTokensAtom);
+  const { t } = useTranslation();
 
   const setDesignTokens = useCallback(
     (tokens: ChaiDesignTokens) => {
@@ -375,10 +380,10 @@ export const useQuerySync = () => {
 
   const handleQuerySync = useCallback(
     (payload: SyncPayload) => {
-      const shouldSync = processSyncPayload(payload, queryClient, setChaiTheme, setDesignTokens);
+      const shouldSync = processSyncPayload(payload, queryClient, setChaiTheme, setDesignTokens, t);
       sendRealtimeEventIfNeeded(shouldSync, sendEvent, payload.type, payload.data);
     },
-    [queryClient, sendEvent, setChaiTheme, setDesignTokens],
+    [queryClient, sendEvent, setChaiTheme, setDesignTokens, t],
   );
 
   return {
