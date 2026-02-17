@@ -14,6 +14,8 @@ type SyncPayload = {
   type: string;
   data: SyncData;
   sync?: boolean;
+  userId?: string;
+  userName?: string;
 };
 
 type SyncData = {
@@ -165,6 +167,7 @@ const handleWebsiteDataSync = (
   queryClient: QueryClient,
   data: SyncData,
   sync: boolean,
+  userName: string | undefined,
   setChaiTheme?: (theme: SetStateAction<ChaiTheme | Partial<ChaiTheme>>) => void,
   setDesignTokens?: (tokens: ChaiDesignTokens) => void,
 ): void => {
@@ -177,12 +180,18 @@ const handleWebsiteDataSync = (
       setDesignTokens,
     });
 
-    if (!sync) {
+    if (!sync && userName) {
       if (data.settings.theme !== undefined) {
-        toast.success("Theme Updated Successfully", { position: "bottom-left" });
+        toast.success("Theme Updated Successfully", {
+          description: `${userName} updated the theme`,
+          position: "bottom-left",
+        });
       }
       if (data.settings.designTokens !== undefined) {
-        toast.success("Design Tokens Updated Successfully", { position: "bottom-left" });
+        toast.success("Design Tokens Updated Successfully", {
+          description: `${userName} updated the design tokens`,
+          position: "bottom-left",
+        });
       }
     }
   }
@@ -238,7 +247,12 @@ const clearAppChanges = (
 /**
  * Handle publish changes - clear changes arrays for published items
  */
-const handlePublishChanges = ({ queryClient, ids, sync }: PublishChangesParams): void => {
+const handlePublishChanges = ({
+  queryClient,
+  ids,
+  sync,
+  userName,
+}: PublishChangesParams & { userName?: string }): void => {
   queryClient.setQueryData([ACTIONS.GET_WEBSITE_PAGES], (oldData: ChaiPage[] | undefined) => {
     if (!oldData || !Array.isArray(oldData)) return oldData;
     return oldData.map((page) => clearPageChanges(page, ids));
@@ -255,8 +269,11 @@ const handlePublishChanges = ({ queryClient, ids, sync }: PublishChangesParams):
     );
   }
 
-  if (!sync) {
-    toast.success("Changes Published Successfully", { position: "bottom-left" });
+  if (!sync && userName) {
+    toast.success("Changes Published Successfully", {
+      description: `${userName} published changes`,
+      position: "bottom-left",
+    });
   }
 };
 
@@ -313,11 +330,11 @@ const processSyncPayload = (
   setChaiTheme: (theme: SetStateAction<ChaiTheme | Partial<ChaiTheme>>) => void,
   setDesignTokens: (tokens: ChaiDesignTokens) => void,
 ): boolean => {
-  const { type, data, sync = false } = payload;
+  const { type, data, sync = false, userName } = payload;
 
   switch (type) {
     case "UPDATE_WEBSITE_DATA":
-      handleWebsiteDataSync(queryClient, data, sync, setChaiTheme, setDesignTokens);
+      handleWebsiteDataSync(queryClient, data, sync, userName, setChaiTheme, setDesignTokens);
       break;
 
     case "UPDATE_PAGE_DATA":
@@ -326,7 +343,7 @@ const processSyncPayload = (
 
     case "PUBLISH_CHANGES":
       if (data.ids) {
-        handlePublishChanges({ queryClient, ids: data.ids, sync });
+        handlePublishChanges({ queryClient, ids: data.ids, sync, userName });
       }
       break;
 

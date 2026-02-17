@@ -1,6 +1,7 @@
 import { useSavePage } from "@/hooks/use-save-page";
 import { useQuerySync } from "@/hooks/use-query-sync";
 import { useRealtimeAdapter } from "@/pages/hooks/project/use-builder-prop";
+import { useChaiAuth } from "@/pages/hooks/use-chai-auth";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import {
@@ -142,6 +143,7 @@ export const useSendRealtimeEvent = () => {
   const channel = useRealtimeChannel();
   const pageOwner = useCurrentPageOwner();
   const { setPageLockMeta } = usePageLockMeta();
+  const { user: chaiUser } = useChaiAuth();
   const pageRef = useRef<any>(pageId);
 
   useEffect(() => {
@@ -153,13 +155,14 @@ export const useSendRealtimeEvent = () => {
       if (!channel) return;
       const payload = _payload || {};
       payload.userId = userId;
+      payload.userName = chaiUser?.name || chaiUser?.email || "Unknown user";
       payload.pageId = pageRef.current;
       payload.senderClientId = clientId;
       payload.receiverClientId = _payload?.requestingClientId || pageOwner?.clientId;
       await channel.send(event, payload);
       setPageLockMeta({});
     },
-    [channel, userId, pageOwner, setPageLockMeta],
+    [channel, userId, pageOwner, setPageLockMeta, chaiUser],
   );
 };
 
@@ -198,6 +201,7 @@ export const useReceiveRealtimeEvent = () => {
             type: event,
             data: payload?.data,
             sync: false,
+            userName: payload?.userName,
           });
           return;
         }
