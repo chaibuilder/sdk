@@ -64,8 +64,8 @@ function DeletePage({ page, onClose }: { page: any; onClose: () => void }) {
   
   const languagePagesCount = useMemo(() => {
     if (!isPrimaryPage || !languagePages) return 0;
-    return languagePages.filter((lp: any) => lp.id !== page?.id).length;
-  }, [isPrimaryPage, languagePages, page?.id]);
+    return languagePages.filter((lp: any) => lp.id !== page.id).length;
+  }, [isPrimaryPage, languagePages, page.id]);
 
   const childPageCount = useMemo(() => {
     if (!page?.id || !allPages.length) return 0;
@@ -81,7 +81,7 @@ function DeletePage({ page, onClose }: { page: any; onClose: () => void }) {
     }
 
     return totalChildren;
-  }, [page?.id, allPages, isPrimaryPage, languagePages]);
+  }, [page.id, allPages, isPrimaryPage, languagePages]);
 
   const handleDelete = () => {
     if (isDeleting) return;

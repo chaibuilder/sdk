@@ -29,5 +29,6 @@ function deriveSiteWideUsage(defaultLangPages: any[]): SiteWideUsage {
 
 export const useSiteWideUsage = () => {
   const { data: websitePages } = useWebsitePages();
-  return useMemo(() => deriveSiteWideUsage(websitePages ?? []), [websitePages]);
+  const data = useMemo(() => deriveSiteWideUsage(websitePages ?? []), [websitePages]);
+  return { data };
 };
