@@ -7,10 +7,11 @@ import {
 import { getRegisteredChaiBlock } from "@/runtime";
 import { ChaiBlockConfig } from "@/types/blocks";
 import { ChaiBlock, ChaiPageProps } from "@/types/common";
-import { get, has, isArray, isFunction, isNull } from "lodash-es";
+import { get, has, isArray, isFunction, isNull, isString } from "lodash-es";
 import { createElement, Suspense } from "react";
 import { applyBindingToBlockProps } from "./apply-binding";
 import DataProviderPropsBlock from "./async-props-block";
+import { resolveBinding } from "./binding-engine";
 import { getRuntimePropValues, RenderChaiBlocksProps } from "./render-chai-blocks";
 
 const SuspenseFallback = () => <div></div>;
@@ -64,7 +65,11 @@ export const RenderBlock = (
     pageData: externalData ?? {},
     ...newBlock,
   };
-  const isShown = get(newBlock, "_show", true);
+  let isShown = get(newBlock, "_show", true);
+  if (isString(isShown) && isShown.startsWith("{{")) {
+    const resolved = resolveBinding(isShown, externalData as Record<string, any>);
+    isShown = resolved !== "false";
+  }
   if (isNull(Component) || !isShown) return null;
 
   if (hasDataProvider) {

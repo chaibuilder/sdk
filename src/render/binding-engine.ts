@@ -92,3 +92,7 @@ export const resolveStringBinding = (
 
   return renderBinding(value, data, index, repeaterKey);
 };
+
+export const resolveBinding = (value: string, data: Record<string, any>): any => {
+  return resolveStringBinding(value, data, -1, "");
+};
