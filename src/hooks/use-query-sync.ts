@@ -271,13 +271,6 @@ const handlePublishChanges = ({
       clearAppChanges(oldData, ids),
     );
   }
-
-  if (!sync && userName) {
-    toast.success(t("Changes Published Successfully"), {
-      description: t("{{userName}} published changes", { userName }),
-      position: "bottom-left",
-    });
-  }
 };
 
 /**
