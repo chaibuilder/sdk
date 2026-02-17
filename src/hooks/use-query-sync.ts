@@ -1,18 +1,22 @@
-import { QueryClient, useQueryClient } from "@tanstack/react-query";
-import { useCallback } from "react";
-import { ACTIONS } from "@/pages/constants/ACTIONS";
+import { chaiDesignTokensAtom } from "@/atoms/builder";
 import { useSendRealtimeEvent } from "@/pages/client/components/page-lock/page-lock-hook";
-import { useAtom, SetStateAction } from "jotai";
-import { chaiThemeValuesAtom } from "./use-theme";
+import { ACTIONS } from "@/pages/constants/ACTIONS";
+import { ChaiPage, ChaiWebsiteSetting } from "@/types/actions";
 import { ChaiTheme } from "@/types/chaibuilder-editor-props";
 import { ChaiDesignTokens } from "@/types/types";
-import { ChaiPage, ChaiWebsiteSetting } from "@/types/actions";
-import { chaiDesignTokensAtom } from "@/atoms/builder";
+import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import { SetStateAction, useAtom } from "jotai";
+import { useCallback } from "react";
+import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
+import { chaiThemeValuesAtom } from "./use-theme";
 
 type SyncPayload = {
   type: string;
   data: SyncData;
   sync?: boolean;
+  userId?: string;
+  userName?: string;
 };
 
 type SyncData = {
@@ -46,6 +50,7 @@ type UpdatePageDataParams = {
 type PublishChangesParams = {
   queryClient: QueryClient;
   ids: string[];
+  sync: boolean;
 };
 
 type UnpublishPageParams = {
@@ -162,6 +167,9 @@ const updatePageData = ({ queryClient, pageId, designTokens, linkPageIds, partia
 const handleWebsiteDataSync = (
   queryClient: QueryClient,
   data: SyncData,
+  sync: boolean,
+  userName: string | undefined,
+  t: (key: string, options?: any) => string,
   setChaiTheme?: (theme: SetStateAction<ChaiTheme | Partial<ChaiTheme>>) => void,
   setDesignTokens?: (tokens: ChaiDesignTokens) => void,
 ): void => {
@@ -173,6 +181,21 @@ const handleWebsiteDataSync = (
       setTheme: setChaiTheme,
       setDesignTokens,
     });
+
+    if (!sync && userName) {
+      if (data.settings.theme !== undefined) {
+        toast.success(t("Theme Updated"), {
+          description: t("{{userName}} updated the theme", { userName }),
+          position: "bottom-left",
+        });
+      }
+      if (data.settings.designTokens !== undefined) {
+        toast.success(t("Design Tokens Updated"), {
+          description: t("{{userName}} updated the design tokens", { userName }),
+          position: "bottom-left",
+        });
+      }
+    }
   }
 };
 
@@ -296,12 +319,13 @@ const processSyncPayload = (
   queryClient: QueryClient,
   setChaiTheme: (theme: SetStateAction<ChaiTheme | Partial<ChaiTheme>>) => void,
   setDesignTokens: (tokens: ChaiDesignTokens) => void,
+  t: (key: string, options?: any) => string,
 ): boolean => {
-  const { type, data, sync = false } = payload;
+  const { type, data, sync = false, userName } = payload;
 
   switch (type) {
     case "UPDATE_WEBSITE_DATA":
-      handleWebsiteDataSync(queryClient, data, setChaiTheme, setDesignTokens);
+      handleWebsiteDataSync(queryClient, data, sync, userName, t, setChaiTheme, setDesignTokens);
       break;
 
     case "UPDATE_PAGE_DATA":
@@ -310,7 +334,7 @@ const processSyncPayload = (
 
     case "PUBLISH_CHANGES":
       if (data.ids) {
-        handlePublishChanges({ queryClient, ids: data.ids });
+        handlePublishChanges({ queryClient, ids: data.ids, sync });
       }
       break;
 
@@ -321,7 +345,7 @@ const processSyncPayload = (
       break;
 
     default:
-      console.log("Unknown sync type", type);
+      console.log(t("Unknown sync type"), type);
   }
 
   return sync;
@@ -332,6 +356,7 @@ export const useQuerySync = () => {
   const sendEvent = useSendRealtimeEvent();
   const [_, setChaiTheme] = useAtom(chaiThemeValuesAtom);
   const [, setDesignTokensAtom] = useAtom(chaiDesignTokensAtom);
+  const { t } = useTranslation();
 
   const setDesignTokens = useCallback(
     (tokens: ChaiDesignTokens) => {
@@ -342,10 +367,10 @@ export const useQuerySync = () => {
 
   const handleQuerySync = useCallback(
     (payload: SyncPayload) => {
-      const shouldSync = processSyncPayload(payload, queryClient, setChaiTheme, setDesignTokens);
+      const shouldSync = processSyncPayload(payload, queryClient, setChaiTheme, setDesignTokens, t);
       sendRealtimeEventIfNeeded(shouldSync, sendEvent, payload.type, payload.data);
     },
-    [queryClient, sendEvent, setChaiTheme, setDesignTokens],
+    [queryClient, sendEvent, setChaiTheme, setDesignTokens, t],
   );
 
   return {
