@@ -205,7 +205,7 @@ const RootLayout: ComponentType = () => {
     <div dir={htmlDir} className="h-screen max-h-full w-screen overflow-x-hidden bg-background text-foreground">
       <TooltipProvider>
         <div onContextMenu={preventContextMenu} className="flex h-full max-h-full flex-col">
-          <div className="flex h-[50px] w-screen items-center border-b border-gray-200 bg-white text-gray-900">
+          <div className="flex h-[50px] w-screen items-center border-b border-gray-200 bg-gray-50 text-gray-900">
             <Suspense>
               <TopBar />
             </Suspense>
