@@ -182,13 +182,13 @@ const handleWebsiteDataSync = (
 
     if (!sync && userName) {
       if (data.settings.theme !== undefined) {
-        toast.success("Theme Updated Successfully", {
+        toast.success("Theme Updated", {
           description: `${userName} updated the theme`,
           position: "bottom-left",
         });
       }
       if (data.settings.designTokens !== undefined) {
-        toast.success("Design Tokens Updated Successfully", {
+        toast.success("Design Tokens Updated", {
           description: `${userName} updated the design tokens`,
           position: "bottom-left",
         });
