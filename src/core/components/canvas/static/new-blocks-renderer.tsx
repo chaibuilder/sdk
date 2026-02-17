@@ -21,11 +21,12 @@ import { usePartialBlocksStore } from "@/hooks/use-partial-blocks-store";
 import { useSavePage } from "@/hooks/use-save-page";
 import { useGetBlockAtom } from "@/hooks/use-update-block-atom";
 import { applyBindingToBlockProps } from "@/render/apply-binding";
+import { resolveBinding } from "@/render/binding-engine";
 import { getRegisteredChaiBlock } from "@/runtime";
 import { ChaiBlock } from "@/types/common";
 import { atom, Atom, Provider, useAtom, useAtomValue } from "jotai";
 import { splitAtom } from "jotai/utils";
-import { filter, get, has, isArray, isEmpty, isNull, map, noop } from "lodash-es";
+import { filter, get, has, isArray, isEmpty, isNull, isString, map, noop } from "lodash-es";
 import React, { createContext, createElement, Suspense, useCallback, useContext, useMemo } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { toast } from "sonner";
@@ -162,7 +163,15 @@ const BlockRenderer = ({
     [mode, blockProps, selectedLang, fallbackLang, dataBindingProps, blockAttributesProps, runtimeProps, asyncProps],
   );
   const needErrorBoundary = useMemo(() => !CORE_BLOCKS.includes(block._type), [block._type]);
-  const isShown = useMemo(() => get(block, "_show", true), [block]);
+  const isShown = useMemo(() => {
+    const show = get(block, "_show", true);
+    if (isString(show)) {
+      if (!dataBindingActive) return true;
+      const resolved = resolveBinding(show, pageExternalData);
+      return resolved !== "false";
+    }
+    return show;
+  }, [block, dataBindingActive, pageExternalData]);
   if (isNull(Component) || !isShown) return null;
   let blockNode = (
     <Suspense>
