@@ -36,7 +36,7 @@ export const getDefaultThemeValues = (options: ChaiThemeOptions = defaultThemeOp
 };
 
 // Create a new atom for changeable theme values, initialized with default values
-const chaiThemeValuesAtom = atom<ChaiTheme | Partial<ChaiTheme>>({});
+export const chaiThemeValuesAtom = atom<ChaiTheme | Partial<ChaiTheme>>({});
 
 export const useTheme = () => {
   const options = useThemeOptions();

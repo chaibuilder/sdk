@@ -92,6 +92,25 @@ export const useSavePage = () => {
     return compact([...new Set(uuids)]);
   }, []);
 
+  const getDesignTokens = useCallback((blocks: ChaiBlock[]): Record<string, Record<string, string>> => {
+    const regex = /dt#[^ "]+/g;
+    const result: Record<string, Record<string, string>> = {};
+    for (const block of blocks) {
+      const blockStr = JSON.stringify(block);
+      let match;
+      while ((match = regex.exec(blockStr)) !== null) {
+        if (match[0]) {
+          const tokenId = match[0];
+          if (!result[tokenId]) {
+            result[tokenId] = {};
+          }
+          result[tokenId][block._id] = block._name || block._type;
+        }
+      }
+    }
+    return result;
+  }, []);
+
   const shouldSkipSave = useCallback(
     (force: boolean) => {
       // Skip save if no permission or page not loaded
@@ -127,6 +146,7 @@ export const useSavePage = () => {
         needTranslations: needTranslations(),
         partialIds: getAllPartialIds((pageData.blocks as unknown as ChaiBlock[]) || []),
         linkPageIds: getLinkPageIds((pageData.blocks as unknown as ChaiBlock[]) || []),
+        designTokens: getDesignTokens((pageData.blocks as unknown as ChaiBlock[]) || []),
       });
       setTimeout(() => {
         setSaveState("SAVED");
@@ -145,6 +165,7 @@ export const useSavePage = () => {
       checkStructure,
       getAllPartialIds,
       getLinkPageIds,
+      getDesignTokens,
     ],
     3000, // save only every 3 seconds
   );
@@ -163,6 +184,7 @@ export const useSavePage = () => {
       needTranslations: needTranslations(),
       partialIds: getAllPartialIds((pageData.blocks as unknown as ChaiBlock[]) || []),
       linkPageIds: getLinkPageIds((pageData.blocks as unknown as ChaiBlock[]) || []),
+      designTokens: getDesignTokens((pageData.blocks as unknown as ChaiBlock[]) || []),
     });
     setTimeout(() => {
       setSaveState("SAVED");

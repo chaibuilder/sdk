@@ -4,11 +4,12 @@ import { useFetch } from "@/pages/hooks/utils/use-fetch";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useApiUrl } from "./use-builder-prop";
+import { useQuerySync } from "@/hooks/use-query-sync";
 
 export const useUpdateWebsiteFields = () => {
   const apiUrl = useApiUrl();
-  const queryClient = useQueryClient();
   const fetchAPI = useFetch();
+  const { handleQuerySync } = useQuerySync();
 
   return useMutation({
     mutationFn: async (data: any) => {
@@ -17,12 +18,11 @@ export const useUpdateWebsiteFields = () => {
         data,
       });
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [ACTIONS.GET_WEBSITE_DRAFT_SETTINGS],
-      });
-      queryClient.invalidateQueries({
-        queryKey: [ACTIONS.GET_CHANGES],
+    onSuccess: (_, variables) => {
+      handleQuerySync({
+        type: "UPDATE_WEBSITE_DATA",
+        data: variables,
+        sync: true,
       });
     },
     onError: (response) => {

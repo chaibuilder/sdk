@@ -1,7 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
 import { isEmpty } from "lodash-es";
-import { QUERY_KEYS } from "./QUERY_KEYS";
 import { useWebsitePages } from "..";
+import { useMemo } from "react";
 
 type BlocksWithDesignTokens = Record<string, string>;
 export interface SiteWideUsage {
@@ -30,12 +29,5 @@ function deriveSiteWideUsage(defaultLangPages: any[]): SiteWideUsage {
 
 export const useSiteWideUsage = () => {
   const { data: websitePages } = useWebsitePages();
-  return useQuery({
-    queryKey: [QUERY_KEYS.SITE_WIDE_USAGE],
-    queryFn: () => {
-      return deriveSiteWideUsage(websitePages ?? []);
-    },
-    enabled: !!websitePages,
-    retry: false,
-  });
+  return useMemo(() => deriveSiteWideUsage(websitePages ?? []), [websitePages]);
 };
