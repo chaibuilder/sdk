@@ -1,3 +1,4 @@
+import { useQuerySync } from "@/hooks/use-query-sync";
 import { useSavePage } from "@/hooks/use-save-page";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { ERRORS } from "@/pages/constants/ERRORS";
@@ -141,9 +142,10 @@ export const useDeletePage = () => {
 
 export const useUnpublishPage = () => {
   const apiUrl = useApiUrl();
-  const queryClient = useQueryClient();
   const fetchAPI = useFetch();
   const { data: pageTypes } = usePageTypes();
+  const { handleQuerySync } = useQuerySync();
+
   return useMutation({
     mutationFn: async (page: any) => {
       return fetchAPI(apiUrl, {
@@ -152,15 +154,15 @@ export const useUnpublishPage = () => {
       });
     },
     onSuccess: (_, args: any) => {
-      if (args && args?.primaryPage) {
-        queryClient.invalidateQueries({
-          queryKey: [ACTIONS.GET_LANGUAGE_PAGES, args?.primaryPage],
-        });
-      } else {
-        queryClient.invalidateQueries({
-          queryKey: [ACTIONS.GET_WEBSITE_PAGES],
-        });
-      }
+      handleQuerySync({
+        type: "UNPUBLISH_PAGE",
+        data: {
+          pageId: args?.id,
+          primaryPage: args?.primaryPage,
+        },
+        sync: true,
+      });
+
       const pageTypeObject = find(pageTypes, { key: args.pageType });
       toast.success(
         !pageTypeObject?.hasSlug
@@ -181,9 +183,9 @@ export const useUnpublishPage = () => {
 export const usePublishPages = () => {
   const apiUrl = useApiUrl();
   const fetchAPI = useFetch();
-  const queryClient = useQueryClient();
   const { savePageAsync } = useSavePage();
   const revisionsEnabled = useRevisionsEnabled();
+  const { handleQuerySync } = useQuerySync();
 
   return useMutation({
     mutationFn: async ({ ids }: { ids: string[] }) => {
@@ -196,16 +198,11 @@ export const usePublishPages = () => {
     },
     onSuccess: (_data, { ids }) => {
       // Invalidate pages query to reflect cleared changes and updated online status
-      queryClient.invalidateQueries({
-        queryKey: [ACTIONS.GET_WEBSITE_PAGES],
+      handleQuerySync({
+        type: "PUBLISH_CHANGES",
+        data: { ids },
+        sync: true,
       });
-
-      // If THEME or DESIGN_TOKENS were published, invalidate settings to reflect cleared appChanges
-      if (ids.includes("THEME") || ids.includes("DESIGN_TOKENS")) {
-        queryClient.invalidateQueries({
-          queryKey: [ACTIONS.GET_WEBSITE_DRAFT_SETTINGS],
-        });
-      }
     },
     onError: (error) => {
       console.log("##", error);

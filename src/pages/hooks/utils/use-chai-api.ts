@@ -1,7 +1,9 @@
+import { useQuerySync } from "@/hooks/use-query-sync";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { usePageEditInfo } from "@/pages/hooks/pages/use-current-page";
 import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
 import { ChaiBlock } from "@/types/common";
+import { ChaiDesignTokens } from "@/types/types";
 import { useQueryClient } from "@tanstack/react-query";
 import { useFetch } from "./use-fetch";
 
@@ -10,15 +12,22 @@ export const usePagesSavePage = () => {
   const fetchAPI = useFetch();
   const [, setPageEditInfo] = usePageEditInfo();
   const queryClient = useQueryClient();
+  const { handleQuerySync } = useQuerySync();
 
   const onSave = async ({
     page,
     blocks,
     needTranslations,
+    partialIds,
+    linkPageIds,
+    designTokens,
   }: {
     page: string;
     blocks: ChaiBlock[] | any;
     needTranslations?: boolean;
+    partialIds?: string[];
+    linkPageIds?: string[];
+    designTokens?: ChaiDesignTokens;
   }) => {
     try {
       const response = await fetchAPI(apiUrl, {
@@ -37,9 +46,16 @@ export const usePagesSavePage = () => {
         if (!oldData) return oldData;
         return oldData?.map((item: any) => (item?.id === page ? { ...item, changes: ["Page"] } : item));
       });
-      queryClient.setQueryData([ACTIONS.GET_WEBSITE_PAGES], (oldData: any[] | undefined) => {
-        if (!oldData) return oldData;
-        return oldData?.map((item: any) => (item?.id === page ? { ...item, changes: ["Page"] } : item));
+      // Emit sync event for page save - syncs blocks, links, partials, design tokens, and site-wide usage
+      handleQuerySync({
+        type: "UPDATE_PAGE_DATA",
+        data: {
+          pageId: page,
+          partialIds,
+          linkPageIds,
+          designTokens,
+        },
+        sync: true,
       });
 
       return response;

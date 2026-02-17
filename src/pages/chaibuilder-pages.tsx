@@ -218,11 +218,18 @@ const ChaiBuilderInner = ({ ...props }: ChaiBuilderInnerProps) => {
         pageTypes={pageTypes}
         searchPageTypeItems={searchPageTypeItems}
         askAiCallBack={askAiCallBack}
-        onSave={async ({ blocks: _blocks, needTranslations }) => {
+        onSave={async ({ blocks: _blocks, needTranslations, partialIds, linkPageIds, designTokens }) => {
           if (!page) return true;
           blocksDataRef.current = _blocks;
           const updatedBlocks = [..._blocks];
-          await onSave({ page: page as string, blocks: updatedBlocks, needTranslations });
+          await onSave({
+            page: page as string,
+            blocks: updatedBlocks,
+            needTranslations,
+            partialIds,
+            linkPageIds,
+            designTokens,
+          });
           blocksDataRef.current = updatedBlocks;
           return true;
         }}
