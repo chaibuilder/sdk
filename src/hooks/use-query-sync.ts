@@ -1,15 +1,15 @@
-import { QueryClient, useQueryClient } from "@tanstack/react-query";
-import { useCallback } from "react";
-import { ACTIONS } from "@/pages/constants/ACTIONS";
+import { chaiDesignTokensAtom } from "@/atoms/builder";
 import { useSendRealtimeEvent } from "@/pages/client/components/page-lock/page-lock-hook";
-import { useAtom, SetStateAction } from "jotai";
-import { chaiThemeValuesAtom } from "./use-theme";
+import { ACTIONS } from "@/pages/constants/ACTIONS";
+import { ChaiPage, ChaiWebsiteSetting } from "@/types/actions";
 import { ChaiTheme } from "@/types/chaibuilder-editor-props";
 import { ChaiDesignTokens } from "@/types/types";
-import { ChaiPage, ChaiWebsiteSetting } from "@/types/actions";
-import { chaiDesignTokensAtom } from "@/atoms/builder";
-import { toast } from "sonner";
+import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import { SetStateAction, useAtom } from "jotai";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
+import { chaiThemeValuesAtom } from "./use-theme";
 
 type SyncPayload = {
   type: string;
@@ -249,13 +249,7 @@ const clearAppChanges = (
 /**
  * Handle publish changes - clear changes arrays for published items
  */
-const handlePublishChanges = ({
-  queryClient,
-  ids,
-  sync,
-  userName,
-  t,
-}: PublishChangesParams & { userName?: string; t: (key: string, options?: any) => string }): void => {
+const handlePublishChanges = ({ queryClient, ids }: PublishChangesParams): void => {
   queryClient.setQueryData([ACTIONS.GET_WEBSITE_PAGES], (oldData: ChaiPage[] | undefined) => {
     if (!oldData || !Array.isArray(oldData)) return oldData;
     return oldData.map((page) => clearPageChanges(page, ids));
@@ -340,7 +334,7 @@ const processSyncPayload = (
 
     case "PUBLISH_CHANGES":
       if (data.ids) {
-        handlePublishChanges({ queryClient, ids: data.ids, sync, userName, t });
+        handlePublishChanges({ queryClient, ids: data.ids, sync });
       }
       break;
 
