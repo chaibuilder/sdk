@@ -2,6 +2,7 @@ import { getSupabaseAdmin } from "@/app/supabase-admin";
 import { registerPageTypes } from "@/page-types";
 import { ChaiActionsRegistry, initChaiBuilderActionHandler } from "@chaibuilder/sdk/actions";
 import { SupabaseAuthActions, SupabaseStorageActions } from "@chaibuilder/sdk/actions/supabase";
+import { NextJsPublishChangesAction } from "./actions/publish-changes";
 import { NextRequest, NextResponse } from "next/server";
 
 registerPageTypes();
@@ -16,6 +17,7 @@ export async function POST(req: NextRequest) {
   const supabase = getSupabaseAdmin();
   ChaiActionsRegistry.registerActions(SupabaseAuthActions(supabase));
   ChaiActionsRegistry.registerActions(SupabaseStorageActions(supabase));
+  ChaiActionsRegistry.register("PUBLISH_CHANGES", new NextJsPublishChangesAction());
   try {
     // Get authorization header
     let authorization = req.headers.get("authorization") || "";
@@ -31,7 +33,7 @@ export async function POST(req: NextRequest) {
     }
     const userId = supabaseUser.data.user?.id || "";
 
-    const actionHandler = initChaiBuilderActionHandler({ apiKey, userId });
+    const actionHandler = initChaiBuilderActionHandler({ apiKey, userId, hostname: req.nextUrl.host });
     const response = await actionHandler(body);
     // Handle streaming responses
     if (response?._streamingResponse && response?._streamResult) {
