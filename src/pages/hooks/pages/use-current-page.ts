@@ -28,11 +28,10 @@ export const useCurrentActivePage = () => {
   const page = searchParams.get("page");
   const { data: languagePages, isFetching } = useWebsiteLanguagePages(lang);
   const { data: primaryPages } = useWebsitePrimaryPages();
-  const currentPage = useMemo(() => {
-    const languagePage = find(values(languagePages), { id: page });
-    if (languagePage) return languagePage;
-    return find(primaryPages, { id: page }) || {};
-  }, [languagePages, primaryPages, page]);
+  const currentPage = useMemo(
+    () => find([...values(languagePages), ...primaryPages], { lang, id: page }) || {},
+    [languagePages, primaryPages, lang, page],
+  );
   return { data: currentPage as any, isFetching };
 };
 
