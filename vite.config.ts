@@ -63,6 +63,7 @@ export default defineConfig({
         "path",
         "os",
         "fs",
+        "eta",
         "net",
         "tls",
         "stream",

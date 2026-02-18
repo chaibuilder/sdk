@@ -1,13 +1,13 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
-import { useActivePage } from "./pages/use-current-page";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useCurrentActivePage } from "./pages/use-current-page";
 import { useApiUrl } from "./project/use-builder-prop";
 import { useFetch } from "./utils/use-fetch";
 
 export const useUpdateActivePageMetadata = () => {
   const apiUrl = useApiUrl();
   const fetch = useFetch();
-  const { data: currentPage } = useActivePage();
+  const { data: currentPage } = useCurrentActivePage();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (metadata: Record<string, any>) => {

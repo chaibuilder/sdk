@@ -71,7 +71,12 @@ export abstract class ChaiBaseAction<T = any, K = any> implements ChaiAction<T, 
    * Verify if the user has access to the app
    * @throws ActionError if the user does not have access
    */
-  protected async verifyAccess(): Promise<void> {
+  /**
+   * Get user access data from the database
+   * @returns The user access record
+   * @throws ActionError if access check fails
+   */
+  protected async getUserAccess(): Promise<any> {
     if (!this.context) {
       throw new ActionError("Context not set", "CONTEXT_NOT_SET", 500);
     }
@@ -100,6 +105,12 @@ export abstract class ChaiBaseAction<T = any, K = any> implements ChaiAction<T, 
     if (!userAccess || userAccess.length === 0) {
       throw new ActionError("User does not have access to this app", "UNAUTHORIZED", 401);
     }
+
+    return userAccess[0];
+  }
+
+  protected async verifyAccess(): Promise<void> {
+    await this.getUserAccess();
   }
 
   /**

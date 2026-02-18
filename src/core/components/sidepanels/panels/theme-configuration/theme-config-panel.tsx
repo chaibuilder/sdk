@@ -81,7 +81,7 @@ const ThemeConfigPanel: React.FC<ThemeConfigProps> = React.memo(({ className = "
   const { hasPermission } = usePermissions();
   const { debouncedSaveTheme } = useSaveWebsiteData();
   const importThemeEnabled = useBuilderProp("flags.importTheme", true);
-  const darkModeEnabled = useBuilderProp("flags.darkMode", true);
+  const darkModeEnabled = useBuilderProp("flags.darkMode", false);
   const availableFonts = useRegisteredFonts();
 
   if (!themePresets || themePresets.length === 0) {

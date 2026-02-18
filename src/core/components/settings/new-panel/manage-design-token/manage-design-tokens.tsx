@@ -509,6 +509,7 @@ const ManageDesignTokens = ({ onActiveTokenChange, onDirtyStateChange }: ManageD
             classFromProps={classes}
             onAddNew={handleAddClass}
             onRemove={handleRemoveClass}
+            showDesignTokenSuggestions={false}
           />
 
           {/* Footer - show Add button for add mode, Save button for edit mode */}

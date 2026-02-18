@@ -16,6 +16,7 @@ type GetWebsiteSettingsActionResponse = {
   theme: any; // Making it more flexible to match database schema
   appKey: string;
   designTokens?: any;
+  appChanges?: string[];
 };
 
 export class GetWebsiteSettingsAction extends ChaiBaseAction<
@@ -47,6 +48,7 @@ export class GetWebsiteSettingsAction extends ChaiBaseAction<
           languages: targetTable.languages,
           settings: targetTable.settings,
           designTokens: targetTable.designTokens,
+          changes: targetTable.changes,
         })
         .from(targetTable)
         .where(eq(targetTable.id, appId))
@@ -63,6 +65,8 @@ export class GetWebsiteSettingsAction extends ChaiBaseAction<
 
     const settings = first(config);
 
+    const appChanges = ((settings as any)?.changes ?? []) as string[];
+
     return {
       ...this.getDefaultSettings(),
       ...settings,
@@ -72,6 +76,7 @@ export class GetWebsiteSettingsAction extends ChaiBaseAction<
       theme: settings?.theme || this.getDefaultSettings().theme,
       // Generate deterministic app key like the original implementation
       appKey: this.generateDeterministicUuid(appId),
+      appChanges,
     };
   }
 

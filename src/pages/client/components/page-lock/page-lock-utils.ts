@@ -1,4 +1,4 @@
-import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
+import { usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
 import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
 import { useChaiAuth } from "@/pages/hooks/use-chai-auth";
 import { atom } from "jotai";
@@ -25,6 +25,10 @@ export const EVENT = {
   FORCE_TAKE_OVER_REQUEST: "FORCE_TAKE_OVER_REQUEST",
   CONTINUE_EDITING_IN_THIS_CLIENT: "CONTINUE_EDITING_IN_THIS_CLIENT",
   CONTINUE_EDITING_IN_THIS_TAB_REQUEST: "CONTINUE_EDITING_IN_THIS_TAB_REQUEST",
+  UPDATE_WEBSITE_DATA: "UPDATE_WEBSITE_DATA",
+  UPDATE_PAGE_DATA: "UPDATE_PAGE_DATA",
+  PUBLISH_CHANGES: "PUBLISH_CHANGES",
+  UNPUBLISH_PAGE: "UNPUBLISH_PAGE",
 };
 
 export const PRESENCE_EVENTS = ["sync", "join", "leave"];
@@ -36,6 +40,10 @@ export const BROADCAST_EVENTS = [
   EVENT.FORCE_TAKE_OVER_REQUEST,
   EVENT.CONTINUE_EDITING_IN_THIS_CLIENT,
   EVENT.CONTINUE_EDITING_IN_THIS_TAB_REQUEST,
+  EVENT.UPDATE_WEBSITE_DATA,
+  EVENT.UPDATE_PAGE_DATA,
+  EVENT.PUBLISH_CHANGES,
+  EVENT.UNPUBLISH_PAGE,
 ];
 
 export const pageUserMapAtom = atom<Record<string, ChaiOnlineUser>>({});
@@ -69,6 +77,6 @@ export const useChannelId = () => {
 };
 
 export const usePageId = () => {
-  const { data: currentPage } = useChaiCurrentPage();
-  return currentPage?.id;
+  const { data: primaryPage } = usePrimaryPage();
+  return primaryPage?.id;
 };

@@ -1,9 +1,10 @@
 import { usePageExternalData } from "@/atoms/builder";
 import MediaManagerModal from "@/core/components/sidepanels/panels/images/media-manager-modal";
+import { removeSizeClasses } from "@/core/utils/remove-size-classes";
 import { useLanguages } from "@/hooks/use-languages";
 import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
-import { getBlockDefaultProps } from "@/runtime";
 import { applyBindingToBlockProps } from "@/render/apply-binding";
+import { getBlockDefaultProps } from "@/runtime";
 import { ChaiAsset } from "@/types";
 import { Cross1Icon, Pencil2Icon } from "@radix-ui/react-icons";
 import { WidgetProps } from "@rjsf/utils";
@@ -11,7 +12,6 @@ import { first, get, has, isArray, isEmpty, set, startsWith } from "lodash-es";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useUpdateBlocksProps } from "../../hooks/use-update-blocks-props";
-import { removeSizeClasses } from "@/core/utils/remove-size-classes";
 
 const PLACEHOLDER_IMAGE =
   "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZmlsbD0iI2Q1ZDdkYSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIFBsYWNlaG9sZGVyPC90ZXh0Pjwvc3ZnPg==";
@@ -122,7 +122,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur, uiSchema }: WidgetProps
           <img
             src={resolvedValue}
             className={
-              `h-14 w-14 overflow-hidden rounded-md border border-border object-cover transition duration-200 ` +
+              `h-[72px] w-[72px] overflow-hidden rounded-md border border-border object-cover transition duration-200 ` +
               (assetId && assetId !== "" ? "cursor-pointer group-hover:blur-sm" : "")
             }
             alt=""
@@ -147,7 +147,7 @@ const ImagePickerField = ({ value, onChange, id, onBlur, uiSchema }: WidgetProps
         </div>
       ) : (
         <MediaManagerModal onSelect={handleSelect} mode="image" assetId={assetId}>
-          <div className="h-14 w-14 cursor-pointer rounded-md border border-border bg-[radial-gradient(#AAA,transparent_1px)] duration-300 [background-size:10px_10px]"></div>
+          <div className="h-[72px] w-[72px] cursor-pointer rounded-md border border-border bg-[radial-gradient(#AAA,transparent_1px)] duration-300 [background-size:10px_10px]"></div>
         </MediaManagerModal>
       )}
       <div className="flex w-3/5 flex-col">

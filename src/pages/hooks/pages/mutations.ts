@@ -1,7 +1,8 @@
+import { useQuerySync } from "@/hooks/use-query-sync";
 import { useSavePage } from "@/hooks/use-save-page";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { ERRORS } from "@/pages/constants/ERRORS";
-import { useActivePage, useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
+import { useCurrentActivePage } from "@/pages/hooks/pages/use-current-page";
 import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useRevisionsEnabled } from "@/pages/hooks/use-revisions-enabled";
@@ -58,7 +59,7 @@ export const useUpdatePage = () => {
   const apiUrl = useApiUrl();
   const queryClient = useQueryClient();
   const fetchAPI = useFetch();
-  const { data: activePage } = useActivePage();
+  const { data: activePage } = useCurrentActivePage();
   const { data: pageTypes } = usePageTypes();
   return useMutation({
     mutationFn: async (updatedPage: Partial<any>) => {
@@ -141,9 +142,10 @@ export const useDeletePage = () => {
 
 export const useUnpublishPage = () => {
   const apiUrl = useApiUrl();
-  const queryClient = useQueryClient();
   const fetchAPI = useFetch();
   const { data: pageTypes } = usePageTypes();
+  const { handleQuerySync } = useQuerySync();
+
   return useMutation({
     mutationFn: async (page: any) => {
       return fetchAPI(apiUrl, {
@@ -152,15 +154,15 @@ export const useUnpublishPage = () => {
       });
     },
     onSuccess: (_, args: any) => {
-      if (args && args?.primaryPage) {
-        queryClient.invalidateQueries({
-          queryKey: [ACTIONS.GET_LANGUAGE_PAGES, args?.primaryPage],
-        });
-      } else {
-        queryClient.invalidateQueries({
-          queryKey: [ACTIONS.GET_WEBSITE_PAGES],
-        });
-      }
+      handleQuerySync({
+        type: "UNPUBLISH_PAGE",
+        data: {
+          pageId: args?.id,
+          primaryPage: args?.primaryPage,
+        },
+        sync: true,
+      });
+
       const pageTypeObject = find(pageTypes, { key: args.pageType });
       toast.success(
         !pageTypeObject?.hasSlug
@@ -178,32 +180,12 @@ export const useUnpublishPage = () => {
   });
 };
 
-export const usePublishPage = () => {
-  const apiUrl = useApiUrl();
-  const fetchAPI = useFetch();
-  return useMutation({
-    mutationFn: async (id: string) => {
-      return fetchAPI(apiUrl, {
-        action: ACTIONS.PUBLISH_PAGE,
-        data: { id },
-      });
-    },
-    onSuccess: () => {
-      toast.success("Page published successfully.");
-    },
-    onError: () => {
-      toast.error("Failed to publish page");
-    },
-  });
-};
-
 export const usePublishPages = () => {
   const apiUrl = useApiUrl();
   const fetchAPI = useFetch();
-  const queryClient = useQueryClient();
-  const { data: currentPage } = useChaiCurrentPage();
   const { savePageAsync } = useSavePage();
   const revisionsEnabled = useRevisionsEnabled();
+  const { handleQuerySync } = useQuerySync();
 
   return useMutation({
     mutationFn: async ({ ids }: { ids: string[] }) => {
@@ -214,15 +196,12 @@ export const usePublishPages = () => {
         data: { ids, revisions: revisionsEnabled },
       });
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [ACTIONS.GET_CHANGES],
-      });
-      queryClient.invalidateQueries({
-        queryKey: [ACTIONS.GET_WEBSITE_PAGES],
-      });
-      queryClient.invalidateQueries({
-        queryKey: [ACTIONS.GET_LANGUAGE_PAGES, currentPage?.id],
+    onSuccess: (_data, { ids }) => {
+      // Invalidate pages query to reflect cleared changes and updated online status
+      handleQuerySync({
+        type: "PUBLISH_CHANGES",
+        data: { ids },
+        sync: true,
       });
     },
     onError: (error) => {

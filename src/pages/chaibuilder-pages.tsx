@@ -1,15 +1,13 @@
+import { Button } from "@/components/ui/button";
 import { ChaiBuilderEditor } from "@/core/main";
 import { Topbar } from "@/pages/extensions/topbar";
 import { useAskAi } from "@/pages/hooks/ai/use-ask-ai";
-import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
+import { usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
 import { useExtractPageBlocks } from "@/pages/hooks/pages/use-extract-page-blocks";
-import { useBuilderPageData, usePageDraftBlocks } from "@/pages/hooks/pages/use-page-draft-blocks";
+import { usePageAllData } from "@/pages/hooks/pages/use-page-all-data";
 import { useUpdateWebsiteFields } from "@/pages/hooks/project/mutations";
-import { usePageTypes, useSearchPageTypePages } from "@/pages/hooks/project/use-page-types";
-import { useUILibraries } from "@/pages/hooks/project/use-ui-libraries";
-import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
+import { useSearchPageTypePages } from "@/pages/hooks/project/use-page-types";
 import { useCheckUserAccess } from "@/pages/hooks/user/use-check-access";
-import { useUserRoleAndPermissions } from "@/pages/hooks/user/use-user-permissions";
 import { usePagesSavePage } from "@/pages/hooks/utils/use-chai-api";
 import { usePagesProps } from "@/pages/hooks/utils/use-pages-props";
 import { usePartialBlocksFn } from "@/pages/hooks/utils/use-partial-blocks";
@@ -31,9 +29,9 @@ import { BlurContainer } from "./client/components/chai-loader";
 import { usePageLockStatus } from "./client/components/page-lock/page-lock-hook";
 import { PAGE_STATUS } from "./client/components/page-lock/page-lock-utils";
 import { registerPagesFeatureFlags } from "./feature-flags";
-import { useChaiCollections, useGetBlockAysncProps } from "./hooks/use-chai-collections";
-import { useFallbackLang } from "./hooks/use-fallback-lang";
+import { useGetBlockAysncProps } from "./hooks/use-chai-collections";
 import { useGotoPage } from "./hooks/use-goto-page";
+import { useWebsiteData } from "./hooks/use-website-data";
 import { useSiteWideUsage } from "./hooks/use-site-wide-usage";
 
 const PageLock = lazy(() => import("./client/components/page-lock/page-lock"));
@@ -50,7 +48,7 @@ registerChaiMediaManager(DigitalAssetManager as any);
 registerChaiSaveToLibrary(SaveToLibrary);
 
 const DEFAULT_ROLES_AND_PERMISSIONS = {
-  role: "",
+  role: "admin",
   permissions: null,
 };
 
@@ -73,24 +71,44 @@ const BuilderWithAccessCheck = (props: ChaiWebsiteBuilderProps) => {
 };
 
 const DefaultChaiBuilder = (props: ChaiWebsiteBuilderProps) => {
-  // * WEBSITE DATA
-  const { data: uiLibraries } = useUILibraries();
-  const fallbackLang = useFallbackLang();
-  const { data: roleAndPermissions = DEFAULT_ROLES_AND_PERMISSIONS, isFetching: isRoleAndPermissionsFetching } =
-    useUserRoleAndPermissions();
-  const { data: pageTypes, isFetching: isPageTypesFetching } = usePageTypes();
-  const { data: collections, isFetching: isCollectionsFetching } = useChaiCollections();
-  const { data: websiteConfig, isFetching: isWebsiteConfigFetching } = useWebsiteSetting();
-  const isFetchingWebsiteData =
-    isRoleAndPermissionsFetching || isPageTypesFetching || isCollectionsFetching || isWebsiteConfigFetching;
+  const { data: websiteData, isFetching: isWebsiteDataFetching, isError } = useWebsiteData();
 
+  // Show loader until websiteData is resolved (cache gets populated first)
+  if (!websiteData || isWebsiteDataFetching) {
+    return (
+      <BlurContainer className="fixed inset-0 bg-white">
+        <Loader className="h-6 w-6 animate-spin text-primary" />
+      </BlurContainer>
+    );
+  }
+  if (isError) {
+    return (
+      <BlurContainer className="fixed inset-0 bg-white">
+        <p>Failed to load website data</p>
+        <Button onClick={() => window.location.reload()}>Retry</Button>
+      </BlurContainer>
+    );
+  }
+
+  // Once resolved, render the editor — all child hooks will find data in cache
+  return <ChaiBuilderInner {...props} />;
+};
+
+type ChaiBuilderInnerProps = ChaiWebsiteBuilderProps;
+
+const ChaiBuilderInner = ({ ...props }: ChaiBuilderInnerProps) => {
+  const { data: websiteData } = useWebsiteData();
+  const { data: siteWideUsage } = useSiteWideUsage();
+  const { libraries: uiLibraries, collections, pageTypes, websiteSettings: websiteConfig } = websiteData;
+  const fallbackLang = useMemo(() => websiteConfig?.fallbackLang || "en", [websiteConfig]);
+  const { data: accessData, isFetching: isFetchingAccessData } = useCheckUserAccess();
+  const roleAndPermissions = accessData || DEFAULT_ROLES_AND_PERMISSIONS;
   // * PAGE DATA
   const [searchParams] = useSearchParams();
   const page = searchParams.get("page");
-  const { data: currentPage } = useChaiCurrentPage();
-  const { data: draftBlocks, isFetching: isDraftBlocksFetching } = usePageDraftBlocks();
-  const { blocks } = useExtractPageBlocks(draftBlocks);
-  const { data: builderPageData, isFetching: isBuilderPageDataFetching } = useBuilderPageData();
+  const { data: currentPage } = usePrimaryPage();
+  const { data: pageData, isFetching: isFetchingPageAllData } = usePageAllData();
+  const { blocks } = useExtractPageBlocks(pageData?.draftPage?.blocks ?? []);
   const { pageStatus } = usePageLockStatus();
 
   // * ACTIONS
@@ -100,7 +118,6 @@ const DefaultChaiBuilder = (props: ChaiWebsiteBuilderProps) => {
   const { getPartialBlocks, getPartialBlockBlocks } = usePartialBlocksFn();
   const { mutateAsync: searchPageTypePages } = useSearchPageTypePages();
   const { mutateAsync: updateSettings } = useUpdateWebsiteFields();
-  const { data: siteWideUsage } = useSiteWideUsage(props.flags?.designTokens ?? true);
   const gotoPage = useGotoPage();
 
   // * STATES
@@ -109,9 +126,11 @@ const DefaultChaiBuilder = (props: ChaiWebsiteBuilderProps) => {
   // * UTILS
   const blocksDataRef = useRef([] as any);
   const currentTheme = useMemo(() => get(websiteConfig, "theme", {}) || {}, [websiteConfig]);
+  const websiteLanguages = useMemo(() => get(websiteConfig, "languages", []) || [], [websiteConfig]);
+  const websiteDesignTokens = useMemo(() => get(websiteConfig, "designTokens", {}) || {}, [websiteConfig]);
   const isEditing = pageStatus === PAGE_STATUS.EDITING;
   const isCheckingPageLock = pageStatus === PAGE_STATUS.CHECKING;
-  const isFetchingPageData = isDraftBlocksFetching || isCheckingPageLock || isBuilderPageDataFetching;
+  const isFetchingPageData = isFetchingPageAllData || isCheckingPageLock;
 
   useEffect(() => {
     blocksDataRef.current = blocks;
@@ -140,8 +159,9 @@ const DefaultChaiBuilder = (props: ChaiWebsiteBuilderProps) => {
       editorProps.permissions = get(roleAndPermissions, "permissions", null);
       editorProps.role = get(roleAndPermissions, "role", "user");
     }
+    editorProps.pageExternalData = pageData?.builderPageData ?? {};
     return editorProps;
-  }, [roleAndPermissions]);
+  }, [roleAndPermissions, pageData]);
 
   const isLibrarySite = useMemo(() => {
     return uiLibraries?.some((library: any) => library.isSiteLibrary);
@@ -157,9 +177,9 @@ const DefaultChaiBuilder = (props: ChaiWebsiteBuilderProps) => {
 
   return (
     <>
-      {isFetchingPageData && (
-        <BlurContainer className={isFetchingWebsiteData ? "fixed inset-0 bg-white" : "bg-white/75"}>
-          <Loader className={`animate-spin text-primary ${isFetchingWebsiteData ? "h-6 w-6" : "h-5 w-5"}`} />
+      {isFetchingPageAllData && (
+        <BlurContainer className={isFetchingAccessData ? "fixed inset-0 bg-white" : "bg-white/75"}>
+          <Loader className={`animate-spin text-primary ${isFetchingAccessData ? "h-6 w-6" : "h-5 w-5"}`} />
         </BlurContainer>
       )}
       {previewUrl && (
@@ -178,14 +198,13 @@ const DefaultChaiBuilder = (props: ChaiWebsiteBuilderProps) => {
         gotoPage={gotoPage}
         collections={collections ?? []}
         getBlockAsyncProps={getBlockAsyncProps}
-        pageExternalData={builderPageData}
         themePresets={props.themePresets ?? []}
         pageId={currentPage?.id}
-        loading={isDraftBlocksFetching}
+        loading={isFetchingPageData}
         fallbackLang={fallbackLang}
-        languages={websiteConfig?.languages || []}
-        brandingOptions={websiteConfig?.theme || {}}
-        designTokens={websiteConfig?.designTokens || {}}
+        languages={websiteLanguages}
+        brandingOptions={currentTheme}
+        designTokens={websiteDesignTokens}
         translations={props.translations || {}}
         locale={props.locale || "en"}
         htmlDir={props.htmlDir || "ltr"}
@@ -194,16 +213,23 @@ const DefaultChaiBuilder = (props: ChaiWebsiteBuilderProps) => {
         onError={props.onError || console.error}
         getPartialBlockBlocks={getPartialBlockBlocks}
         getPartialBlocks={getPartialBlocks}
-        blocks={isDraftBlocksFetching ? [] : blocks}
+        blocks={isFetchingPageAllData ? [] : blocks}
         theme={cloneDeep(currentTheme)}
         pageTypes={pageTypes}
         searchPageTypeItems={searchPageTypeItems}
         askAiCallBack={askAiCallBack}
-        onSave={async ({ blocks: _blocks, needTranslations }) => {
+        onSave={async ({ blocks: _blocks, needTranslations, partialIds, linkPageIds, designTokens }) => {
           if (!page) return true;
           blocksDataRef.current = _blocks;
           const updatedBlocks = [..._blocks];
-          await onSave({ page: page as string, blocks: updatedBlocks, needTranslations });
+          await onSave({
+            page: page as string,
+            blocks: updatedBlocks,
+            needTranslations,
+            partialIds,
+            linkPageIds,
+            designTokens,
+          });
           blocksDataRef.current = updatedBlocks;
           return true;
         }}
@@ -216,7 +242,7 @@ const DefaultChaiBuilder = (props: ChaiWebsiteBuilderProps) => {
           return true;
         }}
         {...forwardedProps}>
-        <PageLock isFetchingPageData={isFetchingPageData} />
+        <PageLock isFetchingPageData={isFetchingPageAllData} />
       </ChaiBuilderEditor>
       <div>
         <NoLanguagePageDialog />

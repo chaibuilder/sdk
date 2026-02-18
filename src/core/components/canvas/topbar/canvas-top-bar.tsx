@@ -6,7 +6,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { ScalePercent } from "@/core/components/canvas/scale-percent";
 import { Breakpoints } from "@/core/components/canvas/topbar/canvas-breakpoints";
@@ -14,11 +13,11 @@ import { ClearCanvas } from "@/core/components/canvas/topbar/clear-canvas";
 import { DarkMode } from "@/core/components/canvas/topbar/dark-mode";
 import { UndoRedo } from "@/core/components/canvas/topbar/undo-redo";
 import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { DotsHorizontalIcon, LightningBoltIcon } from "@radix-ui/react-icons";
+import { LightningBoltIcon } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
+import { MoreVertical } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { PageValidation } from "./page-validation";
 
 const CanvasTopBar: React.FC = () => {
   const darkModeEnabled = useBuilderProp("flags.darkMode", false);
@@ -29,21 +28,21 @@ const CanvasTopBar: React.FC = () => {
   const showDataBindingToggle = dataBindingEnabled;
 
   return (
-    <div className="flex h-10 items-center justify-between border-b border-border bg-background/70 px-2 shadow-xl">
+    <div className="flex h-10 items-center justify-between px-2">
       <div className="flex h-full space-x-2">{showDarkModeToggle ? <DarkMode /> : null}</div>
       <div className="flex h-full items-center space-x-2">
-        <Breakpoints canvas openDelay={400} />
-        <Separator orientation="vertical" />
+        <Breakpoints canvas openDelay={400} activeButtonClass="bg-gray-200" />
         <ScalePercent />
-        <Separator orientation="vertical" />
         <UndoRedo />
       </div>
       <div className="flex h-full items-center">
+        {/* <PageValidation /> */}
+        <ClearCanvas />
         {showDataBindingToggle ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button size="sm" variant="ghost" className="h-7 w-7 rounded-md p-1">
-                <DotsHorizontalIcon className="h-4 w-4" />
+              <Button size="sm" variant="ghost" className="size-2 h-7 w-7 rounded-md p-1">
+                <MoreVertical className="h-2 w-2" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56 border-border text-xs">
@@ -55,8 +54,6 @@ const CanvasTopBar: React.FC = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         ) : null}
-        <PageValidation />
-        <ClearCanvas />
       </div>
     </div>
   );

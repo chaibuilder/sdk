@@ -24,6 +24,10 @@ type GetWebsitePagesActionResponse = Array<{
   primaryPage?: string | null;
   isTemplate: boolean;
   changes: string[] | null;
+  lang: string;
+  designTokens: unknown;
+  links: string | null;
+  partialBlocks: string | null;
 }>;
 
 export class GetWebsitePagesAction extends ChaiBaseAction<GetWebsitePagesActionData, GetWebsitePagesActionResponse> {
@@ -59,6 +63,10 @@ export class GetWebsitePagesAction extends ChaiBaseAction<GetWebsitePagesActionD
           dynamicSlugCustom: schema.appPages.dynamicSlugCustom,
           primaryPage: schema.appPages.primaryPage,
           changes: schema.appPages.changes,
+          lang: schema.appPages.lang,
+          designTokens: schema.appPages.designTokens,
+          links: schema.appPages.links,
+          partialBlocks: schema.appPages.partialBlocks,
         })
         .from(schema.appPages)
         .where(and(eq(schema.appPages.app, appId), eq(schema.appPages.lang, lang))),
@@ -97,6 +105,10 @@ export class GetWebsitePagesAction extends ChaiBaseAction<GetWebsitePagesActionD
       pageType: page.pageType ?? "page",
       isTemplate: templatePageIds.has(page.id),
       changes: page.changes as string[] | null,
+      lang: page.lang,
+      designTokens: page.designTokens,
+      links: page.links,
+      partialBlocks: page.partialBlocks,
     }));
   }
 }

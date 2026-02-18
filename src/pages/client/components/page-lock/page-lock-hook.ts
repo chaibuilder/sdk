@@ -1,5 +1,7 @@
 import { useSavePage } from "@/hooks/use-save-page";
+import { useQuerySync } from "@/hooks/use-query-sync";
 import { useRealtimeAdapter } from "@/pages/hooks/project/use-builder-prop";
+import { useChaiAuth } from "@/pages/hooks/use-chai-auth";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import {
@@ -141,6 +143,7 @@ export const useSendRealtimeEvent = () => {
   const channel = useRealtimeChannel();
   const pageOwner = useCurrentPageOwner();
   const { setPageLockMeta } = usePageLockMeta();
+  const { user: chaiUser } = useChaiAuth();
   const pageRef = useRef<any>(pageId);
 
   useEffect(() => {
@@ -152,13 +155,14 @@ export const useSendRealtimeEvent = () => {
       if (!channel) return;
       const payload = _payload || {};
       payload.userId = userId;
+      payload.userName = chaiUser?.name || chaiUser?.email || "Unknown user";
       payload.pageId = pageRef.current;
       payload.senderClientId = clientId;
       payload.receiverClientId = _payload?.requestingClientId || pageOwner?.clientId;
       await channel.send(event, payload);
       setPageLockMeta({});
     },
-    [channel, userId, pageOwner, setPageLockMeta],
+    [channel, userId, pageOwner, setPageLockMeta, chaiUser],
   );
 };
 
@@ -176,6 +180,7 @@ export const useReceiveRealtimeEvent = () => {
   const sendEvent = useSendRealtimeEvent();
   const pageRef = useRef<any>(pageId);
   const { savePageAsync } = useSavePage();
+  const { handleQuerySync } = useQuerySync();
 
   useEffect(() => {
     pageRef.current = pageId;
@@ -185,6 +190,21 @@ export const useReceiveRealtimeEvent = () => {
     (event: string) =>
       async ({ payload: _payload }: any) => {
         const payload = _payload || {};
+        // Handle query sync events (these don't need pageId/clientId validation)
+        if (
+          event === EVENT.UPDATE_WEBSITE_DATA ||
+          event === EVENT.UPDATE_PAGE_DATA ||
+          event === EVENT.PUBLISH_CHANGES ||
+          event === EVENT.UNPUBLISH_PAGE
+        ) {
+          handleQuerySync({
+            type: event,
+            data: payload?.data,
+            sync: false,
+            userName: payload?.userName,
+          });
+          return;
+        }
         if (!payload?.pageId || payload?.pageId !== pageRef.current || payload?.receiverClientId !== clientId) return;
         setPageLockMeta({});
 
@@ -219,7 +239,7 @@ export const useReceiveRealtimeEvent = () => {
             break;
         }
       },
-    [sendEvent, setPageLockMeta, setPageStatus, channel, userId, savePageAsync],
+    [sendEvent, setPageLockMeta, setPageStatus, channel, userId, savePageAsync, handleQuerySync],
   );
 };
 

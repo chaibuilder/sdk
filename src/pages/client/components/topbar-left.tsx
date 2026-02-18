@@ -10,7 +10,7 @@ import { mergeClasses } from "@/core/main";
 import { useLanguages } from "@/hooks/use-languages";
 import { addNewLangAtom } from "@/pages/atom/add-new-lang";
 import { LANGUAGES } from "@/pages/constants/LANGUAGES";
-import { useChaiCurrentPage } from "@/pages/hooks/pages/use-current-page";
+import { usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
 import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
 import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
@@ -22,7 +22,6 @@ import { ChevronDown, Languages, Plus, Star } from "lucide-react";
 import React, { lazy, Suspense, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { usePageLockStatus } from "./page-lock/page-lock-hook";
-import PagesManagerTrigger from "./page-manager/page-manager-trigger";
 
 const AddNewLanguagePage = lazy(() => import("./add-new-language-page"));
 
@@ -34,11 +33,9 @@ const TopLeftCorner = () => {
 
 export const LanguageSwitcher = ({
   showAdd = true,
-  variant = "ghost",
   goToDefaultLang = false,
 }: {
   showAdd?: boolean;
-  variant?: "ghost" | "outline";
   goToDefaultLang?: boolean;
 }) => {
   const { fallbackLang, languages, selectedLang, setSelectedLang } = useLanguages();
@@ -67,7 +64,7 @@ export const LanguageSwitcher = ({
 
   const setAddNewLang = useSetAtom(addNewLangAtom);
 
-  const { data: currentPage } = useChaiCurrentPage();
+  const { data: currentPage } = usePrimaryPage();
   const { data: websiteSettings } = useWebsiteSetting();
   const { data: languagePages } = useLanguagePages();
 
@@ -152,11 +149,7 @@ export const LanguageSwitcher = ({
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild className="focus:outline-none">
-          <Button
-            disabled={Boolean(isLocked)}
-            variant={variant as "ghost" | "outline"}
-            size="sm"
-            className="ml-px h-max gap-2 py-1.5">
+          <Button disabled={Boolean(isLocked)} variant={"outline"} size="sm" className="ml-px h-max gap-2 py-1.5">
             <Languages className="h-4 w-4" />
             {get(LANGUAGES, currentLang, currentLang)}
             <ChevronDown className="h-4 w-4" />
@@ -214,7 +207,6 @@ export default function TopbarLeft() {
   return (
     <div className="relative z-10 flex items-center justify-end gap-1">
       <TopLeftCorner />
-      <PagesManagerTrigger />
       {addNewLang && (
         <Suspense>
           <AddNewLanguagePage

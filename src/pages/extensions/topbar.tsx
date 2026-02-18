@@ -1,14 +1,18 @@
+import { CanvasTopBar } from "@/core/components/canvas/topbar/canvas-top-bar";
 import { mergeClasses } from "@/core/main";
 import { PageDropdownInHeader } from "@/pages/client/components/page-dropdown-in-header";
 import { ScreenOverlay } from "@/pages/client/components/screen-overlay";
 import TopbarLeft, { LanguageSwitcher } from "@/pages/client/components/topbar-left";
 import TopbarRight from "@/pages/client/components/topbar-right";
-import { useActivePage, useChaiCurrentPage, useGetPageFullSlug } from "@/pages/hooks/pages/use-current-page";
+import { useCurrentActivePage, useGetPageFullSlug, usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
 import { useDynamicPageSelector, useDynamicPageSlug } from "@/pages/hooks/pages/use-dynamic-page-selector";
 import { useChaiFeatureFlag } from "@/runtime/client";
 import { get } from "lodash-es";
-import { ExternalLink } from "lucide-react";
+import { ChevronRight, ExternalLink } from "lucide-react";
 import { lazy, Suspense } from "react";
+import { useTranslation } from "react-i18next";
+import PagesManagerTrigger from "../client/components/page-manager/page-manager-trigger";
+import Tooltip from "../utils/tooltip";
 const DynamicPageSelector = lazy(() => import("../client/components/dynamic-page-selector"));
 
 const DynamicPageSelectorSuspense = () => {
@@ -27,12 +31,12 @@ const DynamicPageSelectorSuspense = () => {
 };
 
 const AddressBar = () => {
-  const { data: activePage, isFetching: isFetchingActivePage } = useActivePage();
-  const { data: page, isFetching: isFetchingCurrentPage } = useChaiCurrentPage();
+  const { data: activePage, isFetching: isFetchingActivePage } = useCurrentActivePage();
+  const { data: page, isFetching: isFetchingCurrentPage } = usePrimaryPage();
   const dynamic = get(page, "dynamic", false);
   const dynamicPageSlug = useDynamicPageSlug();
   const isDynamicPageSelectorEnabled = useChaiFeatureFlag("dynamic-page-selector");
-
+  const { t } = useTranslation();
   const slug = activePage?.slug;
   const isPartialPage = !slug;
   const fullUrl = useGetPageFullSlug();
@@ -40,44 +44,63 @@ const AddressBar = () => {
 
   // Ensure the slug is always visible, truncate domain if needed
   const visible = isPartialPage ? `Partial: ${activePage?.name} ` : `${slug}${dynamicPageSlug}`;
-
   const visibleSlug = visible.replace(window.location.host, "");
+
   return (
     <div className={`relative flex items-center`}>
-      <div
-        className={mergeClasses(
-          "flex h-8 w-auto max-w-[600px] items-center rounded-l-md border border-r-0 border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800",
-          isFetching && "max-w-0 overflow-hidden opacity-0",
-        )}>
-        <PageDropdownInHeader />
-      </div>
-      <div
-        className={mergeClasses(
-          "flex h-8 w-auto max-w-[600px] items-center rounded-r-md border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800" +
-            (isPartialPage ? " pr-2" : ""),
-          isFetching && "max-w-0 overflow-hidden opacity-0",
-        )}>
-        <LanguageSwitcher />
-        <div className="flex w-full items-center overflow-hidden">
+      <div className="flex items-center">
+        {/* PagesManagerTrigger */}
+        <div className={mergeClasses("flex h-8 items-center", isFetching && "max-w-0 overflow-hidden opacity-0")}>
+          <PagesManagerTrigger />
+        </div>
+
+        {/* ChevronRight */}
+        <ChevronRight className="mx-1 h-3 w-3 flex-shrink-0 text-gray-400" />
+
+        {/* PageDropdownInHeader */}
+        <div className={mergeClasses("flex h-8 items-center", isFetching && "max-w-0 overflow-hidden opacity-0")}>
+          <PageDropdownInHeader />
+        </div>
+
+        {/* ChevronRight */}
+        <ChevronRight className="mx-1 h-3 w-3 flex-shrink-0 text-gray-400" />
+
+        {/* LanguageSwitcher */}
+        {/* <div
+          className={mergeClasses(
+            "flex h-8 items-center" + (isPartialPage ? " pr-2" : ""),
+            isFetching && "max-w-0 overflow-hidden opacity-0",
+          )}>
+          <LanguageSwitcher />
+        </div> */}
+
+        {/* ChevronRight */}
+        {/* <ChevronRight className="mx-1 h-3 w-3 flex-shrink-0 text-gray-400" /> */}
+
+        {/* Current page path */}
+        <div className="group flex items-center overflow-hidden">
           <div
-            className={`w-full max-w-[200px] overflow-hidden overflow-ellipsis whitespace-nowrap pl-1 text-xs ${isPartialPage ? "italic text-gray-400" : "font-mono text-gray-500"}`}>
+            className={`w-full max-w-[200px] overflow-hidden overflow-ellipsis whitespace-nowrap text-xs ${isPartialPage ? "italic" : "font-mono"}`}>
             {visibleSlug === "/" ? (
-              <span className="text-gray-900">
-                /<span className="text-[11px] font-light italic text-gray-400">(Homepage)</span>
+              <span>
+                /<span className="text-[11px] font-light italic">(Homepage)</span>
               </span>
             ) : (
               visibleSlug
             )}
           </div>
           {!isPartialPage && (
-            <a href={fullUrl} target="_blank" rel="noopener noreferrer">
-              <div className="ml-2 mr-px flex-shrink-0 rounded-sm p-1.5 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
-                <ExternalLink className="h-4 w-4" strokeWidth={1} />
-              </div>
-            </a>
+            <Tooltip content={t("Open page")}>
+              <a href={fullUrl} target="_blank" rel="noopener noreferrer" className="">
+                <div className="ml-2 mr-px flex-shrink-0 rounded-sm p-1.5 opacity-0 transition-opacity group-hover:opacity-100">
+                  <ExternalLink className="h-4 w-4" strokeWidth={1} />
+                </div>
+              </a>
+            </Tooltip>
           )}
         </div>
       </div>
+
       {dynamic && isDynamicPageSelectorEnabled && <DynamicPageSelectorSuspense />}
     </div>
   );
@@ -88,11 +111,13 @@ export const Topbar = () => {
     <div className="grid h-full w-full grid-cols-3 items-center px-2">
       <div className="flex justify-start">
         <TopbarLeft />
-      </div>
-      <div className="flex justify-center">
         <AddressBar />
       </div>
-      <div className="flex justify-end">
+      <div className="flex justify-center">
+        <CanvasTopBar />
+      </div>
+      <div className="flex items-center justify-end">
+        <LanguageSwitcher />
         <TopbarRight />
       </div>
     </div>

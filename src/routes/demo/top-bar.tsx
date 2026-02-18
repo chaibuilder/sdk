@@ -1,4 +1,5 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { CanvasTopBar } from "@/core/components/canvas/topbar/canvas-top-bar";
 import { LanguageButton } from "@/routes/demo/lang-button";
 import RightTop from "@/routes/demo/right-top";
 import { Cross2Icon, InfoCircledIcon } from "@radix-ui/react-icons";
@@ -65,6 +66,9 @@ export default function Topbar() {
   return (
     <div className="flex w-full items-center justify-between px-2">
       <Logo />
+      <div>
+        <CanvasTopBar />
+      </div>
       <div className="flex items-center gap-2">
         <LanguageButton />
         <RightTop />
