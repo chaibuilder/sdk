@@ -30,7 +30,7 @@ export const useCurrentActivePage = () => {
   const { data: primaryPages } = useWebsitePrimaryPages();
   const currentPage = useMemo(
     () => find([...values(languagePages), ...primaryPages], { lang, id: page }) || {},
-    [languagePages, lang, page],
+    [languagePages, primaryPages, lang, page],
   );
   return { data: currentPage as any, isFetching };
 };
