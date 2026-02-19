@@ -8,7 +8,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { PartialBlockInfo } from "@/pages/hooks/pages/use-get-unpublished-partial-blocks";
-import { Eye } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 interface UnpublishedPartialsModalProps {
