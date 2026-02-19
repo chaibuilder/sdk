@@ -34,10 +34,10 @@ const UnpublishedPartialsModal = ({
       {isOpen && (
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>{t("Publish Page with Unpublished Blocks?")}</DialogTitle>
+            <DialogTitle>{t("You have some unpublished changes")}</DialogTitle>
             <DialogDescription>
               {t(
-                "You have unpublished changes in the following blocks. They will be published together with the page.",
+                "The following partials are either unpublished or have unpublished changes.",
               )}
             </DialogDescription>
           </DialogHeader>
@@ -46,23 +46,22 @@ const UnpublishedPartialsModal = ({
               <ul className="space-y-1 text-sm">
                 {partialBlocksInfo.map((info) => (
                   <li key={info?.id} className="flex items-center justify-between text-muted-foreground">
-                    <span>• {info?.name}</span>
-                    <span className="flex items-center gap-1">
+                    <span className="flex items-center gap-2"><p className={`h-2 w-2 rounded-full ${info?.status === "unpublished_changes" ? "bg-green-400" : "bg-gray-300"}`}></p> {info?.name}</span>
+                    <span className="flex items-center">
                       {info?.status === "unpublished_changes" && onViewChanges && (
                         <Button
                           variant="ghost"
-                          size="icon"
                           title={t("View Changes")}
-                          className="h-4 w-4 text-blue-600 hover:bg-blue-100 hover:text-blue-800 dark:hover:bg-blue-900"
+                          className="text-blue-600 hover:text-blue-600 hover:bg-transparent hover:underline text-[10px] p-0"
                           onClick={() => onViewChanges(info.id, info.name)}>
-                          <Eye className="h-3 w-3" />
+                        {t("View Changes")}
                         </Button>
                       )}
                       <span
                         className={`rounded text-[10px] ${
                           info?.status === "unpublished" && "text-orange-700"
                         }`}>
-                        {info?.status === "unpublished" && t("Unpublished page")}
+                        {info?.status === "unpublished" && t("Unpublished")}
                       </span>
                     </span>
                   </li>
@@ -75,7 +74,7 @@ const UnpublishedPartialsModal = ({
               {t("Cancel")}
             </Button>
             <Button onClick={onContinue} disabled={isPending}>
-              {isPending ? t("Publishing...") : t("Publish Page & Blocks")}
+              {isPending ? t("Publishing...") : t("Publish Partials & Page")}
             </Button>
           </DialogFooter>
         </DialogContent>
