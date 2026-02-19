@@ -45,7 +45,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string[
     pageLang: page.lang,
   };
   return (
-    <html className={`smooth-scroll`} lang={page.lang}>
+    <html className={`scroll-smooth`} lang={page.lang}>
       <head>
         <ChaiPageStyles page={page} />
       </head>

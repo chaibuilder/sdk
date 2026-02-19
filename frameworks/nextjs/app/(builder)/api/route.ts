@@ -2,7 +2,7 @@ import { getSupabaseAdmin } from "@/app/supabase-admin";
 import { registerPageTypes } from "@/page-types";
 import { ChaiActionsRegistry, initChaiBuilderActionHandler } from "@chaibuilder/sdk/actions";
 import { SupabaseAuthActions, SupabaseStorageActions } from "@chaibuilder/sdk/actions/supabase";
-import { NextJsPublishChangesAction } from "./actions/publish-changes";
+import { NextJsPublishChangesAction } from "@/package/actions";
 import { NextRequest, NextResponse } from "next/server";
 
 registerPageTypes();
