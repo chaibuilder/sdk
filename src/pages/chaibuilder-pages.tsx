@@ -280,6 +280,7 @@ const ChaiWebsiteBuilder = (props: ChaiWebsiteBuilderProps) => {
         "getLoggedInUser",
         "flags",
         "currentUser",
+        "onPublish"
       ]),
     );
     setTimeout(() => {

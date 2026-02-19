@@ -9,6 +9,7 @@ import "@chaibuilder/sdk/styles";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useState } from "react";
 import { LoginScreen } from "./login";
+import { updatePages } from "@/package/update-pages";
 const ChaiWebsiteBuilder = dynamic(() => import("@chaibuilder/sdk/pages").then((mod) => mod.ChaiWebsiteBuilder), {
   ssr: false,
 });
@@ -116,6 +117,7 @@ export default function Editor() {
         designTokens: true,
         ai: true,
       }}
+      onPublish={updatePages}
       currentUser={user}
       autoSave
       autoSaveActionsCount={5}

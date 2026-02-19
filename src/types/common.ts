@@ -56,6 +56,7 @@ export type ChaiWebsiteBuilderProps = {
   currentUser: LoggedInUser | null;
   websocket?: any;
   realtimeAdapter?: RealtimeAdapter;
+  onPublish?: (tags: string[]) => void
 } & Pick<
   ChaiBuilderEditorProps,
   | "onError"

@@ -1,8 +1,8 @@
 import { getSupabaseAdmin } from "@/app/supabase-admin";
 import { registerPageTypes } from "@/page-types";
-import { ChaiActionsRegistry, initChaiBuilderActionHandler } from "@chaibuilder/sdk/actions";
+import { ChaiActionsRegistry } from "@chaibuilder/sdk/actions";
 import { SupabaseAuthActions, SupabaseStorageActions } from "@chaibuilder/sdk/actions/supabase";
-import { NextJsPublishChangesAction } from "@/package/actions";
+import { initChaiBuilderNextJSActionHandler } from "@/package/actions";
 import { NextRequest, NextResponse } from "next/server";
 
 registerPageTypes();
@@ -17,7 +17,6 @@ export async function POST(req: NextRequest) {
   const supabase = getSupabaseAdmin();
   ChaiActionsRegistry.registerActions(SupabaseAuthActions(supabase));
   ChaiActionsRegistry.registerActions(SupabaseStorageActions(supabase));
-  ChaiActionsRegistry.register("PUBLISH_CHANGES", new NextJsPublishChangesAction());
   try {
     // Get authorization header
     let authorization = req.headers.get("authorization") || "";
@@ -33,39 +32,8 @@ export async function POST(req: NextRequest) {
     }
     const userId = supabaseUser.data.user?.id || "";
 
-    const actionHandler = initChaiBuilderActionHandler({ apiKey, userId, hostname: req.nextUrl.host });
-    const response = await actionHandler(body);
-    // Handle streaming responses
-    if (response?._streamingResponse && response?._streamResult) {
-      const result = response._streamResult;
-
-      if (!result?.textStream) {
-        return NextResponse.json({ error: "No streaming response available" }, { status: 500 });
-      }
-
-      // Create a ReadableStream for streaming response
-      const stream = new ReadableStream({
-        async start(controller) {
-          const encoder = new TextEncoder();
-          try {
-            for await (const chunk of result.textStream) {
-              if (chunk) {
-                controller.enqueue(encoder.encode(chunk));
-              }
-            }
-            controller.close();
-          } catch (error) {
-            controller.error(error);
-          }
-        },
-      });
-
-      return new Response(stream, {
-        headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-cache" },
-      });
-    }
-
-    return NextResponse.json(response, { status: response.status || 200 });
+    const actionHandler = initChaiBuilderNextJSActionHandler({ apiKey, userId });
+    return await actionHandler(body);
   } catch (error) {
     console.error("Error handling POST request", {
       message: error instanceof Error ? error.message : String(error),

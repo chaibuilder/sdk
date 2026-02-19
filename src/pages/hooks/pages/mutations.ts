@@ -3,12 +3,12 @@ import { useSavePage } from "@/hooks/use-save-page";
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { ERRORS } from "@/pages/constants/ERRORS";
 import { useCurrentActivePage } from "@/pages/hooks/pages/use-current-page";
-import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
+import { useApiUrl, usePagesProp } from "@/pages/hooks/project/use-builder-prop";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useRevisionsEnabled } from "@/pages/hooks/use-revisions-enabled";
 import { useFetch } from "@/pages/hooks/utils/use-fetch";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { find, get } from "lodash-es";
+import { find, get, noop } from "lodash-es";
 import { toast } from "sonner";
 
 export const useCreatePage = () => {
@@ -186,6 +186,7 @@ export const usePublishPages = () => {
   const { savePageAsync } = useSavePage();
   const revisionsEnabled = useRevisionsEnabled();
   const { handleQuerySync } = useQuerySync();
+  const onPublish = usePagesProp('onPublish', noop)
 
   return useMutation({
     mutationFn: async ({ ids }: { ids: string[] }) => {
@@ -196,16 +197,17 @@ export const usePublishPages = () => {
         data: { ids, revisions: revisionsEnabled },
       });
     },
-    onSuccess: (_data, { ids }) => {
+    onSuccess: (data, { ids }) => {
       // Invalidate pages query to reflect cleared changes and updated online status
       handleQuerySync({
         type: "PUBLISH_CHANGES",
         data: { ids },
         sync: true,
       });
+      onPublish(data.tags)
     },
     onError: (error) => {
-      console.log("##", error);
+      console.log(error);
       toast.error("Failed to publish pages.");
     },
   });
