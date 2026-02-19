@@ -60,9 +60,9 @@ const UnpublishedPartialsModal = ({
                       )}
                       <span
                         className={`rounded text-[10px] ${
-                          info?.status === "unpublished" ? "text-orange-700" : "text-blue-700"
+                          info?.status === "unpublished" && "text-orange-700"
                         }`}>
-                        {info?.status === "unpublished" ? t("Unpublished page") : t("Unpublished changes")}
+                        {info?.status === "unpublished" && t("Unpublished page")}
                       </span>
                     </span>
                   </li>
