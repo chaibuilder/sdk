@@ -15,7 +15,7 @@ import PermissionChecker from "@/pages/client/components/permission-checker";
 import PublishPages from "@/pages/client/components/publish-pages/publish-pages";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
 import { usePublishPages } from "@/pages/hooks/pages/mutations";
-import { useCurrentActivePage, usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
+import { useCurrentActivePage, useGetPageFullSlug, usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
 import { useGetUnpublishedPartialBlocks } from "@/pages/hooks/pages/use-get-unpublished-partial-blocks";
 import { useIsLanguagePageCreated } from "@/pages/hooks/pages/use-is-languagep-page-created";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
@@ -30,6 +30,7 @@ import { compact, find, isEmpty, upperCase } from "lodash-es";
 import {
   CheckCircle,
   ChevronDown,
+  ExternalLink,
   Eye,
   Loader,
   Palette,
@@ -446,6 +447,25 @@ const PublishButton = () => {
   );
 };
 
+const LiveLinkButton = () => {
+  const { t } = useTranslation();
+  const { data: currentPage } = usePrimaryPage();
+  const fullUrl = useGetPageFullSlug();
+  const isOnline = currentPage?.online;
+
+  if (!isOnline) return null;
+
+  return (
+    <Tooltip content={t("Open live page")} delayDuration={0}>
+      <a href={fullUrl} target="_blank" rel="noopener noreferrer">
+        <Button variant="ghost" size="icon" className="ml-1 h-8 w-8">
+          <ExternalLink className="h-4 w-4" />
+        </Button>
+      </a>
+    </Tooltip>
+  );
+};
+
 export default function TopbarRight() {
   const { isLocked } = usePageLockStatus();
   const [searchParams] = useSearchParams();
@@ -467,6 +487,7 @@ export default function TopbarRight() {
       <PermissionChecker permission={PAGES_PERMISSIONS.PUBLISH_PAGE}>
         <PublishButton />
       </PermissionChecker>
+      <LiveLinkButton />
     </div>
   );
 }
