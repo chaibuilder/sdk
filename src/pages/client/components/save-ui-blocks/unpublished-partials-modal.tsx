@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -46,22 +47,28 @@ const UnpublishedPartialsModal = ({
                 {partialBlocksInfo.map((info) => (
                   <li key={info?.id} className="flex items-center justify-between text-muted-foreground">
                     <span className="flex items-center gap-2"><p className={`h-2 w-2 rounded-full ${info?.status === "unpublished_changes" ? "bg-green-400" : "bg-gray-300"}`}></p> {info?.name}</span>
-                    <span className="flex items-center">
-                      {info?.status === "unpublished_changes" && onViewChanges && (
-                        <Button
-                          variant="ghost"
-                          title={t("View Changes")}
-                          className="text-blue-600 hover:text-blue-600 hover:bg-transparent hover:underline text-[10px] p-0"
-                          onClick={() => onViewChanges(info.id, info.name)}>
-                        {t("View Changes")}
-                        </Button>
+                    <span className="flex items-center gap-1">
+                      {info?.status === "unpublished_changes" && (
+                        <>
+                          <Badge className="bg-green-100 text-green-600 border-green-200 hover:bg-green-100 text-[10px] px-1.5 py-0">
+                            {t("Published")}
+                          </Badge>
+                          {onViewChanges && (
+                            <Button
+                              variant="ghost"
+                              title={t("View Changes")}
+                              className="text-blue-600 hover:text-blue-600 hover:bg-transparent hover:underline text-[10px] p-0"
+                              onClick={() => onViewChanges(info.id, info.name)}>
+                              {t("View Changes")}
+                            </Button>
+                          )}
+                        </>
                       )}
-                      <span
-                        className={`rounded text-[10px] ${
-                          info?.status === "unpublished" && "text-orange-700"
-                        }`}>
-                        {info?.status === "unpublished" && t("Unpublished")}
-                      </span>
+                      {info?.status === "unpublished" && (
+                        <Badge className="bg-orange-100 text-orange-600 border-orange-200 hover:bg-orange-100 text-[10px] px-1.5 py-0">
+                          {t("Unpublished")}
+                        </Badge>
+                      )}
                     </span>
                   </li>
                 ))}
