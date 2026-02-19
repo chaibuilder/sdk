@@ -195,6 +195,7 @@ const PublishButton = () => {
   const [showUnpublishedPartialsWarning, setShowUnpublishedPartialsWarning] = useState(false);
   const [unpublishedPartialBlockIds, setUnpublishedPartialBlockIds] = useState<string[]>([]);
   const [unpublishedPartialBlocksInfo, setUnpublishedPartialBlocksInfo] = useState<any[]>([]);
+  const [comparePartial, setComparePartial] = useState<{ id: string; name: string } | null>(null);
 
   const { data: currentPage } = usePrimaryPage();
   const { mutate: publishPage, isPending } = usePublishPages();
@@ -260,6 +261,10 @@ const PublishButton = () => {
     setUnpublishedPartialBlockIds([]);
     setUnpublishedPartialBlocksInfo([]);
   };
+
+  const handleViewPartialChanges = useCallback((partialId: string, partialName: string) => {
+    setComparePartial({ id: partialId, name: partialName });
+  }, []);
 
   const handleContinueAnyway = () => {
     setShowTranslationWarning(false);
@@ -413,8 +418,27 @@ const PublishButton = () => {
             isOpen={showUnpublishedPartialsWarning}
             onClose={handleCancelPartials}
             onContinue={handleContinueWithPartials}
+            onViewChanges={handleViewPartialChanges}
             isPending={isPending}
             partialBlocksInfo={unpublishedPartialBlocksInfo}
+          />
+        </Suspense>
+      )}
+
+      {comparePartial && (
+        <Suspense>
+          <JsonDiffViewer
+            open={!!comparePartial}
+            onOpenChange={(open) => {
+              if (!open) {
+                setComparePartial(null);
+                setShowUnpublishedPartialsWarning(true);
+              }
+            }}
+            compare={[
+              { label: "live", uid: `live:${comparePartial.id}`, item: {} },
+              { label: "draft", uid: `draft:${comparePartial.id}`, item: {} },
+            ]}
           />
         </Suspense>
       )}
