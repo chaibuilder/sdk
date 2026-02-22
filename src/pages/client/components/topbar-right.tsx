@@ -15,7 +15,7 @@ import PermissionChecker from "@/pages/client/components/permission-checker";
 import PublishPages from "@/pages/client/components/publish-pages/publish-pages";
 import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
 import { usePublishPages } from "@/pages/hooks/pages/mutations";
-import { useCurrentActivePage, usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
+import { useCurrentActivePage, useGetPageFullSlug, usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
 import { useGetUnpublishedPartialBlocks } from "@/pages/hooks/pages/use-get-unpublished-partial-blocks";
 import { useIsLanguagePageCreated } from "@/pages/hooks/pages/use-is-languagep-page-created";
 import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
@@ -30,6 +30,7 @@ import { compact, find, isEmpty, upperCase } from "lodash-es";
 import {
   CheckCircle,
   ChevronDown,
+  ExternalLink,
   Eye,
   Loader,
   Palette,
@@ -195,6 +196,7 @@ const PublishButton = () => {
   const [showUnpublishedPartialsWarning, setShowUnpublishedPartialsWarning] = useState(false);
   const [unpublishedPartialBlockIds, setUnpublishedPartialBlockIds] = useState<string[]>([]);
   const [unpublishedPartialBlocksInfo, setUnpublishedPartialBlocksInfo] = useState<any[]>([]);
+  const [comparePartial, setComparePartial] = useState<{ id: string; name: string } | null>(null);
 
   const { data: currentPage } = usePrimaryPage();
   const { mutate: publishPage, isPending } = usePublishPages();
@@ -260,6 +262,10 @@ const PublishButton = () => {
     setUnpublishedPartialBlockIds([]);
     setUnpublishedPartialBlocksInfo([]);
   };
+
+  const handleViewPartialChanges = useCallback((partialId: string, partialName: string) => {
+    setComparePartial({ id: partialId, name: partialName });
+  }, []);
 
   const handleContinueAnyway = () => {
     setShowTranslationWarning(false);
@@ -413,12 +419,50 @@ const PublishButton = () => {
             isOpen={showUnpublishedPartialsWarning}
             onClose={handleCancelPartials}
             onContinue={handleContinueWithPartials}
+            onViewChanges={handleViewPartialChanges}
             isPending={isPending}
             partialBlocksInfo={unpublishedPartialBlocksInfo}
           />
         </Suspense>
       )}
+
+      {comparePartial && (
+        <Suspense>
+          <JsonDiffViewer
+            open={!!comparePartial}
+            onOpenChange={(open) => {
+              if (!open) {
+                setComparePartial(null);
+                setShowUnpublishedPartialsWarning(true);
+              }
+            }}
+            compare={[
+              { label: "live", uid: `live:${comparePartial.id}`, item: {} },
+              { label: "draft", uid: `draft:${comparePartial.id}`, item: {} },
+            ]}
+          />
+        </Suspense>
+      )}
     </>
+  );
+};
+
+const LiveLinkButton = () => {
+  const { t } = useTranslation();
+  const { data: currentPage } = usePrimaryPage();
+  const fullUrl = useGetPageFullSlug();
+  const isOnline = currentPage?.online;
+
+  if (!isOnline) return null;
+
+  return (
+    <Tooltip content={t("Open live page")} delayDuration={0}>
+      <a href={fullUrl} target="_blank" rel="noopener noreferrer">
+        <Button variant="ghost" size="icon" className="ml-1 h-8 w-8">
+          <ExternalLink className="h-4 w-4" />
+        </Button>
+      </a>
+    </Tooltip>
   );
 };
 
@@ -443,6 +487,7 @@ export default function TopbarRight() {
       <PermissionChecker permission={PAGES_PERMISSIONS.PUBLISH_PAGE}>
         <PublishButton />
       </PermissionChecker>
+      <LiveLinkButton />
     </div>
   );
 }
