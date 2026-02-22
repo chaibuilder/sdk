@@ -1,3 +1,5 @@
+import { defaultThemeValues } from "@/hooks/default-theme-options";
+import { ChaiTheme } from "@/types";
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { TreeApi } from "react-arborist";
@@ -58,3 +60,4 @@ selectedLibraryAtom.debugLabel = "selectedLibraryAtom";
 
 export const dataBindingActiveAtom = atom(true);
 dataBindingActiveAtom.debugLabel = "dataBindingActiveAtom";
+export const lsThemeAtom = atomWithStorage<ChaiTheme>("chai-builder-theme", defaultThemeValues);
