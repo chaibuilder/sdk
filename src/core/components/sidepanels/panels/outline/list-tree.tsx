@@ -3,7 +3,6 @@ import { treeRefAtom } from "@/atoms/ui";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { DefaultCursor } from "@/core/components/sidepanels/panels/outline/default-cursor";
-import { DefaultDragPreview } from "@/core/components/sidepanels/panels/outline/default-drag-preview";
 import {
   close,
   defaultShortcuts,
@@ -336,7 +335,7 @@ const ListTree = () => {
             childrenAccessor={(d: any) => d.children}
             width={"100%"}
             rowHeight={25}
-            renderDragPreview={DefaultDragPreview}
+            renderDragPreview={() => null}
             indent={10}
             onContextMenu={onContextMenu}
             disableDrop={debouncedDisableDrop as any}
