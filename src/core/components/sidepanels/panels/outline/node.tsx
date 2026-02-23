@@ -211,9 +211,8 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
   }
 
   const isLastChild = node.parent && node.parent.children && node.childIndex === node.parent.children.length - 1;
-
   return (
-    <div className={`relative flex h-full w-full items-center ${isSelected ? "bg-primary/20" : "hover:bg-gray-100"}`}>
+    <div className={cn("relative flex h-full w-full items-center", isSelected ? "bg-primary/20" : "hover:bg-gray-100")}>
       <div
         className="w-full"
         onMouseEnter={() => highlightBlock(id)}
@@ -329,7 +328,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
             </div>
             <div
               className={cn(
-                "leading-1 flex items-center",
+                "leading-1 flex w-full items-center",
                 isLibBlock && "text-orange-600/90",
                 isLibBlock && isSelected && "text-orange-800",
                 isPartialBlock && "text-purple-600/90",
