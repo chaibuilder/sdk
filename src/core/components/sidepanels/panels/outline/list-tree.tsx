@@ -258,7 +258,9 @@ const ListTree = () => {
 
   return (
     <>
-      <div className={cn("flex h-full select-none flex-col space-y-1")} onClick={() => clearSelection()}>
+      <div
+        className={cn("chai-outline group/parent parent-group flex h-full select-none flex-col space-y-1")}
+        onClick={() => clearSelection()}>
         <div
           id="outline-view "
           className="no-scrollbar h-full overflow-y-auto text-sm"
@@ -324,7 +326,7 @@ const ListTree = () => {
             ref={treeRef}
             height={window.innerHeight - 160}
             className="no-scrollbar !h-full max-w-full space-y-1 !overflow-y-auto !overflow-x-hidden"
-            rowClassName="flex items-center h-full border-b border-transparent"
+            rowClassName="flex items-center h-full border-b border-transparent tree-group:bg-black"
             selection={ids[0] || ""}
             onRename={onRename}
             openByDefault={false}

@@ -238,7 +238,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
             {Array.from({ length: node.level }).map((_, index) => (
               <div
                 key={index}
-                className="absolute top-0 h-full border-l border-border/80 transition-colors group-hover:border-border/60"
+                className="absolute top-0 h-full border-l border-border/80 transition-colors group-hover/parent:border-gray-300"
                 style={{
                   left: `${index * 14 + 11}px`,
                 }}
