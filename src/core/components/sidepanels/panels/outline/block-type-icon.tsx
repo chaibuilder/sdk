@@ -1,5 +1,5 @@
 import { useRegisteredChaiBlocks } from "@/runtime";
-import { SquareIcon } from "@radix-ui/react-icons";
+import { BoxIcon } from "@radix-ui/react-icons";
 import { get } from "lodash-es";
 import React from "react";
 
@@ -18,5 +18,5 @@ export const TypeIcon: React.FC<Props> = (props) => {
   }
 
   // * Fallback Icon
-  return <SquareIcon className={ICON_CLASS} />;
+  return <BoxIcon className={ICON_CLASS} />;
 };
