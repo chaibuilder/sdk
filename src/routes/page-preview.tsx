@@ -1,8 +1,9 @@
+import { lsThemeAtom } from "@/atoms/ui";
 import "@/core/index.css";
 import { getChaiThemeCssVariables, getStylesForBlocks, RenderChaiBlocks } from "@/render";
 import { applyDesignTokens } from "@/render/apply-design-tokens";
 import { getMergedPartialBlocks } from "@/render/functions";
-import { lsBlocksAtom, lsDesignTokensAtom, lsThemeAtom } from "@/routes/demo/atoms-dev";
+import { lsBlocksAtom, lsDesignTokensAtom } from "@/routes/demo/atoms-dev";
 import registerCustomBlocks from "@/routes/demo/blocks";
 import { EXTERNAL_DATA } from "@/routes/demo/EXTERNAL_DATA";
 import { PARTIALS } from "@/routes/demo/PARTIALS";
