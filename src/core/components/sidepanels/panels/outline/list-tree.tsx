@@ -303,10 +303,10 @@ const ListTree = () => {
               aria-selected={true}
               aria-expanded={false}
               onClick={() => setIds([])}
-              className="flex h-full items-center border-b border-transparent">
+              className="flex min-h-[25px] items-center">
               <div
                 className={cn(
-                  "group flex w-full cursor-pointer items-center justify-between space-x-px !rounded p-1 py-0 outline-none",
+                  "group flex h-[25px] w-full cursor-pointer items-center justify-between space-x-px px-2 py-0 outline-none",
                   ids.length === 0 ? "bg-primary/20" : "",
                 )}>
                 <div className="leading-1 flex items-center">
@@ -325,8 +325,8 @@ const ListTree = () => {
           <Tree
             ref={treeRef}
             height={window.innerHeight - 160}
-            className="no-scrollbar !h-full max-w-full space-y-1 !overflow-y-auto !overflow-x-hidden"
-            rowClassName="flex items-center h-full border-b border-transparent tree-group:bg-black"
+            className="no-scrollbar !h-full max-w-full !overflow-y-auto !overflow-x-hidden"
+            rowClassName="flex items-center h-full"
             selection={ids[0] || ""}
             onRename={onRename}
             openByDefault={false}

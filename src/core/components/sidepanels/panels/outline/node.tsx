@@ -210,9 +210,12 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
     );
   }
 
+  const isLastChild = node.parent && node.parent.children && node.childIndex === node.parent.children.length - 1;
+
   return (
-    <div className={"w-full"}>
+    <div className={`relative flex h-full w-full items-center ${isSelected ? "bg-primary/20" : "hover:bg-gray-100"}`}>
       <div
+        className="w-full"
         onMouseEnter={() => highlightBlock(id)}
         onMouseLeave={() => clearHighlight()}
         onClick={handleNodeClickWithoutPropagating}
@@ -235,15 +238,44 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
         }}>
         {node.level > 0 && (
           <div className="pointer-events-none absolute left-0 top-0 h-full">
-            {Array.from({ length: node.level }).map((_, index) => (
-              <div
-                key={index}
-                className="absolute top-0 h-full border-l border-border/80 transition-colors group-hover/parent:border-gray-300"
-                style={{
-                  left: `${index * 14 + 11}px`,
-                }}
-              />
-            ))}
+            {Array.from({ length: node.level }).map((_, index) => {
+              const isCurrentLevel = index === node.level - 1;
+              const shouldShowHalfHeight = isCurrentLevel && isLastChild;
+
+              // Check if this ancestor level has more siblings after current node's branch
+              let ancestorNode: any = node;
+              for (let i = 0; i < node.level - index - 1; i++) {
+                ancestorNode = ancestorNode?.parent;
+                if (!ancestorNode) break;
+              }
+
+              const hasMoreSiblings =
+                ancestorNode?.parent?.children && ancestorNode.childIndex < ancestorNode.parent.children.length - 1;
+
+              // Don't show line if it's not current level and has no more siblings
+              if (!isCurrentLevel && !hasMoreSiblings) {
+                return null;
+              }
+
+              return (
+                <div
+                  key={index}
+                  className={cn(
+                    "absolute top-0 border-l border-black/20 transition-colors group-hover/parent:border-black/30",
+                    shouldShowHalfHeight ? "h-1/2" : "h-full",
+                  )}
+                  style={{
+                    left: `${index * 14 + 10}px`,
+                  }}
+                />
+              );
+            })}
+            <div
+              className="absolute top-1/2 w-2 border-b border-black/20 transition-colors group-hover/parent:border-black/30"
+              style={{
+                left: `${(node.level - 1) * 14 + 10}px`,
+              }}
+            />
           </div>
         )}
         {hasPermission(PERMISSIONS.ADD_BLOCK) &&
@@ -268,15 +300,21 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
               </div>
             </div>
           )}
+        <div className="absolute left-0 right-0 top-0 -z-10 h-full">
+          <div
+            className={cn(
+              "h-full transition-colors",
+              willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
+              node?.id === addSelectParentHighlight ? "bg-gray-100 dark:bg-gray-900" : "",
+            )}
+          />
+        </div>
         <div
           className={cn(
-            "group flex w-full cursor-pointer items-center justify-between space-x-px !rounded p-1 py-0 outline-none",
-            isSelected ? "bg-primary/20" : "hover:bg-primary/10",
-            willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
-            node?.id === addSelectParentHighlight ? "bg-primary/10" : "",
+            "group relative flex w-full cursor-pointer items-center justify-between space-x-px p-1 py-0 outline-none",
             isDragging && "opacity-20",
             !isShown ? "line-through opacity-50" : "",
-            isLibBlock && isSelected && "bg-primary/20 text-primary",
+            isLibBlock && isSelected && "text-primary",
           )}>
           <div className="flex items-center">
             <div
