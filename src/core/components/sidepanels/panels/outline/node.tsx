@@ -233,6 +233,19 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
           e.preventDefault();
           setDropAttribute(id, "no");
         }}>
+        {node.level > 0 && (
+          <div className="pointer-events-none absolute left-0 top-0 h-full">
+            {Array.from({ length: node.level }).map((_, index) => (
+              <div
+                key={index}
+                className="absolute top-0 h-full border-l border-border/80 transition-colors group-hover:border-border/60"
+                style={{
+                  left: `${index * 14 + 11}px`,
+                }}
+              />
+            ))}
+          </div>
+        )}
         {hasPermission(PERMISSIONS.ADD_BLOCK) &&
           !isDragAndDropEnabled &&
           node?.rowIndex !== null &&

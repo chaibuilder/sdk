@@ -336,7 +336,7 @@ const ListTree = () => {
             width={"100%"}
             rowHeight={25}
             renderDragPreview={() => null}
-            indent={13}
+            indent={14}
             onContextMenu={onContextMenu}
             disableDrop={debouncedDisableDrop as any}
             idAccessor={"_id"}>
