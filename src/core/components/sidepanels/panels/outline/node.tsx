@@ -249,12 +249,6 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
                 />
               );
             })}
-            <div
-              className={`absolute top-1/2 ${(node?.children?.length || 0) > 0 ? "w-1" : "w-3"} border-b border-black/0 transition-colors group-hover/parent:border-black/30`}
-              style={{
-                left: `${(node.level - 1) * 14 + 10}px`,
-              }}
-            />
           </div>
         )}
         {hasPermission(PERMISSIONS.ADD_BLOCK) &&
