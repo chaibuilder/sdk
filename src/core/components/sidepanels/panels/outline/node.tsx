@@ -144,6 +144,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
     }, 500);
 
     return () => clearTimeout(timedToggle);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [willReceiveDrop, node, isDragging]);
 
   const setDropAttribute = (id: string, value: string) => {
