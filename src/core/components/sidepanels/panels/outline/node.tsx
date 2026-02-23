@@ -176,6 +176,20 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
     }
   };
 
+  const { librarySite } = useBuilderProp("flags", { librarySite: false });
+  const isLibBlock = useMemo(() => {
+    return (
+      librarySite &&
+      has(data, "_libBlockId") &&
+      !isEmpty(data._libBlockId) &&
+      (hasPermission(PERMISSIONS.CREATE_LIBRARY_BLOCK) || hasPermission(PERMISSIONS.EDIT_LIBRARY_BLOCK))
+    );
+  }, [data, hasPermission, librarySite]);
+
+  const isPartialBlock = useMemo(() => {
+    return data?._type === "PartialBlock" || data?._type === "GlobalBlock";
+  }, [data]);
+
   if (id === ROOT_TEMP_KEY) {
     return (
       <div className="group relative mt-2 w-full cursor-pointer">
@@ -194,19 +208,6 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
       </div>
     );
   }
-  const { librarySite } = useBuilderProp("flags", { librarySite: false });
-  const isLibBlock = useMemo(() => {
-    return (
-      librarySite &&
-      has(data, "_libBlockId") &&
-      !isEmpty(data._libBlockId) &&
-      (hasPermission(PERMISSIONS.CREATE_LIBRARY_BLOCK) || hasPermission(PERMISSIONS.EDIT_LIBRARY_BLOCK))
-    );
-  }, [data, hasPermission, librarySite]);
-
-  const isPartialBlock = useMemo(() => {
-    return data?._type === "PartialBlock" || data?._type === "GlobalBlock";
-  }, [data]);
 
   return (
     <div className={"w-full"}>
