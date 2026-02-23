@@ -210,7 +210,6 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
     );
   }
 
-  const isLastChild = node.parent && node.parent.children && node.childIndex === node.parent.children.length - 1;
   return (
     <div className={cn("relative flex h-full w-full items-center", isSelected ? "bg-primary/20" : "hover:bg-gray-100")}>
       <div
@@ -238,31 +237,12 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
         {node.level > 0 && (
           <div className="pointer-events-none absolute left-0 top-0 h-full">
             {Array.from({ length: node.level }).map((_, index) => {
-              const isCurrentLevel = index === node.level - 1;
-              const shouldShowHalfHeight = isCurrentLevel && isLastChild;
-
-              // Check if this ancestor level has more siblings after current node's branch
-              let ancestorNode: any = node;
-              for (let i = 0; i < node.level - index - 1; i++) {
-                ancestorNode = ancestorNode?.parent;
-                if (!ancestorNode) break;
-              }
-
-              const hasMoreSiblings =
-                ancestorNode?.parent?.children && ancestorNode.childIndex < ancestorNode.parent.children.length - 1;
-
-              // Don't show line if it's not current level and has no more siblings
-              if (!isCurrentLevel && !hasMoreSiblings) {
-                return null;
-              }
-
               return (
                 <div
                   key={index}
-                  className={cn(
-                    "absolute top-0 border-l border-black/20 transition-colors group-hover/parent:border-black/30",
-                    shouldShowHalfHeight ? "h-1/2" : "h-full",
-                  )}
+                  className={
+                    "absolute top-0 h-full border-l border-black/5 transition-colors group-hover/parent:border-black/30"
+                  }
                   style={{
                     left: `${index * 14 + 10}px`,
                   }}
@@ -270,7 +250,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
               );
             })}
             <div
-              className="absolute top-1/2 w-2 border-b border-black/20 transition-colors group-hover/parent:border-black/30"
+              className={`absolute top-1/2 ${(node?.children?.length || 0) > 0 ? "w-1" : "w-3"} border-b border-black/0 transition-colors group-hover/parent:border-black/30`}
               style={{
                 left: `${(node.level - 1) * 14 + 10}px`,
               }}
