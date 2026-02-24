@@ -3,7 +3,6 @@ import { treeRefAtom } from "@/atoms/ui";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { DefaultCursor } from "@/core/components/sidepanels/panels/outline/default-cursor";
-import { DefaultDragPreview } from "@/core/components/sidepanels/panels/outline/default-drag-preview";
 import {
   close,
   defaultShortcuts,
@@ -259,7 +258,9 @@ const ListTree = () => {
 
   return (
     <>
-      <div className={cn("flex h-full select-none flex-col space-y-1")} onClick={() => clearSelection()}>
+      <div
+        className={cn("chai-outline group/parent parent-group flex h-full select-none flex-col space-y-1")}
+        onClick={() => clearSelection()}>
         <div
           id="outline-view "
           className="no-scrollbar h-full overflow-y-auto text-sm"
@@ -302,10 +303,10 @@ const ListTree = () => {
               aria-selected={true}
               aria-expanded={false}
               onClick={() => setIds([])}
-              className="flex h-full items-center border-b border-transparent">
+              className="flex min-h-[25px] items-center">
               <div
                 className={cn(
-                  "group flex w-full cursor-pointer items-center justify-between space-x-px !rounded p-1 py-0 outline-none",
+                  "group flex h-[25px] w-full cursor-pointer items-center justify-between space-x-px px-2 py-0 outline-none",
                   ids.length === 0 ? "bg-primary/20" : "",
                 )}>
                 <div className="leading-1 flex items-center">
@@ -324,8 +325,8 @@ const ListTree = () => {
           <Tree
             ref={treeRef}
             height={window.innerHeight - 160}
-            className="no-scrollbar !h-full max-w-full space-y-1 !overflow-y-auto !overflow-x-hidden"
-            rowClassName="flex items-center h-full border-b border-transparent"
+            className="no-scrollbar !h-full max-w-full !overflow-y-auto !overflow-x-hidden"
+            rowClassName="flex items-center h-full"
             selection={ids[0] || ""}
             onRename={onRename}
             openByDefault={false}
@@ -336,8 +337,8 @@ const ListTree = () => {
             childrenAccessor={(d: any) => d.children}
             width={"100%"}
             rowHeight={25}
-            renderDragPreview={DefaultDragPreview}
-            indent={10}
+            renderDragPreview={() => null}
+            indent={14}
             onContextMenu={onContextMenu}
             disableDrop={debouncedDisableDrop as any}
             idAccessor={"_id"}>

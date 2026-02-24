@@ -23,7 +23,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useAtom } from "jotai";
 import { cloneDeep, get, pick } from "lodash-es";
 import { Loader } from "lucide-react";
-import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { previewUrlAtom } from "./atom/preview-url";
 import { BlurContainer } from "./client/components/chai-loader";
 import { usePageLockStatus } from "./client/components/page-lock/page-lock-hook";
@@ -33,6 +33,7 @@ import { useGetBlockAysncProps } from "./hooks/use-chai-collections";
 import { useGotoPage } from "./hooks/use-goto-page";
 import { useWebsiteData } from "./hooks/use-website-data";
 import { useSiteWideUsage } from "./hooks/use-site-wide-usage";
+import { useUILibraries } from "./hooks/project/use-ui-libraries";
 
 const PageLock = lazy(() => import("./client/components/page-lock/page-lock"));
 const NoLanguagePageDialog = lazy(() => import("@/pages/client/components/no-language-page/no-language-page-dialog"));
@@ -99,7 +100,8 @@ type ChaiBuilderInnerProps = ChaiWebsiteBuilderProps;
 const ChaiBuilderInner = ({ ...props }: ChaiBuilderInnerProps) => {
   const { data: websiteData } = useWebsiteData();
   const { data: siteWideUsage } = useSiteWideUsage();
-  const { libraries: uiLibraries, collections, pageTypes, websiteSettings: websiteConfig } = websiteData;
+  const { data: uiLibraries } = useUILibraries();
+  const { collections, pageTypes, websiteSettings: websiteConfig } = websiteData;
   const fallbackLang = useMemo(() => websiteConfig?.fallbackLang || "en", [websiteConfig]);
   const { data: accessData, isFetching: isFetchingAccessData } = useCheckUserAccess();
   const roleAndPermissions = accessData || DEFAULT_ROLES_AND_PERMISSIONS;
@@ -116,7 +118,7 @@ const ChaiBuilderInner = ({ ...props }: ChaiBuilderInnerProps) => {
   const { onSave } = usePagesSavePage();
   const { mutateAsync: getBlockAsyncProps } = useGetBlockAysncProps();
   const { getPartialBlocks, getPartialBlockBlocks } = usePartialBlocksFn();
-  const { mutateAsync: searchPageTypePages } = useSearchPageTypePages();
+  const { searchPages } = useSearchPageTypePages();
   const { mutateAsync: updateSettings } = useUpdateWebsiteFields();
   const gotoPage = useGotoPage();
 
@@ -167,14 +169,6 @@ const ChaiBuilderInner = ({ ...props }: ChaiBuilderInnerProps) => {
     return uiLibraries?.some((library: any) => library.isSiteLibrary);
   }, [uiLibraries]);
 
-  // * SEARCH for page types
-  const searchPageTypeItems = useCallback(
-    async (pageType: string, query: string) => {
-      return await searchPageTypePages({ pageType, query });
-    },
-    [searchPageTypePages],
-  );
-
   return (
     <>
       {isFetchingPageAllData && (
@@ -216,7 +210,7 @@ const ChaiBuilderInner = ({ ...props }: ChaiBuilderInnerProps) => {
         blocks={isFetchingPageAllData ? [] : blocks}
         theme={cloneDeep(currentTheme)}
         pageTypes={pageTypes}
-        searchPageTypeItems={searchPageTypeItems}
+        searchPageTypeItems={searchPages}
         askAiCallBack={askAiCallBack}
         onSave={async ({ blocks: _blocks, needTranslations, partialIds, linkPageIds, designTokens }) => {
           if (!page) return true;

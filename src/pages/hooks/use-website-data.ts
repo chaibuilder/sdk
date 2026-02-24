@@ -16,7 +16,7 @@ export const useWebsiteData = () => {
       queryClient.setQueryData([ACTIONS.GET_WEBSITE_DRAFT_SETTINGS], data.websiteSettings);
       queryClient.setQueryData([ACTIONS.GET_WEBSITE_PAGES], data.websitePages);
       queryClient.setQueryData([ACTIONS.GET_PAGE_TYPES], data.pageTypes);
-      queryClient.setQueryData([ACTIONS.UI_LIBRARIES], data.libraries);
+      queryClient.setQueryData([ACTIONS.GET_LIBRARIES], data.libraries);
       queryClient.setQueryData([ACTIONS.GET_COLLECTIONS], data.collections);
 
       return data;

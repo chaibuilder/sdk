@@ -1,10 +1,12 @@
 import { getBlocksFromHTML } from "@/core/main";
-import { useFetch } from "@/pages/hooks/utils/use-fetch";
 import { registerChaiLibrary } from "@/runtime/client";
 import { ChaiLibrary, ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 import { useQuery } from "@tanstack/react-query";
 import { get, isArray } from "lodash-es";
+import { useWebsiteData } from "../use-website-data";
+import { useFetch } from "../utils/use-fetch";
 import { useApiUrl } from "./use-builder-prop";
+import { ACTIONS } from "@/pages/constants/ACTIONS";
 
 const uiLibrariesChaiApi = {
   async getUILibraryBlock(uiLibBlock: ChaiLibraryBlock, fetchAPI: any, apiUrl: string) {
@@ -29,14 +31,16 @@ const uiLibrariesChaiApi = {
 };
 
 export const useUILibraries = () => {
-  const apiUrl = useApiUrl();
   const fetchAPI = useFetch();
+  const apiUrl = useApiUrl();
+  const { data } = useWebsiteData();
+  const allLibraries = data?.libraries;
+
   return useQuery({
-    queryKey: ["uiLibraries"],
+    queryKey: [ACTIONS.UI_LIBRARIES],
     staleTime: "static",
     queryFn: async () => {
-      const response = await fetchAPI(apiUrl, { action: "GET_LIBRARIES" });
-      const libraries = response.map((library: any) => ({
+      const libraries = allLibraries.map((library: any) => ({
         ...library,
       }));
       libraries.forEach((library: any) => {

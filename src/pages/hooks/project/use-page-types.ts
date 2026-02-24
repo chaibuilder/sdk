@@ -1,9 +1,10 @@
 import { ACTIONS } from "@/pages/constants/ACTIONS";
 import { useFetch } from "@/pages/hooks/utils/use-fetch";
 import { ChaiPageType } from "@/types/actions";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useCallback, useMemo } from "react";
 import { useApiUrl } from "./use-builder-prop";
+import { useWebsitePages } from "@/pages";
 
 export const usePageTypes = () => {
   const apiUrl = useApiUrl();
@@ -24,24 +25,29 @@ export const usePageType = (pageType: string) => {
 };
 
 export const useSearchPageTypePages = () => {
-  const apiUrl = useApiUrl();
-  const fetchAPI = useFetch();
-  return useMutation({
-    mutationFn: async ({ pageType, query }: any) => {
-      try {
-        return (
-          fetchAPI(apiUrl, {
-            action: ACTIONS.SEARCH_PAGES,
-            data: {
-              pageType,
-              query: Array.isArray(query) && query.length > 0 ? query[0] : query,
-            },
-          }) || []
-        );
-      } catch (_error) {
-        console.error(_error);
-        return [];
+  const { data: primaryPages } = useWebsitePages();
+  const searchPages = useCallback(
+    async (_pageType: string, query: string | string[]) => {
+      if (!primaryPages || !query) return [];
+
+      // When query is an array (ID lookup during initialization)
+      if (Array.isArray(query)) {
+        return primaryPages.filter((page: any) => query.includes(page.id));
       }
+
+      // Normal text search — exclude partials (no slug) and dynamic pages
+      const lowerQuery = query.toLowerCase();
+      return primaryPages.filter(
+        (page: any) =>
+          page.slug &&
+          !page.dynamic &&
+          (page.id === query ||
+            (page.name || "").toLowerCase().includes(lowerQuery) ||
+            (page.slug || "").toLowerCase().includes(lowerQuery)),
+      );
     },
-  });
+    [primaryPages],
+  );
+
+  return { searchPages };
 };
