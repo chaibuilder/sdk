@@ -9,26 +9,15 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataBindingSelector } from "./data-binding-selector";
 
-const PageTypeField = ({
-  href,
-  pageTypes,
-  onChange,
-}: {
-  href: string;
-  pageTypes: any[];
-  onChange: (href: string) => void;
-}) => {
+const PageTypeField = ({ href, onChange }: { href: string; onChange: (href: string) => void }) => {
   const { t } = useTranslation();
   const searchPageTypeItems = useBuilderProp("searchPageTypeItems", (_: string, __: any) => []);
   const [loading, setLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
-  const [pageType, setPageType] = useState("page");
   const [searchQuery, setSearchQuery] = useState("");
   const [pageTypeItems, setPageTypeItems] = useState<any[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const listRef = useRef<HTMLUListElement>(null);
-
-  const currentPageTypeName = pageTypes?.find((_pageType) => _pageType.key === pageType)?.name;
 
   useEffect(() => {
     setSearchQuery("");
@@ -38,11 +27,9 @@ const PageTypeField = ({
 
     if (!href || loading || !startsWith(href, "pageType:")) return;
     const initHref = split(href, ":");
-    const _pageType = get(initHref, 1, "page") || "page";
-    setPageType(_pageType);
 
     (async () => {
-      const initalValue = await searchPageTypeItems(_pageType, [get(initHref, 2, "page")]);
+      const initalValue = await searchPageTypeItems("", [get(initHref, 2, "page")]);
       if (initalValue && Array.isArray(initalValue)) {
         setSearchQuery(get(initalValue, [0, "name"], ""));
       }
@@ -55,18 +42,18 @@ const PageTypeField = ({
       if (isEmpty(query)) {
         setPageTypeItems([]);
       } else {
-        const pageTypeItemResponse = await searchPageTypeItems(pageType, query);
+        const pageTypeItemResponse = await searchPageTypeItems("", query);
         setPageTypeItems(pageTypeItemResponse);
       }
       setLoading(false);
       setSelectedIndex(-1);
     },
-    [pageType],
+    [],
     300,
   );
 
   const handleSelect = (pageTypeItem: any) => {
-    const href = ["pageType", pageType, pageTypeItem.primaryPage ?? pageTypeItem.id];
+    const href = ["pageType", pageTypeItem.pageType || "page", pageTypeItem.primaryPage ?? pageTypeItem.id];
     if (!href[1]) return;
     onChange(href.join(":"));
     setSearchQuery(pageTypeItem.name);
@@ -124,32 +111,23 @@ const PageTypeField = ({
 
   return (
     <div>
-      <select name="pageType" value={pageType} onChange={(e) => setPageType(e.target.value)}>
-        {map(pageTypes, (col) => (
-          <option key={col.key} value={col.key}>
-            {col.name}
-          </option>
-        ))}
-      </select>
-      {pageType && (
-        <div className="group relative mt-2 flex items-center">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => handleSearch(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder={t(`Search ${currentPageTypeName ?? ""}`)}
-            className="w-full rounded-md border border-gray-300 p-2 pr-16"
-          />
-          <div className="absolute bottom-2 right-2 top-3 flex items-center gap-1.5">
-            {searchQuery && (
-              <button onClick={clearSearch} className="text-gray-400 hover:text-gray-600" title={t("Clear search")}>
-                <Cross1Icon className="h-4 w-4" />
-              </button>
-            )}
-          </div>
+      <div className="group relative flex items-center">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => handleSearch(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder={t("Search pages")}
+          className="w-full rounded-md border border-gray-300 p-2 pr-16"
+        />
+        <div className="absolute bottom-2 right-2 top-3 flex items-center gap-1.5">
+          {searchQuery && (
+            <button onClick={clearSearch} className="text-gray-400 hover:text-gray-600" title={t("Clear search")}>
+              <Cross1Icon className="h-4 w-4" />
+            </button>
+          )}
         </div>
-      )}
+      </div>
 
       {(loading || !isEmpty(pageTypeItems) || (isSearching && isEmpty(pageTypeItems))) && (
         <div className="absolute z-40 mt-2 max-h-40 w-full max-w-[250px] overflow-y-auto rounded-md border border-border bg-background shadow-lg">
@@ -237,11 +215,7 @@ const LinkField = ({ schema, formData, onChange, name }: FieldProps) => {
           )}
         </select>
         {linkType === "pageType" && !isEmpty(pageTypes) ? (
-          <PageTypeField
-            href={href}
-            pageTypes={pageTypes}
-            onChange={(href: string) => onChange({ ...formData, href })}
-          />
+          <PageTypeField href={href} onChange={(href: string) => onChange({ ...formData, href })} />
         ) : null}
         <input
           id={`root.${name}.href`}
