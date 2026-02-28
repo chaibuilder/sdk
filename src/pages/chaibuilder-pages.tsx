@@ -279,7 +279,7 @@ const ChaiWebsiteBuilder = (props: ChaiWebsiteBuilderProps) => {
         "realtimeAdapter",
         "getLoggedInUser",
         "flags",
-        "currentUser"
+        "currentUser",
       ]),
     );
     setTimeout(() => {
