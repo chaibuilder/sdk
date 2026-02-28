@@ -31,7 +31,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Invalid or expired token" }, { status: 401 });
     }
     const userId = supabaseUser.data.user?.id || "";
-
     const actionHandler = initChaiBuilderNextJSActionHandler({ apiKey, userId });
     return await actionHandler(body);
   } catch (error) {

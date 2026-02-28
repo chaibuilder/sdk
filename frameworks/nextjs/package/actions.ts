@@ -1,7 +1,29 @@
-import { initChaiBuilderActionHandler } from "@chaibuilder/sdk/actions";
+import { initChaiBuilderActionHandler, ChaiActionsRegistry, PublishChangesAction } from "@chaibuilder/sdk/actions";
 import { NextResponse } from "next/server";
+import { revalidatePath, revalidateTag } from "next/cache";
+
+export class NextJsPublishChangesAction extends PublishChangesAction {
+    async execute(data: any) {
+        const response = await super.execute(data);
+        const { tags, paths } = response;
+
+        // Handle tags revalidation
+        if (tags && tags.length > 0) {
+            await Promise.all(tags.map((tag: string) => revalidateTag(tag, "max")));
+        }
+
+        // Handle paths revalidation
+        if (paths && paths.length > 0) {
+            await Promise.all(paths.map((path: string) => revalidatePath(path)));
+        }
+
+        return response;
+    }
+}
+
 export * from "@chaibuilder/sdk/actions";
 export function initChaiBuilderNextJSActionHandler({ apiKey, userId }: { apiKey: string, userId: string }) {
+    (ChaiActionsRegistry as any).register("PUBLISH_CHANGES", new NextJsPublishChangesAction());
     return async function (body: any) {
         const actionHandler = initChaiBuilderActionHandler({ apiKey, userId })
         const response: any = await actionHandler(body)
