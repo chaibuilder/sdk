@@ -100,7 +100,8 @@ export function getBlockTagAttributes(
 
 export const getBlockRuntimeProps = memoize((blockType: string) => {
   const chaiBlock = getRegisteredChaiBlock(blockType) as any;
-  const props = get(chaiBlock, "schema.properties", {});
+  const schema = chaiBlock?.props?.schema || (chaiBlock?.schema ?? {});
+  const props = get(schema, "properties", {});
   // return key value with value has runtime: true
   return Object.fromEntries(Object.entries(props).filter(([, value]) => get(value, "runtime", false)));
 });
