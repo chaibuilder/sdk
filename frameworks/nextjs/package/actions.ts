@@ -9,6 +9,10 @@ export class NextJsPublishChangesAction extends PublishChangesAction {
 
         // Handle tags revalidation
         if (tags && tags.length > 0) {
+            if (tags.some((tag: string) => tag.startsWith("website-settings-"))) {
+                revalidatePath('/(public)/[[...slug]]', 'page');
+                return response;
+            }
             await Promise.all(tags.map((tag: string) => revalidateTag(tag, "max")));
         }
 
