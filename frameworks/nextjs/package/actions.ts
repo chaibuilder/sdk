@@ -32,7 +32,7 @@ export class NextJsPublishChangesAction extends PublishChangesAction {
 
 export * from "@chaibuilder/sdk/actions";
 export function initChaiBuilderNextJSActionHandler({ apiKey, userId, catchAllRoute }: { apiKey: string, userId: string, catchAllRoute?: string[] }) {
-    (ChaiActionsRegistry as any).register("PUBLISH_CHANGES", new NextJsPublishChangesAction(catchAllRoute || ["/(public)/[[...slug]]"]));
+    ChaiActionsRegistry.registerActions({ "PUBLISH_CHANGES": new NextJsPublishChangesAction(catchAllRoute || ["/(public)/[[...slug]]"]) });
     return async function (body: any) {
         const actionHandler = initChaiBuilderActionHandler({ apiKey, userId })
         const response: any = await actionHandler(body)

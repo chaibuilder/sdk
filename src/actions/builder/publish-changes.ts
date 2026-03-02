@@ -106,7 +106,7 @@ export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionDat
   /**
    * Publish theme changes
    */
-  private async publishTheme(): Promise<{ tags: string[]; paths: string[] }> {
+  private async publishTheme(): Promise<PublishChangesActionResponse> {
     const app = await this.cloneApp();
 
     // Delete existing online app
@@ -136,7 +136,7 @@ export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionDat
   /**
    * Publish design token changes
    */
-  private async publishDesignToken(): Promise<{ tags: string[]; paths: string[] }> {
+  private async publishDesignToken(): Promise<PublishChangesActionResponse> {
     const app = await this.cloneApp();
 
     // Delete existing online app
@@ -253,7 +253,7 @@ export class PublishChangesAction extends ChaiBaseAction<PublishChangesActionDat
   /**
    * Publish a single page
    */
-  private async publishPage(id: string): Promise<{ tags: string[]; paths: string[] }> {
+  private async publishPage(id: string): Promise<PublishChangesActionResponse> {
     const page = await this.clonePage(id);
     await this.addOnlinePage(page);
 
