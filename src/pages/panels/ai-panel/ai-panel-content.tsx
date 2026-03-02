@@ -15,7 +15,7 @@ const AiPanelForDefaultLang = lazy(() => import("./ai-panel-default-lang"));
 const AiPanelForOtherLang = lazy(() => import("./ai-panel-other-lang"));
 
 // Main AI Panel Component
-const AiPanelContent = () => {
+export const AiPanelContent = () => {
   const { t } = useTranslation();
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);

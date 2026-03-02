@@ -19,7 +19,7 @@ export { LanguageSwitcher } from "@/pages/client/components/topbar-left";
 export { ImagePicker } from "@/pages/digital-asset-manager/image-picker";
 export { SmartJsonInput as ChaiJsonInput } from "./client/components/smart-json-input";
 export { ChaiWebsiteBuilder, NestedPathSelector };
-export { default as ChaiAiPanel } from "./panels/ai-panel/ai-panel-content";
+export { AiPanelContent as ChaiAiPanel } from "@/pages/panels/ai-panel/ai-panel-content";
 
 
 /** Hooks */
