@@ -3,6 +3,9 @@ import { NextResponse } from "next/server";
 import { revalidatePath, revalidateTag } from "next/cache";
 
 export class NextJsPublishChangesAction extends PublishChangesAction {
+    constructor(private catchAllRoute?: string[]) {
+        super();
+    }
     async execute(data: any) {
         const response = await super.execute(data);
         const { tags, paths } = response;
@@ -10,7 +13,9 @@ export class NextJsPublishChangesAction extends PublishChangesAction {
         // Handle tags revalidation
         if (tags && tags.length > 0) {
             if (tags.some((tag: string) => tag.startsWith("website-settings-"))) {
-                revalidatePath('/(public)/[[...slug]]', 'page');
+                this.catchAllRoute?.forEach((route: string) => {
+                    revalidatePath(route, 'page');
+                });
                 return response;
             }
             await Promise.all(tags.map((tag: string) => revalidateTag(tag, "max")));
@@ -26,8 +31,8 @@ export class NextJsPublishChangesAction extends PublishChangesAction {
 }
 
 export * from "@chaibuilder/sdk/actions";
-export function initChaiBuilderNextJSActionHandler({ apiKey, userId }: { apiKey: string, userId: string }) {
-    (ChaiActionsRegistry as any).register("PUBLISH_CHANGES", new NextJsPublishChangesAction());
+export function initChaiBuilderNextJSActionHandler({ apiKey, userId, catchAllRoute }: { apiKey: string, userId: string, catchAllRoute?: string[] }) {
+    (ChaiActionsRegistry as any).register("PUBLISH_CHANGES", new NextJsPublishChangesAction(catchAllRoute || ["/(public)/[[...slug]]"]));
     return async function (body: any) {
         const actionHandler = initChaiBuilderActionHandler({ apiKey, userId })
         const response: any = await actionHandler(body)
