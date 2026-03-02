@@ -1,6 +1,7 @@
+import { lsThemeAtom } from "@/atoms/ui";
 import { ChaiBuilderEditor, defaultChaiLibrary } from "@/core/main";
 import "@/index.css";
-import { lsBlocksAtom, lsDesignTokensAtom, lsThemeAtom } from "@/routes/demo/atoms-dev";
+import { lsBlocksAtom, lsDesignTokensAtom } from "@/routes/demo/atoms-dev";
 import { EXTERNAL_DATA } from "@/routes/demo/EXTERNAL_DATA";
 import { PARTIALS } from "@/routes/demo/PARTIALS";
 import { defaultShadcnPreset } from "@/routes/demo/THEME_PRESETS";

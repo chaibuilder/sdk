@@ -144,7 +144,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
     }, 500);
 
     return () => clearTimeout(timedToggle);
-  }, [willReceiveDrop, node, isDragging]);
+  }, [willReceiveDrop, node, isDragging, isShown]);
 
   const setDropAttribute = (id: string, value: string) => {
     const innerDoc = iframe.contentDocument || iframe.contentWindow?.document;
@@ -176,6 +176,20 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
     }
   };
 
+  const { librarySite } = useBuilderProp("flags", { librarySite: false });
+  const isLibBlock = useMemo(() => {
+    return (
+      librarySite &&
+      has(data, "_libBlockId") &&
+      !isEmpty(data._libBlockId) &&
+      (hasPermission(PERMISSIONS.CREATE_LIBRARY_BLOCK) || hasPermission(PERMISSIONS.EDIT_LIBRARY_BLOCK))
+    );
+  }, [data, hasPermission, librarySite]);
+
+  const isPartialBlock = useMemo(() => {
+    return data?._type === "PartialBlock" || data?._type === "GlobalBlock";
+  }, [data]);
+
   if (id === ROOT_TEMP_KEY) {
     return (
       <div className="group relative mt-2 w-full cursor-pointer">
@@ -194,23 +208,11 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
       </div>
     );
   }
-  const { librarySite } = useBuilderProp("flags", { librarySite: false });
-  const isLibBlock = useMemo(() => {
-    return (
-      librarySite &&
-      has(data, "_libBlockId") &&
-      !isEmpty(data._libBlockId) &&
-      (hasPermission(PERMISSIONS.CREATE_LIBRARY_BLOCK) || hasPermission(PERMISSIONS.EDIT_LIBRARY_BLOCK))
-    );
-  }, [data, hasPermission, librarySite]);
-
-  const isPartialBlock = useMemo(() => {
-    return data?._type === "PartialBlock" || data?._type === "GlobalBlock";
-  }, [data]);
 
   return (
-    <div className={"w-full"}>
+    <div className={cn("relative flex h-full w-full items-center", isSelected ? "bg-primary/20" : "hover:bg-gray-100")}>
       <div
+        className="w-full"
         onMouseEnter={() => highlightBlock(id)}
         onMouseLeave={() => clearHighlight()}
         onClick={handleNodeClickWithoutPropagating}
@@ -231,6 +233,23 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
           e.preventDefault();
           setDropAttribute(id, "no");
         }}>
+        {node.level > 0 && (
+          <div className="pointer-events-none absolute left-0 top-0 h-full">
+            {Array.from({ length: node.level }).map((_, index) => {
+              return (
+                <div
+                  key={index}
+                  className={
+                    "absolute top-0 h-full border-l border-black/5 transition-colors group-hover/parent:border-black/30"
+                  }
+                  style={{
+                    left: `${index * 14 + 10}px`,
+                  }}
+                />
+              );
+            })}
+          </div>
+        )}
         {hasPermission(PERMISSIONS.ADD_BLOCK) &&
           !isDragAndDropEnabled &&
           node?.rowIndex !== null &&
@@ -253,15 +272,21 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
               </div>
             </div>
           )}
+        <div className="absolute left-0 right-0 top-0 -z-10 h-full">
+          <div
+            className={cn(
+              "h-full transition-colors",
+              willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
+              node?.id === addSelectParentHighlight ? "bg-gray-100 dark:bg-gray-900" : "",
+            )}
+          />
+        </div>
         <div
           className={cn(
-            "group flex w-full cursor-pointer items-center justify-between space-x-px !rounded p-1 py-0 outline-none",
-            isSelected ? "bg-primary/20" : "hover:bg-primary/10",
-            willReceiveDrop && canAcceptChildBlock(data._type, "Icon") ? "bg-green-200" : "",
-            node?.id === addSelectParentHighlight ? "bg-primary/10" : "",
+            "group relative flex w-full cursor-pointer items-center justify-between space-x-px p-1 py-0 outline-none",
             isDragging && "opacity-20",
             !isShown ? "line-through opacity-50" : "",
-            isLibBlock && isSelected && "bg-primary/20 text-primary",
+            isLibBlock && isSelected && "text-primary",
           )}>
           <div className="flex items-center">
             <div
@@ -276,7 +301,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
             </div>
             <div
               className={cn(
-                "leading-1 flex items-center",
+                "leading-1 flex w-full items-center",
                 isLibBlock && "text-orange-600/90",
                 isLibBlock && isSelected && "text-orange-800",
                 isPartialBlock && "text-purple-600/90",
