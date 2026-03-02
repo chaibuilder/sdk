@@ -205,7 +205,7 @@ export const usePublishPages = () => {
       });
     },
     onError: (error) => {
-      console.log("##", error);
+      console.log(error);
       toast.error("Failed to publish pages.");
     },
   });
