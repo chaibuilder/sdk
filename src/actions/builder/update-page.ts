@@ -108,6 +108,8 @@ export class UpdatePageAction extends ChaiBaseAction<UpdatePageActionData, Updat
         await this.updatePageInDatabase(data.id, filteredData);
       }
 
+      await this.syncDynamicFieldsToSecondaryPages(data.id, filteredData);
+
       return await this.buildResponse(data.id, filteredData);
     } catch (error) {
       return this.handleExecutionError(error);
@@ -317,6 +319,35 @@ export class UpdatePageAction extends ChaiBaseAction<UpdatePageActionData, Updat
     const updatedPage = await this.fetchUpdatedPageData(pageId);
     return { page: updatedPage };
   }
+
+  /**
+   * Sync dynamic and dynamicSlugCustom fields to secondary pages based on primary page.
+   */
+  private async syncDynamicFieldsToSecondaryPages(pageId: string, filteredData: Partial<UpdatePageActionData>) {
+    const dataKeys = keys(filteredData);
+    const hasDynamicUpdates = dataKeys.includes("dynamic") || dataKeys.includes("dynamicSlugCustom");
+
+    if (!hasDynamicUpdates) return;
+
+    // 1. Sync the dynamic flags directly to secondary pages
+    const syncData: any = {};
+    if (dataKeys.includes("dynamic")) syncData.dynamic = filteredData.dynamic;
+    if (dataKeys.includes("dynamicSlugCustom")) syncData.dynamicSlugCustom = filteredData.dynamicSlugCustom;
+
+    const { error } = await safeQuery(() =>
+      db
+        .update(schema.appPages)
+        .set(syncData)
+        .where(and(eq(schema.appPages.primaryPage, pageId), eq(schema.appPages.app, this.appId))),
+    );
+
+    if (error) {
+      console.error("Failed to sync dynamic fields to secondary pages:", error);
+    }
+
+  }
+
+
 
   /**
    * Handle execution errors with proper error transformation
