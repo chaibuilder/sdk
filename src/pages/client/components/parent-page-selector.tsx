@@ -193,7 +193,7 @@ export function ParentPageSelector({
             const indentLevel = getIndentationLevel(page.slug);
             const indent = indentLevel > 0 ? getIndentation(indentLevel) : "";
             const displaySlug = getDisplaySlug(page.slug);
-            const isDisabled = currentPage?.id === page.id || page.slug.startsWith(currentPage?.slug);
+            const isDisabled = currentPage?.id === page.id || page.slug.startsWith((currentPage?.slug || "") + "/");
 
             if (isDisabled) {
               return null;

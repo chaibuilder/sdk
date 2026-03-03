@@ -101,6 +101,25 @@ export class CreatePageAction extends ChaiBaseAction<CreatePageActionData, Creat
       blocks = await this.getTemplateBlocks(data.template, appId);
     }
 
+    let dynamic = data.dynamic ?? false;
+    let dynamicSlugCustom = data.dynamicSlugCustom ?? "";
+
+    if (data.primaryPage) {
+      const { data: primaryPageData } = await safeQuery(() =>
+        db.query.appPages.findFirst({
+          where: and(eq(schema.appPages.id, data.primaryPage as string), eq(schema.appPages.app, appId)),
+          columns: {
+            dynamic: true,
+            dynamicSlugCustom: true,
+          },
+        }),
+      );
+      if (primaryPageData) {
+        dynamic = primaryPageData.dynamic ?? false;
+        dynamicSlugCustom = primaryPageData.dynamicSlugCustom ?? "";
+      }
+    }
+
     // Prepare the page data
     const pageData = {
       app: appId,
@@ -110,8 +129,8 @@ export class CreatePageAction extends ChaiBaseAction<CreatePageActionData, Creat
       parent: data.parent ?? null,
       lang: !data.primaryPage ? "" : (data.lang ?? ""),
       primaryPage: data.primaryPage ?? null,
-      dynamic: data.dynamic ?? false,
-      dynamicSlugCustom: data.dynamicSlugCustom ?? "",
+      dynamic: dynamic,
+      dynamicSlugCustom: dynamicSlugCustom,
       blocks: blocks,
       seo: data.seo ?? {
         title: data.name,
