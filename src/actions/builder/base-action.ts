@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { ActionError } from "./action-error";
-import { getChaiAction } from "./actions-registery";
 import { ChaiAction, ChaiActionContext } from "./chai-action-interface";
 
 /**
@@ -67,22 +66,23 @@ export abstract class ChaiBaseAction<T = any, K = any> implements ChaiAction<T, 
   abstract execute(data: T): Promise<any>;
 
   /**
-   * Verify if the user has access to the app
+   * Verify if the user has access to the app.
+   * Delegates to the CHECK_USER_ACCESS action from the registry so that
+   * callers can override the default access-check by registering a custom action.
+   * Uses a dynamic import to avoid a circular module dependency at init time.
    * @throws ActionError if the user does not have access
    */
-  /**
-   * Get user access data from the database
-   * @returns The user access record
-   * @throws ActionError if access check fails
-   */
-
   protected async verifyAccess(): Promise<void> {
     if (!this.context) {
       throw new ActionError("Context not set", "CONTEXT_NOT_SET", 500);
     }
+    const { getChaiAction } = await import("./actions-registery");
     const checkUserAccessAction = getChaiAction("CHECK_USER_ACCESS");
-    checkUserAccessAction?.setContext(this.context);
-    await checkUserAccessAction?.execute({});
+    if (!checkUserAccessAction) {
+      throw new ActionError("CHECK_USER_ACCESS action not registered", "ACCESS_CHECK_NOT_FOUND", 500);
+    }
+    checkUserAccessAction.setContext(this.context);
+    await checkUserAccessAction.execute({});
   }
 
   /**
