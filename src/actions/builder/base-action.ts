@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { ActionError } from "./action-error";
-import { getChaiAction } from "./actions-registery";
 import { ChaiAction, ChaiActionContext } from "./chai-action-interface";
+import { getUserAccess } from "./get-user-access";
 
 /**
  * Base Action Class
@@ -70,19 +70,11 @@ export abstract class ChaiBaseAction<T = any, K = any> implements ChaiAction<T, 
    * Verify if the user has access to the app
    * @throws ActionError if the user does not have access
    */
-  /**
-   * Get user access data from the database
-   * @returns The user access record
-   * @throws ActionError if access check fails
-   */
-
   protected async verifyAccess(): Promise<void> {
     if (!this.context) {
       throw new ActionError("Context not set", "CONTEXT_NOT_SET", 500);
     }
-    const checkUserAccessAction = getChaiAction("CHECK_USER_ACCESS");
-    checkUserAccessAction?.setContext(this.context);
-    await checkUserAccessAction?.execute({});
+    await getUserAccess(this.context);
   }
 
   /**
