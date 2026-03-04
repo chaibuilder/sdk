@@ -1,5 +1,7 @@
 import { z } from "zod";
+import { ActionError } from "./action-error";
 import { ChaiBaseAction } from "./base-action";
+import { getUserAccess } from "./get-user-access";
 
 type CheckUserAccessResponse = {
   access: boolean;
@@ -13,7 +15,10 @@ export class CheckUserAccessAction extends ChaiBaseAction<any, CheckUserAccessRe
   }
 
   async execute(): Promise<CheckUserAccessResponse> {
-    const user = await this.getUserAccess();
+    if (!this.context) {
+      throw new ActionError("Context not set", "CONTEXT_NOT_SET", 500);
+    }
+    const user = await getUserAccess(this.context);
     return {
       access: true,
       role: user.role || "user",
