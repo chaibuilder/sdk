@@ -21,7 +21,7 @@ import {
   Search,
   Star,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 /**
@@ -43,6 +43,18 @@ const PageTypeSelector = ({ selectedPageType, setSelectedPageType }: PageTypeSel
   const [pageTypeSearch, setPageTypeSearch] = useState("");
   const { data: pageTypes } = usePageTypes();
   const isSearchAndSelectEnabled = true;
+  const hasCustomPageTypes = useMemo(
+    () => pageTypes.some((pageType: any) => !["page", "global"].includes(get(pageType, "key", ""))),
+    [pageTypes],
+  );
+
+  useEffect(() => {
+    if (!hasCustomPageTypes && selectedPageType !== "all") {
+      setSelectedPageType("all");
+    }
+  }, [hasCustomPageTypes, selectedPageType, setSelectedPageType]);
+
+  if (!hasCustomPageTypes) return null;
 
   const filterPageTypes = (pageType: any) => {
     if (!pageTypeSearch) return true;
