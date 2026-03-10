@@ -7,6 +7,7 @@ import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { usePageTypes } from "@/pages/hooks/project/use-page-types";
 import { useFallbackLang } from "@/pages/hooks/use-fallback-lang";
 import { usePageExpandManager } from "@/pages/hooks/utils/use-page-expand-manager";
+import { ChaiPageType } from "@/types/actions";
 import { ChaiPage } from "@/pages/utils/page-organization";
 import { useQueryClient } from "@tanstack/react-query";
 import { filter, get, isEmpty, map } from "lodash-es";
@@ -21,7 +22,7 @@ import {
   Search,
   Star,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 /**
@@ -43,8 +44,20 @@ const PageTypeSelector = ({ selectedPageType, setSelectedPageType }: PageTypeSel
   const [pageTypeSearch, setPageTypeSearch] = useState("");
   const { data: pageTypes } = usePageTypes();
   const isSearchAndSelectEnabled = true;
+  const hasCustomPageTypes = useMemo(
+    () => pageTypes.some((pageType: ChaiPageType) => !["page", "global"].includes(get(pageType, "key", ""))),
+    [pageTypes],
+  );
 
-  const filterPageTypes = (pageType: any) => {
+  useEffect(() => {
+    if (!hasCustomPageTypes && selectedPageType !== "all") {
+      setSelectedPageType("all");
+    }
+  }, [hasCustomPageTypes, selectedPageType, setSelectedPageType]);
+
+  if (!hasCustomPageTypes) return null;
+
+  const filterPageTypes = (pageType: ChaiPageType) => {
     if (!pageTypeSearch) return true;
     const search = pageTypeSearch.toLowerCase();
 
@@ -56,7 +69,7 @@ const PageTypeSelector = ({ selectedPageType, setSelectedPageType }: PageTypeSel
     return isIn("name") || isIn("key");
   };
 
-  const selectedPage = pageTypes.find((pageType: any) => pageType.key === selectedPageType);
+  const selectedPage = pageTypes.find((pageType: ChaiPageType) => pageType.key === selectedPageType);
 
   return (
     <Select onValueChange={setSelectedPageType} value={selectedPageType}>
