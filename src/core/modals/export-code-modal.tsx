@@ -91,10 +91,14 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
   };
 
   const handleExportEvent = useCallback(async () => {
-    if (!selectedBlock) return;
+    const blockForExport: ChaiBlock = selectedBlock ?? ({ _name: "Body", _type: "Body" } as ChaiBlock);
     try {
       setShow(false);
-      let html = blocksHtmlForAi({ blockId: selectedBlock?._id, additionalCoreBlocks: ["Icon"] });
+      let html = blocksHtmlForAi(
+        selectedBlock
+          ? { blockId: selectedBlock._id, additionalCoreBlocks: ["Icon"] }
+          : { additionalCoreBlocks: ["Icon"] },
+      );
       html = html.replace(/\s*bid=["'][^"']*["']/g, "");
 
       const isTypeScript = tab === "ts";
@@ -103,7 +107,7 @@ const ExportCodeModalContent = ({ tab }: { tab: string }) => {
         html: htmlCode,
         componentName,
       } = await getExportedCoded({
-        selectedBlock,
+        selectedBlock: blockForExport,
         html,
         isTypeScript,
       });
