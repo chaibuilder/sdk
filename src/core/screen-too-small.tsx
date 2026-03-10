@@ -11,11 +11,6 @@ export const ScreenTooSmall = () => {
         <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(to_right,#f3f4f6_1px,transparent_1px),linear-gradient(to_bottom,#f3f4f6_1px,transparent_1px)] bg-[size:10px_10px] py-12 sm:py-16 lg:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-md space-y-6 text-center">
-              <img
-                src="https://ucarecdn.com/fbfc3b05-cb73-4e99-92a2-3a367b7c36cd/"
-                alt="Chai Builder"
-                className="mx-auto h-20 w-20 rounded-full shadow-lg transition-transform duration-300 hover:scale-105"
-              />
               <div className="space-y-4">
                 <h2 className="text-5xl font-bold tracking-tight text-gray-900">Screen too small</h2>
                 <p className="mx-auto max-w-sm text-sm leading-7 text-gray-600">
