@@ -11,8 +11,8 @@ import { ChaiBlock } from "@/types/common";
 import { Bot } from "lucide-react";
 import { Fragment, lazy, Suspense, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { useAIModels } from "./ai-models-context";
 import { Message } from "./ai-panel-helper";
-import { getDefaultModel } from "./models";
 import { getTranslationUserPrompt } from "./prompt-helper";
 import { SelectedBlockDisplay } from "./selected-block-display";
 
@@ -56,10 +56,14 @@ const AiPanelForOtherLang = ({
   abortController,
   setAbortController,
   setCurrentBlock,
-  selectedModel = getDefaultModel().id,
+  selectedModel,
   onModelChange,
 }: AiPanelForOtherLangProps) => {
   const { t } = useTranslation();
+  const { models } = useAIModels();
+  const defaultModel = models.find((model) => model.id === "google/gemini-3-flash") || models[0];
+  const currentSelectedModel = selectedModel || defaultModel.id;
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const selectedBlock = useSelectedBlock();
   const [, setSelectedBlockIds] = useSelectedBlockIds();
@@ -113,7 +117,7 @@ const AiPanelForOtherLang = ({
       const requestBody: any = {
         messages: [userMessageObj],
         initiator: isTranslate ? "TRANSLATE_CONTENT" : "UPDATE_CONTENT",
-        model: model || selectedModel,
+        model: model || currentSelectedModel,
       };
 
       const response = await fetch({ body: { action: "ASK_AI", data: requestBody }, streamResponse: true });
@@ -217,7 +221,7 @@ const AiPanelForOtherLang = ({
             selectedLang={selectedLang}
             currentBlock={(selectedBlock || currentBlock) as ChaiBlock}
             disabled={input?.length === 0}
-            selectedModel={selectedModel}
+            selectedModel={currentSelectedModel}
             onModelChange={onModelChange}
           />
         </Suspense>

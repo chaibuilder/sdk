@@ -100,7 +100,7 @@ const WebsiteBuilder = () => {
   return (
     <ChaiWebsiteBuilder
       locale="fr-CA"
-      flags={{ exportCode: false, dragAndDrop: true, designTokens: true }}
+      flags={{ exportCode: false, dragAndDrop: true, designTokens: true, ai: true }}
       translations={{ "fr-CA": { Outline: "Contour" } }}
       getPreviewUrl={getPreviewUrl}
       getLiveUrl={getLiveUrl}

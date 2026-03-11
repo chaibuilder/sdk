@@ -13,7 +13,7 @@ import {
 } from "@/pages/components/ai-elements/model-selector";
 import { Cpu } from "lucide-react";
 import { useState } from "react";
-import { AI_MODELS, getDefaultModel, getModelById } from "./models";
+import { AIModel, useAIModels } from "./ai-models-context";
 
 interface ModelSelectorDropdownProps {
   selectedModel: string;
@@ -27,10 +27,11 @@ export const ModelSelectorDropdown = ({
   disabled = false,
 }: ModelSelectorDropdownProps) => {
   const [open, setOpen] = useState(false);
+  const { models } = useAIModels();
 
-  const currentModel = getModelById(selectedModel) || getDefaultModel();
+  const currentModel = models.find((model) => model.id === selectedModel) || models[0];
 
-  const groupedModels = AI_MODELS.reduce(
+  const groupedModels = models.reduce(
     (acc, model) => {
       if (!acc[model.provider]) {
         acc[model.provider] = [];
@@ -38,7 +39,7 @@ export const ModelSelectorDropdown = ({
       acc[model.provider].push(model);
       return acc;
     },
-    {} as Record<string, typeof AI_MODELS>,
+    {} as Record<string, AIModel[]>,
   );
 
   const handleModelSelect = (modelId: string) => {

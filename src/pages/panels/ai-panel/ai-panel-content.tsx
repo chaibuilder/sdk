@@ -8,14 +8,19 @@ import { Plus } from "lucide-react";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { AIConfig, AIConfigProvider } from "./ai-models-context";
 import { Message } from "./ai-panel-helper";
 import { getDefaultModel } from "./models";
 
 const AiPanelForDefaultLang = lazy(() => import("./ai-panel-default-lang"));
 const AiPanelForOtherLang = lazy(() => import("./ai-panel-other-lang"));
 
+interface AiPanelContentProps {
+  config?: Partial<AIConfig>;
+}
+
 // Main AI Panel Component
-export const AiPanelContent = () => {
+const AiPanelContentInner = () => {
   const { t } = useTranslation();
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
@@ -110,6 +115,14 @@ export const AiPanelContent = () => {
         </Suspense>
       </div>
     </>
+  );
+};
+
+export const AiPanelContent = ({ config }: AiPanelContentProps) => {
+  return (
+    <AIConfigProvider config={config}>
+      <AiPanelContentInner />
+    </AIConfigProvider>
   );
 };
 

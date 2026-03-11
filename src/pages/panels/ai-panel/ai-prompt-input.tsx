@@ -20,8 +20,8 @@ import { ChaiBlock } from "@/types/common";
 import { GlobeIcon, Paperclip, Send, Square } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useAIModels } from "./ai-models-context";
 import { ModelSelectorDropdown } from "./model-selector-dropdown";
-import { getDefaultModel } from "./models";
 
 const MODEL_STORAGE_KEY = "chai-ai-selected-model";
 
@@ -47,11 +47,13 @@ const AiPromptInput = ({
   isLoading,
   disabled,
   selectedLang,
-  selectedModel: propSelectedModel = getDefaultModel().id,
+  selectedModel: propSelectedModel,
   onModelChange,
 }: AiPromptInputProps) => {
   const { t } = useTranslation();
-  const [selectedModel, setSelectedModel] = useState(propSelectedModel);
+  const { models } = useAIModels();
+  const defaultModel = models.find((model) => model.id === "google/gemini-3-flash") || models[0];
+  const [selectedModel, setSelectedModel] = useState(propSelectedModel || defaultModel.id);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [useWebSearch, setUseWebSearch] = useState(false);
@@ -65,12 +67,11 @@ const AiPromptInput = ({
         onModelChange?.(savedModel);
       } else {
         // Set default model if no saved model exists
-        const defaultModel = getDefaultModel().id;
-        setSelectedModel(defaultModel);
-        onModelChange?.(defaultModel);
+        setSelectedModel(defaultModel.id);
+        onModelChange?.(defaultModel.id);
       }
     }
-  }, [selectedLang, onModelChange]);
+  }, [selectedLang, onModelChange, defaultModel.id]);
 
   const handleSubmit = (message: { text: string; files: any[] }) => {
     const imageFile = message.files.find((file) => file.mediaType?.startsWith("image/"));

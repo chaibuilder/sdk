@@ -15,8 +15,8 @@ import { ChaiBlock } from "@/types/common";
 import { Bot } from "lucide-react";
 import { Fragment, lazy, Suspense } from "react";
 import { toast } from "sonner";
+import { useAIModels } from "./ai-models-context";
 import { Message } from "./ai-panel-helper";
-import { getDefaultModel } from "./models";
 import { getUserPrompt } from "./prompt-helper";
 import { SelectedBlockDisplay } from "./selected-block-display";
 import { useProcessAiStream } from "./use-process-ai-stream";
@@ -59,9 +59,13 @@ const AiPanelForDefaultLang = ({
   fallbackLang,
   setCurrentBlock,
   setAbortController,
-  selectedModel = getDefaultModel().id,
+  selectedModel,
   onModelChange,
 }: AiPanelForDefaultLangProps) => {
+  const { models } = useAIModels();
+  const defaultModel = models.find((model) => model.id === "google/gemini-3-flash") || models[0];
+  const currentSelectedModel = selectedModel || defaultModel.id;
+
   const selectedBlock = useSelectedBlock();
   const [, setSelectedBlockIds] = useSelectedBlockIds();
   const blocksHtmlForAi = useBlocksHtmlForAi();
@@ -112,7 +116,7 @@ const AiPanelForDefaultLang = ({
           role: m.role,
           content: m.content,
         })),
-        model: model || selectedModel,
+        model: model || currentSelectedModel,
       };
 
       // Add image to request if provided
@@ -199,7 +203,7 @@ const AiPanelForDefaultLang = ({
             selectedLang=""
             currentBlock={(selectedBlock || currentBlock) as ChaiBlock}
             disabled={input?.length === 0}
-            selectedModel={selectedModel}
+            selectedModel={currentSelectedModel}
             onModelChange={onModelChange}
           />
         </Suspense>
