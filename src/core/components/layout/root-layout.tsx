@@ -261,11 +261,17 @@ const RootLayout: ComponentType = () => {
               transition={{ duration: 0.3, ease: "easeInOut" }}>
               {activePanel !== null && get(activePanelItem, "view", "standard") === "standard" && (
                 <div className="no-scrollbar flex h-full flex-col overflow-hidden px-3 py-2">
+                  {get(activePanelItem, "label", "") !== "" ? (
+                    <div
+                      className={`absolute top-2 flex h-10 items-center space-x-1 py-2 text-base font-bold ${get(activePanelItem, "isInternal", false) ? "" : "w-64"}`}>
+                      <span>{t(get(activePanelItem, "label", ""))}</span>
+                    </div>
+                  ) : null}
                   <div
-                    className={`absolute top-2 flex h-10 items-center space-x-1 py-2 text-base font-bold ${get(activePanelItem, "isInternal", false) ? "" : "w-64"}`}>
-                    <span>{t(get(activePanelItem, "label", ""))}</span>
-                  </div>
-                  <div className="no-scrollbar h-full max-h-full overflow-y-auto pt-10">
+                    className={
+                      "no-scrollbar h-full max-h-full overflow-y-auto " +
+                      (get(activePanelItem, "label", "") !== "" ? "pt-10" : "")
+                    }>
                     <Suspense fallback={<div>Loading...</div>}>
                       {React.createElement(get(activePanelItem, "panel", NoopComponent), {})}
                     </Suspense>
