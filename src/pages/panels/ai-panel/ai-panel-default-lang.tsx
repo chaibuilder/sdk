@@ -13,10 +13,10 @@ import { Reasoning, ReasoningContent, ReasoningTrigger } from "@/pages/component
 import { TaskMessage } from "@/pages/components/ai-elements/task-message";
 import { ChaiBlock } from "@/types/common";
 import { Bot } from "lucide-react";
-import { Fragment, lazy, Suspense } from "react";
+import { Fragment, lazy, startTransition, Suspense } from "react";
 import { toast } from "sonner";
+import { useAIConfig, useAIModels } from "./ai-models-context";
 import { Message } from "./ai-panel-helper";
-import { getDefaultModel } from "./models";
 import { getUserPrompt } from "./prompt-helper";
 import { SelectedBlockDisplay } from "./selected-block-display";
 import { useProcessAiStream } from "./use-process-ai-stream";
@@ -59,9 +59,14 @@ const AiPanelForDefaultLang = ({
   fallbackLang,
   setCurrentBlock,
   setAbortController,
-  selectedModel = getDefaultModel().id,
+  selectedModel,
   onModelChange,
 }: AiPanelForDefaultLangProps) => {
+  const { models } = useAIModels();
+  const config = useAIConfig();
+  const defaultModel = models.find((model) => model.id === "google/gemini-3-flash") || models[0];
+  const currentSelectedModel = selectedModel || defaultModel.id;
+
   const selectedBlock = useSelectedBlock();
   const [, setSelectedBlockIds] = useSelectedBlockIds();
   const blocksHtmlForAi = useBlocksHtmlForAi();
@@ -106,13 +111,18 @@ const AiPanelForDefaultLang = ({
     const controller = new AbortController();
     setAbortController(controller);
 
+    const usedModel = model || currentSelectedModel;
+
+    // Trigger stream start event
+    config.onAIEvent?.({ type: "stream_start", model: usedModel, timestamp: Date.now() });
+
     try {
       const requestBody: any = {
         messages: [userMessageObj].map((m) => ({
           role: m.role,
           content: m.content,
         })),
-        model: model || selectedModel,
+        model: model || currentSelectedModel,
       };
 
       // Add image to request if provided
@@ -129,6 +139,28 @@ const AiPanelForDefaultLang = ({
       const reader = response.body?.getReader();
       if (!reader) throw new Error(t("Response body is not readable"));
       await processAiStream(reader, setMessages);
+
+      // Capture the AI response and trigger callbacks after stream completes
+      setMessages((prev) => {
+        // Get the last assistant message after streaming completes
+        startTransition(() => {
+          const assistantMessages = prev.filter((m) => m.role === "assistant" && !m.isReasoning && !m.isTask);
+          const lastResponse = assistantMessages[assistantMessages.length - 1]?.content || "";
+          const timestamp = Date.now();
+
+          // Trigger success callbacks with actual AI response
+          config.onSuccess?.({ content: lastResponse, model: usedModel, timestamp });
+          config.onComplete?.({ success: true, content: lastResponse, model: usedModel, timestamp });
+          config.onAIEvent?.({
+            type: "completion",
+            content: lastResponse,
+            model: usedModel,
+            timestamp,
+          });
+        });
+
+        return prev;
+      });
     } catch (error: any) {
       // Don't show error message if request was aborted
       if (error.name !== "AbortError") {
@@ -138,6 +170,16 @@ const AiPanelForDefaultLang = ({
           content: t("Sorry, I encountered an error. Please try again."),
         };
         setMessages((prev) => [...prev, errorMessage]);
+
+        // Trigger error callbacks with actual error message (non-urgent update)
+        startTransition(() => {
+          const errorMsg = error instanceof Error ? error.message : String(error);
+          const timestamp = Date.now();
+
+          config.onError?.({ error: errorMsg, model: usedModel, timestamp });
+          config.onComplete?.({ success: false, error: errorMsg, model: usedModel, timestamp });
+          config.onAIEvent?.({ type: "error", error: errorMsg, model: usedModel, timestamp });
+        });
       }
     } finally {
       setInput("");
@@ -199,7 +241,7 @@ const AiPanelForDefaultLang = ({
             selectedLang=""
             currentBlock={(selectedBlock || currentBlock) as ChaiBlock}
             disabled={input?.length === 0}
-            selectedModel={selectedModel}
+            selectedModel={currentSelectedModel}
             onModelChange={onModelChange}
           />
         </Suspense>
