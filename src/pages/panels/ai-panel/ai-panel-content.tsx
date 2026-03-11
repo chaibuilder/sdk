@@ -8,7 +8,15 @@ import { Plus } from "lucide-react";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { AIConfig, AIConfigProvider } from "./ai-models-context";
+import {
+  AICompleteCallback,
+  AIConfig,
+  AIConfigProvider,
+  AIErrorCallback,
+  AIEvent,
+  AIModel,
+  AISuccessCallback,
+} from "./ai-models-context";
 import { Message } from "./ai-panel-helper";
 import { getDefaultModel } from "./models";
 
@@ -16,7 +24,12 @@ const AiPanelForDefaultLang = lazy(() => import("./ai-panel-default-lang"));
 const AiPanelForOtherLang = lazy(() => import("./ai-panel-other-lang"));
 
 interface AiPanelContentProps {
-  config?: Partial<AIConfig>;
+  models?: AIModel[];
+  onAIEvent?: (event: AIEvent) => void;
+  onSuccess?: (data: AISuccessCallback) => void;
+  onError?: (data: AIErrorCallback) => void;
+  onComplete?: (data: AICompleteCallback) => void;
+  [key: string]: any;
 }
 
 // Main AI Panel Component
@@ -118,7 +131,16 @@ const AiPanelContentInner = () => {
   );
 };
 
-export const AiPanelContent = ({ config }: AiPanelContentProps) => {
+export const AiPanelContent = ({ models, onAIEvent, onSuccess, onError, onComplete, ...rest }: AiPanelContentProps) => {
+  const config: Partial<AIConfig> = {
+    models,
+    onAIEvent,
+    onSuccess,
+    onError,
+    onComplete,
+    ...rest,
+  };
+
   return (
     <AIConfigProvider config={config}>
       <AiPanelContentInner />

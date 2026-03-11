@@ -6,30 +6,30 @@
  */
 
 import React from "react";
-import { AIConfig, AIEvent } from "./ai-models-context";
+import { AIEvent } from "./ai-models-context";
 import { AiPanelContent } from "./ai-panel-content";
 
 // Example 1: Basic usage with success/error/complete callbacks
 export const BasicCallbackExample = () => {
-  const config: Partial<AIConfig> = {
-    onSuccess: ({ content, model, timestamp }) => {
-      console.log(`✅ AI succeeded using ${model}`);
-      console.log("Content:", content);
-      console.log("Timestamp:", new Date(timestamp).toISOString());
-      // Track analytics, show success notification, etc.
-    },
-    onError: ({ error, model, timestamp }) => {
-      console.error(`❌ AI error with ${model}:`, error);
-      console.log("Error timestamp:", new Date(timestamp).toISOString());
-      // Log to error tracking service, show error notification, etc.
-    },
-    onComplete: ({ success, content, error, model, timestamp }) => {
-      console.log(`🏁 AI request completed. Success: ${success}`);
-      // Always called after AI request finishes (success or error)
-    },
-  };
-
-  return <AiPanelContent config={config} />;
+  return (
+    <AiPanelContent
+      onSuccess={({ content, model, timestamp }) => {
+        console.log(`✅ AI succeeded using ${model}`);
+        console.log("Content:", content);
+        console.log("Timestamp:", new Date(timestamp).toISOString());
+        // Track analytics, show success notification, etc.
+      }}
+      onError={({ error, model, timestamp }) => {
+        console.error(`❌ AI error with ${model}:`, error);
+        console.log("Error timestamp:", new Date(timestamp).toISOString());
+        // Log to error tracking service, show error notification, etc.
+      }}
+      onComplete={({ success, content, error, model, timestamp }) => {
+        console.log(`🏁 AI request completed. Success: ${success}`);
+        // Always called after AI request finishes (success or error)
+      }}
+    />
+  );
 };
 
 // Example 2: Custom models with callbacks
@@ -51,17 +51,17 @@ export const CustomModelsExample = () => {
     },
   ];
 
-  const config: Partial<AIConfig> = {
-    models: customModels,
-    onSuccess: ({ content, model, timestamp }) => {
-      console.log("AI generation succeeded:", { content, model, timestamp });
-    },
-    onComplete: ({ success }) => {
-      console.log("AI request finished. Success:", success);
-    },
-  };
-
-  return <AiPanelContent config={config} />;
+  return (
+    <AiPanelContent
+      models={customModels}
+      onSuccess={({ content, model, timestamp }) => {
+        console.log("AI generation succeeded:", { content, model, timestamp });
+      }}
+      onComplete={({ success }) => {
+        console.log("AI request finished. Success:", success);
+      }}
+    />
+  );
 };
 
 // Example 3: Unified event handler for all AI events
@@ -96,11 +96,7 @@ export const UnifiedEventHandlerExample = () => {
     }
   };
 
-  const config: Partial<AIConfig> = {
-    onAIEvent: handleAIEvent,
-  };
-
-  return <AiPanelContent config={config} />;
+  return <AiPanelContent onAIEvent={handleAIEvent} />;
 };
 
 // Example 4: Analytics tracking
@@ -110,38 +106,38 @@ export const AnalyticsTrackingExample = () => {
     console.log("Analytics:", eventName, properties);
   };
 
-  const config: Partial<AIConfig> = {
-    onAIEvent: (event) => {
-      trackAnalytics("ai_event", {
-        event_type: event.type,
-        model: event.model,
-        timestamp: event.timestamp,
-      });
-    },
-    onSuccess: ({ content, model, timestamp }) => {
-      trackAnalytics("ai_success", {
-        model,
-        content_length: content.length,
-        timestamp,
-      });
-    },
-    onError: ({ error, model, timestamp }) => {
-      trackAnalytics("ai_error", {
-        model,
-        error: error instanceof Error ? error.message : String(error),
-        timestamp,
-      });
-    },
-    onComplete: ({ success, model, timestamp }) => {
-      trackAnalytics("ai_complete", {
-        success,
-        model,
-        timestamp,
-      });
-    },
-  };
-
-  return <AiPanelContent config={config} />;
+  return (
+    <AiPanelContent
+      onAIEvent={(event) => {
+        trackAnalytics("ai_event", {
+          event_type: event.type,
+          model: event.model,
+          timestamp: event.timestamp,
+        });
+      }}
+      onSuccess={({ content, model, timestamp }) => {
+        trackAnalytics("ai_success", {
+          model,
+          content_length: content.length,
+          timestamp,
+        });
+      }}
+      onError={({ error, model, timestamp }) => {
+        trackAnalytics("ai_error", {
+          model,
+          error: error instanceof Error ? error.message : String(error),
+          timestamp,
+        });
+      }}
+      onComplete={({ success, model, timestamp }) => {
+        trackAnalytics("ai_complete", {
+          success,
+          model,
+          timestamp,
+        });
+      }}
+    />
+  );
 };
 
 // Example 5: State management with callbacks
@@ -149,28 +145,26 @@ export const StateManagementExample = () => {
   const [aiStatus, setAiStatus] = React.useState<"idle" | "loading" | "success" | "error">("idle");
   const [lastModel, setLastModel] = React.useState<string>("");
 
-  const config: Partial<AIConfig> = {
-    onAIEvent: (event) => {
-      switch (event.type) {
-        case "stream_start":
-          setAiStatus("loading");
-          setLastModel(event.model);
-          break;
-        case "completion":
-          setAiStatus("success");
-          break;
-        case "error":
-          setAiStatus("error");
-          break;
-      }
-    },
-  };
-
   return (
     <div>
       <div>Status: {aiStatus}</div>
       <div>Last Model: {lastModel}</div>
-      <AiPanelContent config={config} />
+      <AiPanelContent
+        onAIEvent={(event) => {
+          switch (event.type) {
+            case "stream_start":
+              setAiStatus("loading");
+              setLastModel(event.model);
+              break;
+            case "completion":
+              setAiStatus("success");
+              break;
+            case "error":
+              setAiStatus("error");
+              break;
+          }
+        }}
+      />
     </div>
   );
 };

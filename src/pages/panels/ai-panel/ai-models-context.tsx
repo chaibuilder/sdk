@@ -62,11 +62,7 @@ export interface AIConfig {
   [key: string]: any;
 }
 
-interface AIConfigContextType {
-  config: AIConfig;
-}
-
-const AIConfigContext = createContext<AIConfigContextType | undefined>(undefined);
+const AIConfigContext = createContext<AIConfig | undefined>(undefined);
 
 interface AIConfigProviderProps {
   children: ReactNode;
@@ -74,30 +70,23 @@ interface AIConfigProviderProps {
 }
 
 export const AIConfigProvider = ({ children, config }: AIConfigProviderProps) => {
-  const defaultConfig: AIConfig = {
-    models: AI_MODELS,
+  const mergedConfig: AIConfig = {
     ...config,
+    models: config?.models || AI_MODELS,
   };
 
-  const value = {
-    config: {
-      ...defaultConfig,
-      models: config?.models || defaultConfig.models,
-    },
-  };
-
-  return <AIConfigContext.Provider value={value}>{children}</AIConfigContext.Provider>;
+  return <AIConfigContext.Provider value={mergedConfig}>{children}</AIConfigContext.Provider>;
 };
 
 export const useAIConfig = () => {
-  const context = useContext(AIConfigContext);
-  if (context === undefined) {
+  const config = useContext(AIConfigContext);
+  if (config === undefined) {
     throw new Error("useAIConfig must be used within AIConfigProvider");
   }
-  return context;
+  return config;
 };
 
 export const useAIModels = () => {
-  const { config } = useAIConfig();
+  const config = useAIConfig();
   return { models: config.models };
 };

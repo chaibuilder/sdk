@@ -38,6 +38,6 @@ export const aiPanel = {
   id: aiPanelId,
   label: "AI Assistant",
   button: AiPanelButton,
-  panel: AiPanelContent,
+  panel: () => <AiPanelContent onSuccess={console.log} onError={console.log} onComplete={console.log} />,
   position: "top" as const,
 };

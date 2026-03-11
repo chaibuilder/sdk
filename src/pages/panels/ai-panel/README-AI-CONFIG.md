@@ -31,7 +31,7 @@ const customModels = [
   // ... more models
 ];
 
-<AiPanelContent config={{ models: customModels }} />;
+<AiPanelContent models={customModels} />;
 ```
 
 ### Event Callbacks
@@ -40,41 +40,39 @@ Listen to AI completion and error events:
 
 ```tsx
 <AiPanelContent
-  config={{
-    models: customModels,
-    onSuccess: ({ content, model, timestamp }) => {
-      console.log(`AI succeeded using ${model}:`, content);
-      console.log("Timestamp:", new Date(timestamp).toISOString());
-      // Track analytics, show notifications, etc.
-    },
-    onError: ({ error, model, timestamp }) => {
-      console.error(`AI error with ${model}:`, error);
-      console.log("Error timestamp:", new Date(timestamp).toISOString());
-      // Log errors, show user feedback, etc.
-    },
-    onComplete: ({ success, content, error, model, timestamp }) => {
-      // Called after every AI request (success or error)
-      console.log(`AI request completed. Success: ${success}`);
-      if (success) {
-        console.log("Content:", content);
-      } else {
-        console.error("Error:", error);
-      }
-    },
-    onAIEvent: (event) => {
-      // Unified event handler for all AI events
-      switch (event.type) {
-        case "stream_start":
-          console.log("AI stream started with model:", event.model);
-          break;
-        case "completion":
-          console.log("AI completed:", event.content);
-          break;
-        case "error":
-          console.error("AI error:", event.error);
-          break;
-      }
-    },
+  models={customModels}
+  onSuccess={({ content, model, timestamp }) => {
+    console.log(`AI succeeded using ${model}:`, content);
+    console.log("Timestamp:", new Date(timestamp).toISOString());
+    // Track analytics, show notifications, etc.
+  }}
+  onError={({ error, model, timestamp }) => {
+    console.error(`AI error with ${model}:`, error);
+    console.log("Error timestamp:", new Date(timestamp).toISOString());
+    // Log errors, show user feedback, etc.
+  }}
+  onComplete={({ success, content, error, model, timestamp }) => {
+    // Called after every AI request (success or error)
+    console.log(`AI request completed. Success: ${success}`);
+    if (success) {
+      console.log("Content:", content);
+    } else {
+      console.error("Error:", error);
+    }
+  }}
+  onAIEvent={(event) => {
+    // Unified event handler for all AI events
+    switch (event.type) {
+      case "stream_start":
+        console.log("AI stream started with model:", event.model);
+        break;
+      case "completion":
+        console.log("AI completed:", event.content);
+        break;
+      case "error":
+        console.error("AI error:", event.error);
+        break;
+    }
   }}
 />
 ```
@@ -85,14 +83,12 @@ The `AIConfig` interface is extensible, allowing you to add other configuration 
 
 ```tsx
 <AiPanelContent
-  config={{
-    models: customModels,
-    apiEndpoint: "https://custom-api.com",
-    maxTokens: 4000,
-    onSuccess: ({ content, model, timestamp }) => console.log("Success!", model),
-    onComplete: ({ success }) => console.log("Done!", success),
-    // ... any other config
-  }}
+  models={customModels}
+  apiEndpoint="https://custom-api.com"
+  maxTokens={4000}
+  onSuccess={({ content, model, timestamp }) => console.log("Success!", model)}
+  onComplete={({ success }) => console.log("Done!", success)}
+  // ... any other props
 />
 ```
 

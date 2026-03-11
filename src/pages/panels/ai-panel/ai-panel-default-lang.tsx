@@ -13,7 +13,7 @@ import { Reasoning, ReasoningContent, ReasoningTrigger } from "@/pages/component
 import { TaskMessage } from "@/pages/components/ai-elements/task-message";
 import { ChaiBlock } from "@/types/common";
 import { Bot } from "lucide-react";
-import { Fragment, lazy, Suspense } from "react";
+import { Fragment, lazy, startTransition, Suspense } from "react";
 import { toast } from "sonner";
 import { useAIConfig, useAIModels } from "./ai-models-context";
 import { Message } from "./ai-panel-helper";
@@ -63,7 +63,7 @@ const AiPanelForDefaultLang = ({
   onModelChange,
 }: AiPanelForDefaultLangProps) => {
   const { models } = useAIModels();
-  const { config } = useAIConfig();
+  const config = useAIConfig();
   const defaultModel = models.find((model) => model.id === "google/gemini-3-flash") || models[0];
   const currentSelectedModel = selectedModel || defaultModel.id;
 
@@ -140,20 +140,23 @@ const AiPanelForDefaultLang = ({
       if (!reader) throw new Error(t("Response body is not readable"));
       await processAiStream(reader, setMessages);
 
-      // Capture the AI response from messages state and emit in callbacks
+      // Capture the AI response and trigger callbacks after stream completes
       setMessages((prev) => {
-        const assistantMessages = prev.filter((m) => m.role === "assistant" && !m.isReasoning && !m.isTask);
-        const lastResponse = assistantMessages[assistantMessages.length - 1]?.content || "";
-        const timestamp = Date.now();
+        // Get the last assistant message after streaming completes
+        startTransition(() => {
+          const assistantMessages = prev.filter((m) => m.role === "assistant" && !m.isReasoning && !m.isTask);
+          const lastResponse = assistantMessages[assistantMessages.length - 1]?.content || "";
+          const timestamp = Date.now();
 
-        // Trigger success callbacks with actual AI response
-        config.onSuccess?.({ content: lastResponse, model: usedModel, timestamp });
-        config.onComplete?.({ success: true, content: lastResponse, model: usedModel, timestamp });
-        config.onAIEvent?.({
-          type: "completion",
-          content: lastResponse,
-          model: usedModel,
-          timestamp,
+          // Trigger success callbacks with actual AI response
+          config.onSuccess?.({ content: lastResponse, model: usedModel, timestamp });
+          config.onComplete?.({ success: true, content: lastResponse, model: usedModel, timestamp });
+          config.onAIEvent?.({
+            type: "completion",
+            content: lastResponse,
+            model: usedModel,
+            timestamp,
+          });
         });
 
         return prev;
@@ -168,12 +171,15 @@ const AiPanelForDefaultLang = ({
         };
         setMessages((prev) => [...prev, errorMessage]);
 
-        // Trigger error callbacks with actual error message
-        const errorMsg = error instanceof Error ? error.message : String(error);
-        const timestamp = Date.now();
-        config.onError?.({ error: errorMsg, model: usedModel, timestamp });
-        config.onComplete?.({ success: false, error: errorMsg, model: usedModel, timestamp });
-        config.onAIEvent?.({ type: "error", error: errorMsg, model: usedModel, timestamp });
+        // Trigger error callbacks with actual error message (non-urgent update)
+        startTransition(() => {
+          const errorMsg = error instanceof Error ? error.message : String(error);
+          const timestamp = Date.now();
+
+          config.onError?.({ error: errorMsg, model: usedModel, timestamp });
+          config.onComplete?.({ success: false, error: errorMsg, model: usedModel, timestamp });
+          config.onAIEvent?.({ type: "error", error: errorMsg, model: usedModel, timestamp });
+        });
       }
     } finally {
       setInput("");
