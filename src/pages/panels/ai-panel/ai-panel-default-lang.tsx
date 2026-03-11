@@ -15,7 +15,7 @@ import { ChaiBlock } from "@/types/common";
 import { Bot } from "lucide-react";
 import { Fragment, lazy, Suspense } from "react";
 import { toast } from "sonner";
-import { useAIModels } from "./ai-models-context";
+import { useAIConfig, useAIModels } from "./ai-models-context";
 import { Message } from "./ai-panel-helper";
 import { getUserPrompt } from "./prompt-helper";
 import { SelectedBlockDisplay } from "./selected-block-display";
@@ -63,6 +63,7 @@ const AiPanelForDefaultLang = ({
   onModelChange,
 }: AiPanelForDefaultLangProps) => {
   const { models } = useAIModels();
+  const { config } = useAIConfig();
   const defaultModel = models.find((model) => model.id === "google/gemini-3-flash") || models[0];
   const currentSelectedModel = selectedModel || defaultModel.id;
 
@@ -110,6 +111,11 @@ const AiPanelForDefaultLang = ({
     const controller = new AbortController();
     setAbortController(controller);
 
+    const usedModel = model || currentSelectedModel;
+
+    // Trigger stream start event
+    config.onAIEvent?.({ type: "stream_start", model: usedModel, timestamp: Date.now() });
+
     try {
       const requestBody: any = {
         messages: [userMessageObj].map((m) => ({
@@ -133,6 +139,25 @@ const AiPanelForDefaultLang = ({
       const reader = response.body?.getReader();
       if (!reader) throw new Error(t("Response body is not readable"));
       await processAiStream(reader, setMessages);
+
+      // Capture the AI response from messages state and emit in callbacks
+      setMessages((prev) => {
+        const assistantMessages = prev.filter((m) => m.role === "assistant" && !m.isReasoning && !m.isTask);
+        const lastResponse = assistantMessages[assistantMessages.length - 1]?.content || "";
+        const timestamp = Date.now();
+
+        // Trigger success callbacks with actual AI response
+        config.onSuccess?.({ content: lastResponse, model: usedModel, timestamp });
+        config.onComplete?.({ success: true, content: lastResponse, model: usedModel, timestamp });
+        config.onAIEvent?.({
+          type: "completion",
+          content: lastResponse,
+          model: usedModel,
+          timestamp,
+        });
+
+        return prev;
+      });
     } catch (error: any) {
       // Don't show error message if request was aborted
       if (error.name !== "AbortError") {
@@ -142,6 +167,13 @@ const AiPanelForDefaultLang = ({
           content: t("Sorry, I encountered an error. Please try again."),
         };
         setMessages((prev) => [...prev, errorMessage]);
+
+        // Trigger error callbacks with actual error message
+        const errorMsg = error instanceof Error ? error.message : String(error);
+        const timestamp = Date.now();
+        config.onError?.({ error: errorMsg, model: usedModel, timestamp });
+        config.onComplete?.({ success: false, error: errorMsg, model: usedModel, timestamp });
+        config.onAIEvent?.({ type: "error", error: errorMsg, model: usedModel, timestamp });
       }
     } finally {
       setInput("");

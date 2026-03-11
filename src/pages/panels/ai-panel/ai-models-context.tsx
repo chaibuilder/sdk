@@ -11,8 +11,54 @@ export type AIModel = {
   multiplier: number;
 };
 
+export type AICompletionEvent = {
+  type: "completion";
+  content: string;
+  model: string;
+  timestamp: number;
+};
+
+export type AIErrorEvent = {
+  type: "error";
+  error: Error | string;
+  model?: string;
+  timestamp: number;
+};
+
+export type AIStreamStartEvent = {
+  type: "stream_start";
+  model: string;
+  timestamp: number;
+};
+
+export type AIEvent = AICompletionEvent | AIErrorEvent | AIStreamStartEvent;
+
+export type AISuccessCallback = {
+  content: string;
+  model: string;
+  timestamp: number;
+};
+
+export type AIErrorCallback = {
+  error: Error | string;
+  model: string;
+  timestamp: number;
+};
+
+export type AICompleteCallback = {
+  success: boolean;
+  content?: string;
+  error?: Error | string;
+  model: string;
+  timestamp: number;
+};
+
 export interface AIConfig {
   models: AIModel[];
+  onAIEvent?: (event: AIEvent) => void;
+  onSuccess?: (data: AISuccessCallback) => void;
+  onError?: (data: AIErrorCallback) => void;
+  onComplete?: (data: AICompleteCallback) => void;
   [key: string]: any;
 }
 

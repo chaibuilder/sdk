@@ -11,7 +11,7 @@ import { ChaiBlock } from "@/types/common";
 import { Bot } from "lucide-react";
 import { Fragment, lazy, Suspense, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { useAIModels } from "./ai-models-context";
+import { useAIConfig, useAIModels } from "./ai-models-context";
 import { Message } from "./ai-panel-helper";
 import { getTranslationUserPrompt } from "./prompt-helper";
 import { SelectedBlockDisplay } from "./selected-block-display";
@@ -61,6 +61,7 @@ const AiPanelForOtherLang = ({
 }: AiPanelForOtherLangProps) => {
   const { t } = useTranslation();
   const { models } = useAIModels();
+  const { config } = useAIConfig();
   const defaultModel = models.find((model) => model.id === "google/gemini-3-flash") || models[0];
   const currentSelectedModel = selectedModel || defaultModel.id;
 
@@ -113,11 +114,16 @@ const AiPanelForOtherLang = ({
     setMessages((prev) => [...prev, userMessageObj, reasoningMessage]);
     setIsLoading(true);
 
+    const usedModel = model || currentSelectedModel;
+
+    // Trigger stream start event
+    config.onAIEvent?.({ type: "stream_start", model: usedModel, timestamp: Date.now() });
+
     try {
       const requestBody: any = {
         messages: [userMessageObj],
         initiator: isTranslate ? "TRANSLATE_CONTENT" : "UPDATE_CONTENT",
-        model: model || currentSelectedModel,
+        model: usedModel,
       };
 
       const response = await fetch({ body: { action: "ASK_AI", data: requestBody }, streamResponse: true });
@@ -148,8 +154,26 @@ const AiPanelForOtherLang = ({
 
       const blocks = JSON.parse(accumulatedText?.replace("```json", "").replace("```", ""));
       updateBlocksWithStream(blocks);
-    } catch {
+
+      // Trigger success callbacks with actual AI response
+      const timestamp = Date.now();
+      config.onSuccess?.({ content: accumulatedText, model: usedModel, timestamp });
+      config.onComplete?.({ success: true, content: accumulatedText, model: usedModel, timestamp });
+      config.onAIEvent?.({
+        type: "completion",
+        content: accumulatedText,
+        model: usedModel,
+        timestamp,
+      });
+    } catch (error: any) {
       abortController?.abort();
+
+      // Trigger error callbacks with actual error
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      const timestamp = Date.now();
+      config.onError?.({ error: errorMessage, model: usedModel, timestamp });
+      config.onComplete?.({ success: false, error: errorMessage, model: usedModel, timestamp });
+      config.onAIEvent?.({ type: "error", error: errorMessage, model: usedModel, timestamp });
     } finally {
       setIsLoading(false);
       setInput("");
