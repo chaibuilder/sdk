@@ -19,8 +19,10 @@ export { LanguageSwitcher } from "@/pages/client/components/topbar-left";
 export { ImagePicker } from "@/pages/digital-asset-manager/image-picker";
 export { SmartJsonInput as ChaiJsonInput } from "./client/components/smart-json-input";
 export { ChaiWebsiteBuilder, NestedPathSelector };
-export { AiPanelContent as ChaiAiPanel } from "@/pages/panels/ai-panel/ai-panel-content";
-
+export {
+  AiPanelContent as ChaiAiPanel,
+  type AiPanelContentProps as ChaiAiPanelProps,
+} from "@/pages/panels/ai-panel/ai-panel-content";
 
 /** Hooks */
 export { usePrimaryPage as useChaiPrimaryPage } from "@/pages/hooks/pages/use-current-page";

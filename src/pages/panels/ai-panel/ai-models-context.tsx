@@ -59,6 +59,11 @@ export interface AIConfig {
   onSuccess?: (data: AISuccessCallback) => void;
   onError?: (data: AIErrorCallback) => void;
   onComplete?: (data: AICompleteCallback) => void;
+  prompt?: string;
+  context?: {
+    site?: string;
+    page?: string;
+  };
   [key: string]: any;
 }
 
