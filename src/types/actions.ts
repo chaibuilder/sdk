@@ -135,6 +135,12 @@ export type AIChatOptions = {
   systemPrompt?: string;
   initiator?: string | null;
   model?: string;
+  context?: AIContext;
+};
+
+export type AIContext = {
+  site?: Record<string, any>;
+  page?: Record<string, any>;
 };
 
 export interface ChaiBuilderPagesAIInterface {

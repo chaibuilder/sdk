@@ -19,6 +19,7 @@ import {
 } from "./ai-models-context";
 import { Message } from "./ai-panel-helper";
 import { getDefaultModel } from "./models";
+import { AIContext } from "@/types";
 
 const AiPanelForDefaultLang = lazy(() => import("./ai-panel-default-lang"));
 const AiPanelForOtherLang = lazy(() => import("./ai-panel-other-lang"));
@@ -29,11 +30,7 @@ export interface AiPanelContentProps {
   onSuccess?: (data: AISuccessCallback) => void;
   onError?: (data: AIErrorCallback) => void;
   onComplete?: (data: AICompleteCallback) => void;
-  prompt?: string;
-  context?: {
-    site?: string;
-    page?: string;
-  };
+  context?: AIContext;
   [key: string]: any;
 }
 
@@ -142,7 +139,6 @@ export const AiPanelContent = ({
   onSuccess,
   onError,
   onComplete,
-  prompt,
   context,
   ...rest
 }: AiPanelContentProps) => {
@@ -152,7 +148,6 @@ export const AiPanelContent = ({
     onSuccess,
     onError,
     onComplete,
-    prompt,
     context,
     ...rest,
   };
