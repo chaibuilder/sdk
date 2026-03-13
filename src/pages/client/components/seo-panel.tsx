@@ -700,13 +700,6 @@ const SeoPanel = () => {
                         <Label className="text-xs" htmlFor="metaOther">
                           {t("Meta Tags")}
                         </Label>
-                        <div className="flex items-center gap-2">
-                          <AISEOButton
-                            keyword={formValues.keyword}
-                            onComplete={onAiGenerate("metaOther")}
-                            field="metaOther"
-                          />
-                        </div>
                       </div>
                       <SmartJsonInput
                         id="metaOther"
