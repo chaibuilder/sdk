@@ -1,4 +1,3 @@
-import { AIContext } from "@/types";
 
 /**
  *
@@ -368,32 +367,18 @@ Format:
  * @returns SYSTEM PROMPT
  */
 export function getAskAiSystemPrompt(
-  initiator: string | null = null,
-  context?: AIContext,
+  initiator: string | null = null
 ): string {
-  let systemPrompt = DEFAULT_LANG_SYSTEM_PROMPT;
   if (initiator) {
     switch (initiator) {
       case "TRANSLATE_CONTENT":
-        systemPrompt = TRANSLATE_TO_LANG_SYSTEM_PROMPT;
-        break;
+        return TRANSLATE_TO_LANG_SYSTEM_PROMPT;
       case "UPDATE_CONTENT":
-        systemPrompt = UPDATE_TRANSLATED_CONTENT_SYSTEM_PROMPT;
-        break;
+        return UPDATE_TRANSLATED_CONTENT_SYSTEM_PROMPT;
       default:
-        systemPrompt = DEFAULT_LANG_SYSTEM_PROMPT;
+        return DEFAULT_LANG_SYSTEM_PROMPT;
     }
   }
 
-  if (context) {
-    systemPrompt += "\n\n## Additional Information";
-    if (context?.site) {
-      systemPrompt += `\n\n## Website Information\n${JSON.stringify(context.site)}`;
-    }
-    if (context?.page) {
-      systemPrompt += `\n\n## Page Information\n${JSON.stringify(context.page)}`;
-    }
-  }
-
-  return systemPrompt;
+  return DEFAULT_LANG_SYSTEM_PROMPT;
 }

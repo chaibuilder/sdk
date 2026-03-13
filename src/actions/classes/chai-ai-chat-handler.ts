@@ -42,9 +42,19 @@ export class ChaiAIChatHandler implements ChaiBuilderPagesAIInterface {
       ]
       : messages;
 
+    let systemPrompt = getAskAiSystemPrompt(initiator);
+    if (context) {
+      systemPrompt += "\n\n## Additional Information";
+      if (context?.site) {
+        systemPrompt += `\n\n## Website Information\n${JSON.stringify(context.site)}`;
+      }
+      if (context?.page) {
+        systemPrompt += `\n\n## Page Information\n${JSON.stringify(context.page)}`;
+      }
+    }
     const result = streamText({
       model: selectedModel,
-      system: getAskAiSystemPrompt(initiator, context),
+      system: systemPrompt,
       messages: aiMessages,
       temperature: this.temperature,
       onFinish: this.options?.onFinish ?? noop,
