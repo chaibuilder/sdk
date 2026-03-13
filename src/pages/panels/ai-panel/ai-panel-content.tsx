@@ -111,7 +111,7 @@ const AiPanelContentInner = () => {
       )}
       <div className="flex h-full w-full flex-col">
         <div className="flex w-full items-center justify-between">
-          <p className="text-xs text-gray-500">{t("Your conversation will not be saved")}</p>
+          <p className="text-xs text-gray-500">{t("Generate with AI")}</p>
           {messages?.length > 0 && (
             <Button variant="outline" size="icon" onClick={handleReset} className="h-6 w-6" disabled={isLoading}>
               <Plus />
