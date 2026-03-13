@@ -124,6 +124,7 @@ const AiPanelForOtherLang = ({
         messages: [userMessageObj],
         initiator: isTranslate ? "TRANSLATE_CONTENT" : "UPDATE_CONTENT",
         model: usedModel,
+        context: config.context,
       };
 
       const response = await fetch({ body: { action: "ASK_AI", data: requestBody }, streamResponse: true });

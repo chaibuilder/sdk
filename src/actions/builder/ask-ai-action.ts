@@ -2,6 +2,7 @@ import { ChaiAIChatHandler } from "@/actions/classes/chai-ai-chat-handler";
 import { logAiRequest, logAiRequestError } from "@/actions/utils/log-ai-request";
 import { z } from "zod";
 import { ChaiBaseAction } from "./base-action";
+import { AIContext } from "@/types";
 
 type AskAIActionData = {
   messages?: Array<{
@@ -13,7 +14,7 @@ type AskAIActionData = {
   type?: "styles" | "content";
   prompt?: string;
   blocks?: any[];
-  context?: string;
+  context?: AIContext;
   lang?: string;
   initiator?: string;
 };
@@ -73,6 +74,7 @@ export class AskAIAction extends ChaiBaseAction<AskAIActionData, any> {
       image: data.image,
       model: data.model,
       initiator: data.initiator || null,
+      context: data.context,
     };
 
     const result = await ai.handleRequest(requestOptions);

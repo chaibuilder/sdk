@@ -1,3 +1,4 @@
+
 /**
  *
  *
@@ -365,7 +366,9 @@ Format:
  * @param translation
  * @returns SYSTEM PROMPT
  */
-export function getAskAiSystemPrompt(initiator: string | null = null): string {
+export function getAskAiSystemPrompt(
+  initiator: string | null = null
+): string {
   if (initiator) {
     switch (initiator) {
       case "TRANSLATE_CONTENT":

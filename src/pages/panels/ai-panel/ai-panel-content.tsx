@@ -19,16 +19,18 @@ import {
 } from "./ai-models-context";
 import { Message } from "./ai-panel-helper";
 import { getDefaultModel } from "./models";
+import { AIContext } from "@/types";
 
 const AiPanelForDefaultLang = lazy(() => import("./ai-panel-default-lang"));
 const AiPanelForOtherLang = lazy(() => import("./ai-panel-other-lang"));
 
-interface AiPanelContentProps {
+export interface AiPanelContentProps {
   models?: AIModel[];
   onAIEvent?: (event: AIEvent) => void;
   onSuccess?: (data: AISuccessCallback) => void;
   onError?: (data: AIErrorCallback) => void;
   onComplete?: (data: AICompleteCallback) => void;
+  context?: AIContext;
   [key: string]: any;
 }
 
@@ -131,13 +133,22 @@ const AiPanelContentInner = () => {
   );
 };
 
-export const AiPanelContent = ({ models, onAIEvent, onSuccess, onError, onComplete, ...rest }: AiPanelContentProps) => {
+export const AiPanelContent = ({
+  models,
+  onAIEvent,
+  onSuccess,
+  onError,
+  onComplete,
+  context,
+  ...rest
+}: AiPanelContentProps) => {
   const config: Partial<AIConfig> = {
     models,
     onAIEvent,
     onSuccess,
     onError,
     onComplete,
+    context,
     ...rest,
   };
 

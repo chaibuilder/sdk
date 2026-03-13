@@ -14,7 +14,7 @@ export class ChaiAIChatHandler implements ChaiBuilderPagesAIInterface {
   }
 
   async handleRequest(options: AIChatOptions, res?: any): Promise<StreamTextResult<any, any>> {
-    const { messages, image, initiator = null, model } = options;
+    const { messages, image, initiator = null, model, context } = options;
 
     // Use the provided model or fall back to the default
     const selectedModel = model || this.model;
@@ -25,26 +25,36 @@ export class ChaiAIChatHandler implements ChaiBuilderPagesAIInterface {
 
     const aiMessages = image
       ? [
-          ...userMessages.slice(0, -1),
-          {
-            role: "user",
-            content: [
-              {
-                type: "text",
-                text: lastUserMessage.content,
-              },
-              {
-                type: "image",
-                image: image,
-              },
-            ],
-          },
-        ]
+        ...userMessages.slice(0, -1),
+        {
+          role: "user",
+          content: [
+            {
+              type: "text",
+              text: lastUserMessage.content,
+            },
+            {
+              type: "image",
+              image: image,
+            },
+          ],
+        },
+      ]
       : messages;
 
+    let systemPrompt = getAskAiSystemPrompt(initiator);
+    if (context) {
+      systemPrompt += "\n\n## Additional Information";
+      if (context?.site) {
+        systemPrompt += `\n\n## Website Information\n${JSON.stringify(context.site)}`;
+      }
+      if (context?.page) {
+        systemPrompt += `\n\n## Page Information\n${JSON.stringify(context.page)}`;
+      }
+    }
     const result = streamText({
       model: selectedModel,
-      system: getAskAiSystemPrompt(initiator),
+      system: systemPrompt,
       messages: aiMessages,
       temperature: this.temperature,
       onFinish: this.options?.onFinish ?? noop,

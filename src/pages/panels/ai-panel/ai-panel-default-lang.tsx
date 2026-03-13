@@ -123,6 +123,7 @@ const AiPanelForDefaultLang = ({
           content: m.content,
         })),
         model: model || currentSelectedModel,
+        context: config.context,
       };
 
       // Add image to request if provided

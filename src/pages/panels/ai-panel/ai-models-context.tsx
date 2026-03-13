@@ -2,6 +2,7 @@
 
 import { createContext, ReactNode, useContext } from "react";
 import { AI_MODELS } from "./models";
+import { AIContext } from "@/types";
 
 export type AIModel = {
   id: string;
@@ -59,6 +60,7 @@ export interface AIConfig {
   onSuccess?: (data: AISuccessCallback) => void;
   onError?: (data: AIErrorCallback) => void;
   onComplete?: (data: AICompleteCallback) => void;
+  context?: AIContext;
   [key: string]: any;
 }
 
