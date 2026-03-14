@@ -51,7 +51,6 @@ The core builder package that can be integrated as a standard React component in
 - 🤖 **AI Panel** - AI Chat Panel
 - 🧩 **Partial Blocks** - Reusable header, footer components
 - 🎨 **Theme System** - Customizable theming
-- 🎯 **Design Tokens** - Design system integration
 - 📄 **Import HTML** - Import existing HTML content
 
 📚 **[View Documentation](https://docs.chaibuilder.com/)**
@@ -71,11 +70,7 @@ A more powerful Next.js-specific implementation designed for blogs, marketing si
 - 🖼️ **Media Manager** - Built-in media manager with image editor
 - 🤖 **AI Assistant** - Create and edit UI components and content with AI
 - 🔍 **SEO & JSON-LD** - Advanced SEO features with structured data
-- 🌐 **Multilingual** - Multilingual support
 - 👁️ **Preview Mode** - Live preview before publishing
-- 📝 **Revisions & Compare** - Version control with comparison tools
-- 📚 **Library Blocks** - Shared block library across projects
-- 🔒 **Page Lock** - Prevent conflicts with page locking
 - 🔒 **CMS Integration** - Connect to any headless CMS
 - 🔐 **BYO Stack** - Bring Your Own Auth, Database (Postgres), and Storage
 
