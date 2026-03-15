@@ -1,15 +1,15 @@
-import { Button } from "@/components/ui/button";
-import { LANGUAGES } from "@/core/constants/LANGUAGES";
-import { useCodeEditor } from "@/hooks/use-code-editor";
-import { useLanguages } from "@/hooks/use-languages";
-import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
-import { getRegisteredChaiBlock } from "@/runtime";
-import { ChaiBlockConfig } from "@/types";
-import { ChaiBlock } from "@/types/common";
 import { WidgetProps } from "@rjsf/utils";
 import { get, includes } from "lodash-es";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { Button } from "~/components/ui/button";
+import { LANGUAGES } from "~/core/constants/LANGUAGES";
+import { useCodeEditor } from "~/hooks/use-code-editor";
+import { useLanguages } from "~/hooks/use-languages";
+import { useSelectedBlock } from "~/hooks/use-selected-blockIds";
+import { getRegisteredChaiBlock } from "~/runtime";
+import { ChaiBlockConfig } from "~/types";
+import { ChaiBlock } from "~/types/common";
 
 const CodeEditor = ({ id, placeholder }: WidgetProps) => {
   const { t } = useTranslation();

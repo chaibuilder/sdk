@@ -1,12 +1,12 @@
-import { LANGUAGES } from "@/core/constants/LANGUAGES";
-import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { useLanguages } from "@/hooks/use-languages";
 import { Cross1Icon } from "@radix-ui/react-icons";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { FieldProps } from "@rjsf/utils";
 import { get, isEmpty, map, split, startsWith } from "lodash-es";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { LANGUAGES } from "~/core/constants/LANGUAGES";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
+import { useLanguages } from "~/hooks/use-languages";
 import { DataBindingSelector } from "./data-binding-selector";
 
 const PageTypeField = ({ href, onChange }: { href: string; onChange: (href: string) => void }) => {

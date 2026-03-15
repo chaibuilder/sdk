@@ -1,14 +1,14 @@
-import { usePageExternalData } from "@/atoms/builder";
-import { Badge } from "@/components/ui/badge";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { LANGUAGES } from "@/core/constants/LANGUAGES";
-import { useLanguages } from "@/hooks/use-languages";
-import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
-import { useRegisteredChaiBlocks } from "@/runtime";
 import { ChevronDownIcon, ChevronRightIcon, InfoCircledIcon, ListBulletIcon } from "@radix-ui/react-icons";
 import { FieldTemplateProps } from "@rjsf/utils";
 import { get, isEmpty } from "lodash-es";
 import { useMemo, useState } from "react";
+import { usePageExternalData } from "~/atoms/builder";
+import { Badge } from "~/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
+import { LANGUAGES } from "~/core/constants/LANGUAGES";
+import { useLanguages } from "~/hooks/use-languages";
+import { useSelectedBlock } from "~/hooks/use-selected-blockIds";
+import { useRegisteredChaiBlocks } from "~/runtime";
 import { DataBindingSelector } from "./data-binding-selector";
 
 const JSONFormFieldTemplate = (props: FieldTemplateProps) => {

@@ -16,15 +16,13 @@ import { usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
 import { useBuilderPageData } from "@/pages/hooks/pages/use-page-draft-blocks";
 import { usePageType } from "@/pages/hooks/project/use-page-types";
 import { usePagesProps } from "@/pages/hooks/utils/use-pages-props";
-import { get, isEmpty, isEqual } from "lodash-es";
+import { get, isEqual } from "lodash-es";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { getSeoDefaults } from "./get-seo-defaults";
-import { processAiSeoResponse } from "./process-ai-seo-response";
 import { SeoLanguageSwitchDialog } from "./seo-language-switch-dialog";
 import { SmartJsonInput } from "./smart-json-input";
-import { LanguageSwitcher } from "./topbar-left";
 
 // Add JSON validation function
 const isValidJSONData = (str: string) => {
@@ -367,41 +365,6 @@ const SeoPanel = () => {
     setFormValues(newData);
   };
 
-  const onAiGenerate = (field: string) => {
-    return (data: { fieldValue: string | null; error?: string }) => {
-      if (!isEmpty(data.fieldValue)) {
-        const result: { success: true; value: string } | { success: false; error: string } = processAiSeoResponse(
-          data.fieldValue,
-          field,
-        );
-
-        if (result.success) {
-          handleInputChange({
-            target: {
-              name: field,
-              value: result.value,
-            },
-          } as any);
-        } else {
-          toast.error(
-            <div>
-              <h2>Failed to process AI response:</h2>
-              <p>{(result as { success: false; error: string }).error}</p>
-            </div>,
-          );
-        }
-      }
-      if (data.error) {
-        toast.error(
-          <div>
-            <h2>Failed to generate:</h2>
-            <p>{data.error}</p>
-          </div>,
-        );
-      }
-    };
-  };
-
   const copyJsonLDFromDefaultPage = () => {
     const defaultPageJsonLd = get(primaryPage, "seo.jsonLD", "{}");
     if (defaultPageJsonLd?.trim() === "{}") {
@@ -429,7 +392,6 @@ const SeoPanel = () => {
             <div className="font-medium">{languagePage?.name}</div>
             <span className="font-mono text-xs leading-tight text-gray-500">{languagePage?.slug}</span>
           </span>
-          <LanguageSwitcher showAdd={false} />
         </div>
         <form className="space-y-8">
           <Tabs value={tab} onValueChange={setTab} className="w-full">

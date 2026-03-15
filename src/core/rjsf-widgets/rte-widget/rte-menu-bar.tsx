@@ -1,4 +1,3 @@
-import { cn } from "@/core/utils/cn";
 import {
   CaretDownIcon,
   EnterFullScreenIcon,
@@ -15,6 +14,7 @@ import {
   ValueIcon,
 } from "@radix-ui/react-icons";
 import { RefObject, useRef } from "react";
+import { cn } from "~/core/utils/cn";
 import RteColorPicker from "./rte-color-picker";
 import RteDropdownMenu from "./rte-dropdown-menu";
 

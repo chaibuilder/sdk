@@ -1,16 +1,16 @@
-import { usePageExternalData } from "@/atoms/builder";
-import MediaManagerModal from "@/core/components/sidepanels/panels/images/media-manager-modal";
-import { removeSizeClasses } from "@/core/utils/remove-size-classes";
-import { useLanguages } from "@/hooks/use-languages";
-import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
-import { applyBindingToBlockProps } from "@/render/apply-binding";
-import { getBlockDefaultProps } from "@/runtime";
-import { ChaiAsset } from "@/types";
 import { Cross1Icon, Pencil2Icon } from "@radix-ui/react-icons";
 import { WidgetProps } from "@rjsf/utils";
 import { first, get, has, isArray, isEmpty, set, startsWith } from "lodash-es";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { usePageExternalData } from "~/atoms/builder";
+import MediaManagerModal from "~/core/components/sidepanels/panels/images/media-manager-modal";
+import { removeSizeClasses } from "~/core/utils/remove-size-classes";
+import { useLanguages } from "~/hooks/use-languages";
+import { useSelectedBlock } from "~/hooks/use-selected-blockIds";
+import { applyBindingToBlockProps } from "~/render/apply-binding";
+import { getBlockDefaultProps } from "~/runtime";
+import { ChaiAsset } from "~/types";
 import { useUpdateBlocksProps } from "../../hooks/use-update-blocks-props";
 
 const PLACEHOLDER_IMAGE =
