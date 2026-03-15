@@ -1,4 +1,4 @@
-import { registerChaiPageType } from "@/runtime/register-page-type";
+import { registerChaiPageType } from "~/runtime/register-page-type";
 
 registerChaiPageType("listing", {
   name: "Listings",

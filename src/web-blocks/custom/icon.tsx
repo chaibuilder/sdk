@@ -1,10 +1,10 @@
-import { registerChaiBlockProps, stylesProp } from "@/runtime";
-import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
-import EmptySlot from "@/web-blocks/empty-slot";
-import { addForcedClasses } from "@/web-blocks/helper";
 import { SketchLogoIcon } from "@radix-ui/react-icons";
 import { isEmpty } from "lodash-es";
 import * as React from "react";
+import { registerChaiBlockProps, stylesProp } from "~/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "~/types/blocks";
+import EmptySlot from "~/web-blocks/empty-slot";
+import { addForcedClasses } from "~/web-blocks/helper";
 
 export type IconBlockProps = {
   styles: ChaiStyles;

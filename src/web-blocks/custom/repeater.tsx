@@ -1,8 +1,8 @@
-import { closestBlockProp, registerChaiBlockProps, stylesProp } from "@/runtime";
-import { ChaiBlockComponentProps, ChaiBlockConfig, ChaiStyles } from "@/types/blocks";
 import { LoopIcon } from "@radix-ui/react-icons";
 import { isEmpty, pick } from "lodash-es";
 import * as React from "react";
+import { closestBlockProp, registerChaiBlockProps, stylesProp } from "~/runtime";
+import { ChaiBlockComponentProps, ChaiBlockConfig, ChaiStyles } from "~/types/blocks";
 import { PaginationWrapper } from "./pagination-wrapper";
 
 export type RepeaterProps = {

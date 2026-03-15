@@ -7,7 +7,7 @@ import { FallbackError } from "~/core/components/fallback-error";
 import { useBuilderProp } from "~/hooks/use-builder-prop";
 import { useCodeEditor } from "~/hooks/use-code-editor";
 
-const CodeEditor = React.lazy(() => import("@/core/components/canvas/static/code-editor"));
+const CodeEditor = React.lazy(() => import("~/core/components/canvas/static/code-editor"));
 
 const CanvasArea: React.FC = () => {
   const [codeEditor] = useCodeEditor();

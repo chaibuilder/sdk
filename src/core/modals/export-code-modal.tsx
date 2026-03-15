@@ -1,17 +1,17 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { useBlocksHtmlForAi } from "@/hooks/use-blocks-html-for-ai";
-import { useEditorMode } from "@/hooks/use-editor-mode";
-import { usePubSub } from "@/hooks/use-pub-sub";
-import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
-import { ChaiBlock } from "@/types/common";
-import { shadcnTheme } from "@/utils/get-chai-builder-tailwind-config";
 import { camelCase } from "lodash-es";
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "~/components/ui/dialog";
+import { Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { CHAI_BUILDER_EVENTS } from "~/core/events";
+import { useBlocksHtmlForAi } from "~/hooks/use-blocks-html-for-ai";
+import { useEditorMode } from "~/hooks/use-editor-mode";
+import { usePubSub } from "~/hooks/use-pub-sub";
+import { useSelectedBlock } from "~/hooks/use-selected-blockIds";
+import { ChaiBlock } from "~/types/common";
+import { shadcnTheme } from "~/utils/get-chai-builder-tailwind-config";
 import { domToJsx, formatHtml } from "./domToJsx";
 
 // Lazy load the CodeDisplay component

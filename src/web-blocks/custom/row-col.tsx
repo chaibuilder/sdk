@@ -1,9 +1,9 @@
-import { NUMBER_TO_COL_SPAN } from "@/core/constants/TWCLASS_VALUES";
-import { registerChaiBlockProps, stylesProp } from "@/runtime";
-import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
-import { ChaiBlock } from "@/types/common";
 import { LayoutIcon, RowsIcon } from "@radix-ui/react-icons";
 import { get } from "lodash-es";
+import { NUMBER_TO_COL_SPAN } from "~/core/constants/TWCLASS_VALUES";
+import { registerChaiBlockProps, stylesProp } from "~/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "~/types/blocks";
+import { ChaiBlock } from "~/types/common";
 
 export type RowProps = {
   styles: ChaiStyles;

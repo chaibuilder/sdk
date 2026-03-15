@@ -1,10 +1,10 @@
 import { each, get, isEmpty } from "lodash-es";
 
-import { useLanguages } from "@/hooks/use-languages";
-import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
-import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
 import { find } from "lodash-es";
 import { useMemo } from "react";
+import { useLanguages } from "~/hooks/use-languages";
+import { useLanguagePages } from "~/pages/hooks/pages/use-language-pages";
+import { useWebsiteSetting } from "~/pages/hooks/project/use-website-settings";
 
 export const useIsLanguagePageCreated = (lang: string) => {
   const { fallbackLang } = useLanguages();

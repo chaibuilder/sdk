@@ -1,6 +1,6 @@
-import { db, safeQuery, schema } from "@/actions/db";
-import { apiError } from "@/actions/lib";
 import { eq } from "drizzle-orm";
+import { db, safeQuery, schema } from "~/actions/db";
+import { apiError } from "~/actions/lib";
 
 /**
  * Interface for page tree node

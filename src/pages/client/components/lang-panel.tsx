@@ -20,8 +20,8 @@ import { usePageTypes } from "~/pages/hooks/project/use-page-types";
 import { useWebsiteSetting } from "~/pages/hooks/project/use-website-settings";
 import { ChaiPageType } from "~/types/actions";
 
-const DeletePage = lazy(() => import("@/pages/client/components/delete-page"));
-const UnpublishPage = lazy(() => import("@/pages/client/components/unpublish-page"));
+const DeletePage = lazy(() => import("~/pages/client/components/delete-page"));
+const UnpublishPage = lazy(() => import("~/pages/client/components/unpublish-page"));
 
 const LangPanel = () => {
   const { t } = useTranslation();

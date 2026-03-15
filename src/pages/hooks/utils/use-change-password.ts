@@ -1,6 +1,6 @@
-import { ACTIONS } from "@/pages/constants/ACTIONS";
-import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
 import { useMutation } from "@tanstack/react-query";
+import { ACTIONS } from "~/pages/constants/ACTIONS";
+import { useApiUrl } from "~/pages/hooks/project/use-builder-prop";
 import { useFetch } from "./use-fetch";
 
 export type ChangePasswordPayload = {

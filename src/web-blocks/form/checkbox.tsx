@@ -1,6 +1,6 @@
-import { registerChaiBlockProps, stylesProp } from "@/runtime";
-import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { CheckboxIcon } from "@radix-ui/react-icons";
+import { registerChaiBlockProps, stylesProp } from "~/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "~/types/blocks";
 
 export type CheckboxProps = {
   label: string;

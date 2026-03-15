@@ -3,7 +3,7 @@ import {
   getMinWidthTwClassValue,
   getTwClassValue,
   getValueAndUnitForTWClass,
-} from "@/core/functions/helper-fn";
+} from "~/core/functions/helper-fn";
 
 describe("getClassValueAndUnit", () => {
   test("should return", () => {

@@ -1,8 +1,8 @@
-import { ChaiWebsiteBuilder } from "@/pages/chaibuilder-pages";
-import { createRealtimeAdapter } from "@/pages/client/components/page-lock/create-realtime-adapter";
-import { LoggedInUser } from "@/pages/types/loggedin-user";
-import { LoginScreen } from "@/routes/login";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { ChaiWebsiteBuilder } from "~/pages/chaibuilder-pages";
+import { createRealtimeAdapter } from "~/pages/client/components/page-lock/create-realtime-adapter";
+import { LoggedInUser } from "~/pages/types/loggedin-user";
+import { LoginScreen } from "~/routes/login";
 import { supabaseClient } from "./supabase";
 
 const WebsiteBuilder = () => {
@@ -100,7 +100,7 @@ const WebsiteBuilder = () => {
   return (
     <ChaiWebsiteBuilder
       locale="fr-CA"
-      flags={{ exportCode: false, dragAndDrop: true, designTokens: true, ai: true }}
+      flags={{ exportCode: false, dragAndDrop: true, ai: true }}
       translations={{ "fr-CA": { Outline: "Contour" } }}
       getPreviewUrl={getPreviewUrl}
       getLiveUrl={getLiveUrl}

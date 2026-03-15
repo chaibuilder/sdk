@@ -1,7 +1,7 @@
-import { fetchAPI } from "@/pages/utils/fetch-api";
 import { useQuery } from "@tanstack/react-query";
 import { noop } from "lodash-es";
 import { toast } from "sonner";
+import { fetchAPI } from "~/pages/utils/fetch-api";
 import { useApiUrl, usePagesProp } from "../project/use-builder-prop";
 
 type CheckUserAccessResponse = {

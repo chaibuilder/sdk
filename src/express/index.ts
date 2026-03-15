@@ -1,10 +1,10 @@
-import ChaiActionsRegistry from "@/actions/builder/actions-registery";
-import { initChaiBuilderActionHandler } from "@/actions/builder/chai-builder-actions-handler";
-import { supabase } from "@/express/supabase-admin";
 import cors from "cors";
 import dotenv from "dotenv";
 import express, { Express } from "express";
 import fileUpload from "express-fileupload";
+import ChaiActionsRegistry from "~/actions/builder/actions-registery";
+import { initChaiBuilderActionHandler } from "~/actions/builder/chai-builder-actions-handler";
+import { supabase } from "~/express/supabase-admin";
 import { SupabaseAuthActions, SupabaseStorageActions } from "./actions/storage";
 import "./register";
 import { registerPageTypes } from "./registerPageTypes";

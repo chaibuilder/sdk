@@ -1,5 +1,5 @@
-import { adjustSpacingInContentBlocks } from "@/core/components/canvas/static/adjust-spacing-in-blocks";
 import { filter, get, has, isArray, isEmpty, map, uniqBy } from "lodash-es";
+import { adjustSpacingInContentBlocks } from "~/core/components/canvas/static/adjust-spacing-in-blocks";
 import { RenderBlock } from "./block-renderer";
 import { RenderChaiBlocksProps } from "./render-chai-blocks";
 

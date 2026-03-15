@@ -7,7 +7,7 @@ import { builderSaveStateAtom, checkMissingTranslations, useSavePage } from "~/h
 import { getRegisteredChaiBlock } from "~/runtime";
 
 vi.mock("@/runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("@/runtime")>();
+  const actual = await importOriginal<typeof import("~/runtime")>();
   return {
     ...actual,
     getRegisteredChaiBlock: vi.fn(),
@@ -246,12 +246,12 @@ describe("useSavePage - prevent save when no unsaved changes", () => {
     mockHasPermission = vi.fn(() => true);
     mockCheckStructure = vi.fn();
 
-    const { useBuilderProp } = await import("@/hooks/use-builder-prop");
-    const { useGetPageData } = await import("@/hooks/use-get-page-data");
-    const { usePermissions } = await import("@/hooks/use-permissions");
-    const { useLanguages } = await import("@/hooks/use-languages");
-    const { useIsPageLoaded } = await import("@/hooks/use-is-page-loaded");
-    const { useCheckStructure } = await import("@/hooks/use-check-structure");
+    const { useBuilderProp } = await import("~/hooks/use-builder-prop");
+    const { useGetPageData } = await import("~/hooks/use-get-page-data");
+    const { usePermissions } = await import("~/hooks/use-permissions");
+    const { useLanguages } = await import("~/hooks/use-languages");
+    const { useIsPageLoaded } = await import("~/hooks/use-is-page-loaded");
+    const { useCheckStructure } = await import("~/hooks/use-check-structure");
 
     (useBuilderProp as any).mockImplementation((key: string, defaultValue: any) => {
       if (key === "onSave") return mockOnSave;
@@ -335,7 +335,7 @@ describe("useSavePage - prevent save when no unsaved changes", () => {
 
   it("should not call onSave when page not loaded and not forced", async () => {
     builderStore.set(builderSaveStateAtom, "UNSAVED");
-    const { useIsPageLoaded } = await import("@/hooks/use-is-page-loaded");
+    const { useIsPageLoaded } = await import("~/hooks/use-is-page-loaded");
     (useIsPageLoaded as any).mockReturnValue([false]);
 
     const { result } = renderHook(() => useSavePage());
@@ -425,13 +425,13 @@ describe("useSavePage - getAllPartialIds", () => {
     mockHasPermission = vi.fn(() => true);
     mockCheckStructure = vi.fn();
 
-    const { useBuilderProp } = await import("@/hooks/use-builder-prop");
-    const { useGetPageData } = await import("@/hooks/use-get-page-data");
-    const { useTheme, useThemeOptions } = await import("@/hooks/use-theme");
-    const { usePermissions } = await import("@/hooks/use-permissions");
-    const { useLanguages } = await import("@/hooks/use-languages");
-    const { useIsPageLoaded } = await import("@/hooks/use-is-page-loaded");
-    const { useCheckStructure } = await import("@/hooks/use-check-structure");
+    const { useBuilderProp } = await import("~/hooks/use-builder-prop");
+    const { useGetPageData } = await import("~/hooks/use-get-page-data");
+    const { useTheme, useThemeOptions } = await import("~/hooks/use-theme");
+    const { usePermissions } = await import("~/hooks/use-permissions");
+    const { useLanguages } = await import("~/hooks/use-languages");
+    const { useIsPageLoaded } = await import("~/hooks/use-is-page-loaded");
+    const { useCheckStructure } = await import("~/hooks/use-check-structure");
 
     (useBuilderProp as any).mockImplementation((key: string, defaultValue: any) => {
       if (key === "onSave") return mockOnSave;
@@ -692,13 +692,13 @@ describe("useSavePage - getLinkPageIds", () => {
     mockHasPermission = vi.fn(() => true);
     mockCheckStructure = vi.fn();
 
-    const { useBuilderProp } = await import("@/hooks/use-builder-prop");
-    const { useGetPageData } = await import("@/hooks/use-get-page-data");
-    const { useTheme, useThemeOptions } = await import("@/hooks/use-theme");
-    const { usePermissions } = await import("@/hooks/use-permissions");
-    const { useLanguages } = await import("@/hooks/use-languages");
-    const { useIsPageLoaded } = await import("@/hooks/use-is-page-loaded");
-    const { useCheckStructure } = await import("@/hooks/use-check-structure");
+    const { useBuilderProp } = await import("~/hooks/use-builder-prop");
+    const { useGetPageData } = await import("~/hooks/use-get-page-data");
+    const { useTheme, useThemeOptions } = await import("~/hooks/use-theme");
+    const { usePermissions } = await import("~/hooks/use-permissions");
+    const { useLanguages } = await import("~/hooks/use-languages");
+    const { useIsPageLoaded } = await import("~/hooks/use-is-page-loaded");
+    const { useCheckStructure } = await import("~/hooks/use-check-structure");
 
     (useBuilderProp as any).mockImplementation((key: string, defaultValue: any) => {
       if (key === "onSave") return mockOnSave;

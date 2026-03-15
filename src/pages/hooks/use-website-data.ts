@@ -1,7 +1,7 @@
-import { ACTIONS } from "@/pages/constants/ACTIONS";
-import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
-import { useFetch } from "@/pages/hooks/utils/use-fetch";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { ACTIONS } from "~/pages/constants/ACTIONS";
+import { useApiUrl } from "~/pages/hooks/project/use-builder-prop";
+import { useFetch } from "~/pages/hooks/utils/use-fetch";
 
 export const useWebsiteData = () => {
   const fetchApi = useFetch();

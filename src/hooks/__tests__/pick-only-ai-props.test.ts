@@ -5,7 +5,7 @@ import { ChaiBlock } from "~/types/common";
 
 // Mock the runtime module
 vi.mock("@/runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("@/runtime")>();
+  const actual = await importOriginal<typeof import("~/runtime")>();
   return {
     ...actual,
     getRegisteredChaiBlock: vi.fn(),

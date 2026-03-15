@@ -1,9 +1,9 @@
-import { registerChaiBlockProps, stylesProp } from "@/runtime";
-import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
-import EmptySlot from "@/web-blocks/empty-slot";
 import { RowsIcon } from "@radix-ui/react-icons";
 import { isEmpty } from "lodash-es";
 import * as React from "react";
+import { registerChaiBlockProps, stylesProp } from "~/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "~/types/blocks";
+import EmptySlot from "~/web-blocks/empty-slot";
 
 export type ListBlockProps = {
   styles: ChaiStyles;

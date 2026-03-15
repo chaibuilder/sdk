@@ -1,7 +1,7 @@
-import { registerChaiBlockProps, stylesProp } from "@/runtime";
-import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { DividerHorizontalIcon } from "@radix-ui/react-icons";
 import { createElement } from "react";
+import { registerChaiBlockProps, stylesProp } from "~/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "~/types/blocks";
 
 export type DividerBlockProps = {
   styles: ChaiStyles;

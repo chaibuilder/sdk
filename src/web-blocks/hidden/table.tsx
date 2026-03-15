@@ -1,8 +1,3 @@
-import { generateUUID } from "@/core/functions/common-functions";
-import { registerChaiBlock, registerChaiBlockProps, stylesProp } from "@/runtime";
-import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
-import { ChaiBlock } from "@/types/common";
-import EmptySlot from "@/web-blocks/empty-slot";
 import {
   BorderAllIcon,
   BorderTopIcon,
@@ -12,6 +7,11 @@ import {
 } from "@radix-ui/react-icons";
 import { isEmpty } from "lodash-es";
 import { createElement } from "react";
+import { generateUUID } from "~/core/functions/common-functions";
+import { registerChaiBlock, registerChaiBlockProps, stylesProp } from "~/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "~/types/blocks";
+import { ChaiBlock } from "~/types/common";
+import EmptySlot from "~/web-blocks/empty-slot";
 
 export type TableProps = {
   styles: ChaiStyles;

@@ -1,4 +1,8 @@
-import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { z } from "zod";
+import { Button } from "~/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -6,15 +10,11 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
-import { useChangePassword } from "@/pages/hooks/utils/use-change-password";
-import { Loader2 } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { z } from "zod";
+} from "~/components/ui/dialog";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { usePagesProp } from "~/pages/hooks/project/use-builder-prop";
+import { useChangePassword } from "~/pages/hooks/utils/use-change-password";
 
 type ChangePasswordModalProps = {
   open: boolean;

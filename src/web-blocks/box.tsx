@@ -1,7 +1,7 @@
-import { registerChaiBlockProps, stylesProp } from "@/runtime";
-import { ChaiBlockComponentProps, ChaiBlockConfig, ChaiStyles } from "@/types/blocks";
-import EmptySlot from "@/web-blocks/empty-slot";
 import * as React from "react";
+import { registerChaiBlockProps, stylesProp } from "~/runtime";
+import { ChaiBlockComponentProps, ChaiBlockConfig, ChaiStyles } from "~/types/blocks";
+import EmptySlot from "~/web-blocks/empty-slot";
 
 export type BoxProps = {
   tag: string;

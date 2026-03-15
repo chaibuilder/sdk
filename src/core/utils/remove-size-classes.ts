@@ -1,5 +1,5 @@
-import { STYLES_KEY } from "@/core/constants/STRINGS";
-import { getSplitChaiClasses } from "@/hooks/get-split-classes";
+import { STYLES_KEY } from "~/core/constants/STRINGS";
+import { getSplitChaiClasses } from "~/hooks/get-split-classes";
 
 /**
  * Removes w-full and h-full classes from a styles string when dimensions are provided.

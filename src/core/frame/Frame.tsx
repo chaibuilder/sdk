@@ -1,8 +1,8 @@
 // @ts-nocheck
-import Content from "@/core/frame/frame-content";
-import { FrameContextProvider } from "@/core/frame/frame-context";
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
+import Content from "~/core/frame/frame-content";
+import { FrameContextProvider } from "~/core/frame/frame-context";
 
 interface FrameProps {
   style?: object;
@@ -50,7 +50,7 @@ export class Frame extends Component<FrameProps> {
   }
 
   getDoc() {
-    return this.nodeRef.current ? this.nodeRef.current.contentDocument : null;  
+    return this.nodeRef.current ? this.nodeRef.current.contentDocument : null;
   }
 
   getMountTarget() {

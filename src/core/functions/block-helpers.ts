@@ -1,5 +1,5 @@
-import { getRegisteredChaiBlock } from "@/runtime";
 import { get, has } from "lodash-es";
+import { getRegisteredChaiBlock } from "~/runtime";
 
 type BlockDefinition = {
   canAcceptBlock?: (target: string) => boolean;

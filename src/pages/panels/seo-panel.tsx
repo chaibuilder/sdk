@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
-import { usePageType } from "@/pages/hooks/project/use-page-types";
 import { has } from "lodash-es";
 import { lazy } from "react";
+import { Button } from "~/components/ui/button";
+import { usePrimaryPage } from "~/pages/hooks/pages/use-current-page";
+import { usePageType } from "~/pages/hooks/project/use-page-types";
 const SeoPanel = lazy(() => import("../client/components/seo-panel"));
 
 export const seoPanelId = "seo";

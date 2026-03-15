@@ -1,7 +1,7 @@
-import { ChaiBaseAction } from "@/actions/builder/base-action";
-import { ChaiAssets } from "@/express/assets/class-chai-assets";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { z } from "zod";
+import { ChaiBaseAction } from "~/actions/builder/base-action";
+import { ChaiAssets } from "~/express/assets/class-chai-assets";
 
 const DeleteAssetSchema = z.object({
   id: z.string(),

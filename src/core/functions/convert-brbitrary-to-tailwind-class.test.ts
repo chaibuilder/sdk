@@ -1,7 +1,7 @@
 import {
   convertArbitraryToTailwindClass,
   convertRemToPxIfNeeded,
-} from "@/core/functions/convert-brbitrary-to-tailwind-class";
+} from "~/core/functions/convert-brbitrary-to-tailwind-class";
 import {
   gap,
   nonArbitraryClasses,
@@ -9,7 +9,7 @@ import {
   padding,
   position,
   zIndex,
-} from "@/core/functions/convert-brbitrary-to-tailwind-class-data";
+} from "~/core/functions/convert-brbitrary-to-tailwind-class-data";
 
 describe("ConvertArbitraryToTw", () => {
   const MAPPER: { [key: string]: string } = {
@@ -62,7 +62,6 @@ describe("ConvertArbitraryToTw", () => {
   };
 
   it("should return the correct tw class value", () => {
-     
     for (const cls in MAPPER) {
       const expected: string = MAPPER[cls];
       expect(convertArbitraryToTailwindClass(cls)).toBe(expected);

@@ -1,12 +1,12 @@
-import { getBlocksFromHTML } from "@/core/main";
-import { registerChaiLibrary } from "@/runtime/client";
-import { ChaiLibrary, ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 import { useQuery } from "@tanstack/react-query";
 import { get, isArray } from "lodash-es";
+import { getBlocksFromHTML } from "~/core/main";
+import { ACTIONS } from "~/pages/constants/ACTIONS";
+import { registerChaiLibrary } from "~/runtime/client";
+import { ChaiLibrary, ChaiLibraryBlock } from "~/types/chaibuilder-editor-props";
 import { useWebsiteData } from "../use-website-data";
 import { useFetch } from "../utils/use-fetch";
 import { useApiUrl } from "./use-builder-prop";
-import { ACTIONS } from "@/pages/constants/ACTIONS";
 
 const uiLibrariesChaiApi = {
   async getUILibraryBlock(uiLibBlock: ChaiLibraryBlock, fetchAPI: any, apiUrl: string) {

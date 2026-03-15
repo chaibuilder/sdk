@@ -1,12 +1,12 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { useBlocksHtmlForAi } from "@/hooks/use-blocks-html-for-ai";
-import { useHtmlToBlocks } from "@/hooks/use-html-to-blocks";
-import { useI18nBlocks } from "@/hooks/use-i18n-blocks";
-import { useReplaceBlock } from "@/hooks/use-replace-block";
-import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
 import { useState } from "react";
+import { Button } from "~/components/ui/button";
+import { useBlocksHtmlForAi } from "~/hooks/use-blocks-html-for-ai";
+import { useHtmlToBlocks } from "~/hooks/use-html-to-blocks";
+import { useI18nBlocks } from "~/hooks/use-i18n-blocks";
+import { useReplaceBlock } from "~/hooks/use-replace-block";
+import { useSelectedBlock } from "~/hooks/use-selected-blockIds";
 
 export default function AIChatPanel() {
   const selectedBlock = useSelectedBlock();

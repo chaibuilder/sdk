@@ -1,10 +1,10 @@
-import { ACTIONS } from "@/pages/constants/ACTIONS";
-import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
-import { useFallbackLang } from "@/pages/hooks/use-fallback-lang";
-import { useFetch } from "@/pages/hooks/utils/use-fetch";
-import { ChaiPage } from "@/pages/utils/page-organization";
 import { useQuery } from "@tanstack/react-query";
 import { keyBy, map } from "lodash-es";
+import { ACTIONS } from "~/pages/constants/ACTIONS";
+import { useApiUrl } from "~/pages/hooks/project/use-builder-prop";
+import { useFallbackLang } from "~/pages/hooks/use-fallback-lang";
+import { useFetch } from "~/pages/hooks/utils/use-fetch";
+import { ChaiPage } from "~/pages/utils/page-organization";
 
 export const useWebsitePrimaryPages = () => {
   const fetchApi = useFetch();

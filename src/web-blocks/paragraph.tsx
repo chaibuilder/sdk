@@ -1,8 +1,8 @@
-import { registerChaiBlockProps, stylesProp } from "@/runtime";
-import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { TextIcon } from "@radix-ui/react-icons";
 import { isNull } from "lodash-es";
 import * as React from "react";
+import { registerChaiBlockProps, stylesProp } from "~/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "~/types/blocks";
 import { addForcedClasses } from "./helper";
 
 export type ParagraphProps = {

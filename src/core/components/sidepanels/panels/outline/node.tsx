@@ -24,7 +24,6 @@ import { pubsub } from "~/core/pubsub";
 import { cn } from "~/core/utils/cn";
 import { useBlockHighlight } from "~/hooks/use-block-highlight";
 import { useBuilderProp } from "~/hooks/use-builder-prop";
-import { usePermissions } from "~/hooks/use-permissions";
 import { useStructureValidation } from "~/hooks/use-structure-validation";
 import { useUpdateBlocksProps } from "~/hooks/use-update-blocks-props";
 
@@ -68,7 +67,6 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
   const { t } = useTranslation();
   const updateBlockProps = useUpdateBlocksProps();
   const [iframe] = useAtom<HTMLIFrameElement>(canvasIframeAtom);
-  const { hasPermission } = usePermissions();
   let previousState: boolean | null = null;
   const hasChildren = node.children && node.children.length > 0;
   const { highlightBlock, clearHighlight } = useBlockHighlight();
@@ -178,13 +176,8 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
 
   const { librarySite } = useBuilderProp("flags", { librarySite: false });
   const isLibBlock = useMemo(() => {
-    return (
-      librarySite &&
-      has(data, "_libBlockId") &&
-      !isEmpty(data._libBlockId) &&
-      (hasPermission(PERMISSIONS.CREATE_LIBRARY_BLOCK) || hasPermission(PERMISSIONS.EDIT_LIBRARY_BLOCK))
-    );
-  }, [data, hasPermission, librarySite]);
+    return librarySite && has(data, "_libBlockId") && !isEmpty(data._libBlockId);
+  }, [data, librarySite]);
 
   const isPartialBlock = useMemo(() => {
     return data?._type === "PartialBlock" || data?._type === "GlobalBlock";
@@ -194,16 +187,14 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
     return (
       <div className="group relative mt-2 w-full cursor-pointer">
         <br />
-        {hasPermission(PERMISSIONS.ADD_BLOCK) && (
-          <div
-            role="button"
-            onClick={() => addBlockOnPosition(-1)}
-            className="h-1 rounded bg-primary opacity-0 duration-200 group-hover:opacity-100">
-            <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 transform items-center gap-x-1 rounded-full bg-primary px-3 py-1 text-[9px] leading-tight text-white hover:bg-primary">
-              <PlusIcon className="w-2.4 h-2.5 stroke-[5] text-white" /> {t("Add block")}
-            </div>
+        <div
+          role="button"
+          onClick={() => addBlockOnPosition(-1)}
+          className="h-1 rounded bg-primary opacity-0 duration-200 group-hover:opacity-100">
+          <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 transform items-center gap-x-1 rounded-full bg-primary px-3 py-1 text-[9px] leading-tight text-white hover:bg-primary">
+            <PlusIcon className="w-2.4 h-2.5 stroke-[5] text-white" /> {t("Add block")}
           </div>
-        )}
+        </div>
         <br />
       </div>
     );
@@ -250,8 +241,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
             })}
           </div>
         )}
-        {hasPermission(PERMISSIONS.ADD_BLOCK) &&
-          !isDragAndDropEnabled &&
+        {!isDragAndDropEnabled &&
           node?.rowIndex !== null &&
           node?.rowIndex !== undefined &&
           node?.rowIndex > 0 &&

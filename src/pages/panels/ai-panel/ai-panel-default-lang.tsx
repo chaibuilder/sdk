@@ -1,20 +1,20 @@
 "use client";
 
-import { useBlocksHtmlForAi } from "@/hooks/use-blocks-html-for-ai";
-import { useSelectedBlock, useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
+import { Bot } from "lucide-react";
+import { Fragment, lazy, startTransition, Suspense } from "react";
+import { toast } from "sonner";
+import { useBlocksHtmlForAi } from "~/hooks/use-blocks-html-for-ai";
+import { useSelectedBlock, useSelectedBlockIds } from "~/hooks/use-selected-blockIds";
 import {
   Conversation,
   ConversationContent,
   ConversationEmptyState,
   ConversationScrollButton,
-} from "@/pages/components/ai-elements/conversation";
-import { Message as AiMessage, MessageContent, MessageResponse } from "@/pages/components/ai-elements/message";
-import { Reasoning, ReasoningContent, ReasoningTrigger } from "@/pages/components/ai-elements/reasoning";
-import { TaskMessage } from "@/pages/components/ai-elements/task-message";
-import { ChaiBlock } from "@/types/common";
-import { Bot } from "lucide-react";
-import { Fragment, lazy, startTransition, Suspense } from "react";
-import { toast } from "sonner";
+} from "~/pages/components/ai-elements/conversation";
+import { Message as AiMessage, MessageContent, MessageResponse } from "~/pages/components/ai-elements/message";
+import { Reasoning, ReasoningContent, ReasoningTrigger } from "~/pages/components/ai-elements/reasoning";
+import { TaskMessage } from "~/pages/components/ai-elements/task-message";
+import { ChaiBlock } from "~/types/common";
 import { useAIConfig, useAIModels } from "./ai-models-context";
 import { Message } from "./ai-panel-helper";
 import { getUserPrompt } from "./prompt-helper";

@@ -1,5 +1,5 @@
-import { getAllRegisteredFonts } from "@/runtime";
-import { ChaiTheme } from "@/types/chaibuilder-editor-props";
+import { getAllRegisteredFonts } from "~/runtime";
+import { ChaiTheme } from "~/types/chaibuilder-editor-props";
 import { toHex } from "./color-formatter";
 
 /**

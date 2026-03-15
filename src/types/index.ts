@@ -1,4 +1,4 @@
-import type { ChaiBuilderEditorProps } from "@/types/chaibuilder-editor-props";
+import type { ChaiBuilderEditorProps } from "~/types/chaibuilder-editor-props";
 
 export type { ChaiBuilderEditorProps };
 
@@ -11,9 +11,9 @@ export type ChaiAsset = {
   height?: number;
 };
 
-export * from "@/types/actions";
-export * from "@/types/blocks";
-export * from "@/types/chaibuilder-editor-props";
-export * from "@/types/collections";
-export * from "@/types/common";
-export * from "@/types/types";
+export * from "~/types/actions";
+export * from "~/types/blocks";
+export * from "~/types/chaibuilder-editor-props";
+export * from "~/types/collections";
+export * from "~/types/common";
+export * from "~/types/types";

@@ -1,15 +1,15 @@
-import { Button } from "@/components/ui/button";
+import { ChatBubbleIcon, ChevronDownIcon, StarIcon } from "@radix-ui/react-icons";
+import { get, isEmpty, map } from "lodash-es";
+import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { LANGUAGES } from "@/core/constants/LANGUAGES";
-import { mergeClasses } from "@/core/main";
-import { useLanguages } from "@/hooks/use-languages";
-import { ChatBubbleIcon, ChevronDownIcon, StarIcon } from "@radix-ui/react-icons";
-import { get, isEmpty, map } from "lodash-es";
+} from "~/components/ui/dropdown-menu";
+import { LANGUAGES } from "~/core/constants/LANGUAGES";
+import { mergeClasses } from "~/core/main";
+import { useLanguages } from "~/hooks/use-languages";
 
 export const LanguageButton = () => {
   const { fallbackLang, selectedLang, setSelectedLang } = useLanguages();

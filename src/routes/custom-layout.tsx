@@ -1,11 +1,11 @@
-import { ChaiBuilderEditor } from "@/core/main";
 import "@/index.css";
-import { lsBlocksAtom } from "@/routes/demo/atoms-dev";
-import CustomLayout from "@/routes/demo/custom-layout";
-import PreviewWeb from "@/routes/demo/preview/web-preview";
-import { ChaiBlock } from "@/types/common";
-import { loadWebBlocks } from "@/web-blocks";
 import { useAtom } from "jotai";
+import { ChaiBuilderEditor } from "~/core/main";
+import { lsBlocksAtom } from "~/routes/demo/atoms-dev";
+import CustomLayout from "~/routes/demo/custom-layout";
+import PreviewWeb from "~/routes/demo/preview/web-preview";
+import { ChaiBlock } from "~/types/common";
+import { loadWebBlocks } from "~/web-blocks";
 
 loadWebBlocks();
 

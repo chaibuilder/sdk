@@ -1,13 +1,12 @@
-import { PER_VALUE_TO_TW_CLASS, PX_VALUE_TO_TW_CLASS } from "@/core/constants/TWCLASS_VALUES";
-import { ClassDerivedObject, constructClassObject } from "@/core/functions/class-fn";
 import { first, get, includes, keys, map, parseInt } from "lodash-es";
+import { PER_VALUE_TO_TW_CLASS, PX_VALUE_TO_TW_CLASS } from "~/core/constants/TWCLASS_VALUES";
+import { ClassDerivedObject, constructClassObject } from "~/core/functions/class-fn";
 
 const REM_BASE = 16;
 const PX_TO_TW_DIVIDER = 4;
 
 export function convertRemToPxIfNeeded(arbitraryValue: string) {
   if (arbitraryValue.indexOf("rem") !== -1) {
-     
     arbitraryValue = `${parseFloat(arbitraryValue.replace("rem", "")) * REM_BASE}px`;
   }
   return arbitraryValue;
@@ -115,7 +114,6 @@ export const convertArbitraryToTailwindClass = (className: string) => {
         twClassName = "max-w-0";
       }
 
-       
       const pxMapper: { [px: string]: string } = {
         "320px": "xs",
         "384px": "sm",
@@ -154,7 +152,6 @@ export const convertArbitraryToTailwindClass = (className: string) => {
       break;
 
     case "fontSize":
-       
       const fontSizeMapper: any = {
         "12px": "xs",
         "14px": "sm",
@@ -175,7 +172,6 @@ export const convertArbitraryToTailwindClass = (className: string) => {
       }
       break;
     case "lineHeight":
-       
       const lineHeightMapper: any = {
         "12px": "3",
         "16px": "4",
@@ -198,13 +194,11 @@ export const convertArbitraryToTailwindClass = (className: string) => {
       break;
 
     case "zIndex":
-       
       const zIndexTw: string[] = ["0", "10", "20", "30", "40", "50"];
       twClassName = zIndexTw.indexOf(arbitraryValue) !== -1 ? `${classKey}${arbitraryValue}` : className;
       break;
 
     case "opacity":
-       
       const values: string[] = [
         "0",
         "5",
@@ -222,7 +216,7 @@ export const convertArbitraryToTailwindClass = (className: string) => {
         "95",
         "100",
       ];
-       
+
       const opacity: number = parseFloat(arbitraryValue) * 100;
       if (includes(values, opacity.toString())) {
         twClassName = `opacity-${opacity}`;

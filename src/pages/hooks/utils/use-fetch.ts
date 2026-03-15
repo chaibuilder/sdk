@@ -1,7 +1,7 @@
-import { useApiUrl, usePagesProp } from "@/pages/hooks/project/use-builder-prop";
-import { fetchAPI } from "@/pages/utils/fetch-api";
 import { get, noop } from "lodash-es";
 import { useCallback } from "react";
+import { useApiUrl, usePagesProp } from "~/pages/hooks/project/use-builder-prop";
+import { fetchAPI } from "~/pages/utils/fetch-api";
 
 export const useBuilderFetch = () => {
   const fetch = useFetch();
@@ -20,7 +20,7 @@ export const useBuilderFetch = () => {
     }) => {
       return fetch(url, body, headers, streamResponse);
     },
-    [fetch],
+    [fetch, apiUrl],
   );
 };
 

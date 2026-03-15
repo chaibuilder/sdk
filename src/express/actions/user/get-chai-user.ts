@@ -1,6 +1,6 @@
-import { ChaiBaseAction } from "@/actions/builder/base-action";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { z } from "zod";
+import { ChaiBaseAction } from "~/actions/builder/base-action";
 
 const GetChaiUserSchema = z.object({
   userId: z.string(),

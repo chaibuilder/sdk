@@ -1,5 +1,5 @@
-import type { ChaiBlock, ChaiPageProps } from "@/types/common";
 import type { StreamTextResult } from "ai";
+import type { ChaiBlock, ChaiPageProps } from "~/types/common";
 import type { ChaiTheme } from "./chaibuilder-editor-props";
 import type { ChaiDesignTokens } from "./types";
 

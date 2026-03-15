@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
 import { get, has } from "lodash-es";
 import { LanguagesIcon } from "lucide-react";
 import { lazy } from "react";
+import { Button } from "~/components/ui/button";
+import { useWebsiteSetting } from "~/pages/hooks/project/use-website-settings";
 const LangPanel = lazy(() => import("../client/components/lang-panel"));
 
 export const LangButton = ({ isActive, show }: { isActive: boolean; show: () => void }) => {

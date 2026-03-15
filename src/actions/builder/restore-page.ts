@@ -1,7 +1,7 @@
-import { db, safeQuery, schema } from "@/actions/db";
 import { and, eq } from "drizzle-orm";
 import { pick } from "lodash-es";
 import { z } from "zod";
+import { db, safeQuery, schema } from "~/actions/db";
 import { ActionError } from "./action-error";
 import { ChaiBaseAction } from "./base-action";
 

@@ -1,7 +1,7 @@
-import { registerChaiBlockProps } from "@/runtime";
-import { ChaiBlockComponentProps } from "@/types/blocks";
 import { FrameIcon } from "@radix-ui/react-icons";
 import * as React from "react";
+import { registerChaiBlockProps } from "~/runtime";
+import { ChaiBlockComponentProps } from "~/types/blocks";
 
 export type PartialBlockProps = {
   partialBlockId: string;

@@ -1,6 +1,6 @@
-import { getChaiAction } from "@/actions/builder/actions-registery";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { isEmpty, kebabCase, set } from "lodash-es";
+import { getChaiAction } from "~/actions/builder/actions-registery";
 
 type ChaiAsset = any;
 
@@ -72,12 +72,7 @@ export class ChaiAssets {
     }
 
     // GIF: "GIF" signature, width at byte 6 (LE 16-bit), height at byte 8
-    if (
-      buffer.length >= ChaiAssets.MIN_GIF_LENGTH &&
-      buffer[0] === 0x47 &&
-      buffer[1] === 0x49 &&
-      buffer[2] === 0x46
-    ) {
+    if (buffer.length >= ChaiAssets.MIN_GIF_LENGTH && buffer[0] === 0x47 && buffer[1] === 0x49 && buffer[2] === 0x46) {
       return {
         width: buffer.readUInt16LE(6),
         height: buffer.readUInt16LE(8),

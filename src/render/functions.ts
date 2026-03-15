@@ -1,6 +1,6 @@
-import { getSplitChaiClasses } from "@/hooks/get-split-classes";
-import { ChaiBlock } from "@/types/common";
 import { cloneDeep, flattenDeep, get, isEmpty, last } from "lodash-es";
+import { getSplitChaiClasses } from "~/hooks/get-split-classes";
+import { ChaiBlock } from "~/types/common";
 
 export function getMergedPartialBlocks(blocks: ChaiBlock[], partials: Record<string, ChaiBlock[]>) {
   const partialBlocksList = blocks.filter((block) => block._type === "GlobalBlock" || block._type === "PartialBlock");

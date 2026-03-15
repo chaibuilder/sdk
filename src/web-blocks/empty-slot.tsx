@@ -1,4 +1,4 @@
-import { cn } from "@/core/functions/common-functions";
+import { cn } from "~/core/functions/common-functions";
 
 type EmptySlotProps = {
   className?: any;

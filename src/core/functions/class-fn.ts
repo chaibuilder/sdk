@@ -1,6 +1,6 @@
-import { CLASSES_LIST } from "@/core/constants/CLASSES_LIST";
-import { MODIFIERS } from "@/core/constants/MODIFIERS";
 import { get, isEmpty, map, startsWith } from "lodash-es";
+import { CLASSES_LIST } from "~/core/constants/CLASSES_LIST";
+import { MODIFIERS } from "~/core/constants/MODIFIERS";
 
 export type ClassDerivedObject = {
   cls: string;
@@ -54,7 +54,7 @@ export function getPropertyForClass(pureCls: string): string {
     return memoizedProps[pureCls];
   }
   let property: string = "";
-   
+
   for (const key in CLASSES_LIST) {
     const expression = get(CLASSES_LIST, `${key}.regExp`, "") as string;
     if (new RegExp(expression, "g").test(pureCls)) {

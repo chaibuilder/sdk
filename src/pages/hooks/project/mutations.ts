@@ -1,10 +1,10 @@
-import { useLanguages } from "@/hooks/use-languages";
-import { ACTIONS } from "@/pages/constants/ACTIONS";
-import { useFetch } from "@/pages/hooks/utils/use-fetch";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { useLanguages } from "~/hooks/use-languages";
+import { useQuerySync } from "~/hooks/use-query-sync";
+import { ACTIONS } from "~/pages/constants/ACTIONS";
+import { useFetch } from "~/pages/hooks/utils/use-fetch";
 import { useApiUrl } from "./use-builder-prop";
-import { useQuerySync } from "@/hooks/use-query-sync";
 
 export const useUpdateWebsiteFields = () => {
   const apiUrl = useApiUrl();

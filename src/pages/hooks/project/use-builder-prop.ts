@@ -1,7 +1,7 @@
 import { get } from "lodash-es";
 import { useMemo } from "react";
-import { usePagesProps } from "@/pages/hooks/utils/use-pages-props";
-import type { RealtimeAdapter } from "@/pages/client/components/page-lock/realtime-adapter";
+import type { RealtimeAdapter } from "~/pages/client/components/page-lock/realtime-adapter";
+import { usePagesProps } from "~/pages/hooks/utils/use-pages-props";
 
 export const usePagesProp = <T>(key: string, defaultValue?: T) => {
   const [pagesProps] = usePagesProps();
@@ -24,9 +24,9 @@ export const useWebsocket = () => {
 
 /**
  * Get the realtime adapter for page lock functionality.
- * 
+ *
  * Users must create and pass their own adapter instance (e.g., SupabaseRealtimeAdapter).
- * 
+ *
  * @returns RealtimeAdapter instance or null
  */
 export const useRealtimeAdapter = (): RealtimeAdapter | null => {

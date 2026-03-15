@@ -41,14 +41,10 @@ import { throwConfetti } from "~/pages/utils/confetti";
 import Tooltip from "~/pages/utils/tooltip";
 import { usePageLockStatus } from "./page-lock/page-lock-hook";
 
-const UnpublishPage = lazy(() => import("@/pages/client/components/unpublish-page"));
-const TranslationWarningModal = lazy(
-  () => import("@/pages/client/components/save-ui-blocks/translation-warning-modal"),
-);
+const UnpublishPage = lazy(() => import("~/pages/client/components/unpublish-page"));
 const UnpublishedPartialsModal = lazy(
-  () => import("@/pages/client/components/save-ui-blocks/unpublished-partials-modal"),
+  () => import("~/pages/client/components/save-ui-blocks/unpublished-partials-modal"),
 );
-const JsonDiffViewer = lazy(() => import("@/pages/client/components/json-diff-viewer"));
 
 const PreviewButton = () => {
   const { t } = useTranslation();
@@ -385,29 +381,6 @@ const PublishButton = () => {
           <UnpublishPage page={unpublishPage} onClose={() => setUnpublishPage(null)} />
         </Suspense>
       )}
-      {showCompareModal && (
-        <Suspense>
-          <JsonDiffViewer
-            open={showCompareModal}
-            onOpenChange={setShowCompareModal}
-            compare={[
-              { label: "live", uid: `live:${currentPage?.id}`, item: {} },
-              { label: "draft", uid: `draft:${currentPage?.id}`, item: currentPage },
-            ]}
-          />
-        </Suspense>
-      )}
-
-      {showTranslationWarning && (
-        <Suspense>
-          <TranslationWarningModal
-            isOpen={showTranslationWarning}
-            onClose={handleCancelTranslation}
-            onContinue={handleContinueAnyway}
-            isPending={isPending}
-          />
-        </Suspense>
-      )}
 
       {showUnpublishedPartialsWarning && (
         <Suspense>
@@ -418,24 +391,6 @@ const PublishButton = () => {
             onViewChanges={handleViewPartialChanges}
             isPending={isPending}
             partialBlocksInfo={unpublishedPartialBlocksInfo}
-          />
-        </Suspense>
-      )}
-
-      {comparePartial && (
-        <Suspense>
-          <JsonDiffViewer
-            open={!!comparePartial}
-            onOpenChange={(open) => {
-              if (!open) {
-                setComparePartial(null);
-                setShowUnpublishedPartialsWarning(true);
-              }
-            }}
-            compare={[
-              { label: "live", uid: `live:${comparePartial.id}`, item: {} },
-              { label: "draft", uid: `draft:${comparePartial.id}`, item: {} },
-            ]}
           />
         </Suspense>
       )}

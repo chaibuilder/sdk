@@ -1,7 +1,7 @@
-import { ChaiPageProps } from "@/types";
-import { ChaiBlock } from "@/types/common";
 import { has, isFunction, omit } from "lodash-es";
 import React from "react";
+import { ChaiPageProps } from "~/types";
+import { ChaiBlock } from "~/types/common";
 
 type DataProvider = (props: {
   draft: boolean;

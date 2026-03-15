@@ -1,7 +1,7 @@
-import { Button } from "@/components/ui/button";
-import { useSavePage } from "@/hooks/use-save-page";
-import { useRightPanel } from "@/hooks/use-theme";
 import { CheckIcon, EyeOpenIcon, MixerHorizontalIcon } from "@radix-ui/react-icons";
+import { Button } from "~/components/ui/button";
+import { useSavePage } from "~/hooks/use-save-page";
+import { useRightPanel } from "~/hooks/use-theme";
 
 export default function RightTop() {
   const [panel, setRightPanel] = useRightPanel();

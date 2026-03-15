@@ -1,6 +1,6 @@
-import { getRegisteredChaiBlock } from "@/runtime";
-import { ChaiBlock, ChaiPageProps } from "@/types/common";
 import { cloneDeep, find, forEach, get, has, isEmpty, isFunction, isObject, isString, keys } from "lodash-es";
+import { getRegisteredChaiBlock } from "~/runtime";
+import { ChaiBlock, ChaiPageProps } from "~/types/common";
 import { AsyncRenderBlocks } from "./async-blocks-renderer";
 
 const applyBinding = (block: ChaiBlock | Record<string, any>, pageExternalData: Record<string, any>) => {

@@ -1,6 +1,6 @@
-import { generateUUID } from "@/core/functions/common-functions";
-import { ChaiBlock } from "@/types/common";
 import { filter, find, flatten } from "lodash-es";
+import { generateUUID } from "~/core/functions/common-functions";
+import { ChaiBlock } from "~/types/common";
 
 export const nestedToFlatArray = (nestedJson: Array<ChaiBlock>, parent: string | null = null): Array<ChaiBlock> =>
   flatten(

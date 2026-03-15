@@ -1,7 +1,7 @@
-import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { registerChaiSidebarPanel } from "@/runtime/client";
 import { ArchiveIcon, CookieIcon, DimensionsIcon, IconJarLogoIcon } from "@radix-ui/react-icons";
+import { Button } from "~/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
+import { registerChaiSidebarPanel } from "~/runtime/client";
 
 const Panel1Button = ({ isActive, show }: { isActive: boolean; show: () => void }) => {
   return (

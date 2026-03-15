@@ -1,9 +1,9 @@
-import { db, safeQuery, schema } from "@/actions/db";
-import { PageTreeBuilder } from "@/actions/utils/page-tree-builder";
-import { ChaiBlock } from "@/types/common";
 import { and, eq, sql } from "drizzle-orm";
 import { compact, get, keys, pick } from "lodash-es";
 import { z } from "zod";
+import { db, safeQuery, schema } from "~/actions/db";
+import { PageTreeBuilder } from "~/actions/utils/page-tree-builder";
+import { ChaiBlock } from "~/types/common";
 import { ActionError } from "./action-error";
 import { ChaiBaseAction } from "./base-action";
 import { SlugChangeHandler } from "./slug-change-handler";
@@ -344,10 +344,7 @@ export class UpdatePageAction extends ChaiBaseAction<UpdatePageActionData, Updat
     if (error) {
       console.error("Failed to sync dynamic fields to secondary pages:", error);
     }
-
   }
-
-
 
   /**
    * Handle execution errors with proper error transformation

@@ -1,10 +1,10 @@
-import { ACTIONS } from "@/pages/constants/ACTIONS";
-import { useFetch } from "@/pages/hooks/utils/use-fetch";
-import { ChaiPageType } from "@/types/actions";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useMemo } from "react";
+import { useWebsitePages } from "~/pages";
+import { ACTIONS } from "~/pages/constants/ACTIONS";
+import { useFetch } from "~/pages/hooks/utils/use-fetch";
+import { ChaiPageType } from "~/types/actions";
 import { useApiUrl } from "./use-builder-prop";
-import { useWebsitePages } from "@/pages";
 
 export const usePageTypes = () => {
   const apiUrl = useApiUrl();

@@ -1,5 +1,5 @@
-import { ChaiBlock, ChaiPageProps } from "@/types/common";
 import { cloneDeep, find, forEach, get, isEmpty, isObject, isString, keys } from "lodash-es";
+import { ChaiBlock, ChaiPageProps } from "~/types/common";
 import { RenderBlocks } from "./blocks-renderer";
 
 const applyBinding = (block: ChaiBlock | Record<string, any>, pageExternalData: Record<string, any>) => {

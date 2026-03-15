@@ -1,8 +1,8 @@
-import { ACTIONS } from "@/pages/constants/ACTIONS";
-import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
-import { useFetch } from "@/pages/hooks/utils/use-fetch";
 import { useQuery } from "@tanstack/react-query";
 import { replace, startsWith } from "lodash-es";
+import { ACTIONS } from "~/pages/constants/ACTIONS";
+import { useApiUrl } from "~/pages/hooks/project/use-builder-prop";
+import { useFetch } from "~/pages/hooks/utils/use-fetch";
 
 export interface RevisionData {
   uid: string;

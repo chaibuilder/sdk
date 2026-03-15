@@ -1,13 +1,14 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { useLanguages } from "@/hooks/use-languages";
-import { useBuilderFetch } from "@/pages/hooks/utils/use-fetch";
-import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { Plus } from "lucide-react";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { Button } from "~/components/ui/button";
+import { useLanguages } from "~/hooks/use-languages";
+import { useBuilderFetch } from "~/pages/hooks/utils/use-fetch";
+import { useSearchParams } from "~/pages/hooks/utils/use-search-params";
+import { AIContext } from "~/types";
 import {
   AICompleteCallback,
   AIConfig,
@@ -19,7 +20,6 @@ import {
 } from "./ai-models-context";
 import { Message } from "./ai-panel-helper";
 import { getDefaultModel } from "./models";
-import { AIContext } from "@/types";
 
 const AiPanelForDefaultLang = lazy(() => import("./ai-panel-default-lang"));
 const AiPanelForOtherLang = lazy(() => import("./ai-panel-other-lang"));

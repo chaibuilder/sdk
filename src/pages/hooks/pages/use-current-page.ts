@@ -1,8 +1,8 @@
-import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
-import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { atom, useAtom } from "jotai";
 import { find, noop, values } from "lodash-es";
 import { useMemo } from "react";
+import { usePagesProp } from "~/pages/hooks/project/use-builder-prop";
+import { useSearchParams } from "~/pages/hooks/utils/use-search-params";
 import { useDynamicPageSlug } from "./use-dynamic-page-selector";
 import { useWebsiteLanguagePages, useWebsitePrimaryPages } from "./use-project-pages";
 

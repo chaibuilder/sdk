@@ -1,5 +1,5 @@
-import { ChaiBlock, ChaiPageProps } from "@/types/common";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { ChaiBlock, ChaiPageProps } from "~/types/common";
 import DataProviderPropsBlock from "./async-props-block";
 
 describe("createCacheKey logic", () => {

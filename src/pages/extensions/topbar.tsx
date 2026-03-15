@@ -1,15 +1,15 @@
-import { CanvasTopBar } from "@/core/components/canvas/topbar/canvas-top-bar";
-import { mergeClasses } from "@/core/main";
-import { PageDropdownInHeader } from "@/pages/client/components/page-dropdown-in-header";
-import { ScreenOverlay } from "@/pages/client/components/screen-overlay";
-import TopbarLeft, { LanguageSwitcher } from "@/pages/client/components/topbar-left";
-import TopbarRight from "@/pages/client/components/topbar-right";
-import { useCurrentActivePage, usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
-import { useDynamicPageSelector } from "@/pages/hooks/pages/use-dynamic-page-selector";
-import { useChaiFeatureFlag } from "@/runtime/client";
 import { get } from "lodash-es";
 import { ChevronRight } from "lucide-react";
 import { lazy, Suspense } from "react";
+import { CanvasTopBar } from "~/core/components/canvas/topbar/canvas-top-bar";
+import { mergeClasses } from "~/core/main";
+import { PageDropdownInHeader } from "~/pages/client/components/page-dropdown-in-header";
+import { ScreenOverlay } from "~/pages/client/components/screen-overlay";
+import TopbarLeft, { LanguageSwitcher } from "~/pages/client/components/topbar-left";
+import TopbarRight from "~/pages/client/components/topbar-right";
+import { useCurrentActivePage, usePrimaryPage } from "~/pages/hooks/pages/use-current-page";
+import { useDynamicPageSelector } from "~/pages/hooks/pages/use-dynamic-page-selector";
+import { useChaiFeatureFlag } from "~/runtime/client";
 import PagesManagerTrigger from "../client/components/page-manager/page-manager-trigger";
 const DynamicPageSelector = lazy(() => import("../client/components/dynamic-page-selector"));
 

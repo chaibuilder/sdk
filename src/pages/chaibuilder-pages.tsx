@@ -1,44 +1,43 @@
-import { Button } from "@/components/ui/button";
-import { ChaiBuilderEditor } from "@/core/main";
-import { Topbar } from "@/pages/extensions/topbar";
-import { useAskAi } from "@/pages/hooks/ai/use-ask-ai";
-import { usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
-import { useExtractPageBlocks } from "@/pages/hooks/pages/use-extract-page-blocks";
-import { usePageAllData } from "@/pages/hooks/pages/use-page-all-data";
-import { useUpdateWebsiteFields } from "@/pages/hooks/project/mutations";
-import { useSearchPageTypePages } from "@/pages/hooks/project/use-page-types";
-import { useCheckUserAccess } from "@/pages/hooks/user/use-check-access";
-import { usePagesSavePage } from "@/pages/hooks/utils/use-chai-api";
-import { usePagesProps } from "@/pages/hooks/utils/use-pages-props";
-import { usePartialBlocksFn } from "@/pages/hooks/utils/use-partial-blocks";
-import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
-import { registerChaiPanels } from "@/pages/panels";
-import { registerChaiMediaManager } from "@/runtime/client/register-chai-media-manager";
-import { registerChaiSaveToLibrary } from "@/runtime/client/register-chai-save-to-library";
-import { registerChaiTopBar } from "@/runtime/client/register-chai-top-bar";
-import { ChaiWebsiteBuilderProps } from "@/types/common";
-import { loadWebBlocks } from "@/web-blocks";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useAtom } from "jotai";
 import { cloneDeep, get, pick } from "lodash-es";
 import { Loader } from "lucide-react";
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { Button } from "~/components/ui/button";
+import { ChaiBuilderEditor } from "~/core/main";
+import { Topbar } from "~/pages/extensions/topbar";
+import { useAskAi } from "~/pages/hooks/ai/use-ask-ai";
+import { usePrimaryPage } from "~/pages/hooks/pages/use-current-page";
+import { useExtractPageBlocks } from "~/pages/hooks/pages/use-extract-page-blocks";
+import { usePageAllData } from "~/pages/hooks/pages/use-page-all-data";
+import { useUpdateWebsiteFields } from "~/pages/hooks/project/mutations";
+import { useSearchPageTypePages } from "~/pages/hooks/project/use-page-types";
+import { useCheckUserAccess } from "~/pages/hooks/user/use-check-access";
+import { usePagesSavePage } from "~/pages/hooks/utils/use-chai-api";
+import { usePagesProps } from "~/pages/hooks/utils/use-pages-props";
+import { usePartialBlocksFn } from "~/pages/hooks/utils/use-partial-blocks";
+import { useSearchParams } from "~/pages/hooks/utils/use-search-params";
+import { registerChaiPanels } from "~/pages/panels";
+import { registerChaiMediaManager } from "~/runtime/client/register-chai-media-manager";
+import { registerChaiSaveToLibrary } from "~/runtime/client/register-chai-save-to-library";
+import { registerChaiTopBar } from "~/runtime/client/register-chai-top-bar";
+import { ChaiWebsiteBuilderProps } from "~/types/common";
+import { loadWebBlocks } from "~/web-blocks";
 import { previewUrlAtom } from "./atom/preview-url";
 import { BlurContainer } from "./client/components/chai-loader";
 import { usePageLockStatus } from "./client/components/page-lock/page-lock-hook";
 import { PAGE_STATUS } from "./client/components/page-lock/page-lock-utils";
 import { registerPagesFeatureFlags } from "./feature-flags";
+import { useUILibraries } from "./hooks/project/use-ui-libraries";
 import { useGetBlockAysncProps } from "./hooks/use-chai-collections";
 import { useGotoPage } from "./hooks/use-goto-page";
-import { useWebsiteData } from "./hooks/use-website-data";
 import { useSiteWideUsage } from "./hooks/use-site-wide-usage";
-import { useUILibraries } from "./hooks/project/use-ui-libraries";
+import { useWebsiteData } from "./hooks/use-website-data";
 
-const PageLock = lazy(() => import("./client/components/page-lock/page-lock"));
-const NoLanguagePageDialog = lazy(() => import("@/pages/client/components/no-language-page/no-language-page-dialog"));
-const DigitalAssetManager = lazy(() => import("@/pages/digital-asset-manager/digital-asset-manager"));
-const SaveToLibrary = lazy(() => import("@/pages/client/components/save-ui-blocks/save-to-lib"));
+const NoLanguagePageDialog = lazy(() => import("~/pages/client/components/no-language-page/no-language-page-dialog"));
+const DigitalAssetManager = lazy(() => import("~/pages/digital-asset-manager/digital-asset-manager"));
+const SaveToLibrary = lazy(() => import("~/pages/client/components/save-ui-blocks/save-to-lib"));
 const PreviewWeb = lazy(() => import("./client/components/web-preview"));
 
 registerPagesFeatureFlags();
@@ -235,9 +234,7 @@ const ChaiBuilderInner = ({ ...props }: ChaiBuilderInnerProps) => {
           }
           return true;
         }}
-        {...forwardedProps}>
-        <PageLock isFetchingPageData={isFetchingPageAllData} />
-      </ChaiBuilderEditor>
+        {...forwardedProps}></ChaiBuilderEditor>
       <div>
         <NoLanguagePageDialog />
       </div>

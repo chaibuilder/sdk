@@ -1,15 +1,14 @@
-import { useQuerySync } from "@/hooks/use-query-sync";
-import { useSavePage } from "@/hooks/use-save-page";
-import { ACTIONS } from "@/pages/constants/ACTIONS";
-import { ERRORS } from "@/pages/constants/ERRORS";
-import { useCurrentActivePage } from "@/pages/hooks/pages/use-current-page";
-import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
-import { usePageTypes } from "@/pages/hooks/project/use-page-types";
-import { useRevisionsEnabled } from "@/pages/hooks/use-revisions-enabled";
-import { useFetch } from "@/pages/hooks/utils/use-fetch";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { find, get } from "lodash-es";
 import { toast } from "sonner";
+import { useQuerySync } from "~/hooks/use-query-sync";
+import { useSavePage } from "~/hooks/use-save-page";
+import { ACTIONS } from "~/pages/constants/ACTIONS";
+import { ERRORS } from "~/pages/constants/ERRORS";
+import { useCurrentActivePage } from "~/pages/hooks/pages/use-current-page";
+import { useApiUrl } from "~/pages/hooks/project/use-builder-prop";
+import { usePageTypes } from "~/pages/hooks/project/use-page-types";
+import { useFetch } from "~/pages/hooks/utils/use-fetch";
 
 export const useCreatePage = () => {
   const apiUrl = useApiUrl();
@@ -184,7 +183,6 @@ export const usePublishPages = () => {
   const apiUrl = useApiUrl();
   const fetchAPI = useFetch();
   const { savePageAsync } = useSavePage();
-  const revisionsEnabled = useRevisionsEnabled();
   const { handleQuerySync } = useQuerySync();
 
   return useMutation({
@@ -193,7 +191,7 @@ export const usePublishPages = () => {
 
       return fetchAPI(apiUrl, {
         action: ACTIONS.PUBLISH_CHANGES,
-        data: { ids, revisions: revisionsEnabled },
+        data: { ids, revisions: false },
       });
     },
     onSuccess: (_data, { ids }) => {
