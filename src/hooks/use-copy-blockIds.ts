@@ -1,13 +1,13 @@
-import { getDuplicatedBlocks } from "@/core/functions/blocks-fn";
-import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
-import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { cutBlockIdsAtom } from "@/hooks/use-cut-blockIds";
-import { usePartialBlocksStore } from "@/hooks/use-partial-blocks-store";
-import { ChaiBlock } from "@/types/common";
 import { atom, useAtom, useSetAtom } from "jotai";
 import { isEmpty, set } from "lodash-es";
 import { useCallback } from "react";
 import { toast } from "sonner";
+import { getDuplicatedBlocks } from "~/core/functions/blocks-fn";
+import { useBlocksStore } from "~/hooks/history/use-blocks-store-undoable-actions";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
+import { cutBlockIdsAtom } from "~/hooks/use-cut-blockIds";
+import { usePartialBlocksStore } from "~/hooks/use-partial-blocks-store";
+import { ChaiBlock } from "~/types/common";
 
 export const copiedBlockIdsAtom = atom<Array<string>>([]);
 

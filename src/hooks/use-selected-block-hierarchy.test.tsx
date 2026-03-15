@@ -1,11 +1,11 @@
-import { presentBlocksAtom } from "@/atoms/blocks";
-import { selectedBlockIdsAtom, useSelectedBlockHierarchy } from "@/hooks/use-selected-blockIds";
-import { ChaiBlock } from "@/types/common";
 import { renderHook } from "@testing-library/react";
 import { Provider, WritableAtom } from "jotai";
 import { useHydrateAtoms } from "jotai/utils";
 import React from "react";
 import { describe, expect, it } from "vitest";
+import { presentBlocksAtom } from "~/atoms/blocks";
+import { selectedBlockIdsAtom, useSelectedBlockHierarchy } from "~/hooks/use-selected-blockIds";
+import { ChaiBlock } from "~/types/common";
 
 type AtomTuple = [WritableAtom<any, any[], any>, any];
 

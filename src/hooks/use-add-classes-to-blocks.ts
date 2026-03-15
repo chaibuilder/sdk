@@ -1,15 +1,15 @@
-import { pageBlocksAtomsAtom } from "@/atoms/blocks";
-import { STYLES_KEY } from "@/core/constants/STRINGS";
-import { orderClassesByBreakpoint } from "@/core/functions/order-classes-by-breakpoint";
-import { removeDuplicateClasses } from "@/core/functions/remove-duplicate-classes";
-import { getSplitChaiClasses } from "@/hooks/get-split-classes";
-import { useBlocksStoreUndoableActions } from "@/hooks/history/use-blocks-store-undoable-actions";
-import { selectedStylingBlocksAtom, TStyleBlock } from "@/hooks/use-selected-styling-blocks";
-import { ChaiBlock } from "@/types/common";
 import { atom, useSetAtom } from "jotai";
 import { filter, first, get as getProp, map } from "lodash-es";
 import { useCallback } from "react";
 import { twMerge } from "tailwind-merge";
+import { pageBlocksAtomsAtom } from "~/atoms/blocks";
+import { STYLES_KEY } from "~/core/constants/STRINGS";
+import { orderClassesByBreakpoint } from "~/core/functions/order-classes-by-breakpoint";
+import { removeDuplicateClasses } from "~/core/functions/remove-duplicate-classes";
+import { getSplitChaiClasses } from "~/hooks/get-split-classes";
+import { useBlocksStoreUndoableActions } from "~/hooks/history/use-blocks-store-undoable-actions";
+import { selectedStylingBlocksAtom, TStyleBlock } from "~/hooks/use-selected-styling-blocks";
+import { ChaiBlock } from "~/types/common";
 
 type Created = {
   blockIds: Array<string>;

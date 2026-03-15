@@ -1,12 +1,12 @@
-import { pageBlocksAtomsAtom } from "@/atoms/blocks";
-import { STYLES_KEY } from "@/core/constants/STRINGS";
-import { getSplitChaiClasses } from "@/hooks/get-split-classes";
-import { useBlocksStoreUndoableActions } from "@/hooks/history/use-blocks-store-undoable-actions";
-import { selectedStylingBlocksAtom, TStyleBlock } from "@/hooks/use-selected-styling-blocks";
-import { ChaiBlock } from "@/types/common";
 import { atom, useSetAtom } from "jotai";
 import { each, filter, first, get as getProp, includes, map } from "lodash-es";
 import { useCallback } from "react";
+import { pageBlocksAtomsAtom } from "~/atoms/blocks";
+import { STYLES_KEY } from "~/core/constants/STRINGS";
+import { getSplitChaiClasses } from "~/hooks/get-split-classes";
+import { useBlocksStoreUndoableActions } from "~/hooks/history/use-blocks-store-undoable-actions";
+import { selectedStylingBlocksAtom, TStyleBlock } from "~/hooks/use-selected-styling-blocks";
+import { ChaiBlock } from "~/types/common";
 
 export const removeClassFromBlocksAtom: any = atom(null, (get, _set, { blockIds, fullClasses }) => {
   const styleBlock = first(get(selectedStylingBlocksAtom)) as TStyleBlock;

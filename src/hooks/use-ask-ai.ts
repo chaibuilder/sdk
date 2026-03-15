@@ -1,14 +1,3 @@
-import { LANGUAGES } from "@/core/constants/LANGUAGES";
-import { STYLES_KEY } from "@/core/constants/STRINGS";
-import { getSplitChaiClasses } from "@/hooks/get-split-classes";
-import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
-import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { useLanguages } from "@/hooks/use-languages";
-import { useRightPanel } from "@/hooks/use-theme";
-import { useStreamMultipleBlocksProps, useUpdateMultipleBlocksProps } from "@/hooks/use-update-blocks-props";
-import { getRegisteredChaiBlock } from "@/runtime";
-import { ChaiAskAiResponse } from "@/types/chaibuilder-editor-props";
-import { ChaiBlock } from "@/types/common";
 import { atom, useAtom } from "jotai";
 import {
   cloneDeep,
@@ -25,6 +14,17 @@ import {
   startsWith,
 } from "lodash-es";
 import { useCallback, useState } from "react";
+import { LANGUAGES } from "~/core/constants/LANGUAGES";
+import { STYLES_KEY } from "~/core/constants/STRINGS";
+import { getSplitChaiClasses } from "~/hooks/get-split-classes";
+import { useBlocksStore } from "~/hooks/history/use-blocks-store-undoable-actions";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
+import { useLanguages } from "~/hooks/use-languages";
+import { useRightPanel } from "~/hooks/use-theme";
+import { useStreamMultipleBlocksProps, useUpdateMultipleBlocksProps } from "~/hooks/use-update-blocks-props";
+import { getRegisteredChaiBlock } from "~/runtime";
+import { ChaiAskAiResponse } from "~/types/chaibuilder-editor-props";
+import { ChaiBlock } from "~/types/common";
 
 function getChildBlocks(allBlocks: ChaiBlock[], blockId: string, blocks: ChaiBlock[]) {
   blocks.push(find(allBlocks, { _id: blockId }) as ChaiBlock);

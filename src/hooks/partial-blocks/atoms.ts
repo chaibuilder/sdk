@@ -1,5 +1,5 @@
-import { PartialBlockEntry, PartialBlockList } from "@/types/partial-blocks";
 import { atom } from "jotai";
+import { PartialBlockEntry, PartialBlockList } from "~/types/partial-blocks";
 
 /**
  * Consolidated atom storing all partial block data

@@ -1,5 +1,5 @@
-import { ChaiBlock } from "@/types/common";
 import { filter, get } from "lodash-es";
+import { ChaiBlock } from "~/types/common";
 
 /**
  * Helper to extract partial IDs from blocks

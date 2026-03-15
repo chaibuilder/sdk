@@ -1,5 +1,5 @@
-import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { atom, useAtom } from "jotai";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
 
 const languageAtom = atom("");
 languageAtom.debugLabel = "selectedLanguageAtom";

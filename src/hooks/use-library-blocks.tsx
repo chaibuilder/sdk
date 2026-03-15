@@ -1,7 +1,7 @@
-import { ChaiLibrary, ChaiLibraryBlock } from "@/types/chaibuilder-editor-props";
 import { atom, useAtom } from "jotai";
 import { get } from "lodash-es";
 import { useCallback, useEffect, useMemo, useRef } from "react";
+import { ChaiLibrary, ChaiLibraryBlock } from "~/types/chaibuilder-editor-props";
 
 export const libraryBlocksAtom = atom<{
   [uuid: string]: { loading: "idle" | "loading" | "complete"; blocks: any[] | null; error: boolean };

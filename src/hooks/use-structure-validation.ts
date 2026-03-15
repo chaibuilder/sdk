@@ -1,3 +1,4 @@
+import { useAtom } from "jotai";
 import {
   hasStructureErrorsAtom,
   hasStructureWarningsAtom,
@@ -6,8 +7,7 @@ import {
   structureErrorsByBlockAtom,
   structureValidationValidAtom,
   structureWarningCountAtom,
-} from "@/atoms/blocks";
-import { useAtom } from "jotai";
+} from "~/atoms/blocks";
 
 export const useStructureValidation = () => {
   const [errors] = useAtom(structureErrorsAtom);

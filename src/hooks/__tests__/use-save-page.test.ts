@@ -1,10 +1,10 @@
-import { userActionsCountAtom } from "@/atoms/builder";
-import { builderStore } from "@/atoms/store";
-import { partialBlocksAtom } from "@/hooks/partial-blocks/atoms";
-import { builderSaveStateAtom, checkMissingTranslations, useSavePage } from "@/hooks/use-save-page";
-import { getRegisteredChaiBlock } from "@/runtime";
 import { act, renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { userActionsCountAtom } from "~/atoms/builder";
+import { builderStore } from "~/atoms/store";
+import { partialBlocksAtom } from "~/hooks/partial-blocks/atoms";
+import { builderSaveStateAtom, checkMissingTranslations, useSavePage } from "~/hooks/use-save-page";
+import { getRegisteredChaiBlock } from "~/runtime";
 
 vi.mock("@/runtime", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@/runtime")>();

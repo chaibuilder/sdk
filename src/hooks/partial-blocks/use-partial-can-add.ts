@@ -1,8 +1,8 @@
-import { MAX_PARTIAL_DEPTH } from "@/core/constants/partial-blocks";
-import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { CanAddPartialResult } from "@/types/partial-blocks";
 import { useAtom } from "jotai";
 import { useCallback, useMemo } from "react";
+import { MAX_PARTIAL_DEPTH } from "~/core/constants/partial-blocks";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
+import { CanAddPartialResult } from "~/types/partial-blocks";
 import { partialBlocksAtom } from "./atoms";
 import { getPartialDepth, wouldCreateCycle } from "./utils";
 

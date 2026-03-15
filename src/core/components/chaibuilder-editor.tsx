@@ -12,7 +12,6 @@ import { FallbackError } from "~/core/components/fallback-error";
 import { RootLayout } from "~/core/components/layout/root-layout";
 import { PreviewScreen } from "~/core/components/PreviewScreen";
 import { useAutoSave } from "~/core/components/use-auto-save";
-import { ChaiFeatureFlagsWidget } from "~/core/flags/flags-widget";
 import { setDebugLogs } from "~/core/functions/logging";
 import i18n from "~/core/locales/load";
 import { ExportCodeModal } from "~/core/modals/export-code-modal";
@@ -133,7 +132,6 @@ const ChaiBuilderEditor: React.FC<ChaiBuilderEditorProps> = (props: ChaiBuilderE
         <ChaiWatchers {...props} />
         <PreviewScreen />
         <Toaster richColors />
-        <ChaiFeatureFlagsWidget />
       </ErrorBoundary>
     </div>
   );

@@ -1,9 +1,9 @@
-import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
-import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { PartialBlockEntry } from "@/types/partial-blocks";
 import { useAtom } from "jotai";
 import { get } from "lodash-es";
 import { useEffect, useMemo, useRef } from "react";
+import { useBlocksStore } from "~/hooks/history/use-blocks-store-undoable-actions";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
+import { PartialBlockEntry } from "~/types/partial-blocks";
 import { partialBlocksAtom } from "./atoms";
 import { extractPartialIds } from "./utils";
 

@@ -1,15 +1,15 @@
+import { useDebouncedCallback } from "@react-hookz/web";
+import { useSetAtom } from "jotai";
+import { useCallback } from "react";
 import {
   hasStructureErrorsAtom,
   hasStructureWarningsAtom,
   structureErrorsAtom,
   structureValidationValidAtom,
-} from "@/atoms/blocks";
-import { convertToBlocksTree } from "@/core/functions/blocks-fn";
-import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { ChaiBlock } from "@/types/common";
-import { useDebouncedCallback } from "@react-hookz/web";
-import { useSetAtom } from "jotai";
-import { useCallback } from "react";
+} from "~/atoms/blocks";
+import { convertToBlocksTree } from "~/core/functions/blocks-fn";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
+import { ChaiBlock } from "~/types/common";
 import { StructureError, StructureRule, defaultRuleRegistry } from "./structure-rules";
 
 export interface UseCheckStructureOptions {

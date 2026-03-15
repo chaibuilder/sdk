@@ -1,11 +1,11 @@
-import { canAcceptChildBlock } from "@/core/functions/block-helpers";
-import { generateUUID } from "@/core/functions/common-functions";
-import { useBlocksStore, useBlocksStoreUndoableActions } from "@/hooks/history/use-blocks-store-undoable-actions";
-import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
-import { getBlockDefaultProps } from "@/runtime";
-import { ChaiBlock, ChaiCoreBlock } from "@/types/common";
 import { filter, find, first, forEach, has } from "lodash-es";
 import { useCallback } from "react";
+import { canAcceptChildBlock } from "~/core/functions/block-helpers";
+import { generateUUID } from "~/core/functions/common-functions";
+import { useBlocksStore, useBlocksStoreUndoableActions } from "~/hooks/history/use-blocks-store-undoable-actions";
+import { useSelectedBlockIds } from "~/hooks/use-selected-blockIds";
+import { getBlockDefaultProps } from "~/runtime";
+import { ChaiBlock, ChaiCoreBlock } from "~/types/common";
 
 // Delay before selecting a newly added block to ensure the block is rendered in the DOM
 // and the state has been updated before attempting to highlight it

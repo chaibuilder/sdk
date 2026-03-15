@@ -22,4 +22,4 @@ export {
 } from "./partial-blocks";
 
 // Re-export types
-export type { CanAddPartialResult, PartialBlockEntry, PartialBlockList } from "@/types/partial-blocks";
+export type { CanAddPartialResult, PartialBlockEntry, PartialBlockList } from "~/types/partial-blocks";

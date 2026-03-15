@@ -1,9 +1,9 @@
-import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { builderSaveStateAtom } from "@/hooks/use-save-page";
 import { atom, useAtom } from "jotai";
 import { noop } from "lodash-es";
 import { useCallback, useEffect, useMemo } from "react";
 import UndoManager from "undo-manager";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
+import { builderSaveStateAtom } from "~/hooks/use-save-page";
 
 const undoManager = new UndoManager();
 undoManager.setLimit(50);

@@ -1,9 +1,9 @@
-import { defaultThemeOptions, defaultThemeValues } from "@/hooks/default-theme-options";
-import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { ChaiBorderRadiusValue, ChaiTheme, ChaiThemeOptions } from "@/types/chaibuilder-editor-props";
 import { atom, useAtom } from "jotai";
 import { isEmpty } from "lodash-es";
 import { useMemo } from "react";
+import { defaultThemeOptions, defaultThemeValues } from "~/hooks/default-theme-options";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
+import { ChaiBorderRadiusValue, ChaiTheme, ChaiThemeOptions } from "~/types/chaibuilder-editor-props";
 
 export const getDefaultThemeValues = (options: ChaiThemeOptions = defaultThemeOptions): ChaiTheme => {
   const themeValues: ChaiTheme = defaultThemeValues;

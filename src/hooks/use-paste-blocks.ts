@@ -1,13 +1,13 @@
-import { presentBlocksAtom } from "@/atoms/blocks";
-import { canAcceptChildBlock } from "@/core/functions/block-helpers";
-import { useBlocksStore, useBlocksStoreUndoableActions } from "@/hooks/history/use-blocks-store-undoable-actions";
-import { useAddBlock } from "@/hooks/use-add-block";
-import { useCutBlockIds } from "@/hooks/use-cut-blockIds";
-import { ChaiBlock } from "@/types/common";
 import { useAtomValue } from "jotai";
 import { find, first, has, isEmpty } from "lodash-es";
 import { useCallback } from "react";
 import { toast } from "sonner";
+import { presentBlocksAtom } from "~/atoms/blocks";
+import { canAcceptChildBlock } from "~/core/functions/block-helpers";
+import { useBlocksStore, useBlocksStoreUndoableActions } from "~/hooks/history/use-blocks-store-undoable-actions";
+import { useAddBlock } from "~/hooks/use-add-block";
+import { useCutBlockIds } from "~/hooks/use-cut-blockIds";
+import { ChaiBlock } from "~/types/common";
 
 const isFirefox = () => {
   return navigator.userAgent.toLowerCase().includes("firefox");

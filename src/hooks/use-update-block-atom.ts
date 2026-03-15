@@ -1,10 +1,10 @@
-import { pageBlocksAtomsAtom } from "@/atoms/blocks";
-import { builderStore } from "@/atoms/store";
-import { ChaiBlock } from "@/types/common";
 import { Atom, atom, useSetAtom } from "jotai";
 import { useAtomCallback } from "jotai/utils";
 import { find, isString } from "lodash-es";
 import { useCallback } from "react";
+import { pageBlocksAtomsAtom } from "~/atoms/blocks";
+import { builderStore } from "~/atoms/store";
+import { ChaiBlock } from "~/types/common";
 
 const writeAtomValue = atom(
   null, // it's a convention to pass `null` for the first argument

@@ -1,8 +1,8 @@
-import { useBlocksStoreManager } from "@/hooks/history/use-blocks-store-manager";
-import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
-import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { useEffect } from "react";
+import { useBlocksStoreManager } from "~/hooks/history/use-blocks-store-manager";
+import { useBlocksStore } from "~/hooks/history/use-blocks-store-undoable-actions";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
 
 const broadcastChannel = new BroadcastChannel("chaibuilder");
 export const useBroadcastChannel = () => {
