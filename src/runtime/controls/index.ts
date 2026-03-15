@@ -1,5 +1,5 @@
-import { STYLES_KEY } from "@/core/constants/STRINGS.ts";
 import { get, omit } from "lodash-es";
+import { STYLES_KEY } from "~/core/constants/STRINGS.ts";
 import { Code } from "./Code";
 
 export { Code, STYLES_KEY };

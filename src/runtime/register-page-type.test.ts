@@ -1,6 +1,6 @@
-import { PAGE_TYPES, getChaiPageType, getChaiPageTypes, registerChaiPageType } from "@/runtime/register-page-type";
-import { ChaiPageType } from "@/types/actions";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { PAGE_TYPES, getChaiPageType, getChaiPageTypes, registerChaiPageType } from "~/runtime/register-page-type";
+import { ChaiPageType } from "~/types/actions";
 
 describe("Page Type Registration", () => {
   // Clear PAGE_TYPES before each test to ensure isolation

@@ -1,5 +1,5 @@
-import { ChaiBlock } from "@/types/common";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { ChaiBlock } from "~/types/common";
 import {
   COLLECTIONS,
   CollectionFetchParams,

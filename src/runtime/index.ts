@@ -1,6 +1,6 @@
-import { STYLES_KEY } from "@/core/constants/STRINGS.ts";
-import { ChaiBlockPropsSchema, ChaiBlockRJSFSchemas, ChaiBlockUiSchema } from "@/types/common.ts";
 import { each, get, intersection, isEmpty, keys, omit } from "lodash-es";
+import { STYLES_KEY } from "~/core/constants/STRINGS.ts";
+import { ChaiBlockPropsSchema, ChaiBlockRJSFSchemas, ChaiBlockUiSchema } from "~/types/common.ts";
 
 export const registerChaiBlockSchema = (blockSchema: ChaiBlockPropsSchema): ChaiBlockRJSFSchemas => {
   console.warn("registerChaiBlockSchema is deprecated, use registerChaiBlockProps instead");

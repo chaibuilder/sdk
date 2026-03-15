@@ -1,5 +1,5 @@
-import { ChaiBlock } from "@/types/common";
 import { get, has } from "lodash-es";
+import { ChaiBlock } from "~/types/common";
 
 export type CollectionFetchParams = {
   block: ChaiBlock;

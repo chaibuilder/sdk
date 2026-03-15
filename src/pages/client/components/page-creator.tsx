@@ -1,5 +1,3 @@
-"use client";
-
 import { find, isEmpty, pick, set } from "lodash-es";
 import { Check, ChevronDown, Search } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -14,13 +12,11 @@ import { usePermissions } from "~/hooks/use-permissions";
 import { DynamicSlugInput } from "~/pages/client/components/dynamic-slug-input";
 import { ParentPageSelector } from "~/pages/client/components/parent-page-selector";
 import { SlugInput } from "~/pages/client/components/slug-input";
-import { TemplateSelection } from "~/pages/client/components/template-selection";
 import { LANGUAGES } from "~/pages/constants/LANGUAGES";
 import { PAGES_PERMISSIONS } from "~/pages/constants/PERMISSIONS";
 import { useCreatePage, useUpdatePage } from "~/pages/hooks/pages/mutations";
 import { useWebsitePrimaryPages } from "~/pages/hooks/pages/use-project-pages";
 import { usePageTypes } from "~/pages/hooks/project/use-page-types";
-import { useTemplatesWithLibraries } from "~/pages/hooks/project/use-templates-with-libraries";
 import { useChangePage } from "~/pages/hooks/use-change-page";
 import { combineParentChildSlugs, removeSlugExtension } from "~/pages/utils/slug-utils";
 import { useChaiFeatureFlag } from "~/runtime/client";
@@ -93,7 +89,6 @@ export default function PageCreator({ addEditPage, close, closePanel }: PageCrea
   const [showSlugChangeWarning, setShowSlugChangeWarning] = useState(false);
 
   const [selectedTemplate, setSelectedTemplate] = useState<string>("");
-  const { data: templates, isLoading: isLoadingTemplates } = useTemplatesWithLibraries(pageType);
   const isPending = isCreating || isUpdating;
   const isSearchAndSelectEnabled = useChaiFeatureFlag("enable-add-page-dropdown");
 
@@ -721,18 +716,6 @@ export default function PageCreator({ addEditPage, close, closePanel }: PageCrea
           </div>
         )}
       </div>
-
-      {!isEdit && currentPageType?.hasSlug && templates.length > 0 && (
-        <div className="space-y-1">
-          <Label className="mb-1 block text-sm">Template</Label>
-          <TemplateSelection
-            templates={templates}
-            selectedTemplateId={selectedTemplate}
-            onSelectTemplate={handleTemplateSelection}
-            isLoading={isLoadingTemplates}
-          />
-        </div>
-      )}
 
       <ParentPageSelector
         pages={pages}

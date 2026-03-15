@@ -1,10 +1,10 @@
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ChaiAsset } from "@/types";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Alert, AlertDescription } from "~/components/ui/alert";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { ChaiAsset } from "~/types";
 
 export type MediaManagerProps = {
   assetId?: string;

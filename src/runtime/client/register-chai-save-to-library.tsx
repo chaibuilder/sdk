@@ -1,5 +1,5 @@
-import { ChaiBlock } from "@/types/common";
 import { ComponentType, useMemo } from "react";
+import { ChaiBlock } from "~/types/common";
 
 export type SaveToLibraryProps = {
   blockId: string;

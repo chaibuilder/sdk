@@ -1,4 +1,4 @@
-import { ChaiPageType } from "@/types/actions";
+import { ChaiPageType } from "~/types/actions";
 
 export const PAGE_TYPES: Record<string, ChaiPageType> = {};
 
