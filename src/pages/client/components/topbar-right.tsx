@@ -27,7 +27,6 @@ import {
 import { useLanguages } from "~/hooks/use-languages";
 import { useSavePage } from "~/hooks/use-save-page";
 import { useRightPanel } from "~/hooks/use-theme";
-import PageRevisions from "~/pages/client/components/page-revisions/page-revisions-trigger";
 import PublishPages from "~/pages/client/components/publish-pages/publish-pages";
 import { usePublishPages } from "~/pages/hooks/pages/mutations";
 import { useCurrentActivePage, useGetPageFullSlug, usePrimaryPage } from "~/pages/hooks/pages/use-current-page";
@@ -37,7 +36,6 @@ import { useLanguagePages } from "~/pages/hooks/pages/use-language-pages";
 import { usePagesProp } from "~/pages/hooks/project/use-builder-prop";
 import { usePageTypes } from "~/pages/hooks/project/use-page-types";
 import { useUnpublishedWebsiteSettings } from "~/pages/hooks/project/use-unpublished-website-settings";
-import { useRevisionsEnabled } from "~/pages/hooks/use-revisions-enabled";
 import { useSearchParams } from "~/pages/hooks/utils/use-search-params";
 import { throwConfetti } from "~/pages/utils/confetti";
 import Tooltip from "~/pages/utils/tooltip";
@@ -469,12 +467,10 @@ export default function TopbarRight() {
   const [searchParams] = useSearchParams();
   const lang = searchParams.get("lang");
   const isLanguagePageCreated = useIsLanguagePageCreated(lang as string);
-  const revisionsEnabled = useRevisionsEnabled();
 
   if (isLocked || !isLanguagePageCreated) return <div />;
   return (
     <div className="flex items-center justify-end gap-1">
-      {revisionsEnabled && <PageRevisions />}
       <ThemeButton />
       <PreviewButton />
       <SaveButton />
