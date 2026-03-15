@@ -1,8 +1,8 @@
-import { useBlockRepeaterDataAtom } from "@/hooks/async-props/use-async-props";
-import { ChaiBuilderEditorProps } from "@/types";
-import { ChaiDesignTokens } from "@/types/types";
 import { atom, useAtomValue } from "jotai";
 import { useMemo } from "react";
+import { useBlockRepeaterDataAtom } from "~/hooks/async-props/use-async-props";
+import { ChaiBuilderEditorProps } from "~/types";
+import { ChaiDesignTokens } from "~/types/types";
 
 export const chaiBuilderPropsAtom = atom<Omit<
   ChaiBuilderEditorProps,
