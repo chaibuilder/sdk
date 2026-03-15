@@ -1,10 +1,3 @@
-import { NestedPathSelector } from "@/pages/client/components/nested-path-selector/nested-path-selector";
-import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
-import { useUpdatePage } from "@/pages/hooks/pages/mutations";
-import { useCurrentLanguagePage } from "@/pages/hooks/pages/use-current-language-page";
-import { useBuilderPageData } from "@/pages/hooks/pages/use-page-draft-blocks";
-import { usePageType } from "@/pages/hooks/project/use-page-types";
-
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,14 +7,19 @@ import { Textarea } from "@/components/ui/textarea";
 import { useLanguages } from "@/hooks/use-languages";
 import { usePermissions } from "@/hooks/use-permissions";
 import { useSidebarActivePanel } from "@/hooks/use-sidebar-active-panel";
+import { NestedPathSelector } from "@/pages/client/components/nested-path-selector/nested-path-selector";
+import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
 import { ImagePicker } from "@/pages/digital-asset-manager";
+import { useUpdatePage } from "@/pages/hooks/pages/mutations";
+import { useCurrentLanguagePage } from "@/pages/hooks/pages/use-current-language-page";
 import { usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
+import { useBuilderPageData } from "@/pages/hooks/pages/use-page-draft-blocks";
+import { usePageType } from "@/pages/hooks/project/use-page-types";
 import { usePagesProps } from "@/pages/hooks/utils/use-pages-props";
 import { get, isEmpty, isEqual } from "lodash-es";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { AISEOButton } from "./ai-seo-button";
 import { getSeoDefaults } from "./get-seo-defaults";
 import { processAiSeoResponse } from "./process-ai-seo-response";
 import { SeoLanguageSwitchDialog } from "./seo-language-switch-dialog";
@@ -473,7 +471,6 @@ const SeoPanel = () => {
                       {t("SEO Title")}
                     </Label>
                     <div className="flex items-center justify-end gap-2">
-                      <AISEOButton keyword={formValues.keyword} onComplete={onAiGenerate("title")} field="title" />
                       {editSeo && (
                         <NestedPathSelector
                           dataType="value"
@@ -501,11 +498,6 @@ const SeoPanel = () => {
                       {t("SEO Description")}
                     </Label>
                     <div className="flex items-center gap-2">
-                      <AISEOButton
-                        keyword={formValues.keyword}
-                        onComplete={onAiGenerate("description")}
-                        field="description"
-                      />
                       {editSeo && (
                         <NestedPathSelector
                           data={pageData ?? {}}
@@ -603,11 +595,6 @@ const SeoPanel = () => {
                           {t("OG Title")}
                         </Label>
                         <div className="flex items-center gap-2">
-                          <AISEOButton
-                            keyword={formValues.keyword}
-                            onComplete={onAiGenerate("ogTitle")}
-                            field="ogTitle"
-                          />
                           {editSeo && (
                             <NestedPathSelector
                               dataType="value"
@@ -635,11 +622,6 @@ const SeoPanel = () => {
                           {t("OG Description")}
                         </Label>
                         <div className="flex items-center gap-2">
-                          <AISEOButton
-                            keyword={formValues.keyword}
-                            onComplete={onAiGenerate("ogDescription")}
-                            field="ogDescription"
-                          />
                           {editSeo && (
                             <NestedPathSelector
                               dataType="value"
@@ -729,11 +711,7 @@ const SeoPanel = () => {
                     <Label className="text-xs" htmlFor="jsonLD">
                       {t("JSON-LD")}
                     </Label>
-                    {hasJsonLdForSelectedLang && (
-                      <div className="flex items-center gap-2">
-                        <AISEOButton keyword={formValues.keyword} onComplete={onAiGenerate("jsonLD")} field="jsonLD" />
-                      </div>
-                    )}
+                    {hasJsonLdForSelectedLang && <div className="flex items-center gap-2"></div>}
                   </div>
                   {/* Log pageData to see what's available */}
                   <div className="hidden">{JSON.stringify(pageData)}</div>
