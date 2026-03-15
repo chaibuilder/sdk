@@ -1,15 +1,15 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Command, CommandEmpty, CommandGroup, CommandItem } from "@/components/ui/command";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { removeSlugExtension } from "@/pages/utils/slug-utils";
-import { useChaiFeatureFlag } from "@/runtime/client";
 import { isEmpty } from "lodash-es";
 import { Check, ChevronDown, Search } from "lucide-react";
 import { useMemo, useState } from "react";
+import { Button } from "~/components/ui/button";
+import { Command, CommandEmpty, CommandGroup, CommandItem } from "~/components/ui/command";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
+import { removeSlugExtension } from "~/pages/utils/slug-utils";
+import { useChaiFeatureFlag } from "~/runtime/client";
 import ChaiCommandList from "./ui/chai-command-list";
 
 // Utility to conditionally join class names

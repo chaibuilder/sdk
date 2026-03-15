@@ -1,4 +1,7 @@
-import { Button } from "@/components/ui/button";
+import { get, isEmpty } from "lodash-es";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import { Button } from "~/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -6,21 +9,18 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { useLanguages } from "@/hooks/use-languages";
-import { useSidebarActivePanel } from "@/hooks/use-sidebar-active-panel";
-import { LANGUAGES } from "@/pages/constants/LANGUAGES";
-import { useDeletePage } from "@/pages/hooks/pages/mutations";
-import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
-import { useWebsitePrimaryPages } from "@/pages/hooks/pages/use-project-pages";
-import { usePageTypes } from "@/pages/hooks/project/use-page-types";
-import { useSiteWideUsage } from "@/pages/hooks/use-site-wide-usage";
-import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
-import { ChaiPage } from "@/pages/utils/page-organization";
-import { ChaiPageType } from "@/types/actions";
-import { get, isEmpty } from "lodash-es";
-import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
+} from "~/components/ui/dialog";
+import { useLanguages } from "~/hooks/use-languages";
+import { useSidebarActivePanel } from "~/hooks/use-sidebar-active-panel";
+import { LANGUAGES } from "~/pages/constants/LANGUAGES";
+import { useDeletePage } from "~/pages/hooks/pages/mutations";
+import { useLanguagePages } from "~/pages/hooks/pages/use-language-pages";
+import { useWebsitePrimaryPages } from "~/pages/hooks/pages/use-project-pages";
+import { usePageTypes } from "~/pages/hooks/project/use-page-types";
+import { useSiteWideUsage } from "~/pages/hooks/use-site-wide-usage";
+import { useSearchParams } from "~/pages/hooks/utils/use-search-params";
+import { ChaiPage } from "~/pages/utils/page-organization";
+import { ChaiPageType } from "~/types/actions";
 
 // Helper function to recursively count all child pages
 const countAllChildren = (pageId: string, allPages: ChaiPage[]): number => {
@@ -46,22 +46,22 @@ function DeletePage({ page, onClose }: { page: any; onClose: () => void }) {
   const isPrimaryPage = !page?.primaryPage;
   const { data: languagePages = [] } = useLanguagePages(isPrimaryPage ? page?.id : undefined);
   const { data: siteWideUsage } = useSiteWideUsage();
-  
+
   const isPartial = useMemo(() => isEmpty(page?.slug), [page?.slug]);
-  
+
   const pagesUsingPartial = useMemo(() => {
     if (!isPartial || !page?.id || !siteWideUsage) return [];
-    
+
     const affectedPages: { id: string; name: string }[] = [];
     Object.entries(siteWideUsage).forEach(([pageId, usage]) => {
       if (usage.partialBlocks.includes(page.id) && !usage.isPartial) {
         affectedPages.push({ id: pageId, name: usage.name });
       }
     });
-    
+
     return affectedPages;
   }, [isPartial, page.id, siteWideUsage]);
-  
+
   const languagePagesCount = useMemo(() => {
     if (!isPrimaryPage || !languagePages) return 0;
     return languagePages.filter((lp: any) => lp.id !== page.id).length;
@@ -132,7 +132,7 @@ function DeletePage({ page, onClose }: { page: any; onClose: () => void }) {
                 </ul>
               </div>
             )}
-            
+
             {/* Warning for partial being used in pages */}
             {isPartial && pagesUsingPartial.length > 0 && (
               <div className="mt-3 rounded-md bg-red-50 p-3 text-sm">

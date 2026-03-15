@@ -1,19 +1,19 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { usePageToUser } from "@/pages/client/components/page-lock/page-lock-hook";
-import { useUserId } from "@/pages/client/components/page-lock/page-lock-utils";
-import { LanguageSelector } from "@/pages/client/components/page-manager/page-manager-search-and-filter";
-import { useGetPageChanges } from "@/pages/hooks/pages/use-get-page-changes";
-import { usePageTypes } from "@/pages/hooks/project/use-page-types";
-import { useFallbackLang } from "@/pages/hooks/use-fallback-lang";
-import { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
-import { throwConfetti } from "@/pages/utils/confetti";
-import Tooltip from "@/pages/utils/tooltip";
 import { concat, filter, find, first, get, includes, isEmpty, keys, map, orderBy, uniq } from "lodash-es";
 import { Edit, File, GlobeIcon, Lock } from "lucide-react";
 import { startTransition, useCallback, useEffect, useMemo, useState } from "react";
+import { Button } from "~/components/ui/button";
+import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "~/components/ui/dialog";
+import { usePageToUser } from "~/pages/client/components/page-lock/page-lock-hook";
+import { useUserId } from "~/pages/client/components/page-lock/page-lock-utils";
+import { LanguageSelector } from "~/pages/client/components/page-manager/page-manager-search-and-filter";
+import { useGetPageChanges } from "~/pages/hooks/pages/use-get-page-changes";
+import { usePageTypes } from "~/pages/hooks/project/use-page-types";
+import { useFallbackLang } from "~/pages/hooks/use-fallback-lang";
+import { useChaiUserInfo } from "~/pages/hooks/utils/use-chai-user-info";
+import { throwConfetti } from "~/pages/utils/confetti";
+import Tooltip from "~/pages/utils/tooltip";
 
 const SinglePageItem = ({ page, selectedPages, handleCheckboxChange, getPageType, hasSlug, currentOwnerId }: any) => {
   const userId = useUserId();

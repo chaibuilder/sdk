@@ -1,4 +1,5 @@
-import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
+import { Button } from "~/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -6,9 +7,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { useUnpublishPage } from "@/pages/hooks/pages/mutations";
-import { useTranslation } from "react-i18next";
+} from "~/components/ui/dialog";
+import { useUnpublishPage } from "~/pages/hooks/pages/mutations";
 
 const UnpublishPage = ({ page, onClose }: { page: any; onClose: () => void }) => {
   const { t } = useTranslation();

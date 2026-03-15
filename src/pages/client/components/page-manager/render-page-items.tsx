@@ -1,6 +1,6 @@
-import { usePageExpandManager } from "@/pages/hooks/utils/use-page-expand-manager";
-import { ChaiPage } from "@/pages/utils/page-organization";
 import { Fragment } from "react/jsx-runtime";
+import { usePageExpandManager } from "~/pages/hooks/utils/use-page-expand-manager";
+import { ChaiPage } from "~/pages/utils/page-organization";
 import PageItem from "./page-item";
 
 /**

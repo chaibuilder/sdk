@@ -1,16 +1,16 @@
-import { Button } from "@/components/ui/button";
+import { get } from "lodash-es";
+import { ChevronDown } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { useLanguages } from "@/hooks/use-languages";
-import { useDynamicPageSelector } from "@/pages/hooks/pages/use-dynamic-page-selector";
-import { get } from "lodash-es";
-import { ChevronDown } from "lucide-react";
-import { useEffect, useRef } from "react";
+} from "~/components/ui/dropdown-menu";
+import { Input } from "~/components/ui/input";
+import { useLanguages } from "~/hooks/use-languages";
+import { useDynamicPageSelector } from "~/pages/hooks/pages/use-dynamic-page-selector";
 
 const SearchInput = ({
   isDefaultLang,

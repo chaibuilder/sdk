@@ -1,7 +1,7 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
 import { useEffect, useRef, useState } from "react";
+import { Input } from "~/components/ui/input";
 
 interface DynamicSlugInputProps {
   value: string;

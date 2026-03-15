@@ -1,7 +1,7 @@
-import { Button } from "@/components/ui/button";
 import { useAtom } from "jotai";
 import { ExternalLink } from "lucide-react";
 import { useEffect, useRef } from "react";
+import { Button } from "~/components/ui/button";
 import { contextMenuAtom } from "./context-menu-state";
 
 interface PageLinkContextMenuProps {

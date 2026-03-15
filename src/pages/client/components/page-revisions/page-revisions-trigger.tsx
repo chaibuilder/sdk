@@ -1,10 +1,10 @@
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { History } from "lucide-react";
 import * as React from "react";
 import { Suspense } from "react";
+import { Button } from "~/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet";
+import { Skeleton } from "~/components/ui/skeleton";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
 
 // Loading skeleton for the lazy loaded component
 function RevisionsLoading() {

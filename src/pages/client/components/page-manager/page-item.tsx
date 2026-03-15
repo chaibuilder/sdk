@@ -1,15 +1,15 @@
-import { PageActionsDropdown } from "@/pages/client/components/page-action-dropdown";
-import { usePageToUser } from "@/pages/client/components/page-lock/page-lock-hook";
-import { useUserId } from "@/pages/client/components/page-lock/page-lock-utils";
-import { LANGUAGES } from "@/pages/constants/LANGUAGES";
-import { useFallbackLang } from "@/pages/hooks/use-fallback-lang";
-import { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
-import { usePageExpandManager } from "@/pages/hooks/utils/use-page-expand-manager";
-import { ChaiPage } from "@/pages/utils/page-organization";
-import Tooltip from "@/pages/utils/tooltip";
 import { find, get, isEmpty } from "lodash-es";
 import { ChevronRight, File, Hash, Lock, MoreHorizontal, Pencil, Plus, StarsIcon } from "lucide-react";
 import { useMemo } from "react";
+import { PageActionsDropdown } from "~/pages/client/components/page-action-dropdown";
+import { usePageToUser } from "~/pages/client/components/page-lock/page-lock-hook";
+import { useUserId } from "~/pages/client/components/page-lock/page-lock-utils";
+import { LANGUAGES } from "~/pages/constants/LANGUAGES";
+import { useFallbackLang } from "~/pages/hooks/use-fallback-lang";
+import { useChaiUserInfo } from "~/pages/hooks/utils/use-chai-user-info";
+import { usePageExpandManager } from "~/pages/hooks/utils/use-page-expand-manager";
+import { ChaiPage } from "~/pages/utils/page-organization";
+import Tooltip from "~/pages/utils/tooltip";
 import { PageLinkContextMenu } from "./page-link-context-menu";
 
 /**

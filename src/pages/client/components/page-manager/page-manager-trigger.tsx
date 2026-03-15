@@ -1,15 +1,15 @@
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { useSavePage } from "@/hooks/use-save-page";
-import { usePageLockStatus } from "@/pages/client/components/page-lock/page-lock-hook";
-import { usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
-import { useWebsitePrimaryPages } from "@/pages/hooks/pages/use-project-pages";
-import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { isEmpty } from "lodash-es";
 import { Folder } from "lucide-react";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Button } from "~/components/ui/button";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "~/components/ui/sheet";
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
+import { useSavePage } from "~/hooks/use-save-page";
+import { usePageLockStatus } from "~/pages/client/components/page-lock/page-lock-hook";
+import { usePrimaryPage } from "~/pages/hooks/pages/use-current-page";
+import { useWebsitePrimaryPages } from "~/pages/hooks/pages/use-project-pages";
+import { useSearchParams } from "~/pages/hooks/utils/use-search-params";
 const PagesManagerNew = lazy(() => import("./page-manager-new"));
 
 const PagesManagerTrigger = ({ children }: { children?: React.ReactNode }) => {

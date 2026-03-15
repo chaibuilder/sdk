@@ -1,5 +1,10 @@
-import { Alert } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
+import { find, isEqual, startsWith } from "lodash-es";
+import { AlertCircle } from "lucide-react";
+import { FormEvent, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
+import { Alert } from "~/components/ui/alert";
+import { Button } from "~/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,17 +12,12 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { LANGUAGES } from "@/pages/constants/LANGUAGES";
-import { useChangeSlug } from "@/pages/hooks/pages/mutations";
-import { usePageTypes } from "@/pages/hooks/project/use-page-types";
-import { find, isEqual, startsWith } from "lodash-es";
-import { AlertCircle } from "lucide-react";
-import { FormEvent, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
+} from "~/components/ui/dialog";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { LANGUAGES } from "~/pages/constants/LANGUAGES";
+import { useChangeSlug } from "~/pages/hooks/pages/mutations";
+import { usePageTypes } from "~/pages/hooks/project/use-page-types";
 
 export const ChangeSlug = ({ page, onClose }: { page: any; onClose: () => void }) => {
   const { t } = useTranslation();

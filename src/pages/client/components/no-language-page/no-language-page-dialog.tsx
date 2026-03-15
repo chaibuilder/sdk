@@ -1,6 +1,6 @@
-import { useIsLanguagePageCreated } from "@/pages/hooks/pages/use-is-languagep-page-created";
-import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { Suspense, lazy } from "react";
+import { useIsLanguagePageCreated } from "~/pages/hooks/pages/use-is-languagep-page-created";
+import { useSearchParams } from "~/pages/hooks/utils/use-search-params";
 
 const NoLanguagePageContent = lazy(() => import("./no-language-page-content"));
 

@@ -1,8 +1,8 @@
-import PageManagerSearchAndFilter from "@/pages/client/components/page-manager/page-manager-search-and-filter";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 import { vi } from "vitest";
+import { TooltipProvider } from "~/components/ui/tooltip";
+import PageManagerSearchAndFilter from "~/pages/client/components/page-manager/page-manager-search-and-filter";
 
 const mockUsePageTypes = vi.fn();
 

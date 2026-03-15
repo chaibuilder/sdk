@@ -1,6 +1,6 @@
-import { Dialog } from "@/components/ui/dialog";
-import { usePublishPages } from "@/pages/hooks/pages/mutations";
 import { lazy, Suspense } from "react";
+import { Dialog } from "~/components/ui/dialog";
+import { usePublishPages } from "~/pages/hooks/pages/mutations";
 const PublishPagesModalContent = lazy(() => import("./publish-pages-content"));
 
 export default function PublishPages({

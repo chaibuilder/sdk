@@ -1,17 +1,17 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Switch } from "@/components/ui/switch";
 import { formatDate } from "date-fns";
 import { isArray, isPlainObject, isString, map, mapValues, startsWith, trim } from "lodash-es";
 import { Check, Copy, FileJson, Loader } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Diff, Hunk, parseDiff } from "react-diff-view";
-import { useRevisionComparison } from "@/pages/hooks/use-revision-comparison";
-import { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
+import { Badge } from "~/components/ui/badge";
+import { Button } from "~/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "~/components/ui/dialog";
+import { ScrollArea } from "~/components/ui/scroll-area";
+import { Switch } from "~/components/ui/switch";
+import { useRevisionComparison } from "~/pages/hooks/use-revision-comparison";
+import { useChaiUserInfo } from "~/pages/hooks/utils/use-chai-user-info";
 
 const RevisionTag = ({ version }: { version: { uid: string; label: string; item: any } }) => {
   const item = version?.item;

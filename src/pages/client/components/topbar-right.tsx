@@ -1,31 +1,3 @@
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useLanguages } from "@/hooks/use-languages";
-import { useSavePage } from "@/hooks/use-save-page";
-import { useRightPanel } from "@/hooks/use-theme";
-import PageRevisions from "@/pages/client/components/page-revisions/page-revisions-trigger";
-import PermissionChecker from "@/pages/client/components/permission-checker";
-import PublishPages from "@/pages/client/components/publish-pages/publish-pages";
-import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
-import { usePublishPages } from "@/pages/hooks/pages/mutations";
-import { useCurrentActivePage, useGetPageFullSlug, usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
-import { useGetUnpublishedPartialBlocks } from "@/pages/hooks/pages/use-get-unpublished-partial-blocks";
-import { useIsLanguagePageCreated } from "@/pages/hooks/pages/use-is-languagep-page-created";
-import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
-import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
-import { usePageTypes } from "@/pages/hooks/project/use-page-types";
-import { useUnpublishedWebsiteSettings } from "@/pages/hooks/project/use-unpublished-website-settings";
-import { useRevisionsEnabled } from "@/pages/hooks/use-revisions-enabled";
-import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
-import { throwConfetti } from "@/pages/utils/confetti";
-import Tooltip from "@/pages/utils/tooltip";
 import { compact, find, isEmpty, upperCase } from "lodash-es";
 import {
   CheckCircle,
@@ -43,6 +15,32 @@ import {
 } from "lucide-react";
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Button } from "~/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
+import { useLanguages } from "~/hooks/use-languages";
+import { useSavePage } from "~/hooks/use-save-page";
+import { useRightPanel } from "~/hooks/use-theme";
+import PageRevisions from "~/pages/client/components/page-revisions/page-revisions-trigger";
+import PublishPages from "~/pages/client/components/publish-pages/publish-pages";
+import { usePublishPages } from "~/pages/hooks/pages/mutations";
+import { useCurrentActivePage, useGetPageFullSlug, usePrimaryPage } from "~/pages/hooks/pages/use-current-page";
+import { useGetUnpublishedPartialBlocks } from "~/pages/hooks/pages/use-get-unpublished-partial-blocks";
+import { useIsLanguagePageCreated } from "~/pages/hooks/pages/use-is-languagep-page-created";
+import { useLanguagePages } from "~/pages/hooks/pages/use-language-pages";
+import { usePagesProp } from "~/pages/hooks/project/use-builder-prop";
+import { usePageTypes } from "~/pages/hooks/project/use-page-types";
+import { useUnpublishedWebsiteSettings } from "~/pages/hooks/project/use-unpublished-website-settings";
+import { useRevisionsEnabled } from "~/pages/hooks/use-revisions-enabled";
+import { useSearchParams } from "~/pages/hooks/utils/use-search-params";
+import { throwConfetti } from "~/pages/utils/confetti";
+import Tooltip from "~/pages/utils/tooltip";
 import { usePageLockStatus } from "./page-lock/page-lock-hook";
 
 const UnpublishPage = lazy(() => import("@/pages/client/components/unpublish-page"));
@@ -477,16 +475,10 @@ export default function TopbarRight() {
   return (
     <div className="flex items-center justify-end gap-1">
       {revisionsEnabled && <PageRevisions />}
-      <PermissionChecker permission={PAGES_PERMISSIONS.EDIT_THEME}>
-        <ThemeButton />
-      </PermissionChecker>
+      <ThemeButton />
       <PreviewButton />
-      <PermissionChecker permission={PAGES_PERMISSIONS.SAVE_PAGE}>
-        <SaveButton />
-      </PermissionChecker>
-      <PermissionChecker permission={PAGES_PERMISSIONS.PUBLISH_PAGE}>
-        <PublishButton />
-      </PermissionChecker>
+      <SaveButton />
+      <PublishButton />
       <LiveLinkButton />
     </div>
   );

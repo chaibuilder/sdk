@@ -1,6 +1,12 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { useQueryClient } from "@tanstack/react-query";
+import { format, formatDistanceToNow } from "date-fns";
+import { isEmpty } from "lodash-es";
+import { CloudOff, FileJson, MoreHorizontal, Rocket, Save, Trash, Undo2, X } from "lucide-react";
+import * as React from "react";
+import { lazy, startTransition, Suspense, useEffect, useState } from "react";
+import { Button } from "~/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,31 +14,23 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "~/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useLanguages } from "@/hooks/use-languages";
-import { useSavePage } from "@/hooks/use-save-page";
-import PermissionChecker from "@/pages/client/components/permission-checker";
-import { ACTIONS } from "@/pages/constants/ACTIONS";
-import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
-import { usePageEditInfo, usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
-import { type Revision, useDeleteRevision, useRestoreRevision, useRevisions } from "@/pages/hooks/use-revisions";
-import { useChaiUserInfo } from "@/pages/hooks/utils/use-chai-user-info";
-import { useQueryClient } from "@tanstack/react-query";
-import { format, formatDistanceToNow } from "date-fns";
-import { isEmpty } from "lodash-es";
-import { CloudOff, FileJson, MoreHorizontal, Rocket, Save, Trash, Undo2, X } from "lucide-react";
-import * as React from "react";
-import { lazy, startTransition, Suspense, useEffect, useState } from "react";
+} from "~/components/ui/dropdown-menu";
+import { ScrollArea } from "~/components/ui/scroll-area";
+import { SheetHeader, SheetTitle } from "~/components/ui/sheet";
+import { Skeleton } from "~/components/ui/skeleton";
+import { useLanguages } from "~/hooks/use-languages";
+import { useSavePage } from "~/hooks/use-save-page";
+import { ACTIONS } from "~/pages/constants/ACTIONS";
+import { usePageEditInfo, usePrimaryPage } from "~/pages/hooks/pages/use-current-page";
+import { type Revision, useDeleteRevision, useRestoreRevision, useRevisions } from "~/pages/hooks/use-revisions";
+import { useChaiUserInfo } from "~/pages/hooks/utils/use-chai-user-info";
 
 // Lazy load the JsonDiffViewer component
 const JsonDiffViewer = lazy(() => import("@/pages/client/components/json-diff-viewer"));
@@ -199,9 +197,7 @@ function RevisionItem({
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <PermissionChecker permissions={[PAGES_PERMISSIONS.RESTORE_REVISION, PAGES_PERMISSIONS.DELETE_REVISION]}>
-          <RevisionActions revision={revision} onRestore={onRestore} onDelete={onDelete} />
-        </PermissionChecker>
+        <RevisionActions revision={revision} onRestore={onRestore} onDelete={onDelete} />
       </div>
       <CompareCheckbox
         checked={checked}
@@ -348,24 +344,20 @@ function RevisionActions({ revision, onRestore, onDelete }: RevisionActionsProps
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="text-xs">
-        <PermissionChecker permission={PAGES_PERMISSIONS.RESTORE_REVISION}>
-          <DropdownMenuItem onClick={onRestore} className="cursor-pointer text-sm">
-            <Undo2 className="mr-2 h-4 w-4" />
-            <span>Restore this version</span>
-          </DropdownMenuItem>
-        </PermissionChecker>
+        <DropdownMenuItem onClick={onRestore} className="cursor-pointer text-sm">
+          <Undo2 className="mr-2 h-4 w-4" />
+          <span>Restore this version</span>
+        </DropdownMenuItem>
 
-        <PermissionChecker permission={PAGES_PERMISSIONS.DELETE_REVISION}>
-          {revision.uid !== "current" && (
-            <>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={onDelete} className="cursor-pointer text-destructive">
-                <Trash className="mr-2 h-4 w-4" />
-                <span>Delete this version</span>
-              </DropdownMenuItem>
-            </>
-          )}
-        </PermissionChecker>
+        {revision.uid !== "current" && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={onDelete} className="cursor-pointer text-destructive">
+              <Trash className="mr-2 h-4 w-4" />
+              <span>Delete this version</span>
+            </DropdownMenuItem>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

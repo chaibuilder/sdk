@@ -1,16 +1,16 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Edit, MoreVertical, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { Button } from "~/components/ui/button";
+import { Card, CardContent } from "~/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { usePermissions } from "@/hooks/use-permissions";
-import { DeleteBlockConfirmation } from "@/pages/client/components/save-ui-blocks/delete-block-confirmation";
-import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
-import { Edit, MoreVertical, Trash2 } from "lucide-react";
-import { useState } from "react";
+} from "~/components/ui/dropdown-menu";
+import { usePermissions } from "~/hooks/use-permissions";
+import { DeleteBlockConfirmation } from "~/pages/client/components/save-ui-blocks/delete-block-confirmation";
+import { PAGES_PERMISSIONS } from "~/pages/constants/PERMISSIONS";
 
 interface EditBlockButtonProps {
   blockId: string;
