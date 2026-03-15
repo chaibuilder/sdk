@@ -10,16 +10,16 @@
  * @module use-block-drag-end
  */
 
+import { useAtom } from "jotai";
+import { useCallback } from "react";
 import {
   canvasRenderKeyAtom,
   dragAndDropAtom,
   dropIndicatorAtom,
   setIsDragging,
-} from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
-import { useDragParentHighlight } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-parent-highlight";
-import { useCanvasIframe } from "@/hooks/use-canvas-iframe";
-import { useAtom } from "jotai";
-import { useCallback } from "react";
+} from "~/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
+import { useDragParentHighlight } from "~/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-parent-highlight";
+import { useCanvasIframe } from "~/hooks/use-canvas-iframe";
 
 /**
  * @HOOK useBlockDragEnd

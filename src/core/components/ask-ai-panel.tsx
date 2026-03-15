@@ -1,12 +1,12 @@
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { QuickPrompts } from "@/core/components/QuickPrompts";
-import { useAskAi } from "@/hooks/use-ask-ai";
-import { useSelectedBlock, useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
 import { ArrowTopRightIcon, ReloadIcon, StopIcon } from "@radix-ui/react-icons";
 import { first } from "lodash-es";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Button } from "~/components/ui/button";
+import { Textarea } from "~/components/ui/textarea";
+import { QuickPrompts } from "~/core/components/QuickPrompts";
+import { useAskAi } from "~/hooks/use-ask-ai";
+import { useSelectedBlock, useSelectedBlockIds } from "~/hooks/use-selected-blockIds";
 import { AiIcon } from "./ai/ai-icon";
 import { TypeIcon } from "./sidepanels/panels/outline/block-type-icon";
 

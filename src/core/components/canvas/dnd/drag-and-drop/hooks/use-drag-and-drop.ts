@@ -9,8 +9,8 @@
  * @module use-drag-and-drop
  */
 
-import { ChaiBlock } from "@/types/common";
 import { atom } from "jotai";
+import { ChaiBlock } from "~/types/common";
 
 /**
  * Atom to store the currently dragged block

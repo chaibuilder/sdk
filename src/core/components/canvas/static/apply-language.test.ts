@@ -1,5 +1,5 @@
-import { ChaiBlockConfig } from "@/types/blocks";
-import { ChaiBlock } from "@/types/common";
+import { ChaiBlockConfig } from "~/types/blocks";
+import { ChaiBlock } from "~/types/common";
 import { applyLanguage } from "./new-blocks-render-helpers";
 
 describe("applyLanguage", () => {

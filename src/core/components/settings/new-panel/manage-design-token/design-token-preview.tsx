@@ -1,7 +1,7 @@
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { TailwindPreviewIframe } from "@/core/components/canvas/tailwind-preview-iframe";
-import { sanitizeClasses } from "@/core/functions/SanitizeClasses";
 import { useTranslation } from "react-i18next";
+import { ScrollArea } from "~/components/ui/scroll-area";
+import { TailwindPreviewIframe } from "~/core/components/canvas/tailwind-preview-iframe";
+import { sanitizeClasses } from "~/core/functions/SanitizeClasses";
 
 interface DesignTokenPreviewProps {
   activeToken?: {

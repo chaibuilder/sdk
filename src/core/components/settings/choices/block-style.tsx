@@ -1,22 +1,22 @@
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { AdvanceChoices } from "@/core/components/settings/choices/advance-choices";
-import { ColorChoice } from "@/core/components/settings/choices/color-choice";
-import { DropDownChoices } from "@/core/components/settings/choices/dropdown-choices";
-import { IconChoices } from "@/core/components/settings/choices/icon-choice";
-import { RangeChoices } from "@/core/components/settings/choices/range-choices";
-import { BlockStyleProvider } from "@/core/components/settings/choices/style-context";
-import { ClassDerivedObject, generateFullClsName } from "@/core/functions/class-fn";
-import { useAddClassesToBlocks } from "@/hooks/use-add-classes-to-blocks";
-import { useDarkMode } from "@/hooks/use-dark-mode";
-import { useRemoveClassesFromBlocks } from "@/hooks/use-remove-classes-from-blocks";
-import { useScreenSizeWidth } from "@/hooks/use-screen-size-width";
-import { useSelectedBlockCurrentClasses } from "@/hooks/use-select-block-classes";
-import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
-import { useStylingState } from "@/hooks/use-styling-state";
 import { CrossCircledIcon, InfoCircledIcon } from "@radix-ui/react-icons";
 import { findLast, get } from "lodash-es";
 import { useCallback, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
+import { AdvanceChoices } from "~/core/components/settings/choices/advance-choices";
+import { ColorChoice } from "~/core/components/settings/choices/color-choice";
+import { DropDownChoices } from "~/core/components/settings/choices/dropdown-choices";
+import { IconChoices } from "~/core/components/settings/choices/icon-choice";
+import { RangeChoices } from "~/core/components/settings/choices/range-choices";
+import { BlockStyleProvider } from "~/core/components/settings/choices/style-context";
+import { ClassDerivedObject, generateFullClsName } from "~/core/functions/class-fn";
+import { useAddClassesToBlocks } from "~/hooks/use-add-classes-to-blocks";
+import { useDarkMode } from "~/hooks/use-dark-mode";
+import { useRemoveClassesFromBlocks } from "~/hooks/use-remove-classes-from-blocks";
+import { useScreenSizeWidth } from "~/hooks/use-screen-size-width";
+import { useSelectedBlockCurrentClasses } from "~/hooks/use-select-block-classes";
+import { useSelectedBlockIds } from "~/hooks/use-selected-blockIds";
+import { useStylingState } from "~/hooks/use-styling-state";
 
 type EditOptionProps = {
   label: string;

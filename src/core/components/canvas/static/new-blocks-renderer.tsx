@@ -1,35 +1,35 @@
-import { pageBlocksAtomsAtom } from "@/atoms/blocks";
-import { chaiDesignTokensAtom, usePageExternalData } from "@/atoms/builder";
-import { builderStore } from "@/atoms/store";
-import { dataBindingActiveAtom } from "@/atoms/ui";
-import { useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
-import { useDirectBlockDrag } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-direct-block-drag";
-import {
-  applyLanguage,
-  applyLimit,
-  getBlockRuntimeProps,
-  getBlockTagAttributes,
-} from "@/core/components/canvas/static/new-blocks-render-helpers";
-import { useBlockRuntimeProps } from "@/core/components/canvas/static/use-block-runtime-props";
-import { MAX_PARTIAL_DEPTH } from "@/core/constants/partial-blocks";
-import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
-import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { useEditorMode } from "@/hooks/use-editor-mode";
-import { useInlineEditing } from "@/hooks/use-inline-editing";
-import { useLanguages } from "@/hooks/use-languages";
-import { usePartialBlocksStore } from "@/hooks/use-partial-blocks-store";
-import { useSavePage } from "@/hooks/use-save-page";
-import { useGetBlockAtom } from "@/hooks/use-update-block-atom";
-import { applyBindingToBlockProps } from "@/render/apply-binding";
-import { resolveBinding } from "@/render/binding-engine";
-import { getRegisteredChaiBlock } from "@/runtime";
-import { ChaiBlock } from "@/types/common";
 import { atom, Atom, Provider, useAtom, useAtomValue } from "jotai";
 import { splitAtom } from "jotai/utils";
 import { filter, get, has, isArray, isEmpty, isNull, isString, map, noop } from "lodash-es";
 import React, { createContext, createElement, Suspense, useCallback, useContext, useMemo } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { toast } from "sonner";
+import { pageBlocksAtomsAtom } from "~/atoms/blocks";
+import { chaiDesignTokensAtom, usePageExternalData } from "~/atoms/builder";
+import { builderStore } from "~/atoms/store";
+import { dataBindingActiveAtom } from "~/atoms/ui";
+import { useIsDragAndDropEnabled } from "~/core/components/canvas/dnd/drag-and-drop/hooks";
+import { useDirectBlockDrag } from "~/core/components/canvas/dnd/drag-and-drop/hooks/use-direct-block-drag";
+import {
+  applyLanguage,
+  applyLimit,
+  getBlockRuntimeProps,
+  getBlockTagAttributes,
+} from "~/core/components/canvas/static/new-blocks-render-helpers";
+import { useBlockRuntimeProps } from "~/core/components/canvas/static/use-block-runtime-props";
+import { MAX_PARTIAL_DEPTH } from "~/core/constants/partial-blocks";
+import { useBlocksStore } from "~/hooks/history/use-blocks-store-undoable-actions";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
+import { useEditorMode } from "~/hooks/use-editor-mode";
+import { useInlineEditing } from "~/hooks/use-inline-editing";
+import { useLanguages } from "~/hooks/use-languages";
+import { usePartialBlocksStore } from "~/hooks/use-partial-blocks-store";
+import { useSavePage } from "~/hooks/use-save-page";
+import { useGetBlockAtom } from "~/hooks/use-update-block-atom";
+import { applyBindingToBlockProps } from "~/render/apply-binding";
+import { resolveBinding } from "~/render/binding-engine";
+import { getRegisteredChaiBlock } from "~/runtime";
+import { ChaiBlock } from "~/types/common";
 import { adjustSpacingInContentBlocks } from "./adjust-spacing-in-blocks";
 import { MayBeAsyncPropsWrapper } from "./async-props-wrapper";
 import { ErrorFallback } from "./error-fallback";

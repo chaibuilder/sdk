@@ -1,18 +1,18 @@
-import { Badge } from "@/components/ui/badge";
+import { DotsVerticalIcon } from "@radix-ui/react-icons";
+import { find, get, isEmpty, map, startCase } from "lodash-es";
+import { useTranslation } from "react-i18next";
+import { Badge } from "~/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { getSplitChaiClasses } from "@/hooks/get-split-classes";
-import { useRemoveClassesFromBlocks } from "@/hooks/use-remove-classes-from-blocks";
-import { useResetBlockStyles } from "@/hooks/use-reset-block-styles";
-import { useSelectedBlock, useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
-import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
-import { DotsVerticalIcon } from "@radix-ui/react-icons";
-import { find, get, isEmpty, map, startCase } from "lodash-es";
-import { useTranslation } from "react-i18next";
+} from "~/components/ui/dropdown-menu";
+import { getSplitChaiClasses } from "~/hooks/get-split-classes";
+import { useRemoveClassesFromBlocks } from "~/hooks/use-remove-classes-from-blocks";
+import { useResetBlockStyles } from "~/hooks/use-reset-block-styles";
+import { useSelectedBlock, useSelectedBlockIds } from "~/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "~/hooks/use-selected-styling-blocks";
 
 export const BlockStylingProps = () => {
   const selectedBlock = useSelectedBlock();

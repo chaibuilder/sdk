@@ -1,16 +1,3 @@
-import {
-  getChaiThemeOptions,
-  getThemeCustomFontFace,
-  getThemeFontsUrls,
-} from "@/core/components/canvas/static/chai-theme-helpers";
-import { CssThemeVariables } from "@/core/components/css-theme-var";
-import { useFrame } from "@/core/frame";
-import { useDarkMode } from "@/hooks/use-dark-mode";
-import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
-import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
-import { useTheme, useThemeOptions } from "@/hooks/use-theme";
-import { useRegisteredFonts } from "@/runtime";
-import { ChaiFontBySrc, ChaiFontByUrl, ChaiTheme } from "@/types";
 import aspectRatio from "@tailwindcss/aspect-ratio";
 import containerQueries from "@tailwindcss/container-queries";
 import forms from "@tailwindcss/forms";
@@ -18,6 +5,19 @@ import typography from "@tailwindcss/typography";
 import { filter, get, has, map } from "lodash-es";
 import { useEffect, useMemo } from "react";
 import plugin from "tailwindcss/plugin";
+import {
+  getChaiThemeOptions,
+  getThemeCustomFontFace,
+  getThemeFontsUrls,
+} from "~/core/components/canvas/static/chai-theme-helpers";
+import { CssThemeVariables } from "~/core/components/css-theme-var";
+import { useFrame } from "~/core/frame";
+import { useDarkMode } from "~/hooks/use-dark-mode";
+import { useSelectedBlockIds } from "~/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "~/hooks/use-selected-styling-blocks";
+import { useTheme, useThemeOptions } from "~/hooks/use-theme";
+import { useRegisteredFonts } from "~/runtime";
+import { ChaiFontBySrc, ChaiFontByUrl, ChaiTheme } from "~/types";
 
 export const HeadTags = () => {
   const [chaiTheme] = useTheme();

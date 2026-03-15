@@ -1,10 +1,10 @@
-import { useCurrentClassByProperty } from "@/core/components/settings/choices/block-style";
-import { DropDownChoices } from "@/core/components/settings/choices/dropdown-choices";
-import { StyleContext } from "@/core/components/settings/choices/style-context";
-import { useTailwindClassList } from "@/core/constants/CLASSES_LIST";
 import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 import { get, nth } from "lodash-es";
 import { useContext, useMemo } from "react";
+import { useCurrentClassByProperty } from "~/core/components/settings/choices/block-style";
+import { DropDownChoices } from "~/core/components/settings/choices/dropdown-choices";
+import { StyleContext } from "~/core/components/settings/choices/style-context";
+import { useTailwindClassList } from "~/core/constants/CLASSES_LIST";
 
 export const RangeChoices = ({ property, onChange }: any) => {
   const { canReset, canChange } = useContext(StyleContext);

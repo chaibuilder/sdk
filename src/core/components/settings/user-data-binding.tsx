@@ -1,7 +1,7 @@
-import { Input } from "@/components/ui/input";
 import { Eta } from "eta/core";
 import { get, isArray, isObject } from "lodash-es";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Input } from "~/components/ui/input";
 
 type UserDataBindingProps = {
   currentExpression: string;

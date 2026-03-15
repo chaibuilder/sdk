@@ -1,12 +1,12 @@
-import { saveToLibraryModalAtom } from "@/atoms/builder";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
-import { useSaveToLibraryComponent } from "@/runtime/client";
-import { ChaiBlock } from "@/types/common";
 import { useAtom } from "jotai";
 import { filter, find, isEmpty } from "lodash-es";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { saveToLibraryModalAtom } from "~/atoms/builder";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "~/components/ui/dialog";
+import { useBlocksStore } from "~/hooks/history/use-blocks-store-undoable-actions";
+import { useSaveToLibraryComponent } from "~/runtime/client";
+import { ChaiBlock } from "~/types/common";
 const getBlocks = (allBlocks: ChaiBlock[], parent: string) => {
   const blocks = filter(allBlocks, { _parent: parent });
   if (blocks.length === 0) return [];

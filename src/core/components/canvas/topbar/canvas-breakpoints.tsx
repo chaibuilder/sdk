@@ -1,4 +1,7 @@
-import { Button } from "@/components/ui/button";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
+import { includes, map, toUpper } from "lodash-es";
+import { useTranslation } from "react-i18next";
+import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -6,15 +9,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-import { cn, getBreakpointValue } from "@/core/functions/common-functions";
-import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { useCanvasDisplayWidth, useScreenSizeWidth } from "@/hooks/use-screen-size-width";
-import { useSelectedBreakpoints } from "@/hooks/use-selected-breakpoints";
-import { ChevronDownIcon } from "@radix-ui/react-icons";
-import { includes, map, toUpper } from "lodash-es";
-import { useTranslation } from "react-i18next";
+} from "~/components/ui/dropdown-menu";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "~/components/ui/hover-card";
+import { cn, getBreakpointValue } from "~/core/functions/common-functions";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
+import { useCanvasDisplayWidth, useScreenSizeWidth } from "~/hooks/use-screen-size-width";
+import { useSelectedBreakpoints } from "~/hooks/use-selected-breakpoints";
 
 export interface BreakpointItemType {
   breakpoint: string;

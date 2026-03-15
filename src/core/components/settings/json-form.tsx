@@ -1,16 +1,3 @@
-import { CodeEditor } from "@/core/rjsf-widgets/code-widget";
-import { CollectionFilterSortField } from "@/core/rjsf-widgets/collection-select";
-import { IconPickerField } from "@/core/rjsf-widgets/Icon";
-import { ImagePickerField } from "@/core/rjsf-widgets/image";
-import JSONFormFieldTemplate from "@/core/rjsf-widgets/json-form-field-template";
-import { LinkField } from "@/core/rjsf-widgets/link";
-import { RepeaterBindingWidget } from "@/core/rjsf-widgets/repeater-binding";
-import { RowColField } from "@/core/rjsf-widgets/row-col";
-import { RTEField } from "@/core/rjsf-widgets/rte-widget/rte-widget";
-import { SliderField } from "@/core/rjsf-widgets/slider";
-import { SourcesField } from "@/core/rjsf-widgets/sources";
-import { useLanguages } from "@/hooks/use-languages";
-import { useChaiBlockSettingComponents } from "@/runtime/client";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { useThrottledCallback } from "@react-hookz/web";
 import RjForm from "@rjsf/core";
@@ -18,6 +5,19 @@ import { RJSFSchema, UiSchema } from "@rjsf/utils";
 import validator from "@rjsf/validator-ajv8";
 import { get, set, take } from "lodash-es";
 import { memo } from "react";
+import { CodeEditor } from "~/core/rjsf-widgets/code-widget";
+import { CollectionFilterSortField } from "~/core/rjsf-widgets/collection-select";
+import { IconPickerField } from "~/core/rjsf-widgets/Icon";
+import { ImagePickerField } from "~/core/rjsf-widgets/image";
+import JSONFormFieldTemplate from "~/core/rjsf-widgets/json-form-field-template";
+import { LinkField } from "~/core/rjsf-widgets/link";
+import { RepeaterBindingWidget } from "~/core/rjsf-widgets/repeater-binding";
+import { RowColField } from "~/core/rjsf-widgets/row-col";
+import { RTEField } from "~/core/rjsf-widgets/rte-widget/rte-widget";
+import { SliderField } from "~/core/rjsf-widgets/slider";
+import { SourcesField } from "~/core/rjsf-widgets/sources";
+import { useLanguages } from "~/hooks/use-languages";
+import { useChaiBlockSettingComponents } from "~/runtime/client";
 
 type JSONFormType = {
   blockId?: string;

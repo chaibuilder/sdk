@@ -1,16 +1,3 @@
-import { chaiDesignTokensAtom } from "@/atoms/builder";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { DesignTokensIcon } from "@/core/components/sidepanels/panels/design-tokens/DesignTokensIcon";
-import { useFuseSearch } from "@/core/constants/CLASSES_LIST";
-import { DESIGN_TOKEN_PREFIX } from "@/core/constants/STRINGS";
-import { getSplitChaiClasses } from "@/hooks/get-split-classes";
-import { useAddClassesToBlocks } from "@/hooks/use-add-classes-to-blocks";
-import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { useRemoveClassesFromBlocks } from "@/hooks/use-remove-classes-from-blocks";
-import { useSelectedBlock, useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
-import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
 import { CheckIcon, CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { useAtomValue } from "jotai";
 import { first, get, isEmpty, isFunction, map } from "lodash-es";
@@ -18,6 +5,19 @@ import { Suspense, lazy, useMemo, useRef, useState } from "react";
 import Autosuggest from "react-autosuggest";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { chaiDesignTokensAtom } from "~/atoms/builder";
+import { Button } from "~/components/ui/button";
+import { Label } from "~/components/ui/label";
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
+import { DesignTokensIcon } from "~/core/components/sidepanels/panels/design-tokens/DesignTokensIcon";
+import { useFuseSearch } from "~/core/constants/CLASSES_LIST";
+import { DESIGN_TOKEN_PREFIX } from "~/core/constants/STRINGS";
+import { getSplitChaiClasses } from "~/hooks/get-split-classes";
+import { useAddClassesToBlocks } from "~/hooks/use-add-classes-to-blocks";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
+import { useRemoveClassesFromBlocks } from "~/hooks/use-remove-classes-from-blocks";
+import { useSelectedBlock, useSelectedBlockIds } from "~/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "~/hooks/use-selected-styling-blocks";
 
 const ManageDesignTokensModal = lazy(() => import("./manage-design-token/manage-design-tokens-modal"));
 

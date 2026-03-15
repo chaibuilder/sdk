@@ -1,17 +1,17 @@
-import { useFrame } from "@/core/frame/frame-context";
-import RteMenubar from "@/core/rjsf-widgets/rte-widget/rte-menu-bar";
-import { useRTEditor } from "@/core/rjsf-widgets/rte-widget/use-rte-editor";
-import { useBlockHighlight } from "@/hooks/use-block-highlight";
-import { useInlineEditing } from "@/hooks/use-inline-editing";
-import { useLanguages } from "@/hooks/use-languages";
-import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
-import { useUpdateBlocksProps } from "@/hooks/use-update-blocks-props";
-import { getRegisteredChaiBlock } from "@/runtime";
-import { ChaiBlock } from "@/types/common";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { BubbleMenu, EditorContent } from "@tiptap/react";
 import { cloneDeep, get, has } from "lodash-es";
 import { createElement, memo, startTransition, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useFrame } from "~/core/frame/frame-context";
+import RteMenubar from "~/core/rjsf-widgets/rte-widget/rte-menu-bar";
+import { useRTEditor } from "~/core/rjsf-widgets/rte-widget/use-rte-editor";
+import { useBlockHighlight } from "~/hooks/use-block-highlight";
+import { useInlineEditing } from "~/hooks/use-inline-editing";
+import { useLanguages } from "~/hooks/use-languages";
+import { useSelectedBlockIds } from "~/hooks/use-selected-blockIds";
+import { useUpdateBlocksProps } from "~/hooks/use-update-blocks-props";
+import { getRegisteredChaiBlock } from "~/runtime";
+import { ChaiBlock } from "~/types/common";
 
 function getInitialTextAlign(element: HTMLElement) {
   let el = element as HTMLElement | null;

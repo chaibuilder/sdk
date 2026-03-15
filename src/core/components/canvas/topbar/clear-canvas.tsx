@@ -1,3 +1,6 @@
+import { EraserIcon } from "@radix-ui/react-icons";
+import { useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -8,14 +11,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { useBlocksStoreUndoableActions } from "@/hooks/history/use-blocks-store-undoable-actions";
-import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
-import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
-import { EraserIcon } from "@radix-ui/react-icons";
-import { useCallback } from "react";
-import { useTranslation } from "react-i18next";
+} from "~/components/ui/alert-dialog";
+import { Button } from "~/components/ui/button";
+import { useBlocksStoreUndoableActions } from "~/hooks/history/use-blocks-store-undoable-actions";
+import { useSelectedBlockIds } from "~/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "~/hooks/use-selected-styling-blocks";
 
 export const ClearCanvas = ({ children }: { children?: React.ReactNode }) => {
   const { t } = useTranslation();

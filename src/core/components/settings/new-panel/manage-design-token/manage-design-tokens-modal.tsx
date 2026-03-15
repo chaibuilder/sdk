@@ -1,3 +1,6 @@
+import { TokensIcon } from "@radix-ui/react-icons";
+import React, { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -7,11 +10,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { TokensIcon } from "@radix-ui/react-icons";
-import React, { useCallback, useState } from "react";
-import { useTranslation } from "react-i18next";
+} from "~/components/ui/alert-dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "~/components/ui/dialog";
 import { DesignTokenPreview } from "./design-token-preview";
 import ManageDesignTokens from "./manage-design-tokens";
 

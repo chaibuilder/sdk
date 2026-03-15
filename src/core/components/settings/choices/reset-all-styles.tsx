@@ -1,16 +1,16 @@
+import { Cross2Icon, DotsVerticalIcon, ResetIcon } from "@radix-ui/react-icons";
+import { isEmpty } from "lodash-es";
+import { useTranslation } from "react-i18next";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useRemoveAllClassesForBlock } from "@/hooks/use-remove-classes-from-blocks";
-import { useResetBlockStyles } from "@/hooks/use-reset-block-styles";
-import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
-import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
-import { Cross2Icon, DotsVerticalIcon, ResetIcon } from "@radix-ui/react-icons";
-import { isEmpty } from "lodash-es";
-import { useTranslation } from "react-i18next";
+} from "~/components/ui/dropdown-menu";
+import { useRemoveAllClassesForBlock } from "~/hooks/use-remove-classes-from-blocks";
+import { useResetBlockStyles } from "~/hooks/use-reset-block-styles";
+import { useSelectedBlock } from "~/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "~/hooks/use-selected-styling-blocks";
 
 export const ResetStylesButton = () => {
   const { resetAll } = useResetBlockStyles();

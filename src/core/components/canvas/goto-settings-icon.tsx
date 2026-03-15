@@ -1,6 +1,6 @@
-import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { pubsub } from "@/core/pubsub";
 import { GearIcon } from "@radix-ui/react-icons";
+import { CHAI_BUILDER_EVENTS } from "~/core/events";
+import { pubsub } from "~/core/pubsub";
 
 interface GotoSettingsIconProps {
   blockId?: string;

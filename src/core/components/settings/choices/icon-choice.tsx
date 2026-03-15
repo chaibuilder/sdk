@@ -1,11 +1,11 @@
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { useCurrentClassByProperty } from "@/core/components/settings/choices/block-style";
-import { StyleContext } from "@/core/components/settings/choices/style-context";
-import { useTailwindClassList } from "@/core/constants/CLASSES_LIST";
-import { EDITOR_ICONS } from "@/core/constants/ICONS";
 import { BoxIcon } from "@radix-ui/react-icons";
 import { get, map, startCase, toLower } from "lodash-es";
 import React, { useContext, useMemo } from "react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
+import { useCurrentClassByProperty } from "~/core/components/settings/choices/block-style";
+import { StyleContext } from "~/core/components/settings/choices/style-context";
+import { useTailwindClassList } from "~/core/constants/CLASSES_LIST";
+import { EDITOR_ICONS } from "~/core/constants/ICONS";
 
 export const IconChoices = ({ property, onChange }: any) => {
   const { getClasses } = useTailwindClassList();

@@ -1,6 +1,6 @@
-import { Input } from "@/components/ui/input";
 import { Cross1Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
+import { Input } from "~/components/ui/input";
 
 export default function SearchInput({ value, setValue }: { value: string; setValue: (query: string) => void }) {
   const { t } = useTranslation();

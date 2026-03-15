@@ -1,12 +1,12 @@
-import { Input } from "@/components/ui/input";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { useCurrentClassByProperty } from "@/core/components/settings/choices/block-style";
-import { StyleContext } from "@/core/components/settings/choices/style-context";
-import { useTailwindClassList } from "@/core/constants/CLASSES_LIST";
-import { useUndoManager } from "@/hooks/history/use-undo-manager";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { get } from "lodash-es";
 import { useContext, useMemo } from "react";
+import { Input } from "~/components/ui/input";
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
+import { useCurrentClassByProperty } from "~/core/components/settings/choices/block-style";
+import { StyleContext } from "~/core/components/settings/choices/style-context";
+import { useTailwindClassList } from "~/core/constants/CLASSES_LIST";
+import { useUndoManager } from "~/hooks/history/use-undo-manager";
 
 export const DropDownChoices = ({ label, property, onChange }: any) => {
   const { getClasses } = useTailwindClassList();

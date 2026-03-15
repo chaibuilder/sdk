@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -8,9 +10,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { ReactNode } from "react";
-import { useTranslation } from "react-i18next";
+} from "~/components/ui/alert-dialog";
 
 export interface DeleteDesignTokenProps {
   tokenName: string;

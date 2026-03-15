@@ -1,7 +1,7 @@
-import { Breakpoints, WEB_BREAKPOINTS } from "@/core/components/canvas/topbar/canvas-breakpoints";
-import { useScreenSizeWidth } from "@/hooks/use-screen-size-width";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { Breakpoints, WEB_BREAKPOINTS } from "~/core/components/canvas/topbar/canvas-breakpoints";
+import { useScreenSizeWidth } from "~/hooks/use-screen-size-width";
 
 export function BreakpointSelector() {
   const [, breakpoint] = useScreenSizeWidth();

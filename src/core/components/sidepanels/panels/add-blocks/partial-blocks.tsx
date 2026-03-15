@@ -1,9 +1,9 @@
-import { ChaiBuilderBlocks } from "@/core/components/sidepanels/panels/add-blocks/add-blocks";
-import { useCheckPartialCanAdd, usePartialBlocksList } from "@/hooks/use-partial-blocks-store";
 import { FrameIcon } from "@radix-ui/react-icons";
 import { atom, useAtom } from "jotai";
 import { map, uniq } from "lodash-es";
 import { useEffect, useMemo } from "react";
+import { ChaiBuilderBlocks } from "~/core/components/sidepanels/panels/add-blocks/add-blocks";
+import { useCheckPartialCanAdd, usePartialBlocksList } from "~/hooks/use-partial-blocks-store";
 
 // Create an atom to store the fetched partial blocks
 const partialBlocksDataAtom = atom<{

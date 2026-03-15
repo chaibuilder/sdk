@@ -1,13 +1,13 @@
-import { usePageExternalData } from "@/atoms/builder";
-import { dataBindingActiveAtom } from "@/atoms/ui";
-import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { cn } from "@/core/functions/common-functions";
-import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { LightningBoltIcon } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
 import { isEmpty } from "lodash-es";
 import { useTranslation } from "react-i18next";
+import { usePageExternalData } from "~/atoms/builder";
+import { dataBindingActiveAtom } from "~/atoms/ui";
+import { Button } from "~/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
+import { cn } from "~/core/functions/common-functions";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
 
 export const DataBinding = () => {
   const pageExternalData = usePageExternalData();

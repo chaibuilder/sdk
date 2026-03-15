@@ -10,22 +10,22 @@
  * @module use-block-drag-start
  */
 
-import { cleanupDragImage, createCoreDragImage } from "@/core/components/canvas/dnd/drag-and-drop/create-drag-image";
+import { useAtom } from "jotai";
+import { pick } from "lodash-es";
+import { DragEvent, useCallback, useRef } from "react";
+import { cleanupDragImage, createCoreDragImage } from "~/core/components/canvas/dnd/drag-and-drop/create-drag-image";
 import {
   dragAndDropAtom,
   dropIndicatorAtom,
   setIsDragging,
-} from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
-import { getOrientation } from "@/core/components/canvas/dnd/getOrientation";
-import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { pubsub } from "@/core/pubsub";
-import { useBlockHighlight } from "@/hooks/use-block-highlight";
-import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
-import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
-import { ChaiBlock } from "@/types/common";
-import { useAtom } from "jotai";
-import { pick } from "lodash-es";
-import { DragEvent, useCallback, useRef } from "react";
+} from "~/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
+import { getOrientation } from "~/core/components/canvas/dnd/getOrientation";
+import { CHAI_BUILDER_EVENTS } from "~/core/events";
+import { pubsub } from "~/core/pubsub";
+import { useBlockHighlight } from "~/hooks/use-block-highlight";
+import { useSelectedBlockIds } from "~/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "~/hooks/use-selected-styling-blocks";
+import { ChaiBlock } from "~/types/common";
 
 /**
  * @HOOK useBlockDragStart

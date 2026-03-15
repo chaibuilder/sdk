@@ -15,8 +15,8 @@
  * @author ChaiBuilder Team
  */
 
-import { getOrientation } from "@/core/components/canvas/dnd/getOrientation";
-import { canAcceptChildBlock } from "@/core/functions/block-helpers";
+import { getOrientation } from "~/core/components/canvas/dnd/getOrientation";
+import { canAcceptChildBlock } from "~/core/functions/block-helpers";
 
 // ============================================================================
 // CONSTANTS

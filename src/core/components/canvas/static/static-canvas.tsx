@@ -1,24 +1,24 @@
 // @ts-nochecks
 
-import { Skeleton } from "@/components/ui/skeleton";
-import { BlockSelectionHighlighter } from "@/core/components/canvas/block-floating-actions";
-import { useDragAndDrop, useDropIndicator } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
-import { IframeInitialContent } from "@/core/components/canvas/IframeInitialContent";
-import { KeyboardHandler } from "@/core/components/canvas/keyboar-handler";
-import { AddBlockAtBottom } from "@/core/components/canvas/static/add-block-at-bottom";
-import { Canvas } from "@/core/components/canvas/static/chai-canvas";
-import { HeadTags } from "@/core/components/canvas/static/head-tags";
-import { ResizableCanvasWrapper } from "@/core/components/canvas/static/resizable-canvas-wrapper";
-import { StaticBlocksRenderer } from "@/core/components/canvas/static/static-blocks-renderer";
-import { useCanvasScale } from "@/core/components/canvas/static/use-canvas-scale";
-import { ChaiFrame } from "@/core/frame";
-import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { useCanvasIframe } from "@/hooks/use-canvas-iframe";
-import { useHighlightBlockId } from "@/hooks/use-highlight-blockId";
-import { useCanvasDisplayWidth } from "@/hooks/use-screen-size-width";
 import { isEmpty } from "lodash-es";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Provider } from "react-wrap-balancer";
+import { Skeleton } from "~/components/ui/skeleton";
+import { BlockSelectionHighlighter } from "~/core/components/canvas/block-floating-actions";
+import { useDragAndDrop, useDropIndicator } from "~/core/components/canvas/dnd/drag-and-drop/hooks";
+import { IframeInitialContent } from "~/core/components/canvas/IframeInitialContent";
+import { KeyboardHandler } from "~/core/components/canvas/keyboar-handler";
+import { AddBlockAtBottom } from "~/core/components/canvas/static/add-block-at-bottom";
+import { Canvas } from "~/core/components/canvas/static/chai-canvas";
+import { HeadTags } from "~/core/components/canvas/static/head-tags";
+import { ResizableCanvasWrapper } from "~/core/components/canvas/static/resizable-canvas-wrapper";
+import { StaticBlocksRenderer } from "~/core/components/canvas/static/static-blocks-renderer";
+import { useCanvasScale } from "~/core/components/canvas/static/use-canvas-scale";
+import { ChaiFrame } from "~/core/frame";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
+import { useCanvasIframe } from "~/hooks/use-canvas-iframe";
+import { useHighlightBlockId } from "~/hooks/use-highlight-blockId";
+import { useCanvasDisplayWidth } from "~/hooks/use-screen-size-width";
 import { CanvasEventsWatcher } from "./canvas-events-watcher";
 
 const StaticCanvas = () => {

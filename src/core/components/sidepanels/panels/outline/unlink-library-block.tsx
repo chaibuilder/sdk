@@ -1,8 +1,8 @@
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
-import { useUpdateBlocksProps } from "@/hooks/use-update-blocks-props";
 import { LinkBreak2Icon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
+import { DropdownMenuItem } from "~/components/ui/dropdown-menu";
+import { useSelectedBlock } from "~/hooks/use-selected-blockIds";
+import { useUpdateBlocksProps } from "~/hooks/use-update-blocks-props";
 
 export const UnlinkLibraryBlock = () => {
   const { t } = useTranslation();

@@ -1,22 +1,22 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FallbackError } from "@/core/components/fallback-error";
-import BlockSettings from "@/core/components/settings/block-settings";
-import BlockStyling from "@/core/components/settings/block-styling";
-import { BlockAttributesEditor } from "@/core/components/settings/new-panel/block-attributes-editor";
-import { PERMISSIONS } from "@/core/main";
-import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { useLanguages } from "@/hooks/use-languages";
-import { usePermissions } from "@/hooks/use-permissions";
-import { useSavePage } from "@/hooks/use-save-page";
-import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
-import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
-import { useActiveSettingsTab } from "@/hooks/use-theme";
 import { ChevronDownIcon, MixerHorizontalIcon } from "@radix-ui/react-icons";
 import { isEmpty, noop } from "lodash-es";
 import React, { useCallback, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { FallbackError } from "~/core/components/fallback-error";
+import BlockSettings from "~/core/components/settings/block-settings";
+import BlockStyling from "~/core/components/settings/block-styling";
+import { BlockAttributesEditor } from "~/core/components/settings/new-panel/block-attributes-editor";
+import { PERMISSIONS } from "~/core/main";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
+import { useLanguages } from "~/hooks/use-languages";
+import { usePermissions } from "~/hooks/use-permissions";
+import { useSavePage } from "~/hooks/use-save-page";
+import { useSelectedBlock } from "~/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "~/hooks/use-selected-styling-blocks";
+import { useActiveSettingsTab } from "~/hooks/use-theme";
 import { ResetStylesButton } from "./choices/reset-all-styles";
 
 function BlockAttributesToggle() {

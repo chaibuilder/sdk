@@ -1,23 +1,3 @@
-import { chaiDesignTokensAtom } from "@/atoms/builder";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { ManualClasses } from "@/core/components/settings/new-panel/manual-classes";
-import { useIncrementActionsCount } from "@/core/components/use-auto-save";
-import { DESIGN_TOKEN_PREFIX } from "@/core/constants/STRINGS";
-import { orderClassesByBreakpoint } from "@/core/functions/order-classes-by-breakpoint";
-import { removeDuplicateClasses } from "@/core/functions/remove-duplicate-classes";
-import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { useSaveWebsiteData } from "@/hooks/use-save-website-data";
 import {
   ArrowLeftIcon,
   EyeOpenIcon,
@@ -32,6 +12,26 @@ import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } fro
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
+import { chaiDesignTokensAtom } from "~/atoms/builder";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogTitle,
+} from "~/components/ui/alert-dialog";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { ScrollArea } from "~/components/ui/scroll-area";
+import { ManualClasses } from "~/core/components/settings/new-panel/manual-classes";
+import { useIncrementActionsCount } from "~/core/components/use-auto-save";
+import { DESIGN_TOKEN_PREFIX } from "~/core/constants/STRINGS";
+import { orderClassesByBreakpoint } from "~/core/functions/order-classes-by-breakpoint";
+import { removeDuplicateClasses } from "~/core/functions/remove-duplicate-classes";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
+import { useSaveWebsiteData } from "~/hooks/use-save-website-data";
 import { convertTokenNameInput, getTokenNameError, validateTokenName } from "./design-token-utils";
 
 const DesignTokenUsage = lazy(() => import("./design-token-usage"));

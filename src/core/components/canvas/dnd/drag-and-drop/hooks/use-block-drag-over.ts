@@ -10,26 +10,26 @@
  * @module use-block-drag-over
  */
 
-import { detectDropZone } from "@/core/components/canvas/dnd/drag-and-drop/drag-and-drop-utils";
-import { isDraggingOnlyImageBlock } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-block-drop";
+import { useAtom } from "jotai";
+import { throttle } from "lodash-es";
+import { DragEvent, useCallback, useEffect, useRef } from "react";
+import { detectDropZone } from "~/core/components/canvas/dnd/drag-and-drop/drag-and-drop-utils";
+import { isDraggingOnlyImageBlock } from "~/core/components/canvas/dnd/drag-and-drop/hooks/use-block-drop";
 import {
   dragAndDropAtom,
   dropIndicatorAtom,
   isDragging,
-} from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
-import { useDragParentHighlight } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-parent-highlight";
+} from "~/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
+import { useDragParentHighlight } from "~/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-parent-highlight";
 import {
   canDropAsSiblingWithoutCircularReference,
   canDropWithoutCircularReference,
   isDescendantOf,
-} from "@/core/components/canvas/dnd/drag-and-drop/prevent-circular-drop";
-import { getOrientation } from "@/core/components/canvas/dnd/getOrientation";
-import { canAcceptChildBlock } from "@/core/functions/block-helpers";
-import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
-import { useCanvasIframe } from "@/hooks/use-canvas-iframe";
-import { useAtom } from "jotai";
-import { throttle } from "lodash-es";
-import { DragEvent, useCallback, useEffect, useRef } from "react";
+} from "~/core/components/canvas/dnd/drag-and-drop/prevent-circular-drop";
+import { getOrientation } from "~/core/components/canvas/dnd/getOrientation";
+import { canAcceptChildBlock } from "~/core/functions/block-helpers";
+import { useBlocksStore } from "~/hooks/history/use-blocks-store-undoable-actions";
+import { useCanvasIframe } from "~/hooks/use-canvas-iframe";
 
 // Leaf block types that cannot accept children
 const LEAF_BLOCK_TYPES = [
