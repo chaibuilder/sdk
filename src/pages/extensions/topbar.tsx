@@ -5,7 +5,7 @@ import { CanvasTopBar } from "~/core/components/canvas/topbar/canvas-top-bar";
 import { mergeClasses } from "~/core/main";
 import { PageDropdownInHeader } from "~/pages/client/components/page-dropdown-in-header";
 import { ScreenOverlay } from "~/pages/client/components/screen-overlay";
-import TopbarLeft, { LanguageSwitcher } from "~/pages/client/components/topbar-left";
+import TopbarLeft from "~/pages/client/components/topbar-left";
 import TopbarRight from "~/pages/client/components/topbar-right";
 import { useCurrentActivePage, usePrimaryPage } from "~/pages/hooks/pages/use-current-page";
 import { useDynamicPageSelector } from "~/pages/hooks/pages/use-dynamic-page-selector";
@@ -68,7 +68,6 @@ export const Topbar = () => {
         <CanvasTopBar />
       </div>
       <div className="flex items-center justify-end">
-        <LanguageSwitcher />
         <TopbarRight />
       </div>
     </div>

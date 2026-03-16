@@ -88,7 +88,6 @@ export default function PageCreator({ addEditPage, close, closePanel }: PageCrea
   const [isDynamicSlugValid, setIsDynamicSlugValid] = useState(true);
   const [showSlugChangeWarning, setShowSlugChangeWarning] = useState(false);
 
-  const [selectedTemplate, setSelectedTemplate] = useState<string>("");
   const isPending = isCreating || isUpdating;
   const isSearchAndSelectEnabled = useChaiFeatureFlag("enable-add-page-dropdown");
 
@@ -152,10 +151,6 @@ export default function PageCreator({ addEditPage, close, closePanel }: PageCrea
     } else {
       setSlug(slug ? `${slug}` : "");
     }
-  };
-
-  const handleTemplateSelection = (templateId: string) => {
-    setSelectedTemplate(templateId);
   };
 
   /**
@@ -280,7 +275,7 @@ export default function PageCreator({ addEditPage, close, closePanel }: PageCrea
       parent: parentPage,
       dynamic: useDynamicSlug,
       hasSlug: true,
-      template: selectedTemplate || undefined,
+      template: undefined,
       tracking: {},
       seo: {},
       jsonLD: {},
@@ -337,7 +332,7 @@ export default function PageCreator({ addEditPage, close, closePanel }: PageCrea
       pageType,
       name,
       slug: slug === "" ? "/" : `/${slug.replace(/\/$/, "")}`,
-      template: selectedTemplate || undefined,
+      template: undefined,
       parent: null,
       tracking: {},
     };

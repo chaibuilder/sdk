@@ -34,8 +34,6 @@ import { useSidebarActivePanel } from "~/hooks/use-sidebar-active-panel";
 import { useActiveSettingsTab, useRightPanel } from "~/hooks/use-theme";
 import { registerChaiSidebarPanel, useChaiSidebarPanels, useTopBarComponent } from "~/runtime/client";
 
-const ManageDesignTokens = React.lazy(() => import("../settings/new-panel/manage-design-token/manage-design-tokens"));
-
 export const DEFAULT_PANEL_WIDTH = 280;
 
 const OutlineButton = ({ isActive, show }: { isActive: boolean; show: () => void; panelId: string }) => {
@@ -339,17 +337,7 @@ const RootLayout: ComponentType = () => {
                   </h2>
                   <div className="flex h-full max-h-full w-full">
                     <Suspense fallback={<div>Loading...</div>}>
-                      {panel === "ai" ? (
-                        <AskAI />
-                      ) : panel === "design-tokens" ? (
-                        <React.Suspense fallback={<div className="h-1/2 w-full animate-pulse"></div>}>
-                          <ManageDesignTokens />
-                        </React.Suspense>
-                      ) : panel === "theme" ? (
-                        <ThemeConfigPanel />
-                      ) : (
-                        <SettingsPanel />
-                      )}
+                      {panel === "ai" ? <AskAI /> : panel === "theme" ? <ThemeConfigPanel /> : <SettingsPanel />}
                     </Suspense>
                   </div>
                 </div>

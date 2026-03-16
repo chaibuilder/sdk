@@ -6,11 +6,11 @@ import PageManagerSearchAndFilter from "~/pages/client/components/page-manager/p
 
 const mockUsePageTypes = vi.fn();
 
-vi.mock("@/pages/hooks/project/use-page-types", () => ({
+vi.mock("~/pages/hooks/project/use-page-types", () => ({
   usePageTypes: () => mockUsePageTypes(),
 }));
 
-vi.mock("@/pages/hooks/utils/use-page-expand-manager", () => ({
+vi.mock("~/pages/hooks/utils/use-page-expand-manager", () => ({
   usePageExpandManager: () => ({
     expandAll: vi.fn(),
     collapseAll: vi.fn(),
@@ -18,7 +18,7 @@ vi.mock("@/pages/hooks/utils/use-page-expand-manager", () => ({
   }),
 }));
 
-vi.mock("@/pages/hooks/use-fallback-lang", () => ({
+vi.mock("~/pages/hooks/use-fallback-lang", () => ({
   useFallbackLang: () => "en",
 }));
 

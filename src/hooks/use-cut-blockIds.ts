@@ -1,4 +1,4 @@
-import { copiedBlockIdsAtom } from "@/hooks/use-copy-blockIds";
+import { copiedBlockIdsAtom } from "~/hooks/use-copy-blockIds";
 import { atom, useAtom, useSetAtom } from "jotai";
 import { useCallback } from "react";
 

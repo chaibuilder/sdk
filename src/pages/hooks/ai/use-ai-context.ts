@@ -1,4 +1,4 @@
-import { ACTIONS } from "@/pages/constants/ACTIONS";
+import { ACTIONS } from "~/pages/constants/ACTIONS";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 

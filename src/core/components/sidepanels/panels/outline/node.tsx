@@ -16,7 +16,6 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip
 import { useIsDragAndDropEnabled } from "~/core/components/canvas/dnd/drag-and-drop/hooks";
 import { BlockMoreOptions } from "~/core/components/sidepanels/panels/outline/block-more-options";
 import { TypeIcon } from "~/core/components/sidepanels/panels/outline/block-type-icon";
-import { PERMISSIONS } from "~/core/constants/PERMISSIONS";
 import { ROOT_TEMP_KEY } from "~/core/constants/STRINGS";
 import { CHAI_BUILDER_EVENTS } from "~/core/events";
 import { canAcceptChildBlock, canAddChildBlock } from "~/core/functions/block-helpers";
@@ -323,7 +322,7 @@ export const Node = memo(({ node, style, dragHandle }: NodeRendererProps<any>) =
             </div>
           </div>
           <div className="invisible flex items-center space-x-1.5 pr-px group-hover:visible">
-            {canAddChildBlock(data?._type) && isShown && hasPermission(PERMISSIONS.ADD_BLOCK) ? (
+            {canAddChildBlock(data?._type) && isShown ? (
               <Tooltip>
                 <TooltipTrigger
                   onClick={() => pubsub.publish(CHAI_BUILDER_EVENTS.OPEN_ADD_BLOCK, { _id: id })}

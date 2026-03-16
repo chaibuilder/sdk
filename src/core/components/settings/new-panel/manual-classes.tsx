@@ -36,7 +36,6 @@ export function ManualClasses({
   const [isCopied, setIsCopied] = useState(false);
   const [editingClassIndex, setEditingClassIndex] = useState(-1);
   const isSelectingSuggestion = useRef(false);
-  const [, setIsDesignTokenModalOpen] = useState(false);
   const fuse = useFuseSearch();
   const { t } = useTranslation();
   const [styleBlock] = useSelectedStylingBlocks();

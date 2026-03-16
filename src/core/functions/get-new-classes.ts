@@ -1,4 +1,4 @@
-import { ClassDerivedObject, constructClassObject } from "@/core/functions/class-fn";
+import { ClassDerivedObject, constructClassObject } from "~/core/functions/class-fn";
 import { each, filter, find, includes, isNull, map, pick, sortBy } from "lodash-es";
 
 const MEDIA_QUERIES: any = {

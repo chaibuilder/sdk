@@ -1,7 +1,7 @@
-import "@/core/index.css";
 import { useAtom } from "jotai";
 import { useEffect, useMemo, useState } from "react";
 import { lsThemeAtom } from "~/atoms/ui";
+import "~/core/index.css";
 import { getChaiThemeCssVariables, getStylesForBlocks, RenderChaiBlocks } from "~/render";
 import { applyDesignTokens } from "~/render/apply-design-tokens";
 import { getMergedPartialBlocks } from "~/render/functions";

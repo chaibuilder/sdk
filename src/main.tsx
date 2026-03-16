@@ -1,7 +1,7 @@
-import "@/index.css";
 import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import "~/index.css";
 import { registerDemoFeatureFlags } from "./routes/demo/demo-flags";
 import { MicrosoftClarity } from "./routes/demo/microsoft-clarity";
 

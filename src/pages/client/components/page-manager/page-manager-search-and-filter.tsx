@@ -316,7 +316,7 @@ const PageManagerSearchAndFilter = ({
   setShowUntranslatedPages,
 }: PageManagerSearchAndFilterProps) => {
   const { t } = useTranslation();
-  const isMultiLingual = languages.length > 1;
+  const isMultiLingual = false;
   return (
     <div className="space-y-3 border-b border-b-gray-200 px-4 pb-1">
       <div className="flex items-center gap-x-2">

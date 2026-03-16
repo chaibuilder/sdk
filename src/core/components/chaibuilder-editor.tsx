@@ -1,4 +1,3 @@
-import "@/core/index.css";
 import { useAtom } from "jotai";
 import { each, noop, omit } from "lodash-es";
 import React, { useEffect, useMemo } from "react";
@@ -13,6 +12,7 @@ import { RootLayout } from "~/core/components/layout/root-layout";
 import { PreviewScreen } from "~/core/components/PreviewScreen";
 import { useAutoSave } from "~/core/components/use-auto-save";
 import { setDebugLogs } from "~/core/functions/logging";
+import "~/core/index.css";
 import i18n from "~/core/locales/load";
 import { ExportCodeModal } from "~/core/modals/export-code-modal";
 import { ScreenTooSmall } from "~/core/screen-too-small";

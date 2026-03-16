@@ -1,4 +1,4 @@
-import { getUserInputValues } from "@/core/functions/get-user-input-values";
+import { getUserInputValues } from "~/core/functions/get-user-input-values";
 
 describe("Validate and format user input value", () => {
   test("should return correct values for allowed units", () => {

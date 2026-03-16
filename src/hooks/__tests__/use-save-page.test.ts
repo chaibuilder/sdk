@@ -6,7 +6,7 @@ import { partialBlocksAtom } from "~/hooks/partial-blocks/atoms";
 import { builderSaveStateAtom, checkMissingTranslations, useSavePage } from "~/hooks/use-save-page";
 import { getRegisteredChaiBlock } from "~/runtime";
 
-vi.mock("@/runtime", async (importOriginal) => {
+vi.mock("~/runtime", async (importOriginal) => {
   const actual = await importOriginal<typeof import("~/runtime")>();
   return {
     ...actual,
@@ -14,31 +14,31 @@ vi.mock("@/runtime", async (importOriginal) => {
   };
 });
 
-vi.mock("@/hooks/use-builder-prop", () => ({
+vi.mock("~/hooks/use-builder-prop", () => ({
   useBuilderProp: vi.fn(),
 }));
 
-vi.mock("@/hooks/use-get-page-data", () => ({
+vi.mock("~/hooks/use-get-page-data", () => ({
   useGetPageData: vi.fn(),
 }));
 
-vi.mock("@/hooks/use-permissions", () => ({
+vi.mock("~/hooks/use-permissions", () => ({
   usePermissions: vi.fn(),
 }));
 
-vi.mock("@/hooks/use-languages", () => ({
+vi.mock("~/hooks/use-languages", () => ({
   useLanguages: vi.fn(),
 }));
 
-vi.mock("@/hooks/use-is-page-loaded", () => ({
+vi.mock("~/hooks/use-is-page-loaded", () => ({
   useIsPageLoaded: vi.fn(),
 }));
 
-vi.mock("@/hooks/use-check-structure", () => ({
+vi.mock("~/hooks/use-check-structure", () => ({
   useCheckStructure: vi.fn(),
 }));
 
-vi.mock("@/hooks/use-theme", () => ({
+vi.mock("~/hooks/use-theme", () => ({
   useTheme: vi.fn(),
   useThemeOptions: vi.fn(),
 }));

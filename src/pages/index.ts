@@ -1,4 +1,4 @@
-import "@/index.css";
+import "~/index.css";
 import { ChaiWebsiteBuilder } from "~/pages/chaibuilder-pages";
 import { useCurrentActivePage } from "~/pages/hooks/pages/use-current-page";
 import { NestedPathSelector } from "./client/components/nested-path-selector/nested-path-selector";

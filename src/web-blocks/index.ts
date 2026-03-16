@@ -1,4 +1,3 @@
-import "@/web-blocks/hidden/table";
 import { registerChaiBlock } from "~/runtime";
 import { Component as Box, Config as BoxConfig } from "~/web-blocks/box";
 import { Component as Button, Config as ButtonConfig } from "~/web-blocks/button";
@@ -20,6 +19,7 @@ import { Component as SelectBlock, Config as SelectBlockConfig } from "~/web-blo
 import { Component as TextAreaBlock, Config as TextAreaBlockConfig } from "~/web-blocks/form/textarea";
 import { Component as HeadingBlock, Config as HeadingBlockConfig } from "~/web-blocks/heading";
 import { Component as LineBreakBlock, Config as LineBreakBlockConfig } from "~/web-blocks/hidden/line-break";
+import "~/web-blocks/hidden/table";
 import { Component as ImageBlock, Config as ImageBlockConfig } from "~/web-blocks/image";
 import { Component as LinkBlock, Config as LinkBlockConfig } from "~/web-blocks/link";
 import { Component as ListBlock, Config as ListBlockConfig } from "~/web-blocks/list";

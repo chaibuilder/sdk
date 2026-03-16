@@ -6,22 +6,22 @@ import { replaceBlock, useReplaceBlock } from "~/hooks/use-replace-block";
 import { ChaiBlock } from "~/types/common";
 
 // Mock dependencies
-vi.mock("@/hooks/history/use-blocks-store-undoable-actions", () => ({
+vi.mock("~/hooks/history/use-blocks-store-undoable-actions", () => ({
   useBlocksStore: vi.fn(),
   useBlocksStoreUndoableActions: vi.fn(),
 }));
 
-vi.mock("@/hooks/use-selected-blockIds", () => ({
+vi.mock("~/hooks/use-selected-blockIds", () => ({
   useSelectedBlockIds: vi.fn(),
 }));
 
-vi.mock("@/core/main", () => ({
+vi.mock("~/core/main", () => ({
   PERMISSIONS: {
     EDIT_BLOCK: "EDIT_BLOCK",
   },
 }));
 
-vi.mock("@/hooks/use-permissions", () => ({
+vi.mock("~/hooks/use-permissions", () => ({
   usePermissions: vi.fn(),
 }));
 

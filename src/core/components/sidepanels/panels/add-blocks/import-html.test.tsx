@@ -3,7 +3,7 @@ import { getBlocksFromHTML } from "~/core/import-html/html-to-json";
 import { syncBlocksWithDefaultProps } from "~/runtime";
 
 // Mock the runtime module
-vi.mock("@/runtime", () => ({
+vi.mock("~/runtime", () => ({
   syncBlocksWithDefaultProps: vi.fn((blocks) => blocks),
 }));
 

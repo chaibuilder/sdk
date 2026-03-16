@@ -1,4 +1,4 @@
-import { PERMISSIONS as SDK_PERMISSIONS } from "@/core/main";
+import { PERMISSIONS as SDK_PERMISSIONS } from "~/core/main";
 
 export const PAGES_PERMISSIONS = {
   ...SDK_PERMISSIONS,

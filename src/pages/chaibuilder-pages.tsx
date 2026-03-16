@@ -20,7 +20,6 @@ import { usePartialBlocksFn } from "~/pages/hooks/utils/use-partial-blocks";
 import { useSearchParams } from "~/pages/hooks/utils/use-search-params";
 import { registerChaiPanels } from "~/pages/panels";
 import { registerChaiMediaManager } from "~/runtime/client/register-chai-media-manager";
-import { registerChaiSaveToLibrary } from "~/runtime/client/register-chai-save-to-library";
 import { registerChaiTopBar } from "~/runtime/client/register-chai-top-bar";
 import { ChaiWebsiteBuilderProps } from "~/types/common";
 import { loadWebBlocks } from "~/web-blocks";
@@ -37,7 +36,6 @@ import { useWebsiteData } from "./hooks/use-website-data";
 
 const NoLanguagePageDialog = lazy(() => import("~/pages/client/components/no-language-page/no-language-page-dialog"));
 const DigitalAssetManager = lazy(() => import("~/pages/digital-asset-manager/digital-asset-manager"));
-const SaveToLibrary = lazy(() => import("~/pages/client/components/save-ui-blocks/save-to-lib"));
 const PreviewWeb = lazy(() => import("./client/components/web-preview"));
 
 registerPagesFeatureFlags();
@@ -45,7 +43,6 @@ loadWebBlocks();
 registerChaiTopBar(Topbar);
 registerChaiPanels();
 registerChaiMediaManager(DigitalAssetManager as any);
-registerChaiSaveToLibrary(SaveToLibrary);
 
 const DEFAULT_ROLES_AND_PERMISSIONS = {
   role: "admin",

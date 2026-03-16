@@ -3,7 +3,6 @@ import {
   CheckCircle,
   ChevronDown,
   ExternalLink,
-  Eye,
   Loader,
   Palette,
   Pencil,
@@ -181,14 +180,11 @@ const PublishButton = () => {
   const [showModal, setShowModal] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [unpublishPage, setUnpublishPage] = useState(null);
-  const [showCompareModal, setShowCompareModal] = useState(false);
-  const { savePageAsync } = useSavePage();
-  const [showTranslationWarning, setShowTranslationWarning] = useState(false);
-  const { hasUnpublishedSettings, hasUnpublishedTheme, hasUnpublishedDesignToken } = useUnpublishedWebsiteSettings();
+  const { hasUnpublishedSettings, hasUnpublishedTheme } = useUnpublishedWebsiteSettings();
   const [showUnpublishedPartialsWarning, setShowUnpublishedPartialsWarning] = useState(false);
   const [unpublishedPartialBlockIds, setUnpublishedPartialBlockIds] = useState<string[]>([]);
   const [unpublishedPartialBlocksInfo, setUnpublishedPartialBlocksInfo] = useState<any[]>([]);
-  const [comparePartial, setComparePartial] = useState<{ id: string; name: string } | null>(null);
+  const [, setComparePartial] = useState<{ id: string; name: string } | null>(null);
 
   const { data: currentPage } = usePrimaryPage();
   const { mutate: publishPage, isPending } = usePublishPages();
@@ -215,7 +211,7 @@ const PublishButton = () => {
 
   const handlePublishCurrentPage = async () => {
     if (needTranslation) {
-      setShowTranslationWarning(true);
+      // setShowTranslationWarning(true);
       return;
     }
 
@@ -258,16 +254,6 @@ const PublishButton = () => {
   const handleViewPartialChanges = useCallback((partialId: string, partialName: string) => {
     setComparePartial({ id: partialId, name: partialName });
   }, []);
-
-  const handleContinueAnyway = () => {
-    setShowTranslationWarning(false);
-    checkAndPublish([activePage?.id, activePage?.primaryPage]);
-  };
-
-  const handleCancelTranslation = async () => {
-    setShowTranslationWarning(false);
-    await savePageAsync();
-  };
 
   return (
     <>
@@ -315,12 +301,6 @@ const PublishButton = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-60">
             <DropdownMenuLabel className="-mt-1 text-xs font-light text-gray-600">{t("Page")}</DropdownMenuLabel>
-            {isPublished && hasUnpublishedChanges && (
-              <DropdownMenuItem onClick={() => setShowCompareModal(true)} className="cursor-pointer text-xs">
-                <Eye className="mr-0.5 h-3 w-3" />
-                {t("View Unpublished changes")}
-              </DropdownMenuItem>
-            )}
             {!isPublished && (
               <DropdownMenuItem
                 disabled={isPending}
@@ -329,10 +309,6 @@ const PublishButton = () => {
                 {t("Publish")} page
               </DropdownMenuItem>
             )}
-            {/* <DropdownMenuItem onClick={() => setShowModal(true)} className="cursor-pointer text-xs">
-              {t("Open")} publish menu
-            </DropdownMenuItem> */}
-
             {isPublished && (
               <DropdownMenuItem onClick={() => setUnpublishPage(activePage)} className="cursor-pointer text-xs">
                 <TriangleAlert className="mr-0.5 h-3 w-3" />
@@ -356,19 +332,6 @@ const PublishButton = () => {
                 <span className="flex h-full w-full items-center gap-2">
                   <span className="mt-0.5 h-1 w-1 animate-pulse rounded-full bg-orange-500" />
                   {t("Publish")} theme
-                </span>
-              </DropdownMenuItem>
-            )}
-            {hasUnpublishedDesignToken && (
-              <DropdownMenuItem
-                disabled={isPending}
-                className="cursor-pointer text-xs"
-                onClick={() =>
-                  publishPage({ ids: ["DESIGN_TOKENS"] }, { onSuccess: () => throwConfetti("TOP_RIGHT") })
-                }>
-                <span className="flex h-full w-full items-center gap-2">
-                  <span className="mt-0.5 h-1 w-1 animate-pulse rounded-full bg-orange-500" />
-                  {t("Publish")} design token
                 </span>
               </DropdownMenuItem>
             )}

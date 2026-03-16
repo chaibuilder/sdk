@@ -1,4 +1,4 @@
-import { db, safeQuery, schema } from "@/actions/db";
+import { db, safeQuery, schema } from "~/actions/db";
 import { and, eq } from "drizzle-orm";
 import { orderBy } from "lodash-es";
 import { z } from "zod";

@@ -1,9 +1,9 @@
-import "@/index.css";
 import { useAtom } from "jotai";
 import { isArray } from "lodash-es";
 import { toast } from "sonner";
 import { lsThemeAtom } from "~/atoms/ui";
 import { ChaiBuilderEditor, defaultChaiLibrary } from "~/core/main";
+import "~/index.css";
 import { lsBlocksAtom, lsDesignTokensAtom } from "~/routes/demo/atoms-dev";
 import { EXTERNAL_DATA } from "~/routes/demo/EXTERNAL_DATA";
 import { PARTIALS } from "~/routes/demo/PARTIALS";
@@ -32,7 +32,6 @@ function ChaiBuilderDefault() {
       pageId="header"
       designTokens={designTokensValue}
       flags={{
-        librarySite: false,
         copyPaste: true,
         darkMode: false,
         exportCode: true,
@@ -40,7 +39,6 @@ function ChaiBuilderDefault() {
         importHtml: true,
         importTheme: true,
         dragAndDrop: true,
-        designTokens: true,
       }}
       gotoPage={(args) => {
         console.log("gotoPage", args);

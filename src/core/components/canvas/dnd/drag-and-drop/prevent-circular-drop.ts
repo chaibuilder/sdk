@@ -9,7 +9,7 @@
  * @module prevent-circular-drop
  */
 
-import { ChaiBlock } from "@/types/common";
+import { ChaiBlock } from "~/types/common";
 
 /**
  * Checks if targetId is a descendant of ancestorId
