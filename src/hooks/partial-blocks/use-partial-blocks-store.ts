@@ -1,7 +1,7 @@
-import { ChaiBlock } from "@/types/common";
 import { useAtom } from "jotai";
 import { get } from "lodash-es";
 import { useCallback } from "react";
+import { ChaiBlock } from "~/types/common";
 import { partialBlocksAtom } from "./atoms";
 
 export const usePartialBlocksStore = () => {

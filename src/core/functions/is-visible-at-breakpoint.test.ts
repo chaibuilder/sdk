@@ -1,4 +1,4 @@
-import { isVisibleAtBreakpoint } from "@/core/functions/is-visible-at-breakpoint";
+import { isVisibleAtBreakpoint } from "~/core/functions/is-visible-at-breakpoint";
 
 describe("isVisibleAtBreakpoint", () => {
   test("hidden by default", () => {

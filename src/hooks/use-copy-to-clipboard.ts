@@ -1,5 +1,5 @@
-import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { useCallback, useState } from "react";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
 
 type CopiedValue = string | null;
 

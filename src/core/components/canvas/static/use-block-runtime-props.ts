@@ -1,7 +1,7 @@
-import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
-import { ChaiBlock } from "@/types/common";
 import { find, get, isEmpty } from "lodash-es";
 import { useCallback } from "react";
+import { useBlocksStore } from "~/hooks/history/use-blocks-store-undoable-actions";
+import { ChaiBlock } from "~/types/common";
 
 export const useBlockRuntimeProps = () => {
   const [allBlocks] = useBlocksStore();

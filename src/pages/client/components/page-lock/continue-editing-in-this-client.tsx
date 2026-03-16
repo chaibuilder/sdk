@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { BlurContainer } from "@/pages/client/components/chai-loader";
 import { Check, CheckCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Button } from "~/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
+import { BlurContainer } from "~/pages/client/components/chai-loader";
 import { usePageLockMeta } from "./page-lock-hook";
 
 const ContinueEditingInThisClient = () => {

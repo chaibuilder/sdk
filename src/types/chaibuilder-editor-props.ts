@@ -1,7 +1,7 @@
-import { StructureRule } from "@/hooks/structure-rules";
-import { ChaiPage } from "@/pages/utils/page-organization";
-import { ChaiBlock } from "@/types/common";
 import React from "react";
+import { StructureRule } from "~/hooks/structure-rules";
+import { ChaiPage } from "~/pages/utils/page-organization";
+import { ChaiBlock } from "~/types/common";
 import { ChaiLoggedInUser, ChaiPageType } from "./actions";
 import { ChaiCollectoin } from "./collections";
 import { ChaiDesignTokens, ChaiSiteWideUsageData } from "./types";
@@ -281,7 +281,6 @@ export interface ChaiBuilderEditorProps {
    * temporary props. Not to be used in production
    */
   flags?: {
-    librarySite?: boolean;
     copyPaste?: boolean;
     exportCode?: boolean;
     darkMode?: boolean;
@@ -291,11 +290,7 @@ export interface ChaiBuilderEditorProps {
     gotoSettings?: boolean;
     dragAndDrop?: boolean;
     validateStructure?: boolean;
-    designTokens?: boolean;
     ai?: boolean;
-    revisions?: boolean;
-    sharedJsonLD?: boolean;
-    resetSeoToDefault?: boolean;
   };
 
   //TODO: Move to registerChaiStructureRules()

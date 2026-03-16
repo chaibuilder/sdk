@@ -1,14 +1,14 @@
-import { usePageExternalData } from "@/atoms/builder";
-import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Switch } from "@/components/ui/switch";
-import { UserDataBinding } from "@/core/components/settings/user-data-binding";
-import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
-import { useUpdateBlocksProps } from "@/hooks/use-update-blocks-props";
 import { TrashIcon } from "@radix-ui/react-icons";
 import { has, isString } from "lodash-es";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { usePageExternalData } from "~/atoms/builder";
+import { Button } from "~/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
+import { Switch } from "~/components/ui/switch";
+import { UserDataBinding } from "~/core/components/settings/user-data-binding";
+import { useSelectedBlock } from "~/hooks/use-selected-blockIds";
+import { useUpdateBlocksProps } from "~/hooks/use-update-blocks-props";
 
 export const VisibilitySettings = () => {
   const { t } = useTranslation();

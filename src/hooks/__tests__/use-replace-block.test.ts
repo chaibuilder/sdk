@@ -1,33 +1,33 @@
-import { presentBlocksAtom } from "@/atoms/blocks";
-import { builderStore } from "@/atoms/store";
-import { replaceBlock, useReplaceBlock } from "@/hooks/use-replace-block";
-import { ChaiBlock } from "@/types/common";
 import { act, renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { presentBlocksAtom } from "~/atoms/blocks";
+import { builderStore } from "~/atoms/store";
+import { replaceBlock, useReplaceBlock } from "~/hooks/use-replace-block";
+import { ChaiBlock } from "~/types/common";
 
 // Mock dependencies
-vi.mock("@/hooks/history/use-blocks-store-undoable-actions", () => ({
+vi.mock("~/hooks/history/use-blocks-store-undoable-actions", () => ({
   useBlocksStore: vi.fn(),
   useBlocksStoreUndoableActions: vi.fn(),
 }));
 
-vi.mock("@/hooks/use-selected-blockIds", () => ({
+vi.mock("~/hooks/use-selected-blockIds", () => ({
   useSelectedBlockIds: vi.fn(),
 }));
 
-vi.mock("@/core/main", () => ({
+vi.mock("~/core/main", () => ({
   PERMISSIONS: {
     EDIT_BLOCK: "EDIT_BLOCK",
   },
 }));
 
-vi.mock("@/hooks/use-permissions", () => ({
+vi.mock("~/hooks/use-permissions", () => ({
   usePermissions: vi.fn(),
 }));
 
-import { useBlocksStoreUndoableActions } from "@/hooks/history/use-blocks-store-undoable-actions";
-import { usePermissions } from "@/hooks/use-permissions";
-import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
+import { useBlocksStoreUndoableActions } from "~/hooks/history/use-blocks-store-undoable-actions";
+import { usePermissions } from "~/hooks/use-permissions";
+import { useSelectedBlockIds } from "~/hooks/use-selected-blockIds";
 
 describe("replaceBlock", () => {
   it("should replace a block with replacement blocks", () => {

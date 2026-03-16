@@ -1,4 +1,4 @@
-import { ChaiFont, ChaiFontBySrc } from "@/types/common";
+import { ChaiFont, ChaiFontBySrc } from "~/types/common";
 
 const REGISTERED_FONTS: ChaiFont[] = [
   {

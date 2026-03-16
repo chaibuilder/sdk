@@ -1,22 +1,3 @@
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { AddBlocksPanel, Outline } from "@/core/components";
-import { AiIcon } from "@/core/components/ai/ai-icon";
-import { AskAI } from "@/core/components/ask-ai-panel";
-import CanvasArea from "@/core/components/canvas/canvas-area";
-import { useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
-import { AddBlocksDialog } from "@/core/components/layout/add-blocks-dialog";
-import { NoopComponent } from "@/core/components/noop-component";
-import SettingsPanel from "@/core/components/settings/settings-panel";
-import { DesignTokensIcon } from "@/core/components/sidepanels/panels/design-tokens/DesignTokensIcon";
-import ThemeConfigPanel from "@/core/components/sidepanels/panels/theme-configuration/theme-config-panel";
-import { isDevelopment } from "@/core/import-html/general";
-import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { useSidebarActivePanel } from "@/hooks/use-sidebar-active-panel";
-import { useActiveSettingsTab, useRightPanel } from "@/hooks/use-theme";
-import { registerChaiSidebarPanel, useChaiSidebarPanels, useTopBarComponent } from "@/runtime/client";
 import { Cross1Icon, LightningBoltIcon, MixerHorizontalIcon } from "@radix-ui/react-icons";
 import { motion } from "framer-motion";
 import { find, first, get, reverse } from "lodash-es";
@@ -33,8 +14,25 @@ import React, {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-
-const ManageDesignTokens = React.lazy(() => import("../settings/new-panel/manage-design-token/manage-design-tokens"));
+import { Button } from "~/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "~/components/ui/dialog";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "~/components/ui/sheet";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
+import { AddBlocksPanel, Outline } from "~/core/components";
+import { AiIcon } from "~/core/components/ai/ai-icon";
+import { AskAI } from "~/core/components/ask-ai-panel";
+import CanvasArea from "~/core/components/canvas/canvas-area";
+import { useIsDragAndDropEnabled } from "~/core/components/canvas/dnd/drag-and-drop/hooks";
+import { AddBlocksDialog } from "~/core/components/layout/add-blocks-dialog";
+import { NoopComponent } from "~/core/components/noop-component";
+import SettingsPanel from "~/core/components/settings/settings-panel";
+import { DesignTokensIcon } from "~/core/components/sidepanels/panels/design-tokens/DesignTokensIcon";
+import ThemeConfigPanel from "~/core/components/sidepanels/panels/theme-configuration/theme-config-panel";
+import { isDevelopment } from "~/core/import-html/general";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
+import { useSidebarActivePanel } from "~/hooks/use-sidebar-active-panel";
+import { useActiveSettingsTab, useRightPanel } from "~/hooks/use-theme";
+import { registerChaiSidebarPanel, useChaiSidebarPanels, useTopBarComponent } from "~/runtime/client";
 
 export const DEFAULT_PANEL_WIDTH = 280;
 
@@ -339,17 +337,7 @@ const RootLayout: ComponentType = () => {
                   </h2>
                   <div className="flex h-full max-h-full w-full">
                     <Suspense fallback={<div>Loading...</div>}>
-                      {panel === "ai" ? (
-                        <AskAI />
-                      ) : panel === "design-tokens" ? (
-                        <React.Suspense fallback={<div className="h-1/2 w-full animate-pulse"></div>}>
-                          <ManageDesignTokens />
-                        </React.Suspense>
-                      ) : panel === "theme" ? (
-                        <ThemeConfigPanel />
-                      ) : (
-                        <SettingsPanel />
-                      )}
+                      {panel === "ai" ? <AskAI /> : panel === "theme" ? <ThemeConfigPanel /> : <SettingsPanel />}
                     </Suspense>
                   </div>
                 </div>

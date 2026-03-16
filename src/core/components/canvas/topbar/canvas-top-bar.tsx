@@ -1,23 +1,23 @@
-import { dataBindingActiveAtom } from "@/atoms/ui";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Switch } from "@/components/ui/switch";
-import { ScalePercent } from "@/core/components/canvas/scale-percent";
-import { Breakpoints } from "@/core/components/canvas/topbar/canvas-breakpoints";
-import { ClearCanvas } from "@/core/components/canvas/topbar/clear-canvas";
-import { DarkMode } from "@/core/components/canvas/topbar/dark-mode";
-import { UndoRedo } from "@/core/components/canvas/topbar/undo-redo";
-import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { LightningBoltIcon } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
 import { MoreVertical } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { dataBindingActiveAtom } from "~/atoms/ui";
+import { Button } from "~/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
+import { Switch } from "~/components/ui/switch";
+import { ScalePercent } from "~/core/components/canvas/scale-percent";
+import { Breakpoints } from "~/core/components/canvas/topbar/canvas-breakpoints";
+import { ClearCanvas } from "~/core/components/canvas/topbar/clear-canvas";
+import { DarkMode } from "~/core/components/canvas/topbar/dark-mode";
+import { UndoRedo } from "~/core/components/canvas/topbar/undo-redo";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
 
 const CanvasTopBar: React.FC = () => {
   const darkModeEnabled = useBuilderProp("flags.darkMode", false);

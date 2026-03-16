@@ -13,21 +13,21 @@
  * const { onDragStart, onDragOver, onDrop, onDragEnd, isDragging } = useDragAndDrop();
  */
 
-import { useBlockDragEnd } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-block-drag-end";
-import { useBlockDragOver } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-block-drag-over";
-import { useBlockDragStart } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-block-drag-start";
-import { useBlockDrop } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-block-drop";
-import { dropIndicatorAtom, isDragging } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
-import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { useAtom } from "jotai";
 import { DragEvent } from "react";
+import { useBlockDragEnd } from "~/core/components/canvas/dnd/drag-and-drop/hooks/use-block-drag-end";
+import { useBlockDragOver } from "~/core/components/canvas/dnd/drag-and-drop/hooks/use-block-drag-over";
+import { useBlockDragStart } from "~/core/components/canvas/dnd/drag-and-drop/hooks/use-block-drag-start";
+import { useBlockDrop } from "~/core/components/canvas/dnd/drag-and-drop/hooks/use-block-drop";
+import { dropIndicatorAtom, isDragging } from "~/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
 
 // Export individual hooks
-export { useBlockDragEnd } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-block-drag-end";
-export { useBlockDragOver } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-block-drag-over";
-export { useBlockDragStart } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-block-drag-start";
-export { useBlockDrop } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-block-drop";
-export { useDragParentHighlight } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-parent-highlight";
+export { useBlockDragEnd } from "~/core/components/canvas/dnd/drag-and-drop/hooks/use-block-drag-end";
+export { useBlockDragOver } from "~/core/components/canvas/dnd/drag-and-drop/hooks/use-block-drag-over";
+export { useBlockDragStart } from "~/core/components/canvas/dnd/drag-and-drop/hooks/use-block-drag-start";
+export { useBlockDrop } from "~/core/components/canvas/dnd/drag-and-drop/hooks/use-block-drop";
+export { useDragParentHighlight } from "~/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-parent-highlight";
 
 // Export atoms and state
 export {
@@ -36,8 +36,8 @@ export {
   dropIndicatorAtom,
   isDragging,
   setIsDragging,
-} from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
-export type { DropIndicatorState } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
+} from "~/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
+export type { DropIndicatorState } from "~/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
 
 /**
  * Interface for the complete drag and drop system

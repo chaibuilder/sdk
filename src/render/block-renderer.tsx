@@ -1,14 +1,14 @@
+import { get, has, isArray, isFunction, isNull, isString } from "lodash-es";
+import { createElement, Suspense } from "react";
 import {
   applyLanguage,
   applyLimit,
   getBlockRuntimeProps,
   getBlockTagAttributes,
-} from "@/core/components/canvas/static/new-blocks-render-helpers";
-import { getRegisteredChaiBlock } from "@/runtime";
-import { ChaiBlockConfig } from "@/types/blocks";
-import { ChaiBlock, ChaiPageProps } from "@/types/common";
-import { get, has, isArray, isFunction, isNull, isString } from "lodash-es";
-import { createElement, Suspense } from "react";
+} from "~/core/components/canvas/static/new-blocks-render-helpers";
+import { getRegisteredChaiBlock } from "~/runtime";
+import { ChaiBlockConfig } from "~/types/blocks";
+import { ChaiBlock, ChaiPageProps } from "~/types/common";
 import { applyBindingToBlockProps } from "./apply-binding";
 import DataProviderPropsBlock from "./async-props-block";
 import { resolveBinding } from "./binding-engine";

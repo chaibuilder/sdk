@@ -1,13 +1,13 @@
-import { lsThemeAtom } from "@/atoms/ui";
-import { Input } from "@/components/ui/input";
-import { cn } from "@/core/utils/cn";
-import { useDarkMode } from "@/hooks/use-dark-mode";
 import { CaretDownIcon, Cross1Icon } from "@radix-ui/react-icons";
 import { useDebouncedState } from "@react-hookz/web";
 import { useAtom } from "jotai";
 import { get, uniq } from "lodash-es";
 import { useEffect, useState } from "react";
 import { HexAlphaColorPicker } from "react-colorful";
+import { lsThemeAtom } from "~/atoms/ui";
+import { Input } from "~/components/ui/input";
+import { cn } from "~/core/utils/cn";
+import { useDarkMode } from "~/hooks/use-dark-mode";
 import RteDropdownMenu from "./rte-dropdown-menu";
 
 const getActiveClasses = (editor: any, keys: string[] | boolean, from: string) => {

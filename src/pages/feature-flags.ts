@@ -1,4 +1,4 @@
-import { registerChaiFeatureFlag } from "@/runtime/client";
+import { registerChaiFeatureFlag } from "~/runtime/client";
 
 export const registerPagesFeatureFlags = () => {
   registerChaiFeatureFlag("dynamic-page-selector", {

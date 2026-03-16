@@ -1,8 +1,8 @@
-import { useWebsitePrimaryPages } from "@/pages/hooks/pages/use-project-pages";
-import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
-import { ChaiBlock } from "@/types/common";
 import { filter, has, isEmpty, startCase } from "lodash-es";
 import { useCallback } from "react";
+import { useWebsitePrimaryPages } from "~/pages/hooks/pages/use-project-pages";
+import { useApiUrl } from "~/pages/hooks/project/use-builder-prop";
+import { ChaiBlock } from "~/types/common";
 import { useFetch } from "./use-fetch";
 
 export const usePartialBlocksFn = (): {

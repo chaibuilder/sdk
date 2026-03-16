@@ -1,13 +1,13 @@
-import { Button } from "@/components/ui/button";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { COLLECTION_PREFIX, REPEATER_PREFIX } from "@/core/constants/STRINGS";
-import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { ChevronLeftIcon, ChevronRightIcon, IdCardIcon, LoopIcon } from "@radix-ui/react-icons";
 import { t } from "i18next";
 import { startsWith } from "lodash-es";
 import React from "react";
+import { Button } from "~/components/ui/button";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "~/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
+import { COLLECTION_PREFIX, REPEATER_PREFIX } from "~/core/constants/STRINGS";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
 
 type NestedPathSelectorProps = {
   data: Record<string, any>;

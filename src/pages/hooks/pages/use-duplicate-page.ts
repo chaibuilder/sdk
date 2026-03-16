@@ -1,8 +1,8 @@
-import { ACTIONS } from "@/pages/constants/ACTIONS";
-import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
-import { useFetch } from "@/pages/hooks/utils/use-fetch";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { ACTIONS } from "~/pages/constants/ACTIONS";
+import { useApiUrl } from "~/pages/hooks/project/use-builder-prop";
+import { useFetch } from "~/pages/hooks/utils/use-fetch";
 
 export const useDuplicatePage = () => {
   const apiUrl = useApiUrl();

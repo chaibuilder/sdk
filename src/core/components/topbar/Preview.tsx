@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { usePreviewMode } from "@/hooks/use-preview-mode";
 import { EyeOpenIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
+import { Button } from "~/components/ui/button";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
+import { usePreviewMode } from "~/hooks/use-preview-mode";
 
 export const Preview = function Preview() {
   const preview = useBuilderProp("previewComponent", false);

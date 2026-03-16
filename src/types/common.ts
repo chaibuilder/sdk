@@ -1,6 +1,5 @@
-import { RealtimeAdapter } from "@/pages";
-import { LoggedInUser } from "@/pages/types/loggedin-user";
 import type { RJSFSchema, UiSchema } from "@rjsf/utils";
+import { LoggedInUser } from "~/pages/types/loggedin-user";
 import { ChaiBuilderEditorProps } from "./chaibuilder-editor-props";
 
 type ChaiBlock<T = Record<string, any>> = {
@@ -54,8 +53,6 @@ export type ChaiWebsiteBuilderProps = {
   onLogout?: (reason?: string) => void;
   getAccessToken?: () => Promise<string>;
   currentUser: LoggedInUser | null;
-  websocket?: any;
-  realtimeAdapter?: RealtimeAdapter;
 } & Pick<
   ChaiBuilderEditorProps,
   | "onError"

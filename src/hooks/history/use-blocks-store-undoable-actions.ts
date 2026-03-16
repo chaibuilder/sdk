@@ -1,10 +1,10 @@
-import { presentBlocksAtom } from "@/atoms/blocks";
-import { builderStore } from "@/atoms/store";
-import { useBlocksStoreManager } from "@/hooks/history/use-blocks-store-manager";
-import { useUndoManager } from "@/hooks/history/use-undo-manager";
-import { ChaiBlock } from "@/types/common";
 import { useAtom } from "jotai";
 import { each, first, keys, map } from "lodash-es";
+import { presentBlocksAtom } from "~/atoms/blocks";
+import { builderStore } from "~/atoms/store";
+import { useBlocksStoreManager } from "~/hooks/history/use-blocks-store-manager";
+import { useUndoManager } from "~/hooks/history/use-undo-manager";
+import { ChaiBlock } from "~/types/common";
 
 export const useBlocksStore = () => {
   return useAtom(presentBlocksAtom);

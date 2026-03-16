@@ -1,13 +1,13 @@
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { useDragAndDrop, useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
-import { CHAI_BUILDER_EVENTS } from "@/core/events";
-import { pubsub } from "@/core/pubsub";
-import { useAddBlock } from "@/hooks/use-add-block";
-import { syncBlocksWithDefaultProps } from "@/runtime";
 import { BoxIcon } from "@radix-ui/react-icons";
 import { capitalize, has, isFunction, kebabCase } from "lodash-es";
 import { createElement } from "react";
 import { useTranslation } from "react-i18next";
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
+import { useDragAndDrop, useIsDragAndDropEnabled } from "~/core/components/canvas/dnd/drag-and-drop/hooks";
+import { CHAI_BUILDER_EVENTS } from "~/core/events";
+import { pubsub } from "~/core/pubsub";
+import { useAddBlock } from "~/hooks/use-add-block";
+import { syncBlocksWithDefaultProps } from "~/runtime";
 
 export const CoreBlock = ({
   block,

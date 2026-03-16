@@ -1,8 +1,8 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
-import { formatParentSlug } from "@/pages/utils/slug-utils";
 import { useEffect, useState } from "react";
+import { Input } from "~/components/ui/input";
+import { formatParentSlug } from "~/pages/utils/slug-utils";
 
 interface SlugInputProps {
   value: string;

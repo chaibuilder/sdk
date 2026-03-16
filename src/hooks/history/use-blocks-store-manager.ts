@@ -1,13 +1,13 @@
-import { useIncrementActionsCount } from "@/core/components/use-auto-save";
-import { insertBlocksAtPosition } from "@/hooks/history/insert-block-at-position";
-import { moveBlocksWithChildren } from "@/hooks/history/move-blocks-with-children";
-import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
-import { useBroadcastChannel } from "@/hooks/use-broadcast-channel";
-import { useCheckStructure } from "@/hooks/use-check-structure";
-import { removeNestedBlocks } from "@/hooks/use-remove-blocks";
-import { useUpdateBlockAtom } from "@/hooks/use-update-block-atom";
-import { ChaiBlock } from "@/types/common";
 import { each, find, omit } from "lodash-es";
+import { useIncrementActionsCount } from "~/core/components/use-auto-save";
+import { insertBlocksAtPosition } from "~/hooks/history/insert-block-at-position";
+import { moveBlocksWithChildren } from "~/hooks/history/move-blocks-with-children";
+import { useBlocksStore } from "~/hooks/history/use-blocks-store-undoable-actions";
+import { useBroadcastChannel } from "~/hooks/use-broadcast-channel";
+import { useCheckStructure } from "~/hooks/use-check-structure";
+import { removeNestedBlocks } from "~/hooks/use-remove-blocks";
+import { useUpdateBlockAtom } from "~/hooks/use-update-block-atom";
+import { ChaiBlock } from "~/types/common";
 
 export const useBlocksStoreManager = () => {
   const [, setBlocks] = useBlocksStore();

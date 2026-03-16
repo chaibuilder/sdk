@@ -1,7 +1,7 @@
-import { CLASSES_LIST } from "@/core/constants/CLASSES_LIST";
-import { getModForCls, getMqForCls, getPropertyForClass, getPureClsName } from "@/core/functions/class-fn";
-import { convertArbitraryToTailwindClass } from "@/core/functions/convert-brbitrary-to-tailwind-class";
 import { each } from "lodash-es";
+import { CLASSES_LIST } from "~/core/constants/CLASSES_LIST";
+import { getModForCls, getMqForCls, getPropertyForClass, getPureClsName } from "~/core/functions/class-fn";
+import { convertArbitraryToTailwindClass } from "~/core/functions/convert-brbitrary-to-tailwind-class";
 
 describe("Class functions", () => {
   test.skip("convertArbitraryToTw", () => {
@@ -116,7 +116,7 @@ describe("Class functions", () => {
   test("getPropertyForClass", () => {
     expect(getPropertyForClass("rounded-lg")).toBe("borderRadius");
     // check for all available classes
-     
+
     for (const key in CLASSES_LIST) {
       each(CLASSES_LIST[key].classes, (pureCls: string) => {
         expect(getPropertyForClass(pureCls)).toBe(key);

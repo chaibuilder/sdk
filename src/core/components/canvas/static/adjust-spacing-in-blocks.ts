@@ -1,5 +1,5 @@
-import { ChaiBlock } from "@/types/common";
 import { isString, last, startsWith } from "lodash-es";
+import { ChaiBlock } from "~/types/common";
 
 export const adjustSpacingInContentBlocks = (blocks: ChaiBlock[]) => {
   const lastBlock = last(blocks);

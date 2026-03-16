@@ -1,13 +1,13 @@
-import { userActionsCountAtom } from "@/atoms/builder";
-import { aiAssistantActiveAtom } from "@/atoms/ui";
-import { useBlockRepeaterDataAtom } from "@/hooks/async-props/use-async-props";
-import { useUndoManager } from "@/hooks/history/use-undo-manager";
-import { useBlockHighlight } from "@/hooks/use-block-highlight";
-import { usePartialBlocksStore } from "@/hooks/use-partial-blocks-store";
-import { useSavePage } from "@/hooks/use-save-page";
-import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
-import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
 import { useAtom } from "jotai";
+import { userActionsCountAtom } from "~/atoms/builder";
+import { aiAssistantActiveAtom } from "~/atoms/ui";
+import { useBlockRepeaterDataAtom } from "~/hooks/async-props/use-async-props";
+import { useUndoManager } from "~/hooks/history/use-undo-manager";
+import { useBlockHighlight } from "~/hooks/use-block-highlight";
+import { usePartialBlocksStore } from "~/hooks/use-partial-blocks-store";
+import { useSavePage } from "~/hooks/use-save-page";
+import { useSelectedBlockIds } from "~/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "~/hooks/use-selected-styling-blocks";
 
 export const useBuilderReset = () => {
   const { clear } = useUndoManager();

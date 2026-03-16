@@ -1,6 +1,6 @@
-import { getChaiThemeOptions } from "@/core/components/canvas/static/chai-theme-helpers";
-import { defaultThemeOptions } from "@/hooks/default-theme-options";
-import { ChaiThemeOptions } from "@/types/chaibuilder-editor-props";
+import { getChaiThemeOptions } from "~/core/components/canvas/static/chai-theme-helpers";
+import { defaultThemeOptions } from "~/hooks/default-theme-options";
+import { ChaiThemeOptions } from "~/types/chaibuilder-editor-props";
 
 export const getChaiBuilderTheme = (themeOptions: ChaiThemeOptions = defaultThemeOptions) => {
   return {

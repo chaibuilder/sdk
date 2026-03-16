@@ -1,5 +1,5 @@
-import { builderProp, closestBlockProp, registerChaiBlockProps, StylesProp } from "@/runtime";
-import { ChaiBlockComponentProps, ChaiBlockConfig, ChaiStyles } from "@/types/blocks";
+import { builderProp, closestBlockProp, registerChaiBlockProps, StylesProp } from "~/runtime";
+import { ChaiBlockComponentProps, ChaiBlockConfig, ChaiStyles } from "~/types/blocks";
 
 type Sort = {
   field: string;

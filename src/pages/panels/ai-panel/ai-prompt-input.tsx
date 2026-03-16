@@ -1,5 +1,8 @@
 "use client";
 
+import { GlobeIcon, Paperclip, Send, Square } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   PromptInput,
   PromptInputActionAddAttachments,
@@ -15,11 +18,8 @@ import {
   PromptInputSubmit,
   PromptInputTextarea,
   PromptInputTools,
-} from "@/pages/components/ai-elements/prompt-input";
-import { ChaiBlock } from "@/types/common";
-import { GlobeIcon, Paperclip, Send, Square } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+} from "~/pages/components/ai-elements/prompt-input";
+import { ChaiBlock } from "~/types/common";
 import { useAIModels } from "./ai-models-context";
 import { ModelSelectorDropdown } from "./model-selector-dropdown";
 

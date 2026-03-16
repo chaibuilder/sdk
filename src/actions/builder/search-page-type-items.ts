@@ -1,4 +1,4 @@
-import { getChaiPageType } from "@/runtime/register-page-type";
+import { getChaiPageType } from "~/runtime/register-page-type";
 import { z } from "zod";
 import { ChaiBaseAction } from "./base-action";
 

@@ -1,10 +1,10 @@
-import { useQuerySync } from "@/hooks/use-query-sync";
-import { ACTIONS } from "@/pages/constants/ACTIONS";
-import { usePageEditInfo } from "@/pages/hooks/pages/use-current-page";
-import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
-import { ChaiBlock } from "@/types/common";
-import { ChaiDesignTokens } from "@/types/types";
 import { useQueryClient } from "@tanstack/react-query";
+import { useQuerySync } from "~/hooks/use-query-sync";
+import { ACTIONS } from "~/pages/constants/ACTIONS";
+import { usePageEditInfo } from "~/pages/hooks/pages/use-current-page";
+import { useApiUrl } from "~/pages/hooks/project/use-builder-prop";
+import { ChaiBlock } from "~/types/common";
+import { ChaiDesignTokens } from "~/types/types";
 import { useFetch } from "./use-fetch";
 
 export const usePagesSavePage = () => {

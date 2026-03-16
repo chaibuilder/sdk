@@ -1,4 +1,4 @@
-import { ACTIONS } from "@/pages/constants/ACTIONS";
+import { ACTIONS } from "~/pages/constants/ACTIONS";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCurrentActivePage } from "./pages/use-current-page";
 import { useApiUrl } from "./project/use-builder-prop";

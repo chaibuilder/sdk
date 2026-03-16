@@ -1,4 +1,4 @@
-import { getBgImageValue, getBreakpointValue } from "@/core/functions/common-functions";
+import { getBgImageValue, getBreakpointValue } from "~/core/functions/common-functions";
 import { intersection } from "lodash-es";
 
 test("get background image css property value", () => {

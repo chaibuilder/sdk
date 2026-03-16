@@ -1,9 +1,9 @@
-import { usePageExternalData } from "@/atoms/builder";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { NestedPathSelector } from "@/core/components/nested-path-selector";
 import { Editor } from "@tiptap/react";
 import React from "react";
+import { usePageExternalData } from "~/atoms/builder";
+import { Button } from "~/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "~/components/ui/dialog";
+import { NestedPathSelector } from "~/core/components/nested-path-selector";
 
 /**
  *

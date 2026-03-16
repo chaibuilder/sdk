@@ -1,5 +1,5 @@
-import { getChaiPageType } from "@/runtime/register-page-type";
 import { z } from "zod";
+import { getChaiPageType } from "~/runtime/register-page-type";
 import { ChaiBaseAction } from "./base-action";
 
 type GetDynamicPagesActionData = {

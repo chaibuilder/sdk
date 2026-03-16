@@ -1,8 +1,8 @@
-import { usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
-import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
-import { useChaiAuth } from "@/pages/hooks/use-chai-auth";
 import { atom } from "jotai";
 import { first, groupBy, minBy, values } from "lodash-es";
+import { usePrimaryPage } from "~/pages/hooks/pages/use-current-page";
+import { useWebsiteSetting } from "~/pages/hooks/project/use-website-settings";
+import { useChaiAuth } from "~/pages/hooks/use-chai-auth";
 import type { RealtimeChannelAdapter } from "./realtime-adapter";
 
 export type ChaiOnlineUser = { pageId: string; userId: string; clientId: string; onlineAt: number };

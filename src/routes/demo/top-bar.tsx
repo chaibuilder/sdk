@@ -1,9 +1,9 @@
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { CanvasTopBar } from "@/core/components/canvas/topbar/canvas-top-bar";
-import { LanguageButton } from "@/routes/demo/lang-button";
-import RightTop from "@/routes/demo/right-top";
 import { Cross2Icon, InfoCircledIcon } from "@radix-ui/react-icons";
 import { startTransition, useEffect, useState } from "react";
+import { Alert, AlertDescription } from "~/components/ui/alert";
+import { CanvasTopBar } from "~/core/components/canvas/topbar/canvas-top-bar";
+import { LanguageButton } from "~/routes/demo/lang-button";
+import RightTop from "~/routes/demo/right-top";
 
 const Logo = () => {
   return (

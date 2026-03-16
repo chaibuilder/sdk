@@ -1,12 +1,12 @@
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { AiIcon } from "@/core/components/ai/ai-icon";
-import { PERMISSIONS } from "@/core/main";
-import { useAiAssistant } from "@/hooks/use-ask-ai";
-import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { usePermissions } from "@/hooks/use-permissions";
-import { useRightPanel } from "@/hooks/use-theme";
 import { useTranslation } from "react-i18next";
+import { Label } from "~/components/ui/label";
+import { Switch } from "~/components/ui/switch";
+import { AiIcon } from "~/core/components/ai/ai-icon";
+import { PERMISSIONS } from "~/core/main";
+import { useAiAssistant } from "~/hooks/use-ask-ai";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
+import { usePermissions } from "~/hooks/use-permissions";
+import { useRightPanel } from "~/hooks/use-theme";
 
 export const AiAssistant = () => {
   const setAiAssistantActive = useAiAssistant();

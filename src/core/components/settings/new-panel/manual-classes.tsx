@@ -1,25 +1,22 @@
-import { chaiDesignTokensAtom } from "@/atoms/builder";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { DesignTokensIcon } from "@/core/components/sidepanels/panels/design-tokens/DesignTokensIcon";
-import { useFuseSearch } from "@/core/constants/CLASSES_LIST";
-import { DESIGN_TOKEN_PREFIX } from "@/core/constants/STRINGS";
-import { getSplitChaiClasses } from "@/hooks/get-split-classes";
-import { useAddClassesToBlocks } from "@/hooks/use-add-classes-to-blocks";
-import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { useRemoveClassesFromBlocks } from "@/hooks/use-remove-classes-from-blocks";
-import { useSelectedBlock, useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
-import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
 import { CheckIcon, CopyIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { useAtomValue } from "jotai";
 import { first, get, isEmpty, isFunction, map } from "lodash-es";
-import { Suspense, lazy, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Autosuggest from "react-autosuggest";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-
-const ManageDesignTokensModal = lazy(() => import("./manage-design-token/manage-design-tokens-modal"));
+import { chaiDesignTokensAtom } from "~/atoms/builder";
+import { Button } from "~/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
+import { DesignTokensIcon } from "~/core/components/sidepanels/panels/design-tokens/DesignTokensIcon";
+import { useFuseSearch } from "~/core/constants/CLASSES_LIST";
+import { DESIGN_TOKEN_PREFIX } from "~/core/constants/STRINGS";
+import { getSplitChaiClasses } from "~/hooks/get-split-classes";
+import { useAddClassesToBlocks } from "~/hooks/use-add-classes-to-blocks";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
+import { useRemoveClassesFromBlocks } from "~/hooks/use-remove-classes-from-blocks";
+import { useSelectedBlock, useSelectedBlockIds } from "~/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "~/hooks/use-selected-styling-blocks";
 
 export function ManualClasses({
   from = "default",
@@ -39,7 +36,6 @@ export function ManualClasses({
   const [isCopied, setIsCopied] = useState(false);
   const [editingClassIndex, setEditingClassIndex] = useState(-1);
   const isSelectingSuggestion = useRef(false);
-  const [isDesignTokenModalOpen, setIsDesignTokenModalOpen] = useState(false);
   const fuse = useFuseSearch();
   const { t } = useTranslation();
   const [styleBlock] = useSelectedStylingBlocks();
@@ -101,25 +97,21 @@ export function ManualClasses({
               }}
               className="hidden h-max w-3.5 cursor-pointer rounded bg-gray-100 p-0.5 text-red-500 hover:bg-gray-50 group-hover:block"
             />
-            {cls.startsWith(DESIGN_TOKEN_PREFIX) ? (
-              <DesignTokensIcon className="text-[rgba(55, 65, 81, 0.4)] h-3.5 w-3.5 group-hover:hidden" />
-            ) : (
-              <svg
-                className="h-3.5 w-3.5 group-hover:hidden"
-                fill="rgba(55, 65, 81, 0.4)"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-                xmlSpace="preserve">
-                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M12 6.036c-2.667 0-4.333 1.325-5 3.976 1-1.325 2.167-1.822 3.5-1.491.761.189 1.305.738 1.906 1.345C13.387 10.855 14.522 12 17 12c2.667 0 4.333-1.325 5-3.976-1 1.325-2.166 1.822-3.5 1.491-.761-.189-1.305-.738-1.907-1.345-.98-.99-2.114-2.134-4.593-2.134zM7 12c-2.667 0-4.333 1.325-5 3.976 1-1.326 2.167-1.822 3.5-1.491.761.189 1.305.738 1.907 1.345.98.989 2.115 2.134 4.594 2.134 2.667 0 4.333-1.325 5-3.976-1 1.325-2.167 1.822-3.5 1.491-.761-.189-1.305-.738-1.906-1.345C10.613 13.145 9.478 12 7 12z"></path>
-                </g>
-              </svg>
-            )}
+            <svg
+              className="h-3.5 w-3.5 group-hover:hidden"
+              fill="rgba(55, 65, 81, 0.4)"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlSpace="preserve">
+              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+              <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
+              <g id="SVGRepo_iconCarrier">
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M12 6.036c-2.667 0-4.333 1.325-5 3.976 1-1.325 2.167-1.822 3.5-1.491.761.189 1.305.738 1.906 1.345C13.387 10.855 14.522 12 17 12c2.667 0 4.333-1.325 5-3.976-1 1.325-2.166 1.822-3.5 1.491-.761-.189-1.305-.738-1.907-1.345-.98-.99-2.114-2.134-4.593-2.134zM7 12c-2.667 0-4.333 1.325-5 3.976 1-1.326 2.167-1.822 3.5-1.491.761.189 1.305.738 1.907 1.345.98.989 2.115 2.134 4.594 2.134 2.667 0 4.333-1.325 5-3.976-1 1.325-2.167 1.822-3.5 1.491-.761-.189-1.305-.738-1.906-1.345C10.613 13.145 9.478 12 7 12z"></path>
+              </g>
+            </svg>
           </div>
           <div>{getDisplayName(cls)}</div>
         </button>
@@ -308,17 +300,7 @@ export function ManualClasses({
       <div className="flex items-center justify-between gap-x-2">
         <div className="flex w-full items-center justify-between gap-x-2 text-muted-foreground">
           <span className="flex items-center gap-x-1">
-            <span>
-              {from === "designToken" ? (
-                <Label className="text-sm font-medium leading-tight text-gray-900 peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  {t("Token Classes")}
-                </Label>
-              ) : designTokensEnabled ? (
-                t("Styles")
-              ) : (
-                t("Classes")
-              )}
-            </span>
+            <span>{t("Classes")}</span>
             {enableCopyToClipboard && (
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -334,11 +316,6 @@ export function ManualClasses({
               </Tooltip>
             )}
           </span>
-          {designTokensEnabled && from === "default" && (
-            <Button variant="link" className="underline" onClick={() => setIsDesignTokenModalOpen(true)}>
-              {t("Design Tokens")}
-            </Button>
-          )}
         </div>
       </div>
       <div className={"relative flex items-center gap-x-3"}>
@@ -409,11 +386,6 @@ export function ManualClasses({
           ),
         )}
       </div>
-
-      {/* Design Token Management Modal */}
-      <Suspense fallback={null}>
-        <ManageDesignTokensModal open={isDesignTokenModalOpen} onOpenChange={setIsDesignTokenModalOpen} />
-      </Suspense>
     </div>
   );
 }

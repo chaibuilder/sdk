@@ -10,27 +10,27 @@
  * @module use-block-drop
  */
 
+import { useAtom } from "jotai";
+import { filter, find, get, has, isFunction } from "lodash-es";
+import { DragEvent, useCallback } from "react";
+import { toast } from "sonner";
 import {
   canvasRenderKeyAtom,
   dragAndDropAtom,
   dropIndicatorAtom,
   setIsDragging,
-} from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
-import { useDragParentHighlight } from "@/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-parent-highlight";
-import { useBlocksStore, useBlocksStoreUndoableActions } from "@/hooks/history/use-blocks-store-undoable-actions";
-import { useAddBlock } from "@/hooks/use-add-block";
-import { useBlockHighlight } from "@/hooks/use-block-highlight";
-import { useCanvasIframe } from "@/hooks/use-canvas-iframe";
-import { useCheckPartialCanAdd } from "@/hooks/use-partial-blocks-store";
-import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
-import { useSelectedStylingBlocks } from "@/hooks/use-selected-styling-blocks";
-import { useUpdateBlocksProps } from "@/hooks/use-update-blocks-props";
-import { syncBlocksWithDefaultProps } from "@/runtime";
-import { ChaiBlock } from "@/types/common";
-import { useAtom } from "jotai";
-import { filter, find, get, has, isFunction } from "lodash-es";
-import { DragEvent, useCallback } from "react";
-import { toast } from "sonner";
+} from "~/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-and-drop";
+import { useDragParentHighlight } from "~/core/components/canvas/dnd/drag-and-drop/hooks/use-drag-parent-highlight";
+import { useBlocksStore, useBlocksStoreUndoableActions } from "~/hooks/history/use-blocks-store-undoable-actions";
+import { useAddBlock } from "~/hooks/use-add-block";
+import { useBlockHighlight } from "~/hooks/use-block-highlight";
+import { useCanvasIframe } from "~/hooks/use-canvas-iframe";
+import { useCheckPartialCanAdd } from "~/hooks/use-partial-blocks-store";
+import { useSelectedBlockIds } from "~/hooks/use-selected-blockIds";
+import { useSelectedStylingBlocks } from "~/hooks/use-selected-styling-blocks";
+import { useUpdateBlocksProps } from "~/hooks/use-update-blocks-props";
+import { syncBlocksWithDefaultProps } from "~/runtime";
+import { ChaiBlock } from "~/types/common";
 
 /**
  * @HOOK useBlockDrop

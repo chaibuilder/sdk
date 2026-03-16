@@ -1,8 +1,8 @@
-import { getRegisteredChaiBlock } from "@/runtime";
-import { getChaiCollection } from "@/runtime/register-collection";
-import { ChaiBlock } from "@/types/common";
 import { isFunction } from "lodash-es";
 import { z } from "zod";
+import { getRegisteredChaiBlock } from "~/runtime";
+import { getChaiCollection } from "~/runtime/register-collection";
+import { ChaiBlock } from "~/types/common";
 import { ChaiBaseAction } from "./base-action";
 
 type GetBlockAsyncPropsActionData = {

@@ -1,8 +1,8 @@
-import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
-import { useUpdateBlocksProps } from "@/hooks/use-update-blocks-props";
-import { getBlockDefaultProps } from "@/runtime";
 import { pick } from "lodash-es";
 import { useCallback } from "react";
+import { useSelectedBlock } from "~/hooks/use-selected-blockIds";
+import { useUpdateBlocksProps } from "~/hooks/use-update-blocks-props";
+import { getBlockDefaultProps } from "~/runtime";
 
 /**
  * useResetBlockStyles

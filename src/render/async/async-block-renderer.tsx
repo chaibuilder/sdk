@@ -1,16 +1,16 @@
+import { get, has, isArray, isFunction, isNull } from "lodash-es";
+import { createElement, Suspense } from "react";
 import {
   applyLanguage,
   applyLimit,
   getBlockRuntimeProps,
   getBlockTagAttributes,
-} from "@/core/components/canvas/static/new-blocks-render-helpers";
-import { applyBindingToBlockProps } from "@/render/apply-binding";
-import { getRuntimePropValues, RenderChaiBlocksProps } from "@/render/render-chai-blocks";
-import { getRegisteredChaiBlock } from "@/runtime";
-import { ChaiBlockConfig } from "@/types/blocks";
-import { ChaiBlock } from "@/types/common";
-import { get, has, isArray, isFunction, isNull } from "lodash-es";
-import { createElement, Suspense } from "react";
+} from "~/core/components/canvas/static/new-blocks-render-helpers";
+import { applyBindingToBlockProps } from "~/render/apply-binding";
+import { getRuntimePropValues, RenderChaiBlocksProps } from "~/render/render-chai-blocks";
+import { getRegisteredChaiBlock } from "~/runtime";
+import { ChaiBlockConfig } from "~/types/blocks";
+import { ChaiBlock } from "~/types/common";
 import AsyncDataProviderPropsBlock from "./async-props-block";
 
 const SuspenseFallback = () => <div></div>;

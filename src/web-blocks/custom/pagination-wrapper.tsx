@@ -1,8 +1,8 @@
-import { getRegisteredChaiBlock } from "@/runtime";
-import { ChaiStyles } from "@/types/blocks";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { omit } from "lodash-es";
 import * as React from "react";
+import { getRegisteredChaiBlock } from "~/runtime";
+import { ChaiStyles } from "~/types/blocks";
 
 type PaginationProps = {
   paginationStyles: ChaiStyles;

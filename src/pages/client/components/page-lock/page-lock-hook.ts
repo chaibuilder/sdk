@@ -1,9 +1,9 @@
-import { useSavePage } from "@/hooks/use-save-page";
-import { useQuerySync } from "@/hooks/use-query-sync";
-import { useRealtimeAdapter } from "@/pages/hooks/project/use-builder-prop";
-import { useChaiAuth } from "@/pages/hooks/use-chai-auth";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useQuerySync } from "~/hooks/use-query-sync";
+import { useSavePage } from "~/hooks/use-save-page";
+import { useRealtimeAdapter } from "~/pages/hooks/project/use-builder-prop";
+import { useChaiAuth } from "~/pages/hooks/use-chai-auth";
 import {
   BROADCAST_EVENTS,
   EVENT,

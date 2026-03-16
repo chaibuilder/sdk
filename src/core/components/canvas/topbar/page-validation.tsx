@@ -1,8 +1,8 @@
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
-import { useStructureValidation } from "@/hooks/use-structure-validation";
 import { ExclamationTriangleIcon, InfoCircledIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "~/components/ui/dropdown-menu";
+import { useSelectedBlockIds } from "~/hooks/use-selected-blockIds";
+import { useStructureValidation } from "~/hooks/use-structure-validation";
 
 export const PageValidation = () => {
   const { hasErrors, hasWarnings, errorCount, warningCount, errors } = useStructureValidation();

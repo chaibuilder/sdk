@@ -1,12 +1,12 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import { BrainIcon, ChevronDownIcon } from "lucide-react";
 import type { ComponentProps } from "react";
 import { createContext, memo, useContext, useEffect, useState } from "react";
 import { Streamdown } from "streamdown";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/pages/components/ui/collapsible";
+import { cn } from "~/lib/utils";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "~/pages/components/ui/collapsible";
 import { Shimmer } from "./shimmer";
 
 type ReasoningContextValue = {
@@ -145,7 +145,7 @@ export const ReasoningContent = memo(({ className, children, ...props }: Reasoni
   <CollapsibleContent
     className={cn(
       "mt-4 text-sm",
-      "text-muted-foreground outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-top-2 data-[state=open]:slide-in-from-top-2",
+      "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-top-2 data-[state=open]:slide-in-from-top-2 text-muted-foreground outline-none",
       className,
     )}
     {...props}>

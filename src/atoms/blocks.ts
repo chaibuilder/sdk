@@ -1,9 +1,9 @@
-import { convertToBlocksTree } from "@/core/functions/blocks-fn";
-import { StructureError } from "@/hooks/structure-rules";
-import { ChaiBlock } from "@/types/common";
 import { atom } from "jotai";
 import { splitAtom } from "jotai/utils";
 import { filter, has } from "lodash-es";
+import { convertToBlocksTree } from "~/core/functions/blocks-fn";
+import { StructureError } from "~/hooks/structure-rules";
+import { ChaiBlock } from "~/types/common";
 
 // derived atoms
 export const presentBlocksAtom = atom<ChaiBlock[]>([]);

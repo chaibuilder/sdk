@@ -1,19 +1,19 @@
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Textarea } from "@/components/ui/textarea";
-import { usePagesProps } from "@/pages/hooks/utils/use-pages-props";
+import { get } from "lodash-es";
+import { AlertTriangle, Code, Eye, FileCode2, Plus, Share2 } from "lucide-react";
+import { lazy, startTransition, Suspense, useEffect, useRef, useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import { Alert, AlertDescription } from "~/components/ui/alert";
+import { Button } from "~/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { Textarea } from "~/components/ui/textarea";
+import { usePagesProps } from "~/pages/hooks/utils/use-pages-props";
 import {
   evaluatePlaceholders,
   JsonError,
   parseJSONWithPlaceholders,
   restorePlaceholders,
-} from "@/pages/utils/json-utils";
-import Tooltip from "@/pages/utils/tooltip";
-import { get } from "lodash-es";
-import { AlertTriangle, Code, Eye, FileCode2, Plus, Share2 } from "lucide-react";
-import { lazy, startTransition, Suspense, useEffect, useRef, useState } from "react";
-import { ErrorBoundary } from "react-error-boundary";
+} from "~/pages/utils/json-utils";
+import Tooltip from "~/pages/utils/tooltip";
 import { NestedPathSelector } from "./nested-path-selector/nested-path-selector";
 const SharedJsonLD = lazy(() => import("./shared-json-ld/shared-json-ld"));
 

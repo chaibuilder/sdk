@@ -1,7 +1,7 @@
-import { useRegisteredChaiBlocks } from "@/runtime";
 import { BoxIcon } from "@radix-ui/react-icons";
 import { get } from "lodash-es";
 import React from "react";
+import { useRegisteredChaiBlocks } from "~/runtime";
 
 type Props = {
   type: string;

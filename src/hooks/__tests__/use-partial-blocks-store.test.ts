@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getPartialDepth, wouldCreateCycle } from "@/hooks/use-partial-blocks-store";
+import { getPartialDepth, wouldCreateCycle } from "~/hooks/use-partial-blocks-store";
 
 describe("wouldCreateCycle", () => {
   it("should return true for self-reference", () => {

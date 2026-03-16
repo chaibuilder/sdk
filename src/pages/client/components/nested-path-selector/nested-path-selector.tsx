@@ -2,9 +2,9 @@
 
 import * as React from "react";
 
-import { Button } from "@/components/ui/button";
-import { Popover, PopoverTrigger } from "@/components/ui/popover";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Button } from "~/components/ui/button";
+import { Popover, PopoverTrigger } from "~/components/ui/popover";
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
 const NestedPathSelectorContent = React.lazy(() => import("./nested-path-selector-content"));
 
 type NestedPathSelectorProps = {

@@ -1,10 +1,10 @@
-import { chaiDesignTokensAtom } from "@/atoms/builder";
-import { builderStore } from "@/atoms/store";
-import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { useTheme } from "@/hooks/use-theme";
-import { ChaiDesignTokens, ChaiSaveWebsiteData, ChaiTheme } from "@/types";
 import { useDebouncedCallback } from "@react-hookz/web";
 import { useCallback, useRef } from "react";
+import { chaiDesignTokensAtom } from "~/atoms/builder";
+import { builderStore } from "~/atoms/store";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
+import { useTheme } from "~/hooks/use-theme";
+import { ChaiDesignTokens, ChaiSaveWebsiteData, ChaiTheme } from "~/types";
 
 export const useSaveWebsiteData = () => {
   const onSaveWebsiteData = useBuilderProp("onSaveWebsiteData", async (_data: ChaiSaveWebsiteData) => {});

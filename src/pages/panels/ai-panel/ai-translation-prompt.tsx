@@ -1,9 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { LANGUAGES } from "@/pages/constants/LANGUAGES";
 import { ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Button } from "~/components/ui/button";
+import { LANGUAGES } from "~/pages/constants/LANGUAGES";
 
 const TranslationPrompts = ({
   selectedLang,

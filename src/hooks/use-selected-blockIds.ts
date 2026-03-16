@@ -1,9 +1,9 @@
-import { presentBlocksAtom } from "@/atoms/blocks";
-import { ChaiBlock } from "@/types/common";
 import { atom, useAtom, useAtomValue } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { compact, filter, get as getProp, includes, map, without } from "lodash-es";
 import { useCallback } from "react";
+import { presentBlocksAtom } from "~/atoms/blocks";
+import { ChaiBlock } from "~/types/common";
 
 /**
  * Core selected  ids atom

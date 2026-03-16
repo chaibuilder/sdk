@@ -1,4 +1,4 @@
-import type { ChaiBlockPropsSchema } from "@/types/common";
+import type { ChaiBlockPropsSchema } from "~/types/common";
 import { registerChaiBlockProps } from "../..";
 
 describe("registerChaiBlockProps", () => {

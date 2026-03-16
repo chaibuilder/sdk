@@ -1,9 +1,13 @@
 "use client";
 
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { BlockAttributesEditor } from "@/core/components/settings/new-panel/block-attributes-editor";
-import { CHAI_BUILDER_EVENTS } from "@/core/events";
+import { ChevronDownIcon, GearIcon, ImageIcon, StackIcon, TextIcon } from "@radix-ui/react-icons";
+import { motion } from "framer-motion";
+import React, { Suspense, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { ScrollArea } from "~/components/ui/scroll-area";
+import { TooltipProvider } from "~/components/ui/tooltip";
+import { BlockAttributesEditor } from "~/core/components/settings/new-panel/block-attributes-editor";
+import { CHAI_BUILDER_EVENTS } from "~/core/events";
 import {
   ChaiBlockPropsEditor,
   ChaiBlockStyleEditor,
@@ -11,13 +15,9 @@ import {
   ChaiOutline,
   ChaiScreenSizes,
   ChaiUndoRedo,
-} from "@/core/main";
-import { usePubSub } from "@/hooks/use-pub-sub";
-import { useSelectedBlock, useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
-import { ChevronDownIcon, GearIcon, ImageIcon, StackIcon, TextIcon } from "@radix-ui/react-icons";
-import { motion } from "framer-motion";
-import React, { Suspense, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+} from "~/core/main";
+import { usePubSub } from "~/hooks/use-pub-sub";
+import { useSelectedBlock, useSelectedBlockIds } from "~/hooks/use-selected-blockIds";
 
 const BlockEditor = () => {
   const [showAttributes, setShowAttributes] = useState(true);

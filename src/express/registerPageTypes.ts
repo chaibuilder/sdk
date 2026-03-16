@@ -3,7 +3,7 @@ import {
   registerChaiGlobalDataProvider,
   registerChaiPageType,
   registerChaiPartialType,
-} from "@/runtime";
+} from "~/runtime";
 import { DevGlobalData } from ".";
 
 export const registerPageTypes = () => {

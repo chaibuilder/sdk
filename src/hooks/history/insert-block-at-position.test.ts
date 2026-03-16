@@ -1,7 +1,7 @@
-import * as Functions from "@/core/functions/common-functions";
-import { insertBlocksAtPosition } from "@/hooks/history/insert-block-at-position";
-import { ChaiBlock } from "@/types/common";
 import { vi } from "vitest";
+import * as Functions from "~/core/functions/common-functions";
+import { insertBlocksAtPosition } from "~/hooks/history/insert-block-at-position";
+import { ChaiBlock } from "~/types/common";
 
 const BLOCK_1 = { _id: "1", _type: "Text" };
 

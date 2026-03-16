@@ -1,6 +1,6 @@
-import { ChaiBlock, ChaiPageProps } from "@/types/common";
 import { has, isFunction, omit } from "lodash-es";
 import React from "react";
+import { ChaiBlock, ChaiPageProps } from "~/types/common";
 
 export default async function AsyncDataProviderPropsBlock(props: {
   lang: string;

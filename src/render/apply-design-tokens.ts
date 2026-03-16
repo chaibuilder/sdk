@@ -1,8 +1,8 @@
-import { generateClassNames } from "@/core/components/canvas/static/new-blocks-render-helpers";
-import { STYLES_KEY } from "@/core/constants/STRINGS";
-import { ChaiBlock } from "@/types/common";
-import { ChaiDesignTokens } from "@/types/types";
 import { each, isString, keys } from "lodash-es";
+import { generateClassNames } from "~/core/components/canvas/static/new-blocks-render-helpers";
+import { STYLES_KEY } from "~/core/constants/STRINGS";
+import { ChaiBlock } from "~/types/common";
+import { ChaiDesignTokens } from "~/types/types";
 
 export const applyDesignTokens = (blocks: ChaiBlock[], designTokens: ChaiDesignTokens) => {
   return blocks.map((block) => {

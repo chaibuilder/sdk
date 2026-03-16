@@ -1,4 +1,4 @@
-import { ChaiBlock } from "@/types/common";
+import { ChaiBlock } from "~/types/common";
 
 /**
  * Recursively collects all descendant blocks for a given parent ID

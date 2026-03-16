@@ -1,6 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Cpu } from "lucide-react";
+import { useState } from "react";
+import { Button } from "~/components/ui/button";
 import {
   ModelSelector,
   ModelSelectorContent,
@@ -10,9 +12,7 @@ import {
   ModelSelectorLogo,
   ModelSelectorName,
   ModelSelectorTrigger,
-} from "@/pages/components/ai-elements/model-selector";
-import { Cpu } from "lucide-react";
-import { useState } from "react";
+} from "~/pages/components/ai-elements/model-selector";
 import { AIModel, useAIModels } from "./ai-models-context";
 
 interface ModelSelectorDropdownProps {

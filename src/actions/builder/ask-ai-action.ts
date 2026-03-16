@@ -1,8 +1,8 @@
-import { ChaiAIChatHandler } from "@/actions/classes/chai-ai-chat-handler";
-import { logAiRequest, logAiRequestError } from "@/actions/utils/log-ai-request";
 import { z } from "zod";
+import { ChaiAIChatHandler } from "~/actions/classes/chai-ai-chat-handler";
+import { logAiRequest, logAiRequestError } from "~/actions/utils/log-ai-request";
+import { AIContext } from "~/types";
 import { ChaiBaseAction } from "./base-action";
-import { AIContext } from "@/types";
 
 type AskAIActionData = {
   messages?: Array<{

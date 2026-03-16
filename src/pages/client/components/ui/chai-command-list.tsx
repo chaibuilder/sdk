@@ -1,5 +1,5 @@
-import { CommandList } from "@/components/ui/command";
 import React from "react";
+import { CommandList } from "~/components/ui/command";
 
 interface ChaiCommandListProps extends React.ComponentProps<typeof CommandList> {
   children: React.ReactNode;

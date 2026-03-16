@@ -1,9 +1,4 @@
 // @ts-ignore
-import { STYLES_KEY } from "@/core/constants/STRINGS";
-import { cn, generateUUID } from "@/core/functions/common-functions";
-import { getVideoURLFromHTML, hasVideoEmbed } from "@/core/import-html/import-video";
-import { syncBlocksWithDefaultProps } from "@/runtime";
-import { ChaiBlock } from "@/types/common";
 import type { HimalayaAttribute, HimalayaNode } from "himalaya";
 import { parse, stringify } from "himalaya";
 import {
@@ -27,6 +22,11 @@ import {
   trim,
   unset,
 } from "lodash-es";
+import { STYLES_KEY } from "~/core/constants/STRINGS";
+import { cn, generateUUID } from "~/core/functions/common-functions";
+import { getVideoURLFromHTML, hasVideoEmbed } from "~/core/import-html/import-video";
+import { syncBlocksWithDefaultProps } from "~/runtime";
+import { ChaiBlock } from "~/types/common";
 
 const NAME_ATTRIBUTES = ["chai-name", "data-chai-name"];
 

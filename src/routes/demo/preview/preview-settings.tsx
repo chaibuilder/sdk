@@ -1,7 +1,7 @@
-import { useFrame } from "@/core/frame";
-import { useBrandingOptions } from "@/hooks/use-branding-options";
 import { get } from "lodash-es";
 import { useEffect, useState } from "react";
+import { useFrame } from "~/core/frame";
+import { useBrandingOptions } from "~/hooks/use-branding-options";
 
 const getTailwindConfig = (options: any, w: Window) => {
   const headingFont = get(options, "headingFont", "Arial");

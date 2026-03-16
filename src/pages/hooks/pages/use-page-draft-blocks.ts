@@ -1,9 +1,9 @@
-import { ACTIONS } from "@/pages/constants/ACTIONS";
-import { useCurrentActivePage, usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
-import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
-import { useFallbackLang } from "@/pages/hooks/use-fallback-lang";
-import { useFetch } from "@/pages/hooks/utils/use-fetch";
 import { useQuery } from "@tanstack/react-query";
+import { ACTIONS } from "~/pages/constants/ACTIONS";
+import { useCurrentActivePage, usePrimaryPage } from "~/pages/hooks/pages/use-current-page";
+import { useApiUrl } from "~/pages/hooks/project/use-builder-prop";
+import { useFallbackLang } from "~/pages/hooks/use-fallback-lang";
+import { useFetch } from "~/pages/hooks/utils/use-fetch";
 import { useDynamicPageSlug } from "./use-dynamic-page-selector";
 
 export const useBuilderPageData = () => {

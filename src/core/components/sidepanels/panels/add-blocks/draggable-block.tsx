@@ -1,9 +1,9 @@
-import { useDragAndDrop, useIsDragAndDropEnabled } from "@/core/components/canvas/dnd/drag-and-drop/hooks";
-import { getBlocksFromHTML } from "@/core/import-html/html-to-json";
-import { useBlockHighlight } from "@/hooks/use-block-highlight";
-import { useSelectedBlockIds } from "@/hooks/use-selected-blockIds";
 import { get, isEmpty, omit } from "lodash-es";
 import React, { DragEvent } from "react";
+import { useDragAndDrop, useIsDragAndDropEnabled } from "~/core/components/canvas/dnd/drag-and-drop/hooks";
+import { getBlocksFromHTML } from "~/core/import-html/html-to-json";
+import { useBlockHighlight } from "~/hooks/use-block-highlight";
+import { useSelectedBlockIds } from "~/hooks/use-selected-blockIds";
 
 type ChaiDraggableBlockProps = {
   html?: string | (() => Promise<string>);

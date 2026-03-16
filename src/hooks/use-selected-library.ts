@@ -1,4 +1,4 @@
-import { selectedLibraryAtom } from "@/atoms/ui";
+import { selectedLibraryAtom } from "~/atoms/ui";
 import { useAtom } from "jotai";
 
 /**

@@ -1,16 +1,16 @@
-import PageManagerSearchAndFilter from "@/pages/client/components/page-manager/page-manager-search-and-filter";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 import { vi } from "vitest";
+import { TooltipProvider } from "~/components/ui/tooltip";
+import PageManagerSearchAndFilter from "~/pages/client/components/page-manager/page-manager-search-and-filter";
 
 const mockUsePageTypes = vi.fn();
 
-vi.mock("@/pages/hooks/project/use-page-types", () => ({
+vi.mock("~/pages/hooks/project/use-page-types", () => ({
   usePageTypes: () => mockUsePageTypes(),
 }));
 
-vi.mock("@/pages/hooks/utils/use-page-expand-manager", () => ({
+vi.mock("~/pages/hooks/utils/use-page-expand-manager", () => ({
   usePageExpandManager: () => ({
     expandAll: vi.fn(),
     collapseAll: vi.fn(),
@@ -18,7 +18,7 @@ vi.mock("@/pages/hooks/utils/use-page-expand-manager", () => ({
   }),
 }));
 
-vi.mock("@/pages/hooks/use-fallback-lang", () => ({
+vi.mock("~/pages/hooks/use-fallback-lang", () => ({
   useFallbackLang: () => "en",
 }));
 

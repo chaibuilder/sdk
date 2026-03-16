@@ -1,12 +1,12 @@
-import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { BlockSettingsContext } from "@/core/components/settings/settings-context";
-import { getUserInputValues } from "@/core/functions/get-user-input-values";
-import { getClassValueAndUnit } from "@/core/functions/helper-fn";
 import { InfoCircledIcon, RowSpacingIcon, TriangleDownIcon } from "@radix-ui/react-icons";
 import { useThrottledCallback } from "@react-hookz/web";
 import { first, get, isEmpty, isNaN, parseInt } from "lodash-es";
 import { useCallback, useContext, useEffect, useState } from "react";
+import { Button } from "~/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
+import { BlockSettingsContext } from "~/core/components/settings/settings-context";
+import { getUserInputValues } from "~/core/functions/get-user-input-values";
+import { getClassValueAndUnit } from "~/core/functions/helper-fn";
 
 type RangeOptionsType = {
   classPrefix: string;

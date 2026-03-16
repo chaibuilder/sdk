@@ -23,7 +23,7 @@
     "types": ["vitest/globals", "vitest/importMeta"],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "~/*": ["./src/*"]
     }
   },
   "include": ["src", "lib", "e2e_tests", "declaration.d.ts"],

@@ -1,4 +1,4 @@
-import { canvasIframeAtom } from "@/atoms/ui";
+import { canvasIframeAtom } from "~/atoms/ui";
 import { useAtom } from "jotai";
 import { useCallback, useMemo } from "react";
 

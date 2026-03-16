@@ -1,9 +1,9 @@
-import { db, safeQuery, schema } from "@/actions/db";
-import { apiError } from "@/actions/lib";
 import { createHash } from "crypto";
 import { eq } from "drizzle-orm";
 import { first } from "lodash-es";
 import { z } from "zod";
+import { db, safeQuery, schema } from "~/actions/db";
+import { apiError } from "~/actions/lib";
 import { ChaiBaseAction } from "./base-action";
 
 type GetWebsiteSettingsActionData = {

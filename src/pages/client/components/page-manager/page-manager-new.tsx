@@ -1,17 +1,17 @@
-import { useLanguages } from "@/hooks/use-languages";
-import { addNewLangAtom } from "@/pages/atom/add-new-lang";
-import { useWebsiteLanguagePages, useWebsitePrimaryPages } from "@/pages/hooks/pages/use-project-pages";
-import { usePageTypes } from "@/pages/hooks/project/use-page-types";
-import { useFallbackLang } from "@/pages/hooks/use-fallback-lang";
-import { usePageExpandManager } from "@/pages/hooks/utils/use-page-expand-manager";
-import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
-import { navigateToPage } from "@/pages/utils/navigation";
-import { organizePages } from "@/pages/utils/page-organization";
 import { useSetAtom } from "jotai";
 import { filter, find, isEmpty, map } from "lodash-es";
 import { File } from "lucide-react";
 import { Suspense, lazy, startTransition, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useLanguages } from "~/hooks/use-languages";
+import { addNewLangAtom } from "~/pages/atom/add-new-lang";
+import { useWebsiteLanguagePages, useWebsitePrimaryPages } from "~/pages/hooks/pages/use-project-pages";
+import { usePageTypes } from "~/pages/hooks/project/use-page-types";
+import { useFallbackLang } from "~/pages/hooks/use-fallback-lang";
+import { usePageExpandManager } from "~/pages/hooks/utils/use-page-expand-manager";
+import { useSearchParams } from "~/pages/hooks/utils/use-search-params";
+import { navigateToPage } from "~/pages/utils/navigation";
+import { organizePages } from "~/pages/utils/page-organization";
 import RenderPageItems from "./render-page-items";
 const PageManagerSearchAndFilter = lazy(() => import("./page-manager-search-and-filter"));
 

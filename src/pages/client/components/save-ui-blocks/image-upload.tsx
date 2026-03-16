@@ -1,9 +1,9 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { ImageIcon, X } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 import { toast } from "sonner";
-import { compressImageIfNeeded } from "@/pages/utils/image-compression";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { compressImageIfNeeded } from "~/pages/utils/image-compression";
 
 interface ImageUploadProps {
   value: string;

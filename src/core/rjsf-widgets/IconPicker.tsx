@@ -1,10 +1,10 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import lucideIcons from "@iconify-json/lucide/icons.json";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import Fuse from "fuse.js";
 import { useMemo, useState } from "react";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 
 interface IconPickerProps {
   onSelectIcon: (svg: string) => void;

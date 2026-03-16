@@ -1,4 +1,4 @@
-import { useWebsitePrimaryPages } from "@/pages/hooks/pages/use-project-pages";
+import { useWebsitePrimaryPages } from "~/pages/hooks/pages/use-project-pages";
 import { filter } from "lodash-es";
 import { useMemo } from "react";
 

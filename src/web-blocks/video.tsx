@@ -1,7 +1,7 @@
-import { registerChaiBlockProps, stylesProp } from "@/runtime";
-import { ChaiBlockComponentProps, ChaiStyles } from "@/types/blocks";
 import { VideoIcon } from "@radix-ui/react-icons";
 import { get, isEmpty, omit, pick } from "lodash-es";
+import { registerChaiBlockProps, stylesProp } from "~/runtime";
+import { ChaiBlockComponentProps, ChaiStyles } from "~/types/blocks";
 
 export type VideoBlockProps = {
   styles: ChaiStyles;

@@ -1,4 +1,6 @@
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Button } from "~/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -6,10 +8,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { useUnmarkAsTemplate } from "@/pages/hooks/pages/mutations";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
+} from "~/components/ui/dialog";
+import { useUnmarkAsTemplate } from "~/pages/hooks/pages/mutations";
 
 const UnmarkAsTemplate = ({ page, onClose }: { page: any; onClose: () => void }) => {
   const { t } = useTranslation();

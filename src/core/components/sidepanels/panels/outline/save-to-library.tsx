@@ -1,10 +1,10 @@
-import { saveToLibraryModalAtom } from "@/atoms/builder";
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
-import { useSaveToLibraryComponent } from "@/runtime/client";
 import { CheckIcon } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
+import { saveToLibraryModalAtom } from "~/atoms/builder";
+import { DropdownMenuItem } from "~/components/ui/dropdown-menu";
+import { useSelectedBlock } from "~/hooks/use-selected-blockIds";
+import { useSaveToLibraryComponent } from "~/runtime/client";
 
 export const SaveToLibrary = () => {
   const selectedBlock = useSelectedBlock();

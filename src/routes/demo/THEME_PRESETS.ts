@@ -1,4 +1,4 @@
-import { ChaiTheme } from "@/types/chaibuilder-editor-props";
+import { ChaiTheme } from "~/types/chaibuilder-editor-props";
 
 export const defaultShadcnPreset: ChaiTheme = {
   fontFamily: {

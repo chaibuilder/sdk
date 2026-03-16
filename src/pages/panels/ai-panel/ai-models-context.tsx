@@ -1,8 +1,8 @@
 "use client";
 
 import { createContext, ReactNode, useContext } from "react";
+import { AIContext } from "~/types";
 import { AI_MODELS } from "./models";
-import { AIContext } from "@/types";
 
 export type AIModel = {
   id: string;

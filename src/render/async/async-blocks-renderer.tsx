@@ -1,6 +1,6 @@
-import { adjustSpacingInContentBlocks } from "@/core/components/canvas/static/adjust-spacing-in-blocks";
-import { RenderChaiBlocksProps } from "@/render/render-chai-blocks";
 import { filter, get, has, isArray, isEmpty, map, uniqBy } from "lodash-es";
+import { adjustSpacingInContentBlocks } from "~/core/components/canvas/static/adjust-spacing-in-blocks";
+import { RenderChaiBlocksProps } from "~/render/render-chai-blocks";
 import { AsyncRenderBlock } from "./async-block-renderer";
 
 export const AsyncRenderBlocks = async (

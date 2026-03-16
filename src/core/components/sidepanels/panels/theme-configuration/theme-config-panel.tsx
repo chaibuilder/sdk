@@ -1,20 +1,3 @@
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
-import { Switch } from "@/components/ui/switch";
-import {
-  BorderRadiusInput,
-  ColorPickerInput,
-  FontSelector,
-} from "@/core/components/sidepanels/panels/theme-configuration";
-import { cn } from "@/core/functions/common-functions";
-import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { useDarkMode } from "@/hooks/use-dark-mode";
-import { usePermissions } from "@/hooks/use-permissions";
-import { useSaveWebsiteData } from "@/hooks/use-save-website-data";
-import { useTheme, useThemeOptions } from "@/hooks/use-theme";
-import { ChaiTheme } from "@/types/chaibuilder-editor-props";
 import {
   CornerTopRightIcon,
   MixerHorizontalIcon,
@@ -29,11 +12,28 @@ import { capitalize, get, set } from "lodash-es";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { Button } from "~/components/ui/button";
+import { Label } from "~/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+import { Separator } from "~/components/ui/separator";
+import { Switch } from "~/components/ui/switch";
+import {
+  BorderRadiusInput,
+  ColorPickerInput,
+  FontSelector,
+} from "~/core/components/sidepanels/panels/theme-configuration";
+import { cn } from "~/core/functions/common-functions";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
+import { useDarkMode } from "~/hooks/use-dark-mode";
+import { usePermissions } from "~/hooks/use-permissions";
+import { useSaveWebsiteData } from "~/hooks/use-save-website-data";
+import { useTheme, useThemeOptions } from "~/hooks/use-theme";
+import { ChaiTheme } from "~/types/chaibuilder-editor-props";
 
-import { Badge } from "@/components/ui/badge";
-import { claude, defaultShadcnPreset, solarized, supabase, twitter } from "@/core/constants/THEME_PRESETS";
-import { useRegisteredFonts } from "@/runtime";
 import { lazy, Suspense } from "react";
+import { Badge } from "~/components/ui/badge";
+import { claude, defaultShadcnPreset, solarized, supabase, twitter } from "~/core/constants/THEME_PRESETS";
+import { useRegisteredFonts } from "~/runtime";
 
 const LazyCssImportModal = lazy(() =>
   import("./css-import-modal").then((module) => ({ default: module.CssImportModal })),

@@ -1,4 +1,4 @@
-import { db, safeQuery, schema } from "@/actions/db";
+import { db, safeQuery, schema } from "~/actions/db";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 import { ActionError } from "./action-error";

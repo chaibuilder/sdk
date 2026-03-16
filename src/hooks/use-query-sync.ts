@@ -1,14 +1,14 @@
-import { chaiDesignTokensAtom } from "@/atoms/builder";
-import { useSendRealtimeEvent } from "@/pages/client/components/page-lock/page-lock-hook";
-import { ACTIONS } from "@/pages/constants/ACTIONS";
-import { ChaiPage, ChaiWebsiteSetting } from "@/types/actions";
-import { ChaiTheme } from "@/types/chaibuilder-editor-props";
-import { ChaiDesignTokens } from "@/types/types";
 import { QueryClient, useQueryClient } from "@tanstack/react-query";
 import { SetStateAction, useAtom } from "jotai";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { chaiDesignTokensAtom } from "~/atoms/builder";
+import { useSendRealtimeEvent } from "~/pages/client/components/page-lock/page-lock-hook";
+import { ACTIONS } from "~/pages/constants/ACTIONS";
+import { ChaiPage, ChaiWebsiteSetting } from "~/types/actions";
+import { ChaiTheme } from "~/types/chaibuilder-editor-props";
+import { ChaiDesignTokens } from "~/types/types";
 import { chaiThemeValuesAtom } from "./use-theme";
 
 type SyncPayload = {

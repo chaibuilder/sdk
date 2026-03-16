@@ -1,15 +1,15 @@
-import { Button } from "@/components/ui/button";
-import { ChaiFrame } from "@/core/frame/Frame";
-import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
-import { useBrandingOptions } from "@/hooks/use-branding-options";
-import { useLanguages } from "@/hooks/use-languages";
-import { RenderChaiBlocks } from "@/render";
-import { SettingsWatcher } from "@/routes/demo/preview/preview-settings";
 import { DesktopIcon, LaptopIcon, MobileIcon } from "@radix-ui/react-icons";
 import clsx from "clsx";
 import { get, map } from "lodash-es";
 import { useState } from "react";
 import ReactDOM from "react-dom/server";
+import { Button } from "~/components/ui/button";
+import { ChaiFrame } from "~/core/frame/Frame";
+import { useBlocksStore } from "~/hooks/history/use-blocks-store-undoable-actions";
+import { useBrandingOptions } from "~/hooks/use-branding-options";
+import { useLanguages } from "~/hooks/use-languages";
+import { RenderChaiBlocks } from "~/render";
+import { SettingsWatcher } from "~/routes/demo/preview/preview-settings";
 
 interface BreakpointItemType {
   content: string;

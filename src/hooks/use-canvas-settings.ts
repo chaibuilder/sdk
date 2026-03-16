@@ -1,4 +1,4 @@
-import { canvasSettingsAtom } from "@/atoms/ui";
+import { canvasSettingsAtom } from "~/atoms/ui";
 import { useAtom } from "jotai";
 
 export const useCanvasSettings = () => {

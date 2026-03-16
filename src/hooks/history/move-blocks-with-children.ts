@@ -1,7 +1,7 @@
-import { generateUUID } from "@/core/functions/common-functions";
-import { getBlocksTree } from "@/core/functions/split-blocks";
-import { ChaiBlock } from "@/types/common";
 import TreeModel from "tree-model";
+import { generateUUID } from "~/core/functions/common-functions";
+import { getBlocksTree } from "~/core/functions/split-blocks";
+import { ChaiBlock } from "~/types/common";
 
 // Convert the tree back to a flat array
 function flattenTree(node: TreeModel.Node<Partial<ChaiBlock>>): Partial<ChaiBlock>[] {

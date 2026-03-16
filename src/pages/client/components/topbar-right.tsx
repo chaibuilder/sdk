@@ -1,37 +1,8 @@
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useLanguages } from "@/hooks/use-languages";
-import { useSavePage } from "@/hooks/use-save-page";
-import { useRightPanel } from "@/hooks/use-theme";
-import PageRevisions from "@/pages/client/components/page-revisions/page-revisions-trigger";
-import PermissionChecker from "@/pages/client/components/permission-checker";
-import PublishPages from "@/pages/client/components/publish-pages/publish-pages";
-import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
-import { usePublishPages } from "@/pages/hooks/pages/mutations";
-import { useCurrentActivePage, useGetPageFullSlug, usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
-import { useGetUnpublishedPartialBlocks } from "@/pages/hooks/pages/use-get-unpublished-partial-blocks";
-import { useIsLanguagePageCreated } from "@/pages/hooks/pages/use-is-languagep-page-created";
-import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
-import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
-import { usePageTypes } from "@/pages/hooks/project/use-page-types";
-import { useUnpublishedWebsiteSettings } from "@/pages/hooks/project/use-unpublished-website-settings";
-import { useRevisionsEnabled } from "@/pages/hooks/use-revisions-enabled";
-import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
-import { throwConfetti } from "@/pages/utils/confetti";
-import Tooltip from "@/pages/utils/tooltip";
 import { compact, find, isEmpty, upperCase } from "lodash-es";
 import {
   CheckCircle,
   ChevronDown,
   ExternalLink,
-  Eye,
   Loader,
   Palette,
   Pencil,
@@ -43,16 +14,36 @@ import {
 } from "lucide-react";
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Button } from "~/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
+import { useLanguages } from "~/hooks/use-languages";
+import { useSavePage } from "~/hooks/use-save-page";
+import { useRightPanel } from "~/hooks/use-theme";
+import PublishPages from "~/pages/client/components/publish-pages/publish-pages";
+import { usePublishPages } from "~/pages/hooks/pages/mutations";
+import { useCurrentActivePage, useGetPageFullSlug, usePrimaryPage } from "~/pages/hooks/pages/use-current-page";
+import { useGetUnpublishedPartialBlocks } from "~/pages/hooks/pages/use-get-unpublished-partial-blocks";
+import { useIsLanguagePageCreated } from "~/pages/hooks/pages/use-is-languagep-page-created";
+import { useLanguagePages } from "~/pages/hooks/pages/use-language-pages";
+import { usePagesProp } from "~/pages/hooks/project/use-builder-prop";
+import { usePageTypes } from "~/pages/hooks/project/use-page-types";
+import { useUnpublishedWebsiteSettings } from "~/pages/hooks/project/use-unpublished-website-settings";
+import { useSearchParams } from "~/pages/hooks/utils/use-search-params";
+import { throwConfetti } from "~/pages/utils/confetti";
+import Tooltip from "~/pages/utils/tooltip";
 import { usePageLockStatus } from "./page-lock/page-lock-hook";
 
-const UnpublishPage = lazy(() => import("@/pages/client/components/unpublish-page"));
-const TranslationWarningModal = lazy(
-  () => import("@/pages/client/components/save-ui-blocks/translation-warning-modal"),
-);
+const UnpublishPage = lazy(() => import("~/pages/client/components/unpublish-page"));
 const UnpublishedPartialsModal = lazy(
-  () => import("@/pages/client/components/save-ui-blocks/unpublished-partials-modal"),
+  () => import("~/pages/client/components/save-ui-blocks/unpublished-partials-modal"),
 );
-const JsonDiffViewer = lazy(() => import("@/pages/client/components/json-diff-viewer"));
 
 const PreviewButton = () => {
   const { t } = useTranslation();
@@ -189,14 +180,11 @@ const PublishButton = () => {
   const [showModal, setShowModal] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [unpublishPage, setUnpublishPage] = useState(null);
-  const [showCompareModal, setShowCompareModal] = useState(false);
-  const { savePageAsync } = useSavePage();
-  const [showTranslationWarning, setShowTranslationWarning] = useState(false);
-  const { hasUnpublishedSettings, hasUnpublishedTheme, hasUnpublishedDesignToken } = useUnpublishedWebsiteSettings();
+  const { hasUnpublishedSettings, hasUnpublishedTheme } = useUnpublishedWebsiteSettings();
   const [showUnpublishedPartialsWarning, setShowUnpublishedPartialsWarning] = useState(false);
   const [unpublishedPartialBlockIds, setUnpublishedPartialBlockIds] = useState<string[]>([]);
   const [unpublishedPartialBlocksInfo, setUnpublishedPartialBlocksInfo] = useState<any[]>([]);
-  const [comparePartial, setComparePartial] = useState<{ id: string; name: string } | null>(null);
+  const [, setComparePartial] = useState<{ id: string; name: string } | null>(null);
 
   const { data: currentPage } = usePrimaryPage();
   const { mutate: publishPage, isPending } = usePublishPages();
@@ -223,7 +211,7 @@ const PublishButton = () => {
 
   const handlePublishCurrentPage = async () => {
     if (needTranslation) {
-      setShowTranslationWarning(true);
+      // setShowTranslationWarning(true);
       return;
     }
 
@@ -266,16 +254,6 @@ const PublishButton = () => {
   const handleViewPartialChanges = useCallback((partialId: string, partialName: string) => {
     setComparePartial({ id: partialId, name: partialName });
   }, []);
-
-  const handleContinueAnyway = () => {
-    setShowTranslationWarning(false);
-    checkAndPublish([activePage?.id, activePage?.primaryPage]);
-  };
-
-  const handleCancelTranslation = async () => {
-    setShowTranslationWarning(false);
-    await savePageAsync();
-  };
 
   return (
     <>
@@ -323,12 +301,6 @@ const PublishButton = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-60">
             <DropdownMenuLabel className="-mt-1 text-xs font-light text-gray-600">{t("Page")}</DropdownMenuLabel>
-            {isPublished && hasUnpublishedChanges && (
-              <DropdownMenuItem onClick={() => setShowCompareModal(true)} className="cursor-pointer text-xs">
-                <Eye className="mr-0.5 h-3 w-3" />
-                {t("View Unpublished changes")}
-              </DropdownMenuItem>
-            )}
             {!isPublished && (
               <DropdownMenuItem
                 disabled={isPending}
@@ -337,10 +309,6 @@ const PublishButton = () => {
                 {t("Publish")} page
               </DropdownMenuItem>
             )}
-            {/* <DropdownMenuItem onClick={() => setShowModal(true)} className="cursor-pointer text-xs">
-              {t("Open")} publish menu
-            </DropdownMenuItem> */}
-
             {isPublished && (
               <DropdownMenuItem onClick={() => setUnpublishPage(activePage)} className="cursor-pointer text-xs">
                 <TriangleAlert className="mr-0.5 h-3 w-3" />
@@ -367,19 +335,6 @@ const PublishButton = () => {
                 </span>
               </DropdownMenuItem>
             )}
-            {hasUnpublishedDesignToken && (
-              <DropdownMenuItem
-                disabled={isPending}
-                className="cursor-pointer text-xs"
-                onClick={() =>
-                  publishPage({ ids: ["DESIGN_TOKENS"] }, { onSuccess: () => throwConfetti("TOP_RIGHT") })
-                }>
-                <span className="flex h-full w-full items-center gap-2">
-                  <span className="mt-0.5 h-1 w-1 animate-pulse rounded-full bg-orange-500" />
-                  {t("Publish")} design token
-                </span>
-              </DropdownMenuItem>
-            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
@@ -387,29 +342,6 @@ const PublishButton = () => {
       {unpublishPage && (
         <Suspense>
           <UnpublishPage page={unpublishPage} onClose={() => setUnpublishPage(null)} />
-        </Suspense>
-      )}
-      {showCompareModal && (
-        <Suspense>
-          <JsonDiffViewer
-            open={showCompareModal}
-            onOpenChange={setShowCompareModal}
-            compare={[
-              { label: "live", uid: `live:${currentPage?.id}`, item: {} },
-              { label: "draft", uid: `draft:${currentPage?.id}`, item: currentPage },
-            ]}
-          />
-        </Suspense>
-      )}
-
-      {showTranslationWarning && (
-        <Suspense>
-          <TranslationWarningModal
-            isOpen={showTranslationWarning}
-            onClose={handleCancelTranslation}
-            onContinue={handleContinueAnyway}
-            isPending={isPending}
-          />
         </Suspense>
       )}
 
@@ -422,24 +354,6 @@ const PublishButton = () => {
             onViewChanges={handleViewPartialChanges}
             isPending={isPending}
             partialBlocksInfo={unpublishedPartialBlocksInfo}
-          />
-        </Suspense>
-      )}
-
-      {comparePartial && (
-        <Suspense>
-          <JsonDiffViewer
-            open={!!comparePartial}
-            onOpenChange={(open) => {
-              if (!open) {
-                setComparePartial(null);
-                setShowUnpublishedPartialsWarning(true);
-              }
-            }}
-            compare={[
-              { label: "live", uid: `live:${comparePartial.id}`, item: {} },
-              { label: "draft", uid: `draft:${comparePartial.id}`, item: {} },
-            ]}
           />
         </Suspense>
       )}
@@ -471,22 +385,14 @@ export default function TopbarRight() {
   const [searchParams] = useSearchParams();
   const lang = searchParams.get("lang");
   const isLanguagePageCreated = useIsLanguagePageCreated(lang as string);
-  const revisionsEnabled = useRevisionsEnabled();
 
   if (isLocked || !isLanguagePageCreated) return <div />;
   return (
     <div className="flex items-center justify-end gap-1">
-      {revisionsEnabled && <PageRevisions />}
-      <PermissionChecker permission={PAGES_PERMISSIONS.EDIT_THEME}>
-        <ThemeButton />
-      </PermissionChecker>
+      <ThemeButton />
       <PreviewButton />
-      <PermissionChecker permission={PAGES_PERMISSIONS.SAVE_PAGE}>
-        <SaveButton />
-      </PermissionChecker>
-      <PermissionChecker permission={PAGES_PERMISSIONS.PUBLISH_PAGE}>
-        <PublishButton />
-      </PermissionChecker>
+      <SaveButton />
+      <PublishButton />
       <LiveLinkButton />
     </div>
   );

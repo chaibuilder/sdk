@@ -1,5 +1,5 @@
-import { useBuilderProp } from "@/hooks/use-builder-prop";
 import { useCallback } from "react";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
 
 export const usePermissions = () => {
   const permissions = useBuilderProp("permissions", null) as string[] | null | undefined;

@@ -1,8 +1,8 @@
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { useFrame } from "@/core/frame";
 import { Editor } from "@tiptap/react";
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "~/components/ui/dropdown-menu";
+import { useFrame } from "~/core/frame";
 
 const RteDropdownMenu = ({
   editor,

@@ -1,9 +1,9 @@
-import { db, safeQuery, schema } from "@/actions/db";
-import { ChaiBlock } from "@/types/common";
 import { eq } from "drizzle-orm";
 import { set } from "lodash-es";
 import { randomUUID } from "node:crypto";
 import { z } from "zod";
+import { db, safeQuery, schema } from "~/actions/db";
+import { ChaiBlock } from "~/types/common";
 import { ActionError } from "./action-error";
 import { getChaiAction } from "./actions-registery";
 import { ChaiBaseAction } from "./base-action";

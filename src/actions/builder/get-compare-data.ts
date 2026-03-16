@@ -1,7 +1,7 @@
-import { db, safeQuery, schema } from "@/actions/db";
-import { ChaiBlock } from "@/types/common";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
+import { db, safeQuery, schema } from "~/actions/db";
+import { ChaiBlock } from "~/types/common";
 import { ActionError } from "./action-error";
 import { ChaiBaseAction } from "./base-action";
 

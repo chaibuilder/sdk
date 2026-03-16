@@ -1,7 +1,7 @@
-import { syncBlocksWithDefaultProps } from "@/runtime";
-import { ChaiBlock } from "@/types/common";
 import { filter, includes, isEmpty } from "lodash-es";
 import { useMemo } from "react";
+import { syncBlocksWithDefaultProps } from "~/runtime";
+import { ChaiBlock } from "~/types/common";
 
 type ExtractedTemplateData = {
   blocks: ChaiBlock[];

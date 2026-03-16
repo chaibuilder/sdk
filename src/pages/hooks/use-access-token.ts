@@ -1,4 +1,4 @@
-import { usePagesProp } from "@/pages/hooks/project/use-builder-prop";
+import { usePagesProp } from "~/pages/hooks/project/use-builder-prop";
 import { useCallback } from "react";
 
 export const useAccessToken = () => {

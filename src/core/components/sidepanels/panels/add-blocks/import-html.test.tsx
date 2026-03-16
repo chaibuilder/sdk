@@ -1,9 +1,9 @@
-import { getBlocksFromHTML } from "@/core/import-html/html-to-json";
-import { syncBlocksWithDefaultProps } from "@/runtime";
 import { describe, expect, it, vi } from "vitest";
+import { getBlocksFromHTML } from "~/core/import-html/html-to-json";
+import { syncBlocksWithDefaultProps } from "~/runtime";
 
 // Mock the runtime module
-vi.mock("@/runtime", () => ({
+vi.mock("~/runtime", () => ({
   syncBlocksWithDefaultProps: vi.fn((blocks) => blocks),
 }));
 

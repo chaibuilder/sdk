@@ -1,29 +1,25 @@
-"use client";
-
-import { Button } from "@/components/ui/button";
-import { Command, CommandEmpty, CommandGroup, CommandItem } from "@/components/ui/command";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { useLanguages } from "@/hooks/use-languages";
-import { usePermissions } from "@/hooks/use-permissions";
-import { DynamicSlugInput } from "@/pages/client/components/dynamic-slug-input";
-import { ParentPageSelector } from "@/pages/client/components/parent-page-selector";
-import { SlugInput } from "@/pages/client/components/slug-input";
-import { TemplateSelection } from "@/pages/client/components/template-selection";
-import { LANGUAGES } from "@/pages/constants/LANGUAGES";
-import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
-import { useCreatePage, useUpdatePage } from "@/pages/hooks/pages/mutations";
-import { useWebsitePrimaryPages } from "@/pages/hooks/pages/use-project-pages";
-import { usePageTypes } from "@/pages/hooks/project/use-page-types";
-import { useTemplatesWithLibraries } from "@/pages/hooks/project/use-templates-with-libraries";
-import { useChangePage } from "@/pages/hooks/use-change-page";
-import { combineParentChildSlugs, removeSlugExtension } from "@/pages/utils/slug-utils";
-import { useChaiFeatureFlag } from "@/runtime/client";
 import { find, isEmpty, pick, set } from "lodash-es";
 import { Check, ChevronDown, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
+import { Button } from "~/components/ui/button";
+import { Command, CommandEmpty, CommandGroup, CommandItem } from "~/components/ui/command";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
+import { useLanguages } from "~/hooks/use-languages";
+import { usePermissions } from "~/hooks/use-permissions";
+import { DynamicSlugInput } from "~/pages/client/components/dynamic-slug-input";
+import { ParentPageSelector } from "~/pages/client/components/parent-page-selector";
+import { SlugInput } from "~/pages/client/components/slug-input";
+import { LANGUAGES } from "~/pages/constants/LANGUAGES";
+import { PAGES_PERMISSIONS } from "~/pages/constants/PERMISSIONS";
+import { useCreatePage, useUpdatePage } from "~/pages/hooks/pages/mutations";
+import { useWebsitePrimaryPages } from "~/pages/hooks/pages/use-project-pages";
+import { usePageTypes } from "~/pages/hooks/project/use-page-types";
+import { useChangePage } from "~/pages/hooks/use-change-page";
+import { combineParentChildSlugs, removeSlugExtension } from "~/pages/utils/slug-utils";
+import { useChaiFeatureFlag } from "~/runtime/client";
 import { getSeoDefaults } from "./get-seo-defaults";
 import ChaiCommandList from "./ui/chai-command-list";
 // Simple utility to conditionally join class names
@@ -92,8 +88,6 @@ export default function PageCreator({ addEditPage, close, closePanel }: PageCrea
   const [isDynamicSlugValid, setIsDynamicSlugValid] = useState(true);
   const [showSlugChangeWarning, setShowSlugChangeWarning] = useState(false);
 
-  const [selectedTemplate, setSelectedTemplate] = useState<string>("");
-  const { data: templates, isLoading: isLoadingTemplates } = useTemplatesWithLibraries(pageType);
   const isPending = isCreating || isUpdating;
   const isSearchAndSelectEnabled = useChaiFeatureFlag("enable-add-page-dropdown");
 
@@ -157,10 +151,6 @@ export default function PageCreator({ addEditPage, close, closePanel }: PageCrea
     } else {
       setSlug(slug ? `${slug}` : "");
     }
-  };
-
-  const handleTemplateSelection = (templateId: string) => {
-    setSelectedTemplate(templateId);
   };
 
   /**
@@ -285,7 +275,7 @@ export default function PageCreator({ addEditPage, close, closePanel }: PageCrea
       parent: parentPage,
       dynamic: useDynamicSlug,
       hasSlug: true,
-      template: selectedTemplate || undefined,
+      template: undefined,
       tracking: {},
       seo: {},
       jsonLD: {},
@@ -342,7 +332,7 @@ export default function PageCreator({ addEditPage, close, closePanel }: PageCrea
       pageType,
       name,
       slug: slug === "" ? "/" : `/${slug.replace(/\/$/, "")}`,
-      template: selectedTemplate || undefined,
+      template: undefined,
       parent: null,
       tracking: {},
     };
@@ -721,18 +711,6 @@ export default function PageCreator({ addEditPage, close, closePanel }: PageCrea
           </div>
         )}
       </div>
-
-      {!isEdit && currentPageType?.hasSlug && templates.length > 0 && (
-        <div className="space-y-1">
-          <Label className="mb-1 block text-sm">Template</Label>
-          <TemplateSelection
-            templates={templates}
-            selectedTemplateId={selectedTemplate}
-            onSelectTemplate={handleTemplateSelection}
-            isLoading={isLoadingTemplates}
-          />
-        </div>
-      )}
 
       <ParentPageSelector
         pages={pages}

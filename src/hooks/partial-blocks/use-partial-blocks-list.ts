@@ -1,7 +1,7 @@
-import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { PartialBlockList } from "@/types/partial-blocks";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useState } from "react";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
+import { PartialBlockList } from "~/types/partial-blocks";
 import { partialBlocksListAtom } from "./atoms";
 
 export const usePartialBlocksList = () => {

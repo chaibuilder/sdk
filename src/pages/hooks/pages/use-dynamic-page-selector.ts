@@ -1,10 +1,10 @@
-import { useLanguages } from "@/hooks/use-languages";
-import { ACTIONS } from "@/pages/constants/ACTIONS";
-import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
-import { useFetch } from "@/pages/hooks/utils/use-fetch";
 import { useQuery } from "@tanstack/react-query";
 import { atom, PrimitiveAtom, useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useLanguages } from "~/hooks/use-languages";
+import { ACTIONS } from "~/pages/constants/ACTIONS";
+import { useApiUrl } from "~/pages/hooks/project/use-builder-prop";
+import { useFetch } from "~/pages/hooks/utils/use-fetch";
 import { usePrimaryPage } from "./use-current-page";
 
 type DynamicPage = { id: string; name: string; slug: string; lang: string; primaryPage?: string };

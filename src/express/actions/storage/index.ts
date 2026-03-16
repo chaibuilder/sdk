@@ -5,8 +5,8 @@ import {
   GetAssetsAction,
   UpdateAssetAction,
   UploadAssetAction,
-} from "@/express/actions/assets";
-import { GetChaiUserAction, ChangePasswordAction } from "@/express/actions/user";
+} from "~/express/actions/assets";
+import { ChangePasswordAction, GetChaiUserAction } from "~/express/actions/user";
 import { DeleteFromStorageAction } from "./delete-from-storage";
 import { UploadToStorageAction } from "./upload-to-storage";
 

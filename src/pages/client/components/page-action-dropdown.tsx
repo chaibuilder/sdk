@@ -1,16 +1,16 @@
+import { find } from "lodash-es";
+import { CopyPlusIcon, Pencil, Power, Trash } from "lucide-react";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { usePermissions } from "@/hooks/use-permissions";
-import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
-import { usePageTypes } from "@/pages/hooks/project/use-page-types";
-import { find } from "lodash-es";
-import { CopyPlusIcon, Pencil, Power, Trash } from "lucide-react";
-import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
+} from "~/components/ui/dropdown-menu";
+import { usePermissions } from "~/hooks/use-permissions";
+import { PAGES_PERMISSIONS } from "~/pages/constants/PERMISSIONS";
+import { usePageTypes } from "~/pages/hooks/project/use-page-types";
 
 interface PageActionsDropdownProps {
   page: any;

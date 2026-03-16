@@ -1,5 +1,5 @@
-import { ChaiBlock } from "@/types/common";
 import { describe, expect, it } from "vitest";
+import { ChaiBlock } from "~/types/common";
 import { getBlockWithNestedChildren } from "./get-block-with-nested-children";
 
 describe("getBlockWithNestedChildren", () => {

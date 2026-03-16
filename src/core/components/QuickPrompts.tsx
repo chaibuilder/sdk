@@ -1,7 +1,3 @@
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { LANGUAGES } from "@/core/constants/LANGUAGES";
-import { useAskAi } from "@/hooks/use-ask-ai";
-import { useLanguages } from "@/hooks/use-languages";
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -14,6 +10,10 @@ import {
 } from "@radix-ui/react-icons";
 import { get } from "lodash-es";
 import { useTranslation } from "react-i18next";
+import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
+import { LANGUAGES } from "~/core/constants/LANGUAGES";
+import { useAskAi } from "~/hooks/use-ask-ai";
+import { useLanguages } from "~/hooks/use-languages";
 
 export function QuickPrompts({ onClick }: { onClick: (prompt: string) => void }) {
   const { loading } = useAskAi();

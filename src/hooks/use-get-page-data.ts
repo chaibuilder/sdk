@@ -1,10 +1,10 @@
-import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
-import { useBrandingOptions } from "@/hooks/use-branding-options";
-import { useCurrentPage } from "@/hooks/use-current-page";
-import { getRegisteredChaiBlock } from "@/runtime";
-import { ChaiBlock } from "@/types/common";
 import { compact, get, map, memoize, omit } from "lodash-es";
 import { useCallback } from "react";
+import { useBlocksStore } from "~/hooks/history/use-blocks-store-undoable-actions";
+import { useBrandingOptions } from "~/hooks/use-branding-options";
+import { useCurrentPage } from "~/hooks/use-current-page";
+import { getRegisteredChaiBlock } from "~/runtime";
+import { ChaiBlock } from "~/types/common";
 
 /**
  * Get the builder props for a block

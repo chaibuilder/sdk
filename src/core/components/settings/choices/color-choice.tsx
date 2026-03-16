@@ -1,9 +1,9 @@
-import { useCurrentClassByProperty } from "@/core/components/settings/choices/block-style";
-import { DropDown } from "@/core/components/settings/choices/dropdown-choices";
-import { StyleContext } from "@/core/components/settings/choices/style-context";
-import { useTailwindClassList } from "@/core/constants/CLASSES_LIST";
 import { get } from "lodash-es";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useCurrentClassByProperty } from "~/core/components/settings/choices/block-style";
+import { DropDown } from "~/core/components/settings/choices/dropdown-choices";
+import { StyleContext } from "~/core/components/settings/choices/style-context";
+import { useTailwindClassList } from "~/core/constants/CLASSES_LIST";
 
 export const COLOR_PROP = {
   backgroundColor: "bg",
@@ -31,7 +31,6 @@ export const ColorChoice = ({ property, onChange }: any) => {
   const shade = get(colors, "2", "");
 
   const onColorChange = useCallback(
-     
     (color: string) => {
       if (["current", "inherit", "transparent", "black", "white"].includes(color)) {
         setShades([]);
@@ -44,7 +43,6 @@ export const ColorChoice = ({ property, onChange }: any) => {
     [setShades, setNewColor],
   );
 
-   
   useEffect(() => {
     if (["current", "inherit", "transparent", "black", "white"].includes(color)) {
       return setShades([]);
@@ -53,7 +51,6 @@ export const ColorChoice = ({ property, onChange }: any) => {
   }, [color]);
 
   const onChangeShade = useCallback(
-     
     (shade: string) => {
       setNewColor({ color, ...{ shade } });
     },

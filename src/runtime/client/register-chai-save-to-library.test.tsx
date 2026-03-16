@@ -1,10 +1,10 @@
+import { renderHook } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   registerChaiSaveToLibrary,
   resetSaveToLibrary,
   useSaveToLibraryComponent,
-} from "@/runtime/client/register-chai-save-to-library";
-import { renderHook } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+} from "~/runtime/client/register-chai-save-to-library";
 
 describe("save-to-library", () => {
   beforeEach(() => {

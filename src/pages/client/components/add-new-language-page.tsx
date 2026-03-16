@@ -1,5 +1,9 @@
-import { Alert } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
+import { filter, find, startsWith } from "lodash-es";
+import { Loader } from "lucide-react";
+import React, { FormEvent, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Alert } from "~/components/ui/alert";
+import { Button } from "~/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,25 +11,21 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useLanguages } from "@/hooks/use-languages";
-import { useSidebarActivePanel } from "@/hooks/use-sidebar-active-panel";
-import { SlugInput } from "@/pages/client/components/slug-input";
-import { LANGUAGES } from "@/pages/constants/LANGUAGES";
-import { useCreatePage, useUpdatePage } from "@/pages/hooks/pages/mutations";
-import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
-import { useWebsitePrimaryPages } from "@/pages/hooks/pages/use-project-pages";
-import { usePageTypes } from "@/pages/hooks/project/use-page-types";
-import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
-import { useFallbackLang } from "@/pages/hooks/use-fallback-lang";
-import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
-import { parseSlugForEdit, removeSlugExtension } from "@/pages/utils/slug-utils";
-import { filter, find, startsWith } from "lodash-es";
-import { Loader } from "lucide-react";
-import React, { FormEvent, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
+} from "~/components/ui/dialog";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { useLanguages } from "~/hooks/use-languages";
+import { useSidebarActivePanel } from "~/hooks/use-sidebar-active-panel";
+import { SlugInput } from "~/pages/client/components/slug-input";
+import { LANGUAGES } from "~/pages/constants/LANGUAGES";
+import { useCreatePage, useUpdatePage } from "~/pages/hooks/pages/mutations";
+import { useLanguagePages } from "~/pages/hooks/pages/use-language-pages";
+import { useWebsitePrimaryPages } from "~/pages/hooks/pages/use-project-pages";
+import { usePageTypes } from "~/pages/hooks/project/use-page-types";
+import { useWebsiteSetting } from "~/pages/hooks/project/use-website-settings";
+import { useFallbackLang } from "~/pages/hooks/use-fallback-lang";
+import { useSearchParams } from "~/pages/hooks/utils/use-search-params";
+import { parseSlugForEdit, removeSlugExtension } from "~/pages/utils/slug-utils";
 
 /**
  * Props for the AddNewLanguagePage component.

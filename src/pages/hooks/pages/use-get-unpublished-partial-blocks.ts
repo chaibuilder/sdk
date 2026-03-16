@@ -1,7 +1,7 @@
-import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
-import { useWebsitePrimaryPages } from "@/pages/hooks/pages/use-project-pages";
 import { compact, filter, find, get, isEmpty, uniq } from "lodash-es";
 import { useCallback } from "react";
+import { useBlocksStore } from "~/hooks/history/use-blocks-store-undoable-actions";
+import { useWebsitePrimaryPages } from "~/pages/hooks/pages/use-project-pages";
 
 export type PartialBlockStatus = "unpublished" | "unpublished_changes";
 

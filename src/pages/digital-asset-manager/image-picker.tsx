@@ -1,11 +1,11 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { pick } from "lodash-es";
 import { ImageIcon, Trash2, X } from "lucide-react";
 import React, { lazy, Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Button } from "~/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "~/components/ui/dialog";
 import { Asset } from "./types";
 const DigitalAssetManager = lazy(() => import("./digital-asset-manager"));
 

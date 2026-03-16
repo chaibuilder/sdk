@@ -1,6 +1,6 @@
-import { AIChatOptions, ChaiBuilderPagesAIInterface } from "@/types/actions";
 import { streamText, StreamTextResult } from "ai";
 import { noop } from "lodash-es";
+import { AIChatOptions, ChaiBuilderPagesAIInterface } from "~/types/actions";
 import { getAskAiSystemPrompt } from "./system-prompt";
 
 const DEFAULT_MODEL = "google/gemini-2.5-flash";
@@ -25,21 +25,21 @@ export class ChaiAIChatHandler implements ChaiBuilderPagesAIInterface {
 
     const aiMessages = image
       ? [
-        ...userMessages.slice(0, -1),
-        {
-          role: "user",
-          content: [
-            {
-              type: "text",
-              text: lastUserMessage.content,
-            },
-            {
-              type: "image",
-              image: image,
-            },
-          ],
-        },
-      ]
+          ...userMessages.slice(0, -1),
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: lastUserMessage.content,
+              },
+              {
+                type: "image",
+                image: image,
+              },
+            ],
+          },
+        ]
       : messages;
 
     let systemPrompt = getAskAiSystemPrompt(initiator);

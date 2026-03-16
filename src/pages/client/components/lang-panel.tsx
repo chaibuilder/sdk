@@ -1,29 +1,27 @@
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useLanguages } from "@/hooks/use-languages";
-import { addNewLangAtom } from "@/pages/atom/add-new-lang";
-import { ChangeSlug } from "@/pages/client/components/change-slug";
-import PermissionChecker from "@/pages/client/components/permission-checker";
-import { LANGUAGES } from "@/pages/constants/LANGUAGES";
-import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
-import { usePrimaryPage } from "@/pages/hooks/pages/use-current-page";
-import { useLanguagePages } from "@/pages/hooks/pages/use-language-pages";
-import { usePageTypes } from "@/pages/hooks/project/use-page-types";
-import { useWebsiteSetting } from "@/pages/hooks/project/use-website-settings";
-import { ChaiPageType } from "@/types/actions";
 import { useSetAtom } from "jotai";
 import { filter, find, get, isEmpty, map } from "lodash-es";
 import { MoreHorizontal, PencilIcon, Power, StarIcon, TrashIcon } from "lucide-react";
 import { lazy, Suspense, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Button } from "~/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
+import { useLanguages } from "~/hooks/use-languages";
+import { addNewLangAtom } from "~/pages/atom/add-new-lang";
+import { ChangeSlug } from "~/pages/client/components/change-slug";
+import { LANGUAGES } from "~/pages/constants/LANGUAGES";
+import { usePrimaryPage } from "~/pages/hooks/pages/use-current-page";
+import { useLanguagePages } from "~/pages/hooks/pages/use-language-pages";
+import { usePageTypes } from "~/pages/hooks/project/use-page-types";
+import { useWebsiteSetting } from "~/pages/hooks/project/use-website-settings";
+import { ChaiPageType } from "~/types/actions";
 
-const DeletePage = lazy(() => import("@/pages/client/components/delete-page"));
-const UnpublishPage = lazy(() => import("@/pages/client/components/unpublish-page"));
+const DeletePage = lazy(() => import("~/pages/client/components/delete-page"));
+const UnpublishPage = lazy(() => import("~/pages/client/components/unpublish-page"));
 
 const LangPanel = () => {
   const { t } = useTranslation();
@@ -93,63 +91,49 @@ const LangPanel = () => {
                     </div>
                   ) : (
                     <div className="flex items-center gap-x-3">
-                      <PermissionChecker
-                        permissions={[
-                          PAGES_PERMISSIONS.EDIT_PAGE,
-                          PAGES_PERMISSIONS.DELETE_PAGE,
-                          PAGES_PERMISSIONS.UNPUBLISH_PAGE,
-                        ]}>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                            <Button variant="ghost" size="sm" className={`h-8 w-8 p-0`}>
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="z-[9999] text-sm">
-                            <PermissionChecker permissions={[PAGES_PERMISSIONS.EDIT_PAGE]}>
-                              <DropdownMenuItem
-                                className="flex cursor-pointer items-center gap-2"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setAddNewLang({
-                                    edit: true,
-                                    id: langPage.id,
-                                    primaryPage: langPage.primaryPage,
-                                  });
-                                }}>
-                                <PencilIcon className="size-3" />
-                                {t("Edit")}
-                              </DropdownMenuItem>
-                            </PermissionChecker>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                          <Button variant="ghost" size="sm" className={`h-8 w-8 p-0`}>
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="z-[9999] text-sm">
+                          <DropdownMenuItem
+                            className="flex cursor-pointer items-center gap-2"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setAddNewLang({
+                                edit: true,
+                                id: langPage.id,
+                                primaryPage: langPage.primaryPage,
+                              });
+                            }}>
+                            <PencilIcon className="size-3" />
+                            {t("Edit")}
+                          </DropdownMenuItem>
 
-                            <PermissionChecker permissions={[PAGES_PERMISSIONS.UNPUBLISH_PAGE]}>
-                              {langPage?.online && (
-                                <DropdownMenuItem
-                                  className="flex cursor-pointer items-center gap-2"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setUnpublishPage(langPage);
-                                  }}>
-                                  <Power className="size-3" />
-                                  {t("Unpublish")}
-                                </DropdownMenuItem>
-                              )}
-                            </PermissionChecker>
-
-                            <PermissionChecker permissions={[PAGES_PERMISSIONS.DELETE_PAGE]}>
-                              <DropdownMenuItem
-                                className="flex cursor-pointer items-center gap-2"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setDeletePage(langPage);
-                                }}>
-                                <TrashIcon className="size-3" />
-                                {t("Delete")}
-                              </DropdownMenuItem>
-                            </PermissionChecker>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </PermissionChecker>
+                          {langPage?.online && (
+                            <DropdownMenuItem
+                              className="flex cursor-pointer items-center gap-2"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setUnpublishPage(langPage);
+                              }}>
+                              <Power className="size-3" />
+                              {t("Unpublish")}
+                            </DropdownMenuItem>
+                          )}
+                          <DropdownMenuItem
+                            className="flex cursor-pointer items-center gap-2"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setDeletePage(langPage);
+                            }}>
+                            <TrashIcon className="size-3" />
+                            {t("Delete")}
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </div>
                   )}
                 </li>
@@ -160,22 +144,20 @@ const LangPanel = () => {
         )}
       </ul>
 
-      <PermissionChecker permissions={[PAGES_PERMISSIONS.ADD_PAGE]}>
-        <div className="flex w-full justify-center">
-          <Button
-            variant="default"
-            size="sm"
-            disabled={isEmpty(languages)}
-            onClick={() => {
-              setAddNewLang({
-                primaryPage: currentPage?.id,
-                edit: false,
-              });
-            }}>
-            {t("Add new language page")}
-          </Button>
-        </div>
-      </PermissionChecker>
+      <div className="flex w-full justify-center">
+        <Button
+          variant="default"
+          size="sm"
+          disabled={isEmpty(languages)}
+          onClick={() => {
+            setAddNewLang({
+              primaryPage: currentPage?.id,
+              edit: false,
+            });
+          }}>
+          {t("Add new language page")}
+        </Button>
+      </div>
 
       {deletePage && (
         <Suspense>

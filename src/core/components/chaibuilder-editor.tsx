@@ -1,35 +1,34 @@
-import { chaiBuilderPropsAtom, chaiDesignTokensAtom, chaiPageExternalDataAtom } from "@/atoms/builder";
-import { builderStore } from "@/atoms/store";
-import { selectedLibraryAtom } from "@/atoms/ui";
-import { CssThemeVariables } from "@/core/components/css-theme-var";
-import { FallbackError } from "@/core/components/fallback-error";
-import { RootLayout } from "@/core/components/layout/root-layout";
-import { PreviewScreen } from "@/core/components/PreviewScreen";
-import { useAutoSave } from "@/core/components/use-auto-save";
-import { ChaiFeatureFlagsWidget } from "@/core/flags/flags-widget";
-import { setDebugLogs } from "@/core/functions/logging";
-import "@/core/index.css";
-import i18n from "@/core/locales/load";
-import { ExportCodeModal } from "@/core/modals/export-code-modal";
-import { ScreenTooSmall } from "@/core/screen-too-small";
-import { defaultThemeValues } from "@/hooks/default-theme-options";
-import { useBlocksStore } from "@/hooks/history/use-blocks-store-undoable-actions";
-import { useBroadcastChannel, useUnmountBroadcastChannel } from "@/hooks/use-broadcast-channel";
-import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { useBuilderReset } from "@/hooks/use-builder-reset";
-import { useCheckStructure } from "@/hooks/use-check-structure";
-import { useExpandTree } from "@/hooks/use-expand-tree";
-import { isPageLoadedAtom } from "@/hooks/use-is-page-loaded";
-import { useKeyEventWatcher } from "@/hooks/use-key-event-watcher";
-import { useWatchPartialBlocks } from "@/hooks/use-partial-blocks-store";
-import { builderSaveStateAtom } from "@/hooks/use-save-page";
-import { syncBlocksWithDefaultProps } from "@/runtime";
-import { ChaiBuilderEditorProps, ChaiTheme } from "@/types";
 import { useAtom } from "jotai";
 import { each, noop, omit } from "lodash-es";
 import React, { useEffect, useMemo } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Toaster } from "sonner";
+import { chaiBuilderPropsAtom, chaiDesignTokensAtom, chaiPageExternalDataAtom } from "~/atoms/builder";
+import { builderStore } from "~/atoms/store";
+import { selectedLibraryAtom } from "~/atoms/ui";
+import { CssThemeVariables } from "~/core/components/css-theme-var";
+import { FallbackError } from "~/core/components/fallback-error";
+import { RootLayout } from "~/core/components/layout/root-layout";
+import { PreviewScreen } from "~/core/components/PreviewScreen";
+import { useAutoSave } from "~/core/components/use-auto-save";
+import { setDebugLogs } from "~/core/functions/logging";
+import "~/core/index.css";
+import i18n from "~/core/locales/load";
+import { ExportCodeModal } from "~/core/modals/export-code-modal";
+import { ScreenTooSmall } from "~/core/screen-too-small";
+import { defaultThemeValues } from "~/hooks/default-theme-options";
+import { useBlocksStore } from "~/hooks/history/use-blocks-store-undoable-actions";
+import { useBroadcastChannel, useUnmountBroadcastChannel } from "~/hooks/use-broadcast-channel";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
+import { useBuilderReset } from "~/hooks/use-builder-reset";
+import { useCheckStructure } from "~/hooks/use-check-structure";
+import { useExpandTree } from "~/hooks/use-expand-tree";
+import { isPageLoadedAtom } from "~/hooks/use-is-page-loaded";
+import { useKeyEventWatcher } from "~/hooks/use-key-event-watcher";
+import { useWatchPartialBlocks } from "~/hooks/use-partial-blocks-store";
+import { builderSaveStateAtom } from "~/hooks/use-save-page";
+import { syncBlocksWithDefaultProps } from "~/runtime";
+import { ChaiBuilderEditorProps, ChaiTheme } from "~/types";
 
 const ChaiWatchers = (props: ChaiBuilderEditorProps) => {
   const [, setAllBlocks] = useBlocksStore();
@@ -133,7 +132,6 @@ const ChaiBuilderEditor: React.FC<ChaiBuilderEditorProps> = (props: ChaiBuilderE
         <ChaiWatchers {...props} />
         <PreviewScreen />
         <Toaster richColors />
-        <ChaiFeatureFlagsWidget />
       </ErrorBoundary>
     </div>
   );

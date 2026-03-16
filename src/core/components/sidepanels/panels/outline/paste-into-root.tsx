@@ -1,11 +1,11 @@
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { DropdownMenuItem } from "~/components/ui/dropdown-menu";
 
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { usePasteBlocks } from "@/hooks/use-paste-blocks";
 import { CardStackIcon } from "@radix-ui/react-icons";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "~/components/ui/dropdown-menu";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
+import { usePasteBlocks } from "~/hooks/use-paste-blocks";
 
 export const PasteAtRootContextMenu = ({
   parentContext,

@@ -13,7 +13,7 @@ import {
   UnderlineIcon,
 } from "@radix-ui/react-icons";
 import { Editor } from "@tiptap/react";
-import { cn } from "@/lib/utils";
+import { cn } from "~/lib/utils";
 
 const BUBBLE_MENU_ICONS = {
   bold: FontBoldIcon,

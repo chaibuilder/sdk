@@ -1,19 +1,19 @@
-import { lsThemeAtom } from "@/atoms/ui";
-import { ChaiBuilderEditor, defaultChaiLibrary } from "@/core/main";
-import "@/index.css";
-import { lsBlocksAtom, lsDesignTokensAtom } from "@/routes/demo/atoms-dev";
-import { EXTERNAL_DATA } from "@/routes/demo/EXTERNAL_DATA";
-import { PARTIALS } from "@/routes/demo/PARTIALS";
-import { defaultShadcnPreset } from "@/routes/demo/THEME_PRESETS";
-import Topbar from "@/routes/demo/top-bar";
-import { registerChaiFont } from "@/runtime";
-import { registerChaiLibrary, registerChaiTopBar } from "@/runtime/client";
-import { ChaiSavePageData, ChaiSaveWebsiteData, ChaiTheme } from "@/types/chaibuilder-editor-props";
-import { ChaiBlock } from "@/types/common";
-import { loadWebBlocks } from "@/web-blocks";
 import { useAtom } from "jotai";
 import { isArray } from "lodash-es";
 import { toast } from "sonner";
+import { lsThemeAtom } from "~/atoms/ui";
+import { ChaiBuilderEditor, defaultChaiLibrary } from "~/core/main";
+import "~/index.css";
+import { lsBlocksAtom, lsDesignTokensAtom } from "~/routes/demo/atoms-dev";
+import { EXTERNAL_DATA } from "~/routes/demo/EXTERNAL_DATA";
+import { PARTIALS } from "~/routes/demo/PARTIALS";
+import { defaultShadcnPreset } from "~/routes/demo/THEME_PRESETS";
+import Topbar from "~/routes/demo/top-bar";
+import { registerChaiFont } from "~/runtime";
+import { registerChaiLibrary, registerChaiTopBar } from "~/runtime/client";
+import { ChaiSavePageData, ChaiSaveWebsiteData, ChaiTheme } from "~/types/chaibuilder-editor-props";
+import { ChaiBlock } from "~/types/common";
+import { loadWebBlocks } from "~/web-blocks";
 
 loadWebBlocks();
 registerChaiTopBar(Topbar);
@@ -32,7 +32,6 @@ function ChaiBuilderDefault() {
       pageId="header"
       designTokens={designTokensValue}
       flags={{
-        librarySite: false,
         copyPaste: true,
         darkMode: false,
         exportCode: true,
@@ -40,7 +39,6 @@ function ChaiBuilderDefault() {
         importHtml: true,
         importTheme: true,
         dragAndDrop: true,
-        designTokens: true,
       }}
       gotoPage={(args) => {
         console.log("gotoPage", args);

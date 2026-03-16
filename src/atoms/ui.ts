@@ -1,8 +1,8 @@
-import { defaultThemeValues } from "@/hooks/default-theme-options";
-import { ChaiTheme } from "@/types";
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { TreeApi } from "react-arborist";
+import { defaultThemeValues } from "~/hooks/default-theme-options";
+import { ChaiTheme } from "~/types";
 
 export const readOnlyModeAtom: any = atom<boolean>(false);
 readOnlyModeAtom.debugLabel = "readOnlyModeAtom";

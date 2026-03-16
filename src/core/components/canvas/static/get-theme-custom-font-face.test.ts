@@ -1,5 +1,5 @@
-import { getThemeCustomFontFace } from "@/core/components/canvas/static/chai-theme-helpers";
-import { ChaiFontBySrc } from "@/types";
+import { getThemeCustomFontFace } from "~/core/components/canvas/static/chai-theme-helpers";
+import { ChaiFontBySrc } from "~/types";
 
 describe("getThemeCustomFontFace", () => {
   it("should return empty string for empty array input", () => {

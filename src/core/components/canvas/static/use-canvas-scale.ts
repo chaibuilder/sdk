@@ -1,7 +1,7 @@
-import { useBuilderProp } from "@/hooks/use-builder-prop";
-import { useCanvasZoom } from "@/hooks/use-canvas-zoom";
-import { useCanvasDisplayWidth } from "@/hooks/use-screen-size-width";
 import { useCallback, useEffect, useState } from "react";
+import { useBuilderProp } from "~/hooks/use-builder-prop";
+import { useCanvasZoom } from "~/hooks/use-canvas-zoom";
+import { useCanvasDisplayWidth } from "~/hooks/use-screen-size-width";
 
 export const useCanvasScale = (dimension: { height: number; width: number }) => {
   const [canvasWidth] = useCanvasDisplayWidth();

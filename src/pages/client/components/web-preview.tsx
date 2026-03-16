@@ -1,10 +1,10 @@
-import { Button } from "@/components/ui/button";
 import { useAtom } from "jotai";
 import { map } from "lodash-es";
 import { Laptop, LaptopMinimal, Smartphone, Tablet } from "lucide-react";
 import { useState } from "react";
-import { previewUrlAtom } from "@/pages/atom/preview-url";
-import Tooltip from "@/pages/utils/tooltip";
+import { Button } from "~/components/ui/button";
+import { previewUrlAtom } from "~/pages/atom/preview-url";
+import Tooltip from "~/pages/utils/tooltip";
 
 interface BreakpointItemType {
   content: string;

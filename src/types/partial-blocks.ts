@@ -1,4 +1,4 @@
-import { ChaiBlock } from "@/types/common";
+import { ChaiBlock } from "~/types/common";
 
 /**
  * Unified state for a single partial block entry

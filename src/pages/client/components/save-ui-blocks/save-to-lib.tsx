@@ -1,20 +1,20 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useLibraryBlocks } from "@/hooks/use-library-blocks";
-import { usePartialBlocksStore } from "@/hooks/use-partial-blocks-store";
-import { usePermissions } from "@/hooks/use-permissions";
-import { useUpdateBlocksPropsRealtime } from "@/hooks/use-update-blocks-props";
-import { DeleteBlockButton } from "@/pages/client/components/save-ui-blocks/delete-block-confirmation";
-import { GroupSelector } from "@/pages/client/components/save-ui-blocks/group-selector";
-import { ImageUpload } from "@/pages/client/components/save-ui-blocks/image-upload";
-import { PAGES_PERMISSIONS } from "@/pages/constants/PERMISSIONS";
-import { useGetUIBlockDetails, useSaveUIBlock } from "@/pages/hooks/project/use-block-library-mutations";
-import { ChaiBlock } from "@/types/common";
 import { has, isEmpty, set } from "lodash-es";
 import { AlertCircle } from "lucide-react";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { useLibraryBlocks } from "~/hooks/use-library-blocks";
+import { usePartialBlocksStore } from "~/hooks/use-partial-blocks-store";
+import { usePermissions } from "~/hooks/use-permissions";
+import { useUpdateBlocksPropsRealtime } from "~/hooks/use-update-blocks-props";
+import { DeleteBlockButton } from "~/pages/client/components/save-ui-blocks/delete-block-confirmation";
+import { GroupSelector } from "~/pages/client/components/save-ui-blocks/group-selector";
+import { ImageUpload } from "~/pages/client/components/save-ui-blocks/image-upload";
+import { PAGES_PERMISSIONS } from "~/pages/constants/PERMISSIONS";
+import { useGetUIBlockDetails, useSaveUIBlock } from "~/pages/hooks/project/use-block-library-mutations";
+import { ChaiBlock } from "~/types/common";
 
 // Define the props interface
 interface SaveToLibraryProps {

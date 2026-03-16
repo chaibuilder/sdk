@@ -1,7 +1,7 @@
-import { COLLECTION_PREFIX } from "@/core/constants/STRINGS";
-import { resolveStringBinding } from "@/render/binding-engine";
-import { ChaiBlock } from "@/types/common";
 import { cloneDeep, forEach, isArray, isEmpty, isString, keys, startsWith } from "lodash-es";
+import { COLLECTION_PREFIX } from "~/core/constants/STRINGS";
+import { resolveStringBinding } from "~/render/binding-engine";
+import { ChaiBlock } from "~/types/common";
 
 const applyBindingToValue = (
   value: any,

@@ -1,15 +1,3 @@
-import { IframeInitialContent } from "@/core/components/canvas/IframeInitialContent";
-import {
-  getChaiThemeOptions,
-  getThemeCustomFontFace,
-  getThemeFontsUrls,
-} from "@/core/components/canvas/static/chai-theme-helpers";
-import { CssThemeVariables } from "@/core/components/css-theme-var";
-import { ChaiFrame, useFrame } from "@/core/frame";
-import { useDarkMode } from "@/hooks/use-dark-mode";
-import { useTheme, useThemeOptions } from "@/hooks/use-theme";
-import { useRegisteredFonts } from "@/runtime";
-import { ChaiFontBySrc, ChaiFontByUrl, ChaiTheme } from "@/types";
 import aspectRatio from "@tailwindcss/aspect-ratio";
 import containerQueries from "@tailwindcss/container-queries";
 import forms from "@tailwindcss/forms";
@@ -17,6 +5,18 @@ import typography from "@tailwindcss/typography";
 import { filter, get, has } from "lodash-es";
 import React, { useEffect, useMemo } from "react";
 import plugin from "tailwindcss/plugin";
+import { IframeInitialContent } from "~/core/components/canvas/IframeInitialContent";
+import {
+  getChaiThemeOptions,
+  getThemeCustomFontFace,
+  getThemeFontsUrls,
+} from "~/core/components/canvas/static/chai-theme-helpers";
+import { CssThemeVariables } from "~/core/components/css-theme-var";
+import { ChaiFrame, useFrame } from "~/core/frame";
+import { useDarkMode } from "~/hooks/use-dark-mode";
+import { useTheme, useThemeOptions } from "~/hooks/use-theme";
+import { useRegisteredFonts } from "~/runtime";
+import { ChaiFontBySrc, ChaiFontByUrl, ChaiTheme } from "~/types";
 
 const PreviewHeadTags = () => {
   const [chaiTheme] = useTheme();

@@ -1,16 +1,16 @@
-import { JSONForm } from "@/core/components/settings/json-form";
-import { COLLECTION_PREFIX } from "@/core/constants/STRINGS";
-import { useLanguages } from "@/hooks/use-languages";
-import { useSelectedBlock } from "@/hooks/use-selected-blockIds";
-import { useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "@/hooks/use-update-blocks-props";
-import { useWrapperBlock } from "@/hooks/use-wrapper-block";
-import { getBlockFormSchemas, getRegisteredChaiBlock } from "@/runtime";
-import { ChaiBlockConfig } from "@/types/blocks";
-import { ChaiBlock } from "@/types/common";
 import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { IChangeEvent } from "@rjsf/core";
 import { cloneDeep, debounce, forEach, get, includes, isEmpty, keys, set, startCase, startsWith } from "lodash-es";
 import { useCallback, useMemo, useState } from "react";
+import { JSONForm } from "~/core/components/settings/json-form";
+import { COLLECTION_PREFIX } from "~/core/constants/STRINGS";
+import { useLanguages } from "~/hooks/use-languages";
+import { useSelectedBlock } from "~/hooks/use-selected-blockIds";
+import { useUpdateBlocksProps, useUpdateBlocksPropsRealtime } from "~/hooks/use-update-blocks-props";
+import { useWrapperBlock } from "~/hooks/use-wrapper-block";
+import { getBlockFormSchemas, getRegisteredChaiBlock } from "~/runtime";
+import { ChaiBlockConfig } from "~/types/blocks";
+import { ChaiBlock } from "~/types/common";
 import { VisibilitySettings } from "./visibility-setting";
 
 const formDataWithSelectedLang = (formData: Record<string, any>, selectedLang: string, coreBlock: ChaiBlockConfig) => {

@@ -1,7 +1,7 @@
-import { ActionError } from "@/actions/builder/action-error";
-import { ChaiBaseAction } from "@/actions/builder/base-action";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { z } from "zod";
+import { ActionError } from "~/actions/builder/action-error";
+import { ChaiBaseAction } from "~/actions/builder/base-action";
 
 const ChangePasswordSchema = z
   .object({

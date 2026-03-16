@@ -1,8 +1,8 @@
-import { useAsyncProps } from "@/hooks/async-props/use-async-props";
-import { getRegisteredChaiBlock } from "@/runtime";
-import { ChaiBlock } from "@/types/common";
 import { get } from "lodash-es";
 import { useMemo } from "react";
+import { useAsyncProps } from "~/hooks/async-props/use-async-props";
+import { getRegisteredChaiBlock } from "~/runtime";
+import { ChaiBlock } from "~/types/common";
 
 type AsyncPropsWrapperProps = {
   children: (asyncProps: Record<string, any>) => React.ReactNode;

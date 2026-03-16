@@ -1,10 +1,10 @@
-import { useLanguages } from "@/hooks/use-languages";
-import { ACTIONS } from "@/pages/constants/ACTIONS";
-import { useApiUrl } from "@/pages/hooks/project/use-builder-prop";
-import { useFetch } from "@/pages/hooks/utils/use-fetch";
-import { useSearchParams } from "@/pages/hooks/utils/use-search-params";
 import { useQuery } from "@tanstack/react-query";
 import { reverse, sortBy } from "lodash-es";
+import { useLanguages } from "~/hooks/use-languages";
+import { ACTIONS } from "~/pages/constants/ACTIONS";
+import { useApiUrl } from "~/pages/hooks/project/use-builder-prop";
+import { useFetch } from "~/pages/hooks/utils/use-fetch";
+import { useSearchParams } from "~/pages/hooks/utils/use-search-params";
 
 export const useLanguagePages = (pageId?: string | undefined) => {
   const apiUrl = useApiUrl();

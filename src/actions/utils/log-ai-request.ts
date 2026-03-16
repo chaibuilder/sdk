@@ -1,5 +1,5 @@
-import { db, safeQuery, schema } from "@/actions/db";
-import { AI_MODELS } from "@/pages/panels/ai-panel/models";
+import { db, safeQuery, schema } from "~/actions/db";
+import { AI_MODELS } from "~/pages/panels/ai-panel/models";
 
 const getModelMultiplier = (id: string) => {
   return AI_MODELS.find((model) => model.id === id)?.multiplier || 1;

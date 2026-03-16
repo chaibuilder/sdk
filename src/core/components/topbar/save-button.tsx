@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { cn } from "@/core/functions/common-functions";
-import { useSavePage } from "@/hooks/use-save-page";
 import { CheckIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
+import { Button } from "~/components/ui/button";
+import { cn } from "~/core/functions/common-functions";
+import { useSavePage } from "~/hooks/use-save-page";
 
 export const SaveButton = () => {
   const { savePage, saveState } = useSavePage();
