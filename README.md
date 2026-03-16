@@ -10,7 +10,7 @@ Chai Builder is a **full open-source React website builder** that empowers devel
 - **Next.js 16**
 - **Tailwind CSS v3+**
 
-📚 **[CodeWiki](https://codewiki.google/github.com/chaibuilder/sdk)**  | 🎨 **[Live Demo](https://chaibuilder-sdk.vercel.app/)** 
+📚 **[CodeWiki](https://codewiki.google/github.com/chaibuilder/sdk)** | 🎨 **[Live Demo](https://chaibuilder-sdk.vercel.app/)**
 
 ![CHAI BUILDER](https://fldwljgzcktqnysdkxnn.supabase.co/storage/v1/object/public/dam-assets/assets/chai-builder.jpg)
 
@@ -29,52 +29,40 @@ Chai Builder is a **full open-source React website builder** that empowers devel
 
 ## 📦 Packages
 
-Chai Builder is available in two packages:
+Chai Builder is available in three packages:
 
----
-
-### `@chaibuilder/sdk` - Core Builder
-
-**For any React application**
-
-The core builder package that can be integrated as a standard React component into any React application. Perfect for building custom page builders and visual editors.
-
-**Core Features:**
-
-- 🎨 **Drag & Drop React Builder** - Visual builder component for React
-- 🔧 **Extensible API** - Add custom layouts with ease
-- 🪝 **Inner Hooks** - Exposed hooks to create custom layouts
-- 📦 **Custom Blocks** - Register custom blocks and block settings
-- 🎛️ **Custom Panels** - Add your own custom panels
-- 🔗 **Data Binding** - Built-in data-binding support
-- 🌍 **i18n Support** - Internationalization ready
-- 🤖 **AI Panel** - AI Chat Panel
-- 🧩 **Partial Blocks** - Reusable header, footer components
-- 🎨 **Theme System** - Customizable theming
-- 📄 **Import HTML** - Import existing HTML content
-
-📚 **[View Documentation](https://docs.chaibuilder.com/)**
-
----
-
-### `@chaibuilder/next` - Next.js Website Builder
-
-**For public content-heavy sites**
-
-A more powerful Next.js-specific implementation designed for blogs, marketing sites, documentation, and any public-facing content. Built with **SSG (Static Site Generation) + ISR (Incremental Static Regeneration)** for optimal performance.
-
-**All Core Features Plus:**
-
-- 📄 **Page Types** - Define custom page types with specific layouts
-- 📚 **Collections** - Manage content collections (blogs, products, portfolios)
-- 🖼️ **Media Manager** - Built-in media manager with image editor
-- 🤖 **AI Assistant** - Create and edit UI components and content with AI
-- 🔍 **SEO & JSON-LD** - Advanced SEO features with structured data
-- 👁️ **Preview Mode** - Live preview before publishing
-- 🔒 **CMS Integration** - Connect to any headless CMS
-- 🔐 **BYO Stack** - Bring Your Own Auth, Database (Postgres), and Storage
-
-🚀 **Get Started:** [Next.js + Supabase Starter](https://github.com/chaibuilder/chaibuilder-next-supabase-starter) (Work in Progress)
+| Feature                   | sdk | next | pro |
+| ------------------------- | :-: | :--: | :-: |
+| Drag & Drop React Builder | ✅  |  ✅  | ✅  |
+| Extensible API            | ✅  |  ✅  | ✅  |
+| Inner Hooks               | ✅  |  ✅  | ✅  |
+| Custom Blocks             | ✅  |  ✅  | ✅  |
+| Custom Panels             | ✅  |  ✅  | ✅  |
+| Data Binding              | ✅  |  ✅  | ✅  |
+| i18n Support              | ✅  |  ✅  | ✅  |
+| AI Panel(standard)        | ✅  |  ✅  | ✅  |
+| Theme System              | ✅  |  ✅  | ✅  |
+| Import HTML               | ✅  |  ✅  | ✅  |
+| Partial Blocks            |     |  ✅  | ✅  |
+| Page Types                |     |  ✅  | ✅  |
+| Collections               |     |  ✅  | ✅  |
+| Media Manager             |     |  ✅  | ✅  |
+| SEO & JSON-LD             |     |  ✅  | ✅  |
+| Preview Mode              |     |  ✅  | ✅  |
+| CMS Integration           |     |  ✅  | ✅  |
+| BYO Stack                 |     |  ✅  | ✅  |
+| Multiple Languages        |     |      | ✅  |
+| AI for SEO                |     |      | ✅  |
+| Revisions                 |     |      | ✅  |
+| Design Tokens             |     |      | ✅  |
+| Library                   |     |      | ✅  |
+| Multi User                |     |      | ✅  |
+| AI Context & Advanced AI  |     |      | ✅  |
+| Multi-tenant Support      |     |      | ✅  |
+| Reveal Animations         |     |      | 🔜  |
+| New Builder UI            |     |      | 🔜  |
+| Registry of Custom Blocks |     |      | 🔜  |
+| Premium Templates         |     |      | 🔜  |
 
 ---
 
