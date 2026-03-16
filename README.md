@@ -31,38 +31,38 @@ Chai Builder is a **full open-source React website builder** that empowers devel
 
 Chai Builder is available in three packages:
 
-| Feature                   | sdk | next | pro |
-| ------------------------- | :-: | :--: | :-: |
-| Drag & Drop React Builder | ✅  |  ✅  | ✅  |
-| Extensible API            | ✅  |  ✅  | ✅  |
-| Inner Hooks               | ✅  |  ✅  | ✅  |
-| Custom Blocks             | ✅  |  ✅  | ✅  |
-| Custom Panels             | ✅  |  ✅  | ✅  |
-| Data Binding              | ✅  |  ✅  | ✅  |
-| i18n Support              | ✅  |  ✅  | ✅  |
-| AI Panel(standard)        | ✅  |  ✅  | ✅  |
-| Theme System              | ✅  |  ✅  | ✅  |
-| Import HTML               | ✅  |  ✅  | ✅  |
-| Partial Blocks            |     |  ✅  | ✅  |
-| Page Types                |     |  ✅  | ✅  |
-| Collections               |     |  ✅  | ✅  |
-| Media Manager             |     |  ✅  | ✅  |
-| SEO & JSON-LD             |     |  ✅  | ✅  |
-| Preview Mode              |     |  ✅  | ✅  |
-| CMS Integration           |     |  ✅  | ✅  |
-| BYO Stack                 |     |  ✅  | ✅  |
-| Multiple Languages        |     |      | ✅  |
-| AI for SEO                |     |      | ✅  |
-| Revisions                 |     |      | ✅  |
-| Design Tokens             |     |      | ✅  |
-| Library                   |     |      | ✅  |
-| Multi User                |     |      | ✅  |
-| AI Context & Advanced AI  |     |      | ✅  |
-| Multi-tenant Support      |     |      | ✅  |
-| Reveal Animations         |     |      | 🔜  |
-| New Builder UI            |     |      | 🔜  |
-| Registry of Custom Blocks |     |      | 🔜  |
-| Premium Templates         |     |      | 🔜  |
+| Feature                   | sdk<br />(reactjs) | next <br />(nextjs) | pro<br />(multi-tenant nextjs) |
+| ------------------------- | :----------------: | :-----------------: | :----------------------------: |
+| Drag & Drop React Builder |         ✅         |         ✅          |               ✅               |
+| Extensible API            |         ✅         |         ✅          |               ✅               |
+| Inner Hooks               |         ✅         |         ✅          |               ✅               |
+| Custom Blocks             |         ✅         |         ✅          |               ✅               |
+| Custom Panels             |         ✅         |         ✅          |               ✅               |
+| Data Binding              |         ✅         |         ✅          |               ✅               |
+| i18n Support              |         ✅         |         ✅          |               ✅               |
+| AI Panel(standard)        |         ✅         |         ✅          |               ✅               |
+| Theme System              |         ✅         |         ✅          |               ✅               |
+| Import HTML               |         ✅         |         ✅          |               ✅               |
+| Partial Blocks            |                    |         ✅          |               ✅               |
+| Page Types                |                    |         ✅          |               ✅               |
+| Collections               |                    |         ✅          |               ✅               |
+| Media Manager             |                    |         ✅          |               ✅               |
+| SEO & JSON-LD             |                    |         ✅          |               ✅               |
+| Preview Mode              |                    |         ✅          |               ✅               |
+| CMS Integration           |                    |         ✅          |               ✅               |
+| BYO Stack                 |                    |         ✅          |               ✅               |
+| Multiple Languages        |                    |                     |               ✅               |
+| AI for SEO                |                    |                     |               ✅               |
+| Revisions                 |                    |                     |               ✅               |
+| Design Tokens             |                    |                     |               ✅               |
+| Library                   |                    |                     |               ✅               |
+| Multi User                |                    |                     |               ✅               |
+| AI Context & Advanced AI  |                    |                     |               ✅               |
+| Multi-tenant Support      |                    |                     |               ✅               |
+| Reveal Animations         |                    |                     |               🔜               |
+| New Builder UI            |                    |                     |               🔜               |
+| Registry of Custom Blocks |                    |                     |               🔜               |
+| Premium Templates         |                    |                     |               🔜               |
 
 ---
 
