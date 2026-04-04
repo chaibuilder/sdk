@@ -95,7 +95,7 @@ export const useCopyBlocks = (): [
         console.error("Failed to copy blocks to clipboard:", error);
       }
     },
-    [setIds, resetCutBlockIds, presentBlocks],
+    [setIds, resetCutBlockIds, enableCopyToClipboard, presentBlocks, getPartialBlocks],
   );
 
   return [ids as string[], copyBlocks, hasPartialBlocks];

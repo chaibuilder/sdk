@@ -72,7 +72,9 @@ export const useAddBlock = (): AddBlocks => {
         _id: blockId,
         ...props,
         ...(has(coreBlock, "_name") && { _name: coreBlock._name }),
-        ...(has(coreBlock, "partialBlockId") && { partialBlockId: coreBlock.partialBlockId }),
+        ...(has(coreBlock, "partialBlockId") && {
+          partialBlockId: coreBlock.partialBlockId,
+        }),
       };
       let parentBlock;
       let parentBlockId;
@@ -82,7 +84,7 @@ export const useAddBlock = (): AddBlocks => {
         parentBlockId = parentId;
       }
 
-      const canAdd = canAcceptChildBlock(parentBlock?._type!, newBlock._type);
+      const canAdd = parentBlock ? canAcceptChildBlock(parentBlock._type, newBlock._type) : true;
       if (!canAdd && parentBlock) {
         newBlock._parent = parentBlock._parent;
         parentBlockId = parentBlock._parent;

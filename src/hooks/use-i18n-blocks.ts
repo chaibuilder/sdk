@@ -10,7 +10,9 @@ export const useI18nBlocks = () => {
   const [currentBlocks] = useBlocksStore();
   return useCallback(
     (lang: string | "ALL" = "") => {
-      const blocks = selectedBlock?._id ? getBlockWithNestedChildren(selectedBlock._id, currentBlocks) : currentBlocks;
+      const blocks = selectedBlock?._id
+        ? getBlockWithNestedChildren(selectedBlock._id, currentBlocks)
+        : currentBlocks;
       if (!blocks) return [];
       return compact(
         blocks.map((block) => {
@@ -20,16 +22,22 @@ export const useI18nBlocks = () => {
           if (i18nProps.length === 0) return null;
           const keys =
             lang === "ALL"
-              ? Object.keys(block).filter((key) => i18nProps.find((prop) => key.startsWith(prop)))
+              ? Object.keys(block).filter((key) =>
+                  i18nProps.find((prop) => key.startsWith(prop)),
+                )
               : i18nProps.map((prop) => (lang ? `${prop}-${lang}` : prop));
           const blockProps: Record<string, any> = pick(block, ["_id"]);
           each(keys, (key) => {
-            blockProps[key] = get(block, key, get(block, key.replace(`-${lang}`, "")));
+            blockProps[key] = get(
+              block,
+              key,
+              get(block, key.replace(`-${lang}`, "")),
+            );
           });
           return blockProps;
         }),
       );
     },
-    [selectedBlock?._id, currentBlocks],
+    [selectedBlock, currentBlocks],
   );
 };

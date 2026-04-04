@@ -5,4 +5,4 @@ const highlightBlockIdAtom = atom<string>("");
 /**
  *
  */
-export const useHighlightBlockId = (): [string, Function] => useAtom(highlightBlockIdAtom);
+export const useHighlightBlockId = () => useAtom(highlightBlockIdAtom);

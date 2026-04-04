@@ -18,7 +18,7 @@ export const getDefaultThemeValues = (options: ChaiThemeOptions = defaultThemeOp
     );
   }
 
-  // @ts-ignore
+  // @ts-expect-error - borderRadius is a string in options but ChaiBorderRadiusValue in themeValues
   themeValues.borderRadius = options.borderRadius as ChaiBorderRadiusValue;
 
   if (options.colors) {
@@ -46,7 +46,11 @@ export const useTheme = () => {
 
   const themeValues = useMemo(
     () =>
-      ({ ...defaultThemeValues, ...(!isEmpty(theme) && theme), ...(!isEmpty(chaiTheme) && chaiTheme) }) as ChaiTheme,
+      ({
+        ...defaultThemeValues,
+        ...(!isEmpty(theme) && theme),
+        ...(!isEmpty(chaiTheme) && chaiTheme),
+      }) as ChaiTheme,
     [defaultThemeValues, theme, chaiTheme],
   );
   return [themeValues, setChaiTheme] as const;

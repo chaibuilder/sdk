@@ -37,5 +37,5 @@ export const useUnmountBroadcastChannel = () => {
       broadcastChannel.onmessageerror = null;
       //broadcastChannel.close();
     };
-  }, [setBlocks, pageId]);
+  }, [setBlocks, pageId, updateBlocksProps]);
 };

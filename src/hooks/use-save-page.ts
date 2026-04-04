@@ -134,7 +134,7 @@ export const useSavePage = () => {
       // Run structure validation before saving
       const pageData = getPageData();
       if (pageData?.blocks) {
-        // @ts-ignore
+        // @ts-expect-error - checkStructure expects specific block types
         checkStructure(pageData.blocks);
       }
       setSaveState("SAVING");
