@@ -12,13 +12,15 @@ export const useBuilderFetch = () => {
       headers = {},
       url = apiUrl,
       streamResponse = false,
+      signal,
     }: {
       body: { action: string; data?: any };
       headers?: Record<string, string>;
       url?: string;
       streamResponse?: boolean;
+      signal?: AbortSignal;
     }) => {
-      return fetch(url, body, headers, streamResponse);
+      return fetch(url, body, headers, streamResponse, signal);
     },
     [fetch, apiUrl],
   );
@@ -34,14 +36,20 @@ export const useFetch = () => {
       body: { action: string; data?: any },
       headers: Record<string, string> = {},
       streamResponse = false,
+      signal?: AbortSignal,
     ) => {
       const authToken = await getAccessToken();
       try {
         const action = get(body, "action", "").toLowerCase();
-        const response = await fetchAPI(url + (action ? `?action=${action}` : ""), body, {
-          ...headers,
-          Authorization: `Bearer ${authToken}`,
-        });
+        const response = await fetchAPI(
+          url + (action ? `?action=${action}` : ""),
+          body,
+          {
+            ...headers,
+            Authorization: `Bearer ${authToken}`,
+          },
+          signal ? { signal } : undefined,
+        );
         if (streamResponse) {
           return response;
         }

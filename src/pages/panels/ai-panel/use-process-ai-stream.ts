@@ -49,6 +49,26 @@ export const useProcessAiStream = () => {
   };
 
   let canvasElement: HTMLElement | null = null;
+  /** Block hidden with display:none during EDIT stream preview; restored on abort/cleanup */
+  let editHiddenBlockEl: HTMLElement | null = null;
+
+  const applyStreamCanvasLayout = (el: HTMLElement) => {
+    el.style.width = "100%";
+    el.style.maxWidth = "100%";
+    el.style.boxSizing = "border-box";
+    el.style.display = "block";
+  };
+
+  const cleanupStreamCanvasPreview = () => {
+    const iframeDoc = document.getElementById("canvas-iframe") as HTMLIFrameElement;
+    const doc = iframeDoc?.contentDocument;
+    doc?.querySelectorAll("[data-stream-canvas]").forEach((node) => node.remove());
+    if (editHiddenBlockEl) {
+      editHiddenBlockEl.style.removeProperty("display");
+      editHiddenBlockEl = null;
+    }
+    canvasElement = null;
+  };
 
   const getCanvasElement = (parentId?: string, position?: number): HTMLElement | null => {
     // Always create a fresh canvas element for proper positioning
@@ -84,6 +104,7 @@ export const useProcessAiStream = () => {
     // Create new canvas element
     canvasElement = iframeDocument.createElement("div");
     canvasElement.setAttribute("data-stream-canvas", "true");
+    applyStreamCanvasLayout(canvasElement);
 
     // Position the canvas based on the position parameter
     if (position !== undefined && position >= 0 && targetContainer.children) {
@@ -124,12 +145,15 @@ export const useProcessAiStream = () => {
     // Create new canvas element to replace the target block temporarily
     canvasElement = iframeDocument.createElement("div");
     canvasElement.setAttribute("data-stream-canvas", "true");
+    applyStreamCanvasLayout(canvasElement);
 
     // Insert the canvas element right after the target block
     targetBlock.parentNode?.insertBefore(canvasElement, targetBlock.nextSibling);
 
     // Hide the original block during streaming
-    (targetBlock as HTMLElement).style.display = "none";
+    const hidden = targetBlock as HTMLElement;
+    hidden.style.display = "none";
+    editHiddenBlockEl = hidden;
 
     return canvasElement;
   };
@@ -198,6 +222,8 @@ export const useProcessAiStream = () => {
       reader: ReadableStreamDefaultReader,
       setMessages: (messages: Message[] | ((prev: Message[]) => Message[])) => void,
     ) => {
+      cleanupStreamCanvasPreview();
+
       const decoder = new TextDecoder();
       let accumulatedText = "";
       let buffer = "";
@@ -232,6 +258,7 @@ export const useProcessAiStream = () => {
             canvasElement.remove();
             canvasElement = null;
           }
+          editHiddenBlockEl = null;
           return;
         }
 
@@ -420,6 +447,8 @@ export const useProcessAiStream = () => {
         });
       } catch (e) {
         console.log(e);
+      } finally {
+        cleanupStreamCanvasPreview();
       }
     },
     [removeBlocks],
