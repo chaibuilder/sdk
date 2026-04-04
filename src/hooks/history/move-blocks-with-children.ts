@@ -5,7 +5,7 @@ import { ChaiBlock } from "~/types/common";
 
 // Convert the tree back to a flat array
 function flattenTree(node: TreeModel.Node<Partial<ChaiBlock>>): Partial<ChaiBlock>[] {
-  let flatArray: ChaiBlock[] = [];
+  const flatArray: ChaiBlock[] = [];
   node.walk((n) => {
     delete n.model.children;
     flatArray.push(n.model);
@@ -173,13 +173,16 @@ function moveBlocksWithChildren(
   if (!blockToMove) return _blocks;
 
   // Handle Text block logic for the old parent
-  let processedBlocks = handleOldParentTextBlock(_blocks, blockToMove) as ChaiBlock[];
+  const processedBlocks = handleOldParentTextBlock(_blocks, blockToMove) as ChaiBlock[];
 
   // Set newParentId to "root" for tree model if it's null or undefined
   const treeParentId = newParentId || "root";
 
   const tree = new TreeModel();
-  const root = tree.parse({ _id: "root", children: getBlocksTree(processedBlocks) });
+  const root = tree.parse({
+    _id: "root",
+    children: getBlocksTree(processedBlocks),
+  });
 
   if (moveNode(root, idToMove, treeParentId, newPosition)) {
     let newBlocks = flattenTree(root) as ChaiBlock[];

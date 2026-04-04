@@ -12,7 +12,8 @@ Chai Builder is a **full open-source React website builder** that empowers devel
 
 📚 **[CodeWiki](https://codewiki.google/github.com/chaibuilder/sdk)** | 🎨 **[Live Demo](https://chaibuilder-sdk.vercel.app/)**
 
-![CHAI BUILDER](https://fldwljgzcktqnysdkxnn.supabase.co/storage/v1/object/public/dam-assets/assets/chai-builder.jpg)
+![Chai Builder New UI](https://github.com/user-attachments/assets/75e49431-981b-4ea6-94b9-d9cc64bd8db6)
+
 
 ## ✨ Features
 
@@ -59,8 +60,8 @@ Chai Builder is available in three packages:
 | Multi User                |                    |                     |               ✅               |
 | AI Context & Advanced AI  |                    |                     |               ✅               |
 | Multi-tenant Support      |                    |                     |               ✅               |
+| New Builder UI            |                    |                     |               ✅               |
 | Reveal Animations         |                    |                     |               🔜               |
-| New Builder UI            |                    |                     |               🔜               |
 | Registry of Custom Blocks |                    |                     |               🔜               |
 | Premium Templates         |                    |                     |               🔜               |
 

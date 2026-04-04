@@ -1,10 +1,10 @@
-import { copiedBlockIdsAtom } from "~/hooks/use-copy-blockIds";
 import { atom, useAtom, useSetAtom } from "jotai";
 import { useCallback } from "react";
+import { copiedBlockIdsAtom } from "~/hooks/use-copy-blockIds";
 
-export const cutBlockIdsAtom: any = atom<Array<string>>([]);
+export const cutBlockIdsAtom = atom<Array<string>>([]);
 
-export const useCutBlockIds = (): [Array<string>, Function] => {
+export const useCutBlockIds = () => {
   const [ids, setIds] = useAtom(cutBlockIdsAtom);
   const resetCopyIds = useSetAtom(copiedBlockIdsAtom);
 
@@ -16,5 +16,5 @@ export const useCutBlockIds = (): [Array<string>, Function] => {
     [setIds, resetCopyIds],
   );
 
-  return [ids as string[], setCutBlockIds];
+  return [ids as string[], setCutBlockIds] as const;
 };

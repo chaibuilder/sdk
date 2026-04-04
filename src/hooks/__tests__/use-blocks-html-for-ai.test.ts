@@ -1,3 +1,4 @@
+import * as blockHelpers from "~/core/functions/block-helpers";
 import { transformNode, type HimalayaNode } from "~/hooks/use-blocks-html-for-ai";
 
 describe("transformNode", () => {
@@ -107,8 +108,14 @@ describe("transformNode", () => {
       const result = transformNode(node, mockBlocks);
 
       expect(result.attributes).toHaveLength(2);
-      expect(result.attributes).toContainEqual({ key: "chai-type", value: "CustomBlock" });
-      expect(result.attributes).toContainEqual({ key: "bid", value: "custom123" });
+      expect(result.attributes).toContainEqual({
+        key: "chai-type",
+        value: "CustomBlock",
+      });
+      expect(result.attributes).toContainEqual({
+        key: "bid",
+        value: "custom123",
+      });
     });
 
     test("should have only chai-type attribute if no data-block-id", () => {
@@ -125,7 +132,10 @@ describe("transformNode", () => {
       const result = transformNode(node, mockBlocks);
 
       expect(result.attributes).toHaveLength(1);
-      expect(result.attributes?.[0]).toEqual({ key: "chai-type", value: "CustomBlock" });
+      expect(result.attributes?.[0]).toEqual({
+        key: "chai-type",
+        value: "CustomBlock",
+      });
     });
 
     test("should remove all children from custom blocks", () => {
@@ -168,7 +178,10 @@ describe("transformNode", () => {
       const result = transformNode(node, mockBlocks);
 
       expect(result.tagName).toBe("div");
-      expect(result.attributes?.[0]).toEqual({ key: "class", value: "wrapper" });
+      expect(result.attributes?.[0]).toEqual({
+        key: "class",
+        value: "wrapper",
+      });
       expect(result.children?.[0].attributes?.find((attr) => attr.key === "data-block-type")).toBeUndefined();
     });
 
@@ -270,6 +283,131 @@ describe("transformNode", () => {
 
       expect(result.tagName).toBe("div");
       expect(result.children?.[0].tagName).toBe("chai-custom-widget");
+      expect(result.children?.[0].children).toHaveLength(0);
+    });
+  });
+
+  describe("Nested Custom Blocks with canAcceptBlock", () => {
+    let canAddChildBlockSpy: any;
+
+    afterEach(() => {
+      canAddChildBlockSpy?.mockRestore();
+    });
+
+    test("should recursively transform nested custom blocks when parent has canAcceptBlock", () => {
+      canAddChildBlockSpy = vi.spyOn(blockHelpers, "canAddChildBlock").mockImplementation((parentType: string) => {
+        return ["Accordion", "AccordionTrigger", "AccordionContent"].includes(parentType);
+      });
+
+      const node: HimalayaNode = {
+        type: "element",
+        tagName: "div",
+        attributes: [
+          { key: "data-block-type", value: "Accordion" },
+          { key: "data-block-id", value: "accordion1" },
+        ],
+        children: [
+          {
+            type: "element",
+            tagName: "div",
+            attributes: [
+              { key: "data-block-type", value: "AccordionTrigger" },
+              { key: "data-block-id", value: "trigger1" },
+            ],
+            children: [
+              {
+                type: "element",
+                tagName: "h3",
+                attributes: [{ key: "data-block-type", value: "Heading" }],
+                children: [],
+              },
+            ],
+          },
+          {
+            type: "element",
+            tagName: "div",
+            attributes: [
+              { key: "data-block-type", value: "AccordionContent" },
+              { key: "data-block-id", value: "content1" },
+            ],
+            children: [
+              {
+                type: "element",
+                tagName: "p",
+                attributes: [{ key: "data-block-type", value: "Paragraph" }],
+                children: [],
+              },
+            ],
+          },
+        ],
+      };
+
+      const result = transformNode(node, mockBlocks);
+
+      // Parent Accordion should be transformed to web component
+      expect(result.tagName).toBe("chai-accordion");
+
+      // Children should be preserved and transformed (AccordionTrigger and AccordionContent)
+      expect(result.children).toHaveLength(2);
+
+      // AccordionTrigger should be transformed
+      expect(result.children?.[0].tagName).toBe("chai-accordion-trigger");
+
+      // AccordionTrigger's children (Heading) should be preserved since it has canAcceptBlock
+      expect(result.children?.[0].children).toHaveLength(1);
+      expect(result.children?.[0].children?.[0].tagName).toBe("h3");
+
+      // AccordionContent should be transformed
+      expect(result.children?.[1].tagName).toBe("chai-accordion-content");
+
+      // AccordionContent's children (Paragraph) should be preserved
+      expect(result.children?.[1].children).toHaveLength(1);
+      expect(result.children?.[1].children?.[0].tagName).toBe("p");
+    });
+
+    test("should remove children from nested custom block without canAcceptBlock", () => {
+      canAddChildBlockSpy = vi.spyOn(blockHelpers, "canAddChildBlock").mockImplementation((parentType: string) => {
+        // Only ParentCustomBlock can accept children, ChildCustomBlock cannot
+        return parentType === "ParentCustomBlock";
+      });
+
+      const node: HimalayaNode = {
+        type: "element",
+        tagName: "div",
+        attributes: [
+          { key: "data-block-type", value: "ParentCustomBlock" },
+          { key: "data-block-id", value: "parent1" },
+        ],
+        children: [
+          {
+            type: "element",
+            tagName: "div",
+            attributes: [
+              { key: "data-block-type", value: "ChildCustomBlock" },
+              { key: "data-block-id", value: "child1" },
+            ],
+            children: [
+              {
+                type: "element",
+                tagName: "span",
+                attributes: [],
+                children: [{ type: "text", content: "Should be removed" }],
+              },
+            ],
+          },
+        ],
+      };
+
+      const result = transformNode(node, mockBlocks);
+
+      // Parent should have children (since it has canAcceptBlock)
+      expect(result.tagName).toBe("chai-parent-custom-block");
+      expect(result.children).toHaveLength(1);
+
+      // Child custom block should be transformed
+      expect(result.children?.[0].tagName).toBe("chai-child-custom-block");
+
+      // Child's children should be removed (since ChildCustomBlock doesn't have canAcceptBlock)
       expect(result.children?.[0].children).toHaveLength(0);
     });
   });

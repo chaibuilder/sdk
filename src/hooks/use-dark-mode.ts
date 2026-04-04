@@ -6,7 +6,7 @@ export const darkModeAtom = atomWithStorage("darkMode", false);
 /**
  * Wrapper hook around useAtom
  */
-export const useDarkMode = (): [boolean, Function] => {
+export const useDarkMode = () => {
   const [darkMode, setDarkMode] = useAtom(darkModeAtom);
-  return [darkMode, setDarkMode];
+  return [darkMode, setDarkMode] as const;
 };

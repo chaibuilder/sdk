@@ -21,12 +21,8 @@ type Created = {
  * @param blockIds
  * @param newClasses
  */
-export const addClassesToBlocksAtom: any = atom(null, (get, _set, { blockIds, newClasses }: Created) => {
-  // @ts-ignore
-  const blockAtoms = filter(get(pageBlocksAtomsAtom), (blockAtom) =>
-    // @ts-ignore
-    blockIds.includes(get(blockAtom)._id),
-  );
+export const addClassesToBlocksAtom = atom(null, (get, _set, { blockIds, newClasses }: Created) => {
+  const blockAtoms = filter(get(pageBlocksAtomsAtom), (blockAtom) => blockIds.includes(get(blockAtom)._id));
   const styleBlock = first(get(selectedStylingBlocksAtom)) as TStyleBlock;
   return map(blockAtoms, (blockAtom) => {
     const block: ChaiBlock = get(blockAtom as any);
@@ -48,7 +44,10 @@ export const useAddClassesToBlocks = () => {
   const { updateBlocks, updateBlocksRuntime } = useBlocksStoreUndoableActions();
   return useCallback(
     (blockIds: Array<string>, newClasses: Array<string>, undo: boolean = false) => {
-      const blocks = addClassesToBlocks({ blockIds, newClasses }) as Array<{ ids: Array<string>; props: any }>;
+      const blocks = addClassesToBlocks({ blockIds, newClasses }) as Array<{
+        ids: Array<string>;
+        props: any;
+      }>;
       if (!undo) {
         updateBlocksRuntime(blockIds, blocks[0].props);
         return;

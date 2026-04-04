@@ -2,6 +2,7 @@ import { parse, stringify } from "himalaya";
 import { kebabCase } from "lodash-es";
 import { useCallback } from "react";
 import { getCurrentBlocks } from "~/atoms/store";
+import { canAddChildBlock } from "~/core/functions/block-helpers";
 import { useCanvasIframe } from "~/hooks/use-canvas-iframe";
 import { getRegisteredChaiBlock } from "~/runtime";
 import { ChaiBlock } from "~/types/common";
@@ -192,12 +193,12 @@ export const transformNode = (node: HimalayaNode, currentBlocks: ChaiBlock[], op
         node.attributes = node.attributes.filter((attr) => attr.key !== "icon");
       }
 
-      // Check if custom block has canAcceptBlock defined
-      // If yes, recursively transform children; otherwise remove all children
-      if (blockDefinition && blockDefinition.canAcceptBlock) {
+      // Check if custom block can accept children using the helper function
+      // This properly checks if canAcceptBlock is defined in the block definition
+      if (canAddChildBlock(blockType)) {
         // Custom block can accept children, so recursively transform them
         if (node.children) {
-          node.children = node.children.map((node) => transformNode(node, currentBlocks, options));
+          node.children = node.children.map((child) => transformNode(child, currentBlocks, options));
         }
       } else {
         // Remove all children for custom blocks that don't accept children
@@ -230,7 +231,6 @@ export const useBlocksHtmlForAi = () => {
       const html = (iframeDocument as HTMLIFrameElement).contentDocument?.querySelector(id)?.[
         id === "#canvas" ? "innerHTML" : "outerHTML"
       ];
-
       if (!html) return "";
 
       // Parse HTML into AST

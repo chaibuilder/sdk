@@ -10,10 +10,7 @@ import { ChaiBlock } from "~/types/common";
 
 export const removeClassFromBlocksAtom: any = atom(null, (get, _set, { blockIds, fullClasses }) => {
   const styleBlock = first(get(selectedStylingBlocksAtom)) as TStyleBlock;
-  const blockAtoms = filter(get(pageBlocksAtomsAtom), (blockAtom) =>
-    // @ts-ignore
-    blockIds.includes(get(blockAtom)._id),
-  );
+  const blockAtoms = filter(get(pageBlocksAtomsAtom), (blockAtom) => blockIds.includes(get(blockAtom)._id));
 
   return map(blockAtoms, (blockAtom) => {
     const block: ChaiBlock = get(blockAtom as any);
@@ -79,7 +76,7 @@ export const useRemoveAllClassesForBlock = () => {
   );
 };
 
-export const useRemoveClassesFromBlocks = (): Function => {
+export const useRemoveClassesFromBlocks = () => {
   const { updateBlocks, updateBlocksRuntime } = useBlocksStoreUndoableActions();
   const removeClassesFromBlocks = useSetAtom(removeClassFromBlocksAtom);
   return useCallback(
@@ -94,6 +91,6 @@ export const useRemoveClassesFromBlocks = (): Function => {
         updateBlocks(blockIds, blocks[0].props);
       }
     },
-    [removeClassesFromBlocks],
+    [removeClassesFromBlocks, updateBlocks, updateBlocksRuntime],
   );
 };

@@ -1,7 +1,6 @@
 import { compact, get, map, memoize, omit } from "lodash-es";
 import { useCallback } from "react";
 import { useBlocksStore } from "~/hooks/history/use-blocks-store-undoable-actions";
-import { useBrandingOptions } from "~/hooks/use-branding-options";
 import { useCurrentPage } from "~/hooks/use-current-page";
 import { getRegisteredChaiBlock } from "~/runtime";
 import { ChaiBlock } from "~/types/common";
@@ -22,7 +21,6 @@ const getBlockBuilderProps = memoize((type: string) => {
 });
 
 export const useGetPageData = () => {
-  const [projectOptions] = useBrandingOptions();
   const { currentPage } = useCurrentPage();
   const [presentBlocks] = useBlocksStore();
 
@@ -36,5 +34,5 @@ export const useGetPageData = () => {
       currentPage,
       blocks,
     };
-  }, [projectOptions, currentPage, presentBlocks]);
+  }, [currentPage, presentBlocks]);
 };

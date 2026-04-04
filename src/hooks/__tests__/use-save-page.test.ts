@@ -3,7 +3,11 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { userActionsCountAtom } from "~/atoms/builder";
 import { builderStore } from "~/atoms/store";
 import { partialBlocksAtom } from "~/hooks/partial-blocks/atoms";
-import { builderSaveStateAtom, checkMissingTranslations, useSavePage } from "~/hooks/use-save-page";
+import {
+  builderSaveStateAtom,
+  checkMissingTranslations,
+  useSavePage,
+} from "~/hooks/use-save-page";
 import { getRegisteredChaiBlock } from "~/runtime";
 
 vi.mock("~/runtime", async (importOriginal) => {
@@ -253,15 +257,22 @@ describe("useSavePage - prevent save when no unsaved changes", () => {
     const { useIsPageLoaded } = await import("~/hooks/use-is-page-loaded");
     const { useCheckStructure } = await import("~/hooks/use-check-structure");
 
-    (useBuilderProp as any).mockImplementation((key: string, defaultValue: any) => {
-      if (key === "onSave") return mockOnSave;
-      if (key === "onSaveStateChange") return mockOnSaveStateChange;
-      return defaultValue;
-    });
+    (useBuilderProp as any).mockImplementation(
+      (key: string, defaultValue: any) => {
+        if (key === "onSave") return mockOnSave;
+        if (key === "onSaveStateChange") return mockOnSaveStateChange;
+        return defaultValue;
+      },
+    );
 
     (useGetPageData as any).mockReturnValue(mockGetPageData);
-    (usePermissions as any).mockReturnValue({ hasPermission: mockHasPermission });
-    (useLanguages as any).mockReturnValue({ selectedLang: "en", fallbackLang: "en" });
+    (usePermissions as any).mockReturnValue({
+      hasPermission: mockHasPermission,
+    });
+    (useLanguages as any).mockReturnValue({
+      selectedLang: "en",
+      fallbackLang: "en",
+    });
     (useIsPageLoaded as any).mockReturnValue([true]);
     (useCheckStructure as any).mockReturnValue(mockCheckStructure);
 
@@ -433,17 +444,24 @@ describe("useSavePage - getAllPartialIds", () => {
     const { useIsPageLoaded } = await import("~/hooks/use-is-page-loaded");
     const { useCheckStructure } = await import("~/hooks/use-check-structure");
 
-    (useBuilderProp as any).mockImplementation((key: string, defaultValue: any) => {
-      if (key === "onSave") return mockOnSave;
-      if (key === "onSaveStateChange") return mockOnSaveStateChange;
-      return defaultValue;
-    });
+    (useBuilderProp as any).mockImplementation(
+      (key: string, defaultValue: any) => {
+        if (key === "onSave") return mockOnSave;
+        if (key === "onSaveStateChange") return mockOnSaveStateChange;
+        return defaultValue;
+      },
+    );
 
     (useGetPageData as any).mockReturnValue(mockGetPageData);
     (useTheme as any).mockReturnValue([{}]);
     (useThemeOptions as any).mockReturnValue({});
-    (usePermissions as any).mockReturnValue({ hasPermission: mockHasPermission });
-    (useLanguages as any).mockReturnValue({ selectedLang: "en", fallbackLang: "en" });
+    (usePermissions as any).mockReturnValue({
+      hasPermission: mockHasPermission,
+    });
+    (useLanguages as any).mockReturnValue({
+      selectedLang: "en",
+      fallbackLang: "en",
+    });
     (useIsPageLoaded as any).mockReturnValue([true]);
     (useCheckStructure as any).mockReturnValue(mockCheckStructure);
 
@@ -495,7 +513,9 @@ describe("useSavePage - getAllPartialIds", () => {
   });
 
   it("should return partial IDs from GlobalBlock type", async () => {
-    const mockBlocks = [{ _id: "1", _type: "GlobalBlock", partialBlockId: "global-1" }];
+    const mockBlocks = [
+      { _id: "1", _type: "GlobalBlock", partialBlockId: "global-1" },
+    ];
     mockGetPageData.mockReturnValue({ blocks: mockBlocks });
 
     builderStore.set(partialBlocksAtom, {
@@ -516,12 +536,16 @@ describe("useSavePage - getAllPartialIds", () => {
   });
 
   it("should collect nested partial IDs from dependencies", async () => {
-    const mockBlocks = [{ _id: "1", _type: "PartialBlock", partialBlockId: "partial-1" }];
+    const mockBlocks = [
+      { _id: "1", _type: "PartialBlock", partialBlockId: "partial-1" },
+    ];
     mockGetPageData.mockReturnValue({ blocks: mockBlocks });
 
     builderStore.set(partialBlocksAtom, {
       "partial-1": {
-        blocks: [{ _id: "nested", _type: "PartialBlock", partialBlockId: "partial-2" }],
+        blocks: [
+          { _id: "nested", _type: "PartialBlock", partialBlockId: "partial-2" },
+        ],
         dependencies: ["partial-2"],
         status: "loaded",
       },
@@ -542,7 +566,9 @@ describe("useSavePage - getAllPartialIds", () => {
   });
 
   it("should collect deeply nested partial IDs", async () => {
-    const mockBlocks = [{ _id: "1", _type: "PartialBlock", partialBlockId: "partial-1" }];
+    const mockBlocks = [
+      { _id: "1", _type: "PartialBlock", partialBlockId: "partial-1" },
+    ];
     mockGetPageData.mockReturnValue({ blocks: mockBlocks });
 
     builderStore.set(partialBlocksAtom, {
@@ -567,7 +593,11 @@ describe("useSavePage - getAllPartialIds", () => {
 
     expect(mockOnSave).toHaveBeenCalledWith(
       expect.objectContaining({
-        partialIds: expect.arrayContaining(["partial-1", "partial-2", "partial-3"]),
+        partialIds: expect.arrayContaining([
+          "partial-1",
+          "partial-2",
+          "partial-3",
+        ]),
       }),
     );
   });
@@ -598,7 +628,9 @@ describe("useSavePage - getAllPartialIds", () => {
   });
 
   it("should handle circular dependencies without infinite loop", async () => {
-    const mockBlocks = [{ _id: "1", _type: "PartialBlock", partialBlockId: "partial-1" }];
+    const mockBlocks = [
+      { _id: "1", _type: "PartialBlock", partialBlockId: "partial-1" },
+    ];
     mockGetPageData.mockReturnValue({ blocks: mockBlocks });
 
     builderStore.set(partialBlocksAtom, {
@@ -628,7 +660,9 @@ describe("useSavePage - getAllPartialIds", () => {
   });
 
   it("should skip partials that are not loaded", async () => {
-    const mockBlocks = [{ _id: "1", _type: "PartialBlock", partialBlockId: "partial-1" }];
+    const mockBlocks = [
+      { _id: "1", _type: "PartialBlock", partialBlockId: "partial-1" },
+    ];
     mockGetPageData.mockReturnValue({ blocks: mockBlocks });
 
     builderStore.set(partialBlocksAtom, {
@@ -700,17 +734,24 @@ describe("useSavePage - getLinkPageIds", () => {
     const { useIsPageLoaded } = await import("~/hooks/use-is-page-loaded");
     const { useCheckStructure } = await import("~/hooks/use-check-structure");
 
-    (useBuilderProp as any).mockImplementation((key: string, defaultValue: any) => {
-      if (key === "onSave") return mockOnSave;
-      if (key === "onSaveStateChange") return mockOnSaveStateChange;
-      return defaultValue;
-    });
+    (useBuilderProp as any).mockImplementation(
+      (key: string, defaultValue: any) => {
+        if (key === "onSave") return mockOnSave;
+        if (key === "onSaveStateChange") return mockOnSaveStateChange;
+        return defaultValue;
+      },
+    );
 
     (useGetPageData as any).mockReturnValue(mockGetPageData);
     (useTheme as any).mockReturnValue([{}]);
     (useThemeOptions as any).mockReturnValue({});
-    (usePermissions as any).mockReturnValue({ hasPermission: mockHasPermission });
-    (useLanguages as any).mockReturnValue({ selectedLang: "en", fallbackLang: "en" });
+    (usePermissions as any).mockReturnValue({
+      hasPermission: mockHasPermission,
+    });
+    (useLanguages as any).mockReturnValue({
+      selectedLang: "en",
+      fallbackLang: "en",
+    });
     (useIsPageLoaded as any).mockReturnValue([true]);
     (useCheckStructure as any).mockReturnValue(mockCheckStructure);
 
@@ -745,7 +786,10 @@ describe("useSavePage - getLinkPageIds", () => {
       {
         _id: "1",
         _type: "Link",
-        link: { href: "pageType:blog:550e8400-e29b-41d4-a716-446655440000", target: "_self" },
+        link: {
+          href: "pageType:blog:550e8400-e29b-41d4-a716-446655440000",
+          target: "_self",
+        },
       },
     ];
     mockGetPageData.mockReturnValue({ blocks: mockBlocks });
@@ -768,7 +812,10 @@ describe("useSavePage - getLinkPageIds", () => {
       {
         _id: "1",
         _type: "Button",
-        link: { href: "pageType:page:a1b2c3d4-e5f6-7890-abcd-ef1234567890", target: "_blank" },
+        link: {
+          href: "pageType:page:a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          target: "_blank",
+        },
       },
     ];
     mockGetPageData.mockReturnValue({ blocks: mockBlocks });
@@ -791,7 +838,10 @@ describe("useSavePage - getLinkPageIds", () => {
       {
         _id: "1",
         _type: "Image",
-        link: { href: "pageType:product:12345678-1234-1234-1234-123456789abc", target: "_self" },
+        link: {
+          href: "pageType:product:12345678-1234-1234-1234-123456789abc",
+          target: "_self",
+        },
       },
     ];
     mockGetPageData.mockReturnValue({ blocks: mockBlocks });
@@ -814,8 +864,14 @@ describe("useSavePage - getLinkPageIds", () => {
       {
         _id: "1",
         _type: "Card",
-        cardLink: { href: "pageType:blog:11111111-1111-1111-1111-111111111111", target: "_self" },
-        ctaButton: { href: "pageType:page:22222222-2222-2222-2222-222222222222", target: "_blank" },
+        cardLink: {
+          href: "pageType:blog:11111111-1111-1111-1111-111111111111",
+          target: "_self",
+        },
+        ctaButton: {
+          href: "pageType:page:22222222-2222-2222-2222-222222222222",
+          target: "_blank",
+        },
       },
     ];
     mockGetPageData.mockReturnValue({ blocks: mockBlocks });
@@ -841,17 +897,26 @@ describe("useSavePage - getLinkPageIds", () => {
       {
         _id: "1",
         _type: "Link",
-        link: { href: "pageType:blog:11111111-1111-1111-1111-111111111111", target: "_self" },
+        link: {
+          href: "pageType:blog:11111111-1111-1111-1111-111111111111",
+          target: "_self",
+        },
       },
       {
         _id: "2",
         _type: "Button",
-        link: { href: "pageType:page:22222222-2222-2222-2222-222222222222", target: "_blank" },
+        link: {
+          href: "pageType:page:22222222-2222-2222-2222-222222222222",
+          target: "_blank",
+        },
       },
       {
         _id: "3",
         _type: "Image",
-        link: { href: "pageType:product:33333333-3333-3333-3333-333333333333", target: "_self" },
+        link: {
+          href: "pageType:product:33333333-3333-3333-3333-333333333333",
+          target: "_self",
+        },
       },
     ];
     mockGetPageData.mockReturnValue({ blocks: mockBlocks });
@@ -878,12 +943,18 @@ describe("useSavePage - getLinkPageIds", () => {
       {
         _id: "1",
         _type: "Link",
-        link: { href: "pageType:blog:11111111-1111-1111-1111-111111111111", target: "_self" },
+        link: {
+          href: "pageType:blog:11111111-1111-1111-1111-111111111111",
+          target: "_self",
+        },
       },
       {
         _id: "2",
         _type: "Button",
-        link: { href: "pageType:blog:11111111-1111-1111-1111-111111111111", target: "_blank" },
+        link: {
+          href: "pageType:blog:11111111-1111-1111-1111-111111111111",
+          target: "_blank",
+        },
       },
     ];
     mockGetPageData.mockReturnValue({ blocks: mockBlocks });
@@ -901,7 +972,11 @@ describe("useSavePage - getLinkPageIds", () => {
 
   it("should ignore blocks with regular URL hrefs", async () => {
     const mockBlocks = [
-      { _id: "1", _type: "Link", link: { href: "https://example.com", target: "_blank" } },
+      {
+        _id: "1",
+        _type: "Link",
+        link: { href: "https://example.com", target: "_blank" },
+      },
       { _id: "2", _type: "Button", link: { href: "/about", target: "_self" } },
       { _id: "3", _type: "Link", link: { href: "#section", target: "_self" } },
     ];
@@ -925,8 +1000,13 @@ describe("useSavePage - getLinkPageIds", () => {
       {
         _id: "1",
         _type: "Container",
-        _internalLink: { href: "pageType:blog:11111111-1111-1111-1111-111111111111" },
-        link: { href: "pageType:page:22222222-2222-2222-2222-222222222222", target: "_self" },
+        _internalLink: {
+          href: "pageType:blog:11111111-1111-1111-1111-111111111111",
+        },
+        link: {
+          href: "pageType:page:22222222-2222-2222-2222-222222222222",
+          target: "_self",
+        },
       },
     ];
     mockGetPageData.mockReturnValue({ blocks: mockBlocks });
@@ -966,7 +1046,11 @@ describe("useSavePage - getLinkPageIds", () => {
   it("should handle blocks with null or undefined link href", async () => {
     const mockBlocks = [
       { _id: "1", _type: "Link", link: { href: null, target: "_self" } },
-      { _id: "2", _type: "Button", link: { href: undefined, target: "_blank" } },
+      {
+        _id: "2",
+        _type: "Button",
+        link: { href: undefined, target: "_blank" },
+      },
       { _id: "3", _type: "Image", link: {} },
     ];
     mockGetPageData.mockReturnValue({ blocks: mockBlocks });
@@ -989,12 +1073,18 @@ describe("useSavePage - getLinkPageIds", () => {
       {
         _id: "1",
         _type: "Link",
-        link: { href: "pageType:blog-post:11111111-1111-1111-1111-111111111111", target: "_self" },
+        link: {
+          href: "pageType:blog-post:11111111-1111-1111-1111-111111111111",
+          target: "_self",
+        },
       },
       {
         _id: "2",
         _type: "Link",
-        link: { href: "pageType:product_page:22222222-2222-2222-2222-222222222222", target: "_self" },
+        link: {
+          href: "pageType:product_page:22222222-2222-2222-2222-222222222222",
+          target: "_self",
+        },
       },
     ];
     mockGetPageData.mockReturnValue({ blocks: mockBlocks });

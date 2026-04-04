@@ -8,7 +8,7 @@ import { ChaiBlock } from "~/types/common";
 /**
  * useDuplicateBlock
  */
-export const useDuplicateBlocks = (): Function => {
+export const useDuplicateBlocks = () => {
   const [presentBlocks] = useBlocksStore();
   const [, setSelected] = useSelectedBlockIds();
   const { addBlocks } = useBlocksStoreUndoableActions();
@@ -36,6 +36,6 @@ export const useDuplicateBlocks = (): Function => {
       });
       setSelected(newBlockIds);
     },
-    [presentBlocks, setSelected],
+    [addBlocks, presentBlocks, setSelected],
   );
 };

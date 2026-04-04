@@ -8,7 +8,7 @@ import { ChaiBlock } from "~/types/common";
 export const removeNestedBlocks = (blocks: ChaiBlock[], blockIds: Array<string>): ChaiBlock[] => {
   // Create a copy of blocks to modify
   let modifiedBlocks = [...blocks];
-  let additionalBlocksToRemove: string[] = [];
+  const additionalBlocksToRemove: string[] = [];
 
   // For each block being removed, check its parent
   blockIds.forEach((blockId) => {
@@ -75,7 +75,7 @@ export const removeNestedBlocks = (blocks: ChaiBlock[], blockIds: Array<string>)
 
 export const useRemoveBlocks = () => {
   const [presentBlocks] = useBlocksStore();
-  const [ids, setSelectedIds] = useSelectedBlockIds();
+  const [, setSelectedIds] = useSelectedBlockIds();
   const { setNewBlocks } = useBlocksStoreUndoableActions();
   const { hasPermission } = usePermissions();
 
@@ -86,6 +86,6 @@ export const useRemoveBlocks = () => {
       setNewBlocks(removeNestedBlocks(presentBlocks, blockIds));
       setTimeout(() => setSelectedIds(parentBlockId ? [parentBlockId] : []), 200);
     },
-    [presentBlocks, setSelectedIds, ids, hasPermission],
+    [hasPermission, presentBlocks, setNewBlocks, setSelectedIds],
   );
 };

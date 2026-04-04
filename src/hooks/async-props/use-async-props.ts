@@ -29,11 +29,6 @@ export const useAsyncProps = (
   dependencies?: string[],
   mockDataProvider?: (args: { block: ChaiBlock }) => object,
 ) => {
-  const [asyncProps, setAsyncProps] = useState<BlockAsyncProps>({
-    status: "idle",
-    props: {},
-    error: undefined,
-  });
   const updateRuntimeProps = useUpdateBlocksPropsRealtime();
   const getAsyncBlockProps = useBuilderProp("getBlockAsyncProps", async (_args: { block: ChaiBlock }) => ({}));
   const setBlockRepeaterDataAtom = useSetAtom(blockRepeaterDataAtom);
@@ -41,15 +36,26 @@ export const useAsyncProps = (
   const isCollectionRepeater = block?._type === "Repeater" && startsWith(block.repeaterItems, `{{${COLLECTION_PREFIX}`);
   const isCustomBlockDataProvider = block?._type !== "Repeater" && dataProviderMode === "live";
 
+  const shouldFetchData =
+    (dataProviderMode === "mock" && isFunction(mockDataProvider)) ||
+    (dataProviderMode === "live" && (isCollectionRepeater || isCustomBlockDataProvider));
+
+  const [asyncProps, setAsyncProps] = useState<BlockAsyncProps>({
+    status: shouldFetchData ? "loading" : "idle",
+    props: {},
+    error: undefined,
+  });
+
   useEffect(() => {
     if (dataProviderMode === "mock") {
       if (isFunction(mockDataProvider)) {
-        setAsyncProps((prev) => ({ ...prev, status: "loading", props: {} }));
-        const result = mockDataProvider({ block });
-        if (!isObject(result)) {
-          throw new Error("mockDataProvider should return an object");
-        }
-        setAsyncProps((prev) => ({ ...prev, status: "loaded", props: result }));
+        Promise.resolve().then(() => {
+          const result = mockDataProvider({ block });
+          if (!isObject(result)) {
+            throw new Error("mockDataProvider should return an object");
+          }
+          setAsyncProps({ status: "loaded", props: result });
+        });
       }
       return;
     }
@@ -57,11 +63,9 @@ export const useAsyncProps = (
     if (dataProviderMode !== "live") return;
     if (!isCollectionRepeater && !isCustomBlockDataProvider) return;
 
-    setAsyncProps((prev) => ({ ...prev, status: "loading", props: {} }));
     getAsyncBlockProps({ block })
       .then((props = {}) => {
         if (isCollectionRepeater) {
-          // set the props to a global state
           setBlockRepeaterDataAtom((prev) => ({
             ...prev,
             [block._id]: {
@@ -70,10 +74,18 @@ export const useAsyncProps = (
               repeaterItems: block.repeaterItems,
             },
           }));
-          setAsyncProps((prev) => ({ ...prev, status: "loaded", props: { totalItems: get(props, "totalItems") } }));
-          updateRuntimeProps([block._id], { totalItems: get(props, "totalItems") });
+          setAsyncProps({
+            status: "loaded",
+            props: { totalItems: get(props, "totalItems") },
+          });
+          updateRuntimeProps([block._id], {
+            totalItems: get(props, "totalItems"),
+          });
         } else {
-          setAsyncProps((prev) => ({ ...prev, status: "loaded", props: isObject(props) ? props : {} }));
+          setAsyncProps({
+            status: "loaded",
+            props: isObject(props) ? props : {},
+          });
         }
       })
       .catch((error) => {
@@ -82,12 +94,31 @@ export const useAsyncProps = (
             ...prev,
             [block._id]: { status: "error", error, props: [] },
           }));
-          setAsyncProps((prev) => ({ ...prev, status: "error", error, props: {} }));
+          setAsyncProps({
+            status: "error",
+            error,
+            props: {},
+          });
         } else {
-          setAsyncProps((prev) => ({ ...prev, status: "error", error, props: {} }));
+          setAsyncProps({
+            status: "error",
+            error,
+            props: {},
+          });
         }
       });
-  }, [block?._id, depsString, isCollectionRepeater, isCustomBlockDataProvider, mockDataProvider, dataProviderMode]);
+  }, [
+    block._id,
+    depsString,
+    isCollectionRepeater,
+    isCustomBlockDataProvider,
+    mockDataProvider,
+    dataProviderMode,
+    getAsyncBlockProps,
+    block,
+    setBlockRepeaterDataAtom,
+    updateRuntimeProps,
+  ]);
 
   const status = get(asyncProps, `status`);
   return {

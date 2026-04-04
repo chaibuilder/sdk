@@ -179,7 +179,7 @@ const BlockFloatingSelector = ({ block, isDragging, selectedBlockElement }: Bloc
         }}
         onMouseEnter={(e) => {
           e.stopPropagation();
-          setHighlighted(null);
+          setHighlighted("");
         }}
         onKeyDown={(e) => e.stopPropagation()}
         className={`isolate z-[999] flex h-6 items-center justify-between bg-blue-500 py-2 text-xs text-white ${isDragging ? "opacity-0" : ""}`}>
