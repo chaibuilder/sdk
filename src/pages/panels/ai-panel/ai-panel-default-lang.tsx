@@ -117,11 +117,19 @@ const AiPanelForDefaultLang = ({
     config.onAIEvent?.({ type: "stream_start", model: usedModel, timestamp: Date.now() });
 
     try {
-      const requestBody: any = {
-        messages: [userMessageObj].map((m) => ({
+      // Send conversation history so the AI has context from prior turns.
+      // Cap at last 10 messages to avoid exceeding token/payload limits.
+      const MAX_HISTORY = 10;
+      const conversationMessages = [...messages, userMessageObj]
+        .filter((m) => !m.isReasoning && !m.isTask && (m.role === "user" || m.role === "assistant"))
+        .slice(-MAX_HISTORY)
+        .map((m) => ({
           role: m.role,
           content: m.content,
-        })),
+        }));
+
+      const requestBody: any = {
+        messages: conversationMessages,
         model: model || currentSelectedModel,
         context: config.context,
       };
@@ -131,7 +139,11 @@ const AiPanelForDefaultLang = ({
         requestBody.image = image;
       }
 
-      const response = await fetch({ body: { action: "ASK_AI", data: requestBody }, streamResponse: true });
+      const response = await fetch({
+        body: { action: "ASK_AI", data: requestBody },
+        streamResponse: true,
+        signal: controller.signal,
+      });
 
       if (!response.ok) {
         throw new Error(t("Failed to get AI response"));
