@@ -17,6 +17,7 @@ import { TaskMessage } from "~/pages/components/ai-elements/task-message";
 import { ChaiBlock } from "~/types/common";
 import { useAIConfig, useAIModels } from "./ai-models-context";
 import { Message } from "./ai-panel-helper";
+import { getDefaultModel } from "./models";
 import { getUserPrompt } from "./prompt-helper";
 import { SelectedBlockDisplay } from "./selected-block-display";
 import { useProcessAiStream } from "./use-process-ai-stream";
@@ -64,7 +65,7 @@ const AiPanelForDefaultLang = ({
 }: AiPanelForDefaultLangProps) => {
   const { models } = useAIModels();
   const config = useAIConfig();
-  const defaultModel = models.find((model) => model.id === "google/gemini-3-flash") || models[0];
+  const defaultModel = models.find((model) => model.id === getDefaultModel().id) || models[0];
   const currentSelectedModel = selectedModel || defaultModel.id;
 
   const selectedBlock = useSelectedBlock();
