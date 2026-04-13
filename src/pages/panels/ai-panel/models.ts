@@ -1,3 +1,5 @@
+export const DEFAULT_MODEL_ID = "google/gemini-2.5-flash";
+
 export const AI_MODELS = [
   {
     id: "google/gemini-2.5-flash",
@@ -69,5 +71,5 @@ export const getModelById = (id: string) => {
 };
 
 export const getDefaultModel = () => {
-  return AI_MODELS.find((model) => model.id === "google/gemini-3-flash") || AI_MODELS[0];
+  return AI_MODELS.find((model) => model.id === DEFAULT_MODEL_ID) || AI_MODELS[0];
 };

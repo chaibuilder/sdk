@@ -21,6 +21,7 @@ import {
 } from "~/pages/components/ai-elements/prompt-input";
 import { ChaiBlock } from "~/types/common";
 import { useAIModels } from "./ai-models-context";
+import { getDefaultModel } from "./models";
 import { ModelSelectorDropdown } from "./model-selector-dropdown";
 
 const MODEL_STORAGE_KEY = "chai-ai-selected-model";
@@ -52,7 +53,7 @@ const AiPromptInput = ({
 }: AiPromptInputProps) => {
   const { t } = useTranslation();
   const { models } = useAIModels();
-  const defaultModel = models.find((model) => model.id === "google/gemini-3-flash") || models[0];
+  const defaultModel = models.find((model) => model.id === getDefaultModel().id) || models[0];
   const [selectedModel, setSelectedModel] = useState(propSelectedModel || defaultModel.id);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -62,16 +63,17 @@ const AiPromptInput = ({
   useEffect(() => {
     if (!selectedLang) {
       const savedModel = localStorage.getItem(MODEL_STORAGE_KEY);
-      if (savedModel) {
+      if (savedModel && models.find((m) => m.id === savedModel)) {
         setSelectedModel(savedModel);
         onModelChange?.(savedModel);
       } else {
-        // Set default model if no saved model exists
+        // Clear stale/invalid saved model and use default
+        if (savedModel) localStorage.removeItem(MODEL_STORAGE_KEY);
         setSelectedModel(defaultModel.id);
         onModelChange?.(defaultModel.id);
       }
     }
-  }, [selectedLang, onModelChange, defaultModel.id]);
+  }, [selectedLang, onModelChange, defaultModel.id, models]);
 
   const handleSubmit = (message: { text: string; files: any[] }) => {
     const imageFile = message.files.find((file) => file.mediaType?.startsWith("image/"));

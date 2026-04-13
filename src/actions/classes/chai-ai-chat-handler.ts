@@ -3,6 +3,7 @@ import { noop } from "lodash-es";
 import { AIChatOptions, ChaiBuilderPagesAIInterface } from "~/types/actions";
 import { getAskAiSystemPrompt } from "./system-prompt";
 
+// Keep in sync with DEFAULT_MODEL_ID in pages/panels/ai-panel/models.ts
 const DEFAULT_MODEL = "google/gemini-2.5-flash";
 
 export class ChaiAIChatHandler implements ChaiBuilderPagesAIInterface {

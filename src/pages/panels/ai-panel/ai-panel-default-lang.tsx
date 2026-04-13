@@ -17,6 +17,7 @@ import { TaskMessage } from "~/pages/components/ai-elements/task-message";
 import { ChaiBlock } from "~/types/common";
 import { useAIConfig, useAIModels } from "./ai-models-context";
 import { Message } from "./ai-panel-helper";
+import { getDefaultModel } from "./models";
 import { getUserPrompt } from "./prompt-helper";
 import { SelectedBlockDisplay } from "./selected-block-display";
 import { useProcessAiStream } from "./use-process-ai-stream";
@@ -64,7 +65,7 @@ const AiPanelForDefaultLang = ({
 }: AiPanelForDefaultLangProps) => {
   const { models } = useAIModels();
   const config = useAIConfig();
-  const defaultModel = models.find((model) => model.id === "google/gemini-3-flash") || models[0];
+  const defaultModel = models.find((model) => model.id === getDefaultModel().id) || models[0];
   const currentSelectedModel = selectedModel || defaultModel.id;
 
   const selectedBlock = useSelectedBlock();
@@ -117,11 +118,19 @@ const AiPanelForDefaultLang = ({
     config.onAIEvent?.({ type: "stream_start", model: usedModel, timestamp: Date.now() });
 
     try {
-      const requestBody: any = {
-        messages: [userMessageObj].map((m) => ({
+      // Send conversation history so the AI has context from prior turns.
+      // Cap at last 10 messages to avoid exceeding token/payload limits.
+      const MAX_HISTORY = 10;
+      const conversationMessages = [...messages, userMessageObj]
+        .filter((m) => !m.isReasoning && !m.isTask && (m.role === "user" || m.role === "assistant"))
+        .slice(-MAX_HISTORY)
+        .map((m) => ({
           role: m.role,
           content: m.content,
-        })),
+        }));
+
+      const requestBody: any = {
+        messages: conversationMessages,
         model: model || currentSelectedModel,
         context: config.context,
       };
@@ -131,7 +140,11 @@ const AiPanelForDefaultLang = ({
         requestBody.image = image;
       }
 
-      const response = await fetch({ body: { action: "ASK_AI", data: requestBody }, streamResponse: true });
+      const response = await fetch({
+        body: { action: "ASK_AI", data: requestBody },
+        streamResponse: true,
+        signal: controller.signal,
+      });
 
       if (!response.ok) {
         throw new Error(t("Failed to get AI response"));

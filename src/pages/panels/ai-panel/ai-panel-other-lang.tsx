@@ -13,6 +13,7 @@ import { TaskMessage } from "~/pages/components/ai-elements/task-message";
 import { ChaiBlock } from "~/types/common";
 import { useAIConfig, useAIModels } from "./ai-models-context";
 import { Message } from "./ai-panel-helper";
+import { getDefaultModel } from "./models";
 import { getTranslationUserPrompt } from "./prompt-helper";
 import { SelectedBlockDisplay } from "./selected-block-display";
 
@@ -62,7 +63,7 @@ const AiPanelForOtherLang = ({
   const { t } = useTranslation();
   const { models } = useAIModels();
   const config = useAIConfig();
-  const defaultModel = models.find((model) => model.id === "google/gemini-3-flash") || models[0];
+  const defaultModel = models.find((model) => model.id === getDefaultModel().id) || models[0];
   const currentSelectedModel = selectedModel || defaultModel.id;
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -105,8 +106,6 @@ const AiPanelForOtherLang = ({
       isStreaming: true,
     };
 
-    setIsLoading(true);
-
     // Create new AbortController for this request
     const controller = new AbortController();
     setAbortController(controller);
@@ -127,7 +126,11 @@ const AiPanelForOtherLang = ({
         context: config.context,
       };
 
-      const response = await fetch({ body: { action: "ASK_AI", data: requestBody }, streamResponse: true });
+      const response = await fetch({
+        body: { action: "ASK_AI", data: requestBody },
+        streamResponse: true,
+        signal: controller.signal,
+      });
 
       if (!response.ok) {
         throw new Error(t("Failed to get AI response"));
@@ -148,12 +151,18 @@ const AiPanelForOtherLang = ({
         const chunk = decoder.decode(value, { stream: true });
         accumulatedText += chunk;
         setMessages((prev) => {
-          prev[prev.length - 1].content = accumulatedText;
-          return [...prev];
+          const updated = [...prev];
+          updated[updated.length - 1] = { ...updated[updated.length - 1], content: accumulatedText };
+          return updated;
         });
       }
 
-      const blocks = JSON.parse(accumulatedText?.replace("```json", "").replace("```", ""));
+      let blocks;
+      try {
+        blocks = JSON.parse(accumulatedText?.replace("```json", "").replace("```", ""));
+      } catch {
+        throw new Error(t("Failed to parse AI response. Please try again."));
+      }
       updateBlocksWithStream(blocks);
 
       // Trigger success callbacks with actual AI response (non-urgent update)
@@ -169,9 +178,20 @@ const AiPanelForOtherLang = ({
         });
       });
     } catch (error: any) {
-      abortController?.abort();
+      if (error?.name === "AbortError") {
+        return;
+      }
 
-      // Trigger error callbacks with actual error (non-urgent update)
+      // Show error to user in chat
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: (Date.now() + 2).toString(),
+          role: "assistant" as const,
+          content: t("Sorry, I encountered an error. Please try again."),
+        },
+      ]);
+
       startTransition(() => {
         const errorMessage = error instanceof Error ? error.message : String(error);
         const timestamp = Date.now();
@@ -180,6 +200,7 @@ const AiPanelForOtherLang = ({
         config.onAIEvent?.({ type: "error", error: errorMessage, model: usedModel, timestamp });
       });
     } finally {
+      setAbortController(null);
       setIsLoading(false);
       setInput("");
       setCurrentBlock(null);
