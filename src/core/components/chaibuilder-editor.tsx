@@ -120,7 +120,7 @@ const ChaiBuilderComponent = (props: ChaiBuilderEditorProps) => {
   );
 };
 /**
- * ChaiBuilder is the main entry point for the Chai Builder Studio.
+ * ChaiBuilder is the main entry point for the ChaiBuilder Studio.
  */
 const ChaiBuilderEditor: React.FC<ChaiBuilderEditorProps> = (props: ChaiBuilderEditorProps) => {
   const onErrorFn = props.onError || noop;

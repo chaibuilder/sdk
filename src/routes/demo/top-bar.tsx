@@ -7,14 +7,13 @@ import RightTop from "~/routes/demo/right-top";
 
 const Logo = () => {
   return (
-    <div className="flex w-96 items-center gap-2">
+    <div className="flex w-96 items-center gap-3">
       <a href="https://chaibuilder.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-        <img src="/chaibuilder-logo.png" alt="Chai Builder" width={32} height={32} className="rounded-md" />
-        <span className="font-mono font-bold tracking-tight">ChaiBuilder</span>
+        <img src="/chaibuilder-logo.png" alt="ChaiBuilder" className="h-7 w-auto object-contain" />
       </a>
 
-      <a href="https://github.com/chaibuilder/sdk" target="_blank" rel="noopener noreferrer">
-        <img src="https://img.shields.io/github/stars/chaibuilder/sdk" alt="Chai Builder" className="rounded-md" />
+      <a href="https://github.com/chaibuilder/sdk" target="_blank" rel="noopener noreferrer" className="opacity-90 transition-opacity hover:opacity-100">
+        <img src="https://img.shields.io/github/stars/chaibuilder/sdk" alt="ChaiBuilder GitHub Stars" className="rounded-md" />
       </a>
     </div>
   );

@@ -54,7 +54,6 @@ const AiPanelForOtherLang = ({
   selectedLang,
   currentBlock,
   fallbackLang,
-  abortController,
   setAbortController,
   setCurrentBlock,
   selectedModel,
