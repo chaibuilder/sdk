@@ -20,7 +20,7 @@ type ChaiDraggableBlockProps = {
 /**
  * @component ChaiDraggableBlock
  * @description
- * A draggable wrapper component for Chai Builder blocks.
+ * A draggable wrapper component for ChaiBuilder blocks.
  * Supports multiple input formats: HTML strings, single blocks, or block arrays.
  * Can handle both synchronous and asynchronous data loading.
  *

@@ -1,7 +1,7 @@
 export const EXTERNAL_DATA = {
   vehicle: {
     title: "query_params",
-    description: "Chai Builder is a tool that allows you to build your own website visually.",
+    description: "ChaiBuilder is a tool that allows you to build your own website visually.",
     price: "$2000",
     image: "https://picsum.photos/400/200",
     link: "https://www.google.com",
