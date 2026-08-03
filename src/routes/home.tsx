@@ -1,4 +1,4 @@
-import { ArrowRight, ExternalLink, Github, Globe, Layers } from "lucide-react";
+import { ArrowRight, ExternalLink, Globe, Layers } from "lucide-react";
 
 export default function Home() {
   const navigationItems = [
