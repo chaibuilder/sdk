@@ -1,16 +1,16 @@
-# Chai Builder - Open Source React Website Builder
+# Chai Builder - Open Source React/NextJS Website Builder
 
-[![npm version](https://img.shields.io/npm/v/@chaibuilder/sdk.svg)](https://www.npmjs.com/package/@chaibuilder/sdk)
-[![License](https://img.shields.io/npm/l/@chaibuilder/sdk.svg)](https://github.com/chaibuilder/chaibuilder-sdk/blob/main/LICENSE)
 
-Chai Builder is a **full open-source React website builder** that empowers developers to create stunning web pages visually using drag-and-drop functionality. Built with React and Tailwind CSS, it seamlessly integrates into your existing projects.
+Chai Builder is a **full open-source React/NextJS website builder** that empowers developers to create stunning web pages visually using drag-and-drop functionality. Built with React and Tailwind CSS, it seamlessly integrates into your existing projects.
 
 🚀 **Out-of-the-box support for:**
 
 - **Next.js 16**
 - **Tailwind CSS v3+**
 
-📚 **[CodeWiki](https://codewiki.google/github.com/chaibuilder/sdk)** | 🎨 **[Live Demo](https://chaibuilder-sdk.vercel.app/)**
+**[Website](https://bit.ly/4iYoCZ0)**
+
+**[Live Demo](https://chai-live-demo.vercel.app/admin/login?utm_source=github)**
 
 ![Chai Builder New UI](https://github.com/user-attachments/assets/75e49431-981b-4ea6-94b9-d9cc64bd8db6)
 
