@@ -1,5 +1,7 @@
 # Chai Builder - Open Source React/NextJS Website Builder
 
+> **Deprecated:** This repository is no longer maintained. Please use the [ChaiBuilder Core repository](https://github.com/chaibuilder/core) instead.
+
 
 Chai Builder is a **full open-source React/NextJS website builder** that empowers developers to create stunning web pages visually using drag-and-drop functionality. Built with React and Tailwind CSS, it seamlessly integrates into your existing projects.
 
